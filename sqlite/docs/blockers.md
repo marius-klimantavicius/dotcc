@@ -57,14 +57,15 @@ Pointer and sized-array syntax now parses and runs. A related typedef lexer bug
 mistook a callback field for the enclosing typedef name; `typedef-nested-callback`
 prints `42 8` and now passes. Upstream source remains unchanged.
 
-## B005 — flexible nested array and storage (parser/layout, active)
+## B005 — flexible nested array and storage (parser/layout, fixed becd09e)
 
 After sized-array fix, full SQLite stops at reported `18863:19`, closing `]`;
 raw source `sqlite3.c:18967` is `struct sColMap {...} aCol[FLEXARRAY]` and the
 C17 profile expands FLEXARRAY empty. Existing generic flexible arrays also model
-`[]` as `[1]`, which cannot satisfy native sizeof/alignment. Parser and generator
-workers are implementing actual zero-storage flexible tails, including correct
-alignment and generated offsets; no FLEXARRAY/profile workaround is allowed.
+`[]` as `[1]`, which cannot satisfy native sizeof/alignment. Parser and generator now implement zero-storage flexible tails with explicit
+header size, alignment anchors and generator-backed tail pointer accessors.
+Native and translated regression headers agree at size4/8 instead of the prior
+8/16/24. No FLEXARRAY macro override was introduced.
 
 Diagnostic note: existing line-continuation splicing shifts reported coordinates
 from physical source lines. Raw locations are recorded where known. Fixing source
@@ -77,3 +78,18 @@ standalone/project/GeneratorDriver/object integration and native-checked fixture
 Full suite caught eager recursive CType.Slice formatting for unused Zig metadata;
 fixed by nonrecursive type-kind diagnostics. Unknown requested layouts still fail
 clearly. See `sqlite/generators/README.md` for remaining FAM/ABI/AOT work.
+
+## B006 — tagged definition with variable (parser, verification in progress)
+
+After B005, SQLite reaches `sqlite3StatType` (reported24191/raw24341), a tagged
+struct definition used as a type specifier with a variable declarator. Parser
+worker added a native-verified fixture and structural Type productions; focused
+execution passes. Full suite exposed only a stale old FAM emitted-string assertion,
+which is updated to the new correct zero-storage representation.
+
+## B007 — self-referential object/function macro rescan (preprocessor, active)
+
+After B006, `vfsList` (reported26735/raw26892) leaves `GLOBAL(sqlite3_vfs*,vfsList)`
+in actual preprocessed C. The object alias's macro hide state is lost before the
+function-like GLOBAL expansion. This defect is also visible in the pristine
+preprocessed baseline. Worker is reducing/fixing shared rescan semantics.

@@ -53,3 +53,17 @@ from the matching public `jsonb01.test`, retaining upstream expected bytes and
 error behavior. `tests/upstream-jsonb.expected` records the native transcript;
 `docs/upstream-tests.md` documents the adaptation and coverage boundary.
 Translated execution remains pending.
+
+## Native ABI and single-unit adapter validation
+
+All native core, API, VFS and upstream JSONB suites pass with the explicit matching
+`-mms-bitfields` profile. Core/API/upstream transcripts remain byte-for-byte equal
+to their saved expected results. Actual SQLite layout probes and raw default-GCC
+comparison are recorded in `tests/layout-native.expected` and
+`tests/layout-native-sysv.reference`.
+
+The one-unit layout probe exposed our adapter's private `MemFile` name collision
+with SQLite's built-in memdb VFS. Adapter types and private symbols are now
+prefixed `DotccMem`/`dotcc_mem_`; native VFS contracts pass after the rename.
+SQLite source remains untouched. Probe logs live under `artifacts/layout-native-*`
+and profile rerun logs under `artifacts/native-matched-*`.

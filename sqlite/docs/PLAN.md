@@ -167,11 +167,11 @@ Current code has an `OffsetOf` IR node, constant-context layout evaluation in
 stack-instance address subtraction. Existing offset tests and dotted-designator
 fixtures are starting coverage, not a complete solution for SQLite.
 
-- [ ] Add a Roslyn incremental source-generator project under `generators/`.
+- [x] Add a Roslyn incremental source-generator project under `generators/`.
       Keep its design generic to dotcc aggregates despite its campaign location.
       Explicitly set a Roslyn-compatible target framework instead of inheriting
       the repository's `net10.0` target blindly.
-- [ ] Specify deterministic input metadata from typed IR: target ABI, aggregate
+- [x] Specify deterministic input metadata from typed IR: target ABI, aggregate
       identity, fields and lowered storage, nesting, arrays, alignment/packing,
       unions, and requested member designators. Emit it with generated C# as an
       `AdditionalFiles` input (or equivalent documented structured contract).

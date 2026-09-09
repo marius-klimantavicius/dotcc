@@ -1,0 +1,2 @@
+# Match dotcc's existing same-sized bit-field storage units on the LP64 host.
+-mms-bitfields
