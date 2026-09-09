@@ -86,3 +86,16 @@ rowids, JSON joins, rejection of writes, absent FTS5, and module/context cleanup
 It preserves a virtual-table extension seam for future FTS while FTS remains
 disabled. `tests/native-vtable.expected` records the transcript. This is native
 oracle coverage; translated execution and a C# SQLite module remain pending.
+
+## Bounded allocator failure contract
+
+`scripts/test-allocation-native.sh` and its `SQLITE_SANITIZE=1` ASan/UBSan run
+pass 128 deterministic one-shot allocator failures. Sixty-four target
+prepare/execute through `sqlite3_exec`; another 64 begin after preparing a
+statement, targeting VM execution, recursive inserts, and JSONB construction.
+The test disables connection lookaside to route these requests through SQLite's
+configured allocator callbacks. Every selected failure returns `SQLITE_NOMEM`,
+then rollback when needed, integrity checks, new JSONB writes/reads, handle
+cleanup, and shutdown memory accounting succeed. The allocator is restored.
+This bounded fault corpus does not claim exhaustive OOM coverage. Its portable C
+and `tests/native-allocation.expected` will also drive translated validation.
