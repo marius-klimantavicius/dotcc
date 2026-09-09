@@ -38,8 +38,24 @@ internal sealed partial class CSharpBackend
         var nested = new Dictionary<CaseLabelStmt, string>(ReferenceEqualityComparer.Instance);
         var locals = new List<LocalDecl>();
         var seenLocals = new HashSet<Symbol>(ReferenceEqualityComparer.Instance);
+        var entryLabels = new Dictionary<CStmt, bool>(ReferenceEqualityComparer.Instance);
+        bool HasEntryLabel(CStmt current)
+        {
+            if (entryLabels.TryGetValue(current, out var result)) return result;
+            result = current is CaseLabelStmt or Labeled || SwitchChildren(current).Any(HasEntryLabel);
+            entryLabels.Add(current, result);
+            return result;
+        }
+        // Only ancestors of entry labels must become a shared label scope.
+        // Ordinary blocks/loops keep both their structured control flow and
+        // their local storage. Flattening all branches in a large C switch
+        // makes Roslyn repeatedly clone/join thousands of assignment states.
+        // Seq is deliberately excluded: it does not introduce a C scope.
+        bool KeepStructured(CStmt current) =>
+            current is Block or If or While or DoWhile or For && !HasEntryLabel(current);
         void Discover(CStmt current)
         {
+            if (KeepStructured(current)) return;
             if (current is CaseLabelStmt label) nested.Add(label, Fresh());
             if (current is DeclStmt declaration)
                 foreach (var local in declaration.Decls)
@@ -89,6 +105,11 @@ internal sealed partial class CSharpBackend
         {
             _breakAsGoto = breakTarget;
             _continueAsGoto = continueTarget;
+            if (KeepStructured(current))
+            {
+                Stmt(output, current, bodyIndent);
+                return;
+            }
             switch (current)
             {
                 case Block or Seq:

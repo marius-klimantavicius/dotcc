@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -81,6 +82,9 @@ internal static class FixtureRunner
     /// real Zig) writes to stderr, not stdout.
     /// </summary>
     public static (string stdout, string stderr, int exit) CompileAndRunCapturingStreams(string csharpSource, string[] args)
+        => CompileAndRunCapturingStreams(csharpSource, args, CancellationToken.None);
+
+    public static (string stdout, string stderr, int exit) CompileAndRunCapturingStreams(string csharpSource, string[] args, CancellationToken cancellationToken)
     {
         // Strip the file-based-program directive — Roslyn doesn't parse it
         // (it's a `dotnet run --file` thing). The rest of the source compiles
@@ -88,7 +92,7 @@ internal static class FixtureRunner
         var cleaned = StripFileBasedHeader(csharpSource);
 
         var syntax = CSharpSyntaxTree.ParseText(cleaned,
-            new CSharpParseOptions(LanguageVersion.Preview, preprocessorSymbols: new[] { "DOTCC_OFFSET_GENERATOR" }));
+            new CSharpParseOptions(LanguageVersion.Preview, preprocessorSymbols: new[] { "DOTCC_OFFSET_GENERATOR" }), cancellationToken: cancellationToken);
 
         var refs = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
@@ -129,13 +133,13 @@ internal static class FixtureRunner
         GeneratorDriver driver = CSharpGeneratorDriver.Create(
             new[] { new DotCC.OffsetGenerator.OffsetGenerator().AsSourceGenerator() },
             parseOptions: (CSharpParseOptions)syntax.Options);
-        driver.RunGeneratorsAndUpdateCompilation(comp, out var generated, out var generatorDiagnostics);
+        driver.RunGeneratorsAndUpdateCompilation(comp, out var generated, out var generatorDiagnostics, cancellationToken);
         if (generatorDiagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))
             throw new InvalidOperationException("Offset generation failed: " + string.Join("\n", generatorDiagnostics));
         comp = (CSharpCompilation)generated;
 
         using var pe = new MemoryStream();
-        var result = comp.Emit(pe);
+        var result = comp.Emit(pe, cancellationToken: cancellationToken);
         if (!result.Success)
         {
             var errs = string.Join('\n',

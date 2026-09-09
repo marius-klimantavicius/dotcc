@@ -2639,7 +2639,7 @@ public sealed class ZigOracleTests
             var emitted = Compiler.EmitCSharp(new[] { zigPath }, emit: EmitMode.Csproj);
             // Capture BOTH streams: `std.debug.print` (wall-plan W6) — like real Zig — writes to stderr,
             // not stdout, so an stdout-only assertion would pass vacuously against it.
-            (dotccStdout, dotccStderr, dotccExit) = FixtureRunner.CompileAndRunCapturingStreams(emitted, Array.Empty<string>());
+            (dotccStdout, dotccStderr, dotccExit) = FixtureRunner.CompileAndRunCapturingStreams(emitted, Array.Empty<string>(), TestContext.Current.CancellationToken);
         }
         finally { File.Delete(zigPath); }
 
