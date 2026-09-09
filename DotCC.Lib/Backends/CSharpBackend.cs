@@ -24,7 +24,8 @@ internal sealed record CSharpBackendResult(
     bool MainReturnsVoid = false,
     bool MainReturnsErrUnion = false,
     bool MainErrPayloadIsVoid = false,
-    IReadOnlyList<(string Name, string FnName)>? Tests = null);
+    IReadOnlyList<(string Name, string FnName)>? Tests = null,
+    IReadOnlyDictionary<string, string>? TypeDeclarations = null);
 
 /// <summary>
 /// Lowers the typed IR to low-level unsafe C# text. Deliberately DUMB: every
@@ -40,6 +41,9 @@ internal sealed class CSharpBackend
     /// into). The statement / expression emitter in this class is still the
     /// C#-specific one.</summary>
     private readonly ITarget _target = new CSharpTarget();
+    private DotCC.Layout.OffsetDocument _offsetDocument = null!;
+    private DotCC.Layout.OffsetLayoutModel _offsetModel = null!;
+    private readonly HashSet<string> _offsetRequests = new(StringComparer.Ordinal);
 
     /// <summary>Project a neutral <see cref="CType"/> onto the target's type
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
@@ -48,6 +52,10 @@ internal sealed class CSharpBackend
     public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null)
     {
         var cg = new CSharpBackend { _convGate = convGate };
+        cg._offsetDocument = unit.CreateOffsetDocument();
+        cg._offsetRequests.UnionWith(cg._offsetDocument.Requests.Select(request => request.Name));
+        cg._offsetModel = new DotCC.Layout.OffsetLayoutModel(name => cg._offsetDocument.Aggregates.TryGetValue(name, out var aggregate)
+            ? aggregate : throw new DotCC.Layout.OffsetLayoutException("Unknown offsetof aggregate: " + name));
         // C tag namespace vs ordinary namespace: collect globals whose name an
         // emitted struct/enum type will shadow, so reads qualify (GlobalName).
         var typeNames = new HashSet<string>(unit.Types.Select(t => t.Name), StringComparer.Ordinal);
@@ -142,8 +150,15 @@ internal sealed class CSharpBackend
 
         // struct/union/enum type declarations → the top-level type-decls section.
         var structs = new StringBuilder();
-        foreach (var t in unit.Types) { structs.Append(cg.StructText(t)); }
-        foreach (var en in unit.Enums) { structs.Append(cg.EnumText(en)); }
+        var typeDeclarations = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var t in unit.Types) { typeDeclarations.Add(t.Name, cg.StructText(t)); }
+        foreach (var en in unit.Enums) { typeDeclarations.Add(en.Name, cg.EnumText(en)); }
+        foreach (var request in cg._offsetDocument.Requests.OrderBy(request => request.Name, StringComparer.Ordinal))
+        {
+            var document = cg._offsetDocument.ForRequest(request);
+            typeDeclarations.Add(request.Name, document.Serialize() + "#if !DOTCC_OFFSET_GENERATOR\n" + document.Materialize() + "#endif\n");
+        }
+        foreach (var declaration in typeDeclarations.Values) structs.Append(declaration);
 
         // Zig test-mode manifest (empty for a normal build): each test's display name paired with the
         // emitted method name (TargetName — the same spelling `Func` above prints at line ~411), so the
@@ -152,7 +167,7 @@ internal sealed class CSharpBackend
             ? unit.Tests.Select(t => (t.Name, t.Sym.TargetName)).ToList()
             : null;
 
-        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: "", globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests);
+        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: "", globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations);
     }
 
     // ---- type declarations -----------------------------------------------
@@ -817,7 +832,9 @@ internal sealed class CSharpBackend
         // C's switch is int-semantic. An enum subject / enumerator case label decays
         // to its underlying int so the governing type is uniform — a plain int switch
         // may carry enumerator labels and vice versa (C# rejects the mixed forms).
-        var subj = Hoist(sb, pad, () => Expr(DecayEnum(sw.Subject)));
+        var subjectValue = DecayEnum(sw.Subject);
+        var promotedType = CType.IntegerPromote(subjectValue.Type);
+        var subj = Hoist(sb, pad, () => Coerced(subjectValue, promotedType));
 
         // A C case section `case X: { … }` parses as one wrapping Block; the labels
         // we reconcile (ret/l_tforcall/…) live INSIDE it. Work on each section's
@@ -1374,7 +1391,12 @@ internal sealed class CSharpBackend
             var st = subject.Unqualified is CType.Prim { Integer: true } sp ? Cs(sp) : "long";
             return $"unchecked(({st})({v.ToString(System.Globalization.CultureInfo.InvariantCulture)}))";
         }
-        return Expr(DecayEnum(ce));
+        var value = DecayEnum(ce);
+        var target = CType.IntegerPromote(subject.Unqualified is CType.Enum enumeration ? enumeration.Underlying : subject);
+        // C converts every integer case constant to the promoted governing type.
+        // A generated size_t offset is a ulong constant; C# needs that narrowing
+        // conversion explicitly even when the value is representable as int.
+        return TryCoerceCast(value, target, out var converted) ? $"unchecked({converted})" : Expr(value);
     }
 
     private static bool ContainsPointerCast(CExpr e) => e switch
@@ -1740,20 +1762,20 @@ internal sealed class CSharpBackend
                 return ($"((ulong)({SizeofText(so.Of)}))", PPrimary);
             case OffsetOf o:
             {
-                // .NET has no offsetof operator, and the address-through-a-null
-                // idiom (`&((T*)null)->m`) FAULTS — C#'s `->` null-checks the base.
-                // Compute it from a stack `default` instance instead: the member's
-                // address minus the base address, honoring the real .NET blittable
-                // layout (alignment included). `__t` lives inside the lambda (not
-                // captured), so `&__t` needs no `fixed`. A primitive `fixed`-buffer
-                // member's access already yields its address (no `&`); a scalar
-                // member uses `&`.
-                var m = string.Join(".", o.Path.Select(DotCC.EmitHelpers.Id));
-                // A member that lowers to a C# `fixed` buffer (primitive-element
-                // array) already yields its own address — no `&` (would be CS0211).
-                var decays = o.MemberType?.Unqualified is CType.Array fa && IsFixedBufferType(Cs(fa.Element));
-                var memberAddr = decays ? $"(byte*)__t.{m}" : $"(byte*)&__t.{m}";
-                return ($"((System.Func<ulong>)(() => {{ {Cs(o.StructType)} __t = default; return (ulong)({memberAddr} - (byte*)&__t); }}))()", PPrimary);
+                if (o.StructType.Unqualified is not CType.Named named)
+                    throw new IrUnsupportedException("offsetof requires an aggregate type");
+                var id = DotCC.Layout.OffsetDocument.RequestName(named.Name, o.Path);
+                try
+                {
+                    if (_offsetRequests.Add(id))
+                        _offsetDocument.Requests.Add(new DotCC.Layout.OffsetRequest
+                        {
+                            Name = id, Aggregate = named.Name, Path = o.Path.ToArray(),
+                            Expected = _offsetModel.Offset(named.Name, o.Path),
+                        });
+                }
+                catch (DotCC.Layout.OffsetLayoutException error) { throw new IrUnsupportedException(error.Message); }
+                return (id + ".Value", PPrimary);
             }
             case Index ix:
             {

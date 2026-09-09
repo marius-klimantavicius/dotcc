@@ -981,92 +981,6 @@ internal sealed partial class IrBuilder
     /// type.</summary>
     internal int AlignOfConst(CType t) => Layout(t).Align;
 
-    /// <summary>The (size, alignment) in bytes of a type under the C ABI / .NET
-    /// blittable layout.</summary>
-    private (int Size, int Align) Layout(CType t)
-    {
-        switch (t.Unqualified)
-        {
-            case CType.Prim p: return (p.Bytes, p.Bytes);
-            case CType.Pointer or CType.Func: return (8, 8);
-            case CType.Array a:
-            {
-                var (es, ea) = Layout(a.FlatElement);
-                var count = 1;
-                for (CType c = a; c is CType.Array ca; c = ca.Element) { count *= ca.Count ?? 0; }
-                return (es * count, ea);
-            }
-            case CType.Named n: return LayoutAggregate(n.Name);
-            default: return (0, 1);
-        }
-    }
-
-    /// <summary>The (size, alignment) of a registered struct/union: sequential
-    /// fields each aligned up to their own alignment for a struct; all overlaid at 0
-    /// for a union. The total rounds up to the aggregate's alignment.</summary>
-    private (int Size, int Align) LayoutAggregate(string name)
-    {
-        if (!_structFields.TryGetValue(name, out var fields)) { return (0, 1); } // opaque/unknown
-        var isUnion = _structIsUnion.GetValueOrDefault(name);
-        var packed = _packedStructs.Contains(name);   // byte-packed: no inter-field padding, align 1
-        int align = 1, size = 0, off = 0;
-        foreach (var f in fields)
-        {
-            var (fs, fa) = Layout(f.Type);
-            if (packed) { fa = 1; }
-            if (fa > align) { align = fa; }
-            if (isUnion) { if (fs > size) { size = fs; } }
-            else { off = RoundUp(off, fa) + fs; }
-        }
-        return (RoundUp(isUnion ? size : off, align), align);
-    }
-
-    /// <summary>The byte offset of a (possibly nested) member-designator within
-    /// struct <paramref name="structName"/> — per-level offsets summed, each
-    /// intermediate level resolved through its member's type. Null if any level
-    /// isn't modelled.</summary>
-    private int? OffsetOfConstPath(string structName, IReadOnlyList<string> path)
-    {
-        var total = 0;
-        var current = structName;
-        for (var i = 0; i < path.Count; i++)
-        {
-            var seg = path[i];
-            if (OffsetOfConst(current, seg) is not { } off
-                || !_structFields.TryGetValue(current, out var fields)) { return null; }
-            total += off;
-            if (i == path.Count - 1) { break; }   // final segment — no deeper level to name
-            CType? segType = null;
-            foreach (var f in fields)
-            {
-                if (f.Name == seg) { segType = f.Type; break; }
-            }
-            if ((segType?.Unqualified as CType.Named)?.Name is not { } next) { return null; }
-            current = next;
-        }
-        return total;
-    }
-
-    /// <summary>The byte offset of <paramref name="member"/> within struct
-    /// <paramref name="structName"/> (0 for any union member), or null if unknown.</summary>
-    private int? OffsetOfConst(string structName, string member)
-    {
-        if (!_structFields.TryGetValue(structName, out var fields)) { return null; }
-        if (_structIsUnion.GetValueOrDefault(structName)) { return 0; }
-        var packed = _packedStructs.Contains(structName);   // byte-packed: no inter-field padding
-        var off = 0;
-        foreach (var f in fields)
-        {
-            var (fs, fa) = Layout(f.Type);
-            if (!packed) { off = RoundUp(off, fa); }
-            if (f.Name == member) { return off; }
-            off += fs;
-        }
-        return null;
-    }
-
-    private static int RoundUp(int v, int align) => align <= 1 ? v : (v + align - 1) / align * align;
-
     // ---- structs / unions ------------------------------------------------
 
     /// <summary>Define a struct/union. <paramref name="tag"/> is the C tag (null
@@ -3146,34 +3060,39 @@ internal sealed partial class IrBuilder
 
     // ---- literals --------------------------------------------------------
 
-    /// <summary><c>offsetof(T, member)</c> — resolve the aggregate type and look
-    /// up the member's field type so codegen knows whether it is a primitive
-    /// <c>fixed</c>-buffer (whose access already yields its address, so no
-    /// <c>&amp;</c>). The actual offset is computed at runtime by the
-    /// null-pointer idiom in codegen, matching the .NET blittable layout.</summary>
+    /// <summary>Resolve and validate a constant member designator against the shared
+    /// storage layout, retaining its request for generator cross-checking.</summary>
     private CExpr BuildOffsetof(C.OffsetofExpr n)
     {
         var structType = ResolveType(n.Arg2);
         var path = CollectOffsetofPath(n.Arg4);
-        // Record the FINAL member's declared type (a neutral fact); the backend
-        // decides whether its layout makes the member's access self-addressing.
-        // Walk the path segment by segment: each intermediate segment must be a
-        // modelled struct/union member whose type names the next level.
-        CType? memberType = null;
-        var canon = (structType.Unqualified as CType.Named)?.Name;
-        foreach (var seg in path)
+        if (structType.Unqualified is not CType.Named root)
+            throw new IrUnsupportedException("offsetof requires an aggregate type");
+        var normalized = new List<string>();
+        CType? memberType = structType;
+        foreach (var segment in path)
         {
-            memberType = null;
-            if (canon is null || !_structFields.TryGetValue(canon, out var fields)) { break; }
-            foreach (var f in fields)
+            if (segment.StartsWith("[", StringComparison.Ordinal))
             {
-                if (f.Name != seg) { continue; }
-                memberType = f.Type;
-                break;
+                memberType = (memberType?.Unqualified as CType.Array)?.Element;
+                normalized.Add(segment);
+                continue;
             }
-            canon = (memberType?.Unqualified as CType.Named)?.Name;
+            while (memberType?.Unqualified is CType.Named container
+                && _promoted.TryGetValue(container.Name, out var promoted) && promoted.TryGetValue(segment, out var route))
+            {
+                normalized.Add(route.Hidden);
+                memberType = new CType.Named(route.Nested);
+            }
+            normalized.Add(segment);
+            if (memberType?.Unqualified is not CType.Named named || !_structFields.TryGetValue(named.Name, out var fields))
+                throw new IrUnsupportedException("Invalid offsetof member designator");
+            memberType = null;
+            foreach (var field in fields)
+                if (field.Name == segment) { memberType = field.Type; break; }
         }
-        return new OffsetOf(structType, path, memberType) { Type = CType.SizeT };
+        OffsetOfConstPath(root.Name, normalized);
+        return new OffsetOf(structType, normalized, memberType) { Type = CType.SizeT };
     }
 
     /// <summary>Flatten an <c>OffsetofPath</c> parse tree (<c>ID ('.' ID)*</c>)
@@ -3187,6 +3106,13 @@ internal sealed partial class IrBuilder
             {
                 case C.OffsetofPathCons c: Walk(c.Arg0); segs.Add(Tok(c.Arg2)); break;
                 case C.OffsetofPathOne o: segs.Add(Tok(o.Arg0)); break;
+                case C.OffsetofPathIndex index:
+                    Walk(index.Arg0);
+                    var value = ConstEval(BuildExpr(index.Arg2));
+                    if (value is null or < 0 or > int.MaxValue)
+                        throw new IrUnsupportedException("offsetof array index must be a nonnegative integer constant");
+                    segs.Add("[" + value.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) + "]");
+                    break;
                 default: throw new IrUnsupportedException(TypeName(node.Content));
             }
         }

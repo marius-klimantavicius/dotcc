@@ -191,7 +191,7 @@ public static partial class Compiler
             var objDefs = irBuilder.Functions.Select(f => f.Sym.Name)
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
-            return SerializeFragment(cg.Functions, new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
+            return SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
                 objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid);
         }
         return BuildShell(cg.MainArity, cg.Functions, cg.Structs, cg.Aliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests);

@@ -23,7 +23,8 @@ public static partial class Compiler
     /// (<c>.dll</c> / <c>.so</c> / <c>.dylib</c>).
     /// </summary>
     public static string BuildGeneratedCsproj(
-        bool libraryMode = false, string assemblyName = "dotcc-out", IReadOnlyList<string>? staticArchives = null)
+        bool libraryMode = false, string assemblyName = "dotcc-out", IReadOnlyList<string>? staticArchives = null,
+        string? offsetGeneratorAssembly = null)
     {
         // Static archives (.a/.lib): link them into the NativeAOT image. <DirectPInvoke>
         // tells ILC to resolve the [DllImport] stubs statically; <NativeLibrary> hands
@@ -46,6 +47,13 @@ public static partial class Compiler
             }
             sb.Append("  </ItemGroup>\n");
             staticItems = sb.ToString();
+        }
+
+        if (offsetGeneratorAssembly is not null)
+        {
+            var analyzerPath = System.Security.SecurityElement.Escape(offsetGeneratorAssembly.Replace('\\', '/'));
+            staticItems += $"  <PropertyGroup><DefineConstants>$(DefineConstants);DOTCC_OFFSET_GENERATOR</DefineConstants></PropertyGroup>\n"
+                + $"  <ItemGroup><Analyzer Include=\"{analyzerPath}\" /></ItemGroup>\n";
         }
 
         if (libraryMode)

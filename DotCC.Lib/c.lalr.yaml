@@ -369,7 +369,7 @@ symbols:
   - 'offsetof'     # 162 builtin (C89 <stddef.h>) — offsetof(Type, member)
   # offsetof's member-designator may be a DOTTED PATH into nested members
   # (C99 7.17: "member-designator") — `offsetof(struct S, value.type.f)`,
-  # chibi-scheme's sexp_offsetof. Array designators (`m[2]`) stay unsupported.
+  # chibi-scheme's sexp_offsetof. Constant array indices are also supported.
   - OffsetofPath   # 163 non-terminal: ID ('.' ID)* inside offsetof
   # EMBED (C23 #embed) — a SYNTHETIC terminal with NO lexer rule. The `#embed`
   # preprocessor directive (onEmbed) reads the named file's RAW bytes and emits
@@ -1517,10 +1517,11 @@ productions:
       # bare typedef-name there is fine, unlike a value arg). The designator is
       # a dotted path into nested members (C99 7.17) — a single ID is the
       # common form, `value.type.f` walks nested structs/unions (chibi's
-      # sexp_offsetof). Array designators (`m[2]`) aren't supported.
+      # sexp_offsetof); constant array designators (`m[2]`) may be interleaved.
       - { lhs: Postfix, rhs: ['offsetof', '(', Type, ',', OffsetofPath, ')'], action: offsetofExpr }
       - { lhs: OffsetofPath, rhs: [ID], action: offsetofPathOne }
       - { lhs: OffsetofPath, rhs: [OffsetofPath, '.', ID], action: offsetofPathCons }
+      - { lhs: OffsetofPath, rhs: [OffsetofPath, '[', E, ']'], action: offsetofPathIndex }
       # Postfix ++/-- — left-associative (chained `x++` then `++` is illegal
       # in C and C# both; the grammar permits but the downstream compiler
       # diagnoses).
