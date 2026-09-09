@@ -18,8 +18,9 @@ negative array indexes, extracted SQL versus JSON values, explicit JSON null /
 missing path / SQL NULL / text `"null"` distinctions, JSONB validity flags,
 stored JSONB updates, constructors, changes, aggregates and table traversal.
 The native transcript preserves types, lengths and exact text/blob bytes;
-JSONB bytes are compared only within this pinned version. The 39-case native
+JSONB bytes are compared only within this pinned version. The 39-case core
 corpus also records extended result codes and exact error text for constraint,
-FTS, malformed JSON/JSONB and invalid-path failures. Translated execution remains
-pending; separate API, allocation and VFS harnesses supply bounded randomized
-and failure-injection checks.
+FTS, malformed JSON/JSONB and invalid-path failures. Its translated transcript
+matches the native mmap-disabled profile exactly. Separate API and VFS checks
+also pass, including all 128 allocation-failure recovery cases. All 37 adapted upstream
+JSONB cases pass through both engines; see `upstream-tests.md`.

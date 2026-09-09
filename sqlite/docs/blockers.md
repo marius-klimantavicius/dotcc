@@ -369,3 +369,18 @@ A native/runtime fixture covers multidimensional rows, arrays of aggregates,
 global pointer storage and side effects. All repository suites and the complete
 SQLite engine retry pass. Two negative tests also reject pointer addition and integer-minus-pointer
 subtraction (follow-up `eb0dd71`), instead of silently changing the operator.
+
+
+## B034 — standard-header NULL spelling (fixed a3a7b5f)
+
+The allocation-failure harness fails emission with incompatible `int`/`void*`
+conditional operands. Five dotcc standard headers define NULL as the C# spelling
+`null`, which is an undeclared identifier in C and has no valid C null-constant
+type. The actual preprocessed callback returns `should_fail() ? null : allocator`.
+The headers now use standard C `((void*)0)`. Five red unit cases and a native
+runtime fixture cover typed conditionals, function pointers, sizeof and `_Generic`.
+The fixture also exposed missing null callback-store/argument coercions; a narrow
+recognizer unwraps only a void-pointer cast of proven integer zero. Ordinary
+void pointers and side effects are not silently converted to callback pointers.
+All six actual translated corpora and all three database-image exchange directions
+now match native after this fix. Evidence: `artifacts/null-macro/`.

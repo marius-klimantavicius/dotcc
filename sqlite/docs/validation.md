@@ -305,3 +305,45 @@ analysis warnings. ELF `DT_NEEDED` lists only libm, libc and the Linux loader;
 there is no native SQLite dependency. Ordinary .NET native runtime imports are
 not SQLite extension loading. Logs: `artifacts/layout-aot-validation.log`,
 `layout-aot-total.time`, and `translated-layout-aot.{out,build.log}`.
+
+
+## Broad translated integration checkpoint
+
+The translated API, VFS, explicit virtual-table and all 37 adapted upstream
+JSONB cases match their native transcripts exactly. API coverage includes UTF-16,
+ownership/destructors, scalar/aggregate/collation callbacks, hooks, backup,
+incremental blobs and 256 deterministic transaction operations (seed `0x51a17e`).
+The complete memory-VFS contract and multi-connection recovery checks pass.
+Allocator harness emission exposed B034; core/image reruns and port regressions
+remain pending. Logs: `artifacts/translated-{api,vfs,vtable,upstream}.out`.
+
+All eight native baseline runners also pass with the explicit mmap-disabled
+profile. Only the reviewed core `PRAGMA mmap_size` zero row differs from the
+previous platform-dependent profile. Exact source preservation and feature scope
+are unchanged. Logs: `artifacts/mmap-profile/`.
+
+
+## Complete native differential corpus
+
+After the standard-header NULL and callback-null coercion correction, all six
+translated suites were regenerated and pass against the exact native transcripts:
+39 core SQL/JSON/JSONB cases, the API corpus with 256 seeded operations, full VFS
+contracts, explicit virtual tables, 128 allocator failures (64 execution and 64
+step failures with recovery), and all 37 adapted public JSONB assertions.
+
+Independent-process database-image exchange also passes native→managed,
+managed→native and managed→managed. Each direction checks integrity, JSONB,
+Unicode/embedded NUL, a 64-KiB incremental blob, metadata and cleanup. No generated
+engine source was patched. Logs: `artifacts/null-macro/runtime-*.log`,
+`allocation-retry.log`, `image-exchange.log`, and `artifacts/exchange-*.out`.
+M5 is complete for this documented corpus; shared port regression and clean
+reproduction gates remain. This does not claim the complete SQLite test suite.
+
+
+The final shared-header fix is committed as `a3a7b5f`. Full repository verification
+passes 1,800 unit tests (51 seconds) and 277 functional tests (92 seconds), with
+895 optional oracle skips and zero failures. The same snapshot re-emits/builds
+and passes every SQLite runtime corpus, all image exchanges and the separate C#
+consumer. The full managed library again has zero compile errors; all 30 metadata
+contracts match. Logs: `artifacts/null-macro/{unit-all,functional-all,
+managed-consumer}.log`. Existing Lua/Chibi/WAT execution is the next shared gate.

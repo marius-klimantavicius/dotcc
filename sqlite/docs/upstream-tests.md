@@ -12,8 +12,9 @@ finalize result codes, and the exact malformed-JSON message. Unexpected source
 shape aborts generation; cases are never silently skipped. Generated C and the
 manifest with source hash/case IDs live under `generated/`.
 
-Run `scripts/test-upstream-native.sh` from `sqlite/`. All 37 assertions pass using
-the pinned native amalgamation and campaign memory VFS; its transcript is saved in
-`tests/upstream-jsonb.expected`. Translated execution of this identical generated
-harness is still pending. Other upstream test files have not yet been executed;
+Run `scripts/test-upstream-native.sh` and `scripts/test-translated.sh upstream`
+from `sqlite/`. All 37 assertions pass using both the pinned native amalgamation
+and its dotcc translation with the campaign memory VFS. The identical generated
+harness matches `tests/upstream-jsonb.expected` byte-for-byte. Other upstream test
+files have not been executed;
 this is not a claim of passing the entire public SQLite suite or TH3.

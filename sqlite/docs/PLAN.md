@@ -1,10 +1,9 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: M0/M1/M2 complete. The complete managed C# library builds and the separate
-C# consumer passes SQL, JSONB, nested callbacks, GC stress and cleanup. Actual JIT
-storage checks pass all 30 offsets, 33 sizes/alignments and eight pointer arrays.
-The actual consumer and full layout probe also pass NativeAOT. The complete
-native differential campaign and reproducibility gates (M3–M6) remain active.
+Status: M0–M5 complete. The unchanged configured engine, separate C# consumer,
+all native differential corpora and database-image exchanges pass. JIT and
+NativeAOT validate actual SQLite storage, offsetof and C# callbacks. Final shared
+repository/port regressions and clean-checkout reproduction (M6) remain active.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
 ## Objective and constraints
@@ -225,11 +224,11 @@ M1/M2 may interleave where layout-dependent declarations block lowering.
       native ABI exports, unmanaged thunks, and `UnmanagedCallersOnly` are not
       required. Preserve callback/context lifetimes. Never use pointer types as
       generic type arguments.
-- [ ] Exercise callback registration and invocation through VFS methods, scalar/
+- [x] Exercise callback registration and invocation through VFS methods, scalar/
       aggregate SQL functions, collations, busy/progress handlers, and destructors.
       Cover null callbacks, context pointers, `SQLITE_STATIC`/`SQLITE_TRANSIENT`,
       disposal, and GC stress so callable addresses and data remain valid.
-- [ ] Audit unresolved libc dependencies and extend dotcc's runtime as needed;
+- [x] Audit unresolved libc dependencies and extend dotcc's runtime as needed;
       exclude accidental imports of native SQLite. Keep runtime allocator,
       strings, memory operations, formatting, and math on dotcc implementations.
 - [x] Start with a small C `main` harness for execution. Then expose a reusable
@@ -243,32 +242,32 @@ pass, and a separate C# consumer can call the translated engine. Commit per fix.
 
 ### M4 — Memory VFS and platform contract
 
-- [ ] Prefer a small portable C VFS in `src/`, compiled by dotcc and by the native
+- [x] Prefer a small portable C VFS in `src/`, compiled by dotcc and by the native
       oracle. Back storage with dotcc allocation/memory routines; use existing
       runtime facilities for clocks/randomness or an explicit deterministic test
       provider. Keep platform-specific code behind this adapter boundary.
-- [ ] Implement initialization/registration and a versioned `sqlite3_vfs` /
+- [x] Implement initialization/registration and a versioned `sqlite3_vfs` /
       `sqlite3_io_methods` table. Initial file methods version 1 is sufficient;
       advertise only implemented capabilities. Supply open/close, read/write,
       truncate/size, delete/access/path, lock/unlock/check-reserved-lock, sync,
       file-control, sector/device information, randomness, sleep, and time.
-- [ ] Model named files shared by handles, anonymous temporary files, rollback
+- [x] Model named files shared by handles, anonymous temporary files, rollback
       journals, delete-on-close, zero-filled growth, and short reads with required
       zero-fill plus `SQLITE_IOERR_SHORT_READ`. Respect access modes and error
       codes. Unknown file controls return `SQLITE_NOTFOUND` as appropriate.
-- [ ] Track lock ownership/transitions between connections; test successful and
+- [x] Track lock ownership/transitions between connections; test successful and
       conflicting shared/reserved/exclusive requests. Sync can succeed as an
       in-memory operation, with no durability claim. Avoid reporting success for
       unsupported disk, mapping, shared-memory, or locking capabilities.
-- [ ] Test close/reopen within a process, rollback journals, injected I/O errors,
+- [x] Test close/reopen within a process, rollback journals, injected I/O errors,
       transaction recovery after simulated failures, and resource cleanup.
       Distinguish this VFS from SQLite's own `:memory:` database mode.
 
 Exit: native and translated engines pass the same VFS contract and multi-connection
 tests under serialized calls. No persistence across processes, cross-process
 locking, power-loss durability, or concurrent-thread guarantee is claimed.
-The C adapter and all listed native contracts are implemented; checkboxes remain
-open until the same implementation runs through the translated engine.
+The same C adapter and all listed contracts pass through both native and
+translated engines.
 Follow upstream [VFS](https://www.sqlite.org/vfs.html),
 [VFS object](https://www.sqlite.org/c3ref/vfs.html), and
 [file methods](https://www.sqlite.org/c3ref/io_methods.html) contracts.
@@ -276,33 +275,33 @@ M4 can begin early to support the M0 native baseline and M3 execution.
 
 ### M5 — Verify core SQL, APIs, JSON, and JSONB
 
-- [ ] Run identical inputs through native and translated builds of the pinned
+- [x] Run identical inputs through native and translated builds of the pinned
       source/profile. Compare result codes, ordered rows, column types, byte
       lengths, text/blob bytes, errors, changes, and transaction outcomes. Use
       explicit ordering and controlled time/randomness; do not normalize away
       semantic differences. Store reviewable expected results for offline runs.
-- [ ] Cover prepare/bind/step/reset/finalize, null/text/blob/numeric conversions,
+- [x] Cover prepare/bind/step/reset/finalize, null/text/blob/numeric conversions,
       UTF-8/UTF-16, embedded NULs, ownership/destructors, and open/close errors.
-- [ ] Cover DDL/DML, joins/subqueries, sorting/grouping/aggregates, indexes, views,
+- [x] Cover DDL/DML, joins/subqueries, sorting/grouping/aggregates, indexes, views,
       triggers, foreign keys (enabled at runtime in tests), constraints, UPSERT,
       RETURNING, recursive CTEs, window functions, date/time, and pragmas.
-- [ ] Cover commit/rollback/savepoints, attached databases, multiple connections,
+- [x] Cover commit/rollback/savepoints, attached databases, multiple connections,
       backup, incremental blob I/O, and integrity/foreign-key checks. Export and
       reopen database images between native and translated engines in both
       directions using the VFS test harness; verify content and integrity.
-- [ ] Inventory the pinned release's JSON/JSONB surface. Test constructors,
+- [x] Inventory the pinned release's JSON/JSONB surface. Test constructors,
       extraction/operators, updates/removal, validation/errors, aggregates,
       `json_each`/`json_tree` and any pinned JSONB table variants, JSON5 handling,
       Unicode/escaping, paths, null distinctions, nested values, and stored blobs.
       Check JSONB SQL type, operations, and round trips against that exact native
       version; do not promise binary stability across SQLite releases. Use the
       [upstream JSON reference](https://www.sqlite.org/json1.html) for the inventory.
-- [ ] Verify FTS modules are absent while custom virtual tables and JSON table
+- [x] Verify FTS modules are absent while custom virtual tables and JSON table
       functions work, leaving a tested extension point for later FTS work.
-- [ ] Add bounded deterministic randomized differential tests with saved seeds
+- [x] Add bounded deterministic randomized differential tests with saved seeds
       and reduced regressions. Include allocation/I/O failure injection, large
       values, overflow boundaries, callback re-entry where allowed, and GC stress.
-- [ ] Incorporate relevant public upstream SQL/API tests from matching sources;
+- [x] Incorporate relevant public upstream SQL/API tests from matching sources;
       document adaptations, executed cases, and skips. Native success alone does
       not count as translated coverage. Do not claim the proprietary TH3 suite or
       all SQLite tests passed when only a selected corpus ran.
@@ -315,7 +314,7 @@ parser/emitter/runtime defects have regression tests and full-amalgamation retri
 - [ ] Reproduce fetch -> checksum -> preprocess -> translate -> source-generate
       -> build -> test from a clean checkout, using documented commands rooted at
       `sqlite/`. Ensure generated output is never edited by hand.
-- [ ] Add a local campaign entry script and CI integration using existing repo
+- [x] Add a local campaign entry script and CI integration using existing repo
       conventions; CI configuration may live in `.github/workflows/`, while all
       SQLite workflow logic stays under `sqlite/scripts/`. No push is required.
 - [ ] Run full required repository regressions serially and NativeAOT smoke
