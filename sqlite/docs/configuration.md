@@ -8,8 +8,9 @@ loading. A portable memory VFS supplies the OS interface.
 
 Initial host: Linux x64, little-endian LP64; .NET SDK 10.0.111, runtime 10.0.11,
 GCC on Ubuntu 24.04/Zorin 18. dotcc targets 64-bit pointers/long/size_t.
-Initial solution build resolves NuGet `SharpAstro.LALR.CC` 4.7.0 (verified in
-`DotCC.Lib/obj/project.assets.json`); a forced NuGet rebuild remains a validation item. Calls are serialized; WAL/shared memory, mmap,
+Solution builds resolve NuGet `SharpAstro.LALR.CC` 4.7.0 (verified in
+`DotCC.Lib/obj/project.assets.json`); campaign rebuilds explicitly set
+`UseLocalLalrCc=false`. Calls are serialized; WAL/shared memory, mmap,
 process durability and concurrent hosting are unsupported platform capabilities.
 
 ## Bit-field layout selected for the native oracle
@@ -24,8 +25,11 @@ introduces no native interop. The SQL engine is still the unchanged upstream C.
 Actual upstream probes show why the flag is required: `ExprList_item` has size32
 and union offset24 in this profile, versus size24/offset20 with default GCC;
 `VdbeCursor` has size120, seekHit offset12 and aType offset120, versus112/6/112.
-All other selected aggregates match in both modes. `scripts/layout-native.sh`
-prints sizeof/alignment/offsetof alongside actual address differences; set
+The expanded probe of all active offsetof requests also finds differences in
+`Parse` (size424 versus416), `WhereInfo` (size864 versus856), and `WhereLoop`
+(size112 versus104), including their fields following bit-field storage.
+`scripts/layout-native.sh` prints sizeof/alignment/offsetof alongside actual
+address differences for all 30 active requests and additional aggregates; set
 `SQLITE_MS_BITFIELDS=0` for the separate default-GCC comparison. Expected matching
 layout is `tests/layout-native.expected`; `layout-native-sysv.reference` is an
 explicit comparison, not the oracle's ABI.
