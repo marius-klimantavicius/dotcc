@@ -110,3 +110,22 @@ round trip passes integrity checks, JSONB with Unicode/embedded NUL, a 64KiB
 overflow-page blob with an incremental write, user metadata, and cleanup.
 Host `fopen`/read/write calls only transport the closed image; SQLite itself
 continues to use the memory VFS. Cross-engine exchange remains pending.
+
+## Managed library and explicit callback API
+
+The managed library increment passes a clean Release solution build (zero
+warnings/errors, 6.88 seconds) and seven focused managed/native-library tests.
+Separate library/consumer assemblies cover source and object-link output,
+public callback structs/inline arrays/enums/globals, static callback table
+initialization, context pointers, GC stress, cleanup, and rejected native binds.
+An existing native-library test now supplies its framework references explicitly
+so it also passes in isolation without depending on other test execution order.
+
+Actual CLI `--emit=managedlib -c --offset-generator ...` builds the generated
+library with the analyzer (zero warnings/errors). A separate project-reference
+consumer prints `42 8` under both JIT and NativeAOT: the managed callback result
+and generated offset. Both `-shared`/`--shared` conflicts and `-lexample` are
+rejected with exit code 2. Logs/projects: `artifacts/managed-api/`.
+This validates the compiler/library/generator seam, not a translated SQLite
+engine. The actual SQLite library, C# extension, and engine AOT test remain open.
+See `docs/managed-api.md` for usage and ownership rules.

@@ -120,7 +120,8 @@ public static partial class Compiler
     /// </summary>
     /// <param name="emit">The output shape (see <see cref="EmitMode"/>): a file-based
     /// program (default), a csproj-paired shell, a <c>-shared</c> shared library, or an
-    /// <c>--emit=obj</c> object fragment. In <see cref="EmitMode.SharedLib"/> the emit is
+    /// <c>--emit=obj</c> object fragment. <see cref="EmitMode.ManagedLib"/> exposes a
+    /// public managed C# API with direct function pointers. In <see cref="EmitMode.SharedLib"/> the emit is
     /// a NativeAOT-publishable shared library — user functions in
     /// <c>internal static class DotCcLib</c>, non-static C functions re-exported via
     /// <c>[UnmanagedCallersOnly]</c> in <c>public static class DotCcExports</c>, and no
@@ -137,13 +138,17 @@ public static partial class Compiler
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false)
     {
-        var libraryMode = emit == EmitMode.SharedLib;
+        var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
+        if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
+            throw new CompileException("managed-library output does not support native import or archive bindings");
         var asObject = emit == EmitMode.Object;
         var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode);
         // -Wconversion: collect narrowing-conversion warnings during codegen, then
         // flush to stderr. Off by default (the bit is clear unless -Wconversion set).
         var convGate = (warnings & WarningFlags.Conversion) != 0 ? new ConversionGate() : null;
-        var cg = Backends.CSharpBackend.Run(irBuilder, convGate);
+        // Objects retain public types so managed linking requires no textual
+        // rewriting of type declarations or their inline-array wrapper types.
+        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object);
         if (convGate is { HasAny: true })
         {
             foreach (var d in convGate.Diagnostics) { Console.Error.WriteLine("dotcc: warning: " + d); }

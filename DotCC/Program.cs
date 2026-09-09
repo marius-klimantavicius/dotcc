@@ -30,12 +30,16 @@ internal static class Program
         };
         var emitOpt = new Option<EmitKind>("--emit")
         {
-            Description = "csproj: write Program.cs + .csproj. file: emit a single .NET 10 file-based program to stdout. build: like csproj, then `dotnet build`. obj: compile one .c to a .cs object fragment (link .cs objects to a program).",
+            Description = "csproj: write Program.cs + .csproj. file: emit a single .NET 10 file-based program to stdout. build: like csproj, then `dotnet build`. obj: compile one .c to a .cs object fragment. managedlib: emit a reusable managed library with a public C# API (add -c to build).",
             DefaultValueFactory = _ => EmitKind.Csproj,
         };
         var targetOpt = new Option<string?>("--target")
         {
             Description = "Output target (the M in N×M): cs (C#, default) or wat (WebAssembly text). wat emits a .wat module to -o, else stdout.",
+        };
+        var offsetGeneratorOpt = new Option<string?>("--offset-generator")
+        {
+            Description = "Path to DotCC.OffsetGenerator.dll for generated project builds; runs the offsetof analyzer instead of materialized constants.",
         };
         var preprocessOpt = new Option<bool>("-E")
         {
@@ -55,7 +59,7 @@ internal static class Program
         {
             Description = "Compile to a .NET assembly (no native publish). Clang-shaped alias for --emit=build.",
         };
-        var sharedOpt = new Option<bool>("-shared")
+        var sharedOpt = new Option<bool>("-shared", "--shared")
         {
             Description = "Produce a shared library (NativeAOT-publishable, with [UnmanagedCallersOnly] exports for non-static C functions).",
         };
@@ -116,7 +120,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, targetOpt, offsetGeneratorOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -228,13 +232,14 @@ internal static class Program
             }
 
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
-                       mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings);
+                       mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
+                       buildManaged: compileFlag && emit == EmitKind.ManagedLib, offsetGeneratorAssembly: parse.GetValue(offsetGeneratorOpt));
         });
 
         return root.Parse(args).Invoke();
     }
 
-    private enum EmitKind { Csproj, File, Build, Obj }
+    private enum EmitKind { Csproj, File, Build, Obj, ManagedLib }
 
     /// <summary>
     /// <c>EmitKind</c> → <see cref="EmitMode"/> flattening, as a C# 14 extension member so the
@@ -257,6 +262,7 @@ internal static class Program
         private EmitMode ToEmitMode(bool libraryMode) => emit switch
         {
             _ when libraryMode => EmitMode.SharedLib,
+            EmitKind.ManagedLib => EmitMode.ManagedLib,
             EmitKind.File      => EmitMode.File,
             _                  => EmitMode.Csproj,
         };
@@ -278,9 +284,29 @@ internal static class Program
         string[] depTargets,
         bool debugHeap = false,
         ImportOptions? imports = null,
-        WarningFlags warnings = WarningFlags.Default)
+        WarningFlags warnings = WarningFlags.Default,
+        bool buildManaged = false, string? offsetGeneratorAssembly = null)
     {
         imports ??= ImportOptions.Empty;
+        if (emit == EmitKind.ManagedLib && (libraryMode || (target is not null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase))))
+        {
+            Console.Error.WriteLine("dotcc: managedlib requires the C# target and cannot be combined with -shared");
+            return 2;
+        }
+        if (offsetGeneratorAssembly is not null)
+        {
+            if (emit is EmitKind.File or EmitKind.Obj || preprocessOnly || (target is not null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.Error.WriteLine("dotcc: --offset-generator requires generated C# project output");
+                return 2;
+            }
+            offsetGeneratorAssembly = Path.GetFullPath(offsetGeneratorAssembly);
+            if (!File.Exists(offsetGeneratorAssembly))
+            {
+                Console.Error.WriteLine($"dotcc: offset generator assembly not found: {offsetGeneratorAssembly}");
+                return 2;
+            }
+        }
         if (preprocessOnly)
         {
             Compiler.Preprocess(inputPaths, Console.Out, includeDirs, defines, dialect);
@@ -409,11 +435,13 @@ internal static class Program
 
             case EmitKind.Csproj:
             case EmitKind.Build:
+            case EmitKind.ManagedLib:
             {
                 Directory.CreateDirectory(outDir);
                 var csprojFile = $"{asmName}.csproj";
                 File.WriteAllText(Path.Combine(outDir, "Program.cs"), program);
-                File.WriteAllText(Path.Combine(outDir, csprojFile), Compiler.BuildGeneratedCsproj(libraryMode, asmName, imports.StaticArchives));
+                File.WriteAllText(Path.Combine(outDir, csprojFile), Compiler.BuildGeneratedCsproj(libraryMode, asmName, imports.StaticArchives,
+                    offsetGeneratorAssembly: offsetGeneratorAssembly, managedLibrary: emit == EmitKind.ManagedLib));
                 Console.Error.WriteLine($"dotcc: wrote {outDir}/Program.cs + {csprojFile}");
                 if (imports.StaticArchives.Count > 0)
                 {
@@ -423,7 +451,7 @@ internal static class Program
                         $"dotcc: note: static native archives ({string.Join(", ", imports.StaticArchives)}) " +
                         $"link at NativeAOT publish — run `dotnet publish -c Release -r <RID>` in {outDir}/");
                 }
-                if (emit == EmitKind.Build)
+                if (emit == EmitKind.Build || buildManaged)
                 {
                     var psi = new System.Diagnostics.ProcessStartInfo
                     {
@@ -438,6 +466,7 @@ internal static class Program
                     if (proc.ExitCode != 0) { return proc.ExitCode; }
                     var artifactNote = libraryMode
                         ? $"managed .dll at {outDir}/bin/Release/net10.0/{asmName}.dll. Run `dotnet publish -c Release` in {outDir}/ for the native shared library."
+                        : emit == EmitKind.ManagedLib ? $"managed library at {outDir}/bin/Release/net10.0/{asmName}.dll; reference it from your C# application."
                         : $"dotnet {outDir}/bin/Release/net10.0/{asmName}.dll [args]";
                     Console.Error.WriteLine($"dotcc: OK. {artifactNote}");
                 }

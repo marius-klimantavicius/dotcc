@@ -118,6 +118,9 @@ public sealed class LibraryModeTests
         // (system()); it's type-forwarded and not in the harvested set. See
         // FixtureRunner.AddReferenceByType.
         FixtureRunner.AddReferenceByType(refs, typeof(System.Diagnostics.Process));
+        FixtureRunner.AddReferenceByType(refs, typeof(System.Net.Sockets.Socket));
+        FixtureRunner.AddReferenceByType(refs, typeof(System.Net.IPAddress));
+        FixtureRunner.AddReferenceByType(refs, typeof(System.ComponentModel.Win32Exception));
 
         var options = new CSharpCompilationOptions(
             OutputKind.DynamicallyLinkedLibrary,

@@ -41,6 +41,7 @@ internal sealed class CSharpBackend
     /// into). The statement / expression emitter in this class is still the
     /// C#-specific one.</summary>
     private readonly ITarget _target = new CSharpTarget();
+    private bool _publicTypes;
     private DotCC.Layout.OffsetDocument _offsetDocument = null!;
     private DotCC.Layout.OffsetLayoutModel _offsetModel = null!;
     private readonly HashSet<string> _offsetRequests = new(StringComparer.Ordinal);
@@ -49,9 +50,9 @@ internal sealed class CSharpBackend
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
     private string Cs(CType t) => _target.RenderType(t);
 
-    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null)
+    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false)
     {
-        var cg = new CSharpBackend { _convGate = convGate };
+        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes };
         cg._offsetDocument = unit.CreateOffsetDocument();
         cg._offsetRequests.UnionWith(cg._offsetDocument.Requests.Select(request => request.Name));
         cg._offsetModel = new DotCC.Layout.OffsetLayoutModel(name => cg._offsetDocument.Aggregates.TryGetValue(name, out var aggregate)
@@ -207,7 +208,7 @@ internal sealed class CSharpBackend
             // Zig `packed struct` — byte-pack with no inter-field padding (V1: Pack=1, not bit-packed).
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]\n");
         }
-        sb.Append("unsafe struct ").Append(t.Name).Append("\n{\n");
+        sb.Append(_publicTypes ? "public unsafe struct " : "unsafe struct ").Append(t.Name).Append("\n{\n");
         if (headerLayout is not null)
         {
             // A tail with stricter alignment than any stored member must still
@@ -266,7 +267,8 @@ internal sealed class CSharpBackend
                 else
                 {
                     var wrap = $"__IA_{t.Name}_{fid}";
-                    wrappers.Append("[System.Runtime.CompilerServices.InlineArray(").Append(count).Append(")]\nunsafe struct ")
+                    wrappers.Append("[System.Runtime.CompilerServices.InlineArray(").Append(count).Append(")]\n")
+                        .Append(_publicTypes ? "public unsafe struct " : "unsafe struct ")
                         .Append(wrap).Append("\n{\n    public ").Append(Cs(flat)).Append(" _e;\n}\n\n");
                     sb.Append("    public ").Append(wrap).Append(' ').Append(fid).Append(";\n");
                 }
@@ -286,7 +288,7 @@ internal sealed class CSharpBackend
     private string EnumText(EnumTypeDef e)
     {
         var sb = new StringBuilder();
-        sb.Append("enum ").Append(e.Name).Append(" : ").Append(Cs(e.Underlying)).Append("\n{\n");
+        sb.Append(_publicTypes ? "public enum " : "enum ").Append(e.Name).Append(" : ").Append(Cs(e.Underlying)).Append("\n{\n");
         foreach (var m in e.Members)
         {
             sb.Append("    ").Append(DotCC.EmitHelpers.Id(m.Name)).Append(" = ")

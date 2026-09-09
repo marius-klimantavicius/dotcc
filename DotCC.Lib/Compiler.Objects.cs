@@ -90,7 +90,9 @@ public static partial class Compiler
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
         ImportOptions? imports = null)
     {
-        var libraryMode = emit == EmitMode.SharedLib;
+        var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
+        if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
+            throw new CompileException("managed-library output does not support native import or archive bindings");
         var typeByName = new Dictionary<string, string>(StringComparer.Ordinal); // first wins
         var typeOrder = new List<string>();
         var aliasLines = new List<string>();

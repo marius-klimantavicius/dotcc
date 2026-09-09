@@ -37,4 +37,9 @@ public enum EmitMode
     /// + globals with link markers, no shell or runtime — merged later by
     /// <see cref="Compiler.LinkObjects"/>.</summary>
     Object,
+
+    /// <summary>A reusable managed library with a public <c>DotCcLib</c> API,
+    /// public aggregate types and managed function pointers. No native export
+    /// wrappers or dynamic import bindings; no <c>main</c> is required.</summary>
+    ManagedLib,
 }

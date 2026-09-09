@@ -1,6 +1,6 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: M0 complete; parser fixes (M1), offsetof generation (M2), and native VFS/API validation (M4/M5) active.
+Status: M0 complete; parser fixes (M1), offsetof generation (M2), managed-library API (M3), and native VFS/API validation (M4/M5) active. Full SQLite translation/execution remains pending.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
 ## Objective and constraints
@@ -180,7 +180,7 @@ fixtures are starting coverage, not a complete solution for SQLite.
       access helpers/metadata, and diagnostics. Ensure generated storage layout
       matches that model; audit `sizeof` and alignment together with offsets.
       Do not maintain a hand-written table of SQLite struct offsets.
-- [ ] Resolve C integer constant expressions during dotcc lowering from that
+- [x] Resolve C integer constant expressions during dotcc lowering from that
       shared model, including array bounds, enums, case labels, and static
       assertions. Roslyn runs later and cannot retroactively supply constants
       needed to parse/lower C; avoid a circular build dependency. Cross-check
@@ -190,11 +190,11 @@ fixtures are starting coverage, not a complete solution for SQLite.
       dotted paths, and indexed designators needed by SQLite. Audit flexible
       array tails and fields following bit-field storage; diagnose `offsetof`
       applied to a bit-field itself and other invalid/nonconstant requests.
-- [ ] Use generated helpers for valid runtime-only access when necessary, with
+- [x] Use generated helpers for valid runtime-only access when necessary, with
       no null-pointer dereference, runtime reflection, dynamic code generation,
       or per-call delegate allocation. Runtime helpers cannot stand in for C
       integer constants. Unsupported layouts must produce a clear diagnostic.
-- [ ] Wire generation into emitted project/build output and in-process Roslyn
+- [x] Wire generation into emitted project/build output and in-process Roslyn
       fixture compilation via `GeneratorDriver`; cover object/link output as
       needed. Preserve standalone `--emit=file` usability by materializing the
       same generated declarations through the shared generation implementation.
@@ -262,6 +262,8 @@ pass, and a separate C# consumer can call the translated engine. Commit per fix.
 Exit: native and translated engines pass the same VFS contract and multi-connection
 tests under serialized calls. No persistence across processes, cross-process
 locking, power-loss durability, or concurrent-thread guarantee is claimed.
+The C adapter and all listed native contracts are implemented; checkboxes remain
+open until the same implementation runs through the translated engine.
 Follow upstream [VFS](https://www.sqlite.org/vfs.html),
 [VFS object](https://www.sqlite.org/c3ref/vfs.html), and
 [file methods](https://www.sqlite.org/c3ref/io_methods.html) contracts.
