@@ -6,6 +6,13 @@ and generator compile the same `Shared/OffsetLayout.cs`; the compiler does not
 reference Roslyn. There is no native interop, runtime reflection, dynamic code,
 null-pointer dereference, or delegate allocation in offset evaluation.
 
+The campaign's `scripts/layout-native.sh` extracts all active offsetof requests
+from full preprocessed SQLite and generates native checks without storing any
+offset values in the recipe. The current profile has 30 distinct requests;
+their native sizes, alignments, constant offsets, and address differences are
+recorded in `tests/layout-native.expected`. The same probe is ready for the
+translated compiler once full lowering succeeds.
+
 The compiler resolves integer-constant contexts before C# generation, recording
 those requests as well as runtime expression requests. Each request produces an
 `internal static class __DotccOffset_<UTF8 hex identity>` with `const ulong Value`

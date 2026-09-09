@@ -109,11 +109,34 @@ dispatch bypassing storage-class declaration lowering; it now uses the common
 declaration dispatcher. Native and translated output is `43`. Full retry reaches
 B009; SQLite C remains unchanged.
 
-## B009 — array-first mixed declaration (parser, active)
+## B009 — array-first mixed declaration (parser, fixed 6ae3c5f)
 
 After B008, full SQLite stops at reported55596/raw55953:
-`PgHdr *a[N_SORT_BUCKET], *p;`. Current grammar accepts arrays in later
+`PgHdr *a[N_SORT_BUCKET], *p;`. The grammar accepted arrays in later
 declarators but not an array before the first comma. Native/red reduced cases
 cover pointer-array and multidimensional heads, scalar/pointer tails, and pointer
 typedefs. Timed current retry: 0.80 seconds, 123632 KiB peak RSS; evidence under
 `artifacts/parse-probes/register-sqlite-retry.*`.
+The fix joins an array head into the shared declarator list while preserving
+the first type and each later declarator's pointer levels. Native and translated
+fixture output is `42 20 17 7 2 2`. Full retry advances to B010.
+
+## B010 — comma in conditional middle operand (parser, fixed b8c11e1)
+
+Full retry next stops inside the `putVarint32` replacement list (raw definition
+21695, first affected call78591). C's conditional middle operand is a full
+expression, permitting commas; the grammar accepted only an assignment-level
+expression. The middle operand now uses `Expr`, preserving right association
+of nested conditionals. Native and translated fixture output is
+`30 7 16 14 20 1 42`, including untaken-arm side effects and a SQLite-style macro.
+Full retry advances to B011 (0.99 seconds, 123952 KiB before source-map changes).
+
+## B011 — callback storage in members, locals, and casts (parser, active)
+
+The complete parser now reaches physical `sqlite3.c:139841:10` (byte5075023),
+the auto-extension table's `void (**aExt)(void)` member. The earlier callback
+output-parameter fix does not cover these other declarator contexts. Reduced
+native/red fixture covers member/local storage, abstract two-star casts,
+callback indexing, and void/old-style signatures. Native output is `42 17 2`.
+Source positions are now physical after commit50308f9; see `source-mapping.md`
+for the remaining included-filename and macro-backtrace boundaries.

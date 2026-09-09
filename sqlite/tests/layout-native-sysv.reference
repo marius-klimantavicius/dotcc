@@ -31,3 +31,33 @@ header JsonParse 72 8
 field JsonParse nBlob 8 8
 field JsonParse delta 52 52
 field JsonParse aIns 64 64
+required BtCursor pBt 296 8 32 32
+required DbClientData zName 24 8 24 24
+required Expr iTable 72 8 44 44
+required Expr pLeft 72 8 16 16
+required ExprList a 8 8 8 8
+required FKey aCol 64 8 64 64
+required HiddenIndexInfo aRhs 32 8 32 32
+required IdList a 8 8 8 8
+required KeyInfo aColl 32 8 32 32
+required Mem db 56 8 24 24
+required Parse aTempReg 416 8 184 184
+required Parse sLastToken 416 8 280 280
+required Parse zErrMsg 416 8 8 8
+required PgHdr pDirty 80 8 32 32
+required SrcList a 8 8 8 8
+required Vdbe aOp 304 8 136 136
+required VdbeCursor aType 112 8 112 112
+required VdbeCursor pAltCursor 112 8 32 32
+required VdbeSorter aTask 96 8 96 96
+required WalIndexHdr aCksum 48 4 40 40
+required WalIterator aSegment 8 8 8 8
+required WhereInfo a 856 8 856 856
+required WhereInfo nOBSat 856 8 65 65
+required WhereInfo sWC 856 8 104 104
+required WhereLoop nLSlot 104 8 56 56
+required WhereTerm eOperator 56 8 20 20
+required With a 16 8 16 16
+required sqlite3_context argv 48 8 48 48
+required sqlite3_module xCommit 200 8 128 128
+required sqlite3_module xRollback 200 8 136 136

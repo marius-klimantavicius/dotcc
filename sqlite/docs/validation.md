@@ -139,3 +139,28 @@ the macro invocation-boundary correction, and register locals/for initializers.
 The next array-leading and physical-source-mapping tests were added afterward
 as separate reduced failures and are not claimed by these counts.
 Full SQLite retry reaches B009 in 0.80 seconds with 123632 KiB peak RSS.
+
+## Every active offsetof request
+
+`scripts/layout-native.sh` now preprocesses the entire pinned profile, extracts
+every active `offsetof` request, and generates a C include containing probes.
+There are 30 distinct aggregate/member requests. Unexpected designator syntax
+fails explicitly; the generator contains no offset values. Native C computes
+size/alignment, constant offset, and actual address difference for each request.
+All 30 agree under the matching profile, alongside the existing representative
+public/JSON/bit-field/FAM probes. Default-GCC comparison is retained separately.
+The wrapper produces exactly the same transcript as the captured preprocessor
+input; both updated transcripts are committed. The corresponding translated
+layout comparison remains pending full lowering/emission.
+
+## Array declarations, conditional commas, physical source mapping
+
+Commits `6ae3c5f`, `b8c11e1`, and `50308f9`: clean build, 1,750 unit tests
+passed (37 seconds), 251 functional tests passed with 847 opt-in skips (78
+seconds), zero failures. Native-verified expression tests check selected and
+unselected conditional side effects, nested ternaries, mixed array declarations,
+and pointer typedefs. Eight physical-position tests cover continuation splicing,
+LF/CRLF, UTF-8 byte offsets, includes, builtins, and macro invocation positions.
+The complete SQLite retry now reports physical `139841:10`, byte `5075023`,
+at a pointer-to-function-pointer field (B011). Source mapping limitations are
+recorded in `docs/source-mapping.md`.
