@@ -366,3 +366,20 @@ plus five functional cases pass. Full SQLite emission/build passes (zero errors,
 scope errors. Full shared suites will repeat after that remaining correction.
 Logs: `artifacts/unsigned-constant-wrap/{unit-focus-after,functional-final,
 engine-final-build,chibi-build-after}.log`.
+
+
+## Final repository and shared-port checkpoint
+
+Commits `1110b45` and `f9b19bc`: Release solution build passes in 9.30 seconds
+with zero warnings/errors; all 1,814 unit tests pass (46 seconds), and all 280
+functional tests pass (86 seconds), with 901 optional oracle skips. The first full
+unit run found one stale Zig emission-string assertion; its slice length remains
+three, and the corrected assertion passes the repeated complete unit suite.
+
+Lua's upstream runner, Chibi's 1,225 tests/18 subgroups against its exact native
+baseline, and all 146 WAT execution tests pass (35.95 seconds total). The actual
+SQLite engine still builds in 7.68 seconds with zero errors and 47 warnings;
+its separate consumer passes SQL/JSONB/callback/reentry/GC checks (12.13 seconds
+including emission/build). Full clean-checkout reproduction is the remaining gate.
+Logs: `artifacts/external-switch-{unit-final,functional-all,sqlite}.log`,
+`external-switch-entry-final-build.log`, and `ports-final-validation.log`.

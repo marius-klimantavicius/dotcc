@@ -385,7 +385,7 @@ void pointers and side effects are not silently converted to callback pointers.
 All six actual translated corpora and all three database-image exchange directions
 now match native after this fix. Evidence: `artifacts/null-macro/`.
 
-## B035 — external entry into switch labels (Chibi regression, active)
+## B035 — external entry into switch labels (fixed f9b19bc)
 
 The shared-port gate compiles Lua successfully but Chibi reports CS0159 for
 `make_call` and `call_error_handler`. Its function-level gotos target labels now
@@ -436,3 +436,14 @@ typing and the comparison correction is deliberately bounded to common unsigned
 types through 64 bits. Broader constant-evaluator width/cast limitations are
 explicitly documented in shared `docs/C-SUPPORT.md`, outside this verified corpus.
 Evidence: `artifacts/unsigned-constant-wrap/`.
+
+
+B035 reserves affected local/fixed-array storage at function entry and exposes
+labels only for directly entered function-body switches (including braceless
+sequence/named-label wrappers). Subject and initializer effects stay in place;
+ordinary structured scopes retain their prior behavior. Full ancestor-chain
+analysis preserves inner-to-outer switch jumps. Unsupported enclosing block/if/
+loop/exception entry diagnoses explicitly. Native/red fixtures, the actual Chibi
+suite and SQLite consumer pass. Final repository/port evidence is in `validation.md`.
+The only full-unit follow-up was an expected-output string for unchanged Zig
+slice length three, updated in `1110b45` for the explicit unchecked expression.
