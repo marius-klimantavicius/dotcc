@@ -2126,6 +2126,7 @@ internal sealed partial class IrBuilder
         // pre-C23 storage class). See BuildDeclAutoInfer / BuildDeclList.
         C.DeclAutoInfer d => BuildDeclAutoInfer(d),
         C.DeclAutoStorage d => BuildDeclList(d.Arg1, d.Arg2),
+        C.DeclRegisterStorage d => BuildDeclList(d.Arg1, d.Arg2),
         // `char s[] = "hi";` (implicit size) / `char buf[N] = "hi";` (explicit, zero-padded).
         C.DeclCharArrStr d => BuildDeclCharArrStr(d.Arg0, d.Arg1, null, d.Arg5),
         C.DeclCharArrStrSized d => BuildDeclCharArrStr(d.Arg0, d.Arg1, CharArrSize(d.Arg2), d.Arg4),
@@ -2523,7 +2524,7 @@ internal sealed partial class IrBuilder
         // Decl=Arg3, ForCond=Arg5, ForPost=Arg7, body=Arg9 (see legacy StmtForDecl).
         _symbols.EnterScope();
         Gate(1999, "for-loop initializer declaration", s.Arg3);
-        var init = BuildDecl(s.Arg3);
+        var init = BuildDeclStmt(s.Arg3);
         var cond = BuildForCond(s.Arg5);
         var post = BuildForPost(s.Arg7);
         var body = BuildStmt(s.Arg9);

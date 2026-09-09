@@ -474,6 +474,7 @@ symbols:
   - U8STRING       # 189 char8_t string literal — u8"…"
   - U8CHAR         # 190 char8_t char constant — u8'x'
   - U8StringSeq    # 191 non-terminal: a run of adjacent u8"…" literals
+  - 'register'     # 192 storage-class keyword: automatic local with an optimization hint
 
 productions:
   # Start production. Single-non-terminal — trimmed at parse time so the root
@@ -1217,6 +1218,8 @@ productions:
       # with a plain ID.
       - { lhs: Decl, rhs: ['auto', ID, '=', E],       action: declAutoInfer }
       - { lhs: Decl, rhs: ['auto', Type, DeclItemList], action: declAutoStorage }
+      # Register allocation is a compiler hint; the local retains automatic storage.
+      - { lhs: Decl, rhs: ['register', Type, DeclItemList], action: declRegisterStorage }
       # Stack-allocated array: `int arr[N]`. Lowers to `int* arr = stackalloc int[N]`
       # so subscript and pointer arithmetic both work naturally in C# `unsafe`
       # blocks. Size must be a compile-time constant or an int expression
@@ -1855,6 +1858,7 @@ lexer:
     - { symbol: 'static',   match: 'static' }
     - { symbol: 'extern',   match: 'extern' }
     - { symbol: 'auto',     match: 'auto' }
+    - { symbol: 'register', match: 'register' }
 
     # Multi-char operators. Longest-match handles `==` vs `=`, `<=` vs `<`, etc.
     # so the ordering doesn't strictly matter — listed multi-char first for
