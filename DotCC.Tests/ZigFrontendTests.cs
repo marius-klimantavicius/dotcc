@@ -2075,8 +2075,9 @@ public sealed class ZigFrontendTests
     {
         // `arr[lo..]` on a `[N]T` array → the open high bound is the element count `N`,
         // so the length is `N - (ulong)lo` and the base decays to its element pointer.
+        // Constant unsigned subtraction carries an unchecked wrapper; 4 - 1 remains length 3.
         var cs = EmitZig("pub fn main() u8 { var b: [4]u8 = undefined; b[0] = 1; const s = b[1..]; return s[0]; }\n");
-        cs.ShouldContain("new Slice<byte>(b + 1, 4UL - (ulong)1)");
+        cs.ShouldContain("new Slice<byte>(b + 1, unchecked(4UL - (ulong)1))");
     }
 
     [Fact]
