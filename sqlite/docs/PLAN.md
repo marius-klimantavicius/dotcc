@@ -1,6 +1,8 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: M0 complete; parser fixes (M1), offsetof generation (M2), managed-library API (M3), and native VFS/API validation (M4/M5) active. Full SQLite translation/execution remains pending.
+Status: M0 complete; the full configured amalgamation parses, lowers, and emits C#.
+Combined VFS translation (M1), offsetof validation (M2), generated C# compilation
+(M3), and translated VFS/API validation (M4/M5) remain active. Execution is pending.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
 ## Objective and constraints

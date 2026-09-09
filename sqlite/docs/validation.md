@@ -183,3 +183,13 @@ GCC with `-funsigned-char` and dotcc's supplied limits. The native core, API,
 VFS, 37-case upstream JSONB, virtual-table, 128-case allocator-fault and closed
 image suites all pass after adding this explicit ABI flag. Every saved corpus
 transcript remains byte-for-byte identical. Logs: `artifacts/native-unsigned-*`.
+
+## Full amalgamation emission
+
+Commits `ccf6ab9` and `65cd92d`: 1,753 unit tests pass (37 seconds),
+257 functional tests pass with 857 opt-in skips (79 seconds), zero failures.
+The full unchanged configured amalgamation parses, lowers to typed IR, and emits
+106,296 lines / 3,641,990 bytes of C#: 3.09 seconds and 771,092 KiB peak RSS.
+Logs: `artifacts/parse-probes/local-typedef-string-{unit,functional}-all.log`.
+This establishes emission only. The combined engine/VFS translation exposes B014;
+the standalone amalgamation's managed-library build exposes B015 syntax errors.

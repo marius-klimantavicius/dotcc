@@ -155,14 +155,16 @@ comparison with integer-zero null constants. These now use pointer-sized backing
 storage, typed initializer coercion, and the other operand's pointer context.
 The fixture prints `42 17 1 1 9 2`; full retry advances to B013.
 
-## B013 — scoped local callback typedef (parser/IR, active)
+## B013 — scoped local callback typedef (parser/IR, fixed ccf6ab9)
 
 Physical183277 in `sqlite3_config` declares a local callback typedef, then retrieves
 one through `va_arg`. Existing typedef support handles only file scope. The new
 native/red fixture covers callback alias shadow/restoration, scalar alias sizes,
 no type-name leakage to a later function, and actual variadic callback retrieval.
-Native output is `59 16 42`. The shared SymbolTable already has scoped typedef
-symbols; the fix is using that existing mechanism and scoped lexer names.
+Native and translated output is `59 16 42 17`. The fix uses the existing scoped
+SymbolTable and scoped lexer names. Variadic callback arguments preserve their
+typed function-pointer signature before conversion to pointer bits; tests invoke
+both a direct function designator and a callback variable retrieved with va_arg.
 
 ## Inline aggregate array initialization (IR/emitter, fixed 037a1ab)
 
@@ -175,3 +177,27 @@ full typed-shape hashes for deterministic cross-object identity. Tests also foun
 and fixed global array-member address projection. Native/translated primitive,
 multidimensional, nested-aggregate, pointer and callback arrays pass, including
 separate-object callback factory linking. See `aggregate-initializers.md`.
+
+## Inline character-array strings (IR, fixed 65cd92d)
+
+The complete typed-IR retry next reached the `aXformType` date-name table at
+physical25380, whose `char zName[7]` member has string initializers. Inline arrays
+now decode compatible byte/UTF-16/UTF-32 literals, omit terminators for exact-fit
+arrays, zero-fill short strings, accept optional braces and nested rows, and
+reject actual character overflow. The full configured amalgamation now emits
+106,296 C# lines (3,641,990 bytes) in 3.09 seconds, peak RSS 771,092 KiB.
+
+## B014 — combined engine include context (parser, active)
+
+`scripts/emit-engine.sh` compiles `src/engine.c`, including unchanged sqlite3.c
+and the memory VFS. It currently fails at reported8614:27, unexpected `(`,
+expected `*` or identifier. The amalgamation alone emits; reduction is ongoing.
+Evidence: `artifacts/engine-emission.log`.
+
+## B015 — nested switch labels (C# emitter, active)
+
+The amalgamation alone also emits managed-library source and its project with
+the actual offsetof analyzer. The first Roslyn build reports twelve syntax
+diagnostics: ten `switch expected` and two missing braces, in two functions.
+Reduction is ongoing; compilation and execution are not yet established.
+Evidence: `artifacts/sqliteonly-build.log`, `generated/SqliteOnly/Program.cs`.
