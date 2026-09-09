@@ -82,7 +82,8 @@ public static unsafe partial class Libc
     private static int Wd(tm* t) => ((t->tm_wday % 7) + 7) % 7;
     private static int Mo(tm* t) => ((t->tm_mon % 12) + 12) % 12;
 
-    private static void FillTm(tm* t, DateTime dt, int isdst)
+    // The embedded runtime shares a file with C types such as SQLite's DateTime.
+    private static void FillTm(tm* t, global::System.DateTime dt, int isdst)
     {
         t->tm_sec = dt.Second;
         t->tm_min = dt.Minute;
@@ -168,7 +169,7 @@ public static unsafe partial class Libc
             // Build from Jan 1 of the year, then add the (possibly out-of-range)
             // month/day/time components — DateTime arithmetic normalizes the
             // overflow (e.g. tm_mon=13 rolls into the next year).
-            var dt = new DateTime(1900 + t->tm_year, 1, 1, 0, 0, 0, DateTimeKind.Local)
+            var dt = new global::System.DateTime(1900 + t->tm_year, 1, 1, 0, 0, 0, DateTimeKind.Local)
                 .AddMonths(t->tm_mon)
                 .AddDays(t->tm_mday - 1)
                 .AddHours(t->tm_hour)

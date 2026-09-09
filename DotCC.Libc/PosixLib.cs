@@ -82,7 +82,7 @@ public static unsafe partial class Libc
             if (slot?.Stream == null) { errno = EBADF; return -1; }
             len = slot.Stream.CanSeek ? slot.Stream.Length : 0;
         }
-        FillStat(buf, S_IFREG, len, DateTime.UtcNow);
+        FillStat(buf, S_IFREG, len, global::System.DateTime.UtcNow);
         return 0;
     }
 
@@ -91,7 +91,7 @@ public static unsafe partial class Libc
     /// fields it fills don't distinguish), so this aliases <c>stat</c>.</summary>
     public static int lstat(byte* path, void* buf) => stat(path, buf);
 
-    private static void FillStat(void* buf, uint mode, long size, DateTime mtimeUtc)
+    private static void FillStat(void* buf, uint mode, long size, global::System.DateTime mtimeUtc)
     {
         var b = (byte*)buf;
         // struct stat is 96 bytes after the appended st_rdev/st_blksize/st_blocks
@@ -113,7 +113,7 @@ public static unsafe partial class Libc
     public static int gettimeofday(void* tv, void* tz)
     {
         var t = (long*)tv;
-        var ticks = (DateTime.UtcNow - DateTime.UnixEpoch).Ticks; // 100 ns units
+        var ticks = (global::System.DateTime.UtcNow - global::System.DateTime.UnixEpoch).Ticks; // 100 ns units
         t[0] = ticks / TimeSpan.TicksPerSecond;
         t[1] = ticks % TimeSpan.TicksPerSecond / 10;
         return 0;
