@@ -1350,6 +1350,7 @@ productions:
       # An array in first position joins this list only when followed by a
       # comma; a standalone array keeps its existing declaration productions.
       - { lhs: DeclItemList, rhs: [ID, ArrDims, ',', DeclItemTail], action: declItemListArrayHead }
+      - { lhs: DeclItemList, rhs: [ID, ArrDims, '=', '{', InitList, '}', ',', DeclItemTail], action: declItemListArrayHeadInit }
       # SUBSEQUENT (post-comma) declarators are `DeclItemTail`, which may carry
       # its OWN leading `*`s (`int *a, *b;` → `b` is a pointer too). This is
       # conflict-free where a first-position `*` would not be: after a `,` there
@@ -1371,9 +1372,10 @@ productions:
       # numbuf[LEN];` (chibi's sexp.c). Tail-only: a FIRST-position array has
       # its own Stmt/Fn productions, and adding `DeclItem → ID ArrDims` there
       # would collide with them. Composes with the `*` prefix rule (`int *a,
-      # *c[5];`). No initializer form (a brace-init array tail stays a loud
-      # parse error).
+      # *c[5];`). Brace initializers retain their typed array element/zero-fill
+      # lowering in a mixed local declaration list.
       - { lhs: DeclItemTail, rhs: [ID, ArrDims],       action: declItemTailArr }
+      - { lhs: DeclItemTail, rhs: [ID, ArrDims, '=', '{', InitList, '}'], action: declItemTailArrInit }
 
   # MemberInitList — one or more `.field = E` items, comma-separated, optional
   # trailing comma (`{ .x = 1, .y = 2, }`). Left-recursive, so the trailing-

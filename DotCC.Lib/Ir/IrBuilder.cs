@@ -2346,17 +2346,20 @@ internal sealed partial class IrBuilder
                 // keeps the (possibly nested) array type so sizeof/the length idiom
                 // resolve; the stackalloc extent is the flattened product.
                 var total = 1;
+                var dimensions = new List<int>();
                 var elem = type.Unqualified;
                 while (elem is CType.Array a)
                 {
-                    total *= a.Count ?? throw new IrUnsupportedException("unsized array in a multi-declarator tail");
+                    var count = a.Count ?? throw new IrUnsupportedException("unsized array in a multi-declarator tail");
+                    dimensions.Add(count);
+                    total = checked(total * count);
                     elem = a.Element;
                 }
                 var asym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
                 Flush();
                 stmts.Add(new ArrayDecl(asym, elem,
                     new LitInt(total.ToString(System.Globalization.CultureInfo.InvariantCulture), total) { Type = CType.Int },
-                    null));
+                    initItem is { } arrayInit ? BuildArrayElems(elem, dimensions, ParseInitList(arrayInit)) : null));
                 return;
             }
             var sym = _symbols.Declare(new Symbol
@@ -2429,6 +2432,10 @@ internal sealed partial class IrBuilder
                     add(Tok(a.Arg0), null, MakeArrayType(WrapPtr(element, stars),
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator tail")));
                     break;
+                case C.DeclItemTailArrInit a:
+                    add(Tok(a.Arg0), a.Arg4, MakeArrayType(WrapPtr(element, stars),
+                        TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator tail")));
+                    break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
         }
@@ -2443,11 +2450,16 @@ internal sealed partial class IrBuilder
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator head")));
                     WalkTail(a.Arg3, 0);
                     break;
+                case C.DeclItemListArrayHeadInit a:
+                    add(Tok(a.Arg0), a.Arg4, MakeArrayType(baseType,
+                        TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator head")));
+                    WalkTail(a.Arg7, 0);
+                    break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, baseType); break;
                 case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, baseType); break;
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, 0); break;
                 case C.DeclItemTailPtr t: WalkTail(t.Arg1, 1); break;
-                case C.DeclItemTailArr: WalkTail(it, 0); break;
+                case C.DeclItemTailArr or C.DeclItemTailArrInit: WalkTail(it, 0); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
         }
