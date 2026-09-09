@@ -357,3 +357,12 @@ Chibi emission succeeds but its C# build exposes two generic regressions: extern
 switch-label scope (B035) and unsigned constant arithmetic context (B036). Their
 reductions and corrections are required before clean reproduction. Logs:
 `artifacts/regression-{lua,chibi,wat}*` and `artifacts/ports-validation.log`.
+
+
+Commit `147d26e` fixes unsigned constant arithmetic, primitive sizeof typing and
+unsigned comparisons through 64 bits. Native/red reductions and 56 focused unit
+plus five functional cases pass. Full SQLite emission/build passes (zero errors,
+47 warnings; 7.61 seconds build); Chibi now reports only the two B035 switch-label
+scope errors. Full shared suites will repeat after that remaining correction.
+Logs: `artifacts/unsigned-constant-wrap/{unit-focus-after,functional-final,
+engine-final-build,chibi-build-after}.log`.

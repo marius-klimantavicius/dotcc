@@ -397,7 +397,7 @@ sufficient. Keep ordinary SQLite switch regions structured to avoid reintroducin
 Roslyn's previous definite-assignment performance failure.
 Evidence: `artifacts/regression-chibi-build.log`.
 
-## B036 — unsigned constant arithmetic context (Chibi regression, active)
+## B036 — unsigned constant arithmetic context (fixed 147d26e)
 
 Typed sizeof correctly makes `-sizeof(long)` unsigned. Chibi then multiplies it
 by eight; emitted `unchecked(0UL - sizeof(long)) * 8UL` leaves multiplication in
@@ -408,7 +408,7 @@ only the required unsigned constant arithmetic should acquire the outer unchecke
 context. Signed and floating semantics must remain unchanged.
 Evidence: `artifacts/regression-chibi-build.log`, generated line 17547.
 
-## B037 — primitive sizeof loses size_t type (reduction, active)
+## B037 — primitive sizeof loses size_t type (fixed 147d26e)
 
 The unsigned-overflow reduction exposed a second path: token folding replaces
 `sizeof(long)` with the signed-int literal `8`, whereas a typedef operand reaches
@@ -416,3 +416,23 @@ typed lowering and retains unsigned `size_t`. Preserve the type on primitive fol
 and test `_Generic`, comparisons with negative values, and arithmetic for both
 primitive and alias spellings. The fixture retains the plain-long case so a fix
 for Chibi's alias spelling cannot conceal this generic inconsistency.
+
+## B038 — unsigned compile-time comparison (fixed 147d26e)
+
+Static assertions in the sizeof type regression reveal that the shared constant
+interpreter compares raw signed Int128 values without usual arithmetic conversion.
+The alias spelling fails too, independently of primitive folding. Reconcile
+operands for a common unsigned type up to 64 bits; retain signed, floating and
+128-bit behavior. Tests distinguish unsigned32/unsigned64 comparisons with negative
+values from the representable signed64/unsigned32 case. This bounded correction
+is not a redesign of all legacy constant-evaluator arithmetic and casts.
+
+
+B036–B038 checkpoint: native/red reductions, 56 focused unit tests and five runtime
+fixtures pass. The complete SQLite engine re-emits and builds with zero errors
+and 47 warnings (7.61 seconds build). Chibi's overflow diagnostic disappears;
+only the two B035 label-scope diagnostics remain. Primitive folds retain `UL`
+typing and the comparison correction is deliberately bounded to common unsigned
+types through 64 bits. Broader constant-evaluator width/cast limitations are
+explicitly documented in shared `docs/C-SUPPORT.md`, outside this verified corpus.
+Evidence: `artifacts/unsigned-constant-wrap/`.
