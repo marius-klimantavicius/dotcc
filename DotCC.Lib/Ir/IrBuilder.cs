@@ -1300,6 +1300,8 @@ internal sealed partial class IrBuilder
         // `struct Tag` / `union Tag` as a type — the canonical C# struct name.
         C.TypeStruct t => new CType.Named(Tok(t.Arg1)),
         C.TypeUnion t => new CType.Named(Tok(t.Arg1)),
+        C.TypeTaggedStruct t => ResolveTaggedAggregate(Tok(t.Arg1), t.Arg3, isUnion: false),
+        C.TypeTaggedUnion t => ResolveTaggedAggregate(Tok(t.Arg1), t.Arg3, isUnion: true),
         // Inline anonymous aggregate used as a type — `union { int i; float f; } u;`
         // (a NAMED member/var of an unnamed aggregate). Synthesize a struct name.
         C.TypeAnonStruct t => ResolveAnonAggregate(it, t.Arg3, isUnion: false),
@@ -1343,6 +1345,12 @@ internal sealed partial class IrBuilder
         _structIsUnion[name] = isUnion;
         Types.Add(new StructTypeDef(name, fields, isUnion));
         return named;
+    }
+
+    private CType ResolveTaggedAggregate(string tag, Item memberList, bool isUnion)
+    {
+        if (!_emittedTypes.Contains(tag)) BuildStructDef(tag, memberList, null, isUnion);
+        return new CType.Named(tag);
     }
 
     /// <summary>Resolve a type-name token: a user/library typedef resolves to its

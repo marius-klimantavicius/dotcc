@@ -750,6 +750,13 @@ productions:
       - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')'], action: paramFnPtrOutput }
       - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ')'], action: paramFnPtrOutputNoArgs }
 
+  # Inline tagged definitions bind before the shorter `struct Tag` type.
+  # Otherwise Type's leftmost group reduces the tag reference before `{`.
+  - derivation: none
+    rules:
+      - { lhs: Type, rhs: ['struct', ID, '{', MemberList, '}'], action: typeTaggedStruct }
+      - { lhs: Type, rhs: ['union', ID, '{', MemberList, '}'], action: typeTaggedUnion }
+
   # Type — the "declarator type" non-terminal. Most C type forms reduce to
   # this via TypeSpecList (the C-standard declaration-specifier sequence:
   # any order, any combination of `signed/unsigned`, `short/long/long-long`,

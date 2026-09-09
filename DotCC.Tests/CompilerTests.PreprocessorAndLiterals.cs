@@ -1462,11 +1462,11 @@ public sealed partial class CompilerTests
     }
 
     [Fact]
-    public void Array_members_lower_to_fixed_buffers()
+    public void Array_members_use_fixed_storage_only_for_sized_arrays()
     {
         // Sized `T name[N];` (C89) and the C99 flexible array member `T name[];`
-        // both lower to a C# fixed-size buffer. The FAM uses [1] (over-allocates
-        // by one element — the malloc idiom stays safe).
+        // retain their distinct storage: sized arrays use fixed buffers, while
+        // the flexible tail is a pointer accessor with no phantom element.
         var src = WriteTemp("""
             struct Vec { int len; int data[]; };
             struct Grid { int rows; int cells[4]; };
@@ -1475,7 +1475,8 @@ public sealed partial class CompilerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("public fixed int data[1];");    // FAM → [1]
+            emitted.ShouldContain("public int* data");            // zero-storage tail
+            emitted.ShouldNotContain("public fixed int data[1];");
             emitted.ShouldContain("public fixed int cells[4];");   // sized
         }
         finally { File.Delete(src); }
