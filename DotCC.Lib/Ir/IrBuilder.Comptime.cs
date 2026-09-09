@@ -508,7 +508,22 @@ internal sealed partial class IrBuilder
     {
         int cmp;
         if (l is CtFloat || r is CtFloat) { cmp = ToDouble(l).CompareTo(ToDouble(r)); }
-        else { cmp = ToInt128(l).CompareTo(ToInt128(r)); }
+        else
+        {
+            var left = ToInt128(l);
+            var right = ToInt128(r);
+            // Comparison results are int/bool, but their operands still undergo
+            // C's usual arithmetic conversions. In particular, a negative int
+            // becomes UINT_MAX/ULONG_MAX when the common type is unsigned.
+            if (CType.UsualArithmetic(TypeOf(l), TypeOf(r)).Unqualified
+                is CType.Prim { Integer: true, Signed: false, Bytes: > 0 and <= 8 } common)
+            {
+                var mask = (System.Int128.One << (common.Bytes * 8)) - 1;
+                left &= mask;
+                right &= mask;
+            }
+            cmp = left.CompareTo(right);
+        }
         return op switch
         {
             BinOp.Lt => cmp < 0,

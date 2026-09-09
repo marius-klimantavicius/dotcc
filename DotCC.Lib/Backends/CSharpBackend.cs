@@ -2245,6 +2245,13 @@ internal sealed partial class CSharpBackend
                     // right children (`a - (b - c)`) keep their grouping.
                     var p = Prec(b.Op);
                     var (l, r) = ReconcileOperands(b.Left, b.Right, p, p + 1);
+                    // C unsigned arithmetic wraps at the promoted operand width.
+                    // C# checks constant arithmetic even in an unchecked-default
+                    // project; an unchecked child does not cover its parent.
+                    if (b.Op is BinOp.Add or BinOp.Sub or BinOp.Mul
+                        && b.Type.Unqualified is CType.Prim { Integer: true, Signed: false }
+                        && IsConstExpr(b))
+                        return ($"unchecked({l} {BinSym(b.Op)} {r})", PPrimary);
                     return ($"{l} {BinSym(b.Op)} {r}", p);
                 }
         }

@@ -9,7 +9,7 @@ namespace DotCC;
 
 /// <summary>
 /// Folds <c>sizeof(T)</c> to its numeric value in the token stream so that
-/// <c>sizeof(int) * CHAR_BIT</c> becomes <c>4 * 8</c> which the LALR parser
+/// <c>sizeof(int) * CHAR_BIT</c> becomes <c>4UL * 8</c> which the LALR parser
 /// handles without conflict. Without this, the grammar's subscript production
 /// (<c>E[E]</c>) creates a conflict that drops binary operators after
 /// <c>sizeof</c>, causing e.g. <c>MAXABITS+1=32</c> to become just <c>4</c>.
@@ -75,9 +75,9 @@ internal sealed class SizeofFolder : RewritingTokenStream
         var size = EvalSizeof(typeTokens);
         if (size is int n)
         {
-            // Replace entire sizeof(type) sequence with NUM
+            // Preserve size_t (unsigned long on the supported LP64 target) in NUM.
             Emit(SourceFileOrigin.Rewrite(token, _numSym, n.ToString(
-                System.Globalization.CultureInfo.InvariantCulture)));
+                System.Globalization.CultureInfo.InvariantCulture) + "UL"));
             return;
         }
 

@@ -69,7 +69,7 @@ public sealed class SizeofTypeArithTests
         // stream (no `sizeof(...)` survives), so the wrap path never applies.
         var emitted = Compiler.EmitCSharp(new[] { WriteTemp(Probe("sizeof(int) * 8")) });
         emitted.ShouldNotContain("sizeof(int)");
-        emitted.ShouldContain("4 * 8");
+        emitted.ShouldContain("4UL * (ulong)(8)");
     }
 
     [Fact]
