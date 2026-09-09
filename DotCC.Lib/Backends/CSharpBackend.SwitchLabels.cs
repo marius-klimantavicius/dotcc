@@ -35,56 +35,20 @@ internal sealed partial class CSharpBackend
         string Fresh() => prefix + nextLabel++;
         var end = Fresh();
         var sections = statement.Sections.Select(_ => Fresh()).ToArray();
+        var analysis = new SwitchEntryAnalysis(statement);
         var nested = new Dictionary<CaseLabelStmt, string>(ReferenceEqualityComparer.Instance);
-        var locals = new List<LocalDecl>();
-        var arrays = new List<(ArrayDecl Declaration, int Count)>();
-        var seenLocals = new HashSet<Symbol>(ReferenceEqualityComparer.Instance);
-        var entryLabels = new Dictionary<CStmt, bool>(ReferenceEqualityComparer.Instance);
-        bool HasEntryLabel(CStmt current)
-        {
-            if (entryLabels.TryGetValue(current, out var result)) return result;
-            result = current is CaseLabelStmt or Labeled || SwitchChildren(current).Any(HasEntryLabel);
-            entryLabels.Add(current, result);
-            return result;
-        }
-        // Only ancestors of entry labels must become a shared label scope.
-        // Ordinary blocks/loops keep both their structured control flow and
-        // their local storage. Flattening all branches in a large C switch
-        // makes Roslyn repeatedly clone/join thousands of assignment states.
-        // Seq is deliberately excluded: it does not introduce a C scope.
-        bool KeepStructured(CStmt current) =>
-            current is Block or If or While or DoWhile or For && !HasEntryLabel(current);
-        void Discover(CStmt current)
-        {
-            if (KeepStructured(current)) return;
-            if (current is CaseLabelStmt label) nested.Add(label, Fresh());
-            if (current is DeclStmt declaration)
-                foreach (var local in declaration.Decls)
-                    if (seenLocals.Add(local.Sym)) locals.Add(local with { Init = null });
-            if (current is ArrayDecl array && seenLocals.Add(array.Sym))
-            {
-                // A fixed array's storage exists when its enclosing block is
-                // entered, including entry directly at a later case label.
-                // Only initializer effects belong at the declaration site.
-                var count = array.Inits?.Count;
-                if (count is null && array.CountExpr is LitInt { Value: { } fixedCount }
-                    && fixedCount >= 0 && fixedCount <= int.MaxValue)
-                    count = (int)fixedCount;
-                if (count is null)
-                    throw new IrUnsupportedException("variable-length array across a switch entry");
-                arrays.Add((array, count.Value));
-            }
-            foreach (var child in SwitchChildren(current)) Discover(child);
-        }
-        foreach (var section in statement.Sections)
-            foreach (var child in section.Body) Discover(child);
+        foreach (var label in analysis.NestedCases) nested.Add(label, Fresh());
+        var locals = analysis.Locals;
+        var arrays = analysis.Arrays;
+        bool KeepStructured(CStmt current) => analysis.KeepStructured(current);
+        var functionScoped = _functionScopeSwitches.Contains(statement);
 
         var pad = Pad(indent);
-        var bodyIndent = indent + 1;
+        var bodyIndent = functionScoped ? indent : indent + 1;
         var bodyPad = Pad(bodyIndent);
-        output.Append(pad).Append("{\n");
-        EmitDeclStmt(output, new DeclStmt(locals), bodyPad);
-        foreach (var (array, count) in arrays)
+        if (!functionScoped) output.Append(pad).Append("{\n");
+        if (!functionScoped) EmitDeclStmt(output, new DeclStmt(locals), bodyPad);
+        foreach (var (array, count) in functionScoped ? Array.Empty<(ArrayDecl, int)>() : arrays.AsEnumerable())
         {
             var element = Cs(array.Element);
             output.Append(bodyPad).Append(element).Append("* ").Append(array.Sym.TargetName)
@@ -209,6 +173,6 @@ internal sealed partial class CSharpBackend
             _breakAsGoto = savedBreak;
             _continueAsGoto = savedContinue;
         }
-        output.Append(pad).Append("}\n");
+        if (!functionScoped) output.Append(pad).Append("}\n");
     }
 }

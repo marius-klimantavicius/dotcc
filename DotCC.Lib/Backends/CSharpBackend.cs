@@ -478,6 +478,7 @@ internal sealed partial class CSharpBackend
         // block. Hoist labeled tails until every goto is legal (no-op for the
         // overwhelming majority of functions — see GotoScopeNormalizer).
         var body = GotoScopeNormalizer.Normalize(fn.Body);
+        body = PrepareFunctionSwitchEntries(body);
         // A Zig `!T` function (error-union return) wraps its body so a propagated
         // `try` (ZigErrorReturn) converts back to an `Err` return — the exception-based
         // early-return-out-of-an-expression, modeled on the setjmp lowering. A `!void`

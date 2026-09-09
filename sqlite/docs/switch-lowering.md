@@ -57,6 +57,34 @@ Trace files and summarized stacks are under ignored
 `sqlite/artifacts/compiler-profile/`; reduced native sources, before/after
 logs, and actual engine timing are under `sqlite/artifacts/switch-structure/`.
 
+## Entry from outside a switch
+
+Chibi's interpreter jumps from function-level code to `make_call` and
+`call_error_handler` inside its dispatch switch. C labels have function scope;
+a synthetic C# block around the dispatcher would hide those targets. Removing
+that block alone is insufficient: an external jump can also skip the storage
+initialization required by C# definite assignment and fixed-array access.
+
+`PrepareFunctionSwitchEntries` identifies external entry using each goto's full
+switch ancestor chain. A jump from an inner switch to its enclosing switch's
+label remains internal. For an externally entered switch directly in the
+function body, the backend reserves the affected local and fixed-array storage
+at function entry and emits the dispatcher without its synthetic outer block.
+The switch subject and all initializer effects stay at their original sites;
+jumping directly to a label skips them. Braceless `Seq` and named-label wrappers
+are also direct scope. Switches without external entry retain their existing
+storage scopes and structured subtrees.
+
+External entry into a switch inside another block, conditional, loop, or
+exception scope is explicitly unsupported. The compiler diagnoses that boundary
+rather than emitting inaccessible C# labels. `ExternalSwitchEntryTests` covers
+block/if/loop diagnostics. The native-backed `external-switch-entry` fixture
+covers forward and backward entry, skipped subject/initializers, fixed storage,
+shadowed names, normal repeated initialization, inner-to-outer switch jumps,
+and a labeled function-body switch. Chibi's full 1,225-test R7RS suite now
+matches its native baseline; Lua's upstream suite and all 146 WAT oracle tests
+also pass with the combined arithmetic and switch fixes.
+
 ## Loop reachability
 
 Literal integer and enum conditions, including parenthesized and resolved

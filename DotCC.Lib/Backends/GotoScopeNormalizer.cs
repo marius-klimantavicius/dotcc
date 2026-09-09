@@ -58,7 +58,9 @@ internal static class GotoScopeNormalizer
     /// <summary>Find a label declared in a block that does NOT enclose one of
     /// its gotos (C# visibility rule: the label's scope chain must be a prefix
     /// of the goto's). Labels inside a <see cref="Switch"/> are skipped —
-    /// RenderSwitch owns those via its goto-case / section-hoist machinery.</summary>
+    /// RenderSwitch owns their internal entry paths. PrepareFunctionSwitchEntries
+    /// handles external entry into function-body switches and diagnoses unsupported
+    /// enclosing scopes before emission.</summary>
     private static string? FindViolation(Block body)
     {
         var labelChain = new Dictionary<string, List<object>>(StringComparer.Ordinal);
