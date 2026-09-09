@@ -1,0 +1,19 @@
+PASS API bindings ownership UTF8 UTF16 conversions lifecycle
+PASS API scalar aggregate collation progress busy transaction callbacks
+PASS API incremental blob backup and read-only handles
+RANDOM seed=0x51a17e operations=256 state=134805630
+RANDOM row INTEGER:1 INTEGER:-282
+RANDOM row INTEGER:2 INTEGER:436
+RANDOM row INTEGER:3 INTEGER:374
+RANDOM row INTEGER:4 INTEGER:123
+RANDOM row INTEGER:5 INTEGER:-1136
+RANDOM row INTEGER:6 INTEGER:1265
+RANDOM row INTEGER:7 INTEGER:707
+RANDOM row INTEGER:8 INTEGER:-129
+RANDOM row INTEGER:10 INTEGER:-1179
+RANDOM row INTEGER:11 INTEGER:1691
+RANDOM row INTEGER:12 INTEGER:-2199
+RANDOM row INTEGER:15 INTEGER:441
+PASS API deterministic randomized transactions versus independent model
+PASS API prepare errors extended constraints reset finalize error propagation
+PASS all memory VFS C API contracts

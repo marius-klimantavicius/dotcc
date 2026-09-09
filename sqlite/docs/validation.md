@@ -17,6 +17,12 @@ Campaign commands run from `sqlite/`; scripts resolve their own absolute roots.
   Covers direct I/O/locking/failure contracts, journal cleanup, transaction recovery,
   reopen/read-only, WAL fallback, JSONB, image export/import and resource cleanup.
 - `python3 scripts/fetch.py`: archive SHA-256 verified; upstream source unchanged.
+- `scripts/test-api-native.sh`: native API corpus passes; matching full-source
+  ASan+UBSan execution passes. Transcript at `tests/native-api.expected`.
+  Covers prepare/bind/reset/finalize, embedded NULs, destructor ownership, UTF16,
+  scalar/aggregate/collation callbacks, busy/progress/transaction hooks, backup,
+  incremental blobs, extended errors and 256 deterministic random mutations
+  compared with an independent C model (seed `0x51a17e`).
 - `scripts/preprocess.sh > artifacts/sqlite3.i`: passed.
 - `scripts/translate.sh`: failed at nested callback declarator; see B001.
 - GCC C17 reduced nested-callback fixture: expected output `7` confirmed.
