@@ -745,8 +745,13 @@ internal sealed class CPreprocessor : C.IPreprocessor
         return Array.Empty<Item>();
     }
 
+    // MacroExpander must see original arguments for # and ##. Ordinary
+    // substitution prescans them only after the complete argument is captured.
+    internal bool CaptureRawMacroArguments { get; set; }
+
     public IEnumerable<Item> Rewrite(Item token)
     {
+        if (CaptureRawMacroArguments) { return new[] { token }; }
         // Predefined identifiers come first — they shadow any same-named
         // user macro by C standard (which forbids redefining them anyway).
         if (token.Content is string text)
