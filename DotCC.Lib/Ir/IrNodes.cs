@@ -170,17 +170,15 @@ public sealed record CommaOp(IReadOnlyList<CExpr> Items) : CExpr;
 public sealed record SizeOfExpr(CType Of) : CExpr;
 
 /// <summary><c>offsetof(T, member-designator)</c> — the byte offset of the member
-/// within struct/union <paramref name="StructType"/>. Codegen computes it via the
-/// address-through-a-null-pointer idiom (<c>(nint)&amp;((T*)null)-&gt;m</c>), so it
-/// respects the real .NET blittable layout (alignment included).
+/// within struct/union <paramref name="StructType"/>. Codegen references a typed
+/// constant produced by the shared layout/source-generator implementation,
+/// cross-checked against the compiler's constant evaluation.
 /// <see cref="Path"/> is the designator as segments — one field name in the
-/// common case, or a dotted walk into nested members (C99 7.17:
+/// common case, a constant indexed designator, or a dotted walk into nested members:
 /// <c>offsetof(struct S, value.type.f)</c>, chibi's <c>sexp_offsetof</c>).
-/// <see cref="MemberType"/> is the FINAL member's declared type (null if the
-/// struct/field isn't modelled) — a neutral fact from which the backend decides
-/// rendering: an array member that lowers to a C# <c>fixed</c> buffer already
-/// evaluates to its own address, so the backend omits the <c>&amp;</c> (taking it
-/// would be CS0211).</summary>
+/// <see cref="MemberType"/> retains the final member's declared type as a neutral
+/// IR fact. Unsupported requested layouts produce explicit diagnostics; there
+/// is no null-pointer, reflection, or delegate fallback.</summary>
 public sealed record OffsetOf(CType StructType, IReadOnlyList<string> Path, CType? MemberType) : CExpr;
 
 /// <summary>A positional struct/union aggregate initializer — lowered from

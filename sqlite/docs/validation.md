@@ -129,3 +129,13 @@ rejected with exit code 2. Logs/projects: `artifacts/managed-api/`.
 This validates the compiler/library/generator seam, not a translated SQLite
 engine. The actual SQLite library, C# extension, and engine AOT test remain open.
 See `docs/managed-api.md` for usage and ownership rules.
+
+## Macro rescan, register, and managed integration
+
+Commits `fba0378`, `ba0b0e2`, and `c630f7d` pass the coherent full snapshot:
+1,742 unit tests (38 seconds), 249 functional tests with 843 opt-in skips
+(77 seconds), zero failures. This includes all managed/native-library tests,
+the macro invocation-boundary correction, and register locals/for initializers.
+The next array-leading and physical-source-mapping tests were added afterward
+as separate reduced failures and are not claimed by these counts.
+Full SQLite retry reaches B009 in 0.80 seconds with 123632 KiB peak RSS.

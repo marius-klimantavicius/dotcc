@@ -88,9 +88,32 @@ functional suite passes 242 tests, and the obsolete FAM emitted-string assertion
 was updated and verified against the correct zero-storage representation.
 Full SQLite retry reaches B007 without changing upstream source.
 
-## B007 — self-referential object/function macro rescan (preprocessor, active)
+## B007 — self-referential object/function macro rescan (preprocessor, fixed fba0378)
 
 After B006, `vfsList` (reported26735/raw26892) leaves `GLOBAL(sqlite3_vfs*,vfsList)`
-in actual preprocessed C. The object alias's macro hide state is lost before the
-function-like GLOBAL expansion. This defect is also visible in the pristine
-preprocessed baseline. Worker is reducing/fixing shared rescan semantics.
+in actual preprocessed C. The object alias's macro hide state was lost before the
+function-like GLOBAL expansion. Tokens now retain their disabled-macro sets
+through object/function boundaries. Function rescan intersects invocation and
+closing-token sets so external arguments still expand correctly. Native-verified
+tests cover self references, aliases, cycles, nested arguments, and the boundary
+case `#define A F` / `#define F(x) x` / `A(A)` producing `F`.
+Full preprocessing has zero stray GLOBAL calls and preserves JSON `->`/`->>`;
+the complete parse retry advances to B008.
+
+## B008 — register locals and for initializers (parser/IR, fixed ba0b0e2)
+
+The next full parse stopped at reported35733/raw35947 in `sqlite3_strnicmp`:
+`register unsigned char *a,*b;`. Added a real storage-class keyword/production,
+lowered to automatic locals. The reduced fixture also caught for-initializer
+dispatch bypassing storage-class declaration lowering; it now uses the common
+declaration dispatcher. Native and translated output is `43`. Full retry reaches
+B009; SQLite C remains unchanged.
+
+## B009 — array-first mixed declaration (parser, active)
+
+After B008, full SQLite stops at reported55596/raw55953:
+`PgHdr *a[N_SORT_BUCKET], *p;`. Current grammar accepts arrays in later
+declarators but not an array before the first comma. Native/red reduced cases
+cover pointer-array and multidimensional heads, scalar/pointer tails, and pointer
+typedefs. Timed current retry: 0.80 seconds, 123632 KiB peak RSS; evidence under
+`artifacts/parse-probes/register-sqlite-retry.*`.
