@@ -1,8 +1,9 @@
 # SQLite amalgamation to C# with dotcc
 
 Status: M0/M1 complete; configured SQLite, VFS and every harness parse, lower, and emit C#.
-Actual offsetof storage validation (M2), generated C# compilation
-(M3), and translated VFS/API validation (M4/M5) remain active. Execution is pending.
+The complete managed C# library builds. Actual offsetof storage validation (M2),
+managed API execution (M3), and translated VFS/API validation (M4/M5) remain
+active. Engine execution is pending.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
 ## Objective and constraints
@@ -164,10 +165,11 @@ without skipping bodies. Commit each independent fix as it lands.
 
 ### M2 — Implement offsetof with a source generator
 
-Current code has an `OffsetOf` IR node, constant-context layout evaluation in
-`IrBuilder`, and a C# expression path that uses an inline `Func<ulong>` lambda with
-stack-instance address subtraction. Existing offset tests and dotted-designator
-fixtures are starting coverage, not a complete solution for SQLite.
+At campaign start, code had an `OffsetOf` IR node, constant-context layout
+evaluation in `IrBuilder`, and an inline `Func<ulong>` lambda with stack-instance
+address subtraction. The shared layout model and source generator now replace
+that runtime path. All 30 active compiler contracts match the native oracle;
+actual translated storage/address validation remains pending engine compilation.
 
 - [x] Add a Roslyn incremental source-generator project under `generators/`.
       Keep its design generic to dotcc aggregates despite its campaign location.
@@ -213,7 +215,7 @@ M1/M2 may interleave where layout-dependent declarations block lowering.
 
 ### M3 — Compile emitted C# and preserve the callback API
 
-- [ ] Iterate on actual Roslyn diagnostics until all enabled SQLite code builds.
+- [x] Iterate on actual Roslyn diagnostics until all enabled SQLite code builds.
       Prioritize structural issues: aggregate storage/initialization, static
       lifetime, pointer conversions/arithmetic, integer promotions/overflow,
       function-pointer arrays/tables, switch/goto scopes, and address stability.

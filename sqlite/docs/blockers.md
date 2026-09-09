@@ -291,12 +291,49 @@ IR diagnostics prefer that origin. Five regressions and the actual amalgamation
 confirm nested headers, semantic errors, macro invocation and parent restoration.
 See `source-mapping.md`.
 
-## Next semantic families
+## B025 — conditional pointer types and conversions (fixed 0b4d96d)
 
-The actual generated C# build now reports 66 errors: 37 CS0029 and 15 CS1503
-conversions, seven JSON shared-label variables outside their emitted scope,
-two constant infinite-loop return paths, two pointer/function-pointer field
-addresses passed as invalid Unsafe.AsPointer generic arguments, one promoted
-ushort variadic argument ambiguity, and two wide shift-assignment counts.
-These are being reduced without modifying generated output. Evidence:
-`artifacts/source-filenames/engine-build.log`.
+The actual engine reported 37 CS0029 and 15 CS1503 errors in pointer/null
+conditionals. Binding now applies array decay, compatible pointee qualifiers,
+void-pointer common types and proven null constants. Emission establishes that
+common type before an outer C# cast/call can supply its own target type. Native
+tests cover `_Generic`, sizeof, callback pointers, context conversions and skipped
+side effects; incompatible operands diagnose.
+
+## B026 — global pointer-member addresses (fixed 9003712)
+
+Addresses of sqlite3Config.xLog and pLogArg incorrectly used pointer types as
+Unsafe.AsPointer generic arguments (CS0306). The emitter now projects member
+addresses from the containing global aggregate. A nested native callback-table
+regression checks storage identity, pointer mutation, invocation and null values.
+
+## B027 — wide compound shift counts (fixed d738f6f)
+
+Two SQLite ulong shifts use long counts, rejected by C#. Counts now receive an
+explicit int cast independently of the target type. Native tests retain exactly
+one evaluation of indexed targets, function calls and comma-operator effects.
+
+## B028/B029 — shared handlers and constant loops (fixed 1687ce7)
+
+The old switch renderer moved JSON's to_double handler outside its locals' scope,
+causing seven missing-name errors. Named-label switches now use the scoped
+dispatcher, preserving storage and skipped initializers. Literal/enum loop truth
+is emitted as C# constants, resolving two false missing-return errors. Other
+expressions keep their runtime truth evaluation. Native tests cover shared
+handlers, fallthrough, outer continue and condition side effects.
+
+## B030 — default variadic promotions (fixed 6a1700d)
+
+The final engine error was an ambiguous ushort-to-VaArg int/uint conversion.
+Known C variadic arguments now explicitly promote small integers to int and
+float to double. A native test checks signs, unsigned bounds and single evaluation.
+The initial broad fallback affected Zig saturation helper overloads; the existing
+full unit suite caught it. Promotion is restricted to known C argument tails,
+and all Zig/frontend and repository tests now pass.
+
+The full unchanged SQLite plus memory VFS now builds as a managed C# library
+with zero errors. Fifty warnings remain across pointer identity/inline arrays,
+unreachable code, empty statements, self-assignment, byte-range comparisons and
+unused labels; storage and runtime validation are separate requirements.
+Evidence: `artifacts/pointer-conditionals/engine-scope-build.log` and
+`artifacts/variadic-promotions/test-before.log`.

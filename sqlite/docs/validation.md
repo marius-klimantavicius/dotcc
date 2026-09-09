@@ -249,3 +249,20 @@ Actual complete engine emission takes 3.99 seconds / 1,048,676 KiB peak RSS;
 its C# build completes in 7.29 seconds with 66 errors, down from 170. All 30
 compiler offset contracts still match native. Actual C# storage and engine
 execution remain pending. Logs: `artifacts/source-filenames/`.
+
+## Complete managed-library compilation
+
+Commits `9003712`, `d738f6f`, `1687ce7`, `0b4d96d`, and `6a1700d`:
+1,785 unit tests pass (49 seconds), 273 functional tests pass (83 seconds),
+887 optional oracle skips, zero failures. All six native-verified runtime
+regressions pass, as do 405 focused pointer/Zig cases. The first variadic patch
+failed four existing Zig saturation checks; its corrected C-only scope passes
+the complete suites.
+
+The unchanged combined engine emits in 4.13 seconds / 1,055,276 KiB peak RSS
+and compiles into TranslatedSqlite.dll with zero errors (7.73 seconds wall,
+7.57 seconds MSBuild). All 30 compiler offset contracts still match native.
+The archive SHA-256 and all four extracted amalgamation files were rechecked
+against the pinned ZIP with no changes. Logs:
+`artifacts/pointer-conditionals/*scope*`. Engine execution, independent storage
+checks and full native differentials are the next gate.
