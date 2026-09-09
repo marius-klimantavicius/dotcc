@@ -1312,6 +1312,9 @@ productions:
   - derivation: leftmost
     rules:
       - { lhs: DeclItemList, rhs: [DeclItem], action: declItemListOne }
+      # An array in first position joins this list only when followed by a
+      # comma; a standalone array keeps its existing declaration productions.
+      - { lhs: DeclItemList, rhs: [ID, ArrDims, ',', DeclItemTail], action: declItemListArrayHead }
       # SUBSEQUENT (post-comma) declarators are `DeclItemTail`, which may carry
       # its OWN leading `*`s (`int *a, *b;` → `b` is a pointer too). This is
       # conflict-free where a first-position `*` would not be: after a `,` there

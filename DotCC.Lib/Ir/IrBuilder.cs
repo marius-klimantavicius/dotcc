@@ -2371,6 +2371,11 @@ internal sealed partial class IrBuilder
             {
                 case C.DeclItemListCons c: Walk(c.Arg0); Walk(c.Arg2); break;
                 case C.DeclItemListOne o: Walk(o.Arg0); break;
+                case C.DeclItemListArrayHead a:
+                    add(Tok(a.Arg0), null, MakeArrayType(baseType,
+                        TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator head")));
+                    WalkTail(a.Arg3, 0);
+                    break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, baseType); break;
                 case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, baseType); break;
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, 0); break;
