@@ -326,6 +326,8 @@ internal sealed partial class IrBuilder
             case C.ExternArrIncomplete g: BuildExternArr(g.Arg1, g.Arg2, null); break;
             // `static T x = { … };` at file scope — a once-initialised struct/union field.
             case C.GlobalStaticStructInit g: BuildGlobalStructInit(g.Arg1, g.Arg2, g.Arg5); break;
+            case C.GlobalStaticStructDesignated g: BuildGlobalStructDesignated(g.Arg1, g.Arg2, g.Arg5); break;
+            case C.GlobalStructDesignated g: BuildGlobalStructDesignated(g.Arg0, g.Arg1, g.Arg4); break;
             // `extern T x;` declares the name + type for resolution but emits no
             // field — the definition lives in another TU (dotcc whole-program model).
             case C.ExternVarDecl g: BuildGlobalDecls(g.Arg1, g.Arg2, Storage.Extern); break;

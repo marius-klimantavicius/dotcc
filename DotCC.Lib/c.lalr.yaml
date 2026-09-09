@@ -704,6 +704,8 @@ productions:
       # (no ArrDims / `[ ]`) and from `static Type DeclItemList ;` (the `{` after
       # `=`), like the block-scope rule.
       - { lhs: Fn, rhs: ['static', Type, ID, '=', '{', InitList, '}', ';'], action: globalStaticStructInit }
+      - { lhs: Fn, rhs: ['static', Type, ID, '=', '{', MemberInitList, '}', ';'], action: globalStaticStructDesignated }
+      - { lhs: Fn, rhs: [Type, ID, '=', '{', MemberInitList, '}', ';'], action: globalStructDesignated }
       # `extern` array DECLARATIONS — declare without defining (the storage lives
       # in another TU), so emit no field; just register the name's type so same-TU
       # references resolve. Sized and incomplete forms (the latter is lua.h's
