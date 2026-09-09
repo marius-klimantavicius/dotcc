@@ -275,7 +275,10 @@ internal sealed class CPreprocessor : C.IPreprocessor
             // opcodes.c's `_I` — worked either way; this fixes the undef case.)
             using var subMacro = new MacroExpander(subPreproc, this);
             var tokens = new List<Item>();
-            while (subMacro.MoveNext()) { tokens.Add(subMacro.Current); }
+            // These are final preprocessing tokens. The enclosing expander
+            // must not replay them using definitions introduced later in this
+            // include, nor extend a header-tail function name into parent text.
+            while (subMacro.MoveNext()) { tokens.Add(MacroExpansionItem.FinishInclude(subMacro.Current)); }
             return tokens;
         }
         finally

@@ -11,19 +11,35 @@ namespace DotCC;
 internal sealed class MacroExpansionItem : SourceMappedItem
 {
     private readonly HashSet<string> _disabled;
+    private readonly bool _fullyExpanded;
+    private static readonly HashSet<string> NoDisabledNames = new(StringComparer.Ordinal);
 
-    private MacroExpansionItem(Item item, HashSet<string> disabled)
-        : base(item) => _disabled = disabled;
+    private MacroExpansionItem(Item item, HashSet<string> disabled, bool fullyExpanded = false)
+        : base(item)
+    {
+        _disabled = disabled;
+        _fullyExpanded = fullyExpanded || (item as MacroExpansionItem)?._fullyExpanded == true;
+    }
 
     private MacroExpansionItem(Item item, HashSet<string> disabled, Item origin)
-        : base(item, origin) => _disabled = disabled;
+        : base(item, origin)
+    {
+        _disabled = disabled;
+        _fullyExpanded = (item as MacroExpansionItem)?._fullyExpanded == true;
+    }
+
+    /// <summary>An included file has already passed through its own expander.
+    /// Its output cannot be rescanned against later definitions by the parent.
+    /// Macro definitions themselves remain live for subsequent parent tokens.</summary>
+    internal static Item FinishInclude(Item item) => item is MacroExpansionItem { _fullyExpanded: true }
+        ? item : new MacroExpansionItem(item, (item as MacroExpansionItem)?._disabled ?? NoDisabledNames, fullyExpanded: true);
 
     internal static Item AtInvocation(Item item, Item invocation) => item is MacroExpansionItem expansion
         ? new MacroExpansionItem(item, expansion._disabled, invocation)
         : new SourceMappedItem(item, invocation);
 
     internal static bool IsDisabled(Item item, string name) =>
-        item is MacroExpansionItem expansion && expansion._disabled.Contains(name);
+        item is MacroExpansionItem expansion && (expansion._fullyExpanded || expansion._disabled.Contains(name));
 
     internal static HashSet<string> CopyDisabled(Item item, IEnumerable<string>? context = null)
     {
