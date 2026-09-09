@@ -146,6 +146,7 @@ internal sealed class CFrontend : IFrontend
             var root = ParseUnit(unitPath, irParser, quiet: false, gate);
             irBuilder.AddUnit(root, Path.GetFileName(unitPath));
         }
+        irBuilder.FinishAggregateTypes();
         var irErrors = irBuilder.Diagnostics.Where(d => d.Severity == Ir.Severity.Error).ToList();
         if (irErrors.Count > 0)
         {

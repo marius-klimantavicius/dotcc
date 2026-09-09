@@ -355,7 +355,7 @@ internal sealed partial class IrBuilder
             case C.TypedefStructAnon s: BuildStructDef(null, s.Arg3, Tok(s.Arg5), isUnion: false); break;
             case C.TypedefUnionAnon s: BuildStructDef(null, s.Arg3, Tok(s.Arg5), isUnion: true); break;
             // `struct Tag;` forward declaration — C# resolves order-independently.
-            case C.StructFwd: break;
+            case C.StructFwd s: ReferenceAggregate(s.Arg1, isUnion: false); break;
             // `_Static_assert(expr[, "msg"]);` at file scope — a compile-time-only
             // assertion, EVALUATED here (C11 §6.7.10) via the unified comptime
             // interpreter. A holding assertion emits nothing; a zero or non-constant
@@ -702,6 +702,8 @@ internal sealed partial class IrBuilder
         _sawNoreturnSpec = false;
         _sawInlineSpec = false;
         var sig = ExtractFnSig(fnSig);
+        RequireCompleteObject(sig.Return, "function return");
+        foreach (var parameter in sig.Params) RequireCompleteObject(parameter.Type, "function parameter");
         // A definition means this name is no longer a pure prototype → not an import.
         _protoOnlyFuncs.Remove(sig.Name);
         Symbol funcSym;
@@ -1197,6 +1199,7 @@ internal sealed partial class IrBuilder
             }
         }
         Member(memberList);
+        foreach (var field in fields) RequireCompleteObject(field.Type, "member '" + owner + "." + field.Name + "'");
         return fields;
     }
 
@@ -1313,8 +1316,8 @@ internal sealed partial class IrBuilder
         // tag is unknown (forward/opaque) or names an anonymous int-constant enum.
         C.TypeEnum te => _enumTypes.TryGetValue(Tok(te.Arg1), out var et) ? et : CType.Int,
         // `struct Tag` / `union Tag` as a type — the canonical C# struct name.
-        C.TypeStruct t => new CType.Named(Tok(t.Arg1)),
-        C.TypeUnion t => new CType.Named(Tok(t.Arg1)),
+        C.TypeStruct t => ReferenceAggregate(t.Arg1, isUnion: false),
+        C.TypeUnion t => ReferenceAggregate(t.Arg1, isUnion: true),
         C.TypeTaggedStruct t => ResolveTaggedAggregate(Tok(t.Arg1), t.Arg3, isUnion: false),
         C.TypeTaggedUnion t => ResolveTaggedAggregate(Tok(t.Arg1), t.Arg3, isUnion: true),
         // Inline anonymous aggregate used as a type — `union { int i; float f; } u;`
@@ -2329,6 +2332,7 @@ internal sealed partial class IrBuilder
         _sawConstexprSpec = false; // consumed below (C23 allows block-scope constexpr)
         WalkDeclList(typeItem, listItem, (name, initItem, type) =>
         {
+            RequireCompleteObject(type, "local object '" + name + "'");
             if (type.Unqualified is CType.Array)
             {
                 if (_sawConstexprSpec)
@@ -2482,6 +2486,7 @@ internal sealed partial class IrBuilder
     private ArrayDecl BuildArrDecl(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, bool implicitSize)
     {
         var elem = ResolveType(typeItem);
+        RequireCompleteObject(elem, "array element");
         var name = Tok(nameItem);
         var dims = dimsItem is { } di ? TryConstDims(di) : null;
 
@@ -2700,9 +2705,9 @@ internal sealed partial class IrBuilder
             C.LitTrue => new LitInt("1", 1) { Type = CType.Int },
             C.LitFalse => new LitInt("0", 0) { Type = CType.Int },
             C.LitNullptr => new NullPtr { Type = new CType.Pointer(CType.Void) },
-            C.SizeofType s => new SizeOfExpr(ResolveType(s.Arg2)) { Type = CType.SizeT },
+            C.SizeofType s => BuildSizeOf(ResolveType(s.Arg2)),
             // `sizeof expr` — the operand isn't evaluated, only its type measured.
-            C.SizeofExpr s => new SizeOfExpr(BuildExpr(s.Arg1).Type) { Type = CType.SizeT },
+            C.SizeofExpr s => BuildSizeOf(BuildExpr(s.Arg1).Type),
             // `_Alignof(Type)` (C11 §6.5.3.4) — folds immediately to the layout
             // model's alignment (an integer constant expression, `size_t`-typed
             // like sizeof), so it composes with _Static_assert / array bounds /
@@ -2762,6 +2767,7 @@ internal sealed partial class IrBuilder
             CType.Array a => a.Element,
             _ => CType.Int,
         };
+        RequireCompleteObject(elem, "array subscript");
         return new Index(base_, idx) { Type = elem, IsLValue = true };
     }
 
@@ -2873,6 +2879,11 @@ internal sealed partial class IrBuilder
     {
         var le = BuildExpr(l);
         var re = BuildExpr(r);
+        if (op is BinOp.Add or BinOp.Sub)
+        {
+            if (PointeeOf(le.Type) is { } leftElement) RequireCompleteObject(leftElement, "pointer arithmetic");
+            if (PointeeOf(re.Type) is { } rightElement) RequireCompleteObject(rightElement, "pointer arithmetic");
+        }
         return new Binary(op, le, re) { Type = BinaryType(op, le.Type, re.Type) };
     }
 
@@ -2988,6 +2999,7 @@ internal sealed partial class IrBuilder
         // ++/-- on a const lvalue is a write — same constraint violation as assignment.
         if (op is UnOp.PreInc or UnOp.PostInc or UnOp.PreDec or UnOp.PostDec)
         {
+            if (PointeeOf(oe.Type) is { } element) RequireCompleteObject(element, "pointer increment/decrement");
             ReportConstWrite(oe, SrcPos.From(operand),
                 op is UnOp.PreInc or UnOp.PostInc ? "increment of" : "decrement of");
         }
