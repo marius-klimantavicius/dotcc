@@ -44,6 +44,10 @@ internal sealed partial class CSharpBackend
     {
         var leftPointer = IsPointerType(binary.Left.Type);
         var rightPointer = IsPointerType(binary.Right.Type);
+        if (leftPointer && rightPointer && binary.Op == BinOp.Add)
+            throw new IrUnsupportedException("addition of two pointers is invalid");
+        if (!leftPointer && rightPointer && binary.Op == BinOp.Sub)
+            throw new IrUnsupportedException("subtraction of a pointer from an integer is invalid");
         if (leftPointer && rightPointer)
         {
             var stride = PointerArrayStride(binary.Left.Type);
