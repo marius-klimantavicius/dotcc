@@ -5,9 +5,8 @@
    (offsetof is a dotcc builtin — a grammar production, not a macro — so it
    needs no definition here.)
 
-   NULL expands to the C# `null` keyword rather than real C's `((void*)0)`
-   because C# rejects implicit `void* → T*` conversion; a bare `null` literal
-   binds to any pointer type without further help.
+   NULL is a C null-pointer constant. The typed binder and backend handle its
+   conversion to object and function pointers when emitting C#.
 
    size_t / ptrdiff_t are 64-bit (→ C# ulong / long) per dotcc's LP64 model
    (see <stdint.h>). They live HERE — their canonical C home. The other headers
@@ -15,7 +14,7 @@
    <string.h>, <time.h>) reach them by including this one. */
 
 #ifndef NULL
-#define NULL null
+#define NULL ((void*)0)
 #endif
 
 typedef unsigned long size_t;

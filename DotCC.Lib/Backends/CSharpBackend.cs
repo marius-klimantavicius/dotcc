@@ -1290,11 +1290,16 @@ internal sealed partial class CSharpBackend
         var tgt = target.Unqualified;
         var src = value.Type.Unqualified;
 
-        // C's null pointer constant — an integer constant 0 — becomes C# `null`
+        // C's null pointer constant — integer zero, optionally cast to void* — becomes C# `null`
         // where a POINTER is expected (C# won't convert int 0 to a pointer).
         // A function pointer (bare CType.Func — lowered delegate*) is a pointer
         // for this purpose too: chibi's opcode tables store NULL handlers.
-        if (tgt is CType.Pointer or CType.Func && TryConstInt(value, out var z) && z == 0)
+        var nullOperand = value;
+        while (nullOperand is Paren nullParen) nullOperand = nullParen.Inner;
+        if (nullOperand is Cast { Target.Unqualified: CType.Pointer { Pointee.Unqualified: CType.VoidType } } nullCast
+            && nullCast.Operand.Type.Unqualified.IsInteger)
+            nullOperand = nullCast.Operand;
+        if (tgt is CType.Pointer or CType.Func && TryConstInt(nullOperand, out var z) && z == 0)
         {
             text = "null";
             return true;
