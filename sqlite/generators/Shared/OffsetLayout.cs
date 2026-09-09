@@ -25,6 +25,9 @@ internal sealed class LayoutInfo
     public int Size;
     public int Alignment;
     public readonly Dictionary<string, int> Offsets = new Dictionary<string, int>(StringComparer.Ordinal);
+    // Each actual storage unit is identified by its first source field index.
+    // Consecutive bit-fields can share one unit; zero-length tails have none.
+    public readonly Dictionary<int, int> StorageOffsets = new Dictionary<int, int>();
 }
 internal sealed class OffsetLayoutException : Exception
 {
@@ -71,8 +74,9 @@ internal sealed class OffsetLayoutModel
             var cursor = 0;
             var unitBytes = 0;
             var usedBits = 0;
-            foreach (var field in aggregate.Fields)
+            for (var fieldIndex = 0; fieldIndex < aggregate.Fields.Count; fieldIndex++)
             {
+                var field = aggregate.Fields[fieldIndex];
                 var layout = Type(field.Type);
                 var alignment = aggregate.Packed ? 1 : layout.Alignment;
                 if (field.BitWidth is int width)
@@ -89,6 +93,7 @@ internal sealed class OffsetLayoutModel
                 result.Alignment = Math.Max(result.Alignment, alignment);
                 var offset = aggregate.Union ? 0 : RoundUp(cursor, alignment);
                 if (field.BitWidth is null) result.Offsets.Add(field.Name, offset);
+                if (layout.Size != 0) result.StorageOffsets.Add(fieldIndex, offset);
                 cursor = aggregate.Union ? Math.Max(cursor, layout.Size) : checked(offset + layout.Size);
             }
             result.Size = RoundUp(cursor, result.Alignment);

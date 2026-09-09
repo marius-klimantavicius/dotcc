@@ -179,7 +179,21 @@ internal sealed class CSharpBackend
     {
         var wrappers = new StringBuilder();   // [InlineArray] wrapper types for non-primitive array members
         var sb = new StringBuilder();
-        if (t.IsUnion)
+        var flexibleField = t.Fields.FirstOrDefault(field => field.Type.Unqualified is CType.Array { Count: 0 });
+        DotCC.Layout.LayoutInfo? headerLayout = null;
+        if (flexibleField.Type is not null)
+        {
+            headerLayout = _offsetModel.Aggregate(t.Name);
+            if (headerLayout.Alignment is not (1 or 2 or 4 or 8) || headerLayout.Size < headerLayout.Alignment)
+                throw new IrUnsupportedException("flexible-array header storage alignment/size for " + t.Name);
+            // Register through the same path as explicit C offsetof expressions.
+            // Both StructLayout constants and the pointer getter use generator output.
+            Expr(new OffsetOf(new CType.Named(t.Name), new[] { flexibleField.Name }, flexibleField.Type) { Type = CType.SizeT });
+            var layoutClass = DotCC.Layout.OffsetDocument.RequestName(t.Name, new[] { flexibleField.Name });
+            sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
+                .Append(layoutClass).Append(".Size, Pack = ").Append(layoutClass).Append(".Alignment)]\n");
+        }
+        else if (t.IsUnion)
         {
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]\n");
         }
@@ -194,6 +208,14 @@ internal sealed class CSharpBackend
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]\n");
         }
         sb.Append("unsafe struct ").Append(t.Name).Append("\n{\n");
+        if (headerLayout is not null)
+        {
+            // A tail with stricter alignment than any stored member must still
+            // align the header when it is embedded. The overlay uses real header
+            // bytes and never reserves a phantom tail element.
+            var anchor = headerLayout.Alignment switch { 1 => "byte", 2 => "ushort", 4 => "uint", _ => "ulong" };
+            sb.Append("    [System.Runtime.InteropServices.FieldOffset(0)]\n    private ").Append(anchor).Append(" __dotcc_flex_alignment;\n");
+        }
         var bitUnitCounter = 0;
         for (var fi = 0; fi < t.Fields.Count; )
         {
@@ -208,11 +230,24 @@ internal sealed class CSharpBackend
                 var run = new List<StructField>();
                 var fj = fi;
                 while (fj < t.Fields.Count && t.Fields[fj].IsBitField) { run.Add(t.Fields[fj]); fj++; }
-                sb.Append(PackBitFieldRun(run, t.IsUnion, ref bitUnitCounter));
+                var storageOffsets = headerLayout?.StorageOffsets.Where(pair => pair.Key >= fi && pair.Key < fj)
+                    .OrderBy(pair => pair.Key).Select(pair => pair.Value).ToArray();
+                sb.Append(PackBitFieldRun(run, t.IsUnion, ref bitUnitCounter, storageOffsets));
                 fi = fj;
                 continue;
             }
-            if (t.IsUnion) { sb.Append("    [System.Runtime.InteropServices.FieldOffset(0)]\n"); }
+            if (f.Type.Unqualified is CType.Array { Count: 0 })
+            {
+                var offset = Expr(new OffsetOf(new CType.Named(t.Name), new[] { f.Name }, f.Type) { Type = CType.SizeT });
+                sb.Append("    public ").Append(Cs(f.Type)).Append(' ').Append(DotCC.EmitHelpers.Id(f.Name)).Append("\n    {\n        get\n        {\n            fixed (")
+                    .Append(t.Name).Append("* __self = &this)\n            {\n                return (").Append(Cs(f.Type)).Append(")((byte*)__self + ")
+                    .Append(offset).Append(");\n            }\n        }\n    }\n");
+                fi++;
+                continue;
+            }
+            if (headerLayout is not null)
+                sb.Append("    [System.Runtime.InteropServices.FieldOffset(").Append(headerLayout.Offsets[f.Name]).Append(")]\n");
+            else if (t.IsUnion) { sb.Append("    [System.Runtime.InteropServices.FieldOffset(0)]\n"); }
             // An array member is C-inline storage, not a pointer field. A primitive
             // element lowers to a C# `fixed` buffer (inline, indexable, decays to a
             // pointer with no bounds check — both for free, matching C). A
@@ -283,7 +318,7 @@ internal sealed class CSharpBackend
     /// semantics (modular store, signed sign-extension on read). Anonymous members
     /// reserve bits but get no accessor. A union puts every unit at
     /// <c>[FieldOffset(0)]</c> (all members overlay).</summary>
-    private string PackBitFieldRun(IReadOnlyList<StructField> run, bool isUnion, ref int unitCounter)
+    private string PackBitFieldRun(IReadOnlyList<StructField> run, bool isUnion, ref int unitCounter, IReadOnlyList<int>? explicitOffsets = null)
     {
         var units = new List<(int Bytes, List<(StructField F, int Off)> Members)>();
         int curBytes = -1; List<(StructField, int)>? curMembers = null; var used = 0;
@@ -309,11 +344,14 @@ internal sealed class CSharpBackend
         Close();
 
         var sb = new StringBuilder();
+        var storageIndex = 0;
         foreach (var (bytes, members) in units)
         {
             var id = "__bf" + unitCounter++;
             var (ut, _) = BitStorage(bytes);
-            if (isUnion) { sb.Append("    [System.Runtime.InteropServices.FieldOffset(0)]\n"); }
+            if (explicitOffsets is not null)
+                sb.Append("    [System.Runtime.InteropServices.FieldOffset(").Append(explicitOffsets[storageIndex++]).Append(")]\n");
+            else if (isUnion) { sb.Append("    [System.Runtime.InteropServices.FieldOffset(0)]\n"); }
             sb.Append("    private ").Append(ut).Append(' ').Append(id).Append(";\n");
             foreach (var (f, off) in members)
             {
@@ -1804,7 +1842,7 @@ internal sealed class CSharpBackend
                 // access decays to the element pointer `(T*)&field` (C#'s InlineArray
                 // indexer bounds-checks, but a C array over-indexes into the tail),
                 // restoring both over-indexing and array→pointer decay.
-                if (m.Type.Unqualified is CType.Array arr && !IsFixedBufferType(Cs(arr.FlatElement)))
+                if (m.Type.Unqualified is CType.Array arr && arr.Count != 0 && !IsFixedBufferType(Cs(arr.FlatElement)))
                 {
                     return ($"({Cs(m.Type)})&{dot}", PUnary);
                 }
@@ -2050,6 +2088,9 @@ internal sealed class CSharpBackend
             // &fn where fn is a function already decays to `&fn` in the VarRef
             // case — don't emit a second `&`.
             case UnOp.AddrOf when u.Operand is VarRef { Sym.Kind: SymKind.Func }: return Render(u.Operand);
+            // A flexible array has no C# field to address. Its getter already
+            // returns the beginning of the tail (also the address of the C array).
+            case UnOp.AddrOf when u.Operand.Type.Unqualified is CType.Array { Count: 0 }: return Render(u.Operand);
             // &global — a file-scope global / static local lowers to a C# static
             // field, which is a MOVEABLE variable (`&field` is CS0212). Take its
             // address via Unsafe.AsPointer: dotcc's globals are unmanaged value

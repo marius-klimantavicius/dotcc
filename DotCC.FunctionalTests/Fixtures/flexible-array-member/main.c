@@ -2,8 +2,8 @@
 #include <stdlib.h>
 
 /* C99 flexible array member (sized at malloc time) + C89 sized array member.
-   Both lower to C# fixed-size buffers; the FAM's [1] over-allocates by one
-   element so the malloc(sizeof(S)+n*sizeof(T)) idiom stays safe. */
+   The flexible tail contributes no element to sizeof; its pointer accessor
+   addresses the separately allocated tail after the fixed-size header. */
 
 struct Vec { int len; int data[]; };        /* flexible array member */
 struct Grid { int rows; int cells[4]; };     /* sized array member */

@@ -1165,6 +1165,11 @@ productions:
       - { lhs: Member, rhs: ['union', '{', MemberMark, MemberList, '}', ID, ArrDims, ';'], action: arrayNestedUnion }
       - { lhs: Member, rhs: ['struct', ID, '{', MemberMark, MemberList, '}', ID, ArrDims, ';'], action: arrayNestedTaggedStruct }
       - { lhs: Member, rhs: ['union', ID, '{', MemberMark, MemberList, '}', ID, ArrDims, ';'], action: arrayNestedTaggedUnion }
+      # C99 flexible tails may declare their aggregate element type inline.
+      - { lhs: Member, rhs: ['struct', '{', MemberMark, MemberList, '}', ID, '[', ']', ';'], action: flexArrayNestedStruct }
+      - { lhs: Member, rhs: ['union', '{', MemberMark, MemberList, '}', ID, '[', ']', ';'], action: flexArrayNestedUnion }
+      - { lhs: Member, rhs: ['struct', ID, '{', MemberMark, MemberList, '}', ID, '[', ']', ';'], action: flexArrayNestedTaggedStruct }
+      - { lhs: Member, rhs: ['union', ID, '{', MemberMark, MemberList, '}', ID, '[', ']', ';'], action: flexArrayNestedTaggedUnion }
       - { lhs: MemberMark, rhs: [], action: memberMark }
 
   # EnumList / EnumItem — enumerator body for `enum Name { … }`.

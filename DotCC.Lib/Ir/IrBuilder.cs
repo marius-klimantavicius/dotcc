@@ -1116,6 +1116,10 @@ internal sealed partial class IrBuilder
                 case C.ArrayNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true, dimensions: nm.Arg6); break;
                 case C.ArrayNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false, dimensions: nm.Arg7); break;
                 case C.ArrayNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true, dimensions: nm.Arg7); break;
+                case C.FlexArrayNestedStruct nm: Gate(1999, "flexible array member", m); AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: false, flexible: true); break;
+                case C.FlexArrayNestedUnion nm: Gate(1999, "flexible array member", m); AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true, flexible: true); break;
+                case C.FlexArrayNestedTaggedStruct nm: Gate(1999, "flexible array member", m); AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false, flexible: true); break;
+                case C.FlexArrayNestedTaggedUnion nm: Gate(1999, "flexible array member", m); AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true, flexible: true); break;
                 // `T name[N]…;` — a fixed-size array member (codegen: a `fixed`
                 // buffer for a primitive element, an [InlineArray] wrapper for a
                 // non-primitive one). Multi-dimensional bounds give a nested array
@@ -1126,12 +1130,11 @@ internal sealed partial class IrBuilder
                     fields.Add(new StructField(Tok(sm.Arg1), MakeArrayType(ResolveType(sm.Arg0), dims)));
                     break;
                 }
-                // C99 flexible array member `T name[];` — over-allocated at malloc
-                // time. Model as a 1-element array (the struct-hack [1] convention),
-                // so the member exists and access over-indexes into the tail.
+                // C99 flexible array member: contributes alignment but no element
+                // storage. The backend exposes its over-allocated tail by pointer.
                 case C.StructFlexArrMember sm:
                     Gate(1999, "flexible array member", m);
-                    fields.Add(new StructField(Tok(sm.Arg1), new CType.Array(ResolveType(sm.Arg0), 1)));
+                    fields.Add(new StructField(Tok(sm.Arg1), new CType.Array(ResolveType(sm.Arg0), 0)));
                     break;
                 // `Ret (*name)(params);` — a function-pointer member. Same
                 // FnPtrType lowering as the typedef/param fn-ptr forms (codegen
@@ -1206,7 +1209,7 @@ internal sealed partial class IrBuilder
     /// or a tagged <c>struct Tag {…} m;</c>, and union forms). Defines the nested
     /// type (under its tag, or a synthesized name) and adds <paramref name="member"/>
     /// of that type — unlike an anonymous member, the fields are NOT promoted.</summary>
-    private void AddNamedNested(string? tag, Item innerMemberList, string member, List<StructField> parentFields, bool isUnion, bool pointer = false, Item? dimensions = null)
+    private void AddNamedNested(string? tag, Item innerMemberList, string member, List<StructField> parentFields, bool isUnion, bool pointer = false, Item? dimensions = null, bool flexible = false)
     {
         var typeName = tag ?? $"__Anon{_anonAggrSeq++}";
         if (_emittedTypes.Add(typeName))
@@ -1217,6 +1220,7 @@ internal sealed partial class IrBuilder
             Types.Add(new StructTypeDef(typeName, inner, isUnion));
         }
         CType memberType = new CType.Named(typeName);
+        if (flexible) memberType = new CType.Array(memberType, 0);
         if (dimensions is { } dims)
             memberType = MakeArrayType(memberType, TryConstDims(dims) ?? throw new IrUnsupportedException("non-constant nested aggregate array bound"));
         parentFields.Add(new StructField(member, pointer ? new CType.Pointer(memberType) : memberType));

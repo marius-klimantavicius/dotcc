@@ -75,9 +75,17 @@ unknown layouts, bitfield address rejection, and object/link compilation.
 
 M2 is not complete until the campaign records the full SQLite retry, complete
 suite results, NativeAOT validation, and SQLite-specific layout comparisons.
-The audit also found an existing flexible-array limitation: `T member[]` is
-currently lowered as `T member[1]`. Its initial offset agrees, but the struct's
-size may exceed the C ABI size. No claim of exact flexible-array `sizeof` is made;
-that lowering must be corrected before relying on those sizes. General GCC/MSVC
-bitfield ABI differences and >8-byte primitive alignment still need an explicit
-supported-profile audit.
+Flexible arrays now use count-zero metadata. Their header has explicit size and
+field offsets, an overlapping scalar alignment anchor, and a pointer property for
+the tail; there is no phantom element in storage. Generator constants supply the
+header's `StructLayout.Size`/`Pack` and tail pointer offset. The
+`flexible-array-layout` fixture compares native and translated sizes, alignment,
+offsets, actual addresses and overallocated access for scalar, aggregate, pointer
+and function-pointer tails, including a double tail following integer bitfields.
+
+General GCC/MSVC bitfield ABI differences and >8-byte primitive alignment remain
+an explicit audit item. In particular, GCC may place a char tail directly after
+the used bits of an integer bitfield, while dotcc's current backing-unit model
+places it after the complete storage unit; that shape is not yet claimed to match
+GCC. Empty flexible headers and tail-header alignments beyond 8 bytes produce a
+clear unsupported-storage diagnostic.
