@@ -164,3 +164,22 @@ LF/CRLF, UTF-8 byte offsets, includes, builtins, and macro invocation positions.
 The complete SQLite retry now reports physical `139841:10`, byte `5075023`,
 at a pointer-to-function-pointer field (B011). Source mapping limitations are
 recorded in `docs/source-mapping.md`.
+
+## Callback arrays and inline aggregate initialization
+
+Commits `3d7d65e`, `04555ea`, and `037a1ab`: build with zero warnings/errors
+(7.59 seconds), 1,750 unit tests passed (40 seconds), 255 functional tests passed
+with 853 opt-in skips (78 seconds). Tests cover native-verified callback storage,
+const/mutable/zero-filled direct callback arrays, null comparisons, and typed
+inline-array factories for global/local/static/compound initialization. Separate
+object linking checks deterministic helper identity and callback initialization.
+Actual full SQLite parsing reaches the local typedef at physical183277. The new
+local typedef fixture is a separate pending regression, not part of these counts.
+
+## Unsigned plain-char native profile
+
+The actual emitted char ABI probe builds and prints `255 0 0 255`, matching
+GCC with `-funsigned-char` and dotcc's supplied limits. The native core, API,
+VFS, 37-case upstream JSONB, virtual-table, 128-case allocator-fault and closed
+image suites all pass after adding this explicit ABI flag. Every saved corpus
+transcript remains byte-for-byte identical. Logs: `artifacts/native-unsigned-*`.

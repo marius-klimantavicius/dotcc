@@ -131,7 +131,7 @@ of nested conditionals. Native and translated fixture output is
 `30 7 16 14 20 1 42`, including untaken-arm side effects and a SQLite-style macro.
 Full retry advances to B011 (0.99 seconds, 123952 KiB before source-map changes).
 
-## B011 — callback storage in members, locals, and casts (parser, active)
+## B011 — callback storage in members, locals, and casts (parser, fixed 3d7d65e)
 
 The complete parser now reaches physical `sqlite3.c:139841:10` (byte5075023),
 the auto-extension table's `void (**aExt)(void)` member. The earlier callback
@@ -140,3 +140,38 @@ native/red fixture covers member/local storage, abstract two-star casts,
 callback indexing, and void/old-style signatures. Native output is `42 17 2`.
 Source positions are now physical after commit50308f9; see `source-mapping.md`
 for the remaining included-filename and macro-backtrace boundaries.
+The fix preserves callback-storage pointer levels in members, local declarations,
+and abstract casts. Twelve related callback fixtures pass; full retry advances
+to the built-in extension callback array B012 (1.95 seconds, 221640 KiB RSS).
+
+## B012 — direct callback arrays and nulls (parser/emitter, fixed 04555ea)
+
+The next full parse stops at physical182695, `sqlite3BuiltinExtensions`, a static
+array of const callback pointers. New declarator productions retain signature,
+qualifiers, array bounds, and the existing pinned global-array representation.
+The native/red regression then exposes emission defects for uninitialized
+callback arrays, partial zero initialization, and callback/ordinary-pointer
+comparison with integer-zero null constants. These now use pointer-sized backing
+storage, typed initializer coercion, and the other operand's pointer context.
+The fixture prints `42 17 1 1 9 2`; full retry advances to B013.
+
+## B013 — scoped local callback typedef (parser/IR, active)
+
+Physical183277 in `sqlite3_config` declares a local callback typedef, then retrieves
+one through `va_arg`. Existing typedef support handles only file scope. The new
+native/red fixture covers callback alias shadow/restoration, scalar alias sizes,
+no type-name leakage to a later function, and actual variadic callback retrieval.
+Native output is `59 16 42`. The shared SymbolTable already has scoped typedef
+symbols; the fix is using that existing mechanism and scoped lexer names.
+
+## Inline aggregate array initialization (IR/emitter, fixed 037a1ab)
+
+While reducing `sqlite3Stat` at physical24341, its two array members initialized
+with `{{0,},{0,}}` exposed the lowerer's assumption that nested braces always
+initialize structs. Typed inline-array IR now retains dense values and zero fill;
+generated factories write actual inline storage and work in global/local/static
+and compound-expression contexts without heap/delegate allocation. Factories use
+full typed-shape hashes for deterministic cross-object identity. Tests also found
+and fixed global array-member address projection. Native/translated primitive,
+multidimensional, nested-aggregate, pointer and callback arrays pass, including
+separate-object callback factory linking. See `aggregate-initializers.md`.

@@ -38,3 +38,13 @@ This is a verified profile for the observed SQLite layouts, not a claim that eve
 MS ABI corner case is implemented. Zero-width and mixed/union bit-field cases
 remain subject to the shared compiler's layout audit. Translated SQLite layout
 comparison is still required once full emission succeeds.
+
+## Plain char in the C# target
+
+The native oracle also uses `-funsigned-char`. Generated C# stores plain `char`
+as `byte`, and dotcc's `limits.h` defines `CHAR_MIN=0`, `CHAR_MAX=255`. An
+actual generated executable prints `255 0 0 255` for `(char)255`, its comparison
+with zero, and those limits; GCC with `-funsigned-char` prints the same values.
+Default x64 GCC instead prints `-1 1 -128 127`. Evidence is under `artifacts/abi/`.
+This selects the native oracle's plain-char behavior without changing SQLite
+feature definitions. Explicit `signed char` remains signed.
