@@ -6,6 +6,20 @@ source fallthrough, switch and loop exits, outer-loop continuation, and the
 original execution points of initializers. Only local storage whose scope must
 be opened for an entry is hoisted.
 
+Statements before the first case are preserved as an initial section without
+case labels. Their declarations bind names and reserve storage, while dispatch
+skips their executable code. A named goto can still reach a label in this
+prelude. SQLite's `yy_reduce` depends on this for its `yylhsminor` union.
+
+For fixed arrays in scopes opened to case entry, storage allocation is separate
+from initialization: storage is reserved before dispatch, and initializer
+stores remain at their original source points. Thus jumping past a declaration
+can still assign and read array elements without executing a skipped
+initializer. The `switch-prelude` native fixture covers scalar and
+aggregate storage, multidimensional and aggregate arrays, direct nested entry,
+and a goto back into the prelude. Variable-length arrays in affected flattened
+scopes are explicitly unsupported; case jumps into their scope are rejected.
+
 Subtrees without a case or named C label retain their structured blocks,
 conditionals, and loops. Their declarations retain those scopes. `Seq` nodes
 are always traversed because they are statement sequences rather than C

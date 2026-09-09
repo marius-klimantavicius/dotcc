@@ -875,7 +875,7 @@ internal sealed partial class CSharpBackend
     /// </list></summary>
     private void RenderSwitch(StringBuilder sb, Switch sw, int ind, string pad)
     {
-        if (sw.Sections.Any(section => section.Body.Any(ContainsNestedCase)))
+        if (sw.Sections.Any(section => section.Labels.Count == 0 || section.Body.Any(ContainsNestedCase)))
         {
             RenderSwitchWithNestedLabels(sb, sw, ind);
             return;

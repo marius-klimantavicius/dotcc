@@ -1869,7 +1869,7 @@ internal sealed partial class IrBuilder
 
         void Flush()
         {
-            if (open) { sections.Add(new SwitchSection(labels, body)); }
+            if (open || body.Count > 0) { sections.Add(new SwitchSection(labels, body)); }
             labels = new List<SwitchLabel>();
             body = new List<CStmt>();
             open = false;
@@ -1898,18 +1898,17 @@ internal sealed partial class IrBuilder
                     Walk(ls.Arg2);
                     break;
                 default:
-                    // A statement before the first case label is unreachable in C;
-                    // drop it (C# would reject it anyway).
-                    if (open)
+                    // Prelude declarations still introduce storage and names,
+                    // even though case dispatch skips their initializer code.
+                    // Keep an unlabeled section: a named goto can also reach
+                    // statements here, so discarding all prelude code is wrong.
+                    var st = BuildStmt(it);
+                    for (var i = pendingLabels.Count - 1; i >= 0; i--)
                     {
-                        var st = BuildStmt(it);
-                        for (var i = pendingLabels.Count - 1; i >= 0; i--)
-                        {
-                            st = new Labeled(pendingLabels[i], st) { Pos = st.Pos };
-                        }
-                        pendingLabels.Clear();
-                        body.Add(st);
+                        st = new Labeled(pendingLabels[i], st) { Pos = st.Pos };
                     }
+                    pendingLabels.Clear();
+                    body.Add(st);
                     break;
             }
         }
@@ -1949,6 +1948,7 @@ internal sealed partial class IrBuilder
     {
         for (var i = 0; i < sections.Count - 1; i++)   // last section: nothing to fall INTO
         {
+            if (sections[i].Labels.Count == 0) { continue; } // skipped switch prelude, not a case
             var body = sections[i].Body;
             if (body.Count == 0) { continue; }                  // empty (stacked labels) — fine
             var last = body[^1];

@@ -553,7 +553,9 @@ public sealed record ZigErrorThrow(int Code) : CStmt;
 public sealed record Switch(CExpr Subject, IReadOnlyList<SwitchSection> Sections) : CStmt;
 
 /// <summary>One case section: its (stacked) labels and the statements that follow
-/// up to the next label.</summary>
+/// up to the next label. An initial section with no labels is the switch prelude:
+/// its declarations introduce storage, but normal case dispatch skips its code.
+/// Named gotos may still reach labels in that prelude.</summary>
 public sealed record SwitchSection(IReadOnlyList<SwitchLabel> Labels, IReadOnlyList<CStmt> Body);
 
 /// <summary>A <c>case E:</c> / <c>default:</c> label that appears NESTED inside

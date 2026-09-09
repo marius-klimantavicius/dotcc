@@ -37,6 +37,7 @@ internal sealed partial class CSharpBackend
         var sections = statement.Sections.Select(_ => Fresh()).ToArray();
         var nested = new Dictionary<CaseLabelStmt, string>(ReferenceEqualityComparer.Instance);
         var locals = new List<LocalDecl>();
+        var arrays = new List<(ArrayDecl Declaration, int Count)>();
         var seenLocals = new HashSet<Symbol>(ReferenceEqualityComparer.Instance);
         var entryLabels = new Dictionary<CStmt, bool>(ReferenceEqualityComparer.Instance);
         bool HasEntryLabel(CStmt current)
@@ -61,7 +62,18 @@ internal sealed partial class CSharpBackend
                 foreach (var local in declaration.Decls)
                     if (seenLocals.Add(local.Sym)) locals.Add(local with { Init = null });
             if (current is ArrayDecl array && seenLocals.Add(array.Sym))
-                locals.Add(new LocalDecl(array.Sym, null));
+            {
+                // A fixed array's storage exists when its enclosing block is
+                // entered, including entry directly at a later case label.
+                // Only initializer effects belong at the declaration site.
+                var count = array.Inits?.Count;
+                if (count is null && array.CountExpr is LitInt { Value: { } fixedCount }
+                    && fixedCount >= 0 && fixedCount <= int.MaxValue)
+                    count = (int)fixedCount;
+                if (count is null)
+                    throw new IrUnsupportedException("variable-length array across a switch entry");
+                arrays.Add((array, count.Value));
+            }
             foreach (var child in SwitchChildren(current)) Discover(child);
         }
         foreach (var section in statement.Sections)
@@ -72,6 +84,13 @@ internal sealed partial class CSharpBackend
         var bodyPad = Pad(bodyIndent);
         output.Append(pad).Append("{\n");
         EmitDeclStmt(output, new DeclStmt(locals), bodyPad);
+        foreach (var (array, count) in arrays)
+        {
+            var element = Cs(array.Element);
+            output.Append(bodyPad).Append(element).Append("* ").Append(array.Sym.TargetName)
+                .Append(" = stackalloc ").Append(element).Append('[')
+                .Append(count.ToString(System.Globalization.CultureInfo.InvariantCulture)).Append("];\n");
+        }
         var subject = DecayEnum(statement.Subject);
         var value = Hoist(output, bodyPad, () => Coerced(subject, CType.IntegerPromote(subject.Type)));
         output.Append(bodyPad).Append("switch (").Append(value).Append(")\n").Append(bodyPad).Append("{\n");
@@ -128,18 +147,14 @@ internal sealed partial class CSharpBackend
                         }
                     break;
                 case ArrayDecl array:
-                {
-                    // Pointer stackalloc must remain a declaration initializer.
-                    // Allocate at the original point, then assign the hoisted C name.
-                    var temporary = Fresh();
-                    var element = Cs(array.Element);
-                    var storage = array.Inits is { } values
-                        ? "[]{ " + string.Join(", ", values.Select(item => Coerced(item, array.Element))) + " }"
-                        : "[" + (array.CountExpr is { } count ? Expr(count) : "0") + "]";
-                    output.Append(bodyPad).Append(element).Append("* ").Append(temporary).Append(" = stackalloc ").Append(element).Append(storage).Append(";\n")
-                        .Append(bodyPad).Append(array.Sym.TargetName).Append(" = ").Append(temporary).Append(";\n");
+                    if (array.Inits is { } values)
+                        for (var index = 0; index < values.Count; ++index)
+                        {
+                            var elementValue = Hoist(output, bodyPad, () => Coerced(values[index], array.Element));
+                            output.Append(bodyPad).Append(array.Sym.TargetName).Append('[').Append(index)
+                                .Append("] = ").Append(elementValue).Append(";\n");
+                        }
                     break;
-                }
                 case If conditional:
                 {
                     var other = Fresh(); var past = Fresh();
