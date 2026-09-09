@@ -18,7 +18,7 @@ int main(void) {
   HEADER(VdbeCursor); FIELD(VdbeCursor, seekHit); FIELD(VdbeCursor, ub); FIELD(VdbeCursor, uc); FIELD(VdbeCursor, aType);
   HEADER(JsonParse); FIELD(JsonParse, nBlob); FIELD(JsonParse, delta); FIELD(JsonParse, aIns);
 #ifdef DOTCC_LAYOUT_REQUESTS
-#include "layout_requests.inc"
+#include "layout_requests.h"
 #endif
   return 0;
 }

@@ -213,3 +213,28 @@ image and upstream JSONB outputs equal their saved transcripts byte-for-byte.
 Logs: `artifacts/combined-*-native.{out,log}` and build logs. Core/API/VFS/upstream
 combined harnesses now emit C#; virtual-table/allocation parser gaps B019/B020
 are being fixed. The reusable C# build remains at opaque/tentative declarations.
+
+## Opaque declarations, global storage and complete harness emission
+
+Commits `7fdf9aa`, `a6ff6dc`, `dd1636b`, and `529a68c`: 1,775 unit tests
+and 264 functional tests pass, 871 opt-in skips, zero failures. Native-verified
+regressions cover opaque callback pointers, incomplete-type rejection, canonical
+tentative globals, external initializers, designated callback tables and mixed
+initialized arrays. Runtime-owned calendar/locale tags retain their dotcc library
+definitions. All seven engine/harness translation units and the complete layout
+probe now emit C#. The generated layout header uses `.h`, matching the compiler's
+header catalog; native output remains identical after this campaign-only rename.
+Logs: `artifacts/opaque-aggregates/`, `artifacts/translated-*-emission.log`.
+
+## C# compiler control-flow performance
+
+Commit `905c8b3`: clean build, 1,775 unit and 265 functional tests pass,
+871 opt-in skips, zero failures. A native-verified 80-case control-flow stress
+test passes with a 60-second compiler cancellation bound. The actual full SQLite
+C# compilation now completes in 7.32 seconds and reports 170 remaining semantic
+diagnostics, compared with the prior attempt cancelled after 5:14.68 without
+diagnostics. The improvement preserves structured regions without entry labels.
+The before/after profile and VDBE statement counts are in `switch-lowering.md`;
+logs and read-only trace: `artifacts/switch-structure/` and
+`artifacts/compiler-profile/`. This is a compilation progress result, not yet a
+working SQLite assembly or runtime validation.

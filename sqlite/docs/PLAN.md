@@ -150,9 +150,9 @@ Commit the baseline infrastructure and findings.
 
 ### M1 — Parse and lower the complete selected amalgamation
 
-- [ ] Apply the regression-first workflow until all enabled SQLite C parses and
+- [x] Apply the regression-first workflow until all enabled SQLite C parses and
       lowers to typed IR. Keep the amalgamation as one logical translation unit.
-- [ ] Investigate actual failures in macro expansion, typedef/tag scope, complex
+- [x] Investigate actual failures in macro expansion, typedef/tag scope, complex
       declarators, nested function-pointer signatures, aggregate initializers,
       array bounds, casts, and constant expressions; these are investigation
       areas, not asserted findings before the baseline runs.

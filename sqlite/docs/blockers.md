@@ -225,16 +225,19 @@ the unsafe token-level alias cache is removed. All 30 compiler contracts now
 match native, and full checkpoint validation passes.
 Evidence: `artifacts/sizeof-order/`, `artifacts/layout-metadata-before.log`.
 
-## B017/B018 — opaque types and tentative globals (IR/emitter, active)
+## B017/B018 — opaque types and tentative globals (fixed a6ff6dc/7fdf9aa)
 
 After B014/B015, the actual combined engine's C# build reports 225 CS0246
 diagnostics for opaque pointer types (sqlite3_stmt, sqlite3_pcache, Fts5Context,
 sqlite3_mutex, sqlite3_blob, Fts5Tokenizer, SQLiteThread, CCurHint), plus three
 CS0102 duplicate tentative globals (sqlite3_temp_directory,
-sqlite3_data_directory, sqlite3WhereTrace). Workers are reducing these cases.
-Opaque FTS header types do not enable any FTS implementation.
+sqlite3_data_directory, sqlite3WhereTrace). The compiler now emits identity-only types behind opaque pointers, rejects
+incomplete object storage, and preserves dotcc runtime-owned calendar/locale
+aggregates. Tentative scalar/pointer globals share canonical symbols/storage;
+real duplicate definitions and incompatible declarations diagnose. Native/red
+regressions and full suites pass. Opaque FTS header types do not enable FTS.
 
-## B019 — file-scope designated aggregate initializer (parser, active)
+## B019 — file-scope designated aggregate initializer (fixed dd1636b)
 
 The combined virtual-table harness stops at tests/vtable_native.c:116 on
 `static sqlite3_module numbers_module = { .iVersion = 1, ... };`.
@@ -244,7 +247,7 @@ integer, pointer and omitted fields. The new productions reuse existing typed
 member initialization and the B018 canonical global storage registry.
 Evidence: `artifacts/global-designated/`, `artifacts/translated-vtable-emission.log`.
 
-## B020 — initialized arrays in mixed declarations (parser/IR, active)
+## B020 — initialized arrays in mixed declarations (fixed 529a68c)
 
 The allocation harness stops at tests/allocation_native.c:56 on
 `int phase, i, rc, final_rc, nomem_results[2] = {0, 0};`. Array heads/tails
@@ -252,3 +255,23 @@ previously supported declarations only. New productions preserve the initializer
 and reuse typed array lowering, dimensions and zero fill. The native/red fixture
 checks scalar/pointer tails, pointer arrays, initialized multidimensional heads
 and omitted values. Evidence: `artifacts/mixed-array-initializer/`.
+
+## B021 — excessive switch flattening (C# compile performance, fixed 905c8b3)
+
+After declaration fixes, the full C# compiler did not finish within 5:14.68.
+A bounded read-only trace attributed 99.97% of the busy thread's sampled CPU to
+Roslyn definite-assignment analysis. The VDBE method contained 1,234 labels,
+1,643 goto edges and 319 hoisted locals. Retaining structured regions without
+entry labels reduces those to 167, 590 and 48. The actual full compile now ends
+in 7.32 seconds with 170 semantic diagnostics. A native-verified stress case,
+compiler cancellation bound and full suites pass. See `switch-lowering.md`.
+
+## Next semantic families
+
+The actual generated C# build now reports 94 unknown-variable diagnostics
+(mostly yy_reduce's yylhsminor declared before the first case), pointer and
+conditional conversions, runtime DateTime name collisions, two missing return
+paths, pointer/function-pointer va_arg generic arguments, one promoted ushort
+variadic argument ambiguity, and two wide shift-assignment counts. These are
+being reduced without modifying generated output. Evidence:
+`artifacts/switch-structure/engine-build.log`.
