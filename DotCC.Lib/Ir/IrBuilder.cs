@@ -1373,7 +1373,8 @@ internal sealed partial class IrBuilder
     /// <c>FILE</c> / <c>jmp_buf</c>'s target) stays a <see cref="CType.Named"/>
     /// whose spelling the backend emits verbatim.</summary>
     private CType ResolveTypeName(string name) =>
-        _typedefs.TryGetValue(name, out var t) ? t : new CType.Named(name);
+        _symbols.Resolve(name) is { Kind: SymKind.Typedef } local ? local.Type
+        : _typedefs.TryGetValue(name, out var t) ? t : new CType.Named(name);
 
     /// <summary>Resolve a `TypeSpecList TYPE_NAME` type: the run's surviving facts
     /// are the function/storage specifiers (`_Noreturn`, `inline`,
@@ -2142,6 +2143,9 @@ internal sealed partial class IrBuilder
         C.DeclAutoInfer d => BuildDeclAutoInfer(d),
         C.DeclAutoStorage d => BuildDeclList(d.Arg1, d.Arg2),
         C.DeclRegisterStorage d => BuildDeclList(d.Arg1, d.Arg2),
+        C.DeclLocalTypedefAlias d => BuildLocalTypedef(d.Arg2, ResolveType(d.Arg1)),
+        C.DeclLocalTypedefFnPtr d => BuildLocalTypedef(d.Arg4, FnPtrType(d.Arg1, d.Arg7)),
+        C.DeclLocalTypedefFnPtrNoArgs d => BuildLocalTypedef(d.Arg4, FnPtrType(d.Arg1, null)),
         // `char s[] = "hi";` (implicit size) / `char buf[N] = "hi";` (explicit, zero-padded).
         C.DeclCharArrStr d => BuildDeclCharArrStr(d.Arg0, d.Arg1, null, d.Arg5),
         C.DeclCharArrStrSized d => BuildDeclCharArrStr(d.Arg0, d.Arg1, CharArrSize(d.Arg2), d.Arg4),
@@ -2242,6 +2246,14 @@ internal sealed partial class IrBuilder
         Globals.Add(new GlobalVar(sym, init));
         _symbols.DeclareAlias(sym);
         return new DeclStmt(System.Array.Empty<LocalDecl>());
+    }
+
+    private CStmt BuildLocalTypedef(Item nameItem, CType type)
+    {
+        // The existing symbol table restores an outer alias when a block ends.
+        // A typedef itself has no runtime storage or emitted declaration.
+        _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Typedef, Type = type, Storage = Storage.Typedef });
+        return new Seq(System.Array.Empty<CStmt>());
     }
 
     private void BuildGlobalFnPtrArray(Item declarator, Item? initItem)

@@ -2682,6 +2682,11 @@ internal sealed class CSharpBackend
             // an enum decays to its underlying int (C# has no enum→int for `.Arg`).
             a.Add(c.ParamTypes is { } pts && i < pts.Count
                 ? CoercedArg(c.Args[i], pts[i])
+                // VaArg stores pointer bits via its void* conversion. A bare
+                // function address first needs its delegate* signature; an
+                // existing callback pointer uses the same representation.
+                : c.ParamTypes is not null && c.Args[i].Type.Unqualified is CType.Func
+                    ? $"(void*)(({Cs(c.Args[i].Type)})({Expr(c.Args[i])}))"
                 : Sub(DecayEnum(c.Args[i]), PAssign));
         }
         if (IsPrintfFamily(c.Callee) || IsScanfFamily(c.Callee))

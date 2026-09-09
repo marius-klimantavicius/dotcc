@@ -1234,6 +1234,10 @@ productions:
       - { lhs: Decl, rhs: ['auto', Type, DeclItemList], action: declAutoStorage }
       # Register allocation is a compiler hint; the local retains automatic storage.
       - { lhs: Decl, rhs: ['register', Type, DeclItemList], action: declRegisterStorage }
+      # Block-scoped aliases use the same resolved types as file-scope typedefs.
+      - { lhs: Decl, rhs: ['typedef', Type, ID], action: declLocalTypedefAlias }
+      - { lhs: Decl, rhs: ['typedef', Type, '(', '*', ID, ')', '(', ParamList, ')'], action: declLocalTypedefFnPtr }
+      - { lhs: Decl, rhs: ['typedef', Type, '(', '*', ID, ')', '(', ')'], action: declLocalTypedefFnPtrNoArgs }
       # Stack-allocated array: `int arr[N]`. Lowers to `int* arr = stackalloc int[N]`
       # so subscript and pointer arithmetic both work naturally in C# `unsafe`
       # blocks. Size must be a compile-time constant or an int expression

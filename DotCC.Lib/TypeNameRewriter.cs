@@ -27,12 +27,11 @@ namespace DotCC;
 /// </list>
 /// </summary>
 /// <remarks>
-/// State is a single <see cref="HashSet{T}"/> of typedef'd names. There's no
-/// scope tracking — we don't yet support function-local typedefs, and any
-/// shadowing by a local variable of the same name will surface as a
-/// downstream C# compile error. Real C disambiguates via the identifier's
-/// ordinary-vs-typename namespace, which would need scope-aware lexing —
-/// a follow-up.
+/// Typedef names are visible through their containing braced scope. Names
+/// introduced locally are removed when that scope closes, while shadowing an
+/// existing typedef keeps its lexical classification (the binder restores its
+/// underlying type). Ordinary-variable shadowing of a visible typedef remains
+/// a separate declaration-context problem.
 /// <para>
 /// All the iterator plumbing (ready queue, look-ahead buffer, exhaustion
 /// flag) lives in <see cref="RewritingTokenStream"/>; this class is pure
@@ -59,6 +58,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     private readonly int _enumSymbol;
     private readonly HashSet<string> _typeNames;
     private readonly HashSet<string> _seedTypeNames;
+    private readonly Stack<HashSet<string>> _scopeTypeNames = new();
 
     // True when the previous token forwarded through ProcessToken was a
     // `struct` / `union` / `enum` keyword — so the NEXT ID is a tag, not a
@@ -117,6 +117,15 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
 
     protected override void ProcessToken(Item token)
     {
+        if (token.ID == _openBraceSymbol)
+        {
+            _scopeTypeNames.Push(new HashSet<string>(StringComparer.Ordinal));
+        }
+        else if (token.ID == _closeBraceSymbol && _scopeTypeNames.Count > 0)
+        {
+            foreach (var local in _scopeTypeNames.Pop()) _typeNames.Remove(local);
+        }
+
         // Did a struct/union/enum keyword just go by? Snapshot it, then update
         // the flag for the next token from THIS token's identity.
         var afterTag = _afterTagKeyword;
@@ -190,7 +199,8 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         var aliasName = aliasIndex >= 0 ? body[aliasIndex].Content as string : null;
         if (aliasName is not null)
         {
-            _typeNames.Add(aliasName);
+            if (_typeNames.Add(aliasName) && _scopeTypeNames.Count > 0)
+                _scopeTypeNames.Peek().Add(aliasName);
         }
 
         // Emit the typedef token + body so the parser sees the full sequence.
@@ -274,6 +284,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         // Restore to the seed-only state so predefined libc-class type
         // names survive across reuse but per-TU typedef'd aliases don't.
         _typeNames.Clear();
+        _scopeTypeNames.Clear();
         foreach (var name in _seedTypeNames) { _typeNames.Add(name); }
         _afterTagKeyword = false;
         base.Reset();
