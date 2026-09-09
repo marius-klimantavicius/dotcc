@@ -1,9 +1,10 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: M0/M1 complete; configured SQLite, VFS and every harness parse, lower, and emit C#.
-The complete managed C# library builds. Actual offsetof storage validation (M2),
-managed API execution (M3), and translated VFS/API validation (M4/M5) remain
-active. Engine execution is pending.
+Status: M0/M1/M2 complete. The complete managed C# library builds and the separate
+C# consumer passes SQL, JSONB, nested callbacks, GC stress and cleanup. Actual JIT
+storage checks pass all 30 offsets, 33 sizes/alignments and eight pointer arrays.
+The actual consumer and full layout probe also pass NativeAOT. The complete
+native differential campaign and reproducibility gates (M3–M6) remain active.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
 ## Objective and constraints
@@ -169,7 +170,7 @@ At campaign start, code had an `OffsetOf` IR node, constant-context layout
 evaluation in `IrBuilder`, and an inline `Func<ulong>` lambda with stack-instance
 address subtraction. The shared layout model and source generator now replace
 that runtime path. All 30 active compiler contracts match the native oracle;
-actual translated storage/address validation remains pending engine compilation.
+actual translated storage/address validation passes under the JIT and NativeAOT.
 
 - [x] Add a Roslyn incremental source-generator project under `generators/`.
       Keep its design generic to dotcc aggregates despite its campaign location.
@@ -179,7 +180,7 @@ actual translated storage/address validation remains pending engine compilation.
       identity, fields and lowered storage, nesting, arrays, alignment/packing,
       unions, and requested member designators. Emit it with generated C# as an
       `AdditionalFiles` input (or equivalent documented structured contract).
-- [ ] Share a single layout model between compiler constant evaluation and the
+- [x] Share a single layout model between compiler constant evaluation and the
       generator. Generate typed `size_t`-equivalent offset constants, required
       access helpers/metadata, and diagnostics. Ensure generated storage layout
       matches that model; audit `sizeof` and alignment together with offsets.
@@ -189,7 +190,7 @@ actual translated storage/address validation remains pending engine compilation.
       assertions. Roslyn runs later and cannot retroactively supply constants
       needed to parse/lower C; avoid a circular build dependency. Cross-check
       compiler-folded constants against source-generator output.
-- [ ] Support typedefs, named/anonymous nested structs/unions, scalar and array
+- [x] Support typedefs, named/anonymous nested structs/unions, scalar and array
       members, fixed buffers, inline storage, pointer/function-pointer fields,
       dotted paths, and indexed designators needed by SQLite. Audit flexible
       array tails and fields following bit-field storage; diagnose `offsetof`
@@ -203,7 +204,7 @@ actual translated storage/address validation remains pending engine compilation.
       needed. Preserve standalone `--emit=file` usability by materializing the
       same generated declarations through the shared generation implementation.
       No hidden analyzer installed only on the developer's machine.
-- [ ] Test generator determinism, invalid input diagnostics, constant contexts,
+- [x] Test generator determinism, invalid input diagnostics, constant contexts,
       and representative SQLite aggregates. Compare native C `sizeof`/alignment/
       offsets, compiler constants, generated constants, and actual unsafe C#
       address differences. Check supported 64-bit target layouts and AOT output.
@@ -219,7 +220,7 @@ M1/M2 may interleave where layout-dependent declarations block lowering.
       Prioritize structural issues: aggregate storage/initialization, static
       lifetime, pointer conversions/arithmetic, integer promotions/overflow,
       function-pointer arrays/tables, switch/goto scopes, and address stability.
-- [ ] Preserve compatible `delegate*` signatures for translated callbacks.
+- [x] Preserve compatible `delegate*` signatures for translated callbacks.
       Use managed calling conventions for translated code and C# extensions;
       native ABI exports, unmanaged thunks, and `UnmanagedCallersOnly` are not
       required. Preserve callback/context lifetimes. Never use pointer types as
@@ -231,7 +232,7 @@ M1/M2 may interleave where layout-dependent declarations block lowering.
 - [ ] Audit unresolved libc dependencies and extend dotcc's runtime as needed;
       exclude accidental imports of native SQLite. Keep runtime allocator,
       strings, memory operations, formatting, and math on dotcc implementations.
-- [ ] Start with a small C `main` harness for execution. Then expose a reusable
+- [x] Start with a small C `main` harness for execution. Then expose a reusable
       C# assembly and minimal C-style callable API with clear ownership rules.
       Ensure the library shell exposes a usable managed API without requiring
       native `-shared` exports. Test a C# extension explicitly registered by the

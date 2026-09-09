@@ -337,3 +337,35 @@ unreachable code, empty statements, self-assignment, byte-range comparisons and
 unused labels; storage and runtime validation are separate requirements.
 Evidence: `artifacts/pointer-conditionals/engine-scope-build.log` and
 `artifacts/variadic-promotions/test-before.log`.
+
+## B031 — preprocessor character constants (fixed be6ab96)
+
+The first managed `SELECT sqlite_version()` failed with `unrecognized token: "S"`.
+SQLite's unchanged `#if 'A' == '\301'` selected EBCDIC because character tokens
+were evaluated as zero. Conditional expression tokens now use the shared C literal
+decoder, preserving macro substitution, stringification and source positions.
+Eight regressions cover ordinary/octal/hex constants and spaced `# if` directives;
+the native/runtime fixture and complete suites pass. No ASCII override is used.
+The full retry selects ASCII and the separate C# consumer executes SQL and JSONB.
+Evidence: `artifacts/preprocessor-char/` and
+`artifacts/managed-consumer-ascii-final-run.log`.
+
+## B032 — address of fixed array storage (fixed 4fc82b1)
+
+Two actual member address differences failed despite correct constants and sizes:
+Parse.aTempReg and WalIndexHdr.aCksum. The emitter addressed a fixed-buffer pointer
+temporary instead of element storage. C array addresses now use underlying storage;
+a native/runtime regression checks local/global/member/multidimensional arrays.
+All 30 actual offsets now pass with 33 independent sizes/alignments and eight
+pointer-array sizes/read-write spans. See `layout-storage.md`.
+Evidence: `artifacts/preprocessor-char/layout-jit-final.log`.
+
+## B033 — pointer-to-array arithmetic (fixed a54d816)
+
+The array-address reduction exposed a separate row-stride defect: flattened C#
+pointers advanced by one scalar. Arithmetic, subtraction, compound updates and
+pre/post increment now account for the C array bound while evaluating targets once.
+A native/runtime fixture covers multidimensional rows, arrays of aggregates,
+global pointer storage and side effects. All repository suites and the complete
+SQLite engine retry pass. Two negative tests also reject pointer addition and integer-minus-pointer
+subtraction (follow-up `eb0dd71`), instead of silently changing the operator.

@@ -1,6 +1,8 @@
 # Validation evidence
 
 Campaign commands run from `sqlite/`; scripts resolve their own absolute roots.
+Evidence is recorded in milestone order; later checkpoints supersede earlier
+pending statements. Reproduction commands are in `usage.md`.
 
 - `dotnet build ../dotcc.sln -c Release`: passed, zero warnings/errors, 9 seconds.
 - Baseline unit suite: **1,723 passed, zero failed/skipped**, 35 seconds, with isolated TMPDIR.
@@ -266,3 +268,40 @@ The archive SHA-256 and all four extracted amalgamation files were rechecked
 against the pinned ZIP with no changes. Logs:
 `artifacts/pointer-conditionals/*scope*`. Engine execution, independent storage
 checks and full native differentials are the next gate.
+
+
+## First actual managed execution and independent storage checks
+
+Commits `be6ab96`, `4fc82b1`, and `a54d816`: all 1,793 unit tests pass
+(48 seconds), 276 functional tests pass (90 seconds), 893 optional skips, zero
+failures. Character-conditional, array-address and row-stride reductions all pass.
+The unchanged engine now selects ASCII correctly and builds with zero errors and
+47 warnings. The separate C# consumer passes actual SQLite 3.50.4 SQL, JSONB,
+explicit callback registration, nested SQL, pointer identity/GC stress and cleanup.
+
+The expanded JIT layout probe independently checks 33 actual aggregate sizes and
+alignments, eight pointer-inline-array sizes and storage spans, and all 30 member
+address differences against native results. Compiler/generator constants also
+match. These are actual storage checks, not only comparisons of folded constants.
+Logs: `artifacts/preprocessor-char/{build-final,unit-all-final,functional-all-final,
+engine-final-build,layout-jit-final}.log` and
+`artifacts/managed-consumer-ascii-final-run.log`. Full native differential suites,
+NativeAOT and clean reproducibility remain required before completion.
+
+
+The actual full-engine C# consumer also publishes and executes under linux-x64
+NativeAOT: publish 12.00 seconds, peak RSS 307,808 KiB; runtime under 0.01 seconds,
+peak RSS 10,496 KiB, exit zero. Its SQL/JSONB, explicit callback, nested SQL,
+function identity/GC and cleanup assertions all pass. Logs:
+`artifacts/managed-consumer-aot-build.log`, `managed-consumer-aot.out`,
+`managed-consumer-aot.err`, and `managed-consumer-aot-runtime.time`.
+
+
+The complete layout pipeline also passes NativeAOT (22.60 seconds total, peak RSS
+1,065,872 KiB). The 71-line native, JIT and AOT transcripts are byte-identical;
+all 33 actual aggregate size/alignment checks, eight pointer-array storage checks
+and 30 active offsets pass. Neither full-engine AOT publish reports ILxxxx
+analysis warnings. ELF `DT_NEEDED` lists only libm, libc and the Linux loader;
+there is no native SQLite dependency. Ordinary .NET native runtime imports are
+not SQLite extension loading. Logs: `artifacts/layout-aot-validation.log`,
+`layout-aot-total.time`, and `translated-layout-aot.{out,build.log}`.
