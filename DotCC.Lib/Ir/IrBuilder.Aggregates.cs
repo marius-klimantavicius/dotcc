@@ -384,8 +384,10 @@ internal sealed partial class IrBuilder
     /// the field takes that mangled name and an alias symbol is registered so
     /// in-function uses resolve to it; otherwise it's a file-scope name.</summary>
     private void BuildGlobalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, string? csName)
+        => BuildGlobalArr(ResolveType(typeItem), nameItem, dimsItem, initItem, csName);
+
+    private void BuildGlobalArr(CType elem, Item nameItem, Item? dimsItem, Item? initItem, string? csName)
     {
-        var elem = ResolveType(typeItem);
         var name = Tok(nameItem);
         var dims = dimsItem is { } di ? TryConstDims(di) : null;
 

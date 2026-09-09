@@ -2151,9 +2151,9 @@ internal sealed class CSharpBackend
                     // `&fn`, which C# can't compare without a target type
                     // (CS0019). CmpOperand casts such an operand to its fn-ptr
                     // type; integer operands keep usual-arithmetic reconcile.
-                    if (IsFnPtrType(b.Left.Type) || IsFnPtrType(b.Right.Type))
+                    if (IsPointerType(b.Left.Type) || IsPointerType(b.Right.Type))
                     {
-                        return ($"((CBool)({CmpOperand(b.Left, p)} {BinSym(b.Op)} {CmpOperand(b.Right, p + 1)}))", PPrimary);
+                        return ($"((CBool)({CmpOperand(b.Left, b.Right.Type, p)} {BinSym(b.Op)} {CmpOperand(b.Right, b.Left.Type, p + 1)}))", PPrimary);
                     }
                     var (l, r) = ReconcileOperands(b.Left, b.Right, p, p + 1);
                     return ($"((CBool)({l} {BinSym(b.Op)} {r}))", PPrimary);
@@ -2236,8 +2236,11 @@ internal sealed class CSharpBackend
     /// method-group address <c>&amp;fn</c>, which C# leaves untyped until a target
     /// type is supplied — a comparison has none, so cast it to its own function-
     /// pointer type. Every other operand passes through unchanged.</summary>
-    private string CmpOperand(CExpr e, int p)
+    private string CmpOperand(CExpr e, CType otherType, int p)
     {
+        // The other operand supplies the pointer context for C's integer-zero
+        // null pointer constant, in either operand order.
+        if (IsPointerType(otherType) && TryConstInt(e, out var value) && value == 0) return "null";
         var inner = e;
         while (inner is Paren pp) { inner = pp.Inner; }
         return inner is VarRef { Sym.Kind: SymKind.Func }
@@ -2323,13 +2326,13 @@ internal sealed class CSharpBackend
         if (pa.Elems is null)
         {
             var count = pa.Count is { } c ? Expr(c) : "0";
-            return pa.Element.Unqualified is CType.Pointer
+            return pa.Element.Unqualified is CType.Pointer or CType.Func
                 ? $"({elemCs}*)Libc.GlobalArrayZeroed<nint>({count})"
                 : $"Libc.GlobalArrayZeroed<{elemCs}>({count})";
         }
         if (pa.Element.Unqualified is CType.Func)
         {
-            return $"({elemCs}*)Libc.PinFnPtrArray(new {elemCs}[]{{ {string.Join(", ", pa.Elems.Select(Expr))} }})";
+            return $"({elemCs}*)Libc.PinFnPtrArray(new {elemCs}[]{{ {string.Join(", ", pa.Elems.Select(value => Coerced(value, pa.Element)))} }})";
         }
         if (pa.Element.Unqualified is CType.Pointer)
         {

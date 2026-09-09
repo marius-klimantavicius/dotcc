@@ -475,6 +475,8 @@ symbols:
   - U8CHAR         # 190 char8_t char constant — u8'x'
   - U8StringSeq    # 191 non-terminal: a run of adjacent u8"…" literals
   - 'register'     # 192 storage-class keyword: automatic local with an optimization hint
+  - FnPtrArrayDeclarator # 193 function-pointer array declarator
+  - FnPtrArrayName       # 194 array name/bounds and pointer qualifiers
 
 productions:
   # Start production. Single-non-terminal — trimmed at parse time so the root
@@ -690,6 +692,12 @@ productions:
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', U32StringSeq, ';'],        action: globalStaticU32CharArrStr }
       - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', U8StringSeq, ';'],          action: globalStaticU8CharArrStrSized }
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', U8StringSeq, ';'],         action: globalStaticU8CharArrStr }
+      # Direct callback arrays retain the same pinned global-array storage as
+      # typedef-spelled callback arrays, including const pointer elements.
+      - { lhs: Fn, rhs: [FnPtrArrayDeclarator, ';'], action: globalFnPtrArray }
+      - { lhs: Fn, rhs: ['static', FnPtrArrayDeclarator, ';'], action: globalStaticFnPtrArray }
+      - { lhs: Fn, rhs: [FnPtrArrayDeclarator, '=', '{', InitList, '}', ';'], action: globalFnPtrArrayInit }
+      - { lhs: Fn, rhs: ['static', FnPtrArrayDeclarator, '=', '{', InitList, '}', ';'], action: globalStaticFnPtrArrayInit }
       # File-scope `static T x = { … };` — static struct/union AGGREGATE init, the
       # file-scope twin of stmtStaticStructInit. Same emitter (a once-initialised
       # DotCcGlobals field), just no name mangling. Disjoint from the array forms
@@ -1313,6 +1321,15 @@ productions:
       # structs lower to `= default`; sized arrays to a zeroed `stackalloc`.
       - { lhs: Decl, rhs: [Type, ID, '=', '{', '}'],          action: declEmptyInit }
       - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', '{', '}'], action: declArrEmptyInit }
+
+  - derivation: none
+    rules:
+      - { lhs: FnPtrArrayDeclarator, rhs: [Type, '(', '*', FnPtrArrayName, ')', '(', ParamList, ')'], action: fnPtrArrayDeclarator }
+      - { lhs: FnPtrArrayDeclarator, rhs: [Type, '(', '*', FnPtrArrayName, ')', '(', ')'], action: fnPtrArrayDeclaratorNoArgs }
+      - { lhs: FnPtrArrayName, rhs: [ID, '[', ']'], action: fnPtrArrayNameImplicit }
+      - { lhs: FnPtrArrayName, rhs: [ID, ArrDims], action: fnPtrArrayNameSized }
+      - { lhs: FnPtrArrayName, rhs: ['const', FnPtrArrayName], action: fnPtrArrayNameConst }
+      - { lhs: FnPtrArrayName, rhs: ['volatile', FnPtrArrayName], action: fnPtrArrayNameVolatile }
 
   # ArrDims — one or more `[ E ]` array dimensions, left-recursive.
   - derivation: leftmost

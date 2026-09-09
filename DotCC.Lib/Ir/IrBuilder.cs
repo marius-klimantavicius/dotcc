@@ -266,6 +266,8 @@ internal sealed partial class IrBuilder
                 or C.GlobalArr or C.GlobalStaticArr
                 or C.GlobalArrInit or C.GlobalStaticArrInit
                 or C.GlobalArrInitImplicit or C.GlobalStaticArrInitImplicit
+                or C.GlobalFnPtrArray or C.GlobalStaticFnPtrArray
+                or C.GlobalFnPtrArrayInit or C.GlobalStaticFnPtrArrayInit
                 or C.GlobalCharArrStr or C.GlobalCharArrStrSized
                 or C.GlobalStaticCharArrStr or C.GlobalStaticCharArrStrSized
                 or C.GlobalU16CharArrStr or C.GlobalU16CharArrStrSized
@@ -289,6 +291,10 @@ internal sealed partial class IrBuilder
             case C.GlobalStaticArrInit g: BuildGlobalArr(g.Arg1, g.Arg2, g.Arg3, g.Arg6, null); break;
             case C.GlobalArrInitImplicit g: BuildGlobalArr(g.Arg0, g.Arg1, null, g.Arg6, null); break;
             case C.GlobalStaticArrInitImplicit g: BuildGlobalArr(g.Arg1, g.Arg2, null, g.Arg7, null); break;
+            case C.GlobalFnPtrArray g: BuildGlobalFnPtrArray(g.Arg0, null); break;
+            case C.GlobalStaticFnPtrArray g: BuildGlobalFnPtrArray(g.Arg1, null); break;
+            case C.GlobalFnPtrArrayInit g: BuildGlobalFnPtrArray(g.Arg0, g.Arg3); break;
+            case C.GlobalStaticFnPtrArrayInit g: BuildGlobalFnPtrArray(g.Arg1, g.Arg4); break;
             // File-scope char arrays from a string literal.
             case C.GlobalCharArrStr g: BuildGlobalCharArr(g.Arg0, g.Arg1, g.Arg5, null, null); break;
             case C.GlobalCharArrStrSized g: BuildGlobalCharArr(g.Arg0, g.Arg1, g.Arg4, g.Arg2, null); break;
@@ -2236,6 +2242,33 @@ internal sealed partial class IrBuilder
         Globals.Add(new GlobalVar(sym, init));
         _symbols.DeclareAlias(sym);
         return new DeclStmt(System.Array.Empty<LocalDecl>());
+    }
+
+    private void BuildGlobalFnPtrArray(Item declarator, Item? initItem)
+    {
+        var (returnType, arrayName, parameters) = declarator.Content switch
+        {
+            C.FnPtrArrayDeclarator d => (d.Arg0, d.Arg3, (Item?)d.Arg6),
+            C.FnPtrArrayDeclaratorNoArgs d => (d.Arg0, d.Arg3, (Item?)null),
+            _ => throw new IrUnsupportedException(TypeName(declarator.Content)),
+        };
+        var quals = TypeQual.None;
+        while (true)
+        {
+            switch (arrayName.Content)
+            {
+                case C.FnPtrArrayNameConst q: quals |= TypeQual.Const; arrayName = q.Arg1; continue;
+                case C.FnPtrArrayNameVolatile q: quals |= TypeQual.Volatile; arrayName = q.Arg1; continue;
+            }
+            break;
+        }
+        var (name, dimensions) = arrayName.Content switch
+        {
+            C.FnPtrArrayNameImplicit a => (a.Arg0, (Item?)null),
+            C.FnPtrArrayNameSized a => (a.Arg0, (Item?)a.Arg1),
+            _ => throw new IrUnsupportedException(TypeName(arrayName.Content)),
+        };
+        BuildGlobalArr(FnPtrType(returnType, parameters).WithQuals(quals), name, dimensions, initItem, null);
     }
 
     private DeclStmt BuildFnPtrLocal(Item retItem, Item nameItem, Item? paramsItem, Item? initItem, int pointerLevels = 0)
