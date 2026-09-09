@@ -1209,6 +1209,20 @@ internal sealed partial class CSharpBackend
         _ => false,
     };
 
+    // Project member addresses from the aggregate root. A pointer or callback
+    // field cannot itself be Unsafe.AsPointer<T>'s generic type argument, but
+    // its containing unmanaged aggregate can. Nested member paths remain
+    // ordinary pointer projections with the original field's storage identity.
+    private string GlobalStorageAddress(CExpr value) => value switch
+    {
+        Paren p => GlobalStorageAddress(p.Inner),
+        Member { Arrow: false } member =>
+            $"&(({Cs(member.Base.Type)}*){GlobalStorageAddress(member.Base)})->{DotCC.EmitHelpers.Id(member.Field)}",
+        VarRef variable =>
+            $"System.Runtime.CompilerServices.Unsafe.AsPointer(ref {GlobalName(variable.Sym)})",
+        _ => throw new IrUnsupportedException("global storage address without a global root"),
+    };
+
     /// <summary>The C# backend's decision to store a pointer/fn-ptr-typed
     /// <em>global</em> as an <c>nint</c> field: when its address is taken (the abstract
     /// <see cref="Symbol.AddressTaken"/> fact), a pointer T can't be the type arg of
@@ -2117,7 +2131,7 @@ internal sealed partial class CSharpBackend
             // types in non-moving static storage, so the pointer is stable. (Lua
             // leans on this: &absentkey, &dummynode_.)
             case UnOp.AddrOf when RootsAtGlobal(u.Operand):
-                return ($"({Cs(u.Type)})System.Runtime.CompilerServices.Unsafe.AsPointer(ref {BareLValue(u.Operand)})", PUnary);
+                return ($"({Cs(u.Type)}){GlobalStorageAddress(u.Operand)}", PUnary);
             // &<rvalue> — the address of a materialized temporary: a C compound literal
             // `&(T){…}` or a Zig typed struct literal `&T{…}` (both lower to a StructInit
             // rvalue). C# forbids `&new T{…}` (CS0211), so bind the literal to a block-local
