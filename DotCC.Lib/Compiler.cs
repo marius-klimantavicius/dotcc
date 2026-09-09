@@ -291,11 +291,13 @@ public static partial class Compiler
         foreach (var unitPath in inputPaths)
         {
             output.WriteLine($"# {unitPath}");
-            var source = SpliceLineContinuations(File.ReadAllText(unitPath));
+            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath));
+            var source = sourceMap.Text;
             var pre = new CPreprocessor(lexerTable, includeMap, seededDefines);
             pre.SetActiveFilename(Path.GetFileName(unitPath));
             using var lexer = BytesLexer.FromString(source, lexerTable);
-            using var preproc = C.WrapPreprocessor(lexer, pre);
+            using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
+            using var preproc = C.WrapPreprocessor(mappedLexer, pre);
             preproc.ExpandFuncMacro = pre.ExpandFuncMacro;
             // -E mode also routes through MacroExpander so function-like
             // macro expansion is visible in the dumped token stream.
@@ -350,13 +352,16 @@ public static partial class Compiler
         var lexerTable = C.BuildLexer();
         var seededDefines = SeedDialectDefines(dialect ?? CDialect.Default, defines);
 
-        var source = SpliceLineContinuations(File.ReadAllText(sourcePath));
+        var sourceMap = new PhysicalSourceMap(File.ReadAllText(sourcePath));
+        var source = sourceMap.Text;
         var pre = new CPreprocessor(lexerTable, content, seededDefines, quiet: true);
         pre.SetActiveFilename(Path.GetFileName(sourcePath));
         var lexer = BytesLexer.FromString(source, lexerTable);
-        var preproc = C.WrapPreprocessor(lexer, pre);
+        var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
+        var preproc = C.WrapPreprocessor(mappedLexer, pre);
         preproc.ExpandFuncMacro = pre.ExpandFuncMacro;
         using (lexer)
+        using (mappedLexer)
         using (preproc)
         using (var macroExp = new MacroExpander(preproc, pre))
         {
@@ -499,12 +504,9 @@ public static partial class Compiler
     /// correctly leaves a single <c>\</c>.
     /// </summary>
     /// <remarks>
-    /// Caveat: this collapses physical lines, so <c>__LINE__</c> and error
-    /// line numbers drift for lines following a continuation. Acceptable for
-    /// now (diagnostics only); a faithful logical→physical line map is future
-    /// work. The fast path returns the input untouched when it has no
-    /// backslash at all (the common case), so non-macro-heavy code pays
-    /// nothing.
+    /// Compilation retains a <see cref="PhysicalSourceMap"/> alongside this
+    /// phase-two text, so preprocessing adjacency uses logical coordinates
+    /// while __LINE__ and diagnostics report original physical positions.
     /// </remarks>
     internal static string SpliceLineContinuations(string source)
         => source.IndexOf('\\') < 0

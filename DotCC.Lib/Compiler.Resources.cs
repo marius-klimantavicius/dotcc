@@ -47,9 +47,9 @@ public static partial class Compiler
             using var stream = asm.GetManifestResourceStream(name)
                 ?? throw new InvalidOperationException($"missing embedded header resource: {name}");
             using var reader = new StreamReader(stream);
-            // Splice line continuations here so the synthetic headers (some of
-            // which use multi-line macros) lex like any other source.
-            map[fileName] = SpliceLineContinuations(reader.ReadToEnd());
+            // Keep original text so include preprocessing can preserve physical
+            // locations while splicing its logical token stream.
+            map[fileName] = reader.ReadToEnd();
         }
         return map;
     }

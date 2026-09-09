@@ -145,7 +145,7 @@ public static partial class Compiler
                     // between scan and read is skipped, not fatal — the same
                     // race-tolerance the lazy `.c` path already has below.
                     string content;
-                    try { content = SpliceLineContinuations(File.ReadAllText(full)); }
+                    try { content = File.ReadAllText(full); }
                     catch (IOException) { continue; }
                     catch (UnauthorizedAccessException) { continue; }
                     eager[rel] = content;
@@ -200,7 +200,7 @@ public static partial class Compiler
             {
                 try
                 {
-                    content = SpliceLineContinuations(File.ReadAllText(path));
+                    content = File.ReadAllText(path);
                 }
                 catch (IOException) { content = ""; return false; }
                 catch (UnauthorizedAccessException) { content = ""; return false; }

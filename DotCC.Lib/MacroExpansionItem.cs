@@ -8,12 +8,19 @@ namespace DotCC;
 /// <summary>Replacement tokens retain the macro names disabled when they were
 /// produced, even when object and function expansion cross stream boundaries.
 /// Content and position remain the original token's parser-visible values.</summary>
-internal sealed class MacroExpansionItem : Item
+internal sealed class MacroExpansionItem : SourceMappedItem
 {
     private readonly HashSet<string> _disabled;
 
     private MacroExpansionItem(Item item, HashSet<string> disabled)
-        : base(item.ID, item.Content, item.Position) => _disabled = disabled;
+        : base(item) => _disabled = disabled;
+
+    private MacroExpansionItem(Item item, HashSet<string> disabled, Item origin)
+        : base(item, origin) => _disabled = disabled;
+
+    internal static Item AtInvocation(Item item, Item invocation) => item is MacroExpansionItem expansion
+        ? new MacroExpansionItem(item, expansion._disabled, invocation)
+        : new SourceMappedItem(item, invocation);
 
     internal static bool IsDisabled(Item item, string name) =>
         item is MacroExpansionItem expansion && expansion._disabled.Contains(name);

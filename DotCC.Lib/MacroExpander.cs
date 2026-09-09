@@ -77,7 +77,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                 if (next.ID == _openParenSymbol)
                 {
                     var args = CollectArgsFromStream(next);
-                    var substituted = Substitute(macro, args, new HashSet<string>(StringComparer.Ordinal));
+                    var substituted = Substitute(macro, args, new HashSet<string>(StringComparer.Ordinal), token);
                     // A function name may come from an object replacement while
                     // its arguments/closing parenthesis are ordinary source.
                     var hiding = MacroExpansionItem.IntersectDisabled(token, args.Closing);
@@ -113,7 +113,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                             if (end >= 0)
                             {
                                 var substituted = Substitute(macro, args,
-                                    new HashSet<string>(hiding, StringComparer.Ordinal));
+                                    new HashSet<string>(hiding, StringComparer.Ordinal), token.Item);
                                 var functionHiding = MacroExpansionItem.IntersectDisabled(token.Item, args.Closing);
                                 functionHiding.UnionWith(hiding);
                                 functionHiding.Add(name);
@@ -128,7 +128,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                     else
                     {
                         activeHiding.Add(name);
-                        var replacement = ExpandTokenList(ReadTokens(macro.Body), activeHiding);
+                        var replacement = ExpandTokenList(ReadBody(macro.Body, token.Item), activeHiding);
                         AppendReplacement(result, replacement, token.LeadingSpace);
                         pendingSpace = replacement.Count == 0 && token.LeadingSpace;
                         continue;
@@ -210,7 +210,15 @@ internal sealed class MacroExpander : RewritingTokenStream
         return (args, -1);
     }
 
-    private List<Token> Substitute(MacroDef macro, Arguments args, HashSet<string> hiding)
+    private static List<Token> ReadBody(IReadOnlyList<Item> body, Item invocation)
+    {
+        var tokens = ReadTokens(body);
+        for (var i = 0; i < tokens.Count; ++i)
+            tokens[i] = tokens[i] with { Item = MacroExpansionItem.AtInvocation(tokens[i].Item, invocation) };
+        return tokens;
+    }
+
+    private List<Token> Substitute(MacroDef macro, Arguments args, HashSet<string> hiding, Item invocation)
     {
         var raw = new Dictionary<string, IReadOnlyList<Token>>(StringComparer.Ordinal);
         for (var i = 0; i < macro.Params!.Count; ++i)
@@ -229,7 +237,7 @@ internal sealed class MacroExpander : RewritingTokenStream
         foreach (var pair in raw)
             expanded[pair.Key] = ExpandTokenList(pair.Value, new HashSet<string>(hiding, StringComparer.Ordinal));
         var result = new List<Token>(macro.Body.Count);
-        SubstituteInto(result, ReadTokens(macro.Body), macro, raw, expanded);
+        SubstituteInto(result, ReadBody(macro.Body, invocation), macro, raw, expanded);
         return result;
     }
 
@@ -270,7 +278,7 @@ internal sealed class MacroExpander : RewritingTokenStream
             if (token.ID == _hashSymbol && i + 1 < body.Count && body[i + 1].Content is string name
                 && raw.TryGetValue(name, out var argument))
             {
-                result.Add(new Token(new Item(_stringSymbol, "\"" + Stringify(argument) + "\"", token.Position), token.LeadingSpace));
+                result.Add(new Token(SourceMappedItem.Create(_stringSymbol, "\"" + Stringify(argument) + "\"", token.Item), token.LeadingSpace));
                 ++i;
                 continue;
             }
@@ -297,7 +305,7 @@ internal sealed class MacroExpander : RewritingTokenStream
         for (var i = 0; i < left.Count - 1; ++i)
             output.Add(i == 0 ? left[i] with { LeadingSpace = location.LeadingSpace } : left[i]);
         var text = (left[^1].Content?.ToString() ?? string.Empty) + (right[0].Content?.ToString() ?? string.Empty);
-        output.Add(new Token(new Item(_idSymbol, text, location.Position),
+        output.Add(new Token(SourceMappedItem.Create(_idSymbol, text, location.Item),
             left.Count == 1 ? location.LeadingSpace : left[^1].LeadingSpace));
         for (var i = 1; i < right.Count; ++i) output.Add(right[i]);
     }

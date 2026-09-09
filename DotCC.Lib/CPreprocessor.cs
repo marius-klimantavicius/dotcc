@@ -229,12 +229,15 @@ internal sealed class CPreprocessor : C.IPreprocessor
             _diag.WriteLine($"dotcc: #include '{name}' not resolvable (not in -I dirs or system headers)");
             return Array.Empty<Item>();
         }
+        var initialLine = Compiler.IsSyntheticHeaderContent(name, source)
+            ? Ir.SrcPos.SyntheticLineBase : 1;
+        var sourceMap = new PhysicalSourceMap(source, initialLine);
         // First-time include of this file: scan the source text for a
         // controlling header guard. Cache the result (or null) so the
         // detection cost is paid at most once per filename.
         if (!_fileGuards.ContainsKey(name))
         {
-            _fileGuards[name] = DetectControllingMacro(source);
+            _fileGuards[name] = DetectControllingMacro(sourceMap.Text);
         }
         var saved = _currentlyIncluding;
         // A #line remap is per-file: the included file starts fresh (physical
@@ -254,11 +257,9 @@ internal sealed class CPreprocessor : C.IPreprocessor
             // name stays at line 1: IsSyntheticHeaderContent tests content
             // identity, not just the name (clang's local-first rule already let
             // the user file win the slot). User headers and `.c` splices: line 1.
-            var initialLine = Compiler.IsSyntheticHeaderContent(name, source)
-                ? Ir.SrcPos.SyntheticLineBase
-                : 1;
-            using var subLexer = BytesLexer.FromString(source, _lexerTable, initialLine: initialLine);
-            using var subPreproc = C.WrapPreprocessor(subLexer, this);
+            using var subLexer = BytesLexer.FromString(sourceMap.Text, _lexerTable, initialLine: initialLine);
+            using var mappedLexer = new SourceMappingLexer(subLexer, sourceMap);
+            using var subPreproc = C.WrapPreprocessor(mappedLexer, this);
             subPreproc.ExpandFuncMacro = ExpandFuncMacro;
             // Expand function-like macros WITHIN the include, mirroring the
             // top-level pipeline (where MacroExpander sits above the preprocessor).
@@ -333,7 +334,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
         // entry, and the key is stable + collision-free without a global counter.
         var key = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes));
         _embeds[key] = bytes;
-        return new[] { new Item(_embedSymbolId, key, args[0].Position) };
+        return new[] { SourceMappedItem.Create(_embedSymbolId, key, args[0]) };
     }
 
     /// <summary>Extract the embed filename from its directive args (quoted or
@@ -761,8 +762,8 @@ internal sealed class CPreprocessor : C.IPreprocessor
             {
                 // Physical line as the byte-DFA lexer counted it, shifted by any
                 // active #line remap (_lineDelta is 0 when no #line is in effect).
-                var line = (token.Position.Line + _lineDelta).ToString(System.Globalization.CultureInfo.InvariantCulture);
-                return new[] { new Item(_numSymbolId, line, token.Position) };
+                var line = (SourceMappedItem.Physical(token).Line + _lineDelta).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                return new[] { SourceMappedItem.Create(_numSymbolId, line, token) };
             }
             if (text == "__FILE__")
             {
@@ -772,7 +773,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
                 // STRING tokens carry the raw lexeme including surrounding
                 // quotes — the visitor's Str() strips them and re-wraps in
                 // the u8 literal form.
-                return new[] { new Item(_stringSymbolId, "\"" + name + "\"", token.Position) };
+                return new[] { SourceMappedItem.Create(_stringSymbolId, "\"" + name + "\"", token) };
             }
             // Function-like macros need lookahead (peek for the `(`) which the
             // Rewrite hook can't do — MacroExpander handles those downstream.
@@ -786,7 +787,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
                 // transitively resolve at use site. Hide set guards
                 // against self-referential cycles (`#define A A`).
                 var hideSet = new HashSet<string>(StringComparer.Ordinal) { text };
-                return ExpandObjectLikeBody(macro.Body, hideSet);
+                return ExpandObjectLikeBody(macro.Body, hideSet, token);
             }
         }
         return new[] { token };
@@ -800,11 +801,17 @@ internal sealed class CPreprocessor : C.IPreprocessor
     /// so a macro can't expand to itself (per the C standard's
     /// "hideset" rule).
     /// </summary>
-    private List<Item> ExpandObjectLikeBody(IReadOnlyList<Item> body, HashSet<string> hideSet)
+    private List<Item> ExpandObjectLikeBody(IReadOnlyList<Item> body, HashSet<string> hideSet, Item? invocation = null)
     {
         var result = new List<Item>(body.Count);
-        foreach (var item in body)
+        foreach (var original in body)
         {
+            var item = invocation is null ? original : MacroExpansionItem.AtInvocation(original, invocation);
+            if (item.Content is "__LINE__" or "__FILE__")
+            {
+                result.AddRange(Rewrite(item));
+                continue;
+            }
             if (item.Content is string text
                 && !hideSet.Contains(text)
                 && !MacroExpansionItem.IsDisabled(item, text)
@@ -812,7 +819,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
                 && !inner.IsFunctionLike)
             {
                 var nestedHide = new HashSet<string>(hideSet, StringComparer.Ordinal) { text };
-                result.AddRange(ExpandObjectLikeBody(inner.Body, nestedHide));
+                result.AddRange(ExpandObjectLikeBody(inner.Body, nestedHide, item));
             }
             else
             {
@@ -949,7 +956,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
         // The directive sits on this physical line (its first argument token's
         // line). Macro expansion below may pull body tokens in from elsewhere
         // (carrying the definition's position), so capture the use-site line FIRST.
-        var directivePhysLine = args[0].Position.Line;
+        var directivePhysLine = SourceMappedItem.PhysicalEndLine(args[0]);
         // The standard says the arguments are macro-expanded before
         // interpretation (`#define LN 100` then `#line LN`). Object-like
         // expansion covers the digit-sequence + optional string-literal operands.

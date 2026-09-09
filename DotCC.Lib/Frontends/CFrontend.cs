@@ -56,7 +56,8 @@ internal sealed class CFrontend : IFrontend
         // pass so #warning / #include messages don't print twice.
         Item ParseUnit(string unitPath, global::LALR.CC.Parser parser, bool quiet, DialectGate? gate = null)
         {
-            var source = Compiler.SpliceLineContinuations(File.ReadAllText(unitPath));
+            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath));
+            var source = sourceMap.Text;
             // #embed search path: the TU's own directory first, then the -I dirs
             // (first-wins, mirroring #include). Resolved on the filesystem since
             // OnEmbed reads RAW bytes (distinct from the include text map).
@@ -66,7 +67,8 @@ internal sealed class CFrontend : IFrontend
             var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, quiet, gate, embedDirs, embeds);
             pre.SetActiveFilename(Path.GetFileName(unitPath));
             using var lexer = BytesLexer.FromString(source, lexerTable);
-            using var preproc = C.WrapPreprocessor(lexer, pre);
+            using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
+            using var preproc = C.WrapPreprocessor(mappedLexer, pre);
             // Enable function-like macro expansion in #if/#elif expressions.
             preproc.ExpandFuncMacro = pre.ExpandFuncMacro;
             // MacroExpander: function-like macro expansion. Needs lookahead
@@ -81,7 +83,8 @@ internal sealed class CFrontend : IFrontend
             // expansion (so an included header's `#define bool _Bool` wins and
             // the table simply doesn't fire) and BEFORE the typedef rewriter
             // (so e.g. `typedef bool MyBool;` under c23 sees `_Bool`).
-            using var dialectRewriter = new DialectKeywordRewriter(macroExp, activeDialect);
+            using var physicalTokens = new PhysicalPositionRewriter(macroExp);
+            using var dialectRewriter = new DialectKeywordRewriter(physicalTokens, activeDialect);
             // TypeNameRewriter: the C lexer hack. Promotes ID → TYPE_NAME for
             // any name previously bound by a `typedef`. Sits AFTER macro
             // expansion (so expanded names can also trigger typedef
