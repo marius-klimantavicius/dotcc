@@ -1743,7 +1743,14 @@ internal sealed class CSharpBackend
                 ? ($"&{v.Sym.TargetName}", PUnary)
                 : QualifiedRead(v, GlobalName(v.Sym), PPrimary);
             case IndirectCall ic:
-                return ($"{Sub(ic.Callee, PPostfix)}({string.Join(", ", ic.Args.Select(a => Sub(a, PAssign)))})", PPostfix);
+            {
+                var signature = ic.Callee.Type.Unqualified as CType.Func;
+                var arguments = ic.Args.Select((argument, index) =>
+                    signature is not null && index < signature.Params.Count
+                        ? CoercedArg(argument, signature.Params[index])
+                        : Sub(DecayEnum(argument), PAssign));
+                return ($"{Sub(ic.Callee, PPostfix)}({string.Join(", ", arguments)})", PPostfix);
+            }
             case Paren p: return Render(p.Inner); // explicit C parens are redundant; precedence re-adds as needed
             case Cast c: return RenderCast(c);
             case BitCast bc:
@@ -2161,9 +2168,9 @@ internal sealed class CSharpBackend
 
     /// <summary>True when <paramref name="t"/> is a function pointer — in dotcc's
     /// IR a fn-ptr is a bare <see cref="CType.Func"/> (the C# backend renders it as a
-    /// <c>delegate*&lt;…&gt;</c>); <c>Pointer(Func)</c> is tolerated for safety.</summary>
+    /// <c>delegate*&lt;…&gt;</c>). Pointer(Func) addresses callback storage.</summary>
     private static bool IsFnPtrType(CType t) =>
-        t.Unqualified is CType.Func or CType.Pointer { Pointee: CType.Func };
+        t.Unqualified is CType.Func;
 
     /// <summary>True when the expression (under parens / <c>&amp;</c>) is a bare
     /// function designator — i.e. it renders as an untyped method group.</summary>

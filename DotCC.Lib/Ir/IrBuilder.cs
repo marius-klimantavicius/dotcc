@@ -845,9 +845,7 @@ internal sealed partial class IrBuilder
         C.FnSig n => new(ResolveType(n.Arg0), Tok(n.Arg1), BuildParams(n.Arg3, out var v0), v0, false),
         C.FnSigNoArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false),
         C.FnSigVoidArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false),
-        C.FnSigStatic n => new(ResolveType(n.Arg1), Tok(n.Arg2), BuildParams(n.Arg4, out var v1), v1, true),
-        C.FnSigStaticNoArgs n => new(ResolveType(n.Arg1), Tok(n.Arg2), new(), false, true),
-        C.FnSigStaticVoidArgs n => new(ResolveType(n.Arg1), Tok(n.Arg2), new(), false, true),
+        C.FnSigStaticDeclarator n => ExtractFnSig(n.Arg1) with { IsStatic = true },
         // Parenthesized declarator name `T (name)(args)` — identical to
         // `T name(args)`; the parens are pure grouping around the name (public
         // headers wrap API names so a same-named function-like macro can't expand
@@ -888,6 +886,8 @@ internal sealed partial class IrBuilder
                 // Function-pointer parameter: `Ret (*name)(paramTypes)`.
                 case C.ParamFnPtr p: acc.Add(new(FnPtrType(p.Arg0, p.Arg6), Tok(p.Arg3))); break;
                 case C.ParamFnPtrNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg3))); break;
+                case C.ParamFnPtrOutput p: acc.Add(new(new CType.Pointer(FnPtrType(p.Arg0, p.Arg7)), Tok(p.Arg4))); break;
+                case C.ParamFnPtrOutputNoArgs p: acc.Add(new(new CType.Pointer(FnPtrType(p.Arg0, null)), Tok(p.Arg4))); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
         }
@@ -1108,6 +1108,14 @@ internal sealed partial class IrBuilder
                 case C.NamedNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true); break;
                 case C.NamedNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false); break;
                 case C.NamedNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true); break;
+                case C.PointerNestedStruct nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg6), fields, isUnion: false, pointer: true); break;
+                case C.PointerNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg6), fields, isUnion: true, pointer: true); break;
+                case C.PointerNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg7), fields, isUnion: false, pointer: true); break;
+                case C.PointerNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg7), fields, isUnion: true, pointer: true); break;
+                case C.ArrayNestedStruct nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: false, dimensions: nm.Arg6); break;
+                case C.ArrayNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true, dimensions: nm.Arg6); break;
+                case C.ArrayNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false, dimensions: nm.Arg7); break;
+                case C.ArrayNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true, dimensions: nm.Arg7); break;
                 // `T name[N]…;` — a fixed-size array member (codegen: a `fixed`
                 // buffer for a primitive element, an [InlineArray] wrapper for a
                 // non-primitive one). Multi-dimensional bounds give a nested array
@@ -1133,6 +1141,18 @@ internal sealed partial class IrBuilder
                     break;
                 case C.StructFnPtrMemberNoArgs sm:
                     fields.Add(new StructField(Tok(sm.Arg3), FnPtrType(sm.Arg0, null)));
+                    break;
+                case C.StructFnPtrReturningFnPtr sm:
+                    fields.Add(new StructField(Tok(sm.Arg5), FnPtrType(FnPtrType(sm.Arg0, sm.Arg12), sm.Arg8)));
+                    break;
+                case C.StructFnPtrReturningFnPtrNoReturnArgs sm:
+                    fields.Add(new StructField(Tok(sm.Arg5), FnPtrType(FnPtrType(sm.Arg0, null), sm.Arg8)));
+                    break;
+                case C.StructFnPtrReturningFnPtrNoArgs sm:
+                    fields.Add(new StructField(Tok(sm.Arg5), FnPtrType(FnPtrType(sm.Arg0, sm.Arg11), null)));
+                    break;
+                case C.StructFnPtrReturningFnPtrEmpty sm:
+                    fields.Add(new StructField(Tok(sm.Arg5), FnPtrType(FnPtrType(sm.Arg0, null), null)));
                     break;
                 // `T name : W;` — a bit-field. Codegen packs consecutive same-size
                 // bit-fields into one shared backing field (MSVC storage-unit layout)
@@ -1186,7 +1206,7 @@ internal sealed partial class IrBuilder
     /// or a tagged <c>struct Tag {…} m;</c>, and union forms). Defines the nested
     /// type (under its tag, or a synthesized name) and adds <paramref name="member"/>
     /// of that type — unlike an anonymous member, the fields are NOT promoted.</summary>
-    private void AddNamedNested(string? tag, Item innerMemberList, string member, List<StructField> parentFields, bool isUnion)
+    private void AddNamedNested(string? tag, Item innerMemberList, string member, List<StructField> parentFields, bool isUnion, bool pointer = false, Item? dimensions = null)
     {
         var typeName = tag ?? $"__Anon{_anonAggrSeq++}";
         if (_emittedTypes.Add(typeName))
@@ -1196,7 +1216,10 @@ internal sealed partial class IrBuilder
             _structIsUnion[typeName] = isUnion;
             Types.Add(new StructTypeDef(typeName, inner, isUnion));
         }
-        parentFields.Add(new StructField(member, new CType.Named(typeName)));
+        CType memberType = new CType.Named(typeName);
+        if (dimensions is { } dims)
+            memberType = MakeArrayType(memberType, TryConstDims(dims) ?? throw new IrUnsupportedException("non-constant nested aggregate array bound"));
+        parentFields.Add(new StructField(member, pointer ? new CType.Pointer(memberType) : memberType));
     }
 
     /// <summary>The CType of <paramref name="field"/> read off the struct/union
@@ -1217,8 +1240,10 @@ internal sealed partial class IrBuilder
     /// <see cref="CType.Func"/> (codegen lowers it to <c>delegate*&lt;params, Ret&gt;</c>).
     /// A lone <c>void</c> parameter list means no parameters.</summary>
     private CType.Func FnPtrType(Item retItem, Item? paramListItem)
+        => FnPtrType(ResolveType(retItem), paramListItem);
+
+    private CType.Func FnPtrType(CType ret, Item? paramListItem)
     {
-        var ret = ResolveType(retItem);
         var ptypes = new List<CType>();
         var variadic = false;
         if (paramListItem is { } pl)
@@ -2906,6 +2931,7 @@ internal sealed partial class IrBuilder
             // promotion and a narrowing store (chibi's `sign = -sign`) misses
             // its cast. inc/dec below keep the lvalue's own type.
             UnOp.Plus or UnOp.Neg or UnOp.BitNot => CType.IntegerPromote(oe.Type),
+            UnOp.AddrOf when Unparen(oe) is VarRef { Sym.Kind: SymKind.Func } => oe.Type,
             UnOp.AddrOf => new CType.Pointer(oe.Type),
             // *p → pointee; *arr (incl. a string literal, typed char[]) → its element
             // (the array decays to a pointer first). *ptr-to-array stays the array,
@@ -3031,7 +3057,7 @@ internal sealed partial class IrBuilder
     /// resolve to their underlying type at <c>ResolveType</c> time, so a plain
     /// structural check on the unqualified type suffices.</summary>
     private static bool IsFuncPtr(CType t) =>
-        t.Unqualified is CType.Pointer { Pointee: CType.Func } or CType.Func;
+        t.Unqualified is CType.Func;
 
     /// <summary>True when <paramref name="t"/> is the C99 <c>_Complex</c> type —
     /// recognised structurally, independent of any target spelling.</summary>

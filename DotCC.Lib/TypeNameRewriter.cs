@@ -233,9 +233,14 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         // Function-pointer typedef has the alias INSIDE the first parenthesized
         // group: `typedef Ret (*Name)(args);`. The body has `( * ID )` at
         // brace/paren depth 0 — scan for that pattern first.
+        var aggregateDepth = 0;
         for (var i = 0; i + 3 < body.Count; i++)
         {
-            if (body[i].ID == _openParenSymbol
+            if (body[i].ID == _openBraceSymbol) { aggregateDepth++; }
+            else if (body[i].ID == _closeBraceSymbol) { aggregateDepth--; }
+            // A callback field inside a typedef aggregate is a member, not the
+            // enclosing typedef's alias. Only inspect file-level declarators.
+            if (aggregateDepth == 0 && body[i].ID == _openParenSymbol
                 && body[i + 1].ID == _starSymbol
                 && body[i + 2].ID == _idSymbol
                 && body[i + 3].ID == _closeParenSymbol)

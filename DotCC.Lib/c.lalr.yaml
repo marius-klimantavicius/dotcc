@@ -497,9 +497,9 @@ productions:
       - { lhs: FnSig, rhs: [Type, ID, '(', ParamList, ')'],     action: fnSig }
       - { lhs: FnSig, rhs: [Type, ID, '(', ')'],                action: fnSigNoArgs }
       - { lhs: FnSig, rhs: [Type, ID, '(', 'void', ')'],        action: fnSigVoidArgs }
-      - { lhs: FnSig, rhs: ['static', Type, ID, '(', ParamList, ')'], action: fnSigStatic }
-      - { lhs: FnSig, rhs: ['static', Type, ID, '(', ')'],            action: fnSigStaticNoArgs }
-      - { lhs: FnSig, rhs: ['static', Type, ID, '(', 'void', ')'],    action: fnSigStaticVoidArgs }
+      # Storage class applies to every declarator shape, including callbacks
+      # returned by functions and parenthesized function names.
+      - { lhs: FnSig, rhs: ['static', FnSig], action: fnSigStaticDeclarator }
       # Parenthesized function-name declarator: `T (name)(args)` ≡ `T name(args)`.
       # The parens are pure grouping around the declarator name. Lua wraps every
       # public API name this way in lua.h prototypes — `LUA_API lua_State
@@ -746,6 +746,9 @@ productions:
       # also works.) Disambiguated from `Type ID …` by the `(` after Type.
       - { lhs: Param, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')'], action: paramFnPtr }
       - { lhs: Param, rhs: [Type, '(', '*', ID, ')', '(', ')'],            action: paramFnPtrNoArgs }
+      # Pointer to callback storage: xFindFunction writes through **pxFunc.
+      - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')'], action: paramFnPtrOutput }
+      - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ')'], action: paramFnPtrOutputNoArgs }
 
   # Type — the "declarator type" non-terminal. Most C type forms reduce to
   # this via TypeSpecList (the C-standard declaration-specifier sequence:
@@ -1117,6 +1120,12 @@ productions:
       # `delegate*` field via FnPtrType, like every other fn-ptr position.
       - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')', ';'], action: structFnPtrMember }
       - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ')', ';'],            action: structFnPtrMemberNoArgs }
+      # A callback may itself return a function pointer (SQLite's xDlSym).
+      # Keep both signatures instead of flattening the returned pointer to void*.
+      - { lhs: Member, rhs: [Type, '(', '*', '(', '*', ID, ')', '(', ParamList, ')', ')', '(', ParamList, ')', ';'], action: structFnPtrReturningFnPtr }
+      - { lhs: Member, rhs: [Type, '(', '*', '(', '*', ID, ')', '(', ParamList, ')', ')', '(', ')', ';'], action: structFnPtrReturningFnPtrNoReturnArgs }
+      - { lhs: Member, rhs: [Type, '(', '*', '(', '*', ID, ')', '(', ')', ')', '(', ParamList, ')', ';'], action: structFnPtrReturningFnPtrNoArgs }
+      - { lhs: Member, rhs: [Type, '(', '*', '(', '*', ID, ')', '(', ')', ')', '(', ')', ';'], action: structFnPtrReturningFnPtrEmpty }
       # Nested aggregate members. All four forms carry a MemberMark (epsilon)
       # right after the `{` to snapshot where the inner fields begin, so a
       # consumer can isolate them from the parent's. The NAMED-vs-anonymous split
@@ -1148,6 +1157,14 @@ productions:
       # still reduces `struct Foo` → Type for the plain member).
       - { lhs: Member, rhs: ['struct', ID, '{', MemberMark, MemberList, '}', ID, ';'], action: namedNestedTaggedStruct }
       - { lhs: Member, rhs: ['union', ID, '{', MemberMark, MemberList, '}', ID, ';'], action: namedNestedTaggedUnion }
+      - { lhs: Member, rhs: ['struct', '{', MemberMark, MemberList, '}', '*', ID, ';'], action: pointerNestedStruct }
+      - { lhs: Member, rhs: ['union', '{', MemberMark, MemberList, '}', '*', ID, ';'], action: pointerNestedUnion }
+      - { lhs: Member, rhs: ['struct', ID, '{', MemberMark, MemberList, '}', '*', ID, ';'], action: pointerNestedTaggedStruct }
+      - { lhs: Member, rhs: ['union', ID, '{', MemberMark, MemberList, '}', '*', ID, ';'], action: pointerNestedTaggedUnion }
+      - { lhs: Member, rhs: ['struct', '{', MemberMark, MemberList, '}', ID, ArrDims, ';'], action: arrayNestedStruct }
+      - { lhs: Member, rhs: ['union', '{', MemberMark, MemberList, '}', ID, ArrDims, ';'], action: arrayNestedUnion }
+      - { lhs: Member, rhs: ['struct', ID, '{', MemberMark, MemberList, '}', ID, ArrDims, ';'], action: arrayNestedTaggedStruct }
+      - { lhs: Member, rhs: ['union', ID, '{', MemberMark, MemberList, '}', ID, ArrDims, ';'], action: arrayNestedTaggedUnion }
       - { lhs: MemberMark, rhs: [], action: memberMark }
 
   # EnumList / EnumItem — enumerator body for `enum Name { … }`.
