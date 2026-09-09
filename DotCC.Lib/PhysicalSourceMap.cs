@@ -12,14 +12,16 @@ namespace DotCC;
 internal sealed class PhysicalSourceMap
 {
     public string Text { get; }
+    internal SourceFileOrigin? SourceFile { get; }
     public bool HasSplices => _spliceOffsets.Length != 0;
     private readonly byte[] _original;
     private readonly int[] _spliceOffsets, _removedBytes, _lineStarts;
     private readonly int _initialLine;
 
-    public PhysicalSourceMap(string source, int initialLine = 1)
+    public PhysicalSourceMap(string source, int initialLine = 1, string? filename = null)
     {
         _initialLine = initialLine;
+        SourceFile = filename is null ? null : new SourceFileOrigin(filename);
         _original = Encoding.UTF8.GetBytes(source);
         var offsets = new List<int>();
         var removed = new List<int>();
@@ -105,6 +107,7 @@ internal class SourceMappedItem : Item
         _map = map;
         _origin = item.Position;
     }
+    internal static SourceFileOrigin? FileOf(Item item) => (item as SourceMappedItem)?._map?.SourceFile;
     internal static SourcePosition Physical(Item item) => item is SourceMappedItem mapped
         ? mapped._map?.Physical(mapped._origin) ?? mapped._origin : item.Position;
     internal static int PhysicalEndLine(Item item) => item is SourceMappedItem mapped
@@ -125,12 +128,14 @@ internal sealed class SourceMappingLexer : ISyncIterator<Item>
         try
         {
             if (!_inner.MoveNext()) return false;
-            Current = _map.HasSplices ? new SourceMappedItem(_inner.Current, _map) : _inner.Current;
+            Current = _map.HasSplices || _map.SourceFile is not null ? new SourceMappedItem(_inner.Current, _map) : _inner.Current;
             return true;
         }
         catch (LexerException error)
         {
-            throw new LexerException(_map.Physical(error.Position), error.OffendingByte, error.LexerStateName);
+            var physicalError = new LexerException(_map.Physical(error.Position), error.OffendingByte, error.LexerStateName);
+            if (_map.SourceFile is { } file) throw new CompileException($"lex failed in {file.Name}: {physicalError.Message}", physicalError);
+            throw physicalError;
         }
     }
     public void Reset() => _inner.Reset();
@@ -139,6 +144,11 @@ internal sealed class SourceMappingLexer : ISyncIterator<Item>
 
 internal sealed class PhysicalPositionRewriter(ISyncIterator<Item> inner) : RewritingTokenStream(inner)
 {
-    protected override void ProcessToken(Item token) =>
-        Emit(token is SourceMappedItem ? new Item(token.ID, token.Content, SourceMappedItem.Physical(token)) : token);
+    protected override void ProcessToken(Item token)
+    {
+        var position = SourceMappedItem.Physical(token);
+        Emit(SourceMappedItem.FileOf(token) is { } source
+            ? new SourceLocatedItem(token.ID, token.Content, position, source)
+            : token is SourceMappedItem ? new Item(token.ID, token.Content, position) : token);
+    }
 }

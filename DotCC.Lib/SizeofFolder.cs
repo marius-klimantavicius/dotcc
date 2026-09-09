@@ -76,8 +76,8 @@ internal sealed class SizeofFolder : RewritingTokenStream
         if (size is int n)
         {
             // Replace entire sizeof(type) sequence with NUM
-            Emit(new Item(_numSym, n.ToString(
-                System.Globalization.CultureInfo.InvariantCulture), token.Position));
+            Emit(SourceFileOrigin.Rewrite(token, _numSym, n.ToString(
+                System.Globalization.CultureInfo.InvariantCulture)));
             return;
         }
 
@@ -93,11 +93,11 @@ internal sealed class SizeofFolder : RewritingTokenStream
         var hasNext = TryReadNext(out var nextTok);
         var wrap = hasNext && (nextTok!.ID == _starSym || nextTok.ID == _minusSym
             || nextTok.ID == _ampSym || nextTok.ID == _plusSym);
-        if (wrap) { Emit(new Item(_lparenSym, "(", token.Position)); }
+        if (wrap) { Emit(SourceFileOrigin.Rewrite(token, _lparenSym, "(")); }
         Emit(token); Emit(lp);
         foreach (var x in typeTokens) Emit(x);
-        Emit(new Item(_rparenSym, ")", token.Position));
-        if (wrap) { Emit(new Item(_rparenSym, ")", token.Position)); }
+        Emit(SourceFileOrigin.Rewrite(token, _rparenSym, ")"));
+        if (wrap) { Emit(SourceFileOrigin.Rewrite(token, _rparenSym, ")")); }
         // Re-emit the peeked token (the operator, or whatever followed). It can't
         // be a `sizeof`/`typedef` needing ProcessToken — neither is valid right
         // after a `sizeof(Type)` without an intervening operator — so emitting it

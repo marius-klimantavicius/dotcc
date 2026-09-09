@@ -231,7 +231,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
         }
         var initialLine = Compiler.IsSyntheticHeaderContent(name, source)
             ? Ir.SrcPos.SyntheticLineBase : 1;
-        var sourceMap = new PhysicalSourceMap(source, initialLine);
+        var sourceMap = new PhysicalSourceMap(source, initialLine, name);
         // First-time include of this file: scan the source text for a
         // controlling header guard. Cache the result (or null) so the
         // detection cost is paid at most once per filename.

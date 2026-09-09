@@ -56,7 +56,7 @@ internal sealed class CFrontend : IFrontend
         // pass so #warning / #include messages don't print twice.
         Item ParseUnit(string unitPath, global::LALR.CC.Parser parser, bool quiet, DialectGate? gate = null)
         {
-            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath));
+            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath));
             var source = sourceMap.Text;
             // #embed search path: the TU's own directory first, then the -I dirs
             // (first-wins, mirroring #include). Resolved on the filesystem since
@@ -109,7 +109,7 @@ internal sealed class CFrontend : IFrontend
             }
             catch (global::LALR.CC.ParseErrorException ex)
             {
-                throw new CompileException($"parse failed in {Path.GetFileName(unitPath)}: {ex.Message}", ex);
+                throw new CompileException($"parse failed in {SourceFileOrigin.Of(ex.OffendingToken)?.Name ?? Path.GetFileName(unitPath)}: {ex.Message}", ex);
             }
             catch (global::LALR.CC.LexicalGrammar.LexerException ex)
             {
@@ -140,7 +140,7 @@ internal sealed class CFrontend : IFrontend
         // (-pedantic) or one collected error (-pedantic-errors). Off by default.
         var gate = (pedantic || pedanticErrors) ? new DialectGate(activeDialect) : null;
         var irBuilder = new Ir.IrBuilder(gate, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings);
-        var irParser = C.BuildParser(C.IdentityVisitor.Instance);
+        var irParser = C.BuildSourceLocatedParser();
         foreach (var unitPath in inputPaths)
         {
             var root = ParseUnit(unitPath, irParser, quiet: false, gate);

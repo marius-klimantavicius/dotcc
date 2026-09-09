@@ -145,7 +145,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             && !afterTag
             && _typeNames.Contains(name))
         {
-            Emit(new Item(_typeNameSymbol, name, token.Position));
+            Emit(SourceFileOrigin.Rewrite(token, _typeNameSymbol, name));
             return;
         }
 
@@ -225,7 +225,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
                 && _typeNames.Contains(s)
                 && s != aliasName)
             {
-                Emit(new Item(_typeNameSymbol, s, t.Position));
+                Emit(SourceFileOrigin.Rewrite(t, _typeNameSymbol, s));
             }
             else
             {

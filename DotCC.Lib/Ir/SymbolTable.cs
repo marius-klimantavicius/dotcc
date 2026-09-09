@@ -8,6 +8,9 @@ namespace DotCC.Ir;
 /// <summary>A source location, carried on IR nodes for diagnostics.</summary>
 public readonly record struct SrcPos(int Line, int Column)
 {
+    /// <summary>Physical origin when known; independent of the outer translation unit.</summary>
+    public string? File { get; init; }
+
     /// <summary>
     /// Line numbers at or above this base belong to a synthetic system header's
     /// reserved band: the <c>#include</c> sub-lexer starts an embedded header here
@@ -22,7 +25,7 @@ public readonly record struct SrcPos(int Line, int Column)
     public bool IsSystemHeader => Line >= SyntheticLineBase;
 
     public static SrcPos From(global::LALR.CC.LexicalGrammar.Item it) =>
-        new(it.Position.Line, it.Position.Column);
+        new(it.Position.Line, it.Position.Column) { File = SourceFileOrigin.Of(it)?.Name };
 
     /// <summary>
     /// Render a line number for a user-facing diagnostic, masking the synthetic band

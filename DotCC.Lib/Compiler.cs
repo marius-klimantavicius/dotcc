@@ -291,7 +291,7 @@ public static partial class Compiler
         foreach (var unitPath in inputPaths)
         {
             output.WriteLine($"# {unitPath}");
-            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath));
+            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath));
             var source = sourceMap.Text;
             var pre = new CPreprocessor(lexerTable, includeMap, seededDefines);
             pre.SetActiveFilename(Path.GetFileName(unitPath));
@@ -352,7 +352,7 @@ public static partial class Compiler
         var lexerTable = C.BuildLexer();
         var seededDefines = SeedDialectDefines(dialect ?? CDialect.Default, defines);
 
-        var sourceMap = new PhysicalSourceMap(File.ReadAllText(sourcePath));
+        var sourceMap = new PhysicalSourceMap(File.ReadAllText(sourcePath), filename: Path.GetFileName(sourcePath));
         var source = sourceMap.Text;
         var pre = new CPreprocessor(lexerTable, content, seededDefines, quiet: true);
         pre.SetActiveFilename(Path.GetFileName(sourcePath));

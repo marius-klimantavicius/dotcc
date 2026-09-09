@@ -144,7 +144,7 @@ internal sealed class DialectKeywordRewriter : RewritingTokenStream
             // visitor for these actions ignores content, but keeping the
             // spelling honest avoids surprises in any future content-aware
             // handling).
-            Emit(new Item(p.TargetSymbol, p.TargetText, token.Position));
+            Emit(SourceFileOrigin.Rewrite(token, p.TargetSymbol, p.TargetText));
             return;
         }
 

@@ -11,14 +11,19 @@ directives count from the physical end of the entire directive. As before,
 `#line` changes the `__LINE__` and `__FILE__` builtins; parser positions remain
 physical. Synthetic system headers retain their reserved line band.
 
-The parser/IR position representation does not carry a filename. An error in an
-included header therefore still uses the translation unit's name in the outer
-diagnostic, although its numeric location is now the header's physical location.
+Parser-facing tokens and IR positions now retain the physical filename too.
+Generated identity parser actions associate each fresh AST node with its first
+child's origin through weak keys; the existing generated grammar and parse table
+remain unchanged. Nested include lexer, parse and semantic diagnostics name the
+offending header, and parent tokens resume their own origin after an include.
 Macro replacement diagnostics identify the invocation; a definition/invocation
-expansion backtrace is not yet available.
+expansion backtrace is not yet available. `#line` still affects builtins only.
 
-Eight regressions cover LF/CRLF splicing, both sides of a continued line, macro
+Eight numeric-location regressions cover LF/CRLF splicing, both sides of a continued line, macro
 adjacency, nested invocation line numbers, continued `#line`, independent header
-maps, parser columns and lexer UTF-8 offsets. The full snapshot passed 1,750 unit
-tests and 251 functional tests (847 platform/oracle skips). The actual amalgamation
-retry reached physical line 139841 at a pointer-to-function-pointer declaration.
+maps, parser columns and lexer UTF-8 offsets. Five filename regressions add nested
+parse/lexer errors, semantic reductions, macro invocation and parent restoration.
+The full snapshot passed 1,782 unit tests and 267 functional tests (875 optional
+oracle skips). Actual combined SQLite/VFS emission now identifies warnings in
+`sqlite3.c` and `memory_vfs.c` correctly: 3.99 seconds and 1,048,676 KiB peak RSS.
+Evidence: `artifacts/source-filenames/`.

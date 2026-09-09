@@ -17,7 +17,8 @@ public sealed record Diagnostic(Severity Severity, string Message, SrcPos Pos, s
 {
     public override string ToString()
     {
-        var loc = File is null ? Pos.ToString() : $"{File}:{Pos}";
+        var file = Pos.File ?? File;
+        var loc = file is null ? Pos.ToString() : $"{file}:{Pos}";
         var sev = Severity == Severity.Error ? "error" : "warning";
         return $"{loc}: {sev}: {Message}";
     }
