@@ -193,3 +193,23 @@ The full unchanged configured amalgamation parses, lowers to typed IR, and emits
 Logs: `artifacts/parse-probes/local-typedef-string-{unit,functional}-all.log`.
 This establishes emission only. The combined engine/VFS translation exposes B014;
 the standalone amalgamation's managed-library build exposes B015 syntax errors.
+
+## Combined engine emission and all active offset contracts
+
+Commits `840ab96`, `4678f4e`, and `304eff4`: clean rebuild, 1,756 unit tests
+pass (43 seconds), 260 functional tests pass with 863 opt-in skips (81 seconds),
+zero failures. Focused coverage includes 99 unit cases and the new include,
+nested-switch and complete-sizeof runtime fixtures. The combined unchanged
+SQLite + memory VFS emits 115,010 lines / 4,457,992 bytes of managed-library C#
+in 3.22 seconds, peak RSS 947,232 KiB. All 30 compiler offset contracts now agree
+with native sizes, alignments and offsets, including corrected WhereInfo storage.
+`scripts/check-layout-metadata.py generated/TranslatedSqlite/Program.cs` repeats
+that static check; actual generated C# storage still requires execution.
+Logs: `artifacts/include-order/checkpoint-*`.
+
+All seven native harnesses also compiled and executed as single translation
+units including the exact engine; core, API, VFS, virtual-table, allocation,
+image and upstream JSONB outputs equal their saved transcripts byte-for-byte.
+Logs: `artifacts/combined-*-native.{out,log}` and build logs. Core/API/VFS/upstream
+combined harnesses now emit C#; virtual-table/allocation parser gaps B019/B020
+are being fixed. The reusable C# build remains at opaque/tentative declarations.

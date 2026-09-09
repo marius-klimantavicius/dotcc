@@ -1,0 +1,3 @@
+PASS VFS direct contract
+PASS VFS SQL transactions, recovery, JSONB, image transfer
+PASS all memory VFS contracts

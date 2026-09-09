@@ -187,17 +187,68 @@ arrays, zero-fill short strings, accept optional braces and nested rows, and
 reject actual character overflow. The full configured amalgamation now emits
 106,296 C# lines (3,641,990 bytes) in 3.09 seconds, peak RSS 771,092 KiB.
 
-## B014 — combined engine include context (parser, active)
+## B014 — completed include expansion (preprocessor, fixed 840ab96)
 
 `scripts/emit-engine.sh` compiles `src/engine.c`, including unchanged sqlite3.c
-and the memory VFS. It currently fails at reported8614:27, unexpected `(`,
-expected `*` or identifier. The amalgamation alone emits; reduction is ongoing.
-Evidence: `artifacts/engine-emission.log`.
+and the memory VFS. It failed at reported8614:27, unexpected `(`, because tokens
+already expanded inside the included file were rescanned by the outer expander
+using the header's final macro definitions. This retrospectively expanded the
+earlier sqlite3_mutex_alloc prototype. Completed include tokens now preserve
+their expansion state. Native/red tests cover late definitions, redefine/undef,
+nested includes, and a header-tail function name followed by parent parentheses.
+Focused tests pass and the combined engine emits (3.34 seconds, 911,224 KiB RSS);
+full checkpoint validation passes. Evidence: `artifacts/include-order/`.
 
-## B015 — nested switch labels (C# emitter, active)
+## B015 — nested switch labels (C# emitter, fixed 4678f4e)
 
-The amalgamation alone also emits managed-library source and its project with
-the actual offsetof analyzer. The first Roslyn build reports twelve syntax
-diagnostics: ten `switch expected` and two missing braces, in two functions.
-Reduction is ongoing; compilation and execution are not yet established.
-Evidence: `artifacts/sqliteonly-build.log`, `generated/SqliteOnly/Program.cs`.
+The first managed-library Roslyn build reported twelve syntax diagnostics:
+ten `switch expected` and two missing braces, in VDBE/JSON functions. C permits
+case labels nested within blocks, conditionals and loops. The backend now lowers
+these switches to same-scope dispatch labels and explicit control-flow edges,
+hoisting local storage while leaving initializer evaluation at its original site.
+Native/red runtime tests cover shared locals, skipped initializers, outer-loop
+continue, nested switches and Duff entry. Syntax errors are cleared; full
+checkpoint validation passes. Evidence: `artifacts/sqliteonly-build.log`,
+`artifacts/include-order/switch-baseline.log`.
+
+## B016 — sizeof type-specifier and typedef folding (layout, fixed 304eff4)
+
+A static comparison of all 30 emitted offsetof contracts to native finds 27
+matches and three related WhereInfo mismatches. Its size and flexible-tail offset
+are 736 rather than 864 because WhereMaskSet.ix has 32 elements rather than 64.
+The token folder chooses the final `int` in `unsigned long long int`, then caches
+that wrong size through SQLite's Bitmask typedef chain. It also ignores typedef
+block scope and qualified pointer widths. Native/red fixture
+`sizeof-type-specifier-order` records `64 260 272 264`, `8 8 2 2 4 8`,
+and `4 8 12 8 4`. Complete types now defer to the existing scoped typed binder;
+the unsafe token-level alias cache is removed. All 30 compiler contracts now
+match native, and full checkpoint validation passes.
+Evidence: `artifacts/sizeof-order/`, `artifacts/layout-metadata-before.log`.
+
+## B017/B018 — opaque types and tentative globals (IR/emitter, active)
+
+After B014/B015, the actual combined engine's C# build reports 225 CS0246
+diagnostics for opaque pointer types (sqlite3_stmt, sqlite3_pcache, Fts5Context,
+sqlite3_mutex, sqlite3_blob, Fts5Tokenizer, SQLiteThread, CCurHint), plus three
+CS0102 duplicate tentative globals (sqlite3_temp_directory,
+sqlite3_data_directory, sqlite3WhereTrace). Workers are reducing these cases.
+Opaque FTS header types do not enable any FTS implementation.
+
+## B019 — file-scope designated aggregate initializer (parser, active)
+
+The combined virtual-table harness stops at tests/vtable_native.c:116 on
+`static sqlite3_module numbers_module = { .iVersion = 1, ... };`.
+Local and compound designated initializers existed, but file-scope forms did not.
+The native/red fixture checks static const and external globals with callback,
+integer, pointer and omitted fields. The new productions reuse existing typed
+member initialization and the B018 canonical global storage registry.
+Evidence: `artifacts/global-designated/`, `artifacts/translated-vtable-emission.log`.
+
+## B020 — initialized arrays in mixed declarations (parser/IR, active)
+
+The allocation harness stops at tests/allocation_native.c:56 on
+`int phase, i, rc, final_rc, nomem_results[2] = {0, 0};`. Array heads/tails
+previously supported declarations only. New productions preserve the initializer
+and reuse typed array lowering, dimensions and zero fill. The native/red fixture
+checks scalar/pointer tails, pointer arrays, initialized multidimensional heads
+and omitted values. Evidence: `artifacts/mixed-array-initializer/`.

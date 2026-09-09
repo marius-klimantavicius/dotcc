@@ -28,3 +28,11 @@ The native comparison fixture covers partial zero filling, primitive matrices,
 nested struct arrays, pointer and callback arrays, static-local persistence,
 compound values and single evaluation of initializer expressions. Global array
 access also uses the compiler's existing stable-static-storage address projection.
+
+Character-array members also accept compatible narrow, UTF-16 and UTF-32 string
+literals, with optional surrounding braces and nested matrix rows. Exact-fit
+arrays omit the terminator; shorter strings zero-fill the remaining elements.
+Strings whose actual characters exceed the bound are rejected. The string-member
+fixture covers global/local/static initialization and Unicode; three unit cases
+check overflow, including multibyte UTF-8. This resolved SQLite's date-name table
+and allowed the complete amalgamation to reach C# emission.

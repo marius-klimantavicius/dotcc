@@ -15,19 +15,18 @@ assembly; optional unused OS/dlfcn runtime methods are not an extension host.
 
 The existing `-shared` output remains a separate native-export mode.
 
-From `sqlite/`, the eventual engine command uses this form after compiler blockers
-have been resolved:
+From `sqlite/`, the engine entry command is:
 
 ```sh
-dotnet ../DotCC/bin/Release/net10.0/dotcc.dll engine.c \
-  --emit=managedlib -c -o generated/TranslatedSqlite \
-  --offset-generator "$PWD/generators/DotCC.OffsetGenerator/bin/Release/netstandard2.0/DotCC.OffsetGenerator.dll"
+scripts/emit-engine.sh
+dotnet build generated/TranslatedSqlite/TranslatedSqlite.csproj -c Release
 ```
 
-`engine.c` above represents the configured amalgamation plus adapter translation
-unit, not an existing completed translation. The campaign scripts continue to
-record the actual current parser/lowering stage until that engine is ready.
-`-c` builds the generated project; omit it to emit the reviewable source/project.
+`src/engine.c` includes the unchanged amalgamation and memory VFS as one logical
+translation unit. The script supplies the shared feature configuration and
+explicit offsetof analyzer. Current combined-input and C# emission blockers are
+recorded in `blockers.md`; the command does not yet produce a working engine.
+The CLI's optional `-c` also builds the emitted project.
 A consumer references the resulting project or assembly normally.
 
 `--offset-generator` resolves an explicit analyzer DLL path and sets
