@@ -756,6 +756,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
         // user macro by C standard (which forbids redefining them anyway).
         if (token.Content is string text)
         {
+            if (MacroExpansionItem.IsDisabled(token, text)) { return new[] { token }; }
             if (text == "__LINE__")
             {
                 // Physical line as the byte-DFA lexer counted it, shifted by any
@@ -806,6 +807,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
         {
             if (item.Content is string text
                 && !hideSet.Contains(text)
+                && !MacroExpansionItem.IsDisabled(item, text)
                 && _macros.TryGetValue(text, out var inner)
                 && !inner.IsFunctionLike)
             {
@@ -814,7 +816,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
             }
             else
             {
-                result.Add(item);
+                result.Add(MacroExpansionItem.Disable(item, hideSet));
             }
         }
         return result;

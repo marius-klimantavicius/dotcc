@@ -92,6 +92,44 @@ public sealed class MacroStringificationTests
     }
 
     [Fact]
+    public void Object_function_rescan_preserves_disabled_macro_names()
+    {
+        var output = Preprocess("""
+            #define GLOBAL(type,value) value
+            int storage;
+            #define storage GLOBAL(int,storage)
+            #define ALIAS storage
+            #define PASS(x) x
+            int value = storage;
+            int alias = ALIAS;
+            int nested = PASS(ALIAS);
+            """);
+        output.ShouldContain("value = storage ;");
+        output.ShouldContain("alias = storage ;");
+        output.ShouldContain("nested = storage ;");
+        output.ShouldNotContain("GLOBAL");
+    }
+
+    [Fact]
+    public void Function_alias_prescans_external_arguments_and_intersects_boundary_hides()
+    {
+        var output = Preprocess("""
+            #define A F
+            #define F(x) x
+            first = A(A);
+            #undef F
+            #define F(x) A
+            second = A(1);
+            #undef A
+            #define A F(1)
+            third = A;
+            """);
+        output.ShouldContain("first = F ;");
+        output.ShouldContain("second = F ;");
+        output.ShouldContain("third = A ;");
+    }
+
+    [Fact]
     public void Stringification_escapes_literal_quotes_and_backslashes()
     {
         var output = Preprocess("""

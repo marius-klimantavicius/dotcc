@@ -29,6 +29,7 @@ internal sealed class MacroExpander : RewritingTokenStream
     {
         public readonly List<List<Token>> Values = new();
         public readonly List<Token> Commas = new();
+        public Item? Closing;
     }
 
     public MacroExpander(ISyncIterator<Item> inner, CPreprocessor cpp) : base(inner)
@@ -68,6 +69,7 @@ internal sealed class MacroExpander : RewritingTokenStream
     protected override void ProcessToken(Item token)
     {
         if (token.ID == _idSymbol && token.Content is string name
+            && !MacroExpansionItem.IsDisabled(token, name)
             && _cpp.TryGetMacro(name, out var macro) && macro.IsFunctionLike)
         {
             if (TryReadNext(out var next))
@@ -76,7 +78,10 @@ internal sealed class MacroExpander : RewritingTokenStream
                 {
                     var args = CollectArgsFromStream(next);
                     var substituted = Substitute(macro, args, new HashSet<string>(StringComparer.Ordinal));
-                    var hiding = new HashSet<string>(StringComparer.Ordinal) { name };
+                    // A function name may come from an object replacement while
+                    // its arguments/closing parenthesis are ordinary source.
+                    var hiding = MacroExpansionItem.IntersectDisabled(token, args.Closing);
+                    hiding.Add(name);
                     foreach (var expanded in ExpandTokenList(substituted, hiding)) Emit(expanded.Item);
                     return;
                 }
@@ -94,10 +99,12 @@ internal sealed class MacroExpander : RewritingTokenStream
         {
             var token = tokens[i] with { LeadingSpace = tokens[i].LeadingSpace || pendingSpace };
             pendingSpace = false;
-            if (token.ID == _idSymbol && token.Content is string name && !hiding.Contains(name))
+            if (token.ID == _idSymbol && token.Content is string name && !hiding.Contains(name)
+                && !MacroExpansionItem.IsDisabled(token.Item, name))
             {
                 if (_cpp.TryGetMacro(name, out var macro))
                 {
+                    var activeHiding = MacroExpansionItem.CopyDisabled(token.Item, hiding);
                     if (macro.IsFunctionLike)
                     {
                         if (i + 1 < tokens.Count && tokens[i + 1].ID == _openParenSymbol)
@@ -107,11 +114,12 @@ internal sealed class MacroExpander : RewritingTokenStream
                             {
                                 var substituted = Substitute(macro, args,
                                     new HashSet<string>(hiding, StringComparer.Ordinal));
-                                hiding.Add(name);
-                                var replacement = ExpandTokenList(substituted, hiding);
+                                var functionHiding = MacroExpansionItem.IntersectDisabled(token.Item, args.Closing);
+                                functionHiding.UnionWith(hiding);
+                                functionHiding.Add(name);
+                                var replacement = ExpandTokenList(substituted, functionHiding);
                                 AppendReplacement(result, replacement, token.LeadingSpace);
                                 pendingSpace = replacement.Count == 0 && token.LeadingSpace;
-                                hiding.Remove(name);
                                 i = end;
                                 continue;
                             }
@@ -119,11 +127,10 @@ internal sealed class MacroExpander : RewritingTokenStream
                     }
                     else
                     {
-                        hiding.Add(name);
-                        var replacement = ExpandTokenList(ReadTokens(macro.Body), hiding);
+                        activeHiding.Add(name);
+                        var replacement = ExpandTokenList(ReadTokens(macro.Body), activeHiding);
                         AppendReplacement(result, replacement, token.LeadingSpace);
                         pendingSpace = replacement.Count == 0 && token.LeadingSpace;
-                        hiding.Remove(name);
                         continue;
                     }
                 }
@@ -135,7 +142,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                     continue;
                 }
             }
-            result.Add(token);
+            result.Add(token with { Item = MacroExpansionItem.Disable(token.Item, hiding) });
         }
         return result;
     }
@@ -157,6 +164,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                 if (token.ID == _openParenSymbol) ++depth;
                 else if (token.ID == _closeParenSymbol && --depth == 0)
                 {
+                    args.Closing = item;
                     if (current.Count > 0 || args.Values.Count > 0) args.Values.Add(current);
                     return args;
                 }
@@ -186,6 +194,7 @@ internal sealed class MacroExpander : RewritingTokenStream
             if (token.ID == _openParenSymbol) ++depth;
             else if (token.ID == _closeParenSymbol && --depth == 0)
             {
+                args.Closing = token.Item;
                 if (current.Count > 0 || args.Values.Count > 0) args.Values.Add(current);
                 return (args, i);
             }
