@@ -68,9 +68,7 @@ internal sealed class CFrontend : IFrontend
             pre.SetActiveFilename(Path.GetFileName(unitPath));
             using var lexer = BytesLexer.FromString(source, lexerTable);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
-            using var preproc = C.WrapPreprocessor(mappedLexer, pre);
-            // Enable function-like macro expansion in #if/#elif expressions.
-            preproc.ExpandFuncMacro = pre.ExpandFuncMacro;
+            using var preproc = pre.WrapStream(mappedLexer);
             // MacroExpander: function-like macro expansion. Needs lookahead
             // for the `(`, which the Rewrite hook can't do — so it lives as
             // its own RewritingTokenStream subclass after the preprocessor

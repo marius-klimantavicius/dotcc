@@ -32,7 +32,7 @@ internal sealed record MacroDef(
     public bool IsFunctionLike => Params is not null;
 }
 
-internal sealed class CPreprocessor : C.IPreprocessor
+internal sealed partial class CPreprocessor : C.IPreprocessor
 {
     private readonly Dictionary<string, LexRule[]> _lexerTable;
     private readonly Compiler.IncludeMap _files;
@@ -259,8 +259,7 @@ internal sealed class CPreprocessor : C.IPreprocessor
             // the user file win the slot). User headers and `.c` splices: line 1.
             using var subLexer = BytesLexer.FromString(sourceMap.Text, _lexerTable, initialLine: initialLine);
             using var mappedLexer = new SourceMappingLexer(subLexer, sourceMap);
-            using var subPreproc = C.WrapPreprocessor(mappedLexer, this);
-            subPreproc.ExpandFuncMacro = ExpandFuncMacro;
+            using var subPreproc = WrapStream(mappedLexer);
             // Expand function-like macros WITHIN the include, mirroring the
             // top-level pipeline (where MacroExpander sits above the preprocessor).
             // Without this, a macro the included file both DEFINES and #undefs —

@@ -3453,7 +3453,7 @@ internal sealed partial class IrBuilder
         // byte/int sinks via C#'s constant conversions.
         var raw = Tok(c.Arg0);
         if (raw is null || raw.Length < 3) { return new LitInt("0", 0) { Type = CType.Int }; }
-        var value = DecodeCharConstant(raw[1..^1]);
+        var value = CCharacterLiteral.Decode(raw[1..^1]);
         return new LitInt(value.ToString(System.Globalization.CultureInfo.InvariantCulture), value) { Type = CType.Int };
     }
 
@@ -3461,11 +3461,11 @@ internal sealed partial class IrBuilder
     {
         // u'x' — a C11 char16_t character constant. Unlike a plain char constant
         // (type int), this has type char16_t (→ C# char). Decode the value the same
-        // way (DecodeCharConstant keeps full 16-bit \x / octal), tag it char16_t.
+        // way (the shared decoder keeps full 16-bit \x / octal), tag it char16_t.
         var raw = Tok(c.Arg0);   // u'x'
         var lit0 = new LitInt("0", 0) { Type = CType.Int };
         if (raw is null || raw.Length < 4) { return new Cast(CType.Char16, lit0) { Type = CType.Char16 }; }
-        var value = DecodeCharConstant(raw[2..^1]);   // strip the `u'` prefix and `'`
+        var value = CCharacterLiteral.Decode(raw[2..^1]);   // strip the `u'` prefix and `'`
         // Wrap in an explicit (char16_t)→C# (char) cast: a bare integer literal is a
         // C# int, and C# has no implicit int→char conversion (even for constants), so
         // the value must be cast — and an int inner literal avoids the `u` suffix a
@@ -3482,7 +3482,7 @@ internal sealed partial class IrBuilder
         var raw = Tok(c.Arg0);   // L'x'
         var lit0 = new LitInt("0", 0) { Type = CType.Int };
         if (raw is null || raw.Length < 4) { return new Cast(CType.WChar, lit0) { Type = CType.WChar }; }
-        var value = DecodeCharConstant(raw[2..^1]);   // strip the `L'` prefix and `'`
+        var value = CCharacterLiteral.Decode(raw[2..^1]);   // strip the `L'` prefix and `'`
         var inner = new LitInt(value.ToString(System.Globalization.CultureInfo.InvariantCulture), value) { Type = CType.Int };
         return new Cast(CType.WChar, inner) { Type = CType.WChar };
     }
@@ -3497,7 +3497,7 @@ internal sealed partial class IrBuilder
         var raw = Tok(c.Arg0);   // U'x'
         var lit0 = new LitInt("0", 0) { Type = CType.Int };
         if (raw is null || raw.Length < 4) { return new Cast(CType.Char32, lit0) { Type = CType.Char32 }; }
-        var value = DecodeCharConstant(raw[2..^1]);   // strip the `U'` prefix and `'`
+        var value = CCharacterLiteral.Decode(raw[2..^1]);   // strip the `U'` prefix and `'`
         var inner = new LitInt(value.ToString(System.Globalization.CultureInfo.InvariantCulture), value) { Type = CType.Int };
         return new Cast(CType.Char32, inner) { Type = CType.Char32 };
     }
@@ -3512,40 +3512,9 @@ internal sealed partial class IrBuilder
         var raw = Tok(c.Arg0);   // u8'x'
         var lit0 = new LitInt("0", 0) { Type = CType.Int };
         if (raw is null || raw.Length < 5) { return new Cast(CType.Char8, lit0) { Type = CType.Char8 }; }
-        var value = DecodeCharConstant(raw[3..^1]);   // strip the `u8'` prefix and `'`
+        var value = CCharacterLiteral.Decode(raw[3..^1]);   // strip the `u8'` prefix and `'`
         var inner = new LitInt(value.ToString(System.Globalization.CultureInfo.InvariantCulture), value) { Type = CType.Int };
         return new Cast(CType.Char8, inner) { Type = CType.Char8 };
-    }
-
-    /// <summary>Decode the body of a C character constant (the chars between the
-    /// quotes) to its integer value: a single char, a named escape, a
-    /// <c>\xHH</c> hex escape, or a <c>\NNN</c> octal escape.</summary>
-    private static int DecodeCharConstant(string inner)
-    {
-        if (inner.Length == 0) { return 0; }
-        if (inner[0] != '\\') { return inner[0]; }
-        var esc = inner[1];
-        switch (esc)
-        {
-            case 'n': return 10;
-            case 't': return 9;
-            case 'r': return 13;
-            case 'a': return 7;
-            case 'b': return 8;
-            case 'f': return 12;
-            case 'v': return 11;
-            case '0' when inner.Length == 2: return 0;
-            case '\\': return 92;
-            case '\'': return 39;
-            case '"': return 34;
-            case '?': return 63;
-            case 'x':
-                return Convert.ToInt32(inner[2..], 16);
-            case >= '0' and <= '7':
-                return Convert.ToInt32(inner[1..], 8);
-            default:
-                throw new IrUnsupportedException("char literal '" + inner + "'");
-        }
     }
 
     private CExpr BuildNum(C.Num n)

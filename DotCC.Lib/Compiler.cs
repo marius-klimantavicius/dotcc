@@ -297,8 +297,7 @@ public static partial class Compiler
             pre.SetActiveFilename(Path.GetFileName(unitPath));
             using var lexer = BytesLexer.FromString(source, lexerTable);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
-            using var preproc = C.WrapPreprocessor(mappedLexer, pre);
-            preproc.ExpandFuncMacro = pre.ExpandFuncMacro;
+            using var preproc = pre.WrapStream(mappedLexer);
             // -E mode also routes through MacroExpander so function-like
             // macro expansion is visible in the dumped token stream.
             using var macroExp = new MacroExpander(preproc, pre);
@@ -358,8 +357,7 @@ public static partial class Compiler
         pre.SetActiveFilename(Path.GetFileName(sourcePath));
         var lexer = BytesLexer.FromString(source, lexerTable);
         var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
-        var preproc = C.WrapPreprocessor(mappedLexer, pre);
-        preproc.ExpandFuncMacro = pre.ExpandFuncMacro;
+        var preproc = pre.WrapStream(mappedLexer);
         using (lexer)
         using (mappedLexer)
         using (preproc)
