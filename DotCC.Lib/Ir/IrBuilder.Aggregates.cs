@@ -129,6 +129,8 @@ internal sealed partial class IrBuilder
                 dimensions.Add(dimension.Count ?? throw new IrUnsupportedException("inline array initializer requires a constant extent"));
             if (dimensions.Any(count => count <= 0))
                 throw new IrUnsupportedException("initializer for flexible or zero-length array member");
+            if (TryInlineStringInitializer(array, initializer, out var stringValues))
+                return new InlineArrayInit(array.FlatElement, stringValues) { Type = type };
             var items = initializer is InitGroup group ? group.Items
                 : throw new IrUnsupportedException("inline array member initializer requires braces");
             var values = BuildArrayElems(array.FlatElement, dimensions, items);
@@ -146,6 +148,66 @@ internal sealed partial class IrBuilder
             _ => throw new IrUnsupportedException("invalid initializer for aggregate member"),
         };
     }
+
+    private bool TryInlineStringInitializer(CType.Array array, Init initializer, out List<CExpr> values)
+    {
+        values = new List<CExpr>();
+        var literal = initializer switch
+        {
+            InitVal value => value.Value,
+            InitGroup { Items: [InitVal value] } => value.Value,
+            _ => null,
+        };
+        if (literal is LitStr or LitU16Str or LitU32Str && array.Element.Unqualified is not CType.Array)
+        {
+            var name = (array.Element.Unqualified as CType.Prim)?.Name;
+            var characters = literal switch
+            {
+                LitStr text when name is "char" or "signed char" or "unsigned char" or "char8_t"
+                    => DotCC.EmitHelpers.StringByteValues(text.Segments),
+                LitU16Str text when name is "char16_t" or "wchar_t"
+                    => DotCC.EmitHelpers.StringU16Values(text.Segments),
+                LitU32Str text when name is "char32_t"
+                    => DotCC.EmitHelpers.StringU32Values(text.Segments),
+                _ => throw new IrUnsupportedException("string literal is incompatible with inline array element type"),
+            };
+            var count = array.Count!.Value;
+            // C allows an exact-size character array without the terminator;
+            // every actual character must still fit. Shorter literals include
+            // their terminator and zero-fill the remaining inline storage.
+            if (characters.Count > count)
+                throw new IrUnsupportedException($"string literal is too long for inline array member [{count}]");
+            for (var index = 0; index < count; ++index)
+            {
+                var value = index < characters.Count ? characters[index] : 0;
+                values.Add(new LitInt(value.ToString(System.Globalization.CultureInfo.InvariantCulture), value) { Type = CType.Int });
+            }
+            return true;
+        }
+        if (array.Element.Unqualified is CType.Array inner && initializer is InitGroup group && ContainsString(group))
+        {
+            if (group.Items.Count > array.Count)
+                throw new IrUnsupportedException("too many string initializers for inline array member");
+            foreach (var item in group.Items)
+            {
+                var row = (InlineArrayInit)BuildFieldInitializer(inner, item);
+                values.AddRange(row.Elems);
+            }
+            var total = 1;
+            for (CType current = array; current.Unqualified is CType.Array dimension; current = dimension.Element)
+                total = checked(total * dimension.Count!.Value);
+            while (values.Count < total) values.Add(Zero);
+            return true;
+        }
+        return false;
+    }
+
+    private static bool ContainsString(Init initializer) => initializer switch
+    {
+        InitVal { Value: LitStr or LitU16Str or LitU32Str } => true,
+        InitGroup group => group.Items.Any(ContainsString),
+        _ => false,
+    };
 
     /// <summary>Build a C99 designated struct/union initializer
     /// (<c>{ .x = 1, .y = 2 }</c>). The user named the fields, so each member's
