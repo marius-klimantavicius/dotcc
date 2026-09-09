@@ -18,11 +18,11 @@ public static unsafe partial class Libc
 /// raw pointers.
 /// </summary>
 /// <remarks>
-/// C's default argument promotions fall out of the conversion set: <c>char</c>
-/// (a C# <c>byte</c>) and <c>short</c> widen to <c>int</c> via the standard
-/// implicit conversion before reaching <see cref="op_Implicit(int)"/>, and
-/// <c>float</c> widens to <c>double</c> before <see cref="op_Implicit(double)"/>
-/// — exactly the promotions C performs. A typed <c>T*</c> reaches the
+/// The emitter applies C's default argument promotions before these operators:
+/// small integer types widen to <c>int</c> and <c>float</c> to <c>double</c>.
+/// Explicit promotion avoids ambiguous C# overload resolution for unsigned
+/// short, which otherwise converts equally well through int and uint.
+/// A typed <c>T*</c> reaches the
 /// <c>void*</c> operator through the standard <c>T* → void*</c> conversion (one
 /// standard + one user-defined step, which C# permits). Storage is a single
 /// 8-byte integer/pointer slot plus a double slot; <c>va_arg(ap, T)</c> reads
@@ -36,8 +36,8 @@ public readonly struct VaArg
     private VaArg(long bits, double dbl) { _bits = bits; _dbl = dbl; }
 
     // FROM each C argument type (applied at the call site by C# on each
-    // variadic actual). char/short → int and float → double happen via the
-    // standard implicit conversion before reaching these (C's promotions).
+    // variadic actual). The emitter explicitly promotes char/short → int and
+    // float → double before reaching these; direct runtime callers remain valid.
     public static implicit operator VaArg(byte v) => new(v, 0);
     public static implicit operator VaArg(int v) => new(v, 0);
     public static implicit operator VaArg(uint v) => new(v, 0);

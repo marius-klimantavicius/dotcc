@@ -2694,14 +2694,27 @@ internal sealed partial class CSharpBackend
         return $"new System.ValueTuple<{headTypes}, {restTypeStr}>({headVals}, {restCtor})";
     }
 
+    private string DefaultPromotedArgument(CExpr argument)
+    {
+        var value = DecayEnum(argument);
+        var source = value.Type.Unqualified;
+        var promoted = source == CType.Float ? CType.Double : CType.IntegerPromote(source);
+        // Force the C promotion even when C# could widen implicitly: overload
+        // resolution for VaArg otherwise finds ushort -> int and -> uint equally
+        // good. Render once so argument side effects stay at their original site.
+        return Cs(source) != Cs(promoted)
+            ? CoercionCast(value, Cs(promoted)) : Sub(value, PAssign);
+    }
+
     private string CallText(Call c)
     {
         if (LowerAtomicCall(c) is { } atomic) { return atomic; }
         if (LowerVaCall(c) is { } va) { return va; }
         // Coerce each argument to its parameter type (C's implicit conversion at
         // a call C# requires explicit) when the callee's signature is known; the
-        // variadic tail (index ≥ fixed-param count) and unknown-signature callees
-        // pass through unchanged.
+        // known variadic tail (index ≥ fixed-param count) receives C's default
+        // argument promotions. Signature-free backend helpers preserve their
+        // operand widths, which can select arithmetic overload semantics.
         var a = new List<string>(c.Args.Count);
         for (var i = 0; i < c.Args.Count; i++)
         {
@@ -2723,6 +2736,7 @@ internal sealed partial class CSharpBackend
                 // existing callback pointer uses the same representation.
                 : c.ParamTypes is not null && c.Args[i].Type.Unqualified is CType.Func
                     ? $"(void*)(({Cs(c.Args[i].Type)})({Expr(c.Args[i])}))"
+                : c.ParamTypes is not null ? DefaultPromotedArgument(c.Args[i])
                 : Sub(DecayEnum(c.Args[i]), PAssign));
         }
         if (IsPrintfFamily(c.Callee) || IsScanfFamily(c.Callee))
