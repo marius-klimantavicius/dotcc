@@ -99,3 +99,14 @@ then rollback when needed, integrity checks, new JSONB writes/reads, handle
 cleanup, and shutdown memory accounting succeed. The allocator is restored.
 This bounded fault corpus does not claim exhaustive OOM coverage. Its portable C
 and `tests/native-allocation.expected` will also drive translated validation.
+
+## Closed database-image transport
+
+`scripts/test-image-native.sh` writes a closed VFS database image to
+`artifacts/native-exchange.db`, then a separate process imports and validates it.
+The portable driver accepts `write PATH` and `read PATH`, ready to exchange
+images in both directions between native and translated executables. The native
+round trip passes integrity checks, JSONB with Unicode/embedded NUL, a 64KiB
+overflow-page blob with an incremental write, user metadata, and cleanup.
+Host `fopen`/read/write calls only transport the closed image; SQLite itself
+continues to use the memory VFS. Cross-engine exchange remains pending.
