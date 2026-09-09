@@ -1145,6 +1145,12 @@ internal sealed partial class IrBuilder
                 case C.StructFnPtrMemberNoArgs sm:
                     fields.Add(new StructField(Tok(sm.Arg3), FnPtrType(sm.Arg0, null)));
                     break;
+                case C.StructFnPtrStorageMember sm:
+                    fields.Add(new StructField(Tok(sm.Arg4), new CType.Pointer(FnPtrType(sm.Arg0, sm.Arg7))));
+                    break;
+                case C.StructFnPtrStorageMemberNoArgs sm:
+                    fields.Add(new StructField(Tok(sm.Arg4), new CType.Pointer(FnPtrType(sm.Arg0, null))));
+                    break;
                 case C.StructFnPtrReturningFnPtr sm:
                     fields.Add(new StructField(Tok(sm.Arg5), FnPtrType(FnPtrType(sm.Arg0, sm.Arg12), sm.Arg8)));
                     break;
@@ -1323,6 +1329,9 @@ internal sealed partial class IrBuilder
         C.TypeFnPtr t => FnPtrType(t.Arg0, t.Arg5),
         C.TypeFnPtrNoArgs t => FnPtrType(t.Arg0, null),
         C.TypeFnPtrVoid t => FnPtrType(t.Arg0, null),
+        C.TypeFnPtrStorage t => new CType.Pointer(FnPtrType(t.Arg0, t.Arg6)),
+        C.TypeFnPtrStorageNoArgs t => new CType.Pointer(FnPtrType(t.Arg0, null)),
+        C.TypeFnPtrStorageVoid t => new CType.Pointer(FnPtrType(t.Arg0, null)),
         _ => throw new IrUnsupportedException(TypeName(it.Content)),
     };
 
@@ -2155,6 +2164,10 @@ internal sealed partial class IrBuilder
         C.DeclFnPtrNoArgs d => BuildFnPtrLocal(d.Arg0, d.Arg3, null, null),
         C.DeclFnPtrInit d => BuildFnPtrLocal(d.Arg0, d.Arg3, d.Arg6, d.Arg9),
         C.DeclFnPtrNoArgsInit d => BuildFnPtrLocal(d.Arg0, d.Arg3, null, d.Arg8),
+        C.DeclFnPtrStorage d => BuildFnPtrLocal(d.Arg0, d.Arg4, d.Arg7, null, pointerLevels: 1),
+        C.DeclFnPtrStorageNoArgs d => BuildFnPtrLocal(d.Arg0, d.Arg4, null, null, pointerLevels: 1),
+        C.DeclFnPtrStorageInit d => BuildFnPtrLocal(d.Arg0, d.Arg4, d.Arg7, d.Arg10, pointerLevels: 1),
+        C.DeclFnPtrStorageNoArgsInit d => BuildFnPtrLocal(d.Arg0, d.Arg4, null, d.Arg9, pointerLevels: 1),
         _ => throw new IrUnsupportedException(TypeName(it.Content)),
     };
 
@@ -2225,7 +2238,7 @@ internal sealed partial class IrBuilder
         return new DeclStmt(System.Array.Empty<LocalDecl>());
     }
 
-    private DeclStmt BuildFnPtrLocal(Item retItem, Item nameItem, Item? paramsItem, Item? initItem)
+    private DeclStmt BuildFnPtrLocal(Item retItem, Item nameItem, Item? paramsItem, Item? initItem, int pointerLevels = 0)
     {
         CType.Func type = FnPtrType(retItem, paramsItem);
         var init = initItem is { } ii ? BuildExpr(ii) : null;
@@ -2238,7 +2251,7 @@ internal sealed partial class IrBuilder
         {
             type = type with { IsNativeCallConv = true };
         }
-        var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
+        var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = WrapPtr(type, pointerLevels), Storage = Storage.Auto });
         return new DeclStmt(new[] { new LocalDecl(sym, init) });
     }
 

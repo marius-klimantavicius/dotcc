@@ -782,6 +782,10 @@ productions:
       - { lhs: Type, rhs: [Type, '(', '*', ')', '(', ParamList, ')'], action: typeFnPtr }
       - { lhs: Type, rhs: [Type, '(', '*', ')', '(', ')'],            action: typeFnPtrNoArgs }
       - { lhs: Type, rhs: [Type, '(', '*', ')', '(', 'void', ')'],    action: typeFnPtrVoid }
+      # Abstract pointer to callback storage, e.g. `(void (**)(void))p`.
+      - { lhs: Type, rhs: [Type, '(', '*', '*', ')', '(', ParamList, ')'], action: typeFnPtrStorage }
+      - { lhs: Type, rhs: [Type, '(', '*', '*', ')', '(', ')'], action: typeFnPtrStorageNoArgs }
+      - { lhs: Type, rhs: [Type, '(', '*', '*', ')', '(', 'void', ')'], action: typeFnPtrStorageVoid }
       - { lhs: Type, rhs: [TypeSpecList], action: typeFromSpec }
       # `struct ID` as a type reference — used in declarations, parameters,
       # casts, sizeof. The visitor emits just `ID` since C# doesn't require
@@ -1128,6 +1132,8 @@ productions:
       # `delegate*` field via FnPtrType, like every other fn-ptr position.
       - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')', ';'], action: structFnPtrMember }
       - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ')', ';'],            action: structFnPtrMemberNoArgs }
+      - { lhs: Member, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')', ';'], action: structFnPtrStorageMember }
+      - { lhs: Member, rhs: [Type, '(', '*', '*', ID, ')', '(', ')', ';'], action: structFnPtrStorageMemberNoArgs }
       # A callback may itself return a function pointer (SQLite's xDlSym).
       # Keep both signatures instead of flattening the returned pointer to void*.
       - { lhs: Member, rhs: [Type, '(', '*', '(', '*', ID, ')', '(', ParamList, ')', ')', '(', ParamList, ')', ';'], action: structFnPtrReturningFnPtr }
@@ -1282,6 +1288,12 @@ productions:
       - { lhs: Decl, rhs: [Type, '(', '*', ID, ')', '(', ')'],                       action: declFnPtrNoArgs }
       - { lhs: Decl, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')', '=', E],    action: declFnPtrInit }
       - { lhs: Decl, rhs: [Type, '(', '*', ID, ')', '(', ')', '=', E],               action: declFnPtrNoArgsInit }
+      # A pointer to a callback slot/table composes the same function type
+      # with one ordinary data-pointer level.
+      - { lhs: Decl, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')'], action: declFnPtrStorage }
+      - { lhs: Decl, rhs: [Type, '(', '*', '*', ID, ')', '(', ')'], action: declFnPtrStorageNoArgs }
+      - { lhs: Decl, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')', '=', E], action: declFnPtrStorageInit }
+      - { lhs: Decl, rhs: [Type, '(', '*', '*', ID, ')', '(', ')', '=', E], action: declFnPtrStorageNoArgsInit }
       # Pointer-to-array declarator: `int (*p)[3] [= E];` — p is a pointer to an
       # array of 3 (e.g. a row pointer into a 2-D array). Same `( * ID )` shape as
       # the fn-ptr declarator but with `[dims]` instead of `(params)` after the
