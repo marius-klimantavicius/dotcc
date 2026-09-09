@@ -83,6 +83,7 @@ static const char *const corpus[] = {
   "SELECT json('{broken');",
   "CREATE VIRTUAL TABLE forbidden_fts USING fts5(content);",
   "CREATE TABLE json_store(id PRIMARY KEY, doc BLOB); INSERT INTO json_store VALUES(1,jsonb('{\"items\":[1,2,3]}')); UPDATE json_store SET doc=jsonb_set(doc,'$.items[1]',99); SELECT id,typeof(doc),json(doc) FROM json_store ORDER BY id;",
+  "SELECT json_pretty('{\"a\":[1,2]}'),json_pretty('{\"a\":[1,2]}','..'),json_array_length('{\"a\":[1,2]}','$.a'),json_type('null'),json_extract('{\"a\":1,\"b\":2}','$.a','$.b'),hex(jsonb_extract('{\"a\":[1,2]}','$.a'));",
   "PRAGMA integrity_check; PRAGMA foreign_key_check;"
 };
 int main(void) {

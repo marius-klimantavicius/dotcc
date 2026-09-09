@@ -3,9 +3,12 @@
 Campaign commands run from `sqlite/`; scripts resolve their own absolute roots.
 
 - `dotnet build ../dotcc.sln -c Release`: passed, zero warnings/errors, 9 seconds.
-- Baseline unit suite: running, results pending.
+- Baseline unit suite: **1,723 passed, zero failed/skipped**, 35 seconds, with isolated TMPDIR.
+  The first default `/tmp` run was stopped after eight minutes without completion;
+  compiler include discovery repeatedly traversed an unrelated 18 GB temporary tree.
+  `scripts/test-repository.sh` isolates TMPDIR for repeatable test timing.
 - Baseline functional suite: pending.
-- `scripts/native.sh`: 35-case deterministic core/JSON/JSONB native corpus completes;
+- `scripts/native.sh`: 36-case deterministic core/JSON/JSONB native corpus completes;
   expected transcript checked in at `tests/native-corpus.expected`. Translated comparison pending.
 - VFS worker strict GCC native suite passes; ASan+UBSan suite passes. Reproduce with
   `scripts/test-vfs-native.sh` and `SQLITE_SANITIZE=1 scripts/test-vfs-native.sh`.
