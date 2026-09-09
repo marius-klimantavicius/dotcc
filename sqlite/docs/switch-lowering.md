@@ -6,6 +6,13 @@ source fallthrough, switch and loop exits, outer-loop continuation, and the
 original execution points of initializers. Only local storage whose scope must
 be opened for an entry is hoisted.
 
+Named C labels use this same dispatch path, including shared handlers entered
+from another case. Moving just a handler's labeled tail outside the switch
+loses the scope of variables declared before that label. Keeping the affected
+scope together preserves pointer, scalar, and fixed-array storage as well as
+cross-case fallthrough and outer-loop continuation. The
+`named-switch-labels` fixture mirrors SQLite JSON's `to_double` handler.
+
 Statements before the first case are preserved as an initial section without
 case labels. Their declarations bind names and reserve storage, while dispatch
 skips their executable code. A named goto can still reach a label in this
@@ -49,3 +56,16 @@ in approximately two seconds. Existing Duff's-device tests also pass.
 Trace files and summarized stacks are under ignored
 `sqlite/artifacts/compiler-profile/`; reduced native sources, before/after
 logs, and actual engine timing are under `sqlite/artifacts/switch-structure/`.
+
+## Loop reachability
+
+Literal integer and enum conditions, including parenthesized and resolved
+compile-time forms, emit C# `true` or `false` in loops. `Cond.B(1)` evaluates
+correctly at runtime but is not a C# constant expression, so it incorrectly
+leaves an apparent non-returning path after a C infinite loop. This affected
+SQLite's `yy_find_shift_action` and `jsonLabelCompareEscaped`.
+
+Other expressions retain the existing `Cond.B` evaluation. The
+`literal-loop-reachability` native fixture covers `while`, `do`, and `for`,
+zero conditions, `~0xffffffffu`, and a condition with observable side effects.
+This change does not introduce a separate numeric constant folder.

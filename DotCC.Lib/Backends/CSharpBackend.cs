@@ -718,13 +718,13 @@ internal sealed partial class CSharpBackend
                 }
                 break;
             case While w:
-                sb.Append(pad).Append($"while (Cond.B({Expr(DecayEnum(w.Cond))}))\n");
+                sb.Append(pad).Append($"while ({LoopCondition(w.Cond)})\n");
                 WithNormalBreak(() => Nested(sb, w.Body, ind));
                 break;
             case DoWhile dw:
                 sb.Append(pad).Append("do\n");
                 WithNormalBreak(() => Nested(sb, dw.Body, ind));
-                sb.Append(pad).Append($"while (Cond.B({Expr(DecayEnum(dw.Cond))}));\n");
+                sb.Append(pad).Append($"while ({LoopCondition(dw.Cond)});\n");
                 break;
             case Goto g:
                 // A cross-section goto to a label that starts another case section
@@ -812,7 +812,7 @@ internal sealed partial class CSharpBackend
                     ExprStmt e => Expr(e.Expr),
                     _ => "",
                 };
-                var cond = fr.Cond is null ? "" : $"Cond.B({Expr(DecayEnum(fr.Cond))})";
+                var cond = fr.Cond is null ? "" : LoopCondition(fr.Cond);
                 var post = fr.Post is null ? "" : Expr(fr.Post);
                 sb.Append(pad).Append($"for ({init}; {cond}; {post})\n");
                 WithNormalBreak(() => Nested(sb, fr.Body, ind));
@@ -875,7 +875,7 @@ internal sealed partial class CSharpBackend
     /// </list></summary>
     private void RenderSwitch(StringBuilder sb, Switch sw, int ind, string pad)
     {
-        if (sw.Sections.Any(section => section.Labels.Count == 0 || section.Body.Any(ContainsNestedCase)))
+        if (sw.Sections.Any(section => section.Labels.Count == 0 || section.Body.Any(ContainsSwitchEntryLabel)))
         {
             RenderSwitchWithNestedLabels(sb, sw, ind);
             return;

@@ -21,8 +21,8 @@ internal sealed partial class CSharpBackend
         _ => Array.Empty<CStmt>(), // A nested switch owns its own case labels.
     };
 
-    private static bool ContainsNestedCase(CStmt statement) =>
-        statement is CaseLabelStmt || SwitchChildren(statement).Any(ContainsNestedCase);
+    private static bool ContainsSwitchEntryLabel(CStmt statement) =>
+        statement is CaseLabelStmt or Labeled || SwitchChildren(statement).Any(ContainsSwitchEntryLabel);
 
     /// <summary>C permits jumping directly into a block, conditional or loop at
     /// a nested case label. Dispatch once to ordinary same-scope labels, then
@@ -117,8 +117,8 @@ internal sealed partial class CSharpBackend
         void Jump(string label) => output.Append(bodyPad).Append("goto ").Append(label).Append(";\n");
         void BranchFalse(CExpr condition, string destination)
         {
-            var expression = Hoist(output, bodyPad, () => Expr(DecayEnum(condition)));
-            output.Append(bodyPad).Append("if (!Cond.B(").Append(expression).Append(")) goto ").Append(destination).Append(";\n");
+            var expression = Hoist(output, bodyPad, () => LoopCondition(condition));
+            output.Append(bodyPad).Append("if (!(").Append(expression).Append(")) goto ").Append(destination).Append(";\n");
         }
         void Render(CStmt current, string breakTarget, string? continueTarget)
         {
