@@ -2044,7 +2044,12 @@ internal sealed partial class CSharpBackend
                     // only when that common type isn't already the RHS's (so `short +=
                     // int` keeps the int and lets C# narrow), and never for a shift
                     // (whose count is independent) or pointer/non-arithmetic arithmetic.
-                    var rhs = Sub(a.Value, PAssign);
+                    // Like an ordinary C shift, the count is promoted
+                    // independently of the left operand. C# requires int;
+                    // retaining compound assignment evaluates the target once.
+                    var rhs = cop is BinOp.Shl or BinOp.Shr
+                        && a.Value.Type.Unqualified is not CType.Prim { Name: "int" }
+                        ? $"(int)({Expr(a.Value)})" : Sub(a.Value, PAssign);
                     if (cop is not (BinOp.Shl or BinOp.Shr)
                         && a.Target.Type.IsArithmetic && a.Value.Type.IsArithmetic)
                     {
