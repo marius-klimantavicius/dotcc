@@ -238,3 +238,14 @@ The before/after profile and VDBE statement counts are in `switch-lowering.md`;
 logs and read-only trace: `artifacts/switch-structure/` and
 `artifacts/compiler-profile/`. This is a compilation progress result, not yet a
 working SQLite assembly or runtime validation.
+
+## Switch storage, runtime names and source filename checkpoint
+
+Commits `8c45a24`, `ea32962`, and `cb266d8`: 1,782 unit and 267 functional
+tests pass, 875 optional oracle skips, zero failures. Native/red regressions
+cover prelude storage, skipped array initialization and the runtime DateTime
+collision; five unit cases verify physical included-file provenance.
+Actual complete engine emission takes 3.99 seconds / 1,048,676 KiB peak RSS;
+its C# build completes in 7.29 seconds with 66 errors, down from 170. All 30
+compiler offset contracts still match native. Actual C# storage and engine
+execution remain pending. Logs: `artifacts/source-filenames/`.

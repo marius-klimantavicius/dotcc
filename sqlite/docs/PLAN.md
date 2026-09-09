@@ -1,7 +1,7 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: M0 complete; the full configured amalgamation parses, lowers, and emits C#.
-Combined VFS translation (M1), offsetof validation (M2), generated C# compilation
+Status: M0/M1 complete; configured SQLite, VFS and every harness parse, lower, and emit C#.
+Actual offsetof storage validation (M2), generated C# compilation
 (M3), and translated VFS/API validation (M4/M5) remain active. Execution is pending.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
@@ -156,7 +156,7 @@ Commit the baseline infrastructure and findings.
       declarators, nested function-pointer signatures, aggregate initializers,
       array bounds, casts, and constant expressions; these are investigation
       areas, not asserted findings before the baseline runs.
-- [ ] Preserve line/source mapping and fail clearly on unsupported constructs.
+- [x] Preserve line/source mapping and fail clearly on unsupported constructs.
       Record preprocessing/parsing time and memory for this large input.
 
 Exit: the complete configured SQLite plus adapter/harness reaches C# emission

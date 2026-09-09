@@ -266,12 +266,37 @@ entry labels reduces those to 167, 590 and 48. The actual full compile now ends
 in 7.32 seconds with 170 semantic diagnostics. A native-verified stress case,
 compiler cancellation bound and full suites pass. See `switch-lowering.md`.
 
+## B022 — switch prelude storage (fixed 8c45a24)
+
+SQLite's yy_reduce declares yylhsminor before its first case. The IR discarded
+all prelude statements, losing declarations as well as skipped initializers.
+An unlabeled prelude section now retains storage and named-goto reachability.
+Fixed arrays allocate before dispatch while initializer effects remain at their
+original declaration sites; variable arrays bypassed by case entry diagnose.
+Native regressions cover aggregate and multidimensional arrays and skipped side
+effects. All yylhsminor diagnostics disappear in the actual retry.
+
+## B023 — runtime DateTime name collision (fixed ea32962)
+
+SQLite defines a DateTime aggregate in the same generated source as dotcc's
+calendar/POSIX runtime. Runtime references now qualify global::System.DateTime.
+The native/red fixture retains the C type and checks epoch formatting alongside
+it. Actual engine diagnostics for calendar members and constructors disappear.
+
+## B024 — included-file diagnostic provenance (fixed cb266d8)
+
+Physical numeric positions survived macro expansion, but parser reductions lost
+filenames. Token origins now survive rewrites and identity action AST creation;
+IR diagnostics prefer that origin. Five regressions and the actual amalgamation
+confirm nested headers, semantic errors, macro invocation and parent restoration.
+See `source-mapping.md`.
+
 ## Next semantic families
 
-The actual generated C# build now reports 94 unknown-variable diagnostics
-(mostly yy_reduce's yylhsminor declared before the first case), pointer and
-conditional conversions, runtime DateTime name collisions, two missing return
-paths, pointer/function-pointer va_arg generic arguments, one promoted ushort
-variadic argument ambiguity, and two wide shift-assignment counts. These are
-being reduced without modifying generated output. Evidence:
-`artifacts/switch-structure/engine-build.log`.
+The actual generated C# build now reports 66 errors: 37 CS0029 and 15 CS1503
+conversions, seven JSON shared-label variables outside their emitted scope,
+two constant infinite-loop return paths, two pointer/function-pointer field
+addresses passed as invalid Unsafe.AsPointer generic arguments, one promoted
+ushort variadic argument ambiguity, and two wide shift-assignment counts.
+These are being reduced without modifying generated output. Evidence:
+`artifacts/source-filenames/engine-build.log`.
