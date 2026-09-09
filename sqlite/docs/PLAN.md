@@ -1,6 +1,6 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: planned; implementation has not started.
+Status: implementation active; M0 baseline and parallel M2/M4 work in progress.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
 ## Objective and constraints
@@ -27,8 +27,7 @@ against the translated SQLite API and loaded through explicit application
 registration. No dynamic library or assembly loading is required. Native SQLite
 remains a separate test oracle, not a runtime dependency or extension host.
 
-Commit locally after each coherent, tested change. Do not push. This document is
-the planning deliverable; downloading and translating SQLite are future steps.
+Commit locally after each coherent, tested change. Do not push. This document tracks the implementation campaign and its remaining milestones.
 
 ## Workspace and reproducible inputs
 
@@ -137,11 +136,11 @@ workspace changes or push any branch.
 ### M0 — Pin inputs and establish the baseline
 
 - [ ] Add reproducible fetch/config/build/probe scripts and local ignore rules.
-- [ ] Download SQLite into `ref/` and record provenance in `docs/source.md`.
+- [x] Download SQLite into `ref/` and record provenance in `docs/source.md`.
 - [ ] Record existing dotcc build/test results separately from SQLite failures.
 - [ ] Build a native reference from the pinned amalgamation, using the same
       feature definitions and, once available, the same memory VFS and C harness.
-- [ ] Attempt full preprocessing and translation; record actual blockers rather
+- [x] Attempt full preprocessing and translation; record actual blockers rather
       than treating existing C-support documentation as proof of compatibility.
 
 Exit: repeatable inputs, a native baseline, and a recorded real SQLite failure.
