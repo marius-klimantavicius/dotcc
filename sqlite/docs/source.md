@@ -11,4 +11,17 @@ stable release includes JSONB and avoids an implicitly moving feature inventory.
 
 Run `python3 scripts/fetch.py` from `sqlite/`. Every invocation verifies the
 archive checksum before extracting unchanged upstream files into `ref/`.
-Fetched inputs are ignored. No upstream tests have been fetched yet.
+Fetched inputs are ignored.
+
+## Matching public test source
+
+- Archive: https://www.sqlite.org/2025/sqlite-src-3500400.zip
+- Archive SHA-256: `b7b4dc060f36053902fb65b344bbbed592e64b2291a26ac06fe77eec097850e9`
+- Extracted unchanged under `ref/upstream-tests/sqlite-src-3500400/`.
+- Selected `test/jsonb01.test` SHA-256:
+  `33415ec57cf217025e24a08dc947e6014b93134726f485938003cd18bd5b1df3`.
+- The public test source disclaims copyright; its original notice remains in
+  the downloaded source. The generated runner records its provenance.
+
+`fetch.py` checks both archive hashes on every run. Test adaptation is described
+in `upstream-tests.md`; generated C is never manually edited.

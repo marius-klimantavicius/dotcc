@@ -45,3 +45,11 @@ Commits `4db77b5`, `c679ee4`, `0071282`:
 - Raw logs: `artifacts/stringify-*-integrated.log`, earlier offset logs under
   `artifacts/offsetof/`. Generator actual storage/native fixture is documented
   in `generators/README.md`. Full SQLite execution remains pending.
+
+## Public JSONB tests
+
+`scripts/test-upstream-native.sh` passes all 37 adapted SQL assertions and setup
+from the matching public `jsonb01.test`, retaining upstream expected bytes and
+error behavior. `tests/upstream-jsonb.expected` records the native transcript;
+`docs/upstream-tests.md` documents the adaptation and coverage boundary.
+Translated execution remains pending.
