@@ -12,3 +12,9 @@ SQLITE_NATIVE_FLAGS=()
 while IFS= read -r native_flag; do
   [[ -z "$native_flag" || "$native_flag" == \#* ]] || SQLITE_NATIVE_FLAGS+=("$native_flag")
 done < "$SQLITE_ROOT/config/native-flags.txt"
+
+# A generated runtime defect must fail a corpus run instead of hanging CI.
+# Compilation/publishing keeps its separate build budget.
+run_sqlite_process() {
+  timeout --kill-after=10s "${SQLITE_EXECUTION_TIMEOUT:-120}s" "$@"
+}

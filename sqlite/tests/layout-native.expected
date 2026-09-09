@@ -31,6 +31,14 @@ header JsonParse 72 8
 field JsonParse nBlob 8 8
 field JsonParse delta 52 52
 field JsonParse aIns 64 64
+array FuncDefHash a 184 8 184 8 23 0 176 1 1
+array JsonCache a 48 8 32 8 4 16 40 1 1
+array FKey apTrigger 64 8 16 8 2 48 56 1 1
+array MemPage apOvfl 136 8 32 8 4 40 64 1 1
+array BtCursor apPage 296 8 152 8 19 144 288 1 1
+array CellArray apEnd 104 8 48 8 6 32 72 1 1
+array PragmaVtabCursor azArg 40 8 16 8 2 24 32 1 1
+array WhereLoop aLTermSpace 112 8 24 8 3 88 104 1 1
 required BtCursor pBt 296 8 32 32
 required DbClientData zName 24 8 24 24
 required Expr iTable 72 8 44 44

@@ -10,8 +10,11 @@ The campaign's `scripts/layout-native.sh` extracts all active offsetof requests
 from full preprocessed SQLite and generates native checks without storing any
 offset values in the recipe. The current profile has 30 distinct requests;
 their native sizes, alignments, constant offsets, and address differences are
-recorded in `tests/layout-native.expected`. The same probe is ready for the
-translated compiler once full lowering succeeds.
+recorded in `tests/layout-native.expected`. The complete translated probe now
+matches that oracle under both the JIT and linux-x64 NativeAOT. Additional checks measure actual CLR alignment
+for 33 aggregates and real storage for eight pointer-element inline arrays; see
+[`docs/layout-storage.md`](../docs/layout-storage.md) for the test-sidecar design,
+runtime commands, and NativeAOT status.
 
 The compiler resolves integer-constant contexts before C# generation, recording
 those requests as well as runtime expression requests. Each request produces an
@@ -72,16 +75,19 @@ The `offsetof-generated` C fixture compares emitted constants and actual storage
 address differences for nested structs/unions, an inline array, a function-pointer
 field, adjacent bitfields, anonymous promotion, and enum/array/case/static-assert
 contexts. Its checked-in output was verified using the host LP64 `cc -std=c17`.
-Release solution build and 10 focused OffsetofTests passed. The focused functional
-run passed all generator tests and all offset fixtures, including the new native
-layout fixture; the independent callback-return fixture still exposed a compiler
-argument-conversion blocker. The full amalgamation retry advanced to the next
-parser error at preprocessed line 7990. See `artifacts/offsetof/` for these local
-logs. Generator tests cover determinism, malformed input, compiler mismatch diagnostics,
+The initial generator increment passed 10 focused OffsetofTests and the
+generator/offset fixtures while full translation still encountered parser
+blockers. Those historical logs are in `artifacts/offsetof/`; the full selected
+engine now compiles and its actual layout probe passes. Generator tests cover
+determinism, malformed input, compiler mismatch diagnostics,
 unknown layouts, bitfield address rejection, and object/link compilation.
 
-M2 is not complete until the campaign records the full SQLite retry, complete
-suite results, NativeAOT validation, and SQLite-specific layout comparisons.
+The full selected SQLite engine compiles, and its generator constants and actual
+layout pass native comparisons under JIT and NativeAOT. The full repository
+checkpoint passed 1,793 unit tests and 276 functional tests (893 optional skips);
+subsequent invalid pointer-array operator guards passed their focused negative
+and valid-operation regressions. See the campaign validation document for the
+latest complete-suite result and supported profile.
 Flexible arrays now use count-zero metadata. Their header has explicit size and
 field offsets, an overlapping scalar alignment anchor, and a pointer property for
 the tail; there is no phantom element in storage. Generator constants supply the
@@ -90,9 +96,9 @@ header's `StructLayout.Size`/`Pack` and tail pointer offset. The
 offsets, actual addresses and overallocated access for scalar, aggregate, pointer
 and function-pointer tails, including a double tail following integer bitfields.
 
-General GCC/MSVC bitfield ABI differences and >8-byte primitive alignment remain
-an explicit audit item. In particular, GCC may place a char tail directly after
-the used bits of an integer bitfield, while dotcc's current backing-unit model
-places it after the complete storage unit; that shape is not yet claimed to match
-GCC. Empty flexible headers and tail-header alignments beyond 8 bytes produce a
-clear unsupported-storage diagnostic.
+The selected native profile explicitly uses GCC `-mms-bitfields` to match dotcc's
+existing backing-unit ABI, along with unsigned plain char. Default GCC can place
+a char tail directly after the used bits of an integer bitfield; its distinct
+layout is recorded separately in `tests/layout-native-sysv.reference` and is not
+the claimed translated ABI. Empty flexible headers and tail-header alignments
+beyond 8 bytes produce a clear unsupported-storage diagnostic.

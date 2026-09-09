@@ -13,8 +13,18 @@ dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   --offset-generator "$SQLITE_ROOT/generators/DotCC.OffsetGenerator/bin/Release/netstandard2.0/DotCC.OffsetGenerator.dll" \
   > "$SQLITE_ROOT/artifacts/translated-layout-emission.log" 2>&1
 python3 "$SQLITE_ROOT/scripts/check-layout-metadata.py" "$output/Program.cs"
+python3 "$SQLITE_ROOT/scripts/generate-layout-storage-checks.py" \
+  "$SQLITE_ROOT/tests/layout-native.expected" "$output/LayoutStorageChecks.cs"
 dotnet build "$output/Test-layout.csproj" -c Release --nologo \
   > "$SQLITE_ROOT/artifacts/translated-layout-build.log" 2>&1
-dotnet "$output/bin/Release/net10.0/Test-layout.dll" > "$SQLITE_ROOT/artifacts/translated-layout.out"
+run_sqlite_process dotnet "$output/bin/Release/net10.0/Test-layout.dll" > "$SQLITE_ROOT/artifacts/translated-layout.out"
 diff -u "$SQLITE_ROOT/tests/layout-native.expected" "$SQLITE_ROOT/artifacts/translated-layout.out"
 cat "$SQLITE_ROOT/artifacts/translated-layout.out"
+if [[ "${SQLITE_AOT:-0}" == 1 ]]; then
+  dotnet publish "$output/Test-layout.csproj" -c Release -r linux-x64 \
+    -p:PublishAot=true -o "$SQLITE_ROOT/build/layout-aot" --nologo \
+    > "$SQLITE_ROOT/artifacts/translated-layout-aot-build.log" 2>&1
+  run_sqlite_process "$SQLITE_ROOT/build/layout-aot/Test-layout" > "$SQLITE_ROOT/artifacts/translated-layout-aot.out"
+  diff -u "$SQLITE_ROOT/tests/layout-native.expected" "$SQLITE_ROOT/artifacts/translated-layout-aot.out"
+  printf '%s\n' 'PASS NativeAOT layout constants, aggregate alignment, pointer-array storage and addresses'
+fi
