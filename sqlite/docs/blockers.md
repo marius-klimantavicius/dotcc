@@ -447,3 +447,13 @@ loop/exception entry diagnoses explicitly. Native/red fixtures, the actual Chibi
 suite and SQLite consumer pass. Final repository/port evidence is in `validation.md`.
 The only full-unit follow-up was an expected-output string for unchanged Zig
 slice length three, updated in `1110b45` for the explicit unchecked expression.
+
+
+## Campaign completion
+
+All observed blockers B001–B038 are resolved with regression coverage and actual
+amalgamation retries. Implementation commit `53c4a06` passes the complete clean
+fetch/build/test campaign, including NativeAOT, every documented SQLite corpus,
+image exchange, and repository/Lua/Chibi/WAT regressions. No active blocker remains
+for the selected profile. The ledger above retains the original failure context;
+final evidence and explicit scope limits are recorded in `validation.md`.

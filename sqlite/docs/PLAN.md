@@ -1,9 +1,10 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: M0–M5 complete. The unchanged configured engine, separate C# consumer,
-all native differential corpora and database-image exchanges pass. JIT and
-NativeAOT validate actual SQLite storage, offsetof and C# callbacks. Final shared
-repository/port regressions and clean-checkout reproduction (M6) remain active.
+Status: M0–M6 complete. A clean checkout of implementation commit `53c4a06`
+passed the complete fetch/build/test campaign, including all native differential
+corpora, database-image exchanges, repository/port regressions, and JIT/NativeAOT
+validation of actual SQLite storage, offsetof and explicitly registered C# callbacks.
+See `validation.md` for the final evidence and `usage.md` for reproduction commands.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
 ## Objective and constraints
@@ -311,19 +312,19 @@ parser/emitter/runtime defects have regression tests and full-amalgamation retri
 
 ### M6 — Reproducibility and completion
 
-- [ ] Reproduce fetch -> checksum -> preprocess -> translate -> source-generate
+- [x] Reproduce fetch -> checksum -> preprocess -> translate -> source-generate
       -> build -> test from a clean checkout, using documented commands rooted at
       `sqlite/`. Ensure generated output is never edited by hand.
 - [x] Add a local campaign entry script and CI integration using existing repo
       conventions; CI configuration may live in `.github/workflows/`, while all
       SQLite workflow logic stays under `sqlite/scripts/`. No push is required.
-- [ ] Run full required repository regressions serially and NativeAOT smoke
+- [x] Run full required repository regressions serially and NativeAOT smoke
       validation of the generated engine/consumer. Record actual results and
       timings, dependency closure, and any remaining unsupported platform profile.
-- [ ] Update `docs/validation.md`, the campaign blocker ledger, and shared
+- [x] Update `docs/validation.md`, the campaign blocker ledger, and shared
       `docs/C-SUPPORT.md` when generic features land. Document how a future FTS
       profile can reuse the same inputs, callback support, and oracle harness.
-- [ ] Commit the final verified milestone and report local branch/commit state.
+- [x] Commit the final verified milestone and report local branch/commit state.
 
 Completion requires a reusable translated C# engine with core plus JSON/JSONB,
 the memory VFS contract, working function-pointer APIs, the integrated offsetof

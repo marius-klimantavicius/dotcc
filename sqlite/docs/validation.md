@@ -383,3 +383,63 @@ its separate consumer passes SQL/JSONB/callback/reentry/GC checks (12.13 seconds
 including emission/build). Full clean-checkout reproduction is the remaining gate.
 Logs: `artifacts/external-switch-{unit-final,functional-all,sqlite}.log`,
 `external-switch-entry-final-build.log`, and `ports-final-validation.log`.
+
+
+## Final clean-checkout reproduction — M6 complete
+
+Implementation commit `53c4a06869885aa3f98c76f42da4836774587223` passed the
+complete campaign from a fresh detached worktree at
+`sqlite/artifacts/clean-checkout`. Initial tracked status was clean and no fetched
+sources, generated output, `bin/` or `obj/` directories existed. From that
+checkout's `sqlite/` directory, the exact command was:
+
+```sh
+SQLITE_AOT=1 scripts/verify.sh --with-ports
+```
+
+The command exited zero in **8 minutes 6.97 seconds**, with peak RSS
+**1,096,696 KiB**. Both pinned archives were downloaded anew and their SHA-256
+hashes verified. All four extracted amalgamation files match their archive bytes.
+The build used NuGet `SharpAstro.LALR.CC` 4.7.0, with no local sibling dependency
+or copied generated sources/binaries. No source, runner or expected-output changes
+were needed during this reproduction.
+
+- Release solution build: zero errors, 8.69 seconds.
+- Unit suite: **1,814 passed**, zero failures/skips, 41 seconds.
+- Functional suite: **280 passed**, zero failures, 901 optional oracle skips,
+  1 minute 26 seconds. These skips are not counted as executed tests.
+- All seven native baselines match their committed expected transcripts.
+- Actual translated layout passes JIT and NativeAOT: **30 offsets, 33 aggregate
+  size/alignment checks and eight pointer-array storage checks**.
+- The separate C# consumer passes JIT and NativeAOT, including SQL/JSONB,
+  explicit managed function pointers, nested SQL, identity/GC stress and cleanup.
+- All six translated core/API/VFS/virtual-table/allocation/upstream suites match
+  native, including 39 core cases, 256 seeded transaction operations, 128 injected
+  allocator failures and 37 adapted public JSONB assertions.
+- All three independent-process image exchanges pass: native→managed,
+  managed→native and managed→managed.
+- Lua reaches `final OK !!!`; Chibi passes **1,225/1,225** tests and **18/18**
+  subgroups against its exact native baseline; WAT passes **146/146**, zero skips.
+
+Top-level evidence in the original campaign directory:
+`artifacts/clean-reproduction.log`, `clean-reproduction.time`,
+`clean-reproduction-initial.json`, `clean-reproduction-input-audit.json`, and
+`clean-reproduction-final-audit.json`.
+Stage logs and regenerated outputs remain under
+`artifacts/clean-checkout/sqlite/artifacts/`, including `campaign-repository.log`,
+`campaign-layout.log`, `campaign-managed-consumer.log`,
+`campaign-translated-*.log`, `campaign-image-exchange.log`, and `regression-*`.
+The final documentation-only commit records this verified implementation snapshot.
+The detached checkout remains clean after all stages. Both AOT publish logs have
+zero ILxxxx analysis warnings. Both ELF executables list only libm, libc and the
+Linux loader as direct dependencies, with no SQLite import. Ordinary native .NET
+runtime dependencies are distinct from native SQLite interop or extension loading.
+
+The supported profile remains Linux x64, LP64, little endian, unsigned plain char,
+matching whole-unit bit-field layout, serialized calls and a process-local memory
+VFS. There is no native SQLite dependency or dynamic extension loader. FTS remains
+deferred; concurrent hosting, WAL shared memory, mmap and disk durability remain
+outside this profile. This is the documented corpus, not all upstream SQLite tests
+or TH3. Shared compiler limitations outside these verified inputs remain listed in
+`../docs/C-SUPPORT.md`. The CI workflow is committed but remote CI was not run;
+no branch was pushed. Future FTS/profile work is described in `usage.md`.
