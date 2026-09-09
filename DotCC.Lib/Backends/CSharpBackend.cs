@@ -2135,9 +2135,13 @@ internal sealed partial class CSharpBackend
             // &fn where fn is a function already decays to `&fn` in the VarRef
             // case — don't emit a second `&`.
             case UnOp.AddrOf when u.Operand is VarRef { Sym.Kind: SymKind.Func }: return Render(u.Operand);
-            // A flexible array has no C# field to address. Its getter already
-            // returns the beginning of the tail (also the address of the C array).
-            case UnOp.AddrOf when u.Operand.Type.Unqualified is CType.Array { Count: 0 }: return Render(u.Operand);
+            // C &array has the same base address as array decay. Every array
+            // representation already exposes that storage pointer (fixed buffer,
+            // InlineArray, stack/pinned array, or flexible-tail property). Taking
+            // another C# address can address a pointer temporary instead, and a
+            // global pointer must not become Unsafe.AsPointer<T*>'s argument.
+            // Keep the IR pointer-to-array type for element-stride semantics.
+            case UnOp.AddrOf when u.Operand.Type.Unqualified is CType.Array: return Render(u.Operand);
             // &global — a file-scope global / static local lowers to a C# static
             // field, which is a MOVEABLE variable (`&field` is CS0212). Take its
             // address via Unsafe.AsPointer: dotcc's globals are unmanaged value
