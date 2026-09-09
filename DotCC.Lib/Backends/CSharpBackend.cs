@@ -1946,8 +1946,16 @@ internal sealed partial class CSharpBackend
                             // fn-ptr type before the ternary (or a call) can bind.
                             : IsFnPtrType(t.Type) && UnparenIsFunc(a)
                             ? $"({Cs(t.Type)})({Expr(a)})"
+                            : t.Type.Unqualified is CType.Pointer or CType.Func
+                            ? Coerced(a, t.Type)
                             : Expr(a));
-                    return ($"(Cond.B({Expr(DecayEnum(t.Cond))}) ? {Arm(t.Then)} : {Arm(t.Else)})", PPrimary);
+                    var conditional = $"(Cond.B({Expr(DecayEnum(t.Cond))}) ? {Arm(t.Then)} : {Arm(t.Else)})";
+                    // Establish C's common pointer type before an enclosing C#
+                    // cast/call supplies a target type. Otherwise (byte*)(c ?
+                    // malloc(n) : null) tries to convert malloc's void* arm to
+                    // byte* implicitly while binding the conditional itself.
+                    return (t.Type.Unqualified is CType.Pointer or CType.Func
+                        ? $"(({Cs(t.Type)}){conditional})" : conditional, PPrimary);
                 }
             case SwitchExpr sw:
                 {
