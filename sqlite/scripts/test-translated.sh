@@ -38,7 +38,7 @@ if [[ "${2:-}" == --emit-only ]]; then
 fi
 dotnet build "$output/Test-$suite.csproj" -c Release --nologo \
   > "$SQLITE_ROOT/artifacts/translated-$suite-build.log" 2>&1
-dotnet "$output/bin/Release/net10.0/Test-$suite.dll" \
+run_sqlite_process dotnet "$output/bin/Release/net10.0/Test-$suite.dll" \
   > "$SQLITE_ROOT/artifacts/translated-$suite.out"
 diff -u "$SQLITE_ROOT/tests/$expected" "$SQLITE_ROOT/artifacts/translated-$suite.out"
 cat "$SQLITE_ROOT/artifacts/translated-$suite.out"

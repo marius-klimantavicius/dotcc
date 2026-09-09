@@ -42,6 +42,11 @@ static int run_sql(sqlite3 *db, const char *sql, int number) {
     }
     printf("step %d changes %d total %d autocommit %d\n", rc,
       sqlite3_changes(db), sqlite3_total_changes(db), sqlite3_get_autocommit(db));
+    if (rc != SQLITE_DONE) {
+      printf("error %d ", sqlite3_extended_errcode(db));
+      print_bytes((const unsigned char *)sqlite3_errmsg(db), (int)strlen(sqlite3_errmsg(db)));
+      printf("\n");
+    }
     sqlite3_finalize(stmt);
     stmt = 0;
     if (rc != SQLITE_DONE) return rc;
@@ -84,6 +89,9 @@ static const char *const corpus[] = {
   "CREATE VIRTUAL TABLE forbidden_fts USING fts5(content);",
   "CREATE TABLE json_store(id PRIMARY KEY, doc BLOB); INSERT INTO json_store VALUES(1,jsonb('{\"items\":[1,2,3]}')); UPDATE json_store SET doc=jsonb_set(doc,'$.items[1]',99); SELECT id,typeof(doc),json(doc) FROM json_store ORDER BY id;",
   "SELECT json_pretty('{\"a\":[1,2]}'),json_pretty('{\"a\":[1,2]}','..'),json_array_length('{\"a\":[1,2]}','$.a'),json_type('null'),json_extract('{\"a\":1,\"b\":2}','$.a','$.b'),hex(jsonb_extract('{\"a\":[1,2]}','$.a'));",
+  "SELECT json_type('{\"x\":null}','$.x'),json_extract('{\"x\":null}','$.x'),json_type('{}','$.x'),json_extract('{}','$.x'),json_type(NULL),json(NULL),jsonb(NULL),json_type('{\"x\":\"null\"}','$.x'),json_extract('{\"x\":\"null\"}','$.x');",
+  "SELECT json_valid(x'ff',8); SELECT json(x'ff');",
+  "SELECT json_extract('{}','bad-path');",
   "PRAGMA integrity_check; PRAGMA foreign_key_check;"
 };
 int main(void) {

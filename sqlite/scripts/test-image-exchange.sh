@@ -26,7 +26,8 @@ fi
 dotnet build "$output/Test-image.csproj" -c Release --nologo \
   > "$SQLITE_ROOT/artifacts/translated-image-build.log" 2>&1
 "$SQLITE_ROOT/scripts/test-image-native.sh" \
-  > "$SQLITE_ROOT/artifacts/native-image-roundtrip.out" 2>&1
+  > "$SQLITE_ROOT/artifacts/native-image-roundtrip.out" \
+  2> "$SQLITE_ROOT/artifacts/native-image-build.log"
 diff -u "$SQLITE_ROOT/tests/native-image.expected" "$SQLITE_ROOT/artifacts/native-image-roundtrip.out"
 
 native="$SQLITE_ROOT/build/image-native"
@@ -36,14 +37,14 @@ for direction in native-to-managed managed-to-native managed-to-managed; do
   transcript="$SQLITE_ROOT/artifacts/exchange-$direction.out"
   case "$direction" in
     native-to-managed)
-      "$native" write "$database" > "$transcript"
-      "${managed[@]}" read "$database" >> "$transcript" ;;
+      run_sqlite_process "$native" write "$database" > "$transcript"
+      run_sqlite_process "${managed[@]}" read "$database" >> "$transcript" ;;
     managed-to-native)
-      "${managed[@]}" write "$database" > "$transcript"
-      "$native" read "$database" >> "$transcript" ;;
+      run_sqlite_process "${managed[@]}" write "$database" > "$transcript"
+      run_sqlite_process "$native" read "$database" >> "$transcript" ;;
     managed-to-managed)
-      "${managed[@]}" write "$database" > "$transcript"
-      "${managed[@]}" read "$database" >> "$transcript" ;;
+      run_sqlite_process "${managed[@]}" write "$database" > "$transcript"
+      run_sqlite_process "${managed[@]}" read "$database" >> "$transcript" ;;
   esac
   diff -u "$SQLITE_ROOT/tests/native-image.expected" "$transcript"
   echo "PASS $direction: independent-process image exchange"

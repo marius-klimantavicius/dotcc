@@ -15,4 +15,4 @@ gcc -std=c17 -O0 "${SQLITE_LAYOUT_FLAGS[@]}" "${SQLITE_DEFINES[@]}" \
   -DDOTCC_LAYOUT_REQUESTS -I "$SQLITE_ROOT/generated" \
   -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/src" "$SQLITE_ROOT/src/layout_probe.c" \
   -lm -o "$SQLITE_ROOT/build/layout-native"
-exec "$SQLITE_ROOT/build/layout-native"
+run_sqlite_process "$SQLITE_ROOT/build/layout-native"

@@ -14,8 +14,12 @@ The SQL probe covers `json`, `jsonb`, `json_array`, `jsonb_array`,
 profile. This version has no `jsonb_each`/`jsonb_tree` table variants.
 
 Coverage includes JSON5, malformed input, Unicode escapes/surrogates, JSON null,
-negative array indexes, extracted SQL versus JSON values, JSONB validity flags,
+negative array indexes, extracted SQL versus JSON values, explicit JSON null /
+missing path / SQL NULL / text `"null"` distinctions, JSONB validity flags,
 stored JSONB updates, constructors, changes, aggregates and table traversal.
 The native transcript preserves types, lengths and exact text/blob bytes;
-JSONB bytes are compared only within this pinned version. Comprehensive randomized,
-failure and translated execution coverage remains pending.
+JSONB bytes are compared only within this pinned version. The 39-case native
+corpus also records extended result codes and exact error text for constraint,
+FTS, malformed JSON/JSONB and invalid-path failures. Translated execution remains
+pending; separate API, allocation and VFS harnesses supply bounded randomized
+and failure-injection checks.

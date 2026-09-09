@@ -1,10 +1,11 @@
 # Campaign configuration
 
 `config/defines.txt` is the shared native/translated profile: C17,
-`SQLITE_OS_OTHER=1`, `SQLITE_THREADSAFE=0`, `SQLITE_TEMP_STORE=3`, and
+`SQLITE_OS_OTHER=1`, `SQLITE_THREADSAFE=0`, `SQLITE_TEMP_STORE=3`,
+`SQLITE_MAX_MMAP_SIZE=0`, and
 `SQLITE_OMIT_LOAD_EXTENSION`. Default SQLite core and JSON/JSONB remain enabled;
-all FTS opt-in defines remain absent. There is no native interop or dynamic
-loading. A portable memory VFS supplies the OS interface.
+all FTS opt-in defines remain absent. There is no native SQLite interop or dynamic
+extension loading. A portable memory VFS supplies the OS interface.
 
 Initial host: Linux x64, little-endian LP64; .NET SDK 10.0.111, runtime 10.0.11,
 GCC on Ubuntu 24.04/Zorin 18. dotcc targets 64-bit pointers/long/size_t.
@@ -12,6 +13,18 @@ Solution builds resolve NuGet `SharpAstro.LALR.CC` 4.7.0 (verified in
 `DotCC.Lib/obj/project.assets.json`); campaign rebuilds explicitly set
 `UseLocalLalrCc=false`. Calls are serialized; WAL/shared memory, mmap,
 process durability and concurrent hosting are unsupported platform capabilities.
+
+`SQLITE_MAX_MMAP_SIZE=0` explicitly matches the memory VFS's lack of mapped
+reads. Without it, native GCC/Linux selects a nonzero platform default even
+with `SQLITE_OS_OTHER=1`, while dotcc's platform-neutral preprocessing selects
+zero. That difference changes `PRAGMA mmap_size=1000000`: the zero-limit profile
+returns one integer-zero row, whereas the native nonzero limit with this VFS
+returns no row. Both engines now use the same explicit zero-limit profile;
+the VFS still advertises file methods version 1 and no `xFetch` capability.
+The unchanged upstream disabled-mmap stubs contain unused parameters. Native
+builds retain those warnings in their diagnostic logs using
+`-Wno-error=unused-parameter`; other enabled warnings remain errors in strict
+harness builds. This warning policy does not change generated code or features.
 
 ## Bit-field layout selected for the native oracle
 
@@ -36,8 +49,8 @@ explicit comparison, not the oracle's ABI.
 
 This is a verified profile for the observed SQLite layouts, not a claim that every
 MS ABI corner case is implemented. Zero-width and mixed/union bit-field cases
-remain subject to the shared compiler's layout audit. Translated SQLite layout
-comparison is still required once full emission succeeds.
+remain subject to the shared compiler's layout audit. The actual translated layout
+probe passes under both JIT and NativeAOT; see `layout-storage.md`.
 
 ## Plain char in the C# target
 

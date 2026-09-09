@@ -2,3 +2,4 @@
 -mms-bitfields
 # Plain char in generated C# is byte; dotcc limits.h likewise uses 0..255.
 -funsigned-char
+-Wno-error=unused-parameter
