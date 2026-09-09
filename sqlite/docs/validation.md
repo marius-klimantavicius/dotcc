@@ -7,7 +7,9 @@ Campaign commands run from `sqlite/`; scripts resolve their own absolute roots.
   The first default `/tmp` run was stopped after eight minutes without completion;
   compiler include discovery repeatedly traversed an unrelated 18 GB temporary tree.
   `scripts/test-repository.sh` isolates TMPDIR for repeatable test timing.
-- Baseline functional suite: pending.
+- Baseline functional suite: **224 passed, zero failed, 819 opt-in skips**, 1 minute
+  16 seconds, with isolated TMPDIR. Skips include external GCC/Zig/WAT oracle tests;
+  they are not counted as executed translated tests.
 - `scripts/native.sh`: 36-case deterministic core/JSON/JSONB native corpus completes;
   expected transcript checked in at `tests/native-corpus.expected`. Translated comparison pending.
 - VFS worker strict GCC native suite passes; ASan+UBSan suite passes. Reproduce with

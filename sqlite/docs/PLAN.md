@@ -1,6 +1,6 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: implementation active; M0 baseline and parallel M2/M4 work in progress.
+Status: M0 complete; parser fixes (M1), offsetof generation (M2), and native VFS/API validation (M4/M5) active.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
 ## Objective and constraints
@@ -137,7 +137,7 @@ workspace changes or push any branch.
 
 - [x] Add reproducible fetch/config/build/probe scripts and local ignore rules.
 - [x] Download SQLite into `ref/` and record provenance in `docs/source.md`.
-- [ ] Record existing dotcc build/test results separately from SQLite failures.
+- [x] Record existing dotcc build/test results separately from SQLite failures.
 - [x] Build a native reference from the pinned amalgamation, using the same
       feature definitions and, once available, the same memory VFS and C harness.
 - [x] Attempt full preprocessing and translation; record actual blockers rather
