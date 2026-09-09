@@ -135,10 +135,10 @@ workspace changes or push any branch.
 
 ### M0 — Pin inputs and establish the baseline
 
-- [ ] Add reproducible fetch/config/build/probe scripts and local ignore rules.
+- [x] Add reproducible fetch/config/build/probe scripts and local ignore rules.
 - [x] Download SQLite into `ref/` and record provenance in `docs/source.md`.
 - [ ] Record existing dotcc build/test results separately from SQLite failures.
-- [ ] Build a native reference from the pinned amalgamation, using the same
+- [x] Build a native reference from the pinned amalgamation, using the same
       feature definitions and, once available, the same memory VFS and C harness.
 - [x] Attempt full preprocessing and translation; record actual blockers rather
       than treating existing C-support documentation as proof of compatibility.

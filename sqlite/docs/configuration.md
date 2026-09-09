@@ -8,6 +8,6 @@ loading. A portable memory VFS supplies the OS interface.
 
 Initial host: Linux x64, little-endian LP64; .NET SDK 10.0.111, runtime 10.0.11,
 GCC on Ubuntu 24.04/Zorin 18. dotcc targets 64-bit pointers/long/size_t.
-Initial solution build resolves LALR.CC locally; the forced NuGet path remains
-a required validation item. Calls are serialized; WAL/shared memory, mmap,
+Initial solution build resolves NuGet `SharpAstro.LALR.CC` 4.7.0 (verified in
+`DotCC.Lib/obj/project.assets.json`); a forced NuGet rebuild remains a validation item. Calls are serialized; WAL/shared memory, mmap,
 process durability and concurrent hosting are unsupported platform capabilities.
