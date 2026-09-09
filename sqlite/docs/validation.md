@@ -67,3 +67,22 @@ with SQLite's built-in memdb VFS. Adapter types and private symbols are now
 prefixed `DotccMem`/`dotcc_mem_`; native VFS contracts pass after the rename.
 SQLite source remains untouched. Probe logs live under `artifacts/layout-native-*`
 and profile rerun logs under `artifacts/native-matched-*`.
+
+## Tagged definitions and flexible tails
+
+Commit `c32dd74` adds the tagged-definition variable regression and updates the
+old flexible-tail assertion. Functional suite: 242 passed, 839 opt-in skips,
+zero failures, 76 seconds. The updated FAM assertion and 55 focused macro/unit
+tests pass. Full SQLite advances from the definition of `sqlite3StatType` to the
+GLOBAL/vfsList rescan issue B007. Managed-library work was tested separately.
+
+## Explicit virtual-table module contract
+
+`scripts/test-vtable-native.sh` passes against the matching native profile;
+`SQLITE_SANITIZE=1 scripts/test-vtable-native.sh` also passes ASan and UBSan.
+The portable C test registers its module through `sqlite3_create_module_v2`;
+it covers table/cursor callbacks, index constraints, numeric affinity, NULLs,
+rowids, JSON joins, rejection of writes, absent FTS5, and module/context cleanup.
+It preserves a virtual-table extension seam for future FTS while FTS remains
+disabled. `tests/native-vtable.expected` records the transcript. This is native
+oracle coverage; translated execution and a C# SQLite module remain pending.

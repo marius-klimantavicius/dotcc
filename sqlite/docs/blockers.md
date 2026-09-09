@@ -79,13 +79,14 @@ Full suite caught eager recursive CType.Slice formatting for unused Zig metadata
 fixed by nonrecursive type-kind diagnostics. Unknown requested layouts still fail
 clearly. See `sqlite/generators/README.md` for remaining FAM/ABI/AOT work.
 
-## B006 — tagged definition with variable (parser, verification in progress)
+## B006 — tagged definition with variable (parser, fixed c32dd74)
 
 After B005, SQLite reaches `sqlite3StatType` (reported24191/raw24341), a tagged
 struct definition used as a type specifier with a variable declarator. Parser
-worker added a native-verified fixture and structural Type productions; focused
-execution passes. Full suite exposed only a stale old FAM emitted-string assertion,
-which is updated to the new correct zero-storage representation.
+worker added a native-verified fixture and structural Type productions. The
+functional suite passes 242 tests, and the obsolete FAM emitted-string assertion
+was updated and verified against the correct zero-storage representation.
+Full SQLite retry reaches B007 without changing upstream source.
 
 ## B007 — self-referential object/function macro rescan (preprocessor, active)
 
