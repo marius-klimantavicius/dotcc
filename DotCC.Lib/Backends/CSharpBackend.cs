@@ -813,7 +813,7 @@ internal sealed partial class CSharpBackend
                     _ => "",
                 };
                 var cond = fr.Cond is null ? "" : LoopCondition(fr.Cond);
-                var post = fr.Post is null ? "" : Expr(fr.Post);
+                var post = fr.Post is null ? "" : ForPost(fr.Post);
                 sb.Append(pad).Append($"for ({init}; {cond}; {post})\n");
                 WithNormalBreak(() => Nested(sb, fr.Body, ind));
                 break;
@@ -1993,6 +1993,8 @@ internal sealed partial class CSharpBackend
                     return Render(co.Items[^1]);
                 }
                 return (CommaValue(co), PPrimary);
+            case Assign { CompoundOp: BinOp.Add or BinOp.Sub } a when PointerArrayStride(a.Target.Type) != 1:
+                return ($"{PointerArrayLValue(a.Target)} {BinSym(a.CompoundOp.Value)}= {Sub(a.Value, PMul)} * {PointerArrayStride(a.Target.Type)}", PAssign);
             case Assign a when a.Target.Type.IsAtomic:
                 {
                     // An atomic lvalue stores seq-cst (Atomic.Store, returns the stored
@@ -2097,6 +2099,9 @@ internal sealed partial class CSharpBackend
 
     private (string, int) RenderUnary(Unary u)
     {
+        if (u.Op is UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec
+            && PointerArrayStride(u.Operand.Type) != 1)
+            return PointerArrayUpdate(u);
         // ++/-- of an atomic lvalue is a seq-cst step: prefix yields the NEW value
         // (AddFetch/SubFetch), postfix the OLD (FetchAdd/FetchSub) — matching C.
         if (u.Op is UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec && u.Operand.Type.IsAtomic)
@@ -2190,6 +2195,9 @@ internal sealed partial class CSharpBackend
         // C treats an enum operand as its underlying integer in every binary
         // context; C# allows few enum operators, so decay each operand first.
         b = b with { Left = DecayEnum(b.Left), Right = DecayEnum(b.Right) };
+        if (b.Op is BinOp.Add or BinOp.Sub
+            && (PointerArrayStride(b.Left.Type) != 1 || PointerArrayStride(b.Right.Type) != 1))
+            return PointerArrayBinary(b);
         switch (b.Op)
         {
             case BinOp.Eq or BinOp.Ne or BinOp.Lt or BinOp.Gt or BinOp.Le or BinOp.Ge:
@@ -2493,6 +2501,9 @@ internal sealed partial class CSharpBackend
         // Outer parens never matter for a statement-expression (a macro body like
         // `((c) ? a() : b())` arrives parenthesized) — strip them to see the shape.
         while (e is Paren p) { e = p.Inner; }
+        if (e is Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec } arrayUpdate
+            && PointerArrayStride(arrayUpdate.Operand.Type) != 1)
+            return PointerArrayUpdate(arrayUpdate, discard: true).Item1;
         // A comma in statement position discards every operand's value (the whole
         // comma's value is unused here), so emit each operand as its own statement
         // rather than a value tuple/delegate. This is also the ONLY correct lowering
