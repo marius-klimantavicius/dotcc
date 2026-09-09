@@ -29,3 +29,19 @@ Campaign commands run from `sqlite/`; scripts resolve their own absolute roots.
 
 Generated artifacts/logs are ignored under `generated/`, `build/`, `artifacts/`.
 No translated SQLite execution or corpus pass is claimed yet.
+
+## First integrated compiler increment
+
+Commits `4db77b5`, `c679ee4`, `0071282`:
+
+- Release solution build: zero warnings/errors, 8 seconds.
+- Full unit suite: 1,740 passed, zero failed, 41 seconds.
+- Full functional suite: 239 passed, zero failed, 833 opt-in skips, 75 seconds.
+  The not-yet-implemented managed-library regression was deliberately excluded;
+  it remains uncommitted until its API implementation lands.
+- All new parser/macro/layout fixtures have native GCC expected-output evidence.
+- Full SQLite retry advances to the nested flexible array B005. Preprocessing now
+  registers exactly one `->` and one `->>` with no corrupted spaced operator.
+- Raw logs: `artifacts/stringify-*-integrated.log`, earlier offset logs under
+  `artifacts/offsetof/`. Generator actual storage/native fixture is documented
+  in `generators/README.md`. Full SQLite execution remains pending.

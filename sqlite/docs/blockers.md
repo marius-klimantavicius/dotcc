@@ -1,6 +1,6 @@
 # SQLite blocker ledger
 
-## B001 — callback returning a callback (parser, verification in progress)
+## B001 — callback returning a callback (parser/emitter, fixed 0071282)
 
 Full retry: `scripts/translate.sh`, initial compiler revision `681e94a`.
 Preprocessing succeeds. Parsing stops at unmodified `sqlite3.c:1819:10`:
@@ -11,8 +11,8 @@ Regression: `DotCC.FunctionalTests/Fixtures/fnptr-returning-fnptr-field`.
 Native GCC C17 output is `7`; the original dotcc fails at the corresponding
 nested declarator before emission. Evidence: `artifacts/fnptr-before.log`.
 The first structural fix passed full-amalgamation retry through this declaration;
-SQLite next stops at B002. Executable regression then exposed missing `static`
-handling for function-returning-callback signatures, which is also being fixed.
+SQLite next stops at B002. Executable regression also exposed missing `static` handling and indirect-call
+argument coercion; both fixed and executable regressions now pass.
 
 ## Upcoming reduced probes (not full retry results yet)
 
@@ -29,7 +29,7 @@ blocker when reached by a full retry; source hints are evidence of active usage.
 
 These are generic parser issues; no upstream C modifications are planned.
 
-## B002 — callback output parameters (parser/IR, verification in progress)
+## B002 — callback output parameters (parser/IR, fixed 0071282)
 
 The full retry after B001 fails at `sqlite3.c:7861:31`, `unexpected '*'`, on
 `void (**pxFunc)(sqlite3_context*,int,sqlite3_value**)` inside xFindFunction.
@@ -38,10 +38,42 @@ dotcc. The fix preserves pointer-to-callback storage as `Pointer(Func)`, includi
 real dereference when calling through it; `&function` remains canonical `Func`.
 Evidence: `artifacts/fnptr-output-before.log`, `artifacts/offsetof/sqlite-retry.stderr`.
 
-## B003 — JSON arrow stringification (preprocessor, open)
+## B003 — JSON arrow stringification (preprocessor, fixed c679ee4)
 
 The actual preprocessed SQLite registers the JSON operator as `"-> >"`, because
 macro stringification unconditionally inserts a space between adjacent tokens.
 Strict GCC gives `NAME(->>)` as `"->>"`; dotcc gives `"-> >"`.
 Reduced native/old-compiler evidence is in `artifacts/parse-probes/11_stringify_json_arrow`.
-Worker is adding regression coverage and fixing raw argument/whitespace handling.
+Regression suite and actual SQLite preprocessing now preserve both operators;
+raw STR(VALUE), two-level expansion, escaped literals, comments, variadic commas,
+and empty argument/replacement whitespace are covered.
+
+## B004 — nested aggregate pointer/array members (parser, fixed 0071282)
+
+Full retries advanced from reported line7990 (`*aConstraint`) to line18863
+(`aCol[FLEXARRAY]`). Native-verified functional fixtures
+`nested-tagged-pointer-member` and `nested-tagged-array-member` both print `42 17`.
+Pointer and sized-array syntax now parses and runs. A related typedef lexer bug
+mistook a callback field for the enclosing typedef name; `typedef-nested-callback`
+prints `42 8` and now passes. Upstream source remains unchanged.
+
+## B005 — flexible nested array and storage (parser/layout, active)
+
+After sized-array fix, full SQLite stops at reported `18863:19`, closing `]`;
+raw source `sqlite3.c:18967` is `struct sColMap {...} aCol[FLEXARRAY]` and the
+C17 profile expands FLEXARRAY empty. Existing generic flexible arrays also model
+`[]` as `[1]`, which cannot satisfy native sizeof/alignment. Parser and generator
+workers are implementing actual zero-storage flexible tails, including correct
+alignment and generated offsets; no FLEXARRAY/profile workaround is allowed.
+
+Diagnostic note: existing line-continuation splicing shifts reported coordinates
+from physical source lines. Raw locations are recorded where known. Fixing source
+mapping is a remaining M1 correctness task.
+
+## Offset generator integration
+
+Commit `4db77b5` adds shared layout, incremental generator, constant designators,
+standalone/project/GeneratorDriver/object integration and native-checked fixtures.
+Full suite caught eager recursive CType.Slice formatting for unused Zig metadata;
+fixed by nonrecursive type-kind diagnostics. Unknown requested layouts still fail
+clearly. See `sqlite/generators/README.md` for remaining FAM/ABI/AOT work.
