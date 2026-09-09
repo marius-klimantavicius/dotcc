@@ -1403,9 +1403,11 @@ productions:
       - { lhs: E, rhs: [LOr, '<<=', E], action: shlAssign }
       - { lhs: E, rhs: [LOr, '>>=', E], action: shrAssign }
       # Ternary `c ? a : b` — between LOr and assignment in real C precedence.
-      # Both branches are `E` so nested ternaries chain right-associative,
-      # matching C. Cond.B wraps the C-truthy condition at emit time.
-      - { lhs: E, rhs: [LOr, '?', E, ':', E], action: ternary }
+      # The right operand remains `E`, preserving right-associative nested
+      # conditionals. Cond.B wraps the C-truthy condition at emit time.
+      # The middle operand is a full expression, so its comma operators stay
+      # inside the selected arm rather than terminating the conditional.
+      - { lhs: E, rhs: [LOr, '?', Expr, ':', E], action: ternary }
       - { lhs: E, rhs: [LOr] }
 
   - derivation: leftmost
