@@ -1,0 +1,69 @@
+# Build and verify translated SQLite
+
+Run commands from the repository's `sqlite/` directory. The supported initial
+profile is Linux x64, LP64, little endian, .NET 10, serialized calls on one thread,
+and the process-local memory VFS. Core SQLite and JSON/JSONB are enabled; FTS,
+dynamic extensions, WAL shared-memory storage and memory mapping are excluded.
+See `configuration.md` for the exact shared native/translated definitions.
+
+Prerequisites are .NET SDK 10, Python 3, GCC, a POSIX shell and GNU coreutils.
+NativeAOT also requires the .NET Linux native linker prerequisites (the CI recipe
+installs Clang and zlib development headers). Initial fetch/restore requires
+network access; fetched archives are pinned by SHA-256. The optional existing-port
+checks also require Make, Node.js and `wat2wasm`.
+
+The complete campaign command is:
+
+```sh
+scripts/verify.sh
+```
+
+This checks source hashes, builds dotcc with the NuGet LALR.CC dependency, runs the
+unit and functional suites serially, regenerates native baselines for comparison,
+then translates and executes layout, API, SQL, VFS, allocation, virtual-table,
+public JSONB and database-image tests. It includes the separate C# consumer and
+NativeAOT layout/consumer checks. It writes diagnostics under `artifacts/` and
+fails on the first mismatch. `SQLITE_AOT=0 scripts/verify.sh` is an explicitly
+smaller JIT-only run, not the completion gate. `scripts/verify.sh --with-ports`
+adds the existing Lua, Chibi and WAT regressions; their upstream runners and
+committed baselines remain the acceptance criteria.
+
+To build just the reusable assembly after fetching:
+
+```sh
+python3 scripts/fetch.py
+dotnet build ../dotcc.sln -c Release -p:UseLocalLalrCc=false
+scripts/emit-engine.sh
+dotnet build generated/TranslatedSqlite/TranslatedSqlite.csproj -c Release
+scripts/test-managed-consumer.sh
+```
+
+Reference `generated/TranslatedSqlite/TranslatedSqlite.csproj` from a C# project,
+or its built `TranslatedSqlite.dll`. `DotCcLib` exposes the C API as unsafe managed
+methods; public translated aggregate types and `delegate*` signatures preserve
+SQLite's callback surface. `tests/ManagedConsumer` demonstrates explicit C#
+extension registration, ownership, callback re-entry and cleanup. No native SQLite
+library or dynamic extension loader is part of that integration.
+
+Generated engine source is never edited. The offsetof analyzer is built from
+`generators/DotCC.OffsetGenerator`, supplied explicitly by the emission scripts,
+and consumes metadata produced from the typed C input. Native SQLite is used only
+in separate oracle processes. Database-image tests exchange closed files through
+the harness; the memory VFS itself does not promise persistence across processes.
+
+Use `scripts/test-translated.sh core` (or `api`, `vfs`, `vtable`, `allocation`,
+`upstream`) to isolate a corpus. Use `SQLITE_AOT=1 scripts/test-layout-translated.sh`
+and `SQLITE_AOT=1 scripts/test-managed-consumer.sh` for the AOT gates. Runtime
+processes have a default 120-second bound, overridable with
+`SQLITE_EXECUTION_TIMEOUT`; port suites use `SQLITE_PORT_TIMEOUT` (600 seconds).
+Compiler and native build diagnostics are kept separate from expected SQL output.
+
+The checked-in GitHub workflow runs the SQLite campaign on pull requests, main
+pushes, a nightly schedule and manual dispatch. Adding it locally does not run
+remote CI; local evidence and remaining limitations are recorded in `validation.md`.
+
+For future FTS work, retain this profile as a baseline and add a separately named
+feature configuration with the chosen FTS macros. Reuse the unchanged pinned
+inputs, managed callback/virtual-table support, native oracle and image harness;
+add FTS-specific SQL/tokenizer tests and resolve newly reached C before claiming
+that profile supported. C# extensions continue to register explicitly.
