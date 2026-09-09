@@ -262,8 +262,9 @@ internal sealed partial class IrBuilder
             // object — the first build's field + file-scope binding serve every
             // TU, so skip it (mirrors BuildFuncDef's static-inline dedup; see
             // AlreadySeenTopLevel for the per-TU-state caveat).
-            case C.GlobalDeclList or C.GlobalStaticDeclList
-                or C.GlobalArr or C.GlobalStaticArr
+            case C.GlobalStaticDeclList when AlreadySeenScalarGlobalInAnotherUnit(fn):
+                break;
+            case C.GlobalArr or C.GlobalStaticArr
                 or C.GlobalArrInit or C.GlobalStaticArrInit
                 or C.GlobalArrInitImplicit or C.GlobalStaticArrInitImplicit
                 or C.GlobalFnPtrArray or C.GlobalStaticFnPtrArray
@@ -384,7 +385,8 @@ internal sealed partial class IrBuilder
 
     /// <summary>File-scope variable declaration. Each declarator becomes a
     /// <c>DotCcGlobals</c> field (codegen emits <c>public static unsafe T name</c>);
-    /// an <c>extern</c> one is registered for resolution only (no field).</summary>
+    /// Repeated tentative declarations share storage; an <c>extern</c> declaration
+    /// emits storage only when it has an initializer.</summary>
     private void BuildGlobalDecls(Item typeItem, Item listItem, Storage storage)
     {
         _sawThreadLocalSpec = false; // consumed below: set by THIS declaration's spec resolution
@@ -397,7 +399,7 @@ internal sealed partial class IrBuilder
             {
                 throw new IrUnsupportedException("array declarator in a file-scope multi-declarator list (split it into its own declaration)");
             }
-            var sym = _symbols.Declare(new Symbol
+            var declaration = RegisterScalarGlobal(new Symbol
             {
                 Name = name, Kind = SymKind.Var, Storage = storage, IsGlobal = true,
                 // A constexpr object is const-qualified (C23 §6.7.1p5 implies it),
@@ -405,10 +407,11 @@ internal sealed partial class IrBuilder
                 Type = _sawConstexprSpec ? type.WithQuals(TypeQual.Const) : type,
                 IsThreadLocal = _sawThreadLocalSpec,
                 IsConstexpr = _sawConstexprSpec,
-            });
-            if (storage != Storage.Extern)
+            }, SrcPos.From(typeItem));
+            if (declaration is null) return;
+            var sym = declaration.Symbol;
+            if (storage != Storage.Extern || initItem is not null)
             {
-                _definedGlobalNames.Add(name); // a real definition — satisfies any extern decl
                 CExpr? gInit = null;
                 if (initItem is { } ii) { gInit = BuildExpr(ii); EnsureNotEmbed(gInit); CheckQualifierDiscard(gInit, sym.Type, SrcPos.From(ii), "initialization"); }
                 // A .NET [ThreadStatic] initializer runs on the FIRST thread only,
@@ -421,7 +424,7 @@ internal sealed partial class IrBuilder
                         SrcPos.From(typeItem), _file));
                 }
                 if (sym.IsConstexpr) { BindConstexpr(sym, gInit, SrcPos.From(typeItem)); }
-                Globals.Add(new GlobalVar(sym, gInit));
+                DefineRegisteredGlobal(declaration, gInit, initItem is not null, SrcPos.From(typeItem));
             }
         });
     }
