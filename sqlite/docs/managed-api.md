@@ -24,8 +24,8 @@ dotnet build generated/TranslatedSqlite/TranslatedSqlite.csproj -c Release
 
 `src/engine.c` includes the unchanged amalgamation and memory VFS as one logical
 translation unit. The script supplies the shared feature configuration and
-explicit offsetof analyzer. Current combined-input and C# emission blockers are
-recorded in `blockers.md`; the command does not yet produce a working engine.
+explicit offsetof analyzer. The command produces the working engine; the remaining campaign checks are
+recorded in `PLAN.md` and `validation.md`.
 The CLI's optional `-c` also builds the emitted project.
 A consumer references the resulting project or assembly normally.
 
@@ -46,8 +46,7 @@ separate assemblies. It checks public aggregates, inline-array wrappers, enums,
 globals, static callback-table initialization and explicit callback registration.
 Both code images are rooted in a noncollectible test load context; callbacks run
 across forced collections, and registration is cleared before its stack context
-expires. This validates the compiler seam; SQLite's actual reusable assembly and
-extension registration remain campaign integration work until translation succeeds.
+expires. This validates the compiler seam independently of SQLite.
 
 The CLI integration smoke also built a generated library with the actual offset
 analyzer enabled and ran a separate C# consumer under both the JIT and NativeAOT
@@ -55,3 +54,16 @@ analyzer enabled and ran a separate C# consumer under both the JIT and NativeAOT
 generated offset of the callback table's context field. Combining managed mode
 with `-shared`, `--shared`, or an explicit native library binding failed as intended.
 These checks exercise a reduced callback table, not the SQLite engine.
+
+
+The actual `tests/ManagedConsumer` project now references the complete generated
+SQLite library and passes under the JIT. It checks SQLite 3.50.4, JSONB including
+Unicode, FTS absence and explicit C# scalar-function registration. The callback
+re-enters SQL on the same database, forces GC while its nested statement is live,
+and returns the expected values. A 50,000-iteration capture/allocation loop checks
+fresh managed function pointers against saved identities across collections.
+Unregistering calls the destructor exactly once; context, statements, database and
+VFS resources are released. This is observed JIT stress, not proof of a particular
+tiering event. Run `scripts/test-managed-consumer.sh`; set `SQLITE_AOT=1` to repeat
+with NativeAOT. The actual linux-x64 NativeAOT publish and execution also pass
+all of these checks (12.00 seconds publish; runtime under 0.01 seconds).

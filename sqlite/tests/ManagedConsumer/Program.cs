@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using System.Text;
 using static DotCcLib;
 
@@ -17,9 +18,60 @@ internal static unsafe class Program
 
     private static void AddBias(sqlite3_context* context, int count, sqlite3_value** values)
     {
-        var state = (ExtensionState*)sqlite3_user_data(context);
-        ++state->Calls;
-        sqlite3_result_int64(context, state->Bias + sqlite3_value_int64(values[0]));
+        try
+        {
+            var state = (ExtensionState*)sqlite3_user_data(context);
+            ++state->Calls;
+            var input = sqlite3_value_int64(values[0]);
+            // Reenter the same connection through a separate statement while
+            // the caller's statement and callback context remain live.
+            var db = sqlite3_context_db_handle(context);
+            sqlite3_stmt* nested = null;
+            long result;
+            fixed (byte* sql = "SELECT ?1 + json_extract(jsonb_object('n',?2),'$.n')\0"u8)
+                Check(sqlite3_prepare_v2(db, sql, -1, &nested, null), db, "nested prepare");
+            try
+            {
+                Check(sqlite3_bind_int64(nested, 1, state->Bias), db, "nested bind bias");
+                Check(sqlite3_bind_int64(nested, 2, input), db, "nested bind input");
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+                if (sqlite3_step(nested) != Row) throw new InvalidOperationException("Nested query expected row");
+                result = sqlite3_column_int64(nested, 0);
+                if (sqlite3_step(nested) != Done) throw new InvalidOperationException("Nested query expected done");
+            }
+            finally { Check(sqlite3_finalize(nested), db, "nested finalize"); }
+            sqlite3_result_int64(context, result);
+        }
+        catch (Exception error)
+        {
+            // Report managed extension failures through SQLite's result API.
+            var message = Encoding.UTF8.GetBytes(error.Message);
+            fixed (byte* text = message) sqlite3_result_error(context, text, message.Length);
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static delegate*<void*, void> CaptureFree() => &sqlite3_free;
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static delegate*<sqlite3_context*, int, sqlite3_value**, void> CaptureCallback() => &AddBias;
+
+    private static void CheckFunctionIdentity()
+    {
+        var saved = CaptureFree();
+        var callback = CaptureCallback();
+        for (var index = 0; index < 50_000; ++index)
+        {
+            var fresh = CaptureFree();
+            if ((nint)fresh != (nint)saved || (nint)CaptureCallback() != (nint)callback)
+                throw new InvalidOperationException("Function pointer identity changed during warmup");
+            var memory = sqlite3_malloc64(16);
+            if (memory == null) throw new OutOfMemoryException();
+            fresh(memory);
+            if (index % 10_000 == 0) { GC.Collect(); GC.WaitForPendingFinalizers(); }
+        }
     }
 
     private static void Destroy(void* state)
@@ -70,6 +122,7 @@ internal static unsafe class Program
             Expect(db, "SELECT json_extract(jsonb('{\"name\":\"λ\",\"n\":42}'),'$.name')", "λ");
             Expect(db, "SELECT json_valid(jsonb('[1,2,3]'),8)", "1");
             Expect(db, "SELECT sqlite_compileoption_used('ENABLE_FTS5')", "0");
+            CheckFunctionIdentity();
 
             var state = (ExtensionState*)NativeMemory.AllocZeroed((nuint)sizeof(ExtensionState));
             state->Bias = 35;
@@ -91,7 +144,7 @@ internal static unsafe class Program
             if (dotcc_memory_vfs_handle_count() != 0) throw new InvalidOperationException("Leaked VFS handle");
             if (dotcc_memory_vfs_reset() != Ok || sqlite3_shutdown() != Ok)
                 throw new InvalidOperationException("Shutdown failed");
-            Console.WriteLine("managed consumer: SQLite 3.50.4, JSONB, explicit C# callback, GC and cleanup passed");
+            Console.WriteLine("managed consumer: SQLite 3.50.4, JSONB, explicit C# callback, nested SQL, function identity, GC and cleanup passed");
             return 0;
         }
         catch (Exception error)
