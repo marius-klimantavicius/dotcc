@@ -561,9 +561,8 @@ public sealed record SwitchSection(IReadOnlyList<SwitchLabel> Labels, IReadOnlyL
 /// Duff's device (<c>case 7:</c> interleaved into a <c>do…while</c>). The grammar
 /// accepts a case/default label anywhere; <see cref="Switch"/> only models the
 /// top-level sections, so a nested one becomes this free-standing labeled
-/// statement. Codegen prints it verbatim as <c>case E:</c> / <c>default:</c>
-/// followed by <see cref="Body"/> — structurally faithful (C# rejects a case
-/// label inside a nested block, which is the known Duff's limitation).</summary>
+/// statement. C# codegen dispatches these switches to same-scope labels and
+/// explicit control-flow edges, preserving entry into nested blocks/loops.</summary>
 public sealed record CaseLabelStmt(CExpr? CaseExpr, CStmt Body) : CStmt;
 
 /// <summary>A C23 <c>[[fallthrough]];</c> marker (opt-in <c>-Wimplicit-fallthrough</c>).

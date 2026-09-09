@@ -34,7 +34,7 @@ internal sealed record CSharpBackendResult(
 /// Phase 0 covers the vertical slice; it grows alongside the builder until the
 /// IR path reaches parity with the legacy emitter.
 /// </summary>
-internal sealed class CSharpBackend
+internal sealed partial class CSharpBackend
 {
     /// <summary>The backend's lexical projection of the neutral IR — currently the
     /// type-spelling map (<see cref="ITarget"/>, the seam a second target slots
@@ -705,7 +705,7 @@ internal sealed class CSharpBackend
                 // just past the switch — otherwise it would escape the enclosing loop.
                 sb.Append(pad).Append(_breakAsGoto is { } bt ? $"goto {bt};\n" : "break;\n");
                 break;
-            case Continue: sb.Append(pad).Append("continue;\n"); break;
+            case Continue: sb.Append(pad).Append(_continueAsGoto is { } continueDestination ? $"goto {continueDestination};\n" : "continue;\n"); break;
             case If f:
                 // The condition is evaluated once, so a value comma in it can hoist.
                 var ifc = Hoist(sb, pad, () => Expr(DecayEnum(f.Cond)));
@@ -842,6 +842,7 @@ internal sealed class CSharpBackend
     /// the enclosing loop. Cleared inside a nested loop/switch (break resumes its
     /// normal target there).</summary>
     private string? _breakAsGoto;
+    private string? _continueAsGoto;
 
     /// <summary>Unique-suffix counter for the synthetic skip-over labels emitted
     /// after a switch with hoisted shared-handler tails.</summary>
@@ -853,9 +854,12 @@ internal sealed class CSharpBackend
     private void WithNormalBreak(System.Action render)
     {
         var saved = _breakAsGoto;
+        var savedContinue = _continueAsGoto;
         _breakAsGoto = null;
+        _continueAsGoto = null;
         render();
         _breakAsGoto = saved;
+        _continueAsGoto = savedContinue;
     }
 
     /// <summary>Render a C <c>switch</c> to C#, reconciling two label-scope
@@ -871,6 +875,11 @@ internal sealed class CSharpBackend
     /// </list></summary>
     private void RenderSwitch(StringBuilder sb, Switch sw, int ind, string pad)
     {
+        if (sw.Sections.Any(section => section.Body.Any(ContainsNestedCase)))
+        {
+            RenderSwitchWithNestedLabels(sb, sw, ind);
+            return;
+        }
         // C's switch is int-semantic. An enum subject / enumerator case label decays
         // to its underlying int so the governing type is uniform — a plain int switch
         // may carry enumerator labels and vice versa (C# rejects the mixed forms).

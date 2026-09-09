@@ -123,13 +123,9 @@ public sealed partial class CompilerTests
         // handles it (case/default are statement-level labels that can
         // appear anywhere in a switch body).
         //
-        // Important: the emit is structurally faithful but C# REJECTS it
-        // — both because C# requires case labels at the top of the switch
-        // (not inside nested blocks) AND because C# forbids implicit case
-        // fall-through (CS0163). Translating Duff's device to runnable C#
-        // requires a flat-switch-with-goto-case transformation, which is
-        // a known limitation. This test pins down the grammar/emit half:
-        // dotcc parses and emits without throwing.
+        // Nested cases now dispatch to same-scope labels and explicit loop
+        // edges. Runtime entry/fall-through behavior is checked against native
+        // C by the nested-switch-labels functional fixture.
         var src = WriteTemp("""
             void duff_copy(int* dst, int* src, int count) {
                 int n = (count + 7) / 8;
@@ -150,14 +146,11 @@ public sealed partial class CompilerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            // Structural assertions — confirms the case-labels-inside-do-while
-            // shape made it through parse + emit intact.
+            // All original case values remain present in the dispatch.
             emitted.ShouldContain("switch (count % 8)");
             emitted.ShouldContain("case 0:");
             emitted.ShouldContain("case 7:");
             emitted.ShouldContain("case 1:");
-            emitted.ShouldContain("do");
-            emitted.ShouldContain("while (Cond.B(");
         }
         finally { File.Delete(src); }
     }
