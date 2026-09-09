@@ -347,3 +347,13 @@ and passes every SQLite runtime corpus, all image exchanges and the separate C#
 consumer. The full managed library again has zero compile errors; all 30 metadata
 contracts match. Logs: `artifacts/null-macro/{unit-all,functional-all,
 managed-consumer}.log`. Existing Lua/Chibi/WAT execution is the next shared gate.
+
+## Shared-port gate
+
+Lua's complete existing upstream runner reaches `final OK !!!`. All 146 WAT
+execution-oracle cases pass with zero skips (10 seconds). The port runner's
+existing VSTest arguments work on this SDK; no argument workaround was needed.
+Chibi emission succeeds but its C# build exposes two generic regressions: external
+switch-label scope (B035) and unsigned constant arithmetic context (B036). Their
+reductions and corrections are required before clean reproduction. Logs:
+`artifacts/regression-{lua,chibi,wat}*` and `artifacts/ports-validation.log`.

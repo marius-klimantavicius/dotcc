@@ -384,3 +384,35 @@ recognizer unwraps only a void-pointer cast of proven integer zero. Ordinary
 void pointers and side effects are not silently converted to callback pointers.
 All six actual translated corpora and all three database-image exchange directions
 now match native after this fix. Evidence: `artifacts/null-macro/`.
+
+## B035 — external entry into switch labels (Chibi regression, active)
+
+The shared-port gate compiles Lua successfully but Chibi reports CS0159 for
+`make_call` and `call_error_handler`. Its function-level gotos target labels now
+hidden inside the nested-switch dispatcher's added C# block. The existing goto
+normalizer deliberately exempts switch labels. A reduced native/runtime test must
+preserve skipped switch-subject and initializer effects, while making fixed-array
+and local storage available even on external entry. Removing braces alone is not
+sufficient. Keep ordinary SQLite switch regions structured to avoid reintroducing
+Roslyn's previous definite-assignment performance failure.
+Evidence: `artifacts/regression-chibi-build.log`.
+
+## B036 — unsigned constant arithmetic context (Chibi regression, active)
+
+Typed sizeof correctly makes `-sizeof(long)` unsigned. Chibi then multiplies it
+by eight; emitted `unchecked(0UL - sizeof(long)) * 8UL` leaves multiplication in
+C#'s checked constant context and fails with CS0220. Preserve C unsigned wrap at
+the promoted operation width before any wider store. Native/red tests cover
+constant addition/subtraction/multiplication, nested widening and constant contexts;
+only the required unsigned constant arithmetic should acquire the outer unchecked
+context. Signed and floating semantics must remain unchanged.
+Evidence: `artifacts/regression-chibi-build.log`, generated line 17547.
+
+## B037 — primitive sizeof loses size_t type (reduction, active)
+
+The unsigned-overflow reduction exposed a second path: token folding replaces
+`sizeof(long)` with the signed-int literal `8`, whereas a typedef operand reaches
+typed lowering and retains unsigned `size_t`. Preserve the type on primitive folds
+and test `_Generic`, comparisons with negative values, and arithmetic for both
+primitive and alias spellings. The fixture retains the plain-long case so a fix
+for Chibi's alias spelling cannot conceal this generic inconsistency.
