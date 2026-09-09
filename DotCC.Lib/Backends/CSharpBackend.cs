@@ -45,6 +45,7 @@ internal sealed class CSharpBackend
     private DotCC.Layout.OffsetDocument _offsetDocument = null!;
     private DotCC.Layout.OffsetLayoutModel _offsetModel = null!;
     private readonly HashSet<string> _offsetRequests = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string> _aggregateFactories = new(StringComparer.Ordinal);
 
     /// <summary>Project a neutral <see cref="CType"/> onto the target's type
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
@@ -154,6 +155,7 @@ internal sealed class CSharpBackend
         var typeDeclarations = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var t in unit.Types) { typeDeclarations.Add(t.Name, cg.StructText(t)); }
         foreach (var en in unit.Enums) { typeDeclarations.Add(en.Name, cg.EnumText(en)); }
+        foreach (var factory in cg._aggregateFactories) { typeDeclarations.Add(factory.Key, factory.Value); }
         foreach (var request in cg._offsetDocument.Requests.OrderBy(request => request.Name, StringComparer.Ordinal))
         {
             var document = cg._offsetDocument.ForRequest(request);
@@ -1840,6 +1842,13 @@ internal sealed class CSharpBackend
             case Member m:
             {
                 var dot = $"{Sub(m.Base, PPostfix)}{(m.Arrow ? "->" : ".")}{DotCC.EmitHelpers.Id(m.Field)}";
+                if (!m.Arrow && m.Type.Unqualified is CType.Array && RootsAtGlobal(m.Base))
+                {
+                    // Array decay/address-taking needs an unmanaged storage
+                    // expression. Static aggregate fields live in stable static
+                    // storage; use the same address projection as explicit &g.
+                    dot = $"(({Cs(m.Base.Type)}*)System.Runtime.CompilerServices.Unsafe.AsPointer(ref {BareLValue(m.Base)}))->{DotCC.EmitHelpers.Id(m.Field)}";
+                }
                 // A non-primitive array member is stored as an [InlineArray]; its
                 // access decays to the element pointer `(T*)&field` (C#'s InlineArray
                 // indexer bounds-checks, but a C array over-indexes into the tail),
@@ -2373,6 +2382,7 @@ internal sealed class CSharpBackend
     /// are omitted, so C# zero-fills them (C's partial-init rule).</summary>
     private string StructInitText(StructInit si)
     {
+        if (si.Members.Any(member => member.Value is InlineArrayInit)) return StructArrayInitText(si);
         var sb = new StringBuilder("new ").Append(Cs(si.Type)).Append(" { ");
         for (var i = 0; i < si.Members.Count; i++)
         {
@@ -2381,6 +2391,48 @@ internal sealed class CSharpBackend
             sb.Append(DotCC.EmitHelpers.Id(m.Name)).Append(" = ").Append(Coerced(m.Value, m.FieldType));
         }
         return sb.Append(" }").ToString();
+    }
+
+    /// <summary>Fixed buffers cannot be assigned by a C# object initializer.
+    /// Build a value through a typed factory, assigning into its own zeroed
+    /// inline storage. Arguments evaluate once at the call site; no delegate,
+    /// pointer generic argument, heap array or escaping stack pointer is needed.</summary>
+    private string StructArrayInitText(StructInit initializer)
+    {
+        var parameters = new List<string>();
+        var arguments = new List<string>();
+        var stores = new StringBuilder();
+        void Store(string destination, CType type, CExpr value)
+        {
+            var parameter = "p" + parameters.Count;
+            parameters.Add(Cs(type) + " " + parameter);
+            arguments.Add(Coerced(value, type));
+            stores.Append("        ").Append(destination).Append(" = ").Append(parameter).Append(";\n");
+        }
+        foreach (var member in initializer.Members)
+        {
+            var destination = "result." + DotCC.EmitHelpers.Id(member.Name);
+            if (member.Value is InlineArrayInit array)
+            {
+                var elementType = Cs(array.Element);
+                for (var index = 0; index < array.Elems.Count; ++index)
+                {
+                    var element = IsFixedBufferType(elementType) ? destination + "[" + index + "]"
+                        : "((" + elementType + "*)&" + destination + ")[" + index + "]";
+                    Store(element, array.Element, array.Elems[index]);
+                }
+            }
+            else Store(destination, member.FieldType, member.Value);
+        }
+        var body = "    public static unsafe " + Cs(initializer.Type) + " Create(" + string.Join(", ", parameters) + ")\n    {\n"
+            + "        " + Cs(initializer.Type) + " result = default;\n" + stores + "        return result;\n    }\n";
+        // Object fragments merge top-level declarations by name. The entire
+        // typed shape identifies a factory, so separately compiled initializers
+        // can deduplicate identical helpers without colliding with other shapes.
+        var name = "__DotccAggregateInit_" + Convert.ToHexString(
+            System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(body)));
+        _aggregateFactories.TryAdd(name, "internal static class " + name + "\n{\n" + body + "}\n\n");
+        return name + ".Create(" + string.Join(", ", arguments) + ")";
     }
 
     // ---- comma operator --------------------------------------------------

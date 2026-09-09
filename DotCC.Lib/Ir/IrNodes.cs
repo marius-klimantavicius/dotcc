@@ -195,6 +195,11 @@ public sealed record StructInit(IReadOnlyList<FieldInit> Members) : CExpr;
 /// the store), and the value expression.</summary>
 public readonly record struct FieldInit(string Name, CType FieldType, CExpr Value);
 
+/// <summary>Initializer values for array storage embedded in an aggregate.
+/// The destination owns the storage; this expression does not allocate a
+/// separate array or decay its initializer into a pointer.</summary>
+public sealed record InlineArrayInit(CType Element, IReadOnlyList<CExpr> Elems) : CExpr;
+
 /// <summary>An array aggregate as a value — a C99 array compound literal
 /// (<c>(int[]){1,2,3}</c>) or any array initializer. Codegen lowers it to a C#
 /// <c>stackalloc T[]{ … }</c>, valid in initializer position (a stackalloc can't

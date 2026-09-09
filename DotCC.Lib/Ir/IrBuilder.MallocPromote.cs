@@ -236,6 +236,9 @@ internal sealed partial class IrBuilder
         Paren p => SafeExpr(p.Inner, sym, buffer),
         VaArgGet va => SafeExpr(va.Ap, sym, buffer),
         StructInit si => si.Members.All(m => SafeExpr(m.Value, sym, buffer)),
+        // Inline initialization can retain a candidate pointer inside the
+        // returned aggregate. Until modeled, forbid promotion conservatively.
+        InlineArrayInit => false,
         StackArray sa => sa.Elems.All(x => SafeExpr(x, sym, buffer)),
         PinnedArray pa => (pa.Elems?.All(x => SafeExpr(x, sym, buffer)) ?? true) && (pa.Count is null || SafeExpr(pa.Count, sym, buffer)),
         _ => false,   // an unmodeled node: conservatively unsafe
@@ -327,6 +330,7 @@ internal sealed partial class IrBuilder
         Paren p => p with { Inner = RewriteMallocExpr(p.Inner, ctx) },
         VaArgGet va => va with { Ap = RewriteMallocExpr(va.Ap, ctx) },
         StructInit si => si with { Members = si.Members.Select(m => m with { Value = RewriteMallocExpr(m.Value, ctx) }).ToList() },
+        InlineArrayInit array => array with { Elems = array.Elems.Select(value => RewriteMallocExpr(value, ctx)).ToList() },
         _ => e,
     };
 

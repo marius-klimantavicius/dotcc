@@ -103,6 +103,10 @@ internal sealed partial class IrBuilder
     /// struct-array element builder converge.</summary>
     private StructInit BuildStructPositional(CType type, IReadOnlyList<Init> items)
     {
+        // C's universal {0} initializer zeroes the complete aggregate, including
+        // nested arrays. Avoid interpreting its one scalar as an array pointer.
+        if (items is [InitVal { Value: LitInt { Value: 0 } }])
+            return new StructInit(System.Array.Empty<FieldInit>()) { Type = type };
         // Anonymous bit-fields (padding) take no initializer in C — drop them so the
         // positional values land on the accessible members in declaration order.
         var fields = StructFieldsOf(type).Where(f => !f.IsAnonBitField).ToList();
@@ -110,15 +114,37 @@ internal sealed partial class IrBuilder
         for (var i = 0; i < items.Count && i < fields.Count; i++)
         {
             var field = fields[i];
-            CExpr value = items[i] switch
-            {
-                InitVal v => v.Value,
-                InitGroup g => BuildStructPositional(field.Type, g.Items), // nested brace → struct/union field
-                _ => throw new IrUnsupportedException("array designator inside a positional struct initializer"),
-            };
+            var value = BuildFieldInitializer(field.Type, items[i]);
             members.Add(new FieldInit(field.Name, field.Type, value));
         }
         return new StructInit(members) { Type = type };
+    }
+
+    private CExpr BuildFieldInitializer(CType type, Init initializer)
+    {
+        if (type.Unqualified is CType.Array array)
+        {
+            var dimensions = new List<int>();
+            for (CType current = array; current.Unqualified is CType.Array dimension; current = dimension.Element)
+                dimensions.Add(dimension.Count ?? throw new IrUnsupportedException("inline array initializer requires a constant extent"));
+            if (dimensions.Any(count => count <= 0))
+                throw new IrUnsupportedException("initializer for flexible or zero-length array member");
+            var items = initializer is InitGroup group ? group.Items
+                : throw new IrUnsupportedException("inline array member initializer requires braces");
+            var values = BuildArrayElems(array.FlatElement, dimensions, items);
+            if (values.Count > dimensions.Aggregate(1, (left, right) => checked(left * right)))
+                throw new IrUnsupportedException("too many initializers for inline array member");
+            return new InlineArrayInit(array.FlatElement, values) { Type = type };
+        }
+        return initializer switch
+        {
+            InitVal value => value.Value,
+            InitGroup group when type.Unqualified is CType.Named named && _structFields.ContainsKey(named.Name)
+                => BuildStructPositional(type, group.Items),
+            InitGroup { Items.Count: 0 } => new DefaultLit { Type = type },
+            InitGroup { Items.Count: 1 } group => BuildFieldInitializer(type, group.Items[0]),
+            _ => throw new IrUnsupportedException("invalid initializer for aggregate member"),
+        };
     }
 
     /// <summary>Build a C99 designated struct/union initializer

@@ -341,6 +341,11 @@ internal sealed partial class IrBuilder
             case StructInit si:
                 return EvalComptimeStructInit(si);
 
+            // C inline-storage initializers are runtime aggregate values.
+            // Keep comptime evaluation conservative until their storage is modeled.
+            case InlineArrayInit:
+                return null;
+
             case Member mem when !mem.Arrow:
             {
                 return EvalComptime(mem.Base) is CtStruct ms && ms.Fields.TryGetValue(mem.Field, out var mv)
