@@ -22,6 +22,11 @@ pager, B-tree, SQL parser, VM, transactions, and JSON implementation translated
 from upstream C. Function pointers are supported API, including callback tables;
 unsafe C# is explicitly acceptable.
 
+Native-code interop is not required. Any future extensions will be written in C#
+against the translated SQLite API and loaded through explicit application
+registration. No dynamic library or assembly loading is required. Native SQLite
+remains a separate test oracle, not a runtime dependency or extension host.
+
 Commit locally after each coherent, tested change. Do not push. This document is
 the planning deliverable; downloading and translating SQLite are future steps.
 
@@ -77,7 +82,7 @@ NuGet. Do not impersonate GCC or a host OS to select unsupported compiler tricks
 | OS layer | `SQLITE_OS_OTHER=1`; provide `sqlite3_os_init`, `sqlite3_os_end`, and register the memory VFS. |
 | Threading | Initial supported profile: `SQLITE_THREADSAFE=0`, all calls serialized on one thread. VFS locks still model contention between connections. Thread-safe hosting is a later profile using dotcc runtime facilities. |
 | Temporary storage | `SQLITE_TEMP_STORE=3`; named databases and rollback journals still exercise the memory VFS. |
-| Dynamic extensions | `SQLITE_OMIT_LOAD_EXTENSION`; retain statically registered functions and virtual tables. |
+| Extensions | `SQLITE_OMIT_LOAD_EXTENSION`; retain explicit registration of C# extensions, functions, and virtual tables against the translated API. No dynamic loading or native-code interop. |
 | Core | Keep ordinary default core features: transactions, triggers, views, constraints, foreign keys, CTEs, window functions, indexes, virtual-table API, UTF-8/UTF-16 APIs, backup, incremental blobs, and date/time functions. |
 | JSON/JSONB | Keep JSON enabled; verify every JSON/JSONB function/operator available in the pinned profile, including table-valued functions. |
 | FTS | Leave all FTS enable macros undefined, including FTS3/4/5 and tokenizer variants. Check effective configuration and negative SQL probes. |
@@ -212,10 +217,10 @@ M1/M2 may interleave where layout-dependent declarations block lowering.
       lifetime, pointer conversions/arithmetic, integer promotions/overflow,
       function-pointer arrays/tables, switch/goto scopes, and address stability.
 - [ ] Preserve compatible `delegate*` signatures for translated callbacks.
-      Choose managed versus unmanaged calling conventions explicitly at each
-      boundary; a translated callback does not automatically require an unmanaged
-      thunk. Use rooted adapters and `UnmanagedCallersOnly` only where a native
-      boundary requires them. Never use pointer types as generic type arguments.
+      Use managed calling conventions for translated code and C# extensions;
+      native ABI exports, unmanaged thunks, and `UnmanagedCallersOnly` are not
+      required. Preserve callback/context lifetimes. Never use pointer types as
+      generic type arguments.
 - [ ] Exercise callback registration and invocation through VFS methods, scalar/
       aggregate SQL functions, collations, busy/progress handlers, and destructors.
       Cover null callbacks, context pointers, `SQLITE_STATIC`/`SQLITE_TRANSIENT`,
@@ -225,8 +230,9 @@ M1/M2 may interleave where layout-dependent declarations block lowering.
       strings, memory operations, formatting, and math on dotcc implementations.
 - [ ] Start with a small C `main` harness for execution. Then expose a reusable
       C# assembly and minimal C-style callable API with clear ownership rules.
-      Inspect existing library shell behavior: native `-shared` exports alone
-      do not establish a usable managed library API. Fix that seam if necessary.
+      Ensure the library shell exposes a usable managed API without requiring
+      native `-shared` exports. Test a C# extension explicitly registered by the
+      consumer, with no dynamic loading, and fix that seam if necessary.
 
 Exit: generated C# builds, initialization and `SELECT 1` run, callback regressions
 pass, and a separate C# consumer can call the translated engine. Commit per fix.
