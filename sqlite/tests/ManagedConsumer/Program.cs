@@ -1,7 +1,8 @@
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Text;
-using static Sqlite;
+using Managed.Database;
+using static global::Managed.Database.Sqlite;
 
 // A separately compiled C# application registers its managed callbacks directly.
 // No native SQLite, assembly discovery, reflection, or extension loading is used.

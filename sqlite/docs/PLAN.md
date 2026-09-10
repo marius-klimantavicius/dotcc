@@ -614,3 +614,14 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
       Retain environment overrides and run the existing in-place postprocessor afterward.
 - [x] Validate source layout, calls, callbacks and initialization in regression
       tests, then regenerate SQLite and verify ManagedConsumer under JIT/NativeAOT.
+
+
+### Generated namespace
+
+- [x] Add `--namespace` to C# emission/linking APIs and CLI; qualify runtime,
+      aggregate and function-pointer references without adding Roslyn to dotcc.
+- [x] Use `Managed.Database` in SQLite emission, keeping `Sqlite.<function>.cs`
+      filenames; update managed consumers, VFS imports and product layout checks.
+- [x] Teach the shared postprocessor implementation to prove namespaced Cond.B
+      and CBool helpers, preserving in-place processing after dotcc.
+- [x] Regenerate SQLite and validate the namespace under JIT and NativeAOT.

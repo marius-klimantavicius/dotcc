@@ -3,7 +3,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using DotCC.Sqlite;
-using static Sqlite;
+using Managed.Database;
+using static global::Managed.Database.Sqlite;
 
 internal static unsafe class Program
 {

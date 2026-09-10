@@ -22,7 +22,7 @@ done < "$SQLITE_ROOT/config/host-defines.txt"
 dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   -std=c17 "${SQLITE_DEFINES[@]}" "${SQLITE_HOST_DEFINES[@]}" -I "$SQLITE_ROOT/generated/sqlite-port" \
   -I "$SQLITE_ROOT/src" "$SQLITE_ROOT/src/engine.c" \
-  --emit=managedlib --class-name Sqlite "${split_args[@]}" -o "$SQLITE_ROOT/generated/TranslatedSqlite"
+  --emit=managedlib --class-name Sqlite --namespace Managed.Database "${split_args[@]}" -o "$SQLITE_ROOT/generated/TranslatedSqlite"
 
 if "$postprocess"; then
   dotnet build "$DOTCC_ROOT/DotCC.PostProcess/DotCC.PostProcess.csproj" -c Release --nologo

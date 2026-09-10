@@ -65,7 +65,7 @@ scripts/emit-engine.sh --no-postprocess
 ```
 
 SQLite emission defaults to one function per file, followed by in-place
-postprocessing. All methods belong to `partial class Sqlite`; filenames use
+postprocessing. All methods belong to `Managed.Database.Sqlite`; filenames use
 `Sqlite.sqlite3_open.cs`, for example, with a numeric suffix only for collisions.
 Shared runtime/types/globals stay in `Program.cs`. To change the source layout:
 
@@ -83,9 +83,10 @@ manifest so switching layouts does not leave duplicate declarations. Add
 `--no-postprocess` to any invocation when raw dotcc output is needed.
 
 Reference `generated/TranslatedSqlite/TranslatedSqlite.csproj` from a C# project,
-or its built `TranslatedSqlite.dll`. `Sqlite` (selected with `--class-name Sqlite` by `emit-engine.sh`) exposes the C API as unsafe managed
+or its built `TranslatedSqlite.dll`. `Managed.Database.Sqlite` (selected with `--class-name Sqlite --namespace Managed.Database` by `emit-engine.sh`) exposes the C API as unsafe managed
 methods; public translated aggregate types and `delegate*` signatures preserve
-SQLite's callback surface. `tests/ManagedConsumer` demonstrates explicit C#
+SQLite's callback surface. Use `using Managed.Database;` for generated types and
+`using static Managed.Database.Sqlite;` for the API methods. `tests/ManagedConsumer` demonstrates explicit C#
 extension registration, ownership, callback re-entry and cleanup. No native SQLite
 library or dynamic extension loader is part of that integration. The default VFS
 uses real files; OS-level P/Invoke supplies platform locking/durability alongside

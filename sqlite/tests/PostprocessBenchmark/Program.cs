@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Globalization;
-using static Sqlite;
+using Managed.Database;
+using static global::Managed.Database.Sqlite;
 
 internal static unsafe class Program
 {

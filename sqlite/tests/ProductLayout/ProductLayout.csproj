@@ -7,6 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Using Include="Managed.Database" />
     <ProjectReference Include="../../generated/TranslatedSqlite/TranslatedSqlite.csproj" />
     <Compile Include="../../generated/product-layout/LayoutStorageChecks.cs" />
     <Compile Include="../../generated/product-layout/ProductOffsetChecks.cs" />

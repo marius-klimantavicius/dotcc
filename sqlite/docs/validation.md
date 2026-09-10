@@ -1336,3 +1336,46 @@ legacy cleanup (`artifacts/class-file-names-tests.log`). The compiler builds
 without warnings, and ManagedConsumer passes its JIT SQL/JSONB/FTS5/WAL/optional
 feature and callback contracts on the freshly regenerated engine
 (`artifacts/class-file-names-consumer.log`).
+
+
+## Generated namespace (2026-09-10)
+
+SQLite now emits `Managed.Database.Sqlite` and places its translated aggregate
+and runtime types in `Managed.Database`. The script supplies `--namespace
+Managed.Database`; function filenames remain `Sqlite.<function>.cs`. Consumer
+and handwritten VFS imports, product layout checks, and usage documentation
+follow the namespace. Existing generated snapshots need regeneration before
+building against these updated consumers.
+
+The compiler supports namespaced single-file/project executable output,
+managed/shared libraries, all source layouts, and object linking. Names are
+validated and C# keywords escaped. Objects retain symbolic aliases until link
+time; older objects need regeneration for namespaced linking. The compiler and
+runtime acquire no Roslyn dependency. The separate postprocessor and optional
+IDE tools now prove the bound Cond.B/CBool helpers in their actual namespace.
+
+Validation:
+
+- **1,871 unit tests** and **354 functional tests** pass; **921 optional oracle
+  tests** are skipped (`artifacts/namespace-unit.log`,
+  `artifacts/namespace-all-functional.log`). The functional cases cover namespace
+  validation, escaped components, source layouts, object linking, enum shadowing,
+  cached callbacks, executable entry points, runtime types and string preservation.
+- **64 postprocessor tests** and **31 analyzer/code-fix tests** pass, with one
+  opt-in SQLite snapshot test skipped (`artifacts/namespace-postprocess-tests.log`,
+  `artifacts/namespace-analyzer-tests.log`). Namespaced helper rewrites preserve
+  execution and remain idempotent; unproven helpers are skipped.
+- SQLite regeneration rewrites **24,123 Cond.B calls**, skips none, and removes
+  **2,208 empty blocks**, updating **2,511 files**. ManagedConsumer passes JIT and
+  linux-x64 NativeAOT SQL/JSONB/FTS5/optional-feature/WAL/callback checks
+  (`artifacts/namespace-sqlite-consumer.log`).
+- HostVfsTests and ThreadingTests pass, including WAL, mmap, concurrent connection
+  and callback contracts. ProductLayout passes **41 offsetof contracts**, **67
+  actual field offsets** and **8 pointer-array storage checks**
+  (`artifacts/namespace-HostVfsTests-run.log`,
+  `artifacts/namespace-ThreadingTests-run.log`,
+  `artifacts/namespace-ProductLayout-run.log`).
+- The compiler publishes as linux-x64 NativeAOT without warnings. Its native CLI
+  passes executable project and file-based runs, split object linking, legacy
+  object diagnostics/global linking, and invalid option checks
+  (`artifacts/namespace-compiler-aot.log`, `artifacts/namespace-cli-smoke.log`).

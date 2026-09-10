@@ -1,4 +1,5 @@
 #nullable enable
+global using Managed.Database;
 global using static DotCC.Sqlite.HostVfs;
 
 using System;
@@ -9,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using static Sqlite;
+using static global::Managed.Database.Sqlite;
 
 namespace DotCC.Sqlite;
 
