@@ -467,3 +467,40 @@ Evidence: `artifacts/pointer-inline-before.log`, `pointer-inline-after.log`,
 The new `scripts/build.sh` was also executed from the repository root; it fetches
 pinned inputs, builds dotcc/the generator, and regenerates/builds SQLite without
 running tests, consumers, native oracles, or AOT publishing.
+
+
+## Offset source generator removed — 2026-09-10
+
+Commit `5a4c7ad` removes the optional Roslyn offset generator, its CLI/project
+settings, conditional source emission, and the functional test GeneratorDriver.
+The shared layout implementation now belongs to `DotCC.Lib/Layout/OffsetLayout.cs`;
+dotcc emits all offset/size/alignment constants directly. Model/metadata tests
+were retained as `DotCC.FunctionalTests/OffsetLayoutTests.cs`, with added ordinary
+file/project tests for constant contexts and flexible headers. The object-link
+regression first failed on the old conditional generator switch and now passes.
+Historical entries above describe the former analyzer path; it is no longer used.
+
+After deleting the obsolete generator directory including its ignored build
+outputs, `scripts/build.sh` regenerated and built SQLite with zero errors and 38
+unrelated warnings. Generated source/project files contain no offset-generator
+symbol or analyzer reference; dotcc, functional tests, and TranslatedSqlite
+runtime dependency manifests contain no OffsetGenerator dependency.
+
+`scripts/verify.sh` completed with exit zero and AOT enabled:
+
+- **1,814 unit tests and 284 functional tests passed**, with 901 optional oracle
+  skips and no failures.
+- All seven native baselines and six translated core/API/VFS/virtual-table/
+  allocation/upstream-JSONB suites matched.
+- All 30 offsets, 33 actual aggregate layouts, and eight pointer-array layouts
+  matched native under JIT and NativeAOT.
+- The separate managed SQL/JSONB/callback/GC/cleanup consumer passed under JIT
+  and NativeAOT.
+- Native-to-managed, managed-to-native, and managed-to-managed independent-process
+  database-image exchanges passed.
+
+Evidence: `artifacts/offset-removal-before.log`, `offset-removal-focused.log`,
+`offset-removal-build-only.log`, `offset-removal-campaign.log`, and the refreshed
+`campaign-repository.log`, `campaign-layout.log`, `campaign-managed-consumer.log`,
+`campaign-translated-*.log`, and `campaign-image-exchange.log`.
+The optional `--with-ports` campaign was not repeated for this removal.
