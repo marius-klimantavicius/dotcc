@@ -49,6 +49,20 @@ The helper also works from another directory, for example
 `sqlite/scripts/build.sh` from the repository root. To separately run the managed
 consumer checks, use `scripts/test-managed-consumer.sh`.
 
+Open `sqlite/ManagedConsumer.slnx` from the repository root (or
+`ManagedConsumer.slnx` from this directory) in Rider to work on the consumer,
+TranslatedSqlite, and the analyzer/code-fix projects together. Select
+`ManagedConsumer` as the startup project. The tooling projects are grouped under
+`Tooling`; the existing SQLite design-time references enable their quick-fixes.
+Build the code-fix project in Release once to populate those references.
+
+To regenerate only TranslatedSqlite with the already-built dotcc compiler,
+without compiling the generated C# or running the postprocessor:
+
+```sh
+scripts/emit-engine.sh
+```
+
 Reference `generated/TranslatedSqlite/TranslatedSqlite.csproj` from a C# project,
 or its built `TranslatedSqlite.dll`. `DotCcLib` exposes the C API as unsafe managed
 methods; public translated aggregate types and `delegate*` signatures preserve

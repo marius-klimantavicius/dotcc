@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Tooling/">
+    <Project Path="../DotCC.PostProcess.Analyzers/DotCC.PostProcess.Analyzers.csproj" />
+    <Project Path="../DotCC.PostProcess.CodeFixes/DotCC.PostProcess.CodeFixes.csproj" />
+  </Folder>
+  <Project Path="generated/TranslatedSqlite/TranslatedSqlite.csproj" />
+  <Project Path="tests/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>
