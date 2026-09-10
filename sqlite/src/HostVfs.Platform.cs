@@ -41,9 +41,13 @@ internal static unsafe class HostPlatform
         private readonly bool writable;
         private readonly InodeState? inode;
         private readonly (uint Device, ulong Inode) identity;
-        private bool shared, reserved, pending, exclusive, disposed;
+        private bool shared, reserved, pending, exclusive, disposed, externalLocks;
         private bool gateRead, reservedProbe, sharedOverlay, ioFailed;
-        internal bool HasLocks => shared || reserved || pending || exclusive || gateRead || reservedProbe || sharedOverlay;
+        internal bool HasLocks => shared || reserved || pending || exclusive || gateRead || reservedProbe || sharedOverlay || externalLocks;
+        internal void RetainExternalLocks()
+        {
+            lock (Gate) { ObjectDisposedException.ThrowIf(disposed, this); externalLocks = true; }
+        }
         private int FailUnlock() { ioFailed = true; return IoUnlock; }
         private int FailReadLock() { ioFailed = true; return IoReadLock; }
 
@@ -235,7 +239,7 @@ internal static unsafe class HostPlatform
         }
     }
 
-    public static FileHandle Open(string path, FileMode mode, FileAccess access, FileOptions options, bool noFollow = false)
+    public static FileHandle Open(string path, FileMode mode, FileAccess access, FileOptions options, bool noFollow = false, bool shareDelete = true)
     {
         EnsureSupported();
         if (access == FileAccess.Write) throw new ArgumentException("SQLite requires readable file handles.", nameof(access));
@@ -244,7 +248,7 @@ internal static unsafe class HostPlatform
         lock (Gate)
         {
             SafeFileHandle handle = OperatingSystem.IsWindows()
-                ? OpenWindows(path, mode, access, options, noFollow)
+                ? OpenWindows(path, mode, access, options, noFollow, shareDelete)
                 : OpenUnix(path, mode, access, options, noFollow);
             FileHandle? result = null;
             try
@@ -369,7 +373,7 @@ internal static unsafe class HostPlatform
         return new SafeFileHandle((nint)fd, true);
     }
 
-    private static SafeFileHandle OpenWindows(string path, FileMode mode, FileAccess accessMode, FileOptions options, bool noFollow)
+    private static SafeFileHandle OpenWindows(string path, FileMode mode, FileAccess accessMode, FileOptions options, bool noFollow, bool shareDelete)
     {
         uint disposition = mode switch
         {
@@ -384,7 +388,7 @@ internal static unsafe class HostPlatform
         uint desiredAccess = accessMode == FileAccess.Read ? 0x80000000u : 0xc0000000u;
         if ((options & FileOptions.DeleteOnClose) != 0) desiredAccess |= 0x00010000; // DELETE
         SafeFileHandle handle = CreateFileW(path, desiredAccess,
-            1 | 2 | 4, 0, disposition, flags, 0);
+            (uint)(1 | 2 | (shareDelete ? 4 : 0)), 0, disposition, flags, 0);
         if (handle.IsInvalid) { var error = NativeError("CreateFile", path); handle.Dispose(); throw error; }
         if (noFollow)
         {
@@ -393,6 +397,58 @@ internal static unsafe class HostPlatform
             if ((info.Attributes & 0x400) != 0) { handle.Dispose(); throw new IOException("SQLITE_OPEN_NOFOLLOW rejects reparse points."); }
         }
         return handle;
+    }
+
+    internal readonly record struct FileIdentity(ulong Device, ulong Low, ulong High);
+
+    internal static FileIdentity Identity(SafeFileHandle handle)
+    {
+        EnsureSupported();
+        if (OperatingSystem.IsWindows())
+        {
+            if (!GetFileInformationByHandleEx(handle, 18, out WindowsFileId info, 24))
+                throw NativeError("GetFileInformationByHandleEx(FileIdInfo)");
+            return new FileIdentity(info.Volume, info.Low, info.High);
+        }
+        if (OperatingSystem.IsMacOS())
+        {
+            var identity = DarwinIdentity(handle);
+            return new FileIdentity(identity.Device, identity.Inode, 0);
+        }
+        LinuxStat stat;
+        if (fstatLinux(handle, &stat) != 0) throw NativeError("fstat");
+        return new FileIdentity(stat.Device, stat.Inode, 0);
+    }
+
+    internal static int LockRange(SafeFileHandle handle, long start, long length, int kind)
+    {
+        lock (Gate) return SetRange(handle, start, length, kind);
+    }
+
+    // Query a desired write lock without changing ownership: 0 shared conflict,
+    // 1 exclusive conflict, 2 no conflict. Unix DMS initialization needs this
+    // distinction to avoid trusting a crashed initializer's stale wal-index.
+    internal static int QueryRange(SafeFileHandle handle, long start, long length, out int kind)
+    {
+        lock (Gate)
+        {
+            kind = 2;
+            int rc;
+            if (OperatingSystem.IsMacOS())
+            {
+                var range = new DarwinFlock { Start = start, Length = length, Type = 3 };
+                do { rc = DarwinFcntl(handle, 7, &range); } while (rc < 0 && Marshal.GetLastPInvokeError() == 4);
+                if (rc == 0) kind = range.Type == 1 ? 0 : range.Type == 3 ? 1 : 2;
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                var range = new LinuxFlock { Start = start, Length = length, Type = 1 };
+                do { rc = fcntl(handle, 36, &range); } while (rc < 0 && Marshal.GetLastPInvokeError() == 4);
+                if (rc == 0) kind = range.Type;
+            }
+            else throw new PlatformNotSupportedException("Windows has no fcntl lock query.");
+            return rc == 0 ? 0 : IoLock;
+        }
     }
 
     // kind: 0 read/shared, 1 write/exclusive, 2 unlock. Calls never block.
@@ -480,6 +536,12 @@ internal static unsafe class HostPlatform
         RuntimeInformation.ProcessArchitecture == Architecture.Arm64
             ? fcntlDarwinArm64(handle, command, 0, 0, 0, 0, 0, 0, argument) : fcntl(handle, command, argument);
 
+    // Linux x64 and arm64 stat both begin with 64-bit dev/ino. Reserve enough
+    // space for either libc layout; only the common leading fields are read.
+    [StructLayout(LayoutKind.Explicit, Size = 256)]
+    private struct LinuxStat { [FieldOffset(0)] internal ulong Device; [FieldOffset(8)] internal ulong Inode; }
+    [StructLayout(LayoutKind.Sequential)]
+    private struct WindowsFileId { internal ulong Volume, Low, High; }
     [StructLayout(LayoutKind.Sequential)]
     private struct LinuxFlock { internal short Type, Whence; internal long Start, Length; internal int Pid; }
     [StructLayout(LayoutKind.Sequential)]
@@ -502,11 +564,13 @@ internal static unsafe class HostPlatform
     [DllImport("libc", SetLastError = true)] private static extern int fsync(SafeFileHandle handle);
     [DllImport("libc", SetLastError = true)] private static extern int unlink([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
     [DllImport("libc", SetLastError = true)] private static extern int access([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int mode);
+    [DllImport("libc", EntryPoint = "fstat", SetLastError = true)] private static extern int fstatLinux(SafeFileHandle handle, LinuxStat* stat);
     [DllImport("libc", EntryPoint = "fstat$INODE64", SetLastError = true)] private static extern int fstatDarwin(SafeFileHandle handle, DarwinStat* stat);
     [DllImport("libc", EntryPoint = "fstat", SetLastError = true)] private static extern int fstatDarwinArm64(SafeFileHandle handle, DarwinStat* stat);
     [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)] private static extern SafeFileHandle CreateFileW(string path, uint access, uint share, nint security, uint disposition, uint flags, nint template);
     [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)] private static extern uint GetFileAttributesW(string path);
     [DllImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern bool GetFileInformationByHandle(SafeFileHandle handle, out WindowsFileInformation information);
+    [DllImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern bool GetFileInformationByHandleEx(SafeFileHandle handle, int informationClass, out WindowsFileId information, uint size);
     [DllImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern bool LockFileEx(SafeFileHandle handle, uint flags, uint reserved, uint lengthLow, uint lengthHigh, ref Overlapped overlap);
     [DllImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern bool UnlockFileEx(SafeFileHandle handle, uint reserved, uint lengthLow, uint lengthHigh, ref Overlapped overlap);
 }
