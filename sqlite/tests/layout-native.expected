@@ -52,7 +52,7 @@ required Fts5ExprPhrase aTerm 32 8 32 32
 required Fts5Iter aSeg 104 8 104 104
 required Fts5Sorter nIdx 32 8 24 24
 required Fts5Structure aLevel 32 8 32 32
-required Fts5TokenDataIter apIter 56 8 56 56
+required Fts5TokenDataIter apIter 72 8 72 72
 required Fts5TombstoneArray apTombstone 8 8 8 8
 required HiddenIndexInfo aRhs 32 8 32 32
 required IdList a 8 8 8 8
