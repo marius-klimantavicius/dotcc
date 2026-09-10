@@ -99,6 +99,9 @@ and handles obsolete files. Existing string-returning APIs retain single-file
 behavior. The separate postprocessor evaluates all generated Compile inputs, so
 its `--in-place` mode also works with split output.
 
+Generated C# files disable warnings `CS0162`, `CS8909`, `CS1717`, `CS0164`,
+and `CS0642` with a file-scoped `#pragma warning disable` directive.
+
 ## Optional source post-processing
 
 After dotcc finishes, the separate [Roslyn post-processor](postprocess.md) can
