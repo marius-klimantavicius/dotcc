@@ -37,7 +37,8 @@
 
 ## Optional source post-processing
 
-After dotcc finishes, the separate [Roslyn condition inliner](postprocess.md) can
+After dotcc finishes, the separate [Roslyn post-processor](postprocess.md) can
 produce original/optimized project snapshots. It uses semantic syntax-tree
-rewrites for Cond.B only; it is never invoked by the compiler or SQLite build
-helper and adds no Roslyn dependency to their runtime closure.
+rewrites for Cond.B followed by standalone empty-block cleanup. It is never
+invoked by the compiler or SQLite build helper and adds no Roslyn dependency
+to their runtime closure.

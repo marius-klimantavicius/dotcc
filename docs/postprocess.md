@@ -1,10 +1,11 @@
-# Standalone Roslyn condition inlining
+# Standalone Roslyn source post-processing
 
 `DotCC.PostProcess` is an explicit tool for an already emitted .NET 10 C# project.
 Run it after dotcc finishes its normal emission/linking/build actions. It has no
 compiler or SQLite build hook, and introduces no Roslyn dependency into
 `DotCC.Lib`, the dotcc executable, or translated applications. The tool references
-the Roslyn assemblies shipped with the .NET 10 SDK used to build it.
+the Roslyn assemblies shipped with the .NET 10 SDK used to build it. It inlines
+proven `Cond.B` calls, then removes standalone empty blocks for readability.
 
 From the repository root:
 
@@ -29,6 +30,7 @@ project normally, including for NativeAOT publishing. Both freeze the evaluated
 input configuration: building the snapshot with another configuration does not
 change its preprocessor symbols or checked/unsafe settings. The manifest records
 input hashes, compiler arguments, output hashes, rewrite counts and skip reasons.
+`RemovedEmptyBlocks` counts the empty blocks removed by the cleanup pass.
 It is deterministic for identical evaluated inputs.
 
 ## Tree and semantic analysis
@@ -69,6 +71,24 @@ caller-argument text captures, discarded statement-expression positions, or
 across preprocessor directives. Unknown helper implementations are retained too.
 Skip diagnostics include the original source location. CBool stores, arithmetic,
 API signatures and the helper definitions themselves are not rewritten.
+
+## Empty block cleanup
+
+After condition inlining, a syntax-tree pass removes empty block statements from
+method/block statement lists, switch sections and top-level code. It also removes
+blocks that become empty after their nested empty blocks are removed. This pass
+works even when the input has no `Cond` helper.
+
+Bodies belonging to statements or declarations stay intact: `if (x) {}`,
+loops, labeled statements, methods, lambdas, accessors and `try`/`catch`/`finally`
+keep their braces. Nonempty blocks retain their scopes. An otherwise empty
+top-level program retains one block to preserve its implicit entry point.
+
+Comments, whitespace and line breaks from removed blocks are retained in order,
+preserving caller line numbers. Blocks containing preprocessor directives or
+disabled source are retained, as are blocks inside captured caller-argument
+expressions. The pass does not reformat the whole file or remove blank lines.
+Serialized output is compiled again before the snapshot is saved.
 
 ## Supported project inputs
 

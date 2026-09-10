@@ -8,7 +8,7 @@ using Xunit;
 
 namespace DotCC.PostProcess.Tests;
 
-public sealed class CondInlinerTests
+public sealed partial class CondInlinerTests
 {
     private const string Helper = """
         static unsafe class Cond {

@@ -7,7 +7,10 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace DotCC.PostProcess;
 
 public sealed record RewriteResult(CSharpCompilation Compilation, int Rewritten, int Skipped,
-    IReadOnlyList<string> Diagnostics);
+    IReadOnlyList<string> Diagnostics)
+{
+    public int RemovedEmptyBlocks { get; init; }
+}
 
 /// <summary>Optional, post-emission tree rewrite. All bindings come from the
 /// original compilation; rewritten subexpressions retain their boolean type.</summary>
@@ -38,7 +41,7 @@ public static class CondInliner
         return new(output, rewritten, skipped, diagnostics);
     }
 
-    private static void CheckErrors(CSharpCompilation compilation, string phase, CancellationToken token)
+    internal static void CheckErrors(CSharpCompilation compilation, string phase, CancellationToken token)
     {
         var errors = compilation.GetDiagnostics(token).Where(d => d.Severity == DiagnosticSeverity.Error).Take(20).ToArray();
         if (errors.Length != 0) throw new InvalidOperationException(phase + " compilation failed:\n" + string.Join("\n", errors.Select(d => d.ToString())));
@@ -111,30 +114,6 @@ public static class CondInliner
             return CBool(parameter.Type) && binary.LeftOperand is IConversionOperation { Type.SpecialType: SpecialType.System_Int32 } conversion
                 && Parameter(conversion.Operand, parameter) && Zero(binary.RightOperand);
         }
-        private bool ObservableContext(InvocationExpressionSyntax node)
-        {
-            foreach (var ancestor in node.Ancestors())
-            {
-                // Query providers receive compiler-generated expression-tree
-                // lambdas even though the source contains no lambda syntax.
-                if (ancestor is QueryExpressionSyntax) return true;
-                if (ancestor is AnonymousFunctionExpressionSyntax lambda
-                    && Model(lambda).GetTypeInfo(lambda, token).ConvertedType is INamedTypeSymbol { Name: "Expression", Arity: 1 } type
-                    && type.ContainingNamespace.ToDisplayString() == "System.Linq.Expressions") return true;
-                var parameters = ancestor switch
-                {
-                    InvocationExpressionSyntax call when Operation(call) is IInvocationOperation invocation => invocation.TargetMethod.Parameters,
-                    BaseObjectCreationExpressionSyntax call when Operation(call) is IObjectCreationOperation creation => creation.Constructor?.Parameters ?? [],
-                    ConstructorInitializerSyntax call when Operation(call) is IInvocationOperation invocation => invocation.TargetMethod.Parameters,
-                    ElementAccessExpressionSyntax access when Operation(access) is IPropertyReferenceOperation property => property.Property.Parameters,
-                    ElementBindingExpressionSyntax access when Operation(access) is IPropertyReferenceOperation property => property.Property.Parameters,
-                    _ => []
-                };
-                if (parameters.Any(p => p.GetAttributes().Any(a =>
-                        a.AttributeClass?.ToDisplayString() == "System.Runtime.CompilerServices.CallerArgumentExpressionAttribute"))) return true;
-            }
-            return false;
-        }
         public override SyntaxNode? VisitInvocationExpression(InvocationExpressionSyntax node)
         {
             token.ThrowIfCancellationRequested();
@@ -150,7 +129,7 @@ public static class CondInliner
             if (Operation(node) is not IInvocationOperation operation || !Same(operation.TargetMethod.ContainingType, helper)
                 || operation.TargetMethod.Name != "B") return base.VisitInvocationExpression(node);
             // Do not touch children either when their source form is observable.
-            string? reason = ObservableContext(node) ? "expression tree or caller-argument text is observable" :
+            string? reason = SourceObservability.IsObservable(node, model, token) ? "expression tree or caller-argument text is observable" :
                 node.ContainsDirectives ? "preprocessor directives cross the invocation" :
                 !IsHelper(operation.TargetMethod) ? "helper implementation is not a proven dotcc truth conversion" : null;
             SyntaxNode context = node;

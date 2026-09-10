@@ -423,6 +423,12 @@ Handle every existing overload, and simplify CBool conversions only within
 Cond.B arguments. CBool stores/arithmetic remain unchanged. An IDE analyzer is
 not required for this version.
 
+- [x] Readability follow-up: after Cond.B inlining, remove standalone empty block
+      statements with a syntax-tree cleanup. Retain required statement/declaration
+      bodies, labels, nonempty scopes, directives, comments, line breaks and
+      captured caller-argument text. Cover nested blocks and top-level entry
+      points, then retry the standalone processor on translated SQLite.
+
 ### M10 — Span-based varargs and ref-struct VaList (complete)
 
 - [x] Change emitted `params VaArg[] x` to

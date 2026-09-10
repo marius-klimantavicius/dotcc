@@ -23,7 +23,7 @@ internal static class Program
             var paths = SnapshotPaths.Validate(options.Project, options.Output);
             var input = await ProjectInput.ReadAsync(paths.Project, options.Configuration, cancellation.Token);
             var original = input.CreateCompilation(cancellation.Token);
-            var result = CondInliner.Rewrite(original, cancellation.Token);
+            var result = SourcePostProcessor.Rewrite(original, cancellation.Token);
             cancellation.Token.ThrowIfCancellationRequested();
 
             // Publish only a complete snapshot. Failed evaluation/rewrites never
@@ -48,6 +48,7 @@ internal static class Program
                     OptimizedProject = Relative(staging, projects.OptimizedProjectPath),
                     result.Rewritten,
                     result.Skipped,
+                    result.RemovedEmptyBlocks,
                     Diagnostics = result.Diagnostics.Order(StringComparer.Ordinal).ToArray(),
                     Notes = new[]
                     {
@@ -70,6 +71,7 @@ internal static class Program
                     throw new InvalidOperationException("Output appeared during processing; refusing to overwrite it.");
                 Directory.Move(staging, paths.Output);
                 Console.WriteLine($"Rewrote {result.Rewritten} Cond.B calls; skipped {result.Skipped}.");
+                Console.WriteLine($"Removed {result.RemovedEmptyBlocks} standalone empty blocks.");
                 Console.WriteLine(Path.Combine(paths.Output, Relative(staging, projects.OptimizedProjectPath)));
                 return 0;
             }

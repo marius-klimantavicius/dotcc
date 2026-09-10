@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Standalone CLI snapshot contracts; run serially after building the tool."""
 import argparse
+import difflib
 import hashlib
 import json
 import pathlib
@@ -31,7 +32,7 @@ with tempfile.TemporaryDirectory(prefix='dotcc-postprocess-tests-') as temporary
     (dependency / 'Dependency.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>')
     (dependency / 'Value.cs').write_text('public static class Value { public static int Number => 17; }')
     project = source / 'Sample.csproj'
-    project.write_text('''<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><DebugType>portable</DebugType><EmbedAllSources>true</EmbedAllSources></PropertyGroup><ItemGroup><ProjectReference Include="../dependency/Dependency.csproj"/><EmbeddedResource Include="data.txt" LogicalName="payload" /></ItemGroup></Project>''')
+    project.write_text('''<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><DebugType>portable</DebugType><EmbedAllSources>true</EmbedAllSources><NoWarn>CS0162;CS0219;CS0649;CS1701;CS1702</NoWarn></PropertyGroup><ItemGroup><ProjectReference Include="../dependency/Dependency.csproj"/><EmbeddedResource Include="data.txt" LogicalName="payload" /></ItemGroup></Project>''')
     (source / 'data.txt').write_text('resource-preserved')
     code = source / 'Program.cs'
     code.write_text('''using System.Runtime.CompilerServices;
@@ -43,6 +44,8 @@ static class Program {
   throw new System.Exception("Changed Release preprocessor symbols");
 #else
   using var reader = new System.IO.StreamReader(typeof(Program).Assembly.GetManifestResourceStream("payload")!);
+  { /* standalone */ }
+  if (Value.Number == 0) {}
   System.Console.WriteLine($"{Cond.B(Value.Number)}|{Value.Number}|{reader.ReadToEnd()}|{File()}");
 #endif
  }
@@ -55,6 +58,7 @@ static class Program {
     run('dotnet', tool, project, '--output', output)
     manifest = json.loads((output / 'manifest.json').read_text())
     assert manifest['Rewritten'] == 1, manifest
+    assert manifest['RemovedEmptyBlocks'] == 1, manifest
     assert before == hashlib.sha256(code.read_bytes()).hexdigest()
     for item in manifest['Files']:
         assert hashlib.sha256((output / item['Path']).read_bytes()).hexdigest() == item['Sha256']
@@ -67,7 +71,15 @@ static class Program {
         assert (snapshot.parent / 'bin/Debug/net10.0/Sample.pdb').exists()
     second = root / 'snapshot2'
     run('dotnet', tool, project, '--output', second)
-    assert (output / 'manifest.json').read_bytes() == (second / 'manifest.json').read_bytes()
+    for variant in ('OriginalProject', 'OptimizedProject'):
+        first_project = (output / manifest[variant]).read_text()
+        second_project = (second / manifest[variant]).read_text()
+        assert first_project == second_project, ''.join(difflib.unified_diff(
+            first_project.splitlines(keepends=True), second_project.splitlines(keepends=True)))
+    first_manifest = (output / 'manifest.json').read_text()
+    second_manifest = (second / 'manifest.json').read_text()
+    assert first_manifest == second_manifest, ''.join(difflib.unified_diff(
+        first_manifest.splitlines(keepends=True), second_manifest.splitlines(keepends=True)))
     for bad in (output, source / 'nested'):
         assert 'overlap' in run('dotnet', tool, project, '--output', bad, expected=1) or bad == output
     alias = root / 'alias'
