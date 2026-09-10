@@ -1,18 +1,18 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: M0–M6 complete. A clean checkout of implementation commit `53c4a06`
-passed the complete fetch/build/test campaign, including all native differential
-corpora, database-image exchanges, repository/port regressions, and JIT/NativeAOT
-validation of actual SQLite storage, offsetof and explicitly registered C# callbacks.
-See `validation.md` for the final evidence and `usage.md` for reproduction commands.
+Status: the original core/JSONB campaign (M0–M6) is complete. The active follow-up
+implements richer managed SQL workloads, canonical function-pointer fields (M7),
+and statically compiled FTS5 (M8). M9 and M10 are design-only future work: do not
+implement either optimization as part of this phase.
+See `validation.md` for completed checks and `usage.md` for build commands.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
 ## Objective and constraints
 
 Translate the actual SQLite amalgamation into executable, reusable unsafe C#
 using dotcc. Include SQLite core and the pinned release's JSON/JSONB features.
-Exclude FTS3/4/5 for now, while preserving the compiler and virtual-table support
-needed to add FTS later. A native SQLite dependency or a separately maintained C#
+Include FTS5 in the follow-up profile; FTS3/4 remain deferred. Preserve generic
+compiler, callback, and virtual-table support for later extensions. A native SQLite dependency or a separately maintained C#
 SQLite port does not satisfy this objective; native SQLite is the test oracle.
 
 The starting dotcc **cannot parse all the C used by SQLite and has code emission
@@ -87,7 +87,7 @@ NuGet. Do not impersonate GCC or a host OS to select unsupported compiler tricks
 | Extensions | `SQLITE_OMIT_LOAD_EXTENSION`; retain explicit registration of C# extensions, functions, and virtual tables against the translated API. No dynamic loading or native-code interop. |
 | Core | Keep ordinary default core features: transactions, triggers, views, constraints, foreign keys, CTEs, window functions, indexes, virtual-table API, UTF-8/UTF-16 APIs, backup, incremental blobs, and date/time functions. |
 | JSON/JSONB | Keep JSON enabled; verify every JSON/JSONB function/operator available in the pinned profile, including table-valued functions. |
-| FTS | Leave all FTS enable macros undefined, including FTS3/4/5 and tokenizer variants. Check effective configuration and negative SQL probes. |
+| FTS | Enable `SQLITE_ENABLE_FTS5` for the current follow-up. Keep FTS3/4 disabled. Verify positive FTS5 probes and explicit configuration against native. |
 | Other optional extensions | Leave optional RTREE, session, RBU, and similar opt-in extensions at upstream defaults; do not expand the campaign to them. |
 | WAL/mmap | Keep core code compiled. Initial VFS has no shared memory or mapped reads, so WAL operation and mmap acceleration are outside the supported platform profile. Test the actual fallback/refusal behavior. |
 
@@ -272,8 +272,9 @@ M4 can begin early to support the M0 native baseline and M3 execution.
       Check JSONB SQL type, operations, and round trips against that exact native
       version; do not promise binary stability across SQLite releases. Use the
       [upstream JSON reference](https://www.sqlite.org/json1.html) for the inventory.
-- [x] Verify FTS modules are absent while custom virtual tables and JSON table
-      functions work, leaving a tested extension point for later FTS work.
+- [x] Original core profile verified FTS absence while custom virtual tables and
+      JSON table functions worked. M8 supersedes that profile with positive FTS5
+      checks; preserve the non-FTS regression coverage.
 - [x] Add bounded deterministic randomized differential tests with saved seeds
       and reduced regressions. Include allocation/I/O failure injection, large
       values, overflow boundaries, callback re-entry where allowed, and GC stress.
@@ -301,7 +302,131 @@ parser/emitter/runtime defects have regression tests and full-amalgamation retri
       profile can reuse the same inputs, callback support, and oracle harness.
 - [x] Commit the final verified milestone and report local branch/commit state.
 
-Completion requires a reusable translated C# engine with core plus JSON/JSONB,
+Completion of the original M0–M6 campaign required a reusable translated C# engine with core plus JSON/JSONB,
 the memory VFS contract, working function-pointer APIs, direct offsetof
 constant emission, reproducible native differential evidence, and passing required
 regressions. Parser success, a build-only stub, or a SQL smoke test is insufficient.
+
+
+### M7 — Managed SQL workloads and canonical function pointers (implement now)
+
+- [ ] Extend `tests/ManagedConsumer` to create related tables, indexes/views and
+      triggers; insert parameter-bound data; and assert complete result sets.
+- [ ] Exercise simple predicates, joins, aggregates, correlated subqueries, CTEs,
+      window functions, stored JSONB, updates, UPSERT, deletes, transactions and
+      savepoint rollback. Verify final contents, changes, integrity and cleanup.
+- [ ] Emit one canonical static readonly typed function-pointer field per
+      addressable function identity. All emitted address-taking/designator uses,
+      callback tables and comparisons reuse that field. Managed library consumers
+      can reuse public canonical fields for translated functions.
+- [ ] Initialize address fields independently of user global initializers to avoid
+      static initialization cycles/default-null captures. Preserve function
+      signature/calling convention, linkage, name hygiene and object-link identity;
+      distinguish same-spelled static functions in different translation units.
+- [ ] Cover runtime-provided functions as well as translated ones. Callback values
+      received from callers remain caller-owned values; caching must not freeze
+      mutable callback variables, callback context, or dynamically selected targets.
+      Null and destructor sentinels retain their semantics.
+- [ ] Give the managed consumer's own callbacks static readonly fields, reused by
+      registration and identity checks. Verify reference equality to canonical
+      addresses, actual invocation, global initialization, cross-object linking,
+      repeated accesses under warmup/GC, and both JIT and NativeAOT.
+- [ ] Keep native-checked reduced compiler regressions and full SQLite retries.
+      CS8909 may remain at pointer comparisons; correctness relies on reusing the
+      captured address, not on assuming separate method-address captures coincide.
+
+Exit: the expanded managed consumer and shared compiler regressions pass, and
+all generated function-address uses refer to their canonical static fields.
+
+### M8 — Build and verify FTS5 with dotcc (implement now)
+
+- [ ] Coordinator delegates bounded compiler and FTS work, serializes shared
+      builds/tests/commits, and continues fix/test/full-amalgamation retries until
+      the enabled module actually executes correctly. Do not stop at compilation.
+- [ ] Enable FTS5 in the shared pinned SQLite configuration, compiled from the
+      unchanged amalgamation. Keep the memory VFS, core and JSONB, with no native
+      SQLite dependency or dynamic extension loading. Leave FTS3/4 deferred.
+- [ ] Record a native baseline with identical feature/ABI definitions. Reduce
+      every new C parser/emitter/runtime defect, demonstrate a failing regression,
+      fix dotcc, and retry the full enabled engine.
+- [ ] Add deterministic native/translated tests for table creation and CRUD,
+      MATCH terms/phrases/prefixes/boolean/NEAR queries, column filtering, Unicode
+      tokenization, ranking, highlighting/snippets, and vocabulary tables.
+- [ ] Exercise pinned built-in tokenizer variants, external-content synchronization,
+      contentless storage, transactions, index maintenance/integrity, and reopen
+      through the memory VFS. Test malformed-query diagnostics and changes after
+      updates/deletes; normalize only genuinely nondeterministic output.
+- [ ] Cover the explicitly registered managed FTS extension API where exposed
+      (tokenizer/auxiliary callback lifecycle) without adding dynamic loading.
+      Document supported cases, upstream test selection and remaining limits.
+- [ ] Include an FTS CRUD/search demonstration in the separate managed consumer.
+      Verify native differentials and the actual engine under JIT/NativeAOT; rerun
+      core/JSONB/API/VFS/layout regressions and database-image interoperability.
+- [ ] Update scripts, CI inputs, feature assertions and docs that formerly expected
+      FTS absence. Capture checks/commits in the ledger and commit locally, no push.
+
+FTS5 is enabled by `SQLITE_ENABLE_FTS5` in the amalgamation. Planned SQL/API
+coverage follows the pinned release and the
+[upstream FTS5 reference](https://www.sqlite.org/fts5.html).
+Exit: FTS5 builds with dotcc and its checked SQL/index/callback behavior agrees
+with native, while existing required functionality remains verified.
+
+### M9 — Roslyn post-processor for Cond.B (plan only; do not implement)
+
+- [ ] Design a separate build-time Roslyn post-processing step over emitted C#,
+      using symbols/semantic models to identify dotcc's exact `Cond.B` overload.
+      Do not match arbitrary methods by text, modify upstream C, or reintroduce an
+      offset source generator. Retain a comparison path with processing disabled.
+- [ ] Inline the resolved overload's semantics: bool arguments stay bool, numeric
+      arguments compare with correctly typed zero, pointer arguments compare with
+      null, and CBool arguments preserve the existing conversion to int/nonzero.
+      Preserve selected implicit/user conversions rather than dropping them.
+- [ ] Preserve one evaluation of the operand, side effects, short-circuiting,
+      checked/unchecked behavior and expression precedence. Cover assignments,
+      increments, volatile/atomic reads, pointer/function-pointer conditions,
+      floating NaN and signed zero, and shadowed names/aliases. Leave an invocation
+      unchanged with a diagnostic if equivalence cannot be established.
+- [ ] Specify ordering after whole-program/object linking and before final C#
+      compilation; choose deterministic file/project integration, cancellation,
+      source mapping and readable diagnostics. Keep Roslyn out of the translated
+      runtime and preserve dotcc's AOT-compatible compiler packaging.
+- [ ] Add syntax/semantic regressions plus original-vs-processed execution checks
+      and SQLite core/JSONB/FTS5 JIT/AOT differentials. Measure compile time, code
+      size, allocations and execution before adopting the pass: JIT/AOT may already
+      inline these helpers, so benefit must be demonstrated.
+
+This milestone is documentation only in the current phase; no postprocessor,
+rewrites, build hook, or behavior change is authorized by this plan-only request.
+
+### M10 — Span-based varargs and ref-struct VaList (plan only; do not implement)
+
+- [ ] Plan changing emitted `params VaArg[] x` to
+      `params ReadOnlySpan<VaArg> x`, with `VaList` becoming a **ref struct** holding
+      a readonly `ReadOnlySpan<VaArg>` plus a mutable cursor. `VaArg` already is a
+      readonly struct; keep its integer/pointer and floating representation.
+- [ ] Inventory every producer/consumer: variadic function declarations and
+      callbacks, direct/indirect calls, libc formatting, SQLite configuration and
+      printf paths, headers/typedef aliases, IR, object metadata/linking and public
+      managed APIs. Cover empty/expanded/explicit argument storage and forwarding.
+- [ ] Preserve C default promotions (small integers to int, float to double),
+      signedness, null/pointer/callback conversion, argument evaluation once and
+      left-to-right emitted behavior. Keep `va_start`, `va_arg`, `va_copy` and
+      `va_end` behavior: copied lists share borrowed storage but advance independent
+      cursors, and forwarding must not accidentally consume the caller's cursor.
+- [ ] Audit C uses of va_list address-taking, fields, globals, arrays, returns,
+      captures, and callbacks. A ref struct cannot escape to heap storage or outlive
+      its borrowed span. Specify scoped/ref signatures and diagnostics or explicit
+      owned-storage alternatives for incompatible valid-C lifetime patterns; never
+      silently generate dangling stack storage or discard supported paths.
+- [ ] Verify compiler/Roslyn language-version support, overload resolution and
+      managed API compatibility. Do not assume the params modifier guarantees zero
+      allocation; inspect emitted code and measure empty/small/large/forwarded
+      calls, stack pressure and any required heap-backed fallback.
+- [ ] Plan regression coverage for scalar/pointer/function-pointer promotions,
+      nested forwarding, independent va_copy cursors, cleanup and escape rejection.
+      Run core/JSONB/FTS5, Lua/Chibi, and JIT/NativeAOT comparisons and allocation
+      benchmarks before adopting the representation.
+
+This milestone is documentation only in the current phase; retain current
+`VaArg[]` signatures and the current `VaList` implementation until separately
+requested. Active-phase completion means M7 and M8 are done; M9/M10 remain planned.
