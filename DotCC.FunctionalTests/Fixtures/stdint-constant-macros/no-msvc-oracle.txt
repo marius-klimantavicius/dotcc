@@ -1,0 +1,1 @@
+This fixture verifies dotcc's LP64 long/unsigned-long constant types; MSVC uses LLP64.

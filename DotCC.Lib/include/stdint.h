@@ -65,6 +65,21 @@ typedef unsigned long uint_fast32_t;
 typedef long int_fast64_t;
 typedef unsigned long uint_fast64_t;
 
+/* Integer constant macros (C99 7.18.4). The result has the promoted type of
+   int_leastN_t / uint_leastN_t: even unsigned 8/16-bit values promote to int.
+   LP64 uses long / unsigned long for the 64-bit and greatest-width types.
+   Token suffixes keep these usable in #if and integer constant expressions. */
+#define INT8_C(value)    value
+#define UINT8_C(value)   value
+#define INT16_C(value)   value
+#define UINT16_C(value)  value
+#define INT32_C(value)   value
+#define UINT32_C(value)  value ## U
+#define INT64_C(value)   value ## L
+#define UINT64_C(value)  value ## UL
+#define INTMAX_C(value)  value ## L
+#define UINTMAX_C(value) value ## UL
+
 /* Limit macros (C99 7.18.2). Numeric literals so they're usable as
    integer constant expressions per the C standard. */
 #define INT8_MIN   (-128)

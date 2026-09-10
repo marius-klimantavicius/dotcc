@@ -18,6 +18,35 @@ it lands). A deferral that isn't written down is the thing that's "hard to keep 
 
 ---
 
+## C constant-expression followups
+
+Open findings from the SQLite 3.53.4 `<stdint.h>` constant-macro regression,
+kept separate from the supplied-header fix:
+
+- `_Generic` applied through a macro to constants such as `UINT32_C(1)` and
+  `INT64_C(1)` selected the `int` association instead of the unsigned-int/long
+  association. The expanded emitted runtime fixture selected `int` for all ten
+  constant macros. The macro suffix expansions themselves are independently
+  verified; generic-selection lowering remains open.
+- `sizeof` applied through a `WIDTH(x)` macro to `INT64_C(1)`,
+  `UINT64_C(1)` and the greatest-width equivalents returned 4 rather than 8.
+  Preprocessing independently produced the correct `sizeof(1L)` and
+  `sizeof(1UL)` tokens; expression-size inspection remains open. The reduced
+  fixture, native output and failure are retained as `sizeof-expression-before.c`,
+  `sizeof-expression-native.expected` and `sizeof-expression-before.log` in the
+  artifact directory below.
+- `UINT32_C(0) - 1 == UINT32_MAX` emitted `(uint)((0U - 1)) == 4294967295u`,
+  causing Roslyn CS0220 instead of C unsigned wrapping. The existing wrapping
+  lowering does not cover this comparison context; this remains open.
+
+The original native-verified extended fixture, expected output and generated
+failure are retained in `sqlite/artifacts/stdint-constants/` as
+`extended-fixture-before-scope.c`, `extended-fixture-native.expected` and
+`functional-after.log`. None of these findings blocked the actual SQLite engine
+build; the committed header fixture verifies expansion, `#if`, declared storage
+widths, ordinary values, 64-bit static initializers and case labels without
+claiming these gaps fixed.
+
 ## Runtime fidelity
 
 Source: the 2026-07-17 runtime audit (all 40 `DotCC.Libc/*.cs` files, every public function,
