@@ -1,2 +1,2 @@
-PASS image write: integrity, JSONB, Unicode/NUL, 64KiB blob, metadata, cleanup
-PASS image read: integrity, JSONB, Unicode/NUL, 64KiB blob, metadata, cleanup
+PASS image write: integrity, JSONB, Unicode/NUL, 64KiB blob, FTS5 term/phrase/Unicode/index, metadata, cleanup
+PASS image read: integrity, JSONB, Unicode/NUL, 64KiB blob, FTS5 term/phrase/Unicode/index, metadata, cleanup

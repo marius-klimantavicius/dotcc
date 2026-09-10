@@ -6,6 +6,22 @@
 #define CHECK(x) do { if (!(x)) { printf("FAIL image line %d: %s\n", __LINE__, #x); return 1; } } while (0)
 #define OK(x) CHECK((x) == SQLITE_OK)
 
+static int verify_match(sqlite3 *db, const char *query, const char *expected) {
+    sqlite3_stmt *statement = NULL;
+    const char *actual;
+    OK(sqlite3_prepare_v2(db,
+        "SELECT group_concat(rowid,',') FROM ("
+        "SELECT rowid FROM search WHERE search MATCH ?1 ORDER BY rowid)",
+        -1, &statement, NULL));
+    OK(sqlite3_bind_text(statement, 1, query, -1, SQLITE_STATIC));
+    CHECK(sqlite3_step(statement) == SQLITE_ROW);
+    actual = (const char *)sqlite3_column_text(statement, 0);
+    CHECK(expected ? actual != NULL && strcmp(actual, expected) == 0 : actual == NULL);
+    CHECK(sqlite3_step(statement) == SQLITE_DONE);
+    OK(sqlite3_finalize(statement));
+    return 0;
+}
+
 static int verify_image(sqlite3 *db) {
     sqlite3_stmt *statement = NULL;
     const char *sql = "SELECT id,json(payload),length(bytes),hex(substr(bytes,32767,6)),typeof(payload) FROM data ORDER BY id";
@@ -31,6 +47,14 @@ static int verify_image(sqlite3 *db) {
     CHECK(sqlite3_step(statement) == SQLITE_ROW && sqlite3_column_int(statement, 0) == 35004);
     CHECK(sqlite3_step(statement) == SQLITE_DONE);
     OK(sqlite3_finalize(statement));
+    CHECK(verify_match(db, "sqlite", "1,4") == 0);
+    CHECK(verify_match(db, "\"full text\"", "1,4") == 0);
+    CHECK(verify_match(db, "cafe", "2") == 0);
+    CHECK(verify_match(db, "ωμέγα", "2") == 0);
+    CHECK(verify_match(db, "sqlite NOT recipes", "1") == 0);
+    CHECK(verify_match(db, "temporary", NULL) == 0);
+    /* Check stored content against the persisted full-text index as well. */
+    OK(sqlite3_exec(db, "INSERT INTO search(search,rank) VALUES('integrity-check',1)", NULL, NULL, NULL));
     return 0;
 }
 
@@ -66,7 +90,15 @@ int main(int argc, char **argv) {
             "PRAGMA page_size=4096; PRAGMA user_version=35004;"
             "CREATE TABLE data(id INTEGER PRIMARY KEY,payload BLOB,bytes BLOB);"
             "INSERT INTO data VALUES(1,jsonb('{\"n\":[1,2,3],\"text\":\"Ω\"}'),zeroblob(65536));"
-            "INSERT INTO data VALUES(2,jsonb('[null,true,\"a\\u0000b\"]'),x'007fff');",
+            "INSERT INTO data VALUES(2,jsonb('[null,true,\"a\\u0000b\"]'),x'007fff');"
+            "CREATE VIRTUAL TABLE search USING fts5(title,body,tokenize='unicode61 remove_diacritics 2');"
+            "INSERT INTO search(rowid,title,body) VALUES"
+            "(1,'SQLite guide','SQLite full text search with JSONB'),"
+            "(2,'Café notes','café Ωμέγα database notes'),"
+            "(3,'temporary','will delete'),"
+            "(4,'SQLite recipes','SQLite data updates');"
+            "UPDATE search SET body='SQLite full text recipes' WHERE rowid=4;"
+            "DELETE FROM search WHERE rowid=3;",
             NULL, NULL, NULL));
         OK(sqlite3_blob_open(db, "main", "data", "bytes", 1, 1, &blob));
         OK(sqlite3_blob_write(blob, marker, 4, 32767));
@@ -88,6 +120,6 @@ int main(int argc, char **argv) {
     CHECK(dotcc_memory_vfs_handle_count() == 0);
     OK(dotcc_memory_vfs_reset());
     OK(sqlite3_shutdown());
-    printf("PASS image %s: integrity, JSONB, Unicode/NUL, 64KiB blob, metadata, cleanup\n", argv[1]);
+    printf("PASS image %s: integrity, JSONB, Unicode/NUL, 64KiB blob, FTS5 term/phrase/Unicode/index, metadata, cleanup\n", argv[1]);
     return 0;
 }
