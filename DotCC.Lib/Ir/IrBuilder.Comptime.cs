@@ -137,6 +137,58 @@ internal sealed partial class IrBuilder
     private static bool InLongRange(System.Int128 v) =>
         v >= long.MinValue && v <= long.MaxValue;
 
+    /// <summary>Optional API metadata; null records a definition with no constant value.</summary>
+    internal List<(string Name, CExpr? Value)> MacroConstants { get; } = new();
+
+    internal CExpr? FoldMacroConstant(CExpr expression)
+    {
+        // Normalize each typed operation before evaluating its parent. The
+        // general comptime interpreter intentionally retains wide intermediates
+        // for layout/comptime work; exported C constants need C-width wrapping.
+        CExpr? normalized = expression switch
+        {
+            LitStr or LitInt or LitFloat or LitBool => expression,
+            Paren p => FoldMacroConstant(p.Inner),
+            Cast c when FoldMacroConstant(c.Operand) is { } operand => c with { Operand = operand },
+            Unary u when FoldMacroConstant(u.Operand) is { } operand => u with { Operand = operand },
+            Binary b when FoldMacroConstant(b.Left) is { } left && FoldMacroConstant(b.Right) is { } right
+                => b with { Left = left, Right = right },
+            CondExpr c when FoldMacroConstant(c.Cond) is { } foldedCondition && ConstEval(foldedCondition) is { } condition
+                => FoldMacroConstant(condition != 0 ? c.Then : c.Else) is { } chosen
+                    ? new Cast(expression.Type, chosen) { Type = expression.Type } : null,
+            _ => null,
+        };
+        if (normalized is LitStr) return normalized;
+        if (normalized == null) return null;
+        if (normalized is Binary binary && binary.Op is not (BinOp.LogAnd or BinOp.LogOr or BinOp.Shl or BinOp.Shr))
+        {
+            var common = CType.UsualArithmetic(binary.Left.Type, binary.Right.Type);
+            var left = FoldMacroConstant(new Cast(common, binary.Left) { Type = common });
+            var right = FoldMacroConstant(new Cast(common, binary.Right) { Type = common });
+            if (left == null || right == null) return null;
+            normalized = binary with { Left = left, Right = right };
+        }
+        var value = TryEvalTop(normalized, allowCalls: false);
+        if (value is CtBool boolean)
+            return new LitInt(boolean.Value ? "1" : "0", boolean.Value ? 1 : 0) { Type = CType.Int };
+        if (expression.Type.Unqualified is not CType.Prim { Bytes: > 0 and <= 8 } type) return null;
+        if (value is CtInt integer && type.Integer)
+        {
+            int bits = type.Bytes * 8;
+            var modulus = System.Int128.One << bits;
+            var number = integer.Value & (modulus - 1);
+            if (type.Signed && number >= (modulus >> 1)) number -= modulus;
+            return SpliceInt(new CtInt(number, expression.Type));
+        }
+        if (value is CtFloat floating && double.IsFinite(floating.Value))
+        {
+            var number = type.Bytes == 4 ? (double)(float)floating.Value : floating.Value;
+            if (!double.IsFinite(number)) return null;
+            return new LitFloat(FormatComptimeFloat(number) + (type.Bytes == 4 ? "f" : "")) { Type = expression.Type };
+        }
+        return null;
+    }
+
     /// <summary>Resolve a deferred <c>comptime EXPR</c> to a spliced literal <see cref="CExpr"/>, or
     /// null if it does not evaluate to a compile-time constant value. The Zig front-end's post-pass
     /// calls this once every function body is lowered, so a comptime call can interpret its callee.</summary>

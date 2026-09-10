@@ -15,6 +15,12 @@ Running tracker of what dotcc's grammar and libc cover today. Update this when a
 
 Source of truth for the grammar: `DotCC.Lib/c.lalr.yaml`. Source of truth for the visitor lowering: `DotCC.Lib/CSharpEmitter.cs`. Source of truth for the runtime: `DotCC.Libc/`. When you flip a row's status, mention the fixture so the table can be re-validated by inspection.
 
+Object-like numeric and UTF-8 string macros from user sources/headers and explicit
+`-D` options are exported as public C# `const` fields on the generated API class.
+Typed expression folding preserves integer widths and float types; split output
+and object linking retain this metadata. See [macro constants](cli.md#public-macro-constants)
+for supported expressions and omission/collision rules.
+
 ## Coverage at a glance
 
 Bird's-eye scorecard — the detailed per-area tables below are the source of truth; this just rolls them up. **dotcc covers essentially all of C89/C99, and most of C11/C23 that maps cleanly onto .NET.** Output is always modern C# regardless of input dialect.

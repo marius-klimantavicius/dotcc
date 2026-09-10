@@ -47,6 +47,7 @@ internal sealed class CFrontend : IFrontend
         // populates it in OnEmbed) and the single IrBuilder (which resolves the
         // carrier tokens back in BuildEmbed). Keyed by content hash → cross-TU dedup.
         var embeds = new Dictionary<string, byte[]>(StringComparer.Ordinal);
+        var macroBodies = new List<(string Name, IReadOnlyList<Item> Body)>();
 
         // Build the lexer → preprocessor → rewriter → parser pipeline for one
         // translation unit and parse it with the given (visitor-bound) parser.
@@ -122,6 +123,7 @@ internal sealed class CFrontend : IFrontend
             {
                 throw new CompileException($"parse failed in {Path.GetFileName(unitPath)}: {result}");
             }
+            macroBodies.AddRange(pre.ConstantMacroBodies(defines));
             return result;
         }
 
@@ -146,6 +148,8 @@ internal sealed class CFrontend : IFrontend
             irBuilder.AddUnit(root, Path.GetFileName(unitPath));
         }
         irBuilder.FinishAggregateTypes();
+        foreach (var macro in macroBodies)
+            irBuilder.MacroConstants.Add((macro.Name, CConstantMacros.TryLower(macro.Body)));
         var irErrors = irBuilder.Diagnostics.Where(d => d.Severity == Ir.Severity.Error).ToList();
         if (irErrors.Count > 0)
         {

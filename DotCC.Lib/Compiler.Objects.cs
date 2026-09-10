@@ -153,6 +153,8 @@ public static partial class Compiler
                 {
                     var name = section["type:".Length..];
                     if (!typeByName.ContainsKey(name)) { typeByName[name] = buf.ToString(); typeOrder.Add(name); }
+                    else if (name.StartsWith(MacroConstantPrefix, StringComparison.Ordinal) && typeByName[name] != buf.ToString())
+                        typeByName[name] = ""; // Conflicting TU-local macros have no single public value.
                     else if (name.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
                         && typeByName[name] != buf.ToString())
                         throw new CompileException("conflicting canonical function pointer declarations for '" + name + "'");
@@ -233,7 +235,7 @@ public static partial class Compiler
         }
 
         var structDecls = new StringBuilder();
-        foreach (var name in typeOrder) { structDecls.Append(typeByName[name]); }
+        foreach (var name in typeOrder.Where(name => !name.StartsWith(MacroConstantPrefix, StringComparison.Ordinal))) { structDecls.Append(typeByName[name]); }
         var aliasText = aliasLines.Count > 0 ? string.Join("\n", aliasLines) + "\n" : "";
         var globalText = globalLines.Count > 0 ? string.Join("\n", globalLines) + "\n" : "";
         // Import mode at link: bind the candidates no fragment defines (a name defined
@@ -253,7 +255,7 @@ public static partial class Compiler
         aliasText = ResolveGeneratedAliases(aliasText, namespaceName) + FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName);
         return BuildSourceFiles(functions.ToString(), missingBoundaries ? null : functionSources, aliasText,
             emit, libraryClass, importsClass, false, split, splitSize, namespaceName,
-            (functionText, fileAliases, partial) => BuildShell(mainArity, functionText, structDecls.ToString(), fileAliases, globalText,
+            (functionText, fileAliases, partial) => BuildShell(mainArity, RenderMacroFields(typeByName, libraryMode ? libraryClass : "DotCcProgram", definedNames) + functionText, structDecls.ToString(), fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
                 mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName));

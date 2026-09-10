@@ -229,7 +229,7 @@ public static partial class Compiler
         var aliases = ResolveGeneratedAliases(cg.Aliases, namespaceName) + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
             irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass, namespaceName);
         return BuildSourceFiles(cg.Functions, cg.FunctionSources, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName,
-            (functions, fileAliases, partial) => BuildShell(cg.MainArity, functions, cg.Structs, fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName));
+            (functions, fileAliases, partial) => BuildShell(cg.MainArity, RenderMacroFields(cg.TypeDeclarations, libraryMode ? libraryClass : "DotCcProgram", irBuilder.Functions.Select(f => f.Sym.TargetName).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, cg.Structs, fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName));
     }
 
     /// <summary>

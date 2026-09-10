@@ -119,3 +119,25 @@ and native export wrapper calls. Globals, aggregate types, canonical pointer
 containers, assembly names and native export entry-point names keep their existing
 names. Choose a name that does not conflict with translated symbols or runtime
 helper types; infrastructure and translated-declaration collisions are diagnosed.
+
+## Public macro constants
+
+C# output now includes `public const` fields on the generated API class for
+object-like string and numeric macros from source/user headers and explicit
+`-D` options. For example, SQLite exports `Sqlite.SQLITE_CHECKPOINT_TRUNCATE`
+and `Sqlite.SQLITE_VERSION`. Function bodies still use preprocessed values.
+
+The frontend expands object-like aliases and uses the C parser and typed
+constant evaluator for literals, arithmetic/bitwise/comparison expressions and
+primitive casts. Integer widths/signedness and float suffixes are retained.
+Ordinary UTF-8 C string literals become C# strings, without an implicit terminal
+NUL; explicit embedded NULs remain. Synthetic system-header macros and seeded
+compiler built-ins are not exported unless explicitly defined by the caller.
+
+Function-like, empty, undefined, contextual (`__LINE__`/`__FILE__`), nonconstant,
+non-UTF-8 string and unsupported replacement lists are omitted. Expressions
+requiring typedef names, function-like macro calls, or nonprimitive C# constant
+types are currently omitted. Macro names colliding with emitted members/types
+or the API class are omitted too. Across translation units/objects, identical
+fields coalesce and conflicting definitions are omitted rather than picking one
+translation unit's value. Constants remain in `Program.cs` for every split mode.

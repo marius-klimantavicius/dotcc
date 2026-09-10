@@ -38,6 +38,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     private readonly Compiler.IncludeMap _files;
     private readonly System.IO.TextWriter _diag;
     private readonly Dictionary<string, MacroDef> _macros = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _sourceMacroNames = new(StringComparer.Ordinal);
     // `#pragma once` machinery + active filename for `__FILE__`. The same
     // `_currentlyIncluding` field tracks both: it names the file the
     // preprocessor is currently processing (the top-level translation unit
@@ -175,6 +176,16 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         var list = new List<Item>();
         while (lex.MoveNext()) { list.Add(lex.Current); }
         return list.ToArray();
+    }
+
+    /// <summary>Final user macro definitions, expanded without freezing contextual macros.</summary>
+    internal IEnumerable<(string Name, IReadOnlyList<Item> Body)> ConstantMacroBodies(IReadOnlyList<string>? explicitDefines)
+    {
+        var names = _sourceMacroNames.Concat((explicitDefines ?? Array.Empty<string>()).Select(d => d.Split('=')[0]));
+        foreach (var name in names.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal))
+            if (_macros.TryGetValue(name, out var macro))
+                yield return (name, macro.IsFunctionLike ? Array.Empty<Item>()
+                    : ExpandObjectLikeBody(macro.Body, new HashSet<string>(StringComparer.Ordinal) { name }, preserveContext: true));
     }
 
     /// <summary>
@@ -694,6 +705,9 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
             return Array.Empty<Item>();
         }
 
+        if (args[0].Position.Line < Ir.SrcPos.SyntheticLineBase) _sourceMacroNames.Add(name);
+        else _sourceMacroNames.Remove(name);
+
         // Function-like detection: `#define NAME(args) body` is function-
         // like ONLY when the `(` is immediately adjacent to NAME with no
         // intervening whitespace. `#define NAME (args) body` (with space)
@@ -803,13 +817,13 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     /// so a macro can't expand to itself (per the C standard's
     /// "hideset" rule).
     /// </summary>
-    private List<Item> ExpandObjectLikeBody(IReadOnlyList<Item> body, HashSet<string> hideSet, Item? invocation = null)
+    private List<Item> ExpandObjectLikeBody(IReadOnlyList<Item> body, HashSet<string> hideSet, Item? invocation = null, bool preserveContext = false)
     {
         var result = new List<Item>(body.Count);
         foreach (var original in body)
         {
             var item = invocation is null ? original : MacroExpansionItem.AtInvocation(original, invocation);
-            if (item.Content is "__LINE__" or "__FILE__")
+            if (!preserveContext && item.Content is "__LINE__" or "__FILE__")
             {
                 result.AddRange(Rewrite(item));
                 continue;
@@ -821,7 +835,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
                 && !inner.IsFunctionLike)
             {
                 var nestedHide = new HashSet<string>(hideSet, StringComparer.Ordinal) { text };
-                result.AddRange(ExpandObjectLikeBody(inner.Body, nestedHide, item));
+                result.AddRange(ExpandObjectLikeBody(inner.Body, nestedHide, item, preserveContext));
             }
             else
             {

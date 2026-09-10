@@ -177,6 +177,7 @@ internal sealed partial class CSharpBackend
             typeDeclarations.Add(request.Name, document.Serialize() + document.Materialize());
         }
         foreach (var declaration in typeDeclarations.Values) structs.Append(declaration);
+        cg.AddMacroConstants(unit, typeDeclarations);
 
         // Zig test-mode manifest (empty for a normal build): each test's display name paired with the
         // emitted method name (TargetName — the same spelling `Func` above prints at line ~411), so the
