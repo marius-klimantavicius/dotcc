@@ -80,11 +80,23 @@ jobs:
         run: |
           # Equivalent to emit-engine.sh, using native paths on every runner.
           $root = Join-Path $env:GITHUB_WORKSPACE 'sqlite'
-          $definitions = @(Get-Content (Join-Path $root 'config/defines.txt') |
-            ForEach-Object { $_.Trim() } | Where-Object { $_ -and !$_.StartsWith('#') } |
-            ForEach-Object { '-D' + $_ })
-          $arguments = @('-std=c17') + $definitions + @('-DDOTCC_HOST_VFS=1',
-            '-I', (Join-Path $root 'ref/sqlite-amalgamation-3530400'),
+          python sqlite/scripts/prepare-host-source.py 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-preparation.log
+          if ($LASTEXITCODE -ne 0) { throw 'SQLite APPDEF source preparation failed' }
+          # C macro names are case-sensitive. Product definitions replace common
+          # corpus definitions by name, so each -D is supplied exactly once.
+          $definitionByName = [System.Collections.Generic.Dictionary[string,string]]::new([System.StringComparer]::Ordinal)
+          foreach ($file in @('config/defines.txt', 'config/host-defines.txt')) {
+            foreach ($line in Get-Content (Join-Path $root $file)) {
+              $definition = $line.Trim()
+              if (!$definition -or $definition.StartsWith('#')) { continue }
+              $name = ($definition -split '=', 2)[0]
+              $definitionByName[$name] = $definition
+            }
+          }
+          $definitions = @($definitionByName.Values | ForEach-Object { '-D' + $_ })
+          $arguments = @('-std=c17') + $definitions + @(
+            '-I', (Join-Path $root 'generated/sqlite-port'),
             '-I', (Join-Path $root 'src'), (Join-Path $root 'src/engine.c'),
             '--emit=managedlib', '-o', (Join-Path $root 'generated/TranslatedSqlite'))
           dotnet DotCC/bin/Release/net10.0/dotcc.dll @arguments 2>&1 |
@@ -106,6 +118,16 @@ jobs:
           python sqlite/scripts/test-host-vfs-processes.py --managed dotnet $assembly 2>&1 |
             Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-jit-processes.log
           if ($LASTEXITCODE -ne 0) { throw 'JIT host VFS process contracts failed' }
+      - name: Build threading contracts
+        run: |
+          dotnet build sqlite/tests/ThreadingTests/ThreadingTests.csproj -c Release --nologo 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/threading-ci-jit-build.log
+          if ($LASTEXITCODE -ne 0) { throw 'Threading test build failed' }
+      - name: Run JIT initialization, mutex and concurrent SQL contracts
+        run: |
+          $assembly = Join-Path $env:GITHUB_WORKSPACE 'sqlite/tests/ThreadingTests/bin/Release/net10.0/ThreadingTests.dll'
+          dotnet $assembly 2>&1 | Tee-Object -FilePath sqlite/artifacts/threading-ci-jit-contracts.log
+          if ($LASTEXITCODE -ne 0) { throw 'JIT threading contracts failed' }
       - name: Publish host VFS contracts with NativeAOT
         run: |
           dotnet publish sqlite/tests/HostVfsTests/HostVfsTests.csproj -c Release -r $env:SQLITE_HOST_RID `
@@ -125,6 +147,18 @@ jobs:
           python sqlite/scripts/test-host-vfs-processes.py --managed $executable 2>&1 |
             Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-aot-processes.log
           if ($LASTEXITCODE -ne 0) { throw 'NativeAOT host VFS process contracts failed' }
+      - name: Publish threading contracts with NativeAOT
+        run: |
+          dotnet publish sqlite/tests/ThreadingTests/ThreadingTests.csproj -c Release -r $env:SQLITE_HOST_RID `
+            -p:PublishAot=true -o sqlite/artifacts/threading-ci-aot --nologo 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/threading-ci-aot-build.log
+          if ($LASTEXITCODE -ne 0) { throw 'Threading NativeAOT publish failed' }
+      - name: Run NativeAOT initialization, mutex and concurrent SQL contracts
+        run: |
+          $name = if ($IsWindows) { 'ThreadingTests.exe' } else { 'ThreadingTests' }
+          $executable = Join-Path $env:GITHUB_WORKSPACE "sqlite/artifacts/threading-ci-aot/$name"
+          & $executable 2>&1 | Tee-Object -FilePath sqlite/artifacts/threading-ci-aot-contracts.log
+          if ($LASTEXITCODE -ne 0) { throw 'NativeAOT threading contracts failed' }
       - name: Preserve platform diagnostics
         if: always()
         uses: actions/upload-artifact@v7
@@ -133,4 +167,5 @@ jobs:
           path: |
             sqlite/artifacts/host-vfs*.log
             sqlite/artifacts/host-vfs*.out
+            sqlite/artifacts/threading-ci*.log
           if-no-files-found: ignore
