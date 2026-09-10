@@ -49,4 +49,4 @@ done
 if [[ "${1:-}" == --with-ports ]]; then
   "$SQLITE_ROOT/scripts/test-ports.sh"
 fi
-echo "PASS SQLite campaign: core, JSON/JSONB, FTS5, memory VFS, callbacks, layout and image exchange (AOT=$SQLITE_AOT)"
+echo "PASS SQLite campaign: core, JSON/JSONB, FTS5, host rollback/WAL and memory VFS, callbacks, layout and image exchange (AOT=$SQLITE_AOT)"

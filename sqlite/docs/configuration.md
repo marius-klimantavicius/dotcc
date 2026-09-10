@@ -14,8 +14,9 @@ Initial host: Linux x64, little-endian LP64; .NET SDK 10.0.111, runtime 10.0.11,
 GCC on Ubuntu 24.04/Zorin 18. dotcc targets 64-bit pointers/long/size_t.
 Solution builds resolve NuGet `SharpAstro.LALR.CC` 4.7.0 (verified in
 `DotCC.Lib/obj/project.assets.json`); campaign rebuilds explicitly set
-`UseLocalLalrCc=false`. Calls are serialized; WAL/shared memory, mmap and
-multithreaded SQLite hosting remain unsupported. The managed host VFS now provides
+`UseLocalLalrCc=false`. Calls are serialized; database mmap and multithreaded SQLite hosting remain
+unsupported. The host VFS implements WAL shared-memory methods and OS byte locks;
+WAL is selected per database with `PRAGMA journal_mode=WAL`. The managed host VFS now provides
 real disk persistence, flushes and coordination between independent processes;
 the memory VFS retains its original process-local contract.
 
@@ -25,7 +26,8 @@ with `SQLITE_OS_OTHER=1`, while dotcc's platform-neutral preprocessing selects
 zero. That difference changes `PRAGMA mmap_size=1000000`: the zero-limit profile
 returns one integer-zero row, whereas the native nonzero limit with this VFS
 returns no row. Both engines now use the same explicit zero-limit profile;
-the VFS still advertises file methods version 1 and no `xFetch` capability.
+the memory VFS advertises file methods version 1, while the host VFS advertises
+version 2 for WAL. Neither advertises `xFetch` capability.
 The unchanged upstream disabled-mmap stubs contain unused parameters. Native
 builds retain those warnings in their diagnostic logs using
 `-Wno-error=unused-parameter`; other enabled warnings remain errors in strict

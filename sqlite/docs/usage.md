@@ -6,7 +6,8 @@ and the real file-backed `dotcc-host` VFS for the managed library. Deterministic
 corpora retain their process-local memory VFS. Windows/macOS host implementations
 and CI are provided, but local execution evidence is Linux x64. See
 [host VFS](host-vfs.md). Core SQLite, JSON/JSONB and FTS5 are enabled; FTS3/FTS4,
-dynamic extensions, WAL shared-memory storage and memory mapping are excluded.
+dynamic extensions and database memory mapping are excluded. WAL is supported
+on the host VFS; select it with `PRAGMA journal_mode=WAL`.
 See `configuration.md` for the exact shared native/translated definitions.
 
 Prerequisites are .NET SDK 10, Python 3, GCC, a POSIX shell and GNU coreutils.
@@ -26,7 +27,7 @@ unit and functional suites serially, regenerates native baselines for comparison
 then translates and executes layout, API, SQL, VFS, allocation, virtual-table,
 public JSONB, FTS5 and database-image tests. It includes the separate C# consumer and
 NativeAOT layout/consumer checks, plus real-file VFS locking, persistence and
-hot-journal recovery against native processes. It writes diagnostics under `artifacts/` and
+rollback/WAL recovery and checkpoints against native processes. It writes diagnostics under `artifacts/` and
 fails on the first mismatch. `SQLITE_AOT=0 scripts/verify.sh` is an explicitly
 smaller JIT-only run, not the completion gate. `scripts/verify.sh --with-ports`
 adds the existing Lua, Chibi and WAT regressions; their upstream runners and
@@ -50,7 +51,7 @@ SQLite's callback surface. `tests/ManagedConsumer` demonstrates explicit C#
 extension registration, ownership, callback re-entry and cleanup. No native SQLite
 library or dynamic extension loader is part of that integration. The default VFS
 uses real files; OS-level P/Invoke supplies platform locking/durability alongside
-BCL file I/O. The sample consumer creates and cleans up a temporary disk database.
+BCL file I/O. The sample consumer creates and cleans up a temporary WAL database.
 
 Pointer and function-pointer inline-array elements use unmanaged one-field
 structs to support C# indexing and spans. Managed callers access the pointer as

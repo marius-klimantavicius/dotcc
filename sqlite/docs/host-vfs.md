@@ -2,7 +2,7 @@
 
 The reusable `TranslatedSqlite` library defaults to **dotcc-host**. An ordinary
 `sqlite3_open` or `sqlite3_open_v2` therefore creates or opens a real filesystem
-database. Its rollback journals are real files too. The SQLite engine, SQL/JSONB/
+database. Rollback journals and WAL sidecars are real files too. The SQLite engine, SQL/JSONB/
 FTS5 implementation and application extensions remain translated/managed C#;
 there is no native SQLite dependency or dynamic extension loader.
 
@@ -52,7 +52,7 @@ All managed callback addresses are captured once in static readonly tables.
 
 | Platform | OS services | Validation status |
 | --- | --- | --- |
-| Linux x64 | OFD `fcntl` byte locks; OS open/unlink and directory fsync | Local JIT and NativeAOT contracts and native-process interoperability pass. |
+| Linux x64 | OFD `fcntl` byte locks; OS open/unlink and directory fsync | Local JIT/NativeAOT rollback and WAL contracts, native-process interoperability, checkpoint stress and recovery pass. |
 | Windows x64/ARM64 | `CreateFileW`, `LockFileEx`/`UnlockFileEx`, readonly probes and reparse-point checks | Implemented and reviewed; dedicated JIT/AOT CI configured, not run locally. |
 | macOS x64/ARM64 | POSIX `fcntl`, inode identity, deferred descriptor close, full file/directory sync | Implemented and reviewed; dedicated JIT/AOT CI configured, not run locally. |
 | Linux ARM64 | Same 64-bit OFD interface | Guarded implementation; not executed locally. |
@@ -77,12 +77,45 @@ acquisition until safe deferred close drains it. A separate two-case fixture
 checks this ownership path with simulated lock errors and real safe handles;
 it does not substitute for running the macOS ABI in platform CI.
 
-This is a **rollback-journal VFS**, with version-1 I/O methods. WAL shared-memory
-methods and mmap are not advertised; asking for WAL on a rollback database retains
-the supported journal mode. The existing `SQLITE_THREADSAFE=0` profile remains:
-serialize SQLite calls in each process. OS locks permit independent processes and
-multiple serialized connections to coordinate access; they do not make the
-translated engine thread-safe.
+## WAL mode
+
+Enable WAL on a database through the ordinary translated API:
+
+```sql
+PRAGMA journal_mode=WAL;
+```
+
+The result is `wal`, and the mode persists across reopen. New databases retain
+SQLite's default DELETE journal mode until explicitly changed. `ManagedConsumer`
+selects WAL before running its SQL/JSONB/FTS5 and callback workloads.
+
+Version-2 I/O methods implement `xShmMap`, `xShmLock`, `xShmBarrier` and `xShmUnmap`.
+BCL `MemoryMappedFile` maps the actual `database-shm` file, with stable pointers
+for all previously mapped regions when the index grows. These mappings are for
+the WAL index; database mmap (`xFetch`) remains disabled. The translated engine
+continues to implement WAL records, checksums, snapshots, checkpointing and
+recovery itself.
+
+Shared/exclusive locks use SQLite's shm byte range 120–127 and dead-man byte 128.
+One process registry per database inode coordinates local connections, while OS
+locks coordinate independent processes and native SQLite. Initialization follows
+the OS VFS protocol, including clearing an abandoned index only with the required
+exclusive dead-man lock. Readonly shm mappings report SQLite's readonly result
+codes so the engine can select its readonly recovery path. Unmap releases the
+connection's locks; the last local lease releases mappings and the file handle.
+The engine requests sidecar deletion when it can safely complete WAL cleanup.
+
+The pinned 3.53.4 engine includes the upstream WAL-reset race fix. WAL requires
+all processes on the same host and filesystem support for shared mappings and
+byte locks; use a local filesystem. Keep the database and live `-wal` file
+together when moving/copying database state, or use SQLite's backup API.
+
+The existing `SQLITE_THREADSAFE=0` profile remains: serialize SQLite calls in each
+process. WAL permits readers to retain a snapshot while another process commits;
+it still permits only one writer at a time. Long reader transactions can prevent
+a checkpoint from completing. `sqlite3_wal_checkpoint_v2` supports passive, full,
+restart, truncate and the current release's no-op mode. `PRAGMA journal_mode=DELETE`
+returns to rollback journals when other connections/transactions permit it.
 
 ## Verification
 
@@ -99,13 +132,18 @@ using its real OS VFS. Native→managed, managed→native and managed→managed 
 exercise writer/reader contention, pending-lock admission, actual forced process
 termination with a synced hot-journal header, rollback recovery, integrity and
 reuse of released locks. Hardlink and symlink cases cover identity and journal
-paths. The same campaign runs against the NativeAOT executable.
+paths. WAL contracts additionally cover snapshots, writer contention, checkpoint modes,
+multiple index regions, readonly media, close/reopen and journal-mode transitions.
+Forced-kill cases preserve committed frames, discard spilled uncommitted tails
+and rebuild stale or missing indexes. The same campaign runs against the
+NativeAOT executable.
 
 The normal `scripts/verify.sh` includes this gate. The separate
 `.github/workflows/sqlite-host-vfs.yml` builds/runs managed process contracts under
 JIT and NativeAOT on Linux, Windows and macOS; it detects the installed .NET RID.
 Adding this workflow does not run remote CI. See `validation.md` for local results.
 
-References: [SQLite rollback locking](https://www.sqlite.org/lockingv3.html),
+References: [SQLite WAL](https://www.sqlite.org/wal.html),
+[SQLite rollback locking](https://www.sqlite.org/lockingv3.html),
 [SQLite VFS API](https://www.sqlite.org/c3ref/vfs.html),
 [BCL FlushToDisk](https://learn.microsoft.com/en-us/dotnet/api/system.io.randomaccess.flushtodisk).

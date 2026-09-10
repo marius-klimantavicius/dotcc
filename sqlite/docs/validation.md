@@ -722,3 +722,112 @@ the ELF loader, with no SQLite dependency. This is a rollback-journal VFS with
 version-1 I/O methods: WAL/mmap are not advertised, and SQLite calls must still
 be serialized in each process. Process-kill recovery verifies the journal/OS
 contract, not physical power-loss behavior. Changes are committed locally only.
+
+## M12: SQLite 3.53.4 and host WAL
+
+The pinned inputs are now the user-requested SQLite **3.53.4** release. Both
+archives are SHA-256 pinned, and the extracted `sqlite3.c` SHA3-256 matches the
+upstream release page; see [source provenance](source.md). This release includes
+the upstream WAL-reset race fix. The amalgamation remains unchanged.
+
+The real host VFS advertises version-2 I/O methods, maps the actual `-shm` file
+through BCL `MemoryMappedFile`, and implements native-compatible shm range and
+dead-man locks, barriers and cleanup. WAL is enabled with
+`PRAGMA journal_mode=WAL`. The managed consumer now selects it explicitly before
+its full SQL/JSONB/FTS5 and C# callback workload. Database mmap remains disabled;
+M9/M10 remain plan-only and the offset generator remains removed.
+
+Two generic dotcc compatibility fixes were required by the updated amalgamation:
+
+- Disabled Tcl source inside `#if 0` contained non-C preprocessing tokens such as
+  `$`. The lexer now preserves such tokens through preprocessing and diagnoses
+  those that survive into C parsing; macro stringification and discarded arguments
+  are covered too. The initial actual-amalgamation failure and reduced regression
+  are recorded. Full unit tests passed **1,826/1,826** and functional tests passed
+  **300**, with **915** optional oracle skips (`2b31d89`).
+- The supplied `stdint.h` lacked integer-constant macros, producing **54** missing
+  `UINT64_C` errors in generated 3.53.4 C#. All ten standard constant macros now
+  have LP64-appropriate suffixes/promotions. **13** relevant unit tests and **four**
+  focused functional fixtures pass (eight optional skips), as do actual engine
+  emission and library compilation (`4ab79be`). The broad exploratory fixture
+  also exposed existing `_Generic`, literal-expression `sizeof`, and unsigned
+  comparison constant-folding gaps. These are explicitly open in
+  `docs/plans/deferred.md`; they did not block the SQLite build or runtime corpus.
+
+The initial VFS capability regression failed because the old method table had no
+WAL methods (`wal-contract-red.log`). Linux x64 raw and SQL contracts now pass
+under **JIT and NativeAOT**. They verify shared mapping visibility, stable addresses
+across index growth, shared/exclusive range conflicts, atomic failed acquisitions,
+sibling cleanup, invalid ranges and unmap. SQL checks cover reader snapshots,
+`SQLITE_BUSY_SNAPSHOT`, one-writer contention, savepoints, JSONB/FTS5, all five
+checkpoint modes (including NOOP doing no work), 4,500-page multi-region index
+growth, readonly reopen, integrity, final sidecar cleanup and return to DELETE.
+New JSONB table functions and JSON/JSONB array insertion are exercised too.
+
+The independent-process campaign passes under both runtimes for all three pairs:
+managed→managed, native→managed and managed→native. It includes the earlier
+rollback-journal cases and adds WAL snapshots, checkpoint blocking/completion,
+multiple mapped regions, readonly-media reads and recovery, and actual forced
+termination with committed and spilled uncommitted frames. Both stale and missing
+shm indexes recover committed data and discard the uncommitted tail. A stress case
+overlaps 120 writer transactions with 120 passive checkpoints in separate processes,
+then verifies all row values and integrity after checkpoint/reopen. This is bounded
+stress, not an exhaustive scheduler or power-loss simulation.
+
+The readonly-media regression first passed native→native and failed managed with
+`SQLITE_CANTOPEN`: SQLite opens WAL read/write even for readonly databases and
+expects a readonly fallback. The host adapter originally restricted fallback to
+the main database. Extending it to existing WAL files fixes all three mixed/managed
+pairs without changing the test (`8b84480`). Permissions tests require a non-root
+POSIX account; Windows/root runs explicitly skip that permission-specific case.
+
+Fresh native 3.53.4 baselines pass for core, API, VFS, virtual tables, allocation,
+public JSONB, FTS5 and layouts. Exactly two expected lines changed: the reported
+SQLite version and the `Fts5TokenDataIter.apIter` layout (size/offset 56→72).
+All other native baselines are unchanged (`9ccd69e`).
+
+Evidence under `artifacts/`:
+
+- `inactive-script/`: reduced lexer failures, native comparison, full build/unit/
+  functional results and actual 3.53.4 emission.
+- `stdint-constants/`: missing-macro regression, focused results, preserved open
+  expression-type findings and actual engine build.
+- `wal-host-contracts.log`, `wal-aot-contracts.log`: passing raw/SQL contracts.
+- `wal-process-jit-final.log`, `wal-process-aot.log`: complete passing process
+  campaigns, including native interoperation and concurrent stress.
+- `wal-readonly-diagnostic.log`, `wal-readonly-fixed.log`: native-proven failure
+  and all three passing pairs after the WAL readonly fallback fix.
+- `wal-aot-build.log`: NativeAOT publish with no adapter or ILxxxx warnings.
+- `wal-native-baselines.log` and `wal-native-*.{out,diff}`: fresh native evidence
+  and the two reviewed baseline changes.
+
+The final regression sequence (`artifacts/wal-regressions.sh`, invoked from the
+repository root) also exited zero against code through `4ab79be`:
+
+- All seven translated corpora match their fresh native 3.53.4 baselines: core,
+  API, memory VFS, virtual tables, allocation, public JSONB and FTS5.
+- Layout checks pass under JIT and NativeAOT: 39 offsets, 42 actual aggregate
+  layouts and eight pointer-array layouts, including the changed FTS structure.
+- The separate managed consumer passes its WAL SQL/JSONB/FTS5, cached callbacks,
+  nested SQL, identity/GC and cleanup workload under JIT and NativeAOT.
+- All three independent database-image exchange directions pass.
+- Both platform failed-close ownership models pass; these simulate Darwin errors
+  and do not claim execution of macOS system calls.
+- The ordinary `scripts/build.sh` fetches/verifies the new pins, builds dotcc,
+  emits and builds the reusable host-VFS library with zero errors, and remains
+  build-only.
+
+Final-stage logs: `wal-regressions.log`, `wal-translated-*.log`,
+`wal-layout-jit-aot.log`, `wal-managed-consumer-jit-aot.log`,
+`wal-image-exchange.log`, `wal-platform-models.log` and `wal-build-only.log`.
+The reusable host gate remains `SQLITE_AOT=1 scripts/test-host-vfs.sh`; this phase
+ran its build/contract/process components and the regression sequence explicitly,
+not a newly claimed full `verify.sh --with-ports` invocation. Unchanged port and
+standalone function-identity AOT gates retain their preceding-phase evidence.
+
+Linux x64 is the locally executed platform. Windows/macOS implementations and
+JIT/AOT CI are included and source-reviewed, but no remote CI or other OS execution
+is claimed. BSD remains unsupported. SQLite calls remain serialized within each
+process; WAL enables concurrent processes on the same host/local filesystem.
+The Linux NativeAOT executable depends only on libm, libc and the ELF loader,
+with no native SQLite dependency. Changes are committed locally without pushing.

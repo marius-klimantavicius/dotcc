@@ -54,7 +54,8 @@ These checks exercise a reduced callback table, not the SQLite engine.
 
 
 The actual `tests/ManagedConsumer` project references the complete generated
-SQLite library and passes under JIT and linux-x64 NativeAOT. It exercises schema,
+SQLite library and selects WAL on its real temporary database. Its JIT and
+linux-x64 NativeAOT checks exercise schema,
 indexes/views/triggers, prepared inserts, joins/aggregates, correlated queries,
 CTEs/windows, JSONB, updates/upserts/deletes, transactions/savepoints, and integrity.
 FTS5 coverage includes CRUD/MATCH/highlight, an explicitly registered C# auxiliary
