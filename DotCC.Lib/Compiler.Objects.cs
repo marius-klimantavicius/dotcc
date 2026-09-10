@@ -127,6 +127,9 @@ public static partial class Compiler
                 {
                     var name = section["type:".Length..];
                     if (!typeByName.ContainsKey(name)) { typeByName[name] = buf.ToString(); typeOrder.Add(name); }
+                    else if (name.StartsWith("DotCcFunctionPointers.", StringComparison.Ordinal)
+                        && typeByName[name] != buf.ToString())
+                        throw new CompileException("conflicting canonical function pointer declarations for '" + name + "'");
                 }
                 buf.Clear();
             }

@@ -276,6 +276,7 @@ public static partial class Compiler
             // the method group).
             using static DotCcGlobals;
             using static DotCcProgram;{{importsUsing}}
+            using DotCcFunctions = global::DotCcProgram;
 
             // ---- typedef'd `using` aliases (C# 12+ permits `using unsafe X = Y;`
             //      at file scope, ahead of top-level statements). Empty when no
@@ -440,6 +441,7 @@ public static partial class Compiler
             using System.Net.Sockets;
             using static Libc;
             using static DotCcLib;
+            using DotCcFunctions = global::DotCcLib;
             using static DotCcGlobals;{{importsUsing}}
 
             // ---- typedef'd `using` aliases (same as exe mode).

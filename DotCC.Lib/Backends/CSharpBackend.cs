@@ -54,6 +54,7 @@ internal sealed partial class CSharpBackend
     public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false)
     {
         var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes };
+        cg.RegisterPublicFunctionPointers(unit);
         cg._offsetDocument = unit.CreateOffsetDocument();
         cg._offsetRequests.UnionWith(cg._offsetDocument.Requests.Select(request => request.Name));
         cg._offsetModel = new DotCC.Layout.OffsetLayoutModel(name => cg._offsetDocument.Aggregates.TryGetValue(name, out var aggregate)
@@ -156,6 +157,10 @@ internal sealed partial class CSharpBackend
         foreach (var t in unit.Types) { typeDeclarations.Add(t.Name, cg.StructText(t)); }
         foreach (var en in unit.Enums) { typeDeclarations.Add(en.Name, cg.EnumText(en)); }
         foreach (var factory in cg._aggregateFactories) { typeDeclarations.Add(factory.Key, factory.Value); }
+        // One independently keyed partial declaration per function lets object
+        // linking coalesce the same canonical address across translation units.
+        foreach (var pointer in cg._functionPointers.OrderBy(pointer => pointer.Key, StringComparer.Ordinal))
+            typeDeclarations.Add("DotCcFunctionPointers." + pointer.Key, pointer.Value);
         foreach (var request in cg._offsetDocument.Requests.OrderBy(request => request.Name, StringComparer.Ordinal))
         {
             var document = cg._offsetDocument.ForRequest(request);
@@ -1812,8 +1817,8 @@ internal sealed partial class CSharpBackend
                 if (_typeShadowedGlobals.Contains(enumTy)) { enumTy = "global::" + enumTy; }
                 return ($"{enumTy}.{DotCC.EmitHelpers.Id(ec.Sym.Name)}", PPostfix);
             }
-            // A bare function name used as a value decays to its address — C#
-            // needs the explicit `&` to form a delegate* (C allows the bare name).
+            // Every function designator reads its canonical cached address.
+            // Repeated ldftn expressions need not have identical pointer bits.
             // A pointer global stored as `nint` (its address was taken): a value read
             // fences through Volatile/Atomic on the nint field, then casts back to the
             // pointer type. Assignment targets / `&` / ref-args use BareLValue (raw
@@ -1823,7 +1828,7 @@ internal sealed partial class CSharpBackend
                      : v.Type.IsVolatile ? ($"({Cs(v.Type)}){VolatileRead(v.Sym.TargetName)}", PUnary)
                      : ($"({Cs(v.Type)}){v.Sym.TargetName}", PUnary);
             case VarRef v: return v.Sym.Kind == SymKind.Func
-                ? ($"&{v.Sym.TargetName}", PUnary)
+                ? (FunctionPointer(v.Sym), PPrimary)
                 : QualifiedRead(v, GlobalName(v.Sym), PPrimary);
             case IndirectCall ic:
             {
@@ -2155,9 +2160,9 @@ internal sealed partial class CSharpBackend
                 return ($"unchecked(0u - {Sub(DecayEnum(u.Operand), PUnary)})", PPrimary);
             case UnOp.Neg: return ($"-{Sub(DecayEnum(u.Operand), PUnary)}", PUnary);
             case UnOp.BitNot: return ($"~{Sub(DecayEnum(u.Operand), PUnary)}", PUnary);
-            // &fn where fn is a function already decays to `&fn` in the VarRef
+            // &fn where fn is a function already reads the canonical address in VarRef
             // case — don't emit a second `&`.
-            case UnOp.AddrOf when u.Operand is VarRef { Sym.Kind: SymKind.Func }: return Render(u.Operand);
+            case UnOp.AddrOf when UnparenIsFunc(u.Operand): return Render(u.Operand);
             // C &array has the same base address as array decay. Every array
             // representation already exposes that storage pointer (fixed buffer,
             // InlineArray, stack/pinned array, or flexible-tail property). Taking
@@ -2367,7 +2372,7 @@ internal sealed partial class CSharpBackend
         if (des is Unary { Op: UnOp.AddrOf, Operand: VarRef { Sym.Kind: SymKind.Func } } da) { des = da.Operand; }
         if (des is VarRef { Sym.Kind: SymKind.Func } fv && Cs(c.Target) != Cs(fv.Type))
         {
-            return ($"({Cs(c.Target)})({Cs(fv.Type)})&{fv.Sym.TargetName}", PUnary);
+            return ($"({Cs(c.Target)})({Cs(fv.Type)}){FunctionPointer(fv.Sym)}", PUnary);
         }
         var text = $"({Cs(c.Target)}){Sub(c.Operand, PUnary)}";
         if (c.Target.Unqualified is CType.Prim { Integer: true } pt

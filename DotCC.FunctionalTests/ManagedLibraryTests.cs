@@ -14,7 +14,7 @@ namespace DotCC.FunctionalTests;
 /// <summary>Compile the translated API and its consumer as separate assemblies.
 /// The consumer explicitly registers a managed function pointer; no extension
 /// discovery, native interop, delegates, or collectible code pointers are used.</summary>
-public sealed class ManagedLibraryTests
+public sealed partial class ManagedLibraryTests
 {
     [Theory]
     [InlineData(false)]
