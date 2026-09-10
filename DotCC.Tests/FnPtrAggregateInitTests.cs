@@ -42,9 +42,9 @@ public sealed class FnPtrAggregateInitTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            // Each element's `func` is a bare fn name → must take the `&`.
-            emitted.ShouldContain("func = &add");
-            emitted.ShouldContain("func = &mul");
+            // Each element reuses the function's canonical cached address.
+            emitted.ShouldContain("func = global::DotCcFunctionPointers.add");
+            emitted.ShouldContain("func = global::DotCcFunctionPointers.mul");
             // The string field is untouched (not a fn name).
             emitted.ShouldContain("name = Libc.L(\"add\\0\"u8)");
         }
@@ -63,7 +63,7 @@ public sealed class FnPtrAggregateInitTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("func = &neg");
+            emitted.ShouldContain("func = global::DotCcFunctionPointers.neg");
         }
         finally { File.Delete(src); }
     }
@@ -79,7 +79,7 @@ public sealed class FnPtrAggregateInitTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("g = &add1");
+            emitted.ShouldContain("g = global::DotCcFunctionPointers.add1");
         }
         finally { File.Delete(src); }
     }
@@ -88,7 +88,7 @@ public sealed class FnPtrAggregateInitTests
     public void parenthesized_fn_name_argument_decays_through_parens()
     {
         // A parenthesized bare fn name as a call argument (`reg((cb))`) still
-        // decays — DecayFnName sees through the outer parens, emitting `&cb`.
+        // decays through the outer parens to the canonical cached address.
         var src = WriteTemp("""
             typedef int (*fn)(int);
             static int cb(int x) { return x; }
@@ -98,7 +98,7 @@ public sealed class FnPtrAggregateInitTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("&cb");
+            emitted.ShouldContain("global::DotCcFunctionPointers.cb");
             emitted.ShouldNotContain("((cb))");
         }
         finally { File.Delete(src); }

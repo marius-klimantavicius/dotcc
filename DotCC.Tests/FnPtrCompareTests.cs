@@ -33,8 +33,8 @@ public sealed class FnPtrCompareTests
             static int inc(int x) { return x + 1; }
             int main(void) { Op f = inc; return f == inc ? 1 : 0; }
             """);
-        // The bare `inc` decays to `&inc`; the IR expands `Op` to the underlying
+        // The bare `inc` reads its cached address; the IR expands `Op` to the underlying
         // delegate* type for the cast (no using-alias emitted).
-        emitted.ShouldContain("(delegate*<int, int>)(&inc)");
+        emitted.ShouldContain("(delegate*<int, int>)(global::DotCcFunctionPointers.inc)");
     }
 }

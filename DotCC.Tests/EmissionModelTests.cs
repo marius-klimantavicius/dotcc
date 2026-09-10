@@ -48,7 +48,7 @@ public sealed class EmissionModelTests
             int main(void) { return g(5); }
             """);
         emitted.ShouldContain("internal static unsafe int neg(int x)");
-        emitted.ShouldContain("&neg");
+        emitted.ShouldContain("global::DotCcFunctionPointers.neg");
     }
 
     [Fact]
