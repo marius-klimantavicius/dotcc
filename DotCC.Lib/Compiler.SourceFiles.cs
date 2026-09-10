@@ -18,9 +18,20 @@ public static partial class Compiler
     public static void WriteCSharpFiles(string directory, IReadOnlyDictionary<string, string> sources)
     {
         const string manifest = "Dotcc.SourceFiles.txt";
-        static bool GeneratedName(string name) => name == "Program.cs" || name == "Dotcc.GlobalUsings.g.cs"
-            || (name.StartsWith("Dotcc.Functions.", StringComparison.Ordinal) && name.EndsWith(".g.cs", StringComparison.Ordinal)
-                && name.All(c => char.IsAsciiLetterOrDigit(c) || c is '.' or '_'));
+        static bool GeneratedName(string name)
+        {
+            if (name == "Program.cs" || name == "Dotcc.GlobalUsings.g.cs") return true;
+            // Accept the old naming scheme too so existing manifests migrate cleanly.
+            if (name.StartsWith("Dotcc.Functions.", StringComparison.Ordinal) && name.EndsWith(".g.cs", StringComparison.Ordinal)
+                && name.All(c => char.IsAsciiLetterOrDigit(c) || c is '.' or '_')) return true;
+            static bool Identifier(string value) => value.Length > 0 && (char.IsAsciiLetter(value[0]) || value[0] == '_')
+                && value.All(c => char.IsAsciiLetterOrDigit(c) || c == '_');
+            static bool Number(string value) => value.Length > 0 && value.All(char.IsAsciiDigit);
+            var parts = name.Split('.');
+            return parts.Length is 3 or 4 && Identifier(parts[0]) && parts[^1] == "cs"
+                && ((Identifier(parts[1]) && (parts.Length == 3 || Number(parts[2])))
+                    || (Number(parts[1]) && (parts.Length == 3 || Identifier(parts[2]))));
+        }
         if (!sources.ContainsKey("Program.cs") || sources.Keys.Any(name => !GeneratedName(name)))
             throw new ArgumentException("Expected named dotcc project source files", nameof(sources));
         Directory.CreateDirectory(directory);
@@ -28,8 +39,10 @@ public static partial class Compiler
         var previous = File.Exists(manifestPath) ? File.ReadAllLines(manifestPath) : Array.Empty<string>();
         if (previous.Any(name => !GeneratedName(name)))
             throw new IOException("Invalid generated source manifest: " + manifestPath);
-        foreach (var file in sources) File.WriteAllText(Path.Combine(directory, file.Key), file.Value);
+        // Delete obsolete names first: a case-only class rename can refer to
+        // the same physical file on case-insensitive filesystems.
         foreach (var name in previous.Except(sources.Keys, StringComparer.Ordinal)) File.Delete(Path.Combine(directory, name));
+        foreach (var file in sources) File.WriteAllText(Path.Combine(directory, file.Key), file.Value);
         File.WriteAllLines(manifestPath, sources.Keys.Order(StringComparer.Ordinal));
     }
 
@@ -76,15 +89,21 @@ public static partial class Compiler
         var group = new StringBuilder();
         int groupBytes = Encoding.UTF8.GetByteCount(header + footer), index = 0;
         string firstName = "";
+        var filenames = new HashSet<string>(files.Keys, StringComparer.OrdinalIgnoreCase);
         void Flush()
         {
             if (group.Length == 0) return;
-            // Numeric prefixes avoid case-insensitive filesystem collisions;
-            // bounded readable names avoid path-length and keyword problems.
-            var suffix = split == SourceSplit.Function
-                ? "." + new string(firstName.TrimStart('@').Take(80)
-                    .Select(c => char.IsAsciiLetterOrDigit(c) || c == '_' ? c : '_').ToArray()) : "";
-            files[$"Dotcc.Functions.{index++:D5}{suffix}.g.cs"] = header + group + footer;
+            var member = split == SourceSplit.Function
+                ? new string(firstName.TrimStart('@')
+                    .Select(c => char.IsAsciiLetterOrDigit(c) || c == '_' ? c : '_').ToArray())
+                : $"{index++:D5}";
+            var stem = $"{owner.TrimStart('@')}.{member}";
+            var filename = stem + ".cs";
+            int duplicate = 2;
+            // C names are case-sensitive, filenames are not on every host.
+            // Keep ordinary names clean and disambiguate only real collisions.
+            while (!filenames.Add(filename)) filename = $"{stem}.{duplicate++}.cs";
+            files[filename] = header + group + footer;
             group.Clear();
             groupBytes = Encoding.UTF8.GetByteCount(header + footer);
         }

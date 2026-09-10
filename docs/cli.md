@@ -50,8 +50,11 @@ All translated methods belong to the same partial class (`DotCcProgram` for
 executables or the configured library class). `Program.cs` retains entry-point
 wiring, runtime, types, globals and initialization so field initialization order
 is preserved. Canonical pointer aliases are emitted once in
-`Dotcc.GlobalUsings.g.cs`. Function files use deterministic numeric prefixes,
-with readable function names in function mode (`Dotcc.Functions.00000.name.g.cs`).
+`Dotcc.GlobalUsings.g.cs`. Function files use the owning class name:
+`Sqlite.00000.cs` in size mode, or `Sqlite.sqlite3_open.cs` in function mode.
+Only filename collisions receive a numeric suffix, such as `Sqlite.open.2.cs`;
+comparison is case-insensitive for portability. C# identifier escapes (`@`) are
+omitted from filenames.
 
 Size mode counts UTF-8 bytes including the file header and closing braces. The
 threshold is a grouping target, not a hard limit: a whole function can exceed it,

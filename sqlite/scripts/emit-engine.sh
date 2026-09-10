@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/common.sh"
 postprocess=true
-# Keep generated method files comfortable to navigate in Rider.
-split="${SQLITE_SOURCE_SPLIT:-size}"
+# Emit one named function per file for navigation in Rider.
+split="${SQLITE_SOURCE_SPLIT:-function}"
 split_size="${SQLITE_SOURCE_SPLIT_SIZE:-262144}"
 case "${1:-}" in
   --no-postprocess) postprocess=false; shift ;;

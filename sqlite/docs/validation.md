@@ -1315,3 +1315,24 @@ The compiler itself also publishes as linux-x64 NativeAOT without warnings
 smoke checks for all three layouts, automatic build/run, stale-file cleanup,
 invalid flag combinations and split object linking
 (`artifacts/source-split-cli-smoke.log`).
+
+
+## Function filenames and SQLite default (2026-09-10)
+
+Function mode now emits `<class>.<function>.cs`, such as
+`Sqlite.sqlite3_open.cs`. Numeric suffixes appear only on filename collisions;
+case-insensitive comparison makes the output portable (`Sqlite.Open.cs` and
+`Sqlite.open.2.cs`). Size mode uses `<class>.<index>.cs`. Identifier escapes are
+omitted from filenames. The manifest accepts legacy `Dotcc.Functions.*.g.cs`
+entries so regeneration removes obsolete files, and cleanup precedes writing to
+handle case-only class renames safely.
+
+SQLite now defaults to `SQLITE_SOURCE_SPLIT=function`, producing **3,169 function
+files** plus the shared Program.cs and alias file. No old `Dotcc.Functions.*`
+files remain. In-place postprocessing rewrites the same **24,123 Cond.B calls**
+and removes **2,208 empty blocks**, updating **2,511 files**. All **51 managed-library
+tests** pass, including exact filenames, escaped class names, collisions and
+legacy cleanup (`artifacts/class-file-names-tests.log`). The compiler builds
+without warnings, and ManagedConsumer passes its JIT SQL/JSONB/FTS5/WAL/optional
+feature and callback contracts on the freshly regenerated engine
+(`artifacts/class-file-names-consumer.log`).

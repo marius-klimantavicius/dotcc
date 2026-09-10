@@ -54,9 +54,13 @@ public sealed partial class ManagedLibraryTests
             else
             {
                 files["Program.cs"].ShouldContain("partial class");
-                var functionFiles = files.Where(f => f.Key.StartsWith("Dotcc.Functions.")).ToArray();
+                var functionFiles = files.Where(f => f.Key.StartsWith(mode == EmitMode.Csproj ? "DotCcProgram." : "class.")).ToArray();
                 functionFiles.Sum(f => CSharpSyntaxTree.ParseText(f.Value).GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().Count()).ShouldBe(5);
-                if (split == SourceSplit.Function) functionFiles.Length.ShouldBe(5);
+                if (split == SourceSplit.Function)
+                {
+                    functionFiles.Length.ShouldBe(5);
+                    files.Keys.ShouldContain((mode == EmitMode.Csproj ? "DotCcProgram" : "class") + ".add.cs");
+                }
                 foreach (var file in functionFiles)
                 {
                     file.Value.ShouldNotContain("static int calls");
@@ -100,13 +104,29 @@ public sealed partial class ManagedLibraryTests
         {
             File.WriteAllText(path, "int first(void) { return 1; } int second(void) { return 2; } int third(void) { return 3; }");
             var individual = Compiler.EmitCSharpFiles(new[] { path }, emit: EmitMode.ManagedLib, split: SourceSplit.Function);
-            int target = Encoding.UTF8.GetByteCount(individual.First(f => f.Key.StartsWith("Dotcc.Functions.")).Value);
+            int target = Encoding.UTF8.GetByteCount(individual.First(f => f.Key.StartsWith("DotCcLib.")).Value);
             var grouped = Compiler.EmitCSharpFiles(new[] { path }, emit: EmitMode.ManagedLib, split: SourceSplit.Size, splitSize: target);
-            var first = grouped.First(f => f.Key.StartsWith("Dotcc.Functions.")).Value;
+            var first = grouped.First(f => f.Key.StartsWith("DotCcLib.")).Value;
             first.ShouldContain("first()"); first.ShouldContain("second()"); first.ShouldNotContain("third()");
             grouped.ShouldBe(Compiler.EmitCSharpFiles(new[] { path }, emit: EmitMode.ManagedLib, split: SourceSplit.Size, splitSize: target));
             var tiny = Compiler.EmitCSharpFiles(new[] { path }, emit: EmitMode.ManagedLib, split: SourceSplit.Size, splitSize: 1);
-            tiny.Keys.Count(k => k.StartsWith("Dotcc.Functions.")).ShouldBe(3);
+            tiny.Keys.Count(k => k.StartsWith("DotCcLib.")).ShouldBe(3);
+        }
+        finally { File.Delete(path); }
+    }
+
+    [Fact]
+    public void Function_filenames_only_add_suffixes_for_case_insensitive_collisions()
+    {
+        var path = Path.Combine(Path.GetTempPath(), "dotcc-filenames-" + Guid.NewGuid().ToString("N") + ".c");
+        try
+        {
+            File.WriteAllText(path, "int Open(void) { return 1; } int open(void) { return 2; } int event(void) { return 3; }");
+            var files = Compiler.EmitCSharpFiles(new[] { path }, emit: EmitMode.ManagedLib, className: "Sqlite", split: SourceSplit.Function);
+            files.Keys.ShouldContain("Sqlite.Open.cs");
+            files.Keys.ShouldContain("Sqlite.open.2.cs");
+            files.Keys.ShouldContain("Sqlite.event.cs");
+            files["Sqlite.open.2.cs"].ShouldContain("int open()");
         }
         finally { File.Delete(path); }
     }
@@ -122,11 +142,18 @@ public sealed partial class ManagedLibraryTests
             File.WriteAllText(path, SplitSource);
             var output = Path.Combine(root, "output");
             var split = Compiler.EmitCSharpFiles(new[] { path }, emit: EmitMode.ManagedLib, split: SourceSplit.Function);
+            Directory.CreateDirectory(output);
+            var legacy = Path.Combine(output, "Dotcc.Functions.00000.old.g.cs");
+            File.WriteAllText(legacy, "// obsolete generated function");
+            File.WriteAllText(Path.Combine(output, "Dotcc.SourceFiles.txt"), "Program.cs\nDotcc.Functions.00000.old.g.cs\n");
             Compiler.WriteCSharpFiles(output, split);
+            File.Exists(legacy).ShouldBeFalse();
+            split.Keys.Where(name => name.StartsWith("DotCcLib.")).Count().ShouldBe(5);
             var userFile = Path.Combine(output, "Custom.cs");
             File.WriteAllText(userFile, "// user sidecar");
             Compiler.WriteCSharpFiles(output, Compiler.EmitCSharpFiles(new[] { path }, emit: EmitMode.ManagedLib));
             Directory.GetFiles(output, "Dotcc.*.g.cs").ShouldBeEmpty();
+            Directory.GetFiles(output, "DotCcLib.*.cs").ShouldBeEmpty();
             File.ReadAllText(userFile).ShouldBe("// user sidecar");
             File.WriteAllText(Path.Combine(output, "Dotcc.SourceFiles.txt"), "../input.c\n");
             Should.Throw<IOException>(() => Compiler.WriteCSharpFiles(output, split));
