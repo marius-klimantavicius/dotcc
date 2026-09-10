@@ -42,3 +42,15 @@ run_sqlite_process dotnet "$output/bin/Release/net10.0/Test-$suite.dll" \
   > "$SQLITE_ROOT/artifacts/translated-$suite.out"
 diff -u "$SQLITE_ROOT/tests/$expected" "$SQLITE_ROOT/artifacts/translated-$suite.out"
 cat "$SQLITE_ROOT/artifacts/translated-$suite.out"
+
+# The API corpus covers managed-boundary contracts and optional math/percentile/
+# metadata behavior beyond the separate consumer's smoke checks.
+if [[ "$suite" == api && "${SQLITE_AOT:-0}" == 1 ]]; then
+  publish="$SQLITE_ROOT/build/api-aot"
+  dotnet publish "$output/Test-api.csproj" -c Release -r linux-x64 \
+    -p:PublishAot=true -o "$publish" --nologo \
+    > "$SQLITE_ROOT/artifacts/translated-api-aot-build.log" 2>&1
+  run_sqlite_process "$publish/Test-api" > "$SQLITE_ROOT/artifacts/translated-api-aot.out"
+  diff -u "$SQLITE_ROOT/tests/$expected" "$SQLITE_ROOT/artifacts/translated-api-aot.out"
+  echo "PASS NativeAOT API corpus including math, percentiles and column metadata"
+fi
