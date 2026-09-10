@@ -457,3 +457,29 @@ fetch/build/test campaign, including NativeAOT, every documented SQLite corpus,
 image exchange, and repository/Lua/Chibi/WAT regressions. No active blocker remains
 for the selected profile. The ledger above retains the original failure context;
 final evidence and explicit scope limits are recorded in `validation.md`.
+
+## B039 — FTS5 tokenizer enters a sibling loop (fixed; additional shape audit active)
+
+Enabling `SQLITE_ENABLE_FTS5` reaches full parsing/IR but emission fails at
+`fts5UnicodeTokenize`'s `non_ascii_tokenchar` label. The separator loop jumps into
+the token loop, skipping that loop's first condition and prefix work. The existing
+goto scope normalizer cannot move an entry label through a loop boundary.
+`external-loop-entry/` reduces while/do/for entry, skipped condition/initializer
+work, continue/post ordering, nested switch/loop breaks, scalar/fixed-array storage,
+and both ASCII/non-ASCII tokenizer paths. GCC supplies the expected transcript;
+the unchanged backend fails this fixture before the fix. Evidence:
+`artifacts/fts5/engine-baseline-emission.log`, `external-loop-before.log`, and
+`external-loop-native`.
+
+The bounded correction lowers only actually crossed loops to explicit body/test/
+post labels. Crossed declarations reserve function-entry storage while leaving
+initializer effects in place. Ordinary loops stay structured. Focused execution
+and full enabled-amalgamation retries are required before this entry is complete.
+
+The primary reduction now executes with its exact native output, including
+function-entry array storage. The complete FTS5-enabled engine emits/builds with
+zero errors and the expanded separate C# consumer passes JIT and NativeAOT,
+including Unicode tokenizer and auxiliary callback APIs. Evidence:
+`artifacts/loop-focused.log`, `canonical-address-engine-build.log`, and
+`managed-consumer-{jit,aot}.log`. A follow-up audit is reducing unbraced loop/if
+entry forms before the final broad regression gate.

@@ -28,9 +28,10 @@ using DotCC.Ir;
 /// Control-flow equivalent: head still falls into the tail (via the explicit
 /// goto), every other exit of the <c>if</c> skips the tail, and the tail's own
 /// fall-through reaches <c>rest</c> exactly as block-exit did. Only if-arms and
-/// plain nested blocks are hoisted through — a label needing to move out of a
-/// LOOP or SWITCH body changes iteration semantics, and fails loudly instead
-/// (the switch-internal cases are RenderSwitch's own hoisting machinery).
+/// plain nested blocks are hoisted through. An externally entered loop is lowered
+/// to explicit condition/body/post labels, preserving later iterations and the
+/// targets of break/continue. Crossed local storage is reserved at function entry;
+/// initializer effects remain in place. Switch entry has its own backend pass.
 /// Functions with no scope violation pass through untouched (the common case —
 /// the pass costs one read-only scan).
 /// </remarks>
@@ -44,8 +45,10 @@ internal static class GotoScopeNormalizer
         {
             var label = FindViolation(body);
             if (label == null) { return body; }
-            var h = new Hoister(label);
+            var h = new Hoister(label, guard);
             body = h.Rewrite(body);
+            if (h.Done && h.Storage.Count != 0)
+                body = body with { Stmts = h.Storage.Concat(body.Stmts).ToList() };
             if (!h.Done)
             {
                 throw new IrUnsupportedException(
@@ -128,7 +131,11 @@ internal static class GotoScopeNormalizer
         private readonly string _label;
         public bool Done { get; private set; }
 
-        public Hoister(string label) => _label = label;
+        private readonly int _ordinal;
+        private readonly List<CStmt> _storage = new();
+        public IReadOnlyList<CStmt> Storage => _storage;
+
+        public Hoister(string label, int ordinal) { _label = label; _ordinal = ordinal; }
 
         public Block Rewrite(Block b)
         {
@@ -138,7 +145,7 @@ internal static class GotoScopeNormalizer
             {
                 if (TryExtract(stmts[i], out var replaced, out var tail))
                 {
-                    var skip = $"__skip_{_label}";
+                    var skip = $"__skip_{_label}_{_ordinal}";
                     var insert = new List<CStmt> { replaced, new Goto(skip) };
                     insert.AddRange(tail);
                     insert.Add(new Labeled(skip, new Block(Array.Empty<CStmt>())));
@@ -175,6 +182,20 @@ internal static class GotoScopeNormalizer
                 case Block nb when SplitArm(nb, out var head, out tail!):
                     replaced = head;
                     return true;
+                case Labeled label when TryExtract(label.Body, out var labeledHead, out tail!):
+                    replaced = label with { Body = labeledHead };
+                    return true;
+                case While loop when SplitArm(loop.Body, out var loopHead, out tail!):
+                    LowerLoop(loopHead, tail, loop.Cond, null, false, out replaced, out tail);
+                    return true;
+                case DoWhile loop when SplitArm(loop.Body, out var loopHead, out tail!):
+                    LowerLoop(loopHead, tail, loop.Cond, null, true, out replaced, out tail);
+                    return true;
+                case For loop when SplitArm(loop.Body, out var loopHead, out tail!):
+                    LowerLoop(loopHead, tail, loop.Cond, loop.Post, false, out replaced, out tail);
+                    if (loop.Init is { } init)
+                        replaced = new Seq(new[] { LiftStorage(init), replaced });
+                    return true;
             }
             replaced = s;
             tail = new List<CStmt>();
@@ -191,8 +212,11 @@ internal static class GotoScopeNormalizer
                 {
                     if (ab.Stmts[k] is Labeled l && l.Name == _label)
                     {
-                        tail = ab.Stmts.Skip(k).ToList();
-                        var headStmts = ab.Stmts.Take(k).Append(new Goto(_label)).ToList();
+                        // Once a label crosses this scope, its locals need function-entry
+                        // storage even on entry that skips their initializer effects.
+                        var lifted = ab.Stmts.Select(LiftStorage).ToList();
+                        tail = lifted.Skip(k).ToList();
+                        var headStmts = lifted.Take(k).Append(new Goto(_label)).ToList();
                         head = new Block(headStmts) { Pos = ab.Pos };
                         return true;
                     }
@@ -202,6 +226,90 @@ internal static class GotoScopeNormalizer
             tail = new List<CStmt>();
             return false;
         }
+
+        private CStmt LiftStorage(CStmt statement)
+        {
+            switch (statement)
+            {
+                case DeclStmt declaration:
+                    _storage.Add(declaration with
+                    {
+                        Decls = declaration.Decls.Select(local => local with { Init = null }).ToList()
+                    });
+                    return new Seq(declaration.Decls.Where(local => local.Init is not null)
+                        .Select(local => (CStmt)new ExprStmt(new Assign(null,
+                            new VarRef(local.Sym) { Type = local.Sym.Type }, local.Init!)
+                            { Type = local.Sym.Type })).ToList());
+                case ArrayDecl array:
+                    var count = array.Inits?.Count;
+                    if (count is null && array.CountExpr is LitInt { Value: { } fixedCount }
+                        && fixedCount >= 0 && fixedCount <= int.MaxValue) count = (int)fixedCount;
+                    if (count is null)
+                        throw new IrUnsupportedException("variable-length array across a goto entry");
+                    _storage.Add(array with
+                    {
+                        CountExpr = new LitInt(count.Value.ToString(System.Globalization.CultureInfo.InvariantCulture), count.Value)
+                            { Type = CType.Int },
+                        Inits = null
+                    });
+                    return new Seq((array.Inits ?? Array.Empty<CExpr>()).Select((value, index) =>
+                        (CStmt)new ExprStmt(new Assign(null,
+                            new Index(new VarRef(array.Sym) { Type = array.Sym.Type },
+                                new LitInt(index.ToString(System.Globalization.CultureInfo.InvariantCulture), index) { Type = CType.Int })
+                                { Type = array.Element }, value) { Type = array.Element })).ToList());
+                case Seq sequence:
+                    return sequence with { Stmts = sequence.Stmts.Select(LiftStorage).ToList() };
+                case Labeled label:
+                    return label with { Body = LiftStorage(label.Body) };
+                default:
+                    return statement;
+            }
+        }
+
+        // Lower only a loop crossed by an actual incoming goto. The first jump
+        // enters its original test (or body for do/while); external label entry
+        // skips that path. Every later iteration preserves test/post ordering.
+        private void LowerLoop(CStmt head, List<CStmt> originalTail, CExpr? condition,
+            CExpr? post, bool doFirst, out CStmt replaced, out List<CStmt> tail)
+        {
+            var prefix = $"__goto_loop_{_label}_{_ordinal}";
+            var body = prefix + "_body";
+            var test = prefix + "_test";
+            var next = prefix + "_next";
+            var end = prefix + "_end";
+            replaced = new Goto(doFirst ? body : test);
+            tail = new List<CStmt> { new Labeled(body, RewriteLoopTransfers(head, end, next, false)) };
+            tail.AddRange(originalTail.Select(statement => RewriteLoopTransfers(statement, end, next, false)));
+            tail.Add(new Labeled(next, new Block(Array.Empty<CStmt>())));
+            if (post is not null) tail.Add(new ExprStmt(post));
+            tail.Add(new Labeled(test, condition is null
+                ? new Goto(body)
+                : new If(condition, new Goto(body), null)));
+            tail.Add(new Labeled(end, new Block(Array.Empty<CStmt>())));
+        }
+
+        private static CStmt RewriteLoopTransfers(CStmt statement, string end, string next, bool inSwitch) => statement switch
+        {
+            Break when !inSwitch => new Goto(end),
+            Continue => new Goto(next),
+            Block block => block with { Stmts = block.Stmts.Select(child => RewriteLoopTransfers(child, end, next, inSwitch)).ToList() },
+            Seq sequence => sequence with { Stmts = sequence.Stmts.Select(child => RewriteLoopTransfers(child, end, next, inSwitch)).ToList() },
+            Labeled label => label with { Body = RewriteLoopTransfers(label.Body, end, next, inSwitch) },
+            If branch => branch with
+            {
+                Then = RewriteLoopTransfers(branch.Then, end, next, inSwitch),
+                Else = branch.Else is { } other ? RewriteLoopTransfers(other, end, next, inSwitch) : null
+            },
+            Switch choice => choice with
+            {
+                Sections = choice.Sections.Select(section => new SwitchSection(section.Labels,
+                    section.Body.Select(child => RewriteLoopTransfers(child, end, next, true)).ToList())).ToList()
+            },
+            CaseLabelStmt label => label with { Body = RewriteLoopTransfers(label.Body, end, next, inSwitch) },
+            // Nested loops own both break and continue; exception entry remains
+            // unsupported rather than moving control across protected regions.
+            _ => statement
+        };
 
         private CStmt RewriteStmt(CStmt s) => s switch
         {
