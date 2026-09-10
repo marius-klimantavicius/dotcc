@@ -135,12 +135,12 @@ public static partial class Compiler
         bool mainReturnsErrUnion = false,
         bool mainErrPayloadIsVoid = false,
         bool testMode = false,
-        IReadOnlyList<(string Name, string FnName)>? tests = null, string libraryClass = "DotCcLib")
+        IReadOnlyList<(string Name, string FnName)>? tests = null, string libraryClass = "DotCcLib", bool partial = false)
     {
         if (emit is EmitMode.SharedLib or EmitMode.ManagedLib)
         {
             return BuildLibraryShell(emittedFnList, structDecls, usingAliases, globals, exports, importsClass, importsAreStatic,
-                managedLibrary: emit == EmitMode.ManagedLib, libraryClass: libraryClass);
+                managedLibrary: emit == EmitMode.ManagedLib, libraryClass: libraryClass, partial: partial);
         }
         // Import mode: surface the import table by bare name and splice it into the
         // type-decls section. A GOT (-l) table is bound before main; static [DllImport]
@@ -308,7 +308,7 @@ public static partial class Compiler
             //      `using static` note above — class methods, not top-level locals,
             //      so `&fn` / function-pointer tables / cross-context refs work) ----
 
-            static unsafe class DotCcProgram
+            static unsafe {{(partial ? "partial " : "")}}class DotCcProgram
             {
             {{indentedFns}}
             }
@@ -380,7 +380,7 @@ public static partial class Compiler
         string globals,
         IReadOnlyList<EmitHelpers.Export> exports,
         string importsClass = "",
-        bool importsAreStatic = false, bool managedLibrary = false, string libraryClass = "DotCcLib")
+        bool importsAreStatic = false, bool managedLibrary = false, string libraryClass = "DotCcLib", bool partial = false)
     {
         // Import mode in a -shared lib: surface the table by bare name and splice it. A
         // GOT table binds in a static constructor (no entry point here); static [DllImport]
@@ -447,7 +447,7 @@ public static partial class Compiler
             // ---- typedef'd `using` aliases (same as exe mode).
             {{usingAliases}}
             // Translated methods use direct calls and managed function pointers.
-            {{(managedLibrary ? "public" : "internal")}} static class {{libraryClass}}
+            {{(managedLibrary ? "public" : "internal")}} static {{(partial ? "partial " : "")}}class {{libraryClass}}
             {
             {{indentedFns}}
             }

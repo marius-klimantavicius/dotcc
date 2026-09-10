@@ -765,3 +765,12 @@ this adds no new C syntax, compiler behavior, or runtime dependency.
 
 The optional [Rider analyzer/code fix](postprocess.md#rider-in-place-fixes) shares
 these rewrites and offers in-place fixes and Fix All through IDE suggestions.
+
+## Generated source layout
+
+C# project output supports `--split=none|function|size` (default `none`) and a
+positive `--split-size` UTF-8 byte target for size mode. Methods share the same
+partial class; shared runtime, types, globals and initialization remain together.
+The backend supplies whole-function boundaries for direct emission and new object
+fragments. This changes source layout only; existing C semantics and the runtime
+closure are unchanged. See [CLI layout details](cli.md#splitting-generated-c).

@@ -140,7 +140,23 @@ public static partial class Compiler
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
         string? className = null)
+        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className)["Program.cs"];
+
+    /// <summary>Emit one or more named C# sources. Split modes require project output.
+    /// Function boundaries come from the backend; shared declarations remain together.</summary>
+    public static IReadOnlyDictionary<string, string> EmitCSharpFiles(
+        IReadOnlyList<string> inputPaths,
+        IReadOnlyList<string>? includeDirs = null,
+        IReadOnlyList<string>? defines = null,
+        EmitMode emit = EmitMode.File,
+        CDialect? dialect = null,
+        bool debugHeap = false,
+        ImportOptions? imports = null,
+        WarningFlags warnings = WarningFlags.Default,
+        bool testMode = false,
+        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144)
     {
+        ValidateSourceSplit(split, splitSize, emit);
         var libraryClass = ResolveLibraryClassName(className, emit);
         var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
@@ -203,15 +219,16 @@ public static partial class Compiler
             var objDefs = irBuilder.Functions.SelectMany(f => new[] { f.Sym.Name, f.Sym.TargetName })
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
-            return SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
-                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid);
+            return SingleSource(SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
+                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources));
         }
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
                 irBuilder.Functions.Select(f => f.Sym.TargetName).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
         var aliases = cg.Aliases + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
             irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass);
-        return BuildShell(cg.MainArity, cg.Functions, cg.Structs, aliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass);
+        return BuildSourceFiles(cg.Functions, cg.FunctionSources, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize,
+            (functions, fileAliases, partial) => BuildShell(cg.MainArity, functions, cg.Structs, fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial));
     }
 
     /// <summary>

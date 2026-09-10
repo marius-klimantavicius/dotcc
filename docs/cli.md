@@ -13,6 +13,8 @@
 | `--emit=build` | As `csproj`, then run `dotnet build -c Release` in the output dir. |
 | `--emit=managedlib` | Emit a reusable managed library with public functions and aggregate types. Add `-c` to compile it. |
 | `--class-name <name>` | Set the generated API class for `--emit=managedlib` or `-shared` (default `DotCcLib`). Applies to whole-program emission and object linking; specify it at link time, not with `--emit=obj`. Accepts a single ASCII identifier, optionally `@`-escaped; keywords are escaped automatically. Executable, preprocessing and WAT modes reject this option. |
+| `--split=none\|function\|size` | C# project source layout: one file (default), one translated function per file, or groups of whole functions. Supported by csproj/build/managedlib/shared emission and object linking. File/stdout, preprocessing, WAT and object emission reject splitting. |
+| `--split-size <bytes>` | Positive UTF-8 byte target with `--split=size`, default 262144 (256 KiB). Append a complete function, then close the file on its first crossing of the target. |
 | `--emit=obj` | **Separate compilation.** Compile ONE `.c` to a `.cs` object fragment (functions + its type decls + globals, no shell/runtime). Link by passing `.cs` objects back: `dotcc a.cs b.cs -o app` merges (deduping shared types) and wraps in the shell. Drives CMake/make per file (`examples/cmake-demo/`). |
 | **`-o` ⇄ `--emit` inference** | When one is omitted it's inferred: `-o foo.cs` ⇒ `file`; `-o <dir>` ⇒ `csproj`; `--emit=obj` with no `-o` ⇒ `<src>.cs`. Explicit `--emit` wins; `obj` is never inferred. |
 | `-E` | Preprocess only — dump the post-`#include`/`#define` token stream to stdout. No parsing. |
@@ -36,6 +38,38 @@
 **Predefined macros** (seeded every compile, plus any `-D`): `__STDC__`=`1`, `__STDC_HOSTED__`=`1`, `__STDC_VERSION__`=per-`-std=` value (undefined under `c90`), `__dotcc__`=`1` (compiler id, like `__clang__`), and the **LP64 data-model trio** `__LP64__`=`1`, `__SIZEOF_POINTER__`=`8`, `__SIZEOF_LONG__`=`8` — dotcc IS an LP64 compiler (`long` → C# `long`, 8-byte pointers), and portable C (chibi-scheme's `SEXP_64_BIT`) decides pointer-tagging strategy from exactly these macros; without them it would mis-configure for 32-bit and miscompute at runtime.
 
 **Library mode (`-shared`) emit shape:** user functions land in `internal static class DotCcLib` so inter-function calls resolve as direct C# invocations (`[UnmanagedCallersOnly]` prohibits managed call sites). Each non-static C function gets a `public static` wrapper in `public static class DotCcExports` annotated `[UnmanagedCallersOnly]`; NativeAOT inlines the trampoline. C `static` functions stay internal (no wrapper). Varargs functions are skipped from exports (`params object[]` isn't a valid `UnmanagedCallersOnly` signature).
+
+## Splitting generated C#
+
+```sh
+dotcc engine.c --emit=managedlib --class-name Sqlite --split=function -o TranslatedSqlite
+dotcc engine.c --emit=managedlib --class-name Sqlite --split=size --split-size=262144 -o TranslatedSqlite
+```
+
+All translated methods belong to the same partial class (`DotCcProgram` for
+executables or the configured library class). `Program.cs` retains entry-point
+wiring, runtime, types, globals and initialization so field initialization order
+is preserved. Canonical pointer aliases are emitted once in
+`Dotcc.GlobalUsings.g.cs`. Function files use deterministic numeric prefixes,
+with readable function names in function mode (`Dotcc.Functions.00000.name.g.cs`).
+
+Size mode counts UTF-8 bytes including the file header and closing braces. The
+threshold is a grouping target, not a hard limit: a whole function can exceed it,
+and the final group can be smaller. The shared `Program.cs` and alias file are
+not subject to this target. No C# parsing or Roslyn dependency is added to dotcc;
+the backend supplies function boundaries. Newly emitted objects preserve those
+boundaries; old objects still link normally but must be regenerated for splitting.
+
+`Dotcc.SourceFiles.txt` records generated files. Re-emission removes obsolete
+listed files, including when returning to `--split=none`; unlisted sidecars are
+preserved. Keep this manifest with the output directory.
+
+Library callers can use `Compiler.EmitCSharpFiles` or `Compiler.LinkObjectFiles`
+with `split: SourceSplit.Function` or `SourceSplit.Size` and `splitSize: 262144`.
+They return filename/source dictionaries; `Compiler.WriteCSharpFiles` writes them
+and handles obsolete files. Existing string-returning APIs retain single-file
+behavior. The separate postprocessor evaluates all generated Compile inputs, so
+its `--in-place` mode also works with split output.
 
 ## Optional source post-processing
 

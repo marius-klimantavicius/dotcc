@@ -28,6 +28,7 @@ public static partial class Compiler
     private const string FragMainVoid = "//!!dotcc-obj main-void:"; // 1 when main returns void
     private const string FragMainErr = "//!!dotcc-obj main-err:";   // v|i when main returns `!void`|`!<int>`
     private const string FragType   = "//!!dotcc-obj type:";
+    private const string FragFunction = "//!!dotcc-obj function:";
     private const string FragSect   = "//!!dotcc-obj section:"; // aliases|globals|functions
     // Import mode in separate compilation: `-l` is known only at LINK time, so each
     // fragment serializes its import CANDIDATES (proto-only, called, non-system,
@@ -58,7 +59,7 @@ public static partial class Compiler
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, string globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 1 — link with `dotcc <objs> -o <out>`.\n");
@@ -77,7 +78,10 @@ public static partial class Compiler
         }
         sb.Append(FragSect).Append("aliases\n").Append(aliases);
         sb.Append(FragSect).Append("globals\n").Append(globals);
-        sb.Append(FragSect).Append("functions\n").Append(functions);
+        sb.Append(FragSect).Append("functions\n");
+        if (functionSources == null) sb.Append(functions);
+        else foreach (var part in functionSources)
+            sb.Append(FragFunction).Append(part.Name).Append('\n').Append(part.Text).Append('\n');
         return sb.ToString();
     }
 
@@ -89,7 +93,14 @@ public static partial class Compiler
     public static string LinkObjects(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
         ImportOptions? imports = null, string? className = null)
+        => LinkObjectFiles(objectPaths, emit, debugHeap, imports, className)["Program.cs"];
+
+    /// <summary>Link objects into named C# project files. Older objects must be regenerated to split functions.</summary>
+    public static IReadOnlyDictionary<string, string> LinkObjectFiles(
+        IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
+        ImportOptions? imports = null, string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144)
     {
+        ValidateSourceSplit(split, splitSize, emit);
         var libraryClass = ResolveLibraryClassName(className, emit);
         var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
@@ -101,6 +112,8 @@ public static partial class Compiler
         var globalLines = new List<string>();
         var globalSeen = new HashSet<string>(StringComparer.Ordinal);
         var functions = new StringBuilder();
+        var functionSources = new List<CSharpFunctionSource>();
+        bool missingBoundaries = false;
         var mainArity = -1;
         var mainReturnsVoid = false;
         var mainReturnsErrUnion = false;
@@ -122,6 +135,13 @@ public static partial class Compiler
             // Walk the fragment line by line, routing into the current bucket.
             string section = "";            // "type:<name>" | "aliases" | "globals" | "functions"
             var buf = new StringBuilder();
+            string? functionName = null;
+            var functionBody = new StringBuilder();
+            void FlushFunction()
+            {
+                if (functionName != null) functionSources.Add(new(functionName, functionBody.ToString()));
+                functionBody.Clear();
+            }
             void FlushType()
             {
                 if (section.StartsWith("type:", StringComparison.Ordinal))
@@ -136,7 +156,12 @@ public static partial class Compiler
             }
             foreach (var line in text.Split('\n'))
             {
-                if (line.StartsWith(FragMainErr, StringComparison.Ordinal))
+                if (line.StartsWith(FragFunction, StringComparison.Ordinal))
+                {
+                    FlushFunction();
+                    functionName = line[FragFunction.Length..];
+                }
+                else if (line.StartsWith(FragMainErr, StringComparison.Ordinal))
                 {
                     // `main-err:` (v|i) — an error-union main (`!void`/`!<int>`). Disjoint from
                     // the `main-void:` / `main:` markers (the char after "main" differs).
@@ -189,9 +214,12 @@ public static partial class Compiler
                 else if (section == "functions")
                 {
                     functions.Append(line).Append('\n');
+                    if (functionName != null) functionBody.Append(line).Append('\n');
+                    else if (!string.IsNullOrWhiteSpace(line)) missingBoundaries = true;
                 }
             }
             FlushType();
+            FlushFunction();
         }
 
         if (!libraryMode && mainArity < 0)
@@ -218,10 +246,12 @@ public static partial class Compiler
         }
         if (className != null) CheckLibraryClassCollision(libraryClass, typeByName.Keys, definedNames);
         aliasText += FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass);
-        return BuildShell(mainArity, functions.ToString(), structDecls.ToString(), aliasText, globalText,
-                          emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
-                          importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
-                          mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass);
+        return BuildSourceFiles(functions.ToString(), missingBoundaries ? null : functionSources, aliasText,
+            emit, libraryClass, importsClass, false, split, splitSize,
+            (functionText, fileAliases, partial) => BuildShell(mainArity, functionText, structDecls.ToString(), fileAliases, globalText,
+                emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
+                importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
+                mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial));
     }
 
     private static string FunctionPointerOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass)

@@ -25,7 +25,8 @@ internal sealed record CSharpBackendResult(
     bool MainReturnsErrUnion = false,
     bool MainErrPayloadIsVoid = false,
     IReadOnlyList<(string Name, string FnName)>? Tests = null,
-    IReadOnlyDictionary<string, string>? TypeDeclarations = null);
+    IReadOnlyDictionary<string, string>? TypeDeclarations = null,
+    IReadOnlyList<CSharpFunctionSource>? FunctionSources = null);
 
 /// <summary>
 /// Lowers the typed IR to low-level unsafe C# text. Deliberately DUMB: every
@@ -67,6 +68,7 @@ internal sealed partial class CSharpBackend
         cg._typeShadowedGlobals = new HashSet<string>(
             unit.Globals.Select(g => g.Sym.TargetName).Where(typeNames.Contains), StringComparer.Ordinal);
         var fns = new StringBuilder();
+        var functionSources = new List<CSharpFunctionSource>();
         var exports = new List<DotCC.EmitHelpers.Export>();
         var mainArity = -1;
         var mainReturnsVoid = false;
@@ -77,7 +79,9 @@ internal sealed partial class CSharpBackend
         {
             if (fns.Length > 0) { fns.Append("\n\n"); }
             cg._currentFnName = fn.Sym.Name;
-            fns.Append(cg.Func(fn));
+            var functionText = cg.Func(fn);
+            fns.Append(functionText);
+            functionSources.Add(new(fn.Sym.TargetName, functionText));
 
             if (fn.Sym.Name == "main")
             {
@@ -115,6 +119,7 @@ internal sealed partial class CSharpBackend
         // escaping). Emitted only when the program names ≥1 error (so a `@errorName` call resolves).
         if (unit.ZigErrorCodes is { Count: > 0 } errNames)
         {
+            int helperStart = fns.Length;
             if (fns.Length > 0) { fns.Append("\n\n"); }
             // NB: emit `static unsafe` (no access modifier) — the shell rewrites `static unsafe ` →
             // `internal static unsafe ` (exe) / `public static unsafe ` (lib), so a literal
@@ -127,6 +132,7 @@ internal sealed partial class CSharpBackend
                 fns.Append($"        {kv.Value} => new ConstSlice<byte>(L(\"{kv.Key}\"u8), {len}),\n");
             }
             fns.Append("        _ => new ConstSlice<byte>(L(\"(unknown)\"u8), 9),\n    };");
+            functionSources.Add(new("__zigErrorName", fns.ToString(helperStart, fns.Length - helperStart)));
         }
 
         // File-scope variables → public static fields of DotCcGlobals (the shell
@@ -177,7 +183,7 @@ internal sealed partial class CSharpBackend
             ? unit.Tests.Select(t => (t.Name, t.Sym.TargetName)).ToList()
             : null;
 
-        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: "", globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations);
+        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: "", globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources);
     }
 
     // ---- type declarations -----------------------------------------------

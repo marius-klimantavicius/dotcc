@@ -37,6 +37,15 @@ internal static class Program
         {
             Description = "Generated library API class name (managedlib or -shared). Default: DotCcLib.",
         };
+        var splitOpt = new Option<SourceSplit>("--split")
+        {
+            Description = "C# project source layout: none (default), function (one per file), size (whole functions grouped by bytes).",
+            DefaultValueFactory = _ => SourceSplit.None,
+        };
+        var splitSizeOpt = new Option<int?>("--split-size")
+        {
+            Description = "UTF-8 byte target for --split=size (default 262144); close a file after its first complete function crosses the target.",
+        };
         var targetOpt = new Option<string?>("--target")
         {
             Description = "Output target (the M in N×M): cs (C#, default) or wat (WebAssembly text). wat emits a .wat module to -o, else stdout.",
@@ -120,7 +129,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, classNameOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, classNameOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -233,7 +242,8 @@ internal static class Program
 
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
-                       buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt));
+                       buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),
+                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt));
         });
 
         return root.Parse(args).Invoke();
@@ -285,8 +295,15 @@ internal static class Program
         bool debugHeap = false,
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool buildManaged = false, string? className = null)
+        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null)
     {
+        if ((splitSize.HasValue && (split != SourceSplit.Size || splitSize <= 0))
+            || (split != SourceSplit.None && (preprocessOnly || emit is EmitKind.File or EmitKind.Obj
+                || (target != null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase)))))
+        {
+            Console.Error.WriteLine("dotcc: --split requires C# project output; --split-size must be positive and used with --split=size");
+            return 2;
+        }
         imports ??= ImportOptions.Empty;
         if (emit == EmitKind.ManagedLib && (libraryMode || (target is not null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase))))
         {
@@ -368,13 +385,13 @@ internal static class Program
             && System.Array.TrueForAll(inputPaths, p =>
                 !p.EndsWith(".c", System.StringComparison.OrdinalIgnoreCase)
                 && !p.EndsWith(".zig", System.StringComparison.OrdinalIgnoreCase));
-        string program;
+        IReadOnlyDictionary<string, string> generatedSources;
         var emitMode = emit.ToEmitMode(libraryMode);
         try
         {
-            program = linking
-                ? Compiler.LinkObjects(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports, className: className)
-                : Compiler.EmitCSharp(
+            generatedSources = linking
+                ? Compiler.LinkObjectFiles(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports, className: className, split: split, splitSize: splitSize ?? 262144)
+                : Compiler.EmitCSharpFiles(
                     inputPaths,
                     includeDirs,
                     defines,
@@ -382,7 +399,7 @@ internal static class Program
                     dialect: dialect,
                     debugHeap: debugHeap,
                     imports: imports,
-                    warnings: warnings, className: className);
+                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144);
         }
         catch (CompileException ex)
         {
@@ -416,12 +433,12 @@ internal static class Program
                 // `-o foo.cs` inference), else to stdout (pipe-to-a-.cs).
                 if (outputPath is not null)
                 {
-                    File.WriteAllText(outputPath, program);
+                    File.WriteAllText(outputPath, generatedSources["Program.cs"]);
                     Console.Error.WriteLine($"dotcc: wrote {outputPath}");
                 }
                 else
                 {
-                    Console.WriteLine(program);
+                    Console.WriteLine(generatedSources["Program.cs"]);
                 }
                 return 0;
 
@@ -431,10 +448,10 @@ internal static class Program
             {
                 Directory.CreateDirectory(outDir);
                 var csprojFile = $"{asmName}.csproj";
-                File.WriteAllText(Path.Combine(outDir, "Program.cs"), program);
+                Compiler.WriteCSharpFiles(outDir, generatedSources);
                 File.WriteAllText(Path.Combine(outDir, csprojFile), Compiler.BuildGeneratedCsproj(libraryMode, asmName, imports.StaticArchives,
                     managedLibrary: emit == EmitKind.ManagedLib));
-                Console.Error.WriteLine($"dotcc: wrote {outDir}/Program.cs + {csprojFile}");
+                Console.Error.WriteLine($"dotcc: wrote {generatedSources.Count} C# source file(s) + {outDir}/{csprojFile}");
                 if (imports.StaticArchives.Count > 0)
                 {
                     // Static archives link only at NativeAOT publish — even `--emit=build`
