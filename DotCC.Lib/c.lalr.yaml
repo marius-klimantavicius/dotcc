@@ -695,6 +695,8 @@ productions:
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', U8StringSeq, ';'],         action: globalStaticU8CharArrStr }
       # Direct callback arrays retain the same pinned global-array storage as
       # typedef-spelled callback arrays, including const pointer elements.
+      - { lhs: Fn, rhs: [FnPtrArrayDeclarator, '=', E, ';'], action: globalFnPtrScalarInit }
+      - { lhs: Fn, rhs: ['static', FnPtrArrayDeclarator, '=', E, ';'], action: globalStaticFnPtrScalarInit }
       - { lhs: Fn, rhs: [FnPtrArrayDeclarator, ';'], action: globalFnPtrArray }
       - { lhs: Fn, rhs: ['static', FnPtrArrayDeclarator, ';'], action: globalStaticFnPtrArray }
       - { lhs: Fn, rhs: [FnPtrArrayDeclarator, '=', '{', InitList, '}', ';'], action: globalFnPtrArrayInit }
@@ -1333,6 +1335,7 @@ productions:
     rules:
       - { lhs: FnPtrArrayDeclarator, rhs: [Type, '(', '*', FnPtrArrayName, ')', '(', ParamList, ')'], action: fnPtrArrayDeclarator }
       - { lhs: FnPtrArrayDeclarator, rhs: [Type, '(', '*', FnPtrArrayName, ')', '(', ')'], action: fnPtrArrayDeclaratorNoArgs }
+      - { lhs: FnPtrArrayName, rhs: [ID], action: fnPtrScalarName }
       - { lhs: FnPtrArrayName, rhs: [ID, '[', ']'], action: fnPtrArrayNameImplicit }
       - { lhs: FnPtrArrayName, rhs: [ID, ArrDims], action: fnPtrArrayNameSized }
       - { lhs: FnPtrArrayName, rhs: ['const', FnPtrArrayName], action: fnPtrArrayNameConst }

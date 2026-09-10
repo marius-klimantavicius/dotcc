@@ -292,6 +292,8 @@ internal sealed partial class IrBuilder
             case C.GlobalStaticArrInit g: BuildGlobalArr(g.Arg1, g.Arg2, g.Arg3, g.Arg6, null); break;
             case C.GlobalArrInitImplicit g: BuildGlobalArr(g.Arg0, g.Arg1, null, g.Arg6, null); break;
             case C.GlobalStaticArrInitImplicit g: BuildGlobalArr(g.Arg1, g.Arg2, null, g.Arg7, null); break;
+            case C.GlobalFnPtrScalarInit g: BuildGlobalFnPtrArray(g.Arg0, g.Arg2, scalarInitializer: true); break;
+            case C.GlobalStaticFnPtrScalarInit g: BuildGlobalFnPtrArray(g.Arg1, g.Arg3, scalarInitializer: true); break;
             case C.GlobalFnPtrArray g: BuildGlobalFnPtrArray(g.Arg0, null); break;
             case C.GlobalStaticFnPtrArray g: BuildGlobalFnPtrArray(g.Arg1, null); break;
             case C.GlobalFnPtrArrayInit g: BuildGlobalFnPtrArray(g.Arg0, g.Arg3); break;
@@ -2282,7 +2284,7 @@ internal sealed partial class IrBuilder
         return new Seq(System.Array.Empty<CStmt>());
     }
 
-    private void BuildGlobalFnPtrArray(Item declarator, Item? initItem)
+    private void BuildGlobalFnPtrArray(Item declarator, Item? initItem, bool scalarInitializer = false)
     {
         var (returnType, arrayName, parameters) = declarator.Content switch
         {
@@ -2300,6 +2302,23 @@ internal sealed partial class IrBuilder
             }
             break;
         }
+        if (arrayName.Content is C.FnPtrScalarName scalar)
+        {
+            if (initItem != null && !scalarInitializer)
+                throw new IrUnsupportedException("brace initializer for a scalar function pointer");
+            var declaration = RegisterScalarGlobal(new Symbol {
+                Name = Tok(scalar.Arg0), Kind = SymKind.Var, Storage = Storage.Static,
+                IsGlobal = true, Type = FnPtrType(returnType, parameters).WithQuals(quals),
+            }, SrcPos.From(declarator));
+            if (declaration != null)
+            {
+                var init = initItem is { } value ? BuildExpr(value) : null;
+                DefineRegisteredGlobal(declaration, init, initItem != null, SrcPos.From(declarator));
+            }
+            return;
+        }
+        if (scalarInitializer)
+            throw new IrUnsupportedException("non-braced initializer for a function pointer array");
         var (name, dimensions) = arrayName.Content switch
         {
             C.FnPtrArrayNameImplicit a => (a.Arg0, (Item?)null),
