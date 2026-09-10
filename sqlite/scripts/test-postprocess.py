@@ -120,7 +120,7 @@ sizes = {}
 for variant, key in [('Original', 'OriginalProject'), ('Optimized', 'OptimizedProject')]:
     project = snapshot / manifest[key]
     sizes[variant] = {
-        'source_bytes': sum(p.stat().st_size for p in (project.parent / 'src').glob('*.cs')),
+        'source_bytes': sum(p.stat().st_size for p in (project.parent / 'src').rglob('*.cs')),
         'assembly_bytes': (project.parent / 'bin/Release/net10.0' / (manifest['AssemblyName'] + '.dll')).stat().st_size,
     }
 (artifacts / 'measurements.json').write_text(json.dumps({'rewritten': manifest['Rewritten'],

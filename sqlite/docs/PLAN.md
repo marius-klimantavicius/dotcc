@@ -3,7 +3,8 @@
 Status: M0–M8 are complete for the documented profile. The translated engine
 includes core, JSON/JSONB and FTS5, with richer managed SQL workloads and canonical
 function-pointer fields verified through source/object linking, JIT and NativeAOT.
-M9 is being implemented as a standalone Roslyn tree post-processor. M10 is complete: span-based varargs and a ref-struct
+M9 is complete as an opt-in standalone Roslyn tree post-processor (see
+[tool guide](../../docs/postprocess.md)). M10 is complete: span-based varargs and a ref-struct
 VaList, validated for lifetimes, callbacks, allocation behavior and the full
 SQLite/Lua/Chibi/WAT campaign. See `varargs-span.md` for the managed API change.
 M11 is complete for Linux x64: the product defaults to a real OS-file VFS.
@@ -389,26 +390,27 @@ coverage follows the pinned release and the
 Exit: FTS5 builds with dotcc and its checked SQL/index/callback behavior agrees
 with native, while existing required functionality remains verified.
 
-### M9 — Standalone Roslyn Cond.B post-processor (implementation/validation in progress)
+### M9 — Standalone Roslyn Cond.B post-processor (complete on Linux x64)
 
-- [ ] Design a separate build-time Roslyn post-processing step over emitted C#,
+- [x] Design a separate build-time Roslyn post-processing step over emitted C#,
       using symbols/semantic models to identify dotcc's exact `Cond.B` overload.
       Do not match arbitrary methods by text, modify upstream C, or reintroduce an
       offset source generator. Retain a comparison path with processing disabled.
-- [ ] Inline the resolved overload's semantics: bool arguments stay bool, numeric
+- [x] Inline the resolved overload's semantics: bool arguments stay bool, numeric
       arguments compare with correctly typed zero, pointer arguments compare with
       null, and CBool arguments preserve the existing conversion to int/nonzero.
       Preserve selected implicit/user conversions rather than dropping them.
-- [ ] Preserve one evaluation of the operand, side effects, short-circuiting,
+- [x] Preserve one evaluation of the operand, side effects, short-circuiting,
       checked/unchecked behavior and expression precedence. Cover assignments,
       increments, volatile/atomic reads, pointer/function-pointer conditions,
       floating NaN and signed zero, and shadowed names/aliases. Leave an invocation
       unchanged with a diagnostic if equivalence cannot be established.
-- [ ] Specify ordering after whole-program/object linking and before final C#
-      compilation; choose deterministic file/project integration, cancellation,
+- [x] Run after all normal dotcc actions, including linking/build when requested,
+      before compilation of the separate optimized copy; choose deterministic
+      file/project integration, cancellation,
       source mapping and readable diagnostics. Keep Roslyn out of the translated
       runtime and preserve dotcc's AOT-compatible compiler packaging.
-- [ ] Add syntax/semantic regressions plus original-vs-processed execution checks
+- [x] Add syntax/semantic regressions plus original-vs-processed execution checks
       and SQLite core/JSONB/FTS5 JIT/AOT differentials. Measure compile time, code
       size, allocations and execution before adopting the pass: JIT/AOT may already
       inline these helpers, so benefit must be demonstrated.

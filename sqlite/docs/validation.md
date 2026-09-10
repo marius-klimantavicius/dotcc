@@ -1032,3 +1032,82 @@ M14 is complete for the documented Linux x64 profile. The build-only helper
 continues to fetch, emit and build without running tests. M9 remains plan-only;
 the OffsetGenerator remains removed, and no native SQLite dependency or dynamic
 extension loading is introduced. Changes are committed locally without pushing.
+
+## M9 — Standalone Roslyn Cond.B optimization (2026-09-10)
+
+The follow-up request authorizes M9 implementation as a standalone command after
+all normal dotcc actions. `DotCC.PostProcess` consumes an emitted project and
+writes separate original/optimized snapshots; neither dotcc nor the SQLite build
+helper invokes it. All transformations use semantic models and syntax-tree nodes,
+then serialize and revalidate. Only Cond.B calls and proven redundant CBool
+conversions within their arguments are rewritten. Runtime CBool stores/arithmetic
+and compiler emission remain unchanged. Roslyn comes from the .NET 10 SDK and
+is referenced only by the standalone tool and its tests.
+
+Reduced tests first exposed target-typed `new()` losing its context and pointer
+null conversions failing the helper proof. Review added tests for competing
+implicit/explicit user conversions, constructor/indexer caller-argument capture,
+query-provider expression trees, CBool constructor effects and optional helper
+arguments. Actual SQLite then exposed a separate representation case: its embedded
+CBool lives in the global namespace, while the library/test runtime uses
+`DotCC.Libc`. Both are now covered by structural proofs. Semantic-model/proof
+caching fixes the first slow large-source attempt. The final tool rewrites all
+**24,123 calls, with zero skips**, and validates the rewritten compilation in
+about **15 seconds**, using roughly **600 MiB** peak RSS on this host.
+
+All **38 semantic regressions** pass, comparing original execution, rewritten
+execution, serialized/reparsed execution and idempotence. They cover every helper
+overload, native-width integers, NaN/signed zero, typed/function pointers, CBool,
+assignments/increments, short-circuiting, volatile/atomic reads, checked overflow,
+contextual typing, aliases/shadowing, comments and retained observable contexts.
+The final solution build has zero warnings/errors (`m9-repository-build.log`),
+and `m9-core-tests.log` records the final test result. The three standard platform
+CI jobs now include these tests; remote CI has not run in this session.
+
+The standalone CLI contracts also pass (`m9-cli-smoke.log`): isolated
+original/optimized builds preserve implementation assembly references, resource
+names/bytes, Release preprocessor symbols even when built as Debug, caller-file
+paths and portable PDBs. They verify deterministic manifests, unchanged inputs,
+existing-output rejection, symlink path guards and no partial output on invalid
+C#. These tests caught and fixed incremental MSBuild evaluation returning no
+compiler arguments, missing resource preparation and an inadequate file-based
+path map; copied source files now use one mapped directory per input.
+
+The explicit command
+`python3 sqlite/scripts/test-postprocess.py sqlite/generated/postprocess-m9-final --aot --corpora`
+finishes with exit zero (`m9-differentials.log`). Original and optimized managed
+SQL/JSONB/FTS5 consumers, threading, mmap/WAL contracts and independent native
+process interoperability all pass under JIT and linux-x64 NativeAOT. The separate
+core, API, public JSONB and FTS5 executable corpora match their committed native
+baselines in both original/optimized variants under both runtimes. No IL warnings
+or CS9080 span-lifetime warnings appear in the publish logs. Optimized compilation
+exposes six additional CS0162 unreachable-code warnings (63 warnings versus 57);
+all other warning counts remain unchanged, including canonical-pointer CS8909.
+
+| Measurement | Original | Optimized |
+| --- | ---: | ---: |
+| All product C# source bytes | 6,538,635 | 6,320,439 |
+| Managed engine assembly bytes | 1,946,624 | 1,694,208 |
+| NativeAOT managed-consumer executable bytes | 3,915,304 | 3,681,832 |
+| First snapshot Release build elapsed | 8.11 s | 5.29 s |
+| Prepared-query median, JIT | 319.11 ms | 99.33 ms |
+| Prepared-query median, NativeAOT | 337.35 ms | 103.70 ms |
+| Measured managed allocation per query round, JIT/AOT | 0 bytes | 0 bytes |
+
+The query benchmark scans 1,000 rows with an integer filter and sum. After 1,000
+warmup queries, each of three measured rounds executes 3,000 queries and verifies
+the same total (501,501,000). Timings above are the median of those rounds; the
+observed improvement is about 3.2× for this workload. This is not a universal SQL
+speedup or a statement that SQLite makes no unmanaged allocations. Builds are
+single observations affected by caches/order. Detailed timings, sizes and all
+query rounds are under `artifacts/postprocess/`; source-size collection traverses
+the snapshot's per-input subdirectories.
+
+M9 is complete on the locally tested Linux x64 platform. It remains opt-in and
+standalone. The initial CLI supports emitted single-target net10.0 projects and
+explicitly rejects custom generators/analyzers, response-file inputs and other
+unsupported project features described in [the tool guide](../../docs/postprocess.md).
+Feed the original emitted project to subsequent CLI runs; the pure semantic
+rewriter is idempotent, while generated snapshot projects use internal response
+files. No Rider analyzer, offset generator, native SQLite dependency or automatic
+optimization hook was added. All changes are committed locally without pushing.

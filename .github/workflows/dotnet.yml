@@ -130,6 +130,9 @@ jobs:
       - name: Functional tests (fixtures; opt-in oracles skip)
         run: dotnet test DotCC.FunctionalTests/DotCC.FunctionalTests.csproj -c Release --no-build --nologo
 
+      - name: Standalone postprocessor semantic tests
+        run: dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj -c Release --no-build --nologo
+
   build-test-windows:
     runs-on: windows-latest
     steps:
@@ -155,6 +158,9 @@ jobs:
 
       - name: Functional tests (fixtures; opt-in oracles skip)
         run: dotnet test DotCC.FunctionalTests/DotCC.FunctionalTests.csproj -c Release --no-build --nologo
+
+      - name: Standalone postprocessor semantic tests
+        run: dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj -c Release --no-build --nologo
 
   build-test-windows-arm64:
     runs-on: windows-11-arm
@@ -182,6 +188,9 @@ jobs:
 
       - name: Functional tests (fixtures; opt-in oracles skip)
         run: dotnet test DotCC.FunctionalTests/DotCC.FunctionalTests.csproj -c Release --no-build --nologo
+
+      - name: Standalone postprocessor semantic tests
+        run: dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj -c Release --no-build --nologo
 
   wat-oracle:
     runs-on: ubuntu-latest
