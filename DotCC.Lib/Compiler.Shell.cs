@@ -14,7 +14,7 @@ namespace DotCC;
 /// <see cref="Compiler"/> — entry points live in the main file.</summary>
 public static partial class Compiler
 {
-    private const string GeneratedWarningPragma = "#pragma warning disable CS0162, CS8909, CS1717, CS0164, CS0642\n";
+    private const string GeneratedWarningPragma = "#pragma warning disable CS0162, CS8909, CS1717, CS0164, CS0642, CS0675\n";
 
     /// <summary>
     /// Build the csproj scaffold paired with the non-file-based shell from

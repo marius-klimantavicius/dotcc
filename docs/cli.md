@@ -100,7 +100,7 @@ behavior. The separate postprocessor evaluates all generated Compile inputs, so
 its `--in-place` mode also works with split output.
 
 Generated C# files disable warnings `CS0162`, `CS8909`, `CS1717`, `CS0164`,
-and `CS0642` with a file-scoped `#pragma warning disable` directive.
+`CS0642`, and `CS0675` with a file-scoped `#pragma warning disable` directive.
 
 ## Optional source post-processing
 
