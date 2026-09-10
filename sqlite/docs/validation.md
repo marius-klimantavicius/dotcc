@@ -504,3 +504,28 @@ Evidence: `artifacts/offset-removal-before.log`, `offset-removal-focused.log`,
 `campaign-repository.log`, `campaign-layout.log`, `campaign-managed-consumer.log`,
 `campaign-translated-*.log`, and `campaign-image-exchange.log`.
 The optional `--with-ports` campaign was not repeated for this removal.
+
+## FTS5 profile: native baseline and first translated boundary
+
+The shared profile now adds `SQLITE_ENABLE_FTS5`; FTS3 and FTS4 remain disabled.
+The first full FTS5 engine emission on unchanged SQLite 3.50.4 reached typed IR
+then failed on the tokenizer's external entry into the `non_ascii_tokenchar`
+loop. It exited 2 in 4.90 seconds; C# compilation was not reached. Evidence:
+`artifacts/fts5/engine-baseline-emission.log` and `engine-baseline.time`.
+
+Strict native `scripts/test-fts5-native.sh` passes 34 SQL assertions plus explicit
+FTS5 auxiliary/tokenizer callback and lifetime checks. Coverage is enumerated in
+`fts5-inventory.md`; transcript is `tests/native-fts5.expected`.
+The core corpus now has 41 cases: FTS5 option flag becomes one, its former
+negative case now creates/inserts/queries/drops a table, and two new negative
+cases retain FTS3/4 exclusion. FTS5 shadow-table writes account for the increase
+of ten in later `total_changes` counters. All pre-existing data and error rows
+remain unchanged. The explicit-vtable corpus now verifies FTS5 presence and
+FTS3/4 absence. Reviewed transcript deltas are retained under `artifacts/fts5/`.
+The same 34-assertion corpus passes with AddressSanitizer and UndefinedBehaviorSanitizer (`SQLITE_SANITIZE=1`), with an identical transcript. Translated FTS5 completion remains pending this checkpoint.
+
+Native API, VFS, allocation (128 failures), and upstream JSONB (37 cases)
+transcripts remain byte-for-byte unchanged with FTS5 enabled. Native layout
+adds nine FTS5 offsetof contracts (30 to 39); every previous layout row is
+unchanged. The expanded native expected transcript is saved, with the exact
+nine-row delta at `artifacts/fts5/native-layout.diff`.

@@ -150,7 +150,9 @@ int main(void) {
     CHECK(expect(db, "SELECT sum(n.value*j.value) FROM numbers n JOIN json_each('[2,4]') j ON n.value=j.value", "20") == 0);
     CHECK(sqlite3_exec(db, "INSERT INTO numbers VALUES(6,'even')", NULL, NULL, NULL) == SQLITE_ERROR);
     CHECK(strcmp(sqlite3_errmsg(db), "table numbers may not be modified") == 0);
-    CHECK(sqlite3_exec(db, "CREATE VIRTUAL TABLE unwanted USING fts5(body)", NULL, NULL, NULL) == SQLITE_ERROR);
+    OK(sqlite3_exec(db, "CREATE VIRTUAL TABLE enabled_fts USING fts5(body); DROP TABLE enabled_fts", NULL, NULL, NULL));
+    CHECK(sqlite3_exec(db, "CREATE VIRTUAL TABLE unwanted3 USING fts3(body)", NULL, NULL, NULL) == SQLITE_ERROR);
+    CHECK(sqlite3_exec(db, "CREATE VIRTUAL TABLE unwanted4 USING fts4(body)", NULL, NULL, NULL) == SQLITE_ERROR);
     CHECK(state.connected == 1 && state.filtered > 0 && state.constrained > 0);
     CHECK(state.opened == state.closed && state.destroyed == 0);
     OK(sqlite3_exec(db, "DROP TABLE numbers", NULL, NULL, NULL));
@@ -159,6 +161,6 @@ int main(void) {
     CHECK(state.destroyed == 1);
     OK(sqlite3_close(db));
     OK(sqlite3_shutdown());
-    printf("PASS explicit-vtable: scan, constraints, rowid, NULL, JSON join, read-only, FTS absent, lifetimes\n");
+    printf("PASS explicit-vtable: scan, constraints, rowid, NULL, JSON join, read-only, FTS5 enabled, FTS3/4 absent, lifetimes\n");
     return 0;
 }

@@ -2,7 +2,7 @@
 
 Run commands from the repository's `sqlite/` directory. The supported initial
 profile is Linux x64, LP64, little endian, .NET 10, serialized calls on one thread,
-and the process-local memory VFS. Core SQLite and JSON/JSONB are enabled; FTS,
+and the process-local memory VFS. Core SQLite, JSON/JSONB and FTS5 are enabled; FTS3/FTS4,
 dynamic extensions, WAL shared-memory storage and memory mapping are excluded.
 See `configuration.md` for the exact shared native/translated definitions.
 
@@ -21,7 +21,7 @@ scripts/verify.sh
 This checks source hashes, builds dotcc with the NuGet LALR.CC dependency, runs the
 unit and functional suites serially, regenerates native baselines for comparison,
 then translates and executes layout, API, SQL, VFS, allocation, virtual-table,
-public JSONB and database-image tests. It includes the separate C# consumer and
+public JSONB, FTS5 and database-image tests. It includes the separate C# consumer and
 NativeAOT layout/consumer checks. It writes diagnostics under `artifacts/` and
 fails on the first mismatch. `SQLITE_AOT=0 scripts/verify.sh` is an explicitly
 smaller JIT-only run, not the completion gate. `scripts/verify.sh --with-ports`
@@ -58,7 +58,7 @@ in separate oracle processes. Database-image tests exchange closed files through
 the harness; the memory VFS itself does not promise persistence across processes.
 
 Use `scripts/test-translated.sh core` (or `api`, `vfs`, `vtable`, `allocation`,
-`upstream`) to isolate a corpus. Use `SQLITE_AOT=1 scripts/test-layout-translated.sh`
+`upstream`, `fts5`) to isolate a corpus. Use `SQLITE_AOT=1 scripts/test-layout-translated.sh`
 and `SQLITE_AOT=1 scripts/test-managed-consumer.sh` for the AOT gates. Runtime
 processes have a default 120-second bound, overridable with
 `SQLITE_EXECUTION_TIMEOUT`; port suites use `SQLITE_PORT_TIMEOUT` (600 seconds).
@@ -68,8 +68,10 @@ The checked-in GitHub workflow runs the SQLite campaign on pull requests, main
 pushes, a nightly schedule and manual dispatch. Adding it locally does not run
 remote CI; local evidence and remaining limitations are recorded in `validation.md`.
 
-For future FTS work, retain this profile as a baseline and add a separately named
-feature configuration with the chosen FTS macros. Reuse the unchanged pinned
-inputs, managed callback/virtual-table support, native oracle and image harness;
-add FTS-specific SQL/tokenizer tests and resolve newly reached C before claiming
-that profile supported. C# extensions continue to register explicitly.
+
+## FTS5 corpus
+
+The shared profile now statically enables FTS5 while FTS3/FTS4 remain deferred.
+Run `scripts/test-fts5-native.sh` for the native oracle and
+`scripts/test-translated.sh fts5` for the translated comparison. Both are included
+in `scripts/verify.sh`. See [FTS5 coverage](fts5-inventory.md).

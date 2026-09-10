@@ -7,7 +7,7 @@ mkdir -p "$TMPDIR"
 # Compiler/build logs stay separate from the deterministic program transcript.
 suite="${1:-core}"
 if [[ $# -gt 2 || ( -n "${2:-}" && "$2" != --emit-only ) ]]; then
-  echo "Usage: $0 [core|api|vfs|vtable|allocation|upstream] [--emit-only]" >&2
+  echo "Usage: $0 [core|api|vfs|vtable|allocation|upstream|fts5] [--emit-only]" >&2
   exit 2
 fi
 case "$suite" in
@@ -15,11 +15,12 @@ case "$suite" in
   api) harness="$SQLITE_ROOT/tests/api_native.c"; expected=native-api.expected ;;
   vfs) harness="$SQLITE_ROOT/tests/vfs_native.c"; expected=native-vfs.expected ;;
   vtable) harness="$SQLITE_ROOT/tests/vtable_native.c"; expected=native-vtable.expected ;;
+  fts5) harness="$SQLITE_ROOT/tests/fts5_native.c"; expected=native-fts5.expected ;;
   allocation) harness="$SQLITE_ROOT/tests/allocation_native.c"; expected=native-allocation.expected ;;
   upstream)
     python3 "$SQLITE_ROOT/scripts/generate-upstream-jsonb.py" >&2
     harness="$SQLITE_ROOT/generated/upstream-jsonb.c"; expected=upstream-jsonb.expected ;;
-  *) echo "Usage: $0 [core|api|vfs|vtable|allocation|upstream] [--emit-only]" >&2; exit 2 ;;
+  *) echo "Usage: $0 [core|api|vfs|vtable|allocation|upstream|fts5] [--emit-only]" >&2; exit 2 ;;
 esac
 translation_unit="$SQLITE_ROOT/generated/test-$suite.c"
 python3 - "$translation_unit" "$harness" <<'PY'

@@ -26,13 +26,14 @@ native_check test-vfs-native.sh native-vfs.expected vfs
 native_check test-vtable-native.sh native-vtable.expected vtable
 native_check test-allocation-native.sh native-allocation.expected allocation
 native_check test-upstream-native.sh upstream-jsonb.expected upstream
+native_check test-fts5-native.sh native-fts5.expected fts5
 native_check layout-native.sh layout-native.expected layout
 
 "$SQLITE_ROOT/scripts/test-layout-translated.sh" \
   > "$SQLITE_ROOT/artifacts/campaign-layout.log" 2>&1
 "$SQLITE_ROOT/scripts/test-managed-consumer.sh" \
   > "$SQLITE_ROOT/artifacts/campaign-managed-consumer.log" 2>&1
-for suite in core api vfs vtable allocation upstream; do
+for suite in core api vfs vtable allocation upstream fts5; do
   "$SQLITE_ROOT/scripts/test-translated.sh" "$suite" \
     > "$SQLITE_ROOT/artifacts/campaign-translated-$suite.log" 2>&1
   echo "PASS translated $suite"
@@ -42,4 +43,4 @@ done
 if [[ "${1:-}" == --with-ports ]]; then
   "$SQLITE_ROOT/scripts/test-ports.sh"
 fi
-echo "PASS SQLite campaign: core, JSON/JSONB, memory VFS, callbacks, layout and image exchange (AOT=$SQLITE_AOT)"
+echo "PASS SQLite campaign: core, JSON/JSONB, FTS5, memory VFS, callbacks, layout and image exchange (AOT=$SQLITE_AOT)"

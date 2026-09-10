@@ -2,9 +2,9 @@
 
 `config/defines.txt` is the shared native/translated profile: C17,
 `SQLITE_OS_OTHER=1`, `SQLITE_THREADSAFE=0`, `SQLITE_TEMP_STORE=3`,
-`SQLITE_MAX_MMAP_SIZE=0`, and
-`SQLITE_OMIT_LOAD_EXTENSION`. Default SQLite core and JSON/JSONB remain enabled;
-all FTS opt-in defines remain absent. There is no native SQLite interop or dynamic
+`SQLITE_MAX_MMAP_SIZE=0`, `SQLITE_ENABLE_FTS5`, and
+`SQLITE_OMIT_LOAD_EXTENSION`. Default SQLite core, JSON/JSONB, and statically
+compiled FTS5 are enabled; FTS3 and FTS4 remain deferred. There is no native SQLite interop or dynamic
 extension loading. A portable memory VFS supplies the OS interface.
 
 Initial host: Linux x64, little-endian LP64; .NET SDK 10.0.111, runtime 10.0.11,
@@ -42,7 +42,7 @@ The expanded probe of all active offsetof requests also finds differences in
 `Parse` (size424 versus416), `WhereInfo` (size864 versus856), and `WhereLoop`
 (size112 versus104), including their fields following bit-field storage.
 `scripts/layout-native.sh` prints sizeof/alignment/offsetof alongside actual
-address differences for all 30 active requests and additional aggregates; set
+address differences for all 39 active requests in the FTS5 profile and additional aggregates; set
 `SQLITE_MS_BITFIELDS=0` for the separate default-GCC comparison. Expected matching
 layout is `tests/layout-native.expected`; `layout-native-sysv.reference` is an
 explicit comparison, not the oracle's ABI.

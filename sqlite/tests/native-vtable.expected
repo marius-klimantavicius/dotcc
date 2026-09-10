@@ -1,1 +1,1 @@
-PASS explicit-vtable: scan, constraints, rowid, NULL, JSON join, read-only, FTS absent, lifetimes
+PASS explicit-vtable: scan, constraints, rowid, NULL, JSON join, read-only, FTS5 enabled, FTS3/4 absent, lifetimes

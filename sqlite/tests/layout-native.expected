@@ -45,6 +45,15 @@ required Expr iTable 72 8 44 44
 required Expr pLeft 72 8 16 16
 required ExprList a 8 8 8 8
 required FKey aCol 64 8 64 64
+required Fts5DlidxIter aLvl 8 8 8 8
+required Fts5ExprNearset apPhrase 24 8 24 24
+required Fts5ExprNode apChild 48 8 48 48
+required Fts5ExprPhrase aTerm 32 8 32 32
+required Fts5Iter aSeg 104 8 104 104
+required Fts5Sorter nIdx 32 8 24 24
+required Fts5Structure aLevel 32 8 32 32
+required Fts5TokenDataIter apIter 56 8 56 56
+required Fts5TombstoneArray apTombstone 8 8 8 8
 required HiddenIndexInfo aRhs 32 8 32 32
 required IdList a 8 8 8 8
 required KeyInfo aColl 32 8 32 32

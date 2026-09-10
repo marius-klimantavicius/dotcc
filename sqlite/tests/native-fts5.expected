@@ -1,0 +1,5 @@
+PASS FTS5 phrases, NEAR, column filters, boolean/prefix/initial queries, ranking and snippets
+PASS FTS5 unicode61, ascii, porter, trigram tokenizers and vocabulary
+PASS FTS5 external-content triggers/rebuild/integrity and contentless deletion
+PASS FTS5 explicit auxiliary/tokenizer callbacks, pointer API and token lifetime
+PASS FTS5 transactions, savepoints, optimize, JSONB join, reopen and cleanup (34 assertions)
