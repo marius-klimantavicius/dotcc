@@ -1379,3 +1379,15 @@ Validation:
   passes executable project and file-based runs, split object linking, legacy
   object diagnostics/global linking, and invalid option checks
   (`artifacts/namespace-compiler-aot.log`, `artifacts/namespace-cli-smoke.log`).
+
+
+## Host VFS namespace (2026-09-10)
+
+Moved all HostVfs partial files, HostMutex and platform helpers into
+`Managed.Database`, alongside the translated SQLite types. Updated static imports
+and consumer references and removed the redundant global namespace import.
+ManagedConsumer, HostVfsTests, ThreadingTests and HostVfsPlatformTests all build
+and run successfully in Release on Linux. This covers SQL/JSONB/FTS5, WAL/mmap,
+mutexes, concurrent connections and the simulated Darwin handle-close contracts.
+Logs: `artifacts/hostvfs-namespace-<project>-build.log` and
+`artifacts/hostvfs-namespace-<project>-run.log`.

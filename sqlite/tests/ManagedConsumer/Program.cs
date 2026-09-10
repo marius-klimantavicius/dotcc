@@ -438,7 +438,7 @@ internal static unsafe partial class Program
             db = null;
             if (!File.Exists(databasePath) || new FileInfo(databasePath).Length == 0)
                 throw new InvalidOperationException("The default VFS did not persist a database file");
-            if (DotCC.Sqlite.HostVfs.OpenHandleCount != 0) throw new InvalidOperationException("Leaked host VFS handle");
+            if (Managed.Database.HostVfs.OpenHandleCount != 0) throw new InvalidOperationException("Leaked host VFS handle");
             if (ftsDestroyed != 1) throw new InvalidOperationException("FTS5 context destructor must run exactly once on close");
             if (dotcc_memory_vfs_handle_count() != 0) throw new InvalidOperationException("Leaked VFS handle");
             if (dotcc_memory_vfs_reset() != Ok || sqlite3_shutdown() != Ok)

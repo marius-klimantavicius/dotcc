@@ -1,6 +1,5 @@
 #nullable enable
-global using Managed.Database;
-global using static DotCC.Sqlite.HostVfs;
+global using static Managed.Database.HostVfs;
 
 using System;
 using System.IO;
@@ -12,7 +11,7 @@ using System.Text;
 using System.Threading;
 using static global::Managed.Database.Sqlite;
 
-namespace DotCC.Sqlite;
+namespace Managed.Database;
 
 /// <summary>File-backed SQLite rollback-journal and WAL VFS. OS services only; no native SQLite.</summary>
 public static unsafe partial class HostVfs

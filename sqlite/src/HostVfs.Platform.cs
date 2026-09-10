@@ -6,7 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
-namespace DotCC.Sqlite;
+namespace Managed.Database;
 
 // OS services only: SQLite itself and all VFS callbacks remain managed code.
 // All handles for this VFS must be opened/closed here. In particular, do not

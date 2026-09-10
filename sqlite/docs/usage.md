@@ -89,7 +89,7 @@ SQLite's callback surface. Use `using Managed.Database;` for generated types and
 `using static Managed.Database.Sqlite;` for the API methods. `tests/ManagedConsumer` demonstrates explicit C#
 extension registration, ownership, callback re-entry and cleanup. No native SQLite
 library or dynamic extension loader is part of that integration. The default VFS
-uses real files; OS-level P/Invoke supplies platform locking/durability alongside
+uses `Managed.Database.HostVfs` for real files; OS-level P/Invoke supplies platform locking/durability alongside
 BCL file I/O. The sample consumer creates and cleans up a temporary WAL database.
 
 Pointer and function-pointer inline-array elements use unmanaged one-field

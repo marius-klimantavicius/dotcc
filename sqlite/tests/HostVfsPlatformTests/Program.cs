@@ -1,4 +1,4 @@
-using DotCC.Sqlite;
+using Managed.Database;
 using Microsoft.Win32.SafeHandles;
 
 // Exercise Darwin inode ownership on every CI platform with real SafeFileHandles

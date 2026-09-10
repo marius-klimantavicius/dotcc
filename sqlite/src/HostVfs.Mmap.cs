@@ -6,7 +6,7 @@ using System.IO.MemoryMappedFiles;
 using System.Threading;
 using Microsoft.Win32.SafeHandles;
 
-namespace DotCC.Sqlite;
+namespace Managed.Database;
 
 public static unsafe partial class HostVfs
 {

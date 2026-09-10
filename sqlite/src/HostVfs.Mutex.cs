@@ -1,12 +1,12 @@
 #nullable enable
-global using static DotCC.Sqlite.HostMutex;
+global using static Managed.Database.HostMutex;
 
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace DotCC.Sqlite;
+namespace Managed.Database;
 
 /// <summary>SQLite APPDEF mutexes backed by BCL monitors. SQLite owns startup
 /// ordering; this adapter does not initialize SQLite or replace its public API.</summary>

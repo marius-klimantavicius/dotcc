@@ -5,7 +5,7 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Threading;
 
-namespace DotCC.Sqlite;
+namespace Managed.Database;
 
 // Native-compatible WAL index storage. This maps the actual database-shm file;
 // SQLite's translated WAL code owns the index format, recovery and checkpoints.
