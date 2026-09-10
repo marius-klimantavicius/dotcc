@@ -28,10 +28,11 @@ public sealed class CanonicalFunctionPointerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { path });
-            emitted.ShouldContain("public static readonly delegate*<int, int> add = &DotCcFunctions.add;");
-            emitted.ShouldContain("public static readonly delegate*<int, int> abs = &global::Libc.abs;");
-            Regex.Matches(emitted, @"&(?:DotCcFunctions\.)?add\b").Count.ShouldBe(1);
-            Regex.Matches(emitted, @"&(?:global::Libc\.)?abs\b").Count.ShouldBe(1);
+            Regex.IsMatch(emitted, @"public static readonly delegate\*<int, int> add = &\w+\.add;").ShouldBeTrue();
+            Regex.IsMatch(emitted, @"public static readonly delegate\*<int, int> abs = &\w+\.abs;").ShouldBeTrue();
+            Regex.Matches(emitted, @"&\w+\.add\b").Count.ShouldBe(1);
+            Regex.Matches(emitted, @"&\w+\.abs\b").Count.ShouldBe(1);
+            emitted.ShouldContain(" = global::Libc;");
             emitted.ShouldContain("DotCcFunctionPointers.add");
             emitted.ShouldContain("DotCcFunctionPointers.abs");
         }

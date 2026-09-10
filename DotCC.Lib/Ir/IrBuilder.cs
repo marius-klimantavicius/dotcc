@@ -678,11 +678,10 @@ internal sealed partial class IrBuilder
     private static string Fingerprint(Item sig, Item block) => sig.ToString() + "" + block.ToString();
 
     // Definitions seen so far, by C name — the whole-program merge's handling of
-    // C internal linkage. A `static` name may be defined in several TUs: an
-    // identical re-definition (a header-defined `static inline` re-included by
-    // the next TU) re-binds to the one emitted copy; a different body is a fresh
-    // per-TU function under a uniquified TargetName.
+    // C internal linkage. Even identical static bodies in different TUs name
+    // distinct functions: their addresses must retain separate identities.
     private readonly Dictionary<string, List<FnDefSite>> _fnDefSites = new(StringComparer.Ordinal);
+    private readonly Dictionary<(string File, string Name), Symbol> _staticFunctionSymbols = new();
 
     // ---- import-mode candidate tracking (native `-l` linking) ----------------
     // _protoOnlyFuncs: functions DECLARED (prototype) but defined in NO translation
@@ -704,6 +703,7 @@ internal sealed partial class IrBuilder
         _sawNoreturnSpec = false;
         _sawInlineSpec = false;
         var sig = ExtractFnSig(fnSig);
+        if (_staticFunctionSymbols.ContainsKey((_file, sig.Name))) sig = sig with { IsStatic = true };
         RequireCompleteObject(sig.Return, "function return");
         foreach (var parameter in sig.Params) RequireCompleteObject(parameter.Type, "function parameter");
         // A definition means this name is no longer a pure prototype → not an import.
@@ -714,7 +714,7 @@ internal sealed partial class IrBuilder
             var print = Fingerprint(fnSig, block);
             foreach (var site in sites)
             {
-                if (site.Print == print)
+                if (!sig.IsStatic && site.Print == print)
                 {
                     // Identical re-definition: one emitted copy serves all TUs —
                     // re-bind this TU's references to it and build nothing.
@@ -728,17 +728,7 @@ internal sealed partial class IrBuilder
             {
                 // New definition has INTERNAL linkage: a fresh per-TU function
                 // under a uniquified TargetName.
-                funcSym = _symbols.DeclareAlias(new Symbol
-                {
-                    Name = sig.Name,
-                    Kind = SymKind.Func,
-                    Type = new CType.Func(sig.Return, paramTypes, sig.Variadic),
-                    Storage = Storage.Static,
-                    IsGlobal = true,
-                    // Program-unique: a TU defines a static name at most once, so the
-                    // per-name site count suffices (same scheme as static locals' __s{n}).
-                    TargetName = $"{_symbols.Escape(sig.Name)}__{sites.Count + 1}",
-                });
+                funcSym = DeclareFunc(sig);
             }
             else
             {
@@ -834,7 +824,28 @@ internal sealed partial class IrBuilder
 
     private Symbol DeclareFunc(FnSig sig, bool fromSystemHeader = false)
     {
+        var key = (_file, sig.Name);
+        if (_staticFunctionSymbols.TryGetValue(key, out var localFunction))
+            return _symbols.DeclareAlias(localFunction);
+        if (sig.IsStatic)
+        {
+            var name = _symbols.Escape(sig.Name);
+            if (_fnDefSites.TryGetValue(sig.Name, out var sites)) name += "__" + (sites.Count + 1);
+            var function = new Symbol
+            {
+                Name = sig.Name, Kind = SymKind.Func,
+                Type = new CType.Func(sig.Return, sig.Params.Select(parameter => parameter.Type).ToList(), sig.Variadic),
+                Storage = Storage.Static, IsGlobal = true, FromSystemHeader = fromSystemHeader, TargetName = name,
+            };
+            _staticFunctionSymbols.Add(key, function);
+            return _symbols.DeclareAlias(function);
+        }
         var existing = _symbols.Resolve(sig.Name);
+        // A previous TU's internal function is not a declaration of this TU's
+        // external function. Reuse only a genuine external definition, if any.
+        if (existing is { Kind: SymKind.Func, Storage: Storage.Static })
+            existing = _fnDefSites.TryGetValue(sig.Name, out var definitions)
+                ? definitions.FirstOrDefault(site => site.Sym.Storage != Storage.Static)?.Sym : null;
         if (existing is { Kind: SymKind.Func }) { return existing; } // re-declaration (proto then def)
         var paramTypes = new List<CType>(sig.Params.Count);
         foreach (var (t, _) in sig.Params) { paramTypes.Add(t); }
@@ -3014,6 +3025,13 @@ internal sealed partial class IrBuilder
     private CExpr Un(UnOp op, Item operand)
     {
         var oe = BuildExpr(operand);
+        // Dereferencing a function pointer designates that function. Taking its
+        // address cancels the dereference, even for a null pointer, without ever
+        // taking the address of the callback variable's storage. The operand is
+        // preserved once, including any call/side effects that produce it.
+        if (op == UnOp.AddrOf && Unparen(oe) is Unary
+            { Op: UnOp.Deref, Operand.Type.Unqualified: CType.Func } functionDereference)
+            return functionDereference.Operand;
         // ++/-- on a const lvalue is a write — same constraint violation as assignment.
         if (op is UnOp.PreInc or UnOp.PostInc or UnOp.PreDec or UnOp.PostDec)
         {

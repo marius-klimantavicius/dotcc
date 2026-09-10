@@ -127,7 +127,7 @@ public static partial class Compiler
                 {
                     var name = section["type:".Length..];
                     if (!typeByName.ContainsKey(name)) { typeByName[name] = buf.ToString(); typeOrder.Add(name); }
-                    else if (name.StartsWith("DotCcFunctionPointers.", StringComparison.Ordinal)
+                    else if (name.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
                         && typeByName[name] != buf.ToString())
                         throw new CompileException("conflicting canonical function pointer declarations for '" + name + "'");
                 }
@@ -215,10 +215,36 @@ public static partial class Compiler
                 .ToList();
             if (survivors.Count > 0) { importsClass = RenderImportsClass(survivors, imports, libraryMode); }
         }
+        aliasText += FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode);
         return BuildShell(mainArity, functions.ToString(), structDecls.ToString(), aliasText, globalText,
                           emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                           importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
                           mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid);
     }
 
+    private static string FunctionPointerOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode)
+    {
+        var defined = new HashSet<string>(definitions, StringComparer.Ordinal);
+        var aliases = new StringBuilder();
+        foreach (var key in typeKeys.Where(key => key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal))
+            .OrderBy(key => key, StringComparer.Ordinal))
+        {
+            var name = key[FunctionPointerNames.TypeKeyPrefix.Length..];
+            var owner = defined.Contains(name) ? (libraryMode ? "DotCcLib" : "DotCcProgram") : "Libc";
+            aliases.Append("using ").Append(FunctionPointerNames.OwnerAlias(name))
+                .Append(" = global::").Append(owner).Append(";\n");
+        }
+        return aliases.ToString();
+    }
+
+    private static void QualifyObjectInternalFunctions(Ir.IrBuilder unit, IReadOnlyList<string> inputPaths)
+    {
+        // Separate compilation cannot know which other units use the same static
+        // name. Qualify the shared Symbol before emission, so direct calls,
+        // callback values, and cached addresses all retain the same binding.
+        var identity = string.Join("\0", inputPaths.Select(Path.GetFullPath));
+        var suffix = "__unit_" + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(identity)));
+        foreach (var function in unit.Functions.Where(function => function.Sym.Storage == Ir.Storage.Static))
+            function.Sym.TargetName += suffix;
+    }
 }

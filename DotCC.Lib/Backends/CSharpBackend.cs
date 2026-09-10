@@ -160,7 +160,7 @@ internal sealed partial class CSharpBackend
         // One independently keyed partial declaration per function lets object
         // linking coalesce the same canonical address across translation units.
         foreach (var pointer in cg._functionPointers.OrderBy(pointer => pointer.Key, StringComparer.Ordinal))
-            typeDeclarations.Add("DotCcFunctionPointers." + pointer.Key, pointer.Value);
+            typeDeclarations.Add(FunctionPointerNames.TypeKeyPrefix + pointer.Key, pointer.Value);
         foreach (var request in cg._offsetDocument.Requests.OrderBy(request => request.Name, StringComparer.Ordinal))
         {
             var document = cg._offsetDocument.ForRequest(request);
@@ -2303,7 +2303,7 @@ internal sealed partial class CSharpBackend
         t.Unqualified is CType.Func;
 
     /// <summary>True when the expression (under parens / <c>&amp;</c>) is a bare
-    /// function designator — i.e. it renders as an untyped method group.</summary>
+    /// function designator, whose value comes from the canonical address cache.</summary>
     private static bool UnparenIsFunc(CExpr e)
     {
         while (true)
@@ -2319,10 +2319,9 @@ internal sealed partial class CSharpBackend
     }
 
     /// <summary>Render a comparison operand. A bare function designator
-    /// (<see cref="VarRef"/> of a function, possibly parenthesised) renders as the
-    /// method-group address <c>&amp;fn</c>, which C# leaves untyped until a target
-    /// type is supplied — a comparison has none, so cast it to its own function-
-    /// pointer type. Every other operand passes through unchanged.</summary>
+    /// (<see cref="VarRef"/> of a function, possibly parenthesised) reads its typed
+    /// cached pointer. Preserve an explicit signature at the comparison boundary;
+    /// integer-zero operands receive the opposite pointer's null context.</summary>
     private string CmpOperand(CExpr e, CType otherType, int p)
     {
         // The other operand supplies the pointer context for C's integer-zero
@@ -2361,12 +2360,9 @@ internal sealed partial class CSharpBackend
     /// <see cref="IsConstExpr"/> flag alone.</summary>
     private (string, int) RenderCast(Cast c)
     {
-        // A C cast of a function designator — `(sexp_proc3)fn`, `(sexp)&fn`,
-        // chibi's opcode tables — reaches C# as a METHOD-GROUP cast, which only
-        // converts to the function's exactly-matching delegate* type (CS8757 on
-        // a different shape, CS8812 on an object pointer). Pin the group to its
-        // own type first; delegate*→delegate* and delegate*→T* are both legal
-        // explicit pointer conversions from there.
+        // A C cast of a function designator — `(sexp_proc3)fn`, `(sexp)&fn` —
+        // starts at its canonical typed pointer before converting signatures or
+        // erasing to an object pointer. It must never recapture the method address.
         var des = c.Operand;
         while (des is Paren dp) { des = dp.Inner; }
         if (des is Unary { Op: UnOp.AddrOf, Operand: VarRef { Sym.Kind: SymKind.Func } } da) { des = da.Operand; }

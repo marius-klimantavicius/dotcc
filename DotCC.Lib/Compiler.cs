@@ -143,6 +143,7 @@ public static partial class Compiler
             throw new CompileException("managed-library output does not support native import or archive bindings");
         var asObject = emit == EmitMode.Object;
         var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode);
+        if (asObject) QualifyObjectInternalFunctions(irBuilder, inputPaths);
         // -Wconversion: collect narrowing-conversion warnings during codegen, then
         // flush to stderr. Off by default (the bit is clear unless -Wconversion set).
         var convGate = (warnings & WarningFlags.Conversion) != 0 ? new ConversionGate() : null;
@@ -193,13 +194,17 @@ public static partial class Compiler
             var objImports = ImportFieldSpecs(
                 irBuilder.ProtoOnlyReferenced.Values
                     .Where(s => s.Type is not Ir.CType.Func { Variadic: true }).ToList());
-            var objDefs = irBuilder.Functions.Select(f => f.Sym.Name)
+            // Imports use raw C names; canonical pointer ownership uses emitted
+            // names (escaped keywords and private per-object function names).
+            var objDefs = irBuilder.Functions.SelectMany(f => new[] { f.Sym.Name, f.Sym.TargetName })
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
             return SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
                 objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid);
         }
-        return BuildShell(cg.MainArity, cg.Functions, cg.Structs, cg.Aliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests);
+        var aliases = cg.Aliases + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
+            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode);
+        return BuildShell(cg.MainArity, cg.Functions, cg.Structs, aliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests);
     }
 
     /// <summary>
