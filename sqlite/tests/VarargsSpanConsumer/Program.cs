@@ -60,7 +60,7 @@ internal static unsafe class Program
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static int Callback()
     {
-        delegate*<int, ReadOnlySpan<VaArg>, int> callback = &DotCcLib.span_sum;
+        delegate*<int, ReadOnlySpan<VaArg>, int> callback = DotCcFunctionPointers.span_sum;
         return callback(8, Arguments.AsSpan());
     }
 

@@ -11,6 +11,8 @@ fi
 python3 "$SQLITE_ROOT/scripts/fetch.py"
 "$SQLITE_ROOT/scripts/test-repository.sh" \
   > "$SQLITE_ROOT/artifacts/campaign-repository.log" 2>&1
+"$SQLITE_ROOT/scripts/test-varargs-span.sh" \
+  > "$SQLITE_ROOT/artifacts/campaign-varargs-span.log" 2>&1
 "$SQLITE_ROOT/scripts/preprocess.sh" > "$SQLITE_ROOT/artifacts/sqlite3.i"
 
 native_check() {

@@ -21,8 +21,10 @@ cat "$prefix-jit.out"
 
 # Elapsed times are reported, never used as correctness thresholds. Each runtime
 # independently checks results and warmed per-thread allocation deltas.
+if [[ "${SQLITE_AOT:-1}" == 1 ]]; then
 publish="$SQLITE_ROOT/build/varargs-span-aot"
 dotnet publish "$project" -c Release -r linux-x64 -p:PublishAot=true \
   -o "$publish" --nologo > "$prefix-aot-build.log" 2>&1
 run_sqlite_process "$publish/VarargsSpanConsumer" > "$prefix-aot.out"
 cat "$prefix-aot.out"
+fi

@@ -74,7 +74,7 @@ set `SQLITE_AOT=1` to repeat with NativeAOT. Detailed current-phase evidence is 
 ## Canonical function addresses
 
 Generated function designators and address expressions now read canonical static
-readonly fields. In managed-library output, non-variadic translated definitions
+readonly fields. In managed-library output, translated definitions (including variadic methods)
 are available through `DotCcFunctionPointers`, including functions whose addresses
 were not taken by the C input. A C# consumer should reuse that field:
 
@@ -89,5 +89,11 @@ method addresses; it does not run SQLite initialization or read its globals.
 Direct calls continue to use `DotCcLib` normally. Null pointers and integer
 sentinels retain their values. CS8909 warnings may still occur at comparisons;
 identity comes from reusing the captured value, not from comparing independently
-captured method addresses. Variadic methods keep their current `VaArg[]` API;
-no new variadic callback representation is introduced in this phase.
+captured method addresses.
+
+Variadic methods now take `params ReadOnlySpan<VaArg>`. Their canonical callback
+fields have an explicit `ReadOnlySpan<VaArg>` final parameter; function-pointer
+calls supply the span explicitly. `VaList` is a borrowed `ref struct`, with
+independent cursors on copies. Recompile generated libraries, object fragments
+and consumers together; this changes the managed signature. See
+[varargs span API and validation](varargs-span.md) for lifetimes and measurements.

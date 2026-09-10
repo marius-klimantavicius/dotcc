@@ -35,7 +35,7 @@ public sealed class VarargTests
     [Fact]
     public void va_arg_reads_back_each_scalar_type()
     {
-        // Implicit conversions box each value at the "call site"; the explicit
+        // Implicit conversions store each value without boxing; the explicit
         // conversions read them back (what `(T)ap.Next()` compiles to).
         var ap = new VaList(new VaArg[] { 42, 3.5, 9_000_000_000L, 7u });
         ((int)ap.Next()).ShouldBe(42);
@@ -54,6 +54,51 @@ public sealed class VarargTests
         var b = a;                       // va_copy at index 1
         ((int)a.Next()).ShouldBe(2);     // a advances to index 2
         ((int)b.Next()).ShouldBe(2);     // b independently re-reads index 1's successor
+    }
+
+    private static int ReadForwarded(VaList list) => (int)list.Next();
+
+    [Fact]
+    public void stack_backed_lists_borrow_storage_and_forward_independent_cursors()
+    {
+        System.Span<VaArg> arguments = stackalloc VaArg[] { 1, 2, 3 };
+        var list = new VaList(arguments);
+        ((int)list.Next()).ShouldBe(1);
+        var copy = list;
+        ReadForwarded(list).ShouldBe(2);
+        // ReadOnlySpan is a view, not a snapshot. The caller owns the backing
+        // storage, and copying/forwarding a cursor must neither copy nor consume it.
+        arguments[1] = 7;
+        ((int)list.Next()).ShouldBe(7);
+        ((int)copy.Next()).ShouldBe(7);
+        ((int)list.Next()).ShouldBe(3);
+        ((int)copy.Next()).ShouldBe(3);
+        list.End();
+        copy.End();
+        list = new VaList(arguments);
+        ((int)list.Next()).ShouldBe(1);
+        list.End();
+    }
+
+    private static long SumPack(params System.ReadOnlySpan<VaArg> arguments)
+    {
+        var list = new VaList(arguments);
+        long sum = 0;
+        for (var i = 0; i < arguments.Length; i++) sum += (long)list.Next();
+        list.End();
+        return sum;
+    }
+
+    [Fact]
+    public void span_params_accept_expanded_empty_array_and_sliced_storage()
+    {
+        SumPack().ShouldBe(0);
+        SumPack(1, 2L, 3u).ShouldBe(6);
+        VaArg[] storage = [10, 20, 30, 40];
+        SumPack(storage).ShouldBe(100);
+        SumPack(storage.AsSpan(1, 2)).ShouldBe(50);
+        System.Span<VaArg> stack = stackalloc VaArg[] { 4, 5 };
+        SumPack(stack).ShouldBe(9);
     }
 
     // ---- emit shapes -----------------------------------------------------
