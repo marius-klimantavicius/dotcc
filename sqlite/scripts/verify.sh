@@ -9,6 +9,8 @@ if [[ $# -gt 1 || ( -n "${1:-}" && "$1" != --with-ports ) ]]; then
 fi
 
 python3 "$SQLITE_ROOT/scripts/fetch.py"
+python3 -B -m unittest discover -s "$SQLITE_ROOT/tests/source_preparation" -v \
+  > "$SQLITE_ROOT/artifacts/campaign-source-preparation.log" 2>&1
 "$SQLITE_ROOT/scripts/test-repository.sh" \
   > "$SQLITE_ROOT/artifacts/campaign-repository.log" 2>&1
 "$SQLITE_ROOT/scripts/test-varargs-span.sh" \

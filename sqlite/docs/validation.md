@@ -935,3 +935,55 @@ rerun for this phase. No new native SQLite dependency or dynamic loading is adde
 M13 is complete on Linux x64. The following requested phase adds multithreading
 and database mmap; the M13 validation above uses the preceding serialized,
 disabled-database-mmap profile.
+
+## M14 — Multithreading and database mmap (2026-09-10)
+
+The managed product applies `config/host-defines.txt` after the deterministic
+corpus definitions: `SQLITE_THREADSAFE=1`, `SQLITE_MUTEX_APPDEF=1`, host VFS,
+64 MiB default database mmap and 256 MiB maximum per file. The corpus profile
+remains explicitly single-threaded and unmapped. The host uses BCL monitors,
+initialization memory barriers and read-only `MemoryMappedFile` views from existing
+file handles. SQLite still implements transactions, page management and WAL.
+See [threading and mmap](threading-mmap.md) for ownership and configuration.
+
+Upstream `SQLITE_OS_OTHER` otherwise selects no-op mutexes even when THREADSAFE
+is enabled. `prepare-host-source.py` permits APPDEF in exactly one selection guard
+of a generated input copy, supplies the default mutex/barrier hooks from
+`host_mutex.c`, and preserves the downloaded references byte-for-byte. Source
+preparation tests verify the exact single substitution and rejection of changed
+reference inputs before output. The original source SHA-256 is
+`b1dd5d74ec7f29055a6684fa06fb3c2f6821c87dd38f9a458dfd2e8a1db28189`;
+the adapted source SHA-256 is
+`497cc4d6de14a548553a1508c57a8b88bcf02dfe28735e1b7771d281212b77e1`.
+The generated manifest records the header hash and exact guard as well.
+
+The allocation audit found that `NativeMemory` OOM escaped through C allocation
+APIs, which could bypass the memory VFS's C unlock paths. Ten deterministic
+impossible-size cases first failed (`allocator-before-tests.log`). The shared
+libc now returns null, guards calloc/debug-overhead overflow, and preserves the
+old allocation on failed realloc. Fourteen new cases plus existing related tests
+pass (89 total), and the actual SQLite product then emits/builds with zero errors.
+This changes the shared runtime, without introducing SQLite-specific compiler
+rules. Arbitrary managed extension exceptions remain outside the C callback
+contract; callbacks should return SQLite errors.
+
+The dedicated threading executable passes nine groups under JIT and linux-x64
+NativeAOT (`threading-{jit,aot}.out`): concurrent cold initialization, quiescent
+shutdown/restart and configuration modes; static/dynamic mutex identity,
+recursion/ownership/try; shared FULLMUTEX updates and callback reentry; distinct
+NOMUTEX host rollback, host WAL and named-memory connections; cross-thread
+recovery after injected OPEN NOMEM/IOERR; concurrent allocation/status/randomness;
+and joined workers with no leaked VFS handles or dynamic mutexes. Static mutex
+identities intentionally persist across shutdown. Collectible hosting is not
+supported. Named-memory contention uses an elapsed-time retry bound because its
+deterministic sleep callback intentionally does not wait.
+
+An independent native layout gate uses the exact host definitions and adapted
+input with the existing LP64/GCC ABI flags. It compares 48 aggregate sizes and
+alignments, all 41 offset contracts (39 active source requests plus two flexible
+array contracts), 67 actual field addresses and eight pointer-array first/last
+storage checks with the public generated product types. JIT and NativeAOT
+transcripts match (`product-layout-{jit,aot}.out`); no IL warnings appear in its
+AOT publish. Native link stubs abort if called and exist only to link this layout
+probe; they are not a native runtime or mutex oracle. The generator produces test
+consumer assertions, not an OffsetGenerator analyzer or a product postprocessor.
