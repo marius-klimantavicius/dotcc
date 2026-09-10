@@ -63,6 +63,13 @@ class Server:
         result = self.command("Q " + sql)
         require(result == "ROW " + expected, f"{sql}: expected {expected!r}, got {result!r}")
 
+    def checkpoint(self, mode, expected=0):
+        result = self.command("C " + str(mode)).split()
+        require(len(result) == 4 and result[0] == "CK", "checkpoint protocol")
+        rc, frames, checkpointed = map(int, result[1:])
+        require(rc == expected, f"checkpoint {mode}: expected {expected}, got {rc}")
+        return frames, checkpointed
+
     def close(self, crash=False):
         if self not in Server.active:
             return
@@ -158,6 +165,163 @@ def crash_recovery(writer_kind, reader_kind, directory, label):
     print("PASS forced process death, hot-journal recovery and released OS locks:", label, flush=True)
 
 
+def wal_protocol(writer_kind, reader_kind, directory, label):
+    path = directory / ("wal-locking-" + label + ".db")
+    with open_server(writer_kind, path, directory) as writer:
+        writer.query("PRAGMA journal_mode=WAL", "wal")
+        writer.execute("PRAGMA synchronous=FULL;PRAGMA wal_autocheckpoint=0;"
+                       "CREATE TABLE data(id INTEGER PRIMARY KEY,value INTEGER,payload BLOB);"
+                       "INSERT INTO data VALUES(1,7,jsonb('{\"name\":\"λ\"}'));"
+                       "CREATE VIRTUAL TABLE docs USING fts5(body);INSERT INTO docs VALUES('café WAL');")
+        with open_server(reader_kind, path, directory) as reader:
+            reader.execute("BEGIN")
+            reader.query("SELECT value FROM data", "7")
+            writer.execute("BEGIN IMMEDIATE;UPDATE data SET value=42;COMMIT")
+            reader.query("SELECT value FROM data", "7")
+            reader.execute("UPDATE data SET value=99", expected=5)
+            frames, completed = writer.checkpoint(-1)
+            require(frames > 0 and completed == 0, "no-op checkpoint leaves frames untouched")
+            frames, completed = writer.checkpoint(0)
+            require(frames > completed >= 0, "passive checkpoint stops at live snapshot")
+            writer.checkpoint(3, expected=5)
+            with open_server(reader_kind, path, directory, readonly=True) as readonly:
+                readonly.query("SELECT value FROM data", "42")
+                readonly.query("SELECT json_array_insert('[1,3]','$[1]',2)", "[1,2,3]")
+                readonly.query("SELECT json(jsonb_array_insert(jsonb('[1,3]'),'$[1]',2))", "[1,2,3]")
+                readonly.query("SELECT json_extract(payload,'$.name') FROM data", "λ")
+                readonly.query("SELECT count(*) FROM docs WHERE docs MATCH 'cafe'", "1")
+                readonly.execute("UPDATE data SET value=99", expected=8)
+            # Closing a mapped sibling must not release the first reader's lock.
+            writer.checkpoint(2, expected=5)
+            reader.execute("ROLLBACK")
+            reader.query("SELECT value FROM data", "42")
+            writer.execute("BEGIN IMMEDIATE")
+            reader.execute("BEGIN IMMEDIATE", expected=5)
+            reader.query("SELECT value FROM data", "42")
+            writer.execute("ROLLBACK")
+            for mode in (1, 2):
+                frames, completed = writer.checkpoint(mode)
+                require(frames == completed, "complete checkpoint after reader leaves")
+            require(writer.checkpoint(3) == (0, 0), "truncate checkpoint counters")
+            require(Path(str(path) + "-wal").stat().st_size == 0, "truncate checkpoint real file")
+            writer.execute("PRAGMA cache_size=8;CREATE TABLE large(id INTEGER PRIMARY KEY,pad BLOB);"
+                           "WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<4500) "
+                           "INSERT INTO large SELECT x,zeroblob(4000) FROM n;")
+            require(Path(str(path) + "-shm").stat().st_size >= 65536, "WAL index grows beyond one region")
+            reader.query("SELECT count(*) FROM large", "4500")
+            reader.query("PRAGMA integrity_check", "ok")
+    require(not Path(str(path) + "-wal").exists() and not Path(str(path) + "-shm").exists(), "last WAL close cleans sidecars")
+    with open_server(reader_kind, path, directory) as reopened:
+        reopened.query("PRAGMA journal_mode", "wal")
+        reopened.query("SELECT count(*) FROM large", "4500")
+        reopened.query("PRAGMA journal_mode=DELETE", "delete")
+        reopened.query("PRAGMA integrity_check", "ok")
+    print("PASS WAL native-compatible snapshots, locks, checkpoint modes, index growth and reopen:", label, flush=True)
+
+
+def wal_crash_recovery(writer_kind, reader_kind, directory, label):
+    # Both a stale existing index and a missing index must recover committed WAL
+    # frames while ignoring the spilled tail of an uncommitted transaction.
+    for remove_index in (False, True):
+        path = directory / (f"wal-recovery-{label}-{remove_index}.db")
+        writer = open_server(writer_kind, path, directory)
+        writer.query("PRAGMA journal_mode=WAL", "wal")
+        writer.execute("PRAGMA synchronous=FULL;PRAGMA wal_autocheckpoint=0;"
+                       "CREATE TABLE data(id INTEGER PRIMARY KEY,value INTEGER,pad BLOB);"
+                       "WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<100) "
+                       "INSERT INTO data SELECT x,7,zeroblob(4000) FROM n;"
+                       "CREATE VIRTUAL TABLE docs USING fts5(body);INSERT INTO docs VALUES('committed café WAL');")
+        wal = Path(str(path) + "-wal")
+        committed_size = wal.stat().st_size
+        require(committed_size > 4096, "committed frames remain in WAL")
+        writer.execute("PRAGMA cache_size=3;PRAGMA cache_spill=ON;BEGIN IMMEDIATE;"
+                       "UPDATE data SET value=99,pad=randomblob(4000);UPDATE docs SET body='uncommitted';")
+        require(wal.stat().st_size > committed_size, "uncommitted WAL frames actually spilled")
+        writer.close(crash=True)
+        if remove_index:
+            Path(str(path) + "-shm").unlink()
+        with open_server(reader_kind, path, directory) as recovery:
+            recovery.query("SELECT sum(value) FROM data", "700")
+            recovery.query("SELECT count(*) FROM docs WHERE docs MATCH 'committed'", "1")
+            recovery.query("SELECT count(*) FROM docs WHERE docs MATCH 'uncommitted'", "0")
+            recovery.query("PRAGMA integrity_check", "ok")
+            recovery.execute("BEGIN IMMEDIATE;UPDATE data SET value=8 WHERE id=1;COMMIT")
+            recovery.query("SELECT sum(value) FROM data", "701")
+            require(recovery.checkpoint(3) == (0, 0), "recovered WAL checkpoints")
+        with open_server(writer_kind, path, directory, readonly=True) as reopened:
+            reopened.query("SELECT sum(value) FROM data", "701")
+    print("PASS WAL forced-kill commit preservation, uncommitted-tail discard and stale/missing index recovery:", label, flush=True)
+
+
+def wal_readonly_index(writer_kind, reader_kind, directory, label):
+    if os.name == "nt" or (hasattr(os, "geteuid") and os.geteuid() == 0):
+        print("SKIP readonly-media WAL permissions: requires non-root POSIX account", flush=True)
+        return
+    media = directory / ("wal-readonly-" + label)
+    media.mkdir()
+    path = media / "readonly.db"
+    writer = open_server(writer_kind, path, directory)
+    writer.query("PRAGMA journal_mode=WAL", "wal")
+    writer.execute("PRAGMA wal_autocheckpoint=0;PRAGMA synchronous=FULL;CREATE TABLE data(value);INSERT INTO data VALUES(42)")
+    files = [path, Path(str(path) + "-wal"), Path(str(path) + "-shm")]
+    try:
+        for file in files:
+            file.chmod(0o444)
+        media.chmod(0o555)
+        with open_server(reader_kind, path, directory, readonly=True) as reader:
+            reader.query("SELECT value FROM data", "42")
+            reader.execute("INSERT INTO data VALUES(99)", expected=8)
+        writer.close(crash=True)
+        # A lone reader cannot reinitialize a readonly shm; SQLite must use its
+        # readonly recovery path without writing the index or database.
+        with open_server(reader_kind, path, directory, readonly=True) as reader:
+            reader.query("SELECT value FROM data", "42")
+            reader.query("PRAGMA integrity_check", "ok")
+    finally:
+        media.chmod(0o755)
+        for file in files:
+            if file.exists():
+                file.chmod(0o644)
+        writer.close(crash=True)
+    print("PASS WAL readonly-media live-index and crash-recovery reads:", label, flush=True)
+
+
+def wal_checkpoint_race(writer_kind, checkpoint_kind, directory, label):
+    path = directory / ("wal-stress-" + label + ".db")
+    with open_server(writer_kind, path, directory) as writer:
+        writer.query("PRAGMA journal_mode=WAL", "wal")
+        writer.execute("PRAGMA wal_autocheckpoint=0;CREATE TABLE data(id INTEGER PRIMARY KEY,value INTEGER,pad BLOB);"
+                       "WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<40) "
+                       "INSERT INTO data SELECT x,0,zeroblob(4000) FROM n;")
+        with open_server(checkpoint_kind, path, directory) as checkpointer:
+            checkpointer.query("SELECT sum(value) FROM data", "0")
+            failures = queue.Queue()
+            def checkpoint_loop():
+                try:
+                    for _ in range(120):
+                        # PASSIVE returns promptly during writer overlap; the
+                        # returned counters may describe an incomplete checkpoint.
+                        checkpointer.checkpoint(0)
+                except Exception as error:
+                    failures.put(error)
+            thread = threading.Thread(target=checkpoint_loop, daemon=True)
+            thread.start()
+            try:
+                for _ in range(120):
+                    writer.execute("BEGIN IMMEDIATE;UPDATE data SET value=value+1;COMMIT")
+            finally:
+                thread.join(timeout=40)
+            require(not thread.is_alive(), "bounded concurrent checkpoint stress")
+            if not failures.empty():
+                raise failures.get()
+            writer.query("SELECT min(value)||':'||max(value)||':'||sum(value) FROM data", "120:120:4800")
+            require(writer.checkpoint(3) == (0, 0), "stress final checkpoint")
+    with open_server(checkpoint_kind, path, directory, readonly=True) as reader:
+        reader.query("SELECT sum(value) FROM data", "4800")
+        reader.query("PRAGMA integrity_check", "ok")
+    print("PASS WAL overlapping writer/checkpointer stress and final integrity:", label, flush=True)
+
+
 def aliases(managed, native, directory):
     target = directory / "alias-target.db"
     with open_server(managed, target, directory) as writer:
@@ -217,6 +381,10 @@ def main():
                 persistence(writer, reader, directory, label)
                 lock_protocol(writer, reader, directory, label)
                 crash_recovery(writer, reader, directory, label)
+                wal_protocol(writer, reader, directory, label)
+                wal_crash_recovery(writer, reader, directory, label)
+                wal_readonly_index(writer, reader, directory, label)
+                wal_checkpoint_race(writer, reader, directory, label)
             aliases(managed, native, directory)
         finally:
             for server in list(Server.active):

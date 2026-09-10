@@ -13,7 +13,7 @@ using static DotCcLib;
 
 namespace DotCC.Sqlite;
 
-/// <summary>File-backed SQLite rollback-journal VFS. OS services only; no native SQLite.</summary>
+/// <summary>File-backed SQLite rollback-journal and WAL VFS. OS services only; no native SQLite.</summary>
 public static unsafe class HostVfs
 {
     private const int Ok = 0, Error = 1, Busy = 5, NoMemory = 7, ReadOnly = 8,
@@ -32,11 +32,13 @@ public static unsafe class HostVfs
     // identical pointer bits through tiering and collection.
     private static readonly sqlite3_io_methods MethodTable = new()
     {
-        iVersion = 1, xClose = &Close, xRead = &Read, xWrite = &Write,
+        iVersion = 2, xClose = &Close, xRead = &Read, xWrite = &Write,
         xTruncate = &Truncate, xSync = &Sync, xFileSize = &FileSize,
         xLock = &Lock, xUnlock = &Unlock, xCheckReservedLock = &CheckReserved,
         xFileControl = &FileControl, xSectorSize = &SectorSize,
-        xDeviceCharacteristics = &DeviceCharacteristics
+        xDeviceCharacteristics = &DeviceCharacteristics,
+        xShmMap = &ShmMap, xShmLock = &ShmLock,
+        xShmBarrier = &ShmBarrier, xShmUnmap = &ShmUnmap
     };
     private static readonly sqlite3_vfs VfsTable = new()
     {
@@ -60,6 +62,7 @@ public static unsafe class HostVfs
         public required string Path;
         public bool IsReadOnly;
         public bool NeedsDirectorySync;
+        public HostSharedMemory.Connection? SharedMemory;
     }
 
     public static int OpenHandleCount => Volatile.Read(ref openHandles);
@@ -179,7 +182,12 @@ public static unsafe class HostVfs
 
     private static int Close(sqlite3_file* file)
     {
-        try { State(file).File.Dispose(); return Ok; }
+        try
+        {
+            var state = State(file);
+            try { return ShmUnmap(file, 0); }
+            finally { state.File.Dispose(); }
+        }
         catch (Exception exception) { return Failure(exception, IoError | (16 << 8)); }
         finally
         {
@@ -280,6 +288,40 @@ public static unsafe class HostVfs
             return rc;
         }
         catch (Exception exception) { return Failure(exception, IoError | (14 << 8)); }
+    }
+
+    private static int ShmMap(sqlite3_file* file, int region, int size, int extend, void** output)
+    {
+        *output = null;
+        try
+        {
+            var state = State(file);
+            if (state.SharedMemory == null)
+            {
+                var opened = HostSharedMemory.Open(state.File, state.Path, out state.SharedMemory);
+                if (opened != Ok) return opened;
+            }
+            var result = state.SharedMemory!.Map(region, size, extend != 0, out var address);
+            *output = (void*)address;
+            return result;
+        }
+        catch (Exception exception) { return Failure(exception, IoError | (21 << 8)); }
+    }
+
+    private static int ShmLock(sqlite3_file* file, int offset, int count, int flags)
+    {
+        try { return State(file).SharedMemory?.Lock(offset, count, flags) ?? (IoError | (20 << 8)); }
+        catch (Exception exception) { return Failure(exception, IoError | (20 << 8)); }
+    }
+
+    private static void ShmBarrier(sqlite3_file* file) => HostSharedMemory.Barrier();
+
+    private static int ShmUnmap(sqlite3_file* file, int delete)
+    {
+        var state = State(file);
+        try { return state.SharedMemory?.Unmap(delete != 0) ?? Ok; }
+        catch (Exception exception) { return Failure(exception, IoError | (22 << 8)); }
+        finally { state.SharedMemory = null; }
     }
 
     private static int FileControl(sqlite3_file* file, int operation, void* argument)

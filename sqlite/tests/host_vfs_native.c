@@ -1,6 +1,7 @@
 /* Separate-process native oracle for real file locking and hot-journal recovery. */
 #include "sqlite3.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int main(int argc, char **argv) {
@@ -28,6 +29,10 @@ int main(int argc, char **argv) {
                 printf("ROW %s\n", text ? (const char *)text : "NULL");
             }
             if (sqlite3_step(statement) != SQLITE_DONE || sqlite3_finalize(statement) != SQLITE_OK) return 1;
+        } else if (strncmp(command, "C ", 2) == 0) {
+            int frames = -1, checkpointed = -1;
+            rc = sqlite3_wal_checkpoint_v2(db, NULL, atoi(command + 2), &frames, &checkpointed);
+            printf("CK %d %d %d\n", rc, frames, checkpointed);
         } else return 2;
     }
     return sqlite3_close(db) == SQLITE_OK ? 0 : 1;

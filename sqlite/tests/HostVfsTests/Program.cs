@@ -60,6 +60,12 @@ internal static unsafe class Program
                 if (line == "X") break;
                 if (line.StartsWith("E ", StringComparison.Ordinal)) Console.WriteLine("RC " + Execute(db, line[2..]));
                 else if (line.StartsWith("Q ", StringComparison.Ordinal)) Console.WriteLine("ROW " + Query(db, line[2..]));
+                else if (line.StartsWith("C ", StringComparison.Ordinal))
+                {
+                    int frames = -1, checkpointed = -1;
+                    var rc = sqlite3_wal_checkpoint_v2(db, null, int.Parse(line[2..]), &frames, &checkpointed);
+                    Console.WriteLine($"CK {rc} {frames} {checkpointed}");
+                }
                 else throw new InvalidOperationException("Unknown protocol command");
                 Console.Out.Flush();
             }
@@ -220,6 +226,107 @@ internal static unsafe class Program
         Console.WriteLine("PASS host VFS SQL/JSONB/FTS5 disk persistence, rollback, readonly and reinitialization");
     }
 
+    private static void ShmContracts(string directory)
+    {
+        var vfs = sqlite3_vfs_find(null);
+        var path = Path.Combine(directory, "shared-index.db");
+        var first = OpenRaw(vfs, path, 6 | 0x100, out _);
+        var second = OpenRaw(vfs, path, 2 | 0x100, out _);
+        try
+        {
+            var methods = first->pMethods;
+            void* a = null; void* b = null; void* later = null;
+            Require(methods->xShmMap(first, 0, 32768, 0, &a) == 0 && a == null, "unextended region absent");
+            Require(methods->xShmMap(first, 0, 32768, 1, &a) == 0 && a != null, "create shared index");
+            Require(methods->xShmMap(second, 0, 32768, 0, &b) == 0 && b != null, "map existing shared index");
+            ((byte*)a)[4096] = 42;
+            methods->xShmBarrier(first);
+            Require(((byte*)b)[4096] == 42, "shared memory writes visible");
+            Require(methods->xShmMap(first, 3, 32768, 1, &later) == 0 && later != null, "grow shared index");
+            ((byte*)later)[32767] = 91;
+            void* stable = null;
+            Require(methods->xShmMap(first, 0, 32768, 0, &stable) == 0 && stable == a && ((byte*)stable)[4096] == 42,
+                "growing index preserves earlier addresses and contents");
+            Require(methods->xShmMap(second, 3, 32768, 0, &b) == 0 && ((byte*)b)[32767] == 91, "peer maps later region");
+            // SQLITE_SHM_UNLOCK=1, LOCK=2, SHARED=4, EXCLUSIVE=8.
+            Require(methods->xShmLock(first, 3, 1, 2 | 4) == 0 && methods->xShmLock(second, 3, 1, 2 | 4) == 0, "shared shm locks coexist");
+            var third = OpenRaw(vfs, path, 2 | 0x100, out _);
+            try
+            {
+                Require(methods->xShmMap(third, 0, 32768, 0, &b) == 0, "third map");
+                Require(methods->xShmLock(third, 3, 1, 2 | 8) == 5, "exclusive shm conflict");
+                Require(methods->xShmUnmap(second, 0) == 0, "unmap releases only own shared lock");
+                Require(methods->xShmLock(third, 3, 1, 2 | 8) == 5, "sibling unmap retains first lock");
+                Require(methods->xShmLock(first, 3, 1, 1 | 4) == 0, "release shared shm lock");
+                Require(methods->xShmLock(third, 3, 1, 2 | 8) == 0, "exclusive shm after release");
+                Require(methods->xShmLock(first, 1, 4, 2 | 8) == 5, "range acquisition conflicts atomically");
+                Require(methods->xShmLock(third, 1, 1, 2 | 8) == 0, "failed range leaves no partial locks");
+                Require(methods->xShmLock(third, 1, 1, 1 | 8) == 0 && methods->xShmLock(third, 3, 1, 1 | 8) == 0, "release exclusive shm locks");
+                Require(methods->xShmLock(first, 0, 8, 2 | 8) == 0 && methods->xShmLock(first, 0, 8, 1 | 8) == 0, "whole index lock range");
+            }
+            finally { CloseRaw(third); }
+            Require(methods->xShmLock(first, -1, 1, 2 | 8) != 0 && methods->xShmLock(first, 7, 2, 2 | 8) != 0,
+                "invalid shm lock ranges rejected");
+            Require(methods->xShmMap(first, -1, 32768, 1, &b) != 0 && b == null, "invalid shm map rejected");
+            Require(methods->xShmUnmap(first, 1) == 0 && methods->xShmUnmap(first, 1) == 0, "idempotent shm detach");
+        }
+        finally { CloseRaw(first); CloseRaw(second); }
+        Require(!File.Exists(path + "-shm"), "last delete unmap removes shared file");
+        Require(HostVfs.OpenHandleCount == 0, "shared index handles released");
+        Console.WriteLine("PASS WAL raw mapping growth, visibility, lock ranges, sibling cleanup and unmap");
+    }
+
+    private static void WalContracts(string directory)
+    {
+        var path = Path.Combine(directory, "wal-λ.db");
+        var writer = OpenDatabase(path);
+        sqlite3* reader = null;
+        try
+        {
+            Require(Query(writer, "PRAGMA journal_mode=WAL") == "wal", "enable WAL");
+            Require(Execute(writer, "PRAGMA synchronous=FULL;PRAGMA wal_autocheckpoint=0;CREATE TABLE data(id INTEGER PRIMARY KEY,value BLOB);INSERT INTO data VALUES(1,jsonb('{\"n\":7}'));CREATE VIRTUAL TABLE docs USING fts5(body);INSERT INTO docs VALUES('café WAL');") == 0, "WAL core JSONB FTS5");
+            Require(File.Exists(path + "-wal") && File.Exists(path + "-shm"), "real WAL and shm files");
+            Require(Query(writer, "SELECT typeof(value)||':'||json_extract(value,'$.x') FROM jsonb_each('[{\"x\":42}]')") == "blob:42", "JSONB each");
+            Require(Query(writer, "SELECT count(*) FROM jsonb_tree('{\"a\":[1,2]}')") == "4", "JSONB tree");
+            Require(Query(writer, "SELECT json_array_insert('[1,3]','$[1]',2)") == "[1,2,3]", "JSON array insertion");
+            Require(Query(writer, "SELECT json(jsonb_array_insert(jsonb('[1,3]'),'$[1]',2))") == "[1,2,3]", "JSONB array insertion");
+            reader = OpenDatabase(path);
+            Require(Execute(reader, "BEGIN") == 0 && Query(reader, "SELECT json_extract(value,'$.n') FROM data") == "7", "WAL reader snapshot");
+            Require(Execute(writer, "BEGIN IMMEDIATE;UPDATE data SET value=jsonb('{\"n\":42}');SAVEPOINT s;UPDATE docs SET body='temporary';ROLLBACK TO s;RELEASE s;COMMIT") == 0, "WAL writer commits alongside reader");
+            Require(Query(reader, "SELECT json_extract(value,'$.n') FROM data") == "7", "snapshot survives commit");
+            Require(Execute(reader, "UPDATE data SET value=NULL") == 5, "stale reader cannot upgrade");
+            Require(sqlite3_extended_errcode(reader) == 517, "BUSY_SNAPSHOT extended result");
+            int frames = -1, checkpointed = -1;
+            Require(sqlite3_wal_checkpoint_v2(writer, null, -1, &frames, &checkpointed) == 0 && frames > 0 && checkpointed == 0, "no-op checkpoint leaves frames untouched");
+            Require(sqlite3_wal_checkpoint_v2(writer, null, 0, &frames, &checkpointed) == 0 && frames > checkpointed, "passive checkpoint honors reader");
+            Require(sqlite3_wal_checkpoint_v2(writer, null, 3, &frames, &checkpointed) == 5, "truncate checkpoint blocked by reader");
+            Require(Execute(reader, "ROLLBACK") == 0 && Query(reader, "SELECT json_extract(value,'$.n') FROM data") == "42", "new snapshot sees commit");
+            Require(Execute(writer, "BEGIN IMMEDIATE") == 0 && Execute(reader, "BEGIN IMMEDIATE") == 5, "one WAL writer");
+            Require(Execute(writer, "ROLLBACK") == 0, "release WAL writer");
+            Require(sqlite3_wal_checkpoint_v2(writer, null, 1, &frames, &checkpointed) == 0 && frames == checkpointed, "full checkpoint");
+            Require(sqlite3_wal_checkpoint_v2(writer, null, 2, &frames, &checkpointed) == 0, "restart checkpoint");
+            Require(sqlite3_wal_checkpoint_v2(writer, null, 3, &frames, &checkpointed) == 0 && frames == 0 && checkpointed == 0 && new FileInfo(path + "-wal").Length == 0, "truncate checkpoint empties WAL");
+            Require(Execute(writer, "PRAGMA cache_size=8;CREATE TABLE large(id INTEGER PRIMARY KEY,pad BLOB);WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<4500) INSERT INTO large SELECT x,zeroblob(4000) FROM n;") == 0, "WAL transaction spans index regions");
+            Require(new FileInfo(path + "-shm").Length >= 65536 && Query(reader, "SELECT count(*) FROM large") == "4500", "second index region visible");
+            Require(Query(reader, "SELECT count(*) FROM docs WHERE docs MATCH 'cafe'") == "1", "FTS5 savepoint restoration");
+            Require(Query(writer, "PRAGMA integrity_check") == "ok", "WAL integrity");
+        }
+        finally
+        {
+            if (reader != null) Require(sqlite3_close(reader) == 0, "WAL reader close");
+            Require(sqlite3_close(writer) == 0, "WAL writer close");
+        }
+        Require(!File.Exists(path + "-wal") && !File.Exists(path + "-shm"), "last close checkpoints and removes sidecars");
+        reader = OpenDatabase(path, 1);
+        try { Require(Query(reader, "PRAGMA journal_mode") == "wal" && Query(reader, "SELECT count(*) FROM large") == "4500", "readonly WAL reopen"); }
+        finally { Require(sqlite3_close(reader) == 0, "readonly WAL close"); }
+        writer = OpenDatabase(path);
+        try { Require(Query(writer, "PRAGMA journal_mode=DELETE") == "delete" && Query(writer, "PRAGMA integrity_check") == "ok", "return to rollback journals"); }
+        finally { Require(sqlite3_close(writer) == 0, "journal switch close"); }
+        Require(HostVfs.OpenHandleCount == 0, "WAL handles released");
+        Console.WriteLine("PASS WAL snapshots, writer contention, JSONB/FTS5, checkpoints, index growth, readonly reopen and DELETE transition");
+    }
+
     private static int Main(string[] args)
     {
         Console.InputEncoding = new UTF8Encoding(false);
@@ -232,7 +339,7 @@ internal static unsafe class Program
             {
                 var directory = Path.Combine(Path.GetTempPath(), "dotcc-host-tests-" + Guid.NewGuid().ToString("N"));
                 Directory.CreateDirectory(directory);
-                try { RawContracts(directory); SqlContracts(directory); }
+                try { RawContracts(directory); SqlContracts(directory); ShmContracts(directory); WalContracts(directory); }
                 finally { Directory.Delete(directory, recursive: true); }
             }
             Require(HostVfs.OpenHandleCount == 0 && sqlite3_shutdown() == 0, "final shutdown");
