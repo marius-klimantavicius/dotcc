@@ -269,9 +269,21 @@ internal sealed partial class CSharpBackend
                 else
                 {
                     var wrap = $"__IA_{t.Name}_{fid}";
+                    var element = Cs(flat);
+                    if (flat.IsPointerLowered)
+                    {
+                        // InlineArray's element must be a valid generic argument.
+                        // A one-field unmanaged struct keeps pointer size/alignment
+                        // and lets managed consumers index or form spans of cells.
+                        // Translated C still accesses the same storage through T*.
+                        var cell = wrap + "_Element";
+                        wrappers.Append(_publicTypes ? "public unsafe struct " : "unsafe struct ")
+                            .Append(cell).Append("\n{\n    public ").Append(element).Append(" Value;\n}\n\n");
+                        element = cell;
+                    }
                     wrappers.Append("[System.Runtime.CompilerServices.InlineArray(").Append(count).Append(")]\n")
                         .Append(_publicTypes ? "public unsafe struct " : "unsafe struct ")
-                        .Append(wrap).Append("\n{\n    public ").Append(Cs(flat)).Append(" _e;\n}\n\n");
+                        .Append(wrap).Append("\n{\n    public ").Append(element).Append(" _e;\n}\n\n");
                     sb.Append("    public ").Append(wrap).Append(' ').Append(fid).Append(";\n");
                 }
                 fi++;

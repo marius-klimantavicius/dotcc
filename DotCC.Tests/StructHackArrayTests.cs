@@ -63,12 +63,10 @@ public sealed class StructHackArrayTests
     }
 
     [Fact]
-    public void pointer_element_array_member_stores_as_nint()
+    public void pointer_element_array_member_uses_unmanaged_element_wrapper()
     {
-        // The typed IR uses an InlineArray wrapper struct (__IA_Bag_items) with
-        // the concrete element type `U*` as the element field (CS9184 restriction
-        // is no longer triggered in this path — the InlineArray wrapper is itself
-        // an unsafe struct, which allows pointer element types).
+        // Raw pointer elements trigger CS9184 even inside unsafe structs.
+        // A one-field cell preserves the ABI and is a valid generic argument.
         var src = WriteTemp("""
             typedef struct U { int v; } U;
             typedef struct Bag { int n; U *items[1]; } Bag;
@@ -79,7 +77,9 @@ public sealed class StructHackArrayTests
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("InlineArray(1)");
             emitted.ShouldContain("__IA_Bag_items");
-            emitted.ShouldContain("public U* _e;");
+            emitted.ShouldContain("public U* Value;");
+            emitted.ShouldContain("public __IA_Bag_items_Element _e;");
+            emitted.ShouldNotContain("public U* _e;");
         }
         finally { File.Delete(src); }
     }

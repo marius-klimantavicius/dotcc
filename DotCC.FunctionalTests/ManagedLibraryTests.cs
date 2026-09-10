@@ -19,6 +19,73 @@ public sealed class ManagedLibraryTests
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
+    public void Pointer_inline_arrays_support_managed_indexing_and_generic_spans(bool objectLink)
+    {
+        var path = Path.Combine(Path.GetTempPath(), "dotcc-inline-pointers-" + Guid.NewGuid().ToString("N") + ".c");
+        File.WriteAllText(path, """
+            typedef int (*Callback)(int);
+            struct Bag { int *items[2]; void *contexts[2]; int **indirect[2]; Callback callbacks[2]; int tail; };
+            static int add(int x) { return x + 2; }
+            void initialize(struct Bag *b, int *value) {
+                b->items[0] = value;
+                b->contexts[1] = value;
+                b->indirect[0] = &b->items[0];
+                b->callbacks[0] = add;
+                b->tail = 17;
+            }
+            int invoke(struct Bag *b) { return b->callbacks[1](*b->items[1]) + **b->indirect[0] + b->tail; }
+            """);
+        var fragment = Path.ChangeExtension(path, ".cs");
+        try
+        {
+            string emitted;
+            if (objectLink)
+            {
+                File.WriteAllText(fragment, Compiler.EmitObject(path));
+                emitted = Compiler.LinkObjects(new[] { fragment }, emit: EmitMode.ManagedLib);
+            }
+            else emitted = Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib);
+            var references = RuntimeReferences();
+            var libraryImage = Compile("PointerLibrary_" + Guid.NewGuid().ToString("N"), emitted, references);
+            references.Add(MetadataReference.CreateFromImage(libraryImage));
+            var consumerImage = Compile("PointerConsumer_" + Guid.NewGuid().ToString("N"), """
+                public static unsafe class Consumer
+                {
+                    private static int Twice(int x) => x * 2;
+                    public static int Run()
+                    {
+                        Bag bag = default;
+                        if (bag.items[1].Value != null || bag.callbacks[1].Value != null) return -1;
+                        int a = 5, b = 10;
+                        DotCcLib.initialize(&bag, &a);
+                        if (*bag.items[0].Value != 5 || bag.contexts[1].Value != &a) return -2;
+                        if (bag.indirect[0].Value != (int**)&bag.items) return -3;
+                        var items = System.Runtime.InteropServices.MemoryMarshal.CreateSpan(ref bag.items[0], 2);
+                        items[1].Value = &b;
+                        var callbacks = System.Runtime.InteropServices.MemoryMarshal.CreateSpan(ref bag.callbacks[0], 2);
+                        callbacks[1].Value = &Twice;
+                        var callback = callbacks[0].Value;
+                        if (callback(40) != 42 || DotCcLib.invoke(&bag) != 42) return -4;
+                        if (sizeof(__IA_Bag_items) != 2 * sizeof(void*) ||
+                            sizeof(__IA_Bag_callbacks) != 2 * sizeof(void*) ||
+                            (byte*)&bag.tail - (byte*)&bag != 8 * sizeof(void*)) return -5;
+                        if (System.Runtime.CompilerServices.Unsafe.ByteOffset(ref items[0], ref items[1]) != sizeof(void*)) return -6;
+                        System.GC.Collect();
+                        return DotCcLib.invoke(&bag);
+                    }
+                }
+                """, references);
+            var context = new AssemblyLoadContext("dotcc-inline-pointers-" + Guid.NewGuid().ToString("N"), isCollectible: false);
+            context.LoadFromStream(new MemoryStream(libraryImage));
+            var consumer = context.LoadFromStream(new MemoryStream(consumerImage));
+            consumer.GetType("Consumer", true)!.GetMethod("Run")!.Invoke(null, null).ShouldBe(42);
+        }
+        finally { File.Delete(path); File.Delete(fragment); }
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
     public void Separate_consumer_registers_managed_callback_and_survives_gc(bool objectLink)
     {
         var path = Path.Combine(Path.GetTempPath(), "dotcc-managed-" + Guid.NewGuid().ToString("N") + ".c");
@@ -141,7 +208,8 @@ public sealed class ManagedLibraryTests
         var compilation = CSharpCompilation.Create(name,
             new[] { CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.Preview)) },
             references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
-                allowUnsafe: true, optimizationLevel: OptimizationLevel.Release));
+                allowUnsafe: true, optimizationLevel: OptimizationLevel.Release)
+                .WithSpecificDiagnosticOptions(new Dictionary<string, ReportDiagnostic> { ["CS9184"] = ReportDiagnostic.Error }));
         using var output = new MemoryStream();
         var result = compilation.Emit(output);
         if (!result.Success)
