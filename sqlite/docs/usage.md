@@ -64,6 +64,22 @@ scripts/emit-engine.sh
 scripts/emit-engine.sh --no-postprocess
 ```
 
+SQLite emission defaults to grouping whole functions around 256 KiB per file,
+followed by in-place postprocessing. All methods belong to `partial class Sqlite`;
+shared runtime/types/globals stay in `Program.cs`. To change the source layout:
+
+```sh
+SQLITE_SOURCE_SPLIT=function scripts/emit-engine.sh
+SQLITE_SOURCE_SPLIT=size SQLITE_SOURCE_SPLIT_SIZE=524288 scripts/emit-engine.sh
+SQLITE_SOURCE_SPLIT=none scripts/emit-engine.sh
+```
+
+The byte target closes each function group after the first whole function takes
+it over the target; large functions and shared declarations can exceed it.
+Regeneration cleans obsolete files tracked in `Dotcc.SourceFiles.txt`. Keep that
+manifest so switching layouts does not leave duplicate declarations. Add
+`--no-postprocess` to any invocation when raw dotcc output is needed.
+
 Reference `generated/TranslatedSqlite/TranslatedSqlite.csproj` from a C# project,
 or its built `TranslatedSqlite.dll`. `Sqlite` (selected with `--class-name Sqlite` by `emit-engine.sh`) exposes the C API as unsafe managed
 methods; public translated aggregate types and `delegate*` signatures preserve

@@ -600,3 +600,16 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
 - [x] Verify native/product aggregate layouts for the new host profile, rerun the
       full SQLite campaign, document platform/lifecycle limits and commit locally.
       M9 remains plan-only; dynamic/native SQLite extensions remain excluded.
+
+
+### Generated source layout for IDE navigation
+
+- [x] Add `--split=none|function|size` and a positive byte target for size mode.
+      Keep dotcc’s default single-file behavior. Use backend function boundaries
+      and partial classes, retaining shared state/initialization in one file.
+- [x] Support direct project emission and object linking, deterministic names,
+      global aliases emitted once, and obsolete generated-file cleanup.
+- [x] Default SQLite’s emission script to 256 KiB function groups, with environment
+      overrides and the existing in-place postprocessor running afterward.
+- [x] Validate source layout, calls, callbacks and initialization in regression
+      tests, then regenerate SQLite and verify ManagedConsumer under JIT/NativeAOT.

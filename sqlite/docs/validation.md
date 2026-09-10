@@ -1263,3 +1263,55 @@ injects the optional IDE analyzer/code fix. The reduced solution builds in Relea
 the standalone IDE tooling for an explicitly configured project and confirms zero
 DotCC postprocessor analyzers in SQLite’s ordinary and design-time evaluations
 (`artifacts/in-place-analyzer-isolation.log`).
+
+
+## Split generated sources for Rider (2026-09-10)
+
+The compiler now supports project source layouts `--split=none|function|size`,
+with a positive UTF-8 byte target (`--split-size`, default 262144) for size mode.
+Function boundaries come directly from backend emission and are recorded in new
+object fragments. No Roslyn dependency enters dotcc. Existing single-string APIs
+and the general CLI default retain single-file output; old objects still link
+without splitting. New named-source APIs support both emission and linking.
+
+Partial classes share all translated methods. `Program.cs` keeps runtime, types,
+globals and initialization together; aliases are emitted once as global usings.
+A generated-file manifest removes obsolete split files on re-emission while
+preserving unlisted sidecars. Size grouping appends a whole function before
+checking whether the file first exceeds its target; it never splits a function.
+The shared declaration and alias files are outside that target.
+
+All **1,871 unit tests** pass (`artifacts/source-split-unit.log`). The full
+functional suite passes **340 tests**, with **921 optional oracle tests skipped**
+(`artifacts/source-split-all-functional.log`). The managed-library subset passes
+**50 tests**, including direct/object-linked splitting, custom/escaped API names,
+executable and shared-library compilation, calls across files, cached callback
+identity, static-local state, UTF-8 grouping at an exact boundary, indivisible
+large functions, determinism, obsolete-file cleanup and old-object diagnostics.
+The full runs use an isolated `TMPDIR=artifacts/source-split-tmp`; an earlier unit
+run was stopped after tracing excessive header discovery under the crowded system
+`/tmp`, then passed in 46 seconds with that isolated directory.
+
+SQLite’s script defaults to size grouping and then runs the existing in-place
+postprocessor. The actual engine still rewrites **24,123 Cond.B calls**, skips
+none, and removes **2,208 standalone empty blocks**, updating 17 source files.
+The resulting **19 emitted C# files** comprise:
+
+- **17 function groups**, 224,279–279,208 UTF-8 bytes after postprocessing.
+- **Program.cs**, 1,678,195 bytes for shared declarations/runtime.
+- **Dotcc.GlobalUsings.g.cs**, 287,458 bytes for shared aliases.
+
+No Cond.B call sites or temporary replacement files remain. Measurements are in
+`artifacts/source-split-sizes.log`. `SQLITE_AOT=1 scripts/test-managed-consumer.sh`
+passes JIT and linux-x64 NativeAOT against this regenerated, processed engine,
+including SQL/JSONB/FTS5/optional features, WAL and managed callback contracts
+(`artifacts/source-split-sqlite-consumer.log`). The consumer solution still
+contains only ManagedConsumer and TranslatedSqlite, without analyzer/code-fix
+references. Use `SQLITE_SOURCE_SPLIT=none|function|size` and
+`SQLITE_SOURCE_SPLIT_SIZE=<bytes>` to override SQLite’s layout.
+
+The compiler itself also publishes as linux-x64 NativeAOT without warnings
+(`artifacts/source-split-compiler-aot.log`). Its native executable passes CLI
+smoke checks for all three layouts, automatic build/run, stale-file cleanup,
+invalid flag combinations and split object linking
+(`artifacts/source-split-cli-smoke.log`).

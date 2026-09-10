@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/common.sh"
 postprocess=true
+# Keep generated method files comfortable to navigate in Rider.
+split="${SQLITE_SOURCE_SPLIT:-size}"
+split_size="${SQLITE_SOURCE_SPLIT_SIZE:-262144}"
 case "${1:-}" in
   --no-postprocess) postprocess=false; shift ;;
-  --help|-h) echo "Usage: $0 [--no-postprocess]"; exit 0 ;;
+  --help|-h) echo "Usage: $0 [--no-postprocess] (SQLITE_SOURCE_SPLIT=none|function|size; SQLITE_SOURCE_SPLIT_SIZE=bytes)"; exit 0 ;;
 esac
 if (( $# )); then
-  echo "Usage: $0 [--no-postprocess]" >&2
+  echo "Usage: $0 [--no-postprocess] (SQLITE_SOURCE_SPLIT=none|function|size; SQLITE_SOURCE_SPLIT_SIZE=bytes)" >&2
   exit 1
 fi
+split_args=("--split=$split")
+if [[ "$split" == size ]]; then split_args+=("--split-size=$split_size"); fi
 python3 "$SQLITE_ROOT/scripts/prepare-host-source.py" >&2
 SQLITE_HOST_DEFINES=()
 while IFS= read -r definition; do
@@ -17,7 +22,7 @@ done < "$SQLITE_ROOT/config/host-defines.txt"
 dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   -std=c17 "${SQLITE_DEFINES[@]}" "${SQLITE_HOST_DEFINES[@]}" -I "$SQLITE_ROOT/generated/sqlite-port" \
   -I "$SQLITE_ROOT/src" "$SQLITE_ROOT/src/engine.c" \
-  --emit=managedlib --class-name Sqlite -o "$SQLITE_ROOT/generated/TranslatedSqlite"
+  --emit=managedlib --class-name Sqlite "${split_args[@]}" -o "$SQLITE_ROOT/generated/TranslatedSqlite"
 
 if "$postprocess"; then
   dotnet build "$DOTCC_ROOT/DotCC.PostProcess/DotCC.PostProcess.csproj" -c Release --nologo
