@@ -13,6 +13,7 @@
 | `--emit=build` | As `csproj`, then run `dotnet build -c Release` in the output dir. |
 | `--emit=managedlib` | Emit a reusable managed library with public functions and aggregate types. Add `-c` to compile it. |
 | `--class-name <name>` | Set the generated API class for `--emit=managedlib` or `-shared` (default `DotCcLib`). Applies to whole-program emission and object linking; specify it at link time, not with `--emit=obj`. Accepts a single ASCII identifier, optionally `@`-escaped; keywords are escaped automatically. Executable, preprocessing and WAT modes reject this option. |
+| `--namespace <name>` | Place generated functions, aggregate types and embedded runtime in a dotted C# namespace. Default: global namespace. Supported by C# executable/library output and object linking; rejected with preprocessing, WAT and object emission. Specify at link time for objects. |
 | `--split=none\|function\|size` | C# project source layout: one file (default), one translated function per file, or groups of whole functions. Supported by csproj/build/managedlib/shared emission and object linking. File/stdout, preprocessing, WAT and object emission reject splitting. |
 | `--split-size <bytes>` | Positive UTF-8 byte target with `--split=size`, default 262144 (256 KiB). Append a complete function, then close the file on its first crossing of the target. |
 | `--emit=obj` | **Separate compilation.** Compile ONE `.c` to a `.cs` object fragment (functions + its type decls + globals, no shell/runtime). Link by passing `.cs` objects back: `dotcc a.cs b.cs -o app` merges (deduping shared types) and wraps in the shell. Drives CMake/make per file (`examples/cmake-demo/`). |
@@ -38,6 +39,29 @@
 **Predefined macros** (seeded every compile, plus any `-D`): `__STDC__`=`1`, `__STDC_HOSTED__`=`1`, `__STDC_VERSION__`=per-`-std=` value (undefined under `c90`), `__dotcc__`=`1` (compiler id, like `__clang__`), and the **LP64 data-model trio** `__LP64__`=`1`, `__SIZEOF_POINTER__`=`8`, `__SIZEOF_LONG__`=`8` — dotcc IS an LP64 compiler (`long` → C# `long`, 8-byte pointers), and portable C (chibi-scheme's `SEXP_64_BIT`) decides pointer-tagging strategy from exactly these macros; without them it would mis-configure for 32-bit and miscompute at runtime.
 
 **Library mode (`-shared`) emit shape:** user functions land in `internal static class DotCcLib` so inter-function calls resolve as direct C# invocations (`[UnmanagedCallersOnly]` prohibits managed call sites). Each non-static C function gets a `public static` wrapper in `public static class DotCcExports` annotated `[UnmanagedCallersOnly]`; NativeAOT inlines the trampoline. C `static` functions stay internal (no wrapper). Varargs functions are skipped from exports (`params object[]` isn't a valid `UnmanagedCallersOnly` signature).
+
+## Generated namespaces
+
+```sh
+dotcc engine.c --emit=managedlib --class-name Sqlite --namespace Managed.Database --split=function -o TranslatedSqlite
+```
+
+The API is `Managed.Database.Sqlite`; translated types such as `sqlite3`, `CBool`,
+and `DotCcFunctionPointers` live in the same namespace. All split function files
+share it, while filenames remain `Sqlite.<function>.cs`. Namespace components
+must be ASCII C# identifiers; keywords are escaped automatically. Without this
+option, types remain in the global namespace. The project’s `RootNamespace`
+reflects the supplied namespace too.
+
+Executable output uses an explicit namespaced entry class when needed, retaining
+its stack/thread and argv behavior. Object fragments remain independent of the
+final namespace: symbolic aliases bind at link time. Older objects must be
+regenerated before namespaced linking; ordinary global-namespace linking remains
+supported. This does not rewrite C strings or require Roslyn in dotcc.
+
+Use `namespaceName: "Managed.Database"` on `EmitCSharp`, `EmitCSharpFiles`,
+`LinkObjects`, `LinkObjectFiles`, and `BuildGeneratedCsproj`. Consumers can import
+`using Managed.Database;` and `using static Managed.Database.Sqlite;`.
 
 ## Splitting generated C#
 

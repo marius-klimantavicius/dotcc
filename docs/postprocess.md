@@ -71,8 +71,8 @@ It is deterministic for identical evaluated inputs.
 
 The tool evaluates MSBuild's compiler inputs with compiler execution disabled,
 including linked sources, generated usings and SQLite's managed VFS sidecars.
-Roslyn binds this complete compilation. The rewriter identifies the actual global
-`Cond.B` method symbol and proves its helper body implements the known truth
+Roslyn binds this complete compilation. The rewriter identifies the actual
+`Cond.B` method symbol, including namespaced helpers, and proves its helper body implements the known truth
 conversion. A name filter only avoids binding unrelated calls; it never authorizes
 a rewrite by itself. Helper type initializers, fields and changed implementations
 prevent unsafe elimination of a call.
@@ -93,8 +93,9 @@ The semantic rewrite is idempotent.
 | Explicit `CBool` cast inside `Cond.B` | Remove the normalize/read pair only when its constructor and conversion bodies are proven safe. |
 
 For example, `Cond.B((CBool)(a < b))` reduces to the comparison, while a CBool
-assignment elsewhere keeps its 0/1 normalization. Both the namespaced library
-runtime and dotcc's embedded global-namespace CBool are recognized structurally.
+assignment elsewhere keeps its 0/1 normalization. CBool implementations in the library runtime and generated output are recognized
+structurally in both global and explicit namespaces. Each bound Cond helper must
+independently pass the same body and initialization checks.
 Selected argument conversions, target-typed expressions, checked contexts,
 evaluation count and short-circuit behavior are preserved. An inserted explicit
 cast is checked against the original selected user conversion; a different

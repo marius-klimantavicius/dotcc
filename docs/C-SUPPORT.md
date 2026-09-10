@@ -774,3 +774,10 @@ partial class; shared runtime, types, globals and initialization remain together
 The backend supplies whole-function boundaries for direct emission and new object
 fragments. This changes source layout only; existing C semantics and the runtime
 closure are unchanged. See [CLI layout details](cli.md#splitting-generated-c).
+
+`--namespace <name>` places all generated C# types and embedded runtime in the
+requested namespace, including split partial classes and canonical callbacks.
+The default remains the global namespace. Executable/library emission and new
+object linking support it; C strings and native export names are unchanged.
+The postprocessor recognizes namespaced Cond/CBool helpers by their bound symbols
+and structural proofs. See [namespace usage](cli.md#generated-namespaces).

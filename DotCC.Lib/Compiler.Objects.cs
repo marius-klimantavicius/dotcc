@@ -28,6 +28,7 @@ public static partial class Compiler
     private const string FragMainVoid = "//!!dotcc-obj main-void:"; // 1 when main returns void
     private const string FragMainErr = "//!!dotcc-obj main-err:";   // v|i when main returns `!void`|`!<int>`
     private const string FragType   = "//!!dotcc-obj type:";
+    private const string NamespaceNeutral = "//!!dotcc-obj namespace-neutral:1";
     private const string FragFunction = "//!!dotcc-obj function:";
     private const string FragSect   = "//!!dotcc-obj section:"; // aliases|globals|functions
     // Import mode in separate compilation: `-l` is known only at LINK time, so each
@@ -63,6 +64,7 @@ public static partial class Compiler
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 1 — link with `dotcc <objs> -o <out>`.\n");
+        sb.Append(NamespaceNeutral).Append('\n');
         sb.Append(FragMain).Append(mainArity).Append('\n');
         if (mainReturnsVoid) { sb.Append(FragMainVoid).Append("1").Append('\n'); }
         if (mainReturnsErrUnion) { sb.Append(FragMainErr).Append(mainErrPayloadIsVoid ? "v" : "i").Append('\n'); }
@@ -92,14 +94,15 @@ public static partial class Compiler
     /// </summary>
     public static string LinkObjects(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
-        ImportOptions? imports = null, string? className = null)
-        => LinkObjectFiles(objectPaths, emit, debugHeap, imports, className)["Program.cs"];
+        ImportOptions? imports = null, string? className = null, string? namespaceName = null)
+        => LinkObjectFiles(objectPaths, emit, debugHeap, imports, className, namespaceName: namespaceName)["Program.cs"];
 
     /// <summary>Link objects into named C# project files. Older objects must be regenerated to split functions.</summary>
     public static IReadOnlyDictionary<string, string> LinkObjectFiles(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
-        ImportOptions? imports = null, string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144)
+        ImportOptions? imports = null, string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null)
     {
+        namespaceName = ResolveNamespace(namespaceName, emit);
         ValidateSourceSplit(split, splitSize, emit);
         var libraryClass = ResolveLibraryClassName(className, emit);
         var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
@@ -132,6 +135,8 @@ public static partial class Compiler
                     $"'{Path.GetFileName(path)}' is not a dotcc object — no '{MagicObject}' marker. " +
                     "Link expects `--emit=obj` fragments, not a program or hand-written .cs.");
             }
+            if (namespaceName != null && !text.Split('\n').Contains(NamespaceNeutral, StringComparer.Ordinal))
+                throw new CompileException("Object is not namespace-neutral; regenerate objects before using --namespace");
             // Walk the fragment line by line, routing into the current bucket.
             string section = "";            // "type:<name>" | "aliases" | "globals" | "functions"
             var buf = new StringBuilder();
@@ -245,26 +250,28 @@ public static partial class Compiler
             if (survivors.Count > 0) { importsClass = RenderImportsClass(survivors, imports, libraryMode); }
         }
         if (className != null) CheckLibraryClassCollision(libraryClass, typeByName.Keys, definedNames);
-        aliasText += FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass);
+        aliasText = ResolveGeneratedAliases(aliasText, namespaceName) + FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName);
         return BuildSourceFiles(functions.ToString(), missingBoundaries ? null : functionSources, aliasText,
-            emit, libraryClass, importsClass, false, split, splitSize,
+            emit, libraryClass, importsClass, false, split, splitSize, namespaceName,
             (functionText, fileAliases, partial) => BuildShell(mainArity, functionText, structDecls.ToString(), fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
-                mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial));
+                mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName));
     }
 
-    private static string FunctionPointerOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass)
+    private static string FunctionPointerOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null)
     {
         var defined = new HashSet<string>(definitions, StringComparer.Ordinal);
         var aliases = new StringBuilder();
-        foreach (var key in typeKeys.Where(key => key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal))
-            .OrderBy(key => key, StringComparer.Ordinal))
+        var keys = typeKeys.Where(key => key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal))
+            .OrderBy(key => key, StringComparer.Ordinal).ToArray();
+        if (keys.Length != 0) aliases.Append("using DotCcPointers = global::").Append(NamespacePrefix(namespaceName)).Append("DotCcFunctionPointers;\n");
+        foreach (var key in keys)
         {
             var name = key[FunctionPointerNames.TypeKeyPrefix.Length..];
             var owner = defined.Contains(name) ? (libraryMode ? libraryClass : "DotCcProgram") : "Libc";
             aliases.Append("using ").Append(FunctionPointerNames.OwnerAlias(name))
-                .Append(" = global::").Append(owner).Append(";\n");
+                .Append(" = global::").Append(NamespacePrefix(namespaceName)).Append(owner).Append(";\n");
         }
         return aliases.ToString();
     }

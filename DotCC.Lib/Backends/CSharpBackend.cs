@@ -43,6 +43,8 @@ internal sealed partial class CSharpBackend
     /// C#-specific one.</summary>
     private readonly ITarget _target = new CSharpTarget();
     private bool _publicTypes;
+    private bool _relocatable;
+    private readonly HashSet<string> _enumAliases = new(StringComparer.Ordinal);
     private DotCC.Layout.OffsetDocument _offsetDocument = null!;
     private DotCC.Layout.OffsetLayoutModel _offsetModel = null!;
     private readonly HashSet<string> _offsetRequests = new(StringComparer.Ordinal);
@@ -52,10 +54,10 @@ internal sealed partial class CSharpBackend
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
     private string Cs(CType t) => _target.RenderType(t);
 
-    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false)
+    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false)
     {
         VaListLifetimeValidator.Validate(unit);
-        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes };
+        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable };
         cg.RegisterPublicFunctionPointers(unit);
         cg._offsetDocument = unit.CreateOffsetDocument();
         cg._offsetRequests.UnionWith(cg._offsetDocument.Requests.Select(request => request.Name));
@@ -183,7 +185,7 @@ internal sealed partial class CSharpBackend
             ? unit.Tests.Select(t => (t.Name, t.Sym.TargetName)).ToList()
             : null;
 
-        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: "", globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources);
+        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources);
     }
 
     // ---- type declarations -----------------------------------------------
@@ -1828,7 +1830,11 @@ internal sealed partial class CSharpBackend
             case EnumConstRef ec:
             {
                 var enumTy = Cs(ec.Sym.Type.Unqualified);
-                if (_typeShadowedGlobals.Contains(enumTy)) { enumTy = "global::" + enumTy; }
+                if (_typeShadowedGlobals.Contains(enumTy))
+                {
+                    if (_relocatable) { _enumAliases.Add(enumTy); enumTy = Compiler.EnumAliasName(enumTy); }
+                    else enumTy = "global::" + enumTy;
+                }
                 return ($"{enumTy}.{DotCC.EmitHelpers.Id(ec.Sym.Name)}", PPostfix);
             }
             // Every function designator reads its canonical cached address.

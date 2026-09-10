@@ -371,6 +371,29 @@ public sealed partial class CondInlinerTests
     }
 
     [Fact]
+    public void Namespaced_helpers_and_Cbool_are_inlined_and_reparsed()
+    {
+        var (result, text) = Check("""
+            using Managed.Database;
+            public static class Case { public static string Run() => Cond.B((CBool)(2 > 1)).ToString(); }
+            """, "True", "namespace Managed.Database;\n" + Helper.Replace("DotCC.Libc.CBool", "CBool"),
+            Runtime.Replace("namespace DotCC.Libc;", "namespace Managed.Database;"));
+        result.Rewritten.ShouldBe(1); text.ShouldNotContain("Cond.B"); text.ShouldNotContain("CBool");
+    }
+
+    [Fact]
+    public void Each_namespaced_helper_must_prove_its_own_body()
+    {
+        var (result, _) = Check("""
+            public static class Case { public static string Run() => First.Cond.B(-1) + ":" + Second.Cond.B(-1); }
+            """, "True:False", """
+            namespace First { static class Cond { public static bool B(int x) => x != 0; } }
+            namespace Second { static class Cond { public static bool B(int x) => x > 0; } }
+            """);
+        result.Rewritten.ShouldBe(1); result.Skipped.ShouldBe(1);
+    }
+
+    [Fact]
     public void Invalid_input_fails_before_rewriting()
         => Should.Throw<InvalidOperationException>(() => CondInliner.Rewrite(Compile("public class Broken { bool x = Cond.B(missing); }")));
 }

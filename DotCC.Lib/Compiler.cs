@@ -139,8 +139,8 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null)
-        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className)["Program.cs"];
+        string? className = null, string? namespaceName = null)
+        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName)["Program.cs"];
 
     /// <summary>Emit one or more named C# sources. Split modes require project output.
     /// Function boundaries come from the backend; shared declarations remain together.</summary>
@@ -154,8 +154,9 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144)
+        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null)
     {
+        namespaceName = ResolveNamespace(namespaceName, emit);
         ValidateSourceSplit(split, splitSize, emit);
         var libraryClass = ResolveLibraryClassName(className, emit);
         var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
@@ -169,7 +170,7 @@ public static partial class Compiler
         var convGate = (warnings & WarningFlags.Conversion) != 0 ? new ConversionGate() : null;
         // Objects retain public types so managed linking requires no textual
         // rewriting of type declarations or their inline-array wrapper types.
-        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object);
+        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object, relocatable: asObject || namespaceName != null);
         if (convGate is { HasAny: true })
         {
             foreach (var d in convGate.Diagnostics) { Console.Error.WriteLine("dotcc: warning: " + d); }
@@ -225,10 +226,10 @@ public static partial class Compiler
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
                 irBuilder.Functions.Select(f => f.Sym.TargetName).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
-        var aliases = cg.Aliases + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
-            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass);
-        return BuildSourceFiles(cg.Functions, cg.FunctionSources, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize,
-            (functions, fileAliases, partial) => BuildShell(cg.MainArity, functions, cg.Structs, fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial));
+        var aliases = ResolveGeneratedAliases(cg.Aliases, namespaceName) + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
+            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass, namespaceName);
+        return BuildSourceFiles(cg.Functions, cg.FunctionSources, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName,
+            (functions, fileAliases, partial) => BuildShell(cg.MainArity, functions, cg.Structs, fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName));
     }
 
     /// <summary>

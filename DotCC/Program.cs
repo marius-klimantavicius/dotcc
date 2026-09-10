@@ -37,6 +37,10 @@ internal static class Program
         {
             Description = "Generated library API class name (managedlib or -shared). Default: DotCcLib.",
         };
+        var namespaceOpt = new Option<string?>("--namespace")
+        {
+            Description = "Namespace for all generated C# types (default: global namespace). Set at link time for objects.",
+        };
         var splitOpt = new Option<SourceSplit>("--split")
         {
             Description = "C# project source layout: none (default), function (one per file), size (whole functions grouped by bytes).",
@@ -129,7 +133,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, classNameOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, classNameOpt, namespaceOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -243,7 +247,7 @@ internal static class Program
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),
-                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt));
+                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt));
         });
 
         return root.Parse(args).Invoke();
@@ -295,13 +299,19 @@ internal static class Program
         bool debugHeap = false,
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null)
+        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null)
     {
         if ((splitSize.HasValue && (split != SourceSplit.Size || splitSize <= 0))
             || (split != SourceSplit.None && (preprocessOnly || emit is EmitKind.File or EmitKind.Obj
                 || (target != null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase)))))
         {
             Console.Error.WriteLine("dotcc: --split requires C# project output; --split-size must be positive and used with --split=size");
+            return 2;
+        }
+        if (namespaceName != null && (preprocessOnly || emit == EmitKind.Obj
+            || (target != null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase))))
+        {
+            Console.Error.WriteLine("dotcc: --namespace requires C# output; set it at link time for objects");
             return 2;
         }
         imports ??= ImportOptions.Empty;
@@ -390,7 +400,7 @@ internal static class Program
         try
         {
             generatedSources = linking
-                ? Compiler.LinkObjectFiles(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports, className: className, split: split, splitSize: splitSize ?? 262144)
+                ? Compiler.LinkObjectFiles(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName)
                 : Compiler.EmitCSharpFiles(
                     inputPaths,
                     includeDirs,
@@ -399,7 +409,7 @@ internal static class Program
                     dialect: dialect,
                     debugHeap: debugHeap,
                     imports: imports,
-                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144);
+                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName);
         }
         catch (CompileException ex)
         {
@@ -450,7 +460,7 @@ internal static class Program
                 var csprojFile = $"{asmName}.csproj";
                 Compiler.WriteCSharpFiles(outDir, generatedSources);
                 File.WriteAllText(Path.Combine(outDir, csprojFile), Compiler.BuildGeneratedCsproj(libraryMode, asmName, imports.StaticArchives,
-                    managedLibrary: emit == EmitKind.ManagedLib));
+                    managedLibrary: emit == EmitKind.ManagedLib, namespaceName: namespaceName));
                 Console.Error.WriteLine($"dotcc: wrote {generatedSources.Count} C# source file(s) + {outDir}/{csprojFile}");
                 if (imports.StaticArchives.Count > 0)
                 {

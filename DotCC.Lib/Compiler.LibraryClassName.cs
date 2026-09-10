@@ -17,7 +17,7 @@ public static partial class Compiler
             || identifier.Any(c => !Start(c) && c is not (>= '0' and <= '9')))
             throw new CompileException("--class-name must be a single ASCII C# identifier, optionally prefixed with @");
         if (identifier is "Libc" or "Cond" or "CBool" or "VaArg" or "VaList" or "System"
-            or "DotCcGlobals" or "DotCcFunctions" or "DotCcFunctionPointers" or "DotCcProgram"
+            or "DotCcEntryPoint" or "DotCcPointers" or "DotCcGlobals" or "DotCcFunctions" or "DotCcFunctionPointers" or "DotCcProgram"
             or "DotCcExports" or "DotCcImports" or "DotCcStaticImports")
             throw new CompileException($"--class-name '{name}' conflicts with a generated runtime or infrastructure name");
         // The C-expression legalizer intentionally leaves null/default alone

@@ -6,7 +6,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace DotCC.PostProcess;
 
-internal sealed class ConditionRewriter(SemanticModel model, INamedTypeSymbol helper, bool pureContainer,
+internal sealed class ConditionRewriter(SemanticModel model,
     List<string> diagnostics, CancellationToken token,
     Action<InvocationExpressionSyntax>? onRewritten = null, Func<InvocationExpressionSyntax, bool>? include = null) : CSharpSyntaxRewriter
 {
@@ -14,11 +14,7 @@ internal sealed class ConditionRewriter(SemanticModel model, INamedTypeSymbol he
         List<string>? diagnostics = null, Action<InvocationExpressionSyntax>? onRewritten = null,
         Func<InvocationExpressionSyntax, bool>? include = null)
     {
-        var helper = model.Compilation.GetTypeByMetadataName("Cond");
-        if (helper is null) return null;
-        bool pureContainer = helper.IsStatic && helper.Arity == 0 && helper.GetAttributes().Length == 0
-            && helper.GetMembers().All(m => m is IMethodSymbol { MethodKind: MethodKind.Ordinary, Name: "B" });
-        return new(model, helper, pureContainer, diagnostics ?? [], token, onRewritten, include);
+        return new(model, diagnostics ?? [], token, onRewritten, include);
     }
 
     public int Rewritten { get; private set; }
@@ -68,7 +64,7 @@ internal sealed class ConditionRewriter(SemanticModel model, INamedTypeSymbol he
         or SpecialType.System_Int32 or SpecialType.System_UInt32 or SpecialType.System_Int64 or SpecialType.System_UInt64
         or SpecialType.System_IntPtr or SpecialType.System_UIntPtr or SpecialType.System_Single or SpecialType.System_Double;
     private static bool CBool(ITypeSymbol type) => type is INamedTypeSymbol { Name: "CBool", IsValueType: true }
-        && (type.ContainingNamespace.IsGlobalNamespace || type.ContainingNamespace.ToDisplayString() == "DotCC.Libc");
+        && type.ContainingType == null;
     private bool IsHelper(IMethodSymbol method)
     {
         if (methodProofs.TryGetValue(method, out var result)) return result;
@@ -76,6 +72,10 @@ internal sealed class ConditionRewriter(SemanticModel model, INamedTypeSymbol he
     }
     private bool ProveHelper(IMethodSymbol method)
     {
+        var helper = method.ContainingType;
+        bool pureContainer = helper.Name == "Cond" && helper.ContainingType == null && helper.IsStatic
+            && helper.Arity == 0 && helper.GetAttributes().Length == 0
+            && helper.GetMembers().All(m => m is IMethodSymbol { MethodKind: MethodKind.Ordinary, Name: "B" });
         if (!pureContainer || !method.IsStatic || method.Arity != 0 || method.Parameters.Length != 1
             || method.Parameters[0].RefKind != RefKind.None || method.Parameters[0].IsOptional || method.GetAttributes().Length != 0
             || method.ReturnType.SpecialType != SpecialType.System_Boolean || Body(method) is not { } body) return false;
@@ -100,7 +100,7 @@ internal sealed class ConditionRewriter(SemanticModel model, INamedTypeSymbol he
             _ => null
         };
         if (name != "B") return base.VisitInvocationExpression(node);
-        if (Operation(node) is not IInvocationOperation operation || !Same(operation.TargetMethod.ContainingType, helper)
+        if (Operation(node) is not IInvocationOperation operation || operation.TargetMethod.ContainingType.Name != "Cond"
             || operation.TargetMethod.Name != "B") return base.VisitInvocationExpression(node);
         // Do not touch children either when their source form is observable.
         string? reason = SourceObservability.IsObservable(node, model, token) ? "expression tree or caller-argument text is observable" :
