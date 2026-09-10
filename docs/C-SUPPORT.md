@@ -752,3 +752,11 @@ The right strategy is probably to grow the fixture corpus organically as feature
 6. **Update this file**: flip the row from ❌ to ✅, mention the fixture in **Notes**.
 
 The grammar conventions (precedence ladder, dangling-else handling, lexer ordering) live in `CLAUDE.md` under **Grammar conventions** — read that before touching `c.lalr.yaml`.
+
+## Optional C# post-processing
+
+The separate [Roslyn Cond.B inliner](postprocess.md) runs only after normal dotcc
+actions. It preserves the existing C truth conversions while rewriting proven
+helper calls in a copied output project. CBool stores and arithmetic normalization
+remain unchanged. Semantic/execution regressions live in `DotCC.PostProcess.Tests`;
+this adds no new C syntax, compiler behavior, or runtime dependency.

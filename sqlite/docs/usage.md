@@ -97,3 +97,11 @@ checks the native-proven expected output under JIT and Linux x64 NativeAOT,
 including distinct addresses for identical static functions in separate C units.
 The full campaign runs this gate when `SQLITE_AOT=1`; logs use the
 `artifacts/function-identity-*` prefix.
+
+## Optional Cond.B optimization
+
+After the normal build completes, invoke the standalone
+[Roslyn post-processor](../../docs/postprocess.md) to create a separate optimized
+project. `scripts/build.sh` and the normal dotcc pipeline do not run this pass.
+The explicit `scripts/test-postprocess.py <snapshot> --aot --corpora` gate compares
+original and optimized SQL, threading, mmap/WAL and native corpus behavior.

@@ -86,3 +86,10 @@ Auto-detection lives in `Directory.Build.props` (MSBuild `Exists(...)`); the con
 - **Preprocessor directives go in `preprocessor:`** (each becomes an `IPreprocessor` method). Conditionals are handled by LALR.CC's built-in engine — declare them in `conditionals:`; the `IsDefined` hook drives boolean evaluation.
 
 An unresolved conflict throws `GrammarConflictException` with the offending state + lookahead — don't catch it; fix the grammar by adding the colliding productions to a precedence group.
+
+## Optional source post-processing
+
+After dotcc finishes, the separate [Roslyn condition inliner](postprocess.md) can
+produce original/optimized project snapshots. It uses semantic syntax-tree
+rewrites for Cond.B only; it is never invoked by the compiler or SQLite build
+helper and adds no Roslyn dependency to their runtime closure.
