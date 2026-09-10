@@ -26,7 +26,8 @@ This checks source hashes, builds dotcc with the NuGet LALR.CC dependency, runs 
 unit and functional suites serially, regenerates native baselines for comparison,
 then translates and executes layout, API, SQL, VFS, allocation, virtual-table,
 public JSONB, FTS5 and database-image tests. It includes the separate C# consumer and
-NativeAOT layout/consumer checks, plus real-file VFS locking, persistence and
+NativeAOT layout/consumer checks, span-varargs semantics/allocation benchmarks,
+and real-file VFS locking, persistence and
 rollback/WAL recovery and checkpoints against native processes. It writes diagnostics under `artifacts/` and
 fails on the first mismatch. `SQLITE_AOT=0 scripts/verify.sh` is an explicitly
 smaller JIT-only run, not the completion gate. `scripts/verify.sh --with-ports`

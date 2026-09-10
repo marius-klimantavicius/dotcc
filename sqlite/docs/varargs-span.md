@@ -14,8 +14,9 @@ created by `VaList`; it holds a readonly borrowed span and a mutable cursor.
 floating representation. These changes avoid boxing and remove the temporary
 array from measured expanded calls.
 
-This is a managed binary signature change. Re-emit old C/object fragments and
-rebuild libraries and consumers together. Previously compiled array-signature
+This is a managed binary signature change. Re-emit C sources and
+rebuild libraries and consumers together. Regenerate object fragments from C
+source with the updated compiler. Previously compiled array-signature
 assemblies are not binary compatible. Ordinary recompiled direct calls, including
 calls passing an existing array, retain their source syntax. C# method-group or
 function-pointer signatures explicitly naming `VaArg[]` must change to the span.
@@ -47,6 +48,13 @@ capture, cursor values packed into `...`, and returns escaping a local pack.
 `sizeof`, `_Alignof` and `offsetof` cannot treat a cursor as an unmanaged layout.
 Callers needing persistent argument data retain an owned `VaArg[]` and create a
 fresh borrowed cursor when needed; there is no automatic heap cursor wrapper.
+
+The application inventory includes SQLite configuration/printf forwarding and
+its callback tables, Lua formatting forwarders, and Chibi's variadic wrapper.
+dotcc libc's existing fluent `PrintfBuilder` uses its own representation and
+requires no `VaArg[]` conversion; formatted output may still allocate strings.
+The zero-allocation benchmark concerns argument packs and cursor operations,
+not all work performed by variadic functions.
 
 ## Managed callbacks
 

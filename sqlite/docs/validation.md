@@ -831,3 +831,74 @@ is claimed. BSD remains unsupported. SQLite calls remain serialized within each
 process; WAL enables concurrent processes on the same host/local filesystem.
 The Linux NativeAOT executable depends only on libm, libc and the ELF loader,
 with no native SQLite dependency. Changes are committed locally without pushing.
+
+## M10 — Borrowed span varargs (2026-09-10)
+
+The emitted API is now `params ReadOnlySpan<VaArg>` and `VaList` is a ref struct
+with a readonly borrowed span and an independent mutable cursor on copies.
+Variadic managed function pointers carry an explicit final span and use the
+canonical static readonly address fields. The compiler diagnoses unsupported
+cursor storage and escaping local borrows, and scopes locally started cursors
+and their aliases. See [API and limitations](varargs-span.md).
+
+Regression-first evidence includes the original array-signature assertion failure
+(`m10-span-red.log`) and the variadic callback fixture's missing span-tail/signature
+errors. After the fixes, 19 lifetime cases and source/object execution cases pass.
+A full fresh solution build has zero warnings/errors; the repository gate passes
+**1,857 unit tests** and **307 functional tests**, with **919 optional tests skipped**
+(`campaign-repository.log`). The skipped platform/oracle suites are not claimed
+as executed by this run. The explicit WAT gate is recorded separately below.
+
+`scripts/test-varargs-span.sh` freshly emits its C fixture and builds a separate
+consumer. Both JIT and linux-x64 NativeAOT pass all **15 cases**, each measured for
+20,000 calls after 4,096 warmup calls. All span cases allocate **zero measured
+bytes**, including translated C calls, expanded arguments, explicit storage,
+forward/copy, callbacks and promotions. The benchmark build has zero warnings,
+and its NativeAOT publish has no IL warnings or new span lifetime warnings.
+
+| Expanded pack size | Span bytes/call, JIT and AOT | Array baseline bytes/call |
+| --- | ---: | ---: |
+| 0 | 0 | 0 |
+| 1 | 0 | 40 |
+| 8 | 0 | 152 |
+| 64 | 0 | 1,048 |
+
+Representative expanded-call times for 20,000 calls (span / array baseline):
+JIT 1 argument **1.208 / 1.002 ms**, 8 arguments **4.666 / 4.283 ms**, and
+64 arguments **31.153 / 23.627 ms**; AOT **0.141 / 0.453 ms**,
+**0.285 / 1.651 ms**, and **2.118 / 5.062 ms**, respectively. These are reported
+observations, not timing thresholds or a general speedup claim. The baseline
+isolates array allocation and directly sums values, while the translated path
+also forwards a VaList cursor. Runtime optimization and sampling order affect
+these short timings. Allocation removal is the demonstrated improvement.
+A 64-carrier pack has 1,024 bytes of payload; arbitrary arity/recursive stack use
+is not established. Existing caller-owned arrays remain available for large packs.
+Full outputs are `varargs-span-{jit,aot}.out`, with emission/build/publish logs
+under the same prefix.
+
+The complete `scripts/verify.sh --with-ports` invocation finishes with exit zero
+and **AOT enabled** (`m10-campaign.log`). It freshly verifies the pinned SQLite
+3.53.4 archives and passes:
+
+- Eight native baseline comparisons, all seven translated SQL/API/VFS/vtable/
+  allocation/JSONB/FTS5 corpora, and layout comparisons under JIT and NativeAOT.
+- The separate managed consumer's SQL CRUD, joins, CTE/windows, JSONB, FTS5,
+  registered C# callbacks, nested SQL/GC and WAL workloads under JIT and NativeAOT.
+- Host VFS contract/platform-model checks and independent process locking,
+  crash/recovery, readonly-media, WAL snapshot/checkpoint/growth and integrity
+  campaigns under JIT and NativeAOT, including native-process interoperability.
+- Canonical function identity under source/object linking, JIT and NativeAOT,
+  plus all three native/managed database-image exchange directions.
+- Lua's upstream runner (`final OK !!!`), Chibi's **1,225/1,225 R7RS tests** with
+  unchanged baseline, and the explicit **146/146 WAT execution tests**.
+
+Campaign logs use `campaign-*.log`; port evidence is in `regression-lua.out`,
+`regression-chibi.out` and `regression-wat.log`. Actual SQLite compilation has
+zero errors and the existing 57 warnings; all 28 span-related CS9080 warnings
+from the first intermediate build are removed. Final engine/consumer/host-VFS,
+Lua and Chibi build logs contain no CS9080. The benchmark gate now treats CS9080
+as an error in both build and publish; its final rerun is `m10-varargs-final.log`.
+
+M10 is complete for the documented Linux x64 profile. Other OS execution is not
+claimed. M9 remains plan-only, the offset generator remains removed, and all
+changes are committed locally without pushing.

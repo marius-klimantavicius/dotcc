@@ -3,8 +3,9 @@
 Status: M0–M8 are complete for the documented profile. The translated engine
 includes core, JSON/JSONB and FTS5, with richer managed SQL workloads and canonical
 function-pointer fields verified through source/object linking, JIT and NativeAOT.
-M9 remains design-only. M10 is now active: span-based varargs and a ref-struct
-VaList, with lifetime, semantics and allocation validation.
+M9 remains design-only. M10 is complete: span-based varargs and a ref-struct
+VaList, validated for lifetimes, callbacks, allocation behavior and the full
+SQLite/Lua/Chibi/WAT campaign. See `varargs-span.md` for the managed API change.
 M11 is complete for Linux x64: the product defaults to a real OS-file VFS.
 Windows/macOS implementations and JIT/AOT CI are present but have not run locally.
 M12 is complete for Linux x64 on SQLite 3.53.4: real shared-memory WAL,
@@ -407,38 +408,43 @@ with native, while existing required functionality remains verified.
 This milestone is documentation only in the current phase; no postprocessor,
 rewrites, build hook, or behavior change is authorized by this plan-only request.
 
-### M10 — Span-based varargs and ref-struct VaList (implement now)
+### M10 — Span-based varargs and ref-struct VaList (complete)
 
-- [ ] Change emitted `params VaArg[] x` to
+- [x] Change emitted `params VaArg[] x` to
       `params ReadOnlySpan<VaArg> x`, with `VaList` becoming a **ref struct** holding
       a readonly `ReadOnlySpan<VaArg>` plus a mutable cursor. `VaArg` already is a
       readonly struct; keep its integer/pointer and floating representation.
-- [ ] Inventory every producer/consumer: variadic function declarations and
+- [x] Inventory every producer/consumer: variadic function declarations and
       callbacks, direct/indirect calls, libc formatting, SQLite configuration and
       printf paths, headers/typedef aliases, IR, object metadata/linking and public
       managed APIs. Cover empty/expanded/explicit argument storage and forwarding.
-- [ ] Preserve C default promotions (small integers to int, float to double),
+- [x] Preserve C default promotions (small integers to int, float to double),
       signedness, null/pointer/callback conversion, argument evaluation once and
       left-to-right emitted behavior. Keep `va_start`, `va_arg`, `va_copy` and
       `va_end` behavior: copied lists share borrowed storage but advance independent
       cursors, and forwarding must not accidentally consume the caller's cursor.
-- [ ] Audit C uses of va_list address-taking, fields, globals, arrays, returns,
+- [x] Audit C uses of va_list address-taking, fields, globals, arrays, returns,
       captures, and callbacks. A ref struct cannot escape to heap storage or outlive
       its borrowed span. Specify scoped/ref signatures and diagnostics or explicit
       owned-storage alternatives for incompatible valid-C lifetime patterns; never
       silently generate dangling stack storage or discard supported paths.
-- [ ] Verify compiler/Roslyn language-version support, overload resolution and
+- [x] Verify compiler/Roslyn language-version support, overload resolution and
       managed API compatibility. Do not assume the params modifier guarantees zero
       allocation; inspect emitted code and measure empty/small/large/forwarded
       calls, stack pressure and any required heap-backed fallback.
-- [ ] Add regression coverage for scalar/pointer/function-pointer promotions,
+- [x] Add regression coverage for scalar/pointer/function-pointer promotions,
       nested forwarding, independent va_copy cursors, cleanup and escape rejection.
       Run core/JSONB/FTS5, Lua/Chibi, and JIT/NativeAOT comparisons and allocation
       benchmarks before adopting the representation.
 
-The user has now authorized M10 implementation. Replace the borrowed-pack API,
-retain explicit heap arrays as caller-owned backing storage when needed, and
-validate lifetime restrictions and measured allocations. M9 remains plan-only.
+Completed with `params ReadOnlySpan<VaArg>`, borrowed ref-struct cursors, scoped
+local aliases, explicit lifetime diagnostics and managed variadic callback spans.
+Caller-owned arrays remain available. The full `scripts/verify.sh --with-ports`
+campaign passes with AOT enabled; all 15 span benchmark cases measure zero warmed
+allocations under JIT and NativeAOT. Timings are mixed and are not a general
+throughput claim. API compatibility, conservative lifetime restrictions and stack
+coverage limits are documented in `varargs-span.md`; exact evidence is in
+`validation.md`. M9 remains plan-only.
 
 ### M11 — Real file-backed VFS (complete for the documented platform scope)
 
@@ -478,7 +484,7 @@ SQLite. OS interop is limited to platform services; SQLite and extensions remain
 
 Evidence and OS limitations: [host VFS](host-vfs.md) and the M11 section in
 [validation](validation.md). M11 left BSD, WAL/mmap and concurrent engine calls
-outside its scope; M12 below adds WAL. M9/M10 remain plan-only.
+outside its scope; M12 below adds WAL. M9 remains plan-only; M10 is completed above.
 
 
 ### M12 — WAL shared memory and checkpoint/recovery (complete for the documented platform scope)
@@ -502,10 +508,10 @@ outside its scope; M12 below adds WAL. M9/M10 remain plan-only.
       Run JIT/NativeAOT, managed consumer and maintenance-update corpus regressions.
 - [x] Document WAL opt-in with `PRAGMA journal_mode=WAL`, platform evidence,
       same-host/local-filesystem requirements and serialized in-process calls.
-      Commit often locally; do not push. M9/M10 remain plan-only.
+      Commit often locally; do not push. M9 remains plan-only; M10 is completed above.
 
 Exit: WAL mode succeeds on the ordinary managed host VFS; mapped index sharing,
 locking, snapshots, checkpoints and crash recovery pass against native SQLite.
 
 Evidence: the M12 section in [validation](validation.md). Windows/macOS CI is
-configured but unexecuted locally. M9/M10 remain plan-only.
+configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
