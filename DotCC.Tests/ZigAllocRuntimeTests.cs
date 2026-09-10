@@ -22,6 +22,60 @@ public sealed class ZigAllocRuntimeTests
     private const ushort Oom = 7;
 
     [Fact]
+    public unsafe void Allocator_factories_reuse_pointer_bits_and_preserve_instance_contexts()
+    {
+        byte* firstBuffer = stackalloc byte[64];
+        byte* secondBuffer = stackalloc byte[64];
+        var first = FixedBufferAllocator.Init(firstBuffer, 64);
+        var second = FixedBufferAllocator.Init(secondBuffer, 64);
+        var firstArena = ArenaAllocator.Init(ZigAlloc.CHeap());
+        var secondArena = ArenaAllocator.Init(ZigAlloc.CHeap());
+        try
+        {
+            var heap = ZigAlloc.CHeap();
+            var fba = ZigAlloc.FbaAllocator(&first);
+            var arena = ZigAlloc.ArenaToAllocator(&firstArena);
+            for (int i = 0; i < 30000; i++)
+            {
+                SamePointers(heap.Vtable, ZigAlloc.CHeap().Vtable);
+                SamePointers(fba.Vtable, ZigAlloc.FbaAllocator(&second).Vtable);
+                SamePointers(arena.Vtable, ZigAlloc.ArenaToAllocator(&secondArena).Vtable);
+            }
+            System.GC.Collect();
+            SamePointers(heap.Vtable, ZigAlloc.CHeap().Vtable);
+            SamePointers(fba.Vtable, ZigAlloc.FbaAllocator(&second).Vtable);
+            SamePointers(arena.Vtable, ZigAlloc.ArenaToAllocator(&secondArena).Vtable);
+            ((nuint)ZigAlloc.FbaAllocator(&first).Ctx).ShouldBe((nuint)(&first));
+            ((nuint)ZigAlloc.FbaAllocator(&second).Ctx).ShouldBe((nuint)(&second));
+            ((nuint)ZigAlloc.ArenaToAllocator(&firstArena).Ctx).ShouldBe((nuint)(&firstArena));
+            ((nuint)ZigAlloc.ArenaToAllocator(&secondArena).Ctx).ShouldBe((nuint)(&secondArena));
+            foreach (var allocator in new[] { heap, fba, arena, ZigAlloc.FbaAllocator(&second), ZigAlloc.ArenaToAllocator(&secondArena) })
+            {
+                var result = allocator.Alloc<int>(1, Oom);
+                result.IsErr.ShouldBeFalse();
+                result.Value[0] = 42;
+                result.Value[0].ShouldBe(42);
+                allocator.Free(result.Value);
+            }
+            first.EndIndex.ShouldBe(0UL);
+            second.EndIndex.ShouldBe(0UL);
+        }
+        finally
+        {
+            firstArena.Deinit();
+            secondArena.Deinit();
+        }
+    }
+
+    private static unsafe void SamePointers(AllocatorVTable expected, AllocatorVTable actual)
+    {
+        ((nuint)actual.alloc).ShouldBe((nuint)expected.alloc);
+        ((nuint)actual.resize).ShouldBe((nuint)expected.resize);
+        ((nuint)actual.remap).ShouldBe((nuint)expected.remap);
+        ((nuint)actual.free).ShouldBe((nuint)expected.free);
+    }
+
+    [Fact]
     public unsafe void Devirt_c_heap_alloc_writes_reads_and_frees()
     {
         var r = ZigAlloc.AllocCHeap<byte>(4, Oom);

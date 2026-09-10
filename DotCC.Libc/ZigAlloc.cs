@@ -34,9 +34,9 @@ namespace DotCC.Libc;
 /// Zig-internal abstraction), and a managed function pointer targets a plain <c>static</c>
 /// method with no <c>[UnmanagedCallersOnly]</c> ceremony, which keeps the whole file
 /// AOT-clean. The vtable is carried <b>by value</b> inside <see cref="Allocator"/> (rather
-/// than a <c>*const VTable</c>) so there is no managed-static address to pin — the fn-ptr
-/// targets are themselves address-stable, so the table is rebuilt cheaply at each
-/// materialization point.
+/// than a <c>*const VTable</c>) so there is no managed-static address to pin. Each method
+/// address is captured once in a static readonly table; materialization copies those
+/// canonical pointer bits, preserving identity across JIT entry-point changes.
 /// </para>
 /// </remarks>
 public unsafe struct AllocatorVTable
@@ -259,6 +259,23 @@ public unsafe struct ArenaAllocator
 /// </summary>
 public static unsafe class ZigAlloc
 {
+    // Repeated &Method evaluations may produce different managed entry points.
+    // Cache each vtable once; allocator instances keep their own context pointer.
+    private static readonly AllocatorVTable CHeapVtable = new()
+    {
+        alloc = &CHeapAlloc, resize = &CHeapResize, remap = &CHeapRemap, free = &CHeapFree
+    };
+
+    private static readonly AllocatorVTable FbaVtable = new()
+    {
+        alloc = &FbaAlloc, resize = &FbaResize, remap = &FbaRemap, free = &FbaFree
+    };
+
+    private static readonly AllocatorVTable ArenaVtable = new()
+    {
+        alloc = &ArenaAlloc, resize = &ArenaResize, remap = &ArenaRemap, free = &ArenaFree
+    };
+
     /// <summary>The byte alignment dotcc requests for an element type <typeparamref name="T"/> — the
     /// largest power of two ≤ <c>min(sizeof(T), 16)</c>. The single source of truth: both the vtable
     /// path (<see cref="Allocator"/>) and the devirtualized allocator sites feed it, so a given
@@ -299,7 +316,7 @@ public static unsafe class ZigAlloc
     /// <c>std.mem.Allocator</c> sink (a parameter / return), where it must become a real
     /// fat-pointer value. Its vtable still reaches <see cref="Libc.malloc"/>/<see cref="Libc.free"/>.</summary>
     public static Allocator CHeap()
-        => new() { Ctx = null, Vtable = new AllocatorVTable { alloc = &CHeapAlloc, resize = &CHeapResize, remap = &CHeapRemap, free = &CHeapFree } };
+        => new() { Ctx = null, Vtable = CHeapVtable };
 
     /// <summary>The <b>devirtualized</b> <c>page_allocator.alloc(T, n)</c> — a direct
     /// <see cref="Libc.malloc"/>, no vtable load. Emitted whenever the lowering proves the
@@ -402,7 +419,7 @@ public static unsafe class ZigAlloc
     /// returned allocator is valid only while that <see cref="FixedBufferAllocator"/> local is
     /// alive (the same stack-lifetime rule as Zig).</summary>
     public static Allocator FbaAllocator(FixedBufferAllocator* self)
-        => new() { Ctx = self, Vtable = new AllocatorVTable { alloc = &FbaAlloc, resize = &FbaResize, remap = &FbaRemap, free = &FbaFree } };
+        => new() { Ctx = self, Vtable = FbaVtable };
 
     /// <summary>The <b>FBA-site-devirtualized</b> <c>a.alloc(T, n)</c> (Milestone U) — a direct FBA
     /// bump with no vtable load, emitted when the lowering proves <c>a</c> is a particular
@@ -537,7 +554,7 @@ public static unsafe class ZigAlloc
     /// context is the arena and whose vtable bump-allocates it. Valid only while the
     /// <see cref="ArenaAllocator"/> local is alive (the same stack-lifetime rule as Zig).</summary>
     public static Allocator ArenaToAllocator(ArenaAllocator* self)
-        => new() { Ctx = self, Vtable = new AllocatorVTable { alloc = &ArenaAlloc, resize = &ArenaResize, remap = &ArenaRemap, free = &ArenaFree } };
+        => new() { Ctx = self, Vtable = ArenaVtable };
 
     /// <summary><c>arena.deinit()</c> — free the whole chunk chain. A static wrapper over
     /// <see cref="ArenaAllocator.Deinit"/> (called by-ref on the local, like <see cref="ArenaToAllocator"/>).</summary>
