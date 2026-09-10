@@ -106,3 +106,12 @@ project with inlined Cond.B calls and standalone empty blocks removed.
 `scripts/build.sh` and the normal dotcc pipeline do not run this pass.
 The explicit `scripts/test-postprocess.py <snapshot> --aot --corpora` gate compares
 original and optimized SQL, threading, mmap/WAL and native corpus behavior.
+
+For in-place editing in Rider, build
+`DotCC.PostProcess.CodeFixes/DotCC.PostProcess.CodeFixes.csproj` in Release from
+the repository root, then reload the generated SQLite project in Rider.
+SQLite's design-time build adds the analyzer and code-fix references. Use
+Alt+Enter on `DCCPP001` (Cond.B) or `DCCPP002` (empty blocks), with Fix All for a
+document/project/solution. These suggestions do not edit files during a build.
+See the [Rider instructions](../../docs/postprocess.md#rider-in-place-fixes) for
+settings, packaging and disabling the optional IDE integration.

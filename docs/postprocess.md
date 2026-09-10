@@ -1,4 +1,4 @@
-# Standalone Roslyn source post-processing
+# Roslyn source post-processing
 
 `DotCC.PostProcess` is an explicit tool for an already emitted .NET 10 C# project.
 Run it after dotcc finishes its normal emission/linking/build actions. It has no
@@ -6,6 +6,8 @@ compiler or SQLite build hook, and introduces no Roslyn dependency into
 `DotCC.Lib`, the dotcc executable, or translated applications. The tool references
 the Roslyn assemblies shipped with the .NET 10 SDK used to build it. It inlines
 proven `Cond.B` calls, then removes standalone empty blocks for readability.
+The optional [Rider analyzer and code fix](#rider-in-place-fixes) applies the same
+rewrites directly to documents through IDE quick-fixes.
 
 From the repository root:
 
@@ -104,12 +106,93 @@ Win32 resources or unsupported compiler switches are rejected with a diagnostic.
 Snapshot projects use response files internally, so feed the original emitted
 project to a new invocation instead of feeding a snapshot back to the CLI. The
 pure tree rewriter itself can be applied repeatedly without additional edits.
-This is not a general MSBuild project migration tool or a Rider analyzer.
+The standalone command is not a general MSBuild project migration tool. Rider
+integration is provided by the separate analyzer/code-fix assemblies below.
+
+## Rider in-place fixes
+
+Build the IDE tooling from the repository root:
+
+```sh
+dotnet build DotCC.PostProcess.CodeFixes/DotCC.PostProcess.CodeFixes.csproj -c Release
+```
+
+Reload `sqlite/generated/TranslatedSqlite/TranslatedSqlite.csproj` in Rider.
+`sqlite/Directory.Build.targets` references the two built assemblies during
+design-time compilation, so suggestions appear on the original emitted C#.
+Those references are omitted from ordinary builds and standalone postprocessor
+evaluation. Set `DotCCDisablePostProcessAnalyzer=true` to disable SQLite's IDE
+integration. Build the tooling again after changing it; reload Rider's project
+or restart the IDE if it still has the previous assemblies loaded.
+
+Select a suggestion and use **Alt+Enter** to preview/apply its quick-fix:
+
+| Diagnostic | Action |
+| --- | --- |
+| `DCCPP001` | Inline the proven `Cond.B` call, including supported CBool normalization/read pairs. |
+| `DCCPP002` | Remove the standalone empty block, including nested blocks that become empty. |
+
+Each action offers **Fix All in document, project or solution**. Fix All handles
+each affected document in one tree pass per rule instead of compiling once per
+diagnostic. Run it once for each rule to apply both transformations. A single
+fix includes eligible nested expressions/blocks within the selected diagnostic,
+while leaving unrelated siblings alone. Analysis and builds only report
+suggestions; applying a code action is what edits the source. Regenerating with
+dotcc will replace edits to generated files.
+
+Both diagnostics have default severity `suggestion` and intentionally analyze
+generated files. They honor standard diagnostic suppression. For example:
+
+```ini
+[*.cs]
+dotnet_diagnostic.DCCPP001.severity = suggestion
+dotnet_diagnostic.DCCPP002.severity = suggestion
+```
+
+Rider's **Editor | Inspection Settings | Roslyn Analyzers** setting must be
+enabled. JetBrains documents [analyzer references and quick-fix support](https://www.jetbrains.com/help/rider/Using_NET_Compiler_Analyzers.html)
+and [file/project/solution scoped Roslyn fixes](https://blog.jetbrains.com/dotnet/2025/02/24/rider-2025-1-eap-5/).
+Use these quick-fixes rather than assuming Rider's general Reformat action runs
+the analyzer fixes.
+
+For another project, reference both assemblies from the same directory:
+
+```xml
+<ItemGroup>
+  <Analyzer Include="path/to/DotCC.PostProcess.Analyzers.dll" />
+  <Analyzer Include="path/to/DotCC.PostProcess.CodeFixes.dll" />
+</ItemGroup>
+```
+
+Alternatively, build the local NuGet package and install `DotCC.PostProcess.Rider`
+from that directory using Rider's NuGet client. Nothing is published by this command:
+
+```sh
+dotnet pack DotCC.PostProcess.CodeFixes/DotCC.PostProcess.CodeFixes.csproj \
+  -c Release -o sqlite/artifacts/packages
+```
+
+Use `PrivateAssets="all"` on a package reference. The package contains only the
+two assemblies in `analyzers/dotnet/cs`, with no application runtime assets or
+dependencies. The analyzer targets .NET Standard 2.0 and Roslyn 4.14; the code fix
+also uses the IDE's Roslyn Workspaces/MEF services. Neither assembly is a
+dependency of dotcc, its compiler library, or translated applications. For
+projects with explicit analyzer/package references, remove those references
+before feeding the project to the standalone command, whose input contract
+still rejects custom analyzers. SQLite's design-time-only wiring avoids this.
+
+The IDE and standalone tool compile the same source files for rewrite proofs,
+observable-context checks and empty-block cleanup. Documents with compiler
+errors are skipped until bindings are valid. Edits retain trivia and are
+serialized/reparsed and semantically checked before being returned to the IDE;
+no whole-document formatter is invoked. Source-generator outputs are not editable
+workspace documents, so apply these fixes to dotcc's on-disk emitted C#.
 
 ## Verification
 
 ```sh
 dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj -c Release
+dotnet test DotCC.PostProcess.Analyzers.Tests/DotCC.PostProcess.Analyzers.Tests.csproj -c Release
 python3 DotCC.PostProcess.Tests/cli-smoke.py \
   --tool DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll
 python3 sqlite/scripts/test-postprocess.py \
@@ -125,3 +208,17 @@ runtime and managed allocations; build timings and source/assembly sizes are
 saved under `sqlite/artifacts/postprocess/`. Timings are observations, not pass
 thresholds or a promised speedup: JIT/AOT may already inline the original helpers.
 See [SQLite validation](../sqlite/docs/validation.md) for measured results.
+
+The IDE tests run real diagnostic and code-action APIs, including MEF discovery,
+single fixes, all three Fix All scopes, generated files and suppressions. To
+check packaging and compare the IDE Fix All output against a standalone SQLite
+snapshot (absolute path required for the test environment variable):
+
+```sh
+python3 DotCC.PostProcess.Analyzers.Tests/package-smoke.py \
+  --package sqlite/artifacts/packages/DotCC.PostProcess.Rider.0.1.0.nupkg \
+  --sqlite-project sqlite/generated/TranslatedSqlite/TranslatedSqlite.csproj
+DOTCC_POSTPROCESS_SQLITE_SNAPSHOT="$PWD/sqlite/generated/postprocess-empty-blocks" \
+  dotnet test DotCC.PostProcess.Analyzers.Tests/DotCC.PostProcess.Analyzers.Tests.csproj \
+  -c Release --filter FullyQualifiedName~Sqlite_fix_all_matches_standalone_output
+```

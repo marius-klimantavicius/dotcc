@@ -94,3 +94,8 @@ produce original/optimized project snapshots. It uses semantic syntax-tree
 rewrites for Cond.B followed by standalone empty-block cleanup. It is never
 invoked by the compiler or SQLite build helper and adds no Roslyn dependency
 to their runtime closure.
+
+The optional Rider analyzer/code-fix projects compile the same rewrite source
+files and expose IDE suggestions with document/project/solution Fix All. Their
+.NET Standard 2.0 assemblies are development tooling; SQLite references them
+only in design-time builds after the tooling has been built in Release.

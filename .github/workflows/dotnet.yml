@@ -17,7 +17,8 @@ name: ci
 # Windows job reuses the same separate restore→build→test step structure, so it
 # stays clear of the LALR.CC.dll copy-lock flake the org switched away from.
 #
-# dotcc ships no NuGet package, so there is no PACK job (unlike LALR.CC). It does,
+# The optional IDE analyzer package is packed and smoke-tested locally in the
+# Linux build job; nothing is published. There is no separate PACK job. dotcc does,
 # though, publish the clang-shaped `dotcc` exe as NativeAOT (PublishAot=true), and
 # nothing else here exercises the EXE's ILC closure — shared-lib-oracle drives ILC
 # only for the -shared .so. So an aot-publish job below publishes + smoke-tests the
@@ -133,6 +134,14 @@ jobs:
       - name: Standalone postprocessor semantic tests
         run: dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj -c Release --no-build --nologo
 
+      - name: Analyzer and code-fix tests
+        run: dotnet test DotCC.PostProcess.Analyzers.Tests/DotCC.PostProcess.Analyzers.Tests.csproj -c Release --no-build --nologo
+
+      - name: Pack and load the optional IDE analyzer
+        run: |
+          dotnet pack DotCC.PostProcess.CodeFixes/DotCC.PostProcess.CodeFixes.csproj -c Release --no-build -o artifacts/analyzers --nologo
+          python3 DotCC.PostProcess.Analyzers.Tests/package-smoke.py --package artifacts/analyzers/DotCC.PostProcess.Rider.0.1.0.nupkg
+
   build-test-windows:
     runs-on: windows-latest
     steps:
@@ -161,6 +170,9 @@ jobs:
 
       - name: Standalone postprocessor semantic tests
         run: dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj -c Release --no-build --nologo
+
+      - name: Analyzer and code-fix tests
+        run: dotnet test DotCC.PostProcess.Analyzers.Tests/DotCC.PostProcess.Analyzers.Tests.csproj -c Release --no-build --nologo
 
   build-test-windows-arm64:
     runs-on: windows-11-arm
@@ -191,6 +203,9 @@ jobs:
 
       - name: Standalone postprocessor semantic tests
         run: dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj -c Release --no-build --nologo
+
+      - name: Analyzer and code-fix tests
+        run: dotnet test DotCC.PostProcess.Analyzers.Tests/DotCC.PostProcess.Analyzers.Tests.csproj -c Release --no-build --nologo
 
   wat-oracle:
     runs-on: ubuntu-latest

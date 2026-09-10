@@ -1140,3 +1140,54 @@ passes for both variants and runtimes, covering locking, WAL, crash recovery and
 file aliases. Transcripts match (`artifacts/empty-block-differentials.log`). This
 follow-up reruns the consumer/VFS/threading gate; the separate executable corpus
 campaign was last run for M9 above.
+
+## Rider analyzer and in-place code fixes (2026-09-10)
+
+The optional `DotCC.PostProcess.Analyzers` and `DotCC.PostProcess.CodeFixes`
+assemblies target .NET Standard 2.0 and Roslyn 4.14. They compile the same
+condition proof, observable-context and empty-block rewrite source as the
+standalone tool. `DCCPP001` offers Cond.B inlining; `DCCPP002` offers standalone
+empty-block removal. Both expose individual fixes and document/project/solution
+Fix All through Roslyn code actions. The SQLite targets add the built assemblies
+only for design-time compilation; normal builds remain analysis-free for these
+rules, and the standalone CLI retains its existing input contract.
+
+All **31 IDE regressions** pass (`artifacts/rider-analyzer-tests.log`): all current
+argument overloads, typed/function pointers, CBool and nested calls, source
+positions after nested block removal, required bodies, caller line/argument
+information, directives, generated sources, suppressions, unknown helpers,
+invalid documents, Fix All scopes and rule isolation, and MEF discovery. The
+existing **49 standalone tests** and CLI smoke also pass after extracting the
+shared implementation (`artifacts/rider-standalone-tests.log` and
+`artifacts/rider-standalone-cli-smoke.log`).
+
+The separately enabled full SQLite IDE test passes against
+`generated/postprocess-empty-blocks`: **24,123 Cond.B diagnostics and 2,208
+empty-block diagnostics** are fixed through the code-action API. Every resulting
+source file **exactly matches the standalone optimized snapshot** previously
+verified under JIT and NativeAOT. The final IDE compilation emits successfully
+and reports no remaining postprocessor diagnostics. The test takes **31.34 s**
+including repeated diagnostic runs, both Fix All passes, exact comparisons,
+semantic revalidation and assembly emission (`artifacts/rider-sqlite-fixall.log`).
+It edits an in-memory workspace, preserving the on-disk SQLite sources.
+
+The local `DotCC.PostProcess.Rider.0.1.0.nupkg` is built under
+`artifacts/packages/`, with only the two analyzer/code-fix DLLs and no runtime
+assets or dependency packages. The package smoke uses a fresh NuGet cache,
+loads both diagnostics through the real compiler, checks unchanged input source
+and application output, and verifies no analyzer/Roslyn application dependency.
+It also evaluates SQLite with ordinary, design-time and explicitly disabled
+IDE settings, finding respectively zero, two and zero tooling references
+(`artifacts/rider-package-smoke.log`). No package is published.
+
+The local verification exercises Roslyn analysis, MEF discovery and actual code
+actions; it does not drive the Rider UI. See the
+[Rider usage instructions](../../docs/postprocess.md#rider-in-place-fixes) for
+project reload and quick-fix settings. CI runs the IDE tests in all three
+standard platform jobs and the package smoke on Linux; remote CI has not run in
+this session.
+
+The final solution Release build succeeds with zero errors
+(`artifacts/rider-solution-build.log`). Its 14 xUnit1051 cancellation suggestions
+are in the pre-existing standalone empty-block tests; the new IDE projects build
+without warnings.

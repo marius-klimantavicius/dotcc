@@ -42,3 +42,7 @@ produce original/optimized project snapshots. It uses semantic syntax-tree
 rewrites for Cond.B followed by standalone empty-block cleanup. It is never
 invoked by the compiler or SQLite build helper and adds no Roslyn dependency
 to their runtime closure.
+
+For in-place IDE edits, the separate [Rider analyzer/code fix](postprocess.md#rider-in-place-fixes)
+offers the same transformations as quick-fixes with Fix All. This does not add
+a dotcc CLI flag or automatically edit emitted sources.

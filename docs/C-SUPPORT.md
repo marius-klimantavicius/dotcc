@@ -762,3 +762,6 @@ remain unchanged. A subsequent syntax-tree cleanup removes standalone empty
 blocks while retaining required bodies, comments and directives.
 Semantic/execution regressions live in `DotCC.PostProcess.Tests`;
 this adds no new C syntax, compiler behavior, or runtime dependency.
+
+The optional [Rider analyzer/code fix](postprocess.md#rider-in-place-fixes) shares
+these rewrites and offers in-place fixes and Fix All through IDE suggestions.

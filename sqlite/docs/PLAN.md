@@ -428,6 +428,12 @@ not required for this version.
       bodies, labels, nonempty scopes, directives, comments, line breaks and
       captured caller-argument text. Cover nested blocks and top-level entry
       points, then retry the standalone processor on translated SQLite.
+- [x] Add an optional Rider-compatible analyzer and code fix using the same
+      semantic/tree rewrite implementation. Offer separate Cond.B and empty-block
+      diagnostics, individual fixes and document/project/solution Fix All.
+      Preserve generated-source support, suppressions and observable contexts;
+      verify IDE code-action output against standalone SQLite output. Keep
+      analysis read-only until an IDE action is explicitly applied.
 
 ### M10 — Span-based varargs and ref-struct VaList (complete)
 
