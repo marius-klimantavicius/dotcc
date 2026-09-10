@@ -99,7 +99,7 @@ internal static unsafe class Program
         try
         {
             Require((flags & 3) == 1, "readonly returned flag");
-            Require(first->pMethods->iVersion == 1 && first->pMethods->xShmMap == null, "rollback I/O methods");
+            Require(first->pMethods->iVersion == 2 && first->pMethods->xShmMap != null && first->pMethods->xShmLock != null && first->pMethods->xShmBarrier != null && first->pMethods->xShmUnmap != null, "WAL I/O methods");
             byte* data = stackalloc byte[8];
             for (int i = 0; i < 8; i++) data[i] = (byte)(i + 1);
             Require(first->pMethods->xWrite(first, data, 8, 4096) == 0, "offset write");
@@ -200,7 +200,6 @@ internal static unsafe class Program
         try
         {
             Require(Query(db, "PRAGMA journal_mode") == "delete", "rollback journal default");
-            Require(Query(db, "PRAGMA journal_mode=WAL") == "delete", "WAL unavailable without shared-memory methods");
             Require(Execute(db, "PRAGMA synchronous=FULL;CREATE TABLE data(id INTEGER PRIMARY KEY, value BLOB);INSERT INTO data VALUES(1,jsonb('{\"name\":\"λ\",\"n\":42}'));CREATE VIRTUAL TABLE docs USING fts5(body);INSERT INTO docs VALUES('café database search');") == 0, "SQL/JSONB/FTS create");
             Require(Execute(db, "BEGIN;UPDATE data SET value=jsonb('{}');ROLLBACK;") == 0, "rollback");
         }

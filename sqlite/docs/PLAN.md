@@ -6,6 +6,7 @@ function-pointer fields verified through source/object linking, JIT and NativeAO
 M9 and M10 remain design-only future work; neither optimization was implemented.
 M11 is complete for Linux x64: the product defaults to a real OS-file VFS.
 Windows/macOS implementations and JIT/AOT CI are present but have not run locally.
+M12 is active: enable real shared-memory WAL and validate checkpoints/recovery.
 See `validation.md` for completed checks and `usage.md` for build commands.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
@@ -476,3 +477,30 @@ SQLite. OS interop is limited to platform services; SQLite and extensions remain
 Evidence and OS limitations: [host VFS](host-vfs.md) and the M11 section in
 [validation](validation.md). BSD, WAL/mmap and concurrent engine calls remain
 outside this milestone; M9/M10 remain plan-only.
+
+
+### M12 — WAL shared memory and checkpoint/recovery (implement now)
+
+- [ ] Move the pinned unchanged SQLite inputs to the 3.50.7 maintenance release,
+      which fixes the upstream WAL-reset race; verify hashes and rerun translation.
+- [ ] Advertise version-2 I/O methods on `dotcc-host`: file-backed shared mappings,
+      SQLite-compatible shared/exclusive shm range locks, memory barriers and
+      unmap/cleanup. Preserve live mapping addresses during region growth and
+      coordinate initialization/dead-man locks with native SQLite on each OS.
+- [ ] Handle multiple same-process connections and separate processes, readonly
+      databases, missing/stale shm files, failed lock/map operations and cleanup.
+      Keep Linux/Windows/macOS runtime selection and explicit unsupported-platform
+      behavior. Database mmap (`xFetch`) is independent and remains disabled.
+- [ ] Add raw shared-memory contracts and SQL WAL tests for snapshots, single
+      writer contention, stale-reader upgrades, savepoints, JSONB/FTS5, all
+      checkpoint modes, multiple index regions, close/reopen and switching back
+      to DELETE. Preserve rollback-journal and deterministic-memory regressions.
+- [ ] Compare independent native/managed processes, including abrupt termination
+      after committed and uncommitted WAL writes and rebuilding a missing index.
+      Run JIT/NativeAOT, managed consumer and maintenance-update corpus regressions.
+- [ ] Document WAL opt-in with `PRAGMA journal_mode=WAL`, platform evidence,
+      same-host/local-filesystem requirements and serialized in-process calls.
+      Commit often locally; do not push. M9/M10 remain plan-only.
+
+Exit: WAL mode succeeds on the ordinary managed host VFS; mapped index sharing,
+locking, snapshots, checkpoints and crash recovery pass against native SQLite.
