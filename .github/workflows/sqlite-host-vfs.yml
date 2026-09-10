@@ -1,0 +1,131 @@
+name: sqlite-host-vfs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  host-vfs:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_CLI_UI_LANGUAGE: en
+      PYTHONUTF8: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+      - name: Install Linux NativeAOT prerequisites
+        if: runner.os == 'Linux'
+        shell: bash
+        run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+      # Windows runner images include Visual Studio's C++ tools; macOS images
+      # include Xcode's command-line tools. NativeAOT publish verifies both.
+      - name: Resolve actual .NET architecture and isolate temporary files
+        run: |
+          $information = dotnet --info | Out-String
+          if ($LASTEXITCODE -ne 0) { throw 'dotnet --info failed' }
+          Write-Output $information
+          $match = [regex]::Match($information, '(?m)^\s*RID:\s+((linux|win|osx)-(x64|arm64))\s*$')
+          if (!$match.Success) { throw 'Unsupported or unrecognized .NET host RID' }
+          $rid = $match.Groups[1].Value
+          $expectedOS = @{ Linux = 'linux'; Windows = 'win'; macOS = 'osx' }[$env:RUNNER_OS]
+          if (!$expectedOS -or !$rid.StartsWith($expectedOS + '-')) { throw "Host RID $rid disagrees with runner OS" }
+          $root = Join-Path $env:GITHUB_WORKSPACE 'sqlite'
+          foreach ($directory in @('artifacts', 'artifacts/tmp', 'build', 'generated')) {
+            New-Item -ItemType Directory -Force (Join-Path $root $directory) | Out-Null
+          }
+          $temporary = Join-Path $root 'artifacts/tmp'
+          @("SQLITE_HOST_RID=$rid", "TMPDIR=$temporary", "TMP=$temporary", "TEMP=$temporary") |
+            Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          $information | Out-File (Join-Path $root 'artifacts/host-vfs-ci-environment.log')
+      - name: Build dotcc with the pinned NuGet parser
+        run: |
+          dotnet build DotCC/DotCC.csproj -c Release -p:UseLocalLalrCc=false --nologo 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-compiler.log
+          if ($LASTEXITCODE -ne 0) { throw 'dotcc build failed' }
+      - name: Fetch and verify pinned SQLite sources
+        run: |
+          python sqlite/scripts/fetch.py 2>&1 | Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-fetch.log
+          if ($LASTEXITCODE -ne 0) { throw 'SQLite source fetch failed' }
+      - name: Emit SQLite with managed host VFS integration
+        run: |
+          # Equivalent to emit-engine.sh, using native paths on every runner.
+          $root = Join-Path $env:GITHUB_WORKSPACE 'sqlite'
+          $definitions = @(Get-Content (Join-Path $root 'config/defines.txt') |
+            ForEach-Object { $_.Trim() } | Where-Object { $_ -and !$_.StartsWith('#') } |
+            ForEach-Object { '-D' + $_ })
+          $arguments = @('-std=c17') + $definitions + @('-DDOTCC_HOST_VFS=1',
+            '-I', (Join-Path $root 'ref/sqlite-amalgamation-3500400'),
+            '-I', (Join-Path $root 'src'), (Join-Path $root 'src/engine.c'),
+            '--emit=managedlib', '-o', (Join-Path $root 'generated/TranslatedSqlite'))
+          dotnet DotCC/bin/Release/net10.0/dotcc.dll @arguments 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-emission.log
+          if ($LASTEXITCODE -ne 0) { throw 'SQLite translation failed' }
+      - name: Build host VFS contracts
+        run: |
+          dotnet build sqlite/tests/HostVfsTests/HostVfsTests.csproj -c Release --nologo 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-jit-build.log
+          if ($LASTEXITCODE -ne 0) { throw 'Host VFS test build failed' }
+      - name: Run JIT raw I/O and SQL contracts
+        run: |
+          $assembly = Join-Path $env:GITHUB_WORKSPACE 'sqlite/tests/HostVfsTests/bin/Release/net10.0/HostVfsTests.dll'
+          dotnet $assembly 2>&1 | Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-jit-contracts.log
+          if ($LASTEXITCODE -ne 0) { throw 'JIT host VFS contracts failed' }
+      - name: Run JIT process locking and recovery contracts
+        run: |
+          $assembly = Join-Path $env:GITHUB_WORKSPACE 'sqlite/tests/HostVfsTests/bin/Release/net10.0/HostVfsTests.dll'
+          python sqlite/scripts/test-host-vfs-processes.py --managed dotnet $assembly 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-jit-processes.log
+          if ($LASTEXITCODE -ne 0) { throw 'JIT host VFS process contracts failed' }
+      - name: Publish host VFS contracts with NativeAOT
+        run: |
+          dotnet publish sqlite/tests/HostVfsTests/HostVfsTests.csproj -c Release -r $env:SQLITE_HOST_RID `
+            -p:PublishAot=true -o sqlite/artifacts/host-vfs-ci-aot --nologo 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-aot-build.log
+          if ($LASTEXITCODE -ne 0) { throw 'Host VFS NativeAOT publish failed' }
+      - name: Run NativeAOT raw I/O and SQL contracts
+        run: |
+          $name = if ($IsWindows) { 'HostVfsTests.exe' } else { 'HostVfsTests' }
+          $executable = Join-Path $env:GITHUB_WORKSPACE "sqlite/artifacts/host-vfs-ci-aot/$name"
+          & $executable 2>&1 | Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-aot-contracts.log
+          if ($LASTEXITCODE -ne 0) { throw 'NativeAOT host VFS contracts failed' }
+      - name: Run NativeAOT process locking and recovery contracts
+        run: |
+          $name = if ($IsWindows) { 'HostVfsTests.exe' } else { 'HostVfsTests' }
+          $executable = Join-Path $env:GITHUB_WORKSPACE "sqlite/artifacts/host-vfs-ci-aot/$name"
+          python sqlite/scripts/test-host-vfs-processes.py --managed $executable 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-aot-processes.log
+          if ($LASTEXITCODE -ne 0) { throw 'NativeAOT host VFS process contracts failed' }
+      - name: Preserve platform diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sqlite-host-vfs-${{ matrix.os }}
+          path: |
+            sqlite/artifacts/host-vfs*.log
+            sqlite/artifacts/host-vfs*.out
+          if-no-files-found: ignore
