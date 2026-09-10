@@ -46,7 +46,7 @@ cleanly without it).
 ## The working method (do NOT deviate)
 
 1. Re-run the link (`bash link.sh all`) to get the current C# compile-error wall.
-2. Pick the largest / most-systemic error family. Look at the *emitted* `build/Program.cs`
+2. Pick the largest / most-systemic error family. Look at the *emitted* `build/DotCcProgram.cs`
    lines and trace each back to the C source shape that produced it.
 3. **Reduce to a minimal C reproducer** (`/tmp/foo.c`, emit with
    `dotnet "$DLL" --emit=file /tmp/foo.c`), find the emitter root cause, fix **dotcc**.

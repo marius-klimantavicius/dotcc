@@ -44,7 +44,7 @@ dotnet run --project DotCC -c Release -- examples/hello/main.c examples/hello/ma
 dotnet run --project DotCC -c Release -- --emit=file examples/hello/main.c examples/hello/math.c > out.cs
                                                        # single .NET 10 file-based program with #:property AllowUnsafeBlocks
 dotnet run --project DotCC -c Release -- --emit=build examples/hello/main.c examples/hello/math.c -o build/
-                                                       # write Program.cs + csproj, then `dotnet build -c Release` in -o dir
+                                                       # write DotCcProgram.cs + csproj, then `dotnet build -c Release` in -o dir
 dotnet run --project DotCC -c Release -- -E examples/hello/main.c
                                                        # preprocess-only: dump post-#include/#define token stream
 

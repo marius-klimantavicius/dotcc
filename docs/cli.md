@@ -5,11 +5,11 @@
 
 | Flag | Meaning |
 |---|---|
-| `dotcc <a.c> <b.c>` | Compile translation units (whole-program). Default: write `Program.cs + dotcc-out.csproj` to `./a.out-cs/`. **`.cs` inputs are object fragments → linked** (see `--emit=obj`). |
+| `dotcc <a.c> <b.c>` | Compile translation units (whole-program). Default: write `DotCcProgram.cs + dotcc-out.csproj` to `./a.out-cs/`. **`.cs` inputs are object fragments → linked** (see `--emit=obj`). |
 | `dotcc zig test <f.zig>` | **Subcommand** (zig-CLI-shaped). Compile the input's `test "…" {}` blocks and **run** them (like `zig test`): each block lowers to an `anyerror!void` function, and a generated entry point runs each, printing `OK`/`FAIL` per test + a summary, exiting non-zero if any fails. `main` is ignored. Assertions: curated `std.testing.expect`/`expectEqual`. Emits a self-contained file-based program and runs it via `dotnet run` (CLI-tool territory, like `--emit=build`). The harness for running real `std` tests from source (road-to-zig-std). Other `zig` subcommands (`build`/`cc`/`build-exe`/`run`) are future scope. |
 | `-o <path>` | Output: a directory for csproj/build, a file for `file`/`obj`. **Inferred when omitted** (`obj` → `<src>.cs`, csproj/build → `./a.out-cs/`, file → stdout). |
 | `--emit=file` | Single .NET 10 file-based program (`#:property AllowUnsafeBlocks=true`). To `-o <file>` if given, else stdout. |
-| `--emit=csproj` | Default — `Program.cs` + paired csproj to `-o` dir. |
+| `--emit=csproj` | Default — `DotCcProgram.cs` + paired csproj to `-o` dir. |
 | `--emit=build` | As `csproj`, then run `dotnet build -c Release` in the output dir. |
 | `--emit=managedlib` | Emit a reusable managed library with public functions and aggregate types. Add `-c` to compile it. |
 | `--class-name <name>` | Set the generated API class for `--emit=managedlib` or `-shared` (default `DotCcLib`). Applies to whole-program emission and object linking; specify it at link time, not with `--emit=obj`. Accepts a single ASCII identifier, optionally `@`-escaped; keywords are escaped automatically. Executable, preprocessing and WAT modes reject this option. |
@@ -71,18 +71,19 @@ dotcc engine.c --emit=managedlib --class-name Sqlite --split=size --split-size=2
 ```
 
 All translated methods belong to the same partial class (`DotCcProgram` for
-executables or the configured library class). `Program.cs` retains entry-point
+executables or the configured library class). `{class_name}.cs` retains entry-point
 wiring, runtime, types, globals and initialization so field initialization order
 is preserved. Canonical pointer aliases are emitted once in
-`Dotcc.GlobalUsings.g.cs`. Function files use the owning class name:
+`{class_name}.GlobalUsings.g.cs`. Function files use the owning class name:
 `Sqlite.00000.cs` in size mode, or `Sqlite.sqlite3_open.cs` in function mode.
 Only filename collisions receive a numeric suffix, such as `Sqlite.open.2.cs`;
 comparison is case-insensitive for portability. C# identifier escapes (`@`) are
-omitted from filenames.
+omitted from filenames. For the examples above, the shared files are `Sqlite.cs`
+and `Sqlite.GlobalUsings.g.cs`; unsplit output also uses `Sqlite.cs`.
 
 Size mode counts UTF-8 bytes including the file header and closing braces. The
 threshold is a grouping target, not a hard limit: a whole function can exceed it,
-and the final group can be smaller. The shared `Program.cs` and alias file are
+and the final group can be smaller. The shared `{class_name}.cs` and alias file are
 not subject to this target. No C# parsing or Roslyn dependency is added to dotcc;
 the backend supplies function boundaries. Newly emitted objects preserve those
 boundaries; old objects still link normally but must be regenerated for splitting.
@@ -140,4 +141,4 @@ requiring typedef names, function-like macro calls, or nonprimitive C# constant
 types are currently omitted. Macro names colliding with emitted members/types
 or the API class are omitted too. Across translation units/objects, identical
 fields coalesce and conflicting definitions are omitted rather than picking one
-translation unit's value. Constants remain in `Program.cs` for every split mode.
+translation unit's value. Constants remain in `{class_name}.cs` for every split mode.

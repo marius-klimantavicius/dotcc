@@ -28,7 +28,7 @@ checks run before any probe writes, under both JIT and AOT, and fail by exceptio
 on a mismatch. There are currently 42 aggregate checks and eight array checks.
 
 The sidecar contains no reflection or generic pointer arguments. It does not
-edit `Program.cs`, implement missing storage, or change the engine. Expected
+edit `DotCcProgram.cs`, implement missing storage, or change the engine. Expected
 values come from native execution, not a handwritten layout table. SQLite's
 `Mem` typedef is explicitly mapped to its emitted `sqlite3_value` tag. C# test
 wrappers allow testing flexible-array headers without introducing nonstandard

@@ -205,7 +205,7 @@ nested-switch and complete-sizeof runtime fixtures. The combined unchanged
 SQLite + memory VFS emits 115,010 lines / 4,457,992 bytes of managed-library C#
 in 3.22 seconds, peak RSS 947,232 KiB. All 30 compiler offset contracts now agree
 with native sizes, alignments and offsets, including corrected WhereInfo storage.
-`scripts/check-layout-metadata.py generated/TranslatedSqlite/Program.cs` repeats
+`scripts/check-layout-metadata.py generated/TranslatedSqlite/Sqlite.cs` repeats
 that static check; actual generated C# storage still requires execution.
 Logs: `artifacts/include-order/checkpoint-*`.
 
@@ -1442,3 +1442,31 @@ The compiler itself publishes as linux-x64 NativeAOT without warnings
 (`artifacts/macro-constants-compiler-aot.log`).
 Its native executable also emits and runs a namespaced file-based program using
 macro constants and a const scalar callback (`artifacts/macro-constants-native-smoke.log`).
+
+
+## Generated shared filenames follow the API class (2026-09-10)
+
+The shared source is now `{class_name}.cs` for both split and unsplit output;
+split aliases use `{class_name}.GlobalUsings.g.cs`. The product therefore emits
+`Sqlite.cs` and `Sqlite.GlobalUsings.g.cs`, alongside its existing function files.
+The output manifest migrates the previous filenames automatically and preserves
+unlisted sidecars. Executable projects use `DotCcProgram.cs`.
+
+All 67 managed-library tests pass, covering direct emission, object linking,
+source layouts, escaped class names, namespace support and obsolete-file cleanup
+(`artifacts/class-filenames-tests.log`). The compiler builds without warnings
+(`artifacts/class-filenames-compiler-build.log`).
+
+Product regeneration and in-place postprocessing succeed, preserving the
+24,123 Cond.B rewrites and 2,208 empty-block removals. Product layout validation
+passes all 41 offset contracts, 67 actual field offsets, aggregate size/alignment
+checks and eight pointer-array storage checks. ManagedConsumer builds and passes
+its SQL, JSONB, FTS5, optional-feature, WAL and callback workloads.
+Logs: `artifacts/product-layout-emission.log`,
+`artifacts/class-filenames-product-layout.log`,
+`artifacts/class-filenames-consumer-build.log` and
+`artifacts/class-filenames-consumer-run.log`.
+
+The separate upstream Unix VFS experiment was regenerated with the same filenames
+and passes its disk CRUD, cross-process locking, WAL, mmap, JSONB and FTS5 checks
+(`artifacts/class-filenames-upstream-unix.log`).

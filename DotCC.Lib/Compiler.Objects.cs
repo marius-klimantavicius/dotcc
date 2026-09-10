@@ -95,7 +95,7 @@ public static partial class Compiler
     public static string LinkObjects(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
         ImportOptions? imports = null, string? className = null, string? namespaceName = null)
-        => LinkObjectFiles(objectPaths, emit, debugHeap, imports, className, namespaceName: namespaceName)["Program.cs"];
+        => LinkObjectFiles(objectPaths, emit, debugHeap, imports, className, namespaceName: namespaceName).Values.Single();
 
     /// <summary>Link objects into named C# project files. Older objects must be regenerated to split functions.</summary>
     public static IReadOnlyDictionary<string, string> LinkObjectFiles(

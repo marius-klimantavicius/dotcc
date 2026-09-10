@@ -64,7 +64,7 @@ The feature-by-feature Zig tracker is **[ZIG-SUPPORT.md](docs/ZIG-SUPPORT.md)**;
 dotcc speaks clang's dialect of command line:
 
 ```bash
-dotcc a.c b.c                      # whole-program: Program.cs + csproj → ./a.out-cs/
+dotcc a.c b.c                      # whole-program: DotCcProgram.cs + csproj → ./a.out-cs/
 dotcc a.c b.c --emit=file > out.cs # single .NET 10 file-based program (dotnet run out.cs)
 dotcc a.c b.c -c -o build/         # compile to a .NET assembly (--emit=build)
 dotcc a.c --emit=obj -o a.cs       # separate compilation: one .c → one .cs object fragment

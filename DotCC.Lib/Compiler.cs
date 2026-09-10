@@ -140,7 +140,7 @@ public static partial class Compiler
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
         string? className = null, string? namespaceName = null)
-        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName)["Program.cs"];
+        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName).Values.Single();
 
     /// <summary>Emit one or more named C# sources. Split modes require project output.
     /// Function boundaries come from the backend; shared declarations remain together.</summary>

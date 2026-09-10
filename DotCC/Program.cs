@@ -30,7 +30,7 @@ internal static class Program
         };
         var emitOpt = new Option<EmitKind>("--emit")
         {
-            Description = "csproj: write Program.cs + .csproj. file: emit a single .NET 10 file-based program to stdout. build: like csproj, then `dotnet build`. obj: compile one .c to a .cs object fragment. managedlib: emit a reusable managed library with a public C# API (add -c to build).",
+            Description = "csproj: write <class-name>.cs + .csproj. file: emit a single .NET 10 file-based program to stdout. build: like csproj, then `dotnet build`. obj: compile one .c to a .cs object fragment. managedlib: emit a reusable managed library with a public C# API (add -c to build).",
             DefaultValueFactory = _ => EmitKind.Csproj,
         };
         var classNameOpt = new Option<string?>("--class-name")
@@ -443,12 +443,12 @@ internal static class Program
                 // `-o foo.cs` inference), else to stdout (pipe-to-a-.cs).
                 if (outputPath is not null)
                 {
-                    File.WriteAllText(outputPath, generatedSources["Program.cs"]);
+                    File.WriteAllText(outputPath, generatedSources.Values.Single());
                     Console.Error.WriteLine($"dotcc: wrote {outputPath}");
                 }
                 else
                 {
-                    Console.WriteLine(generatedSources["Program.cs"]);
+                    Console.WriteLine(generatedSources.Values.Single());
                 }
                 return 0;
 

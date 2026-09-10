@@ -8,7 +8,7 @@ into a **C-callable native shared library** through .NET NativeAOT.
 ## Build the native library
 
 ```bash
-dotcc -shared math.c -o build/          # emits build/Program.cs + build/build.csproj
+dotcc -shared math.c -o build/          # emits build/DotCcLib.cs + build/build.csproj
 cd build && dotnet publish -c Release -r <RID>
 ```
 

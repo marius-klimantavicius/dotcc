@@ -67,7 +67,8 @@ scripts/emit-engine.sh --no-postprocess
 SQLite emission defaults to one function per file, followed by in-place
 postprocessing. All methods belong to `Managed.Database.Sqlite`; filenames use
 `Sqlite.sqlite3_open.cs`, for example, with a numeric suffix only for collisions.
-Shared runtime/types/globals stay in `Program.cs`. To change the source layout:
+Shared runtime/types/globals stay in `Sqlite.cs`, and shared aliases go in
+`Sqlite.GlobalUsings.g.cs`. To change the source layout:
 
 ```sh
 SQLITE_SOURCE_SPLIT=function scripts/emit-engine.sh

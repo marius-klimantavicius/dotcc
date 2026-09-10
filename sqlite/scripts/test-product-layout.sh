@@ -32,7 +32,7 @@ python3 "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
   "$prefix-preprocessed.c" "$generated/layout_requests.h"
 # Flexible-array storage can require additional offset contracts even when C
 # never spells offsetof for that tail. Measure those independently in C too.
-python3 - "$generated/layout_requests.h" "$SQLITE_ROOT/generated/TranslatedSqlite/Program.cs" <<'PY'
+python3 - "$generated/layout_requests.h" "$SQLITE_ROOT/generated/TranslatedSqlite/Sqlite.cs" <<'PY'
 import base64, pathlib, re, sys
 header, engine = map(pathlib.Path, sys.argv[1:])
 content = header.read_text()
@@ -62,7 +62,7 @@ run_sqlite_process "$SQLITE_ROOT/build/product-layout-native" > "$prefix-native.
 python3 "$SQLITE_ROOT/scripts/generate-layout-storage-checks.py" \
   "$prefix-native.out" "$generated/LayoutStorageChecks.cs"
 python3 "$SQLITE_ROOT/scripts/generate-product-offset-checks.py" \
-  "$prefix-native.out" "$SQLITE_ROOT/generated/TranslatedSqlite/Program.cs" \
+  "$prefix-native.out" "$SQLITE_ROOT/generated/TranslatedSqlite/Sqlite.cs" \
   "$generated/ProductOffsetChecks.cs" > "$prefix-metadata.log"
 cat "$prefix-metadata.log"
 

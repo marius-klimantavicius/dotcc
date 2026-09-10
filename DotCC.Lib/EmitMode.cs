@@ -22,7 +22,7 @@ public enum EmitMode
     /// <c>#:property AllowUnsafeBlocks=true</c> header (the default; <c>--emit=file</c>).</summary>
     File,
 
-    /// <summary><c>Program.cs</c> paired with a generated csproj (<c>--emit=csproj</c> /
+    /// <summary><c>{class_name}.cs</c> paired with a generated csproj (<c>--emit=csproj</c> /
     /// <c>--emit=build</c> / <c>-c</c>) — the standalone-executable shell, no <c>#:property</c>
     /// header.</summary>
     Csproj,

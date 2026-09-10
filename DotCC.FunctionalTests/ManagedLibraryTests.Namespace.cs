@@ -44,7 +44,7 @@ public sealed partial class ManagedLibraryTests
                 ? Compiler.LinkObjectFiles(new[] { obj }, emit: mode, className: api, split: split, namespaceName: namespaceName)
                 : Compiler.EmitCSharpFiles(new[] { path }, emit: mode, className: api, split: split, namespaceName: namespaceName);
             var escaped = namespaceName.Replace(".class", ".@class");
-            files["Program.cs"].ShouldContain("namespace " + escaped + ";");
+            files[(api ?? "DotCcProgram") + ".cs"].ShouldContain("namespace " + escaped + ";");
             var owner = "global::" + escaped + "." + (api ?? "DotCcProgram");
             var consumer = $$"""
                 public static unsafe class Consumer {

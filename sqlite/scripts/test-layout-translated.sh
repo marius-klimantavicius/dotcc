@@ -11,7 +11,7 @@ dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/src" -I "$SQLITE_ROOT/generated" \
   "$SQLITE_ROOT/src/layout_probe.c" --emit=csproj -o "$output" \
   > "$SQLITE_ROOT/artifacts/translated-layout-emission.log" 2>&1
-python3 "$SQLITE_ROOT/scripts/check-layout-metadata.py" "$output/Program.cs"
+python3 "$SQLITE_ROOT/scripts/check-layout-metadata.py" "$output/DotCcProgram.cs"
 python3 "$SQLITE_ROOT/scripts/generate-layout-storage-checks.py" \
   "$SQLITE_ROOT/tests/layout-native.expected" "$output/LayoutStorageChecks.cs"
 dotnet build "$output/Test-layout.csproj" -c Release --nologo \
