@@ -477,6 +477,7 @@ symbols:
   - 'register'     # 192 storage-class keyword: automatic local with an optimization hint
   - FnPtrArrayDeclarator # 193 function-pointer array declarator
   - FnPtrArrayName       # 194 array name/bounds and pointer qualifiers
+  - PP_OTHER            # 195 non-C preprocessing token; must not reach the parser
 
 productions:
   # Start production. Single-non-terminal — trimmed at parse time so the root
@@ -2091,6 +2092,12 @@ lexer:
     # to detect directive line boundaries — which the byte-DFA lexer populates
     # whether or not WS is ignored, so this works.
     - { symbol: WS, match: '[ \t\r\n]+', action: ignore }
+
+    # Translation phase 3 also recognizes otherwise unmatched non-whitespace
+    # characters as preprocessing tokens. Keep them for inactive branches,
+    # discarded macro arguments and stringification; CTokenValidator rejects
+    # any that survive phase 4. Last rule preserves all existing token ties.
+    - { symbol: PP_OTHER, match: '[^ \t\r\n]' }
 
 # Preprocessor declaration. The source generator turns this block into:
 #   public interface IPreprocessor {

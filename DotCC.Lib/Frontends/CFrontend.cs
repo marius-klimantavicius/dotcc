@@ -74,6 +74,7 @@ internal sealed class CFrontend : IFrontend
             // its own RewritingTokenStream subclass after the preprocessor
             // populated the macro table.
             using var macroExp = new MacroExpander(preproc, pre);
+            using var cTokens = new CTokenValidator(macroExp);
             // DialectKeywordRewriter: dialect-aware keyword promotion (rule 2
             // of the gating model). Promotes identifier-spelled keywords
             // (e.g. C23 `bool`) onto their grammar terminal only when the
@@ -81,7 +82,7 @@ internal sealed class CFrontend : IFrontend
             // expansion (so an included header's `#define bool _Bool` wins and
             // the table simply doesn't fire) and BEFORE the typedef rewriter
             // (so e.g. `typedef bool MyBool;` under c23 sees `_Bool`).
-            using var physicalTokens = new PhysicalPositionRewriter(macroExp);
+            using var physicalTokens = new PhysicalPositionRewriter(cTokens);
             using var dialectRewriter = new DialectKeywordRewriter(physicalTokens, activeDialect);
             // TypeNameRewriter: the C lexer hack. Promotes ID → TYPE_NAME for
             // any name previously bound by a `typedef`. Sits AFTER macro

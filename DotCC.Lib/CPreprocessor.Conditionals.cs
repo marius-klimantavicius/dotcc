@@ -36,6 +36,9 @@ internal sealed partial class CPreprocessor
     {
         foreach (var token in tokens)
         {
+            // An evaluated #if expression also requires C tokens. Nested
+            // conditionals in an inactive group are discarded before this hook.
+            CTokenValidator.Validate(token);
             if (CharacterSymbols.Contains(token.ID) && token.Content is string text)
             {
                 var quote = text.IndexOf('\'');
