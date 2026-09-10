@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Shouldly;
@@ -19,14 +20,14 @@ public sealed class RuntimeFunctionPointerTests
         var cancellation = TestContext.Current.CancellationToken;
         var root = CSharpSyntaxTree.ParseText(reader.ReadToEnd(), cancellationToken: cancellation).GetRoot(cancellation);
         var addresses = root.DescendantNodes().OfType<PrefixUnaryExpressionSyntax>()
-            .Where(node => node.Kind() == SyntaxKind.AddressOfExpression).ToArray();
+            .Where(node => node.IsKind(SyntaxKind.AddressOfExpression)).ToArray();
         addresses.Length.ShouldBe(12);
         foreach (var address in addresses)
         {
             var field = address.Ancestors().OfType<FieldDeclarationSyntax>().FirstOrDefault();
             field.ShouldNotBeNull($"{address} must be captured once, not on each allocator construction");
-            field.Modifiers.Any(token => token.Kind() == SyntaxKind.StaticKeyword).ShouldBeTrue();
-            field.Modifiers.Any(token => token.Kind() == SyntaxKind.ReadOnlyKeyword).ShouldBeTrue();
+            field.Modifiers.Any(SyntaxKind.StaticKeyword).ShouldBeTrue();
+            field.Modifiers.Any(SyntaxKind.ReadOnlyKeyword).ShouldBeTrue();
         }
     }
 }
