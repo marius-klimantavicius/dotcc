@@ -71,6 +71,11 @@ jobs:
         run: |
           python sqlite/scripts/fetch.py 2>&1 | Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-fetch.log
           if ($LASTEXITCODE -ne 0) { throw 'SQLite source fetch failed' }
+      - name: Verify descriptor cleanup after injected unlock failures
+        run: |
+          dotnet run --project sqlite/tests/HostVfsPlatformTests/HostVfsPlatformTests.csproj -c Release --no-launch-profile 2>&1 |
+            Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-close-failure.log
+          if ($LASTEXITCODE -ne 0) { throw 'Host VFS descriptor lifetime contracts failed' }
       - name: Emit SQLite with managed host VFS integration
         run: |
           # Equivalent to emit-engine.sh, using native paths on every runner.

@@ -20,12 +20,17 @@ internal static unsafe class HostPlatform
     private const int Busy = 5, IoLock = 10 | (15 << 8), IoUnlock = 10 | (8 << 8);
     private const int IoCheck = 10 | (14 << 8), IoReadLock = 10 | (9 << 8);
     private static readonly object Gate = new();
+#if HOST_VFS_PLATFORM_TESTS
+    // Compiled only by the isolated descriptor-lifetime regression fixture.
+    internal static Func<SafeFileHandle, long, long, int, int>? RangeOperationForTests;
+#endif
     private static readonly Dictionary<(uint Device, ulong Inode), InodeState> Inodes = new();
 
     internal sealed class InodeState
     {
         internal readonly List<FileHandle> Files = new();
         internal readonly List<SafeFileHandle> Deferred = new();
+        internal bool HasOrphanLocks;
         internal bool HasLocks => Files.Exists(f => f.HasLocks);
     }
 
@@ -56,7 +61,7 @@ internal static unsafe class HostPlatform
             lock (Gate)
             {
                 ObjectDisposedException.ThrowIf(disposed, this);
-                if (ioFailed || (inode is not null && inode.Files.Exists(f => f.ioFailed)) || level is not (1 or 2 or 4)) return IoLock;
+                if (ioFailed || (inode is not null && (inode.HasOrphanLocks || inode.Files.Exists(f => f.ioFailed))) || level is not (1 or 2 or 4)) return IoLock;
                 if (LockLevel >= level) return 0;
                 if (level > 1 && !writable) return IoLock;
                 if (level > 1 && !shared) return IoLock;
@@ -177,7 +182,7 @@ internal static unsafe class HostPlatform
             lock (Gate)
             {
                 ObjectDisposedException.ThrowIf(disposed, this);
-                if (ioFailed) { held = false; return IoCheck; }
+                if (ioFailed || inode?.HasOrphanLocks == true) { held = false; return IoCheck; }
                 held = LockLevel >= 2 || (inode is not null && inode.Files.Exists(f => f.LockLevel >= 2));
                 if (held) return 0;
                 if (OperatingSystem.IsWindows())
@@ -204,11 +209,18 @@ internal static unsafe class HostPlatform
                 int rc = Unlock(0);
                 if (inode is not null)
                 {
-                    // On a failed unlock retain the lease and descriptor rather than
-                    // closing a descriptor which could release another reader's locks.
-                    if (rc != 0) throw new IOException("Unable to release SQLite file locks.");
+                    // xClose releases its managed context even on IOERR_CLOSE, so
+                    // this lease can never be retried. Transfer ownership of the
+                    // descriptor to the inode until peers no longer need its locks.
                     inode.Files.Remove(this);
-                    if (inode.HasLocks) inode.Deferred.Add(Handle);
+                    if (inode.HasLocks)
+                    {
+                        inode.Deferred.Add(Handle);
+                        // Failed unlocks may leave process-owned bytes behind. Do
+                        // not admit new locks until closing the deferred descriptor
+                        // can safely release those bytes along with the last reader.
+                        inode.HasOrphanLocks |= rc != 0;
+                    }
                     else
                     {
                         Handle.Dispose();
@@ -218,6 +230,7 @@ internal static unsafe class HostPlatform
                 }
                 else Handle.Dispose(); // OFD/Windows close releases this handle's locks only.
                 disposed = true;
+                if (rc != 0) throw new IOException("Unable to release SQLite file locks before closing.");
             }
         }
     }
@@ -274,6 +287,7 @@ internal static unsafe class HostPlatform
         {
             foreach (SafeFileHandle handle in inode.Deferred) handle.Dispose();
             inode.Deferred.Clear();
+            inode.HasOrphanLocks = false;
         }
         if (OperatingSystem.IsMacOS() && !System.Linq.Enumerable.Any(Inodes.Values, i => i.HasLocks))
         {
@@ -384,6 +398,9 @@ internal static unsafe class HostPlatform
     // kind: 0 read/shared, 1 write/exclusive, 2 unlock. Calls never block.
     private static int SetRange(SafeFileHandle handle, long start, long length, int kind)
     {
+#if HOST_VFS_PLATFORM_TESTS
+        if (RangeOperationForTests is not null) return RangeOperationForTests(handle, start, length, kind);
+#endif
         if (OperatingSystem.IsWindows())
         {
             var overlap = new Overlapped { Offset = (uint)start, OffsetHigh = (uint)(start >> 32) };
