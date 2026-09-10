@@ -33,6 +33,10 @@ native_check layout-native.sh layout-native.expected layout
   > "$SQLITE_ROOT/artifacts/campaign-layout.log" 2>&1
 "$SQLITE_ROOT/scripts/test-managed-consumer.sh" \
   > "$SQLITE_ROOT/artifacts/campaign-managed-consumer.log" 2>&1
+if [[ "$SQLITE_AOT" == 1 ]]; then
+  "$SQLITE_ROOT/scripts/test-function-identity-aot.sh" \
+    > "$SQLITE_ROOT/artifacts/campaign-function-identity.log" 2>&1
+fi
 for suite in core api vfs vtable allocation upstream fts5; do
   "$SQLITE_ROOT/scripts/test-translated.sh" "$suite" \
     > "$SQLITE_ROOT/artifacts/campaign-translated-$suite.log" 2>&1

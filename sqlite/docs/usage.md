@@ -75,3 +75,10 @@ The shared profile now statically enables FTS5 while FTS3/FTS4 remain deferred.
 Run `scripts/test-fts5-native.sh` for the native oracle and
 `scripts/test-translated.sh fts5` for the translated comparison. Both are included
 in `scripts/verify.sh`. See [FTS5 coverage](fts5-inventory.md).
+
+`scripts/test-function-identity-aot.sh` translates the repository's static-function
+identity fixture through both source and separately emitted object routes. It
+checks the native-proven expected output under JIT and Linux x64 NativeAOT,
+including distinct addresses for identical static functions in separate C units.
+The full campaign runs this gate when `SQLITE_AOT=1`; logs use the
+`artifacts/function-identity-*` prefix.
