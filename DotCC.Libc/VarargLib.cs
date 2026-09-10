@@ -5,14 +5,14 @@ namespace DotCC.Libc;
 // VaArg / VaList are NESTED in Libc (like LongJmpToken) so the predefined-type
 // alias the emitter writes — `using unsafe va_list = Libc.VaList;` — resolves,
 // while `using static Libc;` still brings them into scope by bare name for the
-// `params VaArg[]` / `new VaList(...)` the emitter generates.
+// `params ReadOnlySpan<VaArg>` / `new VaList(...)` the emitter generates.
 public static unsafe partial class Libc
 {
 
 /// <summary>
 /// One actual argument passed through a C variadic call (<c>...</c>). dotcc
 /// lowers a variadic C function <c>T f(fixed…, ...)</c> to a C# method with a
-/// trailing <c>params VaArg[]</c>; C# applies the implicit conversions below to
+/// trailing <c>params ReadOnlySpan<VaArg></c>; C# applies the implicit conversions below to
 /// each variadic actual at the call site, so the marshalling rides ordinary
 /// overload resolution — no boxing, and (unlike <c>object[]</c>) it can carry
 /// raw pointers.
@@ -61,26 +61,26 @@ public readonly struct VaArg
 }
 
 /// <summary>
-/// C <c>va_list</c> — a cursor over the <see cref="VaArg"/> array a variadic
-/// function received. A value type, so passing a <c>va_list</c> to another
+/// C <c>va_list</c> — a cursor over the borrowed <see cref="VaArg"/> span a variadic
+/// function received. A stack-bound value type, so passing a <c>va_list</c> to another
 /// function (the <c>lua_pushfstring</c> → <c>luaO_pushvfstring</c> idiom) and
 /// <c>va_copy</c> both work by struct copy: each holder advances its own
-/// independent index over the shared (read-only) argument array.
+/// independent index over the shared read-only argument span.
 /// </summary>
 /// <remarks>
 /// <c>va_start(ap, last)</c> lowers to <c>ap = new VaList(_va)</c> (the
-/// synthesized params array; <c>last</c> is ignored, as the array already holds
+/// synthesized params span; <c>last</c> is ignored, as the span already holds
 /// exactly the variadic actuals). <c>va_arg(ap, T)</c> lowers to the matching
 /// <c>Next…()</c> accessor — pointers via <c>(T)ap.NextPtr()</c>.
 /// <c>va_end(ap)</c> → <see cref="End"/> (a no-op). <c>va_copy(d, s)</c> →
 /// <c>d = s</c>.
 /// </remarks>
-public struct VaList
+public ref struct VaList
 {
-    private readonly VaArg[] _args;
+    private readonly ReadOnlySpan<VaArg> _args;
     private int _i;
 
-    public VaList(VaArg[] args) { _args = args; _i = 0; }
+    public VaList(ReadOnlySpan<VaArg> args) { _args = args; _i = 0; }
 
     // `va_arg(ap, T)` for a scalar T lowers to `(T)ap.Next()`; for a pointer T
     // to `(T)ap.NextPtr()`. Both advance the cursor by one.

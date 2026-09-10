@@ -96,7 +96,7 @@ internal sealed partial class CSharpBackend
                     mainErrPayloadIsVoid = meu.Payload.Unqualified is CType.VoidType;
                 }
             }
-            // A variadic function's `params VaArg[]` tail isn't a valid
+            // A variadic function's `params ReadOnlySpan<VaArg>` tail isn't a valid
             // [UnmanagedCallersOnly] signature, so it can't be exported.
             else if (fn.Sym.Storage != Storage.Static && !fn.Variadic)
             {
@@ -470,9 +470,9 @@ internal sealed partial class CSharpBackend
         var retTy = fn.Sym.Type is CType.Func f ? f.Return : CType.Int;
         _currentRet = retTy;
         var ps = string.Join(", ", fn.Params.Select(p => $"{Cs(p.Type)} {p.TargetName}"));
-        // A variadic C function gets a trailing `params VaArg[] _va`; C# converts
+        // A variadic C function gets a trailing `params ReadOnlySpan<VaArg> _va`; C# converts
         // each variadic actual to a VaArg at the call site (carries pointers too).
-        if (fn.Variadic) { ps = ps.Length == 0 ? "params VaArg[] _va" : ps + ", params VaArg[] _va"; }
+        if (fn.Variadic) { ps = ps.Length == 0 ? "params ReadOnlySpan<VaArg> _va" : ps + ", params ReadOnlySpan<VaArg> _va"; }
         var sb = new StringBuilder();
         // C23 `[[deprecated]]` / `[[deprecated("msg")]]` → [Obsolete]: the .NET
         // build of the emitted program warns at managed call sites, mirroring the
@@ -2704,7 +2704,7 @@ internal sealed partial class CSharpBackend
 
     /// <summary>Lower the <c>&lt;stdarg.h&gt;</c> control macros onto the
     /// <c>VaList</c> runtime: <c>va_start(ap, last)</c> → <c>ap = new VaList(_va)</c>
-    /// (the synthesized params array; <c>last</c> is ignored), <c>va_end(ap)</c> →
+    /// (the synthesized params span; <c>last</c> is ignored), <c>va_end(ap)</c> →
     /// <c>ap.End()</c>, <c>va_copy(d, s)</c> → <c>d = s</c>. <c>va_arg</c> is a
     /// dedicated node (its 2nd operand is a type). Null when not a va_* call.</summary>
     private string? LowerVaCall(Call c) => c.Callee switch

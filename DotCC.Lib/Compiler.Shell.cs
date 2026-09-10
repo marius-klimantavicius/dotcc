@@ -401,12 +401,12 @@ public static partial class Compiler
         var indentedFns = IndentBlock(publicFns, "    ");
 
         // Build the [UnmanagedCallersOnly] wrappers. Skip varargs functions —
-        // C# `params` arrays aren't a valid signature for the attribute and
+        // C# `params` collections aren't a valid signature for the attribute and
         // can't survive AOT publish.
         var exportsBlock = new StringBuilder();
         foreach (var e in managedLibrary ? Array.Empty<EmitHelpers.Export>() : exports)
         {
-            if (e.Params.Contains("params VaArg[]", StringComparison.Ordinal))
+            if (e.Params.Contains("params ", StringComparison.Ordinal))
             {
                 exportsBlock.Append($"    // dotcc: '{e.Name}' has varargs — not exported (no UnmanagedCallersOnly support).\n");
                 continue;

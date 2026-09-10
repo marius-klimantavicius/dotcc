@@ -164,7 +164,7 @@ public static partial class Compiler
     internal static readonly string[] PredefinedTypeNames =
     {
         "LongJmpToken", // <setjmp.h> — opaque jmp_buf target
-        "VaList",       // <stdarg.h> — va_list cursor (Libc.VaList value type)
+        "VaList",       // <stdarg.h> — va_list cursor (Libc.VaList ref struct)
         "thrd_t",       // <threads.h> — opaque thread handle (Libc.thrd_t struct)
         "mtx_t",        // <threads.h> — opaque mutex handle (Libc.mtx_t struct)
         "cnd_t",        // <threads.h> — opaque condition-variable handle (Libc.cnd_t)
