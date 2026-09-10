@@ -351,8 +351,23 @@ static sqlite3_vfs dotcc_mem_vfs = {
 };
 
 sqlite3_vfs *dotcc_memory_vfs(void) { return &dotcc_mem_vfs; }
+#ifdef DOTCC_HOST_VFS
+/* Supplied by the explicitly compiled managed VFS sidecar. Native/differential
+ * fixtures retain the deterministic memory default without this definition. */
+int dotcc_host_vfs_init(void);
+int dotcc_host_vfs_end(void);
+int sqlite3_os_init(void) {
+    int rc = sqlite3_vfs_register(&dotcc_mem_vfs, 0);
+    return rc == SQLITE_OK ? dotcc_host_vfs_init() : rc;
+}
+int sqlite3_os_end(void) {
+    int rc = dotcc_host_vfs_end();
+    return rc == SQLITE_OK ? sqlite3_vfs_unregister(&dotcc_mem_vfs) : rc;
+}
+#else
 int sqlite3_os_init(void) { return sqlite3_vfs_register(&dotcc_mem_vfs, 1); }
 int sqlite3_os_end(void) { return sqlite3_vfs_unregister(&dotcc_mem_vfs); }
+#endif
 
 int dotcc_memory_vfs_reset(void) {
     if (dotcc_mem_handles) return SQLITE_BUSY;

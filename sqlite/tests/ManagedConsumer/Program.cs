@@ -402,9 +402,12 @@ internal static unsafe class Program
     private static int Main()
     {
         sqlite3* db = null;
+        var directory = Path.Combine(Path.GetTempPath(), "dotcc-managed-consumer-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        var databasePath = Path.Combine(directory, "managed-consumer.db");
         try
         {
-            fixed (byte* name = "managed-consumer.db\0"u8)
+            fixed (byte* name = Encoding.UTF8.GetBytes(databasePath + "\0"))
                 Check(sqlite3_open(name, &db), db, "open");
             Expect(db, "SELECT sqlite_version()", "3.50.4");
             Expect(db, "SELECT json_extract(jsonb('{\"name\":\"λ\",\"n\":42}'),'$.name')", "λ");
@@ -430,6 +433,9 @@ internal static unsafe class Program
 
             Check(sqlite3_close(db), db, "close");
             db = null;
+            if (!File.Exists(databasePath) || new FileInfo(databasePath).Length == 0)
+                throw new InvalidOperationException("The default VFS did not persist a database file");
+            if (DotCC.Sqlite.HostVfs.OpenHandleCount != 0) throw new InvalidOperationException("Leaked host VFS handle");
             if (ftsDestroyed != 1) throw new InvalidOperationException("FTS5 context destructor must run exactly once on close");
             if (dotcc_memory_vfs_handle_count() != 0) throw new InvalidOperationException("Leaked VFS handle");
             if (dotcc_memory_vfs_reset() != Ok || sqlite3_shutdown() != Ok)
@@ -442,6 +448,10 @@ internal static unsafe class Program
             Console.Error.WriteLine(error);
             return 1;
         }
-        finally { if (db != null) sqlite3_close_v2(db); }
+        finally
+        {
+            if (db != null) sqlite3_close_v2(db);
+            Directory.Delete(directory, recursive: true);
+        }
     }
 }

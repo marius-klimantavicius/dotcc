@@ -4,6 +4,7 @@ Status: M0–M8 are complete for the documented profile. The translated engine
 includes core, JSON/JSONB and FTS5, with richer managed SQL workloads and canonical
 function-pointer fields verified through source/object linking, JIT and NativeAOT.
 M9 and M10 remain design-only future work; neither optimization was implemented.
+M11 is active: replace the product's memory-only default with a real OS-file VFS.
 See `validation.md` for completed checks and `usage.md` for build commands.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
@@ -21,12 +22,16 @@ preprocess, parse, or C# compilation alone is not completion.
 
 Use dotcc's supplied headers, libc runtime, and existing ports/translations for
 non-platform dependencies. Extend their shared implementations where necessary.
-File access and locking may use a simple, process-local memory VFS. Keep SQLite's
+The original campaign used a simple, process-local memory VFS. M11 adds a real
+file-backed default to the managed product and retains the deterministic memory
+adapter for compiler/native differential and fault-injection tests. Keep SQLite's
 pager, B-tree, SQL parser, VM, transactions, and JSON implementation translated
 from upstream C. Function pointers are supported API, including callback tables;
 unsafe C# is explicitly acceptable.
 
-Native-code interop is not required. Any future extensions will be written in C#
+Native SQLite interop is not required. M11 explicitly permits OS-level P/Invoke
+for locking and durability on Windows, Linux and macOS, preferring BCL operations
+where their semantics suffice. Any future extensions will be written in C#
 against the translated SQLite API and loaded through explicit application
 registration. No dynamic library or assembly loading is required. Native SQLite
 remains a separate test oracle, not a runtime dependency or extension host.
@@ -429,4 +434,40 @@ rewrites, build hook, or behavior change is authorized by this plan-only request
 
 This milestone is documentation only in the current phase; retain current
 `VaArg[]` signatures and the current `VaList` implementation until separately
-requested. Active-phase completion means M7 and M8 are done; M9/M10 remain planned.
+requested. M9/M10 remain planned during the separate M11 implementation.
+
+### M11 — Real file-backed VFS (implement now)
+
+- [ ] Make `dotcc-host` the managed library's default VFS through explicit
+      `sqlite3_os_init` registration. Compile managed source alongside generated
+      SQLite without rewriting the amalgamation or generated C#. Retain the named
+      memory VFS and its unchanged deterministic fixture profile.
+- [ ] Use BCL random-access file reads/writes, length/truncation, safe handles,
+      secure randomness, real time and sleeping. Implement SQLite short-read zero
+      filling, temporary/delete-on-close files, open/create/exclusive/read-only
+      modes, UTF-8 full paths, access checks and operation-specific errors.
+- [ ] Implement shared/reserved/pending/exclusive rollback-journal locks against
+      SQLite's actual lock bytes, including upgrades, downgrades, failed upgrades,
+      reserved probes, process exit and same-process connections. Use runtime OS
+      detection: Linux OFD fcntl, Windows LockFileEx and coordinated macOS POSIX
+      locks. Account for inode aliases and descriptor-close effects. Unsupported
+      platforms/filesystems must fail explicitly; BSD support is optional.
+- [ ] Flush file contents and necessary directory entries; honor full sync on
+      macOS with F_FULLFSYNC. Preserve journaling and hot-journal recovery. Start
+      with version-1 I/O methods (rollback journals); WAL shared-memory and mmap
+      support are separate future work and must not be advertised or stubbed.
+- [ ] Give every managed VFS callback a canonical static address, contain managed
+      exceptions at callback boundaries and release handles/contexts on every
+      normal/error path. Preserve the current serialized SQLite calling profile.
+- [ ] Add raw callback contract tests plus real SQL/JSONB/FTS persistence, readonly,
+      temporary-file, rollback and reopen checks. Check multiple connections and
+      independently running processes, including lock conflicts with native SQLite,
+      abrupt process termination/hot journals, and file format interoperability.
+- [ ] Run Linux JIT and NativeAOT validation and configure Windows/macOS checks.
+      Record which operating systems actually ran; do not claim remote CI results.
+      Recheck the managed consumer and existing deterministic VFS regressions,
+      update build/usage/validation docs and commit locally without pushing.
+
+Exit: the ordinary managed library creates real durable database files by default,
+and tested persistence, rollback, locking and recovery behavior agrees with native
+SQLite. OS interop is limited to platform services; SQLite and extensions remain C#.

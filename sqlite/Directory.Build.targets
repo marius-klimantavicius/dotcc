@@ -1,0 +1,7 @@
+<Project>
+  <!-- Product-specific managed OS services, compiled beside dotcc's unchanged
+       generated source. Native and deterministic C corpora keep their own VFS. -->
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'TranslatedSqlite'">
+    <Compile Include="$(MSBuildThisFileDirectory)src/HostVfs*.cs" />
+  </ItemGroup>
+</Project>
