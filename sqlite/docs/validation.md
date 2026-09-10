@@ -1191,3 +1191,32 @@ The final solution Release build succeeds with zero errors
 (`artifacts/rider-solution-build.log`). Its 14 xUnit1051 cancellation suggestions
 are in the pre-existing standalone empty-block tests; the new IDE projects build
 without warnings.
+
+## Custom library API class (2026-09-10)
+
+`--class-name` is supported by managed/shared C# emission and object linking;
+`Compiler.EmitCSharp` and `Compiler.LinkObjects` expose the corresponding
+optional `className` argument. Omission retains `DotCcLib`. The selected name is
+used in the declaration, static imports, function-owner aliases and native export
+wrapper calls. Invalid identifiers, incompatible modes and conflicting translated
+symbols are rejected. Keywords are escaped without altering user string literals.
+
+All **39 managed/shared library regressions** pass, including custom names,
+object linking, globals initialized from callbacks, canonical/runtime pointers,
+keyword names, separate consumer execution and validation errors
+(`artifacts/class-name-functional.log`). CLI smoke covers both option spellings,
+linking, the unchanged default and rejected modes/names. The compiler builds
+without warnings and publishes as NativeAOT; its native executable successfully
+emits a custom class (`artifacts/class-name-compiler-aot-smoke.log`).
+
+SQLite's emission script now selects **Sqlite**, and the host VFS and consumer
+imports match it. Fresh emission produces `public static class Sqlite` and
+`using DotCcFunctions = global::Sqlite`. The actual SQLite consumer passes JIT
+and linux-x64 NativeAOT with SQL/JSONB/FTS5/optional-feature and callback checks
+(`artifacts/class-name-sqlite-consumer.log`). Host VFS and threading consumers
+also rebuild and pass, including mmap/WAL, lock ranges, snapshots and concurrent
+cleanup (`artifacts/class-name-HostVfsTests-run.log` and
+`artifacts/class-name-ThreadingTests-run.log`). Old postprocessor snapshots retain
+the API name they were emitted with; regenerate snapshots before testing them
+against the current product consumers. The separate varargs fixture still uses
+the default DotCcLib API.

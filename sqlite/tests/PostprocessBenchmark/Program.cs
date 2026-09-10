@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.Globalization;
-using static DotCcLib;
+using static Sqlite;
 
 internal static unsafe class Program
 {

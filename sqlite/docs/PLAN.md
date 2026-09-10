@@ -435,6 +435,11 @@ not required for this version.
       verify IDE code-action output against standalone SQLite output. Keep
       analysis read-only until an IDE action is explicitly applied.
 
+Library API naming follow-up: dotcc supports `--class-name` for managed/shared
+emission and object linking. The SQLite product uses `--class-name Sqlite`;
+the managed consumer and host VFS use that class. Default dotcc output retains
+`DotCcLib`, including the separate span-varargs fixture library.
+
 ### M10 — Span-based varargs and ref-struct VaList (complete)
 
 - [x] Change emitted `params VaArg[] x` to

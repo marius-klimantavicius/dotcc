@@ -1,7 +1,7 @@
 # Managed library output
 
 The compiler's `--emit=managedlib` output is an ordinary reusable C# class library.
-It exposes translated functions through `DotCcLib`, C globals through
+It exposes translated functions through `Sqlite`, C globals through
 `DotCcGlobals`, and aggregate/enum types as public declarations. This is a low-level
 unsafe API, including generated helpers; C ownership and lifetime rules still
 apply. Function-pointer signatures use managed `delegate*` calling conventions.
@@ -95,7 +95,7 @@ private static readonly unsafe delegate*<void*, void> FreePointer =
 Capture each application callback once in its own static readonly field and reuse
 that value for registration and comparisons. Cache initialization only captures
 method addresses; it does not run SQLite initialization or read its globals.
-Direct calls continue to use `DotCcLib` normally. Null pointers and integer
+Direct calls continue to use `Sqlite` normally. Null pointers and integer
 sentinels retain their values. CS8909 warnings may still occur at comparisons;
 identity comes from reusing the captured value, not from comparing independently
 captured method addresses.

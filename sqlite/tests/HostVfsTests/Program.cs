@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using DotCC.Sqlite;
-using static DotCcLib;
+using static Sqlite;
 
 internal static unsafe partial class Program
 {

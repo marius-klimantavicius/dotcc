@@ -64,7 +64,7 @@ scripts/emit-engine.sh
 ```
 
 Reference `generated/TranslatedSqlite/TranslatedSqlite.csproj` from a C# project,
-or its built `TranslatedSqlite.dll`. `DotCcLib` exposes the C API as unsafe managed
+or its built `TranslatedSqlite.dll`. `Sqlite` (selected with `--class-name Sqlite` by `emit-engine.sh`) exposes the C API as unsafe managed
 methods; public translated aggregate types and `delegate*` signatures preserve
 SQLite's callback surface. `tests/ManagedConsumer` demonstrates explicit C#
 extension registration, ownership, callback re-entry and cleanup. No native SQLite
