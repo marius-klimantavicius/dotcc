@@ -3,7 +3,7 @@
 Status: M0–M8 are complete for the documented profile. The translated engine
 includes core, JSON/JSONB and FTS5, with richer managed SQL workloads and canonical
 function-pointer fields verified through source/object linking, JIT and NativeAOT.
-M9 remains design-only. M10 is complete: span-based varargs and a ref-struct
+M9 is being implemented as a standalone Roslyn tree post-processor. M10 is complete: span-based varargs and a ref-struct
 VaList, validated for lifetimes, callbacks, allocation behavior and the full
 SQLite/Lua/Chibi/WAT campaign. See `varargs-span.md` for the managed API change.
 M11 is complete for Linux x64: the product defaults to a real OS-file VFS.
@@ -389,7 +389,7 @@ coverage follows the pinned release and the
 Exit: FTS5 builds with dotcc and its checked SQL/index/callback behavior agrees
 with native, while existing required functionality remains verified.
 
-### M9 — Roslyn post-processor for Cond.B (plan only; do not implement)
+### M9 — Standalone Roslyn Cond.B post-processor (implementation/validation in progress)
 
 - [ ] Design a separate build-time Roslyn post-processing step over emitted C#,
       using symbols/semantic models to identify dotcc's exact `Cond.B` overload.
@@ -413,8 +413,13 @@ with native, while existing required functionality remains verified.
       size, allocations and execution before adopting the pass: JIT/AOT may already
       inline these helpers, so benefit must be demonstrated.
 
-This milestone is documentation only in the current phase; no postprocessor,
-rewrites, build hook, or behavior change is authorized by this plan-only request.
+The follow-up request authorizes implementation of this milestone. Run only as an
+explicit standalone command after dotcc finishes; do not add a compiler or SQLite
+build hook. Accept an emitted project and write an isolated optimized copy. Use
+semantic binding and syntax-tree replacements, then serialize and revalidate.
+Handle every existing overload, and simplify CBool conversions only within
+Cond.B arguments. CBool stores/arithmetic remain unchanged. An IDE analyzer is
+not required for this version.
 
 ### M10 — Span-based varargs and ref-struct VaList (complete)
 
