@@ -72,6 +72,18 @@ internal static class GotoScopeNormalizer
         var chain = new List<object>();
         var switchDepth = 0;
 
+        // The C# renderer braces embedded statements even when C omitted braces.
+        // Track those scopes too, so a directly labeled loop/if body cannot make
+        // an external entry look visible merely because the C AST lacks a Block.
+        void WalkScoped(CStmt? statement)
+        {
+            if (statement is null) return;
+            if (statement is Block) { Walk(statement); return; }
+            chain.Add(statement);
+            Walk(statement);
+            chain.RemoveAt(chain.Count - 1);
+        }
+
         void Walk(CStmt? s)
         {
             switch (s)
@@ -91,10 +103,10 @@ internal static class GotoScopeNormalizer
                     Walk(l.Body);
                     return;
                 case Goto g: gotos.Add((g.Label, new List<object>(chain))); return;
-                case If f: Walk(f.Then); Walk(f.Else); return;
-                case While w: Walk(w.Body); return;
-                case DoWhile dw: Walk(dw.Body); return;
-                case For fo: Walk(fo.Init); Walk(fo.Body); return;
+                case If f: WalkScoped(f.Then); WalkScoped(f.Else); return;
+                case While w: WalkScoped(w.Body); return;
+                case DoWhile dw: WalkScoped(dw.Body); return;
+                case For fo: Walk(fo.Init); WalkScoped(fo.Body); return;
                 case SetjmpGuard sj: Walk(sj.TryBody); Walk(sj.CatchBody); return;
                 // The capture's own goto-restart label/goto are backend-synthetic (never IR
                 // nodes), so only its body carries user gotos/labels to normalize.
@@ -173,11 +185,13 @@ internal static class GotoScopeNormalizer
                 case If f when f.Else is { } el && SplitArm(el, out var elseHead, out tail!):
                     replaced = f with { Else = elseHead };
                     return true;
-                // An else-if chain: `if … else if (P) { L: tail }` — the nested If
-                // hangs off the Else slot, not a block statement list. Extract
-                // within it and rebuild the chain spine.
-                case If f when f.Else is If nested && TryExtract(nested, out var newNested, out tail!):
-                    replaced = f with { Else = newNested };
+                // Braceless nested if/loop statements have no intervening Block
+                // list. Extract through either arm and rebuild that branch spine.
+                case If f when TryExtract(f.Then, out var newThen, out tail!):
+                    replaced = f with { Then = newThen };
+                    return true;
+                case If f when f.Else is { } nested && TryExtract(nested, out var newElse, out tail!):
+                    replaced = f with { Else = newElse };
                     return true;
                 case Block nb when SplitArm(nb, out var head, out tail!):
                     replaced = head;
@@ -206,7 +220,7 @@ internal static class GotoScopeNormalizer
         /// everything before it plus the re-entry <c>goto label;</c>.</summary>
         private bool SplitArm(CStmt arm, out CStmt head, out List<CStmt> tail)
         {
-            if (arm is Block ab)
+            var ab = AsBlock(arm);
             {
                 for (var k = 0; k < ab.Stmts.Count; k++)
                 {
@@ -311,15 +325,17 @@ internal static class GotoScopeNormalizer
             _ => statement
         };
 
+        private static Block AsBlock(CStmt statement) => statement as Block ?? new Block(new[] { statement });
+
         private CStmt RewriteStmt(CStmt s) => s switch
         {
             Block b => Rewrite(b),
             Seq q => new Seq(q.Stmts.Select(RewriteStmt).ToList()) { Pos = q.Pos },
             Labeled l => l with { Body = RewriteStmt(l.Body) },
-            If f => f with { Then = RewriteStmt(f.Then), Else = f.Else is { } e ? RewriteStmt(e) : null },
-            While w => w with { Body = RewriteStmt(w.Body) },
-            DoWhile dw => dw with { Body = RewriteStmt(dw.Body) },
-            For fo => fo with { Body = RewriteStmt(fo.Body) },
+            If f => f with { Then = Rewrite(AsBlock(f.Then)), Else = f.Else is { } e ? Rewrite(AsBlock(e)) : null },
+            While w => w with { Body = Rewrite(AsBlock(w.Body)) },
+            DoWhile dw => dw with { Body = Rewrite(AsBlock(dw.Body)) },
+            For fo => fo with { Body = Rewrite(AsBlock(fo.Body)) },
             SetjmpGuard sj => sj with
             {
                 TryBody = sj.TryBody is { } tb ? RewriteStmt(tb) : null,

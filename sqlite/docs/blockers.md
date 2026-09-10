@@ -458,7 +458,7 @@ image exchange, and repository/Lua/Chibi/WAT regressions. No active blocker rema
 for the selected profile. The ledger above retains the original failure context;
 final evidence and explicit scope limits are recorded in `validation.md`.
 
-## B039 — FTS5 tokenizer enters a sibling loop (fixed; additional shape audit active)
+## B039 — FTS5 tokenizer enters a sibling loop (fixed 9afe0eb, with shape follow-up)
 
 Enabling `SQLITE_ENABLE_FTS5` reaches full parsing/IR but emission fails at
 `fts5UnicodeTokenize`'s `non_ascii_tokenchar` label. The separator loop jumps into
@@ -483,3 +483,13 @@ including Unicode tokenizer and auxiliary callback APIs. Evidence:
 `artifacts/loop-focused.log`, `canonical-address-engine-build.log`, and
 `managed-consumer-{jit,aot}.log`. A follow-up audit is reducing unbraced loop/if
 entry forms before the final broad regression gate.
+
+The unbraced follow-up also passes both native-backed loop fixtures, including
+labels directly used as loop bodies, loops nested beneath unbraced if statements,
+continue from a switch, and multidimensional-array zero fill/reinitialization.
+Scope discovery now accounts for braces added by the C# renderer, and hoisting
+traverses either unbraced branch. The actual translated FTS5 corpus passes all
+34 assertions and explicit auxiliary/tokenizer callback checks with an exact
+native transcript (zero C# build errors, 9.04 seconds). Evidence:
+`artifacts/fts5/loop-shapes-before.log` and `translated-fts5.time`; all focused
+validation logs remain under `artifacts/fts5/`.
