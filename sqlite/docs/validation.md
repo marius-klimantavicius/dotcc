@@ -987,3 +987,48 @@ transcripts match (`product-layout-{jit,aot}.out`); no IL warnings appear in its
 AOT publish. Native link stubs abort if called and exist only to link this layout
 probe; they are not a native runtime or mutex oracle. The generator produces test
 consumer assertions, not an OffsetGenerator analyzer or a product postprocessor.
+
+All six host VFS contract groups pass under JIT and NativeAOT in the full
+campaign (`campaign-host-vfs.log`). New raw mmap assertions cover old-value/query
+and maximum-cap semantics, duplicate borrows, pointer stability across GC and
+rejected changes, invalid releases, overflow/EOF checks, the 256-byte safety
+margin, ordinary-write visibility, growth with live borrows, remapping,
+truncation, readonly handles, disable/fallback and complete cleanup. SQL tests
+assert a positive mapped-read counter increase (not just an enabled PRAGMA) in
+rollback and WAL modes, then exercise snapshots, concurrent writes, checkpoints,
+new file data, disable/re-enable, VACUUM with another connection open, integrity
+and readonly reopen. No mapped views or references remain afterward.
+
+The same gate passes independent managed/managed, native/managed and
+managed/native process pairs under both managed runtimes: lock admission,
+rollback recovery after forced death, WAL snapshots/checkpoints/index growth,
+committed-frame preservation, readonly media, stale/missing index recovery,
+overlapping writers/checkpointers and inode/path aliases. These separate native
+processes use SQLite's normal OS VFS and single-threaded harness configuration;
+they establish storage interoperability, not a native multithreading benchmark.
+The product mmap defaults remain enabled during these runs. Actual product
+compilation has zero errors and the existing 57 warnings; the host and threading
+AOT logs contain no IL warnings or span-lifetime CS9080 warnings.
+
+The dedicated Linux/Windows/macOS workflow now prepares the guarded host input,
+merges host definitions by their case-sensitive names and includes ThreadingTests
+alongside the VFS/mmap JIT/AOT gates. Its YAML and PowerShell blocks were parsed
+locally; remote CI and Windows/macOS runtime results are not claimed. Local
+execution evidence is Linux x64. Static mutex handles intentionally persist for
+noncollectible hosting; shutdown/reconfiguration requires caller quiescence.
+
+The final `scripts/verify.sh --with-ports` run exits zero with NativeAOT enabled
+(`m14-campaign.log`). Both preparation tests, 1,871 unit tests and 308 functional
+tests pass (921 optional functional skips). The span benchmark retains zero
+warmed allocations in all 15 cases. All eight native comparisons and seven
+translated corpora pass, including API NativeAOT math/percentile/metadata
+contracts. Corpus/product layouts, managed SQL/JSONB/FTS5 consumers, threading,
+VFS/mmap/WAL and canonical source/object function identity pass under JIT/AOT.
+All three database-image exchange directions pass. The shared runtime change
+also passes Lua's upstream `final OK !!!`, Chibi's unchanged 1,225/1,225 R7RS
+baseline, and all 146 WAT execution tests.
+
+M14 is complete for the documented Linux x64 profile. The build-only helper
+continues to fetch, emit and build without running tests. M9 remains plan-only;
+the OffsetGenerator remains removed, and no native SQLite dependency or dynamic
+extension loading is introduced. Changes are committed locally without pushing.
