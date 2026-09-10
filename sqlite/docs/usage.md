@@ -28,15 +28,16 @@ smaller JIT-only run, not the completion gate. `scripts/verify.sh --with-ports`
 adds the existing Lua, Chibi and WAT regressions; their upstream runners and
 committed baselines remain the acceptance criteria.
 
-To build just the reusable assembly after fetching:
+To fetch the pinned inputs, rebuild dotcc and its generator, and regenerate/build
+only the reusable SQLite assembly (no tests or consumer execution):
 
 ```sh
-python3 scripts/fetch.py
-dotnet build ../dotcc.sln -c Release -p:UseLocalLalrCc=false
-scripts/emit-engine.sh
-dotnet build generated/TranslatedSqlite/TranslatedSqlite.csproj -c Release
-scripts/test-managed-consumer.sh
+scripts/build.sh
 ```
+
+The helper also works from another directory, for example
+`sqlite/scripts/build.sh` from the repository root. To separately run the managed
+consumer checks, use `scripts/test-managed-consumer.sh`.
 
 Reference `generated/TranslatedSqlite/TranslatedSqlite.csproj` from a C# project,
 or its built `TranslatedSqlite.dll`. `DotCcLib` exposes the C API as unsafe managed
@@ -44,6 +45,10 @@ methods; public translated aggregate types and `delegate*` signatures preserve
 SQLite's callback surface. `tests/ManagedConsumer` demonstrates explicit C#
 extension registration, ownership, callback re-entry and cleanup. No native SQLite
 library or dynamic extension loader is part of that integration.
+
+Pointer and function-pointer inline-array elements use unmanaged one-field
+structs to support C# indexing and spans. Managed callers access the pointer as
+`array[index].Value`; translated C retains its original pointer-array layout.
 
 Generated engine source is never edited. The offsetof analyzer is built from
 `generators/DotCC.OffsetGenerator`, supplied explicitly by the emission scripts,

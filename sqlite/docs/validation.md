@@ -443,3 +443,27 @@ outside this profile. This is the documented corpus, not all upstream SQLite tes
 or TH3. Shared compiler limitations outside these verified inputs remain listed in
 `../docs/C-SUPPORT.md`. The CI workflow is committed but remote CI was not run;
 no branch was pushed. Future FTS/profile work is described in `usage.md`.
+
+
+## Pointer inline-array element wrappers — 2026-09-10
+
+Raw pointer and function-pointer fields inside an InlineArray caused CS9184 and
+prevented managed consumers from using normal indexing and generic spans. New
+source/object-link regressions first reproduced that diagnostic with CS9184
+promoted to an error. Generated inline arrays now contain one-field unmanaged
+structs holding the pointer in `Value`, preserving storage size and alignment.
+The same regressions now pass C# indexing, span mutation, pointer-to-pointer and
+callback access, zero initialization, layout checks, and translated C calls.
+
+Full repository validation passes **1,814 unit tests and 282 functional tests**
+(901 optional oracle skips). The regenerated SQLite library builds with zero
+errors and **38 warnings, with no CS9184** (previously 47 warnings). Actual SQLite
+layout checks and the managed SQL/JSONB/callback consumer pass under both JIT and
+NativeAOT. Layout transcripts still match the native baseline.
+
+Evidence: `artifacts/pointer-inline-before.log`, `pointer-inline-after.log`,
+`pointer-inline-units.log`, `pointer-inline-functional.log`,
+`pointer-inline-layout.log`, `pointer-inline-consumer.log`, and `build-only.log`.
+The new `scripts/build.sh` was also executed from the repository root; it fetches
+pinned inputs, builds dotcc/the generator, and regenerates/builds SQLite without
+running tests, consumers, native oracles, or AOT publishing.
