@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using DotCC.Ir;
 
 namespace DotCC.Backends;
@@ -31,10 +30,10 @@ internal sealed partial class CSharpBackend
     private void RegisterPublicFunctionPointers(IrBuilder unit)
     {
         // Managed consumers need a stable API even when the C source itself never
-        // takes an exported method's address. Variadic methods retain their existing
-        // params-array API; the C callback type does not model that managed tail.
+        // takes an exported method's address. Variadic pointers include the explicit
+        // span tail used by the emitted method's managed calling convention.
         if (_publicTypes)
-            foreach (var function in unit.Functions.Where(function => !function.Variadic))
+            foreach (var function in unit.Functions)
                 FunctionPointer(function.Sym);
     }
 }

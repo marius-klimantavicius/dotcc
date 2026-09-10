@@ -1,0 +1,1 @@
+This fixture checks unsigned-long variadic arguments under dotcc's LP64 target; MSVC uses LLP64.

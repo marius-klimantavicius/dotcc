@@ -107,8 +107,8 @@ public sealed record Call(string Callee, IReadOnlyList<CExpr> Args,
     IReadOnlyList<CType>? ParamTypes = null, Symbol? CalleeSym = null) : CExpr;
 
 /// <summary>A call through a computed function-pointer expression — <c>(*fp)(x)</c>,
-/// <c>tbl[i](x)</c>, <c>s.fn(x)</c>. (A call of a named function or fn-ptr
-/// variable uses <see cref="Call"/> instead.)</summary>
+/// <c>tbl[i](x)</c>, <c>s.fn(x)</c>, or a named callback variable. A call of a
+/// named function uses <see cref="Call"/> instead.</summary>
 public sealed record IndirectCall(CExpr Callee, IReadOnlyList<CExpr> Args) : CExpr;
 
 /// <summary>A cast (explicit or inserted by a coercion pass).</summary>
