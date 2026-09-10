@@ -6,6 +6,33 @@
  * and translated with SQLite. Allocation/memory calls use dotcc's libc port. */
 #define MEM_PATH_MAX 1024
 #define MEM_I64_MAX 9223372036854775807LL
+#ifndef SQLITE_THREADSAFE
+#define SQLITE_THREADSAFE 1 /* Match SQLite's default for separate C units. */
+#endif
+
+/* VFS2 is reserved for extension VFS state. Allocate/initialize its static
+ * mutex before entering it: no SQLite core operation or SQLite allocator is
+ * called while the gate is held. Product APPDEF mutexes are recursive; the
+ * wrappers do not nest, so native non-recursive static mutexes work too.
+ * Standalone THREADSAFE=0 oracle translation units have no mutex symbols.
+ */
+static int dotcc_mem_enter(sqlite3_mutex **mutex) {
+    *mutex = NULL;
+#if SQLITE_THREADSAFE
+    *mutex = sqlite3_mutex_alloc(SQLITE_MUTEX_STATIC_VFS2);
+    if (!*mutex) return SQLITE_NOMEM;
+    sqlite3_mutex_enter(*mutex);
+#endif
+    return SQLITE_OK;
+}
+
+static void dotcc_mem_leave(sqlite3_mutex *mutex) {
+#if SQLITE_THREADSAFE
+    sqlite3_mutex_leave(mutex);
+#else
+    (void)mutex;
+#endif
+}
 
 typedef struct DotccMemNode DotccMemNode;
 typedef struct DotccMemFile DotccMemFile;
@@ -123,7 +150,7 @@ static int dotcc_mem_resize(DotccMemNode *node, sqlite3_int64 size) {
     return SQLITE_OK;
 }
 
-static int dotcc_mem_close(sqlite3_file *base) {
+static int dotcc_mem_close_locked(sqlite3_file *base) {
     DotccMemFile *file = (DotccMemFile *)base;
     DotccMemFile **link = &dotcc_mem_handles;
     DotccMemNode *node = file->node;
@@ -136,7 +163,16 @@ static int dotcc_mem_close(sqlite3_file *base) {
     return SQLITE_OK;
 }
 
-static int dotcc_mem_read(sqlite3_file *base, void *buffer, int count, sqlite3_int64 offset) {
+static int dotcc_mem_close(sqlite3_file *base) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_close_locked(base);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_read_locked(sqlite3_file *base, void *buffer, int count, sqlite3_int64 offset) {
     DotccMemNode *node = ((DotccMemFile *)base)->node;
     sqlite3_int64 available;
     int rc = dotcc_mem_failure(DOTCC_VFS_FAIL_READ);
@@ -153,7 +189,16 @@ static int dotcc_mem_read(sqlite3_file *base, void *buffer, int count, sqlite3_i
     return SQLITE_OK;
 }
 
-static int dotcc_mem_write(sqlite3_file *base, const void *buffer, int count, sqlite3_int64 offset) {
+static int dotcc_mem_read(sqlite3_file *base, void *buffer, int count, sqlite3_int64 offset) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_read_locked(base, buffer, count, offset);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_write_locked(sqlite3_file *base, const void *buffer, int count, sqlite3_int64 offset) {
     DotccMemFile *file = (DotccMemFile *)base;
     int rc;
     if (file->flags & SQLITE_OPEN_READONLY) return SQLITE_READONLY;
@@ -169,7 +214,16 @@ static int dotcc_mem_write(sqlite3_file *base, const void *buffer, int count, sq
     return SQLITE_OK;
 }
 
-static int dotcc_mem_truncate(sqlite3_file *base, sqlite3_int64 size) {
+static int dotcc_mem_write(sqlite3_file *base, const void *buffer, int count, sqlite3_int64 offset) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_write_locked(base, buffer, count, offset);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_truncate_locked(sqlite3_file *base, sqlite3_int64 size) {
     DotccMemFile *file = (DotccMemFile *)base;
     int rc;
     if (file->flags & SQLITE_OPEN_READONLY) return SQLITE_READONLY;
@@ -179,17 +233,44 @@ static int dotcc_mem_truncate(sqlite3_file *base, sqlite3_int64 size) {
     return dotcc_mem_resize(file->node, size);
 }
 
-static int dotcc_mem_sync(sqlite3_file *base, int flags) {
+static int dotcc_mem_truncate(sqlite3_file *base, sqlite3_int64 size) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_truncate_locked(base, size);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_sync_locked(sqlite3_file *base, int flags) {
     (void)base; (void)flags;
     return dotcc_mem_failure(DOTCC_VFS_FAIL_SYNC);
 }
 
-static int dotcc_mem_size(sqlite3_file *base, sqlite3_int64 *size) {
+static int dotcc_mem_sync(sqlite3_file *base, int flags) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_sync_locked(base, flags);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_size_locked(sqlite3_file *base, sqlite3_int64 *size) {
     *size = ((DotccMemFile *)base)->node->size;
     return SQLITE_OK;
 }
 
-static int dotcc_mem_lock(sqlite3_file *base, int level) {
+static int dotcc_mem_size(sqlite3_file *base, sqlite3_int64 *size) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_size_locked(base, size);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_lock_locked(sqlite3_file *base, int level) {
     DotccMemFile *file = (DotccMemFile *)base;
     DotccMemFile *other;
     if (level <= file->lock) return SQLITE_OK;
@@ -211,14 +292,32 @@ static int dotcc_mem_lock(sqlite3_file *base, int level) {
     return SQLITE_OK;
 }
 
-static int dotcc_mem_unlock(sqlite3_file *base, int level) {
+static int dotcc_mem_lock(sqlite3_file *base, int level) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_lock_locked(base, level);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_unlock_locked(sqlite3_file *base, int level) {
     DotccMemFile *file = (DotccMemFile *)base;
     if (level != SQLITE_LOCK_NONE && level != SQLITE_LOCK_SHARED) return SQLITE_IOERR_UNLOCK;
     if (level < file->lock) file->lock = level;
     return SQLITE_OK;
 }
 
-static int dotcc_mem_reserved(sqlite3_file *base, int *result) {
+static int dotcc_mem_unlock(sqlite3_file *base, int level) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_unlock_locked(base, level);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_reserved_locked(sqlite3_file *base, int *result) {
     DotccMemFile *file = (DotccMemFile *)base;
     DotccMemFile *other;
     *result = 0;
@@ -227,7 +326,16 @@ static int dotcc_mem_reserved(sqlite3_file *base, int *result) {
     return SQLITE_OK;
 }
 
-static int dotcc_mem_control(sqlite3_file *base, int operation, void *argument) {
+static int dotcc_mem_reserved(sqlite3_file *base, int *result) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_reserved_locked(base, result);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_control_locked(sqlite3_file *base, int operation, void *argument) {
     if (operation == SQLITE_FCNTL_LOCKSTATE) {
         *(int *)argument = ((DotccMemFile *)base)->lock;
         return SQLITE_OK;
@@ -235,8 +343,35 @@ static int dotcc_mem_control(sqlite3_file *base, int operation, void *argument) 
     return SQLITE_NOTFOUND;
 }
 
-static int dotcc_mem_sector(sqlite3_file *base) { (void)base; return 512; }
-static int dotcc_mem_device(sqlite3_file *base) { (void)base; return 0; }
+static int dotcc_mem_control(sqlite3_file *base, int operation, void *argument) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_control_locked(base, operation, argument);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_sector_locked(sqlite3_file *base) { (void)base; return 512; }
+
+static int dotcc_mem_sector(sqlite3_file *base) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return 0;
+    rc = dotcc_mem_sector_locked(base);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+static int dotcc_mem_device_locked(sqlite3_file *base) { (void)base; return 0; }
+
+static int dotcc_mem_device(sqlite3_file *base) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return 0;
+    rc = dotcc_mem_device_locked(base);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
 
 static const sqlite3_io_methods dotcc_mem_methods = {
     1, dotcc_mem_close, dotcc_mem_read, dotcc_mem_write, dotcc_mem_truncate, dotcc_mem_sync, dotcc_mem_size,
@@ -244,7 +379,7 @@ static const sqlite3_io_methods dotcc_mem_methods = {
     NULL, NULL, NULL, NULL, NULL, NULL
 };
 
-static int dotcc_mem_open(sqlite3_vfs *vfs, const char *name, sqlite3_file *base,
+static int dotcc_mem_open_locked(sqlite3_vfs *vfs, const char *name, sqlite3_file *base,
                     int flags, int *out_flags) {
     DotccMemFile *file = (DotccMemFile *)base;
     DotccMemNode *node;
@@ -281,7 +416,17 @@ static int dotcc_mem_open(sqlite3_vfs *vfs, const char *name, sqlite3_file *base
     return SQLITE_OK;
 }
 
-static int dotcc_mem_delete(sqlite3_vfs *vfs, const char *name, int sync_dir) {
+static int dotcc_mem_open(sqlite3_vfs *vfs, const char *name, sqlite3_file *base,
+                    int flags, int *out_flags) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_open_locked(vfs, name, base, flags, out_flags);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_delete_locked(sqlite3_vfs *vfs, const char *name, int sync_dir) {
     char path[MEM_PATH_MAX + 1];
     DotccMemNode *node;
     int rc = dotcc_mem_failure(DOTCC_VFS_FAIL_DELETE);
@@ -296,7 +441,16 @@ static int dotcc_mem_delete(sqlite3_vfs *vfs, const char *name, int sync_dir) {
     return SQLITE_OK;
 }
 
-static int dotcc_mem_access(sqlite3_vfs *vfs, const char *name, int flags, int *result) {
+static int dotcc_mem_delete(sqlite3_vfs *vfs, const char *name, int sync_dir) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_delete_locked(vfs, name, sync_dir);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_access_locked(sqlite3_vfs *vfs, const char *name, int flags, int *result) {
     char path[MEM_PATH_MAX + 1];
     int rc;
     (void)vfs;
@@ -309,12 +463,30 @@ static int dotcc_mem_access(sqlite3_vfs *vfs, const char *name, int flags, int *
     return SQLITE_OK;
 }
 
-static int dotcc_mem_fullpath(sqlite3_vfs *vfs, const char *name, int count, char *out) {
+static int dotcc_mem_access(sqlite3_vfs *vfs, const char *name, int flags, int *result) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_access_locked(vfs, name, flags, result);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_fullpath_locked(sqlite3_vfs *vfs, const char *name, int count, char *out) {
     (void)vfs;
     return dotcc_mem_path(name, count, out);
 }
 
-static int dotcc_mem_randomness(sqlite3_vfs *vfs, int count, char *out) {
+static int dotcc_mem_fullpath(sqlite3_vfs *vfs, const char *name, int count, char *out) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_fullpath_locked(vfs, name, count, out);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_randomness_locked(sqlite3_vfs *vfs, int count, char *out) {
     int i;
     (void)vfs;
     for (i = 0; i < count; ++i) {
@@ -324,22 +496,58 @@ static int dotcc_mem_randomness(sqlite3_vfs *vfs, int count, char *out) {
     return count;
 }
 
-static int dotcc_mem_sleep(sqlite3_vfs *vfs, int microseconds) {
+static int dotcc_mem_randomness(sqlite3_vfs *vfs, int count, char *out) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return 0;
+    rc = dotcc_mem_randomness_locked(vfs, count, out);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_sleep_locked(sqlite3_vfs *vfs, int microseconds) {
     (void)vfs;
     if (microseconds > 0) dotcc_mem_unix_ms += microseconds / 1000;
     return microseconds > 0 ? microseconds : 0;
 }
 
-static int dotcc_mem_time(sqlite3_vfs *vfs, double *julian_day) {
+static int dotcc_mem_sleep(sqlite3_vfs *vfs, int microseconds) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return 0;
+    rc = dotcc_mem_sleep_locked(vfs, microseconds);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_time_locked(sqlite3_vfs *vfs, double *julian_day) {
     (void)vfs;
     *julian_day = 2440587.5 + (double)dotcc_mem_unix_ms / 86400000.0;
     return SQLITE_OK;
 }
 
-static int dotcc_mem_error(sqlite3_vfs *vfs, int count, char *out) {
+static int dotcc_mem_time(sqlite3_vfs *vfs, double *julian_day) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_mem_time_locked(vfs, julian_day);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_mem_error_locked(sqlite3_vfs *vfs, int count, char *out) {
     (void)vfs;
     if (count > 0) out[0] = 0;
     return 0;
+}
+
+static int dotcc_mem_error(sqlite3_vfs *vfs, int count, char *out) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return 0;
+    rc = dotcc_mem_error_locked(vfs, count, out);
+    dotcc_mem_leave(mutex);
+    return rc;
 }
 
 static sqlite3_vfs dotcc_mem_vfs = {
@@ -369,7 +577,7 @@ int sqlite3_os_init(void) { return sqlite3_vfs_register(&dotcc_mem_vfs, 1); }
 int sqlite3_os_end(void) { return sqlite3_vfs_unregister(&dotcc_mem_vfs); }
 #endif
 
-int dotcc_memory_vfs_reset(void) {
+static int dotcc_memory_vfs_reset_locked(void) {
     if (dotcc_mem_handles) return SQLITE_BUSY;
     while (dotcc_mem_nodes) dotcc_mem_destroy(dotcc_mem_nodes);
     dotcc_mem_fail_mask = 0;
@@ -378,30 +586,78 @@ int dotcc_memory_vfs_reset(void) {
     return SQLITE_OK;
 }
 
-int dotcc_memory_vfs_file_count(void) {
+int dotcc_memory_vfs_reset(void) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_memory_vfs_reset_locked();
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_memory_vfs_file_count_locked(void) {
     DotccMemNode *node;
     int count = 0;
     for (node = dotcc_mem_nodes; node; node = node->next) ++count;
     return count;
 }
 
-int dotcc_memory_vfs_handle_count(void) {
+int dotcc_memory_vfs_file_count(void) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return -1;
+    rc = dotcc_memory_vfs_file_count_locked();
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_memory_vfs_handle_count_locked(void) {
     DotccMemFile *file;
     int count = 0;
     for (file = dotcc_mem_handles; file; file = file->next) ++count;
     return count;
 }
 
-void dotcc_memory_vfs_fail_after(int mask, int successful_calls, int result) {
+int dotcc_memory_vfs_handle_count(void) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return -1;
+    rc = dotcc_memory_vfs_handle_count_locked();
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static void dotcc_memory_vfs_fail_after_locked(int mask, int successful_calls, int result) {
     dotcc_mem_fail_mask = mask;
     dotcc_mem_fail_count = successful_calls > 0 ? successful_calls : 0;
     dotcc_mem_fail_result = result == SQLITE_OK ? SQLITE_IOERR : result;
 }
 
-void dotcc_memory_vfs_seed(unsigned int seed) { dotcc_mem_random = seed; }
-void dotcc_memory_vfs_time(sqlite3_int64 unix_milliseconds) { dotcc_mem_unix_ms = unix_milliseconds; }
+void dotcc_memory_vfs_fail_after(int mask, int successful_calls, int result) {
+    sqlite3_mutex *mutex;
+    if (dotcc_mem_enter(&mutex) != SQLITE_OK) return;
+    dotcc_memory_vfs_fail_after_locked(mask, successful_calls, result);
+    dotcc_mem_leave(mutex);
+}
 
-int dotcc_memory_vfs_export(const char *name, void *buffer,
+static void dotcc_memory_vfs_seed_locked(unsigned int seed) { dotcc_mem_random = seed; }
+
+void dotcc_memory_vfs_seed(unsigned int seed) {
+    sqlite3_mutex *mutex;
+    if (dotcc_mem_enter(&mutex) != SQLITE_OK) return;
+    dotcc_memory_vfs_seed_locked(seed);
+    dotcc_mem_leave(mutex);
+}
+static void dotcc_memory_vfs_time_locked(sqlite3_int64 unix_milliseconds) { dotcc_mem_unix_ms = unix_milliseconds; }
+
+void dotcc_memory_vfs_time(sqlite3_int64 unix_milliseconds) {
+    sqlite3_mutex *mutex;
+    if (dotcc_mem_enter(&mutex) != SQLITE_OK) return;
+    dotcc_memory_vfs_time_locked(unix_milliseconds);
+    dotcc_mem_leave(mutex);
+}
+
+static int dotcc_memory_vfs_export_locked(const char *name, void *buffer,
                             sqlite3_int64 capacity, sqlite3_int64 *size) {
     char path[MEM_PATH_MAX + 1];
     DotccMemNode *node;
@@ -419,7 +675,17 @@ int dotcc_memory_vfs_export(const char *name, void *buffer,
     return SQLITE_OK;
 }
 
-int dotcc_memory_vfs_import(const char *name, const void *buffer, sqlite3_int64 size) {
+int dotcc_memory_vfs_export(const char *name, void *buffer,
+                            sqlite3_int64 capacity, sqlite3_int64 *size) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_memory_vfs_export_locked(name, buffer, capacity, size);
+    dotcc_mem_leave(mutex);
+    return rc;
+}
+
+static int dotcc_memory_vfs_import_locked(const char *name, const void *buffer, sqlite3_int64 size) {
     char path[MEM_PATH_MAX + 1];
     DotccMemNode *node;
     int created = 0;
@@ -438,4 +704,13 @@ int dotcc_memory_vfs_import(const char *name, const void *buffer, sqlite3_int64 
     }
     if (size) memcpy(node->data, buffer, (size_t)size);
     return SQLITE_OK;
+}
+
+int dotcc_memory_vfs_import(const char *name, const void *buffer, sqlite3_int64 size) {
+    sqlite3_mutex *mutex;
+    int rc = dotcc_mem_enter(&mutex);
+    if (rc != SQLITE_OK) return rc;
+    rc = dotcc_memory_vfs_import_locked(name, buffer, size);
+    dotcc_mem_leave(mutex);
+    return rc;
 }
