@@ -1,15 +1,12 @@
 using System;
 using System.Linq;
 using DotCC.Layout;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Text;
 using Shouldly;
 using Xunit;
 
 namespace DotCC.FunctionalTests;
 
-public sealed class OffsetGeneratorTests
+public sealed class OffsetLayoutTests
 {
     [Fact]
     public void object_link_preserves_layout_and_generated_constants()
@@ -26,6 +23,7 @@ public sealed class OffsetGeneratorTests
             emitted.ShouldContain("dotcc-layout-v1");
             System.IO.File.WriteAllText(fragment, emitted);
             var linked = DotCC.Compiler.LinkObjects(new[] { fragment });
+            linked.ShouldNotContain("DOTCC_OFFSET_GENERATOR");
             FixtureRunner.CompileAndRunCapturingExit(linked, Array.Empty<string>()).exit.ShouldBe(0);
         }
         finally { System.IO.Directory.Delete(directory, true); }
@@ -42,44 +40,59 @@ public sealed class OffsetGeneratorTests
         return document;
     }
 
-    private static GeneratorDriver Run(string source)
-    {
-        var parse = new CSharpParseOptions(LanguageVersion.Preview, preprocessorSymbols: new[] { "DOTCC_OFFSET_GENERATOR" });
-        var compilation = CSharpCompilation.Create("Offsets", new[] { CSharpSyntaxTree.ParseText(SourceText.From(source), parse) });
-        return CSharpGeneratorDriver.Create(new[] { new DotCC.OffsetGenerator.OffsetGenerator().AsSourceGenerator() }, parseOptions: parse)
-            .RunGenerators(compilation);
-    }
-
     [Fact]
-    public void generator_and_standalone_materializer_are_identical_and_deterministic()
+    public void direct_constant_emission_is_deterministic_and_metadata_round_trips()
     {
         var document = Sample();
-        var source = document.Serialize() + "#if !DOTCC_OFFSET_GENERATOR\n" + document.Materialize() + "#endif\n";
-        var first = Run(source).GetRunResult();
-        var second = Run(source).GetRunResult();
-        first.Diagnostics.ShouldBeEmpty();
-        first.GeneratedTrees.Single().ToString().ShouldBe(second.GeneratedTrees.Single().ToString());
-        first.GeneratedTrees.Single().ToString().ShouldContain(document.Materialize());
-        OffsetDocument.ReadSource(source).Single().Serialize().ShouldBe(document.Serialize());
+        var declarations = document.Materialize();
+        declarations.ShouldBe(document.Materialize());
+        declarations.ShouldContain("public const ulong Value = 8UL;");
+        declarations.ShouldContain("public const int Size = 24;");
+        declarations.ShouldContain("public const int Alignment = 8;");
+        OffsetDocument.ReadSource(document.Serialize()).Single().Serialize().ShouldBe(document.Serialize());
+    }
+
+    [Theory]
+    [InlineData(EmitMode.File)]
+    [InlineData(EmitMode.Csproj)]
+    public void ordinary_compilation_needs_no_offset_analyzer(EmitMode mode)
+    {
+        var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "dotcc-offset-direct-" + Guid.NewGuid().ToString("N") + ".c");
+        System.IO.File.WriteAllText(path, """
+            struct S { char tag; double value; int tail[]; };
+            enum Offsets { OFFSET = offsetof(struct S, value) };
+            _Static_assert(offsetof(struct S, tail) == 16, "tail offset");
+            int main(void) {
+                char storage[offsetof(struct S, value)];
+                switch (sizeof(storage)) { case OFFSET: return sizeof(struct S) == 16 ? 0 : 1; }
+                return 2;
+            }
+            """);
+        try
+        {
+            var emitted = Compiler.EmitCSharp(new[] { path }, emit: mode);
+            emitted.ShouldNotContain("DOTCC_OFFSET_GENERATOR");
+            emitted.ShouldContain("public const ulong Value = 8UL;");
+            FixtureRunner.CompileAndRunCapturingExit(emitted, Array.Empty<string>()).exit.ShouldBe(0);
+        }
+        finally { System.IO.File.Delete(path); }
     }
 
     [Theory]
     [InlineData("abi\tunknown\n")]
     [InlineData("abi\tlp64-le-dotcc-v1\nrequest\tinvalid\tUw==\tYQ==\t0\n")]
     [InlineData("abi\tlp64-le-dotcc-v1\nfield\tYQ==\tp:4:4\t-\n")]
-    public void malformed_metadata_reports_actionable_diagnostic(string body)
+    public void malformed_metadata_is_rejected(string body)
     {
-        var result = Run(OffsetDocument.Start + body + OffsetDocument.End).GetRunResult();
-        result.Diagnostics.ShouldContain(d => d.Id == "DOTCCOFF001" && d.Severity == DiagnosticSeverity.Error);
+        Should.Throw<OffsetLayoutException>(() => OffsetDocument.ReadSource(OffsetDocument.Start + body + OffsetDocument.End).ToArray());
     }
 
     [Fact]
-    public void generator_cross_checks_compiler_constant()
+    public void constant_emission_rejects_disagreement_with_folded_value()
     {
         var document = Sample();
         document.Requests[0].Expected = 12;
-        var result = Run(document.Serialize() + "#if !DOTCC_OFFSET_GENERATOR\n#endif\n").GetRunResult();
-        result.Diagnostics.ShouldContain(d => d.Id == "DOTCCOFF001" && d.GetMessage().Contains("disagreement"));
+        Should.Throw<OffsetLayoutException>(() => document.Materialize()).Message.ShouldContain("disagreement");
     }
 
     [Fact]

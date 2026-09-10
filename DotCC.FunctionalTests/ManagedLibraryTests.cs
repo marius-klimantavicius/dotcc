@@ -166,13 +166,13 @@ public sealed class ManagedLibraryTests
     }
 
     [Fact]
-    public void Managed_project_is_a_library_with_explicit_generator_integration()
+    public void Managed_project_is_a_standalone_library()
     {
         var project = Compiler.BuildGeneratedCsproj(assemblyName: "Example",
-            offsetGeneratorAssembly: "/tmp/generator & tools/DotCC.OffsetGenerator.dll", managedLibrary: true);
+            managedLibrary: true);
         project.ShouldContain("<OutputType>Library</OutputType>");
-        project.ShouldContain("DOTCC_OFFSET_GENERATOR");
-        project.ShouldContain("generator &amp; tools/DotCC.OffsetGenerator.dll");
+        project.ShouldNotContain("<Analyzer");
+        project.ShouldNotContain("DOTCC_OFFSET_GENERATOR");
         project.ShouldNotContain("<NativeLib>");
         project.ShouldNotContain("<PublishAot>");
         Should.Throw<ArgumentException>(() => Compiler.BuildGeneratedCsproj(libraryMode: true, managedLibrary: true));

@@ -159,7 +159,7 @@ internal sealed partial class CSharpBackend
         foreach (var request in cg._offsetDocument.Requests.OrderBy(request => request.Name, StringComparer.Ordinal))
         {
             var document = cg._offsetDocument.ForRequest(request);
-            typeDeclarations.Add(request.Name, document.Serialize() + "#if !DOTCC_OFFSET_GENERATOR\n" + document.Materialize() + "#endif\n");
+            typeDeclarations.Add(request.Name, document.Serialize() + document.Materialize());
         }
         foreach (var declaration in typeDeclarations.Values) structs.Append(declaration);
 
@@ -190,7 +190,7 @@ internal sealed partial class CSharpBackend
             if (headerLayout.Alignment is not (1 or 2 or 4 or 8) || headerLayout.Size < headerLayout.Alignment)
                 throw new IrUnsupportedException("flexible-array header storage alignment/size for " + t.Name);
             // Register through the same path as explicit C offsetof expressions.
-            // Both StructLayout constants and the pointer getter use generator output.
+            // Both StructLayout constants and the pointer getter use emitted constants.
             Expr(new OffsetOf(new CType.Named(t.Name), new[] { flexibleField.Name }, flexibleField.Type) { Type = CType.SizeT });
             var layoutClass = DotCC.Layout.OffsetDocument.RequestName(t.Name, new[] { flexibleField.Name });
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")

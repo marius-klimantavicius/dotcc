@@ -34,11 +34,9 @@ values come from native execution, not a handwritten layout table. SQLite's
 wrappers allow testing flexible-array headers without introducing nonstandard
 nested flexible-array structures into the C probe.
 
-CS9184 on a pointer-element inline array means C#'s inline-array language
-operations are unavailable for that element type. dotcc accesses these fields
-through raw element pointers. The span, wrapper-size, and read/write checks
-validate the storage those operations require; warning suppression is not used
-as proof.
+Pointer and function-pointer inline arrays now use one-field unmanaged element
+wrappers, enabling normal C# indexing and generic spans through `element.Value`.
+Their layout remains pointer-sized; CS9184 is eliminated rather than suppressed.
 
 Native, translated JIT, and linux-x64 NativeAOT validation of the expanded probe
 passed with the explicit `SQLITE_MAX_MMAP_SIZE=0` profile. All 30 active offsets,

@@ -1,4 +1,4 @@
-// Shared by the compiler and the analyzer; keep free of Roslyn/runtime dependencies.
+// Compiler layout evaluation and C# constant emission; no Roslyn or runtime dependencies.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -144,7 +144,7 @@ internal sealed class OffsetRequest
 }
 
 /// <summary>Line-oriented, culture-independent contract embedded in generated C#.
-/// Base64 encodes free text. The same parser/materializer runs in dotcc and Roslyn.</summary>
+/// Base64 encodes free text. dotcc emits constants directly from this layout description.</summary>
 internal sealed class OffsetDocument
 {
     public const string Start = "/* dotcc-layout-v1\n";
@@ -232,7 +232,7 @@ internal sealed class OffsetDocument
         foreach (var request in Requests.OrderBy(r => r.Name, StringComparer.Ordinal))
         {
             var offset = model.Offset(request.Aggregate, request.Path);
-            if (offset != request.Expected) throw new OffsetLayoutException("Compiler/generator offsetof disagreement: " + request.Name);
+            if (offset != request.Expected) throw new OffsetLayoutException("Constant evaluation/emission offsetof disagreement: " + request.Name);
             var layout = model.Aggregate(request.Aggregate);
             source.Append("internal static class ").Append(request.Name).Append("\n{\n    public const ulong Value = ")
                 .Append(offset.ToString(CultureInfo.InvariantCulture)).Append("UL;\n    public const int Size = ").Append(layout.Size.ToString(CultureInfo.InvariantCulture))

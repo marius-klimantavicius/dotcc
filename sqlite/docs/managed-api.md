@@ -23,21 +23,14 @@ dotnet build generated/TranslatedSqlite/TranslatedSqlite.csproj -c Release
 ```
 
 `src/engine.c` includes the unchanged amalgamation and memory VFS as one logical
-translation unit. The script supplies the shared feature configuration and
-explicit offsetof analyzer. The command produces the working engine; the remaining campaign checks are
+translation unit. The script supplies the shared feature configuration. dotcc emits offsetof
+constants directly into the library source. The command produces the working engine; the remaining campaign checks are
 recorded in `PLAN.md` and `validation.md`.
 The CLI's optional `-c` also builds the emitted project.
 A consumer references the resulting project or assembly normally.
 
-`--offset-generator` resolves an explicit analyzer DLL path and sets
-`DOTCC_OFFSET_GENERATOR` in the generated project, causing Roslyn to supply layout
-constants from the embedded metadata. Without it, the same declarations are
-materialized by dotcc and the generated project is standalone. The option applies
-to C# project output, including managed libraries and ordinary programs.
-
 The library API equivalents are `Compiler.EmitCSharp(..., emit:
-EmitMode.ManagedLib)` and `Compiler.BuildGeneratedCsproj(managedLibrary: true,
-offsetGeneratorAssembly: path)`. Current object fragments also retain public types,
+EmitMode.ManagedLib)` and `Compiler.BuildGeneratedCsproj(managedLibrary: true)`. Current object fragments also retain public types,
 so `Compiler.LinkObjects(..., emit: EmitMode.ManagedLib)` needs no generated-source
 rewriting. Explicit native import/archive bindings are rejected in managed mode.
 
@@ -48,8 +41,7 @@ Both code images are rooted in a noncollectible test load context; callbacks run
 across forced collections, and registration is cleared before its stack context
 expires. This validates the compiler seam independently of SQLite.
 
-The CLI integration smoke also built a generated library with the actual offset
-analyzer enabled and ran a separate C# consumer under both the JIT and NativeAOT
+The original CLI integration smoke used the then-optional offset analyzer and ran a separate C# consumer under both the JIT and NativeAOT
 (`linux-x64`). Both returned `42 8`: the explicit managed callback result and the
 generated offset of the callback table's context field. Combining managed mode
 with `-shared`, `--shared`, or an explicit native library binding failed as intended.

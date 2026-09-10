@@ -87,7 +87,6 @@
   <ItemGroup>
     <InternalsVisibleTo Include="DotCC.Tests" />
     <InternalsVisibleTo Include="DotCC.FunctionalTests" />
-    <Compile Include="..\sqlite\generators\Shared\OffsetLayout.cs" Link="Layout\OffsetLayout.cs" />
   </ItemGroup>
 
 </Project>

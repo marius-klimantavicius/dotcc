@@ -17,7 +17,6 @@ dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   -std=c17 "${SQLITE_DEFINES[@]}" -I "$SQLITE_AMALGAMATION" \
   -I "$SQLITE_ROOT/src" -I "$SQLITE_ROOT/tests" \
   "$translation_unit" --emit=csproj -o "$output" \
-  --offset-generator "$SQLITE_ROOT/generators/DotCC.OffsetGenerator/bin/Release/netstandard2.0/DotCC.OffsetGenerator.dll" \
   > "$SQLITE_ROOT/artifacts/translated-image-emission.log" 2>&1
 if [[ "${1:-}" == --emit-only ]]; then
   echo "Emitted $output"

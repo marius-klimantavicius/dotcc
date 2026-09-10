@@ -92,7 +92,7 @@ internal static class FixtureRunner
         var cleaned = StripFileBasedHeader(csharpSource);
 
         var syntax = CSharpSyntaxTree.ParseText(cleaned,
-            new CSharpParseOptions(LanguageVersion.Preview, preprocessorSymbols: new[] { "DOTCC_OFFSET_GENERATOR" }), cancellationToken: cancellationToken);
+            new CSharpParseOptions(LanguageVersion.Preview), cancellationToken: cancellationToken);
 
         var refs = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
@@ -129,14 +129,6 @@ internal static class FixtureRunner
             syntaxTrees: new[] { syntax },
             references: refs,
             options: options);
-
-        GeneratorDriver driver = CSharpGeneratorDriver.Create(
-            new[] { new DotCC.OffsetGenerator.OffsetGenerator().AsSourceGenerator() },
-            parseOptions: (CSharpParseOptions)syntax.Options);
-        driver.RunGeneratorsAndUpdateCompilation(comp, out var generated, out var generatorDiagnostics, cancellationToken);
-        if (generatorDiagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))
-            throw new InvalidOperationException("Offset generation failed: " + string.Join("\n", generatorDiagnostics));
-        comp = (CSharpCompilation)generated;
 
         using var pe = new MemoryStream();
         var result = comp.Emit(pe, cancellationToken: cancellationToken);

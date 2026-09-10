@@ -3196,7 +3196,7 @@ internal sealed partial class IrBuilder
     // ---- literals --------------------------------------------------------
 
     /// <summary>Resolve and validate a constant member designator against the shared
-    /// storage layout, retaining its request for generator cross-checking.</summary>
+    /// storage layout, retaining its request for constant-emission cross-checking.</summary>
     private CExpr BuildOffsetof(C.OffsetofExpr n)
     {
         var structType = ResolveType(n.Arg2);

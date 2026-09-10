@@ -7,12 +7,12 @@ using Xunit;
 
 namespace DotCC.Tests;
 
-/// <summary>Shared layout constants and standalone source-generator materialization.</summary>
+/// <summary>Shared layout constants emitted directly into standalone C# source.</summary>
 [Collection("Offsetof")]
 public sealed class OffsetofTests
 {
     [Fact]
-    public void offsets_materialize_generator_constants_without_delegates()
+    public void offsets_emit_constants_directly_without_delegates()
     {
         var src = WriteTemp("struct S { char a; double b; }; int main(void) { return (int)offsetof(struct S, b); }");
         try

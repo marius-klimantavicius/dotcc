@@ -26,7 +26,7 @@ public static partial class Compiler
     /// </summary>
     public static string BuildGeneratedCsproj(
         bool libraryMode = false, string assemblyName = "dotcc-out", IReadOnlyList<string>? staticArchives = null,
-        string? offsetGeneratorAssembly = null, bool managedLibrary = false)
+        bool managedLibrary = false)
     {
         if (managedLibrary && (libraryMode || staticArchives is { Count: > 0 }))
             throw new ArgumentException("managed-library output cannot request native shared-library or archive bindings");
@@ -51,13 +51,6 @@ public static partial class Compiler
             }
             sb.Append("  </ItemGroup>\n");
             staticItems = sb.ToString();
-        }
-
-        if (offsetGeneratorAssembly is not null)
-        {
-            var analyzerPath = System.Security.SecurityElement.Escape(offsetGeneratorAssembly.Replace('\\', '/'));
-            staticItems += $"  <PropertyGroup><DefineConstants>$(DefineConstants);DOTCC_OFFSET_GENERATOR</DefineConstants></PropertyGroup>\n"
-                + $"  <ItemGroup><Analyzer Include=\"{analyzerPath}\" /></ItemGroup>\n";
         }
 
         if (libraryMode)

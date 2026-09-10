@@ -54,8 +54,7 @@ sqlite/
   config/                    one shared set of SQLite build definitions
   scripts/                   fetch, preprocess, translate, build, test, oracle
   src/                       C harness, memory VFS, minimal host-facing C# surface
-  generators/                offsetof source generator and build integration
-  tests/                     SQL/C API/VFS suites, generator tests, oracle corpus
+  tests/                     SQL/C API/VFS suites and oracle corpus
   generated/                 regenerated C# and layout metadata; ignored
   build/                     native/.NET outputs; ignored
   artifacts/                 preprocessing, diagnostics, timings, diffs; ignored
@@ -164,55 +163,31 @@ Commit the baseline infrastructure and findings.
 Exit: the complete configured SQLite plus adapter/harness reaches C# emission
 without skipping bodies. Commit each independent fix as it lands.
 
-### M2 — Implement offsetof with a source generator
+### M2 — Compute layouts and emit offsetof constants directly
 
-At campaign start, code had an `OffsetOf` IR node, constant-context layout
-evaluation in `IrBuilder`, and an inline `Func<ulong>` lambda with stack-instance
-address subtraction. The shared layout model and source generator now replace
-that runtime path. All 30 active compiler contracts match the native oracle;
-actual translated storage/address validation passes under the JIT and NativeAOT.
+The original source-generator requirement was withdrawn on 2026-09-10. The final
+design keeps layout evaluation and direct constant emission inside dotcc; no
+separate Roslyn offset generator is needed. Historical validation records retain
+the original implementation steps.
 
-- [x] Add a Roslyn incremental source-generator project under `generators/`.
-      Keep its design generic to dotcc aggregates despite its campaign location.
-      Explicitly set a Roslyn-compatible target framework instead of inheriting
-      the repository's `net10.0` target blindly.
-- [x] Specify deterministic input metadata from typed IR: target ABI, aggregate
-      identity, fields and lowered storage, nesting, arrays, alignment/packing,
-      unions, and requested member designators. Emit it with generated C# as an
-      `AdditionalFiles` input (or equivalent documented structured contract).
-- [x] Share a single layout model between compiler constant evaluation and the
-      generator. Generate typed `size_t`-equivalent offset constants, required
-      access helpers/metadata, and diagnostics. Ensure generated storage layout
-      matches that model; audit `sizeof` and alignment together with offsets.
-      Do not maintain a hand-written table of SQLite struct offsets.
-- [x] Resolve C integer constant expressions during dotcc lowering from that
-      shared model, including array bounds, enums, case labels, and static
-      assertions. Roslyn runs later and cannot retroactively supply constants
-      needed to parse/lower C; avoid a circular build dependency. Cross-check
-      compiler-folded constants against source-generator output.
-- [x] Support typedefs, named/anonymous nested structs/unions, scalar and array
-      members, fixed buffers, inline storage, pointer/function-pointer fields,
-      dotted paths, and indexed designators needed by SQLite. Audit flexible
-      array tails and fields following bit-field storage; diagnose `offsetof`
-      applied to a bit-field itself and other invalid/nonconstant requests.
-- [x] Use generated helpers for valid runtime-only access when necessary, with
-      no null-pointer dereference, runtime reflection, dynamic code generation,
-      or per-call delegate allocation. Runtime helpers cannot stand in for C
-      integer constants. Unsupported layouts must produce a clear diagnostic.
-- [x] Wire generation into emitted project/build output and in-process Roslyn
-      fixture compilation via `GeneratorDriver`; cover object/link output as
-      needed. Preserve standalone `--emit=file` usability by materializing the
-      same generated declarations through the shared generation implementation.
-      No hidden analyzer installed only on the developer's machine.
-- [x] Test generator determinism, invalid input diagnostics, constant contexts,
-      and representative SQLite aggregates. Compare native C `sizeof`/alignment/
-      offsets, compiler constants, generated constants, and actual unsafe C#
-      address differences. Check supported 64-bit target layouts and AOT output.
+- [x] Use one layout model for typed C constant evaluation and C# emission,
+      now located in `DotCC.Lib/Layout/OffsetLayout.cs`.
+- [x] Emit deterministic `size_t`-equivalent offsets, sizes, alignments, and
+      required flexible-tail accessors directly into generated source.
+- [x] Resolve C integer constant contexts before emission: array bounds, enums,
+      case labels, and static assertions. Check emitted values against folding.
+- [x] Support SQLite-required nested/anonymous structs/unions, typedefs, arrays,
+      dotted/indexed paths, pointers/callbacks, bit-field storage, and flexible
+      tails; diagnose invalid layouts and bit-field addresses explicitly.
+- [x] Preserve metadata for native audits and object-link identity without
+      requiring an analyzer, runtime reflection, or runtime offset evaluation.
+- [x] Verify ordinary file/project/managed-library/object-link builds directly,
+      with no `GeneratorDriver` or offset-analyzer project dependency.
+- [x] Compare all 30 active SQLite offsets, 33 actual aggregate sizes/alignments,
+      and eight pointer-array storage checks against native under JIT/NativeAOT.
 
-Exit: all SQLite-required offsets come through the tested generator integration,
-agree with actual storage/native layout, and work in both constant and runtime
-contexts. Commit model, generator, integration, and regressions in focused units.
-M1/M2 may interleave where layout-dependent declarations block lowering.
+Exit: required offsets agree with actual storage and native layout in constant
+and runtime contexts. See `offset-layout.md` and `validation.md`.
 
 ### M3 — Compile emitted C# and preserve the callback API
 
@@ -312,7 +287,7 @@ parser/emitter/runtime defects have regression tests and full-amalgamation retri
 
 ### M6 — Reproducibility and completion
 
-- [x] Reproduce fetch -> checksum -> preprocess -> translate -> source-generate
+- [x] Reproduce fetch -> checksum -> preprocess -> translate -> emit layout constants
       -> build -> test from a clean checkout, using documented commands rooted at
       `sqlite/`. Ensure generated output is never edited by hand.
 - [x] Add a local campaign entry script and CI integration using existing repo
@@ -327,6 +302,6 @@ parser/emitter/runtime defects have regression tests and full-amalgamation retri
 - [x] Commit the final verified milestone and report local branch/commit state.
 
 Completion requires a reusable translated C# engine with core plus JSON/JSONB,
-the memory VFS contract, working function-pointer APIs, the integrated offsetof
-source generator, reproducible native differential evidence, and passing required
+the memory VFS contract, working function-pointer APIs, direct offsetof
+constant emission, reproducible native differential evidence, and passing required
 regressions. Parser success, a build-only stub, or a SQL smoke test is insufficient.

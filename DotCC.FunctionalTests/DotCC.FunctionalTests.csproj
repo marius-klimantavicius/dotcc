@@ -34,8 +34,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotCC.Lib\DotCC.Lib.csproj" />
-    <ProjectReference Include="..\sqlite\generators\DotCC.OffsetGenerator\DotCC.OffsetGenerator.csproj" />
-    <Compile Include="..\sqlite\tests\OffsetGeneratorTests.cs" Link="OffsetGeneratorTests.cs" />
     <!-- For the Float128 differential oracle (GccQuadOracleTests), which diffs
          our DotCC.Libc.Float128 against gcc's binary128 long double. -->
     <ProjectReference Include="..\DotCC.Libc\DotCC.Libc.csproj" />

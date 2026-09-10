@@ -28,7 +28,7 @@ smaller JIT-only run, not the completion gate. `scripts/verify.sh --with-ports`
 adds the existing Lua, Chibi and WAT regressions; their upstream runners and
 committed baselines remain the acceptance criteria.
 
-To fetch the pinned inputs, rebuild dotcc and its generator, and regenerate/build
+To fetch the pinned inputs, rebuild dotcc, and regenerate/build
 only the reusable SQLite assembly (no tests or consumer execution):
 
 ```sh
@@ -50,9 +50,10 @@ Pointer and function-pointer inline-array elements use unmanaged one-field
 structs to support C# indexing and spans. Managed callers access the pointer as
 `array[index].Value`; translated C retains its original pointer-array layout.
 
-Generated engine source is never edited. The offsetof analyzer is built from
-`generators/DotCC.OffsetGenerator`, supplied explicitly by the emission scripts,
-and consumes metadata produced from the typed C input. Native SQLite is used only
+Generated engine source is never edited. dotcc emits offsetof constants directly
+from its shared typed layout model; the emitted project needs no offset analyzer.
+See [offset layout](offset-layout.md) for the model and validation contract.
+Native SQLite is used only
 in separate oracle processes. Database-image tests exchange closed files through
 the harness; the memory VFS itself does not promise persistence across processes.
 
