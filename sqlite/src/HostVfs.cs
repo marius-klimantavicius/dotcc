@@ -73,20 +73,29 @@ public static unsafe class HostVfs
             {
                 if (registeredVfs == null)
                 {
-                    var methods = (sqlite3_io_methods*)NativeMemory.Alloc((nuint)sizeof(sqlite3_io_methods));
-                    var vfs = (sqlite3_vfs*)NativeMemory.Alloc((nuint)sizeof(sqlite3_vfs));
-                    var name = (byte*)NativeMemory.Alloc(11);
-                    if (methods == null || vfs == null || name == null)
+                    sqlite3_io_methods* methods = null;
+                    sqlite3_vfs* vfs = null;
+                    byte* name = null;
+                    try
                     {
-                        NativeMemory.Free(methods); NativeMemory.Free(vfs); NativeMemory.Free(name);
-                        return NoMemory;
+                        methods = (sqlite3_io_methods*)NativeMemory.Alloc((nuint)sizeof(sqlite3_io_methods));
+                        vfs = (sqlite3_vfs*)NativeMemory.Alloc((nuint)sizeof(sqlite3_vfs));
+                        name = (byte*)NativeMemory.Alloc(11);
+                        if (methods == null || vfs == null || name == null) return NoMemory;
+                        *methods = MethodTable;
+                        *vfs = VfsTable;
+                        "dotcc-host\0"u8.CopyTo(new Span<byte>(name, 11));
+                        vfs->zName = name;
+                        registeredMethods = methods;
+                        registeredVfs = vfs;
                     }
-                    *methods = MethodTable;
-                    *vfs = VfsTable;
-                    "dotcc-host\0"u8.CopyTo(new Span<byte>(name, 11));
-                    vfs->zName = name;
-                    registeredMethods = methods;
-                    registeredVfs = vfs;
+                    finally
+                    {
+                        if (registeredVfs == null)
+                        {
+                            NativeMemory.Free(methods); NativeMemory.Free(vfs); NativeMemory.Free(name);
+                        }
+                    }
                 }
                 return sqlite3_vfs_register(registeredVfs, 1);
             }

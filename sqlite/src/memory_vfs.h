@@ -13,7 +13,8 @@
 
 /* Serialized, process-local calls only. Files survive close until deleted/reset.
  * No OS files, native interop, shared-memory/WAL, mmap, or durability guarantee.
- * sqlite3_os_init registers this VFS as the default for SQLITE_OS_OTHER=1.
+ * sqlite3_os_init registers this as default unless DOTCC_HOST_VFS enables the
+ * managed product's real-file default; this VFS remains available by name.
  */
 sqlite3_vfs *dotcc_memory_vfs(void);
 int dotcc_memory_vfs_reset(void); /* SQLITE_BUSY while any file is open. */
