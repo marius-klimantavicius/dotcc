@@ -1,6 +1,9 @@
 /* Platform port for the generated APPDEF amalgamation. Its one guarded change
  * leaves these two default mutex/barrier hooks to the application. Native
  * reference corpora retain their separate THREADSAFE=0 configuration. */
+#if defined(SQLITE_MUTEX_APPDEF) && (!SQLITE_THREADSAFE || defined(SQLITE_MUTEX_NOOP))
+#error SQLITE_MUTEX_APPDEF requires THREADSAFE and the guarded host amalgamation
+#endif
 #if defined(SQLITE_MUTEX_APPDEF) && SQLITE_THREADSAFE
 #ifndef DOTCC_HOST_VFS
 #error SQLITE_MUTEX_APPDEF requires the managed host platform adapter

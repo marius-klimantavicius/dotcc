@@ -11,7 +11,9 @@
 #define DOTCC_VFS_FAIL_SYNC 16
 #define DOTCC_VFS_FAIL_DELETE 32
 
-/* Serialized, process-local calls only. Files survive close until deleted/reset.
+/* Process-local files survive close until deleted/reset. Shared VFS state is
+ * protected by a SQLite static mutex when THREADSAFE is enabled. The
+ * THREADSAFE=0 deterministic corpus still requires serialized callers.
  * No OS files, native interop, shared-memory/WAL, mmap, or durability guarantee.
  * sqlite3_os_init registers this as default unless DOTCC_HOST_VFS enables the
  * managed product's real-file default; this VFS remains available by name.
