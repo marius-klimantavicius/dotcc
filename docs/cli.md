@@ -11,6 +11,8 @@
 | `--emit=file` | Single .NET 10 file-based program (`#:property AllowUnsafeBlocks=true`). To `-o <file>` if given, else stdout. |
 | `--emit=csproj` | Default — `Program.cs` + paired csproj to `-o` dir. |
 | `--emit=build` | As `csproj`, then run `dotnet build -c Release` in the output dir. |
+| `--emit=managedlib` | Emit a reusable managed library with public functions and aggregate types. Add `-c` to compile it. |
+| `--class-name <name>` | Set the generated API class for `--emit=managedlib` or `-shared` (default `DotCcLib`). Applies to whole-program emission and object linking; specify it at link time, not with `--emit=obj`. Accepts a single ASCII identifier, optionally `@`-escaped; keywords are escaped automatically. Executable, preprocessing and WAT modes reject this option. |
 | `--emit=obj` | **Separate compilation.** Compile ONE `.c` to a `.cs` object fragment (functions + its type decls + globals, no shell/runtime). Link by passing `.cs` objects back: `dotcc a.cs b.cs -o app` merges (deduping shared types) and wraps in the shell. Drives CMake/make per file (`examples/cmake-demo/`). |
 | **`-o` ⇄ `--emit` inference** | When one is omitted it's inferred: `-o foo.cs` ⇒ `file`; `-o <dir>` ⇒ `csproj`; `--emit=obj` with no `-o` ⇒ `<src>.cs`. Explicit `--emit` wins; `obj` is never inferred. |
 | `-E` | Preprocess only — dump the post-`#include`/`#define` token stream to stdout. No parsing. |
@@ -46,3 +48,13 @@ to their runtime closure.
 For in-place IDE edits, the separate [Rider analyzer/code fix](postprocess.md#rider-in-place-fixes)
 offers the same transformations as quick-fixes with Fix All. This does not add
 a dotcc CLI flag or automatically edit emitted sources.
+
+For example, `dotcc --emit=managedlib --class-name Sqlite engine.c -o TranslatedSqlite`
+emits `public static class Sqlite`. The corresponding APIs are
+`Compiler.EmitCSharp(..., emit: EmitMode.ManagedLib, className: "Sqlite")` and
+`Compiler.LinkObjects(..., emit: EmitMode.ManagedLib, className: "Sqlite")`.
+The selected name is used in declarations, static imports, function-owner aliases
+and native export wrapper calls. Globals, aggregate types, canonical pointer
+containers, assembly names and native export entry-point names keep their existing
+names. Choose a name that does not conflict with translated symbols or runtime
+helper types; infrastructure and translated-declaration collisions are diagnosed.

@@ -33,6 +33,10 @@ internal static class Program
             Description = "csproj: write Program.cs + .csproj. file: emit a single .NET 10 file-based program to stdout. build: like csproj, then `dotnet build`. obj: compile one .c to a .cs object fragment. managedlib: emit a reusable managed library with a public C# API (add -c to build).",
             DefaultValueFactory = _ => EmitKind.Csproj,
         };
+        var classNameOpt = new Option<string?>("--class-name")
+        {
+            Description = "Generated library API class name (managedlib or -shared). Default: DotCcLib.",
+        };
         var targetOpt = new Option<string?>("--target")
         {
             Description = "Output target (the M in N×M): cs (C#, default) or wat (WebAssembly text). wat emits a .wat module to -o, else stdout.",
@@ -116,7 +120,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, classNameOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -229,7 +233,7 @@ internal static class Program
 
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
-                       buildManaged: compileFlag && emit == EmitKind.ManagedLib);
+                       buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt));
         });
 
         return root.Parse(args).Invoke();
@@ -281,12 +285,18 @@ internal static class Program
         bool debugHeap = false,
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool buildManaged = false)
+        bool buildManaged = false, string? className = null)
     {
         imports ??= ImportOptions.Empty;
         if (emit == EmitKind.ManagedLib && (libraryMode || (target is not null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase))))
         {
             Console.Error.WriteLine("dotcc: managedlib requires the C# target and cannot be combined with -shared");
+            return 2;
+        }
+        if (className != null && (preprocessOnly || emit == EmitKind.Obj || (!libraryMode && emit != EmitKind.ManagedLib)
+            || (target != null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase))))
+        {
+            Console.Error.WriteLine("dotcc: --class-name requires C# managedlib or -shared output (set it at link time for objects)");
             return 2;
         }
         if (preprocessOnly)
@@ -363,7 +373,7 @@ internal static class Program
         try
         {
             program = linking
-                ? Compiler.LinkObjects(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports)
+                ? Compiler.LinkObjects(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports, className: className)
                 : Compiler.EmitCSharp(
                     inputPaths,
                     includeDirs,
@@ -372,7 +382,7 @@ internal static class Program
                     dialect: dialect,
                     debugHeap: debugHeap,
                     imports: imports,
-                    warnings: warnings);
+                    warnings: warnings, className: className);
         }
         catch (CompileException ex)
         {

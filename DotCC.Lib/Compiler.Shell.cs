@@ -135,12 +135,12 @@ public static partial class Compiler
         bool mainReturnsErrUnion = false,
         bool mainErrPayloadIsVoid = false,
         bool testMode = false,
-        IReadOnlyList<(string Name, string FnName)>? tests = null)
+        IReadOnlyList<(string Name, string FnName)>? tests = null, string libraryClass = "DotCcLib")
     {
         if (emit is EmitMode.SharedLib or EmitMode.ManagedLib)
         {
             return BuildLibraryShell(emittedFnList, structDecls, usingAliases, globals, exports, importsClass, importsAreStatic,
-                managedLibrary: emit == EmitMode.ManagedLib);
+                managedLibrary: emit == EmitMode.ManagedLib, libraryClass: libraryClass);
         }
         // Import mode: surface the import table by bare name and splice it into the
         // type-decls section. A GOT (-l) table is bound before main; static [DllImport]
@@ -380,7 +380,7 @@ public static partial class Compiler
         string globals,
         IReadOnlyList<EmitHelpers.Export> exports,
         string importsClass = "",
-        bool importsAreStatic = false, bool managedLibrary = false)
+        bool importsAreStatic = false, bool managedLibrary = false, string libraryClass = "DotCcLib")
     {
         // Import mode in a -shared lib: surface the table by bare name and splice it. A
         // GOT table binds in a static constructor (no entry point here); static [DllImport]
@@ -416,7 +416,7 @@ public static partial class Compiler
             // C# wrapper method + the DotCcLib call escape any C#-keyword name.
             var csName = EmitHelpers.Id(e.Name);
             exportsBlock.Append($"    [UnmanagedCallersOnly(EntryPoint = \"{e.Name}\", CallConvs = new[] {{ typeof(CallConvCdecl) }})]\n");
-            exportsBlock.Append($"    public static unsafe {e.ReturnType} {csName}({e.Params}) => DotCcLib.{csName}({argNames});\n\n");
+            exportsBlock.Append($"    public static unsafe {e.ReturnType} {csName}({e.Params}) => {libraryClass}.{csName}({argNames});\n\n");
         }
 
         var exportsDeclaration = managedLibrary ? "" : "public static class DotCcExports\n{\n" + exportsBlock + "}\n";
@@ -440,14 +440,14 @@ public static partial class Compiler
             using System.Net;
             using System.Net.Sockets;
             using static Libc;
-            using static DotCcLib;
-            using DotCcFunctions = global::DotCcLib;
+            using static {{libraryClass}};
+            using DotCcFunctions = global::{{libraryClass}};
             using static DotCcGlobals;{{importsUsing}}
 
             // ---- typedef'd `using` aliases (same as exe mode).
             {{usingAliases}}
             // Translated methods use direct calls and managed function pointers.
-            {{(managedLibrary ? "public" : "internal")}} static class DotCcLib
+            {{(managedLibrary ? "public" : "internal")}} static class {{libraryClass}}
             {
             {{indentedFns}}
             }
@@ -459,7 +459,7 @@ public static partial class Compiler
             {{structDecls}}
 
             // C file-scope variables, collected as static fields (same as
-            // exe mode). DotCcLib reaches them via `using static DotCcGlobals;`
+            // exe mode). {{libraryClass}} reaches them via `using static DotCcGlobals;`
             // — adding that import here too so library-mode emits work.
             {{(managedLibrary ? "public " : "")}}static unsafe class DotCcGlobals
             {

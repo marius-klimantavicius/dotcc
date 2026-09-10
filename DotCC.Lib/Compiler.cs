@@ -127,6 +127,8 @@ public static partial class Compiler
     /// <c>[UnmanagedCallersOnly]</c> in <c>public static class DotCcExports</c>, and no
     /// <c>main</c> required; every other shape emits the standalone-executable shell with
     /// a <c>return main(…);</c> entry.</param>
+    /// <param name="className">Optional library API class identifier; defaults to DotCcLib.
+    /// Valid only for managed or native shared library output.</param>
     public static string EmitCSharp(
         IReadOnlyList<string> inputPaths,
         IReadOnlyList<string>? includeDirs = null,
@@ -136,8 +138,10 @@ public static partial class Compiler
         bool debugHeap = false,
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool testMode = false)
+        bool testMode = false,
+        string? className = null)
     {
+        var libraryClass = ResolveLibraryClassName(className, emit);
         var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
             throw new CompileException("managed-library output does not support native import or archive bindings");
@@ -202,9 +206,12 @@ public static partial class Compiler
             return SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
                 objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid);
         }
+        if (className != null)
+            CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
+                irBuilder.Functions.Select(f => f.Sym.TargetName).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
         var aliases = cg.Aliases + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
-            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode);
-        return BuildShell(cg.MainArity, cg.Functions, cg.Structs, aliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests);
+            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass);
+        return BuildShell(cg.MainArity, cg.Functions, cg.Structs, aliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass);
     }
 
     /// <summary>

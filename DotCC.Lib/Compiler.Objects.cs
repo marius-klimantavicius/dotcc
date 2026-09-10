@@ -88,8 +88,9 @@ public static partial class Compiler
     /// </summary>
     public static string LinkObjects(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
-        ImportOptions? imports = null)
+        ImportOptions? imports = null, string? className = null)
     {
+        var libraryClass = ResolveLibraryClassName(className, emit);
         var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
             throw new CompileException("managed-library output does not support native import or archive bindings");
@@ -215,14 +216,15 @@ public static partial class Compiler
                 .ToList();
             if (survivors.Count > 0) { importsClass = RenderImportsClass(survivors, imports, libraryMode); }
         }
-        aliasText += FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode);
+        if (className != null) CheckLibraryClassCollision(libraryClass, typeByName.Keys, definedNames);
+        aliasText += FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass);
         return BuildShell(mainArity, functions.ToString(), structDecls.ToString(), aliasText, globalText,
                           emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                           importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
-                          mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid);
+                          mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass);
     }
 
-    private static string FunctionPointerOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode)
+    private static string FunctionPointerOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass)
     {
         var defined = new HashSet<string>(definitions, StringComparer.Ordinal);
         var aliases = new StringBuilder();
@@ -230,7 +232,7 @@ public static partial class Compiler
             .OrderBy(key => key, StringComparer.Ordinal))
         {
             var name = key[FunctionPointerNames.TypeKeyPrefix.Length..];
-            var owner = defined.Contains(name) ? (libraryMode ? "DotCcLib" : "DotCcProgram") : "Libc";
+            var owner = defined.Contains(name) ? (libraryMode ? libraryClass : "DotCcProgram") : "Libc";
             aliases.Append("using ").Append(FunctionPointerNames.OwnerAlias(name))
                 .Append(" = global::").Append(owner).Append(";\n");
         }
