@@ -2,9 +2,12 @@
 
 `config/defines.txt` is the shared native/translated profile: C17,
 `SQLITE_OS_OTHER=1`, `SQLITE_THREADSAFE=0`, `SQLITE_TEMP_STORE=3`,
-`SQLITE_MAX_MMAP_SIZE=0`, `SQLITE_ENABLE_FTS5`, and
-`SQLITE_OMIT_LOAD_EXTENSION`. Default SQLite core, JSON/JSONB, and statically
-compiled FTS5 are enabled; FTS3 and FTS4 remain deferred. There is no native SQLite interop or dynamic
+`SQLITE_MAX_MMAP_SIZE=0`, `SQLITE_ENABLE_FTS5`,
+`SQLITE_ENABLE_MATH_FUNCTIONS`, `SQLITE_ENABLE_PERCENTILE`,
+`SQLITE_ENABLE_COLUMN_METADATA`, and `SQLITE_OMIT_LOAD_EXTENSION`. Default SQLite core, JSON/JSONB, and statically
+compiled FTS5 are enabled, together with SQL math functions, median/percentile
+aggregates and windows, and UTF-8/UTF-16 result-column origin metadata. FTS3 and
+FTS4 remain deferred. There is no native SQLite interop or dynamic
 extension loading. Deterministic C corpora use the portable memory VFS. The
 managed-library build additionally defines `DOTCC_HOST_VFS=1` and compiles the
 [real host VFS](host-vfs.md) sidecars; `dotcc-host` supplies its OS interface and
@@ -68,3 +71,20 @@ with zero, and those limits; GCC with `-funsigned-char` prints the same values.
 Default x64 GCC instead prints `-1 1 -128 127`. Evidence is under `artifacts/abi/`.
 This selects the native oracle's plain-char behavior without changing SQLite
 feature definitions. Explicit `signed char` remains signed.
+
+## Additional SQL functions and result metadata
+
+The shared profile enables `SQLITE_ENABLE_MATH_FUNCTIONS`,
+`SQLITE_ENABLE_PERCENTILE`, and `SQLITE_ENABLE_COLUMN_METADATA` for both the
+native comparison builds and translated engine. Math uses dotcc's BCL-backed
+libc, including inverse hyperbolic functions used in SQLite's callback tables.
+Percentiles use SQLite's unchanged aggregate/window implementation. The optional
+ordered-set `WITHIN GROUP` syntax is not enabled; use SQLite's function-call
+syntax such as `percentile_cont(value, 0.5)`.
+
+The metadata APIs expose original database/table/column names even when a query
+uses aliases and views. Computed expressions have no source column metadata.
+These APIs retain SQLite's borrowed-string lifetime rules; copy names before
+reset/reprepare/finalize or other calls that invalidate their storage.
+`tests/optional_features.h` runs in the native/translated API corpus, and the
+separate managed consumer calls all six UTF-8/UTF-16 origin APIs directly.

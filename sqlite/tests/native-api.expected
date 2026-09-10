@@ -1,3 +1,6 @@
+PASS API math functions arithmetic logs trigonometry hyperbolic and domain NULLs
+PASS API percentile aggregates windows groups sorting NULLs and invalid-input recovery
+PASS API column metadata UTF8 UTF16 aliases views joins attached databases expressions and reset
 PASS API bindings ownership UTF8 UTF16 conversions lifecycle
 PASS API scalar aggregate collation progress busy transaction callbacks
 PASS API incremental blob backup and read-only handles

@@ -5,7 +5,8 @@ profile is Linux x64, LP64, little endian, .NET 10, serialized calls on one thre
 and the real file-backed `dotcc-host` VFS for the managed library. Deterministic C
 corpora retain their process-local memory VFS. Windows/macOS host implementations
 and CI are provided, but local execution evidence is Linux x64. See
-[host VFS](host-vfs.md). Core SQLite, JSON/JSONB and FTS5 are enabled; FTS3/FTS4,
+[host VFS](host-vfs.md). Core SQLite, JSON/JSONB, FTS5, SQL math/percentile functions and column metadata
+are enabled; FTS3/FTS4,
 dynamic extensions and database memory mapping are excluded. WAL is supported
 on the host VFS; select it with `PRAGMA journal_mode=WAL`.
 See `configuration.md` for the exact shared native/translated definitions.

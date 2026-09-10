@@ -333,10 +333,13 @@ static int error_contract(sqlite3 *db) {
     return 0;
 }
 
+#include "optional_features.h"
+
 int main(void) {
     sqlite3 *db = NULL;
     OK(dotcc_memory_vfs_reset());
     OK(sqlite3_open_v2("api.db", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, DOTCC_MEMORY_VFS_NAME));
+    CHECK(optional_features_contract(db) == 0);
     CHECK(binding_contract(db) == 0);
     CHECK(callback_contract(db) == 0);
     CHECK(backup_blob_contract(db) == 0);

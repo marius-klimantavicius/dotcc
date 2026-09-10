@@ -5,7 +5,7 @@ using static DotCcLib;
 
 // A separately compiled C# application registers its managed callbacks directly.
 // No native SQLite, assembly discovery, reflection, or extension loading is used.
-internal static unsafe class Program
+internal static unsafe partial class Program
 {
     private const int Ok = 0, Row = 100, Done = 101;
     private static int destroyed;
@@ -413,6 +413,7 @@ internal static unsafe class Program
             Expect(db, "PRAGMA journal_mode=WAL", "wal");
             Expect(db, "SELECT json_extract(jsonb('{\"name\":\"λ\",\"n\":42}'),'$.name')", "λ");
             Expect(db, "SELECT json_valid(jsonb('[1,2,3]'),8)", "1");
+            CheckOptionalFeatures(db);
             CheckSqlWorkloads(db);
             CheckFullTextSearch(db);
             CheckFunctionIdentity();

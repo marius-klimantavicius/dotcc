@@ -58,6 +58,9 @@ SQLite library and selects WAL on its real temporary database. Its JIT and
 linux-x64 NativeAOT checks exercise schema,
 indexes/views/triggers, prepared inserts, joins/aggregates, correlated queries,
 CTEs/windows, JSONB, updates/upserts/deletes, transactions/savepoints, and integrity.
+It also exercises SQL math, median/percentile aggregates and moving windows,
+and all six UTF-8/UTF-16 database/table/column origin APIs through aliases, views,
+joins and attached databases.
 FTS5 coverage includes CRUD/MATCH/highlight, an explicitly registered C# auxiliary
 function, and the unicode61 tokenizer API. Auxiliary context destruction is
 checked once on close; no extension loading is involved.
