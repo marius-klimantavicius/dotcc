@@ -5,14 +5,19 @@
 `SQLITE_MAX_MMAP_SIZE=0`, `SQLITE_ENABLE_FTS5`, and
 `SQLITE_OMIT_LOAD_EXTENSION`. Default SQLite core, JSON/JSONB, and statically
 compiled FTS5 are enabled; FTS3 and FTS4 remain deferred. There is no native SQLite interop or dynamic
-extension loading. A portable memory VFS supplies the OS interface.
+extension loading. Deterministic C corpora use the portable memory VFS. The
+managed-library build additionally defines `DOTCC_HOST_VFS=1` and compiles the
+[real host VFS](host-vfs.md) sidecars; `dotcc-host` supplies its OS interface and
+uses BCL file I/O plus explicitly permitted OS-level P/Invoke.
 
 Initial host: Linux x64, little-endian LP64; .NET SDK 10.0.111, runtime 10.0.11,
 GCC on Ubuntu 24.04/Zorin 18. dotcc targets 64-bit pointers/long/size_t.
 Solution builds resolve NuGet `SharpAstro.LALR.CC` 4.7.0 (verified in
 `DotCC.Lib/obj/project.assets.json`); campaign rebuilds explicitly set
-`UseLocalLalrCc=false`. Calls are serialized; WAL/shared memory, mmap,
-process durability and concurrent hosting are unsupported platform capabilities.
+`UseLocalLalrCc=false`. Calls are serialized; WAL/shared memory, mmap and
+multithreaded SQLite hosting remain unsupported. The managed host VFS now provides
+real disk persistence, flushes and coordination between independent processes;
+the memory VFS retains its original process-local contract.
 
 `SQLITE_MAX_MMAP_SIZE=0` explicitly matches the memory VFS's lack of mapped
 reads. Without it, native GCC/Linux selects a nonzero platform default even

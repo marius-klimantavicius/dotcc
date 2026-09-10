@@ -2,7 +2,10 @@
 
 Run commands from the repository's `sqlite/` directory. The supported initial
 profile is Linux x64, LP64, little endian, .NET 10, serialized calls on one thread,
-and the process-local memory VFS. Core SQLite, JSON/JSONB and FTS5 are enabled; FTS3/FTS4,
+and the real file-backed `dotcc-host` VFS for the managed library. Deterministic C
+corpora retain their process-local memory VFS. Windows/macOS host implementations
+and CI are provided, but local execution evidence is Linux x64. See
+[host VFS](host-vfs.md). Core SQLite, JSON/JSONB and FTS5 are enabled; FTS3/FTS4,
 dynamic extensions, WAL shared-memory storage and memory mapping are excluded.
 See `configuration.md` for the exact shared native/translated definitions.
 
@@ -22,7 +25,8 @@ This checks source hashes, builds dotcc with the NuGet LALR.CC dependency, runs 
 unit and functional suites serially, regenerates native baselines for comparison,
 then translates and executes layout, API, SQL, VFS, allocation, virtual-table,
 public JSONB, FTS5 and database-image tests. It includes the separate C# consumer and
-NativeAOT layout/consumer checks. It writes diagnostics under `artifacts/` and
+NativeAOT layout/consumer checks, plus real-file VFS locking, persistence and
+hot-journal recovery against native processes. It writes diagnostics under `artifacts/` and
 fails on the first mismatch. `SQLITE_AOT=0 scripts/verify.sh` is an explicitly
 smaller JIT-only run, not the completion gate. `scripts/verify.sh --with-ports`
 adds the existing Lua, Chibi and WAT regressions; their upstream runners and
@@ -44,7 +48,9 @@ or its built `TranslatedSqlite.dll`. `DotCcLib` exposes the C API as unsafe mana
 methods; public translated aggregate types and `delegate*` signatures preserve
 SQLite's callback surface. `tests/ManagedConsumer` demonstrates explicit C#
 extension registration, ownership, callback re-entry and cleanup. No native SQLite
-library or dynamic extension loader is part of that integration.
+library or dynamic extension loader is part of that integration. The default VFS
+uses real files; OS-level P/Invoke supplies platform locking/durability alongside
+BCL file I/O. The sample consumer creates and cleans up a temporary disk database.
 
 Pointer and function-pointer inline-array elements use unmanaged one-field
 structs to support C# indexing and spans. Managed callers access the pointer as
@@ -55,7 +61,8 @@ from its shared typed layout model; the emitted project needs no offset analyzer
 See [offset layout](offset-layout.md) for the model and validation contract.
 Native SQLite is used only
 in separate oracle processes. Database-image tests exchange closed files through
-the harness; the memory VFS itself does not promise persistence across processes.
+the deterministic harness; `scripts/test-host-vfs.sh` separately verifies ordinary
+disk persistence and locking without image import/export.
 
 Use `scripts/test-translated.sh core` (or `api`, `vfs`, `vtable`, `allocation`,
 `upstream`, `fts5`) to isolate a corpus. Use `SQLITE_AOT=1 scripts/test-layout-translated.sh`

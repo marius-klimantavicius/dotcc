@@ -9,9 +9,11 @@ apply. Function-pointer signatures use managed `delegate*` calling conventions.
 A C# extension registers its static callback explicitly through the translated
 registration API, retaining its callback code and context for the registration's
 lifetime. It unregisters before releasing that context. No native export wrappers,
-native SQLite dependency, native import bindings, or extension-discovery/loading
+native SQLite dependency, native SQLite import bindings, or extension-discovery/loading
 path is generated. The shared dotcc libc implementation remains supplied in the
 assembly; optional unused OS/dlfcn runtime methods are not an extension host.
+The product's [host VFS](host-vfs.md) does use explicitly allowed OS-level P/Invoke
+for file locking and durability, alongside BCL file I/O.
 
 The existing `-shared` output remains a separate native-export mode.
 
@@ -23,7 +25,10 @@ dotnet build generated/TranslatedSqlite/TranslatedSqlite.csproj -c Release
 ```
 
 `src/engine.c` includes the unchanged amalgamation and memory VFS as one logical
-translation unit. The script supplies the shared feature configuration. dotcc emits offsetof
+translation unit. The script supplies the shared feature configuration and the
+host-registration switch; `Directory.Build.targets` includes the managed OS
+sidecars. `dotcc-host` is the library default, while the named memory adapter
+remains available. dotcc emits offsetof
 constants directly into the library source. The command produces the working engine; the remaining campaign checks are
 recorded in `PLAN.md` and `validation.md`.
 The CLI's optional `-c` also builds the emitted project.

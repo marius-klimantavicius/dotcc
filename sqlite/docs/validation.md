@@ -652,3 +652,73 @@ WAL shared memory, mmap, concurrent hosting and disk durability remain outside
 this profile. This is the documented corpus, not the complete upstream Tcl/TH3
 suite. `offsetof` remains direct compiler emission; no generator was restored.
 CI configuration is committed, but remote CI was not run and nothing was pushed.
+
+
+## M11: Real host files, OS locks and hot-journal recovery
+
+The managed library now defaults to `dotcc-host`, using BCL random-access I/O and
+OS-specific locking/durability services. This supersedes the preceding product
+memory-only limitation; deterministic C fixtures still use `dotcc-memory`.
+SQLite core, JSONB and FTS5 remain C#, with no native SQLite dependency or dynamic
+extension loading. See [host VFS](host-vfs.md) for the integration and platform
+contract. M9/M10 were not implemented.
+
+Local validation ran on Linux x64 with .NET 10 against code through `be77292`:
+
+```sh
+SQLITE_AOT=1 scripts/test-host-vfs.sh
+SQLITE_AOT=1 scripts/test-managed-consumer.sh
+scripts/test-translated.sh vfs
+scripts/build.sh
+```
+
+All four commands exited zero. The last command still only fetches/builds and
+emits the reusable library; it does not execute tests or publish AOT. The new
+host-VFS gate is also part of `scripts/verify.sh`. This phase did not rerun the
+entire repository/port campaign: generic compiler/runtime code did not change,
+and the preceding phase's broader results remain historical evidence.
+
+The initial default-VFS regression failed with `expected dotcc-host, got
+dotcc-memory` before integration. Passing raw contracts cover sparse offset I/O,
+short-read zero fill, readonly writes/truncation, exclusive creation, temporary
+and delete-on-close files, UTF-8/canonical paths, no-follow symlinks, flushes,
+real clocks/randomness and handle cleanup. SQL tests verify real database file
+headers, close/reopen persistence, rollback, JSONB, FTS5 and integrity, plus
+shutdown/reinitialization. The ordinary managed consumer now creates a temporary
+disk database and passes its full SQL/JSONB/FTS5 and C# callback workload under both
+JIT and NativeAOT.
+
+Independent processes pass in all three directions: managed→managed,
+native→managed and managed→native. The native oracle compiles the pinned
+amalgamation with its actual OS VFS and runs in a separate process. Tests verify
+simultaneous shared locks, reserved contention, pending admission, exclusive
+upgrade/downgrade and readonly reserved-lock probes. A writer spills pages into
+a real transaction, the controller verifies the synced hot-journal magic, then
+forcibly kills it. The surviving engine recovers the original data, passes
+integrity and writes again. Hardlink aliases coordinate locks, and symlink paths
+use the canonical target's journal, including symlink-before-`..` resolution.
+The complete process campaign passes for both JIT and NativeAOT.
+
+Two standalone regression cases simulate macOS unlock failures with real safe
+handles. They verify immediate close and deferred close while peers retain
+locks, removal of disposed leases, poisoned-state refusal and eventual drain.
+These validate ownership/error handling only; they do not execute macOS syscalls.
+Windows and macOS implementations have source review and dedicated JIT/NativeAOT
+CI configuration, but neither operating system was run locally and remote CI was
+not triggered. Linux ARM64 is also unexecuted; BSD is explicitly unsupported.
+
+Evidence under `artifacts/`:
+
+- `host-vfs-default-red.log`: initial failing default-VFS assertion.
+- `host-vfs-final.log`: passing platform failure models and JIT/AOT host campaign.
+- `host-vfs-aot-build.log`: NativeAOT publish; no host-adapter or ILxxxx warnings.
+- `host-vfs-managed-consumer-final.log`: managed consumer succeeds twice, JIT/AOT.
+- `host-vfs-memory-regression.log`: existing memory VFS matches the native fixture.
+- `host-vfs-build-only.log`: dotcc and generated library build, zero errors.
+
+Remaining generated SQLite warnings include CS8909; cached canonical callback
+addresses remain in use. The Linux AOT executable depends only on libm, libc and
+the ELF loader, with no SQLite dependency. This is a rollback-journal VFS with
+version-1 I/O methods: WAL/mmap are not advertised, and SQLite calls must still
+be serialized in each process. Process-kill recovery verifies the journal/OS
+contract, not physical power-loss behavior. Changes are committed locally only.

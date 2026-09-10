@@ -4,7 +4,8 @@ Status: M0–M8 are complete for the documented profile. The translated engine
 includes core, JSON/JSONB and FTS5, with richer managed SQL workloads and canonical
 function-pointer fields verified through source/object linking, JIT and NativeAOT.
 M9 and M10 remain design-only future work; neither optimization was implemented.
-M11 is active: replace the product's memory-only default with a real OS-file VFS.
+M11 is complete for Linux x64: the product defaults to a real OS-file VFS.
+Windows/macOS implementations and JIT/AOT CI are present but have not run locally.
 See `validation.md` for completed checks and `usage.md` for build commands.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
@@ -86,10 +87,10 @@ NuGet. Do not impersonate GCC or a host OS to select unsupported compiler tricks
 
 | Area | Planned setting or behavior |
 | --- | --- |
-| OS layer | `SQLITE_OS_OTHER=1`; provide `sqlite3_os_init`, `sqlite3_os_end`, and register the memory VFS. |
+| OS layer | `SQLITE_OS_OTHER=1`; explicit init/end hooks. Managed product defaults to `dotcc-host`; deterministic C corpora retain `dotcc-memory`. |
 | Threading | Initial supported profile: `SQLITE_THREADSAFE=0`, all calls serialized on one thread. VFS locks still model contention between connections. Thread-safe hosting is a later profile using dotcc runtime facilities. |
-| Temporary storage | `SQLITE_TEMP_STORE=3`; named databases and rollback journals still exercise the memory VFS. |
-| Extensions | `SQLITE_OMIT_LOAD_EXTENSION`; retain explicit registration of C# extensions, functions, and virtual tables against the translated API. No dynamic loading or native-code interop. |
+| Temporary storage | `SQLITE_TEMP_STORE=3`; managed product named databases/rollback journals use real files. Host VFS also supports temporary/delete-on-close handles. |
+| Extensions | `SQLITE_OMIT_LOAD_EXTENSION`; explicit C# extensions, functions and virtual tables. No dynamic loading or native SQLite interop; OS-level VFS P/Invoke is allowed. |
 | Core | Keep ordinary default core features: transactions, triggers, views, constraints, foreign keys, CTEs, window functions, indexes, virtual-table API, UTF-8/UTF-16 APIs, backup, incremental blobs, and date/time functions. |
 | JSON/JSONB | Keep JSON enabled; verify every JSON/JSONB function/operator available in the pinned profile, including table-valued functions. |
 | FTS | Enable `SQLITE_ENABLE_FTS5` for the current follow-up. Keep FTS3/4 disabled. Verify positive FTS5 probes and explicit configuration against native. |
@@ -436,34 +437,34 @@ This milestone is documentation only in the current phase; retain current
 `VaArg[]` signatures and the current `VaList` implementation until separately
 requested. M9/M10 remain planned during the separate M11 implementation.
 
-### M11 — Real file-backed VFS (implement now)
+### M11 — Real file-backed VFS (complete for the documented platform scope)
 
-- [ ] Make `dotcc-host` the managed library's default VFS through explicit
+- [x] Make `dotcc-host` the managed library's default VFS through explicit
       `sqlite3_os_init` registration. Compile managed source alongside generated
       SQLite without rewriting the amalgamation or generated C#. Retain the named
       memory VFS and its unchanged deterministic fixture profile.
-- [ ] Use BCL random-access file reads/writes, length/truncation, safe handles,
+- [x] Use BCL random-access file reads/writes, length/truncation, safe handles,
       secure randomness, real time and sleeping. Implement SQLite short-read zero
       filling, temporary/delete-on-close files, open/create/exclusive/read-only
       modes, UTF-8 full paths, access checks and operation-specific errors.
-- [ ] Implement shared/reserved/pending/exclusive rollback-journal locks against
+- [x] Implement shared/reserved/pending/exclusive rollback-journal locks against
       SQLite's actual lock bytes, including upgrades, downgrades, failed upgrades,
       reserved probes, process exit and same-process connections. Use runtime OS
       detection: Linux OFD fcntl, Windows LockFileEx and coordinated macOS POSIX
       locks. Account for inode aliases and descriptor-close effects. Unsupported
       platforms/filesystems must fail explicitly; BSD support is optional.
-- [ ] Flush file contents and necessary directory entries; honor full sync on
+- [x] Flush file contents and necessary directory entries; honor full sync on
       macOS with F_FULLFSYNC. Preserve journaling and hot-journal recovery. Start
       with version-1 I/O methods (rollback journals); WAL shared-memory and mmap
       support are separate future work and must not be advertised or stubbed.
-- [ ] Give every managed VFS callback a canonical static address, contain managed
+- [x] Give every managed VFS callback a canonical static address, contain managed
       exceptions at callback boundaries and release handles/contexts on every
       normal/error path. Preserve the current serialized SQLite calling profile.
-- [ ] Add raw callback contract tests plus real SQL/JSONB/FTS persistence, readonly,
+- [x] Add raw callback contract tests plus real SQL/JSONB/FTS persistence, readonly,
       temporary-file, rollback and reopen checks. Check multiple connections and
       independently running processes, including lock conflicts with native SQLite,
       abrupt process termination/hot journals, and file format interoperability.
-- [ ] Run Linux JIT and NativeAOT validation and configure Windows/macOS checks.
+- [x] Run Linux JIT and NativeAOT validation and configure Windows/macOS checks.
       Record which operating systems actually ran; do not claim remote CI results.
       Recheck the managed consumer and existing deterministic VFS regressions,
       update build/usage/validation docs and commit locally without pushing.
@@ -471,3 +472,7 @@ requested. M9/M10 remain planned during the separate M11 implementation.
 Exit: the ordinary managed library creates real durable database files by default,
 and tested persistence, rollback, locking and recovery behavior agrees with native
 SQLite. OS interop is limited to platform services; SQLite and extensions remain C#.
+
+Evidence and OS limitations: [host VFS](host-vfs.md) and the M11 section in
+[validation](validation.md). BSD, WAL/mmap and concurrent engine calls remain
+outside this milestone; M9/M10 remain plan-only.
