@@ -64,19 +64,20 @@ scripts/emit-engine.sh
 scripts/emit-engine.sh --no-postprocess
 ```
 
-SQLite emission defaults to one function per file, followed by in-place
-postprocessing. All methods belong to `Managed.Database.Sqlite`; filenames use
-`Sqlite.sqlite3_open.cs`, for example, with a numeric suffix only for collisions.
+SQLite emission defaults to size-based groups targeting 100 KiB (102,400 bytes),
+followed by in-place postprocessing. All methods belong to
+`Managed.Database.Sqlite`; filenames use `Sqlite.00000.cs`, `Sqlite.00001.cs`,
+and so on.
 Shared runtime/types/globals stay in `Sqlite.cs`, and shared aliases go in
 `Sqlite.GlobalUsings.g.cs`. To change the source layout:
 
 ```sh
 SQLITE_SOURCE_SPLIT=function scripts/emit-engine.sh
-SQLITE_SOURCE_SPLIT=size SQLITE_SOURCE_SPLIT_SIZE=524288 scripts/emit-engine.sh
+SQLITE_SOURCE_SPLIT=size SQLITE_SOURCE_SPLIT_SIZE=102400 scripts/emit-engine.sh
 SQLITE_SOURCE_SPLIT=none scripts/emit-engine.sh
 ```
 
-In size mode, filenames use `Sqlite.00000.cs`, `Sqlite.00001.cs`, and so on.
+Function mode uses names such as `Sqlite.sqlite3_open.cs`.
 The byte target closes each function group after the first whole function takes
 it over the target; large functions and shared declarations can exceed it.
 Regeneration cleans obsolete files tracked in `Dotcc.SourceFiles.txt`. Keep that

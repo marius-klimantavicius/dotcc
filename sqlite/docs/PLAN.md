@@ -609,9 +609,12 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
       and partial classes, retaining shared state/initialization in one file.
 - [x] Support direct project emission and object linking, deterministic names,
       global aliases emitted once, and obsolete generated-file cleanup.
-- [x] Default SQLite’s emission script to one function per file, named
+- [x] Support SQLite emission with one function per file, named
       `Sqlite.<function>.cs`, with numeric suffixes only for filename collisions.
       Retain environment overrides and run the existing in-place postprocessor afterward.
+- [x] Default SQLite emission to size-based groups targeting 100 KiB (102,400 bytes),
+      with whole functions and shared declarations allowed to exceed the target.
+      Regenerate and validate ManagedConsumer with the grouped layout.
 - [x] Validate source layout, calls, callbacks and initialization in regression
       tests, then regenerate SQLite and verify ManagedConsumer under JIT/NativeAOT.
 
