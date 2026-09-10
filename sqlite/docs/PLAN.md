@@ -3,7 +3,8 @@
 Status: M0–M8 are complete for the documented profile. The translated engine
 includes core, JSON/JSONB and FTS5, with richer managed SQL workloads and canonical
 function-pointer fields verified through source/object linking, JIT and NativeAOT.
-M9 and M10 remain design-only future work; neither optimization was implemented.
+M9 remains design-only. M10 is now active: span-based varargs and a ref-struct
+VaList, with lifetime, semantics and allocation validation.
 M11 is complete for Linux x64: the product defaults to a real OS-file VFS.
 Windows/macOS implementations and JIT/AOT CI are present but have not run locally.
 M12 is complete for Linux x64 on SQLite 3.53.4: real shared-memory WAL,
@@ -406,9 +407,9 @@ with native, while existing required functionality remains verified.
 This milestone is documentation only in the current phase; no postprocessor,
 rewrites, build hook, or behavior change is authorized by this plan-only request.
 
-### M10 — Span-based varargs and ref-struct VaList (plan only; do not implement)
+### M10 — Span-based varargs and ref-struct VaList (implement now)
 
-- [ ] Plan changing emitted `params VaArg[] x` to
+- [ ] Change emitted `params VaArg[] x` to
       `params ReadOnlySpan<VaArg> x`, with `VaList` becoming a **ref struct** holding
       a readonly `ReadOnlySpan<VaArg>` plus a mutable cursor. `VaArg` already is a
       readonly struct; keep its integer/pointer and floating representation.
@@ -430,14 +431,14 @@ rewrites, build hook, or behavior change is authorized by this plan-only request
       managed API compatibility. Do not assume the params modifier guarantees zero
       allocation; inspect emitted code and measure empty/small/large/forwarded
       calls, stack pressure and any required heap-backed fallback.
-- [ ] Plan regression coverage for scalar/pointer/function-pointer promotions,
+- [ ] Add regression coverage for scalar/pointer/function-pointer promotions,
       nested forwarding, independent va_copy cursors, cleanup and escape rejection.
       Run core/JSONB/FTS5, Lua/Chibi, and JIT/NativeAOT comparisons and allocation
       benchmarks before adopting the representation.
 
-This milestone is documentation only in the current phase; retain current
-`VaArg[]` signatures and the current `VaList` implementation until separately
-requested. M9/M10 remain planned during the separate M11 implementation.
+The user has now authorized M10 implementation. Replace the borrowed-pack API,
+retain explicit heap arrays as caller-owned backing storage when needed, and
+validate lifetime restrictions and measured allocations. M9 remains plan-only.
 
 ### M11 — Real file-backed VFS (complete for the documented platform scope)
 

@@ -76,7 +76,7 @@ public sealed class VarargTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("params VaArg[] _va");
+            emitted.ShouldContain("params ReadOnlySpan<VaArg> _va");
             emitted.ShouldContain("new VaList(_va)");
             emitted.ShouldContain("(int)(ap.Next())");
             emitted.ShouldContain("ap.End()");
