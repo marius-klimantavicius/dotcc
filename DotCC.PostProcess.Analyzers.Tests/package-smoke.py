@@ -71,11 +71,10 @@ dotnet_diagnostic.DCCPP002.severity = warning
 
 if args.sqlite_project:
     project = args.sqlite_project.resolve()
-    for design_time, disabled, expected in [('false', 'false', 0), ('true', 'false', 2), ('true', 'true', 0)]:
+    for design_time in ('false', 'true'):
         evaluated = json.loads(run('dotnet', 'msbuild', project, '-nologo', '-getItem:Analyzer',
-                                   '-p:DesignTimeBuild=' + design_time,
-                                   '-p:DotCCDisablePostProcessAnalyzer=' + disabled))
+                                   '-p:DesignTimeBuild=' + design_time))
         analyzers = [i for i in evaluated['Items']['Analyzer'] if 'DotCC.PostProcess.' in i['Identity']]
-        assert len(analyzers) == expected, analyzers
+        assert not analyzers, analyzers
 
-print('PASS package: analyzer discovery, both diagnostics, no runtime dependency, unchanged source, SQLite IDE-only wiring')
+print('PASS package: analyzer discovery, both diagnostics, no runtime dependency, unchanged source, SQLite analyzer isolation')

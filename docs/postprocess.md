@@ -23,7 +23,7 @@ Choose exactly one of `--in-place` or `--output directory`. Both modes use the
 same semantic tree transformations and require restored/built dependencies.
 In-place mode changes only evaluated C# source files whose text changes, including
 linked files outside the project directory. It preserves encoding, BOM, trivia
-and file permissions; unchanged files retain their timestamps. It does not modify
+and Unix file modes/file attributes; unchanged files retain their timestamps. It does not modify
 the project file or create a comparison snapshot.
 
 Before replacement, serialized source is parsed and semantically validated again.
@@ -149,13 +149,11 @@ Build the IDE tooling from the repository root:
 dotnet build DotCC.PostProcess.CodeFixes/DotCC.PostProcess.CodeFixes.csproj -c Release
 ```
 
-Reload `sqlite/generated/TranslatedSqlite/TranslatedSqlite.csproj` in Rider.
-`sqlite/Directory.Build.targets` references the two built assemblies during
-design-time compilation, so suggestions appear on the original emitted C#.
-Those references are omitted from ordinary builds and standalone postprocessor
-evaluation. Set `DotCCDisablePostProcessAnalyzer=true` to disable SQLite's IDE
-integration. Build the tooling again after changing it; reload Rider's project
-or restart the IDE if it still has the previous assemblies loaded.
+Reference the analyzer and code-fix assemblies in the project you want to edit,
+as shown below, then reload it in Rider. Build the tooling again after changing
+it; reload the project or restart Rider if it still has the previous assemblies
+loaded. SQLite’s ManagedConsumer solution no longer includes these projects or
+design-time analyzer references: its emission script already applies the rewrites.
 
 Select a suggestion and use **Alt+Enter** to preview/apply its quick-fix:
 
@@ -211,7 +209,7 @@ also uses the IDE's Roslyn Workspaces/MEF services. Neither assembly is a
 dependency of dotcc, its compiler library, or translated applications. For
 projects with explicit analyzer/package references, remove those references
 before feeding the project to the standalone command, whose input contract
-still rejects custom analyzers. SQLite's design-time-only wiring avoids this.
+still rejects custom analyzers.
 
 The IDE and standalone tool compile the same source files for rewrite proofs,
 observable-context checks and empty-block cleanup. Documents with compiler

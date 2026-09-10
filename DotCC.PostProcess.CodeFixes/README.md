@@ -18,5 +18,5 @@ The package contains only analyzer/code-fix assemblies under
 .NET Standard 2.0 and the Roslyn 4.14 API. Enable Roslyn analyzers in Rider's
 Editor | Inspection Settings | Roslyn Analyzers settings if necessary.
 
-The repository guide `docs/postprocess.md` describes local builds, SQLite wiring,
+The repository guide `docs/postprocess.md` describes local builds, explicit project references,
 the standalone comparison workflow and diagnostic severity configuration.

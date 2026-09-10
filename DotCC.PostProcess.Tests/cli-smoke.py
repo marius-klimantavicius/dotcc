@@ -32,9 +32,11 @@ with tempfile.TemporaryDirectory(prefix='dotcc-postprocess-tests-') as temporary
     (dependency / 'Dependency.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>')
     (dependency / 'Value.cs').write_text('public static class Value { public static int Number => 17; }')
     project = source / 'Sample.csproj'
-    project.write_text('''<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><DebugType>portable</DebugType><EmbedAllSources>true</EmbedAllSources><NoWarn>CS0162;CS0219;CS0649;CS1701;CS1702</NoWarn></PropertyGroup><ItemGroup><ProjectReference Include="../dependency/Dependency.csproj"/><EmbeddedResource Include="data.txt" LogicalName="payload" /></ItemGroup></Project>''')
+    project.write_text('''<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><DebugType>portable</DebugType><EmbedAllSources>true</EmbedAllSources><NoWarn>CS0162;CS0219;CS0649;CS1701;CS1702</NoWarn></PropertyGroup><ItemGroup><ProjectReference Include="../dependency/Dependency.csproj"/><EmbeddedResource Include="data.txt" LogicalName="payload" /><Compile Include="../shared/Program.cs" Link="Program.cs" /></ItemGroup></Project>''')
     (source / 'data.txt').write_text('resource-preserved')
-    code = source / 'Program.cs'
+    shared = root / 'shared'
+    shared.mkdir()
+    code = shared / 'Program.cs'
     code.write_text('''using System.Runtime.CompilerServices;
 static class Cond { public static bool B(int x) => x != 0; }
 static class Program {
@@ -116,4 +118,4 @@ static class Program {
     broken = code.read_bytes()
     run('dotnet', tool, project, '--in-place', expected=1)
     assert code.read_bytes() == broken
-print('PASS CLI: references/resources/caller paths/symbols/PDBs/determinism/input protection/atomic failure/in-place/idempotence')
+print('PASS CLI: references/resources/caller paths/symbols/PDBs/determinism/input protection/atomic failure/in-place/linked sources/idempotence')

@@ -1220,3 +1220,46 @@ cleanup (`artifacts/class-name-HostVfsTests-run.log` and
 the API name they were emitted with; regenerate snapshots before testing them
 against the current product consumers. The separate varargs fixture still uses
 the default DotCcLib API.
+
+## In-place postprocessing and SQLite emission integration (2026-09-10)
+
+The CLI now accepts `--in-place` as an alternative to `--output`. Both use the
+same semantic tree rewrites. In-place processing preserves source encoding/BOM,
+trivia, file attributes and Unix modes, leaves unchanged files untouched, and
+revalidates serialized source before replacing files. Hash checks detect input
+changes; caught replacement failures/cancellation roll back prior replacements.
+If concurrent edits prevent rollback, they are retained along with an explicitly
+reported backup of the original source. Replacement is atomic per file, not a
+crash-safe transaction across the whole project.
+
+All **62 postprocessor tests** pass (`artifacts/in-place-tests.log`), including
+encoding, read-only inputs, serialization failure, cancellation, injected I/O
+failure, concurrent edits and symlink targets. The CLI smoke checks snapshot
+compatibility, resources/dependencies/caller paths, mutually exclusive options,
+in-place rewriting of a linked source, unchanged project/resources, idempotence
+including timestamps, and invalid-source failure (`artifacts/in-place-cli-smoke.log`).
+The CLI smoke is now included in Linux CI. Existing generated-source warnings
+remain; the postprocessor itself builds without warnings.
+
+`emit-engine.sh` now runs dotcc, builds the separate postprocessor tool, restores
+the emitted project, and processes it in place. `--no-postprocess` retains raw
+emission for baseline comparisons and Rider experiments. `build.sh` then compiles
+the processed TranslatedSqlite; it still does not run tests.
+
+The complete updated emission path rewrites **24,123 Cond.B calls**, skips none,
+and removes **2,208 standalone empty blocks**, updating only `Program.cs` during
+the rewrite. Its source text exactly matches the fresh comparison snapshot at
+`generated/postprocess-in-place-validation/Optimized`, with no remaining Cond.B
+calls or temporary replacement files (`artifacts/in-place-sqlite-comparison.log`).
+MSBuild's `obj` metadata is regenerated separately as usual. The actual processed
+engine passes `SQLITE_AOT=1 scripts/test-managed-consumer.sh` under JIT and
+linux-x64 NativeAOT, including SQL CRUD/joins/windows, JSONB, FTS5, math/percentile/
+metadata, WAL and cached managed callbacks (`artifacts/in-place-sqlite-consumer.log`).
+
+ManagedConsumer’s solution now lists only ManagedConsumer and TranslatedSqlite;
+SQLite's `Directory.Build.targets` retains the managed VFS sources and no longer
+injects the optional IDE analyzer/code fix. The reduced solution builds in Release
+(`artifacts/in-place-consumer-solution-build.log`). The package smoke still loads
+the standalone IDE tooling for an explicitly configured project and confirms zero
+DotCC postprocessor analyzers in SQLite’s ordinary and design-time evaluations
+(`artifacts/in-place-analyzer-isolation.log`).

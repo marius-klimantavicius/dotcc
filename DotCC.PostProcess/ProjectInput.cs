@@ -127,7 +127,9 @@ internal sealed record ProjectInput(string ProjectPath, string AssemblyName, str
             if ((!unquoted.StartsWith('/') && !unquoted.StartsWith('-')) || File.Exists(unquoted))
             {
                 var candidate = Path.GetFullPath(unquoted, BaseDirectory);
-                if (Arguments.SourceFiles.Any(source => source.Path == candidate)) continue;
+                // Roslyn can retain parent segments in linked source paths.
+                // Normalize for comparison without changing the observable source path.
+                if (Arguments.SourceFiles.Any(source => Path.GetFullPath(source.Path, BaseDirectory) == candidate)) continue;
             }
             if (!argument.StartsWith('/') && !argument.StartsWith('-'))
                 throw new InvalidOperationException("Unsupported compiler input: " + argument);

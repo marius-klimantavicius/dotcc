@@ -3,7 +3,7 @@
 Status: M0–M8 are complete for the documented profile. The translated engine
 includes core, JSON/JSONB and FTS5, with richer managed SQL workloads and canonical
 function-pointer fields verified through source/object linking, JIT and NativeAOT.
-M9 is complete as an opt-in standalone Roslyn tree post-processor (see
+M9 is complete as a separate Roslyn tree post-processor with SQLite in-place integration (see
 [tool guide](../../docs/postprocess.md)). M10 is complete: span-based varargs and a ref-struct
 VaList, validated for lifetimes, callbacks, allocation behavior and the full
 SQLite/Lua/Chibi/WAT campaign. See `varargs-span.md` for the managed API change.
@@ -415,9 +415,10 @@ with native, while existing required functionality remains verified.
       size, allocations and execution before adopting the pass: JIT/AOT may already
       inline these helpers, so benefit must be demonstrated.
 
-The follow-up request authorizes implementation of this milestone. Run only as an
-explicit standalone command after dotcc finishes; do not add a compiler or SQLite
-build hook. Accept an emitted project and write an isolated optimized copy. Use
+The initial implementation used an explicit standalone command after dotcc
+finished, accepting an emitted project and writing an isolated optimized copy.
+The later in-place request supersedes that initial restriction: keep the compiler
+independent, and have SQLite’s emission script invoke the separate tool afterward. Use
 semantic binding and syntax-tree replacements, then serialize and revalidate.
 Handle every existing overload, and simplify CBool conversions only within
 Cond.B arguments. CBool stores/arithmetic remain unchanged. An IDE analyzer is
@@ -434,6 +435,15 @@ not required for this version.
       Preserve generated-source support, suppressions and observable contexts;
       verify IDE code-action output against standalone SQLite output. Keep
       analysis read-only until an IDE action is explicitly applied.
+
+- [x] Add CLI `--in-place` alongside snapshot output; preserve encoding and
+      unchanged files, validate serialized source, detect concurrent edits, and
+      roll back caught replacement failures. Test these contracts and retry SQLite.
+      Run the tool after dotcc in `emit-engine.sh`; retain `--no-postprocess` for
+      raw baselines and IDE experiments.
+- [x] Remove the optional analyzer/code-fix projects from ManagedConsumer’s
+      solution and SQLite design-time references now that emission runs the CLI.
+      Keep the standalone IDE tooling available for explicitly configured projects.
 
 Library API naming follow-up: dotcc supports `--class-name` for managed/shared
 emission and object linking. The SQLite product uses `--class-name Sqlite`;

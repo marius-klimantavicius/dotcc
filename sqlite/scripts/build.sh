@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fetch pinned inputs, build dotcc, then translate/build SQLite.
+# Fetch pinned inputs, build dotcc, then translate, postprocess in place, and build SQLite.
 # No tests, native oracle, consumer execution, or AOT publishing.
 source "$(dirname "$0")/common.sh"
 python3 "$SQLITE_ROOT/scripts/fetch.py"

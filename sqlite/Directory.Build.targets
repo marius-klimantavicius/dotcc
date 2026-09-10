@@ -4,13 +4,4 @@
   <ItemGroup Condition="'$(MSBuildProjectName)' == 'TranslatedSqlite'">
     <Compile Include="$(MSBuildThisFileDirectory)src/HostVfs*.cs" />
   </ItemGroup>
-  <!-- Rider's design-time compilation gets optional quick-fixes after the
-       tooling is built. Ordinary dotcc/build/postprocessor runs do not load it. -->
-  <PropertyGroup>
-    <DotCCPostProcessIdeDirectory>$(MSBuildThisFileDirectory)../DotCC.PostProcess.CodeFixes/bin/Release/netstandard2.0</DotCCPostProcessIdeDirectory>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(MSBuildProjectName)' == 'TranslatedSqlite' and '$(DesignTimeBuild)' == 'true' and '$(DotCCDisablePostProcessAnalyzer)' != 'true' and Exists('$(DotCCPostProcessIdeDirectory)/DotCC.PostProcess.CodeFixes.dll')">
-    <Analyzer Include="$(DotCCPostProcessIdeDirectory)/DotCC.PostProcess.Analyzers.dll" />
-    <Analyzer Include="$(DotCCPostProcessIdeDirectory)/DotCC.PostProcess.CodeFixes.dll" />
-  </ItemGroup>
 </Project>

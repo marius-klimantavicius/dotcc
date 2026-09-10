@@ -97,5 +97,5 @@ itself does not invoke it, and no Roslyn runtime dependency is added.
 
 The optional Rider analyzer/code-fix projects compile the same rewrite source
 files and expose IDE suggestions with document/project/solution Fix All. Their
-.NET Standard 2.0 assemblies are development tooling; SQLite references them
-only in design-time builds after the tooling has been built in Release.
+.NET Standard 2.0 assemblies are optional development tooling. SQLite uses
+the CLI pass and does not reference these assemblies.

@@ -51,16 +51,17 @@ consumer checks, use `scripts/test-managed-consumer.sh`.
 
 Open `sqlite/ManagedConsumer.slnx` from the repository root (or
 `ManagedConsumer.slnx` from this directory) in Rider to work on the consumer,
-TranslatedSqlite, and the analyzer/code-fix projects together. Select
-`ManagedConsumer` as the startup project. The tooling projects are grouped under
-`Tooling`; the existing SQLite design-time references enable their quick-fixes.
-Build the code-fix project in Release once to populate those references.
+and TranslatedSqlite together. Select `ManagedConsumer` as the startup project.
+The solution and SQLite design-time builds no longer include the postprocessor
+analyzer/code-fix projects; emission already applies the transformations.
 
 To regenerate only TranslatedSqlite with the already-built dotcc compiler,
-without compiling the generated C# or running the postprocessor:
+and run the postprocessor in place, without compiling the generated C#:
 
 ```sh
 scripts/emit-engine.sh
+# To retain raw dotcc output instead:
+scripts/emit-engine.sh --no-postprocess
 ```
 
 Reference `generated/TranslatedSqlite/TranslatedSqlite.csproj` from a C# project,
@@ -112,20 +113,16 @@ including distinct addresses for identical static functions in separate C units.
 The full campaign runs this gate when `SQLITE_AOT=1`; logs use the
 `artifacts/function-identity-*` prefix.
 
-## Optional source post-processing
+## Source post-processing
 
-After the normal build completes, invoke the standalone
-[Roslyn post-processor](../../docs/postprocess.md) to create a separate optimized
-project with inlined Cond.B calls and standalone empty blocks removed.
-`scripts/build.sh` and the normal dotcc pipeline do not run this pass.
+`scripts/emit-engine.sh` runs the separate
+[Roslyn post-processor](../../docs/postprocess.md) in place after dotcc emission,
+inlining Cond.B calls and removing standalone empty blocks. `scripts/build.sh`
+uses that script before compiling TranslatedSqlite. The compiler itself is unchanged.
+Use `scripts/emit-engine.sh --no-postprocess` to produce a raw baseline, then invoke
+the tool with `--output <new-directory>` to create original/optimized snapshots.
 The explicit `scripts/test-postprocess.py <snapshot> --aot --corpora` gate compares
 original and optimized SQL, threading, mmap/WAL and native corpus behavior.
 
-For in-place editing in Rider, build
-`DotCC.PostProcess.CodeFixes/DotCC.PostProcess.CodeFixes.csproj` in Release from
-the repository root, then reload the generated SQLite project in Rider.
-SQLite's design-time build adds the analyzer and code-fix references. Use
-Alt+Enter on `DCCPP001` (Cond.B) or `DCCPP002` (empty blocks), with Fix All for a
-document/project/solution. These suggestions do not edit files during a build.
-See the [Rider instructions](../../docs/postprocess.md#rider-in-place-fixes) for
-settings, packaging and disabling the optional IDE integration.
+The optional analyzer/code-fix tooling remains available for other projects; see
+the [Rider instructions](../../docs/postprocess.md#rider-in-place-fixes).
