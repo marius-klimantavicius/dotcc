@@ -529,3 +529,37 @@ transcripts remain byte-for-byte unchanged with FTS5 enabled. Native layout
 adds nine FTS5 offsetof contracts (30 to 39); every previous layout row is
 unchanged. The expanded native expected transcript is saved, with the exact
 nine-row delta at `artifacts/fts5/native-layout.diff`.
+
+## FTS5 and canonical function identity checkpoint
+
+The static FTS5 profile (`7cf1e34`) passes 34 native SQL assertions plus explicit
+auxiliary/tokenizer callback lifetimes, including ASan/UBSan execution. Core now
+has 41 cases with positive FTS5 and negative FTS3/4 checks. API/VFS/allocation/
+public-JSONB baseline transcripts remain unchanged. The layout inventory grows to
+39 active offsets, 42 actual aggregate size/alignment checks and eight arrays.
+
+The translated FTS5 corpus matches native exactly (14.72 seconds including emit,
+build and execution); core's 41 cases pass (14.55 seconds), and expanded layout
+JIT checks pass (15.52 seconds). Both native-backed external-loop fixtures pass.
+Logs and timings: `artifacts/fts5/{loop-fixtures.log,translated-fts5.*,
+translated-core.*,layout-jit.*}`. The loop fixes are `9afe0eb` and `b6e1502`.
+
+The expanded separate C# consumer (`574e1d9`) passes JIT and NativeAOT: prepared
+CRUD, joins/correlated queries, CTE/windows, JSONB, savepoints/rollback, triggers,
+FTS5 queries, explicit C# auxiliary/tokenizer callbacks, canonical pointer reuse,
+GC stress and ownership/cleanup. Logs: `artifacts/managed-consumer-{jit,aot}.log`.
+The runtime allocator cache (`cd89af1`, warning cleanup `7775e59`) has a structural
+red/green regression and 18 passing allocator tests, including 30,000 cached-table
+reuses, collections, independent contexts and indirect allocation.
+
+Canonical emitted fields (`be7e05b`) and final static/owner/address-cancellation
+corrections (`8d3df53`) pass focused source/object/runtime tests and full FTS5
+build retries. The final retry has zero errors and 51 warnings (10.35 seconds).
+All four source/object JIT/NativeAOT identity executions match native output,
+including distinct addresses for identical static functions and actual calls.
+`06b09cf` adds that reproducible AOT gate to `scripts/verify.sh`.
+Logs: `artifacts/function-identity-validation.log` and per-route
+`function-identity-{source,objects}-{jit,aot}.out`.
+
+Full repository/port regression review and final campaign reproduction remain
+active. These intermediate passes do not replace the final combined snapshot.

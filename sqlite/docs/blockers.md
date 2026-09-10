@@ -493,3 +493,37 @@ traverses either unbraced branch. The actual translated FTS5 corpus passes all
 native transcript (zero C# build errors, 9.04 seconds). Evidence:
 `artifacts/fts5/loop-shapes-before.log` and `translated-fts5.time`; all focused
 validation logs remain under `artifacts/fts5/`.
+
+## B040 — canonical function identity across declarations and objects (fixed 8d3df53)
+
+The requested canonical cache is introduced in `be7e05b`, with source/object
+consumer and native-backed pointer regressions. A follow-up audit finds two
+structural issues: the binder merges identical static function definitions across
+translation units and can reuse an earlier unit's static symbol for a later
+prototype; separately emitted objects also collide on internal function names.
+Native identity probes return distinct callable pointers. The old source/object
+paths fail those probes (`artifacts/static-identity-before.log`).
+
+The initial cache's per-unit header-provenance test also picks the wrong owner for
+an explicitly declared libc function without a header, or when another linked
+object supplies the definition. Reduced compilation/link tests fail before the
+correction (`artifacts/canonical-runtime-owner-before.log`). Final owner selection
+must use structured whole-program definition metadata, preserve signatures, and
+resolve after linking without rewriting generated C#. Distinct identical-body
+functions also require an actual NativeAOT identity check before completion.
+
+The correction retains per-TU static symbols (including forward prototypes),
+qualifies internal functions for separate objects, and resolves owner aliases
+from final definition metadata. Raw C definition names remain available for
+import filtering. A closely related address-shape regression now cancels
+`&*callback` without a dereference, preserving null and one evaluation; its
+native-backed fixture failed with CS0193 before the narrow binder correction.
+
+All 12 focused tests pass; full FTS5 emission/build retries pass after both the
+static/owner change and the cancellation correction (zero errors, 51 warnings;
+final build 10.35 seconds). Distinct identical-body functions return different
+callable addresses in all four source/object JIT/NativeAOT executions.
+`test-function-identity-aot.sh` now preserves that check in the full campaign.
+Evidence: `artifacts/function-identity-validation.log`, per-route
+`function-identity-{source,objects}-{jit,aot}.out`, and
+`static-identity-engine-build.log`. Full shared regressions remain the final gate.

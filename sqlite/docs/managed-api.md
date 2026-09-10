@@ -48,14 +48,40 @@ with `-shared`, `--shared`, or an explicit native library binding failed as inte
 These checks exercise a reduced callback table, not the SQLite engine.
 
 
-The actual `tests/ManagedConsumer` project now references the complete generated
-SQLite library and passes under the JIT. It checks SQLite 3.50.4, JSONB including
-Unicode, FTS absence and explicit C# scalar-function registration. The callback
-re-enters SQL on the same database, forces GC while its nested statement is live,
-and returns the expected values. A 50,000-iteration capture/allocation loop checks
-fresh managed function pointers against saved identities across collections.
-Unregistering calls the destructor exactly once; context, statements, database and
-VFS resources are released. This is observed JIT stress, not proof of a particular
-tiering event. Run `scripts/test-managed-consumer.sh`; set `SQLITE_AOT=1` to repeat
-with NativeAOT. The actual linux-x64 NativeAOT publish and execution also pass
-all of these checks (12.00 seconds publish; runtime under 0.01 seconds).
+The actual `tests/ManagedConsumer` project references the complete generated
+SQLite library and passes under JIT and linux-x64 NativeAOT. It exercises schema,
+indexes/views/triggers, prepared inserts, joins/aggregates, correlated queries,
+CTEs/windows, JSONB, updates/upserts/deletes, transactions/savepoints, and integrity.
+FTS5 coverage includes CRUD/MATCH/highlight, an explicitly registered C# auxiliary
+function, and the unicode61 tokenizer API. Auxiliary context destruction is
+checked once on close; no extension loading is involved.
+
+The scalar callback re-enters SQL on the same connection and forces GC while its
+nested statement is live. Identity stress reuses cached addresses, including the
+exported canonical `sqlite3_free` pointer, across allocation and collection cycles.
+The consumer also caches each of its own callbacks. Statements, callback contexts,
+databases and VFS resources are released. Run `scripts/test-managed-consumer.sh`;
+set `SQLITE_AOT=1` to repeat with NativeAOT. Detailed current-phase evidence is in
+`validation.md`; the earlier baseline timings are historical measurements.
+
+
+## Canonical function addresses
+
+Generated function designators and address expressions now read canonical static
+readonly fields. In managed-library output, non-variadic translated definitions
+are available through `DotCcFunctionPointers`, including functions whose addresses
+were not taken by the C input. A C# consumer should reuse that field:
+
+```csharp
+private static readonly unsafe delegate*<void*, void> FreePointer =
+    DotCcFunctionPointers.sqlite3_free;
+```
+
+Capture each application callback once in its own static readonly field and reuse
+that value for registration and comparisons. Cache initialization only captures
+method addresses; it does not run SQLite initialization or read its globals.
+Direct calls continue to use `DotCcLib` normally. Null pointers and integer
+sentinels retain their values. CS8909 warnings may still occur at comparisons;
+identity comes from reusing the captured value, not from comparing independently
+captured method addresses. Variadic methods keep their current `VaArg[]` API;
+no new variadic callback representation is introduced in this phase.
