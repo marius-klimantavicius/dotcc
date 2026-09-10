@@ -376,6 +376,7 @@ Every function exists as a `double` overload (routes to `System.Math`) **and** a
 | `sin`, `cos`, `tan` (+ `…f`) | ✅ | `Math.Sin` / `MathF.Sin` etc. |
 | `asin`, `acos`, `atan`, `atan2` (+ `…f`) | ✅ | `Math.Asin` / `MathF.Asin` etc. |
 | `sinh`, `cosh`, `tanh` (+ `…f`, C99) | ✅ | `Math.Sinh` / `MathF.Sinh` etc. |
+| `asinh`, `acosh`, `atanh` (+ `…f`, C99) | ✅ | BCL inverse hyperbolic functions. Direct calls and cached function pointers, double/float results, domain NaNs, poles and signed zero are covered by `math-inverse-hyperbolic/`. |
 | `exp`, `log`, `log10`, `log2` (+ `…f`, C99) | ✅ | `Math.Exp` / `MathF.Exp` etc. |
 | `pow`, `sqrt`, `cbrt` (+ `…f`, C99) | ✅ | `Math.Pow` / `Sqrt` / `Cbrt` and MathF counterparts |
 | `frexp`, `ldexp` (+ `…f`) | ✅ | Mantissa/exponent split + recombine via `Math.ILogB`/`ScaleB` (and the `MathF` float overloads); `frexp` writes the exponent through its `int*`. Fixture `libc-frexp-ldexp-strcoll-ungetc/`. |

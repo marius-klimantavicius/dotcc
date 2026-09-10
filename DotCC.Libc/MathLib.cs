@@ -165,6 +165,36 @@ public static unsafe partial class Libc
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float tanhf(float x) => MathF.Tanh(x);
 
+    /// <summary><c>asinh(x)</c> — inverse hyperbolic sine.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double asinh(double x) => Math.Asinh(x);
+    /// <inheritdoc cref="asinh(double)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float asinh(float x) => MathF.Asinh(x);
+    /// <summary><c>asinhf(x)</c> — explicit single-precision inverse hyperbolic sine.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float asinhf(float x) => MathF.Asinh(x);
+
+    /// <summary><c>acosh(x)</c> — inverse hyperbolic cosine.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double acosh(double x) => Math.Acosh(x);
+    /// <inheritdoc cref="acosh(double)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float acosh(float x) => MathF.Acosh(x);
+    /// <summary><c>acoshf(x)</c> — explicit single-precision inverse hyperbolic cosine.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float acoshf(float x) => MathF.Acosh(x);
+
+    /// <summary><c>atanh(x)</c> — inverse hyperbolic tangent.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double atanh(double x) => Math.Atanh(x);
+    /// <inheritdoc cref="atanh(double)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float atanh(float x) => MathF.Atanh(x);
+    /// <summary><c>atanhf(x)</c> — explicit single-precision inverse hyperbolic tangent.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float atanhf(float x) => MathF.Atanh(x);
+
     // -----------------------------------------------------------------
     // Exponentials and logarithms
     // -----------------------------------------------------------------

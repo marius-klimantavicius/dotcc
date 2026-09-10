@@ -31,6 +31,9 @@ double atan2(double y, double x); float atan2f(float y, float x);
 double sinh(double x);  float sinhf(float x);
 double cosh(double x);  float coshf(float x);
 double tanh(double x);  float tanhf(float x);
+double asinh(double x); float asinhf(float x);
+double acosh(double x); float acoshf(float x);
+double atanh(double x); float atanhf(float x);
 
 /* Exponentials and logarithms. */
 double exp(double x);   float expf(float x);
