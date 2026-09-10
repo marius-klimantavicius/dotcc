@@ -53,6 +53,7 @@ internal sealed partial class CSharpBackend
 
     public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false)
     {
+        VaListLifetimeValidator.Validate(unit);
         var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes };
         cg.RegisterPublicFunctionPointers(unit);
         cg._offsetDocument = unit.CreateOffsetDocument();
@@ -98,7 +99,8 @@ internal sealed partial class CSharpBackend
             }
             // A variadic function's `params ReadOnlySpan<VaArg>` tail isn't a valid
             // [UnmanagedCallersOnly] signature, so it can't be exported.
-            else if (fn.Sym.Storage != Storage.Static && !fn.Variadic)
+            else if (fn.Sym.Storage != Storage.Static && !fn.Variadic
+                     && !(fn.Sym.Type is CType.Func signature && VaListLifetimeValidator.HasByRefLikeSignature(signature)))
             {
                 var ret = fn.Sym.Type is CType.Func f ? cg.Cs(f.Return) : "int";
                 var ps = string.Join(", ", fn.Params.Select(p => $"{cg.Cs(p.Type)} {p.TargetName}"));
@@ -465,11 +467,17 @@ internal sealed partial class CSharpBackend
 
     // ---- functions -------------------------------------------------------
 
+    private HashSet<Symbol> _scopedVaListLocals = new(ReferenceEqualityComparer.Instance);
+
+    private string LocalType(Symbol symbol)
+        => (_scopedVaListLocals.Contains(symbol) ? "scoped " : "") + Cs(symbol.Type);
+
     private string Func(FuncDef fn)
     {
+        _scopedVaListLocals = VaListLifetimeValidator.ScopedLocals(fn);
         var retTy = fn.Sym.Type is CType.Func f ? f.Return : CType.Int;
         _currentRet = retTy;
-        var ps = string.Join(", ", fn.Params.Select(p => $"{Cs(p.Type)} {p.TargetName}"));
+        var ps = string.Join(", ", fn.Params.Select(p => $"{LocalType(p)} {p.TargetName}"));
         // A variadic C function gets a trailing `params ReadOnlySpan<VaArg> _va`; C# converts
         // each variadic actual to a VaArg at the call site (carries pointers too).
         if (fn.Variadic) { ps = ps.Length == 0 ? "params ReadOnlySpan<VaArg> _va" : ps + ", params ReadOnlySpan<VaArg> _va"; }
@@ -1555,8 +1563,8 @@ internal sealed partial class CSharpBackend
     private void EmitDeclStmt(StringBuilder sb, DeclStmt d, string pad)
     {
         if (d.Decls.Count == 0) { return; }
-        var firstCs = Cs(d.Decls[0].Sym.Type);
-        if (d.Decls.All(e => Cs(e.Sym.Type) == firstCs))
+        var firstCs = LocalType(d.Decls[0].Sym);
+        if (d.Decls.All(e => LocalType(e.Sym) == firstCs))
         {
             sb.Append(pad).Append(DeclInline(d)).Append(";\n");
             return;
@@ -1564,7 +1572,7 @@ internal sealed partial class CSharpBackend
         foreach (var e in d.Decls)
         {
             var init = e.Init is { } i ? Coerced(i, e.Sym.Type) : "default";
-            sb.Append(pad).Append($"{Cs(e.Sym.Type)} {e.Sym.TargetName} = {init};\n");
+            sb.Append(pad).Append($"{LocalType(e.Sym)} {e.Sym.TargetName} = {init};\n");
         }
     }
 
@@ -1572,7 +1580,7 @@ internal sealed partial class CSharpBackend
     // when all declarators agree and in `for`-initializer position.
     private string DeclInline(DeclStmt d)
     {
-        var type = d.Decls.Count > 0 ? Cs(d.Decls[0].Sym.Type) : "int";
+        var type = d.Decls.Count > 0 ? LocalType(d.Decls[0].Sym) : "int";
         var parts = d.Decls.Select(e => e.Init is { } init
             ? $"{e.Sym.TargetName} = {Coerced(init, e.Sym.Type)}"
             : $"{e.Sym.TargetName} = default");
@@ -1830,15 +1838,7 @@ internal sealed partial class CSharpBackend
             case VarRef v: return v.Sym.Kind == SymKind.Func
                 ? (FunctionPointer(v.Sym), PPrimary)
                 : QualifiedRead(v, GlobalName(v.Sym), PPrimary);
-            case IndirectCall ic:
-            {
-                var signature = ic.Callee.Type.Unqualified as CType.Func;
-                var arguments = ic.Args.Select((argument, index) =>
-                    signature is not null && index < signature.Params.Count
-                        ? CoercedArg(argument, signature.Params[index])
-                        : Sub(DecayEnum(argument), PAssign));
-                return ($"{Sub(ic.Callee, PPostfix)}({string.Join(", ", arguments)})", PPostfix);
-            }
+            case IndirectCall ic: return (RenderIndirectCall(ic), PPostfix);
             case Paren p: return Render(p.Inner); // explicit C parens are redundant; precedence re-adds as needed
             case Cast c: return RenderCast(c);
             case BitCast bc:
@@ -2617,6 +2617,7 @@ internal sealed partial class CSharpBackend
 
     private string CommaTuple(IReadOnlyList<CExpr> items)
     {
+        VaListLifetimeValidator.ValidateTuple(items);
         // A pointer operand can't be a tuple type argument — cast it to nint for the
         // tuple; if the VALUE (last) is a pointer, cast .ItemN back to its type.
         var elems = items.Select(e =>
@@ -2627,6 +2628,7 @@ internal sealed partial class CSharpBackend
 
     private string CommaDelegate(IReadOnlyList<CExpr> items)
     {
+        VaListLifetimeValidator.ValidateCapture(items);
         var body = new StringBuilder();
         for (var i = 0; i < items.Count - 1; i++) { body.Append(RenderStmtExpr(items[i])).Append("; "); }
         var last = items[^1];

@@ -1463,7 +1463,14 @@ internal sealed partial class IrBuilder
     private CExpr FoldAlignof(C.AlignofType a, Item it)
     {
         Gate(2011, "_Alignof", it);
-        var align = AlignOfConst(ResolveType(a.Arg2));
+        var type = ResolveType(a.Arg2);
+        RuntimeLayoutUses.Add(new(type, "_Alignof", new SrcPos(it.Position.Line, it.Position.Column)));
+        long align;
+        try { align = AlignOfConst(type); }
+        catch (IrUnsupportedException exception)
+        {
+            throw new IrUnsupportedException("_Alignof: " + exception.Message);
+        }
         return new LitInt(align.ToString(System.Globalization.CultureInfo.InvariantCulture), align) { Type = CType.SizeT };
     }
 
@@ -3151,6 +3158,11 @@ internal sealed partial class IrBuilder
                     CheckQualifierDiscard(args[i], ps[i], args[i].Pos, $"passing argument {i + 1} to '{name}'");
                 }
             }
+            // A named callback is still an indirect call: retain its complete
+            // signature (including the managed variadic span tail) and symbol.
+            if (sym is { Kind: not SymKind.Func } && fn is not null)
+                return new IndirectCall(new VarRef(sym) { Type = sym.Type, IsLValue = true }, args)
+                    { Type = fn.Return };
             var calleeSym = sym is { Kind: SymKind.Func } ? sym : null;
             return new Call(name, args, fn?.Params, calleeSym) { Type = fn?.Return ?? CType.Int };
         }
