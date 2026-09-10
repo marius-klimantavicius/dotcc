@@ -7,16 +7,16 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUTS = (
-    ("sqlite-amalgamation-3500400", ROOT / "ref",
-     "1d3049dd0f830a025a53105fc79fd2ab9431aea99e137809d064d8ee8356b032"),
-    ("sqlite-src-3500400", ROOT / "ref" / "upstream-tests",
-     "b7b4dc060f36053902fb65b344bbbed592e64b2291a26ac06fe77eec097850e9"),
+    ("sqlite-amalgamation-3510300", ROOT / "ref",
+     "acb1e6f5d832484bf6d32b681e858c38add8b2acdfd42ac5df24b8afb46552b4"),
+    ("sqlite-src-3510300", ROOT / "ref" / "upstream-tests",
+     "f8a67a1f5b5cae7c6d42f0994ca7bf1a4a5858868c82adc9fc1340bed5eb8cd2"),
 )
 for name, directory, checksum in INPUTS:
     archive = directory / (name + ".zip")
     directory.mkdir(parents=True, exist_ok=True)
     if not archive.exists():
-        with urllib.request.urlopen("https://www.sqlite.org/2025/" + name + ".zip") as response:
+        with urllib.request.urlopen("https://www.sqlite.org/2026/" + name + ".zip") as response:
             data = response.read()
         if hashlib.sha256(data).hexdigest() != checksum:
             raise SystemExit("Downloaded SQLite archive checksum mismatch: " + name)

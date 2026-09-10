@@ -409,7 +409,7 @@ internal static unsafe class Program
         {
             fixed (byte* name = Encoding.UTF8.GetBytes(databasePath + "\0"))
                 Check(sqlite3_open(name, &db), db, "open");
-            Expect(db, "SELECT sqlite_version()", "3.50.4");
+            Expect(db, "SELECT sqlite_version()", "3.51.3");
             Expect(db, "SELECT json_extract(jsonb('{\"name\":\"λ\",\"n\":42}'),'$.name')", "λ");
             Expect(db, "SELECT json_valid(jsonb('[1,2,3]'),8)", "1");
             CheckSqlWorkloads(db);
@@ -440,7 +440,7 @@ internal static unsafe class Program
             if (dotcc_memory_vfs_handle_count() != 0) throw new InvalidOperationException("Leaked VFS handle");
             if (dotcc_memory_vfs_reset() != Ok || sqlite3_shutdown() != Ok)
                 throw new InvalidOperationException("Shutdown failed");
-            Console.WriteLine("managed consumer: SQLite 3.50.4, SQL workloads, JSONB, FTS5, cached C# callbacks, nested SQL, function identity, GC and cleanup passed");
+            Console.WriteLine("managed consumer: SQLite 3.51.3, SQL workloads, JSONB, FTS5, cached C# callbacks, nested SQL, function identity, GC and cleanup passed");
             return 0;
         }
         catch (Exception error)
