@@ -14,7 +14,7 @@ using static DotCcLib;
 namespace DotCC.Sqlite;
 
 /// <summary>File-backed SQLite rollback-journal and WAL VFS. OS services only; no native SQLite.</summary>
-public static unsafe class HostVfs
+public static unsafe partial class HostVfs
 {
     private const int Ok = 0, Error = 1, Busy = 5, NoMemory = 7, ReadOnly = 8,
         IoError = 10, Full = 13, CannotOpen = 14, NotFound = 12;
@@ -32,13 +32,14 @@ public static unsafe class HostVfs
     // identical pointer bits through tiering and collection.
     private static readonly sqlite3_io_methods MethodTable = new()
     {
-        iVersion = 2, xClose = &Close, xRead = &Read, xWrite = &Write,
+        iVersion = 3, xClose = &Close, xRead = &Read, xWrite = &Write,
         xTruncate = &Truncate, xSync = &Sync, xFileSize = &FileSize,
         xLock = &Lock, xUnlock = &Unlock, xCheckReservedLock = &CheckReserved,
         xFileControl = &FileControl, xSectorSize = &SectorSize,
         xDeviceCharacteristics = &DeviceCharacteristics,
         xShmMap = &ShmMap, xShmLock = &ShmLock,
-        xShmBarrier = &ShmBarrier, xShmUnmap = &ShmUnmap
+        xShmBarrier = &ShmBarrier, xShmUnmap = &ShmUnmap,
+        xFetch = &Fetch, xUnfetch = &Unfetch
     };
     private static readonly sqlite3_vfs VfsTable = new()
     {
@@ -63,6 +64,7 @@ public static unsafe class HostVfs
         public bool IsReadOnly;
         public bool NeedsDirectorySync;
         public HostSharedMemory.Connection? SharedMemory;
+        public DatabaseMapping? Mapping;
     }
 
     public static int OpenHandleCount => Volatile.Read(ref openHandles);
@@ -166,7 +168,8 @@ public static unsafe class HostVfs
                 readOnly = true;
             }
             var state = new OpenFile { File = handle, Path = path, IsReadOnly = readOnly,
-                NeedsDirectorySync = !delete && !readOnly && (flags & OpenCreate) != 0 };
+                NeedsDirectorySync = !delete && !readOnly && (flags & OpenCreate) != 0,
+                Mapping = (flags & MainDb) != 0 ? new DatabaseMapping(handle.Handle) : null };
             var context = GCHandle.Alloc(state);
             ((FileRecord*)file)->Context = GCHandle.ToIntPtr(context);
             file->pMethods = registeredMethods;
@@ -187,7 +190,7 @@ public static unsafe class HostVfs
         {
             var state = State(file);
             try { return ShmUnmap(file, 0); }
-            finally { state.File.Dispose(); }
+            finally { try { state.Mapping?.Dispose(); } finally { state.File.Dispose(); } }
         }
         catch (Exception exception) { return Failure(exception, IoError | (16 << 8)); }
         finally
@@ -240,6 +243,9 @@ public static unsafe class HostVfs
         try
         {
             if (State(file).IsReadOnly) return ReadOnly;
+            if (size < 0) return IoError | (6 << 8);
+            var ready = State(file).Mapping?.BeforeTruncate() ?? Ok;
+            if (ready != Ok) return ready;
             RandomAccess.SetLength(State(file).File.Handle, size);
             return Ok;
         }
@@ -276,7 +282,12 @@ public static unsafe class HostVfs
     }
     private static int Unlock(sqlite3_file* file, int level)
     {
-        try { return State(file).File.Unlock(level); }
+        try
+        {
+            var state = State(file);
+            if (level == 0) state.Mapping?.ReleaseIdle();
+            return state.File.Unlock(level);
+        }
         catch (Exception exception) { return Failure(exception, IoError | (8 << 8)); }
     }
     private static int CheckReserved(sqlite3_file* file, int* result)
@@ -334,7 +345,9 @@ public static unsafe class HostVfs
                 case 1: *(int*)argument = State(file).File.LockLevel; return Ok; // LOCKSTATE
                 case 4: *(int*)argument = lastErrorNumber; return Ok; // LAST_ERRNO
                 case 5: return Ok; // SIZE_HINT is an optional allocation hint.
-                case 18: *(long*)argument = 0; return Ok; // MMAP_SIZE
+                case 18: // MMAP_SIZE: query/set advisory cap, returning previous cap.
+                    if (State(file).Mapping is { } mapping) return mapping.Configure((long*)argument);
+                    *(long*)argument = 0; return Ok;
                 default: return NotFound;
             }
         }

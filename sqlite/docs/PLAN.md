@@ -531,3 +531,30 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
 - [x] Verify the new API corpus under native, translated JIT and NativeAOT;
       run the managed consumer under JIT/AOT and the complete SQLite campaign.
       Preserve the current VFS/WAL profile, explicit C# registration and plan-only M9.
+
+### M14 — Multithreading and database mmap (implementation/validation in progress)
+
+- [x] Add an explicit host-product profile with `SQLITE_THREADSAFE=1`, BCL mutex
+      callbacks and real initialization barriers; preserve SQLite's public
+      configuration/initialization/shutdown behavior. The deterministic memory
+      corpus keeps its separately labeled `THREADSAFE=0` profile.
+- [x] Generate a hash-checked copy of SQLite 3.53.4 with one mutex-selection guard
+      adaptation for `SQLITE_MUTEX_APPDEF`. Keep downloaded references unchanged;
+      supply default mutex and memory-barrier hooks in the platform adapter.
+- [x] Synchronize the named memory VFS callbacks, state and public controls;
+      audit host VFS inode/shared-memory state and shared libc allocation state.
+- [x] Implement VFS method version 3 with read-only BCL file mappings from existing
+      handles, `xFetch`/`xUnfetch`, and query/set `SQLITE_FCNTL_MMAP_SIZE` semantics.
+      Product default 64 MiB, maximum 256 MiB; the memory corpus remains unmapped.
+- [x] Preserve borrowed mapping addresses, guard file bounds plus SQLite's
+      256-byte overread margin, coordinate growth/truncation/invalidation, support
+      readonly handles, and fall back to `xRead` when mapping is unavailable.
+- [ ] Pass concurrent cold initialization/restart, mutex identity/try/recursion,
+      shared FULLMUTEX and separate NOMUTEX connections, host rollback/WAL and
+      named-memory workloads, callback reentry, allocator/error recovery and cleanup.
+- [ ] Pass raw mapping lifetime/range/cap tests and actual SQL mapped-read checks
+      through snapshots, growth, checkpoints, mmap disable/re-enable, VACUUM and
+      readonly reopen. Exercise JIT and NativeAOT with native interoperability.
+- [ ] Verify native/product aggregate layouts for the new host profile, rerun the
+      full SQLite campaign, document platform/lifecycle limits and commit locally.
+      M9 remains plan-only; dynamic/native SQLite extensions remain excluded.

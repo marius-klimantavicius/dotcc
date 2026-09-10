@@ -3,7 +3,7 @@ using System.Text;
 using DotCC.Sqlite;
 using static DotCcLib;
 
-internal static unsafe class Program
+internal static unsafe partial class Program
 {
     private static void Require(bool condition, string message)
     {
@@ -108,7 +108,7 @@ internal static unsafe class Program
         try
         {
             Require((flags & 3) == 1, "readonly returned flag");
-            Require(first->pMethods->iVersion == 2 && first->pMethods->xShmMap != null && first->pMethods->xShmLock != null && first->pMethods->xShmBarrier != null && first->pMethods->xShmUnmap != null, "WAL I/O methods");
+            Require(first->pMethods->iVersion == 3 && first->pMethods->xShmMap != null && first->pMethods->xShmLock != null && first->pMethods->xShmBarrier != null && first->pMethods->xShmUnmap != null, "WAL I/O methods");
             byte* data = stackalloc byte[8];
             for (int i = 0; i < 8; i++) data[i] = (byte)(i + 1);
             Require(first->pMethods->xWrite(first, data, 8, 4096) == 0, "offset write");
@@ -342,7 +342,7 @@ internal static unsafe class Program
             {
                 var directory = Path.Combine(Path.GetTempPath(), "dotcc-host-tests-" + Guid.NewGuid().ToString("N"));
                 Directory.CreateDirectory(directory);
-                try { RawContracts(directory); SqlContracts(directory); ShmContracts(directory); WalContracts(directory); }
+                try { RawContracts(directory); RawMappingContracts(directory); SqlContracts(directory); ShmContracts(directory); WalContracts(directory); SqlMappingContracts(directory); }
                 finally { Directory.Delete(directory, recursive: true); }
             }
             Require(HostVfs.OpenHandleCount == 0 && sqlite3_shutdown() == 0, "final shutdown");
