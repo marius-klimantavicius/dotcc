@@ -90,10 +90,10 @@ An unresolved conflict throws `GrammarConflictException` with the offending stat
 ## Optional source post-processing
 
 After dotcc finishes, the separate [Roslyn post-processor](postprocess.md) can
-produce original/optimized project snapshots. It uses semantic syntax-tree
-rewrites for Cond.B followed by standalone empty-block cleanup. It is never
-invoked by the compiler or SQLite build helper and adds no Roslyn dependency
-to their runtime closure.
+rewrite source files with `--in-place` or produce original/optimized project snapshots. It uses semantic syntax-tree
+rewrites for Cond.B followed by standalone empty-block cleanup. The SQLite emission
+script runs it in place by default (`--no-postprocess` skips it). The compiler
+itself does not invoke it, and no Roslyn runtime dependency is added.
 
 The optional Rider analyzer/code-fix projects compile the same rewrite source
 files and expose IDE suggestions with document/project/solution Fix All. Their

@@ -1,15 +1,47 @@
 # Roslyn source post-processing
 
 `DotCC.PostProcess` is an explicit tool for an already emitted .NET 10 C# project.
-Run it after dotcc finishes its normal emission/linking/build actions. It has no
-compiler or SQLite build hook, and introduces no Roslyn dependency into
+Run it after dotcc finishes its normal emission/linking/build actions. SQLite’s `emit-engine.sh` invokes it as a separate step after emission, using
+`--in-place` by default. The compiler itself does not invoke it, and it introduces
+no Roslyn dependency into
 `DotCC.Lib`, the dotcc executable, or translated applications. The tool references
 the Roslyn assemblies shipped with the .NET 10 SDK used to build it. It inlines
 proven `Cond.B` calls, then removes standalone empty blocks for readability.
 The optional [Rider analyzer and code fix](#rider-in-place-fixes) applies the same
 rewrites directly to documents through IDE quick-fixes.
 
+## In-place processing
+
 From the repository root:
+
+```sh
+dotnet run --project DotCC.PostProcess -c Release -- \
+  sqlite/generated/TranslatedSqlite/TranslatedSqlite.csproj --in-place
+```
+
+Choose exactly one of `--in-place` or `--output directory`. Both modes use the
+same semantic tree transformations and require restored/built dependencies.
+In-place mode changes only evaluated C# source files whose text changes, including
+linked files outside the project directory. It preserves encoding, BOM, trivia
+and file permissions; unchanged files retain their timestamps. It does not modify
+the project file or create a comparison snapshot.
+
+Before replacement, serialized source is parsed and semantically validated again.
+Source hashes detect concurrent edits. Replacements are staged beside each source
+and applied atomically per file, with rollback on caught failures or cancellation.
+This is not a crash-safe transaction across multiple files. If a concurrent edit
+prevents rollback, that edit is preserved and the error identifies the retained
+backup containing the original source. Repeating the command makes no further edits.
+
+`sqlite/scripts/emit-engine.sh` builds the tool, restores the emitted project, then
+processes it in place. `sqlite/scripts/build.sh` subsequently compiles that source.
+Use `sqlite/scripts/emit-engine.sh --no-postprocess` for raw dotcc output, including
+when creating a meaningful original/optimized comparison or trying Rider fixes.
+
+## Separate comparison snapshots
+
+From the repository root (first emit with `--no-postprocess` for an unoptimized
+SQLite baseline):
 
 ```sh
 dotnet build DotCC.PostProcess/DotCC.PostProcess.csproj -c Release
@@ -90,7 +122,7 @@ Comments, whitespace and line breaks from removed blocks are retained in order,
 preserving caller line numbers. Blocks containing preprocessor directives or
 disabled source are retained, as are blocks inside captured caller-argument
 expressions. The pass does not reformat the whole file or remove blank lines.
-Serialized output is compiled again before the snapshot is saved.
+Serialized output is compiled again before either output mode saves changes.
 
 ## Supported project inputs
 

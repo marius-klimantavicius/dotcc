@@ -5,7 +5,7 @@ namespace DotCC.PostProcess;
 
 internal static class Program
 {
-    private const string Usage = "Usage: dotnet dotcc-postprocess.dll input.csproj --output directory [--configuration Release]";
+    private const string Usage = "Usage: dotnet dotcc-postprocess.dll input.csproj (--output directory | --in-place) [--configuration Release]";
 
     private static async Task<int> Main(string[] arguments)
     {
@@ -20,11 +20,23 @@ internal static class Program
         try
         {
             var options = Parse(arguments);
-            var paths = SnapshotPaths.Validate(options.Project, options.Output);
+            var paths = options.InPlace
+                ? (Project: SnapshotPaths.ValidateProject(options.Project), Output: "")
+                : SnapshotPaths.Validate(options.Project, options.Output!);
             var input = await ProjectInput.ReadAsync(paths.Project, options.Configuration, cancellation.Token);
             var original = input.CreateCompilation(cancellation.Token);
             var result = SourcePostProcessor.Rewrite(original, cancellation.Token);
             cancellation.Token.ThrowIfCancellationRequested();
+
+            if (options.InPlace)
+            {
+                int updated = InPlaceWriter.Write(original, result.Compilation, input.SourceHashes, cancellation.Token);
+                Console.WriteLine($"Rewrote {result.Rewritten} Cond.B calls; skipped {result.Skipped}.");
+                Console.WriteLine($"Removed {result.RemovedEmptyBlocks} standalone empty blocks.");
+                Console.WriteLine($"Updated {updated} source files in place.");
+                foreach (var diagnostic in result.Diagnostics) Console.Error.WriteLine(diagnostic);
+                return 0;
+            }
 
             // Publish only a complete snapshot. Failed evaluation/rewrites never
             // create output, and a concurrent writer cannot be overwritten.
@@ -52,7 +64,7 @@ internal static class Program
                     Diagnostics = result.Diagnostics.Order(StringComparer.Ordinal).ToArray(),
                     Notes = new[]
                     {
-                        "Standalone opt-in snapshot; dotcc and SQLite build hooks are unchanged.",
+                        "Separate comparison snapshot; input source files are preserved.",
                         "Known SDK analyzers are omitted; source-generator trigger attributes and custom analyzers are rejected.",
                         "Input compiler arguments were evaluated with SkipCompilerExecution=true; project dependencies must already be restored/built."
                     },
@@ -94,24 +106,26 @@ internal static class Program
         finally { Console.CancelKeyPress -= cancel; }
     }
 
-    private static (string Project, string Output, string Configuration) Parse(string[] arguments)
+    private static (string Project, string? Output, string Configuration, bool InPlace) Parse(string[] arguments)
     {
-        if (arguments.Length < 3 || arguments[0].StartsWith('-')) throw new ArgumentException(Usage);
+        if (arguments.Length < 2 || arguments[0].StartsWith('-')) throw new ArgumentException(Usage);
         string? output = null;
         string configuration = "Release";
-        bool configurationSeen = false;
-        for (int index = 1; index < arguments.Length; index += 2)
+        bool configurationSeen = false, inPlace = false;
+        for (int index = 1; index < arguments.Length; index++)
         {
-            if (index + 1 >= arguments.Length) throw new ArgumentException(Usage);
             switch (arguments[index])
             {
-                case "--output" when output == null: output = arguments[index + 1]; break;
-                case "--configuration" when !configurationSeen:
-                    configuration = arguments[index + 1]; configurationSeen = true; break;
+                case "--in-place" when !inPlace: inPlace = true; break;
+                case "--output" when output == null && index + 1 < arguments.Length && !arguments[index + 1].StartsWith('-'):
+                    output = arguments[++index]; break;
+                case "--configuration" when !configurationSeen && index + 1 < arguments.Length && !arguments[index + 1].StartsWith('-'):
+                    configuration = arguments[++index]; configurationSeen = true; break;
                 default: throw new ArgumentException(Usage);
             }
         }
-        return (arguments[0], output ?? throw new ArgumentException(Usage), configuration);
+        if (inPlace == (output != null)) throw new ArgumentException("Choose exactly one of --output or --in-place.\n" + Usage);
+        return (arguments[0], output, configuration, inPlace);
     }
 
     private static string Relative(string root, string path) => Path.GetRelativePath(root, path).Replace('\\', '/');

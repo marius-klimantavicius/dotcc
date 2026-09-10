@@ -40,10 +40,10 @@
 ## Optional source post-processing
 
 After dotcc finishes, the separate [Roslyn post-processor](postprocess.md) can
-produce original/optimized project snapshots. It uses semantic syntax-tree
-rewrites for Cond.B followed by standalone empty-block cleanup. It is never
-invoked by the compiler or SQLite build helper and adds no Roslyn dependency
-to their runtime closure.
+rewrite source files with `--in-place` or produce original/optimized project snapshots. It uses semantic syntax-tree
+rewrites for Cond.B followed by standalone empty-block cleanup. The SQLite emission
+script runs it in place by default (`--no-postprocess` skips it). The compiler
+itself does not invoke it, and no Roslyn runtime dependency is added.
 
 For in-place IDE edits, the separate [Rider analyzer/code fix](postprocess.md#rider-in-place-fixes)
 offers the same transformations as quick-fixes with Fix All. This does not add

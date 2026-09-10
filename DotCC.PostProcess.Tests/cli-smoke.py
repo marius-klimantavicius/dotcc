@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Standalone CLI snapshot contracts; run serially after building the tool."""
+"""Standalone CLI snapshot and in-place contracts; run serially after building the tool."""
 import argparse
 import difflib
 import hashlib
@@ -80,6 +80,23 @@ static class Program {
     second_manifest = (second / 'manifest.json').read_text()
     assert first_manifest == second_manifest, ''.join(difflib.unified_diff(
         first_manifest.splitlines(keepends=True), second_manifest.splitlines(keepends=True)))
+    for options in ((), ('--in-place', '--output', root / 'conflict'),
+                    ('--in-place', '--in-place'), ('--output', '--in-place'),
+                    ('--in-place', '--configuration')):
+        run('dotnet', tool, project, *options, expected=1)
+        assert before == hashlib.sha256(code.read_bytes()).hexdigest()
+    protected = {path: path.read_bytes() for path in (project, source / 'data.txt', dependency / 'Value.cs')}
+    result = run('dotnet', tool, project, '--in-place')
+    assert 'Updated 1 source files in place.' in result, result
+    optimized_code = next((output / 'Optimized/src').rglob('Program.cs'))
+    assert code.read_text() == optimized_code.read_text()
+    assert all(path.read_bytes() == data for path, data in protected.items())
+    run('dotnet', 'build', project, '-c', 'Release', '-v:q')
+    assert run('dotnet', source / 'bin/Release/net10.0/Sample.dll') == expected
+    unchanged = code.read_bytes(), code.stat().st_mtime_ns
+    assert 'Updated 0 source files in place.' in run('dotnet', tool, project, '--in-place')
+    assert unchanged == (code.read_bytes(), code.stat().st_mtime_ns)
+    assert not list(root.rglob('.dotcc-postprocess-*'))
     for bad in (output, source / 'nested'):
         assert 'overlap' in run('dotnet', tool, project, '--output', bad, expected=1) or bad == output
     alias = root / 'alias'
@@ -96,4 +113,7 @@ static class Program {
     failure = root / 'failure'
     run('dotnet', tool, project, '--output', failure, expected=1)
     assert not failure.exists()
-print('PASS CLI: references/resources/caller paths/symbols/PDBs/determinism/input protection/atomic failure')
+    broken = code.read_bytes()
+    run('dotnet', tool, project, '--in-place', expected=1)
+    assert code.read_bytes() == broken
+print('PASS CLI: references/resources/caller paths/symbols/PDBs/determinism/input protection/atomic failure/in-place/idempotence')

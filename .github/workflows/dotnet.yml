@@ -134,6 +134,9 @@ jobs:
       - name: Standalone postprocessor semantic tests
         run: dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj -c Release --no-build --nologo
 
+      - name: Postprocessor snapshot and in-place CLI contracts
+        run: python3 DotCC.PostProcess.Tests/cli-smoke.py --tool DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll
+
       - name: Analyzer and code-fix tests
         run: dotnet test DotCC.PostProcess.Analyzers.Tests/DotCC.PostProcess.Analyzers.Tests.csproj -c Release --no-build --nologo
 

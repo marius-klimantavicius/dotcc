@@ -4,10 +4,8 @@ internal static class SnapshotPaths
 {
     internal static (string Project, string Output) Validate(string project, string output)
     {
-        project = Path.GetFullPath(project);
+        project = ValidateProject(project);
         output = Path.GetFullPath(output);
-        if (!File.Exists(project) || !string.Equals(Path.GetExtension(project), ".csproj", StringComparison.OrdinalIgnoreCase))
-            throw new InvalidOperationException("Input must be an existing C# project (.csproj).");
         if (Directory.Exists(output) || File.Exists(output))
             throw new InvalidOperationException("Output already exists; refusing to overwrite it.");
         var inputDirectory = Canonical(Path.GetDirectoryName(project)!);
@@ -20,6 +18,14 @@ internal static class SnapshotPaths
         return (project, output);
     }
 
+    internal static string ValidateProject(string project)
+    {
+        project = Path.GetFullPath(project);
+        if (!File.Exists(project) || !string.Equals(Path.GetExtension(project), ".csproj", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("Input must be an existing C# project (.csproj).");
+        return project;
+    }
+
     private static bool Contains(string parent, string child)
     {
         var comparison = (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS()) ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
@@ -27,7 +33,7 @@ internal static class SnapshotPaths
             || child.StartsWith(Path.TrimEndingDirectorySeparator(parent) + Path.DirectorySeparatorChar, comparison);
     }
 
-    private static string Canonical(string path)
+    internal static string Canonical(string path)
     {
         path = Path.GetFullPath(path);
         var current = Path.GetPathRoot(path)!;
