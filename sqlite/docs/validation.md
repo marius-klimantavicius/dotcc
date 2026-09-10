@@ -1111,3 +1111,32 @@ Feed the original emitted project to subsequent CLI runs; the pure semantic
 rewriter is idempotent, while generated snapshot projects use internal response
 files. No Rider analyzer, offset generator, native SQLite dependency or automatic
 optimization hook was added. All changes are committed locally without pushing.
+
+## Standalone empty-block cleanup (2026-09-10)
+
+The standalone post-processor now runs a syntax-tree cleanup after Cond.B
+inlining. The current translated engine snapshot at
+`generated/postprocess-empty-blocks` removes **2,208 standalone empty blocks**;
+**24,123 Cond.B calls** still inline with **zero skips**
+(`artifacts/empty-block-sqlite-rewrite.log`). Required bodies, labels and nonempty
+scopes remain intact. Comments and line breaks survive serialization, while
+blocks containing directives or captured caller-argument text are retained.
+
+All **49 postprocessor tests** pass (`artifacts/empty-block-tests.log`), including
+11 new cases covering nested removal, statement/declaration bodies, switch
+sections, labels, comments, caller line numbers and argument text, disabled
+source, top-level entry points, combined inlining and repeated processing.
+Execution tests compare original, transformed and serialized/reparsed source.
+The CLI smoke also passes (`artifacts/empty-block-cli-smoke.log`), with empty-block
+counts now included in the manifest. Repeated runs exposed nondeterministic
+warning-option enumeration in snapshot project files; sorting the diagnostic IDs
+now makes those properties reproducible without changing their values.
+
+`python3 sqlite/scripts/test-postprocess.py sqlite/generated/postprocess-empty-blocks --aot`
+passes from the repository root on Linux x64. Original and optimized managed SQL,
+JSONB and FTS5 consumers, host VFS, threading and prepared-query workloads pass
+under both JIT and NativeAOT. The independent native-process VFS campaign also
+passes for both variants and runtimes, covering locking, WAL, crash recovery and
+file aliases. Transcripts match (`artifacts/empty-block-differentials.log`). This
+follow-up reruns the consumer/VFS/threading gate; the separate executable corpus
+campaign was last run for M9 above.
