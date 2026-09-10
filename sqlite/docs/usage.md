@@ -85,7 +85,9 @@ manifest so switching layouts does not leave duplicate declarations. Add
 Reference `generated/TranslatedSqlite/TranslatedSqlite.csproj` from a C# project,
 or its built `TranslatedSqlite.dll`. `Managed.Database.Sqlite` (selected with `--class-name Sqlite --namespace Managed.Database` by `emit-engine.sh`) exposes the C API as unsafe managed
 methods; public translated aggregate types and `delegate*` signatures preserve
-SQLite's callback surface. Use `using Managed.Database;` for generated types and
+SQLite's callback surface. Numeric/string macros are also exposed as constants,
+for example `Sqlite.SQLITE_CHECKPOINT_TRUNCATE`, `Sqlite.SQLITE_OK`, and
+`Sqlite.SQLITE_VERSION`. Use `using Managed.Database;` for generated types and
 `using static Managed.Database.Sqlite;` for the API methods. `tests/ManagedConsumer` demonstrates explicit C#
 extension registration, ownership, callback re-entry and cleanup. No native SQLite
 library or dynamic extension loader is part of that integration. The default VFS
@@ -145,3 +147,7 @@ original and optimized SQL, threading, mmap/WAL and native corpus behavior.
 
 The optional analyzer/code-fix tooling remains available for other projects; see
 the [Rider instructions](../../docs/postprocess.md#rider-in-place-fixes).
+
+An optional translation of upstream `os_unix.c` lives in a separate experimental
+project; HostVfs remains the product default. See [upstream VFS experiments](upstream-vfs.md)
+for Linux execution evidence and the Windows translation probe.

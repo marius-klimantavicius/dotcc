@@ -625,3 +625,25 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
 - [x] Teach the shared postprocessor implementation to prove namespaced Cond.B
       and CBool helpers, preserving in-place processing after dotcc.
 - [x] Regenerate SQLite and validate the namespace under JIT and NativeAOT.
+
+### Optional upstream OS VFS experiment
+
+- [x] Keep HostVfs as the product default; build the upstream Unix VFS in a
+      separate generated project/namespace using the existing reference inputs.
+- [x] Add a regression and parser fix for upstream's const scalar function pointers.
+- [x] Bind actual Unix OS calls and verify disk, locking, WAL and mmap behavior
+      on Linux x64. Keep SQLite VFS algorithms in translated C, with a small
+      native ABI shim for OS calls only.
+- [x] Preserve a Windows translation probe and document the missing SDK/ABI surface.
+- [ ] Supply checked Windows ABI headers/PInvoke bindings, add regressions for
+      subsequent compiler failures, and verify translated os_win.c on Windows.
+- [ ] Add macOS/BSD/ARM64 profiles and broader fault/native-interoperability tests.
+- [ ] Decide whether to add a common runtime-selection facade after choosing providers.
+
+### Public C macro constants
+
+- [x] Preserve object-like numeric/string macros as public constant fields in the
+      API class, including source splitting and object linking. Keep translated
+      expressions preprocessed; omit ambiguous or unrepresentable definitions.
+- [x] Regenerate SQLite and use its emitted constants in ManagedConsumer; validate
+      the compiler regression suites and the current HostVfs consumer.

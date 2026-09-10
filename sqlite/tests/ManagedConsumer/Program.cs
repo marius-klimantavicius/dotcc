@@ -8,7 +8,6 @@ using static global::Managed.Database.Sqlite;
 // No native SQLite, assembly discovery, reflection, or extension loading is used.
 internal static unsafe partial class Program
 {
-    private const int Ok = 0, Row = 100, Done = 101;
     private static int destroyed;
     private static int ftsDestroyed;
     private static readonly delegate*<void*, void> FreePointer = DotCcFunctionPointers.sqlite3_free;
@@ -46,9 +45,9 @@ internal static unsafe partial class Program
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
-                if (sqlite3_step(nested) != Row) throw new InvalidOperationException("Nested query expected row");
+                if (sqlite3_step(nested) != SQLITE_ROW) throw new InvalidOperationException("Nested query expected row");
                 result = sqlite3_column_int64(nested, 0);
-                if (sqlite3_step(nested) != Done) throw new InvalidOperationException("Nested query expected done");
+                if (sqlite3_step(nested) != SQLITE_DONE) throw new InvalidOperationException("Nested query expected done");
             }
             finally { Check(sqlite3_finalize(nested), db, "nested finalize"); }
             sqlite3_result_int64(context, result);
@@ -99,7 +98,7 @@ internal static unsafe partial class Program
     {
         var state = (ExtensionState*)api->xUserData(fts);
         var instances = 0;
-        if (state == null || state->Bias != 42 || count != 0 || api->xColumnCount(fts) != 2 || api->xInstCount(fts, &instances) != Ok)
+        if (state == null || state->Bias != 42 || count != 0 || api->xColumnCount(fts) != 2 || api->xInstCount(fts, &instances) != SQLITE_OK)
         {
             fixed (byte* message = "Managed FTS5 auxiliary contract failed\0"u8)
                 sqlite3_result_error(context, message, -1);
@@ -114,14 +113,14 @@ internal static unsafe partial class Program
     {
         if (token == null || length <= 0 || start < 0 || end <= start) return 1;
         ++*(int*)context;
-        return Ok;
+        return SQLITE_OK;
     }
 
     private static string Utf8(byte* text) => Marshal.PtrToStringUTF8((nint)text) ?? "";
 
     private static void Check(int result, sqlite3* db, string operation)
     {
-        if (result != Ok)
+        if (result != SQLITE_OK)
             throw new InvalidOperationException($"{operation}: {result}: {Utf8(sqlite3_errmsg(db))}");
     }
 
@@ -134,9 +133,9 @@ internal static unsafe partial class Program
         try
         {
             var result = sqlite3_step(statement);
-            if (result != Row) throw new InvalidOperationException($"Expected row: {result}: {Utf8(sqlite3_errmsg(db))}");
+            if (result != SQLITE_ROW) throw new InvalidOperationException($"Expected row: {result}: {Utf8(sqlite3_errmsg(db))}");
             var value = Utf8(sqlite3_column_text(statement, 0));
-            if (sqlite3_step(statement) != Done) throw new InvalidOperationException("Expected exactly one row");
+            if (sqlite3_step(statement) != SQLITE_DONE) throw new InvalidOperationException("Expected exactly one row");
             return value;
         }
         finally { Check(sqlite3_finalize(statement), db, "finalize"); }
@@ -157,7 +156,7 @@ internal static unsafe partial class Program
             fixed (byte* text = bytes)
             {
                 var result = sqlite3_exec(db, text, null, null, &error);
-                if (result != Ok)
+                if (result != SQLITE_OK)
                     throw new InvalidOperationException($"{sql}: {result}: {Utf8(error)}");
             }
             if (expectedChanges is int expected && sqlite3_changes(db) != expected)
@@ -176,7 +175,7 @@ internal static unsafe partial class Program
         {
             var row = 0;
             int result;
-            while ((result = sqlite3_step(statement)) == Row)
+            while ((result = sqlite3_step(statement)) == SQLITE_ROW)
             {
                 if (row >= expected.Length) throw new InvalidOperationException($"{sql}: unexpected row {row}");
                 var columns = sqlite3_column_count(statement);
@@ -190,7 +189,7 @@ internal static unsafe partial class Program
                 }
                 ++row;
             }
-            if (result != Done || row != expected.Length)
+            if (result != SQLITE_DONE || row != expected.Length)
                 throw new InvalidOperationException($"{sql}: expected {expected.Length} rows and DONE, got {row} rows and {result}: {Utf8(sqlite3_errmsg(db))}");
         }
         finally { Check(sqlite3_finalize(statement), db, "finalize rows"); }
@@ -217,7 +216,7 @@ internal static unsafe partial class Program
                 var status = Encoding.UTF8.GetBytes(order.Status);
                 fixed (byte* text = status)
                     Check(sqlite3_bind_text(statement, 4, text, status.Length, Transient), db, "bind status");
-                if (sqlite3_step(statement) != Done)
+                if (sqlite3_step(statement) != SQLITE_DONE)
                     throw new InvalidOperationException($"Insert {order.Id}: {Utf8(sqlite3_errmsg(db))}");
                 if (sqlite3_changes(db) != 1) throw new InvalidOperationException("Insert expected one changed row");
                 Check(sqlite3_reset(statement), db, "reset insert");
@@ -357,7 +356,7 @@ internal static unsafe partial class Program
             fixed (byte* type = "fts5_api_ptr\0"u8)
             {
                 Check(sqlite3_bind_pointer(statement, 1, &api, type, null), db, "bind FTS5 API");
-                if (sqlite3_step(statement) != Row || sqlite3_step(statement) != Done)
+                if (sqlite3_step(statement) != SQLITE_ROW || sqlite3_step(statement) != SQLITE_DONE)
                     throw new InvalidOperationException("FTS5 API query did not return one row");
             }
         }
@@ -410,7 +409,7 @@ internal static unsafe partial class Program
         {
             fixed (byte* name = Encoding.UTF8.GetBytes(databasePath + "\0"))
                 Check(sqlite3_open(name, &db), db, "open");
-            Expect(db, "SELECT sqlite_version()", "3.53.4");
+            Expect(db, "SELECT sqlite_version()", SQLITE_VERSION);
             Expect(db, "PRAGMA journal_mode=WAL", "wal");
             Expect(db, "SELECT json_extract(jsonb('{\"name\":\"λ\",\"n\":42}'),'$.name')", "λ");
             Expect(db, "SELECT json_valid(jsonb('[1,2,3]'),8)", "1");
@@ -423,7 +422,7 @@ internal static unsafe partial class Program
             state->Bias = 35;
             // create_function_v2 owns this context even when registration fails.
             fixed (byte* name = "managed_bias\0"u8)
-                Check(sqlite3_create_function_v2(db, name, 1, 1, state, CallbackPointer, null, null, DestroyPointer), db, "register callback");
+                Check(sqlite3_create_function_v2(db, name, 1, SQLITE_UTF8, state, CallbackPointer, null, null, DestroyPointer), db, "register callback");
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
@@ -431,9 +430,10 @@ internal static unsafe partial class Program
             Expect(db, "SELECT managed_bias(json_extract(jsonb('{\"n\":8}'),'$.n'))", "43");
             if (state->Calls != 2) throw new InvalidOperationException("Callback count mismatch");
             fixed (byte* name = "managed_bias\0"u8)
-                Check(sqlite3_create_function_v2(db, name, 1, 1, null, null, null, null, null), db, "unregister callback");
+                Check(sqlite3_create_function_v2(db, name, 1, SQLITE_UTF8, null, null, null, null, null), db, "unregister callback");
             if (destroyed != 1) throw new InvalidOperationException("Context destructor must run exactly once");
 
+            Check(sqlite3_wal_checkpoint_v2(db, null, SQLITE_CHECKPOINT_TRUNCATE, null, null), db, "truncate checkpoint");
             Check(sqlite3_close(db), db, "close");
             db = null;
             if (!File.Exists(databasePath) || new FileInfo(databasePath).Length == 0)
@@ -441,7 +441,7 @@ internal static unsafe partial class Program
             if (Managed.Database.HostVfs.OpenHandleCount != 0) throw new InvalidOperationException("Leaked host VFS handle");
             if (ftsDestroyed != 1) throw new InvalidOperationException("FTS5 context destructor must run exactly once on close");
             if (dotcc_memory_vfs_handle_count() != 0) throw new InvalidOperationException("Leaked VFS handle");
-            if (dotcc_memory_vfs_reset() != Ok || sqlite3_shutdown() != Ok)
+            if (dotcc_memory_vfs_reset() != SQLITE_OK || sqlite3_shutdown() != SQLITE_OK)
                 throw new InvalidOperationException("Shutdown failed");
             Console.WriteLine("managed consumer: SQLite 3.53.4, WAL SQL workloads, JSONB, FTS5, cached C# callbacks, nested SQL, function identity, GC and cleanup passed");
             return 0;

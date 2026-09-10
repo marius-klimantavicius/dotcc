@@ -1391,3 +1391,54 @@ and run successfully in Release on Linux. This covers SQL/JSONB/FTS5, WAL/mmap,
 mutexes, concurrent connections and the simulated Darwin handle-close contracts.
 Logs: `artifacts/hostvfs-namespace-<project>-build.log` and
 `artifacts/hostvfs-namespace-<project>-run.log`.
+
+
+## Upstream Unix VFS experiment and macro constants (2026-09-10)
+
+The default product still uses HostVfs. A separate
+`Managed.Database.UpstreamUnix.Sqlite` build enables the actual upstream
+`os_unix.c` inside SQLite 3.53.4's amalgamation. Only the existing guarded APPDEF
+adaptation changes the reference source. Dotcc translates the VFS algorithms;
+P/Invoke plus a small Linux x64 OS shim supplies the system calls and ABI
+structure conversion. No native SQLite engine is linked.
+
+This exposed the unsupported file-scope `static T *(*const finder)(...)`
+declarator. Added the `function-pointer-constant` execution fixture and extended
+the parser/IR binding, preserving const pointer qualification. The callback-array
+and new scalar callback fixtures pass. The real Unix engine then compiles.
+JIT and NativeAOT runs pass disk CRUD, rollback and child-process writer locking,
+WAL snapshots/checkpoints, actual mmap fetch/unfetch, JSONB, FTS5, integrity,
+reopen persistence and mutex cleanup. Native and managed assertions agree on the
+96-byte portable stat bridge and its 40-byte size-field offset. The OS shim is
+copied transitively with the generated project into build/publish output.
+Logs: `artifacts/upstream-vfs-probe/unix-final-build.log`, `unix-final-run.log`,
+`unix-final-aot-build.log` and `unix-final-aot-run.log` in the same directory.
+
+The Windows probe enables `os_win.c` but fails on absent `windows.h` declarations
+(first downstream error at `HANDLE` in `winFile`, amalgamation line 49045).
+This is recorded in `artifacts/upstream-vfs-probe/windows-emit.log` and
+[the experiment document](upstream-vfs.md). Windows bindings and execution remain
+unfinished; HostVfs is still available for all of its existing platforms.
+
+Dotcc now emits **2,079 numeric/string macro constants** on the product's
+`Managed.Database.Sqlite` class. ManagedConsumer uses exported result codes,
+`SQLITE_VERSION`, `SQLITE_UTF8`, and `SQLITE_CHECKPOINT_TRUNCATE`, including an
+actual truncate checkpoint API call. Product regeneration and in-place
+postprocessing still rewrite **24,123 Cond.B calls**, skip none, and remove
+**2,208 empty blocks** across **2,511 updated files**. ManagedConsumer builds
+with zero errors and its 63 existing generated-code warnings, then passes all
+SQL/JSONB/FTS5/optional-feature/WAL/callback checks.
+Logs: `artifacts/macro-constants-sqlite-emit.log`,
+`artifacts/macro-constants-consumer-build.log` and
+`artifacts/macro-constants-consumer-run.log`.
+
+All **1,871 unit tests** and **358 functional tests** pass; **923 optional oracle
+tests** are skipped (`artifacts/macro-constants-unit.log`,
+`artifacts/macro-constants-functional.log`). Macro regressions cover typed
+literals, escapes/concatenation, casts, unsigned wrapping/conversions, aliases,
+conditional expressions, contextual/undefined/unsafe replacement omission,
+member collisions, source layouts and conflicting object/source definitions.
+The compiler itself publishes as linux-x64 NativeAOT without warnings
+(`artifacts/macro-constants-compiler-aot.log`).
+Its native executable also emits and runs a namespaced file-based program using
+macro constants and a const scalar callback (`artifacts/macro-constants-native-smoke.log`).

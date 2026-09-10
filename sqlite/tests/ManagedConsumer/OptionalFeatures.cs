@@ -44,10 +44,10 @@ internal static unsafe partial class Program
                 || sqlite3_column_origin_name16(statement, 2) != null)
                 throw new InvalidOperationException("Expression should have no source column metadata");
             GC.Collect();
-            if (sqlite3_step(statement) != Row) throw new InvalidOperationException("Missing metadata row");
+            if (sqlite3_step(statement) != SQLITE_ROW) throw new InvalidOperationException("Missing metadata row");
             Check(sqlite3_reset(statement), db, "metadata reset");
             if (Utf8(sqlite3_column_origin_name(statement, 0)) != "naïve"
-                || sqlite3_step(statement) != Row || sqlite3_step(statement) != Done)
+                || sqlite3_step(statement) != SQLITE_ROW || sqlite3_step(statement) != SQLITE_DONE)
                 throw new InvalidOperationException("Metadata reset changed the statement");
         }
         finally { Check(sqlite3_finalize(statement), db, "metadata finalize"); }
