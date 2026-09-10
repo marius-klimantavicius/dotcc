@@ -36,7 +36,10 @@ internal static unsafe class Program
     {
         sqlite3_stmt* statement = null;
         fixed (byte* text = Utf8(sql))
-            Require(sqlite3_prepare_v2(db, text, -1, &statement, null) == 0, "prepare: " + sql);
+        {
+            var rc = sqlite3_prepare_v2(db, text, -1, &statement, null);
+            Require(rc == 0, $"prepare ({rc}/{sqlite3_extended_errcode(db)}): {Marshal.PtrToStringUTF8((nint)sqlite3_errmsg(db))}: " + sql);
+        }
         try
         {
             Require(sqlite3_step(statement) == 100, "query row: " + sql);

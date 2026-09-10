@@ -19,7 +19,7 @@ public static unsafe class HostVfs
     private const int Ok = 0, Error = 1, Busy = 5, NoMemory = 7, ReadOnly = 8,
         IoError = 10, Full = 13, CannotOpen = 14, NotFound = 12;
     private const int OpenReadOnly = 1, OpenReadWrite = 2, OpenCreate = 4,
-        DeleteOnClose = 8, Exclusive = 16, MainDb = 0x100, NoFollow = 0x1000000;
+        DeleteOnClose = 8, Exclusive = 16, MainDb = 0x100, Wal = 0x80000, NoFollow = 0x1000000;
     private const int PathBytes = 32768;
     private static readonly object RegistrationGate = new();
     private static sqlite3_vfs* registeredVfs;
@@ -157,10 +157,11 @@ public static unsafe class HostVfs
                 handle = HostPlatform.Open(path, mode, readOnly ? FileAccess.Read : FileAccess.ReadWrite,
                     options, (flags & NoFollow) != 0);
             }
-            catch (Exception exception) when (!readOnly && !temporary && (flags & MainDb) != 0 && (flags & Exclusive) == 0
+            catch (Exception exception) when (!readOnly && !temporary && (flags & (MainDb | Wal)) != 0 && (flags & Exclusive) == 0
                 && exception is IOException or UnauthorizedAccessException)
             {
-                // Existing readable databases may be opened without write access.
+                // SQLite opens WAL files as READWRITE even for readonly databases,
+                // then honors the returned READONLY flag for readable existing files.
                 handle = HostPlatform.Open(path, FileMode.Open, FileAccess.Read, options, (flags & NoFollow) != 0);
                 readOnly = true;
             }
