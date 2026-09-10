@@ -7,7 +7,7 @@ NativeAOT as well as the JIT. Both use the configured LP64, unsigned-char,
 MS-compatible bit-field storage profile. The checked oracle is
 `tests/layout-native.expected`.
 
-`src/layout_probe.c` includes the unchanged amalgamation and tests all 30 active
+`src/layout_probe.c` includes the unchanged amalgamation and tests all 39 active
 `offsetof` requests extracted from its preprocessed source. It compares native
 and translated aggregate sizes, alignment constants, generated offsets, and
 actual member address differences. Eight additional pointer-array probes cover
@@ -25,7 +25,7 @@ constructs a `{ byte Prefix; T Value; }` wrapper and compares the actual address
 difference to native alignment. It also checks actual `sizeof(T)` and the sizes
 of all eight emitted pointer-element inline-array wrapper types. These startup
 checks run before any probe writes, under both JIT and AOT, and fail by exception
-on a mismatch. There are currently 33 aggregate checks and eight array checks.
+on a mismatch. There are currently 42 aggregate checks and eight array checks.
 
 The sidecar contains no reflection or generic pointer arguments. It does not
 edit `Program.cs`, implement missing storage, or change the engine. Expected
@@ -38,12 +38,13 @@ Pointer and function-pointer inline arrays now use one-field unmanaged element
 wrappers, enabling normal C# indexing and generic spans through `element.Value`.
 Their layout remains pointer-sized; CS9184 is eliminated rather than suppressed.
 
-Native, translated JIT, and linux-x64 NativeAOT validation of the expanded probe
-passed with the explicit `SQLITE_MAX_MMAP_SIZE=0` profile. All 30 active offsets,
-33 actual aggregate sizes/alignments, and eight pointer-array storage checks
-matched. The native, JIT, and AOT transcripts are byte-identical. Local evidence
-is in `artifacts/layout-aot-validation.log`, `translated-layout-aot.out`,
-`translated-layout-aot-build.log`, and `layout-aot-total.time`.
+Native, translated JIT, and linux-x64 NativeAOT validation of the FTS5-enabled
+profile passes with explicit `SQLITE_MAX_MMAP_SIZE=0`. All 39 active offsets,
+42 actual aggregate sizes/alignments and eight pointer-array storage checks
+match. Native, JIT and AOT transcripts are byte-identical. The final clean
+implementation snapshot is `3d4dbc0`; evidence is under
+`artifacts/fts5-clean-checkout/sqlite/artifacts/clean-layout.log` and that
+checkout's `translated-layout*.out` / `translated-layout*-build.log` files.
 
 The first translated run exposed two incorrect addresses, for `Parse.aTempReg`
 and `WalIndexHdr.aCksum`. Their sizes and offset constants were correct, but the

@@ -527,3 +527,13 @@ callable addresses in all four source/object JIT/NativeAOT executions.
 Evidence: `artifacts/function-identity-validation.log`, per-route
 `function-identity-{source,objects}-{jit,aot}.out`, and
 `static-identity-engine-build.log`. Full shared regressions remain the final gate.
+
+
+## FTS5 and identity phase completion
+
+B039 and B040 are resolved. Implementation snapshot `3d4dbc0` passes all 1,816
+unit tests, 299 functional tests, Lua, Chibi and WAT, plus source/object function
+identity under JIT and NativeAOT. A fresh checkout passes all seven FTS5-enabled
+translated corpora, actual layout and managed consumer JIT/AOT checks, and all
+three FTS5 database-image exchange directions. No active blocker remains for M7
+or M8. M9/M10 remain plans only. Final evidence is recorded in `validation.md`.

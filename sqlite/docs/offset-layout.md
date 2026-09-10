@@ -40,9 +40,9 @@ and flexible-tail C fixtures compare constants with actual unsafe storage and
 cover nested/indexed designators, bitfields, callback fields, arrays, enums,
 case labels and static assertions.
 
-SQLite's native probe extracts all 30 active offset requests from the pinned
+SQLite's native probe extracts all 39 active offset requests from the pinned
 amalgamation. The translated probe compares those results, actual sizes/alignment
-for 33 aggregates, and eight pointer-array layouts under JIT and linux-x64
+for 42 aggregates, and eight pointer-array layouts under JIT and linux-x64
 NativeAOT. See [layout checks](layout-storage.md) and [validation](validation.md).
 These execution checks independently verify the model against actual storage;
 recomputing constants with the same model alone is not independent validation.

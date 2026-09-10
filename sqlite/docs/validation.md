@@ -563,3 +563,92 @@ Logs: `artifacts/function-identity-validation.log` and per-route
 
 Full repository/port regression review and final campaign reproduction remain
 active. These intermediate passes do not replace the final combined snapshot.
+
+## M7–M8 complete — final FTS5 and canonical identity evidence
+
+The verified implementation snapshot is
+`3d4dbc0bac11405e426c8972c186c9904db02317`. The final documentation-only commit
+records these results; M9/M10 remain planning-only and were not implemented.
+
+Shared validation passed before the fresh packaging run:
+
+- Release solution build: zero warnings/errors, 8.46 seconds.
+- **1,816 unit tests passed**, zero failures/skips, 55 seconds. Thirteen old
+  emitted-text expectations were updated to require canonical fields; production
+  code was unchanged during that assertion-only correction.
+- **299 functional tests passed**, zero failures, 913 optional oracle skips,
+  1 minute 42 seconds. Skips are not counted as executed tests.
+- Lua's upstream runner passed; Chibi passed **1,225/1,225** against its native
+  transcript; WAT passed **146/146**, zero skips. Total port time: 40.75 seconds.
+- Distinct identical-body static functions retained separate callable identities
+  in **source and object routes under both JIT and NativeAOT**. All four outputs
+  match the native-proven `1 42 42` fixture output.
+
+Logs: `artifacts/function-identity-{unit-all,functional-all,ports}.log`,
+`function-identity-ports.time`, and `function-identity-validation.log` with its
+per-route emission/build/JIT/AOT logs. The first full unit log records the stale
+assertion failures; the passing retry is `function-identity-unit-final.log`.
+
+A fresh detached checkout at `artifacts/fts5-clean-checkout` began with empty
+tracked status and no downloaded inputs, generated files, `bin/` or `obj/`
+directories. Both pinned archives were downloaded again and SHA-256 verified;
+all four amalgamation files remain byte-identical to their archive entries.
+The clean Release solution build used NuGet `SharpAstro.LALR.CC` 4.7.0 and passed
+with zero warnings/errors in 8.82 seconds. No copied inputs/binaries, local sibling
+parser project, source edits or expected-output changes were needed.
+
+From that checkout's `sqlite/`, the bounded packaging/integration sequence was:
+
+```sh
+python3 scripts/fetch.py
+dotnet build ../dotcc.sln -c Release -p:UseLocalLalrCc=false
+SQLITE_AOT=1 scripts/test-layout-translated.sh
+SQLITE_AOT=1 scripts/test-managed-consumer.sh
+scripts/test-translated.sh fts5
+scripts/test-translated.sh core
+scripts/test-image-exchange.sh
+for suite in api vfs vtable allocation upstream; do
+  scripts/test-translated.sh "$suite"
+done
+```
+
+Every stage passed. Layout verifies **39 offsets, 42 actual aggregate layouts and
+eight pointer arrays** under JIT and NativeAOT. The separate managed consumer
+passes expanded core/JSONB SQL, FTS5 CRUD/search, explicitly registered C# auxiliary
+and tokenizer callbacks, canonical pointer identity, GC stress and cleanup under
+both runtimes. **All seven FTS5-enabled translated suites match native**: core
+(41 cases), API (including 256 seeded operations), VFS, explicit virtual tables,
+allocation (128 failures), public JSONB (37 assertions), and FTS5 (34 assertions
+plus callback/tokenizer lifecycle checks).
+
+All three independent-process database-image directions pass with persisted FTS5
+index pages and Unicode documents: native→managed, managed→native and
+managed→managed. Tests include index update/delete, bound term/phrase/Unicode/
+boolean MATCH queries and content/index integrity, alongside the existing core,
+JSONB, 64-KiB incremental blob, metadata and cleanup assertions (`aeaac2b`).
+
+The initial packaging sequence exited zero in **2 minutes 12.25 seconds**, peak
+RSS **1,262,064 KiB**; the five supplemental translated suites exited zero in
+**1 minute 8.19 seconds**, peak RSS **1,250,076 KiB**. Already-passing repository,
+port and generic identity-AOT suites were reused rather than repeated. The two
+clean AOT publish logs have no ILxxxx analysis warnings; their ELF dependencies
+are only libm, libc and the Linux loader, with no SQLite import or dependency.
+The detached worktree remains clean after validation.
+
+Original-directory evidence:
+`artifacts/fts5-clean-reproduction.{log,time}`,
+`fts5-clean-supplemental.{log,time}`, and
+`fts5-clean-reproduction-{initial,input-audit,aot-audit,final-audit}.json`.
+Stage logs are under `artifacts/fts5-clean-checkout/sqlite/artifacts/clean-*`.
+The complete reusable campaign command remains `SQLITE_AOT=1 scripts/verify.sh
+--with-ports`; the evidence above records which stages were run freshly and which
+already-green gates were reused, rather than claiming one new full-script run.
+
+The supported profile remains Linux x64, LP64, little endian, unsigned plain char,
+matching bit-field storage, serialized calls and a process-local memory VFS.
+FTS5 is statically compiled; FTS3/4 remain deferred. Native SQLite is only the
+separate oracle. Extensions register explicitly in C#, with no dynamic loading.
+WAL shared memory, mmap, concurrent hosting and disk durability remain outside
+this profile. This is the documented corpus, not the complete upstream Tcl/TH3
+suite. `offsetof` remains direct compiler emission; no generator was restored.
+CI configuration is committed, but remote CI was not run and nothing was pushed.

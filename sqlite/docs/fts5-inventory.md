@@ -35,15 +35,19 @@ WAL, mmap or host-file capabilities. The corpus is bounded coverage, not the
 complete upstream Tcl FTS5 suite. Custom C# consumer registration belongs to the
 separate managed-consumer contract.
 
-Initial actual FTS5 emission reached the tokenizer's externally entered
-`non_ascii_tokenchar` loop, where dotcc rejected an unsupported control-flow
-shape. Evidence: `artifacts/fts5/engine-baseline-emission.log` and
-`engine-baseline.time`. No upstream or emitted-source workaround is permitted;
-translation is retried after the shared compiler regression is fixed.
+The original tokenizer loop-entry failure is fixed in dotcc with native-backed
+regressions; upstream C and generated engine source remain untouched. All 34
+FTS5 assertions and callback contracts now match native in the clean checkout.
+The expanded C# consumer passes JIT and NativeAOT with explicitly registered
+auxiliary/tokenizer callbacks. Database-image tests carry updated/deleted FTS5
+indexes and Unicode documents through native→managed, managed→native and
+managed→managed processes, verifying MATCH results and content/index integrity.
+See `validation.md` for the final snapshot and logs.
 
 The active native layout inventory grows from 30 to 39 offsetof requests. Nine
 new FTS5 aggregates are included: Fts5DlidxIter, Fts5ExprNearset, Fts5ExprNode,
 Fts5ExprPhrase, Fts5Iter, Fts5Sorter, Fts5Structure, Fts5TokenDataIter and
 Fts5TombstoneArray. Every previous core layout row remains unchanged. The
 profile-specific native transcript is `tests/layout-native.expected`; translated
-layout comparison must cover this expanded inventory before completion.
+JIT and NativeAOT checks pass all 39 offsets, 42 aggregate sizes/alignments and
+eight pointer-array layouts in this profile.

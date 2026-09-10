@@ -1,9 +1,9 @@
 # SQLite amalgamation to C# with dotcc
 
-Status: the original core/JSONB campaign (M0–M6) is complete. The active follow-up
-implements richer managed SQL workloads, canonical function-pointer fields (M7),
-and statically compiled FTS5 (M8). M9 and M10 are design-only future work: do not
-implement either optimization as part of this phase.
+Status: M0–M8 are complete for the documented profile. The translated engine
+includes core, JSON/JSONB and FTS5, with richer managed SQL workloads and canonical
+function-pointer fields verified through source/object linking, JIT and NativeAOT.
+M9 and M10 remain design-only future work; neither optimization was implemented.
 See `validation.md` for completed checks and `usage.md` for build commands.
 Branch: `sqlite`. Campaign working directory: `<repo>/sqlite/`.
 
@@ -183,7 +183,7 @@ the original implementation steps.
       requiring an analyzer, runtime reflection, or runtime offset evaluation.
 - [x] Verify ordinary file/project/managed-library/object-link builds directly,
       with no `GeneratorDriver` or offset-analyzer project dependency.
-- [x] Compare all 30 active SQLite offsets, 33 actual aggregate sizes/alignments,
+- [x] Compare all 39 active SQLite offsets, 42 actual aggregate sizes/alignments,
       and eight pointer-array storage checks against native under JIT/NativeAOT.
 
 Exit: required offsets agree with actual storage and native layout in constant
@@ -308,64 +308,64 @@ constant emission, reproducible native differential evidence, and passing requir
 regressions. Parser success, a build-only stub, or a SQL smoke test is insufficient.
 
 
-### M7 — Managed SQL workloads and canonical function pointers (implement now)
+### M7 — Managed SQL workloads and canonical function pointers (complete)
 
-- [ ] Extend `tests/ManagedConsumer` to create related tables, indexes/views and
+- [x] Extend `tests/ManagedConsumer` to create related tables, indexes/views and
       triggers; insert parameter-bound data; and assert complete result sets.
-- [ ] Exercise simple predicates, joins, aggregates, correlated subqueries, CTEs,
+- [x] Exercise simple predicates, joins, aggregates, correlated subqueries, CTEs,
       window functions, stored JSONB, updates, UPSERT, deletes, transactions and
       savepoint rollback. Verify final contents, changes, integrity and cleanup.
-- [ ] Emit one canonical static readonly typed function-pointer field per
+- [x] Emit one canonical static readonly typed function-pointer field per
       addressable function identity. All emitted address-taking/designator uses,
       callback tables and comparisons reuse that field. Managed library consumers
       can reuse public canonical fields for translated functions.
-- [ ] Initialize address fields independently of user global initializers to avoid
+- [x] Initialize address fields independently of user global initializers to avoid
       static initialization cycles/default-null captures. Preserve function
       signature/calling convention, linkage, name hygiene and object-link identity;
       distinguish same-spelled static functions in different translation units.
-- [ ] Cover runtime-provided functions as well as translated ones. Callback values
+- [x] Cover runtime-provided functions as well as translated ones. Callback values
       received from callers remain caller-owned values; caching must not freeze
       mutable callback variables, callback context, or dynamically selected targets.
       Null and destructor sentinels retain their semantics.
-- [ ] Give the managed consumer's own callbacks static readonly fields, reused by
+- [x] Give the managed consumer's own callbacks static readonly fields, reused by
       registration and identity checks. Verify reference equality to canonical
       addresses, actual invocation, global initialization, cross-object linking,
       repeated accesses under warmup/GC, and both JIT and NativeAOT.
-- [ ] Keep native-checked reduced compiler regressions and full SQLite retries.
+- [x] Keep native-checked reduced compiler regressions and full SQLite retries.
       CS8909 may remain at pointer comparisons; correctness relies on reusing the
       captured address, not on assuming separate method-address captures coincide.
 
 Exit: the expanded managed consumer and shared compiler regressions pass, and
 all generated function-address uses refer to their canonical static fields.
 
-### M8 — Build and verify FTS5 with dotcc (implement now)
+### M8 — Build and verify FTS5 with dotcc (complete)
 
-- [ ] Coordinator delegates bounded compiler and FTS work, serializes shared
+- [x] Coordinator delegates bounded compiler and FTS work, serializes shared
       builds/tests/commits, and continues fix/test/full-amalgamation retries until
       the enabled module actually executes correctly. Do not stop at compilation.
-- [ ] Enable FTS5 in the shared pinned SQLite configuration, compiled from the
+- [x] Enable FTS5 in the shared pinned SQLite configuration, compiled from the
       unchanged amalgamation. Keep the memory VFS, core and JSONB, with no native
       SQLite dependency or dynamic extension loading. Leave FTS3/4 deferred.
-- [ ] Record a native baseline with identical feature/ABI definitions. Reduce
+- [x] Record a native baseline with identical feature/ABI definitions. Reduce
       every new C parser/emitter/runtime defect, demonstrate a failing regression,
       fix dotcc, and retry the full enabled engine.
-- [ ] Add deterministic native/translated tests for table creation and CRUD,
+- [x] Add deterministic native/translated tests for table creation and CRUD,
       MATCH terms/phrases/prefixes/boolean/NEAR queries, column filtering, Unicode
       tokenization, ranking, highlighting/snippets, and vocabulary tables.
-- [ ] Exercise pinned built-in tokenizer variants, external-content synchronization,
+- [x] Exercise pinned built-in tokenizer variants, external-content synchronization,
       contentless storage, transactions, index maintenance/integrity, and reopen
       through the memory VFS. Test malformed-query diagnostics and changes after
       updates/deletes; normalize only genuinely nondeterministic output.
-- [ ] Cover the explicitly registered managed FTS extension API where exposed
+- [x] Cover the explicitly registered managed FTS extension API where exposed
       (tokenizer/auxiliary callback lifecycle) without adding dynamic loading.
       Document supported cases, upstream test selection and remaining limits.
-- [ ] Include an FTS CRUD/search demonstration in the separate managed consumer.
+- [x] Include an FTS CRUD/search demonstration in the separate managed consumer.
       Verify native differentials and the actual engine under JIT/NativeAOT; rerun
       core/JSONB/API/VFS/layout regressions and database-image interoperability.
-- [ ] Update scripts, CI inputs, feature assertions and docs that formerly expected
+- [x] Update scripts, CI inputs, feature assertions and docs that formerly expected
       FTS absence. Capture checks/commits in the ledger and commit locally, no push.
 
-FTS5 is enabled by `SQLITE_ENABLE_FTS5` in the amalgamation. Planned SQL/API
+FTS5 is enabled by `SQLITE_ENABLE_FTS5` in the amalgamation. Verified SQL/API
 coverage follows the pinned release and the
 [upstream FTS5 reference](https://www.sqlite.org/fts5.html).
 Exit: FTS5 builds with dotcc and its checked SQL/index/callback behavior agrees
