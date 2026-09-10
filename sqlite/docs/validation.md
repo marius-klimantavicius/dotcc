@@ -902,3 +902,36 @@ as an error in both build and publish; its final rerun is `m10-varargs-final.log
 M10 is complete for the documented Linux x64 profile. Other OS execution is not
 claimed. M9 remains plan-only, the offset generator remains removed, and all
 changes are committed locally without pushing.
+
+## M13 — Math, percentile and column metadata (2026-09-10)
+
+Enabled `SQLITE_ENABLE_MATH_FUNCTIONS`, `SQLITE_ENABLE_PERCENTILE` and
+`SQLITE_ENABLE_COLUMN_METADATA` in the shared configuration. The first actual
+SQLite build failed with three CS0103 errors for missing `acosh`, `asinh` and
+`atanh` callback targets (`features-first-build.log`). A reduced C fixture
+reproduced missing runtime functions (`features-math-red.log`); BCL Math/MathF
+wrappers and header declarations fix direct calls and cached double/float
+callbacks. The fixture passes and matches strict GCC output, including domain
+NaNs, poles and signed zero (`features-math-green.log`, `features-math-native.out`).
+
+The new API contracts pass against native SQLite and translated JIT/NativeAOT:
+math families and domain NULLs; all four percentile functions with aggregate,
+sliding-window, grouped, empty/NULL, sorting and invalid-input recovery cases;
+and all six UTF-8/UTF-16 column-origin APIs through aliases, views, joins,
+attached databases, expressions and statement reset. The native expected
+transcript adds exactly three PASS lines; existing results remain unchanged.
+The separate managed consumer directly exercises the public APIs under JIT/AOT.
+
+The complete `scripts/verify.sh` campaign finishes with exit zero and AOT enabled
+(`features-campaign.log`). It passes 1,857 unit tests, 308 functional tests
+(921 optional skips), the span allocation gate, all eight native comparisons,
+all seven translated corpora, layout and managed-consumer JIT/AOT, host VFS/WAL
+contract and independent-process recovery tests, canonical function identity,
+and all three image-exchange directions. API NativeAOT is now a repeatable part
+of `SQLITE_AOT=1 scripts/test-translated.sh api`; its transcript matches
+`tests/native-api.expected` (`translated-api-aot.out`). Lua/Chibi/WAT were not
+rerun for this phase. No new native SQLite dependency or dynamic loading is added.
+
+M13 is complete on Linux x64. The following requested phase adds multithreading
+and database mmap; the M13 validation above uses the preceding serialized,
+disabled-database-mmap profile.

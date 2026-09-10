@@ -517,7 +517,7 @@ Evidence: the M12 section in [validation](validation.md). Windows/macOS CI is
 configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
 
 
-### M13 — Math, percentile and column metadata (validation in progress)
+### M13 — Math, percentile and column metadata (complete)
 
 - [x] Enable `SQLITE_ENABLE_MATH_FUNCTIONS`, `SQLITE_ENABLE_PERCENTILE` and
       `SQLITE_ENABLE_COLUMN_METADATA` in the shared native/translated profile.
@@ -528,6 +528,6 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
       invalid-input recovery and UTF-8/UTF-16 column origins.
 - [x] Extend the separate managed consumer with math/percentile queries and all
       six metadata APIs, including alias/view/join/attached-database behavior.
-- [ ] Verify the new API corpus under native, translated JIT and NativeAOT;
+- [x] Verify the new API corpus under native, translated JIT and NativeAOT;
       run the managed consumer under JIT/AOT and the complete SQLite campaign.
       Preserve the current VFS/WAL profile, explicit C# registration and plan-only M9.
