@@ -84,7 +84,7 @@ jobs:
             ForEach-Object { $_.Trim() } | Where-Object { $_ -and !$_.StartsWith('#') } |
             ForEach-Object { '-D' + $_ })
           $arguments = @('-std=c17') + $definitions + @('-DDOTCC_HOST_VFS=1',
-            '-I', (Join-Path $root 'ref/sqlite-amalgamation-3510300'),
+            '-I', (Join-Path $root 'ref/sqlite-amalgamation-3530400'),
             '-I', (Join-Path $root 'src'), (Join-Path $root 'src/engine.c'),
             '--emit=managedlib', '-o', (Join-Path $root 'generated/TranslatedSqlite'))
           dotnet DotCC/bin/Release/net10.0/dotcc.dll @arguments 2>&1 |

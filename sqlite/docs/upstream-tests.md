@@ -1,6 +1,6 @@
 # Public upstream test adaptation
 
-The pinned public SQLite 3.51.3 `test/jsonb01.test` contains setup, a table of 18
+The pinned public SQLite 3.53.4 `test/jsonb01.test` contains setup, a table of 18
 JSON paths with exact expected JSON text, two removal queries per path, and one
 malformed-JSON error probe. `scripts/generate-upstream-jsonb.py` adapts all 37 SQL
 assertions plus setup into a C API harness without a Tcl dependency.

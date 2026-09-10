@@ -481,7 +481,7 @@ outside this milestone; M9/M10 remain plan-only.
 
 ### M12 — WAL shared memory and checkpoint/recovery (implement now)
 
-- [ ] Move the pinned unchanged SQLite inputs to the 3.51.3 release,
+- [ ] Move the pinned unchanged SQLite inputs to the 3.53.4 release,
       which fixes the upstream WAL-reset race; verify hashes and rerun translation.
 - [ ] Advertise version-2 I/O methods on `dotcc-host`: file-backed shared mappings,
       SQLite-compatible shared/exclusive shm range locks, memory barriers and

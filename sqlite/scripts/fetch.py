@@ -7,10 +7,10 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUTS = (
-    ("sqlite-amalgamation-3510300", ROOT / "ref",
-     "acb1e6f5d832484bf6d32b681e858c38add8b2acdfd42ac5df24b8afb46552b4"),
-    ("sqlite-src-3510300", ROOT / "ref" / "upstream-tests",
-     "f8a67a1f5b5cae7c6d42f0994ca7bf1a4a5858868c82adc9fc1340bed5eb8cd2"),
+    ("sqlite-amalgamation-3530400", ROOT / "ref",
+     "1e71ddf93849c6a6ecf58b827c0692073d2dd7ee40196158068f7b29f422e87d"),
+    ("sqlite-src-3530400", ROOT / "ref" / "upstream-tests",
+     "d18fa15aec74d8c17e1463f861095adc01b5ad190256acb4f91d22f0368d232b"),
 )
 for name, directory, checksum in INPUTS:
     archive = directory / (name + ".zip")

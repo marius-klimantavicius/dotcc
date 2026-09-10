@@ -1,7 +1,7 @@
 # FTS5 coverage
 
 The shared profile statically enables `SQLITE_ENABLE_FTS5` in unchanged SQLite
-3.51.3. Core and JSON/JSONB remain enabled. FTS3/FTS4 remain deferred and are
+3.53.4. Core and JSON/JSONB remain enabled. FTS3/FTS4 remain deferred and are
 explicitly checked as unavailable. `SQLITE_OMIT_LOAD_EXTENSION` remains enabled;
 there is no native SQLite interop or dynamic extension loading.
 

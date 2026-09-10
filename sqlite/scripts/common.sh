@@ -2,7 +2,7 @@
 set -euo pipefail
 SQLITE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DOTCC_ROOT="$(cd "$SQLITE_ROOT/.." && pwd)"
-SQLITE_AMALGAMATION="$SQLITE_ROOT/ref/sqlite-amalgamation-3510300"
+SQLITE_AMALGAMATION="$SQLITE_ROOT/ref/sqlite-amalgamation-3530400"
 SQLITE_DEFINES=()
 while IFS= read -r definition; do
   [[ -z "$definition" || "$definition" == \#* ]] || SQLITE_DEFINES+=("-D$definition")
