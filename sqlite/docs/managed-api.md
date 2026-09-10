@@ -24,15 +24,21 @@ scripts/emit-engine.sh
 dotnet build generated/TranslatedSqlite/TranslatedSqlite.csproj -c Release
 ```
 
-`src/engine.c` includes the unchanged amalgamation and memory VFS as one logical
-translation unit. The script supplies the shared feature configuration and the
-host-registration switch; `Directory.Build.targets` includes the managed OS
-sidecars. `dotcc-host` is the library default, while the named memory adapter
+`src/engine.c` includes the amalgamation, host mutex bridge and memory VFS as
+one logical translation unit. The script supplies the common features plus host
+profile overrides and prepares the hash-checked mutex-selection guard adaptation
+in `generated/sqlite-port/`; downloaded references remain unchanged.
+`Directory.Build.targets` includes the managed OS sidecars. See
+[threading and mmap](threading-mmap.md) for the platform adaptation. `dotcc-host` is the library default, while the named memory adapter
 remains available. dotcc emits offsetof
 constants directly into the library source. The command produces the working engine; the remaining campaign checks are
 recorded in `PLAN.md` and `validation.md`.
 The CLI's optional `-c` also builds the emitted project.
-A consumer references the resulting project or assembly normally.
+A consumer references the resulting project or assembly normally. The product
+uses serialized connections by default and BCL database mappings; separate
+connections may run concurrently. Sharing multi-call transactions or statement
+sequences requires application ownership. Hosting is noncollectible: static
+mutex identities and canonical callback addresses persist across shutdown.
 
 The library API equivalents are `Compiler.EmitCSharp(..., emit:
 EmitMode.ManagedLib)` and `Compiler.BuildGeneratedCsproj(managedLibrary: true)`. Current object fragments also retain public types,

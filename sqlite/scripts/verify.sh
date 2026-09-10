@@ -35,6 +35,10 @@ native_check layout-native.sh layout-native.expected layout
   > "$SQLITE_ROOT/artifacts/campaign-layout.log" 2>&1
 "$SQLITE_ROOT/scripts/test-managed-consumer.sh" \
   > "$SQLITE_ROOT/artifacts/campaign-managed-consumer.log" 2>&1
+"$SQLITE_ROOT/scripts/test-product-layout.sh" \
+  > "$SQLITE_ROOT/artifacts/campaign-product-layout.log" 2>&1
+"$SQLITE_ROOT/scripts/test-threading.sh" \
+  > "$SQLITE_ROOT/artifacts/campaign-threading.log" 2>&1
 "$SQLITE_ROOT/scripts/test-host-vfs.sh" \
   > "$SQLITE_ROOT/artifacts/campaign-host-vfs.log" 2>&1
 if [[ "$SQLITE_AOT" == 1 ]]; then
@@ -51,4 +55,4 @@ done
 if [[ "${1:-}" == --with-ports ]]; then
   "$SQLITE_ROOT/scripts/test-ports.sh"
 fi
-echo "PASS SQLite campaign: core, JSON/JSONB, FTS5, host rollback/WAL and memory VFS, callbacks, layout and image exchange (AOT=$SQLITE_AOT)"
+echo "PASS SQLite campaign: core, JSON/JSONB, FTS5, math/percentiles/metadata, host threading/mmap/rollback/WAL and memory VFS, callbacks, layout and image exchange (AOT=$SQLITE_AOT)"

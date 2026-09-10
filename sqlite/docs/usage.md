@@ -1,15 +1,17 @@
 # Build and verify translated SQLite
 
 Run commands from the repository's `sqlite/` directory. The supported initial
-profile is Linux x64, LP64, little endian, .NET 10, serialized calls on one thread,
-and the real file-backed `dotcc-host` VFS for the managed library. Deterministic C
+profile is Linux x64, LP64, little endian, .NET 10, concurrent connections with
+serialized connections by default, and the real file-backed `dotcc-host` VFS
+for the managed library. Deterministic C
 corpora retain their process-local memory VFS. Windows/macOS host implementations
 and CI are provided, but local execution evidence is Linux x64. See
 [host VFS](host-vfs.md). Core SQLite, JSON/JSONB, FTS5, SQL math/percentile functions and column metadata
-are enabled; FTS3/FTS4,
-dynamic extensions and database memory mapping are excluded. WAL is supported
+are enabled. Database mmap defaults to 64 MiB with a 256 MiB maximum per file.
+FTS3/FTS4 and dynamic extensions remain excluded. WAL is supported
 on the host VFS; select it with `PRAGMA journal_mode=WAL`.
-See `configuration.md` for the exact shared native/translated definitions.
+See `configuration.md` for corpus and host-product definitions and
+[threading and mmap](threading-mmap.md) for connection ownership and mapping controls.
 
 Prerequisites are .NET SDK 10, Python 3, GCC, a POSIX shell and GNU coreutils.
 NativeAOT also requires the .NET Linux native linker prerequisites (the CI recipe
@@ -27,9 +29,10 @@ This checks source hashes, builds dotcc with the NuGet LALR.CC dependency, runs 
 unit and functional suites serially, regenerates native baselines for comparison,
 then translates and executes layout, API, SQL, VFS, allocation, virtual-table,
 public JSONB, FTS5 and database-image tests. It includes the separate C# consumer and
-NativeAOT layout/consumer/API-corpus checks, span-varargs semantics/allocation benchmarks,
+NativeAOT corpus/product-layout, consumer, API-corpus and threading checks,
+span-varargs semantics/allocation benchmarks,
 and real-file VFS locking, persistence and
-rollback/WAL recovery and checkpoints against native processes. It writes diagnostics under `artifacts/` and
+database mapping lifetime, rollback/WAL recovery and checkpoints against native processes. It writes diagnostics under `artifacts/` and
 fails on the first mismatch. `SQLITE_AOT=0 scripts/verify.sh` is an explicitly
 smaller JIT-only run, not the completion gate. `scripts/verify.sh --with-ports`
 adds the existing Lua, Chibi and WAT regressions; their upstream runners and
@@ -69,7 +72,9 @@ disk persistence and locking without image import/export.
 
 Use `scripts/test-translated.sh core` (or `api`, `vfs`, `vtable`, `allocation`,
 `upstream`, `fts5`) to isolate a corpus. Use `SQLITE_AOT=1 scripts/test-layout-translated.sh`
-and `SQLITE_AOT=1 scripts/test-managed-consumer.sh` for the AOT gates. Runtime
+and `SQLITE_AOT=1 scripts/test-managed-consumer.sh` for the AOT gates.
+`SQLITE_AOT=1 scripts/test-threading.sh` isolates concurrent engine contracts;
+`SQLITE_AOT=1 scripts/test-product-layout.sh` checks the host profile ABI. Runtime
 processes have a default 120-second bound, overridable with
 `SQLITE_EXECUTION_TIMEOUT`; port suites use `SQLITE_PORT_TIMEOUT` (600 seconds).
 Compiler and native build diagnostics are kept separate from expected SQL output.

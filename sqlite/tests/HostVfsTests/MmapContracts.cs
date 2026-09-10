@@ -63,6 +63,10 @@ internal static unsafe partial class Program
             Require(methods->xFileControl(first, 18, &limit) == 0, "disable mmap");
             Require(methods->xFetch(first, 0, 4096, &firstPage) == 0 && firstPage == null, "disabled mapping falls back");
             Require(methods->xUnfetch(first, 0, null) == 0, "idle invalidation");
+            limit = long.MaxValue;
+            Require(methods->xFileControl(first, 18, &limit) == 0 && limit == 0, "oversized request returns old cap");
+            limit = -1;
+            Require(methods->xFileControl(first, 18, &limit) == 0 && limit == DotCcGlobals.sqlite3Config.mxMmap, "mmap cap clamps to configured maximum");
         }
         finally { CloseRaw(first); CloseRaw(second); }
         Require(HostVfs.MappedViewCount == 0 && HostVfs.MappedReferenceCount == 0, "raw mappings reclaimed");

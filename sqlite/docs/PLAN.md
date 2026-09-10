@@ -61,7 +61,7 @@ sqlite/
     configuration.md         feature/ABI choices and effective compile options
     blockers.md              reduced failures, tests, fixes, and retry results
     validation.md            commands, results, coverage, exclusions, limitations
-  config/                    one shared set of SQLite build definitions
+  config/                    common corpus definitions and host-product overrides
   scripts/                   fetch, preprocess, translate, build, test, oracle
   src/                       C harness, memory VFS, minimal host-facing C# surface
   tests/                     SQL/C API/VFS suites and oracle corpus
@@ -77,7 +77,10 @@ the recorded checksum on every fetch. Do not depend on a moving latest URL.
 Record matching public test-source URLs/checksums separately. Commit the fetch
 recipe and provenance; ignore fetched archives and extracted upstream sources.
 Preserve upstream files unchanged. Keep any necessary configuration in `config/`
-and adapters in `src/`; do not patch SQLite C or generated C# to bypass failures.
+and adapters in `src/`; do not patch SQLite C or generated C# to bypass compiler
+failures. M14 permits one reviewed, hash-checked mutex-selection guard adaptation
+in a generated input copy for the managed platform; downloaded references and SQL
+algorithms remain unchanged.
 The amalgamation includes the generated SQL parser, so Lemon is not a prerequisite
 for the translation. [Upstream amalgamation documentation](https://www.sqlite.org/amalgamation.html).
 
@@ -92,14 +95,14 @@ NuGet. Do not impersonate GCC or a host OS to select unsupported compiler tricks
 | Area | Planned setting or behavior |
 | --- | --- |
 | OS layer | `SQLITE_OS_OTHER=1`; explicit init/end hooks. Managed product defaults to `dotcc-host`; deterministic C corpora retain `dotcc-memory`. |
-| Threading | Initial supported profile: `SQLITE_THREADSAFE=0`, all calls serialized on one thread. VFS locks still model contention between connections. Thread-safe hosting is a later profile using dotcc runtime facilities. |
+| Threading | M14 host product: `SQLITE_THREADSAFE=1`, BCL mutexes and serialized connections by default. Deterministic C corpora retain `SQLITE_THREADSAFE=0`. |
 | Temporary storage | `SQLITE_TEMP_STORE=3`; managed product named databases/rollback journals use real files. Host VFS also supports temporary/delete-on-close handles. |
 | Extensions | `SQLITE_OMIT_LOAD_EXTENSION`; explicit C# extensions, functions and virtual tables. No dynamic loading or native SQLite interop; OS-level VFS P/Invoke is allowed. |
 | Core | Keep ordinary default core features: transactions, triggers, views, constraints, foreign keys, CTEs, window functions, indexes, virtual-table API, UTF-8/UTF-16 APIs, backup, incremental blobs, and date/time functions. |
 | JSON/JSONB | Keep JSON enabled; verify every JSON/JSONB function/operator available in the pinned profile, including table-valued functions. |
 | FTS | Enable `SQLITE_ENABLE_FTS5` for the current follow-up. Keep FTS3/4 disabled. Verify positive FTS5 probes and explicit configuration against native. |
-| Other optional extensions | Leave optional RTREE, session, RBU, and similar opt-in extensions at upstream defaults; do not expand the campaign to them. |
-| WAL/mmap | M12 adds real host WAL shared-memory methods and opt-in `PRAGMA journal_mode=WAL`; deterministic memory fixtures retain their fallback. Database mmap remains disabled. |
+| Other optional extensions | M13 enables math functions, percentiles and column metadata. RTREE, session, RBU and other opt-in extensions remain deferred. |
+| WAL/mmap | M12 adds real host WAL shared-memory methods and opt-in `PRAGMA journal_mode=WAL`; deterministic memory fixtures retain their fallback. M14 adds host database mmap, default 64 MiB and maximum 256 MiB per file. |
 
 Do not add `SQLITE_OMIT_*` switches to hide compiler defects or remove required
 core/JSON functionality. Assert the effective profile using macro inspection,

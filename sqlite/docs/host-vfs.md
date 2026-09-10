@@ -6,11 +6,12 @@ database. Rollback journals and WAL sidecars are real files too. The SQLite engi
 FTS5 implementation and application extensions remain translated/managed C#;
 there is no native SQLite dependency or dynamic extension loader.
 
-`scripts/build.sh` builds this library. `scripts/emit-engine.sh` adds
-`DOTCC_HOST_VFS=1`; the translated `sqlite3_os_init` explicitly registers the host
-adapter. `sqlite/Directory.Build.targets` compiles `src/HostVfs.cs` and
-`src/HostVfs.Platform.cs` alongside the generated project. No upstream or generated
-C# source is patched. Keep that targets file and the sidecars when building the
+`scripts/build.sh` builds this library. `scripts/emit-engine.sh` applies the host
+threading/mmap profile; translated `sqlite3_os_init` explicitly registers the host
+adapter. `sqlite/Directory.Build.targets` compiles the managed VFS/mutex sidecars
+alongside the generated project. Downloaded references and emitted C# remain
+unchanged; a generated input copy has one guarded mutex-selection adaptation
+([details](threading-mmap.md)). Keep that targets file and the sidecars when building the
 generated project; the built DLL is independently usable by other C# projects.
 
 The named `dotcc-memory` VFS remains available through `sqlite3_open_v2` for
@@ -89,10 +90,11 @@ The result is `wal`, and the mode persists across reopen. New databases retain
 SQLite's default DELETE journal mode until explicitly changed. `ManagedConsumer`
 selects WAL before running its SQL/JSONB/FTS5 and callback workloads.
 
-Version-2 I/O methods implement `xShmMap`, `xShmLock`, `xShmBarrier` and `xShmUnmap`.
+The version-3 I/O table includes the WAL methods `xShmMap`, `xShmLock`, `xShmBarrier` and `xShmUnmap`.
 BCL `MemoryMappedFile` maps the actual `database-shm` file, with stable pointers
 for all previously mapped regions when the index grows. These mappings are for
-the WAL index; database mmap (`xFetch`) remains disabled. The translated engine
+the WAL index. Separate read-only database mappings implement `xFetch`/`xUnfetch`
+with a 64 MiB default cap; see [threading and mmap](threading-mmap.md). The translated engine
 continues to implement WAL records, checksums, snapshots, checkpointing and
 recovery itself.
 
@@ -110,8 +112,10 @@ all processes on the same host and filesystem support for shared mappings and
 byte locks; use a local filesystem. Keep the database and live `-wal` file
 together when moving/copying database state, or use SQLite's backup API.
 
-The existing `SQLITE_THREADSAFE=0` profile remains: serialize SQLite calls in each
-process. WAL permits readers to retain a snapshot while another process commits;
+The product enables `SQLITE_THREADSAFE=1` with BCL mutexes; concurrent connections
+and serialized shared connections are supported. The deterministic C corpus
+retains its separate `SQLITE_THREADSAFE=0` configuration. WAL permits readers to
+retain a snapshot while another connection or process commits;
 it still permits only one writer at a time. Long reader transactions can prevent
 a checkpoint from completing. `sqlite3_wal_checkpoint_v2` supports passive, full,
 restart, truncate and the current release's no-op mode. `PRAGMA journal_mode=DELETE`
@@ -124,10 +128,12 @@ From `sqlite/`, after building dotcc and fetching the pinned sources:
 ```sh
 SQLITE_AOT=1 scripts/test-host-vfs.sh
 SQLITE_AOT=1 scripts/test-managed-consumer.sh
+SQLITE_AOT=1 scripts/test-threading.sh
 ```
 
 The first command runs raw callbacks, SQL/JSONB/FTS5 disk persistence and readonly
-checks, then a bounded Python process oracle against the pinned native SQLite
+checks, raw mapping lifetime/range/fallback and mapped SQL snapshot/VACUUM
+contracts, then a bounded Python process oracle against the pinned native SQLite
 using its real OS VFS. Native→managed, managed→native and managed→managed pairs
 exercise writer/reader contention, pending-lock admission, actual forced process
 termination with a synced hot-journal header, rollback recovery, integrity and
