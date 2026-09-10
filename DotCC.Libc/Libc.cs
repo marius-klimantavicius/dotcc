@@ -32,12 +32,16 @@ public static unsafe partial class Libc
     /// <summary>
     /// <c>malloc(size)</c> — allocate <paramref name="size"/> bytes from the
     /// process heap. Backed by <see cref="NativeMemory.Alloc(nuint)"/>.
-    /// Returns <c>null</c> only on OOM (the underlying syscall throws an
-    /// <see cref="OutOfMemoryException"/> instead — match real C by catching
-    /// in user code if needed).
+    /// Returns <c>null</c> on allocation failure, matching C even though
+    /// <see cref="NativeMemory"/> reports failure with
+    /// <see cref="OutOfMemoryException"/>.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void* malloc(int size) => _dbgHeap ? DbgAlloc((nuint)size, false) : NativeMemory.Alloc((nuint)size);
+    public static void* malloc(int size)
+    {
+        try { return _dbgHeap ? DbgAlloc((nuint)size, false) : NativeMemory.Alloc((nuint)size); }
+        catch (OutOfMemoryException) { return null; }
+    }
 
     /// <inheritdoc cref="malloc(int)"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -97,8 +101,12 @@ public static unsafe partial class Libc
     /// <summary>Allocate a checked block and return the user pointer.</summary>
     internal static void* DbgAlloc(nuint size, bool zero)
     {
+        // Never let header/redzone arithmetic wrap into a small allocation.
+        if (size > nuint.MaxValue - _dbgHdr - _dbgRed) { return null; }
         if (_dbgScan) { DbgScanAll("alloc"); }
-        var basep = (byte*)NativeMemory.AlignedAlloc(_dbgHdr + size + _dbgRed, 32);
+        byte* basep;
+        try { basep = (byte*)NativeMemory.AlignedAlloc(_dbgHdr + size + _dbgRed, 32); }
+        catch (OutOfMemoryException) { return null; }
         *(ulong*)basep = _dbgMagic;
         *(nuint*)(basep + 8) = size;
         var user = basep + _dbgHdr;
@@ -203,6 +211,7 @@ public static unsafe partial class Libc
         var old = DbgValidate((byte*)p, "realloc", out var ok);
         if (!ok) { return DbgAlloc(newSize, false); }
         var np = DbgAlloc(newSize, false);
+        if (np == null) { return null; } // Failure retains the caller's old block.
         Buffer.MemoryCopy(p, np, newSize, old < newSize ? old : newSize);
         DbgFree(p);
         return np;

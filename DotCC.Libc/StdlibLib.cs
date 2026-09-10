@@ -191,17 +191,26 @@ public static unsafe partial class Libc
     // ---------------------------------------------------------------------
 
     /// <summary><c>calloc(n, size)</c> — allocate <c>n * size</c> zero-filled
-    /// bytes. Routes to <see cref="NativeMemory.AllocZeroed(nuint, nuint)"/>.</summary>
+    /// bytes. Returns null on allocation failure or size-product overflow.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void* calloc(int n, int size) =>
-        _dbgHeap ? DbgAlloc((nuint)n * (nuint)size, true) : NativeMemory.AllocZeroed((nuint)n, (nuint)size);
+    public static void* calloc(int n, int size)
+    {
+        nuint count = (nuint)n, elementSize = (nuint)size;
+        if (elementSize != 0 && count > nuint.MaxValue / elementSize) { return null; }
+        try { return _dbgHeap ? DbgAlloc(count * elementSize, true) : NativeMemory.AllocZeroed(count, elementSize); }
+        catch (OutOfMemoryException) { return null; }
+    }
 
     /// <summary><c>realloc(p, size)</c> — resize a prior allocation, preserving
     /// contents up to the smaller of old/new size. Routes to
-    /// <see cref="NativeMemory.Realloc(void*, nuint)"/>.</summary>
+    /// <see cref="NativeMemory.Realloc(void*, nuint)"/>. On allocation failure,
+    /// returns null and preserves the original allocation.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void* realloc(void* p, int size) =>
-        _dbgHeap ? DbgRealloc(p, (nuint)size) : NativeMemory.Realloc(p, (nuint)size);
+    public static void* realloc(void* p, int size)
+    {
+        try { return _dbgHeap ? DbgRealloc(p, (nuint)size) : NativeMemory.Realloc(p, (nuint)size); }
+        catch (OutOfMemoryException) { return null; }
+    }
 
     // ---------------------------------------------------------------------
     // Pseudo-random numbers
