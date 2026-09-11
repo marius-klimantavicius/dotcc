@@ -24,8 +24,6 @@ internal sealed class LayoutInfo
 {
     public int Size;
     public int Alignment;
-    // Includes ordinary prefix/tail bytes and overlapping mixed-width units.
-    public bool HasBitFieldTailReuse;
     public readonly Dictionary<string, int> Offsets = new Dictionary<string, int>(StringComparer.Ordinal);
     // Each actual storage unit is identified by its first source field index.
     // Consecutive bit-fields can share one unit; zero-length tails have none.
@@ -33,6 +31,10 @@ internal sealed class LayoutInfo
     // Per source field: declared-width containing unit and LSB bit position.
     // The backend consumes this mapping instead of independently packing runs.
     public readonly Dictionary<int, (int Offset, int Bytes, int Bit)> BitFields = new();
+    // Units that can be accessed as a scalar without touching ordinary members
+    // or overlapping mixed-width units. Narrowing changes backing storage only,
+    // never the native bit positions, aggregate size or alignment.
+    public readonly Dictionary<(int Offset, int Bytes), (int Offset, int Bytes)> BitFieldScalars = new();
 }
 internal sealed class OffsetLayoutException : Exception
 {
@@ -85,7 +87,6 @@ internal sealed class OffsetLayoutModel
             var cursor = 0;
             var unitBytes = 0;
             var usedBits = 0;
-            var unitOffset = 0;
             for (var fieldIndex = 0; fieldIndex < aggregate.Fields.Count; fieldIndex++)
             {
                 var field = aggregate.Fields[fieldIndex];
@@ -103,21 +104,10 @@ internal sealed class OffsetLayoutModel
                 }
                 else
                 {
-                    // Ordinary members may start after the occupied bytes of
-                    // the final bitfield unit, rather than after its declared
-                    // integer width. Keep the unit's alignment/backing extent;
-                    // C# must overlay storage when the next member uses its tail.
-                    if (unitBytes != 0 && !aggregate.Union && !aggregate.Packed)
-                    {
-                        cursor = checked(unitOffset + (usedBits + 7) / 8);
-                        if (RoundUp(cursor, alignment) < unitOffset + unitBytes)
-                            result.HasBitFieldTailReuse = true;
-                    }
                     unitBytes = 0; usedBits = 0;
                 }
                 result.Alignment = Math.Max(result.Alignment, alignment);
                 var offset = aggregate.Union ? 0 : RoundUp(cursor, alignment);
-                if (field.BitWidth is not null) unitOffset = offset;
                 if (field.BitWidth is null) result.Offsets.Add(field.Name, offset);
                 if (layout.Size != 0) result.StorageOffsets.Add(fieldIndex, offset);
                 cursor = aggregate.Union ? Math.Max(cursor, layout.Size) : checked(offset + layout.Size);
@@ -174,10 +164,37 @@ internal sealed class OffsetLayoutModel
         }
         result.Size = RoundUp(checked((int)((bitCursor + 7) / 8)), result.Alignment);
         var units = result.BitFields.Values.DistinctBy(field => (field.Offset, field.Bytes)).ToArray();
-        result.HasBitFieldTailReuse = units.Any(unit => ordinary.Any(field =>
-            field.Start < unit.Offset + unit.Bytes && field.End > unit.Offset)) ||
-            units.Any(unit => units.Any(other => other != unit &&
-                other.Offset < unit.Offset + unit.Bytes && other.Offset + other.Bytes > unit.Offset));
+        if (!aggregate.Union)
+        {
+            foreach (var unit in units)
+            {
+                // Keep mixed-width overlaps on the segmented-storage path, even if
+                // narrowing one of the units might make the overlap disappear.
+                if (units.Any(other => other != unit &&
+                    other.Offset < unit.Offset + unit.Bytes && other.Offset + other.Bytes > unit.Offset)) continue;
+                var members = result.BitFields.Where(field =>
+                    field.Value.Offset == unit.Offset && field.Value.Bytes == unit.Bytes).ToArray();
+                // A zero-width boundary can split independent bitfield groups
+                // inside the same declared-width word. Do not combine their accesses.
+                if (members.Max(field => field.Key) - members.Min(field => field.Key) + 1 != members.Length) continue;
+                var offset = unit.Offset;
+                var bytes = unit.Bytes;
+                if (ordinary.Any(field => field.Start < unit.Offset + bytes && field.End > unit.Offset))
+                {
+                    // Drop unused prefix bytes too, rebasing the accessor's
+                    // shifts to the first byte containing this group's bits.
+                    var firstByte = members.Min(field => field.Value.Bit) / 8;
+                    offset += firstByte;
+                    var occupiedBits = members.Max(field => field.Value.Bit + aggregate.Fields[field.Key].BitWidth!.Value) - firstByte * 8;
+                    bytes = occupiedBits <= 8 ? 1 : occupiedBits <= 16 ? 2 : occupiedBits <= 32 ? 4 : 8;
+                    // Rebased scalar storage must retain its natural alignment.
+                    // Otherwise the backend splits the group into aligned integers.
+                    if (offset % bytes != 0 || offset + bytes > unit.Offset + unit.Bytes ||
+                        ordinary.Any(field => field.Start < offset + bytes && field.End > offset)) continue;
+                }
+                result.BitFieldScalars.Add((unit.Offset, unit.Bytes), (offset, bytes));
+            }
+        }
         return result;
     }
     private static long RoundUpBits(long value, int alignment) => checked((value + alignment - 1) / alignment * alignment);

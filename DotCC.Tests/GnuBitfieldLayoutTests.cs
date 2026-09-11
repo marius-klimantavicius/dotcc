@@ -35,11 +35,11 @@ public sealed class GnuBitfieldLayoutTests
     {
         var emitted = Emit("unsigned char prefix; unsigned char a:3; unsigned b:7; unsigned short c:5; signed int d:6; unsigned char tail;");
         emitted.ShouldContain("FieldOffset(1)]\n    private byte __bf0;");
-        emitted.ShouldContain("FieldOffset(0)]\n    private uint __bf1;");
-        emitted.ShouldContain("FieldOffset(2)]\n    private ushort __bf2;");
-        emitted.ShouldContain("(__raw >> 11)");
-        emitted.ShouldContain("(__raw >> 2)");
-        emitted.ShouldContain("(__raw >> 23)");
-        emitted.ShouldNotContain("__bytes[4]");
+        emitted.ShouldContain("FieldOffset(2)]\n    private ushort __bf1;");
+        emitted.ShouldNotContain("__bf2");
+        emitted.ShouldContain("(__bf0 >> 3)");
+        emitted.ShouldContain("(__bf1 >> 2)");
+        emitted.ShouldContain("(__bf1 >> 7)");
+        emitted.ShouldNotContain("__bytes");
     }
 }

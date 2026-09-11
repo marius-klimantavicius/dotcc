@@ -1,0 +1,1 @@
+This fixture validates GNU LP64 bitfield placement, including reuse of unused backing-word bytes.

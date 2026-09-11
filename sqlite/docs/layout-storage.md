@@ -7,6 +7,32 @@ NativeAOT as well as the JIT. Both use the configured LP64, unsigned-char,
 GNU/System V bit-field storage profile. The checked oracle is
 `tests/layout-native.expected`.
 
+For simple bit-field prefix or tail reuse, dotcc narrows the private backing
+integer to `byte`, `ushort` or `uint` when it covers all fields sharing the unit without
+touching an ordinary member. Unused prefix bytes are excluded by moving the
+backing field to the group's first occupied byte and rebasing its shifts. For
+example, `WhereInfo.__bf0` uses a byte at offset 68 for its six flags; `nRowOut`
+remains at offset 70. Accessors use ordinary
+integer masks and shifts. Explicit aggregate size, alignment and member offsets
+remain unchanged. Scalar backing fields must use their natural alignment.
+Groups that cannot use a single safe integer are split across aligned
+`byte`, `ushort`, `uint` or `ulong` backing fields. Accessors read and update
+those fields directly; only a bitfield crossing a storage boundary combines
+multiple integers. No bitfield accessor uses byte pointers.
+
+For example, `__Anon13` uses byte backing fields at offsets 1 and 2, preserving
+`sortFlags` at offset 0. `SrcItem.fg` uses a byte at offset 1 and a ushort at
+offset 2. Ordinary members and zero-width bitfields separate independent
+storage groups. `sqlite3InitInfo`, `Index` and `Parse` keep their rebased byte
+backing fields at offsets 6, 99 and 39 respectively.
+
+SQLite's `uSrc.fromSpace` buffer (emitted in `__Anon40`) uses
+`SZ_SRCLIST_1 = offsetof(SrcList, a) + sizeof(SrcItem)`. Native probes of the same
+source/configuration give 8 + 80 = 88 bytes with MS bit-field packing and
+8 + 72 = 80 bytes with GNU packing. `SrcItem.fg` shrinks from 8 to 4 bytes;
+the resulting offsets also remove padding before `colUsed`. This size change
+comes from the GNU ABI migration, not from narrowing or aligning backing fields.
+
 `src/layout_probe.c` includes the unchanged amalgamation and tests all 39 active
 `offsetof` requests extracted from its preprocessed source. It compares native
 and translated aggregate sizes, alignment constants, generated offsets, and

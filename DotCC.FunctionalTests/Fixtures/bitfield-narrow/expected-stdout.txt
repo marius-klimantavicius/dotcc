@@ -1,0 +1,110 @@
+Byte 8 8 1
+Short 4 4 2
+Word 8 8 4
+SignedWord 8 8 4
+values -1 -1 -1 8191 524287 -1 neighbors 165 165 165 165
+ffa5a5a5a5a5a5a5
+e7ffa5a5
+ffffffffa5a5a5a5
+ffffffffa5a5a5a5
+values 0 0 0 0 0 -2147483648 neighbors 165 165 165 165
+00a5a5a5a5a5a5a5
+0000a5a5
+00000000a5a5a5a5
+00000080a5a5a5a5
+values -1 -1 1023 7167 523263 -1025 neighbors 165 165 165 165
+ffa5a5a5a5a5a5a5
+e77fa5a5
+fffb7fffa5a5a5a5
+fffbffffa5a5a5a5
+values 127 -1 -129 8063 524159 -129 neighbors 165 165 165 165
+7fa5a5a5a5a5a5a5
+e7efa5a5
+7fffefffa5a5a5a5
+7fffffffa5a5a5a5
+values -1 -1 -1 8191 524287 -1 neighbors 165 165 165 165
+ffa5a5a5a5a5a5a5
+e7ffa5a5
+ffffffffa5a5a5a5
+ffffffffa5a5a5a5
+values 0 0 0 0 0 0 neighbors 165 165 165 165
+00a5a5a5a5a5a5a5
+0000a5a5
+00000000a5a5a5a5
+00000000a5a5a5a5
+values 127 -1 127 127 127 127 neighbors 165 165 165 165
+7fa5a5a5a5a5a5a5
+e70fa5a5
+7fe00f00a5a5a5a5
+7f000000a5a5a5a5
+values -1 -1 1023 1023 1023 1023 neighbors 165 165 165 165
+ffa5a5a5a5a5a5a5
+e77fa5a5
+ffe37f00a5a5a5a5
+ff030000a5a5a5a5
+values -1 -1 -1 8191 524287 2147483647 neighbors 165 165 165 165
+ffa5a5a5a5a5a5a5
+e7ffa5a5
+ffffffffa5a5a5a5
+ffffff7fa5a5a5a5
+values 1 1 1 1 1 1 neighbors 165 165 165 165
+01a5a5a5a5a5a5a5
+2100a5a5
+01200000a5a5a5a5
+01000000a5a5a5a5
+nested 16 4 4 stride 4 values -4 -1024 3 1023 neighbors 90 90
+5a5a5a5a1c805a5afb7f5a5a5a5a5a5a
+PrefixByte 4 4 3
+PrefixShort 4 4 3
+PrefixWord 16 8 8
+rebased -1 -1 -1 -1 neighbors 23130 90 90 90 1515870810 90
+5a5aff5a
+5affff5a
+5a5a5a5affffffff5a5a5a5a5a5a5a5a
+rebased 0 0 0 -2147483648 neighbors 23130 90 90 90 1515870810 90
+5a5a005a
+5a18005a
+5a5a5a5a000000805a5a5a5a5a5a5a5a
+rebased -1 -1 1023 -1025 neighbors 23130 90 90 90 1515870810 90
+5a5aff5a
+5aff7f5a
+5a5a5a5afffbffff5a5a5a5a5a5a5a5a
+rebased 127 -1 -129 -129 neighbors 23130 90 90 90 1515870810 90
+5a5a7f5a
+5affef5a
+5a5a5a5a7fffffff5a5a5a5a5a5a5a5a
+rebased -1 -1 -1 -1 neighbors 23130 90 90 90 1515870810 90
+5a5aff5a
+5affff5a
+5a5a5a5affffffff5a5a5a5a5a5a5a5a
+rebased 0 0 0 0 neighbors 23130 90 90 90 1515870810 90
+5a5a005a
+5a18005a
+5a5a5a5a000000005a5a5a5a5a5a5a5a
+rebased 127 -1 127 127 neighbors 23130 90 90 90 1515870810 90
+5a5a7f5a
+5aff0f5a
+5a5a5a5a7f0000005a5a5a5a5a5a5a5a
+rebased -1 -1 1023 1023 neighbors 23130 90 90 90 1515870810 90
+5a5aff5a
+5aff7f5a
+5a5a5a5aff0300005a5a5a5a5a5a5a5a
+rebased -1 -1 -1 2147483647 neighbors 23130 90 90 90 1515870810 90
+5a5aff5a
+5affff5a
+5a5a5a5affffff7f5a5a5a5a5a5a5a5a
+rebased 1 1 1 1 neighbors 23130 90 90 90 1515870810 90
+5a5a015a
+5a39005a
+5a5a5a5a010000005a5a5a5a5a5a5a5a
+PrefixWide 8 8 6
+split-wide -68719476736 neighbors 90 90
+5a00000000505a5a
+split-wide -1 neighbors 90 90
+5affffffff5f5a5a
+split-wide 0 neighbors 90 90
+5a00000000405a5a
+split-wide 68719476735 neighbors 90 90
+5affffffff4f5a5a
+split-wide 1 neighbors 90 90
+5a01000000405a5a
