@@ -498,7 +498,7 @@ internal sealed partial class IrBuilder
     private void BuildGlobalArr(CType elem, Item nameItem, Item? dimsItem, Item? initItem, string? csName)
     {
         var name = Tok(nameItem);
-        var dims = dimsItem is { } di ? TryConstDims(di) : null;
+        var dims = dimsItem is { } di ? TryConstDims(di) ?? throw new IrUnsupportedException("file-scope array requires a constant bound") : null;
 
         CType arrType;
         CExpr init;

@@ -52,10 +52,7 @@ internal sealed class CFrontend : IFrontend
 
         // Build the lexer → preprocessor → rewriter → parser pipeline for one
         // translation unit and parse it with the given (visitor-bound) parser.
-        // Factored out because the two-pass emit (see below) parses every unit
-        // twice: once with an analysis visitor, once with the emit visitor.
-        // `quiet` suppresses the preprocessor's diagnostics on the analysis
-        // pass so #warning / #include messages don't print twice.
+        // Each unit is parsed once; one override session spans the invocation.
         Item ParseUnit(string unitPath, global::LALR.CC.Parser parser, bool quiet, DialectGate? gate = null)
         {
             var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath));
@@ -150,6 +147,10 @@ internal sealed class CFrontend : IFrontend
         }
         overrides?.Complete();
         irBuilder.FinishAggregateTypes();
+        foreach (var global in irBuilder.Globals)
+            if (global.Init is { } init) Ir.IrBuilder.RequireNoRuntimeIntrinsic(init, "static initializer of " + global.Sym.Name);
+        foreach (var intrinsic in irBuilder.RuntimeIntrinsicsUsed.OrderBy(x => x))
+            overrides?.Event("intrinsic", ("name", intrinsic.ToString()), ("type", "_Bool"), ("evaluation", "runtime"));
         foreach (var macro in macroBodies)
         {
             irBuilder.MacroConstants.Add((macro.Name, CConstantMacros.TryLower(macro.Body)));

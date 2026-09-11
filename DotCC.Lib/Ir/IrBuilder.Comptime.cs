@@ -115,7 +115,7 @@ internal sealed partial class IrBuilder
     /// initializers all route here. A relational/logical result reads as C's <c>int</c>
     /// (0/1).</summary>
     internal long? ConstEval(CExpr e) =>
-        TryEvalTop(e, allowCalls: false) switch
+        ContainsRuntimeIntrinsic(e) ? null : TryEvalTop(e, allowCalls: false) switch
         {
             CtInt i when InLongRange(i.Value) => (long)i.Value,
             CtBool b => b.Value ? 1L : 0L,

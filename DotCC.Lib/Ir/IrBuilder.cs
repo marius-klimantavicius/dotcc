@@ -357,13 +357,13 @@ internal sealed partial class IrBuilder
             case C.ExternVarDecl g: BuildGlobalDecls(g.Arg1, g.Arg2, Storage.Extern); break;
             // `typedef <type> <name>;` — record name → underlying type. Resolution
             // (ResolveType's TypeName case) then sees through it everywhere.
-            case C.TypedefAlias t: _typedefs[Tok(t.Arg2)] = ResolveType(t.Arg1); break;
+            case C.TypedefAlias t: _typedefs[UserTypedefName(Tok(t.Arg2))] = ResolveType(t.Arg1); break;
             // `typedef T Name[N];` — the alias IS an array type. Bounds must be
             // constant (same rule as struct array members); the registered
             // CType.Array drives every use site: member → fixed buffer, param →
             // pointer decay, sizeof → N*sizeof(T), local decl → stackalloc.
             case C.TypedefArr t:
-                _typedefs[Tok(t.Arg2)] = MakeArrayType(
+                _typedefs[UserTypedefName(Tok(t.Arg2))] = MakeArrayType(
                     ResolveType(t.Arg1),
                     TryConstDims(t.Arg3) ?? throw new IrUnsupportedException("non-constant array typedef bound"));
                 break;
@@ -371,8 +371,8 @@ internal sealed partial class IrBuilder
             // an anonymous un-typedef'd enum, plain int constants.
             case C.EnumDef e: RegisterEnum(Tok(e.Arg1), null, e.Arg3); break;
             case C.EnumDefTyped e: RegisterEnum(Tok(e.Arg1), e.Arg3, e.Arg5); break;
-            case C.TypedefEnum e: _typedefs[Tok(e.Arg6)] = RegisterEnum(Tok(e.Arg2), null, e.Arg4, Tok(e.Arg6)); break;
-            case C.TypedefEnumAnon e: _typedefs[Tok(e.Arg5)] = RegisterEnum(null, null, e.Arg3, Tok(e.Arg5)); break;
+            case C.TypedefEnum e: _typedefs[UserTypedefName(Tok(e.Arg6))] = RegisterEnum(Tok(e.Arg2), null, e.Arg4, Tok(e.Arg6)); break;
+            case C.TypedefEnumAnon e: _typedefs[UserTypedefName(Tok(e.Arg5))] = RegisterEnum(null, null, e.Arg3, Tok(e.Arg5)); break;
             // struct/union definitions.
             case C.StructDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: false); break;
             case C.UnionDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: true); break;
@@ -390,8 +390,8 @@ internal sealed partial class IrBuilder
             case C.StaticAssert sa: Gate(2011, "_Static_assert", fn); CheckStaticAssert(sa.Arg2, sa.Arg4, SrcPos.From(fn)); break;
             case C.StaticAssertNoMsg sa: Gate(2023, "_Static_assert with no message", fn); CheckStaticAssert(sa.Arg2, null, SrcPos.From(fn)); break;
             // `typedef Ret (*Name)(params);` — record Name → fn-ptr type.
-            case C.TypedefFnPtr t: _typedefs[Tok(t.Arg4)] = FnPtrType(t.Arg1, t.Arg7); break;
-            case C.TypedefFnPtrNoArgs t: _typedefs[Tok(t.Arg4)] = FnPtrType(t.Arg1, null); break;
+            case C.TypedefFnPtr t: _typedefs[UserTypedefName(Tok(t.Arg4))] = FnPtrType(t.Arg1, t.Arg7); break;
+            case C.TypedefFnPtrNoArgs t: _typedefs[UserTypedefName(Tok(t.Arg4))] = FnPtrType(t.Arg1, null); break;
             default: throw new IrUnsupportedException(TypeName(fn.Content));
         }
     }
@@ -1050,7 +1050,7 @@ internal sealed partial class IrBuilder
             Types.Add(new StructTypeDef(canonical, fields, isUnion));
         }
         // `struct Tag` and the typedef alias both resolve to the canonical type.
-        if (alias is not null) { _typedefs[alias] = new CType.Named(canonical); }
+        if (alias is not null) { _typedefs[UserTypedefName(alias)] = new CType.Named(canonical); }
     }
 
     // ---- shared aggregate API for a second frontend (Zig) -----------------
@@ -1893,7 +1893,7 @@ internal sealed partial class IrBuilder
             case C.StmtSwitch s: return BuildSwitch(s, pos);
             // A case/default label NESTED in a switch body statement (Duff's device).
             // BuildSwitch handles the top-level ones; a nested one reaches here.
-            case C.CaseLabel cl: return new CaseLabelStmt(BuildExpr(cl.Arg1), BuildStmt(cl.Arg3)) { Pos = pos };
+            case C.CaseLabel cl: return new CaseLabelStmt(RequireNoRuntimeIntrinsic(BuildExpr(cl.Arg1), "case label"), BuildStmt(cl.Arg3)) { Pos = pos };
             case C.DefaultLabel dl: return new CaseLabelStmt(null, BuildStmt(dl.Arg2)) { Pos = pos };
             case C.StmtGoto s: return new Goto(Tok(s.Arg1)) { Pos = pos };
             case C.StmtLabel s: return new Labeled(Tok(s.Arg0), BuildStmt(s.Arg2)) { Pos = pos };
@@ -1943,7 +1943,7 @@ internal sealed partial class IrBuilder
                 case C.CaseLabel cl:
                     if (body.Count > 0) { Flush(); }   // label after body → new section
                     open = true;
-                    labels.Add(new SwitchLabel(BuildExpr(cl.Arg1)));
+                    labels.Add(new SwitchLabel(RequireNoRuntimeIntrinsic(BuildExpr(cl.Arg1), "case label")));
                     Walk(cl.Arg3);
                     break;
                 case C.DefaultLabel dl:
@@ -2858,6 +2858,8 @@ internal sealed partial class IrBuilder
             _ => throw new IrUnsupportedException(TypeName(it.Content)),
         };
         var result = e with { Pos = pos };
+        if (result is Assign assign && Unparen(assign.Target) is RuntimeIntrinsic)
+            throw new IrUnsupportedException("runtime intrinsic result is not an lvalue");
         // Track every libc setjmp call by the FINAL (post-Pos-clone) object — the reference that
         // actually lands in the IR tree — so a recogniser can claim it by identity through
         // the shallow statement clones. `e with {…}` above would orphan a reference taken in
@@ -3128,6 +3130,8 @@ internal sealed partial class IrBuilder
     private CExpr Un(UnOp op, Item operand)
     {
         var oe = BuildExpr(operand);
+        if (Unparen(oe) is RuntimeIntrinsic && op is UnOp.AddrOf or UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec)
+            throw new IrUnsupportedException("runtime intrinsic result is not an lvalue");
         // Dereferencing a function pointer designates that function. Taking its
         // address cancels the dereference, even for a null pointer, without ever
         // taking the address of the callback variable's storage. The operand is
@@ -3183,6 +3187,8 @@ internal sealed partial class IrBuilder
     private CExpr BuildVar(C.Var v)
     {
         var name = Tok(v.Arg0);
+        if (name == RuntimeIntrinsicNames.IsLittleEndian)
+            throw new IrUnsupportedException("runtime intrinsic must be invoked with zero arguments; its address cannot be taken");
         var sym = _symbols.Resolve(name);
         if (sym is { Kind: SymKind.EnumConst })
         {
@@ -3233,6 +3239,14 @@ internal sealed partial class IrBuilder
         // A simple named callee — a function, a fn-ptr variable, or a libc builtin.
         if (TryCalleeName(calleeItem, out var name))
         {
+            if (name == RuntimeIntrinsicNames.IsLittleEndian)
+            {
+                if (args.Count != 0) throw new IrUnsupportedException("__dotcc_is_little_endian requires zero arguments");
+                RuntimeIntrinsicsUsed.Add(RuntimeIntrinsicKind.IsLittleEndian);
+                return new RuntimeIntrinsic(RuntimeIntrinsicKind.IsLittleEndian) { Type = CType.Bool };
+            }
+            if (name.StartsWith("__dotcc_", StringComparison.Ordinal) && _symbols.Resolve(name) is null)
+                throw new IrUnsupportedException("unknown dotcc intrinsic: " + name);
             // Import-mode: record every directly-called name (a conservative
             // superset — intersected with the proto-only set at ProtoOnlyReferenced).
             _referencedFuncs.Add(name);

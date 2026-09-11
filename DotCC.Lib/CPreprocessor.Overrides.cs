@@ -71,11 +71,11 @@ internal sealed class MacroOverrideSession
                 throw new CompileException("variadic replacement token in a nonvariadic macro");
         }
     }
-    internal void Expansion(MacroDef macro, Item origin)
+    internal void Expansion(MacroDef macro, Item? origin)
     {
         if (macro.OverrideRule is not { } i) return;
         _expansions[i]++;
-        Event("expansion", ("name", macro.Name), ("index", i.ToString()), ("source", Location(origin)));
+        Event("expansion", ("name", macro.Name), ("index", i.ToString()), ("source", origin is null ? "<#if/#elif>" : Location(origin)));
     }
     internal void Complete(bool requireMatches = true)
     {

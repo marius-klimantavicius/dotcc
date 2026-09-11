@@ -894,6 +894,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         }
         args.Add(cur);  // final arg
 
+        _overrides?.Expansion(macro, null);
         var parms = macro.Params!;
         // Build param → body mapping. Each formal gets replaced by the
         // actual-arg token list (one-to-one positional match).  Extras

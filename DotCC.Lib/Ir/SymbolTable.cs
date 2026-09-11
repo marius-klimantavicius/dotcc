@@ -189,6 +189,8 @@ public sealed class SymbolTable
     /// function is uniquified.</summary>
     public Symbol Declare(Symbol sym)
     {
+        if (sym.Name == RuntimeIntrinsicNames.IsLittleEndian)
+            throw new IrUnsupportedException("reserved runtime intrinsic name cannot be declared: " + sym.Name);
         var escaped = _names.Escape(sym.Name);
         if (AtFileScope || sym.Kind is SymKind.Func or SymKind.Param)
         {

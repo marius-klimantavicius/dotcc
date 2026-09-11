@@ -45,6 +45,10 @@ public sealed record LitInt(string Digits, long? Value) : CExpr;
 /// <see cref="CType.Bool"/> (→ the store-normalising <c>CBool</c>, which takes a C# <c>bool</c>).</summary>
 public sealed record LitBool(bool Value) : CExpr;
 
+/// <summary>A runtime target fact; never evaluated on the compiler host.</summary>
+public enum RuntimeIntrinsicKind { IsLittleEndian }
+public sealed record RuntimeIntrinsic(RuntimeIntrinsicKind Kind) : CExpr;
+
 /// <summary>A floating constant. <see cref="Text"/> is the target-neutral decimal
 /// spelling (a hex-float normalised to round-trippable decimal; a long-double
 /// suffix dropped, an <c>f</c> kept); the backend emits it via

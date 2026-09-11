@@ -39,6 +39,8 @@ internal sealed partial class CPreprocessor
             // An evaluated #if expression also requires C tokens. Nested
             // conditionals in an inactive group are discarded before this hook.
             CTokenValidator.Validate(token);
+            if (token.Content?.ToString() == RuntimeIntrinsicNames.IsLittleEndian)
+                throw new CompileException("runtime intrinsic __dotcc_is_little_endian is not allowed in #if/#elif expressions");
             if (CharacterSymbols.Contains(token.ID) && token.Content is string text)
             {
                 var quote = text.IndexOf('\'');

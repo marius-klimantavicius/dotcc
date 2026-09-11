@@ -113,6 +113,55 @@ public sealed class MacroOverrideTests
             .Message.ShouldContain(diagnostic);
     }
     [Fact]
+    public void Regex_budget_limits_are_enforced_and_templates_are_single_pass()
+    {
+        Should.Throw<CompileException>(() => Pre("#define X " + new string('a', 50000) + "!\nX\n",
+            new MacroOverride("X", "0", Pattern: "(a+)+"))).Message.ShouldContain("timed out");
+        Should.Throw<CompileException>(() => new CPreprocessingOptions(new[] {
+            new MacroOverride("X", "0", Pattern: new string('a', 16385)) })).Message.ShouldContain("exceeds");
+        Should.Throw<CompileException>(() => new CPreprocessingOptions(new[] {
+            new MacroOverride("X", new string('a', 1024*1024+1)) })).Message.ShouldContain("limit");
+        Pre("#define X(n) n\nX(1)\n", new MacroOverride("X", "${__dotcc_n} + ${__dotcc_n}")).ShouldEndWith("1+1");
+        Pre("#define X \"${num}\"\nX\n", new MacroOverride("X", "${value}", Pattern: "(?<value>.*)"))
+            .ShouldEndWith("\"${num}\"");
+        Pre("#define X 1\nX\n", new MacroOverride("X", "\"$$\"")) .ShouldEndWith("\"$\"");
+    }
+
+    [Fact]
+    public void Numeric_overrides_control_includes_types_and_dependencies_with_deterministic_reports()
+    {
+        WithSource("#define X 0\n#if X\n#include \"chosen.h\"\n#endif\nChosen f(void) { return X; }", path =>
+        {
+            var include = Path.Combine(Path.GetDirectoryName(path)!, "chosen.h");
+            File.WriteAllText(include, "typedef int Chosen;\n");
+            string Run(bool preprocess)
+            {
+                using var report = new StringWriter();
+                var options = new CPreprocessingOptions(new[] { new MacroOverride("X", "42", RequireMatch:true) }, report:report);
+                if (preprocess) { using var output = new StringWriter(); Compiler.Preprocess(new[]{path}, output, preprocessing:options); output.ToString().ShouldContain("Chosen"); }
+                else Compiler.EmitCSharp(new[]{path}, emit:EmitMode.ManagedLib, preprocessing:options).ShouldContain("return 42;");
+                Compiler.EmitDependencyRule(path, new[]{"out.o"}, false, preprocessing:options.WithoutReport()).ShouldContain(include);
+                return report.ToString();
+            }
+            Run(false).ShouldBe(Run(false));
+            Run(true).ShouldContain("\"expansions\":\"2\"");
+            Run(false).ShouldContain("\"expansions\":\"2\"");
+        });
+    }
+
+    [Fact]
+    public void Conditional_function_macro_expansions_are_counted()
+    {
+        WithSource("#define X(n) n\n#if X(1)\nint f(void) { return 1; }\n#endif", path =>
+        {
+            using var report = new StringWriter();
+            Compiler.EmitCSharp(new[]{path}, emit:EmitMode.ManagedLib,
+                preprocessing:new CPreprocessingOptions(new[]{new MacroOverride("X", "${__dotcc_n}")}, report:report));
+            report.ToString().ShouldContain("\"expansions\":\"1\"");
+        });
+    }
+
+    [Fact]
     public void Profile_validation_precedence_dependency_and_exports()
     {
         WithSource("#define X 1\nint main(void) { return X; }", path =>

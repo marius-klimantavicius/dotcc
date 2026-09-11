@@ -213,7 +213,7 @@ internal sealed partial class IrBuilder
     private static bool SafeExpr(CExpr? e, Symbol sym, bool buffer = false) => e switch
     {
         null => true,
-        LitInt or LitFloat or LitStr or EnumConstRef or NullPtr or NameRef or SizeOfExpr or OffsetOf or DefaultLit or StackNew => true,
+        RuntimeIntrinsic or LitInt or LitFloat or LitStr or EnumConstRef or NullPtr or NameRef or SizeOfExpr or OffsetOf or DefaultLit or StackNew => true,
         VarRef v => v.Sym != sym,   // a bare reference to the candidate is an escape
         // p->field (struct): the base is the candidate itself — allowed, consumed here.
         Member { Arrow: true } m when !buffer && Unparen(m.Base) is VarRef bv && bv.Sym == sym => true,

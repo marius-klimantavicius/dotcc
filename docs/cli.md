@@ -12,6 +12,9 @@
 | `--emit=csproj` | Default — `DotCcProgram.cs` + paired csproj to `-o` dir. |
 | `--emit=build` | As `csproj`, then run `dotnet build -c Release` in the output dir. |
 | `--emit=managedlib` | Emit a reusable managed library with public functions and aggregate types. Add `-c` to compile it. |
+| `--overrides-file <path>` | Load a strict version-1 C macro override profile; exact/regex body selectors, signatures and replacement templates. See [macro overrides](macro-overrides.md). |
+| `--override-macro NAME=BODY` | Replace each active definition of NAME, preserving its signature. Repeat for distinct names; replaces same-name profile rules and conflicts with `-DNAME`. |
+| `--override-report <path>` | Write JSONL selection/expansion/provenance diagnostics for macro overrides and runtime intrinsics. |
 | `--class-name <name>` | Set the generated API class for `--emit=managedlib` or `-shared` (default `DotCcLib`). Applies to whole-program emission and object linking; specify it at link time, not with `--emit=obj`. Accepts a single ASCII identifier, optionally `@`-escaped; keywords are escaped automatically. Executable, preprocessing and WAT modes reject this option. |
 | `--namespace <name>` | Place generated functions, aggregate types and embedded runtime in a dotted C# namespace. Default: global namespace. Supported by C# executable/library output and object linking; rejected with preprocessing, WAT and object emission. Specify at link time for objects. |
 | `--split=none\|function\|size` | C# project source layout: one file (default), one translated function per file, or groups of whole functions. Supported by csproj/build/managedlib/shared emission and object linking. File/stdout, preprocessing, WAT and object emission reject splitting. |

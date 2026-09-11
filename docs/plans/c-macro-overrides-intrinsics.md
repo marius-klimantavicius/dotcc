@@ -1,11 +1,11 @@
 # C macro overrides and typed runtime intrinsics
 
-Status: **IN PROGRESS** — macro configuration, matching and preprocessing implemented; typed intrinsic and SQLite integration next. Created 2026-09-11. Updated to include
+Status: **IN PROGRESS** — macro overrides and typed runtime intrinsic implemented and tested; SQLite runtime validation in progress. Created 2026-09-11. Updated to include
 optional definition selectors, regex captures and function-like macro templates.
 
 ## Recommendation
 
-Add two independent features:
+Implemented as two independent features (see [usage and API](../macro-overrides.md)):
 
 1. A preprocessor policy that replaces selected upstream macro definitions with
    configured **C token sequences**, without editing the downloaded source. Select
@@ -373,42 +373,42 @@ provenance status; no silent claim that current overrides affected them.
 
 ### M0 — Freeze the contract
 
-- [ ] Confirm replace-when-defined lifecycle, exact/regex selectors, first-match
+- [x] Confirm replace-when-defined lifecycle, exact/regex selectors, first-match
       ordering, formal/capture placeholders, optional assertions, schema/version,
       CLI precedence and constant-expression diagnostics above.
-- [ ] Document proposed API additions without breaking existing callers.
-- [ ] Record small native C oracle fixtures for normal definition/undefinition,
-      macro rescanning and endian-probe semantics before changing implementation.
+- [x] Document proposed API additions without breaking existing callers.
+- [x] Record a small native C oracle fixture for macro rescanning and endian-probe
+      semantics, alongside definition/undefinition preprocessing regression tests.
 
 ### M1 — Configurable macro definition replacement
 
-- [ ] Implement validation and propagation through all C preprocessing paths,
+- [x] Implement validation and propagation through all C preprocessing paths,
       retaining original logical body spelling for regex selection alongside tokens.
-- [ ] Test original-source redefinitions, undef/redefine, include guards, inactive
+- [x] Test original-source redefinitions, undef/redefine, include guards, inactive
       branches, nested aliases, token pasting/stringification interactions,
       multiple translation units, selector nonmatches, expected-body assertions
       and explicit requireMatch failures. Verify each definition in a repeated
       define/undef/define sequence is selected independently.
-- [ ] Verify unchanged ordinary `-D` behavior, deterministic reports and identical
+- [x] Verify unchanged ordinary `-D` behavior, deterministic reports and identical
       effective expansion in discovery, `-E`, compilation and dependency output.
-- [ ] Test exact-token versus regex spelling semantics, comments/continuations,
+- [x] Test exact-token versus regex spelling semantics, comments/continuations,
       named captures, changed numeric literals, first-match/fallback precedence,
       invalid regex, timeout, unknown or repeated captures and malformed output.
-- [ ] Test the X(n) example through invocation, side-effecting arguments, multiple
+- [x] Test the X(n) example through invocation, side-effecting arguments, multiple
       formal names, zero-argument functions, standard variadics, #/##, recursion,
       missing parameter placeholders and signature changes across redefinitions.
-- [ ] Cover effective numeric/string macro exports and NativeAOT loading of a
+- [x] Cover effective numeric/string macro exports and NativeAOT loading of a
       runtime-supplied regex profile. Commit independently of the endian intrinsic.
 
 ### M2 — Runtime endian intrinsic
 
-- [ ] Add typed binding/IR/C# lowering and explicit unsupported-backend behavior.
-- [ ] Test values, conditions, negation, ternaries, arithmetic, casts, returns,
+- [x] Add typed binding/IR/C# lowering and explicit unsupported-backend behavior.
+- [x] Test values, conditions, negation, ternaries, arithmetic, casts, returns,
       argument conversions, invalid arity, address-taking and reserved-name misuse.
-- [ ] Test both Boolean polarities using constant-valued provider-independent
+- [x] Test both Boolean polarities using constant-valued provider-independent
       fixtures where appropriate; on real execution compare against the BCL
       property. Inspect emitted code to ensure no host-dependent folding occurred.
-- [ ] Reject runtime use in preprocessing/constant-expression contexts; skip
+- [x] Reject runtime use in preprocessing/constant-expression contexts; skip
       runtime macro constants correctly, including aliases and combined expressions.
 - [ ] Exercise source/object emission and linking, custom namespaces, every split
       mode, raw/postprocessed code and NativeAOT; keep all lowering type-aware.

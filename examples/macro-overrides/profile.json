@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "macroOverrides": [
+    { "name": "LITTLE", "match": { "exact": "(*(char *)&one == 1)" }, "replacement": "(__dotcc_is_little_endian())", "requireMatch": true },
+    { "name": "BIG", "match": { "exact": "(*(char *)&one == 0)" }, "replacement": "(!__dotcc_is_little_endian())", "requireMatch": true },
+    { "name": "X", "signature": { "kind": "function", "parameters": ["n"], "variadic": false }, "match": { "regex": "do_call\\(n, (?<num>\\d+)\\)" }, "replacement": "do_call(${__dotcc_n}, (${num} + 0))", "requireMatch": true }
+  ]
+}

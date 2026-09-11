@@ -694,6 +694,8 @@ internal sealed partial class WatBackend
             case Paren p:
                 EmitExpr(p.Inner);
                 break;
+            case RuntimeIntrinsic intrinsic:
+                throw new IrUnsupportedException($"runtime intrinsic {intrinsic.Kind} is not supported by the WAT backend");
             case LitInt n:
                 Line($"{ValType(e.Type)}.const {_wat.RenderIntLit(n)}");
                 break;

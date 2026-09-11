@@ -1770,6 +1770,8 @@ internal sealed partial class CSharpBackend
         {
             case LitInt i: return (_target.RenderIntLit(i), PPrimary);
             case LitBool b: return (b.Value ? "true" : "false", PPrimary);
+            case RuntimeIntrinsic { Kind: RuntimeIntrinsicKind.IsLittleEndian }:
+                return ("((CBool)global::System.BitConverter.IsLittleEndian)", PPrimary);
             case LitFloat f: return (_target.RenderFloatLit(f), PPrimary);
             case LitStr s: return (DotCC.EmitHelpers.EncodeStringLiteral(s.Segments), PPrimary);
             case LitU16Str s: return (DotCC.EmitHelpers.EncodeU16StringLiteral(s.Segments), PPrimary);
@@ -2750,7 +2752,7 @@ internal sealed partial class CSharpBackend
     {
         // A volatile/atomic read is itself an observable access — never drop it.
         _ when e.Type.IsVolatile || e.Type.IsAtomic => false,
-        LitInt or LitFloat or LitStr or NullPtr or NameRef or DefaultLit or VarRef or SizeOfExpr or OffsetOf => true,
+        LitInt or LitFloat or LitStr or NullPtr or NameRef or DefaultLit or VarRef or SizeOfExpr or OffsetOf or RuntimeIntrinsic => true,
         Paren p => IsPure(p.Inner),
         Cast c => IsPure(c.Operand),
         BitCast bc => IsPure(bc.Operand),
