@@ -8,9 +8,13 @@ provenance mismatch was found, and 2 means required product evidence is missing.
 `--self-test` checks prohibited-code detection and manifest path validation without
 building or loading the product.
 
-The initial source-only run reports zero provider violations and exits 2: no
-successful full-core translation, generated products or Release dependency
-manifests exist yet. This is not a completed P5 dependency or NativeAOT result.
+The final audit exits zero with **zero violations and zero missing inputs**
+after the complete raw/optimized JIT/NativeAOT matrix. It checks the actual source,
+generated manifests, translation provenance and Release dependency manifests.
+Evidence: `artifacts/dependencies/report.json` and
+`artifacts/translation/final-dependency-audit.log`; the tested matrix receipt is
+`artifacts/tests/PASS.json` (`run-lqwhjcso`). The initial source-only exit2 was a
+historical pre-build checkpoint and is superseded by this result.
 
 The audit discovers raw and optimized generated sources through the compiler's
 `Dotcc.SourceFiles.txt`. It rejects missing files, duplicate entries, path escapes,

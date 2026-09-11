@@ -1,160 +1,188 @@
-# P1 BCL feasibility and provider boundary contract
+# BCL provider contract
 
-Status on 2026-09-11: standalone P1 probes pass on Linux x64 using SDK
-10.0.111 / runtime .NET 10.0.11 (Zorin OS 18.1, little endian). This is
-capability and ownership evidence, not an implemented provider or translated TLS.
-The public contract is the unmodified pinned `include/picotls.h` at revision
-`3598470df01264da85157025ed10db0f7e103790`.
+The product is the unchanged pinned picotls core at revision
+`3598470df01264da85157025ed10db0f7e103790`, translated to C# and referenced by
+`src/BclProvider/BclProvider.csproj`. The provider and owning TLS facade live in
+`Managed.Security`. Protocol state machines, HMAC and HKDF remain translated core
+code; application cryptographic operations use .NET 10 BCL APIs.
 
-Run from the repository root or any working directory:
+## Current execution evidence
 
-```sh
-/path/to/dotcc/picotls/scripts/probe-boundaries.sh
-```
+The complete Linux x64 raw/optimized × JIT/NativeAOT matrix passes. Receipt:
+`artifacts/tests/PASS.json`, run `artifacts/tests/run-lqwhjcso`.
 
-The script fetches/verifies pinned inputs using `scripts/fetch.sh`, then uses the system C
-compiler for the native layout oracle, then runs the dependency-free .NET 10
-`tests/BoundaryProbes` executable. Builds/tests must remain serial with other
-campaign work. Temporary files use `artifacts/tmp/p1`; retained evidence is
-`artifacts/p1/boundaries/native-layout.txt` and `managed.log`. No public network
-endpoint, system trust-store modification, persistent private key, or native
-crypto import is used by the managed executable.
+| Evidence in each variant | Result |
+| --- | --- |
+| Actual provider vectors | 2033 checks, including 124 real-handshake allocation boundaries and two failed ticket-clone paths |
+| Actual TLS facade | All scenarios pass; final assertion counts are 9967/9961/9961/9965 for raw JIT/raw AOT/optimized JIT/optimized AOT, varying only with fragment iterations |
+| Actual emitted ABI | 92 layout comparisons match the native oracle |
+| Direct upstream utilities | Eight cases, 232 checks |
+| Translated-peer interoperability | 56 cases with native picotls and independent BCL SslStream peers in both directions; 224 total executions |
+| Product dependency audit | Zero violations and zero missing inputs; `artifacts/dependencies/report.json` |
 
-## Executed capability and encoding checks
+Public results match across variants. All inspected suite and nested peer publish
+logs have zero IL/trim/AOT warnings. Ordinary CS8981 lowercase native-type naming
+warnings remain. Windows, macOS and arm64 product execution is unavailable and
+unverified; Linux evidence does not establish those targets. See [usage.md](usage.md),
+[dependencies.md](dependencies.md) and [upstream-tests.md](upstream-tests.md).
 
-| Boundary | Executed evidence | Remaining provider work |
-| --- | --- | --- |
-| SHA-256 / SHA-384 | Independent `IncrementalHash.Clone` after a shared prefix; diverging suffixes checked against one-shot BCL hashes. SNAPSHOT preserves state; RESET returns digest and resets; FREE returns digest and releases handle/allocation. All modes also accept null output, including cleanup-only FREE. | Actual translated HMAC/HKDF and transcript integration; independent published hash/HKDF vectors. |
-| Hash callback/lifetime | Static `unmanaged[Cdecl]` function pointers in an unmanaged header; appended `GCHandle` roots crypto state across forced collection; 1,000 allocate/free cycles leave zero counted handles. Oversized `size_t` raises a captured overflow, observed after callback return. | Register callbacks with actual emitted signatures; full connection abort, concurrent independent connections, allocation-failure injection. |
-| AES-128/256-GCM | Zero-key/zero-IV 16-byte known-answer ciphertext/tag vectors; decrypt and empty input; TLS-style nonce XOR with big-endian sequence; AAD and tag corruption rejected. This target clears failed-decrypt output. | Mandatory vector/one-shot/decrypt callbacks, IV get/set, bounds and overlap handling, supplementary encryption after ciphertext exists, AES block/mode adapter, key updates and usage limits. |
-| P-256 ECDHE | SEC1 uncompressed `04 || X[32] || Y[32]`; fixed private scalar 1 with peer 2G yields exactly the 32-byte big-endian X coordinate of 2G using `DeriveRawSecretAgreement`. Fresh peers agree after export/import. Wrong point lengths/prefix and off-curve (0,0) rejected. | Provider allocation/release/error mapping, further independent key-agreement vectors including leading-zero secrets, negotiated curve restrictions. |
-| ECDSA | P-256/SHA-256 `SignData` and `VerifyData` explicitly use `Rfc3279DerSequence`; DER parser checks exactly two positive integers; altered signature rejected. | TLS signature-scheme/key restrictions, native-peer verification and malformed DER corpus. |
-| RSA-PSS | RSA-2048/SHA-256 with `RSASignaturePadding.Pss`; altered signature and PKCS#1-v1.5 verification rejected. | TLS RSA key/OID restrictions, independent salt-length/encoding evidence and native interoperability. |
-| X.509 and names | Disposable RSA root signs an ECDSA leaf. Explicit custom root trust and server-auth EKU pass; untrusted, expired, future and client-only EKU fail. DNS/IP SAN and one-label wildcard pass; wrong DNS/IP, CN fallback and multi-label wildcard fail. Leaf key verifies a separate signature; altered signing input fails. | Real certificate callback, returned verification state/cleanup, intermediate-chain policies, production revocation decisions and platform matrix. |
-| AEAD appended state | Core-owned unmanaged header+handle allocation survives forced GC; success and simulated setup failure dispose BCL state and handle before the simulated core frees memory; algorithm pointer is preserved; handle counts return to zero. | Actual translated allocation pairing and provider callbacks; realistic failure injection. |
+The provider project enables `IsAotCompatible`. Its callback registrations are
+statically bound, state types are known at compile time, and it does not depend on
+dynamic assembly loading or runtime code generation. These are NativeAOT design
+constraints; successful compilation, warning review and execution of the actual
+published product remain separate requirements.
 
-Signature round trips use the BCL on both sides and establish API/encoding
-feasibility. They are not independent protocol interoperability. Certificate
-fixtures set `RevocationMode=NoCheck`, disable certificate downloads and fix chain
-verification to the test's captured current time. That choice is an isolated
-fixture policy, not a production revocation policy. No Windows, macOS, arm64 or
-NativeAOT execution is claimed.
+## Advertised profile and BCL operations
 
-## ABI result and its explicit limit
+| Surface | Implemented contract |
+| --- | --- |
+| TLS cipher suites | TLS 1.3 `TLS_AES_128_GCM_SHA256` (0x1301) and `TLS_AES_256_GCM_SHA384` (0x1302). |
+| Hash | SHA-256/SHA-384 through `IncrementalHash`: independent clone, update, snapshot, reset and free; final modes accept null output. |
+| Symmetric encryption | `AesGcm` one-shot/vector encryption, authenticated decryption and IV get/set. ECB uses BCL AES block operations; CTR adapts those operations with a big-endian counter and partial-block state. |
+| Key exchange | Group 23 P-256 only. SEC1 uncompressed 65-byte public points; BCL `DeriveRawSecretAgreement` supplies the 32-byte raw secret without an added KDF. Malformed and off-curve peer points are rejected. |
+| CertificateVerify | P-256 ECDSA/SHA-256 (0x0403), explicitly DER encoded; RSA-PSS with SHA-256 (0x0804), `rsaEncryption` certificate keys of at least 2048 bits. The supplied signing input is hashed once using `SignData`. |
+| Certificate validation | Explicit custom trust roots, caller-selected revocation mode, appropriate server/client EKU, key-usage validation, and SAN endpoint matching for servers. |
+| Entropy and time | `RandomNumberGenerator.Fill` and UTC wall-clock milliseconds through scoped callbacks. |
+| Session tickets | Explicitly configured owning AES-256-GCM ticket protector; fresh DHE required on resumption, early data disabled. |
 
-The native program includes the pinned public header and prints 92 sizes,
-alignments and field offsets for 12 provider-related structures and two appended
-context structures. Every value matched the hand-authored sequential C# mirror
-on this host. Selected sizes (all align to 8 bytes):
+Algorithm lists are terminated and immutable after publication. Initialization
+probes required BCL hash-clone, AES and P-256 capabilities before publishing
+complete tables; table memory intentionally has process lifetime. AEAD advertises
+confidentiality and integrity limits of 2^25 and 2^54 respectively to the core.
+The provider does not configure TLS 1.2, X25519, Ed25519, ChaCha20, AEGIS,
+hybrid/PQ, ECH or QUIC. Translated helper code existing in the assembly does not
+advertise those features through the facade.
 
-| Native structure | Size | Relevant offset |
-| --- | ---: | ---: |
-| `ptls_iovec_t` | 16 | `len=8` |
-| `ptls_buffer_t` | 32 | `is_allocated=24`, `align_bits=25` |
-| `ptls_hash_context_t` | 24 | `clone_=16` |
-| `ptls_hash_algorithm_t` | 96 | `empty_digest=32` |
-| `ptls_cipher_context_t` | 32 | `do_transform=24` |
-| `ptls_cipher_algorithm_t` | 48 | `context_size=32` |
-| `ptls_aead_context_t` | 80 | `do_decrypt=72` |
-| `ptls_aead_algorithm_t` | 104 | `align_bits=81`, `context_size=88` |
-| `ptls_aead_supplementary_encryption_t` | 32 | `output=16` |
-| `ptls_key_exchange_context_t` | 32 | `on_exchange=24` |
-| `ptls_key_exchange_algorithm_t` | 40 | `create=8` |
-| `ptls_verify_certificate_t` | 16 | `algos=8` |
-| Probe hash header + handle | 32 | `handle=24` |
-| Probe AEAD header + handle | 88 | `handle=80` |
+BCL-only describes the authored API and dependency boundary, not the absence of
+native platform libraries. .NET cryptography and certificate validation use
+platform implementations; see Microsoft's [cross-platform cryptography
+documentation](https://learn.microsoft.com/en-us/dotnet/standard/security/cross-platform-cryptography).
+The product provider has no authored P/Invoke crypto layer, dynamic library
+loading, runtime code generation or reflection-based callback binding.
 
-These mirrors are **test-only handwritten declarations**. They do not establish
-that dotcc emits correct layouts. The real-header preprocessing blocker recorded
-in `blockers.md` currently prevents that comparison. P2 must replace or supplement
-these checks with emitted types and layout metadata, including bitfield semantics
-(the current oracle validates fields around `non_temporal`, not bit writes).
-Full `ptls_context_t` and handshake-property layout remain untested. No offset
-source generator has been introduced.
+## Actual ABI and allocation ownership
 
-The C# frontend's ordinary translated callbacks use managed function pointers.
-The standalone hash experiment deliberately exercises a stricter unmanaged Cdecl
-boundary and exception containment; its pointer types must not be blindly copied
-into the translated provider. P2 must use precisely the actual emitted calling
-convention and signatures. Do not cast between managed and unmanaged function
-pointers to bypass a compiler mismatch.
+The provider uses the actual emitted `st_ptls_*` structs and
+`en_ptls_hash_final_mode_t` enum. LP64 `size_t` is `ulong`. Callback pointers are
+ordinary managed `delegate*<...>` pointers with exact emitted parameter types,
+held in canonical static readonly fields. They are not `unmanaged[Cdecl]`
+pointers; casting between those conventions is unsupported. No hand-authored
+mirror ABI types are used in the product.
 
-## Chosen registration and ownership contract (design for P3)
+Appended provider contexts have an actual emitted unmanaged header prefix and an
+opaque pointer-sized GCHandle token. Retained keys and state remain managed
+objects rooted through that handle. Retained certificate bytes and pointer arrays
+have stable owned storage. Allocations passed back to the core use its embedded
+`Libc.malloc`/`free` allocator, with checked conversions; standalone probe
+`NativeMemory` allocations are not mixed into these lifetimes.
 
-Register the provider explicitly before constructing a connection. Keep canonical
-static callback pointer fields and stable unmanaged algorithm/callback tables for
-the lifetime of all referring contexts. Build only fully implemented and
-successfully probed algorithm lists. Retained strings, chains and pointer arrays
-need stable owned storage; movable managed arrays and stack-backed tables cannot
-be retained by translated C. Algorithm registrations are immutable after use.
-The owning context roots shared provider configuration; each connection is used
-serially, while independent connections may run concurrently.
+- Hash contexts and clones are provider-owned. Ordinary FREE releases BCL state,
+  handle and allocation exactly once, including null-output cleanup. RESET resets
+  even without output; SNAPSHOT preserves the hash. An ordinary freed hash cannot
+  be reused.
+- Cipher/AEAD context allocations are core-owned. Setup initializes the undefined
+  tail, preserves `algo`, and unwinds partial BCL/handle ownership on failure. The
+  core frees failed setup allocations without calling provider disposal. After
+  success, provider disposal releases only appended state; the core frees memory.
+- Key-exchange contexts/public keys are provider-owned until release. Cleanup-only
+  `on_exchange` accepts a null secret output. Release nulls the caller's context
+  pointer; returned public and secret buffers use the core allocator.
+- Certificate verification publishes a signature callback and opaque leaf-key
+  state only after validation. Signature verification consumes that state. The
+  upstream abort callback with both data and signature lengths zero releases it
+  without attempting a signature check.
+- A usable empty core buffer has a stable non-null base, zero capacity and zero
+  offset. Use `PicotlsBuffer.Create()` for raw callers. A default zeroed buffer
+  does not satisfy the upstream reserve contract.
 
-Use translated headers as the unmanaged prefix and a pointer-sized opaque
-`GCHandle` token for managed state. Never store a managed object reference in a
-C-copied structure. Allocate `context_size` using the actual emitted header size,
-alignment and tail layout, and pair allocation/free with the translated runtime's
-allocator. The standalone probes use `NativeMemory` only within their own paired
-allocations; they do not prove cross-allocator compatibility.
+`SigningIdentity`, `CertificateVerifier` and `TicketProtector` own their callback
+storage. The facade retains leases on these owners; disposing an owner defers
+resource destruction while contexts retain it. `PicotlsContext` is immutable and
+shareable. Disposal prevents new connections while existing connections retain
+its resources. Each `PicotlsConnection` serializes its synchronous operations;
+independent connections can run concurrently. Direct raw `ApplyTo` use requires
+the caller to retain owners and synchronize mutation/disposal for the whole
+referring context lifetime; it does not acquire a facade lease automatically.
 
-Ownership follows the pinned implementation:
+## Callback failure and output contract
 
-- Hash contexts are provider-owned. FREE always disposes crypto state, releases
-  its handle and frees the context, whether or not output is requested. RESET
-  resets even without output; SNAPSHOT never changes state. Cloning owns a fresh
-  hash and handle. Finalization after FREE is invalid, not an idempotent operation.
-- Cipher and AEAD allocations are core-owned. In `lib/picotls.c`, creation
-  initializes only the public prefix; setup must initialize the undefined tail.
-  On setup error the core directly frees memory without invoking disposal, so
-  setup must unwind every partial provider resource before returning failure.
-  Successful disposal frees provider state/handles only, then the core frees the
-  allocation. Preserve the core-owned `algo` pointer.
-- Key exchange contexts/public-key storage are provider-owned until release.
-  `on_exchange` with null secret is cleanup-only; `release` frees state and sets
-  `*keyex` to null. Returned secret/public-key byte buffers must be compatible
-  with the core's `free`. Failure leaves outputs unchanged or zero-cleared as the
-  public header requires.
-- Certificate verification returns one signature callback plus opaque state.
-  That state owns the leaf verification key and required temporary resources.
-  Normal signature verification consumes/disposes it; a call with both input and
-  signature empty is the upstream abort-cleanup path and must release it without
-  attempting signature verification. Setup failure releases unpublished state.
-  The empty-buffer protocol is a design decision here, not yet an executed
-  provider/handshake test.
+Every raw translated call that can invoke the provider requires
+`CallbackScope.Enter()`. The caller must call `ThrowIfFailed()` before publishing
+any result bytes. Facade entry points supply this boundary automatically. Scopes
+stay on their creating thread and are disposed in stack order. Nested scopes
+preserve and propagate the first captured exception; cleanup cannot replace it.
+Unscoped callbacks fail before cryptographic work and latch an orphan error,
+which can be explicitly drained or is carried into the next scope.
 
-## Failure and encoding contract (design for P3)
+Provider exceptions map to the callback's error convention and are latched.
+Authentication rejection is an ordinary protocol result: for example, AEAD bad
+authentication returns `SIZE_MAX`, and rejected tickets return
+`PTLS_ERROR_SESSION_NOT_FOUND`. Private AEAD scratch prevents unauthenticated
+plaintext publication; checked error paths clear output and scratch. One callback
+or gathered message is limited to 16 MiB, with at most 1,024 iovecs. Gather totals,
+pointer/length pairs, output lengths and integer conversions are checked. Scratch
+allows overlapping input/output. Supplementary encryption reads its input after
+AEAD ciphertext has been written, as required by the pinned core.
 
-Every pointer length must undergo checked `size_t` to span conversion; validate
-null/length pairs, bound gathered iovec totals and scratch allocations, and clear
-secret scratch in `finally`. Validate P-256 point length/prefix before import and
-use the raw agreement, never a BCL KDF. ECDSA uses DER; RSA uses negotiated PSS.
-Sign the supplied CertificateVerify input once with `SignData` and its negotiated
-hash, avoiding an extra transcript hash before that call.
+Hash clone failure has one special ownership rule. The pinned
+`send_session_ticket` stores an unchecked clone result as its transcript, and
+later cleanup dereferences that pointer. A failed clone therefore returns an
+immutable process-lifetime poison hash after recording the original exception.
+It owns no handle, produces no digest, clones only itself and permits cleanup
+without freeing table memory. Any attempt to use it in a fresh or unscoped call
+records another failure; it cannot become a working hash by resetting the scope.
+Ordinary hash creation still returns null on failure. This preserves cleanup
+invariants while the facade rejects output and aborts the connection.
 
-AEAD decryption maps authentication failure to `SIZE_MAX` and does not expose
-unauthenticated plaintext. Use private scratch or explicitly clear output on all
-failure paths; do not generalize the observed Linux bad-tag buffer-clearing
-behavior to every exception or platform. Respect IV XOR sequence encoding and
-run supplementary cipher input only after the ciphertext it may reference exists.
-Deprecated incremental AEAD entries remain unselected; mandatory callbacks must
-not delegate through an unimplemented incremental path.
+`HandshakeAllocationVectors` first completes an actual authenticated handshake
+with ticket issuance, then injects failure at every measured provider ownership
+allocation boundary using fresh contexts/connections. Its scoped hook records
+exception identity and failed-clone hits, checks no result is returned by the
+failing facade call, and checks handle/key cleanup after disposal and finalizer
+drains. It is capped at 512 measured boundaries. All four variants pass all 124
+measured boundaries, including two actual ticket-clone failures. This does not claim exhaustive failure injection into BCL
+internals or every translated-core allocation.
 
-Catch BCL exceptions inside every externally callable ABI callback. Map ordinary
-failure to the header's nonzero PTLS error, null pointer, or `SIZE_MAX` as
-appropriate; populate output pointers only after successful initialization.
-Callbacks without error returns latch the first failure in the owning managed
-entry scope. That scope checks the latch on return, discards buffered output and
-tears down the failed connection. The probe demonstrates a captured exception
-without crossing an unmanaged boundary, but uses a simple thread-local latch;
-production requires scoped nesting and a context association, with no async
-migration during a translated call. Validate failure paths after translation:
-continued internal execution after a latched void-callback failure must neither
-publish output nor violate memory invariants. Cleanup must not replace the first
-failure. Unrecoverable process exceptions are not converted into TLS success.
+## Certificate and ticket policy
 
-Unsupported algorithms and incomplete callback tables are never advertised.
-The initial provider will require P-256, both AES-GCM/SHA suites, and the selected
-ECDSA/RSA schemes. X25519, Ed25519, ChaCha20, AEGIS, hybrid/PQ, tickets, early data,
-HPKE/ECH and QUIC are not established by these probes. Existing core HMAC/HKDF
-must remain translated. Randomness/time, cipher supplementary semantics and
-all TLS-level behavior remain P3/P4 work.
+`CertificateVerifier` requires at least one explicit trust root and an explicit
+`X509RevocationMode`. It uses `CustomRootTrust`, peer-supplied intermediates, the
+appropriate TLS EKU, revocation checking excluding the root, disabled certificate
+downloads and a two-second URL retrieval timeout. Platform chain behavior still
+applies, and an online revocation policy can require network access. Fixtures use
+`NoCheck` for isolated generated credentials; that fixture choice is not a
+production revocation recommendation.
+
+Server identity matching uses DNS/IP SAN with optional wildcard matching and no
+common-name fallback. Present KeyUsage must permit digital signatures. Named
+P-256 and supported RSA leaf keys are validated independently of chain building.
+Mutual TLS validates the client-auth EKU and trust chain; server endpoint-name
+matching applies on the client side. Trust, name and signature failures never
+become a successful handshake.
+
+`TicketProtector` binds permanently to one immutable server context to keep keys
+from crossing authentication policies. AES-256-GCM authenticates the complete
+version/key-id/issue-time/expiry/nonce header. Each key has independent random key
+material and a 128-bit identifier; nonces combine a random prefix and a monotonic
+per-key counter, with at most 2^32 encryptions per key. Lifetime is an explicit
+whole number of seconds from 1 to 604800. Rotation retains a configured zero to
+eight prior keys and discards expired retired keys; extra rotations can invalidate
+otherwise unexpired tickets early. Disposal clears owned material after context
+leases end. Invalid, tampered, unknown-key, future-issued and expired tickets
+leave the destination unchanged. Successful ticket decryption explicitly rejects
+early data, and the context requires fresh DHE for resumed sessions.
+
+Client tickets are connection-local owning `SavedSessionTicket` objects.
+`TakeSessionTickets` transfers them to the caller; disposal clears their stored
+PSK-bearing bytes. `Export` returns a separate caller-owned copy. The facade
+rejects application writes before handshake completion, including resumed
+connections, and never offers early data.
+
+## Historical P1 evidence
+
+`tests/BoundaryProbes` and `scripts/probe-boundaries.sh` are the earlier standalone
+BCL feasibility experiment. Their hand-authored mirror structs and deliberately
+unmanaged Cdecl callback probe established API/encoding feasibility only. They
+are not product ABI declarations, provider execution or TLS interoperability.
+Historical logs remain under `artifacts/p1/boundaries/`; the executed product ABI,
+provider and peer runs above supersede the old “provider not implemented” status.

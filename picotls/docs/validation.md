@@ -1,9 +1,68 @@
 # Campaign validation record
 
-The P0/P1 baseline is recorded below; the subsequent authorized chained-paste
-repair is recorded at the end. Compiler artifact paths contain the latest retry,
-so the baseline table preserves the original outcomes rather than describing
-the current contents of those logs.
+## Final result (2026-09-11)
+
+**The unchanged pinned picotls core and BCL-only product pass the complete Linux
+x64 raw/optimized × JIT/NativeAOT matrix.** All public results match. The product
+dependency audit passes with zero violations and zero missing inputs. Windows,
+macOS and arm64 execution targets were unavailable; those targets remain
+unverified and the corresponding plan gates remain open.
+
+| Variant | Actual ABI | Provider checks | Upstream utility cases/checks | TLS assertions | Independent peer cases |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Raw JIT | 92 | 2033 | 8 / 232 | 9967 | 56 |
+| Raw NativeAOT | 92 | 2033 | 8 / 232 | 9961 | 56 |
+| Optimized JIT | 92 | 2033 | 8 / 232 | 9961 | 56 |
+| Optimized NativeAOT | 92 | 2033 | 8 / 232 | 9965 | 56 |
+
+Each provider run includes all 124 measured real-handshake allocation boundaries
+and two actual ticket-clone failure paths. The TLS suite includes authenticated
+CertificateVerify/Finished corruption, name/trust/expiry/EKU/key-usage failures,
+fragmentation/HRR/key update/close, ticket rotation/expiry/resumption, mTLS ticket
+reauthentication, bounded malformed input and GC/concurrency checks. Peer cases
+cover native picotls and independent BCL SslStream in both roles, totaling 224
+executions. Only the TLS assertion counter varies with fresh ECDSA signature and
+fragment lengths; the driver preserves raw logs and normalizes that one counter.
+Scenario outcomes, negotiated capabilities and payload results still match.
+
+Reproduce from `picotls/`, serially:
+
+```sh
+./scripts/fetch.sh
+./scripts/oracle.sh
+./scripts/translate.sh
+./scripts/build-only.sh
+dotnet build ManagedConsumer/ManagedConsumer.slnx -c Release
+./scripts/test.sh --all --aot --runtime linux-x64
+python3 scripts/audit-product.py
+```
+
+The final run reused the already verified native oracle and final rebuilt
+compiler/postprocessor via `translate.sh --no-build-tools`. Evidence:
+
+- Translation/raw snapshot/postprocessing: `artifacts/translation/final-regeneration.log`
+  and `artifacts/translation/success.json`.
+- Matrix: `artifacts/tests/PASS.json`, `artifacts/tests/run-lqwhjcso/` and
+  `artifacts/translation/final-matrix.log` (exit zero).
+- Independent peer directories, in table order: `artifacts/managed-peer/run-2hehen7q/`,
+  `run-cxo72dtm/`, `run-xbcjdrwj/`, and `run-n3_zcd6s/`.
+- Dependency inventory: `artifacts/dependencies/report.json` and
+  `artifacts/translation/final-dependency-audit.log` (zero violations/missing inputs).
+- Consumer solution: `artifacts/translation/final-consumer-solution-build.log`;
+  all three projects build, zero errors. Current matrix and nested peer publish
+  logs have zero IL/trim/AOT warnings; ordinary CS8981 lowercase native-type
+  naming warnings remain.
+- Shared regressions: 2017 units, 380 functional fixtures (967 opt-in oracle
+  skips), 64 postprocessor and 31 analyzer checks (one optional oracle skip).
+  The complete SQLite JIT/NativeAOT campaign also passes; details and exact
+  preserved-artifact records are below.
+
+The receipt binds input, result and translation hashes. Its results SHA-256 is
+`a1e99c9ac9ecca40d0165deabc66f8cb2f76827fc8bbb6b27cc33d1f5ea776a3`.
+See [provider contracts](crypto-provider.md), [upstream case coverage](upstream-tests.md),
+[dependency audit scope](dependencies.md), and [usage](usage.md) for capability
+boundaries. The remaining sections preserve historical checkpoints; their
+then-pending statements are superseded by this final result.
 
 ## Integrated Linux x64 JIT results (2026-09-11)
 
@@ -27,6 +86,51 @@ remain exact. Raw/optimized equivalence, integrated NativeAOT, real-handshake
 allocation-failure sweeps and final broad compiler/SQLite regressions remain
 pending at this checkpoint. Windows, macOS and other architectures are unrun.
 
+## Expanded provider and upstream TLS checkpoint
+
+The optimized Linux x64 JIT rerun passes 2033 provider checks. Its bounded
+real-handshake fault sweep measures and injects all 124 provider allocation
+boundaries, including two actual ticket-issuance hash-clone failures; first
+exception identity, unpublished outputs, connection closure and post-GC handle/key
+baselines pass. This covers provider wrapper allocation sites, not arbitrary BCL
+or core `malloc` failures. Explicit intermediate-chain positive/negative cases
+also pass. Evidence: `artifacts/translation/provider-expanded.log`.
+
+The expanded TLS suite passes 9959 assertions, including direct upstream cipher
+selection, exact fragment callbacks/overflow, six legacy packets and GREASE
+resumption, mTLS ticket fallback with fresh certificate authentication, and UTF-8
+exporter-label boundaries. Evidence: `artifacts/translation/tls-expanded.log`.
+The actual optimized TLS NativeAOT executable also passes (9963 assertions,
+with the expected variable fragment count). Publish emitted no IL/trim/AOT
+warnings; three ordinary CS8981 lowercase native-type naming warnings remain.
+Evidence: `artifacts/translation/tls-aot-first-build.log`, `tls-aot-first.log` and
+`build/tls-aot-first/`. The final raw/optimized full-suite matrix still awaits
+fresh translation after the shared ABI-profile investigation below.
+
+## Final generic compiler and preserved-port regression result
+
+After `846bc84` completes the measured GNU bit-field placement repair and
+`6607b11` records the independently measured native profile, the complete final
+regression driver exits zero. It passes 2017 compiler/runtime units, 380
+functional fixtures (967 explicitly opt-in oracle skips), 64 semantic
+postprocessor tests and 31 analyzer tests (one optional analyzer oracle skip).
+The entire SQLite regression campaign also passes, including all eight native
+and seven translated corpora, actual/threaded ABI storage, owning consumer,
+threading/abort/GC checks, independent-process VFS/crash/WAL behavior, source and
+object function-pointer identity and bidirectional native/managed image exchange.
+Applicable JIT/NativeAOT executions pass with no IL/trim/AOT warnings in their
+current publish logs. SQLite is regression coverage for the shared compiler and
+libc changes; it is not a picotls product dependency.
+
+Exact added-postprocessor orchestration is retained at
+`artifacts/translation/sqlite-verify-with-postprocess.sh`; output is
+`artifacts/translation/sqlite-final-regression.log`, with individual logs under
+`sqlite/artifacts/campaign-*`. Eleven obsolete generated `Program.cs` files are
+preserved unchanged with their original/destination paths and SHA-256 hashes in
+`artifacts/sqlite-stale-generated/preserved-files.json`. Fresh picotls translation
+and postprocessing then run with the final compiler so the forthcoming full
+raw/optimized JIT/NativeAOT matrix uses current embedded runtime and provenance.
+
 ## P0/P1 baseline
 
 Executed on 2026-09-11 on the existing `sqlite` branch. P0 is complete; P1
@@ -35,7 +139,7 @@ complete, with **actual translated ABI validation still blocked**. P2 was not
 started. All authored changes are confined to `picotls/`; dotcc and SQLite source
 are unchanged. Builds/tests ran serially using campaign-specific `TMPDIR` paths.
 
-## Reproduce
+## P0/P1 reproduction (historical)
 
 Run from `picotls/` in this order; do not run builds/tests concurrently:
 
@@ -44,16 +148,16 @@ Run from `picotls/` in this order; do not run builds/tests concurrently:
 ./scripts/oracle.sh
 ./scripts/probe-boundaries.sh
 python3 scripts/probe-compiler.py --build-dotcc
-# The previous command currently returns 1 because recorded blockers remain.
+# The original P1 run returned 1; current repaired compiler probes pass.
 python3 scripts/inventory.py
 ```
 
 The native scripts resolve their own locations; Python scripts resolve paths from
 `__file__`. Oracle and boundary scripts fetch/verify inputs automatically. The
-compiler and symbol inventories use those established inputs/artifacts. A failed
-compiler probe is expected at this stage; inspect `results.json` rather than
-ignoring all failures. A future compiler change must rerun these exact upstream
-files, as well as appropriate generic regressions.
+compiler and symbol inventories use those established inputs/artifacts. The
+historical P1 compiler failures are retained in the baseline below; current
+results are recorded above. Inspect `results.json` for diagnostics. Future compiler
+changes must rerun these exact upstream files and appropriate generic regressions.
 
 | Check | Result | Evidence under `artifacts/` |
 | --- | --- | --- |
@@ -83,7 +187,7 @@ immutable; these system toolchain/backend versions are recorded environmental
 dependencies, not newly downloaded immutable packages. See
 [source.md](source.md) and [configuration.md](configuration.md).
 
-## Limits and next boundary
+## Historical P1 limits and next boundary
 
 No translated core parses, links or runs yet. Hand-authored ABI mirrors are
 standalone feasibility evidence; actual emitted types/layout metadata, complete
@@ -218,3 +322,43 @@ zero-initialized unspecified fields. The unchanged main core now parses through
 line 4430, where a comma-list of braced aggregate initializers is the next blocker.
 `hpke.c` and `pembase64.c` object emission now have empty stderr after correcting
 readonly libc prototypes. This remains emission evidence, not a compiled product.
+
+## Final shared-regression checkpoint (2026-09-11)
+
+`SQLITE_AOT=1 sqlite/scripts/verify.sh` rebuilt the entire Release solution with
+zero warnings/errors, then passed all 2010 compiler/runtime units and all 379
+ordinary functional fixtures; 965 optional external-oracle cases were explicitly
+skipped by the default test profile. Evidence: `sqlite/artifacts/campaign-repository.log`.
+The broad run found and repaired two issues with existing focused coverage:
+
+- The Zig test-block test searched the entire emitted runtime for the substring
+  `addition`, which legitimate allocation comments now contain. Its assertion
+  checks the quoted test-name literal instead; focused and complete units pass
+  (`34f3caa`).
+- The new pthread clock helper used an unqualified `DateTime` name, which an
+  existing C type in `runtime-datetime-collision` shadows. Both references now
+  use `global::System.DateTime`; the complete unit/functional rerun passes
+  (`48a9191`).
+
+The subsequent SQLite varargs project initially found a pre-manifest generated
+`sqlite/generated/VarargsSpanFixture/Program.cs` from the previous campaign beside
+its newly manifest-owned `DotCcLib.cs`. Its compiler-generated contents were
+preserved unchanged at
+`picotls/artifacts/sqlite-stale-generated/VarargsSpanFixture/Program.cs`; no
+source or generated contents were patched. The saved driver
+`picotls/artifacts/translation/sqlite-verify-after-repository.sh` resumes the
+original verification steps with only the already-passed repository build/tests
+omitted. Its source, exact command and logs remain in artifacts. Remaining SQLite
+stages and postprocessor suites are still running at this checkpoint.
+
+The resumed SQLite native core/API/VFS/vtable/allocation/upstream/FTS5/layout
+oracles pass, as does the 15-case span-varargs corpus under JIT and NativeAOT.
+The subsequent metadata gate reports four differences in `WhereInfo` and
+`WhereLoop`. Its historical native oracle deliberately uses `-mms-bitfields`;
+the picotls repair introduces GNU ordinary-member tail-byte reuse. Existing
+SQLite documentation also records earlier default-GNU differences for
+`ExprList_item`, `VdbeCursor` and `Parse`. The next step is a complete native-GNU
+comparison and a reduced shared-layout repair where required, preserving the
+actual picotls ABI. Neither the expected outputs nor the oracle flags have been
+changed to hide these differences. Remaining SQLite stages are paused at this
+gate while that profile investigation runs.

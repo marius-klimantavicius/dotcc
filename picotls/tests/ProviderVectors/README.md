@@ -40,10 +40,11 @@ result from a failing facade call, safe poison-clone cleanup, disposed-connectio
 rejection and balanced provider handles/keys after disposal and finalizer drains.
 An internal scoped counter proves ticket cloning was included. The sweep is bounded
 to 512 provider context/GCHandle allocation boundaries; it does not inject every
-BCL allocation or translated-core malloc. The optimized JIT run passes 2,033
-checks, including 124 measured handshake allocation boundaries and two failed
-ticket-clone cases. ProviderVectors NativeAOT and raw-output comparisons remain
-pending; see `picotls/docs/validation.md` for final campaign evidence.
+BCL allocation or translated-core malloc. All four Linux x64 raw/optimized ×
+JIT/NativeAOT variants pass 2033 checks, including 124 measured handshake allocation
+boundaries and two failed ticket-clone cases. Public results match. Evidence:
+`picotls/artifacts/tests/run-lqwhjcso`, `picotls/artifacts/tests/PASS.json`, and
+`picotls/docs/validation.md`.
 
 The provider requires `CallbackScope.Enter()` around each raw translated call;
 call `ThrowIfFailed()` before exposing bytes. It bounds each callback/gather to

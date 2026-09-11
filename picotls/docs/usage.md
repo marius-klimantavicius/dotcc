@@ -4,13 +4,12 @@ The product is the pinned picotls core translated to C#, with a BCL crypto
 provider and an owning managed connection API. It targets .NET 10 and NativeAOT.
 The native OpenSSL adapter and independent `SslStream` peer are test oracles.
 
-**Execution status:** the orchestration below is authored after the complete
-unchanged core first emitted C# successfully; the owning product's first build
-and runtime campaign remain pending. Compiler fixtures, libc dependencies and
-independent peer probes have passed separately; this does not establish a passing
-product, provider or managed TLS campaign. Current executed evidence belongs in
-[validation.md](validation.md). A recipe or existing generated directory is not
-a success receipt.
+**Execution status:** the complete Linux x64 raw/optimized × JIT/NativeAOT
+campaign passes, including actual ABI, provider/failure, upstream, TLS and
+independent-peer checks. The dependency audit and broad compiler/SQLite
+regressions also pass. Receipt: `artifacts/tests/PASS.json`, run
+`artifacts/tests/run-lqwhjcso`; detailed evidence is in [validation.md](validation.md).
+Windows/macOS and other architectures remain unverified.
 
 ## Prepare, translate, build, test
 
@@ -96,11 +95,10 @@ ticket bytes are caller-owned secrets; clear the copy after use. Direct access
 to the unsafe translated API requires a valid `CallbackScope`, retained callback
 state and explicit storage/lifetime management.
 
-The intended managed profile is TLS 1.3, P-256 ECDHE, AES-128-GCM/SHA-256 and
+The validated Linux x64 managed profile is TLS 1.3, P-256 ECDHE, AES-128-GCM/SHA-256 and
 AES-256-GCM/SHA-384, with ECDSA P-256/SHA-256 and RSA-PSS/SHA-256 authentication.
 The managed facade includes ALPN, mutual authentication, record processing,
-exporters, key updates and opt-in tickets. Advertise these only after the
-corresponding product tests pass. HPKE remains in the translated source closure
+exporters, key updates and opt-in tickets; these pass the complete campaign. HPKE remains in the translated source closure
 but is not a public managed feature; TLS 1.2, 0-RTT and the native backend's wider
 algorithm lists are outside this profile. The disposable offline certificate
 fixtures explicitly choose `NoCheck` revocation; application verification policy

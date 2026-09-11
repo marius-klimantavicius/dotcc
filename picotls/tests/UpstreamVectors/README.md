@@ -20,5 +20,6 @@ dotnet publish picotls/tests/UpstreamVectors -c Release -r linux-x64 \
 picotls/build/upstream-vectors-aot/UpstreamVectors
 ```
 
-Current status: source authored, execution pending the full-core compiler gate.
-No managed pass is recorded yet.
+Current status: all four Linux x64 raw/optimized × JIT/NativeAOT variants pass
+all eight cases and 232 checks against the actual product. Evidence:
+`artifacts/tests/run-lqwhjcso` and `artifacts/tests/PASS.json`.

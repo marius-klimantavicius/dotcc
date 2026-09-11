@@ -1,5 +1,10 @@
 # P1 compiler boundary findings
 
+The opening table records the historical P1 attempt. Current core object emission,
+source-linking, postprocessing and actual TLS execution pass; subsequent generic
+repairs and cross-campaign regression findings are recorded below. Current
+execution evidence is in [validation.md](validation.md).
+
 The unchanged pinned core was attempted on Linux x64 with a freshly built Release
 dotcc, C17, `PTLS_HAVE_LOG=0` and `PICOTLS_USE_DTRACE=0`. No compiler, upstream C,
 or generated C# was repaired during P0/P1. A subsequently authorized P2 repair
@@ -350,3 +355,31 @@ The initial anonymous-member fixture also exposed an independent pre-existing
 uint-plus-enum local-initializer conversion gap. Its small unsigned mask is now
 explicitly converted to int so the fixture tests anonymous routes and ABI without
 that unrelated expression; no upstream or generated picotls code was altered.
+
+## B20: GNU bit-field placement after ordinary prefixes — fixed
+
+Cross-campaign regression checks exposed the distinction between SQLite's
+historical `-mms-bitfields` native workaround and the GNU ordinary-tail reuse
+needed by picotls. A complete fresh GNU oracle showed the remaining shared
+compiler gap: an ordinary byte prefix before an unsigned bit-field wrongly
+forced the field to the next complete integer unit. Actual `ExprList_item` and
+`VdbeCursor` storage differed from GNU sizes/offsets; `WhereInfo` and `WhereLoop`
+already matched GNU after the earlier tail repair.
+
+Commit `846bc84` uses a single per-field bit-position map for layout and emitted
+accessors. It covers leading-byte reuse, mixed widths, named/unnamed fields,
+zero-width boundaries and unions. Overlapping accessors touch only occupied
+bytes, including flexible-tail overlap. Packed aggregates keep their separate
+existing path. The bit cursor retains the existing large aggregate range.
+
+Validation passes 28 focused units; the seven new GNU cases were rerun after the
+final aggregate-range fix. It also passes
+13 functional/layout cases, exact native GNU reducer byte images and NativeAOT
+byte-image parity. All 39 requested SQLite offsets, 42 actual CLR aggregate
+sizes/alignment wrappers and eight inline-array layouts match the complete fresh
+GNU native transcript under both JIT and NativeAOT. Picotls's 64 actual-header
+metadata contracts remain unchanged. Evidence: `sqlite/artifacts/gnu-layout/`.
+SQLite's oracle now deliberately selects the measured GNU profile; its prior MS
+transcript is preserved, and no generated/upstream source or expected offsets
+were patched to hide a discrepancy. Final broad regressions pass: 2017 units, 380 functional fixtures, 64 postprocessor
+and 31 analyzer cases, and the complete preserved SQLite JIT/NativeAOT campaign.

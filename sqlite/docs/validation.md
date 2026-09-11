@@ -25,9 +25,25 @@ The standard native and translated layout scripts now pass with this profile
 under JIT and NativeAOT (`artifacts/campaign-layout.log`), and all eight native
 corpus checks pass. The complete rebuilt repository passes 2017 units and 380
 functional cases (967 opt-in oracle skips), plus 64 postprocessor and 31 analyzer
-checks (one optional analyzer oracle skip). Threaded-product and complete
-translated SQL corpus replays remain in progress at this checkpoint. Earlier
-MS-profile results below remain historical evidence.
+checks (one optional analyzer oracle skip). The complete final campaign passes with `SQLITE_AOT=1`: all eight native and
+seven translated corpora, owning consumer, threaded product ABI (41 metadata
+contracts, 48 actual aggregate layouts, 67 field offsets and eight arrays),
+threading/restart/failure cleanup, host VFS independent-process/crash/WAL cases,
+source/object function-pointer identity and all three image-exchange directions.
+The applicable executables pass JIT and NativeAOT with no IL/trim/AOT warnings in
+the current publish logs. The source preparation checks also pass.
+
+Exact orchestration is saved at
+`../picotls/artifacts/translation/sqlite-verify-with-postprocess.sh`: it runs the
+unchanged verification sequence and adds the two postprocessor suites after the
+repository build/tests. Final logs are `artifacts/campaign-*.log` and
+`../picotls/artifacts/translation/sqlite-final-regression.log` (exit zero).
+Eleven pre-manifest compiler-generated `Program.cs` files were preserved outside
+regenerated project directories to avoid stale SDK-glob duplicate definitions;
+paths and SHA-256 hashes are recorded in
+`../picotls/artifacts/sqlite-stale-generated/preserved-files.json`. No generated
+contents or upstream sources were patched. Earlier MS-profile results below
+remain historical evidence.
 
 - `dotnet build ../dotcc.sln -c Release`: passed, zero warnings/errors, 9 seconds.
 - Baseline unit suite: **1,723 passed, zero failed/skipped**, 35 seconds, with isolated TMPDIR.

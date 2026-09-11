@@ -1,20 +1,18 @@
 # Translate picotls to C# with dotcc
 
-Status: **P0–P2 compiler and emitted ABI gates pass; integrated P3/P4 Linux x64
-JIT validation passes; P5 raw/NativeAOT campaign remains in progress**
-(2026-09-11). Generic BCL-only pthread and `posix_memalign` pass unit,
-native/translated fixture, and Linux x64 NativeAOT validation. All three unchanged
-core objects emit without diagnostics; full source-linking and semantic
-postprocessing produce the nine-file product with retained raw/optimized
-snapshots and input provenance. Actual emitted ABI checks pass all 92 native
-comparisons. The optimized product passes 321 provider checks, eight upstream
-utility ports with 232 checks, the complete current TLS fixture suite (9669
-assertions), and 56 independent native picotls/SslStream process scenarios.
-Raw-product equivalence, integrated NativeAOT, real-handshake allocation-failure
-sweeps, remaining applicable upstream cases, and broad compiler/SQLite regressions
-are still being completed. Windows/macOS and additional architectures remain
-unrun. See [validation.md](validation.md), [blockers.md](blockers.md), and
-[crypto-provider.md](crypto-provider.md).
+Status: **Linux x64 implementation and all available validation complete;
+Windows/macOS and additional architectures remain unverified** (2026-09-11).
+The unchanged core, BCL-only provider, owning API and consumer pass the complete
+raw/optimized × JIT/NativeAOT matrix. Each variant passes 92 actual ABI checks,
+2033 provider checks (including 124 real-handshake allocation boundaries and two
+ticket-clone failures), eight upstream utility cases/232 checks, all TLS scenarios
+and 56 independent peer cases: 224 peer executions total. Public results match.
+The dependency audit passes with zero violations and zero missing inputs.
+Shared compiler/libc and complete preserved SQLite regressions also pass.
+The remaining unchecked items below require execution machines for other
+platforms; none were available in this environment. See [validation.md](validation.md),
+[blockers.md](blockers.md), [crypto-provider.md](crypto-provider.md), and
+[usage.md](usage.md).
 Campaign working directory: `<repo>/picotls/`.
 
 ## Objective and boundaries
@@ -198,7 +196,7 @@ extern qualified callbacks, qualified specifier runs, inline enum types and
 const pointer tails have been repaired with regressions. The bitfield-tail
 layout repair passes actual-header metadata and a native/emitted/AOT storage
 reducer. All unchanged core sources now emit, source-link, postprocess and compile;
-see [blockers.md](blockers.md) for B1–B19 repairs and regression evidence. All remaining
+see [blockers.md](blockers.md) for B1–B20 repairs and regression evidence. All remaining
 phases are authorized.
 
 - [x] For each parse, IR, emission or runtime failure: reduce it; add a failing
@@ -212,12 +210,12 @@ phases are authorized.
 - [x] Emit `TranslatedPicotls` with class `Picotls`, namespace `Managed.Security`,
       and approximately 100 KiB function groups. Retain shared `Picotls.cs` and
       `Picotls.GlobalUsings.g.cs`; whole functions may exceed the byte target.
-- [ ] Build the unoptimized generated project with typed provider scaffolding.
+- [x] Build the unoptimized generated project with typed provider scaffolding.
       Temporary failure-returning scaffolds are test-only and cannot satisfy P3/P4.
 
 ### P3 — Complete the BCL provider
 
-- [ ] Implement registration, stable function pointers, context ownership, errors,
+- [x] Implement registration, stable function pointers, context ownership, errors,
       secure randomness and time; test allocation/abort/disposal/GC behavior.
 - [x] Implement hash cloning/finalization, AEAD/cipher callbacks, P-256 exchange,
       signing and certificate verification. Verify every advertised algorithm.
@@ -226,6 +224,8 @@ phases are authorized.
 - [ ] Prove capability detection and failure behavior on each target. Record
       unsupported algorithms explicitly; never advertise a partially implemented
       provider table or skip certificate authentication to make a handshake pass.
+      **Linux x64 passes all four variants.** Windows/macOS/arm64 execution is
+      unavailable here and remains open; no support claim is made for them.
 
 ### P4 — Real TLS and interoperability
 
@@ -240,25 +240,27 @@ phases are authorized.
       unsupported algorithms and failure cleanup; authentication must fail closed.
 - [x] Add session tickets, PSK-DHE resumption, expiry/rotation and rejection tests;
       confirm early data stays disabled in the default profile.
-- [ ] Port applicable upstream tests with a case-level pass/skip/blocker inventory.
+- [x] Port applicable upstream tests with a case-level pass/skip/blocker inventory.
       No blanket skip for the provider's missing features and no claim of full
       upstream coverage from a single managed round trip.
 
 ### P5 — Packaging, platforms and sustained validation
 
-- [ ] Add a ManagedConsumer solution containing the translated project/provider
+- [x] Add a ManagedConsumer solution containing the translated project/provider
       and a practical client/server example; expose raw callbacks as well as the
       owning managed API. It must actually exchange and authenticate application data.
-- [ ] Add separate translation, build-only, test and oracle scripts. Translation
+- [x] Add separate translation, build-only, test and oracle scripts. Translation
       runs dotcc first, then the existing semantic postprocessor in place; compare
       raw versus optimized behavior and preserve manifest-based cleanup.
 - [ ] Publish and run NativeAOT tests, then validate Windows/macOS and additional
       architecture targets independently. Record unrun targets honestly.
-- [ ] Add bounded malformed-input/fuzz corpus runs, parallel independent connections,
+      **Linux x64 raw/optimized JIT/NativeAOT passes.** Windows/macOS and other
+      architectures remain unrun because no execution targets were available.
+- [x] Add bounded malformed-input/fuzz corpus runs, parallel independent connections,
       cancellation/abort/GC stress, and memory/handle-leak checks with timeouts.
-- [ ] Run appropriate compiler/runtime suites and SQLite regression checks after
+- [x] Run appropriate compiler/runtime suites and SQLite regression checks after
       shared fixes. Keep builds/tests serial and use an isolated campaign TMPDIR.
-- [ ] Record reproducible source-to-consumer commands, exact negotiated capabilities,
+- [x] Record reproducible source-to-consumer commands, exact negotiated capabilities,
       retained exclusions, dependency inventory, logs, and upgrade procedure.
 
 ## Completion criteria
