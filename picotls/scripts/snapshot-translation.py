@@ -36,6 +36,9 @@ def hashes(directory):
 
 def input_state():
     config = ROOT / "config"
+    inputs = json.loads((config / "inputs.json").read_text())
+    source = ROOT / "ref" / inputs["picotls"]["directory"]
+    core_sources = (config / "core-sources.txt").read_text().splitlines()
     host_sources = []
     for line in (config / "host-sources.txt").read_text().splitlines():
         name = line.strip()
@@ -44,8 +47,12 @@ def input_state():
         path = ROOT / name
         path.resolve().relative_to(ROOT)
         host_sources.append({"path": name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
-    return {"inputs": json.loads((config / "inputs.json").read_text()),
-            "core_sources": (config / "core-sources.txt").read_text().splitlines(),
+    return {"inputs": inputs,
+            "core_sources": core_sources,
+            "core_source_sha256": {name: hashlib.sha256((source / name).read_bytes()).hexdigest()
+                                   for name in core_sources if name.strip() and not name.startswith("#")},
+            "upstream_header_sha256": {str(path.relative_to(source)): hashlib.sha256(path.read_bytes()).hexdigest()
+                                       for path in sorted((source / "include").rglob("*.h"))},
             "defines": (config / "core-defines.txt").read_text().splitlines(),
             "host_sources": host_sources}
 
