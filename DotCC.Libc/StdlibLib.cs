@@ -208,6 +208,7 @@ public static unsafe partial class Libc
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void* realloc(void* p, int size)
     {
+        if (ReallocAlignedBlock(p, size, out var replacement)) { return replacement; }
         try { return _dbgHeap ? DbgRealloc(p, (nuint)size) : NativeMemory.Realloc(p, (nuint)size); }
         catch (OutOfMemoryException) { return null; }
     }

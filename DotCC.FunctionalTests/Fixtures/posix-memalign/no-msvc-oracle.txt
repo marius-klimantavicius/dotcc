@@ -1,0 +1,1 @@
+posix_memalign is a POSIX API absent from the Microsoft C runtime.

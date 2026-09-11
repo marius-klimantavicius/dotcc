@@ -1,0 +1,6 @@
+allocated=1 aligned=1 errno=1
+contents=1
+invalid=1 retained=1 errno=1
+wide-alignment=1
+overflow=1 retained=1
+zero=1

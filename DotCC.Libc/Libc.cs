@@ -52,7 +52,11 @@ public static unsafe partial class Libc
     /// <see cref="malloc"/> to the heap. <c>free(NULL)</c> is a no-op.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void free(void* p) { if (_dbgHeap) { DbgFree(p); } else { NativeMemory.Free(p); } }
+    public static void free(void* p)
+    {
+        if (FreeAlignedBlock(p)) { return; }
+        if (_dbgHeap) { DbgFree(p); } else { NativeMemory.Free(p); }
+    }
 
     // ---------------------------------------------------------------------
     // Debug heap — a minimal AddressSanitizer for the native heap. Opt-in two
@@ -72,8 +76,9 @@ public static unsafe partial class Libc
     /// block layout below. Turned on by compiling with <c>-fsanitize=address</c>
     /// (the emitted shell calls <see cref="EnableDebugHeap"/> at startup) or by
     /// setting <c>DOTCC_DEBUG_HEAP=1</c> at runtime (seeded here — the override
-    /// for an already-built program). Read on every malloc/free; the false path
-    /// is a single branch over the normal <see cref="NativeMemory"/> route.</summary>
+    /// for an already-built program). Ordinary allocations use the normal
+    /// <see cref="NativeMemory"/> route when false; free additionally recognizes
+    /// live posix_memalign allocations through their ownership table.</summary>
     internal static bool _dbgHeap =
         System.Environment.GetEnvironmentVariable("DOTCC_DEBUG_HEAP") == "1";
 
@@ -125,6 +130,7 @@ public static unsafe partial class Libc
     /// the corrupted block narrows down the writer).</summary>
     private static void DbgScanAll(string where)
     {
+        ScanAlignedBlocks(where);
         lock (_dbgLock)
         {
             for (var h = _dbgHead; h != null; h = *(byte**)(h + 16))

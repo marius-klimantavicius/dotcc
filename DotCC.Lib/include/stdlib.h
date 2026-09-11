@@ -1,6 +1,8 @@
 #ifndef _STDLIB_H
 #define _STDLIB_H
 
+#include <stddef.h>
+
 /* dotcc's <stdlib.h> — memory, conversions, RNG, environment, program
    control, and generic sort/search. Implementations: malloc/free/strtod/
    atof in DotCC.Libc/Libc.cs, the rest in DotCC.Libc/StdlibLib.cs. Length
@@ -23,6 +25,8 @@ void* malloc(int size);
 void* calloc(int n, int size);
 void* realloc(void* p, int size);
 void free(void* p);
+/* POSIX: returns an error number directly, without modifying errno. */
+int posix_memalign(void **memptr, size_t alignment, size_t size);
 
 /* String -> number conversions. strtod parses a leading double and (if endptr
    is non-null) reports where parsing stopped; atof is strtod without endptr. */
