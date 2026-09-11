@@ -5,6 +5,28 @@ repair is recorded at the end. Compiler artifact paths contain the latest retry,
 so the baseline table preserves the original outcomes rather than describing
 the current contents of those logs.
 
+## Integrated Linux x64 JIT results (2026-09-11)
+
+The historical baseline sections below preserve their original outcomes. Current
+unchanged-core translation, nine-file source-linking and semantic postprocessing
+pass (`artifacts/translation/emission-fixes-retry.log`, `success.json`). The real
+optimized generated product and BCL provider build successfully.
+
+| Executed check | Result | Evidence under `artifacts/` |
+| --- | --- | --- |
+| Actual emitted type ABI | All 92 native size/alignment/offset comparisons pass | `translated-abi/optimized/`, product `TranslatedAbi` execution |
+| Actual provider vectors | 321 checks pass, including symmetric/AEAD/HKDF, P256, DER/PSS, certificate and direct allocation/lifetime/ticket tests | `translation/provider-vectors.log` |
+| Direct upstream utility ports | Eight cases, 232 checks pass | `translation/upstream-vectors.log` |
+| Translated ↔ translated TLS | 9669 assertions pass: both suites/identities, HRR, mTLS, fragmentation, authenticated CertificateVerify/Finished corruption, record/authentication failures, tickets, stress and eight concurrent connections | `translation/` TLS execution log |
+| Translated ↔ native and SslStream processes | All 56 scenarios pass in both roles, including key update, mTLS, authentication failures, bad key usage and malicious unoffered ALPN | `managed-peer/run-r9nxk7zy/`, `translation/managed-peer-first.json` |
+
+The TLS assertion count includes fragmentation pump iterations and may vary with
+fresh ECDSA signature/record lengths. The driver retains raw logs and compares all
+public output except that single count. Test scenario identities and peer receipts
+remain exact. Raw/optimized equivalence, integrated NativeAOT, real-handshake
+allocation-failure sweeps and final broad compiler/SQLite regressions remain
+pending at this checkpoint. Windows, macOS and other architectures are unrun.
+
 ## P0/P1 baseline
 
 Executed on 2026-09-11 on the existing `sqlite` branch. P0 is complete; P1

@@ -1,19 +1,20 @@
 # Translate picotls to C# with dotcc
 
-Status: **P0 complete; P1 actual-header metadata passes; P2 repairs in progress**
-(2026-09-11). Generic BCL-only pthread and `posix_memalign` implementations pass
-unit, native/translated fixture, and Linux x64 NativeAOT validation. Compiler
-repairs now emit all three unchanged core objects without diagnostics. The
-native ABI probe exposed and repaired bitfield tail-byte reuse; actual-header
-metadata matches the native oracle. Full source-linking and semantic
-postprocessing now succeed for nine generated C# files, with raw/optimized
-snapshots and provenance retained. Anonymous-member reuse, array-element
-conversion and noreturn-flow repairs pass 33 selected units, 18 functional
-fixtures and native comparisons. Actual provider compilation and emitted-type
-runtime ABI validation remain outstanding. BCL provider/facade sources and
-independent TLS peers are being developed concurrently; no translated TLS or
-complete provider is claimed. See [validation.md](validation.md),
-[blockers.md](blockers.md), and [crypto-provider.md](crypto-provider.md).
+Status: **P0–P2 compiler and emitted ABI gates pass; integrated P3/P4 Linux x64
+JIT validation passes; P5 raw/NativeAOT campaign remains in progress**
+(2026-09-11). Generic BCL-only pthread and `posix_memalign` pass unit,
+native/translated fixture, and Linux x64 NativeAOT validation. All three unchanged
+core objects emit without diagnostics; full source-linking and semantic
+postprocessing produce the nine-file product with retained raw/optimized
+snapshots and input provenance. Actual emitted ABI checks pass all 92 native
+comparisons. The optimized product passes 321 provider checks, eight upstream
+utility ports with 232 checks, the complete current TLS fixture suite (9669
+assertions), and 56 independent native picotls/SslStream process scenarios.
+Raw-product equivalence, integrated NativeAOT, real-handshake allocation-failure
+sweeps, remaining applicable upstream cases, and broad compiler/SQLite regressions
+are still being completed. Windows/macOS and additional architectures remain
+unrun. See [validation.md](validation.md), [blockers.md](blockers.md), and
+[crypto-provider.md](crypto-provider.md).
 Campaign working directory: `<repo>/picotls/`.
 
 ## Objective and boundaries
@@ -180,12 +181,11 @@ initial profile is unavailable on the running platform.
 - [x] Prototype BCL capability/encoding checks: cloneable hashes, AES-GCM,
       raw P-256 agreement, ECDSA DER signatures, RSA-PSS and X.509/name checks.
       These are provider feasibility probes, not completion of TLS translation.
-- [ ] Validate ABI layouts and how appended native context storage holds managed
+- [x] Validate ABI layouts and how appended native context storage holds managed
       handles. Decide the provider registration and callback failure contracts.
-      **Partial:** 92 native/C# mirror comparisons and appended hash/AEAD handle
-      lifetime checks pass; registration/failure design is recorded. Actual dotcc
-      header metadata now matches the native oracle after a bitfield-tail repair;
-      full emitted-type runtime checks await a buildable core project.
+      Native/C# mirrors and actual emitted runtime types each pass 92 comparisons;
+      actual-header metadata passes 64 checks. Appended handle lifetime and
+      callback failure/registration checks pass against the actual provider.
 - [x] Save every observed real-source blocker with command, reduced reproducer and expected
       native behavior. Select an initial source/object linking approach; preserve
       multi-translation-unit boundaries for static and inline semantics. Source
@@ -197,19 +197,19 @@ Chained token pasting, diagnostic format annotations, GNU thread-storage,
 extern qualified callbacks, qualified specifier runs, inline enum types and
 const pointer tails have been repaired with regressions. The bitfield-tail
 layout repair passes actual-header metadata and a native/emitted/AOT storage
-reducer. Main-core body parsing continues to expose further generic cases;
-see [blockers.md](blockers.md) for exact current diagnostics. All remaining
+reducer. All unchanged core sources now emit, source-link, postprocess and compile;
+see [blockers.md](blockers.md) for B1–B19 repairs and regression evidence. All remaining
 phases are authorized.
 
-- [ ] For each parse, IR, emission or runtime failure: reduce it; add a failing
+- [x] For each parse, IR, emission or runtime failure: reduce it; add a failing
       compiler/functional regression; fix the shared implementation; run relevant
       tests; retry the same real picotls files; record the result; commit locally.
-- [ ] Cover encountered callback macros, nested function pointers, aggregates,
+- [x] Cover encountered callback macros, nested function pointers, aggregates,
       bitfields, compound literals, inline functions and cross-unit symbols based
       on actual failures, rather than speculative rewrites.
-- [ ] Resolve remaining platform needs using dotcc runtime/BCL adapters, including
+- [x] Resolve remaining platform needs using dotcc runtime/BCL adapters, including
       default time helpers even when a custom context callback is supplied.
-- [ ] Emit `TranslatedPicotls` with class `Picotls`, namespace `Managed.Security`,
+- [x] Emit `TranslatedPicotls` with class `Picotls`, namespace `Managed.Security`,
       and approximately 100 KiB function groups. Retain shared `Picotls.cs` and
       `Picotls.GlobalUsings.g.cs`; whole functions may exceed the byte target.
 - [ ] Build the unoptimized generated project with typed provider scaffolding.
@@ -219,9 +219,9 @@ phases are authorized.
 
 - [ ] Implement registration, stable function pointers, context ownership, errors,
       secure randomness and time; test allocation/abort/disposal/GC behavior.
-- [ ] Implement hash cloning/finalization, AEAD/cipher callbacks, P-256 exchange,
+- [x] Implement hash cloning/finalization, AEAD/cipher callbacks, P-256 exchange,
       signing and certificate verification. Verify every advertised algorithm.
-- [ ] Run independent known-answer and negative vectors for hashes/HMAC/HKDF,
+- [x] Run independent known-answer and negative vectors for hashes/HMAC/HKDF,
       AEAD, raw key agreement and signatures; cover split buffers and overlaps.
 - [ ] Prove capability detection and failure behavior on each target. Record
       unsupported algorithms explicitly; never advertise a partially implemented
@@ -229,16 +229,16 @@ phases are authorized.
 
 ### P4 — Real TLS and interoperability
 
-- [ ] Run translated-client ↔ translated-server exchanges with disposable trusted
+- [x] Run translated-client ↔ translated-server exchanges with disposable trusted
       certificates: both AES suites, ECDSA/RSA authentication, ALPN and SNI.
-- [ ] Exercise fragmented/coalesced handshakes and records, empty and large payloads,
+- [x] Exercise fragmented/coalesced handshakes and records, empty and large payloads,
       exporter agreement, HelloRetryRequest, key updates, alerts and close_notify.
-- [ ] Run both translated/native client/server pairings, then an independent
+- [x] Run both translated/native client/server pairings, then an independent
       TLS 1.3 peer such as BCL `SslStream` or OpenSSL. Use local transports.
-- [ ] Test untrusted, expired, wrong-name and incompatible certificates, invalid
+- [x] Test untrusted, expired, wrong-name and incompatible certificates, invalid
       CertificateVerify/Finished, corrupt tags, truncated/oversized messages,
       unsupported algorithms and failure cleanup; authentication must fail closed.
-- [ ] Add session tickets, PSK-DHE resumption, expiry/rotation and rejection tests;
+- [x] Add session tickets, PSK-DHE resumption, expiry/rotation and rejection tests;
       confirm early data stays disabled in the default profile.
 - [ ] Port applicable upstream tests with a case-level pass/skip/blocker inventory.
       No blanket skip for the provider's missing features and no claim of full
