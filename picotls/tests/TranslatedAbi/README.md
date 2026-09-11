@@ -21,13 +21,15 @@ buildable core before claiming a pass.
 
 `translate.sh` rebuilds the current compiler and semantic postprocessor by
 default (`--no-build-tools` opts out), fetches verified pinned sources, translates
-the three selected units, snapshots raw manifest-owned files, and postprocesses
+the three unchanged core units plus authored adapters listed separately in
+`config/host-sources.txt`, snapshots raw manifest-owned files, and postprocesses
 the product in place. Raw snapshots remove only stale files listed by the prior
 compiler manifest. `build-only.sh` compiles the owning `src/BclProvider` project
 when present and otherwise the emitted core; `--core` or `--raw` explicitly
 selects the respective standalone core variant. It does not fetch, retranslate,
 run tests, or publish. Translation provenance and
-raw/optimized hashes are recorded only after successful postprocessing in
+raw/optimized hashes and adapter source hashes are recorded only after successful
+postprocessing (with inputs verified unchanged throughout translation) in
 `artifacts/translation/success.json`.
 
 `scripts/test-libc-dependencies.sh` independently retains the prerequisite

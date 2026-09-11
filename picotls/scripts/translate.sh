@@ -21,9 +21,13 @@ sources=()
 while IFS= read -r source; do
     [[ -z "$source" || "$source" == \#* ]] || sources+=("$source_dir/$source")
 done < "$PICOTLS_ROOT/config/core-sources.txt"
+while IFS= read -r source; do
+    [[ -z "$source" || "$source" == \#* ]] || sources+=("$PICOTLS_ROOT/$source")
+done < "$PICOTLS_ROOT/config/host-sources.txt"
 logs="$PICOTLS_ROOT/artifacts/translation"
 mkdir -p "$logs"
 rm -f "$logs/success.json"
+python3 "$PICOTLS_ROOT/scripts/snapshot-translation.py" inputs
 timeout --kill-after=10s "${PICOTLS_TRANSLATE_TIMEOUT:-600}s" \
     dotnet "$compiler" -std=c17 "${PICOTLS_DEFINES[@]}" -I "$source_dir/include" \
     "${sources[@]}" --emit=managedlib --class-name Picotls --namespace Managed.Security \

@@ -34,6 +34,22 @@ def hashes(directory):
             for name in sorted(files(directory) + [MANIFEST, PROJECT])}
 
 
+def input_state():
+    config = ROOT / "config"
+    host_sources = []
+    for line in (config / "host-sources.txt").read_text().splitlines():
+        name = line.strip()
+        if not name or name.startswith("#"):
+            continue
+        path = ROOT / name
+        path.resolve().relative_to(ROOT)
+        host_sources.append({"path": name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    return {"inputs": json.loads((config / "inputs.json").read_text()),
+            "core_sources": (config / "core-sources.txt").read_text().splitlines(),
+            "defines": (config / "core-defines.txt").read_text().splitlines(),
+            "host_sources": host_sources}
+
+
 if sys.argv[1:] == ["copy"]:
     # The CLI emits this status only after WriteCSharpFiles and the project
     # write succeed. translate.sh truncates the log each invocation. Relying on
@@ -56,12 +72,14 @@ if sys.argv[1:] == ["copy"]:
             raise SystemExit(f"Refusing to overwrite symlink: {RAW / name}")
         shutil.copyfile(PRODUCT / name, RAW / name)
     print(f"Preserved {len(current)} raw generated sources in {RAW}")
+elif sys.argv[1:] == ["inputs"]:
+    (ROOT / "artifacts/translation/input-state.json").write_text(json.dumps(input_state(), indent=2) + "\n")
 elif sys.argv[1:] == ["record"]:
+    inputs = input_state()
+    if inputs != json.loads((ROOT / "artifacts/translation/input-state.json").read_text()):
+        raise SystemExit("Translation inputs changed during emission/postprocessing; rerun translation")
     record = {"format": "picotls-translation-v1", "raw": hashes(RAW),
-              "optimized": hashes(PRODUCT),
-              "inputs": json.loads((ROOT / "config/inputs.json").read_text()),
-              "core_sources": (ROOT / "config/core-sources.txt").read_text().splitlines(),
-              "defines": (ROOT / "config/core-defines.txt").read_text().splitlines()}
+              "optimized": hashes(PRODUCT), **inputs}
     record["tool_sha256"] = {
         str(path.relative_to(ROOT.parent)): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in [ROOT.parent / "DotCC/bin/Release/net10.0/dotcc.dll",
@@ -70,4 +88,4 @@ elif sys.argv[1:] == ["record"]:
     (ROOT / "artifacts/translation/success.json").write_text(json.dumps(record, indent=2) + "\n")
     print("Translation and in-place semantic postprocessing completed; behavior remains to be tested.")
 else:
-    raise SystemExit("Usage: snapshot-translation.py copy|record")
+    raise SystemExit("Usage: snapshot-translation.py inputs|copy|record")
