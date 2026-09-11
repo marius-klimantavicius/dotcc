@@ -92,5 +92,7 @@ does not prove that its preprocessing or platform dependencies are resolved.
 - [IncrementalHash.Clone](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.incrementalhash.clone?view=net-10.0): independent hash-state cloning. The installed .NET 10 reference pack also exposes this method and `GetCurrentHash`.
 - [ECDiffieHellman.DeriveRawSecretAgreement](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.ecdiffiehellman.deriverawsecretagreement?view=net-10.0): obtain the raw agreement for the translated TLS key schedule; do not substitute a BCL method that applies an additional KDF.
 
-These API checks establish a proposed design, not successful provider behavior on
-any target platform. P1/P3 must verify the actual APIs and byte encodings used.
+These initial reference checks established the proposed design. P1 now exercises
+the actual APIs and encodings on Linux x64; see [crypto-provider.md](crypto-provider.md)
+and [validation.md](validation.md). They do not establish a complete provider or
+translated TLS execution; P3/P4 retain that work.

@@ -1,9 +1,12 @@
 # Translate picotls to C# with dotcc
 
-Status: **plan saved; implementation not started**. Source and API reconnaissance
-is recorded in [source.md](source.md), including the latest upstream commit observed
-on 2026-09-11. No parsing, emission, crypto-provider, or interoperability claim is
-made yet. Campaign working directory: `<repo>/picotls/`.
+Status: **P0 complete; P1 feasibility work executed, translated ABI validation
+blocked** (2026-09-11). Pinned inputs and the native oracle are established;
+BCL capabilities and native/C# boundary mirrors pass on Linux x64. Separate
+real-core compiler probes expose three recorded blockers. See
+[validation.md](validation.md), [blockers.md](blockers.md), and
+[crypto-provider.md](crypto-provider.md). P2–P5 have not started; no translated
+TLS or complete provider is claimed. Campaign working directory: `<repo>/picotls/`.
 
 ## Objective and boundaries
 
@@ -37,10 +40,11 @@ picotls/OpenSSL are allowed as test oracles in separate processes.
 Unsafe pointers and function-pointer tables are valid APIs. Keep callback pointers
 in canonical static fields and register providers explicitly; no dynamic loading
 or reflection-based dispatch. Target .NET 10/C# 14 and preserve NativeAOT support.
-Commit locally after each coherent tested change; do not push. Save this plan on
-the current branch without disturbing SQLite. At implementation start, create or
-switch to a `picotls` work branch from the required dotcc baseline, preserving any
-existing work. This planning request does not start implementation or agents.
+Commit locally after each coherent tested change; do not push. Keep this plan and
+picotls implementation on the `sqlite` branch, preserving existing SQLite work.
+Do not create or switch to a separate picotls branch. The user subsequently
+authorized a coordinator and sub-agents for P0 and P1 only; stop before P2 until
+the user directs continuation.
 
 ## Workspace and repeatable inputs
 
@@ -148,28 +152,34 @@ initial profile is unavailable on the running platform.
 
 ### P0 — Freeze inputs and establish the campaign
 
-- [ ] Confirm the current latest upstream revision at implementation start; keep
+- [x] Confirm the current latest upstream revision at implementation start; keep
       or deliberately replace the recorded snapshot, with archive hash/provenance.
-- [ ] Create the work branch and repeatable verified fetch recipe, including
+- [x] Stay on the `sqlite` branch and create a repeatable verified fetch recipe, including
       exact test-submodule revisions and licenses. Preserve original sources.
-- [ ] Record the effective C source list, includes, feature definitions, LP64
+- [x] Record the effective C source list, includes, feature definitions, LP64
       assumptions, endianness, and .NET/platform matrix. Avoid accidental optional
       dependencies caused by CMake discovering system libraries.
-- [ ] Build a pinned native picotls oracle with a real crypto backend and run its
+- [x] Build a pinned native picotls oracle with a real crypto backend and run its
       relevant upstream tests. Record enabled algorithms and oracle dependencies.
 
 ### P1 — Prove the compiler and BCL boundaries
 
-- [ ] Preprocess the core files separately with dotcc; inventory unresolved libc,
-      OS and header declarations, crypto symbols, exported APIs and callback types.
-- [ ] Prototype BCL capability/encoding checks: cloneable hashes, AES-GCM,
+- [x] Attempt preprocessing of the core files separately with dotcc; inventory
+      unresolved libc, OS and header declarations, crypto symbols, exported APIs
+      and callback types. All three produce invalid residual token-paste output;
+      see [compiler-boundary.md](compiler-boundary.md) and saved diagnostics.
+- [x] Prototype BCL capability/encoding checks: cloneable hashes, AES-GCM,
       raw P-256 agreement, ECDSA DER signatures, RSA-PSS and X.509/name checks.
       These are provider feasibility probes, not completion of TLS translation.
 - [ ] Validate ABI layouts and how appended native context storage holds managed
       handles. Decide the provider registration and callback failure contracts.
-- [ ] Save every real-source blocker with command, smallest reproducer and expected
+      **Partial:** 92 native/C# mirror comparisons and appended hash/AEAD handle
+      lifetime checks pass; registration/failure design is recorded. Actual dotcc
+      layout metadata and emitted types remain blocked by the header parse failure.
+- [x] Save every observed real-source blocker with command, reduced reproducer and expected
       native behavior. Select an initial source/object linking approach; preserve
-      multi-translation-unit static and inline semantics.
+      multi-translation-unit boundaries for static and inline semantics. Source
+      linking is selected; actual-core linked execution requires P2.
 
 ### P2 — Repair dotcc until the real core emits and compiles
 
