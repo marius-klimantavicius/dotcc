@@ -32,6 +32,35 @@ public sealed class AttributeTests
         return path;
     }
 
+    [Theory]
+    [InlineData("__attribute__", "format")]
+    [InlineData("__attribute", "__format__")]
+    public void Gnu_format_callback_and_function_annotations_preserve_declarations(string introducer, string name)
+    {
+        var src = WriteTemp($$"""
+            struct logger { void (*cb)(const char *, ...) {{introducer}}(({{name}}(printf, 1, 2))); };
+            {{introducer}}(({{name}}(printf, 1, 2))) void log(const char *format, ...) { }
+            void declared(const char *format, ...) {{introducer}}(({{name}}(printf, 1, 2)));
+            int main(void) { struct logger logger = {log}; return logger.cb == 0; }
+            """);
+        try
+        {
+            var emitted = Compiler.EmitCSharp(new[] { src });
+            emitted.ShouldContain(" cb;");
+            emitted.ShouldContain("void log(");
+            emitted.ShouldNotContain("__attribute");
+        }
+        finally { File.Delete(src); }
+    }
+
+    [Fact]
+    public void Unknown_Gnu_attribute_is_not_silently_discarded()
+    {
+        var src = WriteTemp("__attribute__((aligned(16))) int value;");
+        try { Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { src })); }
+        finally { File.Delete(src); }
+    }
+
     [Fact]
     public void Attributes_on_declarations_are_accepted_and_ignored()
     {

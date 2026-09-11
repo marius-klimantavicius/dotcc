@@ -479,6 +479,9 @@ symbols:
   - FnPtrArrayName       # 194 array name/bounds and pointer qualifiers
   - PP_OTHER            # 195 non-C preprocessing token; must not reach the parser
 
+  - __attribute__       # 196 GNU diagnostic attribute introducer
+  - GnuFormatAttr       # 197 format annotation (no ABI effect)
+
 productions:
   # Start production. Single-non-terminal — trimmed at parse time so the root
   # Item carries FnList's already-built C# source string.
@@ -536,6 +539,8 @@ productions:
       #   plus static-modifier variants of each.
       # Then `Fn → FnSig Block` is a function definition, `Fn → FnSig ';'`
       # is a prototype. Saves 4 productions overall (8 vs 12).
+      - { lhs: Fn, rhs: [GnuFormatAttr, Fn], action: gnuFormatFn }
+      - { lhs: Fn, rhs: [FnSig, GnuFormatAttr, ';'], action: gnuFormatProto }
       - { lhs: Fn, rhs: [FnSig, Block], action: funcDef }
       - { lhs: Fn, rhs: [FnSig, ';'],    action: funcProto }
       # Struct declaration: `struct ID { MemberList } ;`. Disambiguates from
@@ -1143,6 +1148,7 @@ productions:
       # take `(`, the others take ID/`:`). Ubiquitous in callback tables / vtables
       # (chibi's `struct sigaction { void (*sa_handler)(int); … }`). Lowers to a
       # `delegate*` field via FnPtrType, like every other fn-ptr position.
+      - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')', GnuFormatAttr, ';'], action: structFnPtrFormatMember }
       - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')', ';'], action: structFnPtrMember }
       - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ')', ';'],            action: structFnPtrMemberNoArgs }
       - { lhs: Member, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')', ';'], action: structFnPtrStorageMember }
@@ -1759,6 +1765,12 @@ productions:
       - { lhs: Attr, rhs: [ID, ':', ':', ID, '(', ')'],              action: attrNsCallEmpty }
       - { lhs: Attr, rhs: [ID, ':', ':', ID, '(', E, ')'],           action: attrNsCall }
 
+  # Only the diagnostic format annotation is supported; semantic GNU
+  # attributes stay errors instead of silently changing layout or calling ABI.
+  - derivation: none
+    rules:
+      - { lhs: GnuFormatAttr, rhs: [__attribute__, '(', '(', ID, '(', ID, ',', E, ',', E, ')', ')', ')'], action: gnuFormatAttr }
+
 lexer:
   root:
     # Preprocessor directives — single-token matches. Longest-match in the byte
@@ -2089,6 +2101,7 @@ lexer:
     # octal literal syntax (a leading 0 there is just decimal), so the Num
     # visitor converts the octal value rather than emit it verbatim.
     - { symbol: NUM,    match: '[0-9](''?[0-9])*' }
+    - { symbol: __attribute__, match: '__attribute(__)?' }
     - { symbol: ID,     match: '[a-zA-Z_][a-zA-Z_0-9]*' }
 
     # Whitespace + newlines: ignored. The preprocessor uses SourcePosition.Line

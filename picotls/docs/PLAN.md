@@ -8,7 +8,9 @@ is now repaired; the retry exposes a later callback-attribute parse failure. See
 [validation.md](validation.md), [blockers.md](blockers.md), and
 [crypto-provider.md](crypto-provider.md). P2 has started with this single compiler
 repair; P3–P5 have not started. No translated
-TLS or complete provider is claimed. Campaign working directory: `<repo>/picotls/`.
+TLS or complete provider is claimed. The user has now authorized the coordinator
+and sub-agents to implement BCL-only, NativeAOT-compatible pthread and aligned
+allocation support and continue through the remaining phases. Campaign working directory: `<repo>/picotls/`.
 
 ## Objective and boundaries
 
@@ -44,10 +46,10 @@ in canonical static fields and register providers explicitly; no dynamic loading
 or reflection-based dispatch. Target .NET 10/C# 14 and preserve NativeAOT support.
 Commit locally after each coherent tested change; do not push. Keep this plan and
 picotls implementation on the `sqlite` branch, preserving existing SQLite work.
-Do not create or switch to a separate picotls branch. The user subsequently
-authorized a coordinator and sub-agents for P0 and P1, then explicitly authorized
-fixing chained `##`. Stop after that repair and its validation until the user
-directs further work.
+Do not create or switch to a separate picotls branch. The user authorized a coordinator and sub-agents to continue all remaining
+phases, starting with generic BCL-only, NativeAOT-compatible pthread and
+`posix_memalign` support. Continue until the acceptance criteria pass; record any
+unavailable execution targets or external blockers honestly.
 
 ## Workspace and repeatable inputs
 
@@ -188,7 +190,7 @@ initial profile is unavailable on the running platform.
 
 Chained `##` is fixed with compiler and runnable callback regressions. The same
 three upstream units now pass that point and stop at `picotls.h:845`'s callback
-format attribute. Remaining repairs are not yet authorized; see [blockers.md](blockers.md).
+format attribute. Remaining repairs are authorized and underway; see [blockers.md](blockers.md).
 
 - [ ] For each parse, IR, emission or runtime failure: reduce it; add a failing
       compiler/functional regression; fix the shared implementation; run relevant

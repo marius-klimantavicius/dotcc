@@ -234,6 +234,18 @@ internal sealed partial class IrBuilder
         foreach (var f in ordered) { onFn(f); }
     }
 
+    private void ValidateGnuFormatAttribute(Item item)
+    {
+        if (item.Content is not C.GnuFormatAttr attr ||
+            Tok(attr.Arg3) is not ("format" or "__format__"))
+            throw new IrUnsupportedException("only GNU format attributes are supported");
+        // This annotation affects diagnostics only. Never erase unknown GNU
+        // attributes: packed/aligned/calling-convention attributes affect ABI.
+        if (Tok(attr.Arg5) is not ("printf" or "__printf__" or "scanf" or "__scanf__" or
+            "strftime" or "__strftime__" or "strfmon" or "__strfmon__" or "gnu_printf" or "gnu_scanf"))
+            throw new IrUnsupportedException("unsupported GNU format archetype: " + Tok(attr.Arg5));
+    }
+
     private void BuildTopLevel(Item fn)
     {
         switch (fn.Content)
@@ -251,6 +263,14 @@ internal sealed partial class IrBuilder
                 _pendingAttrNoreturn = false;
                 _pendingAttrDeprecated = null;
                 _pendingAttrNodiscard = null;
+                break;
+            case C.GnuFormatFn a:
+                ValidateGnuFormatAttribute(a.Arg0);
+                BuildTopLevel(a.Arg1);
+                break;
+            case C.GnuFormatProto a:
+                ValidateGnuFormatAttribute(a.Arg1);
+                RegisterProto(a.Arg0);
                 break;
             case C.FuncDef d: BuildFuncDef(d.Arg0, d.Arg1); break;
             case C.ExternFnDef d: BuildFuncDef(d.Arg1, d.Arg2); break;
@@ -1165,6 +1185,10 @@ internal sealed partial class IrBuilder
                 // `Ret (*name)(params);` — a function-pointer member. Same
                 // FnPtrType lowering as the typedef/param fn-ptr forms (codegen
                 // emits a `delegate*` field).
+                case C.StructFnPtrFormatMember sm:
+                    ValidateGnuFormatAttribute(sm.Arg8);
+                    fields.Add(new StructField(Tok(sm.Arg3), FnPtrType(sm.Arg0, sm.Arg6)));
+                    break;
                 case C.StructFnPtrMember sm:
                     fields.Add(new StructField(Tok(sm.Arg3), FnPtrType(sm.Arg0, sm.Arg6)));
                     break;

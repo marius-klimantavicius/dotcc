@@ -120,3 +120,18 @@ Executed serially on the same Linux x64 environment with
 
 Actual translated picotls ABI/TLS behavior remains unverified. No further P2
 repair or P3–P5 work is included.
+
+## P2 GNU format-annotation repair (2026-09-11)
+
+The generic grammar accepts the encountered diagnostic annotation without
+changing the callback type. `dotnet build DotCC/DotCC.csproj -c Release` passed
+with no warnings/errors; `dotnet test DotCC.Tests/DotCC.Tests.csproj -c Release
+--filter FullyQualifiedName~AttributeTests` passed all 12 tests. The
+`gnu-format-attribute` functional fixture passes with `callback=42`, exercising
+an actual variadic callback and `va_arg` consumption. The allocation agent's
+combined 34-test selection independently reran these attribute tests.
+`python3 picotls/scripts/probe-compiler.py` now passes the reduced
+callback-format case and all three actual files advance to the `__thread`
+spelling at header line 1583. Full-core translation remains blocked.
+Logs: `artifacts/attribute-build.log`, `attribute-tests.log`,
+`attribute-retry.log` and `artifacts/compiler/`.

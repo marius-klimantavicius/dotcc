@@ -67,7 +67,7 @@ build command/output too. A generic libc implementation and declaration belong
 in P2, with alignment, invalid arguments, allocation failure and `free` ownership
 tests. An unselected aligned backend does not remove this upstream API body.
 
-## B4: format attribute on a function-pointer member — open
+## B4: format attribute on a function-pointer member — fixed
 
 After B1's repair, all three units stop at `picotls.h:845`, at
 `__attribute__((format(printf, 4, 5)))` following the variadic callback declarator
@@ -77,7 +77,25 @@ The declaration remains present when logging is disabled. The reduced input is
 Its native compile/run and dotcc preprocessing pass; dotcc object emission
 reproduces the same parse error with exit 2. The compiler probe records all four
 commands and results.
-No attribute/parser repair is included in the chained-paste change.
+A subsequent generic grammar repair accepts the GNU diagnostic `format`
+annotation on function-pointer members, leading function declarations/definitions,
+and trailing function prototypes. Both `__attribute__`/`__attribute` and
+`format`/`__format__` spellings work. Unknown GNU attributes remain errors;
+ABI-affecting annotations are never silently removed. Format-string diagnostics
+are not implemented by this repair. The syntax and diagnostic-only contract are
+based on [GCC's attribute documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Attributes.html).
+Twelve attribute unit tests pass. The unchanged three core units now get past
+line 845 and stop at `picotls.h:1583`'s GNU thread-storage spelling.
+
+## B5: GNU `__thread` storage spelling — open
+
+The unchanged header declares `extern PTLS_THREADLOCAL ...` at line 1583, and
+its non-Windows macro expands to `__thread`. This is the GNU spelling for
+thread storage, not an OS service. Dotcc already supports C11 `_Thread_local`
+with zero-initialized file-scope storage. The reduced case is
+[`gnu-thread-local.c`](../tests/compiler-blockers/gnu-thread-local.c).
+The repair must retain that storage contract and the documented limitations,
+rather than erase the specifier or select a different OS branch.
 
 ## Remaining uncertainty
 

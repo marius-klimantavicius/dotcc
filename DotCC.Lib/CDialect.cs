@@ -11,10 +11,9 @@ namespace DotCC;
 /// — the year drives <c>__STDC_VERSION__</c>. <c>c89</c> is omitted on
 /// purpose: ISO renamed the original C89 standard to C90 with no semantic
 /// change, so the single canonical spelling is enough. <c>gnu*</c>
-/// variants are also omitted: dotcc implements no GNU extensions
-/// (no <c>__attribute__</c>, no <c>({…})</c> statement expressions, no
-/// nested functions, no case ranges), so a parallel <c>gnu</c> surface
-/// would be dead toggle space.
+/// variants are also omitted: dotcc accepts a narrow GNU format-annotation
+/// extension, but has no general GNU dialect (no statement expressions,
+/// nested functions, or case ranges).
 /// </summary>
 /// <remarks>
 /// v1 scope is intentionally narrow: <c>-std=</c> changes which
