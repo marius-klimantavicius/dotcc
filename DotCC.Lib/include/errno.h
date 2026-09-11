@@ -45,6 +45,9 @@
 #define EPIPE    32
 #define EDOM     33
 #define ERANGE   34
+#define EDEADLK  35
+#define ENOTSUP  95
+#define ETIMEDOUT 110
 #define EILSEQ   84
 
 #endif

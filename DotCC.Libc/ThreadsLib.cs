@@ -141,6 +141,7 @@ public static unsafe partial class Libc
         }
         finally
         {
+            RunPthreadDtors();                               // POSIX keys used by a C11-created thread
             RunTssDtors();                                   // C11: dtors run at thread exit
             if (st.Detached) { _threads.TryRemove(id, out _); }
         }

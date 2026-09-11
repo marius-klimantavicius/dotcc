@@ -1,0 +1,1 @@
+MSVC has no POSIX pthread.h.

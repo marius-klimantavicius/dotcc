@@ -73,6 +73,8 @@ public static unsafe partial class Libc
     public const int EPIPE = 32;    // Broken pipe
     public const int EDOM = 33;     // Numerical argument out of domain   (C std)
     public const int ERANGE = 34;   // Numerical result out of range      (C std)
+    public const int EDEADLK = 35;  // Resource deadlock avoided
+    public const int ENOTSUP = 95;  // Operation not supported
     public const int EILSEQ = 84;   // Invalid or incomplete multibyte/wide char (C std)
     // ---- socket/network errnos (Linux/glibc asm-generic values; SocketLib) ----
     public const int ENOTSOCK = 88;        // Socket operation on non-socket
@@ -134,6 +136,9 @@ public static unsafe partial class Libc
         EPIPE   => L("Broken pipe\0"u8),
         EDOM    => L("Numerical argument out of domain\0"u8),
         ERANGE  => L("Numerical result out of range\0"u8),
+        EDEADLK => L("Resource deadlock avoided\0"u8),
+        ENOTSUP => L("Operation not supported\0"u8),
+        ETIMEDOUT => L("Connection timed out\0"u8),
         EILSEQ  => L("Invalid or incomplete multibyte or wide character\0"u8),
         _       => L("Unknown error\0"u8),
     };

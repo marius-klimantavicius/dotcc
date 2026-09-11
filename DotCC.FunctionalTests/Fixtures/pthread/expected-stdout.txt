@@ -1,0 +1,4 @@
+count=400 once=1 sum=10 destructors=4
+condition=3 self=1
+timeout=1
+recursive=1

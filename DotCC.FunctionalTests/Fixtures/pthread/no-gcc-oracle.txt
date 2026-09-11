@@ -1,0 +1,1 @@
+The generic GCC oracle does not pass -pthread or feature-test macros. Validated independently with cc -D_POSIX_C_SOURCE=200809L -pthread.
