@@ -5084,7 +5084,7 @@ public sealed class ZigFrontendTests
             "    return 7;\n" +
             "}\n");
         cs.ShouldContain("main");
-        cs.ShouldNotContain("addition"); // the test name string is dropped, not emitted
+        cs.ShouldNotContain("\"addition\""); // the test name literal is dropped; embedded libc comments are unrelated
     }
 
     [Fact]
