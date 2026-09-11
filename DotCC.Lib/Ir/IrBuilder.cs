@@ -1038,9 +1038,13 @@ internal sealed partial class IrBuilder
     private void BuildStructDef(string? tag, Item memberList, string? alias, bool isUnion)
     {
         var canonical = tag ?? alias ?? throw new IrUnsupportedException("struct with neither tag nor typedef name");
-        var fields = BuildStructFields(memberList, canonical);
         if (_emittedTypes.Add(canonical))
         {
+            // Shared headers can repeat this named definition in later source
+            // units. Build its nested types and promotion routes only once:
+            // rebuilding would route later member accesses through fresh hidden
+            // fields absent from the already-emitted canonical definition.
+            var fields = BuildStructFields(memberList, canonical);
             _structFields[canonical] = fields;
             _structIsUnion[canonical] = isUnion;
             Types.Add(new StructTypeDef(canonical, fields, isUnion));
@@ -2035,7 +2039,7 @@ internal sealed partial class IrBuilder
     private static bool StmtTerminates(CStmt s) => s switch
     {
         Break or Continue or Return or Goto or ZigErrorThrow => true,
-        ExprStmt es => IsUnreachableExpr(es.Expr),
+        ExprStmt es => CFlowFacts.TerminatesExpression(es.Expr),
         Block b => b.Stmts.Count > 0 && StmtTerminates(b.Stmts[^1]),
         If f => f.Else is { } e && StmtTerminates(f.Then) && StmtTerminates(e),
         Labeled l => StmtTerminates(l.Body),

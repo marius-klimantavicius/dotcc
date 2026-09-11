@@ -3,9 +3,13 @@
 Status: **P0 complete; P1 actual-header metadata passes; P2 repairs in progress**
 (2026-09-11). Generic BCL-only pthread and `posix_memalign` implementations pass
 unit, native/translated fixture, and Linux x64 NativeAOT validation. Compiler
-repairs now emit the unchanged public header and hpke/pembase64 objects. The
+repairs now emit all three unchanged core objects without diagnostics. The
 native ABI probe exposed and repaired bitfield tail-byte reuse; actual-header
-metadata matches the native oracle. Full-core emission/build and emitted-type
+metadata matches the native oracle. Full source-linking and semantic
+postprocessing now succeed for nine generated C# files, with raw/optimized
+snapshots and provenance retained. Anonymous-member reuse, array-element
+conversion and noreturn-flow repairs pass 33 selected units, 18 functional
+fixtures and native comparisons. Actual provider compilation and emitted-type
 runtime ABI validation remain outstanding. BCL provider/facade sources and
 independent TLS peers are being developed concurrently; no translated TLS or
 complete provider is claimed. See [validation.md](validation.md),

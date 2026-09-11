@@ -711,8 +711,7 @@ internal sealed partial class CSharpBackend
                 // statement per operand, BRACED so a braceless nested body (`if (c)
                 // (a, b); else …`, `while (…) (a, b);`) stays a single statement. Peel
                 // parens / a void cast (`(void)(a, b)`, `api_check`) to find the comma.
-                var inner = es.Expr;
-                while (inner is Paren pp) { inner = pp.Inner; }
+                var inner = CFlowFacts.StatementValue(es.Expr);
                 // `unreachable()` (C23) → a real C# `throw`, NOT a plain call to
                 // the [DoesNotReturn] helper: C#'s CS0161 "not all code paths
                 // return" analysis only treats a literal `throw` as a control-flow
@@ -725,6 +724,18 @@ internal sealed partial class CSharpBackend
                 if (IsUnreachableCall(inner))
                 {
                     sb.Append(pad).Append("throw new System.Diagnostics.UnreachableException(\"unreachable() reached\");\n");
+                    break;
+                }
+                if (CFlowFacts.IsNoReturnCall(inner))
+                {
+                    // Keep the real call (including its effects), then supply
+                    // the explicit terminator C# requires. Braces preserve a
+                    // single statement in braceless if/else and loop bodies.
+                    sb.Append(pad).Append("{\n");
+                    var call = Hoist(sb, Pad(ind + 1), () => RenderStmtExpr(inner));
+                    sb.Append(Pad(ind + 1)).Append(call).Append(";\n");
+                    sb.Append(Pad(ind + 1)).Append("throw new System.Diagnostics.UnreachableException(\"A noreturn function returned.\");\n");
+                    sb.Append(pad).Append("}\n");
                     break;
                 }
                 if (inner is CondExpr { Type.Unqualified: CType.VoidType } ct)
@@ -743,7 +754,7 @@ internal sealed partial class CSharpBackend
                     else
                     {
                         sb.Append(pad).Append("{\n");
-                        foreach (var item in effects) { sb.Append(Pad(ind + 1)).Append(RenderStmtExpr(item)).Append(";\n"); }
+                        foreach (var item in effects) { Stmt(sb, new ExprStmt(item) { Pos = es.Pos }, ind + 1); }
                         sb.Append(pad).Append("}\n");
                     }
                 }
@@ -1187,7 +1198,7 @@ internal sealed partial class CSharpBackend
         // `unreachable()` (C23) lowers to a `throw` (see the ExprStmt emit), so a
         // section ending in it terminates — kept in sync so the switch machinery
         // doesn't append a dead `break;` after it (CS0162).
-        ExprStmt es => IsUnreachableCall(es.Expr),
+        ExprStmt es => CFlowFacts.TerminatesExpression(es.Expr),
         Block b => b.Stmts.Count > 0 && Terminates(b.Stmts[^1]),
         If f => f.Else is { } e && Terminates(f.Then) && Terminates(e),
         Labeled l => Terminates(l.Body),
@@ -1967,7 +1978,7 @@ internal sealed partial class CSharpBackend
                 // one in `_pending`.) Outside a hoistable context (e.g. a loop
                 // condition, re-evaluated each iteration) fall back to the inline
                 // stackalloc, which still binds in a pointer-initializer.
-                var lit = $"stackalloc {Cs(sa.Element)}[]{{ {string.Join(", ", sa.Elems.Select(Expr))} }}";
+                var lit = $"stackalloc {Cs(sa.Element)}[]{{ {string.Join(", ", sa.Elems.Select(element => Coerced(element, sa.Element)))} }}";
                 if (!_canHoist) { return (lit, PPrimary); }
                 var name = $"__cl{_clCounter++}";
                 _pending.Add($"{Cs(sa.Element)}* {name} = {lit}");

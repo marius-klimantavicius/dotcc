@@ -1,0 +1,1 @@
+The fixture checks dotcc's Linux LP64 layout: long is 8 bytes. MSVC's LLP64 long has a different alignment and size.

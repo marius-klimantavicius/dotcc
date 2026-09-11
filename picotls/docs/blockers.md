@@ -298,10 +298,55 @@ zero defaults and reject excess values. Validation: 21 selected units, four
 functional fixtures and native gcc parity pass; logs are in
 `artifacts/struct-expression-array/`. The main core now reaches B16.
 
-## B16: complete IPv6 socket address type — open
+## B16: complete IPv6 socket address type — fixed
 
 The unchanged main core's IR pass now reports
 `local object 'sin6' requires a complete type: incomplete aggregate 'sockaddr_in6'`.
 The local declaration is at `picotls.c:6773`; a later path reads
 `sin6_addr.s6_addr` at line 7254. The libc headers need the actual complete IPv6
 address/socket layout before these unchanged functions can lower.
+
+Commit `0b06454` adds the Linux-shaped IPv6 address layout plus BCL-only strict
+IPv4/IPv6 address conversion. IPv6 socket I/O remains explicitly unsupported;
+the real core only needs address storage and conversion. Fifty-two Inet/Socket
+units, a native/translated fixture and Linux x64 NativeAOT pass. All three
+unchanged objects now emit with empty diagnostics.
+
+## B17: repeated header anonymous-member routes — fixed
+
+The first full source-linked library emits nine C# files, but repeated header
+definitions overwrite promoted anonymous-member paths with fresh hidden field
+names. The canonical `st_ptls_handshake_properties_t` definition retains its
+first fields while later accesses reference `__anon___Anon24` or `__Anon52`.
+The repair registers fields and promotion routes only for the first canonical
+definition. Two source-order unit cases and a cross-unit anonymous-union fixture
+cover nested named members, enum constants, offsets and shared storage.
+
+## B18: array compound-literal element conversions — fixed
+
+Real `ptls_buffer_push` expansions contain `(uint8_t[]){is_server}`, bitfield
+values, comparisons and `!!request_update`. The compound-literal emitter writes
+their C# expressions into `stackalloc byte[]` without C's required narrowing
+conversion. Six raw-build errors include int/uint/CBool to byte. This path now
+uses the same target-typed store conversion as ordinary array declarations;
+the regression also covers enum, null/void pointers and single evaluation.
+
+## B19: noreturn call control flow — fixed
+
+`ptls_buffer__adjust_asn1_blocksize` ends with `fprintf` and `abort`. C# does not
+accept a `[DoesNotReturn]` method call as a statement terminator for CS0161.
+The generic repair retains the actual call and follows it with an explicit
+unreachable throw, sharing termination facts with C flow analysis and preserving
+braceless branches, comma operands and void conditionals.
+
+Combined B17–B19 validation: 33 selected compiler units and 18 functional
+fixtures pass; the three new fixtures match native gcc output, and the noreturn
+fixture preserves an actual process exit status of 91. The full unchanged core
+plus authored host adapter now links into nine C# files and passes semantic
+postprocessing. Logs: `artifacts/translation/emission-fixes-*.log` and
+`artifacts/translation/emission-native/`.
+
+The initial anonymous-member fixture also exposed an independent pre-existing
+uint-plus-enum local-initializer conversion gap. Its small unsigned mask is now
+explicitly converted to int so the fixture tests anonymous routes and ABI without
+that unrelated expression; no upstream or generated picotls code was altered.
