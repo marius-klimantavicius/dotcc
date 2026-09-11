@@ -27,6 +27,7 @@ while IFS= read -r definition; do flags+=("-D$definition"); done < "$prefix-defi
 compiler="$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll"
 source_directory="$SQLITE_ROOT/generated/sqlite-port"
 dotnet "$compiler" -std=c17 "${flags[@]}" -I "$source_directory" -I "$SQLITE_ROOT/src" \
+  --overrides-file "$SQLITE_ROOT/config/dotcc-overrides.json" \
   -E "$SQLITE_ROOT/src/engine.c" > "$prefix-preprocessed.c"
 python3 "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
   "$prefix-preprocessed.c" "$generated/layout_requests.h"

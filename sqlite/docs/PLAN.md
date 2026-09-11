@@ -650,3 +650,16 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
       expressions preprocessed; omit ambiguous or unrepresentable definitions.
 - [x] Regenerate SQLite and use its emitted constants in ManagedConsumer; validate
       the compiler regression suites and the current HostVfs consumer.
+
+
+### Generic macro overrides and runtime endianness
+
+- [x] Implement the [shared compiler plan](../../docs/plans/c-macro-overrides-intrinsics.md):
+      name/exact/regex selection, captures/formal templates and a typed runtime intrinsic.
+- [x] Replace both original endian probes through `config/dotcc-overrides.json`,
+      without SQLite-specific compiler logic or upstream source edits.
+- [x] Regenerate raw/postprocessed code, remove all `sqlite3one` address reads,
+      and include profile dependency/provenance records in the translation script.
+- [x] Verify native/LE/BE UTF-16 APIs and cross-encoding native database exchange,
+      core/JSONB/FTS5 consumer, WAL recovery/interoperability, layout and NativeAOT.
+      See [validation and commands](macro-overrides.md).

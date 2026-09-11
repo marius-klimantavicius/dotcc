@@ -13,6 +13,12 @@ on the host VFS; select it with `PRAGMA journal_mode=WAL`.
 See `configuration.md` for corpus and host-product definitions and
 [threading and mmap](threading-mmap.md) for connection ownership and mapping controls.
 
+The product translation uses [generic endian overrides](macro-overrides.md) to
+map the upstream runtime probes to `BitConverter.IsLittleEndian`. The profile is
+`config/dotcc-overrides.json`; the translation writes `artifacts/engine.d` and an
+auditable `artifacts/engine-overrides.jsonl`. Run `scripts/test-endian.sh` for
+native/managed UTF-16 database exchange (add `SQLITE_AOT=1` for NativeAOT).
+
 Prerequisites are .NET SDK 10, Python 3, GCC, a POSIX shell and GNU coreutils.
 NativeAOT also requires the .NET Linux native linker prerequisites (the CI recipe
 installs Clang and zlib development headers). Initial fetch/restore requires

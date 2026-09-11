@@ -4,6 +4,27 @@ Campaign commands run from `sqlite/`; scripts resolve their own absolute roots.
 Evidence is recorded in milestone order; later checkpoints supersede earlier
 pending statements. Reproduction commands are in `usage.md`.
 
+## Generic runtime endian overrides (2026-09-11)
+
+The product now selects SQLite's original BIGENDIAN/LITTLEENDIAN pointer probes
+using a generic JSON macro profile. They lower through `_Bool` typed IR to
+`BitConverter.IsLittleEndian`, with BIGENDIAN negated. The generated engine has
+26 BCL reads and no `sqlite3one` address reads. Upstream source is unchanged.
+
+Raw and postprocessed ManagedConsumer pass with zero build warnings. Dedicated
+UTF-16LE/BE database exchange passes against unmodified native SQLite under JIT
+and NativeAOT; both byte orders, native UTF-16 APIs, non-ASCII/supplementary text,
+WAL checkpoint/reopen and integrity are covered. The full host VFS independent
+process campaign passes under JIT and NativeAOT, including forced-kill recovery,
+stale/missing WAL indexes, native/managed reads and writes, and checkpoint stress.
+Product layout checks pass: 41 offsetof contracts, 67 actual field offsets,
+48 aggregate size/alignment checks and 8 inline-array storage checks.
+
+Commands, generic compiler evidence and Linux x64 portability limits are in
+[macro-overrides.md](macro-overrides.md). Profile and source dependencies are
+recorded in `artifacts/engine.d`; selection/expansion trace is in
+`artifacts/engine-overrides.jsonl`. The campaign now includes `test-endian.sh`.
+
 ## GNU bit-field profile migration (2026-09-11)
 
 Shared compiler work for the unchanged picotls core repaired ordinary-member

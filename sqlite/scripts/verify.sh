@@ -37,6 +37,8 @@ native_check layout-native.sh layout-native.expected layout
   > "$SQLITE_ROOT/artifacts/campaign-layout.log" 2>&1
 "$SQLITE_ROOT/scripts/test-managed-consumer.sh" \
   > "$SQLITE_ROOT/artifacts/campaign-managed-consumer.log" 2>&1
+"$SQLITE_ROOT/scripts/test-endian.sh" \
+  > "$SQLITE_ROOT/artifacts/campaign-endian.log" 2>&1
 "$SQLITE_ROOT/scripts/test-product-layout.sh" \
   > "$SQLITE_ROOT/artifacts/campaign-product-layout.log" 2>&1
 "$SQLITE_ROOT/scripts/test-threading.sh" \

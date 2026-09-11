@@ -1,7 +1,9 @@
 # C macro overrides and typed runtime intrinsics
 
-Status: **IN PROGRESS** — macro overrides and typed runtime intrinsic implemented and tested; SQLite runtime validation in progress. Created 2026-09-11. Updated to include
-optional definition selectors, regex captures and function-like macro templates.
+Status: **COMPLETE** (2026-09-11). M0–M3 implemented and validated. Usage/API:
+[macro-overrides.md](../macro-overrides.md). SQLite commands and evidence:
+[sqlite/docs/macro-overrides.md](../../sqlite/docs/macro-overrides.md).
+
 
 ## Recommendation
 
@@ -410,32 +412,52 @@ provenance status; no silent claim that current overrides affected them.
       property. Inspect emitted code to ensure no host-dependent folding occurred.
 - [x] Reject runtime use in preprocessing/constant-expression contexts; skip
       runtime macro constants correctly, including aliases and combined expressions.
-- [ ] Exercise source/object emission and linking, custom namespaces, every split
+- [x] Exercise source/object emission and linking, custom namespaces, every split
       mode, raw/postprocessed code and NativeAOT; keep all lowering type-aware.
 
 ### M3 — SQLite integration without compiler coupling
 
-- [ ] Add `sqlite/config/dotcc-overrides.json` and wire it into translation only.
+- [x] Add `sqlite/config/dotcc-overrides.json` and wire it into translation only.
       Select the precise original probe bodies for the pinned SQLite profile,
       with requireMatch enabled to verify this translation encountered the probes.
       Known numeric definitions with different bodies remain unchanged.
-- [ ] Replace both endian macros using the generic facility. Leave upstream C,
+- [x] Replace both endian macros using the generic facility. Leave upstream C,
       `SQLITE_UTF16NATIVE`, and the native SQLite oracle unchanged.
-- [ ] Regenerate SQLite and inspect all generated files: endian use sites read
+- [x] Regenerate SQLite and inspect all generated files: endian use sites read
       the BCL property; no expression takes `sqlite3one`'s address for this probe.
       An unused original declaration may remain; deleting it is not required.
-- [ ] Run UTF-16LE/BE/native C APIs, encoding conversions, and databases whose
+- [x] Run UTF-16LE/BE/native C APIs, encoding conversions, and databases whose
       text encoding differs from the host. Compare with native SQLite results.
-- [ ] Run WAL checksum/checkpoint/recovery and native database interoperability,
+- [x] Run WAL checksum/checkpoint/recovery and native database interoperability,
       product layout checks and ManagedConsumer under JIT and NativeAOT.
       Endianness affects storage behavior, not just readability of UTF-16 code.
-- [ ] Verify the JSON profile is a build dependency and document exact commands,
+- [x] Verify the JSON profile is a build dependency and document exact commands,
       profile trace, results and remaining portability limits. Commit locally.
 
 Completion requires working name-only, exact and regex/capture macro overrides
 (including function-like definitions) independent of SQLite,
 typed intrinsic behavior independent of overrides, equivalent source/object
 results, and verified SQLite behavior using configuration alone.
+
+## Completion evidence
+
+- Generic name/exact/regex overrides, original signatures, formal/capture
+  templates, assertions, CLI precedence, dependencies and object provenance.
+- Typed runtime `_Bool` intrinsic, C# lowering, reserved-name/constant-context
+  diagnostics and explicit WAT rejection. No compiler-host folding.
+- 2,094 unit tests passed; 387 functional tests passed, 969 opt-in tests skipped.
+  Six source/object and split-mode runtime combinations passed.
+- NativeAOT compiler loaded a runtime regex profile. Generated JIT/NativeAOT
+  fixture programs matched gcc, with mixed source/object and depfile checks.
+- SQLite raw/postprocessed builds and ManagedConsumer passed with zero warnings.
+  Profile selects both original probes; generated code has 26 BCL reads and only
+  an unused `sqlite3one` declaration. JSON profile is in `engine.d`.
+- Native UTF-16LE/BE API/database exchange, full WAL/process interoperability and
+  recovery campaigns passed under JIT and NativeAOT. Product layout passed
+  41 offsetof contracts, 67 field offsets, 48 aggregate and 8 inline-array checks.
+- Tested on Linux x64. Opposite-endian data is covered; execution on a big-endian
+  .NET host and other OSes was not performed in this campaign. Later extensions
+  below remain separate. Commits are local; nothing was pushed.
 
 ## Later extensions, deliberately separate
 

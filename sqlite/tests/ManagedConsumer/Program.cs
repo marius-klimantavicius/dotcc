@@ -399,8 +399,9 @@ internal static unsafe partial class Program
         finally { tokenizer.xDelete(instance); }
     }
 
-    private static int Main()
+    private static int Main(string[] args)
     {
+        if (args.Length != 0) return EndianEntry(args);
         sqlite3* db = null;
         var directory = Path.Combine(Path.GetTempPath(), "dotcc-managed-consumer-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(directory);
@@ -413,6 +414,7 @@ internal static unsafe partial class Program
             Expect(db, "PRAGMA journal_mode=WAL", "wal");
             Expect(db, "SELECT json_extract(jsonb('{\"name\":\"λ\",\"n\":42}'),'$.name')", "λ");
             Expect(db, "SELECT json_valid(jsonb('[1,2,3]'),8)", "1");
+            CheckEndianDatabases(directory, write: true);
             CheckOptionalFeatures(db);
             CheckSqlWorkloads(db);
             CheckFullTextSearch(db);
