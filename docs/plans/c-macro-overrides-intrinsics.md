@@ -1,13 +1,16 @@
 # C macro overrides and typed runtime intrinsics
 
-Status: **PLANNED — not implemented**. Created 2026-09-11.
+Status: **PLANNED — not implemented**. Created 2026-09-11. Updated to include
+optional definition selectors, regex captures and function-like macro templates.
 
 ## Recommendation
 
 Add two independent features:
 
 1. A preprocessor policy that replaces selected upstream macro definitions with
-   configured **C token sequences**, without editing the downloaded source.
+   configured **C token sequences**, without editing the downloaded source. Select
+   by name alone, exact body tokens, or a body regex with named captures; support
+   templates referring to both captures and original macro parameters.
 2. A small typed intrinsic surface for target/runtime facts. The first intrinsic,
    `__dotcc_is_little_endian()`, becomes a read of
    `global::System.BitConverter.IsLittleEndian` in the C# backend.
@@ -99,51 +102,189 @@ Boolean optimizer merely to force the exact illustrative spelling above.
 it directly to `IsLittleEndian` would select the wrong UTF-16 encoding and can
 also change SQLite's WAL checksum handling.
 
+## Definition matching and replacement templates
+
+A selector is optional. **Without a body selector, a rule applies to every active
+source definition of the named macro**, subject only to any explicit signature
+selector. With a selector, a nonmatching definition is installed unchanged.
+Reconsider the rules on every active `#define`, including after `#undef`.
+This is selection, not an error condition.
+
+For a precise endian-probe override:
+
+```json
+{
+  "name": "SQLITE_BIGENDIAN",
+  "match": {
+    "exact": "(*(char *)&sqlite3one == 0)"
+  },
+  "replacement": "(!__dotcc_is_little_endian())"
+}
+```
+
+`exact` compares C preprocessing tokens, ignoring whitespace and comments.
+It does not expand aliases, discard parentheses, or prove algebraic equivalence.
+In particular, the currently inspected SQLite definition contains `(&sqlite3one)`;
+its exact selector would be `"(*(char *)(&sqlite3one)==0)"`. Those extra parentheses
+are significant to exact matching. This avoids silently changing the scope of a
+rule described as exact. Use a regex to accept deliberately chosen spelling
+variants, or multiple exact rules for clearly enumerated alternatives.
+
+For a parameter/capture example:
+
+```c
+#define X(n) do_call(n, 5)
+```
+
+```json
+{
+  "name": "X",
+  "signature": { "kind": "function", "parameters": ["n"], "variadic": false },
+  "match": {
+    "regex": "do_call\\(\\s*n\\s*,\\s*(?<num>\\d+)\\s*\\)"
+  },
+  "replacement": "dotcc_mama(${__dotcc_n}, ${num})"
+}
+```
+
+This produces the effective definition:
+
+```c
+#define X(n) dotcc_mama(n, 5)
+```
+
+At a later call `X(value + 1)`, normal macro expansion produces
+`dotcc_mama(value + 1, 5)`. The override applies to the **definition**, not to each
+invocation's source text. `dotcc_mama` is an ordinary function name unless a
+separate declaration/intrinsic defines it; this mechanism does not turn arbitrary
+replacement names into new compiler intrinsics.
+
+### Selector contract
+
+- `match` is optional and contains exactly one of `exact` or `regex`. Reject a
+  malformed selector; never interpret a broken regex as no match.
+- Match the original, unexpanded replacement body only, excluding `#define`,
+  the macro name, and its parameter list. A separate optional `signature` selects
+  object/function form and, for functions, the ordered formal names and variadic
+  shape. Omitted signature means any original shape; explicit mismatch skips
+  the rule rather than turning a function-like definition into an object macro.
+- Preserve the original parameter list and variadic flag in the effective macro.
+  The override changes its body, not its public invocation syntax or arity.
+- Regex input is the original logical body spelling after line splicing and
+  comment removal (comments act as whitespace), with leading/trailing whitespace
+  trimmed and internal whitespace preserved. String/character literal contents
+  remain intact. Do not fabricate this string by concatenating token spellings.
+- Use full-body, case-sensitive matching with .NET-style named groups. Anchor
+  internally as `\A(?:pattern)\z`; partial matching requires an explicitly
+  written pattern such as `.*do_call.*`. The JSON example uses `\s*` to tolerate
+  spacing; `do_call\(n, (?<num>\d+)\)` also works for that literal
+  spacing. Regex delimiters `/.../` are explanatory notation, not part of JSON.
+- Because regex matches spelling, a changed formal name can change its result.
+  No automatic alpha-renaming or C expression parsing is implied. Exact and regex
+  are complementary: exact is the robust default for token-identical bodies;
+  regex is the explicit tool for spelling variation and captured replacements.
+- Keep an ordered list of rules per name. **First matching rule wins**, evaluated
+  against the original definition. Later rules do not see a replacement produced
+  by earlier rules. Put a name-only fallback last; reject trivially unreachable
+  later rules after an unconditional same-name rule. Report which rule won.
+
+Example lifetime behavior for a selective rule matching only `do_call(n, 5)`:
+
+```c
+#define X(n) do_call(n, 5)   /* selected -> dotcc_mama(n, 5) */
+/* uses see the replacement */
+#undef X                    /* X really becomes undefined */
+#define X(n) other_call(n)   /* not selected -> remains other_call(n) */
+/* uses see the original second definition */
+#undef X
+#define X(n) do_call(n, 5)   /* selected again */
+```
+
+### Template contract
+
+- `${num}` inserts the text captured by the regex group named `num`. Only named
+  captures are supported initially; reject missing/unmatched groups used by the
+  template. A referenced group must have exactly one capture, avoiding implicit
+  last-capture behavior for repeated groups. Groups not referenced may repeat.
+- `${__dotcc_n}` inserts the **formal parameter token** named `n` in the selected
+  original function macro. It does not insert an already-expanded actual argument.
+  The same rule applies to other formal names. Reserve the `__dotcc_` group-name
+  prefix so regex captures cannot shadow these parameter placeholders.
+- Preserve existing standard variadic semantics. `__VA_ARGS__` may appear as a
+  normal C replacement token for an originally variadic macro; no new parameter
+  syntax or variadic behavior is introduced by templates.
+- Literal formal names remain valid C replacement tokens, but placeholders make
+  the binding intention explicit and diagnose an absent parameter. Undefined
+  parameter references in a selected rule are an error; signature mismatch is
+  instead a nonmatch. An object-like definition cannot supply formal parameters.
+- Support only `${name}` and `$$` (literal dollar) as template escapes. Substitute
+  once; captured text is not recursively interpreted as another template. Do not
+  apply `Regex.Replace` replacement syntax, `$1`, `$&`, scripting, or C# evaluation.
+- Parameter placeholders occupy complete preprocessing tokens, not substrings
+  inside literals or identifiers. Use ordinary C `#`/`##` where stringification or
+  token pasting is intended. Validate parameter placement and the expanded token
+  stream before installing the effective definition.
+- Lex the constructed body as C preprocessing tokens and validate normal macro
+  constraints, parameter use, `#`/`##`, and variadic tokens. Preserve original
+  definition/use provenance and record the rule, captures and resulting body.
+  Replacement templates cannot introduce new preprocessor directives.
+- Invocation arguments then follow the existing macro expander's rules for
+  prescan, rescanning, recursion suppression, stringification and token pasting.
+  Preserve argument spelling/parentheses rather than inventing grouping or an
+  extra evaluation. A template that repeats a parameter intentionally repeats
+  normal C macro argument evaluation; this feature is not a semantics-preserving
+  optimizer of arbitrary user-authored replacement bodies.
+
 ## Override semantics: replace when defined
 
-The first version supports object-like macros and one optional JSON profile,
-plus repeated CLI rules. It does not override ordinary C variables/functions or
-accept raw C# replacement strings.
+The first version includes object-like and function-like macro body overrides,
+one optional JSON profile, and repeated CLI shorthand rules. It does not override
+ordinary C variables/functions or accept raw C# replacement strings. Use JSON
+for selectors and capture templates; the existing proposed `--override-macro
+'NAME=BODY'` shorthand stays a name-only rule with a literal replacement body.
 
-- A rule does not predefine its name. It becomes effective when an active source
-  or included-header `#define NAME ...` is processed. Earlier uses, `#ifdef`,
-  `#ifndef`, and `defined(NAME)` retain their normal temporal behavior.
-- On that definition, validate the original macro and install the replacement
-  body as the effective macro. Expand its tokens at the normal use site, not
-  when loading the configuration or encountering the definition.
+- A rule does not predefine its name. Earlier uses, `#ifdef`, `#ifndef`, and
+  `defined(NAME)` retain their normal temporal behavior.
+- On each active source/included-header definition, try the matching rules and
+  install the selected effective body, or the unchanged original when none match.
+  Expand tokens at the normal use site, not when loading configuration.
 - `#undef NAME` removes the definition normally. A later active redefinition
-  reapplies the rule. Inactive conditional branches do not match rules.
-- A function-like definition matched by an object-like rule is a clear error,
-  rather than a silent arity change. Parameterized/variadic rules are later work.
+  starts selection again. Inactive conditional branches do not match rules.
 - Apply a profile to every C translation unit in the invocation, with a fresh
-  macro table per unit. Match requirements are checked across the invocation,
-  not independently for each unit; an unrelated C unit need not define the macro.
-- The profile is the base layer; an explicit CLI rule for a name replaces that
-  profile entry. Reject duplicate names within a layer, unknown schema fields,
-  invalid names, directive/newline injection and malformed replacement tokens.
+  macro table per unit. Report and aggregate rule matches across the invocation;
+  an unrelated C unit need not define the macro.
+- The profile is the base layer. An explicit CLI shorthand rule for a name
+  replaces that name's entire profile rule list; report this precedence clearly.
+  Reject duplicate CLI shorthand names, malformed/unknown schema fields, invalid
+  names and malformed replacement tokens. Multiple ordered JSON rules for the
+  same name are valid and necessary for different definitions.
 - Keep `-D` semantics unchanged. Initially reject using `-D` and an override rule
-  for the same name in one invocation, rather than inventing implicit precedence
-  between a seed definition and a replace-when-defined rule.
-- `requireMatch` defaults to true; a rule matching no active source definition
-  fails with the name and configuration location. Allow explicit false for
-  profiles spanning optional features. Report definitions matched separately
-  from source expansions, so a defined-but-unused macro remains visible.
-- Diagnostics retain both the original definition/use location and the rule's
-  profile location. A trace must make it clear that an override changed the body.
+  for the same name, rather than inventing precedence between a seed definition
+  and a replace-when-defined rule.
+- `requireMatch` is an optional **whole-invocation assertion**, default false.
+  When true, a rule that selects no active definition fails after processing;
+  ordinary nonmatching definitions still remain unchanged. This is useful for
+  verifying a pinned campaign actually used a rule and is distinct from selector
+  mismatch. Report candidates, signature/body nonmatches, selected definitions,
+  rules shadowed by earlier matches, and actual source expansions separately.
+- Keep optional `expect` as a strict, separate upstream-drift assertion: after a
+  rule is selected, its original body must match one listed exact token sequence,
+  otherwise fail. `match` chooses whether to replace; `expect` validates a chosen
+  replacement. A regex selector can therefore accept broad spelling while an
+  optional expectation asserts the approved bodies. Omit `expect` for permissive
+  capture-driven transforms. Do not treat either assertion as an implicit selector.
+- Diagnostics retain both original definition/use locations and the rule's
+  configuration location, together with an override trace.
 
-Add an optional `expect` list of original replacement strings to a rule for
-upstream-drift detection. Compare token sequences after normal whitespace/comment
-normalization, before expanding macros. If a matched active definition differs
-from every expected body, fail rather than silently overriding new semantics.
-This is configurable detection of source changes, not built-in recognition of
-any library. Exact values for the SQLite profile must be taken from its pinned
-source during integration; multiple conditional definitions can be allowed
-explicitly when necessary.
+Use BCL regex evaluation compatible with NativeAOT and runtime-supplied patterns;
+no generated dynamic code is required. Use a finite per-match timeout and bounded
+pattern/body/output sizes, with deterministic diagnostic categories for invalid
+patterns, timeouts and oversized results. Validate capture references as early as
+possible and leave no half-installed macro when evaluation or tokenization fails.
 
 Do not add a permanently forced macro mode in the first implementation. A future
-separately named mode could deliberately survive source `#undef` and ignore
-source redefinitions, but that changes include guards and feature detection and
-must not be confused with this contract.
+separately named mode could deliberately survive `#undef`, but that changes
+include guards and feature detection and is not this contract.
 
 ## Typed intrinsic semantics
 
@@ -205,13 +346,13 @@ to work, including constants supplied by overrides.
 | --- | --- |
 | CLI and public API | Add `--override-macro`, `--overrides-file`, and an optional strongly typed C preprocessing-options argument. Parse JSON with AOT-safe BCL APIs; avoid reflective serialization/dependencies. |
 | Frontend requests | Thread the same immutable normalized rules through `Compiler.BuildIr`, `FrontendRequest`, C frontend discovery/emission passes, mixed-input handling and standalone preprocess/dependency entry points. |
-| Preprocessor | Apply rules in `CPreprocessor.OnDefine`, retain normal `OnUndef`, expose effective macro bodies, preserve lazy expansion/source provenance and diagnose runtime intrinsics in conditional evaluation. |
+| Preprocessor | Parse original signatures, retain logical body spelling and tokens, select ordered rules in `CPreprocessor.OnDefine`, interpolate/validate templates, retain normal `OnUndef`, and expose effective macro bodies. Preserve lazy expansion/source provenance and diagnose runtime intrinsics in conditional evaluation. |
 | Expression binding/IR | Add the typed intrinsic node and generic reserved-name/arity validation; update walkers, effect analysis and constant evaluation to understand it. |
 | C# backend | Emit the fully qualified BCL property with correct CBool/numeric/context conversions and expression precedence; do not add SQLite names. |
 | Other backends | Give explicit intrinsic support or rejection. Do not require Roslyn in the compiler/runtime. |
 | Macro exports | Use effective definitions; never export runtime intrinsics as C# constants. Preserve source/object conflict handling. |
 | Object output/linking | Lower intrinsics using the chosen target at object creation. Current objects contain generated C# fragments, so preserve those expressions plus version/profile provenance; do not promise source macro re-expansion at link time. |
-| Diagnostics/reproducibility | Record normalized rules, config hash, original/effective definitions, source locations, match counts, skipped exports and intrinsic dependencies in an optional override report. Report once, not once per frontend pass. |
+| Diagnostics/reproducibility | Record normalized rules, config hash, original/effective definitions, signature/body nonmatches, selected rule and captures, source locations, match counts, skipped exports and intrinsic dependencies. Report once, not once per frontend pass. |
 
 The same profile must govern `-E`, source emission, object creation, include and
 dependency discovery. Add the JSON profile path to dependency output so a changed
@@ -232,22 +373,32 @@ provenance status; no silent claim that current overrides affected them.
 
 ### M0 — Freeze the contract
 
-- [ ] Confirm the replace-when-defined lifecycle, strict match/expect behavior,
-      schema/version, CLI precedence, and constant-expression diagnostics above.
+- [ ] Confirm replace-when-defined lifecycle, exact/regex selectors, first-match
+      ordering, formal/capture placeholders, optional assertions, schema/version,
+      CLI precedence and constant-expression diagnostics above.
 - [ ] Document proposed API additions without breaking existing callers.
 - [ ] Record small native C oracle fixtures for normal definition/undefinition,
       macro rescanning and endian-probe semantics before changing implementation.
 
 ### M1 — Configurable macro definition replacement
 
-- [ ] Implement validation and propagation through all C preprocessing paths.
+- [ ] Implement validation and propagation through all C preprocessing paths,
+      retaining original logical body spelling for regex selection alongside tokens.
 - [ ] Test original-source redefinitions, undef/redefine, include guards, inactive
       branches, nested aliases, token pasting/stringification interactions,
-      multiple translation units, expected-body mismatches and unmatched rules.
+      multiple translation units, selector nonmatches, expected-body assertions
+      and explicit requireMatch failures. Verify each definition in a repeated
+      define/undef/define sequence is selected independently.
 - [ ] Verify unchanged ordinary `-D` behavior, deterministic reports and identical
       effective expansion in discovery, `-E`, compilation and dependency output.
-- [ ] Cover effective numeric/string macro exports and reject function-like rule
-      mismatches. Commit this independently of the endian intrinsic.
+- [ ] Test exact-token versus regex spelling semantics, comments/continuations,
+      named captures, changed numeric literals, first-match/fallback precedence,
+      invalid regex, timeout, unknown or repeated captures and malformed output.
+- [ ] Test the X(n) example through invocation, side-effecting arguments, multiple
+      formal names, zero-argument functions, standard variadics, #/##, recursion,
+      missing parameter placeholders and signature changes across redefinitions.
+- [ ] Cover effective numeric/string macro exports and NativeAOT loading of a
+      runtime-supplied regex profile. Commit independently of the endian intrinsic.
 
 ### M2 — Runtime endian intrinsic
 
@@ -265,7 +416,9 @@ provenance status; no silent claim that current overrides affected them.
 ### M3 — SQLite integration without compiler coupling
 
 - [ ] Add `sqlite/config/dotcc-overrides.json` and wire it into translation only.
-      Record expected original definitions for the pinned SQLite profile.
+      Select the precise original probe bodies for the pinned SQLite profile,
+      with requireMatch enabled to verify this translation encountered the probes.
+      Known numeric definitions with different bodies remain unchanged.
 - [ ] Replace both endian macros using the generic facility. Leave upstream C,
       `SQLITE_UTF16NATIVE`, and the native SQLite oracle unchanged.
 - [ ] Regenerate SQLite and inspect all generated files: endian use sites read
@@ -279,13 +432,15 @@ provenance status; no silent claim that current overrides affected them.
 - [ ] Verify the JSON profile is a build dependency and document exact commands,
       profile trace, results and remaining portability limits. Commit locally.
 
-Completion requires working ordinary macro overrides independent of SQLite,
+Completion requires working name-only, exact and regex/capture macro overrides
+(including function-like definitions) independent of SQLite,
 typed intrinsic behavior independent of overrides, equivalent source/object
 results, and verified SQLite behavior using configuration alone.
 
 ## Later extensions, deliberately separate
 
-- Function-like macro overrides with explicit parameter/variadic contracts.
+- Signature-changing macro rewrites, if needed; this plan preserves original
+  parameters/arity and existing variadic behavior.
 - Origin-file selectors for macros shared by unrelated included libraries, if
   real integrations require narrower scope than invocation-wide name matching.
 - Additional generic intrinsics with typed signatures and backend mappings.
