@@ -349,6 +349,7 @@ internal sealed partial class IrBuilder
             case C.ExternArrIncomplete g: BuildExternArr(g.Arg1, g.Arg2, null); break;
             // `static T x = { … };` at file scope — a once-initialised struct/union field.
             case C.GlobalStaticStructInit g: BuildGlobalStructInit(g.Arg1, g.Arg2, g.Arg5); break;
+            case C.GlobalStructInit g: BuildGlobalStructInit(g.Arg0, g.Arg1, g.Arg4); break;
             case C.GlobalStaticStructDesignated g: BuildGlobalStructDesignated(g.Arg1, g.Arg2, g.Arg5); break;
             case C.GlobalStructDesignated g: BuildGlobalStructDesignated(g.Arg0, g.Arg1, g.Arg4); break;
             // `extern T x;` declares the name + type for resolution but emits no
@@ -2286,12 +2287,13 @@ internal sealed partial class IrBuilder
     private void BuildGlobalStructInit(Item typeItem, Item nameItem, Item initListItem)
     {
         var type = ResolveType(typeItem);
-        var init = BuildAggregateInit(type, initListItem);
-        var sym = _symbols.Declare(new Symbol
+        var position = SrcPos.From(nameItem);
+        var declaration = RegisterScalarGlobal(new Symbol
         {
             Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
-        });
-        Globals.Add(new GlobalVar(sym, init));
+        }, position);
+        if (declaration is null) return;
+        DefineRegisteredGlobal(declaration, BuildAggregateInit(type, initListItem), hasInitializer: true, position);
     }
 
     /// <summary>Block-scope <c>static T x = { … };</c> — like a global aggregate

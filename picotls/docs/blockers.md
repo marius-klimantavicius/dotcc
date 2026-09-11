@@ -267,9 +267,26 @@ use the existing allocation-free inline-array factory. Validation: 19 selected
 units, five functional fixtures and native gcc parity for both new fixtures pass;
 logs are in `artifacts/designated-brace/`. The actual core advances to B14.
 
-## B14: ordinary global positional aggregate initializer — open
+## B14: ordinary global positional aggregate initializer — fixed
 
 At `picotls.c:6643`, `ptls_get_time_t ptls_get_time = {get_time};` is a
 non-static file-scope struct initializer. Existing productions cover static
 positional, global designated and comma-list positional forms; the ordinary
 single positional global form still lacks its production/binder entry point.
+
+The ordinary single positional global production now uses the shared aggregate
+binder and canonical global registration. Extern/tentative declarations reuse one
+storage field, callback designators retain function addresses, and omitted
+members zero-fill. Validation: 17 selected units, five functional fixtures and a
+two-translation-unit native callback/storage fixture pass; logs are in
+`artifacts/global-positional/`. The complete unchanged core now parses and reaches
+its next unsupported IR initializer shape (B15).
+
+## B15: struct-valued expressions in array initializers — open
+
+The full main-core IR pass rejects an element of a `st_ptls_iovec_t` array
+initializer because the array binder requires brace groups for struct elements.
+The matching source at `picotls.c:731` is
+`ptls_iovec_t invec[2] = {ptls_iovec_init(input, inlen), ptls_iovec_init(&content_type, 1)};`.
+These calls return whole struct values; the array initializer must accept and
+store those typed expressions without rewriting them as member brace groups.
