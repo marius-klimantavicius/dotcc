@@ -204,7 +204,7 @@ write rejection and mutable outer pointers around inner const pointers are
 covered. Twenty-four selected tests and the native/translated fixture pass.
 The actual core advances to B11.
 
-## B10: bitfield tail-byte reuse — open
+## B10: bitfield tail-byte reuse — fixed
 
 Actual-header metadata and an emitted/native runnable reducer disagree:
 `ptls_aead_algorithm_t.align_bits` is offset 81 natively and 84 in dotcc, although
@@ -215,7 +215,7 @@ reports offset/address 9 natively and 12 in emitted code. Shared layout and
 aggregate emission must agree while bit setters preserve adjacent ordinary bytes.
 `probe-translated-abi.sh --metadata-only` retains the failing evidence.
 
-## B11: static local designated aggregate initialization — open
+## B11: static local designated aggregate initialization — fixed
 
 `PTLS_LOG_CONN` at `picotls.c:988` expands a function-local
 `static struct st_ptls_log_point_t logpoint = { .name = ... };` even with logging
@@ -223,3 +223,22 @@ off. Global and ordinary local designated aggregates parse, but the static-local
 statement form only accepts positional initializers. The shared repair must hoist
 once-initialized storage with a unique local-static name and preserve zero-filled
 unspecified members.
+
+B10 landed in `3ffc7bd`: generic layout trims the bitfield run to its occupied
+bytes before an ordinary member, while overlapped backing units use explicit
+field offsets and byte-limited setters. All 64 actual-header metadata tuples
+match the 92-entry native oracle; native/emitted/AOT reducers preserve neighboring
+bytes under positive, negative and overflowing bitfield writes. This is not yet
+full product runtime ABI execution.
+
+B11 now reuses the aggregate initializer lowering for the static-local designated
+form, with one program-lifetime backing field per declaration. The unit test and
+native/translated fixture validate repeated calls, independent same-named statics
+and zero-filled unspecified fields. Main-core parsing advanced to B12.
+
+## B12: braced initialization across multiple declarators — open
+
+At `picotls.c:4430`, `ptls_iovec_t pubkey = {0}, ecdh_secret = {0};`
+uses two aggregate-initialized declarators. Single-declaration aggregate
+initializers exist; the comma-list parser/binder needs to preserve type-aware
+initialization for each list item. No upstream-source split is used as a workaround.

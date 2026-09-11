@@ -1,16 +1,16 @@
 # Translate picotls to C# with dotcc
 
-Status: **P0 complete; P1 feasibility work executed, translated ABI validation
-blocked** (2026-09-11). Pinned inputs and the native oracle are established;
-BCL capabilities and native/C# boundary mirrors pass on Linux x64. Separate
-real-core compiler probes exposed three initial blockers. Chained token pasting
-is now repaired; the retry exposes a later callback-attribute parse failure. See
-[validation.md](validation.md), [blockers.md](blockers.md), and
-[crypto-provider.md](crypto-provider.md). P2 has started with this single compiler
-repair; P3–P5 have not started. No translated
-TLS or complete provider is claimed. The user has now authorized the coordinator
-and sub-agents to implement BCL-only, NativeAOT-compatible pthread and aligned
-allocation support and continue through the remaining phases. Campaign working directory: `<repo>/picotls/`.
+Status: **P0 complete; P1 actual-header metadata passes; P2 repairs in progress**
+(2026-09-11). Generic BCL-only pthread and `posix_memalign` implementations pass
+unit, native/translated fixture, and Linux x64 NativeAOT validation. Compiler
+repairs now emit the unchanged public header and hpke/pembase64 objects. The
+native ABI probe exposed and repaired bitfield tail-byte reuse; actual-header
+metadata matches the native oracle. Full-core emission/build and emitted-type
+runtime ABI validation remain outstanding. BCL provider/facade sources and
+independent TLS peers are being developed concurrently; no translated TLS or
+complete provider is claimed. See [validation.md](validation.md),
+[blockers.md](blockers.md), and [crypto-provider.md](crypto-provider.md).
+Campaign working directory: `<repo>/picotls/`.
 
 ## Objective and boundaries
 
@@ -180,7 +180,8 @@ initial profile is unavailable on the running platform.
       handles. Decide the provider registration and callback failure contracts.
       **Partial:** 92 native/C# mirror comparisons and appended hash/AEAD handle
       lifetime checks pass; registration/failure design is recorded. Actual dotcc
-      layout metadata and emitted types remain blocked by the header parse failure.
+      header metadata now matches the native oracle after a bitfield-tail repair;
+      full emitted-type runtime checks await a buildable core project.
 - [x] Save every observed real-source blocker with command, reduced reproducer and expected
       native behavior. Select an initial source/object linking approach; preserve
       multi-translation-unit boundaries for static and inline semantics. Source
@@ -188,9 +189,13 @@ initial profile is unavailable on the running platform.
 
 ### P2 — Repair dotcc until the real core emits and compiles
 
-Chained `##` is fixed with compiler and runnable callback regressions. The same
-three upstream units now pass that point and stop at `picotls.h:845`'s callback
-format attribute. Remaining repairs are authorized and underway; see [blockers.md](blockers.md).
+Chained token pasting, diagnostic format annotations, GNU thread-storage,
+extern qualified callbacks, qualified specifier runs, inline enum types and
+const pointer tails have been repaired with regressions. The bitfield-tail
+layout repair passes actual-header metadata and a native/emitted/AOT storage
+reducer. Main-core body parsing continues to expose further generic cases;
+see [blockers.md](blockers.md) for exact current diagnostics. All remaining
+phases are authorized.
 
 - [ ] For each parse, IR, emission or runtime failure: reduce it; add a failing
       compiler/functional regression; fix the shared implementation; run relevant

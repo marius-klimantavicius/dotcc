@@ -1801,7 +1801,8 @@ internal sealed partial class IrBuilder
             case C.BlockEmpty: return BuildBlock(it);
             case C.StmtDecl d: return BuildDeclStmt(d.Arg0) with { Pos = pos };
             case C.StmtStaticDecl s: return BuildStmtStaticDecl(s) with { Pos = pos };
-            case C.StmtStaticStructInit s: return BuildStmtStaticStructInit(s) with { Pos = pos };
+            case C.StmtStaticStructInit s: return BuildStmtStaticStructInit(s.Arg1, s.Arg2, s.Arg5, designated: false) with { Pos = pos };
+            case C.StmtStaticStructDesignated s: return BuildStmtStaticStructInit(s.Arg1, s.Arg2, s.Arg5, designated: true) with { Pos = pos };
             // Block-scope `static` arrays — pinned global storage under a mangled
             // name (same static storage duration as a file-scope array).
             case C.StmtStaticArr s: return BuildStaticLocalArr(s.Arg1, s.Arg2, s.Arg3, null) with { Pos = pos };
@@ -2296,15 +2297,15 @@ internal sealed partial class IrBuilder
     /// <summary>Block-scope <c>static T x = { … };</c> — like a global aggregate
     /// init, but with a program-unique mangled name and an alias symbol so the
     /// function body's references resolve to the hoisted field.</summary>
-    private CStmt BuildStmtStaticStructInit(C.StmtStaticStructInit n)
+    private CStmt BuildStmtStaticStructInit(Item typeItem, Item nameItem, Item initializer, bool designated)
     {
-        var type = ResolveType(n.Arg1);
-        var init = BuildAggregateInit(type, n.Arg5);
+        var type = ResolveType(typeItem);
+        var init = designated ? BuildStructDesignated(type, initializer) : BuildAggregateInit(type, initializer);
         var sym = new Symbol
         {
-            Name = Tok(n.Arg2), Kind = SymKind.Var, Type = type,
+            Name = Tok(nameItem), Kind = SymKind.Var, Type = type,
             Storage = Storage.Static, IsGlobal = true,
-            TargetName = $"{_symbols.Escape(Tok(n.Arg2))}__s{_staticLocalSeq++}",
+            TargetName = $"{_symbols.Escape(Tok(nameItem))}__s{_staticLocalSeq++}",
         };
         Globals.Add(new GlobalVar(sym, init));
         _symbols.DeclareAlias(sym);

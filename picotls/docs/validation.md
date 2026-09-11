@@ -186,3 +186,13 @@ tests pass. The native and translated `const-pointer-tail` fixture both print
 qualification. Main-core parsing advances to its macro-generated static local
 designated initializer at line 988. Logs:
 `artifacts/const-tail-{build,unit,functional,retry}.log`.
+
+## P2 static local designated initialization (2026-09-11)
+
+The static designated initializer regression passes in the memory agent's
+32-test combined unit selection and four-fixture selection. Its fixture checks
+repeated calls to independently named static objects, retained increments and
+zero-initialized unspecified fields. The unchanged main core now parses through
+line 4430, where a comma-list of braced aggregate initializers is the next blocker.
+`hpke.c` and `pembase64.c` object emission now have empty stderr after correcting
+readonly libc prototypes. This remains emission evidence, not a compiled product.

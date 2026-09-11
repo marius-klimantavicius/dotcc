@@ -1078,6 +1078,7 @@ productions:
       # can't start with `{`, so `= {` unambiguously selects this rule. Nested
       # braces (a union/struct-typed field's init) are handled in the emitter.
       - { lhs: Stmt, rhs: ['static', Type, ID, '=', '{', InitList, '}', ';'], action: stmtStaticStructInit }
+      - { lhs: Stmt, rhs: ['static', Type, ID, '=', '{', MemberInitList, '}', ';'], action: stmtStaticStructDesignated }
       # Block-scope (local) AGGREGATE TYPE DEFINITIONS — `struct Tag { … };`,
       # `union Tag { … };`, `enum Tag { … };` (and the C23 fixed-underlying-type
       # `enum Tag : Type { … };`) used as a STATEMENT. C lets a type be defined
