@@ -155,3 +155,25 @@ and `updated=42`, covering declaration sharing, callback arrays and fenced
 callback reassignment. Logs are `artifacts/extern-callback-{build,unit,functional,retry}.log`.
 The same actual core source advances to `static inline const char *` at header
 line 2012; this is the next open grammar boundary, not a core translation pass.
+
+## P2 qualified specifiers and inline enum types (2026-09-11)
+
+Forty-three qualifier/const-check/volatile/thread-local unit tests pass after the
+specifier fix; twelve enum/qualifier selected tests pass after adding inline enum
+types. Both new functional fixtures match native C: `inline-qualified-return`
+prints `hello 42`, and `inline-enum` prints `phase=7 done=8 mode=2 value=42`.
+The unchanged public header now emits in hpke/pembase64 objects. Main-core parsing
+advanced through the nested enum member and currently stops at the pointer
+qualifier in a later declarator (`picotls.c:672`). Logs are
+`artifacts/inline-qualified-{build,unit,retry}.log` and
+`artifacts/inline-enum-{build,unit,functional,retry}.log`.
+
+## Current libc dependency validation (2026-09-11)
+
+`picotls/scripts/test-libc-dependencies.sh` passes 53 selected unit tests, both
+pthread/posix functional fixtures, both native C oracles and current Linux x64
+NativeAOT executables under normal and debug/scan heaps. Retained evidence is
+`artifacts/libc/PASS.txt` plus each stage's log. No trim/AOT diagnostic is present;
+the pthread generated project has one ordinary CS0649 warning for a global field
+assigned through a pointer. BCL-only implementation and Linux execution are
+established; other platforms have not run.

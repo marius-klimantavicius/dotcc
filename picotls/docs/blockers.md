@@ -170,10 +170,43 @@ backing storage, keeping `Volatile.Read`/`Write` semantics and stable storage.
 Twelve extern-callback/volatile unit tests and a multi-unit functional/native
 fixture pass. The actual core advances to B7.
 
-## B7: inline specifier before qualified primitive return — open
+## B7: inline specifier before qualified primitive return — fixed
 
 `PTLS_LOG_DEFINE_GETSNI` at `picotls.h:2012` expands a
 `static inline const char *` function. The parser accepts `inline` before a
 plain typedef but cannot combine its specifier list with a following qualified
 primitive type. All three units stop at the `char` token. The fix must retain
 both the inline function marker and const qualification of the returned bytes.
+
+Keyword runs now retain interspersed `const`/`volatile` qualifiers before
+resolving their base type, so both function markers and qualified pointees remain
+intact. Const-write rejection and volatile accesses are tested. The unchanged
+header now emits successfully into both `hpke.c` and `pembase64.c` objects; their
+remaining const-discard warnings expose old libc prototype mismatches.
+
+## B8: inline enum definitions in declarations — fixed
+
+After B7, core parsing reached the nested tagged enum member at
+`picotls.c:187`; a later local anonymous enum at line 4428 uses the same missing
+type form. The generic type grammar now handles tagged and anonymous inline enum
+definitions, reusing enum registration and existing scope/type rules. Unit and
+native/translated functional tests cover explicit/implicit values and member/local
+storage. Main-core parsing advances to B9.
+
+## B9: pointer qualifiers on later declarators — open
+
+At `picotls.c:672`, `const uint8_t *p = bignum, *const end = p + size;`
+requires a const qualifier on the second declarator's pointer. Tail declarators
+currently count only stars, losing the ability to attach pointer qualifiers.
+The repair must preserve each pointer level's qualifications independently.
+
+## B10: bitfield tail-byte reuse — open
+
+Actual-header metadata and an emitted/native runnable reducer disagree:
+`ptls_aead_algorithm_t.align_bits` is offset 81 natively and 84 in dotcc, although
+both sizes are 104. A one-bit unsigned field followed by a byte exposes the
+full-word backing storage's unused tail. The reduced
+[`bitfield-tail-padding.c`](../tests/compiler-blockers/bitfield-tail-padding.c)
+reports offset/address 9 natively and 12 in emitted code. Shared layout and
+aggregate emission must agree while bit setters preserve adjacent ordinary bytes.
+`probe-translated-abi.sh --metadata-only` retains the failing evidence.

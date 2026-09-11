@@ -29,6 +29,41 @@ public sealed class ConstQualifierTests
         return path;
     }
 
+    [Theory]
+    [InlineData("static inline const char *")]
+    [InlineData("static inline char const *")]
+    [InlineData("static inline const Byte *")]
+    public void Inline_qualified_return_keeps_function_marker_and_pointee_const(string returnType)
+    {
+        var src = WriteTemp($$"""
+            typedef char Byte;
+            {{returnType}} text(void) { return "hello"; }
+            int main(void) { return text()[0] - 'h'; }
+            """);
+        try
+        {
+            var emitted = Compiler.EmitCSharp(new[] { src });
+            emitted.ShouldContain("MethodImplOptions.AggressiveInlining");
+            emitted.ShouldContain("byte* text()");
+            File.AppendAllText(src, "void bad(void) { *text() = 'x'; }");
+            Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { src }));
+        }
+        finally { File.Delete(src); }
+    }
+
+    [Fact]
+    public void Interspersed_primitive_qualifiers_preserve_volatile_access()
+    {
+        var src = WriteTemp("unsigned volatile long value; int main(void) { value = 7; return value - 7; }");
+        try
+        {
+            var emitted = Compiler.EmitCSharp(new[] { src });
+            emitted.ShouldContain("Volatile.Read(ref value)");
+            emitted.ShouldContain("Volatile.Write(ref value");
+        }
+        finally { File.Delete(src); }
+    }
+
     [Fact]
     public void west_const_before_typedef_name_parses()
     {

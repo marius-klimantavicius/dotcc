@@ -776,6 +776,17 @@ productions:
     rules:
       - { lhs: Type, rhs: ['struct', ID, '{', MemberList, '}'], action: typeTaggedStruct }
       - { lhs: Type, rhs: ['union', ID, '{', MemberList, '}'], action: typeTaggedUnion }
+      - { lhs: Type, rhs: ['enum', ID, '{', EnumList, '}'], action: typeTaggedEnum }
+      - { lhs: Type, rhs: ['enum', '{', EnumList, '}'], action: typeAnonymousEnum }
+
+  # A qualifier within a keyword run stays in that run. Leading qualifiers
+  # remain Type prefixes, avoiding ambiguity with typedef/tag base types.
+  # Bind before Type's postfix qualifier path so `inline const char` retains
+  # both its function marker and its qualified primitive base.
+  - derivation: leftmost
+    rules:
+      - { lhs: TypeSpecList, rhs: [TypeSpecList, 'const'], action: typeSpecListConst }
+      - { lhs: TypeSpecList, rhs: [TypeSpecList, 'volatile'], action: typeSpecListVolatile }
 
   # Type — the "declarator type" non-terminal. Most C type forms reduce to
   # this via TypeSpecList (the C-standard declaration-specifier sequence:
@@ -852,8 +863,8 @@ productions:
       # NOTE: pre+post on the SAME core (`volatile int volatile`) is grammatically
       # ambiguous but semantically idempotent (Quals OR-in), so the enclosing
       # precedence group resolves it deterministically. Interspersing a qualifier
-      # AMONG builtin keywords (`unsigned const long`) is NOT supported — west-of-
-      # run / east-of-run only (`const unsigned long` / `unsigned long const`).
+      # AMONG builtin keywords (`unsigned const long`) stays in TypeSpecList
+      # via the higher-precedence interspersed-qualifier rules above.
       - { lhs: Type, rhs: ['const',    Type], action: typeConstPre }
       - { lhs: Type, rhs: [Type, 'const'],    action: typeConstPost }
       - { lhs: Type, rhs: ['volatile', Type], action: typeVolatile }

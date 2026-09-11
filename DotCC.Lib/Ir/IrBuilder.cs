@@ -1355,6 +1355,8 @@ internal sealed partial class IrBuilder
         // `enum Tag` as a type — the registered real C# enum, or plain int if the
         // tag is unknown (forward/opaque) or names an anonymous int-constant enum.
         C.TypeEnum te => _enumTypes.TryGetValue(Tok(te.Arg1), out var et) ? et : CType.Int,
+        C.TypeTaggedEnum t => RegisterEnum(Tok(t.Arg1), null, t.Arg3),
+        C.TypeAnonymousEnum t => RegisterEnum(null, null, t.Arg2),
         // `struct Tag` / `union Tag` as a type — the canonical C# struct name.
         C.TypeStruct t => ReferenceAggregate(t.Arg1, isUnion: false),
         C.TypeUnion t => ReferenceAggregate(t.Arg1, isUnion: true),
@@ -1428,8 +1430,12 @@ internal sealed partial class IrBuilder
     /// the whole base type.</summary>
     private CType SpecsThenName(C.TypeSpecThenName t, Item it)
     {
-        RecordDeclSpecs(CollectSpecs(t.Arg0), SrcPos.From(it));
-        return ResolveTypeName(Tok(t.Arg1));
+        var specs = CollectSpecs(t.Arg0);
+        RecordDeclSpecs(specs, SrcPos.From(it));
+        var type = ResolveTypeName(Tok(t.Arg1));
+        if (specs.Contains("const")) type = type.WithQuals(TypeQual.Const);
+        if (specs.Contains("volatile")) type = type.WithQuals(TypeQual.Volatile);
+        return type;
     }
 
     private List<string> CollectSpecs(Item it)
@@ -1441,6 +1447,8 @@ internal sealed partial class IrBuilder
             {
                 case C.TypeSpecListCons c: Walk(c.Arg0); Walk(c.Arg1); break;
                 case C.TypeSpecListOne o: Walk(o.Arg0); break;
+                case C.TypeSpecListConst q: Walk(q.Arg0); acc.Add("const"); break;
+                case C.TypeSpecListVolatile q: Walk(q.Arg0); acc.Add("volatile"); break;
                 default: acc.Add(SpecKeyword(node.Content)); break;
             }
         }
@@ -1661,6 +1669,8 @@ internal sealed partial class IrBuilder
         {
             switch (k)
             {
+                case "const": quals |= TypeQual.Const; break;
+                case "volatile": quals |= TypeQual.Volatile; break;
                 case "unsigned": u++; break;
                 case "signed": s++; break;
                 case "short": sh++; break;
