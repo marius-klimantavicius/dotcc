@@ -1,0 +1,1 @@
+Uses POSIX networking headers and the Linux-shaped sockaddr_in6 ABI.

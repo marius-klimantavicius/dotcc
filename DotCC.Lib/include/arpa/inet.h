@@ -1,7 +1,7 @@
 #ifndef _ARPA_INET_H
 #define _ARPA_INET_H
 
-/* dotcc's <arpa/inet.h> — IPv4 presentation <-> binary conversion
+/* dotcc's <arpa/inet.h> — IPv4/IPv6 presentation <-> binary conversion
    (DotCC.Libc.SocketLib). Pulls in <netinet/in.h> for in_addr_t / struct in_addr
    and the htons family, exactly as glibc's arpa/inet.h does. */
 

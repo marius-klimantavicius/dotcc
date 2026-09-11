@@ -32,7 +32,7 @@ namespace DotCC.Libc;
 /// is marshalled to/from <see cref="IPEndPoint"/> by byte offset (family native,
 /// port + address in network order — the same byte-exact technique as <c>rusage</c>).
 /// Deferred: non-blocking / <c>O_NONBLOCK</c> (degrades to blocking, like
-/// <c>fcntl</c>), <c>select</c>/<c>poll</c> over mixed fd sets, IPv6, Unix-domain,
+/// <c>fcntl</c>), <c>select</c>/<c>poll</c> over mixed fd sets, IPv6 socket I/O,
 /// and <c>getaddrinfo</c> (numeric addresses only — <c>inet_pton</c>/<c>inet_addr</c>).
 /// </para>
 /// </remarks>
@@ -455,11 +455,55 @@ public static unsafe partial class Libc
     /// network-order address. Returns 1 (ok), 0 (not parseable), -1 (EAFNOSUPPORT).</summary>
     public static int inet_pton(int af, byte* src, void* dst)
     {
-        if (af != AF_INET) { errno = EAFNOSUPPORT; return -1; }
+        if (af != AF_INET && af != AF_INET6) { errno = EAFNOSUPPORT; return -1; }
         if (dst == null || src == null) { return 0; }
-        if (!IPAddress.TryParse(Str(src), out var ip) || ip.AddressFamily != AddressFamily.InterNetwork) { return 0; }
-        ip.GetAddressBytes().AsSpan().CopyTo(new Span<byte>(dst, 4));
+        // IPAddress.TryParse also accepts non-POSIX forms (IPv4 integers, hex,
+        // short addresses, brackets and scope zones). Validate the presentation
+        // grammar before asking the BCL to perform IPv6 expansion.
+        Span<char> text = stackalloc char[45];
+        int length = 0, maximum = af == AF_INET ? 15 : 45;
+        while (src[length] != 0)
+        {
+            if (length == maximum) return 0;
+            byte value = src[length];
+            if (value is not (>= (byte)'0' and <= (byte)'9') && value is not (>= (byte)'a' and <= (byte)'f') &&
+                value is not (>= (byte)'A' and <= (byte)'F') && value != ':' && value != '.') return 0;
+            text[length++] = (char)value;
+        }
+        var presentation = text[..length];
+        Span<byte> packed = stackalloc byte[16];
+        if (af == AF_INET)
+        {
+            if (!TryStrictIpv4(presentation, packed[..4])) return 0;
+        }
+        else
+        {
+            int colon = presentation.LastIndexOf(':');
+            if (colon < 0) return 0;
+            if (presentation.Contains('.') && !TryStrictIpv4(presentation[(colon + 1)..], packed[..4])) return 0;
+            if (!IPAddress.TryParse(presentation, out var ip) || ip.AddressFamily != AddressFamily.InterNetworkV6 ||
+                !ip.TryWriteBytes(packed, out int written) || written != 16) return 0;
+        }
+        packed[..(af == AF_INET ? 4 : 16)].CopyTo(new Span<byte>(dst, af == AF_INET ? 4 : 16));
         return 1;
+    }
+
+    private static bool TryStrictIpv4(ReadOnlySpan<char> text, Span<byte> output)
+    {
+        int offset = 0;
+        for (int part = 0; part < 4; part++)
+        {
+            int start = offset, value = 0;
+            while (offset < text.Length && text[offset] is >= '0' and <= '9')
+            {
+                value = value * 10 + text[offset++] - '0';
+                if (offset - start > 3 || value > 255) return false;
+            }
+            if (offset == start || (offset - start > 1 && text[start] == '0')) return false;
+            output[part] = (byte)value;
+            if (part != 3 && (offset == text.Length || text[offset++] != '.')) return false;
+        }
+        return offset == text.Length;
     }
 
     /// <summary><c>inet_ntop(af, src, dst, size)</c> — packed network-order address
@@ -467,14 +511,44 @@ public static unsafe partial class Libc
     /// name="dst"/> or null (ENOSPC / EAFNOSUPPORT).</summary>
     public static byte* inet_ntop(int af, void* src, byte* dst, uint size)
     {
-        if (af != AF_INET) { errno = EAFNOSUPPORT; return null; }
+        if (af != AF_INET && af != AF_INET6) { errno = EAFNOSUPPORT; return null; }
         if (src == null || dst == null) { errno = EINVAL; return null; }
-        var ip = new IPAddress(new ReadOnlySpan<byte>(src, 4));
-        var text = Encoding.ASCII.GetBytes(ip.ToString());
+        var address = new ReadOnlySpan<byte>(src, af == AF_INET ? 4 : 16);
+        string presentation = af == AF_INET ? new IPAddress(address).ToString() : FormatInet6(address);
+        var text = Encoding.ASCII.GetBytes(presentation);
         if ((uint)(text.Length + 1) > size) { errno = ENOSPC; return null; }
         text.AsSpan().CopyTo(new Span<byte>(dst, text.Length));
         dst[text.Length] = 0;
         return dst;
+    }
+
+    private static string FormatInet6(ReadOnlySpan<byte> address)
+    {
+        // IPAddress.ToString also prints dotted tails for IPv4-translated and
+        // ISATAP addresses, which glibc prints as hex. Format the standard
+        // shortest hexadecimal form explicitly, with only glibc's mapped and
+        // historical compatible-address exceptions. This is representation,
+        // not address parsing or platform socket marshalling.
+        Span<ushort> words = stackalloc ushort[8];
+        int bestStart = -1, bestLength = 1;
+        for (int i = 0; i < 8; i++) words[i] = (ushort)((address[i * 2] << 8) | address[i * 2 + 1]);
+        for (int i = 0; i < 8;)
+        {
+            if (words[i] != 0) { i++; continue; }
+            int start = i;
+            while (i < 8 && words[i] == 0) i++;
+            if (i - start > bestLength) { bestStart = start; bestLength = i - start; }
+        }
+        bool dotted = bestStart == 0 && (bestLength == 6 || (bestLength == 5 && words[5] == 0xffff));
+        var text = new StringBuilder(45);
+        for (int i = 0; i < 8;)
+        {
+            if (i == bestStart) { text.Append("::"); i += bestLength; continue; }
+            if (text.Length != 0 && text[text.Length - 1] != ':') text.Append(':');
+            if (i == 6 && dotted) { text.Append(new IPAddress(address[12..]).ToString()); break; }
+            text.Append(words[i++].ToString("x", System.Globalization.CultureInfo.InvariantCulture));
+        }
+        return text.ToString();
     }
 
     // ---- helpers -----------------------------------------------------------

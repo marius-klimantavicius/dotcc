@@ -1,7 +1,7 @@
 #ifndef _NETINET_IN_H
 #define _NETINET_IN_H
 
-/* dotcc's <netinet/in.h> — the IPv4 address types + byte-order helpers
+/* dotcc's <netinet/in.h> — IP address types + byte-order helpers
    (DotCC.Libc.SocketLib). Layout matches glibc/Linux so a sockaddr_in filled by
    the C program is read back byte-for-byte by the runtime. */
 
@@ -24,6 +24,31 @@ struct sockaddr_in {
     struct in_addr sin_addr;
     unsigned char  sin_zero[8];
 };
+
+/* Linux storage layout: the union gives in6_addr its four-byte alignment.
+   These address types and inet conversion work independently of socket I/O;
+   AF_INET6 socket marshalling is not yet supported by the runtime. */
+struct in6_addr {
+    union {
+        uint8_t  __u6_addr8[16];
+        uint16_t __u6_addr16[8];
+        uint32_t __u6_addr32[4];
+    } __in6_u;
+};
+#define s6_addr   __in6_u.__u6_addr8
+#define s6_addr16 __in6_u.__u6_addr16
+#define s6_addr32 __in6_u.__u6_addr32
+
+struct sockaddr_in6 {
+    sa_family_t     sin6_family;
+    in_port_t       sin6_port;       /* network byte order */
+    uint32_t        sin6_flowinfo;   /* network byte order */
+    struct in6_addr sin6_addr;       /* network byte order */
+    uint32_t        sin6_scope_id;   /* host byte order */
+};
+
+#define INET_ADDRSTRLEN  16
+#define INET6_ADDRSTRLEN 46
 
 /* IPv4 well-known addresses (host byte order — run through htonl for s_addr) */
 #define INADDR_ANY       ((in_addr_t)0x00000000)
