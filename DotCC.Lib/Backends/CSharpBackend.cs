@@ -200,6 +200,8 @@ internal sealed partial class CSharpBackend
         var sb = new StringBuilder();
         var flexibleField = t.Fields.FirstOrDefault(field => field.Type.Unqualified is CType.Array { Count: 0 });
         DotCC.Layout.LayoutInfo? headerLayout = null;
+        var bitFieldLayout = t.Fields.Any(field => field.IsBitField) && !t.IsUnion && t.Layout != AggregateLayout.Packed
+            ? _offsetModel.Aggregate(t.Name) : null;
         if (flexibleField.Type is not null)
         {
             headerLayout = _offsetModel.Aggregate(t.Name);
@@ -211,6 +213,12 @@ internal sealed partial class CSharpBackend
             var layoutClass = DotCC.Layout.OffsetDocument.RequestName(t.Name, new[] { flexibleField.Name });
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
                 .Append(layoutClass).Append(".Size, Pack = ").Append(layoutClass).Append(".Alignment)]\n");
+        }
+        else if (bitFieldLayout?.HasBitFieldTailReuse == true)
+        {
+            headerLayout = bitFieldLayout;
+            sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
+                .Append(headerLayout.Size).Append(", Pack = ").Append(headerLayout.Alignment).Append(")]\n");
         }
         else if (t.IsUnion)
         {
@@ -227,7 +235,7 @@ internal sealed partial class CSharpBackend
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]\n");
         }
         sb.Append(_publicTypes ? "public unsafe struct " : "unsafe struct ").Append(t.Name).Append("\n{\n");
-        if (headerLayout is not null)
+        if (headerLayout is not null && flexibleField.Type is not null)
         {
             // A tail with stricter alignment than any stored member must still
             // align the header when it is embedded. The overlay uses real header
@@ -239,7 +247,7 @@ internal sealed partial class CSharpBackend
         for (var fi = 0; fi < t.Fields.Count; )
         {
             var f = t.Fields[fi];
-            // A run of consecutive bit-fields packs into MSVC-style storage units —
+            // A run of consecutive bit-fields packs into same-size storage units —
             // one shared backing field per unit (so sizeof + member offsets match C)
             // plus a masked/sign-extended accessor per named member (value semantics:
             // overflow wraps, signed fields sign-extend on read). Consume the whole
@@ -251,7 +259,8 @@ internal sealed partial class CSharpBackend
                 while (fj < t.Fields.Count && t.Fields[fj].IsBitField) { run.Add(t.Fields[fj]); fj++; }
                 var storageOffsets = headerLayout?.StorageOffsets.Where(pair => pair.Key >= fi && pair.Key < fj)
                     .OrderBy(pair => pair.Key).Select(pair => pair.Value).ToArray();
-                sb.Append(PackBitFieldRun(run, t.IsUnion, ref bitUnitCounter, storageOffsets));
+                sb.Append(PackBitFieldRun(run, t.IsUnion, ref bitUnitCounter, storageOffsets,
+                    headerLayout?.HasBitFieldTailReuse == true));
                 fi = fj;
                 continue;
             }
@@ -340,7 +349,7 @@ internal sealed partial class CSharpBackend
             ? new Cast(en.Underlying, e) { Type = en.Underlying, Pos = e.Pos }
             : e;
 
-    /// <summary>Pack a maximal run of consecutive bit-fields into MSVC-style storage
+    /// <summary>Pack a maximal run of consecutive bit-fields into same-size storage
     /// units and emit them. A unit is a single private backing field of the declared
     /// integer type's size (so <c>sizeof</c> + member offsets match C's layout);
     /// consecutive bit-fields of the SAME size share a unit, LSB-first, until it
@@ -348,9 +357,12 @@ internal sealed partial class CSharpBackend
     /// (<c>int : 0;</c>) forces a fresh unit. Each NAMED member gets a masked /
     /// sign-extended accessor property over its unit's backing field — value
     /// semantics (modular store, signed sign-extension on read). Anonymous members
-    /// reserve bits but get no accessor. A union puts every unit at
+    /// reserve bits but get no accessor. Ordinary members may overlap a unit's
+    /// unused tail bytes; those accessors touch only their own occupied bytes.
+    /// A union puts every unit at
     /// <c>[FieldOffset(0)]</c> (all members overlay).</summary>
-    private string PackBitFieldRun(IReadOnlyList<StructField> run, bool isUnion, ref int unitCounter, IReadOnlyList<int>? explicitOffsets = null)
+    private string PackBitFieldRun(IReadOnlyList<StructField> run, bool isUnion, ref int unitCounter,
+        IReadOnlyList<int>? explicitOffsets = null, bool preserveAdjacentBytes = false)
     {
         var units = new List<(int Bytes, List<(StructField F, int Off)> Members)>();
         int curBytes = -1; List<(StructField, int)>? curMembers = null; var used = 0;
@@ -388,7 +400,7 @@ internal sealed partial class CSharpBackend
             foreach (var (f, off) in members)
             {
                 if (f.Name.Length == 0) { continue; }   // anonymous padding — no accessor
-                sb.Append(BitFieldAccessor(f, id, bytes, off));
+                sb.Append(BitFieldAccessor(f, id, bytes, off, preserveAdjacentBytes));
             }
         }
         return sb.ToString();
@@ -429,7 +441,7 @@ internal sealed partial class CSharpBackend
     /// bytes). The getter extracts the field's bits and (signed) sign-extends through
     /// a same-width-or-wider math type; the setter clears the field's bit window and
     /// ORs in the value truncated to the field width — exactly C's value semantics.</summary>
-    private string BitFieldAccessor(StructField f, string unit, int unitBytes, int off)
+    private string BitFieldAccessor(StructField f, string unit, int unitBytes, int off, bool preserveAdjacentBytes = false)
     {
         var inv = System.Globalization.CultureInfo.InvariantCulture;
         var bt = Cs(f.Type);                          // declared type spelling ("int" / "uint" / …)
@@ -445,11 +457,35 @@ internal sealed partial class CSharpBackend
         var clear = unitAll & ~((mask << off) & unitAll);
         var maskLit = mask.ToString(inv) + (mw == 32 ? "u" : "UL");
         var clearLit = LitForUnit(clear, unitBytes);
-        var extract = $"(({mtU})({unit} >> {off}) & {maskLit})";
+        var read = preserveAdjacentBytes ? "__raw" : unit;
+        var extract = $"(({mtU})({read} >> {off}) & {maskLit})";
         var get = signed
             ? $"({bt})((({mtS}){extract} << {mw - w}) >> {mw - w})"   // arithmetic shift sign-extends
             : $"({bt})({extract})";
         var set = $"{unit} = ({ut})(({unit} & {clearLit}) | (({ut})((({mtU})value & {maskLit}) << {off})));";
+        if (preserveAdjacentBytes)
+        {
+            // An ordinary member can overlap the unused bytes of this backing
+            // word. Access only the bytes containing this bitfield: a masked
+            // whole-word store would still race with an independent char member.
+            var body = new StringBuilder();
+            body.Append("    public ").Append(bt).Append(' ').Append(fid).Append("\n    {\n        get\n        {\n")
+                .Append("            fixed (").Append(ut).Append("* __storage = &").Append(unit).Append(")\n            {\n")
+                .Append("                byte* __bytes = (byte*)__storage;\n                ").Append(mtU).Append(" __raw = 0;\n");
+            for (var index = off / 8; index <= (off + w - 1) / 8; index++)
+                body.Append("                __raw |= (").Append(mtU).Append(")__bytes[").Append(index).Append("] << ").Append(index * 8).Append(";\n");
+            body.Append("                return ").Append(get).Append(";\n            }\n        }\n        set\n        {\n")
+                .Append("            fixed (").Append(ut).Append("* __storage = &").Append(unit).Append(")\n            {\n")
+                .Append("                byte* __bytes = (byte*)__storage;\n");
+            for (var index = off / 8; index <= (off + w - 1) / 8; index++)
+            {
+                var byteMask = (mask << off >> (index * 8)) & 255;
+                body.Append("                __bytes[").Append(index).Append("] = (byte)((").Append(mtU).Append(")(__bytes[").Append(index).Append("] & ")
+                    .Append(255 ^ byteMask).Append(") | ((((").Append(mtU).Append(")value & ").Append(maskLit)
+                    .Append(") << ").Append(off).Append(") >> ").Append(index * 8).Append(" & ").Append(byteMask).Append("));\n");
+            }
+            return body.Append("            }\n        }\n    }\n").ToString();
+        }
         return $"    public {bt} {fid} {{ get => {get}; set => {set} }}\n";
     }
 

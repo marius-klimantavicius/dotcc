@@ -1,0 +1,1 @@
+This fixture selects LP64 ordinary-member reuse of bitfield tail bytes. MSVC reserves the whole declared bitfield storage unit instead.

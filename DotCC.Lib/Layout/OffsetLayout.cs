@@ -24,6 +24,7 @@ internal sealed class LayoutInfo
 {
     public int Size;
     public int Alignment;
+    public bool HasBitFieldTailReuse;
     public readonly Dictionary<string, int> Offsets = new Dictionary<string, int>(StringComparer.Ordinal);
     // Each actual storage unit is identified by its first source field index.
     // Consecutive bit-fields can share one unit; zero-length tails have none.
@@ -74,6 +75,7 @@ internal sealed class OffsetLayoutModel
             var cursor = 0;
             var unitBytes = 0;
             var usedBits = 0;
+            var unitOffset = 0;
             for (var fieldIndex = 0; fieldIndex < aggregate.Fields.Count; fieldIndex++)
             {
                 var field = aggregate.Fields[fieldIndex];
@@ -89,9 +91,23 @@ internal sealed class OffsetLayoutModel
                     unitBytes = layout.Size;
                     usedBits = width;
                 }
-                else { unitBytes = 0; usedBits = 0; }
+                else
+                {
+                    // Ordinary members may start after the occupied bytes of
+                    // the final bitfield unit, rather than after its declared
+                    // integer width. Keep the unit's alignment/backing extent;
+                    // C# must overlay storage when the next member uses its tail.
+                    if (unitBytes != 0 && !aggregate.Union && !aggregate.Packed)
+                    {
+                        cursor = checked(unitOffset + (usedBits + 7) / 8);
+                        if (RoundUp(cursor, alignment) < unitOffset + unitBytes)
+                            result.HasBitFieldTailReuse = true;
+                    }
+                    unitBytes = 0; usedBits = 0;
+                }
                 result.Alignment = Math.Max(result.Alignment, alignment);
                 var offset = aggregate.Union ? 0 : RoundUp(cursor, alignment);
+                if (field.BitWidth is not null) unitOffset = offset;
                 if (field.BitWidth is null) result.Offsets.Add(field.Name, offset);
                 if (layout.Size != 0) result.StorageOffsets.Add(fieldIndex, offset);
                 cursor = aggregate.Union ? Math.Max(cursor, layout.Size) : checked(offset + layout.Size);
