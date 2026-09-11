@@ -1,0 +1,1 @@
+GNU LP64 bit-field packing differs from MSVC. Native GCC C17 byte-image oracle.

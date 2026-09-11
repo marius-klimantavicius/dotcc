@@ -24,11 +24,15 @@ internal sealed class LayoutInfo
 {
     public int Size;
     public int Alignment;
+    // Includes ordinary prefix/tail bytes and overlapping mixed-width units.
     public bool HasBitFieldTailReuse;
     public readonly Dictionary<string, int> Offsets = new Dictionary<string, int>(StringComparer.Ordinal);
     // Each actual storage unit is identified by its first source field index.
     // Consecutive bit-fields can share one unit; zero-length tails have none.
     public readonly Dictionary<int, int> StorageOffsets = new Dictionary<int, int>();
+    // Per source field: declared-width containing unit and LSB bit position.
+    // The backend consumes this mapping instead of independently packing runs.
+    public readonly Dictionary<int, (int Offset, int Bytes, int Bit)> BitFields = new();
 }
 internal sealed class OffsetLayoutException : Exception
 {
@@ -71,6 +75,12 @@ internal sealed class OffsetLayoutModel
         try
         {
             var aggregate = resolve(name);
+            if (!aggregate.Packed && aggregate.Fields.Any(field => field.BitWidth is not null))
+            {
+                var bitLayout = UnpackedBitFields(aggregate);
+                cache.Add(name, bitLayout);
+                return bitLayout;
+            }
             var result = new LayoutInfo { Alignment = 1 };
             var cursor = 0;
             var unitBytes = 0;
@@ -118,6 +128,59 @@ internal sealed class OffsetLayoutModel
         }
         finally { active.Remove(name); }
     }
+    private LayoutInfo UnpackedBitFields(LayoutAggregate aggregate)
+    {
+        var result = new LayoutInfo { Alignment = 1 };
+        long bitCursor = 0;
+        var ordinary = new List<(int Start, int End)>();
+        for (var index = 0; index < aggregate.Fields.Count; index++)
+        {
+            var field = aggregate.Fields[index];
+            var layout = Type(field.Type);
+            if (field.BitWidth is int width)
+            {
+                var capacity = checked(layout.Size * 8);
+                if (width < 0 || width > capacity || layout.Size > 8)
+                    throw new OffsetLayoutException("Invalid bit-field width: " + aggregate.Name + "." + field.Name);
+                if (width == 0)
+                {
+                    if (!aggregate.Union) bitCursor = RoundUpBits(bitCursor, checked(layout.Alignment * 8));
+                    continue;
+                }
+                // Unnamed fields reserve bits, but do not impose their declared
+                // type's alignment on the aggregate in this GNU LP64 profile.
+                if (field.Name.Length != 0) result.Alignment = Math.Max(result.Alignment, layout.Alignment);
+                var start = aggregate.Union ? 0 : bitCursor;
+                if (start % capacity + width > capacity) start = RoundUpBits(start, checked(layout.Alignment * 8));
+                var unit = checked((int)((start / capacity) * layout.Size));
+                result.BitFields.Add(index, (unit, layout.Size, (int)(start % capacity)));
+                result.StorageOffsets.Add(index, unit);
+                bitCursor = aggregate.Union ? Math.Max(bitCursor, width) : checked(start + width);
+            }
+            else
+            {
+                result.Alignment = Math.Max(result.Alignment, layout.Alignment);
+                var offset = aggregate.Union ? 0 : RoundUp(checked((int)((bitCursor + 7) / 8)), layout.Alignment);
+                result.Offsets.Add(field.Name, offset);
+                if (layout.Size != 0)
+                {
+                    result.StorageOffsets.Add(index, offset);
+                }
+                // A flexible tail has no header extent, but its independently
+                // accessed bytes can still overlap a declared bitfield unit.
+                ordinary.Add((offset, checked(offset + Math.Max(layout.Size, 1))));
+                bitCursor = aggregate.Union ? Math.Max(bitCursor, (long)layout.Size * 8) : ((long)offset + layout.Size) * 8;
+            }
+        }
+        result.Size = RoundUp(checked((int)((bitCursor + 7) / 8)), result.Alignment);
+        var units = result.BitFields.Values.DistinctBy(field => (field.Offset, field.Bytes)).ToArray();
+        result.HasBitFieldTailReuse = units.Any(unit => ordinary.Any(field =>
+            field.Start < unit.Offset + unit.Bytes && field.End > unit.Offset)) ||
+            units.Any(unit => units.Any(other => other != unit &&
+                other.Offset < unit.Offset + unit.Bytes && other.Offset + other.Bytes > unit.Offset));
+        return result;
+    }
+    private static long RoundUpBits(long value, int alignment) => checked((value + alignment - 1) / alignment * alignment);
     public int Offset(string name, IReadOnlyList<string> path)
     {
         if (path.Count == 0) throw new OffsetLayoutException("Empty offsetof member designator");

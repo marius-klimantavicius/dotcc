@@ -60,8 +60,8 @@ public sealed class BitfieldTailLayoutTests
             int main(void) { return (int)offsetof(struct Tail, next); }
             """);
         emitted.ShouldContain($"public const ulong Value = {offset}UL;");
-        // The ordinary, naturally aligned storage path remains sufficient.
-        emitted.ShouldNotContain("LayoutKind.Explicit, Size =");
+        // Explicit storage now uses the same shared layout map for all bitfields.
+        emitted.ShouldContain("LayoutKind.Explicit, Size =");
         emitted.ShouldContain("__bf0 =");
     }
 

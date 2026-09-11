@@ -1,0 +1,10 @@
+Prefix 8 4 4
+Mixed 8 4 4
+Cross 8 4 6
+Zero 5 1 4
+Unnamed 3 1 2
+a58f01005a5a0000
+a51dcf1c5a000000
+mixed values 5 99 19 -7 60 195
+3cff830fc3000000
+union 0 16

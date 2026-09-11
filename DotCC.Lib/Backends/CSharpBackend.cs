@@ -200,7 +200,7 @@ internal sealed partial class CSharpBackend
         var sb = new StringBuilder();
         var flexibleField = t.Fields.FirstOrDefault(field => field.Type.Unqualified is CType.Array { Count: 0 });
         DotCC.Layout.LayoutInfo? headerLayout = null;
-        var bitFieldLayout = t.Fields.Any(field => field.IsBitField) && !t.IsUnion && t.Layout != AggregateLayout.Packed
+        var bitFieldLayout = t.Fields.Any(field => field.IsBitField) && t.Layout != AggregateLayout.Packed
             ? _offsetModel.Aggregate(t.Name) : null;
         if (flexibleField.Type is not null)
         {
@@ -214,7 +214,7 @@ internal sealed partial class CSharpBackend
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
                 .Append(layoutClass).Append(".Size, Pack = ").Append(layoutClass).Append(".Alignment)]\n");
         }
-        else if (bitFieldLayout?.HasBitFieldTailReuse == true)
+        else if (bitFieldLayout is not null)
         {
             headerLayout = bitFieldLayout;
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
@@ -235,11 +235,11 @@ internal sealed partial class CSharpBackend
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]\n");
         }
         sb.Append(_publicTypes ? "public unsafe struct " : "unsafe struct ").Append(t.Name).Append("\n{\n");
-        if (headerLayout is not null && flexibleField.Type is not null)
+        if (headerLayout is not null)
         {
-            // A tail with stricter alignment than any stored member must still
-            // align the header when it is embedded. The overlay uses real header
-            // bytes and never reserves a phantom tail element.
+            // Preserve the model's alignment even if only unnamed bitfields or
+            // a flexible tail impose storage/alignment requirements. The anchor
+            // overlays real header bytes and never reserves a tail element.
             var anchor = headerLayout.Alignment switch { 1 => "byte", 2 => "ushort", 4 => "uint", _ => "ulong" };
             sb.Append("    [System.Runtime.InteropServices.FieldOffset(0)]\n    private ").Append(anchor).Append(" __dotcc_flex_alignment;\n");
         }
@@ -247,13 +247,19 @@ internal sealed partial class CSharpBackend
         for (var fi = 0; fi < t.Fields.Count; )
         {
             var f = t.Fields[fi];
-            // A run of consecutive bit-fields packs into same-size storage units —
-            // one shared backing field per unit (so sizeof + member offsets match C)
-            // plus a masked/sign-extended accessor per named member (value semantics:
-            // overflow wraps, signed fields sign-extend on read). Consume the whole
-            // run at once so adjacent same-size fields share a unit.
+            // Unpacked C fields use the shared GNU LP64 position map. Packed
+            // aggregates retain their existing complete, same-sized units.
+            // Named accessors truncate stores and sign-extend signed reads.
             if (f.IsBitField)
             {
+                if (bitFieldLayout is not null)
+                {
+                    var end = fi;
+                    while (end < t.Fields.Count && t.Fields[end].IsBitField) end++;
+                    sb.Append(PackMappedBitFields(t.Fields, fi, end, bitFieldLayout, ref bitUnitCounter));
+                    fi = end;
+                    continue;
+                }
                 var run = new List<StructField>();
                 var fj = fi;
                 while (fj < t.Fields.Count && t.Fields[fj].IsBitField) { run.Add(t.Fields[fj]); fj++; }
@@ -406,8 +412,31 @@ internal sealed partial class CSharpBackend
         return sb.ToString();
     }
 
+    private string PackMappedBitFields(IReadOnlyList<StructField> fields, int start, int end,
+        DotCC.Layout.LayoutInfo layout, ref int unitCounter)
+    {
+        var sb = new StringBuilder();
+        var units = new Dictionary<(int Offset, int Bytes), string>();
+        for (var index = start; index < end; index++)
+        {
+            var field = fields[index];
+            if (field.Name.Length == 0 || field.BitWidth == 0) continue;
+            var location = layout.BitFields[index];
+            var key = (location.Offset, location.Bytes);
+            if (!units.TryGetValue(key, out var unit))
+            {
+                unit = "__bf" + unitCounter++;
+                units.Add(key, unit);
+                sb.Append("    [System.Runtime.InteropServices.FieldOffset(").Append(location.Offset)
+                    .Append(")]\n    private ").Append(BitStorage(location.Bytes).Cs).Append(' ').Append(unit).Append(";\n");
+            }
+            sb.Append(BitFieldAccessor(field, unit, location.Bytes, location.Bit, layout.HasBitFieldTailReuse));
+        }
+        return sb.ToString();
+    }
+
     /// <summary>The storage-unit size (bytes) for a bit-field — its declared integer
-    /// type's size (MSVC allocates a unit sized to the type); an enum bit-field uses
+    /// type's size for the legacy packed path; an enum bit-field uses
     /// its underlying size. Falls back to 4 for an unexpected size.</summary>
     private static int BitUnitBytes(CType t)
     {
