@@ -11,43 +11,43 @@
 #include <stddef.h>  /* size_t */
 
 /* Length / comparison / copy. */
-int strlen(char* s);
-int strcmp(char* a, char* b);
-int strncmp(char* a, char* b, size_t n);
-int strcoll(char* a, char* b);
+int strlen(const char* s);
+int strcmp(const char* a, const char* b);
+int strncmp(const char* a, const char* b, size_t n);
+int strcoll(const char* a, const char* b);
 /* POSIX (home: <strings.h>; glibc exposes them here too, which is what
    portable code relies on — chibi calls them with only <string.h>). */
-int strcasecmp(char* a, char* b);
-int strncasecmp(char* a, char* b, size_t n);
-char* strcpy(char* dst, char* src);
-char* strncpy(char* dst, char* src, int n);
+int strcasecmp(const char* a, const char* b);
+int strncasecmp(const char* a, const char* b, size_t n);
+char* strcpy(char* dst, const char* src);
+char* strncpy(char* dst, const char* src, size_t n);
 
 /* Concatenation. */
-char* strcat(char* dst, char* src);
-char* strncat(char* dst, char* src, int n);
+char* strcat(char* dst, const char* src);
+char* strncat(char* dst, const char* src, size_t n);
 
 /* Search. */
-char* strchr(char* s, int c);
-char* strrchr(char* s, int c);
-char* strstr(char* haystack, char* needle);
-int strspn(char* s, char* accept);
-int strcspn(char* s, char* reject);
-char* strpbrk(char* s, char* accept);
+char* strchr(const char* s, int c);
+char* strrchr(const char* s, int c);
+char* strstr(const char* haystack, const char* needle);
+int strspn(const char* s, const char* accept);
+int strcspn(const char* s, const char* reject);
+char* strpbrk(const char* s, const char* accept);
 
 /* Tokenize — reentrant primitive (strtok_r) + stateful wrapper (strtok).
    Prefer strtok_r: it takes an explicit save slot, so it is thread-safe
    and re-entrant. */
-char* strtok_r(char* str, char* delim, char** saveptr);
-char* strtok(char* str, char* delim);
+char* strtok_r(char* str, const char* delim, char** saveptr);
+char* strtok(char* str, const char* delim);
 
 /* Error-number -> message text (see <errno.h>). */
 char* strerror(int errnum);
 
 /* Memory. */
-void* memset(void* dst, int value, int count);
-void* memcpy(void* dst, void* src, int count);
-void* memmove(void* dst, void* src, int count);
-int memcmp(void* a, void* b, int count);
-void* memchr(void* s, int c, int count);
+void* memset(void* dst, int value, size_t count);
+void* memcpy(void* dst, const void* src, size_t count);
+void* memmove(void* dst, const void* src, size_t count);
+int memcmp(const void* a, const void* b, size_t count);
+void* memchr(const void* s, int c, size_t count);
 
 #endif

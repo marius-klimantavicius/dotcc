@@ -235,11 +235,7 @@ public static unsafe partial class Libc
     /// <paramref name="dst"/> (matches C signature).
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void* memset(void* dst, int value, int count)
-    {
-        NativeMemory.Fill(dst, (nuint)count, (byte)value);
-        return dst;
-    }
+    public static void* memset(void* dst, int value, int count) => memset(dst, value, checked((ulong)count));
 
     /// <summary>
     /// <c>memcpy(dst, src, count)</c> — copy <paramref name="count"/> bytes
@@ -248,11 +244,7 @@ public static unsafe partial class Libc
     /// <paramref name="dst"/> (matches C signature).
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void* memcpy(void* dst, void* src, int count)
-    {
-        Buffer.MemoryCopy(src, dst, count, count);
-        return dst;
-    }
+    public static void* memcpy(void* dst, void* src, int count) => memcpy(dst, src, checked((ulong)count));
 
     // ---------------------------------------------------------------------
     // String → number conversions (<stdlib.h>)

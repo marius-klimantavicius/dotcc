@@ -13,8 +13,9 @@ namespace DotCC.Libc;
 /// allocation, matching how real C code passes strings around.
 /// </summary>
 /// <remarks>
-/// dotcc maps C <c>size_t</c> length arguments to plain <c>int</c> (same as
-/// <see cref="Libc.strlen"/> returning <c>int</c>); portable code should cast.
+/// C <c>size_t</c> count arguments use <c>ulong</c> on dotcc's LP64 ABI.
+/// Compatibility overloads retain the existing managed <c>int</c> callers.
+/// The older string-size return APIs still return <c>int</c>; see C-SUPPORT.md.
 /// Per dotcc's reentrant-by-default rule (see C-SUPPORT.md), the tokenizer
 /// primitive is <see cref="strtok_r"/> (explicit <c>char**</c> save slot); the
 /// C89 stateful <see cref="strtok"/> is a thin <c>[ThreadStatic]</c> wrapper.
@@ -31,16 +32,20 @@ public static unsafe partial class Libc
     /// Takes <c>nuint</c> (C size_t) per the C standard. The <c>ulong</c>
     /// overload is for callers that have dotcc's <c>size_t</c> (= ulong).
     /// </summary>
-    public static int strncmp(byte* a, byte* b, nuint n)
+    public static int strncmp(byte* a, byte* b, nuint n) => strncmp(a, b, (ulong)n);
+    public static int strncmp(byte* a, byte* b, ulong n)
     {
-        for (nuint i = 0; i < n; i++)
+        if (n != 0 && (a == null || b == null)) throw new ArgumentNullException(a == null ? nameof(a) : nameof(b));
+        // A huge bound is valid for short terminated strings: do not validate a
+        // fictitious n-byte allocation or narrow n before the early NUL check.
+        while (n-- != 0)
         {
-            if (a[i] != b[i]) { return a[i] - b[i]; }
-            if (a[i] == 0) { return 0; }
+            if (*a != *b) return *a - *b;
+            if (*a == 0) return 0;
+            a++; b++;
         }
         return 0;
     }
-    public static int strncmp(byte* a, byte* b, ulong n) => strncmp(a, b, (nuint)n);
 
     /// <summary>
     /// <c>strncpy(dst, src, n)</c> — copy up to <paramref name="n"/> bytes from
@@ -50,11 +55,14 @@ public static unsafe partial class Libc
     /// written (the classic C99 footgun, faithfully reproduced). Returns
     /// <paramref name="dst"/>.
     /// </summary>
-    public static byte* strncpy(byte* dst, byte* src, int n)
+    public static byte* strncpy(byte* dst, byte* src, int n) => strncpy(dst, src, checked((ulong)n));
+    public static byte* strncpy(byte* dst, byte* src, ulong n)
     {
-        int i = 0;
-        for (; i < n && src[i] != 0; i++) { dst[i] = src[i]; }
-        for (; i < n; i++) { dst[i] = 0; }
+        nuint count = ValidateMemoryRange(dst, n);
+        if (count != 0 && src == null) throw new ArgumentNullException(nameof(src));
+        nuint i = 0;
+        for (; i < count && src[i] != 0; i++) dst[i] = src[i];
+        if (i < count) memset(dst + i, 0, (ulong)(count - i));
         return dst;
     }
 
@@ -80,13 +88,14 @@ public static unsafe partial class Libc
     /// <paramref name="src"/> to <paramref name="dst"/>, then always write a
     /// terminating NUL. Returns <paramref name="dst"/>.
     /// </summary>
-    public static byte* strncat(byte* dst, byte* src, int n)
+    public static byte* strncat(byte* dst, byte* src, int n) => strncat(dst, src, checked((ulong)n));
+    public static byte* strncat(byte* dst, byte* src, ulong n)
     {
+        if (dst == null || (src == null && n != 0)) throw new ArgumentNullException(dst == null ? nameof(dst) : nameof(src));
         byte* p = dst;
-        while (*p != 0) { p++; }
-        int i = 0;
-        for (; i < n && src[i] != 0; i++) { p[i] = src[i]; }
-        p[i] = 0;
+        while (*p != 0) p++;
+        while (n-- != 0 && *src != 0) *p++ = *src++;
+        *p = 0;
         return dst;
     }
 
@@ -259,16 +268,7 @@ public static unsafe partial class Libc
     /// Returns the signed difference of the first differing pair (as
     /// <c>unsigned char</c>), or 0 if all <paramref name="n"/> bytes match.
     /// </summary>
-    public static int memcmp(void* a, void* b, int n)
-    {
-        byte* pa = (byte*)a;
-        byte* pb = (byte*)b;
-        for (int i = 0; i < n; i++)
-        {
-            if (pa[i] != pb[i]) { return pa[i] - pb[i]; }
-        }
-        return 0;
-    }
+    public static int memcmp(void* a, void* b, int n) => memcmp(a, b, checked((ulong)n));
 
     /// <summary>
     /// <c>memmove(dst, src, n)</c> — copy <paramref name="n"/> bytes,
@@ -276,26 +276,12 @@ public static unsafe partial class Libc
     /// contract, though our memcpy is backed by the same overlap-safe primitive).
     /// Returns <paramref name="dst"/>.
     /// </summary>
-    public static void* memmove(void* dst, void* src, int n)
-    {
-        // Buffer.MemoryCopy handles overlapping regions correctly.
-        Buffer.MemoryCopy(src, dst, n, n);
-        return dst;
-    }
+    public static void* memmove(void* dst, void* src, int n) => memmove(dst, src, checked((ulong)n));
 
     /// <summary>
     /// <c>memchr(s, c, n)</c> — pointer to the first occurrence of
     /// <c>(byte)<paramref name="c"/></c> within the first <paramref name="n"/>
     /// bytes of <paramref name="s"/>, or <c>null</c>.
     /// </summary>
-    public static void* memchr(void* s, int c, int n)
-    {
-        byte* p = (byte*)s;
-        byte target = (byte)c;
-        for (int i = 0; i < n; i++)
-        {
-            if (p[i] == target) { return p + i; }
-        }
-        return null;
-    }
+    public static void* memchr(void* s, int c, int n) => memchr(s, c, checked((ulong)n));
 }

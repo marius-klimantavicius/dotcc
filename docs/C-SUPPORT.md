@@ -275,11 +275,11 @@ Implementations: `malloc`/`free`/`strtod`/`atof` in `Libc.cs`, the rest in `Stdl
 
 ### `string.h`
 
-Synthetic header at `DotCC.Lib/include/string.h` declares the surface; implementations live in `DotCC.Libc.Libc` (strlen/strcmp/strcpy + the mem trio in `Libc.cs`; everything else in `StringLib.cs`). Fixtures `string-h-basic/` (the originals) and `string-h-extended/` exercise the surface end-to-end with both oracles; `strtok_r`/`memmove`-overlap/`strncpy`-padding edge cases are unit-tested in `LibcStringExtTests.cs`.
+Synthetic header at `DotCC.Lib/include/string.h` declares const-qualified read-only inputs. Implementations live in `Libc.cs`, `StringLib.cs`, and `MemorySizeLib.cs`. Memory and bounded-string **count parameters use LP64 `size_t` (`ulong`)**, retaining compatibility overloads for managed `int` callers. Memory operations validate native length/address-range representability before access and throw on impossible extents; they receive no allocation capacity, so the caller still must own enough accessible storage. No count narrows to `int`. Bounded comparison/concatenation accept even `SIZE_MAX` when a short string terminates first. Fixtures `string-h-basic/`, `string-h-extended/`, and `string-size-counts/` exercise native-compatible behavior, including callback signatures and overlap; `LibcMemorySizeTests` additionally checks impossible ranges without accessing huge memory.
 
 | Function | Status | Notes |
 |---|---|---|
-| `strlen` | ✅ | Pointer loop; declared in `<string.h>`. Returns `int` (dotcc-specific — real C returns `size_t`; portable code should cast). |
+| `strlen` | ✅ | Pointer loop; declared in `<string.h>`. Legacy `int` return; strings longer than `int.MaxValue` are unsupported. A complete `size_t` return migration remains separate from count-parameter support. |
 | `strcmp` | ✅ | Pointer loop; declared in `<string.h>`. |
 | `strncmp` | ✅ | Bounded `strcmp`; stops at a mismatch or shared NUL within `n`. |
 | `strcoll` | ✅ | Locale-aware compare; dotcc runs the "C" locale (byte order), so it's exactly `strcmp`. Used by Lua's `lvm.c` string ordering. |
@@ -289,7 +289,7 @@ Synthetic header at `DotCC.Lib/include/string.h` declares the surface; implement
 | `strcat`, `strncat` | ✅ | Append to NUL-terminated dst; `strncat` always re-terminates after at most `n` bytes. |
 | `strchr`, `strrchr` | ✅ | First / last occurrence of a byte; the terminating NUL is part of the string (`strchr(s,0)` finds it). |
 | `strstr` | ✅ | First substring occurrence; empty needle returns the haystack. |
-| `strspn`, `strcspn`, `strpbrk` | ✅ | Span of accepted / rejected leading bytes; `strpbrk` finds the first byte in a set. |
+| `strspn`, `strcspn`, `strpbrk` | ✅ | Span of accepted / rejected leading bytes; `strspn` and `strcspn` retain legacy `int` results and support lengths up to `int.MaxValue`. `strpbrk` finds the first byte in a set. |
 | `strtok_r` (POSIX) | ✅ | The reentrant primitive — explicit `char **saveptr`, no hidden state. Destructive (writes NULs into the source buffer), skips leading/consecutive delimiters. The dotcc-default reentrant shape. |
 | `strtok` | ✅ | C89 stateful form — a thin wrapper over `strtok_r` with a `[ThreadStatic]` saveptr (so distinct threads don't clobber each other, unlike real C's process-global cursor). Docs steer users to `strtok_r`. |
 | `strerror` | ✅ | Maps errno → message (modeled on glibc wording). Returns a pinned RVA literal pointer — no allocation. Lives in `ErrnoLib.cs`. |
