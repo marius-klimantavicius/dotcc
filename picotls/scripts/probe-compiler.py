@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shlex
 import subprocess
 
@@ -41,7 +42,7 @@ sources = [line.strip() for line in
 base = ["dotnet", str(compiler), "-std=c17", *defines, "-I", str(source / "include")]
 results = []
 
-def run(name, command, *, preprocess=False, expected_native=False):
+def run(name, command, *, preprocess=False, expected_native=False, build_status=False):
     stdout = out / (name + (".i" if preprocess else ".stdout"))
     stderr = out / (name + ".stderr")
     try:
@@ -52,8 +53,15 @@ def run(name, command, *, preprocess=False, expected_native=False):
     except subprocess.TimeoutExpired:
         status = 124
     diagnostics = stderr.read_text()
+    diagnostic_lines = diagnostics.splitlines()
+    if build_status:
+        # --emit=build reports its successful write/build on stderr too. Only
+        # these known status messages are informational; retain all warnings,
+        # errors and unexpected text as blockers even when dotcc exits zero.
+        diagnostic_lines = [line for line in diagnostic_lines if not re.fullmatch(
+            r"dotcc: wrote [0-9]+ C# source file\(s\) \+ .+\.csproj|dotcc: OK\. dotnet .+\.dll \[args\]", line)]
     pasted_tokens = preprocess and "##" in stdout.read_text()
-    blocked = status != 0 or bool(diagnostics.strip()) or pasted_tokens
+    blocked = status != 0 or any(line.strip() for line in diagnostic_lines) or pasted_tokens
     results.append(dict(name=name, command=shlex.join(command), exit_code=status,
                         stderr=str(stderr.relative_to(root)),
                         stdout=str(stdout.relative_to(root)),
@@ -81,7 +89,7 @@ for case in sorted((root / "tests/compiler-blockers").glob("*.c")):
     run(case.stem + "-object", [*base, "--emit=obj", str(case), "-o", str(target)])
     if case.stem == "posix-memalign":
         run(case.stem + "-build", [*base, "--emit=build", str(case), "-o",
-                                    str(out / "posix-memalign-build")])
+                                    str(out / "posix-memalign-build")], build_status=True)
 
 assemblies = [compiler, compiler.with_name("DotCC.Lib.dll"), compiler.with_name("DotCC.Libc.dll")]
 report = dict(compiler_assembly_sha256={path.name: hashlib.sha256(path.read_bytes()).hexdigest()
