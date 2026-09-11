@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/common.sh"
 SQLITE_LAYOUT_FLAGS=("${SQLITE_NATIVE_FLAGS[@]}")
-if [[ "${SQLITE_MS_BITFIELDS:-1}" == 0 ]]; then
+if [[ "${SQLITE_MS_BITFIELDS:-0}" == 1 ]]; then
   SQLITE_LAYOUT_FLAGS=()
   for flag in "${SQLITE_NATIVE_FLAGS[@]}"; do
-    [[ "$flag" == -mms-bitfields ]] || SQLITE_LAYOUT_FLAGS+=("$flag")
+    [[ "$flag" == -mno-ms-bitfields ]] || SQLITE_LAYOUT_FLAGS+=("$flag")
   done
-  SQLITE_LAYOUT_FLAGS+=(-mno-ms-bitfields)
+  SQLITE_LAYOUT_FLAGS+=(-mms-bitfields)
 fi
 "$SQLITE_ROOT/scripts/preprocess.sh" > "$SQLITE_ROOT/artifacts/layout-sqlite3.i"
 python3 "$SQLITE_ROOT/scripts/generate-layout-requests.py" \

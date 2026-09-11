@@ -4,7 +4,7 @@ Run `scripts/layout-native.sh` to compute the pinned native oracle and
 `scripts/test-layout-translated.sh` to compare translated execution. Set
 `SQLITE_AOT=1` on the latter command to run the same checks under linux-x64
 NativeAOT as well as the JIT. Both use the configured LP64, unsigned-char,
-MS-compatible bit-field storage profile. The checked oracle is
+GNU/System V bit-field storage profile. The checked oracle is
 `tests/layout-native.expected`.
 
 `src/layout_probe.c` includes the unchanged amalgamation and tests all 39 active

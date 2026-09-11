@@ -42,33 +42,37 @@ harness builds. This warning policy does not change generated code or features.
 
 ## Bit-field layout selected for the native oracle
 
-The compiler already packs adjacent same-sized bit-fields into complete storage
-units. LP64 specifies scalar sizes but does not uniquely specify bit-field packing.
-The campaign therefore explicitly uses GCC `-mms-bitfields` through
-`config/native-flags.txt` for the native oracle, matching dotcc's existing storage
-unit layout on this x64 LP64 host. This changes no SQLite feature definitions and
-introduces no native interop. The SQL algorithms remain upstream C. The host
-product uses one hash-checked mutex-selection guard adaptation in a generated
-input copy, documented in [threading and mmap](threading-mmap.md); reference
-downloads remain unchanged. `scripts/test-product-layout.sh` independently
-compares the actual threaded product layout with GCC using these same ABI flags.
+The native oracle uses GNU/System V bit-field placement with
+`-mno-ms-bitfields` through `config/native-flags.txt`. The shared compiler now
+places unpacked fields from a common bit-position map, including ordinary-byte
+prefix reuse, mixed integer widths, zero-width boundaries and ordinary-member
+tail reuse. This profile was selected by comparing actual native and translated
+storage; LP64 scalar widths alone do not establish bit-field compatibility.
 
-Actual upstream probes show why the flag is required: `ExprList_item` has size32
-and union offset24 in this profile, versus size24/offset20 with default GCC;
-`VdbeCursor` has size120, seekHit offset12 and aType offset120, versus112/6/112.
-The expanded probe of all active offsetof requests also finds differences in
-`Parse` (size424 versus416), `WhereInfo` (size864 versus856), and `WhereLoop`
-(size112 versus104), including their fields following bit-field storage.
-`scripts/layout-native.sh` prints sizeof/alignment/offsetof alongside actual
-address differences for all 39 active requests in the FTS5 profile and additional aggregates; set
-`SQLITE_MS_BITFIELDS=0` for the separate default-GCC comparison. Expected matching
-layout is `tests/layout-native.expected`; `layout-native-sysv.reference` is an
-explicit comparison, not the oracle's ABI.
+The old `-mms-bitfields` flag was an explicit workaround for the compiler's earlier
+whole-unit packing. Its measured transcript is preserved unchanged in
+`tests/layout-native-ms.reference`. It is no longer the product oracle. Fresh GNU
+measurements, including all 39 active FTS5-profile offsetof requests and actual
+storage, now supply `tests/layout-native.expected`. The older
+`layout-native-sysv.reference` is historical comparison data from an earlier
+feature profile; it must not replace a current measurement. Set
+`SQLITE_MS_BITFIELDS=1` on `scripts/layout-native.sh` to reproduce the historical
+MS packing comparison; the default and explicit `0` use the current GNU profile.
 
-This is a verified profile for the observed SQLite layouts, not a claim that every
-MS ABI corner case is implemented. Zero-width and mixed/union bit-field cases
-remain subject to the shared compiler's layout audit. The actual translated layout
-probe passes under both JIT and NativeAOT; see `layout-storage.md`.
+The measured GNU profile has `ExprList_item` size24/union offset20,
+`VdbeCursor` size112/seekHit offset6/aType offset112, `WhereInfo` size856 and
+`WhereLoop` size104. The current FTS5 feature configuration has `Parse` size424;
+earlier non-FTS comparison values must not be mixed with this oracle.
+`scripts/test-product-layout.sh` independently checks the threaded product using
+the same configured native flags. No SQLite feature definitions or upstream
+sources changed for this profile migration. Reference downloads remain unchanged;
+the existing hash-checked mutex-selection adaptation is documented in
+[threading and mmap](threading-mmap.md).
+
+This is an executed profile for the observed SQLite layouts, not a promise of
+every compiler/target bit-field ABI. Packed aggregates retain their separately
+documented compiler behavior. Current commands and execution evidence are in
+[layout-storage.md](layout-storage.md) and [validation.md](validation.md).
 
 ## Plain char in the C# target
 

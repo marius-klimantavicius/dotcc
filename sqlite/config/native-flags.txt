@@ -1,5 +1,5 @@
-# Match dotcc's existing same-sized bit-field storage units on the LP64 host.
--mms-bitfields
+# Match the compiler's measured GNU/System V bit-field placement on LP64.
+-mno-ms-bitfields
 # Plain char in generated C# is byte; dotcc limits.h likewise uses 0..255.
 -funsigned-char
 -Wno-error=unused-parameter

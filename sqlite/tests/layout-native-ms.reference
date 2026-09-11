@@ -17,16 +17,16 @@ field FKey nCol 40 40
 field FKey aCol 64 64
 header ExprList 8 8
 field ExprList a 8 8
-header struct ExprList_item 24 8
+header struct ExprList_item 32 8
 field struct ExprList_item fg 16 16
-field struct ExprList_item u 20 20
+field struct ExprList_item u 24 24
 header SrcList 8 8
 field SrcList a 8 8
-header VdbeCursor 112 8
-field VdbeCursor seekHit 6 6
-field VdbeCursor ub 8 8
-field VdbeCursor uc 40 40
-field VdbeCursor aType 112 112
+header VdbeCursor 120 8
+field VdbeCursor seekHit 12 12
+field VdbeCursor ub 16 16
+field VdbeCursor uc 48 48
+field VdbeCursor aType 120 120
 header JsonParse 72 8
 field JsonParse nBlob 8 8
 field JsonParse delta 52 52
@@ -38,7 +38,7 @@ array MemPage apOvfl 136 8 32 8 4 40 64 1 1
 array BtCursor apPage 296 8 152 8 19 144 288 1 1
 array CellArray apEnd 104 8 48 8 6 32 72 1 1
 array PragmaVtabCursor azArg 40 8 16 8 2 24 32 1 1
-array WhereLoop aLTermSpace 104 8 24 8 3 80 96 1 1
+array WhereLoop aLTermSpace 112 8 24 8 3 88 104 1 1
 required BtCursor pBt 296 8 32 32
 required DbClientData zName 24 8 24 24
 required Expr iTable 72 8 44 44
@@ -64,15 +64,15 @@ required Parse zErrMsg 424 8 8 8
 required PgHdr pDirty 80 8 32 32
 required SrcList a 8 8 8 8
 required Vdbe aOp 304 8 136 136
-required VdbeCursor aType 112 8 112 112
-required VdbeCursor pAltCursor 112 8 32 32
+required VdbeCursor aType 120 8 120 120
+required VdbeCursor pAltCursor 120 8 40 40
 required VdbeSorter aTask 96 8 96 96
 required WalIndexHdr aCksum 48 4 40 40
 required WalIterator aSegment 8 8 8 8
-required WhereInfo a 856 8 856 856
-required WhereInfo nOBSat 856 8 65 65
-required WhereInfo sWC 856 8 104 104
-required WhereLoop nLSlot 104 8 56 56
+required WhereInfo a 864 8 864 864
+required WhereInfo nOBSat 864 8 65 65
+required WhereInfo sWC 864 8 112 112
+required WhereLoop nLSlot 112 8 64 64
 required WhereTerm eOperator 56 8 20 20
 required With a 16 8 16 16
 required sqlite3_context argv 48 8 48 48

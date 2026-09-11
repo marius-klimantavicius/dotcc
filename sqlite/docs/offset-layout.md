@@ -47,9 +47,10 @@ NativeAOT. See [layout checks](layout-storage.md) and [validation](validation.md
 These execution checks independently verify the model against actual storage;
 recomputing constants with the same model alone is not independent validation.
 
-The supported native comparison uses unsigned plain char and GCC `-mms-bitfields`
-to match dotcc's bit-field backing units. Default GCC's distinct bit-field ABI is
-recorded separately. Empty flexible headers and header alignment beyond eight
+The supported native comparison uses unsigned plain char and GCC's GNU/System V
+bit-field placement (`-mno-ms-bitfields`), after measured shared compiler repairs.
+The old whole-unit MS comparison is retained as historical evidence in
+`tests/layout-native-ms.reference`; see the current configuration record. Empty flexible headers and header alignment beyond eight
 bytes remain explicitly unsupported.
 
 The original campaign used an optional Roslyn offset generator at the user's

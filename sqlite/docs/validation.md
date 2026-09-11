@@ -4,6 +4,31 @@ Campaign commands run from `sqlite/`; scripts resolve their own absolute roots.
 Evidence is recorded in milestone order; later checkpoints supersede earlier
 pending statements. Reproduction commands are in `usage.md`.
 
+## GNU bit-field profile migration (2026-09-11)
+
+Shared compiler work for the unchanged picotls core repaired ordinary-member
+bit-field tail reuse. Rechecking SQLite exposed its historical `-mms-bitfields`
+oracle workaround and two remaining GNU leading-byte placement gaps. The generic
+repair now uses one bit-position map for metadata and emitted accessors. Native
+GNU reducer byte images, 28 focused units and 13 functional/layout cases pass.
+Fresh actual SQLite JIT storage matches the complete native GNU transcript:
+39 required metadata contracts, 42 aggregate sizes/alignment wrappers and eight
+inline-array storage checks. Evidence is retained under
+`artifacts/gnu-layout/{native.out,translated.out,fresh-storage-build.log}`.
+
+`config/native-flags.txt` now explicitly selects `-mno-ms-bitfields` and
+`tests/layout-native.expected` contains that fresh measured transcript. The
+previous expected transcript is preserved at `tests/layout-native-ms.reference`;
+`SQLITE_MS_BITFIELDS=1 scripts/layout-native.sh` retains the historical comparison.
+No expected offsets were guessed or substituted to suppress a compiler mismatch.
+The standard native and translated layout scripts now pass with this profile
+under JIT and NativeAOT (`artifacts/campaign-layout.log`), and all eight native
+corpus checks pass. The complete rebuilt repository passes 2017 units and 380
+functional cases (967 opt-in oracle skips), plus 64 postprocessor and 31 analyzer
+checks (one optional analyzer oracle skip). Threaded-product and complete
+translated SQL corpus replays remain in progress at this checkpoint. Earlier
+MS-profile results below remain historical evidence.
+
 - `dotnet build ../dotcc.sln -c Release`: passed, zero warnings/errors, 9 seconds.
 - Baseline unit suite: **1,723 passed, zero failed/skipped**, 35 seconds, with isolated TMPDIR.
   The first default `/tmp` run was stopped after eight minutes without completion;
