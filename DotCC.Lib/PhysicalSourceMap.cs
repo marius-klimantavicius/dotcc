@@ -107,6 +107,17 @@ internal class SourceMappedItem : Item
         _map = map;
         _origin = item.Position;
     }
+    internal static string LogicalSpelling(IReadOnlyList<Item> tokens)
+    {
+        if (tokens.Count == 0) return "";
+        var first = tokens[0]; var last = tokens[^1];
+        if (first is not SourceMappedItem { _map: { } map })
+            throw new CompileException("macro override requires original source spelling");
+        var bytes = Encoding.UTF8.GetBytes(map.Text);
+        var start = checked((int)first.Position.ByteOffset);
+        var end = checked((int)last.Position.ByteOffset + Encoding.UTF8.GetByteCount(last.Content?.ToString() ?? ""));
+        return Encoding.UTF8.GetString(bytes, start, end - start);
+    }
     internal static SourceFileOrigin? FileOf(Item item) => (item as SourceMappedItem)?._map?.SourceFile;
     internal static SourcePosition Physical(Item item) => item is SourceMappedItem mapped
         ? mapped._map?.Physical(mapped._origin) ?? mapped._origin : item.Position;

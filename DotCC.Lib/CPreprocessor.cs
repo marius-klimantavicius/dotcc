@@ -27,7 +27,7 @@ internal sealed record MacroDef(
     string Name,
     IReadOnlyList<string>? Params,
     IReadOnlyList<Item> Body,
-    bool IsVariadic = false)
+    bool IsVariadic = false, int? OverrideRule = null)
 {
     public bool IsFunctionLike => Params is not null;
 }
@@ -121,8 +121,9 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         bool quiet = false,
         DialectGate? gate = null,
         IReadOnlyList<string>? embedDirs = null,
-        Dictionary<string, byte[]>? embeds = null)
+        Dictionary<string, byte[]>? embeds = null, MacroOverrideSession? overrides = null)
     {
+        _overrides = overrides;
         _lexerTable = lexerTable;
         _files = files;
         _gate = gate;
@@ -156,6 +157,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
             //                     instead of disappearing.
             var eq = d.IndexOf('=');
             var name = eq < 0 ? d : d[..eq];
+            if (name == RuntimeIntrinsicNames.IsLittleEndian) throw new CompileException("cannot redefine runtime intrinsic: " + name);
             var body = eq < 0 || eq == d.Length - 1
                 ? Array.Empty<Item>()
                 : LexMacroValue(d[(eq + 1)..]);
@@ -743,13 +745,13 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
             // Variadic macros (`#define LOG(fmt, ...)`) are a C99 feature.
             if (isVariadic) { _gate?.RequireMin(1999, "variadic macro", args[0].Position.Line); }
             var body = args.Skip(pos + 1).ToList();
-            _macros[name] = new MacroDef(name, paramNames, body, isVariadic);
+            InstallMacro(new MacroDef(name, paramNames, body, isVariadic), args[0]);
             return Array.Empty<Item>();
         }
 
         // Object-like: body is everything after the name.
         var objBody = args.Count > 1 ? args.Skip(1).ToList() : new List<Item>();
-        _macros[name] = new MacroDef(name, Params: null, Body: objBody);
+        InstallMacro(new MacroDef(name, Params: null, Body: objBody), args[0]);
         return Array.Empty<Item>();
     }
 
@@ -802,6 +804,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
                 //   #define CHAR_MAX  UCHAR_MAX
                 // transitively resolve at use site. Hide set guards
                 // against self-referential cycles (`#define A A`).
+                RecordExpansion(macro, token);
                 var hideSet = new HashSet<string>(StringComparer.Ordinal) { text };
                 return ExpandObjectLikeBody(macro.Body, hideSet, token);
             }
@@ -834,6 +837,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
                 && _macros.TryGetValue(text, out var inner)
                 && !inner.IsFunctionLike)
             {
+                if (!preserveContext) RecordExpansion(inner, invocation ?? item);
                 var nestedHide = new HashSet<string>(hideSet, StringComparer.Ordinal) { text };
                 result.AddRange(ExpandObjectLikeBody(inner.Body, nestedHide, item, preserveContext));
             }

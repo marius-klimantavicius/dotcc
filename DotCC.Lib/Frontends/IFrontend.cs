@@ -41,4 +41,4 @@ internal sealed record FrontendRequest(
     CDialect? Dialect = null,
     INameLegalizer? Names = null,
     WarningFlags Warnings = WarningFlags.Default,
-    bool TestMode = false);
+    bool TestMode = false, CPreprocessingOptions? Preprocessing = null);

@@ -53,17 +53,18 @@ public static partial class Compiler
         IReadOnlyList<string>? includeDirs = null,
         IReadOnlyList<string>? defines = null,
         CDialect? dialect = null,
-        WarningFlags warnings = WarningFlags.Default)
+        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null)
         => EmitCSharp(new[] { inputPath }, includeDirs, defines,
-                      emit: EmitMode.Object, dialect: dialect, warnings: warnings);
+                      emit: EmitMode.Object, dialect: dialect, warnings: warnings, preprocessing: preprocessing);
 
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, string globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none")
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 1 — link with `dotcc <objs> -o <out>`.\n");
+        sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
         sb.Append(NamespaceNeutral).Append('\n');
         sb.Append(FragMain).Append(mainArity).Append('\n');
         if (mainReturnsVoid) { sb.Append(FragMainVoid).Append("1").Append('\n'); }
@@ -94,13 +95,13 @@ public static partial class Compiler
     /// </summary>
     public static string LinkObjects(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
-        ImportOptions? imports = null, string? className = null, string? namespaceName = null)
-        => LinkObjectFiles(objectPaths, emit, debugHeap, imports, className, namespaceName: namespaceName).Values.Single();
+        ImportOptions? imports = null, string? className = null, string? namespaceName = null, TextWriter? overrideReport = null)
+        => LinkObjectFiles(objectPaths, emit, debugHeap, imports, className, namespaceName: namespaceName, overrideReport: overrideReport).Values.Single();
 
     /// <summary>Link objects into named C# project files. Older objects must be regenerated to split functions.</summary>
     public static IReadOnlyDictionary<string, string> LinkObjectFiles(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
-        ImportOptions? imports = null, string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null)
+        ImportOptions? imports = null, string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, TextWriter? overrideReport = null)
     {
         namespaceName = ResolveNamespace(namespaceName, emit);
         ValidateSourceSplit(split, splitSize, emit);
@@ -137,6 +138,9 @@ public static partial class Compiler
             }
             if (namespaceName != null && !text.Split('\n').Contains(NamespaceNeutral, StringComparer.Ordinal))
                 throw new CompileException("Object is not namespace-neutral; regenerate objects before using --namespace");
+            var profileLine = text.Split('\n').FirstOrDefault(l => l.StartsWith("//!!dotcc-obj override-profile:", StringComparison.Ordinal));
+            CPreprocessingOptions.WriteEvent(overrideReport, "object-profile", ("path", path),
+                ("profile", profileLine?["//!!dotcc-obj override-profile:".Length..] ?? "unknown (older object)"));
             // Walk the fragment line by line, routing into the current bucket.
             string section = "";            // "type:<name>" | "aliases" | "globals" | "functions"
             var buf = new StringBuilder();

@@ -50,6 +50,13 @@ internal static class Program
         {
             Description = "UTF-8 byte target for --split=size (default 262144); close a file after its first complete function crosses the target.",
         };
+        var overrideOpt = new Option<string[]>("--override-macro")
+        {
+            Description = "Replace active C macro definitions: NAME=BODY. Repeatable; use --overrides-file for selectors/templates.",
+            AllowMultipleArgumentsPerToken = false,
+        };
+        var overridesFileOpt = new Option<string?>("--overrides-file") { Description = "Version-1 JSON C macro override profile." };
+        var overrideReportOpt = new Option<string?>("--override-report") { Description = "Write macro override provenance and matches as JSON Lines." };
         var targetOpt = new Option<string?>("--target")
         {
             Description = "Output target (the M in N×M): cs (C#, default) or wat (WebAssembly text). wat emits a .wat module to -o, else stdout.",
@@ -133,7 +140,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, classNameOpt, namespaceOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -244,10 +251,23 @@ internal static class Program
                 emit = EmitKind.File;
             }
 
+            try
+            {
+                using var report = parse.GetValue(overrideReportOpt) is { } reportPath ? new StreamWriter(reportPath) : null;
+                var profile = parse.GetValue(overridesFileOpt);
+                var overrides = parse.GetValue(overrideOpt) ?? Array.Empty<string>();
+                var preprocessing = profile != null || overrides.Length != 0 || report != null
+                    ? CPreprocessingOptions.Load(profile, overrides, report) : null;
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),
-                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt));
+                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing);
+            }
+            catch (Exception ex) when (ex is CompileException or IOException or UnauthorizedAccessException)
+            {
+                Console.Error.WriteLine("dotcc: " + ex.Message);
+                return 2;
+            }
         });
 
         return root.Parse(args).Invoke();
@@ -299,7 +319,7 @@ internal static class Program
         bool debugHeap = false,
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null)
+        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null)
     {
         if ((splitSize.HasValue && (split != SourceSplit.Size || splitSize <= 0))
             || (split != SourceSplit.None && (preprocessOnly || emit is EmitKind.File or EmitKind.Obj
@@ -328,7 +348,7 @@ internal static class Program
         }
         if (preprocessOnly)
         {
-            Compiler.Preprocess(inputPaths, Console.Out, includeDirs, defines, dialect);
+            Compiler.Preprocess(inputPaths, Console.Out, includeDirs, defines, dialect, preprocessing);
             return 0;
         }
 
@@ -345,7 +365,7 @@ internal static class Program
             {
                 Console.Error.WriteLine("dotcc: warning: -l/-L native library imports are ignored for --target=wat");
             }
-            return RunWat(inputPaths, outputPath, includeDirs, defines, dialect, warnings);
+            return RunWat(inputPaths, outputPath, includeDirs, defines, dialect, warnings, preprocessing);
         }
 
         // Separate compilation: `--emit=obj a.c -o a.cs` compiles ONE translation
@@ -363,7 +383,7 @@ internal static class Program
             var objOut = outputPath ?? Path.ChangeExtension(Path.GetFileName(inputPaths[0]), ".cs");
             try
             {
-                var frag = Compiler.EmitObject(inputPaths[0], includeDirs, defines, dialect, warnings);
+                var frag = Compiler.EmitObject(inputPaths[0], includeDirs, defines, dialect, warnings, preprocessing);
                 File.WriteAllText(objOut, frag);
             }
             catch (CompileException ex)
@@ -380,7 +400,7 @@ internal static class Program
                     new[] { inputPaths[0] }, includeSystem: !genDepsNoSystem, depFile, depTargets,
                     defaultTargetFor: _ => objOut,
                     defaultDepPathFor: _ => Path.ChangeExtension(objOut, ".d"),
-                    includeDirs, defines, dialect);
+                    includeDirs, defines, dialect, preprocessing);
             }
             return 0;
         }
@@ -395,12 +415,31 @@ internal static class Program
             && System.Array.TrueForAll(inputPaths, p =>
                 !p.EndsWith(".c", System.StringComparison.OrdinalIgnoreCase)
                 && !p.EndsWith(".zig", System.StringComparison.OrdinalIgnoreCase));
+        if (linking && preprocessing is { HasOverrides: true })
+            throw new CompileException("macro overrides require C source; rebuild objects to change their definitions");
         IReadOnlyDictionary<string, string> generatedSources;
         var emitMode = emit.ToEmitMode(libraryMode);
         try
         {
+            var sourceGroup = inputPaths.Where(p => p.EndsWith(".c", StringComparison.OrdinalIgnoreCase) || p.EndsWith(".zig", StringComparison.OrdinalIgnoreCase)).ToArray();
+            var objectGroup = inputPaths.Except(sourceGroup).ToArray();
+            if (sourceGroup.Length != 0 && objectGroup.Length != 0)
+            {
+                var fragment = Compiler.EmitCSharp(sourceGroup, includeDirs, defines, EmitMode.Object, dialect,
+                    warnings: warnings, preprocessing: preprocessing);
+                var temporary = Path.GetTempFileName();
+                try
+                {
+                    File.WriteAllText(temporary, fragment);
+                    generatedSources = Compiler.LinkObjectFiles(objectGroup.Append(temporary).ToArray(), emit: emitMode,
+                        debugHeap: debugHeap, imports: imports, className: className, split: split,
+                        splitSize: splitSize ?? 262144, namespaceName: namespaceName, overrideReport: preprocessing?.Report);
+                }
+                finally { File.Delete(temporary); }
+            }
+            else
             generatedSources = linking
-                ? Compiler.LinkObjectFiles(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName)
+                ? Compiler.LinkObjectFiles(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, overrideReport: preprocessing?.Report)
                 : Compiler.EmitCSharpFiles(
                     inputPaths,
                     includeDirs,
@@ -409,7 +448,7 @@ internal static class Program
                     dialect: dialect,
                     debugHeap: debugHeap,
                     imports: imports,
-                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName);
+                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, preprocessing: preprocessing);
         }
         catch (CompileException ex)
         {
@@ -428,7 +467,7 @@ internal static class Program
                 sources, includeSystem: !genDepsNoSystem, depFile, depTargets,
                 defaultTargetFor: s => Path.ChangeExtension(Path.GetFileName(s), ".cs"),
                 defaultDepPathFor: s => Path.ChangeExtension(Path.GetFileName(s), ".d"),
-                includeDirs, defines, dialect);
+                includeDirs, defines, dialect, preprocessing);
             if (rc != 0) { return rc; }
         }
 
@@ -508,7 +547,7 @@ internal static class Program
         string[] includeDirs,
         string[] defines,
         CDialect dialect,
-        WarningFlags warnings)
+        WarningFlags warnings, CPreprocessingOptions? preprocessing = null)
     {
         var sources = inputPaths.Where(p =>
             p.EndsWith(".c", StringComparison.OrdinalIgnoreCase) ||
@@ -521,7 +560,7 @@ internal static class Program
         string wat;
         try
         {
-            wat = Compiler.EmitWat(sources, includeDirs, defines, dialect, warnings);
+            wat = Compiler.EmitWat(sources, includeDirs, defines, dialect, warnings, preprocessing);
         }
         catch (CompileException ex)
         {
@@ -632,7 +671,7 @@ internal static class Program
         Func<string, string> defaultDepPathFor,
         string[] includeDirs,
         string[] defines,
-        CDialect dialect)
+        CDialect dialect, CPreprocessingOptions? preprocessing = null)
     {
         foreach (var src in sourcePaths)
         {
@@ -642,7 +681,7 @@ internal static class Program
                 : defaultDepPathFor(src);
             try
             {
-                var rule = Compiler.EmitDependencyRule(src, targets, includeSystem, includeDirs, defines, dialect);
+                var rule = Compiler.EmitDependencyRule(src, targets, includeSystem, includeDirs, defines, dialect, preprocessing?.WithoutReport());
                 File.WriteAllText(path, rule);
             }
             catch (CompileException ex)

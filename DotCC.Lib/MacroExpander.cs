@@ -76,6 +76,7 @@ internal sealed class MacroExpander : RewritingTokenStream
             {
                 if (next.ID == _openParenSymbol)
                 {
+                    _cpp.RecordExpansion(macro, token);
                     var args = CollectArgsFromStream(next);
                     var substituted = Substitute(macro, args, new HashSet<string>(StringComparer.Ordinal), token);
                     // A function name may come from an object replacement while
@@ -112,6 +113,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                             var (args, end) = CollectArgsFromList(tokens, i + 2);
                             if (end >= 0)
                             {
+                                _cpp.RecordExpansion(macro, token.Item);
                                 var substituted = Substitute(macro, args,
                                     new HashSet<string>(hiding, StringComparer.Ordinal), token.Item);
                                 var functionHiding = MacroExpansionItem.IntersectDisabled(token.Item, args.Closing);
@@ -127,6 +129,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                     }
                     else
                     {
+                        _cpp.RecordExpansion(macro, token.Item);
                         activeHiding.Add(name);
                         var replacement = ExpandTokenList(ReadBody(macro.Body, token.Item), activeHiding);
                         AppendReplacement(result, replacement, token.LeadingSpace);

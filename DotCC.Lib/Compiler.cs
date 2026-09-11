@@ -65,12 +65,13 @@ public static partial class Compiler
         CDialect? dialect,
         Ir.INameLegalizer? names = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool testMode = false)
+        bool testMode = false, CPreprocessingOptions? preprocessing = null)
     {
         var request = new Frontends.FrontendRequest(
-            inputPaths, includeDirs, defines, dialect, names, warnings, testMode);
+            inputPaths, includeDirs, defines, dialect, names, warnings, testMode, preprocessing);
         var anyZig = inputPaths.Any(IsZigSource);
         var anyC = inputPaths.Any(p => !IsZigSource(p));
+        if (!anyC && preprocessing is { HasOverrides: true }) throw new CompileException("C macro overrides require C source input");
         if (anyZig && anyC) { return BuildMixedIr(request); }
         Frontends.IFrontend frontend = anyZig ? new Frontends.ZigFrontend() : new Frontends.CFrontend();
         return frontend.BuildIr(request);
@@ -139,8 +140,8 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null, string? namespaceName = null)
-        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName).Values.Single();
+        string? className = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null)
+        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName, preprocessing: preprocessing).Values.Single();
 
     /// <summary>Emit one or more named C# sources. Split modes require project output.
     /// Function boundaries come from the backend; shared declarations remain together.</summary>
@@ -154,7 +155,7 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null)
+        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, CPreprocessingOptions? preprocessing = null)
     {
         namespaceName = ResolveNamespace(namespaceName, emit);
         ValidateSourceSplit(split, splitSize, emit);
@@ -163,7 +164,7 @@ public static partial class Compiler
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
             throw new CompileException("managed-library output does not support native import or archive bindings");
         var asObject = emit == EmitMode.Object;
-        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode);
+        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode, preprocessing: preprocessing);
         if (asObject) QualifyObjectInternalFunctions(irBuilder, inputPaths);
         // -Wconversion: collect narrowing-conversion warnings during codegen, then
         // flush to stderr. Off by default (the bit is clear unless -Wconversion set).
@@ -221,7 +222,7 @@ public static partial class Compiler
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
             return SingleSource(SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
-                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources));
+                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none"));
         }
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
@@ -246,9 +247,9 @@ public static partial class Compiler
         IReadOnlyList<string>? includeDirs = null,
         IReadOnlyList<string>? defines = null,
         CDialect? dialect = null,
-        WarningFlags warnings = WarningFlags.Default)
+        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null)
     {
-        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, new Backends.WatNameLegalizer(), warnings);
+        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, new Backends.WatNameLegalizer(), warnings, preprocessing: preprocessing);
         return Backends.WatBackend.Run(irBuilder);
     }
 
@@ -313,17 +314,18 @@ public static partial class Compiler
         TextWriter output,
         IReadOnlyList<string>? includeDirs = null,
         IReadOnlyList<string>? defines = null,
-        CDialect? dialect = null)
+        CDialect? dialect = null, CPreprocessingOptions? preprocessing = null)
     {
         var includeMap = BuildIncludeMap(inputPaths, includeDirs);
         var lexerTable = C.BuildLexer();
         var seededDefines = SeedDialectDefines(dialect ?? CDialect.Default, defines);
+        var overrides = preprocessing is { } options ? new MacroOverrideSession(options, defines) : null;
         foreach (var unitPath in inputPaths)
         {
             output.WriteLine($"# {unitPath}");
             var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath));
             var source = sourceMap.Text;
-            var pre = new CPreprocessor(lexerTable, includeMap, seededDefines);
+            var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, overrides: overrides);
             pre.SetActiveFilename(Path.GetFileName(unitPath));
             using var lexer = BytesLexer.FromString(source, lexerTable);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
@@ -346,6 +348,7 @@ public static partial class Compiler
             }
             output.WriteLine();
         }
+        overrides?.Complete();
     }
 
     /// <summary>
@@ -375,7 +378,7 @@ public static partial class Compiler
         bool includeSystemHeaders,
         IReadOnlyList<string>? includeDirs = null,
         IReadOnlyList<string>? defines = null,
-        CDialect? dialect = null)
+        CDialect? dialect = null, CPreprocessingOptions? preprocessing = null)
     {
         var (content, paths) = BuildIncludeMaps(new[] { sourcePath }, includeDirs);
         var lexerTable = C.BuildLexer();
@@ -383,7 +386,8 @@ public static partial class Compiler
 
         var sourceMap = new PhysicalSourceMap(File.ReadAllText(sourcePath), filename: Path.GetFileName(sourcePath));
         var source = sourceMap.Text;
-        var pre = new CPreprocessor(lexerTable, content, seededDefines, quiet: true);
+        var overrides = preprocessing is { } options ? new MacroOverrideSession(options, defines) : null;
+        var pre = new CPreprocessor(lexerTable, content, seededDefines, quiet: true, overrides: overrides);
         pre.SetActiveFilename(Path.GetFileName(sourcePath));
         var lexer = BytesLexer.FromString(source, lexerTable);
         var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
@@ -406,7 +410,10 @@ public static partial class Compiler
             }
         }
 
+        // A dependency query is one TU, so cannot assert invocation-wide requireMatch.
+        overrides?.Complete(requireMatches: false);
         var prereqs = new List<string> { sourcePath };
+        if (preprocessing?.ProfilePath is { } profile) prereqs.Add(profile);
         foreach (var (name, isSystem) in pre.IncludedHeaders)
         {
             if (isSystem && !includeSystemHeaders) { continue; }   // -MMD: drop <...> headers

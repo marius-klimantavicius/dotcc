@@ -47,6 +47,7 @@ internal sealed class CFrontend : IFrontend
         // populates it in OnEmbed) and the single IrBuilder (which resolves the
         // carrier tokens back in BuildEmbed). Keyed by content hash → cross-TU dedup.
         var embeds = new Dictionary<string, byte[]>(StringComparer.Ordinal);
+        var overrides = req.Preprocessing is { } options ? new MacroOverrideSession(options, defines) : null;
         var macroBodies = new List<(string Name, IReadOnlyList<Item> Body)>();
 
         // Build the lexer → preprocessor → rewriter → parser pipeline for one
@@ -65,7 +66,7 @@ internal sealed class CFrontend : IFrontend
             var embedDirs = new List<string>();
             if (Path.GetDirectoryName(unitPath) is { Length: > 0 } unitDir) { embedDirs.Add(unitDir); }
             if (includeDirs is not null) { embedDirs.AddRange(includeDirs); }
-            var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, quiet, gate, embedDirs, embeds);
+            var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, quiet, gate, embedDirs, embeds, overrides);
             pre.SetActiveFilename(Path.GetFileName(unitPath));
             using var lexer = BytesLexer.FromString(source, lexerTable);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
@@ -147,9 +148,14 @@ internal sealed class CFrontend : IFrontend
             var root = ParseUnit(unitPath, irParser, quiet: false, gate);
             irBuilder.AddUnit(root, Path.GetFileName(unitPath));
         }
+        overrides?.Complete();
         irBuilder.FinishAggregateTypes();
         foreach (var macro in macroBodies)
+        {
             irBuilder.MacroConstants.Add((macro.Name, CConstantMacros.TryLower(macro.Body)));
+            if (macro.Body.Any(t => t.Content?.ToString() == RuntimeIntrinsicNames.IsLittleEndian))
+                overrides?.Event("macro-export-skipped", ("name", macro.Name), ("reason", "runtime intrinsic is not a constant"));
+        }
         var irErrors = irBuilder.Diagnostics.Where(d => d.Severity == Ir.Severity.Error).ToList();
         if (irErrors.Count > 0)
         {

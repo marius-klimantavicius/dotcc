@@ -1,6 +1,6 @@
 # C macro overrides and typed runtime intrinsics
 
-Status: **PLANNED — not implemented**. Created 2026-09-11. Updated to include
+Status: **IN PROGRESS** — macro configuration, matching and preprocessing implemented; typed intrinsic and SQLite integration next. Created 2026-09-11. Updated to include
 optional definition selectors, regex captures and function-like macro templates.
 
 ## Recommendation
