@@ -2486,28 +2486,29 @@ internal sealed partial class IrBuilder
         var litStars = CountLiteralStars(typeItem);
         var element = baseType;
         for (var i = 0; i < litStars && element is CType.Pointer p; i++) { element = p.Pointee; }
-        void WalkTail(Item it, int stars)
+        void WalkTail(Item it, CType tailType)
         {
             switch (it.Content)
             {
                 // `DeclItemTail → * DeclItemTail` (declItemTailPtr) — its child is
                 // itself a DeclItemTail, so it can be a further `*` level OR the
                 // terminal `DeclItemTailPlain` wrapping the DeclItem. Both recurse,
-                // accumulating the star count (`int *a, *b;` → b:int*).
-                case C.DeclItemTailPtr p: WalkTail(p.Arg1, stars + 1); break;
-                case C.DeclItemTailPlain t: WalkTail(t.Arg0, stars); break;
-                case C.DeclItem di: add(Tok(di.Arg0), null, WrapPtr(element, stars)); break;
-                case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, WrapPtr(element, stars)); break;
+                // rebuilding qualified pointer levels (`int *a, *const b;` → b:const int* slot).
+                case C.DeclItemTailPtr p: WalkTail(p.Arg1, new CType.Pointer(tailType)); break;
+                case C.DeclItemTailConstPtr p: WalkTail(p.Arg2, new CType.Pointer(tailType).WithQuals(TypeQual.Const)); break;
+                case C.DeclItemTailPlain t: WalkTail(t.Arg0, tailType); break;
+                case C.DeclItem di: add(Tok(di.Arg0), null, tailType); break;
+                case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, tailType); break;
                 // `…, name[N]` — an array declarator in tail position. The type is
                 // an array OF the star-wrapped element (`int *a, *c[5];` → c is an
                 // array of int*); the consumer decides the lowering (local →
                 // ArrayDecl/stackalloc, struct member → fixed buffer).
                 case C.DeclItemTailArr a:
-                    add(Tok(a.Arg0), null, MakeArrayType(WrapPtr(element, stars),
+                    add(Tok(a.Arg0), null, MakeArrayType(tailType,
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator tail")));
                     break;
                 case C.DeclItemTailArrInit a:
-                    add(Tok(a.Arg0), a.Arg4, MakeArrayType(WrapPtr(element, stars),
+                    add(Tok(a.Arg0), a.Arg4, MakeArrayType(tailType,
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator tail")));
                     break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
@@ -2522,18 +2523,18 @@ internal sealed partial class IrBuilder
                 case C.DeclItemListArrayHead a:
                     add(Tok(a.Arg0), null, MakeArrayType(baseType,
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator head")));
-                    WalkTail(a.Arg3, 0);
+                    WalkTail(a.Arg3, element);
                     break;
                 case C.DeclItemListArrayHeadInit a:
                     add(Tok(a.Arg0), a.Arg4, MakeArrayType(baseType,
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator head")));
-                    WalkTail(a.Arg7, 0);
+                    WalkTail(a.Arg7, element);
                     break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, baseType); break;
                 case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, baseType); break;
-                case C.DeclItemTailPlain t: WalkTail(t.Arg0, 0); break;
-                case C.DeclItemTailPtr t: WalkTail(t.Arg1, 1); break;
-                case C.DeclItemTailArr or C.DeclItemTailArrInit: WalkTail(it, 0); break;
+                case C.DeclItemTailPlain t: WalkTail(t.Arg0, element); break;
+                case C.DeclItemTailPtr or C.DeclItemTailConstPtr: WalkTail(it, element); break;
+                case C.DeclItemTailArr or C.DeclItemTailArrInit: WalkTail(it, element); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
         }

@@ -1390,6 +1390,7 @@ productions:
       # computes the tail's type as stripStars(Type) + Stars*'*'.
       - { lhs: DeclItemTail, rhs: [DeclItem],          action: declItemTailPlain }
       - { lhs: DeclItemTail, rhs: ['*', DeclItemTail], action: declItemTailPtr }
+      - { lhs: DeclItemTail, rhs: ['*', 'const', DeclItemTail], action: declItemTailConstPtr }
       # An ARRAY declarator in tail (post-comma) position — `char *str=NULL,
       # numbuf[LEN];` (chibi's sexp.c). Tail-only: a FIRST-position array has
       # its own Stmt/Fn productions, and adding `DeclItem → ID ArrDims` there

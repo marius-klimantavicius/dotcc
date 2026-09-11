@@ -193,12 +193,16 @@ definitions, reusing enum registration and existing scope/type rules. Unit and
 native/translated functional tests cover explicit/implicit values and member/local
 storage. Main-core parsing advances to B9.
 
-## B9: pointer qualifiers on later declarators — open
+## B9: const pointers on later declarators — fixed
 
 At `picotls.c:672`, `const uint8_t *p = bignum, *const end = p + size;`
 requires a const qualifier on the second declarator's pointer. Tail declarators
 currently count only stars, losing the ability to attach pointer qualifiers.
-The repair must preserve each pointer level's qualifications independently.
+The tail binder now rebuilds pointer types level by level and the grammar
+accepts `*const` tails, retaining const on the correct level. Pointer/pointee
+write rejection and mutable outer pointers around inner const pointers are
+covered. Twenty-four selected tests and the native/translated fixture pass.
+The actual core advances to B11.
 
 ## B10: bitfield tail-byte reuse — open
 
@@ -210,3 +214,12 @@ full-word backing storage's unused tail. The reduced
 reports offset/address 9 natively and 12 in emitted code. Shared layout and
 aggregate emission must agree while bit setters preserve adjacent ordinary bytes.
 `probe-translated-abi.sh --metadata-only` retains the failing evidence.
+
+## B11: static local designated aggregate initialization — open
+
+`PTLS_LOG_CONN` at `picotls.c:988` expands a function-local
+`static struct st_ptls_log_point_t logpoint = { .name = ... };` even with logging
+off. Global and ordinary local designated aggregates parse, but the static-local
+statement form only accepts positional initializers. The shared repair must hoist
+once-initialized storage with a unique local-static name and preserve zero-filled
+unspecified members.

@@ -177,3 +177,12 @@ NativeAOT executables under normal and debug/scan heaps. Retained evidence is
 the pthread generated project has one ordinary CS0649 warning for a global field
 assigned through a pointer. BCL-only implementation and Linux execution are
 established; other platforms have not run.
+
+## P2 const pointer tails (2026-09-11)
+
+Twenty-four selected `ConstPointerTailTests`/multi-declarator/const-check unit
+tests pass. The native and translated `const-pointer-tail` fixture both print
+`count=5 value=9`, verifying the endpoint loop and independent inner/outer pointer
+qualification. Main-core parsing advances to its macro-generated static local
+designated initializer at line 988. Logs:
+`artifacts/const-tail-{build,unit,functional,retry}.log`.
