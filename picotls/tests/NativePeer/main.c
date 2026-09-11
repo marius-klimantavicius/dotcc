@@ -13,6 +13,8 @@
 
 #define MAX_FRAME (8 * 1024 * 1024)
 #define ALPN "dotcc-picotls"
+/* Test-only malicious-server fixture: select a protocol the client never offered. */
+static int force_unoffered_alpn;
 
 static void fail(const char *operation, int error)
 {
@@ -33,6 +35,8 @@ static void path(char *output, size_t capacity, const char *directory, const cha
 static int hello(ptls_on_client_hello_t *self, ptls_t *tls, ptls_on_client_hello_parameters_t *parameters)
 {
     (void)self;
+    if (force_unoffered_alpn)
+        return ptls_set_negotiated_protocol(tls, "unoffered", sizeof("unoffered") - 1);
     for (size_t i = 0; i < parameters->negotiated_protocols.count; i++) {
         ptls_iovec_t protocol = parameters->negotiated_protocols.list[i];
         if (protocol.len == sizeof(ALPN) - 1 && memcmp(protocol.base, ALPN, sizeof(ALPN) - 1) == 0) {
@@ -138,6 +142,7 @@ int main(int argc, char **argv)
     const char *cipher = option(argc, argv, "--cipher", "TLS_AES_256_GCM_SHA384");
     int require_client = strcmp(option(argc, argv, "--require-client-cert", "false"), "true") == 0;
     int update_key = strcmp(option(argc, argv, "--update-key", "false"), "true") == 0;
+    force_unoffered_alpn = server && strcmp(option(argc, argv, "--force-unoffered-alpn", "false"), "true") == 0;
     int port = atoi(option(argc, argv, "--port", "0"));
     size_t length = (size_t)strtoul(option(argc, argv, "--bytes", "65537"), NULL, 10);
     if (port < 0 || port > 65535 || length > MAX_FRAME) fail("port/bytes out of range", 0);

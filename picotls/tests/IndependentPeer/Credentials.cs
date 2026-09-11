@@ -17,7 +17,7 @@ internal static class Credentials
         using var root = rootRequest.CreateSelfSigned(now.AddDays(-7), now.AddDays(30));
         File.WriteAllBytes(Path.Combine(directory, "ca.cer"), root.RawData);
         File.WriteAllText(Path.Combine(directory, "ca.pem"), root.ExportCertificatePem());
-        foreach (string identity in new[] { "server-rsa", "server-ecdsa", "client-rsa", "client-ecdsa", "server-expired", "server-wrong-name" })
+        foreach (string identity in new[] { "server-rsa", "server-ecdsa", "client-rsa", "client-ecdsa", "server-expired", "server-wrong-name", "server-key-encipherment-rsa" })
         {
             bool rsa = identity.EndsWith("rsa", StringComparison.Ordinal);
             bool server = identity.StartsWith("server-", StringComparison.Ordinal);
@@ -27,7 +27,8 @@ internal static class Credentials
                 ? new CertificateRequest("CN=" + identity, rsaKey!, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1)
                 : new CertificateRequest("CN=" + identity, ecKey!, HashAlgorithmName.SHA256);
             request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
-            request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature, true));
+            request.CertificateExtensions.Add(new X509KeyUsageExtension(identity == "server-key-encipherment-rsa"
+                ? X509KeyUsageFlags.KeyEncipherment : X509KeyUsageFlags.DigitalSignature, true));
             request.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(new OidCollection
                 { new(server ? "1.3.6.1.5.5.7.3.1" : "1.3.6.1.5.5.7.3.2") }, true));
             if (server)
