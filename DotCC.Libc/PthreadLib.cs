@@ -220,7 +220,7 @@ public static unsafe partial class Libc
     private static int PthreadTimeout(timespec* deadline)
     {
         Int128 ns = (Int128)deadline->tv_sec * 1_000_000_000 + deadline->tv_nsec;
-        Int128 now = (Int128)(DateTime.UtcNow.Ticks - DateTime.UnixEpoch.Ticks) * 100;
+        Int128 now = (Int128)(global::System.DateTime.UtcNow.Ticks - global::System.DateTime.UnixEpoch.Ticks) * 100;
         Int128 ms = (ns - now + 999_999) / 1_000_000;
         // BCL monitor waits have no wall-clock-change notification. Poll at
         // most once per second so a forward clock adjustment is observed.
