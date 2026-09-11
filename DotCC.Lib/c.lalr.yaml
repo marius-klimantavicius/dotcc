@@ -1890,6 +1890,8 @@ lexer:
     # The C23 lowercase `thread_local` is promoted onto this terminal by the
     # dialect rewriter; pre-C23 the macro lives in <threads.h>.
     - { symbol: '_Thread_local', match: '_Thread_local' }
+    # GNU spelling shares the existing thread-storage lowering and limits.
+    - { symbol: '_Thread_local', match: '__thread' }
     # `_Complex` (C99) — always a keyword (reserved underscore-uppercase). The
     # lowercase `complex` is a <complex.h> macro, not a keyword.
     - { symbol: '_Complex', match: '_Complex' }

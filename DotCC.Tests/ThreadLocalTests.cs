@@ -29,6 +29,23 @@ public sealed class ThreadLocalTests
     }
 
     [Fact]
+    public void Gnu_thread_alias_uses_the_thread_storage_contract()
+    {
+        var src = WriteTemp("""
+            typedef int value_t;
+            extern __thread value_t *current;
+            __thread value_t *current;
+            int main(void) { return current != 0; }
+            """);
+        try
+        {
+            Compiler.EmitCSharp(new[] { src })
+                .ShouldContain("[ThreadStatic]\n    public static unsafe int* current;");
+        }
+        finally { File.Delete(src); }
+    }
+
+    [Fact]
     public void Thread_local_global_gets_thread_static_attribute()
     {
         var src = WriteTemp("""

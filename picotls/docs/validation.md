@@ -135,3 +135,13 @@ callback-format case and all three actual files advance to the `__thread`
 spelling at header line 1583. Full-core translation remains blocked.
 Logs: `artifacts/attribute-build.log`, `attribute-tests.log`,
 `attribute-retry.log` and `artifacts/compiler/`.
+
+## P2 GNU thread-storage spelling (2026-09-11)
+
+The full compiler build passes after adding `__thread` as a spelling of the
+existing thread-local token. The pthread agent ran all 23 selected pthread and
+ThreadLocal unit tests (9 ThreadLocal) and the `gnu-thread-local` functional
+fixture successfully. The unchanged core probe now passes `pthread.h` inclusion
+and the GNU storage declaration, then stops at `picotls.h:1959`'s extern volatile
+function-pointer declaration. Evidence: `artifacts/thread-retry.log` and the
+per-unit diagnostics under `artifacts/compiler/`.

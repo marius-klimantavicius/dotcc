@@ -87,15 +87,26 @@ based on [GCC's attribute documentation](https://gcc.gnu.org/onlinedocs/gcc/Comm
 Twelve attribute unit tests pass. The unchanged three core units now get past
 line 845 and stop at `picotls.h:1583`'s GNU thread-storage spelling.
 
-## B5: GNU `__thread` storage spelling — open
+## B5: GNU `__thread` storage spelling — fixed
 
 The unchanged header declares `extern PTLS_THREADLOCAL ...` at line 1583, and
 its non-Windows macro expands to `__thread`. This is the GNU spelling for
 thread storage, not an OS service. Dotcc already supports C11 `_Thread_local`
 with zero-initialized file-scope storage. The reduced case is
 [`gnu-thread-local.c`](../tests/compiler-blockers/gnu-thread-local.c).
-The repair must retain that storage contract and the documented limitations,
-rather than erase the specifier or select a different OS branch.
+The lexer now maps the GNU spelling onto the existing thread-storage token,
+retaining the same zero-initialization, file-scope and `[ThreadStatic]` contract.
+Nine thread-local unit tests and the `gnu-thread-local` functional fixture pass;
+independent workers keep separate state and the main thread remains unaffected.
+All three unchanged core units advance to the extern volatile callback below.
+
+## B6: extern qualified function-pointer declarations — open
+
+At `picotls.h:1959` the core declares
+`extern void (*volatile ptls_clear_memory)(void *, size_t);` followed by the
+similarly qualified `ptls_mem_equal` callback. Definitions of qualified callback
+variables already have a generic declarator path; the extern declaration does
+not. Preserve its declaration-only storage and volatile read/write semantics.
 
 ## Remaining uncertainty
 
