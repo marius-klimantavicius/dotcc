@@ -1374,6 +1374,11 @@ productions:
       # comma; a standalone array keeps its existing declaration productions.
       - { lhs: DeclItemList, rhs: [ID, ArrDims, ',', DeclItemTail], action: declItemListArrayHead }
       - { lhs: DeclItemList, rhs: [ID, ArrDims, '=', '{', InitList, '}', ',', DeclItemTail], action: declItemListArrayHeadInit }
+      # A braced first initializer enters the shared list only when followed
+      # by a comma, keeping the established standalone productions disjoint.
+      - { lhs: DeclItemList, rhs: [ID, '=', '{', InitList, '}', ',', DeclItemTail], action: declItemListBraceHead }
+      - { lhs: DeclItemList, rhs: [ID, '=', '{', MemberInitList, '}', ',', DeclItemTail], action: declItemListDesignatedHead }
+      - { lhs: DeclItemList, rhs: [ID, '=', '{', '}', ',', DeclItemTail], action: declItemListEmptyHead }
       # SUBSEQUENT (post-comma) declarators are `DeclItemTail`, which may carry
       # its OWN leading `*`s (`int *a, *b;` → `b` is a pointer too). This is
       # conflict-free where a first-position `*` would not be: after a `,` there
@@ -1400,6 +1405,9 @@ productions:
       # lowering in a mixed local declaration list.
       - { lhs: DeclItemTail, rhs: [ID, ArrDims],       action: declItemTailArr }
       - { lhs: DeclItemTail, rhs: [ID, ArrDims, '=', '{', InitList, '}'], action: declItemTailArrInit }
+      - { lhs: DeclItemTail, rhs: [ID, '=', '{', InitList, '}'], action: declItemTailBraceInit }
+      - { lhs: DeclItemTail, rhs: [ID, '=', '{', MemberInitList, '}'], action: declItemTailDesignatedInit }
+      - { lhs: DeclItemTail, rhs: [ID, '=', '{', '}'], action: declItemTailEmptyInit }
 
   # MemberInitList — one or more `.field = E` items, comma-separated, optional
   # trailing comma (`{ .x = 1, .y = 2, }`). Left-recursive, so the trailing-

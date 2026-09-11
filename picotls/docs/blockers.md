@@ -236,9 +236,25 @@ form, with one program-lifetime backing field per declaration. The unit test and
 native/translated fixture validate repeated calls, independent same-named statics
 and zero-filled unspecified fields. Main-core parsing advanced to B12.
 
-## B12: braced initialization across multiple declarators — open
+## B12: braced initialization across multiple declarators — fixed
 
 At `picotls.c:4430`, `ptls_iovec_t pubkey = {0}, ecdh_secret = {0};`
 uses two aggregate-initialized declarators. Single-declaration aggregate
 initializers exist; the comma-list parser/binder needs to preserve type-aware
 initialization for each list item. No upstream-source split is used as a workaround.
+
+The comma-list grammar now retains positional/designated (and C23 empty)
+initializer shapes until each declarator's own type is known. Local, global and
+static-local aggregate lists share the existing nested/partial zero-fill binder;
+qualified pointer heads and typedef pointers keep the right per-declarator type.
+Validation: 21 targeted units, six functional fixtures and native gcc parity for
+`multi-brace-declaration/` pass; logs are in `artifacts/multi-brace/`. The unchanged
+core advances to B13; hpke and pembase64 continue to emit successfully.
+
+## B13: braced designated member initializer — open
+
+At `picotls.c:4440`, assignment uses
+`(struct st_ptls_client_hello_t){.unknown_extensions = {{UINT16_MAX}}}`.
+The designated-member production currently only accepts an expression after `=`,
+so the nested array/struct braces fail during parsing. The repair must bind those
+braces against the actual member type, preserving zero-fill for omitted elements.

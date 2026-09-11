@@ -438,7 +438,7 @@ internal sealed partial class IrBuilder
             if (storage != Storage.Extern || initItem is not null)
             {
                 CExpr? gInit = null;
-                if (initItem is { } ii) { gInit = BuildExpr(ii); EnsureNotEmbed(gInit); CheckQualifierDiscard(gInit, sym.Type, SrcPos.From(ii), "initialization"); }
+                if (initItem is { } ii) { gInit = BuildDeclaratorInitializer(sym.Type, ii); EnsureNotEmbed(gInit); CheckQualifierDiscard(gInit, sym.Type, SrcPos.From(ii), "initialization"); }
                 // A .NET [ThreadStatic] initializer runs on the FIRST thread only,
                 // so C's "every thread starts at the initial value" holds only for
                 // the zero/default value .NET gives every thread's slot anyway.
@@ -2274,7 +2274,7 @@ internal sealed partial class IrBuilder
                 TargetName = $"{_symbols.Escape(name)}__s{_staticLocalSeq++}",
             };
             CExpr? slInit = null;
-            if (initItem is { } ii) { slInit = BuildExpr(ii); EnsureNotEmbed(slInit); CheckQualifierDiscard(slInit, sym.Type, SrcPos.From(ii), "initialization"); }
+            if (initItem is { } ii) { slInit = BuildDeclaratorInitializer(sym.Type, ii); EnsureNotEmbed(slInit); CheckQualifierDiscard(slInit, sym.Type, SrcPos.From(ii), "initialization"); }
             Globals.Add(new GlobalVar(sym, slInit));
             _symbols.DeclareAlias(sym);
         });
@@ -2446,13 +2446,27 @@ internal sealed partial class IrBuilder
                 IsConstexpr = _sawConstexprSpec,
             });
             CExpr? sInit = null;
-            if (initItem is { } ii) { sInit = BuildExpr(ii); EnsureNotEmbed(sInit); CheckQualifierDiscard(sInit, sym.Type, SrcPos.From(ii), "initialization"); }
+            if (initItem is { } ii) { sInit = BuildDeclaratorInitializer(sym.Type, ii); EnsureNotEmbed(sInit); CheckQualifierDiscard(sInit, sym.Type, SrcPos.From(ii), "initialization"); }
             if (sym.IsConstexpr) { BindConstexpr(sym, sInit, SrcPos.From(typeItem)); }
             scalars.Add(new LocalDecl(sym, sInit));
         });
         Flush();
         return stmts.Count == 1 ? stmts[0] : new Seq(stmts);
     }
+
+    /// <summary>Interpret each list initializer against its own declarator type.
+    /// A brace list is not an expression: retain its shape until the target type
+    /// distinguishes an aggregate from a scalar or pointer initialization.</summary>
+    private CExpr BuildDeclaratorInitializer(CType type, Item initializer) => initializer.Content switch
+    {
+        C.InitListOne or C.InitListCons or C.InitListTrail =>
+            BuildFieldInitializer(type, new InitGroup(ParseInitList(initializer))),
+        C.MemberInitListOne or C.MemberInitListCons or C.MemberInitListTrail =>
+            BuildStructDesignated(type, initializer),
+        C.DeclItemListEmptyHead or C.DeclItemTailEmptyInit =>
+            Gated(2023, "empty initializer", initializer, new DefaultLit { Type = type }),
+        _ => BuildExpr(initializer),
+    };
 
     /// <summary>C23 type inference — <c>auto x = E;</c> deduces <c>x</c>'s type
     /// from its initializer. The IR already synthesizes a <see cref="CType"/> on
@@ -2486,7 +2500,7 @@ internal sealed partial class IrBuilder
         // `element`, so every declarator keeps it.
         var litStars = CountLiteralStars(typeItem);
         var element = baseType;
-        for (var i = 0; i < litStars && element is CType.Pointer p; i++) { element = p.Pointee; }
+        for (var i = 0; i < litStars && element.Unqualified is CType.Pointer p; i++) { element = p.Pointee; }
         void WalkTail(Item it, CType tailType)
         {
             switch (it.Content)
@@ -2500,6 +2514,9 @@ internal sealed partial class IrBuilder
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, tailType); break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, tailType); break;
                 case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, tailType); break;
+                case C.DeclItemTailBraceInit di: add(Tok(di.Arg0), di.Arg3, tailType); break;
+                case C.DeclItemTailDesignatedInit di: add(Tok(di.Arg0), di.Arg3, tailType); break;
+                case C.DeclItemTailEmptyInit di: add(Tok(di.Arg0), it, tailType); break;
                 // `…, name[N]` — an array declarator in tail position. The type is
                 // an array OF the star-wrapped element (`int *a, *c[5];` → c is an
                 // array of int*); the consumer decides the lowering (local →
@@ -2521,6 +2538,12 @@ internal sealed partial class IrBuilder
             {
                 case C.DeclItemListCons c: Walk(c.Arg0); Walk(c.Arg2); break;
                 case C.DeclItemListOne o: Walk(o.Arg0); break;
+                case C.DeclItemListBraceHead di:
+                    add(Tok(di.Arg0), di.Arg3, baseType); WalkTail(di.Arg6, element); break;
+                case C.DeclItemListDesignatedHead di:
+                    add(Tok(di.Arg0), di.Arg3, baseType); WalkTail(di.Arg6, element); break;
+                case C.DeclItemListEmptyHead di:
+                    add(Tok(di.Arg0), it, baseType); WalkTail(di.Arg5, element); break;
                 case C.DeclItemListArrayHead a:
                     add(Tok(a.Arg0), null, MakeArrayType(baseType,
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator head")));
@@ -2536,6 +2559,7 @@ internal sealed partial class IrBuilder
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, element); break;
                 case C.DeclItemTailPtr or C.DeclItemTailConstPtr: WalkTail(it, element); break;
                 case C.DeclItemTailArr or C.DeclItemTailArrInit: WalkTail(it, element); break;
+                case C.DeclItemTailBraceInit or C.DeclItemTailDesignatedInit or C.DeclItemTailEmptyInit: WalkTail(it, element); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
         }
@@ -2564,6 +2588,13 @@ internal sealed partial class IrBuilder
                 case C.TypePtrQualConst t: n++; it = t.Arg0; break;
                 case C.TypePtrQualVolatile t: n++; it = t.Arg0; break;
                 case C.TypePtrQualRestrict t: n++; it = t.Arg0; break;
+                // The general qualifier production can also wrap a pointer
+                // node. Its qualifier belongs to that pointer, not the base
+                // type shared by subsequent declarators.
+                case C.TypeConstPre t: it = t.Arg1; break;
+                case C.TypeConstPost t: it = t.Arg0; break;
+                case C.TypeVolatile t: it = t.Arg1; break;
+                case C.TypeVolatilePost t: it = t.Arg0; break;
                 default: return n;
             }
         }
