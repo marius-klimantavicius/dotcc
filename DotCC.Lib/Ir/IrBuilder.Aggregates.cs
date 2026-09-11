@@ -546,8 +546,10 @@ internal sealed partial class IrBuilder
     /// register the name's type so same-TU references resolve (a sized extent keeps
     /// the array type for <c>sizeof</c>; an incomplete one decays to a pointer).</summary>
     private void BuildExternArr(Item typeItem, Item nameItem, Item? dimsItem)
+        => BuildExternArr(ResolveType(typeItem), nameItem, dimsItem);
+
+    private void BuildExternArr(CType elem, Item nameItem, Item? dimsItem)
     {
-        var elem = ResolveType(typeItem);
         var dims = dimsItem is { } di ? TryConstDims(di) : null;
         var type = dims is { Count: >= 1 } ? MakeArrayType(elem, dims) : new CType.Pointer(elem);
         _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Extern, IsGlobal = true });

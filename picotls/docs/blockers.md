@@ -39,7 +39,7 @@ final-name rescan and an empty middle operand; its output also matches native C.
 The reduced picotls case now preprocesses and emits an object successfully.
 All three unchanged real units get past line 758, exposing B4 below.
 
-## B2: an unconditional include is missing, but not fatal
+## B2: pthread header/runtime dependency — fixed
 
 `lib/picotls.c` unconditionally includes `<pthread.h>` in its non-Windows branch,
 even when `PTLS_HAVE_LOG=0` removes its mutex uses. Dotcc has no supplied header
@@ -53,7 +53,15 @@ be generic and should distinguish unused declarations from actual required
 pthread functionality. P1 does not add an empty campaign header or impersonate
 Windows to hide the diagnostic. The probe treats diagnostic output as blocked.
 
-## B3: aligned allocation has no supplied declaration or runtime
+The generic `pthread.h` and BCL process-private implementation landed in
+`76362a9`. It supplies real threads, mutexes, conditions, once and TLS destructors;
+unsupported scheduling/process-sharing/cancellation facilities remain explicit
+limits in `docs/C-SUPPORT.md`. Fourteen direct tests, translated/native fixtures
+and Linux x64 NativeAOT execution passed. Inclusion now preprocesses cleanly.
+The separate generic missing-include error-reporting concern remains a review
+item; this repaired dependency no longer relies on a missing include.
+
+## B3: aligned allocation declaration/runtime — fixed
 
 The active `ptls_buffer_reserve_aligned` implementation calls `posix_memalign`
 at `lib/picotls.c:613`. Native symbol inventory finds that dependency, and dotcc's
@@ -66,6 +74,13 @@ without a diagnostic, but `--emit=build` fails with C# error `CS0103`: the name
 build command/output too. A generic libc implementation and declaration belong
 in P2, with alignment, invalid arguments, allocation failure and `free` ownership
 tests. An unselected aligned backend does not remove this upstream API body.
+
+BCL-backed `posix_memalign` landed in `66f81aa`, with LP64 alignment/size
+arguments, invalid/overflow errors, unchanged output and errno on failure,
+portable `free`/`realloc` ownership and debug heap integration. Selected unit,
+translated/native fixture and Linux x64 NativeAOT tests pass. Host glibc changes
+errno on impossible-size ENOMEM, so that native oracle excludes only this errno
+comparison; runtime unit tests still require errno preservation.
 
 ## B4: format attribute on a function-pointer member — fixed
 
@@ -100,7 +115,7 @@ Nine thread-local unit tests and the `gnu-thread-local` functional fixture pass;
 independent workers keep separate state and the main thread remains unaffected.
 All three unchanged core units advance to the extern volatile callback below.
 
-## B6: extern qualified function-pointer declarations — open
+## B6: extern qualified function-pointer declarations — fixed
 
 At `picotls.h:1959` the core declares
 `extern void (*volatile ptls_clear_memory)(void *, size_t);` followed by the
@@ -146,3 +161,19 @@ Here `source_root=$(scripts/fetch.sh)`. Per-unit `--emit=obj` is used now to exp
 the first compiler boundary independently; it is not a claim that fragments link.
 Object caching can follow once actual-source static/inline semantics pass. No
 native crypto import flags are selected.
+
+The generic extern path now uses the same qualified declarator as definitions,
+registers declaration-only storage, and supports callback arrays too. The runnable
+multi-unit regression exposed a second issue: volatile callback reads took a bare
+address of a C# static field. Volatile pointer globals now use the existing `nint`
+backing storage, keeping `Volatile.Read`/`Write` semantics and stable storage.
+Twelve extern-callback/volatile unit tests and a multi-unit functional/native
+fixture pass. The actual core advances to B7.
+
+## B7: inline specifier before qualified primitive return — open
+
+`PTLS_LOG_DEFINE_GETSNI` at `picotls.h:2012` expands a
+`static inline const char *` function. The parser accepts `inline` before a
+plain typedef but cannot combine its specifier list with a following qualified
+primitive type. All three units stop at the `char` token. The fix must retain
+both the inline function marker and const qualification of the returned bytes.

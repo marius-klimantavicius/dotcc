@@ -703,6 +703,7 @@ productions:
       - { lhs: Fn, rhs: [FnPtrArrayDeclarator, '=', E, ';'], action: globalFnPtrScalarInit }
       - { lhs: Fn, rhs: ['static', FnPtrArrayDeclarator, '=', E, ';'], action: globalStaticFnPtrScalarInit }
       - { lhs: Fn, rhs: [FnPtrArrayDeclarator, ';'], action: globalFnPtrArray }
+      - { lhs: Fn, rhs: ['extern', FnPtrArrayDeclarator, ';'], action: externFnPtrDeclaration }
       - { lhs: Fn, rhs: ['static', FnPtrArrayDeclarator, ';'], action: globalStaticFnPtrArray }
       - { lhs: Fn, rhs: [FnPtrArrayDeclarator, '=', '{', InitList, '}', ';'], action: globalFnPtrArrayInit }
       - { lhs: Fn, rhs: ['static', FnPtrArrayDeclarator, '=', '{', InitList, '}', ';'], action: globalStaticFnPtrArrayInit }

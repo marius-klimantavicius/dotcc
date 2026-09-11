@@ -145,3 +145,13 @@ fixture successfully. The unchanged core probe now passes `pthread.h` inclusion
 and the GNU storage declaration, then stops at `picotls.h:1959`'s extern volatile
 function-pointer declaration. Evidence: `artifacts/thread-retry.log` and the
 per-unit diagnostics under `artifacts/compiler/`.
+
+## P2 extern volatile callbacks (2026-09-11)
+
+The generic extern declarator/storage repair and volatile pointer-global backing
+storage fix pass all 12 `ExternFnPtrTests`/`VolatileTests`. The `extern-fnptr`
+multi-unit fixture and native `cc -std=c17` both print `callback=42 table=80`
+and `updated=42`, covering declaration sharing, callback arrays and fenced
+callback reassignment. Logs are `artifacts/extern-callback-{build,unit,functional,retry}.log`.
+The same actual core source advances to `static inline const char *` at header
+line 2012; this is the next open grammar boundary, not a core translation pass.

@@ -315,6 +315,7 @@ internal sealed partial class IrBuilder
             case C.GlobalFnPtrScalarInit g: BuildGlobalFnPtrArray(g.Arg0, g.Arg2, scalarInitializer: true); break;
             case C.GlobalStaticFnPtrScalarInit g: BuildGlobalFnPtrArray(g.Arg1, g.Arg3, scalarInitializer: true); break;
             case C.GlobalFnPtrArray g: BuildGlobalFnPtrArray(g.Arg0, null); break;
+            case C.ExternFnPtrDeclaration g: BuildGlobalFnPtrArray(g.Arg1, null, isExtern: true); break;
             case C.GlobalStaticFnPtrArray g: BuildGlobalFnPtrArray(g.Arg1, null); break;
             case C.GlobalFnPtrArrayInit g: BuildGlobalFnPtrArray(g.Arg0, g.Arg3); break;
             case C.GlobalStaticFnPtrArrayInit g: BuildGlobalFnPtrArray(g.Arg1, g.Arg4); break;
@@ -2308,7 +2309,7 @@ internal sealed partial class IrBuilder
         return new Seq(System.Array.Empty<CStmt>());
     }
 
-    private void BuildGlobalFnPtrArray(Item declarator, Item? initItem, bool scalarInitializer = false)
+    private void BuildGlobalFnPtrArray(Item declarator, Item? initItem, bool scalarInitializer = false, bool isExtern = false)
     {
         var (returnType, arrayName, parameters) = declarator.Content switch
         {
@@ -2331,10 +2332,10 @@ internal sealed partial class IrBuilder
             if (initItem != null && !scalarInitializer)
                 throw new IrUnsupportedException("brace initializer for a scalar function pointer");
             var declaration = RegisterScalarGlobal(new Symbol {
-                Name = Tok(scalar.Arg0), Kind = SymKind.Var, Storage = Storage.Static,
+                Name = Tok(scalar.Arg0), Kind = SymKind.Var, Storage = isExtern ? Storage.Extern : Storage.Static,
                 IsGlobal = true, Type = FnPtrType(returnType, parameters).WithQuals(quals),
             }, SrcPos.From(declarator));
-            if (declaration != null)
+            if (declaration != null && !isExtern)
             {
                 var init = initItem is { } value ? BuildExpr(value) : null;
                 DefineRegisteredGlobal(declaration, init, initItem != null, SrcPos.From(declarator));
@@ -2349,7 +2350,9 @@ internal sealed partial class IrBuilder
             C.FnPtrArrayNameSized a => (a.Arg0, (Item?)a.Arg1),
             _ => throw new IrUnsupportedException(TypeName(arrayName.Content)),
         };
-        BuildGlobalArr(FnPtrType(returnType, parameters).WithQuals(quals), name, dimensions, initItem, null);
+        var element = FnPtrType(returnType, parameters).WithQuals(quals);
+        if (isExtern) BuildExternArr(element, name, dimensions);
+        else BuildGlobalArr(element, name, dimensions, initItem, null);
     }
 
     private DeclStmt BuildFnPtrLocal(Item retItem, Item nameItem, Item? paramsItem, Item? initItem, int pointerLevels = 0)
