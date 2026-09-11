@@ -26,6 +26,18 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def public_result(suite, output):
+    if suite != "TlsTests":
+        return output
+    # Fresh certificates and ECDSA signature lengths change fragment-pump
+    # assertion counts. Preserve all scenario text and the complete raw log;
+    # only this incidental counter is excluded from cross-run comparison.
+    pattern = r"^PASS: [0-9]+ TLS assertions;(?= )"
+    if len(re.findall(pattern, output, re.MULTILINE)) != 1:
+        raise RuntimeError("TlsTests must emit exactly one successful scenario summary")
+    return re.sub(pattern, "PASS: TLS assertions;", output, flags=re.MULTILINE)
+
+
 def generated_hashes(project):
     names = (project.parent / "Dotcc.SourceFiles.txt").read_text().splitlines()
     if not names or len(names) != len(set(names)):
@@ -162,14 +174,14 @@ def main():
                 prefix = variant + "-" + suite
                 execute(prefix + "-build", ["dotnet", "build", project, "-c", "Release", "--nologo", *properties], build_timeout)
                 arguments = [native_values] if suite == "TranslatedAbi" else []
-                results[prefix + "-jit"] = execute(prefix + "-jit", ["dotnet", project.parent / "bin/Release/net10.0" / (suite + ".dll"), *arguments], test_timeout)
+                results[prefix + "-jit"] = public_result(suite, execute(prefix + "-jit", ["dotnet", project.parent / "bin/Release/net10.0" / (suite + ".dll"), *arguments], test_timeout))
                 if not results[prefix + "-jit"].strip().startswith("PASS"):
                     raise RuntimeError(f"{prefix} returned without its successful test summary")
                 if args.aot:
                     output = run / "publish" / variant / suite
                     execute(prefix + "-publish", ["dotnet", "publish", project, "-c", "Release", "-r", args.runtime,
                                                    "-p:PublishAot=true", *properties, "-o", output, "--nologo"], build_timeout)
-                    results[prefix + "-aot"] = execute(prefix + "-aot", [output / suite, *arguments], test_timeout)
+                    results[prefix + "-aot"] = public_result(suite, execute(prefix + "-aot", [output / suite, *arguments], test_timeout))
                     if results[prefix + "-jit"] != results[prefix + "-aot"]:
                         raise RuntimeError(f"{prefix} deterministic JIT/NativeAOT result differs")
             for mode in (["jit", "aot"] if args.aot else ["jit"]):
