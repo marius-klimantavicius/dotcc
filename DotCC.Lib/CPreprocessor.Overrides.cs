@@ -29,6 +29,11 @@ internal sealed class MacroOverrideSession
         if (!_rules.TryGetValue(macro.Name, out var rules)) return macro;
         string? original = null;
         string Original() => original ??= RemoveComments(SourceMappedItem.LogicalSpelling(macro.Body)).Trim();
+        if (Options.Report is not null)
+            Event("candidate", ("name", macro.Name), ("source", Location(origin)), ("original", Original()),
+                ("kind", macro.IsFunctionLike ? "function" : "object"),
+                ("parameters", string.Join(",", macro.Params ?? Array.Empty<string>())),
+                ("variadic", macro.IsVariadic ? "true" : "false"));
         foreach (var rule in rules)
         {
             string? replacement;

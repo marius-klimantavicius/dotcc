@@ -158,6 +158,8 @@ public sealed class MacroOverrideTests
             Compiler.EmitCSharp(new[]{path}, emit:EmitMode.ManagedLib,
                 preprocessing:new CPreprocessingOptions(new[]{new MacroOverride("X", "${__dotcc_n}")}, report:report));
             report.ToString().ShouldContain("\"expansions\":\"1\"");
+            report.ToString().ShouldContain("\"kind\":\"function\"");
+            report.ToString().ShouldContain("\"parameters\":\"n\"");
         });
     }
 
