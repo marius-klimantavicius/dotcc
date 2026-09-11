@@ -1444,6 +1444,9 @@ productions:
   - derivation: none
     rules:
       - { lhs: MemberInit, rhs: ['.', ID, '=', E], action: memberInit }
+      - { lhs: MemberInit, rhs: ['.', ID, '=', '{', InitList, '}'], action: memberInitBrace }
+      - { lhs: MemberInit, rhs: ['.', ID, '=', '{', MemberInitList, '}'], action: memberInitDesignated }
+      - { lhs: MemberInit, rhs: ['.', ID, '=', '{', '}'], action: memberInitEmpty }
 
   # Comma operator — the full-expression tier above assignment. Left-assoc,
   # lowest precedence. `Expr → E` is the no-comma passthrough; `Expr → Expr , E`

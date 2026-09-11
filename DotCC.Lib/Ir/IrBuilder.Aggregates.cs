@@ -220,7 +220,8 @@ internal sealed partial class IrBuilder
         var members = new List<FieldInit>();
         foreach (var (field, valueItem) in ParseMemberInits(memberList))
         {
-            members.Add(new FieldInit(field, FieldTypeOf(fields, field), BuildExpr(valueItem)));
+            var fieldType = FieldTypeOf(fields, field);
+            members.Add(new FieldInit(field, fieldType, BuildDeclaratorInitializer(fieldType, valueItem)));
         }
         return new StructInit(members) { Type = type };
     }
@@ -248,8 +249,14 @@ internal sealed partial class IrBuilder
         var outp = new List<(string, Item)>();
         void Add(Item mi)
         {
-            if (mi.Content is C.MemberInit m) { outp.Add((Tok(m.Arg1), m.Arg3)); }
-            else { throw new IrUnsupportedException(TypeName(mi.Content)); }
+            switch (mi.Content)
+            {
+                case C.MemberInit m: outp.Add((Tok(m.Arg1), m.Arg3)); break;
+                case C.MemberInitBrace m: outp.Add((Tok(m.Arg1), m.Arg4)); break;
+                case C.MemberInitDesignated m: outp.Add((Tok(m.Arg1), m.Arg4)); break;
+                case C.MemberInitEmpty m: outp.Add((Tok(m.Arg1), mi)); break;
+                default: throw new IrUnsupportedException(TypeName(mi.Content));
+            }
         }
         void Walk(Item n)
         {

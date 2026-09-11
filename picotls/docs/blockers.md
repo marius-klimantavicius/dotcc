@@ -251,10 +251,25 @@ Validation: 21 targeted units, six functional fixtures and native gcc parity for
 `multi-brace-declaration/` pass; logs are in `artifacts/multi-brace/`. The unchanged
 core advances to B13; hpke and pembase64 continue to emit successfully.
 
-## B13: braced designated member initializer — open
+## B13: braced designated member initializer — fixed
 
 At `picotls.c:4440`, assignment uses
 `(struct st_ptls_client_hello_t){.unknown_extensions = {{UINT16_MAX}}}`.
 The designated-member production currently only accepts an expression after `=`,
 so the nested array/struct braces fail during parsing. The repair must bind those
 braces against the actual member type, preserving zero-fill for omitted elements.
+
+Member designators now retain positional/designated/empty brace shapes and bind
+against the actual field type through the shared aggregate initializer. Nested
+arrays of structs, multidimensional arrays, scalar braces and omitted zero fields
+are covered in declaration and compound-literal contexts. C23 empty array members
+use the existing allocation-free inline-array factory. Validation: 19 selected
+units, five functional fixtures and native gcc parity for both new fixtures pass;
+logs are in `artifacts/designated-brace/`. The actual core advances to B14.
+
+## B14: ordinary global positional aggregate initializer — open
+
+At `picotls.c:6643`, `ptls_get_time_t ptls_get_time = {get_time};` is a
+non-static file-scope struct initializer. Existing productions cover static
+positional, global designated and comma-list positional forms; the ordinary
+single positional global form still lacks its production/binder entry point.

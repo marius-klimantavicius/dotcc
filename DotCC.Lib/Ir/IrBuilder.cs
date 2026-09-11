@@ -2463,8 +2463,9 @@ internal sealed partial class IrBuilder
             BuildFieldInitializer(type, new InitGroup(ParseInitList(initializer))),
         C.MemberInitListOne or C.MemberInitListCons or C.MemberInitListTrail =>
             BuildStructDesignated(type, initializer),
-        C.DeclItemListEmptyHead or C.DeclItemTailEmptyInit =>
-            Gated(2023, "empty initializer", initializer, new DefaultLit { Type = type }),
+        C.DeclItemListEmptyHead or C.DeclItemTailEmptyInit or C.MemberInitEmpty =>
+            Gated(2023, "empty initializer", initializer,
+                BuildFieldInitializer(type, new InitGroup(System.Array.Empty<Init>()))),
         _ => BuildExpr(initializer),
     };
 
