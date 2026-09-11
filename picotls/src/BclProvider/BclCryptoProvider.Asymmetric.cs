@@ -1,0 +1,540 @@
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+
+namespace Managed.Security;
+
+public static unsafe partial class BclCryptoProvider
+{
+    private const ushort EcdsaP256Sha256 = 0x0403, RsaPssRsaeSha256 = 0x0804;
+    private const int AlertHandshakeFailure = 40, AlertBadCertificate = 42, AlertUnsupportedCertificate = 43;
+    private const int AlertCertificateRevoked = 44, AlertCertificateExpired = 45, AlertIllegalParameter = 47;
+    private const int AlertUnknownCa = 48, AlertDecryptError = 51, AlertCertificateRequired = 116;
+    public const int MaximumCertificateCount = 16, MaximumCertificateBytes = 1024 * 1024;
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct ExchangeContext { public st_ptls_key_exchange_context_t Header; public nint Handle; }
+    [StructLayout(LayoutKind.Sequential)]
+    private struct SignContext { public st_ptls_sign_certificate_t Header; public nint Handle; }
+    [StructLayout(LayoutKind.Sequential)]
+    private struct VerifyContext { public st_ptls_verify_certificate_t Header; public nint Handle; }
+    [StructLayout(LayoutKind.Sequential)]
+    private struct AsymmetricTables
+    {
+        public st_ptls_key_exchange_algorithm_t P256;
+        public st_ptls_key_exchange_algorithm_t* First;
+        public st_ptls_key_exchange_algorithm_t* End;
+        public ushort Ecdsa, Rsa, SignatureEnd;
+    }
+    private static readonly object asymmetricGate = new();
+    private static AsymmetricTables* asymmetric;
+    private static readonly UTF8Encoding StrictUtf8 = new(false, true);
+    public static st_ptls_key_exchange_algorithm_t* P256KeyExchange { get { InitializeAsymmetric(); return &asymmetric->P256; } }
+    public static st_ptls_key_exchange_algorithm_t** AsymmetricKeyExchanges { get { InitializeAsymmetric(); return &asymmetric->First; } }
+    private static readonly delegate*<st_ptls_key_exchange_algorithm_t*, st_ptls_key_exchange_context_t**, int> ExchangeCreatePointer = &ExchangeCreate;
+    private static readonly delegate*<st_ptls_key_exchange_context_t**, int, st_ptls_iovec_t*, st_ptls_iovec_t, int> ExchangeCompletePointer = &ExchangeComplete;
+    private static readonly delegate*<st_ptls_key_exchange_algorithm_t*, st_ptls_iovec_t*, st_ptls_iovec_t*, st_ptls_iovec_t, int> ExchangeSyncPointer = &ExchangeSync;
+    private static readonly delegate*<st_ptls_sign_certificate_t*, st_ptls_t*, st_ptls_async_job_t**, ushort*, st_ptls_buffer_t*, st_ptls_iovec_t, ushort*, ulong, int> SignPointer = &SignCertificate;
+    private static readonly delegate*<st_ptls_verify_certificate_t*, st_ptls_t*, byte*, delegate*<void*, ushort, st_ptls_iovec_t, st_ptls_iovec_t, int>*, void**, st_ptls_iovec_t*, ulong, int> VerifyCertificatePointer = &VerifyCertificate;
+    private static readonly delegate*<void*, ushort, st_ptls_iovec_t, st_ptls_iovec_t, int> VerifySignaturePointer = &VerifySignature;
+
+    public static void InitializeAsymmetric()
+    {
+        lock (asymmetricGate)
+        {
+            if (asymmetric != null) return;
+            using var probe = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
+            using var peer = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
+            byte[] secret = probe.DeriveRawSecretAgreement(peer.PublicKey);
+            AsymmetricTables* table = null;
+            try
+            {
+                if (secret.Length != 32) throw new PlatformNotSupportedException("P-256 requires a 32-byte raw secret.");
+                table = (AsymmetricTables*)AllocateZeroed(sizeof(AsymmetricTables));
+                table->P256.id = 23;
+                table->P256.name = Libc.L("secp256r1\0"u8);
+                table->P256.create = ExchangeCreatePointer;
+                table->P256.exchange = ExchangeSyncPointer;
+                table->First = &table->P256;
+                table->Ecdsa = EcdsaP256Sha256; table->Rsa = RsaPssRsaeSha256; table->SignatureEnd = ushort.MaxValue;
+                asymmetric = table; table = null;
+            }
+            finally { Libc.free(table); CryptographicOperations.ZeroMemory(secret); }
+        }
+    }
+
+    private sealed class ExchangeState(ECDiffieHellman key) : IDisposable
+    {
+        public ECDiffieHellman Key { get; } = key;
+        public void Dispose() => Key.Dispose();
+    }
+    private static st_ptls_iovec_t CopyBytes(ReadOnlySpan<byte> bytes)
+    {
+        byte* storage = (byte*)AllocateZeroed(Math.Max(1, bytes.Length));
+        bytes.CopyTo(new Span<byte>(storage, bytes.Length));
+        return new st_ptls_iovec_t { @base = storage, len = (ulong)bytes.Length };
+    }
+    private static byte[] EncodePoint(ECDiffieHellman key)
+    {
+        var parameters = key.ExportParameters(false);
+        if (parameters.Q.X?.Length != 32 || parameters.Q.Y?.Length != 32)
+            throw new CryptographicException("Invalid P-256 coordinate widths.");
+        byte[] output = new byte[65]; output[0] = 4;
+        parameters.Q.X.CopyTo(output, 1); parameters.Q.Y.CopyTo(output, 33);
+        return output;
+    }
+    private static ECDiffieHellman ImportPoint(st_ptls_iovec_t point)
+    {
+        if (point.len != 65 || point.@base == null || point.@base[0] != 4)
+            throw new CryptographicException("P-256 requires an uncompressed 65-byte SEC1 point.");
+        var bytes = ReadBytes(point.@base, point.len, 65);
+        return ECDiffieHellman.Create(new ECParameters { Curve = ECCurve.NamedCurves.nistP256,
+            Q = new ECPoint { X = bytes.Slice(1, 32).ToArray(), Y = bytes.Slice(33, 32).ToArray() } });
+    }
+    private static void ReleaseExchange(ExchangeContext* context)
+    {
+        if (context == null) return;
+        try { ReleaseState(ref context->Handle); }
+        catch (Exception error) { CallbackScope.Capture(error); }
+        finally { Libc.free(context->Header.pubkey.@base); Libc.free(context); }
+    }
+    private static int ExchangeCreate(st_ptls_key_exchange_algorithm_t* algorithm, st_ptls_key_exchange_context_t** output)
+    {
+        ExchangeContext* context = null;
+        ECDiffieHellman? key = null;
+        try
+        {
+            if (output == null || algorithm == null || algorithm->id != 23) return AlertIllegalParameter;
+            *output = null;
+            if (!BeginCallback()) return ErrorLibrary;
+            key = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
+            context = (ExchangeContext*)AllocateZeroed(sizeof(ExchangeContext));
+            context->Handle = OwnState(new ExchangeState(key));
+            key = null;
+            context->Header.algo = algorithm;
+            context->Header.on_exchange = ExchangeCompletePointer;
+            context->Header.pubkey = CopyBytes(EncodePoint(State<ExchangeState>(context->Handle).Key));
+            *output = &context->Header;
+            context = null;
+            return 0;
+        }
+        catch (Exception error) { return SetupError(error); }
+        finally
+        {
+            try { if (key != null) DisposeState(key); }
+            catch (Exception error) { CallbackScope.Capture(error); }
+            ReleaseExchange(context);
+        }
+    }
+    private static int ExchangeComplete(st_ptls_key_exchange_context_t** keyex, int release,
+        st_ptls_iovec_t* secret, st_ptls_iovec_t peerkey)
+    {
+        ExchangeContext* context = keyex == null ? null : (ExchangeContext*)*keyex;
+        byte[]? derived = null;
+        try
+        {
+            if (context == null) return AlertIllegalParameter;
+            if (secret == null) return 0; // Cleanup-only invocation; no peer key required.
+            *secret = default;
+            if (!BeginCallback()) return ErrorLibrary;
+            using var peer = ImportPoint(peerkey);
+            derived = State<ExchangeState>(context->Handle).Key.DeriveRawSecretAgreement(peer.PublicKey);
+            if (derived.Length != 32) throw new CryptographicException("Unexpected raw P-256 secret width.");
+            *secret = CopyBytes(derived);
+            return 0;
+        }
+        catch (CryptographicException) { return AlertIllegalParameter; }
+        catch (Exception error) { return SetupError(error); }
+        finally
+        {
+            if (derived != null) CryptographicOperations.ZeroMemory(derived);
+            if (release != 0 && keyex != null) { *keyex = null; ReleaseExchange(context); }
+        }
+    }
+    private static int ExchangeSync(st_ptls_key_exchange_algorithm_t* algorithm, st_ptls_iovec_t* publicKey,
+        st_ptls_iovec_t* secret, st_ptls_iovec_t peerkey)
+    {
+        st_ptls_key_exchange_context_t* context = null;
+        st_ptls_iovec_t resultSecret = default, resultPublic = default;
+        try
+        {
+            if (publicKey == null || secret == null) return AlertIllegalParameter;
+            *publicKey = default; *secret = default;
+            int result = ExchangeCreate(algorithm, &context);
+            if (result != 0) return result;
+            result = ExchangeComplete(&context, 0, &resultSecret, peerkey);
+            if (result != 0) return result;
+            resultPublic = CopyBytes(ReadBytes(context->pubkey.@base, context->pubkey.len, 65));
+            *publicKey = resultPublic; *secret = resultSecret;
+            resultPublic = default; resultSecret = default;
+            return 0;
+        }
+        catch (Exception error) { return SetupError(error); }
+        finally
+        {
+            if (resultSecret.@base != null) { WriteBytes(resultSecret.@base, resultSecret.len).Clear(); Libc.free(resultSecret.@base); }
+            Libc.free(resultPublic.@base);
+            ReleaseExchange((ExchangeContext*)context);
+        }
+    }
+
+    private sealed class SigningState : IDisposable
+    {
+        public readonly object Gate = new();
+        public readonly ECDsa? Ec;
+        public readonly RSA? Rsa;
+        public ushort Algorithm => Ec != null ? EcdsaP256Sha256 : RsaPssRsaeSha256;
+        public SigningState(X509Certificate2 certificate)
+        {
+            RequireDigitalSignature(certificate);
+            if (certificate.PublicKey.Oid.Value == "1.2.840.10045.2.1")
+            {
+                Ec = certificate.GetECDsaPrivateKey() ?? throw new ArgumentException("Certificate has no ECDSA private key.");
+                try { RequireP256(Ec); } catch { Ec.Dispose(); throw; }
+            }
+            else if (certificate.PublicKey.Oid.Value == "1.2.840.113549.1.1.1")
+            {
+                Rsa = certificate.GetRSAPrivateKey() ?? throw new ArgumentException("Certificate has no RSA private key.");
+                if (Rsa.KeySize < 2048) { Rsa.Dispose(); throw new ArgumentException("RSA authentication requires at least 2048 bits."); }
+            }
+            else throw new ArgumentException("Only P-256 ECDSA and rsaEncryption RSA-PSS/SHA-256 identities are supported.");
+        }
+        public void Dispose() { Ec?.Dispose(); Rsa?.Dispose(); }
+    }
+    private static void RequireP256(ECDsa key)
+    {
+        if (key.KeySize != 256 || key.ExportParameters(false).Curve.Oid.Value != "1.2.840.10045.3.1.7")
+            throw new CryptographicException("ECDSA authentication requires named P-256.");
+    }
+    private static void RequireDigitalSignature(X509Certificate2 certificate)
+    {
+        foreach (var extension in certificate.Extensions)
+            if (extension.Oid?.Value == "2.5.29.15")
+            {
+                var usage = extension as X509KeyUsageExtension ?? new X509KeyUsageExtension(extension, extension.Critical);
+                if ((usage.KeyUsages & X509KeyUsageFlags.DigitalSignature) == 0)
+                    throw new CryptographicException("TLS certificate KeyUsage must permit digital signatures when present.");
+            }
+    }
+
+    /// <summary>Owns a signing callback, leaf key, and stable certificate chain.
+    /// Retain it until every referring context/connection has been destroyed.</summary>
+    public sealed class SigningIdentity : IDisposable
+    {
+        private readonly object lifetimeGate = new();
+        private int leases;
+        private bool disposeRequested;
+        private SignContext* context;
+        private st_ptls_iovec_t* chain;
+        private int chainCount;
+        public SigningIdentity(X509Certificate2 leaf, IEnumerable<X509Certificate2>? intermediates = null)
+        {
+            ArgumentNullException.ThrowIfNull(leaf);
+            SigningState? state = null;
+            try
+            {
+                var certificates = new List<byte[]> { leaf.RawData };
+                if (intermediates != null)
+                    foreach (var certificate in intermediates)
+                    {
+                        if (certificates.Count >= MaximumCertificateCount) throw new ArgumentException("Certificate chain is too long.");
+                        certificates.Add(certificate.RawData);
+                    }
+                if (certificates.Sum(certificate => (long)certificate.Length) > MaximumCertificateBytes)
+                    throw new ArgumentException("Certificate chain exceeds the size limit.");
+                state = new SigningState(leaf);
+                context = (SignContext*)AllocateZeroed(sizeof(SignContext));
+                context->Handle = OwnState(state); state = null;
+                context->Header.cb = SignPointer;
+                chain = (st_ptls_iovec_t*)AllocateZeroed(checked(certificates.Count * sizeof(st_ptls_iovec_t)));
+                foreach (var certificate in certificates) chain[chainCount++] = CopyBytes(certificate);
+            }
+            catch { if (state != null) DisposeState(state); Dispose(); throw; }
+        }
+        public st_ptls_sign_certificate_t* Callback => context != null ? &context->Header : throw new ObjectDisposedException(nameof(SigningIdentity));
+        public void ApplyTo(st_ptls_context_t* target)
+        {
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            target->sign_certificate = Callback;
+            target->certificates.list = chain;
+            target->certificates.count = (ulong)chainCount;
+        }
+        internal IDisposable RetainAndApply(st_ptls_context_t* target)
+        {
+            lock (lifetimeGate)
+            {
+                ObjectDisposedException.ThrowIf(disposeRequested, this);
+                var lease = new ProviderLease(ReleaseLease);
+                ApplyTo(target);
+                leases++;
+                return lease;
+            }
+        }
+        private void ReleaseLease()
+        {
+            lock (lifetimeGate)
+            {
+                if (--leases == 0 && disposeRequested) Free();
+            }
+        }
+        public void Dispose()
+        {
+            lock (lifetimeGate)
+            {
+                if (disposeRequested) return;
+                disposeRequested = true;
+                if (leases == 0) Free();
+            }
+            GC.SuppressFinalize(this);
+        }
+        ~SigningIdentity() { try { Dispose(); } catch { } }
+        private void Free()
+        {
+            var previous = context; context = null;
+            try { if (previous != null) ReleaseState(ref previous->Handle); }
+            finally
+            {
+                Libc.free(previous);
+                for (int i = 0; i < chainCount; i++) Libc.free(chain[i].@base);
+                Libc.free(chain); chain = null; chainCount = 0;
+            }
+        }
+    }
+    private static int SignCertificate(st_ptls_sign_certificate_t* self, st_ptls_t* tls, st_ptls_async_job_t** async,
+        ushort* selected, st_ptls_buffer_t* output, st_ptls_iovec_t input, ushort* algorithms, ulong count)
+    {
+        byte[]? signature = null;
+        try
+        {
+            if (!BeginCallback()) return ErrorLibrary;
+            if (self == null || selected == null || output == null || (algorithms == null && count != 0)) return AlertIllegalParameter;
+            if (async != null && *async != null) return ErrorLibrary; // This provider performs synchronous signing only.
+            int length = CheckedLength(count, 32767);
+            var state = State<SigningState>(((SignContext*)self)->Handle);
+            bool offered = false;
+            for (int i = 0; i < length; i++) if (algorithms[i] == state.Algorithm) { offered = true; break; }
+            if (!offered) return AlertHandshakeFailure;
+            var bytes = ReadBytes(input.@base, input.len);
+            lock (state.Gate)
+                signature = state.Ec != null
+                    ? state.Ec.SignData(bytes, HashAlgorithmName.SHA256, DSASignatureFormat.Rfc3279DerSequence)
+                    : state.Rsa!.SignData(bytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
+            fixed (byte* data = signature)
+            {
+                int result = Picotls.ptls_buffer__do_pushv(output, data, (ulong)signature.Length);
+                if (result == 0) *selected = state.Algorithm;
+                return result;
+            }
+        }
+        catch (Exception error) { return SetupError(error); }
+        finally { if (signature != null) CryptographicOperations.ZeroMemory(signature); }
+    }
+
+    private sealed class VerificationPolicy : IDisposable
+    {
+        public readonly X509Certificate2Collection Roots = new();
+        public readonly X509RevocationMode RevocationMode;
+        public readonly bool AllowWildcards;
+        public VerificationPolicy(IEnumerable<X509Certificate2> roots, X509RevocationMode revocationMode, bool allowWildcards)
+        {
+            if (revocationMode is not (X509RevocationMode.NoCheck or X509RevocationMode.Offline or X509RevocationMode.Online))
+                throw new ArgumentOutOfRangeException(nameof(revocationMode));
+            RevocationMode = revocationMode; AllowWildcards = allowWildcards;
+            try
+            {
+                foreach (var root in roots) Roots.Add(X509CertificateLoader.LoadCertificate(root.RawData));
+                if (Roots.Count == 0) throw new ArgumentException("At least one explicit trust root is required.");
+            }
+            catch { Dispose(); throw; }
+        }
+        public void Dispose() { foreach (var certificate in Roots) certificate.Dispose(); Roots.Clear(); }
+    }
+    /// <summary>Owns an explicit certificate trust/revocation policy and callback.
+    /// The caller must retain it for all referring connections; there is no trust bypass.</summary>
+    public sealed class CertificateVerifier : IDisposable
+    {
+        private readonly object lifetimeGate = new();
+        private int leases;
+        private bool disposeRequested;
+        private VerifyContext* context;
+        public CertificateVerifier(IEnumerable<X509Certificate2> trustedRoots, X509RevocationMode revocationMode, bool allowWildcards = true)
+        {
+            ArgumentNullException.ThrowIfNull(trustedRoots);
+            InitializeAsymmetric();
+            VerificationPolicy? policy = null;
+            try
+            {
+                policy = new VerificationPolicy(trustedRoots, revocationMode, allowWildcards);
+                context = (VerifyContext*)AllocateZeroed(sizeof(VerifyContext));
+                context->Handle = OwnState(policy); policy = null;
+                context->Header.cb = VerifyCertificatePointer;
+                context->Header.algos = &asymmetric->Ecdsa;
+            }
+            catch { if (policy != null) DisposeState(policy); Dispose(); throw; }
+        }
+        public st_ptls_verify_certificate_t* Callback => context != null ? &context->Header : throw new ObjectDisposedException(nameof(CertificateVerifier));
+        public void ApplyTo(st_ptls_context_t* target)
+        {
+            if (target == null) throw new ArgumentNullException(nameof(target));
+            target->verify_certificate = Callback;
+        }
+        internal IDisposable RetainAndApply(st_ptls_context_t* target)
+        {
+            lock (lifetimeGate)
+            {
+                ObjectDisposedException.ThrowIf(disposeRequested, this);
+                var lease = new ProviderLease(ReleaseLease);
+                ApplyTo(target);
+                leases++;
+                return lease;
+            }
+        }
+        private void ReleaseLease()
+        {
+            lock (lifetimeGate)
+            {
+                if (--leases == 0 && disposeRequested) Free();
+            }
+        }
+        public void Dispose()
+        {
+            lock (lifetimeGate)
+            {
+                if (disposeRequested) return;
+                disposeRequested = true;
+                if (leases == 0) Free();
+            }
+            GC.SuppressFinalize(this);
+        }
+        ~CertificateVerifier() { try { Dispose(); } catch { } }
+        private void Free()
+        {
+            var previous = context; context = null;
+            try { if (previous != null) ReleaseState(ref previous->Handle); }
+            finally { Libc.free(previous); }
+        }
+    }
+    private sealed class ProviderLease(Action release) : IDisposable
+    {
+        private Action? callback = release;
+        public void Dispose() => Interlocked.Exchange(ref callback, null)?.Invoke();
+    }
+    private sealed class VerificationKey : IDisposable
+    {
+        public readonly ECDsa? Ec;
+        public readonly RSA? Rsa;
+        public ushort Algorithm => Ec != null ? EcdsaP256Sha256 : RsaPssRsaeSha256;
+        public VerificationKey(X509Certificate2 leaf)
+        {
+            if (leaf.PublicKey.Oid.Value == "1.2.840.10045.2.1")
+            {
+                Ec = leaf.GetECDsaPublicKey() ?? throw new CryptographicException("Missing ECDSA leaf key.");
+                try { RequireP256(Ec); } catch { Ec.Dispose(); throw; }
+            }
+            else if (leaf.PublicKey.Oid.Value == "1.2.840.113549.1.1.1")
+            {
+                Rsa = leaf.GetRSAPublicKey() ?? throw new CryptographicException("Missing RSA leaf key.");
+                if (Rsa.KeySize < 2048) { Rsa.Dispose(); throw new CryptographicException("RSA leaf key is too small."); }
+            }
+            else throw new CryptographicException("Unsupported leaf key or RSA-PSS certificate key restriction.");
+        }
+        public void Dispose() { Ec?.Dispose(); Rsa?.Dispose(); }
+    }
+    private static string ReadServerName(byte* name)
+    {
+        if (name == null) throw new CryptographicException("Server endpoint name is required.");
+        int length = 0;
+        while (length < 256 && name[length] != 0) length++;
+        if (length is 0 or 256) throw new CryptographicException("Invalid server endpoint name.");
+        return StrictUtf8.GetString(new ReadOnlySpan<byte>(name, length));
+    }
+    private static int VerifyCertificate(st_ptls_verify_certificate_t* self, st_ptls_t* tls, byte* serverName,
+        delegate*<void*, ushort, st_ptls_iovec_t, st_ptls_iovec_t, int>* verifySignature, void** verifyData,
+        st_ptls_iovec_t* certificateData, ulong count)
+    {
+        List<X509Certificate2>? certificates = null;
+        VerificationKey? key = null;
+        try
+        {
+            if (verifySignature == null || verifyData == null || self == null || tls == null) return AlertIllegalParameter;
+            *verifySignature = null; *verifyData = null;
+            if (!BeginCallback()) return ErrorLibrary;
+            certificates = new List<X509Certificate2>();
+            if (count == 0) return AlertCertificateRequired;
+            if (certificateData == null || count > MaximumCertificateCount) return AlertBadCertificate;
+            int total = 0;
+            for (int i = 0; i < (int)count; i++)
+            {
+                int size = CheckedLength(certificateData[i].len, MaximumCertificateBytes);
+                total = checked(total + size);
+                if (total > MaximumCertificateBytes) return AlertBadCertificate;
+                certificates.Add(X509CertificateLoader.LoadCertificate(ReadBytes(certificateData[i].@base, (ulong)size, MaximumCertificateBytes).ToArray()));
+            }
+            var policy = State<VerificationPolicy>(((VerifyContext*)self)->Handle);
+            bool server = Picotls.ptls_is_server(tls) != 0;
+            using var chain = new X509Chain();
+            chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
+            chain.ChainPolicy.CustomTrustStore.AddRange(policy.Roots);
+            chain.ChainPolicy.RevocationMode = policy.RevocationMode;
+            chain.ChainPolicy.RevocationFlag = X509RevocationFlag.ExcludeRoot;
+            chain.ChainPolicy.DisableCertificateDownloads = true;
+            chain.ChainPolicy.UrlRetrievalTimeout = TimeSpan.FromSeconds(2);
+            chain.ChainPolicy.ApplicationPolicy.Add(new Oid(server ? "1.3.6.1.5.5.7.3.2" : "1.3.6.1.5.5.7.3.1"));
+            for (int i = 1; i < certificates.Count; i++) chain.ChainPolicy.ExtraStore.Add(certificates[i]);
+            if (!chain.Build(certificates[0]))
+            {
+                var flags = chain.ChainStatus.Aggregate(X509ChainStatusFlags.NoError, (status, item) => status | item.Status);
+                if ((flags & X509ChainStatusFlags.Revoked) != 0) return AlertCertificateRevoked;
+                if ((flags & X509ChainStatusFlags.NotTimeValid) != 0) return AlertCertificateExpired;
+                if ((flags & (X509ChainStatusFlags.UntrustedRoot | X509ChainStatusFlags.PartialChain)) != 0) return AlertUnknownCa;
+                return AlertBadCertificate;
+            }
+            if (!server && !certificates[0].MatchesHostname(ReadServerName(serverName), policy.AllowWildcards, allowCommonName: false))
+                return AlertBadCertificate;
+            RequireDigitalSignature(certificates[0]);
+            try { key = new VerificationKey(certificates[0]); }
+            catch (CryptographicException) { return AlertUnsupportedCertificate; }
+            nint handle = OwnState(key); key = null;
+            *verifyData = (void*)handle;
+            *verifySignature = VerifySignaturePointer;
+            return 0;
+        }
+        catch (CryptographicException) { return AlertBadCertificate; }
+        catch (Exception error) { return SetupError(error); }
+        finally
+        {
+            try { if (key != null) DisposeState(key); }
+            catch (Exception error) { CallbackScope.Capture(error); }
+            if (certificates != null)
+                foreach (var certificate in certificates)
+                    try { certificate.Dispose(); }
+                    catch (Exception error) { CallbackScope.Capture(error); }
+        }
+    }
+    private static int VerifySignature(void* opaque, ushort algorithm, st_ptls_iovec_t data, st_ptls_iovec_t signature)
+    {
+        nint handle = (nint)opaque;
+        try
+        {
+            if (handle == 0) return AlertIllegalParameter;
+            if (data.len == 0 && signature.len == 0) return 0; // Upstream abort cleanup, with state consumed below.
+            if (!BeginCallback()) return ErrorLibrary;
+            var key = State<VerificationKey>(handle);
+            if (algorithm != key.Algorithm) return AlertIllegalParameter;
+            bool valid = key.Ec != null
+                ? key.Ec.VerifyData(ReadBytes(data.@base, data.len), ReadBytes(signature.@base, signature.len),
+                    HashAlgorithmName.SHA256, DSASignatureFormat.Rfc3279DerSequence)
+                : key.Rsa!.VerifyData(ReadBytes(data.@base, data.len), ReadBytes(signature.@base, signature.len),
+                    HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
+            return valid ? 0 : AlertDecryptError;
+        }
+        catch (CryptographicException) { return AlertDecryptError; }
+        catch (Exception error) { return SetupError(error); }
+        finally
+        {
+            try { ReleaseState(ref handle); }
+            catch (Exception error) { CallbackScope.Capture(error); }
+        }
+    }
+}
