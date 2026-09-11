@@ -282,7 +282,7 @@ two-translation-unit native callback/storage fixture pass; logs are in
 `artifacts/global-positional/`. The complete unchanged core now parses and reaches
 its next unsupported IR initializer shape (B15).
 
-## B15: struct-valued expressions in array initializers — open
+## B15: struct-valued expressions in array initializers — fixed
 
 The full main-core IR pass rejects an element of a `st_ptls_iovec_t` array
 initializer because the array binder requires brace groups for struct elements.
@@ -290,3 +290,18 @@ The matching source at `picotls.c:731` is
 `ptls_iovec_t invec[2] = {ptls_iovec_init(input, inlen), ptls_iovec_init(&content_type, 1)};`.
 These calls return whole struct values; the array initializer must accept and
 store those typed expressions without rewriting them as member brace groups.
+
+Struct/union array elements now accept expressions with the same unqualified
+aggregate type, preserving value copies and expression evaluation. Existing brace
+elements still bind positionally. Sized arrays pad omitted elements with typed
+zero defaults and reject excess values. Validation: 21 selected units, four
+functional fixtures and native gcc parity pass; logs are in
+`artifacts/struct-expression-array/`. The main core now reaches B16.
+
+## B16: complete IPv6 socket address type — open
+
+The unchanged main core's IR pass now reports
+`local object 'sin6' requires a complete type: incomplete aggregate 'sockaddr_in6'`.
+The local declaration is at `picotls.c:6773`; a later path reads
+`sin6_addr.s6_addr` at line 7254. The libc headers need the actual complete IPv6
+address/socket layout before these unchanged functions can lower.

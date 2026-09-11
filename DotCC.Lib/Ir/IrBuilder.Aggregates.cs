@@ -287,15 +287,29 @@ internal sealed partial class IrBuilder
         var elemName = (elem.Unqualified as CType.Named)?.Name;
         if (elemName is not null && _structFields.ContainsKey(elemName))
         {
-            // struct-element array — each top-level item is a `{ … }` group.
+            // A struct/union element can initialize its members with braces or
+            // copy an already-typed aggregate value (a variable/call/literal).
             var outp = new List<CExpr>(items.Count);
             foreach (var it in items)
             {
-                if (it is not InitGroup g)
+                switch (it)
                 {
-                    throw new IrUnsupportedException($"each element of a '{elemName}' array initializer must be a brace group");
+                    case InitGroup group:
+                        outp.Add(BuildStructPositional(elem, group.Items));
+                        break;
+                    case InitVal value when value.Value.Type.Unqualified.Equals(elem.Unqualified):
+                        outp.Add(value.Value);
+                        break;
+                    default:
+                        throw new IrUnsupportedException($"each element of a '{elemName}' array initializer must be a brace group or a compatible aggregate expression");
                 }
-                outp.Add(BuildStructPositional(elem, g.Items));
+            }
+            if (dims is { Count: > 0 })
+            {
+                var count = dims.Aggregate(1, (left, right) => checked(left * right));
+                if (outp.Count > count)
+                    throw new IrUnsupportedException("too many initializers for aggregate array");
+                while (outp.Count < count) outp.Add(new DefaultLit { Type = elem });
             }
             return outp;
         }
