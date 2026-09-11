@@ -1,0 +1,16 @@
+{
+  "picotls": {
+    "revision": "3598470df01264da85157025ed10db0f7e103790",
+    "url": "https://codeload.github.com/h2o/picotls/tar.gz/3598470df01264da85157025ed10db0f7e103790",
+    "sha256": "735ac6f0f3823dd5d0210ccf3a367ed39edc6fe889214db0749670437f705d00",
+    "directory": "picotls-3598470df01264da85157025ed10db0f7e103790",
+    "license": "MIT (lib/picotls.c and include/picotls.h notices)"
+  },
+  "picotest": {
+    "revision": "a99858e0c33b97b24cd09ceae729f2be33ec01e1",
+    "url": "https://codeload.github.com/h2o/picotest/tar.gz/a99858e0c33b97b24cd09ceae729f2be33ec01e1",
+    "sha256": "f3c42d988c8cd1af24dee2e66ce832f3e257bb7766e34167499954c1604c82c0",
+    "directory": "picotest-a99858e0c33b97b24cd09ceae729f2be33ec01e1",
+    "license": "MIT (picotest.c and picotest.h notices)"
+  }
+}
