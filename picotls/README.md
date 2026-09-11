@@ -5,7 +5,9 @@
 
 P0 is complete. P1 BCL feasibility and native/C# boundary probes pass on Linux
 x64; actual dotcc layouts and core translation remain blocked. No complete BCL
-provider or translated TLS execution is claimed. Work stops before P2.
+provider or translated TLS execution is claimed. The first P2 repair fixes
+chained `##`; the next header parse failure is recorded. Work stops after this
+repair until further direction.
 
 Run these commands serially from this directory (scripts also resolve paths when
 invoked elsewhere):

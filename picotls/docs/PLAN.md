@@ -3,9 +3,11 @@
 Status: **P0 complete; P1 feasibility work executed, translated ABI validation
 blocked** (2026-09-11). Pinned inputs and the native oracle are established;
 BCL capabilities and native/C# boundary mirrors pass on Linux x64. Separate
-real-core compiler probes expose three recorded blockers. See
+real-core compiler probes exposed three initial blockers. Chained token pasting
+is now repaired; the retry exposes a later callback-attribute parse failure. See
 [validation.md](validation.md), [blockers.md](blockers.md), and
-[crypto-provider.md](crypto-provider.md). P2–P5 have not started; no translated
+[crypto-provider.md](crypto-provider.md). P2 has started with this single compiler
+repair; P3–P5 have not started. No translated
 TLS or complete provider is claimed. Campaign working directory: `<repo>/picotls/`.
 
 ## Objective and boundaries
@@ -43,8 +45,9 @@ or reflection-based dispatch. Target .NET 10/C# 14 and preserve NativeAOT suppor
 Commit locally after each coherent tested change; do not push. Keep this plan and
 picotls implementation on the `sqlite` branch, preserving existing SQLite work.
 Do not create or switch to a separate picotls branch. The user subsequently
-authorized a coordinator and sub-agents for P0 and P1 only; stop before P2 until
-the user directs continuation.
+authorized a coordinator and sub-agents for P0 and P1, then explicitly authorized
+fixing chained `##`. Stop after that repair and its validation until the user
+directs further work.
 
 ## Workspace and repeatable inputs
 
@@ -166,7 +169,7 @@ initial profile is unavailable on the running platform.
 
 - [x] Attempt preprocessing of the core files separately with dotcc; inventory
       unresolved libc, OS and header declarations, crypto symbols, exported APIs
-      and callback types. All three produce invalid residual token-paste output;
+      and callback types. All three initially produced invalid token-paste output;
       see [compiler-boundary.md](compiler-boundary.md) and saved diagnostics.
 - [x] Prototype BCL capability/encoding checks: cloneable hashes, AES-GCM,
       raw P-256 agreement, ECDSA DER signatures, RSA-PSS and X.509/name checks.
@@ -182,6 +185,10 @@ initial profile is unavailable on the running platform.
       linking is selected; actual-core linked execution requires P2.
 
 ### P2 — Repair dotcc until the real core emits and compiles
+
+Chained `##` is fixed with compiler and runnable callback regressions. The same
+three upstream units now pass that point and stop at `picotls.h:845`'s callback
+format attribute. Remaining repairs are not yet authorized; see [blockers.md](blockers.md).
 
 - [ ] For each parse, IR, emission or runtime failure: reduce it; add a failing
       compiler/functional regression; fix the shared implementation; run relevant

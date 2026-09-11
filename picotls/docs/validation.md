@@ -1,4 +1,11 @@
-# P0/P1 validation record
+# Campaign validation record
+
+The P0/P1 baseline is recorded below; the subsequent authorized chained-paste
+repair is recorded at the end. Compiler artifact paths contain the latest retry,
+so the baseline table preserves the original outcomes rather than describing
+the current contents of those logs.
+
+## P0/P1 baseline
 
 Executed on 2026-09-11 on the existing `sqlite` branch. P0 is complete; P1
 capability, inventory, native/C# mirror, handle-lifetime and contract work is
@@ -60,7 +67,7 @@ No translated core parses, links or runs yet. Hand-authored ABI mirrors are
 standalone feasibility evidence; actual emitted types/layout metadata, complete
 `ptls_context_t`, handshake properties and bitfield behavior require P2. P1's
 ABI milestone remains open for that reason. [blockers.md](blockers.md) contains
-the three reduced blockers and chosen source-linking strategy.
+the reduced blockers and chosen source-linking strategy.
 
 The native oracle covers in-process upstream C tests, including OpenSSL and
 bundled minicrypto cross-backend scenarios. Three upstream minicrypto capability
@@ -73,4 +80,43 @@ do not establish NativeAOT, Windows/macOS/arm64, revocation policy, TLS-level
 authentication, ticket protection, concurrent connection safety, or cross-allocator
 ownership. Those remain P3–P5. No broad compiler or SQLite regression suite was
 run because no shared implementation changed; the repository compiler itself was
-rebuilt before probing. Continue with P2 only when the user requests it.
+rebuilt before probing during P0/P1.
+
+## Authorized P2 repair: chained token pasting
+
+The user subsequently requested the chained `##` fix only. The shared macro
+expander now consumes a complete paste chain before rescanning, preserving raw
+arguments, empty operands and multi-token boundaries. No upstream or generated
+source is patched. Remaining compiler/provider work is deferred.
+
+Executed serially on the same Linux x64 environment with
+`TMPDIR=picotls/artifacts/tmp/paste` for repository tests:
+
+- New `MacroTokenPasteTests`: all 11 failed before the fix, then all 11 passed.
+  Logs: `artifacts/paste-regression-before.log` and `paste-regression-after.log`.
+- Full `DotCC.Tests` suite: 1,882 passed, none failed/skipped
+  (`dotnet test DotCC.Tests/DotCC.Tests.csproj -c Release --no-build
+  --blame-hang-timeout 300s`); log: `artifacts/paste-unit-suite.log`.
+- Functional macro fixtures: eight passed, including the new self-pointer
+  callback, empty operand and final-name rescan fixture. Command:
+  `dotnet test DotCC.FunctionalTests/DotCC.FunctionalTests.csproj -c Release
+  --filter 'FullyQualifiedName~FixtureTests&DisplayName~macro'`;
+  log: `artifacts/paste-functional.log`.
+- Native C compiled and ran `DotCC.FunctionalTests/Fixtures/macro-chained-paste/main.c`
+  with `cc -std=c17`; output matches the committed expected transcript.
+- `sqlite/scripts/test-translated.sh core`: translated engine builds and its
+  40-case core corpus matches the native baseline, ending with zero handles and
+  files. Log: `artifacts/paste-sqlite-core.log`; SQLite script build/emission logs
+  remain under `sqlite/artifacts/`. An obsolete generated `Program.cs` initially
+  collided with the current `DotCcProgram.cs`; it was preserved as
+  `artifacts/paste-sqlite-previous-Program.cs` outside the build directory before
+  the successful retry. No authored SQLite file changed.
+- `python3 picotls/scripts/probe-compiler.py --build-dotcc`: fresh compiler
+  build passes; chained-paste reducer now preprocesses/emits successfully.
+  None of the three unchanged core units retains `##`. `hpke.c` and `pembase64.c`
+  preprocess cleanly; `picotls.c` still diagnoses missing `pthread.h`.
+  All three advance to the callback format attribute at `picotls.h:845`.
+  Overall probe exit remains 1 for the open blockers, including `posix_memalign`.
+
+Actual translated picotls ABI/TLS behavior remains unverified. No further P2
+repair or P3–P5 work is included.

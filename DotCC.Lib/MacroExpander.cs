@@ -271,8 +271,19 @@ internal sealed class MacroExpander : RewritingTokenStream
             }
             if (i + 2 < body.Count && body[i + 1].ID == _hashHashSymbol)
             {
-                AppendPasted(result, ResolveOperand(token, raw), ResolveOperand(body[i + 2], raw), token);
-                i += 2;
+                // Consume the entire chain before rescanning: intermediate names
+                // must not expand, and every adjacent parameter uses raw tokens.
+                // Keep all operand tokens so subsequent pastes join only their
+                // boundaries, including empty (placemarker) arguments.
+                var pasted = ResolveOperand(token, raw);
+                do
+                {
+                    var next = new List<Token>();
+                    AppendPasted(next, pasted, ResolveOperand(body[i + 2], raw), token);
+                    pasted = next;
+                    i += 2;
+                } while (i + 2 < body.Count && body[i + 1].ID == _hashHashSymbol);
+                AppendReplacement(result, pasted, token.LeadingSpace);
                 continue;
             }
             if (token.ID == _hashSymbol && i + 1 < body.Count && body[i + 1].Content is string name
