@@ -1,0 +1,1 @@
+POSIX netinet/in.h and arpa/inet.h headers are unavailable to the MSVC oracle.

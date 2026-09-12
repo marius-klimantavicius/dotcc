@@ -244,7 +244,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         }
         var initialLine = Compiler.IsSyntheticHeaderContent(name, source)
             ? Ir.SrcPos.SyntheticLineBase : 1;
-        var sourceMap = new PhysicalSourceMap(source, initialLine, name);
+        var sourceMap = new PhysicalSourceMap(source, initialLine, name, identity: _files.SourceIdentity(name));
         // First-time include of this file: scan the source text for a
         // controlling header guard. Cache the result (or null) so the
         // detection cost is paid at most once per filename.
@@ -770,6 +770,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
 
     public IEnumerable<Item> Rewrite(Item token)
     {
+        token = SourcePacking.Stamp(token, _packing);
         if (CaptureRawMacroArguments) { return new[] { token }; }
         // Predefined identifiers come first — they shadow any same-named
         // user macro by C standard (which forbids redefining them anyway).
@@ -930,12 +931,17 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     public bool IsDefined(string name) => name != null && _macros.ContainsKey(name);
 
     /// <summary>
-    /// <c>#pragma</c> dispatcher. Currently only <c>#pragma once</c> is
-    /// honoured — the rest are silently ignored (matches the convention of
+    /// <c>#pragma</c> dispatcher. <c>once</c> and layout-affecting <c>pack</c>
+    /// are honoured — the rest are silently ignored (matches the convention of
     /// most compilers: unknown pragmas don't break the build).
     /// </summary>
     public IEnumerable<Item> OnPragma(IReadOnlyList<Item> args)
     {
+        if (args.Count > 0 && args[0].Content as string == "pack")
+        {
+            ApplyPackingPragma(args);
+            return Array.Empty<Item>();
+        }
         if (args.Count > 0 && args[0].Content is string s && s == "once")
         {
             // Remember the currently-being-processed file as include-once.

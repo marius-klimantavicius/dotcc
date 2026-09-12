@@ -12,12 +12,16 @@ internal sealed class LayoutField
     public string Name = "";
     public string Type = "";
     public int? BitWidth;
+    public int Alignment;
 }
 internal sealed class LayoutAggregate
 {
     public string Name = "";
     public bool Union;
     public bool Packed;
+    // C pragma-pack maximum member alignment. Distinct from Zig packed layout.
+    public int Pack;
+    public int Alignment;
     public readonly List<LayoutField> Fields = new List<LayoutField>();
 }
 internal sealed class LayoutInfo
@@ -77,13 +81,17 @@ internal sealed class OffsetLayoutModel
         try
         {
             var aggregate = resolve(name);
+            ValidateAlignment(aggregate.Alignment);
+            if (aggregate.Pack is not (0 or 1 or 2 or 4 or 8 or 16))
+                throw new OffsetLayoutException("Invalid pragma packing: " + aggregate.Pack);
+            foreach (var field in aggregate.Fields) ValidateAlignment(field.Alignment);
             if (!aggregate.Packed && aggregate.Fields.Any(field => field.BitWidth is not null))
             {
-                var bitLayout = UnpackedBitFields(aggregate);
+                var bitLayout = aggregate.Pack == 0 ? UnpackedBitFields(aggregate) : CPackedBitFields(aggregate);
                 cache.Add(name, bitLayout);
                 return bitLayout;
             }
-            var result = new LayoutInfo { Alignment = 1 };
+            var result = new LayoutInfo { Alignment = Math.Max(1, aggregate.Alignment) };
             var cursor = 0;
             var unitBytes = 0;
             var usedBits = 0;
@@ -91,7 +99,7 @@ internal sealed class OffsetLayoutModel
             {
                 var field = aggregate.Fields[fieldIndex];
                 var layout = Type(field.Type);
-                var alignment = aggregate.Packed ? 1 : layout.Alignment;
+                var alignment = MemberAlignment(aggregate, field, aggregate.Packed ? 1 : layout.Alignment);
                 if (field.BitWidth is int width)
                 {
                     if (width < 0 || width > checked(layout.Size * 8) || layout.Size > 8)
@@ -120,13 +128,14 @@ internal sealed class OffsetLayoutModel
     }
     private LayoutInfo UnpackedBitFields(LayoutAggregate aggregate)
     {
-        var result = new LayoutInfo { Alignment = 1 };
+        var result = new LayoutInfo { Alignment = Math.Max(1, aggregate.Alignment) };
         long bitCursor = 0;
         var ordinary = new List<(int Start, int End)>();
         for (var index = 0; index < aggregate.Fields.Count; index++)
         {
             var field = aggregate.Fields[index];
             var layout = Type(field.Type);
+            var alignment = Math.Max(field.Alignment, layout.Alignment);
             if (field.BitWidth is int width)
             {
                 var capacity = checked(layout.Size * 8);
@@ -139,7 +148,7 @@ internal sealed class OffsetLayoutModel
                 }
                 // Unnamed fields reserve bits, but do not impose their declared
                 // type's alignment on the aggregate in this GNU LP64 profile.
-                if (field.Name.Length != 0) result.Alignment = Math.Max(result.Alignment, layout.Alignment);
+                if (field.Name.Length != 0) result.Alignment = Math.Max(result.Alignment, alignment);
                 var start = aggregate.Union ? 0 : bitCursor;
                 if (start % capacity + width > capacity) start = RoundUpBits(start, checked(layout.Alignment * 8));
                 var unit = checked((int)((start / capacity) * layout.Size));
@@ -149,8 +158,8 @@ internal sealed class OffsetLayoutModel
             }
             else
             {
-                result.Alignment = Math.Max(result.Alignment, layout.Alignment);
-                var offset = aggregate.Union ? 0 : RoundUp(checked((int)((bitCursor + 7) / 8)), layout.Alignment);
+                result.Alignment = Math.Max(result.Alignment, alignment);
+                var offset = aggregate.Union ? 0 : RoundUp(checked((int)((bitCursor + 7) / 8)), alignment);
                 result.Offsets.Add(field.Name, offset);
                 if (layout.Size != 0)
                 {
@@ -196,6 +205,62 @@ internal sealed class OffsetLayoutModel
             }
         }
         return result;
+    }
+
+    private static int MemberAlignment(LayoutAggregate aggregate, LayoutField field, int natural)
+    {
+        int requested = Math.Max(field.Alignment, natural);
+        return aggregate.Pack == 0 ? requested : Math.Min(requested, aggregate.Pack);
+    }
+
+    private LayoutInfo CPackedBitFields(LayoutAggregate aggregate)
+    {
+        var result = new LayoutInfo { Alignment = Math.Max(1, aggregate.Alignment) };
+        long bitCursor = 0;
+        for (int index = 0; index < aggregate.Fields.Count; ++index)
+        {
+            var field = aggregate.Fields[index];
+            var layout = Type(field.Type);
+            int alignment = MemberAlignment(aggregate, field, layout.Alignment);
+            if (field.BitWidth is { } width)
+            {
+                if (width < 0 || width > checked(layout.Size * 8) || layout.Size > 8)
+                    throw new OffsetLayoutException("Invalid bit-field width: " + aggregate.Name + "." + field.Name);
+                if (width == 0)
+                {
+                    // GNU zero-width fields retain the declared type's natural
+                    // boundary even under pragma pack(1), without raising the
+                    // aggregate's own alignment.
+                    if (!aggregate.Union) bitCursor = RoundUpBits(bitCursor, checked(layout.Alignment * 8));
+                    continue;
+                }
+                if (field.Name.Length != 0) result.Alignment = Math.Max(result.Alignment, alignment);
+                long start = aggregate.Union ? 0 : bitCursor;
+                int offset = checked((int)(start / 8));
+                int bit = (int)(start % 8);
+                // Each field describes only the bytes containing its bits.
+                // Spans can overlap and a 64-bit field can occupy nine bytes;
+                // the backend's segmented accessor preserves neighboring bits.
+                result.BitFields.Add(index, (offset, (bit + width + 7) / 8, bit));
+                result.StorageOffsets.Add(index, offset);
+                bitCursor = aggregate.Union ? Math.Max(bitCursor, width) : checked(start + width);
+            }
+            else
+            {
+                result.Alignment = Math.Max(result.Alignment, alignment);
+                int offset = aggregate.Union ? 0 : RoundUp(checked((int)((bitCursor + 7) / 8)), alignment);
+                result.Offsets.Add(field.Name, offset);
+                if (layout.Size != 0) result.StorageOffsets.Add(index, offset);
+                bitCursor = aggregate.Union ? Math.Max(bitCursor, (long)layout.Size * 8) : ((long)offset + layout.Size) * 8;
+            }
+        }
+        result.Size = RoundUp(checked((int)((bitCursor + 7) / 8)), result.Alignment);
+        return result;
+    }
+    private static void ValidateAlignment(int alignment)
+    {
+        if (alignment < 0 || alignment > 128 || (alignment != 0 && (alignment & (alignment - 1)) != 0))
+            throw new OffsetLayoutException("Invalid requested alignment: " + alignment);
     }
     private static long RoundUpBits(long value, int alignment) => checked((value + alignment - 1) / alignment * alignment);
     public int Offset(string name, IReadOnlyList<string> path)
@@ -276,10 +341,10 @@ internal sealed class OffsetDocument
         foreach (var pair in Aggregates.OrderBy(p => p.Key, StringComparer.Ordinal))
         {
             var aggregate = pair.Value;
-            text.Append("aggregate\t").Append(Encode(aggregate.Name)).Append('\t').Append(aggregate.Union ? '1' : '0').Append('\t').Append(aggregate.Packed ? '1' : '0').Append('\n');
+            text.Append("aggregate\t").Append(Encode(aggregate.Name)).Append('\t').Append(aggregate.Union ? '1' : '0').Append('\t').Append(aggregate.Packed ? '1' : '0').Append('\t').Append(aggregate.Alignment).Append('\t').Append(aggregate.Pack).Append('\n');
             foreach (var field in aggregate.Fields)
                 text.Append("field\t").Append(Encode(field.Name)).Append('\t').Append(Encode(field.Type)).Append('\t')
-                    .Append(field.BitWidth?.ToString(CultureInfo.InvariantCulture) ?? "-").Append('\n');
+                    .Append(field.BitWidth?.ToString(CultureInfo.InvariantCulture) ?? "-").Append('\t').Append(field.Alignment).Append('\n');
         }
         foreach (var request in Requests.OrderBy(r => r.Name, StringComparer.Ordinal))
             text.Append("request\t").Append(request.Name).Append('\t').Append(Encode(request.Aggregate)).Append('\t')
@@ -305,11 +370,11 @@ internal sealed class OffsetDocument
                 var fields = line.Split('\t');
                 switch (fields[0])
                 {
-                    case "aggregate" when fields.Length == 4:
-                        aggregate = new LayoutAggregate { Name = Decode(fields[1]), Union = fields[2] == "1", Packed = fields[3] == "1" };
+                    case "aggregate" when fields.Length is 4 or 5 or 6:
+                        aggregate = new LayoutAggregate { Name = Decode(fields[1]), Union = fields[2] == "1", Packed = fields[3] == "1", Alignment = fields.Length >= 5 ? int.Parse(fields[4], CultureInfo.InvariantCulture) : 0, Pack = fields.Length == 6 ? int.Parse(fields[5], CultureInfo.InvariantCulture) : 0 };
                         document.Aggregates.Add(aggregate.Name, aggregate); break;
-                    case "field" when fields.Length == 4 && aggregate != null:
-                        aggregate.Fields.Add(new LayoutField { Name = Decode(fields[1]), Type = Decode(fields[2]), BitWidth = fields[3] == "-" ? (int?)null : int.Parse(fields[3], CultureInfo.InvariantCulture) }); break;
+                    case "field" when (fields.Length is 4 or 5) && aggregate != null:
+                        aggregate.Fields.Add(new LayoutField { Name = Decode(fields[1]), Type = Decode(fields[2]), BitWidth = fields[3] == "-" ? (int?)null : int.Parse(fields[3], CultureInfo.InvariantCulture), Alignment = fields.Length == 5 ? int.Parse(fields[4], CultureInfo.InvariantCulture) : 0 }); break;
                     case "request" when fields.Length == 5:
                         if (!fields[1].StartsWith("__DotccOffset_", StringComparison.Ordinal) || fields[1].Any(c => !char.IsLetterOrDigit(c) && c != '_'))
                             throw new OffsetLayoutException("Invalid offset declaration name");

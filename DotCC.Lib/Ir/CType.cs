@@ -148,6 +148,10 @@ public abstract record CType
         /// <see cref="Describe"/> / <see cref="Unqualified"/>).</summary>
         public bool IsNativeCallConv { get; init; }
 
+        /// <summary>A function typedef before parameter or pointer decay. A bare
+        /// declaration of this type declares a function, never callback storage.</summary>
+        public bool IsFunctionType { get; init; }
+
         /// <summary>Equality excludes <see cref="IsNativeCallConv"/> (a .NET ABI
         /// annotation, not C type identity) and otherwise replicates the synthesized
         /// record behavior this replaces: <see cref="Params"/> compares structurally
@@ -157,11 +161,12 @@ public abstract record CType
         public bool Equals(Func? other) =>
             other is not null
             && Quals == other.Quals
+            && IsFunctionType == other.IsFunctionType
             && Variadic == other.Variadic
             && EqualityComparer<IReadOnlyList<CType>>.Default.Equals(Params, other.Params)
             && EqualityComparer<CType>.Default.Equals(Return, other.Return);
 
-        public override int GetHashCode() => HashCode.Combine(Quals, Variadic, Return);
+        public override int GetHashCode() => HashCode.Combine(Quals, Variadic, Return, IsFunctionType);
     }
 
     /// <summary>A named type the IR doesn't model structurally yet (a typedef

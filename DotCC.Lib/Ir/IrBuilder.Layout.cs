@@ -6,10 +6,13 @@ namespace DotCC.Ir;
 
 internal sealed partial class IrBuilder
 {
+    private readonly System.Collections.Generic.Dictionary<string, int> _structPacks = new(StringComparer.Ordinal);
+    private readonly System.Collections.Generic.Dictionary<string, int> _structAlignments = new(StringComparer.Ordinal);
     private readonly System.Collections.Generic.Dictionary<string, OffsetRequest> _constantOffsetRequests = new(StringComparer.Ordinal);
-    private static string LayoutType(CType type) => type.Unqualified switch
+    internal static string LayoutType(CType type) => type.Unqualified switch
     {
         CType.Prim primitive => $"p:{primitive.Bytes}:{primitive.Bytes}",
+        CType.Func { IsFunctionType: true } => "unsupported:function-type",
         CType.Pointer or CType.Func => "p:8:8",
         CType.Enum enumeration => LayoutType(enumeration.Underlying),
         CType.Array array => "a:" + (array.Count ?? 0).ToString(CultureInfo.InvariantCulture) + ":" + LayoutType(array.Element),
@@ -27,10 +30,10 @@ internal sealed partial class IrBuilder
             throw new OffsetLayoutException("Unknown or incomplete aggregate: " + name);
         var aggregate = new LayoutAggregate
         {
-            Name = name, Union = _structIsUnion.GetValueOrDefault(name), Packed = _packedStructs.Contains(name),
+            Name = name, Union = _structIsUnion.GetValueOrDefault(name), Packed = _packedStructs.Contains(name), Alignment = _structAlignments.GetValueOrDefault(name), Pack = _structPacks.GetValueOrDefault(name),
         };
         foreach (var field in fields)
-            aggregate.Fields.Add(new LayoutField { Name = field.Name, Type = LayoutType(field.Type), BitWidth = field.BitWidth });
+            aggregate.Fields.Add(new LayoutField { Name = field.Name, Type = LayoutType(field.Type), BitWidth = field.BitWidth, Alignment = field.Alignment });
         return aggregate;
     }
 

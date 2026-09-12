@@ -10,7 +10,7 @@ namespace DotCC.Libc;
 /// Seq-cst atomic primitives backing C11 <c>_Atomic</c> and <c>&lt;stdatomic.h&gt;</c>.
 /// C11 atomic operations default to <c>memory_order_seq_cst</c>; these use
 /// <see cref="Interlocked"/> (full fences) on a SAME-WIDTH integer reinterpretation
-/// of the location, so any 4- or 8-byte unmanaged scalar — <c>int</c>/<c>uint</c>/
+/// of the location, so any 1-, 2-, 4-, or 8-byte unmanaged scalar — <c>int</c>/<c>uint</c>/
 /// <c>long</c>/<c>ulong</c>/<c>nint</c>/<c>nuint</c>/<c>float</c>/<c>double</c> —
 /// is covered by one generic implementation. The compare-and-swap loops do the
 /// arithmetic/bitwise step in the value type's own space (<see cref="INumber{T}"/> /
@@ -18,9 +18,10 @@ namespace DotCC.Libc;
 /// <c>float</c>/<c>double</c> (and <c>±0</c>/<c>NaN</c>) behave correctly.
 /// </summary>
 /// <remarks>
-/// dotcc only routes ELIGIBLE scalars here (the 4-/8-byte set above): a 1-/2-byte
-/// atomic (<c>_Atomic char</c>) would over-read on reinterpretation, and a pointer
-/// type can't be a generic argument — those fall back to a plain access (documented).
+/// Every access uses a same-width Interlocked overload. Pointer callers must
+/// reinterpret pointer storage as nint because pointers cannot be generic type
+/// arguments. The C11 frontend retains its documented eligibility rules; GNU
+/// builtins also route narrow integer objects through these same primitives.
 /// Fence note (same as <c>volatile</c>): on .NET these are full barriers, which is
 /// at least as strong as C11 seq-cst requires.
 /// <para>
@@ -31,71 +32,96 @@ namespace DotCC.Libc;
 /// </remarks>
 public static class Atomic
 {
-    // ---- load / store / exchange (4- or 8-byte reinterpretation) ----------
+    // ---- same-width load / store / exchange / compare-exchange -------------
 
-    public static unsafe T Load<T>(ref T loc) where T : unmanaged
-    {
-        if (sizeof(T) == 8)
-        {
-            long bits = Interlocked.Read(ref Unsafe.As<T, long>(ref loc));
-            return Unsafe.As<long, T>(ref bits);
-        }
-        // 4-byte: a CAS against 0 is a full-fence atomic read (writes the same
-        // bits only if already 0). There is no Interlocked.Read(ref int).
-        int b = Interlocked.CompareExchange(ref Unsafe.As<T, int>(ref loc), 0, 0);
-        return Unsafe.As<int, T>(ref b);
-    }
+    public static T Load<T>(ref T loc) where T : unmanaged =>
+        ValueCompareExchange(ref loc, default, default);
 
-    // Returns the stored value, so the C assignment expression `x = v` yields `v`.
-    public static unsafe T Store<T>(ref T loc, T value) where T : unmanaged
+    // Returns the stored value, so the C assignment expression x = v yields v.
+    public static T Store<T>(ref T loc, T value) where T : unmanaged
     {
-        if (sizeof(T) == 8) { Interlocked.Exchange(ref Unsafe.As<T, long>(ref loc), Unsafe.As<T, long>(ref value)); }
-        else { Interlocked.Exchange(ref Unsafe.As<T, int>(ref loc), Unsafe.As<T, int>(ref value)); }
+        Exchange(ref loc, value);
         return value;
     }
 
-    // Atomically replace and return the OLD value (C11 atomic_exchange).
-    public static unsafe T Exchange<T>(ref T loc, T value) where T : unmanaged
+    public static T Exchange<T>(ref T loc, T value) where T : unmanaged
     {
-        if (sizeof(T) == 8)
+        if (Unsafe.SizeOf<T>() == 1)
+        {
+            byte old = Interlocked.Exchange(ref Unsafe.As<T, byte>(ref loc), Unsafe.As<T, byte>(ref value));
+            return Unsafe.As<byte, T>(ref old);
+        }
+        if (Unsafe.SizeOf<T>() == 2)
+        {
+            short old = Interlocked.Exchange(ref Unsafe.As<T, short>(ref loc), Unsafe.As<T, short>(ref value));
+            return Unsafe.As<short, T>(ref old);
+        }
+        if (Unsafe.SizeOf<T>() == 4)
+        {
+            int old = Interlocked.Exchange(ref Unsafe.As<T, int>(ref loc), Unsafe.As<T, int>(ref value));
+            return Unsafe.As<int, T>(ref old);
+        }
+        if (Unsafe.SizeOf<T>() == 8)
         {
             long old = Interlocked.Exchange(ref Unsafe.As<T, long>(ref loc), Unsafe.As<T, long>(ref value));
             return Unsafe.As<long, T>(ref old);
         }
-        int o = Interlocked.Exchange(ref Unsafe.As<T, int>(ref loc), Unsafe.As<T, int>(ref value));
-        return Unsafe.As<int, T>(ref o);
+        throw new System.NotSupportedException("Atomic objects must be 1, 2, 4, or 8 bytes");
     }
 
-    // Raw CAS: write `desired` iff the location's bits equal `comparand`'s; returns
-    // whether it succeeded (bit comparison — correct for float ±0 / NaN).
-    private static unsafe bool TryCas<T>(ref T loc, T desired, T comparand) where T : unmanaged
+    /// <summary>The value observed by the single CAS operation, whether or not
+    /// the comparison succeeded. No second load can race with this observation.</summary>
+    public static T ValueCompareExchange<T>(ref T loc, T desired, T comparand) where T : unmanaged
     {
-        if (sizeof(T) == 8)
+        if (Unsafe.SizeOf<T>() == 1)
         {
-            long c = Unsafe.As<T, long>(ref comparand);
-            return Interlocked.CompareExchange(ref Unsafe.As<T, long>(ref loc), Unsafe.As<T, long>(ref desired), c) == c;
+            byte old = Interlocked.CompareExchange(ref Unsafe.As<T, byte>(ref loc),
+                Unsafe.As<T, byte>(ref desired), Unsafe.As<T, byte>(ref comparand));
+            return Unsafe.As<byte, T>(ref old);
         }
-        int c4 = Unsafe.As<T, int>(ref comparand);
-        return Interlocked.CompareExchange(ref Unsafe.As<T, int>(ref loc), Unsafe.As<T, int>(ref desired), c4) == c4;
+        if (Unsafe.SizeOf<T>() == 2)
+        {
+            short old = Interlocked.CompareExchange(ref Unsafe.As<T, short>(ref loc),
+                Unsafe.As<T, short>(ref desired), Unsafe.As<T, short>(ref comparand));
+            return Unsafe.As<short, T>(ref old);
+        }
+        if (Unsafe.SizeOf<T>() == 4)
+        {
+            int old = Interlocked.CompareExchange(ref Unsafe.As<T, int>(ref loc),
+                Unsafe.As<T, int>(ref desired), Unsafe.As<T, int>(ref comparand));
+            return Unsafe.As<int, T>(ref old);
+        }
+        if (Unsafe.SizeOf<T>() == 8)
+        {
+            long old = Interlocked.CompareExchange(ref Unsafe.As<T, long>(ref loc),
+                Unsafe.As<T, long>(ref desired), Unsafe.As<T, long>(ref comparand));
+            return Unsafe.As<long, T>(ref old);
+        }
+        throw new System.NotSupportedException("Atomic objects must be 1, 2, 4, or 8 bytes");
     }
 
-    private static unsafe bool BitsEqual<T>(T a, T b) where T : unmanaged =>
-        sizeof(T) == 8
-            ? Unsafe.As<T, long>(ref a) == Unsafe.As<T, long>(ref b)
-            : Unsafe.As<T, int>(ref a) == Unsafe.As<T, int>(ref b);
+    private static bool BitsEqual<T>(T a, T b) where T : unmanaged => Unsafe.SizeOf<T>() switch
+    {
+        1 => Unsafe.As<T, byte>(ref a) == Unsafe.As<T, byte>(ref b),
+        2 => Unsafe.As<T, short>(ref a) == Unsafe.As<T, short>(ref b),
+        4 => Unsafe.As<T, int>(ref a) == Unsafe.As<T, int>(ref b),
+        8 => Unsafe.As<T, long>(ref a) == Unsafe.As<T, long>(ref b),
+        _ => throw new System.NotSupportedException("Atomic objects must be 1, 2, 4, or 8 bytes"),
+    };
 
-    /// <summary>
-    /// C11 <c>atomic_compare_exchange_strong</c>: if <paramref name="loc"/> holds
-    /// <paramref name="expected"/>, store <paramref name="desired"/> and return
-    /// true; otherwise load the actual value into <paramref name="expected"/> and
-    /// return false. (No spurious failures — <see cref="Interlocked"/> CAS is
-    /// strong; the C11 _weak form maps to the same primitive.)
-    /// </summary>
+    public static bool CompareExchangeMatches<T>(ref T loc, T desired, T comparand) where T : unmanaged =>
+        BitsEqual(ValueCompareExchange(ref loc, desired, comparand), comparand);
+
+    private static bool TryCas<T>(ref T loc, T desired, T comparand) where T : unmanaged =>
+        CompareExchangeMatches(ref loc, desired, comparand);
+
+    /// <summary>C11 strong CAS; a failure writes the value observed by the CAS
+    /// to expected. Weak CAS may use the same non-spurious implementation.</summary>
     public static bool CompareExchange<T>(ref T loc, ref T expected, T desired) where T : unmanaged
     {
-        // The CAS is the single atomic step; on failure, report the actual value.
-        if (TryCas(ref loc, desired, expected)) { return true; }
-        expected = Load(ref loc);
+        T observed = ValueCompareExchange(ref loc, desired, expected);
+        if (BitsEqual(observed, expected)) return true;
+        expected = observed;
         return false;
     }
 

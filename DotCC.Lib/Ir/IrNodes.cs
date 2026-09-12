@@ -614,7 +614,7 @@ public enum AggregateLayout { Default, Sequential, Packed }
 /// builder's struct table so member access resolves a field's type.
 /// <see cref="Layout"/> drives an optional <c>[StructLayout]</c> attribute for a
 /// non-union aggregate (Zig <c>extern</c>/<c>packed struct</c>).</summary>
-public sealed record StructTypeDef(string Name, IReadOnlyList<StructField> Fields, bool IsUnion, AggregateLayout Layout = AggregateLayout.Default);
+public sealed record StructTypeDef(string Name, IReadOnlyList<StructField> Fields, bool IsUnion, AggregateLayout Layout = AggregateLayout.Default, int Alignment = 0, int Pack = 0, bool IsIncomplete = false);
 
 /// <summary>One field of a <see cref="StructTypeDef"/>. <see cref="BitWidth"/> is
 /// <c>null</c> for a normal field, or the declared width of a bit-field —
@@ -625,7 +625,7 @@ public sealed record StructTypeDef(string Name, IReadOnlyList<StructField> Field
 /// (MSVC storage-unit layout) + masked/sign-extended accessor properties — so
 /// <c>sizeof</c> and member offsets match C's layout while reads/writes keep C's
 /// exact value semantics (modular truncation, signed sign-extension).</summary>
-public readonly record struct StructField(string Name, CType Type, int? BitWidth = null)
+public readonly record struct StructField(string Name, CType Type, int? BitWidth = null, int Alignment = 0)
 {
     /// <summary>True for any bit-field — named, anonymous, or zero-width.</summary>
     public bool IsBitField => BitWidth is not null;

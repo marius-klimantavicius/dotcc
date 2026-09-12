@@ -31,15 +31,69 @@ Bird's-eye scorecard — the detailed per-area tables below are the source of tr
 | **Types** | ✅ Near-complete | `int`…`long long`, `float`/`double`/`long double`, `_Complex`, `_Float128`, pointers, arrays (multi-dim, decay, ptr-to-array), `struct`/`union`/`enum`/`typedef`, function pointers, `const`/`volatile`/`restrict`, `sizeof(type)` + `sizeof expr`, bit-fields (GNU LP64 containing units, mixed-width and ordinary-member sharing), compound literals (struct/scalar/array, any position) | 🚫 VLAs · ❌ `_BitInt(N)`, `_Decimal32/64/128` (nice-to-have) |
 | **Operators** | ✅ Complete | all arithmetic / relational / logical / bitwise / assignment / compound-assignment, `++`/`--`, ternary, comma, `sizeof`, `_Alignof` (folds to a constant), `_Generic` (compile-time type selection), cast, call, `.`/`->`, subscript | — |
 | **Statements** | ✅ Complete | `if`/`else`, `switch`/`case`, `while`, `do`/`while`, `for` (all clauses optional), `break`, `continue`, `return`, `goto`+labels, blocks (with shadow-renaming), empty stmt | — |
-| **Declarations** | ✅ Near-complete | function defs + prototypes, **parenthesized declarator names (`T (name)(args)`)**, **variadic functions (`...` + `<stdarg.h>`)**, multi-declarators, **file-scope arrays** (sized / implicit / multi-dim / char-from-string / extern), initializer lists (positional / designated / empty / nested), `inline`, `_Noreturn`, `_Alignas` (constraint-checked, then ignored), `[[attributes]]` (`noreturn`/`deprecated` lowered to `[DoesNotReturn]`/`[Obsolete]`, `nodiscard` warns on a discarded result, the rest ignored), `static`/`extern`/`auto`, `_Thread_local` (→ `[ThreadStatic]`, zero-init file-scope), `constexpr` (integer objects — folded into every ICE position), mixed decls-and-statements | 🟡 `register` parameter/array forms |
+| **Declarations** | ✅ Near-complete | function defs + prototypes, **parenthesized declarator names (`T (name)(args)`)**, **variadic functions (`...` + `<stdarg.h>`)**, multi-declarators, **file-scope arrays** (sized / implicit / multi-dim / char-from-string / extern), initializer lists (positional / designated / empty / nested), `inline`, `_Noreturn`, `_Alignas` (aligned automatic/static scalar and array storage; see limits below), `[[attributes]]` (`noreturn`/`deprecated` lowered to `[DoesNotReturn]`/`[Obsolete]`, `nodiscard` warns on a discarded result, the rest ignored), `static`/`extern`/`auto`, `_Thread_local` (→ `[ThreadStatic]`, zero-init file-scope), `constexpr` (integer objects — folded into every ICE position), mixed decls-and-statements | 🟡 `register` parameter/array forms |
 | **Preprocessor** | ✅ Near-complete | `#include` (both forms), **`#embed`** (C23, both forms + `limit`/`if_empty`), **`__has_embed`/`__has_include`**, object + function-like macros (`##`, `#`, variadic + `__VA_OPT__` C23), full `#if` constant-expr eval, `#ifdef`/`#else`/`#elif`/`#endif`, `#elifdef`/`#elifndef` (C23), `#error`/`#warning`, `__FILE__`/`__LINE__`/`__func__`, multiple-include optimization | 🟡 `#pragma` (only `once`), `#line` (renumbers `__LINE__`/`__FILE__`; diagnostics still physical) |
 | **libc (33 headers)** | ✅ Near-complete | stdio (incl. real `FILE*` file I/O + `off_t` + `fileno`), stdlib, string (+ POSIX `strcasecmp`/`strncasecmp`), math + tgmath, ctype, time (scalar + `struct tm` calendar + `_r`), errno, assert, complex, inttypes, iso646, stdint, limits, float, stddef (NULL/size_t/ptrdiff_t), stdbool, stdalign, stdnoreturn, **stdarg**, **threads** (full C11: threads / mutexes / condition variables / thread-specific storage / `call_once`), **locale** ("C"-locale shim), **unistd** (POSIX: `usleep`/`isatty`/`close`/`read`/`write` faithful; `select` surface compiles, throws at runtime), **POSIX headers** `fcntl.h` / `poll.h` / `sys/types.h` / `sys/stat.h` / `sys/time.h` / `sys/select.h` / `sys/socket.h` / `sys/un.h` (AF_UNIX) / **`dlfcn.h`** (`dlopen`/`dlsym`/`dlclose`/`dlerror` over .NET `NativeLibrary`; see the POSIX section) | 🟡 setjmp (`if`/`if-else` guard **+ value-capture**: `switch (setjmp(env))`, `int r = setjmp(env)` → `switch`/`if` on `r`; strays rejected loudly) · ✅ signal (SIGINT via `Console.CancelKeyPress`, abstract fn-ptr casts in `SIG_DFL`/`SIG_IGN`) · ✅ dynamic `-lfoo`/`-L` *import mode* (implicit linker-style binding of a TU's undefined prototypes to a native lib, GOT-style over `NativeLibrary`) + static `.a`/`.lib` archives (`[DllImport]` + `<DirectPInvoke>`, NativeAOT-publish-only) · 🚫 Annex K |
 
-**C11 / C23 specifically** — ✅ done: `_Bool`/`bool`, `true`/`false`/`nullptr`, `typeof`, `auto` inference, `_Generic` (compile-time type selection), `_Atomic` + full `<stdatomic.h>`, `_Float128`, empty initializer `{}`, anonymous struct/union members, `_Noreturn`, binary + digit-separator literals, `_Static_assert`/`static_assert` (evaluated at compile time — failing/non-constant = error), `_Alignof`/`alignof` (folds to the layout model's constant) + `_Alignas`/`alignas` (constraint-checked, then ignored) with `<stdalign.h>`, full `<threads.h>` (threads / mutexes / condition variables / thread-specific storage / `call_once`); 🟡 partial: `[[attributes]]` (decl-leading, statement-leading — `[[noreturn]]` → `[DoesNotReturn]`, `[[deprecated]]` → `[Obsolete]`, `[[nodiscard]]` warns on a discarded result, `[[fallthrough]];` suppresses the opt-in `-Wimplicit-fallthrough` warning, `[[maybe_unused]]` on a block-scope local → a scoped `#pragma warning disable/restore CS0168, CS0219` so the emitted C# doesn't warn if it stays unused; the C23 purity hints `[[unsequenced]]`/`[[reproducible]]` and vendor `gnu::…` attrs are recognized-but-inert — no teeth-bearing .NET counterpart, and mapping to the vestigial `[Pure]` would be cosmetic). ✅ `#embed` (file-bytes embed) + `__has_embed`/`__has_include` + `#elifdef`/`#elifndef` + `__VA_OPT__`. ✅ `_Thread_local`/`thread_local` (→ `[ThreadStatic]`, zero-init file-scope; Zig `threadlocal` twofer). ✅ `constexpr` (integer objects — the completion milestone's last part; folded into every ICE position). ✅ `unreachable()` (C23 UB marker → a defined loud throw; statement-position calls lower to a real `throw`). ✅ the full encoding-prefix literal cluster: `char8_t`/`u8"…"` → `byte`, `char16_t`/`wchar_t`/`u"…"`/`L"…"` → `char`, `char32_t`/`U"…"` → `uint`. **The C11/C23 roadmap column is now empty** — every remaining item is nice-to-have or out of scope: ❌ nice-to-have (unscheduled, demand-driven): `_BitInt(N)`, `_Decimal32/64/128`, the multibyte↔wide conversion functions. 🚫 truly out of scope: trigraphs/digraphs (plus, C99-side, VLAs; and Annex K).
+**C11 / C23 specifically** — ✅ done: `_Bool`/`bool`, `true`/`false`/`nullptr`, `typeof`, `auto` inference, `_Generic` (compile-time type selection), `_Atomic` + full `<stdatomic.h>`, `_Float128`, empty initializer `{}`, anonymous struct/union members, `_Noreturn`, binary + digit-separator literals, `_Static_assert`/`static_assert` (evaluated at compile time — failing/non-constant = error), `_Alignof`/`alignof` (folds to the layout model's constant) + `_Alignas`/`alignas` (aligned automatic/static storage; see limits below) with `<stdalign.h>`, full `<threads.h>` (threads / mutexes / condition variables / thread-specific storage / `call_once`); 🟡 partial: `[[attributes]]` (decl-leading, statement-leading — `[[noreturn]]` → `[DoesNotReturn]`, `[[deprecated]]` → `[Obsolete]`, `[[nodiscard]]` warns on a discarded result, `[[fallthrough]];` suppresses the opt-in `-Wimplicit-fallthrough` warning, `[[maybe_unused]]` on a block-scope local → a scoped `#pragma warning disable/restore CS0168, CS0219` so the emitted C# doesn't warn if it stays unused; the C23 purity hints `[[unsequenced]]`/`[[reproducible]]` and vendor `gnu::…` attrs are recognized-but-inert — no teeth-bearing .NET counterpart, and mapping to the vestigial `[Pure]` would be cosmetic). ✅ `#embed` (file-bytes embed) + `__has_embed`/`__has_include` + `#elifdef`/`#elifndef` + `__VA_OPT__`. ✅ `_Thread_local`/`thread_local` (→ `[ThreadStatic]`, zero-init file-scope; Zig `threadlocal` twofer). ✅ `constexpr` (integer objects — the completion milestone's last part; folded into every ICE position). ✅ `unreachable()` (C23 UB marker → a defined loud throw; statement-position calls lower to a real `throw`). ✅ the full encoding-prefix literal cluster: `char8_t`/`u8"…"` → `byte`, `char16_t`/`wchar_t`/`u"…"`/`L"…"` → `char`, `char32_t`/`U"…"` → `uint`. **The C11/C23 roadmap column is now empty** — every remaining item is nice-to-have or out of scope: ❌ nice-to-have (unscheduled, demand-driven): `_BitInt(N)`, `_Decimal32/64/128`, the multibyte↔wide conversion functions. 🚫 truly out of scope: trigraphs/digraphs (plus, C99-side, VLAs; and Annex K).
 
 🟡 entries in the last column are **implemented but partial** — they work for the common case and fail loudly outside it (see the per-area table for the caveat); they are *not* missing. E.g. `setjmp`/`longjmp` handles the standard `if (setjmp(env)) …` idiom (and multi-frame unwind) AND value-capture (`switch (setjmp(env))`, `int r = setjmp(env)` dispatched by `switch`/`if`), just not setjmp buried in a loop/ternary condition or a nested sub-expression (those are rejected loudly).
 
 **No known silent miscompiles** — every gap fails loudly at parse/lex time, and `-pedantic` turns dialect violations into diagnostics.
+
+### Additional declaration and preprocessing coverage
+
+`#pragma pack` supports reset, caps 0/1/2/4/8/16, and push/pop with optional
+labels/caps. State follows includes and macro-generated aggregate declarations.
+The structural C packing cap clamps member alignment and supports bitfields that
+cross declared units, including nine-byte spans for a 64-bit field. Zero-width
+bitfields retain their natural alignment boundary. Packing metadata survives
+object serialization. Pack changes between members of one aggregate explicitly
+fail until per-member caps are implemented; Zig packed-struct semantics remain
+separate. GCC-derived byte/layout fixtures validate the supported forms.
+
+Function-type typedefs support both `typedef int Callback(int)` and parenthesized
+names, declarations through those aliases, and pointer/parameter decay. Empty
+file-scope declarations are accepted. GNU function attribute lists support
+`noreturn`; `noinline`, `always_inline`, and `no_instrument_function` are recognized
+as inert optimization hints. MS typedef/tag anonymous aggregate members preserve
+hidden storage and recursively promote nested fields, including bitfields.
+Designated aggregate initialization resolves those promoted members into their
+actual nested storage, merges sibling members and inline arrays, and replaces
+prior active union initialization when a later designator selects another member.
+Separate-object linking records structural aggregate metadata, selects complete
+definitions over opaque declarations independent of object order, and rejects
+incompatible complete definitions. Anonymous object types use resolved source
+identity and physical declaration locations so shared headers agree across
+translation units and private definitions remain distinct. Older objects without
+aggregate metadata must be regenerated when mixed with these definitions.
+
+Ordinary multichar integer constants accept ASCII source characters and
+byte-valued escapes, packed in source order into the signed low 32 bits (GCC
+policy). Non-ASCII multichar source spelling is rejected. Include discovery is
+independent of file suffix and retains lazy loading. GNU `, ##__VA_ARGS__` handles
+present arguments without corrupting nested argument boundaries; only an omitted
+variadic tail removes the comma, while an explicitly empty argument retains it.
+
+Requested member and tagged-aggregate GNU `aligned(N)` alignment is part of the
+structural layout model. Generated automatic/static objects and arrays use actual
+aligned storage, including by-value parameter copies; nested offsets and array
+strides match native layout. Direct consumer-owned CLR arrays of generated structs
+are outside that allocation guarantee. Aligned thread-local objects and over-aligned pointer-element global arrays
+currently diagnose unsupported storage forms; non-hoistable aligned array
+compound-literal contexts also fail explicitly. Reduced GCC fixtures check
+addresses and values under JIT and NativeAOT, not merely emitted size constants.
+
+GNU C# intrinsic lowering supports `__builtin_bswap16/32/64`, `__sync` old/new-value
+add/sub/and/or/xor families, value/bool CAS, lock test-and-set/release and synchronize;
+`__atomic_load_n/store_n/exchange_n/compare_exchange_n` and matching fetch families
+support 1/2/4/8-byte integers and pointers. Pointer RMW uses byte arithmetic.
+`_Bool` supports nonarithmetic atomic operations. These operations use conservative
+sequential consistency; valid dynamic order expressions evaluate once. Invalid
+constant orders diagnose during binding; dynamic invalid orders fail before
+accessing storage. Unknown atomic builtins fail explicitly. The existing C11
+narrow-type frontend eligibility is unchanged. Narrow runtime operations use
+same-width Interlocked primitives without reading adjacent objects.
 
 ## Lexical
 
@@ -281,6 +335,7 @@ Synthetic header at `DotCC.Lib/include/string.h` declares const-qualified read-o
 | Function | Status | Notes |
 |---|---|---|
 | `strlen` | ✅ | Pointer loop; declared in `<string.h>`. Legacy `int` return; strings longer than `int.MaxValue` are unsupported. A complete `size_t` return migration remains separate from count-parameter support. |
+| `strnlen` | ✅ | POSIX bounded byte-string length with LP64 `size_t` bound and return. Reads at most the bound, stops at NUL, and accepts a large bound for a short terminated string without narrowing it. Fixture `strnlen-bounded/` matches native C for unterminated storage, embedded NUL and a bound larger than 32 bits. |
 | `strcmp` | ✅ | Pointer loop; declared in `<string.h>`. |
 | `strncmp` | ✅ | Bounded `strcmp`; stops at a mismatch or shared NUL within `n`. |
 | `strcoll` | ✅ | Locale-aware compare; dotcc runs the "C" locale (byte order), so it's exactly `strcmp`. Used by Lua's `lvm.c` string ordering. |
@@ -415,7 +470,7 @@ Synthetic header + implementations in `DotCC.Libc/CTypeLib.cs`. All predicates i
 |---|---|---|
 Scalar surface in `DotCC.Libc/TimeLib.cs` (`time_t`/`clock_t` → C# `long` via header typedefs); the `struct tm` calendar family in `CalendarLib.cs`. Fixtures `time-basic/` (deterministic difftime/monotonicity) and `time-calendar/` (gmtime → strftime/asctime, both oracles); `LibcTimeInttypesTests.cs` + `LibcCalendarTests.cs`.
 
-**`struct tm`.** No special mechanism was needed: C spells the type `struct tm`, which dotcc already parses via the `struct ID` rule (`typeStruct`) and emits as the bare tag `tm`, resolving to the runtime `Libc.tm` through `using static Libc;` — exactly like a user struct. `tm` is **not** seeded in `PredefinedTypeNames` (that would make it a `TYPE_NAME` and break the `struct`-keyword parse), and the synthetic header **doesn't** define the body (that would emit a second, colliding `tm`). All-`int` fields keep `tm` unmanaged, so `struct tm *` stays a real pointer. The earlier "struct-tag seeding" worry was unfounded.
+**Runtime aggregates.** Bundled `<time.h>` and `<locale.h>` declarations identify the runtime-owned `tm`, `timespec` and `lconv` types. The compiler records their LP64 fields for positional/designated initializers, compound literals, arrays, member typing, and layout operations; it emits no duplicate struct bodies. The generated names resolve to `Libc` types through `using static Libc;`. Runtime `tm` includes the calendar fields plus `long tm_gmtoff` and `char *tm_zone`; `timespec` contains two 64-bit fields. These are dotcc runtime contracts, not portable native-library ABIs. User tags without the bundled headers remain ordinary C aggregates. Fixture `runtime-aggregate-initializers/` checks initialization, 64-bit values, field offsets and actual storage against native LP64 C.
 
 | Function | Status | Notes |
 |---|---|---|

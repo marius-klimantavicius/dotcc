@@ -27,6 +27,7 @@ public static partial class Compiler
     private const string FragMain   = "//!!dotcc-obj main:";
     private const string FragMainVoid = "//!!dotcc-obj main-void:"; // 1 when main returns void
     private const string FragMainErr = "//!!dotcc-obj main-err:";   // v|i when main returns `!void`|`!<int>`
+    private const string FragAggregate = "//!!dotcc-obj aggregate:";
     private const string FragType   = "//!!dotcc-obj type:";
     private const string NamespaceNeutral = "//!!dotcc-obj namespace-neutral:1";
     private const string FragFunction = "//!!dotcc-obj function:";
@@ -60,7 +61,7 @@ public static partial class Compiler
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, string globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 1 — link with `dotcc <objs> -o <out>`.\n");
@@ -75,6 +76,11 @@ public static partial class Compiler
         // unmanaged[Cdecl]<int, int>`) — is everything after the first space.
         foreach (var (name, ft) in importSpecs) { sb.Append(FragImport).Append(name).Append(' ').Append(ft).Append('\n'); }
         foreach (var d in defNames) { sb.Append(FragDef).Append(d).Append('\n'); }
+        if (aggregateMetadata != null)
+            foreach (var (name, metadata) in aggregateMetadata)
+                sb.Append(FragAggregate).Append(name).Append(' ')
+                    .Append(metadata.IsIncomplete ? '1' : '0').Append(' ')
+                    .Append(metadata.IsUnion ? '1' : '0').Append(' ').Append(metadata.Signature).Append('\n');
         // Types are tagged by name so the link step can union them across TUs.
         foreach (var (name, text) in typeDecls)
         {
@@ -113,8 +119,10 @@ public static partial class Compiler
         var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
             throw new CompileException("managed-library output does not support native import or archive bindings");
-        var typeByName = new Dictionary<string, string>(StringComparer.Ordinal); // first wins
+        var typeByName = new Dictionary<string, string>(StringComparer.Ordinal);
         var typeOrder = new List<string>();
+        var aggregateByName = new Dictionary<string, ObjectAggregateMetadata>(StringComparer.Ordinal);
+        var typeOrigins = new Dictionary<string, string>(StringComparer.Ordinal);
         var aliasLines = new List<string>();
         var aliasSeen = new HashSet<string>(StringComparer.Ordinal);
         var globalLines = new List<string>();
@@ -147,6 +155,16 @@ public static partial class Compiler
             var profileLine = text.Split('\n').FirstOrDefault(l => l.StartsWith("//!!dotcc-obj override-profile:", StringComparison.Ordinal));
             CPreprocessingOptions.WriteEvent(overrideReport, "object-profile", ("path", path),
                 ("profile", profileLine?["//!!dotcc-obj override-profile:".Length..] ?? "unknown (older object)"));
+            var objectAggregates = new Dictionary<string, ObjectAggregateMetadata>(StringComparer.Ordinal);
+            foreach (var metadataLine in text.Split('\n').Where(l => l.StartsWith(FragAggregate, StringComparison.Ordinal)))
+            {
+                var fields = metadataLine[FragAggregate.Length..].Split(' ');
+                if (fields.Length != 4 || fields[1] is not ("0" or "1") || fields[2] is not ("0" or "1")
+                    || fields[3].Length != 64 || !fields[3].All(Uri.IsHexDigit))
+                    throw new CompileException("invalid aggregate metadata in object '" + path + "'");
+                if (!objectAggregates.TryAdd(fields[0], new(fields[1] == "1", fields[2] == "1", fields[3])))
+                    throw new CompileException("duplicate aggregate metadata for '" + fields[0] + "' in object '" + path + "'");
+            }
             // Walk the fragment line by line, routing into the current bucket.
             string section = "";            // "type:<name>" | "aliases" | "globals" | "functions"
             var buf = new StringBuilder();
@@ -162,7 +180,25 @@ public static partial class Compiler
                 if (section.StartsWith("type:", StringComparison.Ordinal))
                 {
                     var name = section["type:".Length..];
-                    if (!typeByName.ContainsKey(name)) { typeByName[name] = buf.ToString(); typeOrder.Add(name); }
+                    objectAggregates.TryGetValue(name, out var incoming);
+                    if (!typeByName.ContainsKey(name))
+                    {
+                        typeByName[name] = buf.ToString(); typeOrder.Add(name); typeOrigins[name] = path;
+                        if (incoming != null) aggregateByName[name] = incoming;
+                    }
+                    else if (incoming != null || aggregateByName.ContainsKey(name))
+                    {
+                        if (incoming == null || !aggregateByName.TryGetValue(name, out var previous))
+                            throw new CompileException("aggregate metadata missing for '" + name + "'; regenerate older objects before linking");
+                        if (incoming.IsUnion != previous.IsUnion
+                            || (!incoming.IsIncomplete && !previous.IsIncomplete && incoming.Signature != previous.Signature))
+                            throw new CompileException("conflicting aggregate declarations for '" + name + "' in '"
+                                + typeOrigins[name] + "' and '" + path + "'");
+                        if (previous.IsIncomplete && !incoming.IsIncomplete)
+                        {
+                            typeByName[name] = buf.ToString(); aggregateByName[name] = incoming; typeOrigins[name] = path;
+                        }
+                    }
                     else if (name.StartsWith(MacroConstantPrefix, StringComparison.Ordinal) && typeByName[name] != buf.ToString())
                         typeByName[name] = ""; // Conflicting TU-local macros have no single public value.
                     else if (name.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
@@ -173,6 +209,7 @@ public static partial class Compiler
             }
             foreach (var line in text.Split('\n'))
             {
+                if (line.StartsWith(FragAggregate, StringComparison.Ordinal)) continue;
                 if (line.StartsWith(FragFunction, StringComparison.Ordinal))
                 {
                     FlushFunction();

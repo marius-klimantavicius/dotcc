@@ -1,0 +1,1 @@
+Pins GCC LP64 packed bitfield allocation, which differs from MSVC bitfield allocation.

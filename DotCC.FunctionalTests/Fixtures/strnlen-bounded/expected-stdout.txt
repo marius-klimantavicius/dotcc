@@ -1,0 +1,4 @@
+bounded 0 2 3
+terminated 1 0 5
+wide 1 8
+unchanged 122 100

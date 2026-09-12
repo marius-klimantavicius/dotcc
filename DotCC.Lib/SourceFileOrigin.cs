@@ -6,7 +6,7 @@ namespace DotCC;
 
 /// <summary>A physical source file, shared by all of its tokens. Positions stay
 /// in the parser's ordinary line/column/byte coordinates.</summary>
-internal sealed record SourceFileOrigin(string Name)
+internal sealed record SourceFileOrigin(string Name, string Identity)
 {
     // Parser reductions create fresh base Items and carry only Position forward.
     // Associate each action's AST object with its first child's file, so trimmed
@@ -29,6 +29,7 @@ internal sealed record SourceFileOrigin(string Name)
 
     internal static object Attach(object ast, Item[] children)
     {
+        SourcePacking.Attach(ast, children);
         if (children.Length > 0 && Of(children[0]) is { } source && !AstOrigins.TryGetValue(ast, out _))
             AstOrigins.Add(ast, source);
         return ast;
@@ -36,12 +37,13 @@ internal sealed record SourceFileOrigin(string Name)
 
     internal static Item Rewrite(Item origin, int id, object? content) =>
         Of(origin) is { } source
-            ? new SourceLocatedItem(id, content, origin.Position, source)
-            : new Item(id, content, origin.Position);
+            ? new SourceLocatedItem(id, content, origin.Position, source, SourcePacking.Of(origin))
+            : new SourcePackingItem(new Item(id, content, origin.Position), SourcePacking.Of(origin));
 }
 
-internal sealed class SourceLocatedItem(int id, object? content, SourcePosition position, SourceFileOrigin sourceFile)
+internal sealed class SourceLocatedItem(int id, object? content, SourcePosition position, SourceFileOrigin sourceFile, int packing = 0)
     : Item(id, content, position)
 {
     internal SourceFileOrigin SourceFile { get; } = sourceFile;
+    internal int Packing { get; } = packing;
 }

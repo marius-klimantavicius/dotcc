@@ -1,0 +1,4 @@
+key 42 [AllocFailure] logging.c:100
+ready [Ready] logging.c:101
+pair 42 [Pair] logging.c:102
+plain

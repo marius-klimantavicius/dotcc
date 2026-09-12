@@ -1,0 +1,1 @@
+Uses GCC __sync, __atomic and __builtin_bswap builtins.

@@ -1,0 +1,1 @@
+GNU __attribute__ syntax is not supported by MSVC.

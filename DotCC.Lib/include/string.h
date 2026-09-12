@@ -12,6 +12,7 @@
 
 /* Length / comparison / copy. */
 int strlen(const char* s);
+size_t strnlen(const char* s, size_t maximum);
 int strcmp(const char* a, const char* b);
 int strncmp(const char* a, const char* b, size_t n);
 int strcoll(const char* a, const char* b);

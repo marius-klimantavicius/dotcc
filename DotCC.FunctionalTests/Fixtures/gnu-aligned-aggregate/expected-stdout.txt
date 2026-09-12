@@ -1,0 +1,2 @@
+layout 16 16 96 32 16 32 64
+storage 0 0 0 value 42

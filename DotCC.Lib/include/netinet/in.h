@@ -39,6 +39,14 @@ struct in6_addr {
 #define s6_addr16 __in6_u.__u6_addr16
 #define s6_addr32 __in6_u.__u6_addr32
 
+/* Standard IPv6 constant initializers and objects. These definitions are real
+   immutable module storage in the generated program; the same header across
+   translation units shares the compiler's canonical global definition. */
+#define IN6ADDR_ANY_INIT {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}}}
+#define IN6ADDR_LOOPBACK_INIT {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}}}
+static const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
+static const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
+
 struct sockaddr_in6 {
     sa_family_t     sin6_family;
     in_port_t       sin6_port;       /* network byte order */

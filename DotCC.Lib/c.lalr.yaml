@@ -539,6 +539,8 @@ productions:
       #   plus static-modifier variants of each.
       # Then `Fn → FnSig Block` is a function definition, `Fn → FnSig ';'`
       # is a prototype. Saves 4 productions overall (8 vs 12).
+      - { lhs: Fn, rhs: [';'], action: emptyDeclaration }
+      - { lhs: Fn, rhs: ['typedef', FnSig, ';'], action: typedefFunction }
       - { lhs: Fn, rhs: [GnuFormatAttr, Fn], action: gnuFormatFn }
       - { lhs: Fn, rhs: [FnSig, GnuFormatAttr, ';'], action: gnuFormatProto }
       - { lhs: Fn, rhs: [FnSig, Block], action: funcDef }
@@ -597,6 +599,10 @@ productions:
       # has no separate tag namespace) plus an empty alias for the tag form
       # when they differ.
       - { lhs: Fn, rhs: ['typedef', 'struct', ID, '{', MemberList, '}', ID, ';'], action: typedefStruct }
+      - { lhs: Fn, rhs: ['typedef', 'struct', GnuFormatAttr, ID, '{', MemberList, '}', ID, ';'], action: typedefAttributedStruct }
+      - { lhs: Fn, rhs: ['typedef', 'union', GnuFormatAttr, ID, '{', MemberList, '}', ID, ';'], action: typedefAttributedUnion }
+      - { lhs: Fn, rhs: ['struct', GnuFormatAttr, ID, '{', MemberList, '}', ';'], action: attributedStruct }
+      - { lhs: Fn, rhs: ['union', GnuFormatAttr, ID, '{', MemberList, '}', ';'], action: attributedUnion }
       # `typedef struct { MemberList } ID ;` — ANONYMOUS (tagless) struct + alias,
       # the most common typedef-struct idiom in real C. Conflict-free with the
       # tagged form above: after `typedef struct`, an ID lookahead → tagged, a `{`
@@ -798,6 +804,7 @@ productions:
   - derivation: leftmost
     rules:
       - { lhs: Type, rhs: [Type, '*'],   action: typePtr }
+      - { lhs: Type, rhs: [Type, GnuFormatAttr], action: typeGnuAttributes }
       # Pointer qualifiers after `*` — `int * const p`, `int *restrict p`,
       # `int * volatile p`. No C# equivalent (no readonly locals, no aliasing
       # model), so they parse and are DROPPED: the pointer type is unchanged.
@@ -1134,6 +1141,10 @@ productions:
       # Reuses the same DeclItemList as block/file-scope declarations. Conflict-
       # free with the bitfield/array forms below: after `Type ID`, `:`/`[` shift
       # those, while `;`/`,` stay on the DeclItem path (neither is in FOLLOW).
+      # MS anonymous members reference an already declared aggregate.
+      - { lhs: Member, rhs: [TYPE_NAME, ';'], action: anonymousTypedefMember }
+      - { lhs: Member, rhs: ['struct', ID, ';'], action: anonymousStructTagMember }
+      - { lhs: Member, rhs: ['union', ID, ';'], action: anonymousUnionTagMember }
       - { lhs: Member, rhs: [Type, DeclItemList, ';'], action: structMemberList }
       # Bit-fields `Type ID : width ;` and anonymous padding `Type : width ;`.
       # C# has no bit-fields; dotcc lowers a named bit-field to a FULL field of
@@ -1260,6 +1271,7 @@ productions:
       # Register allocation is a compiler hint; the local retains automatic storage.
       - { lhs: Decl, rhs: ['register', Type, DeclItemList], action: declRegisterStorage }
       # Block-scoped aliases use the same resolved types as file-scope typedefs.
+      - { lhs: Decl, rhs: ['typedef', FnSig], action: declLocalTypedefFunction }
       - { lhs: Decl, rhs: ['typedef', Type, ID], action: declLocalTypedefAlias }
       - { lhs: Decl, rhs: ['typedef', Type, '(', '*', ID, ')', '(', ParamList, ')'], action: declLocalTypedefFnPtr }
       - { lhs: Decl, rhs: ['typedef', Type, '(', '*', ID, ')', '(', ')'], action: declLocalTypedefFnPtrNoArgs }
@@ -1795,6 +1807,7 @@ productions:
   # attributes stay errors instead of silently changing layout or calling ABI.
   - derivation: none
     rules:
+      - { lhs: GnuFormatAttr, rhs: [__attribute__, '(', '(', AttrList, ')', ')'], action: gnuFunctionAttrs }
       - { lhs: GnuFormatAttr, rhs: [__attribute__, '(', '(', ID, '(', ID, ',', E, ',', E, ')', ')', ')'], action: gnuFormatAttr }
 
 lexer:
@@ -2081,11 +2094,7 @@ lexer:
     # escape class covers the named escapes (\a \b \e \f \n \r \t \v \0 \\ \' \"
     # \?) AND single-digit octal (\0–\7). The Chr visitor decodes the escape to
     # its byte value and lowers to `(byte)N` (or `(byte)'c'` for a plain char).
-    - { symbol: CHAR,   match: '''\\x[0-9a-fA-F]+''' }
-    - { symbol: CHAR,   match: '''\\[0-7][0-7][0-7]''' }
-    - { symbol: CHAR,   match: '''\\[0-7][0-7]''' }
-    - { symbol: CHAR,   match: '''\\[abefnrtv0-7\\''"?]''' }
-    - { symbol: CHAR,   match: '''[^''\\]''' }
+    - { symbol: CHAR,   match: '''([^''\\\r\n]|\\x[0-9a-fA-F]+|\\[0-7][0-7]?[0-7]?|\\[abefnrtv\\''"?])+''' }
     # Hex float literals (C99) — `0x1.8p3`, `0x1p-4`, `0x.8p1`. The binary
     # exponent `p`/`P` is MANDATORY (disambiguates from a hex int, which never has
     # `p`), so longest-match cleanly separates `0x1p4` (hex float) from `0x1`

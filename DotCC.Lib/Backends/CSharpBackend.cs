@@ -26,7 +26,8 @@ internal sealed record CSharpBackendResult(
     bool MainErrPayloadIsVoid = false,
     IReadOnlyList<(string Name, string FnName)>? Tests = null,
     IReadOnlyDictionary<string, string>? TypeDeclarations = null,
-    IReadOnlyList<CSharpFunctionSource>? FunctionSources = null);
+    IReadOnlyList<CSharpFunctionSource>? FunctionSources = null,
+    IReadOnlyDictionary<string, ObjectAggregateMetadata>? AggregateMetadata = null);
 
 /// <summary>
 /// Lowers the typed IR to low-level unsafe C# text. Deliberately DUMB: every
@@ -143,6 +144,7 @@ internal sealed partial class CSharpBackend
         var globals = new StringBuilder();
         foreach (var g in unit.Globals)
         {
+            if (cg.EmitAlignedGlobal(globals, g)) continue;
             // C11 `_Thread_local` / Zig `threadlocal` — thread storage duration:
             // every thread gets its own zero-initialized slot. (The builder rejects
             // a non-zero initializer — a [ThreadStatic] initializer runs on the
@@ -158,7 +160,8 @@ internal sealed partial class CSharpBackend
                 globals.Append($"    public static unsafe nint {g.Sym.TargetName}{ninit};\n");
                 continue;
             }
-            var init = g.Init is { } i ? " = " + cg.Coerced(i, g.Sym.Type) : "";
+            var init = g.Init is PinnedArray arrayInit ? " = " + cg.PinnedArrayText(arrayInit, g.Sym.Alignment)
+                : g.Init is { } i ? " = " + cg.Coerced(i, g.Sym.Type) : "";
             globals.Append($"    public static unsafe {cg.Cs(g.Sym.Type)} {g.Sym.TargetName}{init};\n");
         }
 
@@ -187,7 +190,7 @@ internal sealed partial class CSharpBackend
             ? unit.Tests.Select(t => (t.Name, t.Sym.TargetName)).ToList()
             : null;
 
-        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources);
+        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources, unit.Types.ToDictionary(t => t.Name, ObjectAggregateMetadata.From));
     }
 
     // ---- type declarations -----------------------------------------------
@@ -201,12 +204,16 @@ internal sealed partial class CSharpBackend
         var sb = new StringBuilder();
         var flexibleField = t.Fields.FirstOrDefault(field => field.Type.Unqualified is CType.Array { Count: 0 });
         DotCC.Layout.LayoutInfo? headerLayout = null;
+        // Explicit field offsets/extent preserve requested C alignment and the
+        // padding it introduces in containing aggregates. Storage alignment is
+        // enforced separately by the aligned object/array allocation path.
+        var alignedLayout = HasRequestedTypeAlignment(t.Name) ? _offsetModel.Aggregate(t.Name) : null;
         var bitFieldLayout = t.Fields.Any(field => field.IsBitField) && t.Layout != AggregateLayout.Packed
             ? _offsetModel.Aggregate(t.Name) : null;
         if (flexibleField.Type is not null)
         {
             headerLayout = _offsetModel.Aggregate(t.Name);
-            if (headerLayout.Alignment is not (1 or 2 or 4 or 8) || headerLayout.Size < headerLayout.Alignment)
+            if (headerLayout.Alignment > 128 || headerLayout.Size < headerLayout.Alignment)
                 throw new IrUnsupportedException("flexible-array header storage alignment/size for " + t.Name);
             // Register through the same path as explicit C offsetof expressions.
             // Both StructLayout constants and the pointer getter use emitted constants.
@@ -215,9 +222,9 @@ internal sealed partial class CSharpBackend
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
                 .Append(layoutClass).Append(".Size, Pack = ").Append(layoutClass).Append(".Alignment)]\n");
         }
-        else if (bitFieldLayout is not null)
+        else if (bitFieldLayout is not null || alignedLayout is not null)
         {
-            headerLayout = bitFieldLayout;
+            headerLayout = bitFieldLayout ?? alignedLayout!;
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
                 .Append(headerLayout.Size).Append(", Pack = ").Append(headerLayout.Alignment).Append(")]\n");
         }
@@ -609,6 +616,7 @@ internal sealed partial class CSharpBackend
 
     private string Func(FuncDef fn)
     {
+        _alignedArraySymbols.Clear();
         _scopedVaListLocals = VaListLifetimeValidator.ScopedLocals(fn);
         var retTy = fn.Sym.Type is CType.Func f ? f.Return : CType.Int;
         _currentRet = retTy;
@@ -657,7 +665,15 @@ internal sealed partial class CSharpBackend
             sb.Append("}\n");
             return sb.ToString();
         }
-        Stmt(sb, body, 0);
+        if (fn.Params.Any(RequiresAlignedObject))
+        {
+            sb.Append("{\n");
+            foreach (var parameter in fn.Params.Where(RequiresAlignedObject))
+                EmitAlignedLocal(sb, Pad(1), parameter, parameter.TargetName);
+            Stmt(sb, body, 1);
+            sb.Append("}\n");
+        }
+        else Stmt(sb, body, 0);
         return sb.ToString();
     }
 
@@ -779,6 +795,7 @@ internal sealed partial class CSharpBackend
             }
             case ArrayDecl a:
                 {
+                    if (EmitAlignedArray(sb, pad, a)) break;
                     var elemCs = Cs(a.Element);
                     if (a.Inits is { } inits)
                     {
@@ -978,6 +995,14 @@ internal sealed partial class CSharpBackend
                 sb.Append(pad).Append($"throw new ZigErrorReturn((ushort){zt.Code});\n");
                 break;
             case For fr:
+                if (fr.Init is DeclStmt alignedInit && alignedInit.Decls.Any(declaration => RequiresAlignedObject(declaration.Sym)))
+                {
+                    sb.Append(pad).Append("{\n");
+                    Stmt(sb, alignedInit, ind + 1);
+                    Stmt(sb, fr with { Init = null }, ind + 1);
+                    sb.Append(pad).Append("}\n");
+                    break;
+                }
                 var init = fr.Init switch
                 {
                     DeclStmt d => DeclInline(d),
@@ -1439,7 +1464,9 @@ internal sealed partial class CSharpBackend
     /// <summary>The spelling of a variable reference: the bare TargetName, or
     /// <c>DotCcGlobals.</c>-qualified when an emitted type name shadows it.</summary>
     private string GlobalName(Symbol s) =>
-        s.IsGlobal && _typeShadowedGlobals.Contains(s.TargetName)
+        !s.IsGlobal && s.Kind is SymKind.Var or SymKind.Param && !_alignedArraySymbols.Contains(s) && RequiresAlignedObject(s)
+            ? "(*" + AlignedName(s) + ")"
+            : s.IsGlobal && _typeShadowedGlobals.Contains(s.TargetName)
             ? "DotCcGlobals." + s.TargetName
             : s.TargetName;
 
@@ -1483,6 +1510,10 @@ internal sealed partial class CSharpBackend
         if (tgt is CType.Enum te && Cs(src) != Cs(te) && (src.IsArithmetic || src is CType.Enum))
         {
             text = $"({Cs(te)})({Sub(value, PUnary)})";
+            if (IsConstExpr(value) && !(TryConstInt(value, out var ev) && ConstFitsTarget(ev, Cs(te.Underlying))))
+            {
+                text = $"unchecked({text})";
+            }
             return true;
         }
         // Enum source into an integer sink: C# requires the explicit `(int)` decay.
@@ -1534,7 +1565,7 @@ internal sealed partial class CSharpBackend
             }
             var cast = $"({t2})({Expr(value)})";
             // An out-of-range CONSTANT cast is CS0221 unless wrapped in unchecked.
-            if (TryConstInt(value, out var k) && !ConstFitsTarget(k, t2))
+            if (IsConstExpr(value) && !(TryConstInt(value, out var k) && ConstFitsTarget(k, t2)))
             {
                 cast = $"unchecked({cast})";
             }
@@ -1603,6 +1634,11 @@ internal sealed partial class CSharpBackend
     {
         switch (e)
         {
+            // LitInt retains the low 64 bits in a signed long. A high-bit
+            // unsigned literal is not a negative mathematical constant and
+            // cannot prove that a conversion to signed long is in range.
+            case LitInt { Value: < 0, Type: CType.Prim { Integer: true, Signed: false, Bytes: 8 } }:
+                v = 0; return false;
             case LitInt { Value: { } lv }: v = lv; return true;
             case EnumConstRef ec: v = ec.Sym.ConstValue; return true;
             case Paren p: return TryConstInt(p.Inner, out v);
@@ -1710,6 +1746,17 @@ internal sealed partial class CSharpBackend
     private void EmitDeclStmt(StringBuilder sb, DeclStmt d, string pad)
     {
         if (d.Decls.Count == 0) { return; }
+        if (d.Decls.Any(declaration => RequiresAlignedObject(declaration.Sym)))
+        {
+            foreach (var declaration in d.Decls)
+            {
+                var init = declaration.Init is { } value ? Coerced(value, declaration.Sym.Type) : "default";
+                if (RequiresAlignedObject(declaration.Sym)) EmitAlignedLocal(sb, pad, declaration.Sym, init);
+                else sb.Append(pad).Append(LocalType(declaration.Sym)).Append(' ').Append(declaration.Sym.TargetName)
+                    .Append(" = ").Append(init).Append(";\n");
+            }
+            return;
+        }
         var firstCs = LocalType(d.Decls[0].Sym);
         if (d.Decls.All(e => LocalType(e.Sym) == firstCs))
         {
@@ -1727,6 +1774,8 @@ internal sealed partial class CSharpBackend
     // when all declarators agree and in `for`-initializer position.
     private string DeclInline(DeclStmt d)
     {
+        if (d.Decls.Any(declaration => RequiresAlignedObject(declaration.Sym)))
+            throw new IrUnsupportedException("over-aligned object in a for initializer requires block storage lowering");
         var type = d.Decls.Count > 0 ? LocalType(d.Decls[0].Sym) : "int";
         var parts = d.Decls.Select(e => e.Init is { } init
             ? $"{e.Sym.TargetName} = {Coerced(init, e.Sym.Type)}"
@@ -2040,7 +2089,31 @@ internal sealed partial class CSharpBackend
             }
             case Member m:
             {
-                var dot = $"{Sub(m.Base, PPostfix)}{(m.Arrow ? "->" : ".")}{DotCC.EmitHelpers.Id(m.Field)}";
+                string dot;
+                if (!m.Arrow && m.Type.Unqualified is CType.Array && !m.Base.IsLValue)
+                {
+                    if (!_canHoist) throw new IrUnsupportedException("array member of a temporary aggregate requires a hoistable storage context");
+                    // C keeps an aggregate return temporary alive through the full
+                    // expression. Its array member needs real addressable storage;
+                    // C# rejects a fixed buffer projected directly from a return.
+                    var name = $"__aggregate{_clCounter++}";
+                    var type = Cs(m.Base.Type);
+                    var initializer = Expr(m.Base);
+                    var alignment = TypeAlignment(m.Base.Type);
+                    if (alignment > 8)
+                    {
+                        _pending.Add($"byte* {name}_bytes = stackalloc byte[sizeof({type}) + {alignment - 1}]");
+                        _pending.Add($"{type}* {name} = ({type}*)(((nuint){name}_bytes + {alignment - 1}) & ~(nuint){alignment - 1})");
+                        _pending.Add($"*{name} = {initializer}");
+                        dot = $"{name}->{DotCC.EmitHelpers.Id(m.Field)}";
+                    }
+                    else
+                    {
+                        _pending.Add($"{type} {name} = {initializer}");
+                        dot = $"{name}.{DotCC.EmitHelpers.Id(m.Field)}";
+                    }
+                }
+                else dot = $"{Sub(m.Base, PPostfix)}{(m.Arrow ? "->" : ".")}{DotCC.EmitHelpers.Id(m.Field)}";
                 if (!m.Arrow && m.Type.Unqualified is CType.Array && RootsAtGlobal(m.Base))
                 {
                     // Array decay/address-taking needs an unmanaged storage
@@ -2061,6 +2134,18 @@ internal sealed partial class CSharpBackend
             case StructInit si: return (StructInitText(si), PPrimary);
             case StackArray sa:
             {
+                if (TypeAlignment(sa.Element) is var alignment && alignment > 8)
+                {
+                    if (!_canHoist) throw new IrUnsupportedException("over-aligned array compound literal requires a hoistable storage context");
+                    var arrayName = $"__cl{_clCounter++}";
+                    var elementType = Cs(sa.Element);
+                    var initializers = sa.Elems.Select(element => Coerced(element, sa.Element)).ToArray();
+                    _pending.Add($"byte* {arrayName}_bytes = stackalloc byte[sizeof({elementType}) * {initializers.Length} + {alignment - 1}]");
+                    _pending.Add($"{elementType}* {arrayName} = ({elementType}*)(((nuint){arrayName}_bytes + {alignment - 1}) & ~(nuint){alignment - 1})");
+                    for (var index = 0; index < initializers.Length; index++)
+                        _pending.Add($"{arrayName}[{index}] = {initializers[index]}");
+                    return (arrayName, PPrimary);
+                }
                 // An array compound literal `(T[]){…}` is a `stackalloc` — directly
                 // assignable to a `T*` only in initializer position. To make it work
                 // in ANY expression position (call argument, return, …), hoist it to
@@ -2340,6 +2425,15 @@ internal sealed partial class CSharpBackend
             case UnOp.AddrOf when !u.Operand.IsLValue && _canHoist:
             {
                 var name = $"__cl{_clCounter++}";
+                if (TypeAlignment(u.Operand.Type) is var alignment && alignment > 8)
+                {
+                    var type = Cs(u.Operand.Type);
+                    var initializer = Expr(u.Operand);
+                    _pending.Add($"byte* {name}_bytes = stackalloc byte[sizeof({type}) + {alignment - 1}]");
+                    _pending.Add($"{type}* {name} = ({type}*)(((nuint){name}_bytes + {alignment - 1}) & ~(nuint){alignment - 1})");
+                    _pending.Add($"*{name} = {initializer}");
+                    return (name, PPrimary);
+                }
                 _pending.Add($"{Cs(u.Operand.Type)} {name} = {Expr(u.Operand)}");
                 return ($"&{name}", PUnary);
             }
@@ -2524,7 +2618,9 @@ internal sealed partial class CSharpBackend
             return ($"({Cs(c.Target)})({Cs(fv.Type)}){FunctionPointer(fv.Sym)}", PUnary);
         }
         var text = $"({Cs(c.Target)}){Sub(c.Operand, PUnary)}";
-        if (c.Target.Unqualified is CType.Prim { Integer: true } pt
+        var integerTarget = c.Target.Unqualified is CType.Enum enumeration
+            ? enumeration.Underlying : c.Target.Unqualified;
+        if (integerTarget is CType.Prim { Integer: true } pt
             && IsConstExpr(c.Operand)
             && !(TryConstInt(c.Operand, out var cv) && ConstFitsTarget(cv, Cs(pt))))
         {
@@ -2556,9 +2652,18 @@ internal sealed partial class CSharpBackend
     /// <c>nint[]</c> reinterpreted as <c>T**</c>; a function-pointer element uses
     /// the non-generic <c>PinFnPtrArray</c> (delegate* can't be a type argument
     /// either).</summary>
-    private string PinnedArrayText(PinnedArray pa)
+    private string PinnedArrayText(PinnedArray pa, int requestedAlignment = 0)
     {
         var elemCs = Cs(pa.Element);
+        var alignment = Math.Max(requestedAlignment, TypeAlignment(pa.Element));
+        if (requestedAlignment > 0 || alignment > 8)
+        {
+            if (pa.Element.IsPointerLowered)
+                throw new IrUnsupportedException("over-aligned array of pointers requires integer-backed initialization");
+            return pa.Elems is null
+                ? $"Libc.GlobalAlignedZeroed<{elemCs}>({(pa.Count is { } count ? Expr(count) : "0")}, {alignment})"
+                : $"Libc.GlobalAlignedFrom<{elemCs}>(new {elemCs}[]{{ {string.Join(", ", pa.Elems.Select(value => Coerced(value, pa.Element)))} }}, {alignment})";
+        }
         if (pa.Elems is null)
         {
             var count = pa.Count is { } c ? Expr(c) : "0";
@@ -2904,6 +3009,7 @@ internal sealed partial class CSharpBackend
 
     private string CallText(Call c)
     {
+        if (LowerGnuIntrinsicCall(c) is { } intrinsic) { return intrinsic; }
         if (LowerAtomicCall(c) is { } atomic) { return atomic; }
         if (LowerVaCall(c) is { } va) { return va; }
         // Coerce each argument to its parameter type (C's implicit conversion at

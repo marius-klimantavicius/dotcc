@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Security.Cryptography;
 using LALR.CC;
 using LALR.CC.LexicalGrammar;
 
@@ -18,11 +19,14 @@ internal sealed class PhysicalSourceMap
     private readonly int[] _spliceOffsets, _removedBytes, _lineStarts;
     private readonly int _initialLine;
 
-    public PhysicalSourceMap(string source, int initialLine = 1, string? filename = null)
+    public PhysicalSourceMap(string source, int initialLine = 1, string? filename = null, string? identity = null)
     {
         _initialLine = initialLine;
-        SourceFile = filename is null ? null : new SourceFileOrigin(filename);
         _original = Encoding.UTF8.GetBytes(source);
+        // Headers retain identity across TUs without depending on include order.
+        // Main files supply their absolute path to keep private declarations distinct.
+        SourceFile = filename is null ? null : new SourceFileOrigin(filename,
+            identity ?? filename + ":" + Convert.ToHexString(SHA256.HashData(_original)));
         var offsets = new List<int>();
         var removed = new List<int>();
         var lines = new List<int> { 0 };
@@ -93,6 +97,7 @@ internal sealed class PhysicalSourceMap
 /// use site while whitespace still comes from replacement-list spelling.</summary>
 internal class SourceMappedItem : Item
 {
+    internal int? Packing { get; set; }
     private readonly PhysicalSourceMap? _map;
     private readonly SourcePosition _origin;
 
@@ -101,6 +106,7 @@ internal class SourceMappedItem : Item
     {
         _map = (origin as SourceMappedItem)?._map;
         _origin = origin is SourceMappedItem mapped ? mapped._origin : origin.Position;
+        Packing = SourcePacking.Recorded(origin);
     }
     internal SourceMappedItem(Item item, PhysicalSourceMap map) : base(item.ID, item.Content, item.Position)
     {
@@ -159,7 +165,8 @@ internal sealed class PhysicalPositionRewriter(ISyncIterator<Item> inner) : Rewr
     {
         var position = SourceMappedItem.Physical(token);
         Emit(SourceMappedItem.FileOf(token) is { } source
-            ? new SourceLocatedItem(token.ID, token.Content, position, source)
-            : token is SourceMappedItem ? new Item(token.ID, token.Content, position) : token);
+            ? new SourceLocatedItem(token.ID, token.Content, position, source, SourcePacking.Of(token))
+            : token is SourceMappedItem
+                ? new SourcePackingItem(new Item(token.ID, token.Content, position), SourcePacking.Of(token)) : token);
     }
 }

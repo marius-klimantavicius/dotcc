@@ -55,7 +55,7 @@ internal sealed class CFrontend : IFrontend
         // Each unit is parsed once; one override session spans the invocation.
         Item ParseUnit(string unitPath, global::LALR.CC.Parser parser, bool quiet, DialectGate? gate = null)
         {
-            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath));
+            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath), identity: Path.GetFullPath(unitPath));
             var source = sourceMap.Text;
             // #embed search path: the TU's own directory first, then the -I dirs
             // (first-wins, mirroring #include). Resolved on the filesystem since
@@ -138,7 +138,7 @@ internal sealed class CFrontend : IFrontend
         // parse (preprocessor-era) and IR build (emit-pass), then flush as warnings
         // (-pedantic) or one collected error (-pedantic-errors). Off by default.
         var gate = (pedantic || pedanticErrors) ? new DialectGate(activeDialect) : null;
-        var irBuilder = new Ir.IrBuilder(gate, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings);
+        var irBuilder = new Ir.IrBuilder(gate, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings) { StableAnonymousNames = req.ObjectMode };
         var irParser = C.BuildSourceLocatedParser();
         foreach (var unitPath in inputPaths)
         {

@@ -216,14 +216,51 @@ internal sealed partial class IrBuilder
     /// omitted fields take their zero default.</summary>
     private StructInit BuildStructDesignated(CType type, Item memberList)
     {
-        var fields = StructFieldsOf(type);
+        StructFieldsOf(type); // Validate the target before interpreting designators.
         var members = new List<FieldInit>();
         foreach (var (field, valueItem) in ParseMemberInits(memberList))
-        {
-            var fieldType = FieldTypeOf(fields, field);
-            members.Add(new FieldInit(field, fieldType, BuildDeclaratorInitializer(fieldType, valueItem)));
-        }
+            SetDesignatedMember(type, members, field, valueItem);
         return new StructInit(members) { Type = type };
+    }
+
+    /// <summary>Resolve promoted names through actual anonymous storage. Several
+    /// designators into the same anonymous struct share its initializer; choosing
+    /// another union member discards the previous active member's initializer.
+    /// A repeated designator replaces its earlier value, as in C.</summary>
+    private void SetDesignatedMember(CType type, List<FieldInit> members, string field, Item valueItem)
+    {
+        var canonical = ((CType.Named)type.Unqualified).Name;
+        if (_promoted.TryGetValue(canonical, out var promoted) && promoted.TryGetValue(field, out var path))
+        {
+            SelectUnionMember(path.Hidden);
+            var index = members.FindIndex(member => member.Name == path.Hidden);
+            var nestedType = new CType.Named(path.Nested);
+            var nestedMembers = index >= 0 && members[index].Value is StructInit previous
+                ? previous.Members.ToList() : new List<FieldInit>();
+            SetDesignatedMember(nestedType, nestedMembers, field, valueItem);
+            Store(index, new FieldInit(path.Hidden, nestedType, new StructInit(nestedMembers) { Type = nestedType }));
+            return;
+        }
+
+        var fields = StructFieldsOf(type);
+        var fieldIndex = fields.FindIndex(member => member.Name == field);
+        if (fieldIndex < 0)
+            throw new IrUnsupportedException($"unknown initializer member '{field}' in struct/union '{canonical}'");
+        var definition = fields[fieldIndex];
+        SelectUnionMember(field);
+        Store(members.FindIndex(member => member.Name == field),
+            new FieldInit(field, definition.Type, BuildDeclaratorInitializer(definition.Type, valueItem)));
+
+        void SelectUnionMember(string name)
+        {
+            if (_structIsUnion.GetValueOrDefault(canonical) && members.Count != 0 && members[0].Name != name)
+                members.Clear();
+        }
+        void Store(int index, FieldInit member)
+        {
+            if (index < 0) members.Add(member);
+            else members[index] = member;
+        }
     }
 
     /// <summary>The struct/union fields named by <paramref name="type"/>, or throw
@@ -234,12 +271,6 @@ internal sealed partial class IrBuilder
             ?? throw new IrUnsupportedException("aggregate initializer for a non-struct type");
         return _structFields.TryGetValue(canonical, out var fields) ? fields
             : throw new IrUnsupportedException($"aggregate initializer for unknown struct/union '{canonical}'");
-    }
-
-    private static CType FieldTypeOf(List<StructField> fields, string name)
-    {
-        foreach (var f in fields) { if (f.Name == name) { return f.Type; } }
-        return CType.Int;   // unknown field — let Roslyn surface the real error
     }
 
     /// <summary>Collect a <c>MemberInitList</c>'s <c>.field = value</c> items, in
@@ -493,9 +524,9 @@ internal sealed partial class IrBuilder
     /// the field takes that mangled name and an alias symbol is registered so
     /// in-function uses resolve to it; otherwise it's a file-scope name.</summary>
     private void BuildGlobalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, string? csName)
-        => BuildGlobalArr(ResolveType(typeItem), nameItem, dimsItem, initItem, csName);
+        => BuildGlobalArr(ResolveType(typeItem), nameItem, dimsItem, initItem, csName, DeclarationAlignment(typeItem));
 
-    private void BuildGlobalArr(CType elem, Item nameItem, Item? dimsItem, Item? initItem, string? csName)
+    private void BuildGlobalArr(CType elem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, int alignment = 0)
     {
         var name = Tok(nameItem);
         var dims = dimsItem is { } di ? TryConstDims(di) ?? throw new IrUnsupportedException("file-scope array requires a constant bound") : null;
@@ -520,23 +551,23 @@ internal sealed partial class IrBuilder
             throw new IrUnsupportedException($"file-scope array '{name}' needs a constant size or an initializer");
         }
 
-        AddGlobalArray(name, arrType, init, csName);
+        AddGlobalArray(name, arrType, init, csName, alignment);
     }
 
     /// <summary>Register a global-array symbol and its <see cref="GlobalVar"/>. A
     /// non-null <paramref name="csName"/> marks a static local (mangled field name +
     /// alias symbol); otherwise it's a file-scope name.</summary>
-    private void AddGlobalArray(string name, CType arrType, CExpr init, string? csName)
+    private void AddGlobalArray(string name, CType arrType, CExpr init, string? csName, int alignment = 0)
     {
         if (csName is not null)
         {
-            var sym = new Symbol { Name = name, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true, TargetName = csName };
+            var sym = new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true, TargetName = csName };
             Globals.Add(new GlobalVar(sym, init));
             _symbols.DeclareAlias(sym);
         }
         else
         {
-            var sym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true });
+            var sym = _symbols.Declare(new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true });
             Globals.Add(new GlobalVar(sym, init));
         }
     }
@@ -559,7 +590,7 @@ internal sealed partial class IrBuilder
             elems.Add(new LitInt(v.ToString(inv), v) { Type = CType.Int });
         }
         AddGlobalArray(Tok(nameItem), new CType.Array(elem, total),
-            new PinnedArray(elem, elems, null) { Type = new CType.Pointer(elem) }, csName);
+            new PinnedArray(elem, elems, null) { Type = new CType.Pointer(elem) }, csName, DeclarationAlignment(typeItem));
     }
 
     /// <summary>An <c>extern T a[N];</c> / <c>extern T a[];</c> declaration — storage

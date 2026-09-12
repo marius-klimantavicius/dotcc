@@ -65,10 +65,10 @@ public static partial class Compiler
         CDialect? dialect,
         Ir.INameLegalizer? names = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool testMode = false, CPreprocessingOptions? preprocessing = null)
+        bool testMode = false, CPreprocessingOptions? preprocessing = null, bool objectMode = false)
     {
         var request = new Frontends.FrontendRequest(
-            inputPaths, includeDirs, defines, dialect, names, warnings, testMode, preprocessing);
+            inputPaths, includeDirs, defines, dialect, names, warnings, testMode, preprocessing, objectMode);
         var anyZig = inputPaths.Any(IsZigSource);
         var anyC = inputPaths.Any(p => !IsZigSource(p));
         if (!anyC && preprocessing is { HasOverrides: true }) throw new CompileException("C macro overrides require C source input");
@@ -168,7 +168,7 @@ public static partial class Compiler
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
             throw new CompileException("managed-library output does not support native import or archive bindings");
         var asObject = emit == EmitMode.Object;
-        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode, preprocessing: preprocessing);
+        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode, preprocessing: preprocessing, objectMode: asObject);
         if (asObject) QualifyObjectInternalFunctions(irBuilder, inputPaths);
         // -Wconversion: collect narrowing-conversion warnings during codegen, then
         // flush to stderr. Off by default (the bit is clear unless -Wconversion set).
@@ -226,7 +226,7 @@ public static partial class Compiler
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
             return SingleSource(SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
-                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig));
+                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata));
         }
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
@@ -509,6 +509,12 @@ public static partial class Compiler
             "__LP64__=1",
             "__SIZEOF_POINTER__=8",
             "__SIZEOF_LONG__=8",
+            "__ATOMIC_RELAXED=0",
+            "__ATOMIC_CONSUME=1",
+            "__ATOMIC_ACQUIRE=2",
+            "__ATOMIC_RELEASE=3",
+            "__ATOMIC_ACQ_REL=4",
+            "__ATOMIC_SEQ_CST=5",
             // dotcc's wchar_t is the MSVC shape — an unsigned 16-bit UTF-16 code
             // unit (→ C# char), NOT gcc/Linux's 32-bit wchar_t. Advertise the
             // width so portable code that branches on __SIZEOF_WCHAR_T__ (or the

@@ -1,0 +1,1 @@
+This Microsoft anonymous-member extension requires GCC -fms-extensions; the generic GCC oracle does not enable that flag. Baseline checked manually with gcc -std=c17 -fms-extensions.

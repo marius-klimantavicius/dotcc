@@ -37,6 +37,28 @@ public sealed class ConstCastUncheckedTests
     }
 
     [Fact]
+    public void high_bit_unsigned_long_to_signed_long_wraps_unchecked()
+    {
+        Emit("long f(void) { return (long)0x8000000000000000ULL; } int main(void) { return 0; }")
+            .ShouldContain("unchecked((long)0x8000000000000000UL)");
+    }
+
+    [Fact]
+    public void high_bit_unsigned_constant_to_enum_wraps_unchecked()
+    {
+        Emit("enum Flags { ZERO = 0, ONE = 1 }; enum Flags f(void) { return (enum Flags)0x80000000U; } int main(void) { return 0; }")
+            .ShouldContain("unchecked((Flags)0x80000000u)");
+    }
+
+    [Fact]
+    public void high_bit_implicit_stores_wrap_unchecked()
+    {
+        var emitted = Emit("enum Flags { ZERO = 0, ONE = 1 }; long f(void) { return 0x8000000000000000ULL; } enum Flags g(void) { return 0x80000000U; } int main(void) { return 0; }");
+        emitted.ShouldContain("unchecked((long)(0x8000000000000000UL))");
+        emitted.ShouldContain("unchecked((Flags)(0x80000000u))");
+    }
+
+    [Fact]
     public void cast_byte_of_complement_mask_wraps_unchecked()
     {
         // `~(1 << 6)` folds to -65 (int), out of byte range → unchecked.

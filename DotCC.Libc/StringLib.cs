@@ -22,6 +22,16 @@ namespace DotCC.Libc;
 /// </remarks>
 public static unsafe partial class Libc
 {
+    /// <summary>POSIX bounded byte-string length. Never reads beyond the bound;
+    /// a short terminated string also accepts bounds larger than Int32.MaxValue.</summary>
+    public static ulong strnlen(byte* value, ulong maximum)
+    {
+        if (maximum != 0 && value == null) throw new ArgumentNullException(nameof(value));
+        ulong length = 0;
+        while (length < maximum && value[length] != 0) length++;
+        return length;
+    }
+
     // ---------------------------------------------------------------------
     // Comparison / copy — bounded variants
     // ---------------------------------------------------------------------

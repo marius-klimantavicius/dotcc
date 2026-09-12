@@ -1,0 +1,5 @@
+layout 6 1 1 6 2 5 6 8
+nested 5 1 clamp 16 8 8 reset 8
+bits 6 5 abcde 54321 99 de bc 1a 32 54 99
+wide 10 9 5 123456789abcdef0 13 77 85 f7 e6 d5 c4 b3 a2 91 98 77
+zero 5 4 values ab 12345678 42

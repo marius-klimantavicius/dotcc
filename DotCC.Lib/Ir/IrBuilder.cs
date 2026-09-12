@@ -28,6 +28,26 @@ public sealed class IrUnsupportedException : DotCC.CompileException
 /// </summary>
 internal sealed partial class IrBuilder
 {
+    internal bool StableAnonymousNames { get; set; }
+    private readonly Dictionary<object, string> _anonymousNames = new(ReferenceEqualityComparer.Instance);
+    private readonly Dictionary<string, int> _anonymousNameOccurrences = new(StringComparer.Ordinal);
+
+    private string AnonymousAggregateName(Item origin, bool isUnion)
+    {
+        if (!StableAnonymousNames) return $"__Anon{_anonAggrSeq++}";
+        var identity = (object?)origin.Content ?? origin;
+        if (_anonymousNames.TryGetValue(identity, out var existing)) return existing;
+        var source = SourceFileOrigin.Of(origin)?.Identity ?? _file;
+        var location = source + "\n" + SourceMappedItem.Physical(origin).ByteOffset.ToString(System.Globalization.CultureInfo.InvariantCulture)
+            + (isUnion ? "\nunion" : "\nstruct");
+        var occurrence = _anonymousNameOccurrences.GetValueOrDefault(location);
+        _anonymousNameOccurrences[location] = occurrence + 1;
+        var key = location + "\n" + occurrence.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        var name = "__Anon" + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(key)));
+        _anonymousNames.Add(identity, name);
+        return name;
+    }
+
     private readonly SymbolTable _symbols;
     // Typedef name → its underlying type. Unlike the legacy emitter (which emits
     // `using` aliases and resolves names textually), the IR resolves a typedef
@@ -236,6 +256,11 @@ internal sealed partial class IrBuilder
 
     private void ValidateGnuFormatAttribute(Item item)
     {
+        if (item.Content is C.GnuFunctionAttrs attrs)
+        {
+            ValidateGnuFunctionAttrs(attrs.Arg3);
+            return;
+        }
         if (item.Content is not C.GnuFormatAttr attr ||
             Tok(attr.Arg3) is not ("format" or "__format__"))
             throw new IrUnsupportedException("only GNU format attributes are supported");
@@ -244,6 +269,25 @@ internal sealed partial class IrBuilder
         if (Tok(attr.Arg5) is not ("printf" or "__printf__" or "scanf" or "__scanf__" or
             "strftime" or "__strftime__" or "strfmon" or "__strfmon__" or "gnu_printf" or "gnu_scanf"))
             throw new IrUnsupportedException("unsupported GNU format archetype: " + Tok(attr.Arg5));
+    }
+
+    private void ValidateGnuFunctionAttrs(Item item)
+    {
+        switch (item.Content)
+        {
+            case C.AttrListCons a: ValidateGnuFunctionAttrs(a.Arg0); ValidateGnuFunctionAttrs(a.Arg2); break;
+            case C.AttrNoreturn: _pendingAttrNoreturn = true; break;
+            case C.AttrIdent a:
+                switch (Tok(a.Arg0).Trim('_'))
+                {
+                    case "noreturn": _pendingAttrNoreturn = true; break;
+                    case "always_inline": break; // optimization hint; no observable C behavior
+                    case "noinline": case "no_instrument_function": break;
+                    default: throw new IrUnsupportedException("unsupported GNU attribute: " + Tok(a.Arg0));
+                }
+                break;
+            default: throw new IrUnsupportedException("unsupported GNU attribute: " + TypeName(item.Content));
+        }
     }
 
     private void BuildTopLevel(Item fn)
@@ -265,13 +309,28 @@ internal sealed partial class IrBuilder
                 _pendingAttrNodiscard = null;
                 break;
             case C.GnuFormatFn a:
+            {
+                var noreturn = _pendingAttrNoreturn;
                 ValidateGnuFormatAttribute(a.Arg0);
                 BuildTopLevel(a.Arg1);
+                _pendingAttrNoreturn = noreturn;
                 break;
+            }
             case C.GnuFormatProto a:
+            {
+                var noreturn = _pendingAttrNoreturn;
                 ValidateGnuFormatAttribute(a.Arg1);
                 RegisterProto(a.Arg0);
+                _pendingAttrNoreturn = noreturn;
                 break;
+            }
+            case C.EmptyDeclaration: break;
+            case C.TypedefFunction t:
+            {
+                var sig = ExtractFnSig(t.Arg1);
+                _typedefs[UserTypedefName(sig.Name)] = FunctionTypedefType(sig);
+                break;
+            }
             case C.FuncDef d: BuildFuncDef(d.Arg0, d.Arg1); break;
             case C.ExternFnDef d: BuildFuncDef(d.Arg1, d.Arg2); break;
             case C.FuncProto p: RegisterProto(p.Arg0); break;
@@ -302,7 +361,7 @@ internal sealed partial class IrBuilder
                 or C.GlobalStaticStructInit when AlreadySeenTopLevel(fn):
                 break;
             case C.GlobalDeclList g: BuildGlobalDecls(g.Arg0, g.Arg1, Storage.Static); break;
-            case C.GlobalStaticDeclList g: BuildGlobalDecls(g.Arg1, g.Arg2, Storage.Static); break;
+            case C.GlobalStaticDeclList g: BuildGlobalDecls(g.Arg1, g.Arg2, Storage.Static, isStatic: true); break;
             // File-scope arrays — pinned global backing store (plain and `static`
             // lower identically; internal linkage is a no-op for a never-exported
             // variable). Sized, brace-initialized, and implicit-`[]` forms.
@@ -374,12 +433,16 @@ internal sealed partial class IrBuilder
             case C.TypedefEnum e: _typedefs[UserTypedefName(Tok(e.Arg6))] = RegisterEnum(Tok(e.Arg2), null, e.Arg4, Tok(e.Arg6)); break;
             case C.TypedefEnumAnon e: _typedefs[UserTypedefName(Tok(e.Arg5))] = RegisterEnum(null, null, e.Arg3, Tok(e.Arg5)); break;
             // struct/union definitions.
-            case C.StructDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: false); break;
-            case C.UnionDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: true); break;
-            case C.TypedefStruct s: BuildStructDef(Tok(s.Arg2), s.Arg4, Tok(s.Arg6), isUnion: false); break;
-            case C.TypedefUnion s: BuildStructDef(Tok(s.Arg2), s.Arg4, Tok(s.Arg6), isUnion: true); break;
-            case C.TypedefStructAnon s: BuildStructDef(null, s.Arg3, Tok(s.Arg5), isUnion: false); break;
-            case C.TypedefUnionAnon s: BuildStructDef(null, s.Arg3, Tok(s.Arg5), isUnion: true); break;
+            case C.TypedefAttributedStruct s: BuildStructDef(Tok(s.Arg3), s.Arg5, Tok(s.Arg7), false, GnuAggregateAlignment(s.Arg2), pack: SourcePacking.Of(fn)); break;
+            case C.TypedefAttributedUnion s: BuildStructDef(Tok(s.Arg3), s.Arg5, Tok(s.Arg7), true, GnuAggregateAlignment(s.Arg2), pack: SourcePacking.Of(fn)); break;
+            case C.AttributedStruct s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, false, GnuAggregateAlignment(s.Arg1), pack: SourcePacking.Of(fn)); break;
+            case C.AttributedUnion s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, true, GnuAggregateAlignment(s.Arg1), pack: SourcePacking.Of(fn)); break;
+            case C.StructDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: false, pack: SourcePacking.Of(fn)); break;
+            case C.UnionDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: true, pack: SourcePacking.Of(fn)); break;
+            case C.TypedefStruct s: BuildStructDef(Tok(s.Arg2), s.Arg4, Tok(s.Arg6), isUnion: false, pack: SourcePacking.Of(fn)); break;
+            case C.TypedefUnion s: BuildStructDef(Tok(s.Arg2), s.Arg4, Tok(s.Arg6), isUnion: true, pack: SourcePacking.Of(fn)); break;
+            case C.TypedefStructAnon s: BuildStructDef(null, s.Arg3, Tok(s.Arg5), isUnion: false, pack: SourcePacking.Of(fn)); break;
+            case C.TypedefUnionAnon s: BuildStructDef(null, s.Arg3, Tok(s.Arg5), isUnion: true, pack: SourcePacking.Of(fn)); break;
             // `struct Tag;` forward declaration — C# resolves order-independently.
             case C.StructFwd s: ReferenceAggregate(s.Arg1, isUnion: false); break;
             // `_Static_assert(expr[, "msg"]);` at file scope — a compile-time-only
@@ -413,12 +476,19 @@ internal sealed partial class IrBuilder
     /// <c>DotCcGlobals</c> field (codegen emits <c>public static unsafe T name</c>);
     /// Repeated tentative declarations share storage; an <c>extern</c> declaration
     /// emits storage only when it has an initializer.</summary>
-    private void BuildGlobalDecls(Item typeItem, Item listItem, Storage storage)
+    private void BuildGlobalDecls(Item typeItem, Item listItem, Storage storage, bool isStatic = false)
     {
+        _sawNoreturnSpec = false;
+        _sawInlineSpec = false;
         _sawThreadLocalSpec = false; // consumed below: set by THIS declaration's spec resolution
         _sawConstexprSpec = false;   // same discipline
         WalkDeclList(typeItem, listItem, (name, initItem, type) =>
         {
+            if (type.Unqualified is CType.Func { IsFunctionType: true } functionType)
+            {
+                RegisterTypedefFunction(name, functionType, initItem, typeItem, isStatic);
+                return;
+            }
             // A file-scope array has its own productions (pinned GlobalArray
             // lowering); an array TAIL here would silently become a plain field.
             if (type.Unqualified is CType.Array)
@@ -427,7 +497,7 @@ internal sealed partial class IrBuilder
             }
             var declaration = RegisterScalarGlobal(new Symbol
             {
-                Name = name, Kind = SymKind.Var, Storage = storage, IsGlobal = true,
+                Name = name, Kind = SymKind.Var, Storage = storage, IsGlobal = true, Alignment = DeclarationAlignment(typeItem),
                 // A constexpr object is const-qualified (C23 §6.7.1p5 implies it),
                 // so the standard write-to-const error covers assignments.
                 Type = _sawConstexprSpec ? type.WithQuals(TypeQual.Const) : type,
@@ -949,7 +1019,28 @@ internal sealed partial class IrBuilder
     /// array-typedef alias; the explicit <c>T name[]</c> productions decay at
     /// their own case arms.</summary>
     private static CType DecayParam(CType t)
-        => t is CType.Array a ? new CType.Pointer(a.Element) : t;
+        => t switch
+        {
+            CType.Array a => new CType.Pointer(a.Element),
+            CType.Func { IsFunctionType: true } f => f with { IsFunctionType = false },
+            _ => t,
+        };
+
+    private static CType.Func FunctionTypedefType(FnSig sig) =>
+        new(sig.Return, sig.Params.Select(p => p.Type).ToArray(), sig.Variadic) { IsFunctionType = true };
+
+    private void RegisterTypedefFunction(string name, CType.Func type, Item? initializer, Item source, bool isStatic = false)
+    {
+        if (initializer is not null) throw new IrUnsupportedException("function declaration cannot have an initializer: " + name);
+        var sig = new FnSig(type.Return, name,
+            type.Params.Select((t, i) => new ParamInfo(t, "_p" + i)).ToList(), type.Variadic, isStatic);
+        var sym = DeclareFunc(sig, source.Position.Line >= SrcPos.SyntheticLineBase);
+        ApplyFnMarkers(sym);
+        if (!_fnDefSites.ContainsKey(name)) _protoOnlyFuncs[name] = sym;
+    }
+
+    private static CType PointerType(CType type) => type.Unqualified is CType.Func { IsFunctionType: true } f
+        ? f with { IsFunctionType = false } : new CType.Pointer(type);
 
     // ---- enums -----------------------------------------------------------
 
@@ -1035,7 +1126,7 @@ internal sealed partial class IrBuilder
     /// for an anonymous <c>typedef struct {…} Alias</c>); <paramref name="alias"/>
     /// the typedef name if any. Emits a C# struct under a canonical name, records
     /// its fields for member-type resolution, and maps the typedef alias to it.</summary>
-    private void BuildStructDef(string? tag, Item memberList, string? alias, bool isUnion)
+    private void BuildStructDef(string? tag, Item memberList, string? alias, bool isUnion, int alignment = 0, int pack = 0)
     {
         var canonical = tag ?? alias ?? throw new IrUnsupportedException("struct with neither tag nor typedef name");
         if (_emittedTypes.Add(canonical))
@@ -1044,10 +1135,13 @@ internal sealed partial class IrBuilder
             // units. Build its nested types and promotion routes only once:
             // rebuilding would route later member accesses through fresh hidden
             // fields absent from the already-emitted canonical definition.
+            _structPacks[canonical] = pack;
             var fields = BuildStructFields(memberList, canonical);
             _structFields[canonical] = fields;
             _structIsUnion[canonical] = isUnion;
-            Types.Add(new StructTypeDef(canonical, fields, isUnion));
+            _structAlignments[canonical] = alignment;
+            _structPacks[canonical] = pack;
+            Types.Add(new StructTypeDef(canonical, fields, isUnion, Alignment: alignment, Pack: pack));
         }
         // `struct Tag` and the typedef alias both resolve to the canonical type.
         if (alias is not null) { _typedefs[UserTypedefName(alias)] = new CType.Named(canonical); }
@@ -1141,37 +1235,43 @@ internal sealed partial class IrBuilder
         var fields = new List<StructField>();
         void Member(Item m)
         {
+            if (m.Content is not (C.MembersCons or C.MembersOne)
+                && SourcePacking.Of(m) != _structPacks.GetValueOrDefault(owner))
+                throw new IrUnsupportedException("#pragma pack changes between members of one aggregate are not supported");
             switch (m.Content)
             {
                 case C.MembersCons c: Member(c.Arg0); Member(c.Arg1); break;
                 case C.MembersOne o: Member(o.Arg0); break;
+                case C.AnonymousTypedefMember am: AddExistingAnonymousMember(ResolveTypeName(Tok(am.Arg0)), owner, fields); break;
+                case C.AnonymousStructTagMember am: AddExistingAnonymousMember(ReferenceAggregate(am.Arg1, false), owner, fields); break;
+                case C.AnonymousUnionTagMember am: AddExistingAnonymousMember(ReferenceAggregate(am.Arg1, true), owner, fields); break;
                 case C.StructMemberList sm:
-                    WalkDeclList(sm.Arg0, sm.Arg1, (name, _, type) => fields.Add(new StructField(name, type)));
+                    WalkDeclList(sm.Arg0, sm.Arg1, (name, _, type) => fields.Add(new StructField(name, type, Alignment: DeclarationAlignment(sm.Arg0))));
                     break;
                 // C11 anonymous struct/union member — its fields are promoted into
                 // the parent. Held in a generated nested aggregate + a hidden field;
                 // each inner name is recorded so `parent.inner` routes through it.
-                case C.AnonStructMember am: Gate(2011, "anonymous struct/union member", m); AddAnonMember(am.Arg3, owner, fields, isUnion: false); break;
-                case C.AnonUnionMember am: Gate(2011, "anonymous struct/union member", m); AddAnonMember(am.Arg3, owner, fields, isUnion: true); break;
+                case C.AnonStructMember am: Gate(2011, "anonymous struct/union member", m); AddAnonMember(am.Arg3, owner, fields, isUnion: false, SourcePacking.Of(m)); break;
+                case C.AnonUnionMember am: Gate(2011, "anonymous struct/union member", m); AddAnonMember(am.Arg3, owner, fields, isUnion: true, SourcePacking.Of(m)); break;
                 // A NAMED member of a nested aggregate type — `struct {…} m;` /
                 // `struct Tag {…} m;` (and union forms). Define the (tagged or
                 // synthesized) type, then add `m` of that type — no promotion.
-                case C.NamedNestedStruct nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: false); break;
-                case C.NamedNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true); break;
-                case C.NamedNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false); break;
-                case C.NamedNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true); break;
-                case C.PointerNestedStruct nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg6), fields, isUnion: false, pointer: true); break;
-                case C.PointerNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg6), fields, isUnion: true, pointer: true); break;
-                case C.PointerNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg7), fields, isUnion: false, pointer: true); break;
-                case C.PointerNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg7), fields, isUnion: true, pointer: true); break;
-                case C.ArrayNestedStruct nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: false, dimensions: nm.Arg6); break;
-                case C.ArrayNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true, dimensions: nm.Arg6); break;
-                case C.ArrayNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false, dimensions: nm.Arg7); break;
-                case C.ArrayNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true, dimensions: nm.Arg7); break;
-                case C.FlexArrayNestedStruct nm: Gate(1999, "flexible array member", m); AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: false, flexible: true); break;
-                case C.FlexArrayNestedUnion nm: Gate(1999, "flexible array member", m); AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true, flexible: true); break;
-                case C.FlexArrayNestedTaggedStruct nm: Gate(1999, "flexible array member", m); AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false, flexible: true); break;
-                case C.FlexArrayNestedTaggedUnion nm: Gate(1999, "flexible array member", m); AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true, flexible: true); break;
+                case C.NamedNestedStruct nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: false, pack: SourcePacking.Of(m)); break;
+                case C.NamedNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true, pack: SourcePacking.Of(m)); break;
+                case C.NamedNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false, pack: SourcePacking.Of(m)); break;
+                case C.NamedNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true, pack: SourcePacking.Of(m)); break;
+                case C.PointerNestedStruct nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg6), fields, isUnion: false, pointer: true, pack: SourcePacking.Of(m)); break;
+                case C.PointerNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg6), fields, isUnion: true, pointer: true, pack: SourcePacking.Of(m)); break;
+                case C.PointerNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg7), fields, isUnion: false, pointer: true, pack: SourcePacking.Of(m)); break;
+                case C.PointerNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg7), fields, isUnion: true, pointer: true, pack: SourcePacking.Of(m)); break;
+                case C.ArrayNestedStruct nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: false, dimensions: nm.Arg6, pack: SourcePacking.Of(m)); break;
+                case C.ArrayNestedUnion nm: AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true, dimensions: nm.Arg6, pack: SourcePacking.Of(m)); break;
+                case C.ArrayNestedTaggedStruct nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false, dimensions: nm.Arg7, pack: SourcePacking.Of(m)); break;
+                case C.ArrayNestedTaggedUnion nm: AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true, dimensions: nm.Arg7, pack: SourcePacking.Of(m)); break;
+                case C.FlexArrayNestedStruct nm: Gate(1999, "flexible array member", m); AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: false, flexible: true, pack: SourcePacking.Of(m)); break;
+                case C.FlexArrayNestedUnion nm: Gate(1999, "flexible array member", m); AddNamedNested(null, nm.Arg3, Tok(nm.Arg5), fields, isUnion: true, flexible: true, pack: SourcePacking.Of(m)); break;
+                case C.FlexArrayNestedTaggedStruct nm: Gate(1999, "flexible array member", m); AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: false, flexible: true, pack: SourcePacking.Of(m)); break;
+                case C.FlexArrayNestedTaggedUnion nm: Gate(1999, "flexible array member", m); AddNamedNested(Tok(nm.Arg1), nm.Arg4, Tok(nm.Arg6), fields, isUnion: true, flexible: true, pack: SourcePacking.Of(m)); break;
                 // `T name[N]…;` — a fixed-size array member (codegen: a `fixed`
                 // buffer for a primitive element, an [InlineArray] wrapper for a
                 // non-primitive one). Multi-dimensional bounds give a nested array
@@ -1179,7 +1279,7 @@ internal sealed partial class IrBuilder
                 case C.StructArrMember sm:
                 {
                     var dims = TryConstDims(sm.Arg2) ?? throw new IrUnsupportedException("non-constant struct array bound");
-                    fields.Add(new StructField(Tok(sm.Arg1), MakeArrayType(ResolveType(sm.Arg0), dims)));
+                    fields.Add(new StructField(Tok(sm.Arg1), MakeArrayType(ResolveType(sm.Arg0), dims), Alignment: DeclarationAlignment(sm.Arg0)));
                     break;
                 }
                 // C99 flexible array member: contributes alignment but no element
@@ -1253,34 +1353,53 @@ internal sealed partial class IrBuilder
     /// each inner field as promoted (so <c>parent.inner</c> rewrites to
     /// <c>parent.hidden.inner</c> at access time, keeping the union's overlap /
     /// the struct's sequential layout).</summary>
-    private void AddAnonMember(Item innerMemberList, string owner, List<StructField> parentFields, bool isUnion)
+    private void AddAnonMember(Item innerMemberList, string owner, List<StructField> parentFields, bool isUnion, int pack)
     {
-        var nested = $"__Anon{_anonAggrSeq++}";
+        var nested = AnonymousAggregateName(innerMemberList, isUnion);
+        _structPacks[nested] = pack;
         var innerFields = BuildStructFields(innerMemberList, nested);
         _structFields[nested] = innerFields;
         _structIsUnion[nested] = isUnion;
-        Types.Add(new StructTypeDef(nested, innerFields, isUnion));
+        _structPacks[nested] = pack;
+        Types.Add(new StructTypeDef(nested, innerFields, isUnion, Pack: pack));
 
+        AddExistingAnonymousMember(new CType.Named(nested), owner, parentFields);
+    }
+
+    private void AddExistingAnonymousMember(CType type, string owner, List<StructField> parentFields)
+    {
+        if (type.Unqualified is not CType.Named named || !_structFields.TryGetValue(named.Name, out var innerFields))
+            throw new IrUnsupportedException("anonymous member requires a complete struct or union type");
+        var nested = named.Name;
         var hidden = "__anon_" + nested;
-        parentFields.Add(new StructField(hidden, new CType.Named(nested)));
-
-        if (!_promoted.TryGetValue(owner, out var pm)) { _promoted[owner] = pm = new(StringComparer.Ordinal); }
-        foreach (var f in innerFields) { pm[f.Name] = (hidden, nested); }
+        parentFields.Add(new StructField(hidden, type));
+        if (!_promoted.TryGetValue(owner, out var pm)) _promoted[owner] = pm = new(StringComparer.Ordinal);
+        void Promote(string field)
+        {
+            if (field.Length == 0) return; // unnamed bitfield padding
+            if (!pm.TryAdd(field, (hidden, nested)))
+                throw new IrUnsupportedException("ambiguous anonymous member: " + field);
+        }
+        foreach (var f in innerFields) Promote(f.Name);
+        if (_promoted.TryGetValue(nested, out var innerPromoted))
+            foreach (var name in innerPromoted.Keys) Promote(name);
     }
 
     /// <summary>Add a NAMED member of a nested aggregate type (<c>struct {…} m;</c>
     /// or a tagged <c>struct Tag {…} m;</c>, and union forms). Defines the nested
     /// type (under its tag, or a synthesized name) and adds <paramref name="member"/>
     /// of that type — unlike an anonymous member, the fields are NOT promoted.</summary>
-    private void AddNamedNested(string? tag, Item innerMemberList, string member, List<StructField> parentFields, bool isUnion, bool pointer = false, Item? dimensions = null, bool flexible = false)
+    private void AddNamedNested(string? tag, Item innerMemberList, string member, List<StructField> parentFields, bool isUnion, bool pointer = false, Item? dimensions = null, bool flexible = false, int pack = 0)
     {
-        var typeName = tag ?? $"__Anon{_anonAggrSeq++}";
+        var typeName = tag ?? AnonymousAggregateName(innerMemberList, isUnion);
         if (_emittedTypes.Add(typeName))
         {
+            _structPacks[typeName] = pack;
             var inner = BuildStructFields(innerMemberList, typeName);
             _structFields[typeName] = inner;
             _structIsUnion[typeName] = isUnion;
-            Types.Add(new StructTypeDef(typeName, inner, isUnion));
+            _structPacks[typeName] = pack;
+            Types.Add(new StructTypeDef(typeName, inner, isUnion, Pack: pack));
         }
         CType memberType = new CType.Named(typeName);
         if (flexible) memberType = new CType.Array(memberType, 0);
@@ -1329,13 +1448,14 @@ internal sealed partial class IrBuilder
     private CType ResolveType(Item it) => it.Content switch
     {
         C.TypeFromSpec t => ResolveSpecs(CollectSpecs(t.Arg0), SrcPos.From(it)),
-        C.TypePtr t => new CType.Pointer(ResolveType(t.Arg0)),
+        C.TypePtr t => PointerType(ResolveType(t.Arg0)),
+        C.TypeGnuAttributes t => ResolveGnuAttributedType(t.Arg0, t.Arg1),
         // `int * const p` — the POINTER is const (can't repoint); the pointee is
         // unchanged. Flag the Pointer so `p = q` trips the const check while
         // `*p = v` (pointee write) does not. `* volatile` / `* restrict` have no
         // C# model, so they stay plain pointers (dropped).
-        C.TypePtrQualConst t => new CType.Pointer(ResolveType(t.Arg0)).WithQuals(TypeQual.Const),
-        C.TypePtrQualVolatile t => new CType.Pointer(ResolveType(t.Arg0)),
+        C.TypePtrQualConst t => PointerType(ResolveType(t.Arg0)).WithQuals(TypeQual.Const),
+        C.TypePtrQualVolatile t => PointerType(ResolveType(t.Arg0)),
         // `const T` / `T const` — leading or trailing const qualifier. Carries the
         // flag on the type; drives the const-correctness check + read-only-array RVA.
         C.TypeConstPre t => ResolveType(t.Arg1).WithQuals(TypeQual.Const),
@@ -1350,12 +1470,11 @@ internal sealed partial class IrBuilder
         C.TypeAtomic t => AtomicType(ResolveType(t.Arg1), it),
         C.TypeAtomicParen t => AtomicType(ResolveType(t.Arg2), it),
         // `_Alignas(Type) T` / `_Alignas(constexpr) T` (C11 §6.7.5) — the
-        // alignment specifier is ACCEPTED + IGNORED (a C# field/local has no
-        // controllable alignment; same no-op treatment as Zig's `align(N)`).
-        // Gated C11; the operand is validated but never read.
+        // specifier validates the requested alignment. Declaration binders retain
+        // it on fields/symbols for shared layout and aligned storage emission.
         C.TypeAlignasType t => AlignasType(t.Arg2, t.Arg4, it),
         C.TypeAlignasExpr t => AlignasExpr(t.Arg2, t.Arg4, it),
-        C.TypePtrQualRestrict t => new CType.Pointer(ResolveType(t.Arg0)),
+        C.TypePtrQualRestrict t => PointerType(ResolveType(t.Arg0)),
         C.TypeName t => ResolveTypeName(Tok(t.Arg0)),
         // `enum Tag` as a type — the registered real C# enum, or plain int if the
         // tag is unknown (forward/opaque) or names an anonymous int-constant enum.
@@ -1365,8 +1484,8 @@ internal sealed partial class IrBuilder
         // `struct Tag` / `union Tag` as a type — the canonical C# struct name.
         C.TypeStruct t => ReferenceAggregate(t.Arg1, isUnion: false),
         C.TypeUnion t => ReferenceAggregate(t.Arg1, isUnion: true),
-        C.TypeTaggedStruct t => ResolveTaggedAggregate(Tok(t.Arg1), t.Arg3, isUnion: false),
-        C.TypeTaggedUnion t => ResolveTaggedAggregate(Tok(t.Arg1), t.Arg3, isUnion: true),
+        C.TypeTaggedStruct t => ResolveTaggedAggregate(Tok(t.Arg1), t.Arg3, isUnion: false, SourcePacking.Of(it)),
+        C.TypeTaggedUnion t => ResolveTaggedAggregate(Tok(t.Arg1), t.Arg3, isUnion: true, SourcePacking.Of(it)),
         // Inline anonymous aggregate used as a type — `union { int i; float f; } u;`
         // (a NAMED member/var of an unnamed aggregate). Synthesize a struct name.
         C.TypeAnonStruct t => ResolveAnonAggregate(it, t.Arg3, isUnion: false),
@@ -1398,26 +1517,38 @@ internal sealed partial class IrBuilder
     /// type, cached by source position so the same type item always resolves to
     /// the same <see cref="CType.Named"/> (the field that holds it and every
     /// member access agree on one synthesized struct).</summary>
-    private readonly Dictionary<SrcPos, CType> _anonAggregates = new();
+    private readonly Dictionary<object, CType> _anonAggregates = new(ReferenceEqualityComparer.Instance);
     private int _anonAggrSeq;
+
+    private CType ResolveGnuAttributedType(Item inner, Item attributes)
+    {
+        var type = ResolveType(inner);
+        var pending = _pendingAttrNoreturn;
+        ValidateGnuFormatAttribute(attributes);
+        _sawNoreturnSpec |= _pendingAttrNoreturn;
+        _pendingAttrNoreturn = pending;
+        return type;
+    }
 
     private CType ResolveAnonAggregate(Item typeItem, Item memberListItem, bool isUnion)
     {
-        var pos = SrcPos.From(typeItem);
-        if (_anonAggregates.TryGetValue(pos, out var cached)) { return cached; }
-        var name = $"__Anon{_anonAggrSeq++}";
+        var identity = (object?)typeItem.Content ?? typeItem;
+        if (_anonAggregates.TryGetValue(identity, out var cached)) { return cached; }
+        var name = AnonymousAggregateName(typeItem, isUnion);
         var named = new CType.Named(name);
-        _anonAggregates[pos] = named;
+        _anonAggregates[identity] = named;
+        _structPacks[name] = SourcePacking.Of(typeItem);
         var fields = BuildStructFields(memberListItem, name);
         _structFields[name] = fields;
         _structIsUnion[name] = isUnion;
-        Types.Add(new StructTypeDef(name, fields, isUnion));
+        _structPacks[name] = SourcePacking.Of(typeItem);
+        Types.Add(new StructTypeDef(name, fields, isUnion, Pack: _structPacks[name]));
         return named;
     }
 
-    private CType ResolveTaggedAggregate(string tag, Item memberList, bool isUnion)
+    private CType ResolveTaggedAggregate(string tag, Item memberList, bool isUnion, int pack = 0)
     {
-        if (!_emittedTypes.Contains(tag)) BuildStructDef(tag, memberList, null, isUnion);
+        if (!_emittedTypes.Contains(tag)) BuildStructDef(tag, memberList, null, isUnion, pack: pack);
         return new CType.Named(tag);
     }
 
@@ -1611,10 +1742,45 @@ internal sealed partial class IrBuilder
     };
 
     /// <summary>`_Alignas(Type) T` — the align-as-type form (C11 §6.7.5). The
-    /// specifier is a NO-OP on the managed target (a C# field/local has no
-    /// controllable alignment), but the constraint still holds: the requested
-    /// alignment (the operand type's natural alignment) must not be less strict
-    /// than the declared type's own (§6.7.5p4). Gated C11.</summary>
+    /// requested alignment must not be less strict than the declared type's own
+    /// (§6.7.5p4). DeclarationAlignment retains it for layout/storage. Gated C11.</summary>
+    private int DeclarationAlignment(Item type) => type.Content switch
+    {
+        C.TypeAlignasExpr a => Math.Max(CheckedAlignment(ConstEval(BuildExpr(a.Arg2)) ?? 0), DeclarationAlignment(a.Arg4)),
+        C.TypeAlignasType a => Math.Max(AlignOfConst(ResolveType(a.Arg2)), DeclarationAlignment(a.Arg4)),
+        C.TypePtr p => DeclarationAlignment(p.Arg0),
+        C.TypeGnuAttributes p => DeclarationAlignment(p.Arg0),
+        C.TypePtrQualConst p => DeclarationAlignment(p.Arg0),
+        C.TypePtrQualVolatile p => DeclarationAlignment(p.Arg0),
+        C.TypePtrQualRestrict p => DeclarationAlignment(p.Arg0),
+        C.TypeConstPre p => DeclarationAlignment(p.Arg1),
+        C.TypeConstPost p => DeclarationAlignment(p.Arg0),
+        _ => 0,
+    };
+
+    private static int CheckedAlignment(long alignment)
+    {
+        if (alignment < 0 || (alignment != 0 && (alignment & (alignment - 1)) != 0))
+            throw new IrUnsupportedException("requested alignment is not a positive power of 2");
+        if (alignment > 128)
+            throw new IrUnsupportedException("requested alignment must be no greater than 128");
+        return (int)alignment;
+    }
+
+    private int GnuAggregateAlignment(Item attribute)
+    {
+        if (attribute.Content is not C.GnuFunctionAttrs attrs)
+            throw new IrUnsupportedException("unsupported GNU aggregate attribute");
+        int Walk(Item item) => item.Content switch
+        {
+            C.AttrListCons list => Math.Max(Walk(list.Arg0), Walk(list.Arg2)),
+            C.AttrCall a when Tok(a.Arg0).Trim('_') == "aligned" =>
+                CheckedAlignment(ConstEval(BuildExpr(a.Arg2)) ?? throw new IrUnsupportedException("non-constant GNU alignment")),
+            _ => throw new IrUnsupportedException("unsupported GNU aggregate attribute"),
+        };
+        return Walk(attrs.Arg3);
+    }
+
     private CType AlignasType(Item operandType, Item inner, Item it)
     {
         Gate(2011, "_Alignas", it);
@@ -1624,7 +1790,7 @@ internal sealed partial class IrBuilder
     }
 
     /// <summary>`_Alignas(constexpr) T` — the integer form (C11 §6.7.5). Accepted
-    /// and ignored when valid; a non-constant, non-power-of-2, or weaker-than-
+    /// and retained by declaration binding; a non-constant, non-power-of-2, or weaker-than-
     /// natural alignment is a constraint violation (gcc rejects all three).
     /// <c>_Alignas(0)</c> is C11's explicit no-effect case. Gated C11.</summary>
     private CType AlignasExpr(Item alignExpr, Item inner, Item it)
@@ -1652,9 +1818,7 @@ internal sealed partial class IrBuilder
     }
 
     /// <summary>C11 §6.7.5p4: an alignment specifier shall not request an alignment
-    /// LESS strict than the declared type's natural one (dotcc can't honor a
-    /// stricter one either, but over-alignment is at worst a missed optimization —
-    /// under-alignment would change the program's meaning, so it stays an error).</summary>
+    /// LESS strict than the declared type's natural one.</summary>
     private void CheckAlignasStrictEnough(long requested, CType declared, Item it)
     {
         if (requested < AlignOfConst(declared))
@@ -1829,8 +1993,8 @@ internal sealed partial class IrBuilder
             // type has no storage, so C allows this; dotcc hoists the definition
             // into the top-level type section (deduped by tag, exactly as a
             // file-scope definition) and the statement emits nothing.
-            case C.StmtStructDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: false); return EmptyStmt(pos);
-            case C.StmtUnionDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: true); return EmptyStmt(pos);
+            case C.StmtStructDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: false, pack: SourcePacking.Of(it)); return EmptyStmt(pos);
+            case C.StmtUnionDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: true, pack: SourcePacking.Of(it)); return EmptyStmt(pos);
             // Block-scope `_Static_assert(expr[, "msg"]);` — compile-time only,
             // evaluated exactly like the file-scope forms; a holding assertion
             // emits nothing. The message-less arity gates C23.
@@ -2212,6 +2376,7 @@ internal sealed partial class IrBuilder
         C.DeclAutoInfer d => BuildDeclAutoInfer(d),
         C.DeclAutoStorage d => BuildDeclList(d.Arg1, d.Arg2),
         C.DeclRegisterStorage d => BuildDeclList(d.Arg1, d.Arg2),
+        C.DeclLocalTypedefFunction d => BuildLocalFunctionTypedef(d.Arg1),
         C.DeclLocalTypedefAlias d => BuildLocalTypedef(d.Arg2, ResolveType(d.Arg1)),
         C.DeclLocalTypedefFnPtr d => BuildLocalTypedef(d.Arg4, FnPtrType(d.Arg1, d.Arg7)),
         C.DeclLocalTypedefFnPtrNoArgs d => BuildLocalTypedef(d.Arg4, FnPtrType(d.Arg1, null)),
@@ -2228,9 +2393,9 @@ internal sealed partial class IrBuilder
         C.DeclU8CharArrStrSized d => BuildDeclCharArrStr(d.Arg0, d.Arg1, CharArrSize(d.Arg2), d.Arg4, wide: true),
         C.DeclStructInit d => BuildDeclStructInit(d),
         // `T x = { .field = … };` — C99 designated struct/union initializer.
-        C.DeclStructDesignated d => BuildLocalInit(d.Arg1, ResolveType(d.Arg0), BuildStructDesignated(ResolveType(d.Arg0), d.Arg4)),
+        C.DeclStructDesignated d => BuildLocalInit(d.Arg1, ResolveType(d.Arg0), BuildStructDesignated(ResolveType(d.Arg0), d.Arg4), DeclarationAlignment(d.Arg0)),
         // `T x = {};` — C23 empty initializer (zero value).
-        C.DeclEmptyInit d => Gated(2023, "empty initializer", d.Arg1, BuildLocalInit(d.Arg1, ResolveType(d.Arg0), new DefaultLit { Type = ResolveType(d.Arg0) })),
+        C.DeclEmptyInit d => Gated(2023, "empty initializer", d.Arg1, BuildLocalInit(d.Arg1, ResolveType(d.Arg0), new DefaultLit { Type = ResolveType(d.Arg0) }, DeclarationAlignment(d.Arg0))),
         C.DeclArr d => BuildArrDecl(d.Arg0, d.Arg1, d.Arg2, null, implicitSize: false),
         C.DeclArrEmptyInit d => BuildArrDecl(d.Arg0, d.Arg1, d.Arg2, null, implicitSize: false),
         C.DeclArrInit d => BuildArrDecl(d.Arg0, d.Arg1, d.Arg2, d.Arg5, implicitSize: false),
@@ -2294,7 +2459,7 @@ internal sealed partial class IrBuilder
         var position = SrcPos.From(nameItem);
         var declaration = RegisterScalarGlobal(new Symbol
         {
-            Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
+            Name = Tok(nameItem), Alignment = DeclarationAlignment(typeItem), Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
         }, position);
         if (declaration is null) return;
         DefineRegisteredGlobal(declaration, BuildAggregateInit(type, initListItem), hasInitializer: true, position);
@@ -2316,6 +2481,13 @@ internal sealed partial class IrBuilder
         Globals.Add(new GlobalVar(sym, init));
         _symbols.DeclareAlias(sym);
         return new DeclStmt(System.Array.Empty<LocalDecl>());
+    }
+
+    private CStmt BuildLocalFunctionTypedef(Item signature)
+    {
+        var sig = ExtractFnSig(signature);
+        _symbols.Declare(new Symbol { Name = sig.Name, Kind = SymKind.Typedef, Type = FunctionTypedefType(sig), Storage = Storage.Typedef });
+        return new Seq(System.Array.Empty<CStmt>());
     }
 
     private CStmt BuildLocalTypedef(Item nameItem, CType type)
@@ -2415,6 +2587,11 @@ internal sealed partial class IrBuilder
         _sawConstexprSpec = false; // consumed below (C23 allows block-scope constexpr)
         WalkDeclList(typeItem, listItem, (name, initItem, type) =>
         {
+            if (type.Unqualified is CType.Func { IsFunctionType: true } functionType)
+            {
+                RegisterTypedefFunction(name, functionType, initItem, typeItem);
+                return;
+            }
             RequireCompleteObject(type, "local object '" + name + "'");
             if (type.Unqualified is CType.Array)
             {
@@ -2436,7 +2613,7 @@ internal sealed partial class IrBuilder
                     total = checked(total * count);
                     elem = a.Element;
                 }
-                var asym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
+                var asym = _symbols.Declare(new Symbol { Name = name, Alignment = DeclarationAlignment(typeItem), Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
                 Flush();
                 stmts.Add(new ArrayDecl(asym, elem,
                     new LitInt(total.ToString(System.Globalization.CultureInfo.InvariantCulture), total) { Type = CType.Int },
@@ -2445,7 +2622,7 @@ internal sealed partial class IrBuilder
             }
             var sym = _symbols.Declare(new Symbol
             {
-                Name = name, Kind = SymKind.Var, Storage = Storage.Auto,
+                Name = name, Alignment = DeclarationAlignment(typeItem), Kind = SymKind.Var, Storage = Storage.Auto,
                 // const-qualified for the same write-to-const coverage as the
                 // file-scope form.
                 Type = _sawConstexprSpec ? type.WithQuals(TypeQual.Const) : type,
@@ -2507,7 +2684,13 @@ internal sealed partial class IrBuilder
         // `element`, so every declarator keeps it.
         var litStars = CountLiteralStars(typeItem);
         var element = baseType;
-        for (var i = 0; i < litStars && element.Unqualified is CType.Pointer p; i++) { element = p.Pointee; }
+        for (var i = 0; i < litStars; i++)
+            element = element.Unqualified switch
+            {
+                CType.Pointer p => p.Pointee,
+                CType.Func f => f with { IsFunctionType = true },
+                _ => element,
+            };
         void WalkTail(Item it, CType tailType)
         {
             switch (it.Content)
@@ -2516,8 +2699,8 @@ internal sealed partial class IrBuilder
                 // itself a DeclItemTail, so it can be a further `*` level OR the
                 // terminal `DeclItemTailPlain` wrapping the DeclItem. Both recurse,
                 // rebuilding qualified pointer levels (`int *a, *const b;` → b:const int* slot).
-                case C.DeclItemTailPtr p: WalkTail(p.Arg1, new CType.Pointer(tailType)); break;
-                case C.DeclItemTailConstPtr p: WalkTail(p.Arg2, new CType.Pointer(tailType).WithQuals(TypeQual.Const)); break;
+                case C.DeclItemTailPtr p: WalkTail(p.Arg1, PointerType(tailType)); break;
+                case C.DeclItemTailConstPtr p: WalkTail(p.Arg2, PointerType(tailType).WithQuals(TypeQual.Const)); break;
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, tailType); break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, tailType); break;
                 case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, tailType); break;
@@ -2575,7 +2758,7 @@ internal sealed partial class IrBuilder
 
     private static CType WrapPtr(CType t, int stars)
     {
-        for (var i = 0; i < stars; i++) { t = new CType.Pointer(t); }
+        for (var i = 0; i < stars; i++) { t = PointerType(t); }
         return t;
     }
 
@@ -2592,6 +2775,7 @@ internal sealed partial class IrBuilder
             switch (it.Content)
             {
                 case C.TypePtr t: n++; it = t.Arg0; break;
+                case C.TypeGnuAttributes t: it = t.Arg0; break;
                 case C.TypePtrQualConst t: n++; it = t.Arg0; break;
                 case C.TypePtrQualVolatile t: n++; it = t.Arg0; break;
                 case C.TypePtrQualRestrict t: n++; it = t.Arg0; break;
@@ -2655,7 +2839,7 @@ internal sealed partial class IrBuilder
             arrType = new CType.Pointer(elem);
         }
 
-        var sym = _symbols.Declare(new Symbol { Name = name, Kind = SymKind.Var, Type = arrType, Storage = Storage.Auto });
+        var sym = _symbols.Declare(new Symbol { Name = name, Alignment = DeclarationAlignment(typeItem), Kind = SymKind.Var, Type = arrType, Storage = Storage.Auto });
         return new ArrayDecl(sym, elem, countExpr, inits);
     }
 
@@ -2683,15 +2867,15 @@ internal sealed partial class IrBuilder
     private CStmt BuildDeclStructInit(C.DeclStructInit n)
     {
         var type = ResolveType(n.Arg0);
-        return BuildLocalInit(n.Arg1, type, BuildAggregateInit(type, n.Arg4));
+        return BuildLocalInit(n.Arg1, type, BuildAggregateInit(type, n.Arg4), DeclarationAlignment(n.Arg0));
     }
 
     /// <summary>Declare a single block local of <paramref name="type"/> with an
     /// already-built initializer, as a one-declarator <see cref="DeclStmt"/>.</summary>
-    private DeclStmt BuildLocalInit(Item nameItem, CType type, CExpr init)
+    private DeclStmt BuildLocalInit(Item nameItem, CType type, CExpr init, int alignment = 0)
     {
         EnsureNotEmbed(init);
-        var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
+        var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Alignment = alignment, Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
         return new DeclStmt(new[] { new LocalDecl(sym, init) });
     }
 
@@ -2918,10 +3102,10 @@ internal sealed partial class IrBuilder
             && _promoted.TryGetValue(canonical, out var pm)
             && pm.TryGetValue(field, out var p))
         {
-            var hidden = new Member(base_, p.Hidden, arrow) { Type = new CType.Named(p.Nested), IsLValue = true };
+            var hidden = new Member(base_, p.Hidden, arrow) { Type = new CType.Named(p.Nested), IsLValue = arrow || base_.IsLValue };
             return BuildMemberAccess(hidden, field, arrow: false);
         }
-        return new Member(base_, field, arrow) { Type = MemberType(base_, field), IsLValue = true };
+        return new Member(base_, field, arrow) { Type = MemberType(base_, field), IsLValue = arrow || base_.IsLValue };
     }
 
     /// <summary>The canonical struct/union name an expression's type names (pointer
@@ -3239,6 +3423,7 @@ internal sealed partial class IrBuilder
         // A simple named callee — a function, a fn-ptr variable, or a libc builtin.
         if (TryCalleeName(calleeItem, out var name))
         {
+            if (TryBuildGnuIntrinsic(name, args) is { } gnuIntrinsic) return gnuIntrinsic;
             if (name == RuntimeIntrinsicNames.IsLittleEndian)
             {
                 if (args.Count != 0) throw new IrUnsupportedException("__dotcc_is_little_endian requires zero arguments");
@@ -3581,7 +3766,7 @@ internal sealed partial class IrBuilder
         }
         var sym = _symbols.Declare(new Symbol
         {
-            Name = Tok(nameItem), Kind = SymKind.Var, Type = new CType.Array(elem, count), Storage = Storage.Auto,
+            Name = Tok(nameItem), Alignment = DeclarationAlignment(typeItem), Kind = SymKind.Var, Type = new CType.Array(elem, count), Storage = Storage.Auto,
         });
         return new ArrayDecl(sym, elem, null, inits);
     }

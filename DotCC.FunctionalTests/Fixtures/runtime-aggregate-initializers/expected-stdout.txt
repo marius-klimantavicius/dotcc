@@ -1,0 +1,8 @@
+zero 0 0 partial 17 0
+wide 4294967297 4294967297 8 8
+arrays 44 2 3 0
+nested 5 6 7 8 compound 9 10
+calendar 1 126 7 4294967298 UTC locale . 2
+layout 16 8 8 8 32
+addresses 8 8 16
+runtime 0 4294967297

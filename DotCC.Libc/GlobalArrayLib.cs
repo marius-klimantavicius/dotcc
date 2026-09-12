@@ -50,6 +50,25 @@ public static unsafe partial class Libc
         return PinAndRoot(arr);
     }
 
+    /// <summary>Global C storage with a requested power-of-two alignment. Root
+    /// the entire pinned byte allocation; the aligned interior pointer stays
+    /// stable for the same lifetime as ordinary global arrays.</summary>
+    public static T* GlobalAlignedZeroed<T>(int length, int alignment) where T : unmanaged
+    {
+        if (length < 0 || alignment < 1 || (alignment & (alignment - 1)) != 0)
+            throw new ArgumentOutOfRangeException();
+        var bytes = GC.AllocateArray<byte>(checked(sizeof(T) * length + alignment - 1), pinned: true);
+        var start = (nuint)PinAndRoot(bytes);
+        return (T*)((start + (nuint)(alignment - 1)) & ~(nuint)(alignment - 1));
+    }
+
+    public static T* GlobalAlignedFrom<T>(ReadOnlySpan<T> init, int alignment) where T : unmanaged
+    {
+        var pointer = GlobalAlignedZeroed<T>(init.Length, alignment);
+        init.CopyTo(new Span<T>(pointer, init.Length));
+        return pointer;
+    }
+
     // Pinned delegate* arrays + their GCHandles (delegate* can't be a generic arg).
     private static readonly List<(GCHandle Handle, Array Arr)> _fnPtrArrays = new();
 

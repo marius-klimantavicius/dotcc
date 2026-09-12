@@ -660,7 +660,10 @@ public sealed class ZigFrontendTests
         // Wrapping +% on i128/u128 IS supported — native C# Int128/UInt128 wrap under unchecked
         // (no sub-int cast-back at 16 bytes). Only saturating is the cut (below).
         var cs = EmitZig("fn f(a: u128, b: u128) u128 { return a +% b; }\npub fn main() u8 { return 0; }\n");
-        cs.ShouldContain("a + b");
+        // By-value 128-bit parameters use aligned local storage before arithmetic.
+        cs.ShouldContain("*__dotcc_aligned_a = a;");
+        cs.ShouldContain("*__dotcc_aligned_b = b;");
+        cs.ShouldContain("return (*__dotcc_aligned_a) + (*__dotcc_aligned_b);");
     }
 
     [Fact]

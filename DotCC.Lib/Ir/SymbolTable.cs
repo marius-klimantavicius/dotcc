@@ -56,6 +56,9 @@ public enum Storage { None, Auto, Static, Extern, Register, Typedef }
 /// </summary>
 public sealed class Symbol
 {
+    /// <summary>Explicit C object alignment; zero uses the type's natural alignment.</summary>
+    public int Alignment { get; set; }
+
     public required string Name { get; init; }
     public required SymKind Kind { get; init; }
     /// <summary>The resolved C type. Settable so a post-build IR pass can retype a

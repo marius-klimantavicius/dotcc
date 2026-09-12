@@ -46,8 +46,15 @@
 #define EDOM     33
 #define ERANGE   34
 #define EDEADLK  35
+#define ETIME    62
+#define EPROTO   71
+#define EOVERFLOW 75
+#define EPROTOTYPE 91
+#define ENOPROTOOPT 92
 #define ENOTSUP  95
 #define ETIMEDOUT 110
+#define ECANCELED 125
+#define EOWNERDEAD 130
 #define EILSEQ   84
 
 #endif

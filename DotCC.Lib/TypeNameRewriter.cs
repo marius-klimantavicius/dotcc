@@ -244,19 +244,27 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         // group: `typedef Ret (*Name)(args);`. The body has `( * ID )` at
         // brace/paren depth 0 — scan for that pattern first.
         var aggregateDepth = 0;
+        var parenDepth = 0;
         for (var i = 0; i + 3 < body.Count; i++)
         {
             if (body[i].ID == _openBraceSymbol) { aggregateDepth++; }
             else if (body[i].ID == _closeBraceSymbol) { aggregateDepth--; }
+            // Parentheses grouping a function typedef name: Ret (Name)(args).
+            if (aggregateDepth == 0 && parenDepth == 0 && i + 3 < body.Count
+                && body[i].ID == _openParenSymbol && body[i + 1].ID == _idSymbol
+                && body[i + 2].ID == _closeParenSymbol && body[i + 3].ID == _openParenSymbol)
+                return i + 1;
             // A callback field inside a typedef aggregate is a member, not the
             // enclosing typedef's alias. Only inspect file-level declarators.
-            if (aggregateDepth == 0 && body[i].ID == _openParenSymbol
+            if (aggregateDepth == 0 && parenDepth == 0 && body[i].ID == _openParenSymbol
                 && body[i + 1].ID == _starSymbol
                 && body[i + 2].ID == _idSymbol
                 && body[i + 3].ID == _closeParenSymbol)
             {
                 return i + 2;
             }
+            if (body[i].ID == _openParenSymbol) parenDepth++;
+            else if (body[i].ID == _closeParenSymbol) parenDepth--;
         }
 
         // Otherwise (simple alias / struct-with-tag / struct-with-body):

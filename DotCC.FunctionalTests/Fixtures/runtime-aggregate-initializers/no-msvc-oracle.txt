@@ -1,0 +1,1 @@
+Exercises dotcc's LP64 runtime layout and GNU tm_gmtoff/tm_zone extensions. MSVC uses LLP64 and a different tm contract.

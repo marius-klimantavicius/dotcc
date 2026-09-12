@@ -51,7 +51,7 @@ public static partial class Compiler
             OneLevelScan);
 
     /// <summary>
-    /// Recursively enumerate includable files (<c>.h</c> / <c>.c</c>) under
+    /// Recursively enumerate includable files (regardless of extension) under
     /// <paramref name="root"/>, yielding each match's full path and its <c>/</c>-separated
     /// path relative to <paramref name="root"/> (built incrementally as we descend, so no
     /// per-file <see cref="Path.GetRelativePath"/> re-parse).
@@ -95,8 +95,7 @@ public static partial class Compiler
                 {
                     pending.Push((Path.Combine(dir, e.Name), rel));
                 }
-                else if (e.Name.EndsWith(".h", StringComparison.OrdinalIgnoreCase)
-                      || e.Name.EndsWith(".c", StringComparison.OrdinalIgnoreCase))
+                else
                 {
                     yield return (Path.Combine(dir, e.Name), rel);
                 }
@@ -105,8 +104,8 @@ public static partial class Compiler
     }
 
     /// <summary>
-    /// Resolve headers: scan every <c>-I</c> directory + every <c>.h</c>
-    /// alongside each <c>.c</c> + the synthetic system headers. Returns both
+    /// Resolve includes: scan every <c>-I</c> directory and input directory,
+    /// then combine with the synthetic system headers. Returns both
     /// the <c>name → content</c> map the preprocessor reads AND a
     /// <c>name → on-disk path</c> map used to render dependency files
     /// (<c>-MD</c>/<c>-MMD</c>). Last-wins (in the same dir order) so a user
@@ -129,7 +128,7 @@ public static partial class Compiler
         foreach (var dir in dirs)
         {
             if (!Directory.Exists(dir)) { continue; }
-            // One resilient walk collects BOTH headers and includable `.c` files.
+            // Include names have no extension restriction; non-headers are lazy.
             // A file directly in the dir registers under its bare name
             // (`#include "lstate.h"`). One in a SUBDIRECTORY registers under its
             // dir-relative path with `/` separators, so the subdirectory-qualified
@@ -143,7 +142,7 @@ public static partial class Compiler
                 {
                     // Header content is read eagerly. A header that vanishes/locks
                     // between scan and read is skipped, not fatal — the same
-                    // race-tolerance the lazy `.c` path already has below.
+                    // race-tolerance the lazy non-header path already has below.
                     string content;
                     try { content = File.ReadAllText(full); }
                     catch (IOException) { continue; }
@@ -153,11 +152,11 @@ public static partial class Compiler
                 }
                 else
                 {
-                    // `.c` registers too: `#include "opt/fcall.c"` (chibi vm.c) is the
+                    // Other files register too: `#include "opt/fcall.c"` (chibi vm.c) is the
                     // single-translation-unit composition idiom — a quoted include is
                     // a textual splice regardless of extension. Registered by PATH and
                     // read only on actual inclusion: an input's directory can hold many
-                    // unrelated `.c` files (a temp dir, a whole source tree), and
+                    // unrelated files (a temp dir, a whole source tree), and
                     // reading them all eagerly is wasted I/O — and a race against other
                     // processes' transient files.
                     lazy[rel] = full;
@@ -165,13 +164,13 @@ public static partial class Compiler
                 }
             }
         }
-        return (new IncludeMap(eager, lazy), paths);
+        return (new IncludeMap(eager, lazy, paths), paths);
     }
 
     /// <summary>
     /// The preprocessor's <c>#include</c> resolution map. Header (<c>.h</c>)
     /// content is loaded eagerly at map-build time (the historical behavior);
-    /// includable <c>.c</c> files are registered by path and read on first
+    /// files with other extensions (or none) are registered by path and read on first
     /// actual inclusion, with the content cached. An unreadable lazy entry
     /// (deleted/locked between scan and use) reports as unresolvable rather
     /// than failing the compile.
@@ -180,16 +179,20 @@ public static partial class Compiler
     {
         private readonly Dictionary<string, string> _eager;
         private readonly Dictionary<string, string> _lazyPaths;
+        private readonly IReadOnlyDictionary<string, string> _sourcePaths;
 
-        internal IncludeMap(Dictionary<string, string> eager, Dictionary<string, string> lazyPaths)
+        internal IncludeMap(Dictionary<string, string> eager, Dictionary<string, string> lazyPaths, IReadOnlyDictionary<string, string>? sourcePaths = null)
         {
             _eager = eager;
             _lazyPaths = lazyPaths;
+            _sourcePaths = sourcePaths ?? lazyPaths;
         }
 
         /// <summary>All-eager map (no lazy entries) — test convenience.</summary>
         internal IncludeMap(Dictionary<string, string> eager)
             : this(eager, new Dictionary<string, string>(StringComparer.Ordinal)) { }
+
+        internal string? SourceIdentity(string name) => _sourcePaths.TryGetValue(name, out var path) ? Path.GetFullPath(path) : null;
 
         public bool ContainsKey(string name) => _eager.ContainsKey(name) || _lazyPaths.ContainsKey(name);
 

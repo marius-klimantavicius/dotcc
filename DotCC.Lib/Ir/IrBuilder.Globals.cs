@@ -51,6 +51,7 @@ internal sealed partial class IrBuilder
                 $"conflicting storage specifiers for global '{candidate.Name}'", position, _file));
             return null;
         }
+        declaration.Symbol.Alignment = Math.Max(declaration.Symbol.Alignment, candidate.Alignment);
         _symbols.DeclareAlias(declaration.Symbol);
         return declaration;
     }

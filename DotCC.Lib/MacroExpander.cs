@@ -240,12 +240,14 @@ internal sealed class MacroExpander : RewritingTokenStream
         foreach (var pair in raw)
             expanded[pair.Key] = ExpandTokenList(pair.Value, new HashSet<string>(hiding, StringComparer.Ordinal));
         var result = new List<Token>(macro.Body.Count);
-        SubstituteInto(result, ReadBody(macro.Body, invocation), macro, raw, expanded);
+        SubstituteInto(result, ReadBody(macro.Body, invocation), macro, raw, expanded,
+            macro.Params.Count > 0 && args.Values.Count <= macro.Params.Count);
         return result;
     }
 
     private void SubstituteInto(List<Token> result, IReadOnlyList<Token> body, MacroDef macro,
-        Dictionary<string, IReadOnlyList<Token>> raw, Dictionary<string, IReadOnlyList<Token>> expanded)
+        Dictionary<string, IReadOnlyList<Token>> raw, Dictionary<string, IReadOnlyList<Token>> expanded,
+        bool variadicOmitted)
     {
         var pendingSpace = false;
         for (var i = 0; i < body.Count; ++i)
@@ -267,9 +269,27 @@ internal sealed class MacroExpander : RewritingTokenStream
                 {
                     var group = new List<Token>();
                     for (var j = i + 2; j < close; ++j) group.Add(body[j]);
-                    SubstituteInto(result, group, macro, raw, expanded);
+                    SubstituteInto(result, group, macro, raw, expanded, variadicOmitted);
                 }
                 i = close;
+                continue;
+            }
+            if (macro.IsVariadic && token.ID == _commaSymbol
+                && i + 2 < body.Count && body[i + 1].ID == _hashHashSymbol
+                && body[i + 2].Content as string == VaArgsName)
+            {
+                // GNU's comma elision is not token pasting: keep the comma and
+                // prescan present arguments normally, including nested macros and
+                // __FILE__. Only an omitted variadic argument removes the comma;
+                // an explicitly empty argument (or one expanding empty) keeps it.
+                // For (...) alone, () is empty rather than omitted, matching
+                // GCC in the ISO C dialects supported by dotcc.
+                if (!variadicOmitted)
+                {
+                    result.Add(token);
+                    AppendReplacement(result, expanded[VaArgsName], body[i + 2].LeadingSpace);
+                }
+                i += 2;
                 continue;
             }
             if (i + 2 < body.Count && body[i + 1].ID == _hashHashSymbol)

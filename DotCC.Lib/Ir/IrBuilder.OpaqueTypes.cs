@@ -18,7 +18,7 @@ internal sealed partial class IrBuilder
         // their storage and imported APIs. Recognize this header contract only
         // at synthetic declarations, never by an arbitrary user's tag spelling.
         if (tag.Position.Line >= SrcPos.SyntheticLineBase && name is "tm" or "timespec" or "lconv")
-            _runtimeAggregateTags.Add(name);
+            RegisterRuntimeAggregate(name);
         _aggregateTags.TryAdd(name, isUnion);
         return new CType.Named(name);
     }
@@ -30,6 +30,8 @@ internal sealed partial class IrBuilder
             case CType.Named named when _aggregateTags.ContainsKey(named.Name)
                 && !_structFields.ContainsKey(named.Name) && !_runtimeAggregateTags.Contains(named.Name):
                 throw new IrUnsupportedException($"{use} requires a complete type: incomplete aggregate '{named.Name}'");
+            case CType.Func { IsFunctionType: true }:
+                throw new IrUnsupportedException(use + " requires an object type, not a function type");
             case CType.Array array:
                 RequireCompleteObject(array.Element, use);
                 break;
@@ -52,7 +54,7 @@ internal sealed partial class IrBuilder
         foreach (var tag in _aggregateTags)
         {
             if (!_runtimeAggregateTags.Contains(tag.Key) && _emittedTypes.Add(tag.Key))
-                Types.Add(new StructTypeDef(tag.Key, System.Array.Empty<StructField>(), tag.Value));
+                Types.Add(new StructTypeDef(tag.Key, System.Array.Empty<StructField>(), tag.Value, IsIncomplete: true));
         }
     }
 }

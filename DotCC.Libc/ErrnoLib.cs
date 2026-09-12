@@ -91,6 +91,13 @@ public static unsafe partial class Libc
     public const int EISCONN = 106;        // Transport endpoint is already connected
     public const int ENOTCONN = 107;       // Transport endpoint is not connected
     public const int ETIMEDOUT = 110;      // Connection timed out
+    public const int ECANCELED = 125;      // Operation canceled
+    public const int ETIME = 62;           // Timer expired
+    public const int EPROTO = 71;          // Protocol error
+    public const int EOVERFLOW = 75;       // Value too large for defined data type
+    public const int EPROTOTYPE = 91;      // Protocol wrong type for socket
+    public const int ENOPROTOOPT = 92;     // Protocol not available
+    public const int EOWNERDEAD = 130;     // Owner died
     public const int ECONNREFUSED = 111;   // Connection refused
     public const int EHOSTUNREACH = 113;   // No route to host
     public const int EINPROGRESS = 115;    // Operation now in progress
@@ -139,6 +146,13 @@ public static unsafe partial class Libc
         EDEADLK => L("Resource deadlock avoided\0"u8),
         ENOTSUP => L("Operation not supported\0"u8),
         ETIMEDOUT => L("Connection timed out\0"u8),
+        ECANCELED => L("Operation canceled\0"u8),
+        ETIME => L("Timer expired\0"u8),
+        EPROTO => L("Protocol error\0"u8),
+        EOVERFLOW => L("Value too large for defined data type\0"u8),
+        EPROTOTYPE => L("Protocol wrong type for socket\0"u8),
+        ENOPROTOOPT => L("Protocol not available\0"u8),
+        EOWNERDEAD => L("Owner died\0"u8),
         EILSEQ  => L("Invalid or incomplete multibyte or wide character\0"u8),
         _       => L("Unknown error\0"u8),
     };

@@ -1,0 +1,1 @@
+Pins GCC multicharacter packing, including more than four bytes; implementation-defined across C compilers.
