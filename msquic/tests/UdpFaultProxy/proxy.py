@@ -11,7 +11,9 @@ import hashlib
 import heapq
 import ipaddress
 import json
+import os
 from pathlib import Path
+import select
 import selectors
 import signal
 import socket
@@ -58,7 +60,7 @@ def atomic_json(path, value):
 
 
 class Proxy:
-    def __init__(self, config):
+    def __init__(self, config, server_pid=None):
         allowed = {'family', 'listen_host', 'listen_port', 'server_host', 'server_port', 'seed',
                    'max_queue_packets', 'max_queue_bytes', 'rebind_after_client_packets',
                    'retire_old_backend_on_rebind', *DIRECTIONS}
@@ -117,6 +119,24 @@ class Proxy:
                           source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                           peak_queue_packets=0, peak_queue_bytes=0, backend_ports=[], rebindings=[],
                           directions={name: dict.fromkeys(counters, 0) for name in DIRECTIONS})
+        # A pidfd continues to identify the same process after exit/PID reuse.
+        # Observe it at each I/O error, never infer lifetime from a later wait().
+        self.server_pidfd = os.pidfd_open(server_pid) if server_pid is not None else None
+        self.stats['server_process'] = (dict(pid=server_pid, observation='pidfd')
+                                        if server_pid is not None else None)
+        self.stats['io_errors'] = []
+        self.stats['io_errors_omitted'] = 0
+
+    def record_io_error(self, error, operation, direction, value):
+        self.stats['directions'][direction][operation + '_errors'] += 1
+        if len(self.stats['io_errors']) >= 64:
+            self.stats['io_errors_omitted'] += 1
+            return
+        exited = (bool(select.select([self.server_pidfd], [], [], 0)[0])
+                  if self.server_pidfd is not None else None)
+        self.stats['io_errors'].append(dict(errno=error.errno, operation=operation,
+            direction=direction, monotonic_ns=time.monotonic_ns(),
+            local_port=value.getsockname()[1], server_process_exited=exited))
 
     def create_socket(self):
         value = socket.socket(self.family, socket.SOCK_DGRAM)
@@ -170,8 +190,8 @@ class Proxy:
                 payload, _, flags, sender = value.recvmsg(65535)
             except BlockingIOError:
                 return
-            except ConnectionRefusedError:
-                count['receive_errors'] += 1
+            except OSError as error:
+                self.record_io_error(error, 'receive', direction, value)
                 return
             count['received_packets'] += 1
             count['received_bytes'] += len(payload)
@@ -233,8 +253,9 @@ class Proxy:
                 sent = self.back.send(payload) if direction == 'client_to_server' else self.front.sendto(payload, self.client)
                 if sent != len(payload):
                     raise OSError('Partial UDP send')
-            except OSError:
-                count['send_errors'] += 1
+            except OSError as error:
+                self.record_io_error(error, 'send', direction,
+                                     self.back if direction == 'client_to_server' else self.front)
                 continue
             count['forwarded_packets'] += 1
             count['forwarded_bytes'] += len(payload)
@@ -261,6 +282,9 @@ class Proxy:
         self.selector.close()
         for value in self.sockets:
             value.close()
+        if self.server_pidfd is not None:
+            os.close(self.server_pidfd)
+            self.server_pidfd = None
         self.stats['elapsed_seconds'] = time.monotonic() - self.started
         self.stats['remaining_queue_packets'] = 0
         self.stats['remaining_queue_bytes'] = 0
@@ -271,11 +295,13 @@ def main():
     parser.add_argument('--config', required=True, type=Path)
     parser.add_argument('--ready', required=True, type=Path)
     parser.add_argument('--stats', required=True, type=Path)
+    parser.add_argument('--server-pid', type=int,
+                        help='Observe this server process through a Linux pidfd at each I/O error')
     args = parser.parse_args()
     args.ready.unlink(missing_ok=True)
     args.stats.unlink(missing_ok=True)
     raw = args.config.read_bytes()
-    proxy = Proxy(json.loads(raw))
+    proxy = Proxy(json.loads(raw), args.server_pid)
     proxy.stats['configuration_sha256'] = hashlib.sha256(raw).hexdigest()
 
     def stop(_signum, _frame):

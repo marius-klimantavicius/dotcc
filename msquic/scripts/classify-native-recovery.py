@@ -37,7 +37,6 @@ def validate_case(case):
     # A client-direction black hole can therefore prevent the server from ever
     # reaching its configured change ordinal. Require the actual triggering
     # direction, and do not claim both ceilings changed in this negative case.
-    recovery.validate_faults(case['proxy'], 'mtu-probe-loss' if scenario == 'payload-ceiling-down' else scenario)
     if scenario == 'payload-ceiling-down':
         config = case['proxy']['configuration']['client_to_server']
         counts = case['proxy']['directions']['client_to_server']
@@ -66,6 +65,8 @@ def validate_case(case):
                   'Expected sampled incomplete payload accounting')
             if role == 'both':
                 ownership(peer)
+    recovery.validate_faults(case['proxy'], 'mtu-probe-loss' if scenario == 'payload-ceiling-down' else scenario,
+                            recovery.completed_server_pid(case) if scenario != 'payload-ceiling-down' else None)
     if scenario.startswith('rebinding'):
         server = case['server']
         if role == 'native':

@@ -5,6 +5,7 @@ This qualifies packet delivery under the selected faults, not the other P7
 feature gates. Build and qualify current peers with test-managed-peer.py first.
 """
 import argparse
+import errno
 import hashlib
 import json
 import os
@@ -115,7 +116,48 @@ def validate_peer(result, role, managed, runtime, cipher, family):
               role + ' host I/O failed')
 
 
-def validate_faults(stats, scenario):
+def completed_server_pid(case):
+    """Only a successfully validated endpoint can support teardown classification."""
+    check(case['server_exit'] == 0, 'Server did not exit successfully')
+    server = case['server']
+    validate_peer(server, 'server', case['managed_role'] in ('server', 'both'),
+                  case['runtime'], case['cipher'], case['family'])
+    check(server['connected'] == server['finished'] == server['closed'] == 1
+          and server['transport_status'] == server['transport_error'] == server['peer_error'] == 0,
+          'Server did not complete payload/FIN and close successfully')
+    check(type(case['server_pid']) is int and case['server_pid'] > 0, 'Missing actual server process identity')
+    return case['server_pid']
+
+
+def validate_io_errors(stats, completed_pid=None):
+    """Retain raw errors; only classify refusals observed after successful server exit.
+
+    This establishes when the error was observed, not when an ICMP was generated.
+    Live-process errors, unknown lifetime, other errors and missing events fail.
+    """
+    events = stats['io_errors']
+    check(stats['io_errors_omitted'] == 0 and len(events) <= 64, 'Incomplete proxy I/O evidence')
+    counts = {(direction, operation): 0 for direction in DIRECTIONS for operation in ('send', 'receive')}
+    for event in events:
+        pair = (event['direction'], event['operation'])
+        check(pair in counts, 'Invalid proxy I/O event')
+        counts[pair] += 1
+        check(completed_pid is not None
+              and stats['server_process'] == dict(pid=completed_pid, observation='pidfd')
+              and event['server_process_exited'] is True
+              and event['errno'] == errno.ECONNREFUSED
+              and pair in (('client_to_server', 'send'), ('server_to_client', 'receive'))
+              and event['local_port'] in stats['backend_ports']
+              and type(event['monotonic_ns']) is int and event['monotonic_ns'] > 0,
+              'Unexpected proxy I/O error: ' + json.dumps(event, sort_keys=True))
+    for (direction, operation), count in counts.items():
+        check(stats['directions'][direction][operation + '_errors'] == count,
+              'Proxy raw I/O counts disagree with event evidence')
+    return dict(classification='ECONNREFUSED observed after successful server process exit',
+                count=len(events), server_pid=completed_pid)
+
+
+def validate_faults(stats, scenario, completed_pid=None):
     check(stats['outcome'] == 'stopped', 'Proxy failed')
     check(stats['source_sha256'] == sha(PROXY), 'Proxy executable source changed')
     check(stats['remaining_queue_packets'] == stats['remaining_queue_bytes'] == 0, 'Proxy queue leaked')
@@ -125,8 +167,9 @@ def validate_faults(stats, scenario):
     for direction in DIRECTIONS:
         row = counts[direction]
         check(row['forwarded_packets'] > 0, 'No traffic: ' + direction)
-        for field in ('queue_drops', 'truncated_drops', 'foreign_drops', 'send_errors', 'receive_errors'):
+        for field in ('queue_drops', 'truncated_drops', 'foreign_drops'):
             check(row[field] == 0, 'Unexpected proxy ' + direction + ' ' + field)
+    io_observation = validate_io_errors(stats, completed_pid)
     total = lambda field: sum(counts[direction][field] for direction in DIRECTIONS)
     required = {
         'handshake-loss': ('rule_drops',), 'loss': ('rule_drops',),
@@ -154,6 +197,7 @@ def validate_faults(stats, scenario):
     if scenario == 'baseline':
         check(total('rule_drops') == total('mtu_drops') == total('duplicates_forwarded') == 0,
               'Baseline introduced a fault')
+    return io_observation
 
 
 def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
@@ -188,12 +232,14 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
     try:
         with tempfile.TemporaryDirectory(prefix='dotcc-recovery-') as isolated_tmp:
             environment = dict(os.environ, TMPDIR=isolated_tmp, OPENSSL_CONF=str(BUILD / 'p256.cnf'),
-                               SSL_CERT_FILE=str(certificate), DOTCC_PEER_SETTLE_MS=str(case['post_exchange_settle_ms']))
+                               SSL_CERT_FILE=str(certificate), DOTCC_PEER_SETTLE_MS=str(case['post_exchange_settle_ms']),
+                               DOTCC_PEER_SHARE_UDP_BINDING='0')
             environment.pop('SSLKEYLOGFILE', None)
             with (directory / 'server.log').open('w') as server_log, \
                     (directory / 'client.log').open('w') as client_log, \
                     (directory / 'proxy.log').open('w') as proxy_log:
                 server = start(peer_command('server', 0), server_log, environment)
+                case['server_pid'] = server.pid
                 server_port = wait_ready(server, ready)
                 config = dict(family=family, server_port=server_port, seed=args.seed,
                               max_queue_packets=1024, max_queue_bytes=8 * 1024 * 1024,
@@ -201,7 +247,8 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
                 config_path = directory / 'proxy.config.json'
                 config_path.write_text(json.dumps(config, indent=2) + '\n')
                 proxy = start([sys.executable, str(PROXY), '--config', str(config_path),
-                               '--ready', str(proxy_ready), '--stats', str(stats_path)], proxy_log, environment)
+                               '--ready', str(proxy_ready), '--stats', str(stats_path),
+                               '--server-pid', str(server.pid)], proxy_log, environment)
                 proxy_port = wait_ready(proxy, proxy_ready, as_json=True)
                 client = start(peer_command('client', proxy_port), client_log, environment)
                 case['client_exit'] = client.wait(timeout=60)
@@ -220,9 +267,15 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
                   'Peer or proxy exit failed: ' + name)
             for peer_role in ('client', 'server'):
                 validate_peer(case[peer_role], peer_role, role in (peer_role, 'both'), runtime, cipher, family)
+                if role in (peer_role, 'both'):
+                    check(case[peer_role].get('share_udp_binding_requested') is False,
+                          'Recovery peer differs from the ordinary baseline binding profile')
+                    if peer_role == 'client':
+                        check(case[peer_role].get('share_udp_binding') is False,
+                              'Recovery client unexpectedly enabled shared binding')
             if role in ('client', 'both'):
                 check(case['client']['settle_ms'] == case['post_exchange_settle_ms'], 'Client did not apply the requested validation interval')
-            validate_faults(stats, scenario)
+            case['proxy_io_observation'] = validate_faults(stats, scenario, completed_server_pid(case))
             if scenario.startswith('rebinding'):
                 server_result = case['server']
                 active = [path for path in server_result.get('paths', []) if path['in_use'] and path['active']]

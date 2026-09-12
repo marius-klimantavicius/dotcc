@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Bounded controls for the test proxy; this does not qualify QUIC recovery."""
+import copy
+import errno
+import importlib.util
 import json
+import select
 from pathlib import Path
 import socket
 import subprocess
@@ -11,6 +15,12 @@ import time
 import unittest
 
 from proxy import Proxy, Rules
+
+
+_recovery_spec = importlib.util.spec_from_file_location(
+    'proxy_recovery_validation', Path(__file__).resolve().parents[2] / 'scripts/test-recovery.py')
+recovery = importlib.util.module_from_spec(_recovery_spec)
+_recovery_spec.loader.exec_module(recovery)
 
 
 class ProxyControls(unittest.TestCase):
@@ -142,6 +152,168 @@ class ProxyControls(unittest.TestCase):
             thread.join(timeout=2)
             server.close()
             self.assertFalse(thread.is_alive(), 'echo worker drained')
+
+    def refused_backend(self, family, *, observe_process, exit_before_send):
+        # The pipe acknowledgments establish socket closure independently of
+        # process exit. No sleep guesses whether a UDP endpoint still exists.
+        child_code = """
+import json, socket, sys
+family = socket.AF_INET if sys.argv[1] == 'ipv4' else socket.AF_INET6
+host = '127.0.0.1' if family == socket.AF_INET else '::1'
+value = socket.socket(family, socket.SOCK_DGRAM)
+value.bind((host, 0))
+print(json.dumps({'port': value.getsockname()[1]}), flush=True)
+if sys.stdin.readline().strip() != 'close':
+    raise RuntimeError('expected close command')
+value.close()
+print('closed', flush=True)
+if sys.stdin.readline().strip() != 'exit':
+    raise RuntimeError('expected exit command')
+"""
+        child = subprocess.Popen([sys.executable, '-u', '-c', child_code,
+                                  'ipv4' if family == socket.AF_INET else 'ipv6'],
+                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE, text=True)
+        proxy = None
+
+        def read_line():
+            self.assertTrue(select.select([child.stdout], [], [], 5)[0],
+                            'bounded subprocess pipe acknowledgment')
+            line = child.stdout.readline()
+            self.assertTrue(line, 'subprocess closed its protocol pipe unexpectedly')
+            return line.strip()
+
+        def command(value):
+            child.stdin.write(value + '\n')
+            child.stdin.flush()
+
+        try:
+            port = json.loads(read_line())['port']
+            proxy = Proxy(dict(family='ipv4' if family == socket.AF_INET else 'ipv6',
+                               server_port=port), server_pid=child.pid if observe_process else None)
+            with tempfile.TemporaryDirectory(prefix='dotcc-proxy-icmp-') as temporary:
+                proxy.start(Path(temporary) / 'ready.json')
+                backend_port = proxy.back.getsockname()[1]
+                command('close')
+                self.assertEqual(read_line(), 'closed')
+                self.assertIsNone(child.poll(), 'socket closure must leave the child process alive')
+                if exit_before_send:
+                    command('exit')
+                    self.assertEqual(child.wait(timeout=5), 0)
+                before = time.monotonic_ns()
+                payload = b'actual-kernel-port-unreachable-control'
+                self.assertEqual(proxy.back.send(payload), len(payload))
+                self.assertTrue(select.select([proxy.back], [], [], 5)[0],
+                                'actual connected UDP refusal must become readable')
+                # Exercise the proxy receive path, not a fabricated OSError.
+                proxy.receive(proxy.back, 'server_to_client')
+                after = time.monotonic_ns()
+                if not exit_before_send:
+                    self.assertIsNone(child.poll(), 'live-process refusal control exited unexpectedly')
+                counts = proxy.stats['directions']['server_to_client']
+                self.assertEqual(counts['receive_errors'], 1, 'retain the raw I/O error count')
+                self.assertEqual(counts['send_errors'], 0)
+                self.assertEqual(proxy.stats['io_errors_omitted'], 0)
+                self.assertEqual(len(proxy.stats['io_errors']), 1)
+                event = proxy.stats['io_errors'][0]
+                self.assertEqual(event['errno'], errno.ECONNREFUSED)
+                self.assertEqual(event['operation'], 'receive')
+                self.assertEqual(event['direction'], 'server_to_client')
+                self.assertEqual(event['local_port'], backend_port)
+                self.assertGreaterEqual(event['monotonic_ns'], before)
+                self.assertLessEqual(event['monotonic_ns'], after)
+                if observe_process:
+                    self.assertEqual(proxy.stats['server_process'],
+                                     {'pid': child.pid, 'observation': 'pidfd'})
+                    self.assertIs(event['server_process_exited'], exit_before_send)
+                else:
+                    self.assertIsNone(proxy.stats['server_process'])
+                    self.assertIsNone(event['server_process_exited'],
+                                      'missing lifetime evidence must remain unknown')
+                original = copy.deepcopy(proxy.stats)
+                with self.assertRaises(RuntimeError):
+                    recovery.validate_io_errors(proxy.stats)
+                if observe_process and exit_before_send:
+                    classified = recovery.validate_io_errors(proxy.stats, child.pid)
+                    self.assertEqual(classified['count'], 1)
+                    self.assertEqual(classified['server_pid'], child.pid)
+                    self.assertEqual(classified['classification'],
+                                     'ECONNREFUSED observed after successful server process exit')
+                    with self.assertRaises(RuntimeError):
+                        recovery.validate_io_errors(proxy.stats, child.pid + 1)
+                    for mutation in ('other-errno', 'omitted', 'raw-count', 'live', 'unknown', 'wrong-port'):
+                        altered = copy.deepcopy(proxy.stats)
+                        if mutation == 'other-errno':
+                            altered['io_errors'][0]['errno'] = errno.EIO
+                        elif mutation == 'omitted':
+                            altered['io_errors_omitted'] = 1
+                        elif mutation == 'raw-count':
+                            altered['directions']['server_to_client']['receive_errors'] += 1
+                        elif mutation == 'live':
+                            altered['io_errors'][0]['server_process_exited'] = False
+                        elif mutation == 'unknown':
+                            altered['io_errors'][0]['server_process_exited'] = None
+                        else:
+                            altered['io_errors'][0]['local_port'] = 0
+                        with self.subTest(evidence_mutation=mutation), self.assertRaises(RuntimeError):
+                            recovery.validate_io_errors(altered, child.pid)
+                else:
+                    with self.assertRaises(RuntimeError):
+                        recovery.validate_io_errors(proxy.stats, child.pid)
+                self.assertEqual(proxy.stats, original,
+                                 'classification must retain every raw error and event')
+        finally:
+            if proxy is not None:
+                proxy.close()
+            if child.poll() is None:
+                child.kill()
+            child.wait(timeout=5)
+            for pipe in (child.stdin, child.stdout, child.stderr):
+                pipe.close()
+
+    def test_refusal_while_server_process_alive(self):
+        for family in (socket.AF_INET, socket.AF_INET6):
+            with self.subTest(family=family):
+                self.refused_backend(family, observe_process=True, exit_before_send=False)
+
+    def test_refusal_after_observed_server_exit(self):
+        for family in (socket.AF_INET, socket.AF_INET6):
+            with self.subTest(family=family):
+                self.refused_backend(family, observe_process=True, exit_before_send=True)
+
+    def test_refusal_without_process_observation(self):
+        for family in (socket.AF_INET, socket.AF_INET6):
+            with self.subTest(family=family):
+                self.refused_backend(family, observe_process=False, exit_before_send=False)
+
+    def test_completed_server_requires_successful_terminal_evidence(self):
+        # Receipt-validator controls only; these synthetic rows do not stand in
+        # for the actual kernel/process error controls above.
+        case = dict(server_exit=0, server_pid=12345, managed_role='both',
+                    runtime='jit', cipher='128', family='ipv4', server=dict(
+                        passed=True, family='ipv4', cipher=0x1301, group=23,
+                        quic_version=1, server_bytes=65537, certificate_validation=False,
+                        listener_preflight=True, sent_bytes=65537, send_completions=1,
+                        connected=1, finished=1, closed=1, transport_status=0,
+                        transport_error=0, peer_error=0, aot=False, statistics_status=0,
+                        core_sent_stream_bytes=65537, core_received_stream_bytes=65537,
+                        host_resources=0, host_allocations=0, host_receive_leases=0,
+                        host_send_errors=0, host_receive_errors=0, host_truncations=0))
+        self.assertEqual(recovery.completed_server_pid(case), case['server_pid'])
+        for field, value in [('passed', False), ('server_bytes', 65536),
+                             ('connected', 0), ('finished', 0), ('closed', 0),
+                             ('transport_status', 62), ('transport_error', 1),
+                             ('peer_error', 1), ('host_resources', 1),
+                             ('host_receive_leases', 1), ('host_send_errors', 1)]:
+            altered = copy.deepcopy(case)
+            altered['server'][field] = value
+            with self.subTest(terminal_field=field), self.assertRaises(RuntimeError):
+                recovery.completed_server_pid(altered)
+        for field, value in [('server_exit', 1), ('server_pid', 0), ('server_pid', None)]:
+            altered = copy.deepcopy(case)
+            altered[field] = value
+            with self.subTest(case_field=field, value=value), self.assertRaises(RuntimeError):
+                recovery.completed_server_pid(altered)
 
     def test_ipv4_passthrough(self):
         self.exchange(socket.AF_INET)
