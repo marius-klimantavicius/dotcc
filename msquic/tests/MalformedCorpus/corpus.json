@@ -1,0 +1,987 @@
+{
+  "source_commit": "80a065112426bce68c1da42d026478d3e40fd45e",
+  "source_sha256": {
+    "src/core/unittest/FrameTest.cpp": "b4a3d44b455a4a247511c94fa9f9dd6b4f882add0870be3826035d989cb2a714",
+    "src/core/unittest/TransportParamTest.cpp": "2f6af4a4ffb05a99b0db531695fea951516b99db5e1affc3da80b6d52d6b1371",
+    "src/core/frame.c": "9349609e7c8cef24d6cae2d69eec7fd7b22f6212bc89958aec993806cc0f5c79",
+    "src/core/crypto_tls.c": "fe8da55534bf33cec61d6a8cd0ae97ba05fd67600294d8b39969719881072a40"
+  },
+  "scope": "Selected upstream decoder vectors and explicitly labeled mutations; not the full upstream unit suite or endpoint fuzzing. TP decoder exposes no consumed-offset output.",
+  "cases": [
+    {
+      "id": "reset-valid",
+      "kind": "reset",
+      "hex": "04407fc00000010000000180010000",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "reset-prefix-1",
+      "kind": "reset",
+      "hex": "04",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-2",
+      "kind": "reset",
+      "hex": "0440",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-3",
+      "kind": "reset",
+      "hex": "04407f",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-4",
+      "kind": "reset",
+      "hex": "04407fc0",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-5",
+      "kind": "reset",
+      "hex": "04407fc000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-6",
+      "kind": "reset",
+      "hex": "04407fc00000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-7",
+      "kind": "reset",
+      "hex": "04407fc0000001",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-8",
+      "kind": "reset",
+      "hex": "04407fc000000100",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-9",
+      "kind": "reset",
+      "hex": "04407fc00000010000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-10",
+      "kind": "reset",
+      "hex": "04407fc0000001000000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-11",
+      "kind": "reset",
+      "hex": "04407fc000000100000001",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-12",
+      "kind": "reset",
+      "hex": "04407fc00000010000000180",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-13",
+      "kind": "reset",
+      "hex": "04407fc0000001000000018001",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-prefix-14",
+      "kind": "reset",
+      "hex": "04407fc000000100000001800100",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 209,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "stop-valid",
+      "kind": "stop",
+      "hex": "052a4040",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 355,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "stop-prefix-1",
+      "kind": "stop",
+      "hex": "05",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 355,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "stop-prefix-2",
+      "kind": "stop",
+      "hex": "052a",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 355,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "stop-prefix-3",
+      "kind": "stop",
+      "hex": "052a40",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 355,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "maxdata-valid",
+      "kind": "maxdata",
+      "hex": "1080010000",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 695,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "maxdata-prefix-1",
+      "kind": "maxdata",
+      "hex": "10",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 695,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "maxdata-prefix-2",
+      "kind": "maxdata",
+      "hex": "1080",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 695,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "maxdata-prefix-3",
+      "kind": "maxdata",
+      "hex": "108001",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 695,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "maxdata-prefix-4",
+      "kind": "maxdata",
+      "hex": "10800100",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 695,
+        "derivation": "derived: every proper prefix of upstream valid values"
+      }
+    },
+    {
+      "id": "reset-mask1-v255",
+      "kind": "reset",
+      "hex": "04ff0000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask1-v64",
+      "kind": "reset",
+      "hex": "04400000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask2-v255",
+      "kind": "reset",
+      "hex": "0400ff00",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask2-v64",
+      "kind": "reset",
+      "hex": "04004000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask3-v255",
+      "kind": "reset",
+      "hex": "04ffff00",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask3-v64",
+      "kind": "reset",
+      "hex": "04404000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask4-v255",
+      "kind": "reset",
+      "hex": "040000ff",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask4-v64",
+      "kind": "reset",
+      "hex": "04000040",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask5-v255",
+      "kind": "reset",
+      "hex": "04ff00ff",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask5-v64",
+      "kind": "reset",
+      "hex": "04400040",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask6-v255",
+      "kind": "reset",
+      "hex": "0400ffff",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask6-v64",
+      "kind": "reset",
+      "hex": "04004040",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask7-v255",
+      "kind": "reset",
+      "hex": "04ffffff",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "reset-mask7-v64",
+      "kind": "reset",
+      "hex": "04404040",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 302,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "stop-mask1-v255",
+      "kind": "stop",
+      "hex": "05ff00",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 373,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "stop-mask1-v64",
+      "kind": "stop",
+      "hex": "054000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 373,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "stop-mask2-v255",
+      "kind": "stop",
+      "hex": "0500ff",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 373,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "stop-mask2-v64",
+      "kind": "stop",
+      "hex": "050040",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 373,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "stop-mask3-v255",
+      "kind": "stop",
+      "hex": "05ffff",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 373,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "stop-mask3-v64",
+      "kind": "stop",
+      "hex": "054040",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 373,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "crypto-mask1-v255",
+      "kind": "crypto",
+      "hex": "06ff007f7f7f",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 440,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "crypto-mask1-v64",
+      "kind": "crypto",
+      "hex": "0640007f7f7f",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 440,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "crypto-mask2-v255",
+      "kind": "crypto",
+      "hex": "0600ff7f7f7f",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 440,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "crypto-mask2-v64",
+      "kind": "crypto",
+      "hex": "0600407f7f7f",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 440,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "crypto-mask3-v255",
+      "kind": "crypto",
+      "hex": "06ffff7f7f7f",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 440,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "crypto-mask3-v64",
+      "kind": "crypto",
+      "hex": "0640407f7f7f",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 440,
+        "derivation": "exact upstream GenerateDecodeFailParams mask/value combination"
+      }
+    },
+    {
+      "id": "crypto-valid",
+      "kind": "crypto",
+      "hex": "060703030303",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 414,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "crypto-prefix-1",
+      "kind": "crypto",
+      "hex": "06",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 414,
+        "derivation": "derived: every proper prefix of upstream valid vector"
+      }
+    },
+    {
+      "id": "crypto-prefix-2",
+      "kind": "crypto",
+      "hex": "0607",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 414,
+        "derivation": "derived: every proper prefix of upstream valid vector"
+      }
+    },
+    {
+      "id": "crypto-prefix-3",
+      "kind": "crypto",
+      "hex": "060703",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 414,
+        "derivation": "derived: every proper prefix of upstream valid vector"
+      }
+    },
+    {
+      "id": "crypto-prefix-4",
+      "kind": "crypto",
+      "hex": "06070303",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 414,
+        "derivation": "derived: every proper prefix of upstream valid vector"
+      }
+    },
+    {
+      "id": "crypto-prefix-5",
+      "kind": "crypto",
+      "hex": "0607030303",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 414,
+        "derivation": "derived: every proper prefix of upstream valid vector"
+      }
+    },
+    {
+      "id": "maxdata-varint-255",
+      "kind": "maxdata",
+      "hex": "10ff",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 711,
+        "derivation": "exact upstream GenerateDecodeFailParams value"
+      }
+    },
+    {
+      "id": "maxdata-varint-64",
+      "kind": "maxdata",
+      "hex": "1040",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/FrameTest.cpp",
+        "line": 711,
+        "derivation": "exact upstream GenerateDecodeFailParams value"
+      }
+    },
+    {
+      "id": "tp-cibir-one",
+      "kind": "tp",
+      "hex": "5000020100",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 201,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-cibir-max",
+      "kind": "tp",
+      "hex": "50000340ff00",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 210,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-cibir-max2",
+      "kind": "tp",
+      "hex": "50000340fe01",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 219,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-cibir-zero",
+      "kind": "tp",
+      "hex": "5000020000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 229,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-cibir-over",
+      "kind": "tp",
+      "hex": "500003410000",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 237,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-cibir-sum-over",
+      "kind": "tp",
+      "hex": "50000340ff01",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 246,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-grease-role0",
+      "kind": "tp",
+      "hex": "6ab200",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 256,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-grease-role1",
+      "kind": "tp",
+      "hex": "6ab200",
+      "expected_success": true,
+      "server": 1,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 256,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-grease-nonempty",
+      "kind": "tp",
+      "hex": "6ab20100",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 256,
+        "derivation": "derived: forbidden nonempty flag parameter"
+      }
+    },
+    {
+      "id": "tp-reliable-reset-role0",
+      "kind": "tp",
+      "hex": "c017f7586d2cb57000",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 265,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-reliable-reset-role1",
+      "kind": "tp",
+      "hex": "c017f7586d2cb57000",
+      "expected_success": true,
+      "server": 1,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 265,
+        "derivation": "upstream values encoded as QUIC wire bytes"
+      }
+    },
+    {
+      "id": "tp-reliable-reset-nonempty",
+      "kind": "tp",
+      "hex": "c017f7586d2cb5700100",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 265,
+        "derivation": "derived: forbidden nonempty flag parameter"
+      }
+    },
+    {
+      "id": "tp-version-twice",
+      "kind": "tp",
+      "hex": "1115000102030405060708090a0b0c0d0e0f1011121314",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 2,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 189,
+        "derivation": "upstream21-byte blob length and repeated decode; initialized deterministic blob replaces upstream uninitialized bytes"
+      }
+    },
+    {
+      "id": "tp-version-truncated",
+      "kind": "tp",
+      "hex": "1115000102030405060708090a0b0c0d0e0f10111213",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 189,
+        "derivation": "derived: truncate final owned-version byte"
+      }
+    },
+    {
+      "id": "tp-version-duplicate",
+      "kind": "tp",
+      "hex": "1115000102030405060708090a0b0c0d0e0f10111213141115000102030405060708090a0b0c0d0e0f1011121314",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 189,
+        "derivation": "derived: duplicate known parameter after allocating VersionInfo; cleanup must free it"
+      }
+    },
+    {
+      "id": "tp-version-then-truncated-id",
+      "kind": "tp",
+      "hex": "1115000102030405060708090a0b0c0d0e0f1011121314ff",
+      "expected_success": false,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 189,
+        "derivation": "derived: malformed following ID after VersionInfo allocation"
+      }
+    },
+    {
+      "id": "tp-version-replace-with-invalid",
+      "kind": "tp-replace",
+      "hex": "1115000102030405060708090a0b0c0d0e0f1011121314",
+      "expected_success": true,
+      "server": 0,
+      "repeat": 1,
+      "origin": {
+        "source": "src/core/unittest/TransportParamTest.cpp",
+        "line": 189,
+        "derivation": "derived: second decode uses truncated ID; old VersionInfo must be freed and decode must fail"
+      }
+    }
+  ]
+}
