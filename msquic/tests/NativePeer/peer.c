@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 #define PAYLOAD_SIZE 65537
 static const QUIC_API_TABLE *api;
@@ -156,6 +157,34 @@ static int wait_for(atomic_int *flag, int stop_on_failure) {
     return 0;
 }
 
+static void wait_for_proxy_drain(void) {
+    const char *barrier = getenv("DOTCC_PEER_PROXY_DRAIN");
+    if (!barrier) return;
+    char ready_path[4096], release_path[4096];
+    if (strlen(barrier) > sizeof(ready_path) - 9 || !atomic_load(&server_peer.closed)) {
+        atomic_store(&failure, 1); return;
+    }
+    snprintf(ready_path, sizeof(ready_path), "%s.ready", barrier);
+    snprintf(release_path, sizeof(release_path), "%s.release", barrier);
+    FILE *ready = fopen(ready_path, "w");
+    if (!ready) { atomic_store(&failure, 1); return; }
+    fprintf(ready, "%ld\n", (long)getpid());
+    if (fclose(ready)) { atomic_store(&failure, 1); return; }
+    struct timespec pause = {0, 1000000};
+    for (int i = 0; i < 20000; i++) {
+        FILE *release = fopen(release_path, "r");
+        if (release) {
+            char token[32] = {0};
+            int valid = fgets(token, sizeof(token), release) && !strcmp(token, "proxy-stopped\n");
+            fclose(release);
+            if (!valid) atomic_store(&failure, 1);
+            return;
+        }
+        nanosleep(&pause, NULL);
+    }
+    atomic_store(&failure, 1);
+}
+
 static void snapshot_connection(Peer *peer) {
     if (!peer->connection || !atomic_load(&peer->connected)) return;
     QUIC_ADDR remote = {0};
@@ -285,6 +314,8 @@ int main(int argc, char **argv) {
         wait_for(&client_peer.closed, 0);
     }
     if (run_server) wait_for(&server_peer.closed, 0);
+    // Keep the listener binding alive through the proxy's bounded drain.
+    if (run_server) wait_for_proxy_drain();
     snapshot_connection(&client_peer);
     snapshot_connection(&server_peer);
     if (client_peer.stream) api->StreamClose(client_peer.stream);

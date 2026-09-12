@@ -205,7 +205,9 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
     directory = args.output / name
     directory.mkdir(parents=True, exist_ok=True)
     ready, proxy_ready, stats_path = (directory / filename for filename in ('server.ready', 'proxy.ready.json', 'proxy.stats.json'))
-    for path in (ready, proxy_ready, stats_path):
+    barrier = directory / 'proxy-drain'
+    barrier_ready, barrier_release = Path(str(barrier) + '.ready'), Path(str(barrier) + '.release')
+    for path in (ready, proxy_ready, stats_path, barrier_ready, barrier_release):
         path.unlink(missing_ok=True)
     certificate, key = BUILD / 'ecdsa.pem', BUILD / 'ecdsa.key'
     managed = (['dotnet', str(BUILD / variant / 'bin/Release/net10.0/ManagedPeer.dll')]
@@ -233,7 +235,7 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
         with tempfile.TemporaryDirectory(prefix='dotcc-recovery-') as isolated_tmp:
             environment = dict(os.environ, TMPDIR=isolated_tmp, OPENSSL_CONF=str(BUILD / 'p256.cnf'),
                                SSL_CERT_FILE=str(certificate), DOTCC_PEER_SETTLE_MS=str(case['post_exchange_settle_ms']),
-                               DOTCC_PEER_SHARE_UDP_BINDING='0')
+                               DOTCC_PEER_SHARE_UDP_BINDING='0', DOTCC_PEER_PROXY_DRAIN=str(barrier))
             environment.pop('SSLKEYLOGFILE', None)
             with (directory / 'server.log').open('w') as server_log, \
                     (directory / 'client.log').open('w') as client_log, \
@@ -252,12 +254,23 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
                 proxy_port = wait_ready(proxy, proxy_ready, as_json=True)
                 client = start(peer_command('client', proxy_port), client_log, environment)
                 case['client_exit'] = client.wait(timeout=60)
-                case['server_exit'] = server.wait(timeout=60)
-                # Let short delayed close packets leave the bounded queue before
-                # stopping the proxy. Shutdown abandonment remains recorded.
+                deadline = time.monotonic() + 20
+                while not (barrier_ready.exists() and barrier_ready.read_text().strip() == str(server.pid)):
+                    check(server.poll() is None, 'Server exited before proxy drain barrier')
+                    check(time.monotonic() < deadline, 'Server did not reach proxy drain barrier')
+                    time.sleep(0.01)
+                # The server has observed connection shutdown and retains its
+                # listener binding until the proxy has flushed/stopped. Delayed
+                # duplicates must not be sent to a deliberately closed socket.
                 time.sleep(0.1)
                 proxy.terminate()
                 case['proxy_exit'] = proxy.wait(timeout=5)
+                check(case['proxy_exit'] == 0, 'Proxy failed before server cleanup release')
+                release_tmp = barrier_release.with_suffix('.tmp')
+                release_tmp.write_text('proxy-stopped\n')
+                release_tmp.replace(barrier_release)
+                case['server_exit'] = server.wait(timeout=60)
+                case['proxy_stopped_before_server_cleanup'] = True
             for peer_role in ('client', 'server'):
                 result = read_peer(directory / (peer_role + '.log'))
                 case[peer_role] = result

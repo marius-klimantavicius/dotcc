@@ -119,6 +119,21 @@ internal static unsafe class Program
     }
 
     private static byte Pattern(ulong offset, bool server) => unchecked((byte)(offset * 31 + 17 + (server ? 29UL : 0)));
+
+    private static void WaitForProxyDrain()
+    {
+        string? barrier = Environment.GetEnvironmentVariable("DOTCC_PEER_PROXY_DRAIN");
+        if (!peer.Server || barrier == null) return;
+        Require(Volatile.Read(ref peer.Closed) != 0, "Proxy drain barrier requires connection shutdown");
+        File.WriteAllText(barrier + ".ready", Environment.ProcessId + "\n");
+        long deadline = Environment.TickCount64 + 20000;
+        while (!File.Exists(barrier + ".release"))
+        {
+            if (Environment.TickCount64 >= deadline) throw new TimeoutException("Proxy drain barrier timed out");
+            Thread.Sleep(1);
+        }
+        Require(File.ReadAllText(barrier + ".release").Trim() == "proxy-stopped", "Invalid proxy drain release");
+    }
     private static void Fail(string error) { errors.Enqueue(error); Console.Error.WriteLine(error); Volatile.Write(ref failed, 1); }
     private static void Require(bool condition, string error) { if (!condition) Fail(error); }
     private static bool Check(uint status, string operation)
@@ -407,6 +422,9 @@ internal static unsafe class Program
                     File.WriteAllText(arguments[8] + ".tmp", MsQuicHost.DatagramEndpoint(&address).Port + "\n");
                     File.Move(arguments[8] + ".tmp", arguments[8], overwrite: true);
                     Wait(ref peer.Closed, "server connection shutdown");
+                    // Keep the listener's UDP binding alive until the fault
+                    // proxy has flushed/stopped, before any owning cleanup.
+                    WaitForProxyDrain();
                 }
                 else
                 {
