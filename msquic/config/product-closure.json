@@ -1,0 +1,1530 @@
+{
+  "schema_version": 1,
+  "status": "P0-P2 selected managed closure validated; runtime host and transport qualification remain pending",
+  "revision": "80a065112426bce68c1da42d026478d3e40fd45e",
+  "stage_manifest_sha256": "d2cade3f173b442cc14ca63648e96a61ae1b82a1ba207bc50a89bc76a3983b17",
+  "units": [
+    "src/core/ack_tracker.c",
+    "src/core/api.c",
+    "src/core/binding.c",
+    "src/core/configuration.c",
+    "src/core/congestion_control.c",
+    "src/core/connection.c",
+    "src/core/connection_pool.c",
+    "src/core/crypto.c",
+    "src/core/crypto_tls.c",
+    "src/core/cubic.c",
+    "src/core/bbr.c",
+    "src/core/datagram.c",
+    "src/core/frame.c",
+    "src/core/partition.c",
+    "src/core/library.c",
+    "src/core/listener.c",
+    "src/core/lookup.c",
+    "src/core/loss_detection.c",
+    "src/core/mtu_discovery.c",
+    "src/core/operation.c",
+    "src/core/packet.c",
+    "src/core/packet_builder.c",
+    "src/core/packet_space.c",
+    "src/core/path.c",
+    "src/core/range.c",
+    "src/core/recv_buffer.c",
+    "src/core/registration.c",
+    "src/core/send.c",
+    "src/core/send_buffer.c",
+    "src/core/sent_packet_metadata.c",
+    "src/core/settings.c",
+    "src/core/stream.c",
+    "src/core/stream_recv.c",
+    "src/core/stream_send.c",
+    "src/core/stream_set.c",
+    "src/core/timer_wheel.c",
+    "src/core/worker.c",
+    "src/core/version_neg.c",
+    "src/core/sliding_window_extremum.c",
+    "src/platform/crypt.c",
+    "src/platform/hashtable.c",
+    "src/platform/platform_worker.c",
+    "src/platform/toeplitz.c",
+    "host/forwarders.c",
+    "host/host.c",
+    "host/portable.c",
+    "host/route.c"
+  ],
+  "host_table_version": 1,
+  "host_callback_slots": 99,
+  "data_model": "LP64, little-endian, Linux x64; host ABI validation required",
+  "source_files": [
+    {
+      "path": "src/inc/CMakeLists.txt",
+      "sha256": "ac9077caa273de0353b280c81cf9ff0d1a8e9b88c5c2d497c17e9c8790251b33",
+      "origin": "src/inc/CMakeLists.txt",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/msquic.h",
+      "sha256": "3ebde22085df627140fd6208c638a9a3cd7dd3da9bd270f64f022b1c46b1bc4f",
+      "origin": "src/inc/msquic.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/msquic.hpp",
+      "sha256": "a70c70bb278094175bce42d91718b437e705af686b79a5261e276de812baaf72",
+      "origin": "src/inc/msquic.hpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/msquic.ver",
+      "sha256": "e077be7751fad0b2a50ad317ae2b95a6b9d8e2c274b236ed231d61dd1be997b6",
+      "origin": "src/inc/msquic.ver",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/msquic_fuzz.h",
+      "sha256": "1f1824c2b2f21ad66fc28bb7668def30a1403c519f8f6121c62ca34f23eb1405",
+      "origin": "src/inc/msquic_fuzz.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/msquic_posix.h",
+      "sha256": "ea74ec9245e5b1975d83c8c27c80e7db67005d214d0b65da662398a6dff0997f",
+      "origin": "config/managed-host/inc/msquic_posix.h",
+      "role": "host overlay"
+    },
+    {
+      "path": "src/inc/msquic_winkernel.h",
+      "sha256": "0a519aae8ea9381065014e4202742822f7832a51ffa7ca107cd1587fa6c2b23a",
+      "origin": "src/inc/msquic_winkernel.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/msquic_winuser.h",
+      "sha256": "b7263aba8c93187e42c48537dcb95d4b6bad81255049e2ae45bb77806d0172af",
+      "origin": "src/inc/msquic_winuser.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/msquichelper.h",
+      "sha256": "a4fe48b7ba213a23ebfc6e02880da10e2a38843f608d3e8055dbca03d65b90e9",
+      "origin": "src/inc/msquichelper.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/msquicp.h",
+      "sha256": "a8d4a1cc0d43ca9e8d5e7515658e2bc0a7d55b009b2242d8f33ca7945c963601",
+      "origin": "src/inc/msquicp.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_cert.h",
+      "sha256": "5e95d2e240173da923ec529b7f71ed4370a35f6079d78d714d4a305193fd9771",
+      "origin": "src/inc/quic_cert.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_crypt.h",
+      "sha256": "99448a7ff9c7bb559285c85b80244606e128b4de288cec145fa620f0dc824c34",
+      "origin": "src/inc/quic_crypt.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_datapath.h",
+      "sha256": "0d126c971d237618c3464f172d12b498ef8fd321ae3dd275058f8e22ea298ec7",
+      "origin": "src/inc/quic_datapath.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_driver_helpers.h",
+      "sha256": "1628e92f4e7985e14c78f865dab13272c68d4fae45bfd42f4995e02810dcada7",
+      "origin": "src/inc/quic_driver_helpers.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_hashtable.h",
+      "sha256": "146beeef68b5dadefb13217742fe803469c4c486739c3543110ac0d480fb2bec",
+      "origin": "src/inc/quic_hashtable.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_pcp.h",
+      "sha256": "a023c61ab24cfb83e9b0835cb7e6b6984df980c9410a59e49e7305b75edf25c7",
+      "origin": "src/inc/quic_pcp.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_platform.h",
+      "sha256": "1f26fbbfbae5af9ac108c94e047524b5459c97905384b581da7b2320fa46d15c",
+      "origin": "src/inc/quic_platform.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_platform_posix.h",
+      "sha256": "6e4566fb89b0aa457508bf2fb1d12714732cc49a39205033d9724d8d963e4330",
+      "origin": "config/managed-host/inc/quic_platform_posix.h",
+      "role": "host overlay"
+    },
+    {
+      "path": "src/inc/quic_platform_winkernel.h",
+      "sha256": "9311ee73dfc1afe9ca51eae1295deba96ac6525ec3d980be09c2deb3d32a9835",
+      "origin": "src/inc/quic_platform_winkernel.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_platform_winuser.h",
+      "sha256": "32e8de2b620050dc5bcb4b8f6a7078e4e09ee42c4c9053afa34b183e59f2ee74",
+      "origin": "src/inc/quic_platform_winuser.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_sal_stub.h",
+      "sha256": "8849135a95fee2a49373e168c12a89380de46e23c2136e6b0597394d09a9614c",
+      "origin": "src/inc/quic_sal_stub.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_storage.h",
+      "sha256": "6319c064c62d9b822246c5bfa19daf05272fb6629dca15c4591e1d3430ec9973",
+      "origin": "src/inc/quic_storage.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_tls.h",
+      "sha256": "a8993a1aa2acc4ea8e62ee23984494e9a3cfc2d82d13cefc089126adeb9dd736",
+      "origin": "src/inc/quic_tls.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_toeplitz.h",
+      "sha256": "5b5be0686c874e86d64da6b67da44b61a26190854a9990a46753a321fe6f2236",
+      "origin": "src/inc/quic_toeplitz.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_trace.h",
+      "sha256": "4eaafd7b2ec609149c70bdca437ac4665f2670064a9d7308bd3a0af8eab869aa",
+      "origin": "src/inc/quic_trace.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_trace_manifested_etw.h",
+      "sha256": "7c85364c4ce9f58e8d0823149bb3e5c79819ed1a6628fd6fae648421ac760d83",
+      "origin": "src/inc/quic_trace_manifested_etw.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_var_int.h",
+      "sha256": "15d3a3a21c233ae4f05e513d02ebc7af7e884188cc42814527976099c09b7477",
+      "origin": "src/inc/quic_var_int.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/inc/quic_versions.h",
+      "sha256": "7700d17df49866a785384924b4d052f26caa1a4a91a0f2be806aa79978945eca",
+      "origin": "src/inc/quic_versions.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/CMakeLists.txt",
+      "sha256": "3ffba5aa58e41175e4f419e962d7108023951072ce584dcd7d7a63525f2cd789",
+      "origin": "src/core/CMakeLists.txt",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/ack_tracker.c",
+      "sha256": "8087d5a0e3b5d23a77caa276f3b02eab9516ebc3a5f6b7b05adc383352d9233e",
+      "origin": "src/core/ack_tracker.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/ack_tracker.h",
+      "sha256": "d9b5203dbdaefe53df15f52275a803bf9973547bf3c800b1be242dd20c82e69e",
+      "origin": "src/core/ack_tracker.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/api.c",
+      "sha256": "fa7fcc249059c3989f6625025edb8862e03aa1a2ae8a391c969da01eaa7bbd12",
+      "origin": "src/core/api.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/api.h",
+      "sha256": "65783cea7d4c1eda819908a8fcccc5d8e4d2b9d7dd7fc16ee48319c935303137",
+      "origin": "src/core/api.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/bbr.c",
+      "sha256": "690a73e2ad45bc348a0de1f09a6dda9b00ec05a36f5a8450d6625978df11813e",
+      "origin": "src/core/bbr.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/bbr.h",
+      "sha256": "a605b1b4b78f86ea649473599e8950a6e8872a3f01e9019b7b4269d8e3667dba",
+      "origin": "src/core/bbr.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/binding.c",
+      "sha256": "0f60af1aaae3d174d3f075c293ebc18b3d69af72dec1602a7f975e46595bd839",
+      "origin": "src/core/binding.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/binding.h",
+      "sha256": "369fa25a305f15efae9a22a76c33d1a8466560f1d931407f21083e12a7e29adb",
+      "origin": "src/core/binding.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/cid.h",
+      "sha256": "ab3c548d688d0911116a8ae6eba0ed2f50884634abaf345184fb4b8c149aa97e",
+      "origin": "src/core/cid.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/configuration.c",
+      "sha256": "8655e7165c51c8ab8454dbd0f256e1f8bf523eb84468cb584c18b1900f044e4a",
+      "origin": "src/core/configuration.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/configuration.h",
+      "sha256": "521c97316b3bf18d028e66243562a7407ef34b14fa03682348acf76b02dc7706",
+      "origin": "src/core/configuration.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/congestion_control.c",
+      "sha256": "4510921f9b234f58df9f2df7a4632f5706103a2c5ffb2c42b0b8464bd7024739",
+      "origin": "src/core/congestion_control.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/congestion_control.h",
+      "sha256": "97edba290b997928a395a9406aacf768fccdbd30895bc8aacc3a6731325f6a45",
+      "origin": "src/core/congestion_control.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/connection.c",
+      "sha256": "7bf1eb16839824c35f3e5d03a3165bee5e03aa2e6b1e9ef036dc59ddfd24e036",
+      "origin": "src/core/connection.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/connection.h",
+      "sha256": "6acc7fc2a935b7989d4f4b0f24320a37cdd3e8e6dc70f31c5c9229e1233ddb82",
+      "origin": "src/core/connection.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/connection_pool.c",
+      "sha256": "faace017ec76e6d26ab5794ec4b3adaf4b9b65b53a0f2d360f26b20673ee40b8",
+      "origin": "src/core/connection_pool.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/core.kernel.vcxproj",
+      "sha256": "5631ccc4965e7731ea5481ca91e74023e4c89e94263d526f3b01276e25a8f3c2",
+      "origin": "src/core/core.kernel.vcxproj",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/crypto.c",
+      "sha256": "9338ce8f59ca7d5617eac33660dea3c9531ef6ed0ba9022e2c691cbefb250402",
+      "origin": "src/core/crypto.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/crypto.h",
+      "sha256": "770829b03461dbb8cf3b00aeb19946494bcba444088661785d474783f74b0814",
+      "origin": "src/core/crypto.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/crypto_tls.c",
+      "sha256": "fe8da55534bf33cec61d6a8cd0ae97ba05fd67600294d8b39969719881072a40",
+      "origin": "src/core/crypto_tls.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/cubic.c",
+      "sha256": "134be5cf476f7bc6d87b089785f1ed10b148eeae0f8bd0dfb8a9694ac8c02fd6",
+      "origin": "src/core/cubic.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/cubic.h",
+      "sha256": "7710117d391f80c0c430aaef55c8256acab01c54e5b67cd72a6501366f4f5be1",
+      "origin": "src/core/cubic.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/datagram.c",
+      "sha256": "be9044ffd37d5baa5224e76dc92b3ace2cde0803539d6cc03a31793ab395d322",
+      "origin": "src/core/datagram.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/datagram.h",
+      "sha256": "22e3175399b7fc9928130e17e2241a43d2c225e296539ff70782c1238740e78b",
+      "origin": "src/core/datagram.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/frame.c",
+      "sha256": "9349609e7c8cef24d6cae2d69eec7fd7b22f6212bc89958aec993806cc0f5c79",
+      "origin": "src/core/frame.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/frame.h",
+      "sha256": "9bf5e1ec3ceadfad216ac374e7fd93cbad842b4be1021ec876eb0bc52afd1bb8",
+      "origin": "src/core/frame.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/injection.c",
+      "sha256": "1ab9c7b4b7a946732ed8123e4c7f80911beb86d5cc6034497387450df6998dad",
+      "origin": "src/core/injection.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/library.c",
+      "sha256": "927bee2e637a2c31e657104967510339a04cab23c0fee24e58ce7e26694178bd",
+      "origin": "src/core/library.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/library.h",
+      "sha256": "79f8e3f0e045fa30c2e0a1bd5d3336310f4694939a63b5df8516dbfbd25e00e3",
+      "origin": "src/core/library.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/listener.c",
+      "sha256": "c15179aa80d606b1497045c2cb4f6a4f30e02664d361da7e89a01d4a2b58bb55",
+      "origin": "src/core/listener.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/listener.h",
+      "sha256": "a18ca0eda5888565b2dbb1e40deddcdb445ecac328662dcb88990d16fd231777",
+      "origin": "src/core/listener.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/lookup.c",
+      "sha256": "d49d68ffb9d666ad60735eba238a8802f64ea497e5c02a1cd21cc0489bb2afab",
+      "origin": "src/core/lookup.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/lookup.h",
+      "sha256": "27e584b3743479930804383186e98cedfa6f6031868fc3e52a1c1a5c62bc0aeb",
+      "origin": "src/core/lookup.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/loss_detection.c",
+      "sha256": "00e17d74934f66c2e956943326ad1f31ade4dbdd95b9424af8e12bbbadb7bcf1",
+      "origin": "src/core/loss_detection.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/loss_detection.h",
+      "sha256": "574f027d6753f4c65cfb62df2eef81f5caf7dfae49b44e3cfa9f02723c6230e0",
+      "origin": "src/core/loss_detection.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/mtu_discovery.c",
+      "sha256": "b41f1c3cc3b2689b5c2fdf1024ff277ac155bdb09a4735d7738ff95920d3fda1",
+      "origin": "src/core/mtu_discovery.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/mtu_discovery.h",
+      "sha256": "39fd834f53768826f5666428d64a32633eff4debc81f309c0bb9823de55807b5",
+      "origin": "src/core/mtu_discovery.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/operation.c",
+      "sha256": "624f57a2c783065680f6e97b707ac63a164f7a73f2fea295af018c9692e8363f",
+      "origin": "src/core/operation.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/operation.h",
+      "sha256": "4c10a287382a44e0b6e58ff42ecc50d2e6f471285027f0ce66fb690f69c75fc6",
+      "origin": "src/core/operation.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/packet.c",
+      "sha256": "0b80b81fff3f63265817293346073ca6dc288d1fdfc5b6643c0b09ca44adf682",
+      "origin": "src/core/packet.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/packet.h",
+      "sha256": "991918387a90eca95da99b736d60324d319553da0ccc9c55e2f697c1517f8e50",
+      "origin": "src/core/packet.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/packet_builder.c",
+      "sha256": "2005aaeb60a4f1ee5d4335f0e4b0078d4b007c15e1b74546d039435e76ad24fc",
+      "origin": "src/core/packet_builder.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/packet_builder.h",
+      "sha256": "f060edf88973715feb79ac2c0313ccb8ead1890451fdf6b6733a2273471c9590",
+      "origin": "src/core/packet_builder.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/packet_space.c",
+      "sha256": "e9e37e3bac2e364b7ef92078055eed7c176707d8acb16b3a40f34749982921a9",
+      "origin": "src/core/packet_space.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/packet_space.h",
+      "sha256": "0b869dc865300fe191c0b051ef20a645c89d7172c637afd2783b51472ff58086",
+      "origin": "src/core/packet_space.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/partition.c",
+      "sha256": "77ed6ba0bdb0837763cad05b56b15c8d5132c7e3fb8b321d7179b1edece0a9c2",
+      "origin": "src/core/partition.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/partition.h",
+      "sha256": "b12ddd41f12697e8cb2f44b8f4289251e5de98888a7945330b3166e20bdcf94c",
+      "origin": "src/core/partition.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/path.c",
+      "sha256": "513f3abf655fb1efffcbc3cece374aed2f72d081e728eac01a346dd0c7b027a5",
+      "origin": "src/core/path.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/path.h",
+      "sha256": "9c880284b4de7de42515ce03800af52ced03fa321371d64251d176a46bba7163",
+      "origin": "src/core/path.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/precomp.h",
+      "sha256": "8d97f44fa0be03914b4d73b0213d671efed17b6509080e02e4a5e9dd80765daa",
+      "origin": "src/core/precomp.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/quicdef.h",
+      "sha256": "b4e1012cd2bd820be1cc0a2cd312a5a6ea9202ab9b19239797a709711ec41b15",
+      "origin": "src/core/quicdef.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/range.c",
+      "sha256": "5a36ac713c24aa99bce0350080e99205f54c358813b0f7bd8cb214ab64f30f4f",
+      "origin": "src/core/range.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/range.h",
+      "sha256": "3564d781cc7a9df6ced3c38bd4e9d063982b3a055c16463ed32ac1340387eaef",
+      "origin": "src/core/range.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/recv_buffer.c",
+      "sha256": "c7446204f5ee14ebb90ad96adb194fbce4e40435cdd0d7389676800692d03225",
+      "origin": "src/core/recv_buffer.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/recv_buffer.h",
+      "sha256": "73c6a0a90cff2545b75792e32ef1d96af5e937fd1a8bcb1a52e32d12f9a2481b",
+      "origin": "src/core/recv_buffer.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/registration.c",
+      "sha256": "f0a00253a9e023da7d4a68b2c32ed6d847013a711e6f75804d935b581fb19f15",
+      "origin": "src/core/registration.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/registration.h",
+      "sha256": "14d56d868d0a2e8262d776229ee4d751dc9f6e735173504194b20dfb341c96e7",
+      "origin": "src/core/registration.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/send.c",
+      "sha256": "8ca6caa35c3684047a170f90831ec94db3fa99681a5a12bafc74119bd88145b9",
+      "origin": "src/core/send.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/send.h",
+      "sha256": "62eab422baf234e78159caed6b70d74818d1d4ed54e4a3e36031a32cdf8414c5",
+      "origin": "src/core/send.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/send_buffer.c",
+      "sha256": "626209cb76703ae37a7238313fdc7bd8ef99d97e1b77d6ce55809560481dcdb4",
+      "origin": "src/core/send_buffer.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/send_buffer.h",
+      "sha256": "34951e9b3d5913839b0b1015064e5fd8caba4f6306950ee5662d4442b33efc19",
+      "origin": "src/core/send_buffer.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/sent_packet_metadata.c",
+      "sha256": "8e0a3ea63ba49b87f5f4e0cd14ca1e5507d6c4534659f3eb35033f96db3dfb94",
+      "origin": "src/core/sent_packet_metadata.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/sent_packet_metadata.h",
+      "sha256": "bae9d0009aadf2b0ed892e08208eccaef00e6b29bd7d44f7ac3eb128c2417693",
+      "origin": "src/core/sent_packet_metadata.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/settings.c",
+      "sha256": "e5161a97a6ba6ce616125a54d09570970e82bef8d47b73f805b7b1f643bdadc6",
+      "origin": "src/core/settings.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/settings.h",
+      "sha256": "267d19eabd6eb57ff4f93b1a4f19ad58b80b0aceaac56566ebe8205208062f6d",
+      "origin": "src/core/settings.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/sliding_window_extremum.c",
+      "sha256": "1c2173d58bab687a8a5b41f890c6a463d7ef3d5ce1cdcbc4c86ed11550c44f1b",
+      "origin": "src/core/sliding_window_extremum.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/sliding_window_extremum.h",
+      "sha256": "55e08bd5d108dfdc469a0703cb058d21e717298597bc1da3fc78d3214faf7259",
+      "origin": "src/core/sliding_window_extremum.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/stream.c",
+      "sha256": "66b2455227028286a6cfeb4f10528f82118caa2d0aea6acd210c34575925450c",
+      "origin": "src/core/stream.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/stream.h",
+      "sha256": "df4bbe5f6994ccc6345ecf4034754dce82d1c95c27e388428666d65ee6e6655f",
+      "origin": "src/core/stream.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/stream_recv.c",
+      "sha256": "426854b5b81b254ee0a30debceb19e9f9505bd806038b8197216e0ce8b3abe7b",
+      "origin": "src/core/stream_recv.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/stream_send.c",
+      "sha256": "cf759db551a01e94721b92cf0acce18a3881205cb7584457cd3c47957ee47799",
+      "origin": "src/core/stream_send.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/stream_set.c",
+      "sha256": "772cf792e1ffa12acb20a2adb702f50d7ef7bebd6e7eccc4fdab250a88553f8a",
+      "origin": "src/core/stream_set.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/stream_set.h",
+      "sha256": "ce94d2fa74b626c0a0a9887270efc2394f30ca1e471294cb7543bf7297e416c9",
+      "origin": "src/core/stream_set.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/timer_wheel.c",
+      "sha256": "b1d10b32b6049324a1789c05261e56cde77bdc52fd2a6a7606da5fab3f293497",
+      "origin": "src/core/timer_wheel.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/timer_wheel.h",
+      "sha256": "6134bab86c314e96c3b69120c7d9cd3c4f5cedf52f99c3230ec3ca241d0b63e5",
+      "origin": "src/core/timer_wheel.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/transport_params.h",
+      "sha256": "6ebfd50874ea50101dd374dc611a913aafa8f2ab800d1c2a5c2878d351162188",
+      "origin": "src/core/transport_params.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "sha256": "c32d19804d80f6af948115d00e4297b5c6793543c3063ea4b2bbe369c20f4ffb",
+      "origin": "src/core/unittest/BbrTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/CMakeLists.txt",
+      "sha256": "b6f712ea488acc8322e7659b3a9483e4dac84a5a8af5f62b70c01c00165d9b57",
+      "origin": "src/core/unittest/CMakeLists.txt",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "sha256": "41cef5f9e4b5a30c3aa951bb1f402becfd7f74ba675af708695571ec6eefe604",
+      "origin": "src/core/unittest/CubicTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "sha256": "b4a3d44b455a4a247511c94fa9f9dd6b4f882add0870be3826035d989cb2a714",
+      "origin": "src/core/unittest/FrameTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/PacketNumberTest.cpp",
+      "sha256": "526ad195c6279f3f365be8448ee40cec7eebb9488ba3c9ca5d746c22d0a816d3",
+      "origin": "src/core/unittest/PacketNumberTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/PartitionTest.cpp",
+      "sha256": "0715eed71ff39e0e52afc4a0e55c1cfe6731457acd05f79690139d1545535d2b",
+      "origin": "src/core/unittest/PartitionTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "sha256": "89c333aa781066c69da77ba19d8fd0b55349a377c8137e7f7e4143f318d33cc9",
+      "origin": "src/core/unittest/RangeTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "sha256": "488442e864d8711d7a05070faf6c4bf8d03bf47b85589428570aae5849dcc14d",
+      "origin": "src/core/unittest/RecvBufferTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "sha256": "2440ce91002e1ad2f1c7bb45251f0d9bc84fb64bfee5e55d1a60c68bc42ab0cd",
+      "origin": "src/core/unittest/SettingsTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/SlidingWindowExtremumTest.cpp",
+      "sha256": "eb955e2d471ce884e031721bd55aebbf043e8167ef9840ea183d437a5aea260f",
+      "origin": "src/core/unittest/SlidingWindowExtremumTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/SpinFrame.cpp",
+      "sha256": "5afcf74d3f1576dbe88e80f662d34efa896f0fcef944db91a4d602e9e09b84e8",
+      "origin": "src/core/unittest/SpinFrame.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "sha256": "a571cd9eb3edbf2144e774c773f07ef2427080959780dccf6566ee86de714578",
+      "origin": "src/core/unittest/TicketTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "sha256": "2f6af4a4ffb05a99b0db531695fea951516b99db5e1affc3da80b6d52d6b1371",
+      "origin": "src/core/unittest/TransportParamTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/VarIntTest.cpp",
+      "sha256": "e185aea407f797791ac26c0c4f6e727c46d4b7a92bd52d1645fed3a76486d3f8",
+      "origin": "src/core/unittest/VarIntTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/VersionNegExtTest.cpp",
+      "sha256": "8e09eb751863e64999781e78f23eb5f2680265f165195b550af385220fb3a59b",
+      "origin": "src/core/unittest/VersionNegExtTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/main.cpp",
+      "sha256": "34fdc79b56662166dd5efcfe7b0551ff09085fda00914a1ad14453af1697c768",
+      "origin": "src/core/unittest/main.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/unittest/main.h",
+      "sha256": "e270a7ab09163abb0fda9b6c11568dc0e20cbfc165b4e35d19976bf5644ed9a4",
+      "origin": "src/core/unittest/main.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/version_neg.c",
+      "sha256": "e9671fcd4f3c9227dad33a5ec0d430a9ea63797509a697b501e60756fa0c9e4f",
+      "origin": "src/core/version_neg.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/version_neg.h",
+      "sha256": "14beb3e320813bb6206a48329408c2d874a04d213367c0f85c00c6b423cd450e",
+      "origin": "src/core/version_neg.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/worker.c",
+      "sha256": "ef480fb34b1a6399b355fcd3bfca4bd85b9fed45d2a8c0f7317a709bf19683ae",
+      "origin": "src/core/worker.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/core/worker.h",
+      "sha256": "1e1d0be88be5043e182ac1f8fccf06dd99567f0fd0e208fd3a264df82fc3b765",
+      "origin": "src/core/worker.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/CMakeLists.txt",
+      "sha256": "de4f8156d4fb9e2b3a30b20cab5af0a22716e0f5c03d3660ebdb1ffd6231fa4c",
+      "origin": "src/platform/CMakeLists.txt",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/cert_capi.c",
+      "sha256": "f4d5c82c3039b967c1efd20866bb5397ad10a81cc83548a397fbe4de38c3a49f",
+      "origin": "src/platform/cert_capi.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/certificates_capi.c",
+      "sha256": "db4865febb5c89f342f1d5d75cb91e3272059de66b801c42b7225591dbea2b95",
+      "origin": "src/platform/certificates_capi.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/certificates_darwin.c",
+      "sha256": "6cad1515ce667d410a1c11c07976c3eba06b7fc4a0b97c23bd1d3db750bcfe3f",
+      "origin": "src/platform/certificates_darwin.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/certificates_posix.c",
+      "sha256": "28a01d69bd1497d612399153086017f7ec0050875580b3b506935ae2f5f1d841",
+      "origin": "src/platform/certificates_posix.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/cgroup.c",
+      "sha256": "501082a0ab21b6d9b036132534bbb2cfa8751899c708aaa1c75f0b30fe0f5d33",
+      "origin": "src/platform/cgroup.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/crypt.c",
+      "sha256": "4bb8612b472faa4a909e6755e3444e1e60f933843b03747248244bc07344d3f1",
+      "origin": "src/platform/crypt.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/crypt_bcrypt.c",
+      "sha256": "f704c0e319ad064d904181001c7f4cc6a6e26dd600fb6713f1915ece56fb8d9e",
+      "origin": "src/platform/crypt_bcrypt.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/crypt_openssl.c",
+      "sha256": "fcca19bdacd8d304da8bbfc9915d38a24b6258ce3cc265e902f55baa455d005b",
+      "origin": "src/platform/crypt_openssl.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_epoll.c",
+      "sha256": "0c5d291e93f182625e5121c951b0c533881c10044efa9df6399fcb8a1fab51d2",
+      "origin": "src/platform/datapath_epoll.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_iouring.c",
+      "sha256": "62d444f1cf3bd266aca83a8f856fd16e5c58bf192ef02430425ac820e1a78dfc",
+      "origin": "src/platform/datapath_iouring.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_kqueue.c",
+      "sha256": "9d4741d90c016296d4e5f9fea9a54c09574ce916f181c0cba4bc089823a1e654",
+      "origin": "src/platform/datapath_kqueue.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_linux.c",
+      "sha256": "84fea9daeffe46bfdb4c6f7b6a0214684413a0c297d71c4d0daae587be732f78",
+      "origin": "src/platform/datapath_linux.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_linux.h",
+      "sha256": "8185ebb78840d3524b549f956b3c3ea314faab2c7d78508c49e8b383f23ce378",
+      "origin": "src/platform/datapath_linux.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_raw.c",
+      "sha256": "f954afd40435931591d575ebb0b7601c21f6b39addfd2177c3212a8f42b635e6",
+      "origin": "src/platform/datapath_raw.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_raw.h",
+      "sha256": "222789b621bb19dd74637bdd15dcf312950f6f0f620ea1e1ec1408337e61b2e6",
+      "origin": "src/platform/datapath_raw.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_raw_dummy.c",
+      "sha256": "d6747b7a22df3d50036f70c39611327acbafc6c4dde0a2904a017c746a8c4d7b",
+      "origin": "src/platform/datapath_raw_dummy.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_raw_socket.c",
+      "sha256": "6673816263672200c4ff1751289624b4e127f264a160658d74b07f2903e56c9f",
+      "origin": "src/platform/datapath_raw_socket.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_raw_socket_win.c",
+      "sha256": "cb50b28e7ea5dd3494c457762296a7063f5043846b91637e85ad6c2148cd4534",
+      "origin": "src/platform/datapath_raw_socket_win.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_raw_win.c",
+      "sha256": "fd0616d40e0879d302cf4214a6c4dd2c84d526fa267dee0c0580b7038101d2e1",
+      "origin": "src/platform/datapath_raw_win.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_raw_win.h",
+      "sha256": "dcc2f3a349ac40c35bf1673005a4fdb1b1d8bf061b241c620b4b90054dfd9a2d",
+      "origin": "src/platform/datapath_raw_win.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_raw_xdp.h",
+      "sha256": "7dc435ab0d97419ffc27f58cd15698869b630fbcf85f275e37b91b6e20c33bd8",
+      "origin": "src/platform/datapath_raw_xdp.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_raw_xdp_win.c",
+      "sha256": "fba8bfea786328b596f21674a25fc3277f3069742c6dcf8149d14d7aea528cd0",
+      "origin": "src/platform/datapath_raw_xdp_win.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_unix.c",
+      "sha256": "36ef7e53747abf8259c942b444df3fd3be3e0043ba0ffb422932d0c127082549",
+      "origin": "src/platform/datapath_unix.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_win.c",
+      "sha256": "2f2148a42a90b0e3206f0274ba1b09a0de65117b003cec3c5532a4f6b8b1da66",
+      "origin": "src/platform/datapath_win.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_winkernel.c",
+      "sha256": "156ae6b7462b9cc045f91110c03323916c6932ac73ced95088496001a5fccdfe",
+      "origin": "src/platform/datapath_winkernel.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_winuser.c",
+      "sha256": "d98b5eb9a5c6b9df3b496115dd459fee13e3584cde785034108408c49d2144b6",
+      "origin": "src/platform/datapath_winuser.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/datapath_xplat.c",
+      "sha256": "fdc16a87612454b78c70aa2dd0ed9e73240b19d276d86d638ff29f1f360010b0",
+      "origin": "src/platform/datapath_xplat.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/hashtable.c",
+      "sha256": "bf49212d7afdd017de87b566ab067cd739a4c8ce86e84108cf7113462456cbfe",
+      "origin": "src/platform/hashtable.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/pcp.c",
+      "sha256": "7f70c28b27ee7e1e4baccc292aefb51f63c686f98f45234e5abfa865c6b9e0d2",
+      "origin": "src/platform/pcp.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/platform.kernel.vcxproj",
+      "sha256": "64b81385df6dbe4f35e93b540e5acd74aa8b3db7eed19087cb90dce4b7476917",
+      "origin": "src/platform/platform.kernel.vcxproj",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/platform_internal.h",
+      "sha256": "b2f112027f11a522e630322ded06899e6cb9e34f4413b60cc228aaf4453b3376",
+      "origin": "config/managed-host/platform/platform_internal.h",
+      "role": "host overlay"
+    },
+    {
+      "path": "src/platform/platform_posix.c",
+      "sha256": "60badc1e39893811143739a4ecb61c40a16ab6fb26a019848fad35c9530126a1",
+      "origin": "src/platform/platform_posix.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/platform_winkernel.c",
+      "sha256": "f036369b18379b1e8d4703680bf57767835334116e699f8390273d6bfe076354",
+      "origin": "src/platform/platform_winkernel.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/platform_winuser.c",
+      "sha256": "e6d54a49996af703a9bf2db2d913cfa41ac28b4771ff2431be714557b654fed8",
+      "origin": "src/platform/platform_winuser.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/platform_worker.c",
+      "sha256": "6afac3581894c0cfdef9b0aa33c574bdfe563752441e79fcb943314aa3b8d13a",
+      "origin": "src/platform/platform_worker.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/selfsign_capi.c",
+      "sha256": "051e52e53ffb000d96fb122addf33ea420f20512029dae0a38f56b619b7e8029",
+      "origin": "src/platform/selfsign_capi.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/selfsign_openssl.c",
+      "sha256": "b255e91e8642e5900c9a9e0ecc9ddeb148d8cd0960f7ac2c65136090ff91e345",
+      "origin": "src/platform/selfsign_openssl.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/storage_posix.c",
+      "sha256": "5466a9ab0224f4b5021f89d3d5602bb258929d553870a6e89f7f729c1a171c32",
+      "origin": "src/platform/storage_posix.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/storage_winkernel.c",
+      "sha256": "6ab95d65d7b70ce1c228df589c36cccad56e0eed36067bde21282e209288a2ed",
+      "origin": "src/platform/storage_winkernel.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/storage_winuser.c",
+      "sha256": "02561bb81e4be0ca64562518fb23c0050c06006f2f9273ec0e528c275795f193",
+      "origin": "src/platform/storage_winuser.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/tls_openssl.c",
+      "sha256": "36dd0c5474772cd6cdb8810a8c66ac416d75630e611d7ec0a0cd18311627fad1",
+      "origin": "src/platform/tls_openssl.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/tls_quictls.c",
+      "sha256": "60caf7f0b23e9488580de4d5feca4eeca7e23ed6e82e3cb912162a8e86503798",
+      "origin": "src/platform/tls_quictls.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/tls_schannel.c",
+      "sha256": "3489786cdacee271a4bd3c56b8887949ed14b062ab3dc9f864cb2e509f106b8d",
+      "origin": "src/platform/tls_schannel.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/toeplitz.c",
+      "sha256": "cd6fa774a890b4462f361876a5b699e5bc15e0df551e7be3b7d453351a631512",
+      "origin": "src/platform/toeplitz.c",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/AllocTest.cpp",
+      "sha256": "50b589801b741073f164b277a668722cf8f68a6a6bc93be896f21fe62ddddd86",
+      "origin": "src/platform/unittest/AllocTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/CMakeLists.txt",
+      "sha256": "64dc8bd777f671255d9707d484fe0d30c6a7c7513d9ee332736ef67532f9881f",
+      "origin": "src/platform/unittest/CMakeLists.txt",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "sha256": "61e6b9b37946de0e19bbb6c0bef2426ed889b4878993d1237ba2031bfa5c7488",
+      "origin": "src/platform/unittest/CryptTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "sha256": "fe18f6afd1c119ed9f803ad845224ee44b5ba6a2447be65a2a1c57890119475e",
+      "origin": "src/platform/unittest/DataPathTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/PlatformTest.cpp",
+      "sha256": "15101fcf2468c2b83256148a0c9b78fe396c71433bca09c9c4b299eea193786e",
+      "origin": "src/platform/unittest/PlatformTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/StorageTest.cpp",
+      "sha256": "195966d74a0ffdbc8c6d6c3573569b366123a22262403da1ed415648da8d6ac5",
+      "origin": "src/platform/unittest/StorageTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "sha256": "742c06c6fb4c7a050d01097156387c0bf1cf9b369c36f97706606ed6172207e3",
+      "origin": "src/platform/unittest/TlsTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/ToeplitzTest.cpp",
+      "sha256": "92fe9acfc1ac1998490a51d2bee5fcf4cd830167fdfee1edfde9468266be9c0e",
+      "origin": "src/platform/unittest/ToeplitzTest.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/external/CMakeLists.txt",
+      "sha256": "b0465996b9ba99adabf6ee04329a5025142e8ab50420dc6eb61abbff75188931",
+      "origin": "src/platform/unittest/external/CMakeLists.txt",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/main.cpp",
+      "sha256": "0a2d41ee70bb8027e860edb7832d5b09e9f0ad4a9196b04e1a8fd9fa08d5fd8c",
+      "origin": "src/platform/unittest/main.cpp",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "src/platform/unittest/main.h",
+      "sha256": "4ecb678bd6913500392d51bf62b557b86028b15e2d97c6bdd0abf2f69b456d02",
+      "origin": "src/platform/unittest/main.h",
+      "role": "unchanged upstream"
+    },
+    {
+      "path": "system/netdb.h",
+      "sha256": "8599ef68a1ac956c9b7e39067400f869dc5cbd19558427c2ca801a4bdff795f3",
+      "origin": "config/managed-host/system/netdb.h",
+      "role": "authored host contract"
+    },
+    {
+      "path": "system/netinet/ip.h",
+      "sha256": "f552df89d9286dffdcc5c7ab73326d6b11502f6aa5ce5d7f950c50533d6889f8",
+      "origin": "config/managed-host/system/netinet/ip.h",
+      "role": "authored host contract"
+    },
+    {
+      "path": "host/forwarders.c",
+      "sha256": "aedae35907fe874195d8d9e80ef955623f387bdd05e1bb64b5e5f4393e7f61f2",
+      "origin": "src/Host/forwarders.c",
+      "role": "authored host contract"
+    },
+    {
+      "path": "host/host.c",
+      "sha256": "d688ba7a9757ab1b0e4825144099e82d62849573aff71fe344d9e732bb597198",
+      "origin": "src/Host/host.c",
+      "role": "authored host contract"
+    },
+    {
+      "path": "host/msquic_host.h",
+      "sha256": "320e5132e80ab5cd52ad0b5d52ebc0accb8a9eaf8eaae102de00004d89d44e1d",
+      "origin": "src/Host/msquic_host.h",
+      "role": "authored host contract"
+    },
+    {
+      "path": "host/msquic_host_internal.h",
+      "sha256": "7f37c89614d7852ec41937402414452fb704e9d16438ac2a5a0f2535b7bbdf17",
+      "origin": "src/Host/msquic_host_internal.h",
+      "role": "authored host contract"
+    },
+    {
+      "path": "host/portable.c",
+      "sha256": "c78e519cd6f61b062853916477a35413adcaddf42f9d6319918ea4faffb2edbb",
+      "origin": "src/Host/portable.c",
+      "role": "authored host contract"
+    },
+    {
+      "path": "host/required_slots.inc",
+      "sha256": "85361d36df5a993b4da59e65bf9f67b988fde2310cc9b3e04b1ca2b1c29100d9",
+      "origin": "src/Host/required_slots.inc",
+      "role": "authored host contract"
+    },
+    {
+      "path": "host/route.c",
+      "sha256": "18cc981755191667733cec37731c43f569989eb8fcc865d1e0954d2c61d6621b",
+      "origin": "src/Host/route.c",
+      "role": "authored host contract"
+    }
+  ],
+  "api_profile_sha256": "5868fade755c2c2e2babdedc59b7035bc26f0ac1f88e324f8f6c33799cd763d6",
+  "evidence_sha256": {
+    "artifacts/host-contract/results.json": "4f48858ca3c1e08247705e0ccdf528722bd9eb1462cb395f64c1a4f650047128",
+    "artifacts/product-build/results.json": "e3a18a11473e7e3c783ff6eb29695eb4ed26058b83acf2376dc28032990be043",
+    "artifacts/compiler-full-isolated-receipt.json": "77683bc24d08d52019640c0eab55d2e9ccac554966898b23782b66ac3972bc15",
+    "artifacts/compiler-strnlen-native/receipt.json": "47f02a99a94a5cc637fd7cbda4deee5fef8d6f5e3d5fc2deee07b5ed8abeadfd"
+  },
+  "compiler_hashes": {
+    "DotCC.Lib.dll": "4f625631a75897990d35ec44dfa5e6af50b68d2526925d4729856709a6e75d17",
+    "DotCC.Lib.pdb": "4762174a446036430940bd91092ed0b9568be018d3b3e1d7fe7fe6567c772b44",
+    "LALR.CC.dll": "04a73c3f6b3bcbf049de660830d7b2257cc63f7afe820ad30d22ac80e2b4bc8b",
+    "System.CommandLine.dll": "0b7790b44a438c6c2f4714ec9d408e02c5ed98145d7c89ecd9a9d11acf0932cb",
+    "cs/System.CommandLine.resources.dll": "15981e39eb96e3f1ccea6745b53ce358c85b6b30659af54cdfdfa2adf0536c20",
+    "de/System.CommandLine.resources.dll": "5cdcd1ce61a638cebe1fbd2ef4c3fc83d046670a4f6b43aeadd82d032b1af03a",
+    "dotcc": "697c93db673d26e6ff5be786db486ec0f30632587abf55f0bc92a7fb3916933e",
+    "dotcc.deps.json": "535861a6fbc41a112eb2b3796f05eadd0788c86bced063ef9c1b7d73db82a1d5",
+    "dotcc.dll": "7bf5fabcbbe1c023f6f957d15747e3acbedaa03c33df323953d29da9efd681ad",
+    "dotcc.pdb": "1200b8c1598e315828f19d512a496662c6a694ee23041874b5c992905abd1816",
+    "dotcc.runtimeconfig.json": "5acdb16a460772054343c970894d62b803d3afa33dc719a66317f94d58119b1b",
+    "es/System.CommandLine.resources.dll": "1931512c78045dc88f68bc71f9fe7dcf1e3a679ace15b42ddbfc6235978ebc72",
+    "fr/System.CommandLine.resources.dll": "d161253276bd0079e6edd24c689b7e8c36c115c787af0bd528cd86422f94b32d",
+    "it/System.CommandLine.resources.dll": "a9a0ab1041642a0c1a3b7bef39151e2ef393a79a3e5cccd538bd7639bb11f2f9",
+    "ja/System.CommandLine.resources.dll": "ea81cd7153ca5e2ebb6419a76510c241a9d87c8ddba7b850d56bed4d7240e668",
+    "ko/System.CommandLine.resources.dll": "cea119f65a5114c40c32ed06f77f3454d7971ae14397b5e0500005ec136375ad",
+    "linux-x64/DotCC.Lib.dll": "e0954e79d81b3beca626fb8c1026651d7a55ef765509dc319277e10e26d8ffef",
+    "linux-x64/DotCC.Lib.pdb": "bbde8a82a12cff43060e1158cca06a34ee13d73cbdb7779fdc43960851f3f3e3",
+    "linux-x64/LALR.CC.dll": "04a73c3f6b3bcbf049de660830d7b2257cc63f7afe820ad30d22ac80e2b4bc8b",
+    "linux-x64/Microsoft.CSharp.dll": "e27f4538be340d4d073def8ac5914fee50dbe3d92281ab780fffe4db8c3bb621",
+    "linux-x64/Microsoft.VisualBasic.Core.dll": "15ea5fec66cdcbcdea9f7d0ce65eef237bcb8ab1ad630b56205b4cec1f06b99e",
+    "linux-x64/Microsoft.VisualBasic.dll": "26a50f1e89dc44b67a320df41e0402728c70a1176db9f431e66aedcf8309e8c5",
+    "linux-x64/Microsoft.Win32.Primitives.dll": "a76c8a93f569917bdd1381e9a2b2ef654c27508877339bf549c12bb8c19767c3",
+    "linux-x64/Microsoft.Win32.Registry.dll": "9ff3f1be8959d0e29b21970ad67d69ca70fe1dce32130590e9d486076dcef8a1",
+    "linux-x64/System.AppContext.dll": "5c1f80efd89014202124bdb34fe2e273a693adc3a6a97419467c5ac2643da259",
+    "linux-x64/System.Buffers.dll": "e1dcfff90949236647e0f1f3f7512d7f1f99f32f7844d5b930ca5a4b203db8df",
+    "linux-x64/System.Collections.Concurrent.dll": "9754ef9bcbff3187205e2d49ff2f4ac0a9c15c85c6f8aefddcff6a1575763480",
+    "linux-x64/System.Collections.Immutable.dll": "7605060894e5b2af479cee07ad2df4a9a3c417481258fbe4b62a6becab562509",
+    "linux-x64/System.Collections.NonGeneric.dll": "a625335abf91ed2cea065dfa87557c71909fcb40f419bf4b13c8d8000e2f86d8",
+    "linux-x64/System.Collections.Specialized.dll": "3231a45072955d0a5d636c1c61128b7d9d82417313686dda1121a371c5813c5b",
+    "linux-x64/System.Collections.dll": "66293836777d07fdb89276bb373872b62d6f847a5ebd8ef137a3c545349b99cf",
+    "linux-x64/System.CommandLine.dll": "0b7790b44a438c6c2f4714ec9d408e02c5ed98145d7c89ecd9a9d11acf0932cb",
+    "linux-x64/System.ComponentModel.Annotations.dll": "688f250cda8ad6fe529d3e67156f8af2daa53eeaa60da4093df0302e99755c9c",
+    "linux-x64/System.ComponentModel.DataAnnotations.dll": "c000a2b991f2a672fc667ebd6575b269c633321f2ac2f625a5fa1ee758036d5e",
+    "linux-x64/System.ComponentModel.EventBasedAsync.dll": "3a53617bda66065a4f4865a5c5f3eee58b6acdccd02f786ca735e52c1dff1ae5",
+    "linux-x64/System.ComponentModel.Primitives.dll": "5d573ba16d7413e0aeb621cd65d83c4e23856da74b0c9e28d77a24c16b9a4a0c",
+    "linux-x64/System.ComponentModel.TypeConverter.dll": "2d6e9d3411188e5b4dfa9adad8466c7d58a8c303c213e9ae15ab22350eedf265",
+    "linux-x64/System.ComponentModel.dll": "41e0a4be2c2b586334e7f7848f3d391c76e4952e314a5af1dee88de0b629949f",
+    "linux-x64/System.Configuration.dll": "f84d01949245030b147b22514604a7edd04e6754082d3bca3b84d14927ffadeb",
+    "linux-x64/System.Console.dll": "891b3f17c2189b92963438bc3343e363ad633cfb6be125d9bf7bcb65392b3c96",
+    "linux-x64/System.Core.dll": "35a42dc406cb5f93d890acd80cb0f009cb46b938c1c52d705dc84257f7310a9c",
+    "linux-x64/System.Data.Common.dll": "20cbd8faa591d88340a3c8194d200fe167393d99177973fa8040884430930017",
+    "linux-x64/System.Data.DataSetExtensions.dll": "958d50d13a733b7d83b2f61210b2b348d03bfba0e8dafabd0900dc6b165cf417",
+    "linux-x64/System.Data.dll": "3be8b43fea7272bfd8a8fcd2b5405f956bff8caf55ce0ac87ae3b8d4ae119c6e",
+    "linux-x64/System.Diagnostics.Contracts.dll": "782a588142ffab3a7d70e636f5b0308baea39ce4290dea409f62abc3532f8859",
+    "linux-x64/System.Diagnostics.Debug.dll": "21159ecd4ae5891ee72a239415e85aaabdc73d7935f2678703f9f05e7bfe24d4",
+    "linux-x64/System.Diagnostics.DiagnosticSource.dll": "435d1b58e98ae86fbc09d215743a3975e435b889ff9b590903321b5828d6f02f",
+    "linux-x64/System.Diagnostics.FileVersionInfo.dll": "55cbe69598284b3e317e06e1a320eafda70a7d9eafd8df3d937baf7e12c338a6",
+    "linux-x64/System.Diagnostics.Process.dll": "14343b01c5a0cc293305553ef614a38c380bb225146bcad9b71d5e4231205716",
+    "linux-x64/System.Diagnostics.StackTrace.dll": "f0556de7f7a3d637da77e7a0f360de9f1816f3e6cc71c2f820fcbc4a1c037f19",
+    "linux-x64/System.Diagnostics.TextWriterTraceListener.dll": "6f3da3cd83dc728a07d1b83ed62713ba772fdc98ff23f59a5c9b265c82b80c87",
+    "linux-x64/System.Diagnostics.Tools.dll": "a2b2bda692ccfc0960dacc3025747b51f9a305bfa084c3de5a677acab30fbc51",
+    "linux-x64/System.Diagnostics.TraceSource.dll": "2d3fb04d964a2f1fcf24b31b3e35289bbb3cb5d6c15aa3fbeb2087f8b34eaaed",
+    "linux-x64/System.Diagnostics.Tracing.dll": "7b7bec4160995786f087f748c1cc15719e5c4e66602d74a06b8dda2a4c137d0f",
+    "linux-x64/System.Drawing.Primitives.dll": "68b7d6acadc051853809ab63dfe4c4d85bb691dcf149211f14edfe9fce6dfc21",
+    "linux-x64/System.Drawing.dll": "30701377b10e9034cebd69d2dc054e1e569870c212c72717d993a8dffd817929",
+    "linux-x64/System.Dynamic.Runtime.dll": "8bd74b542edc136d2f44c07f5ae994e29a3e6f6ce53a5d6002277396bc3c27f8",
+    "linux-x64/System.Formats.Asn1.dll": "eb0e57b134f19783d3ddef067346e70622427c28100f6443e2f6a041d13493b6",
+    "linux-x64/System.Formats.Tar.dll": "9e87badb1ba5c3c2ad92218761c3e0aa2525f55bb4a6d3bb7f6ac0a4c590fc1d",
+    "linux-x64/System.Globalization.Calendars.dll": "bae7eec8be38462adae9fc31851096b0cd10e150b2af1baebb839d32e32a8229",
+    "linux-x64/System.Globalization.Extensions.dll": "e7958163f2177129609bb67891559509aa1cbd9cce84ab3cdb33377cf32d25a6",
+    "linux-x64/System.Globalization.dll": "15004c73d622ca729fdc530b251c29d8a73469654842e66d82d6c6b7c09289f7",
+    "linux-x64/System.IO.Compression.Brotli.dll": "4ae618d645dab9880398d6b4811e95e0751c98dbc595deb596b4b46cec1021b4",
+    "linux-x64/System.IO.Compression.FileSystem.dll": "b2af20bc399fbe257060e30dbce7f2cbc6648f9109e8f179907a7cefd0581700",
+    "linux-x64/System.IO.Compression.ZipFile.dll": "9e9e0545f8f6bfae80b0045830e3382a74c107b54acafe8c19436b026e69dce8",
+    "linux-x64/System.IO.Compression.dll": "df8321604a7530ee02e24615910dba383ac12dc43ff5d84f28ae3b632c6ba87d",
+    "linux-x64/System.IO.FileSystem.AccessControl.dll": "8bf0978ff99a358ef4a520d25a002d472c03ee6cff74f618302efb6e70268ecb",
+    "linux-x64/System.IO.FileSystem.DriveInfo.dll": "dd6f5519a29b758ccb13afffbb16367b5e43a50f888dc526c715d96280e7a2ad",
+    "linux-x64/System.IO.FileSystem.Primitives.dll": "aa7bcab401f9e132ea7ffdc7f1b613934339a035aa737b7861bb895b9c7ff3ca",
+    "linux-x64/System.IO.FileSystem.Watcher.dll": "4dbd4ba6888d0f7671efbddb8a5707ecb29d44c832b66e201b48819faf60648b",
+    "linux-x64/System.IO.FileSystem.dll": "499c0b90aa15a76560e88c51526d50156339a92b9abb13b70a5bf65a13106869",
+    "linux-x64/System.IO.IsolatedStorage.dll": "0d3273d30853ecf1070c5ceb31acd0facb4933b4ebdc8fdd0f300b5d602a547d",
+    "linux-x64/System.IO.MemoryMappedFiles.dll": "a5e56dadb4b5d88274857b6aa2999a7cb357f743465617107e53d3967f1fc19d",
+    "linux-x64/System.IO.Pipelines.dll": "8d17936d3c0165279d1a308f134f8b13396658e3f413a385006a1d55ae1de843",
+    "linux-x64/System.IO.Pipes.AccessControl.dll": "97988ec921a058e69a8324b89bf4ac762047a1c742c8c42595aa60aa2d75646b",
+    "linux-x64/System.IO.Pipes.dll": "c629543599dc47011217bd531335b02ef8373e11a0b9abca2bd629e265249fa1",
+    "linux-x64/System.IO.UnmanagedMemoryStream.dll": "fdafd950275d305f023ac548cfe21249f28ddaf93acef187c182a29250724530",
+    "linux-x64/System.IO.dll": "0233c1f6c6dc13e48bdcbc0c603266a84ce95646dbd1b018f0dd4e16cccf1f7e",
+    "linux-x64/System.Linq.AsyncEnumerable.dll": "5e42acccbfa3d6c707bd05acec7fcb32b01337b1ca18c0fe7bec8db56e67c4bd",
+    "linux-x64/System.Linq.Expressions.dll": "55e307521d5d8467330c229ed3c2951e04d307c70e4cb84910f28c80516fc55d",
+    "linux-x64/System.Linq.Parallel.dll": "c230ecadef21789186ae07ad2285376ce9779c50b187e7e3c65e9d2d3369b0f2",
+    "linux-x64/System.Linq.Queryable.dll": "7bcf08538beac5255dc858b2e0890c177812edb298dbd93fda6a7eb0436a58ae",
+    "linux-x64/System.Linq.dll": "54f974fde605cb1bb6ea949526e9f924fd16a8eb5d33c165a41f174dbc036b91",
+    "linux-x64/System.Memory.dll": "ca7ae85b1ca610c4eabac8c887da87a0c9de816a4062ab2d39bcf451145a4197",
+    "linux-x64/System.Net.Http.Json.dll": "7cd2b2123e44b5344e1a9e8798870eca660090ff9dd8804d3dfc46286fe5990d",
+    "linux-x64/System.Net.Http.dll": "041518e45240cd51ac5c522c0a3ea3a3a094844ba915e29ea5a85c90f2235730",
+    "linux-x64/System.Net.HttpListener.dll": "4077620a24db3fe769a5288f126bfee457f740516ef7ff0ee6649af7d2e3e68c",
+    "linux-x64/System.Net.Mail.dll": "fc6f6dd8fd52b4499c486a4221f0ec97c9302be6c642abfcb9cf964db76eb1bc",
+    "linux-x64/System.Net.NameResolution.dll": "a73298943c00939ce3941410a0f1e27c7d97e9b365542b7336a5a98086a3cfc0",
+    "linux-x64/System.Net.NetworkInformation.dll": "6952e2188765ec6f658581c26f0eb19eb4ba706883415c5dc54fe7c54cc88c41",
+    "linux-x64/System.Net.Ping.dll": "964ed25f0cc739f36a1dd132adf61db17e687407f7d4bccba9c14b27aedde282",
+    "linux-x64/System.Net.Primitives.dll": "0b8c70a2576cfea8a6da0ac627cd97d893a60bae309b0bc2e3c6b8c41ee471fa",
+    "linux-x64/System.Net.Quic.dll": "3369f8396160e60374f4ea5405ee001cc5ea24c833ac77be68e86320db9346b3",
+    "linux-x64/System.Net.Requests.dll": "058194e8873697185c6fd8011f0cdab86a02083c6cdeba14028b666d0a50f57f",
+    "linux-x64/System.Net.Security.dll": "83555645f1928b3f64069eafbd22af9939f3c7bb62c05a0871f10af726e39e48",
+    "linux-x64/System.Net.ServerSentEvents.dll": "b83ba4034f7917ce8321226bd84dc4f9535a802b9764187560fe86aca6031e8e",
+    "linux-x64/System.Net.ServicePoint.dll": "8bb97eea92baede17abe500b4bfea6079e9ad868876613a3165b5c4d5c550ae8",
+    "linux-x64/System.Net.Sockets.dll": "37352806d1c4c0772398541440ab4a84da08a8508f750169482faeffaedcaf27",
+    "linux-x64/System.Net.WebClient.dll": "9d0f6cf24b62ab5d6796350e3b85284edab69c4caae28a8fee323e1ef854638f",
+    "linux-x64/System.Net.WebHeaderCollection.dll": "336221541e95bb2f4c1b6100accbfae828c3f771b82ee3440e8ec3a3a726279c",
+    "linux-x64/System.Net.WebProxy.dll": "75ae4e2a1ea34fa1d377627b51e138f6527689ea1253c18de4291269a7916366",
+    "linux-x64/System.Net.WebSockets.Client.dll": "366c237f24ac9a35c01d4684e1e5bbe6b83275714cfdadba05cc2ccd464d08b1",
+    "linux-x64/System.Net.WebSockets.dll": "40a1da873ff367860516b5a3ca485217ecfe21461d1734f11ffe9aad5c642489",
+    "linux-x64/System.Net.dll": "fa5ceffed813adb0c562b2a4895726c6c981cf923cd8deb467d87603b99afb6c",
+    "linux-x64/System.Numerics.Vectors.dll": "6b897ac5e75f0c5b196471831aa1e7feecb6dbf2a7e34fd8af5bb03b46fd0a4f",
+    "linux-x64/System.Numerics.dll": "1f8f09e580aa7a2bd493b64b2275d51955ea3279b28cca9066a4356757e1a154",
+    "linux-x64/System.ObjectModel.dll": "d31f8465cf835475bfdf7a9be0a0f75301499782ab85b4a16200232d53dc024f",
+    "linux-x64/System.Private.CoreLib.dll": "7f905cec6777e546c9f334f23f7552ccaaaa1ac382ae965fbe449ea215df10ed",
+    "linux-x64/System.Private.DataContractSerialization.dll": "b57e033689bbcca770fee7946a9b91227e9f8fd98a281c9e1846424d99a409cf",
+    "linux-x64/System.Private.Uri.dll": "b20db8d0c0d6ec34e57b4704bae195e2824268378bca6e7417bc9c2e25a87783",
+    "linux-x64/System.Private.Xml.Linq.dll": "74412706e8f3fec9812f0fb7d6e34e4f2881d478c5aafefdaf5afd2a5eb4bff0",
+    "linux-x64/System.Private.Xml.dll": "f3fbbb11c7113f049034cd3decd8b6e1930617aaef158ef3e85c9074ee3d33a7",
+    "linux-x64/System.Reflection.DispatchProxy.dll": "fc830715950f9ba7373900ff5fc7caf0abdb72b9230b8c1eeb12e9da12af22ce",
+    "linux-x64/System.Reflection.Emit.ILGeneration.dll": "1c5cdb9e4a109c0288cc1082bc2ea4ee9db8ebeb805a0dc32cd5eeab71eddf65",
+    "linux-x64/System.Reflection.Emit.Lightweight.dll": "afa518fc2be7ec94c9ae44050b9987ad17c922eb392218384b406b3a7dd2c570",
+    "linux-x64/System.Reflection.Emit.dll": "71001deb82907c88348b70efbdf93f5c68dc07af9f262009c34f715926cf96fa",
+    "linux-x64/System.Reflection.Extensions.dll": "904213094848999efc805579df16e1e6bcc31b59ad546f8eaa5453e49c1582e5",
+    "linux-x64/System.Reflection.Metadata.dll": "2d9253e27c69cb7d1d81ced80799abcefef804be4d4cd43381c79d9ba262ad6c",
+    "linux-x64/System.Reflection.Primitives.dll": "405516ff1a1117f732cbe2a58c4a3acdbc0d05e9d8f364dafb2cba64cd34cf65",
+    "linux-x64/System.Reflection.TypeExtensions.dll": "0950c9cfc7ff3b8c8593eba55f4e8bee510a5b84a49858165fc5e2722b28bb0f",
+    "linux-x64/System.Reflection.dll": "d3cd97e43abbe9a4779c7b3eaa538fca0d989b6e0ad845c32e35e6e1a5074aed",
+    "linux-x64/System.Resources.Reader.dll": "bc6e667c78053a75a11ef178a901210096550a3f9a9ce552aaccc70e7e8020b5",
+    "linux-x64/System.Resources.ResourceManager.dll": "efee10932f0b7754f598f7b91842213a9eb803182283fa6264daf6fe54b31aab",
+    "linux-x64/System.Resources.Writer.dll": "78d949f22497112594817ca0f319bdb3b02623f6d213378dc8c37c775be46452",
+    "linux-x64/System.Runtime.CompilerServices.Unsafe.dll": "95cff7d9d8f022d488235880708ac03f94f139faa0581f0635253d8d023131d3",
+    "linux-x64/System.Runtime.CompilerServices.VisualC.dll": "d15bebbdc21482aee50a01da6981c101e709371aa9d2a71c1bacebe147199ea4",
+    "linux-x64/System.Runtime.Extensions.dll": "bd0ae5d0afda8b0777289a5410edf938a38ac3c581033b9227244ad0b12e76f2",
+    "linux-x64/System.Runtime.Handles.dll": "7ea62d4e4674c02126bda574a17fccd4f253893d4774a574029a496668c72d45",
+    "linux-x64/System.Runtime.InteropServices.JavaScript.dll": "a688213a8a713b6ceef1a6b005d2a22ca5c6c1ebfca78e256aca3b9ae5f101e9",
+    "linux-x64/System.Runtime.InteropServices.RuntimeInformation.dll": "291f372068a09393704e30aff6703f0417f7acc4898bc749d3eeb207cb3518ed",
+    "linux-x64/System.Runtime.InteropServices.dll": "e07e6f6695f847cfa4ad9956160a4bb4ec45826bf2ae0d6e867e1ad601ce0b45",
+    "linux-x64/System.Runtime.Intrinsics.dll": "d1ffadc300e3a9b60db6378b26cae6eab6a29a9a60843fba932b8c4d44eba67b",
+    "linux-x64/System.Runtime.Loader.dll": "7cc58290cd0ee1182ff67b0d9a10efba77dda0347ac031cb1951b43eff9e5c5d",
+    "linux-x64/System.Runtime.Numerics.dll": "f48855ff8273e798bbcd39f596ebfd2a8c0509f88be5402c7a924b444e526ed8",
+    "linux-x64/System.Runtime.Serialization.Formatters.dll": "f778c98bfecb010bd3486bcf65a738e755f3d620b5d34e65d12d4ddba61be21f",
+    "linux-x64/System.Runtime.Serialization.Json.dll": "cfe527bb9332e0c9943549ba4552322deb0bdcf30ac22da3b6567efd4e742c84",
+    "linux-x64/System.Runtime.Serialization.Primitives.dll": "2472bfa6a9813843a072c95c7b5be82e35ebc907f4fb976bf0d4281c692f6957",
+    "linux-x64/System.Runtime.Serialization.Xml.dll": "b8121e1e736d9648707635aaa3dd31ced9ed8a4d07823404ddf4e38501837a22",
+    "linux-x64/System.Runtime.Serialization.dll": "a562981d4c3d477235cafec0d2bdaedf785b1dcb6f3282239d663577b975d86c",
+    "linux-x64/System.Runtime.dll": "7dca1e2cf855869e8e4043e82a7368f53af8d50a8d289cae698cc046e2579269",
+    "linux-x64/System.Security.AccessControl.dll": "73654468225888ab3696b8b9bc19313e4bbef52029ee51ba5c1d84492c7f269f",
+    "linux-x64/System.Security.Claims.dll": "69e862c34876d9f2360100c8da98c58a1131370a2bc8bef1d2010906a03167d8",
+    "linux-x64/System.Security.Cryptography.Algorithms.dll": "b78dcadf6933023cc1e393f7de26067db175ff9f7c9a729f1b8a061ec3d405ff",
+    "linux-x64/System.Security.Cryptography.Cng.dll": "6b4430f5460feb9cc7ed078fce9966c6d71c7ab3f471a096feace7521f1213c0",
+    "linux-x64/System.Security.Cryptography.Csp.dll": "25f8811123c7e108374bc6b7cc36c278913840cdef1d66d8f4603218bb263401",
+    "linux-x64/System.Security.Cryptography.Encoding.dll": "5f0588cc3331abc7eb69033569742725d55e6359bcbdbaa3c580b66fad758503",
+    "linux-x64/System.Security.Cryptography.OpenSsl.dll": "3e1ed27d63cce597f47397b5b117b862583063fb3a1fd1bf007e5b0d2e180249",
+    "linux-x64/System.Security.Cryptography.Primitives.dll": "1895111e57716a8bc96b5bac8c989e9c65f187a8e2aeacba4ab1c1337753ca4b",
+    "linux-x64/System.Security.Cryptography.X509Certificates.dll": "61c6b9bb28610da29f05d0fe912a0fcb6c8df6fbf83fe7063d7b50338fd5cd62",
+    "linux-x64/System.Security.Cryptography.dll": "88b8e480752c77b08d8ce25982733d71b77bcbcb2a0feac0b687531732f3c9af",
+    "linux-x64/System.Security.Principal.Windows.dll": "0141da9ef34d02aded15d486139e67e043f62ea53107a56d2b45f3d8a0248fe7",
+    "linux-x64/System.Security.Principal.dll": "0e1ff75678737c42d33a4c07ef2bdfcee9b72c5d7cb80d0b666b4032c59bf29a",
+    "linux-x64/System.Security.SecureString.dll": "0f50a66b1ff592651294bfd2abc3e4d33ef7aaab52e6da59d49a176ade294c63",
+    "linux-x64/System.Security.dll": "cba65f27f9c4f3324d4e83a9c37834af21a1ab2d6cd1d11e1f15b2a7a8f72957",
+    "linux-x64/System.ServiceModel.Web.dll": "101ac010eeceea41bcf34b74d9e5946f0bbd1bf57d70344d592e7dcae2608cfd",
+    "linux-x64/System.ServiceProcess.dll": "a4e9e707a7608e2ff8d2eda45ded161bc0cf6678ad18bddf312d3465a641315e",
+    "linux-x64/System.Text.Encoding.CodePages.dll": "83ad7593e6f3d60d349a3630e812400cadf00de558bcebd42d4d98a7e9dc0a69",
+    "linux-x64/System.Text.Encoding.Extensions.dll": "588c7b965f2e8b1624123f4763e50c8ffb0e4d2bf9faeb0505b4485efaa7aa37",
+    "linux-x64/System.Text.Encoding.dll": "486d2de3e8c1c6016fcc5f44e5a0739ee98ee7157e1f20552f828e5633c2141b",
+    "linux-x64/System.Text.Encodings.Web.dll": "8aac9884764354fdc2314f4a6cc8253c042577011c2ac17c9374a6d535d90003",
+    "linux-x64/System.Text.Json.dll": "5bf3add6ced16b0a77269da1ef26098c472bd598af2fc583bd1683443a1aff89",
+    "linux-x64/System.Text.RegularExpressions.dll": "2117db89ba97586f135fc79d1217c5a2f1cd773103480eb704a5757969856836",
+    "linux-x64/System.Threading.AccessControl.dll": "2f36407b8b3b3d8f724fa144ec0ab7a2a8fa312528582df3bf4e24b6676158b6",
+    "linux-x64/System.Threading.Channels.dll": "761ed324645fe261bb967f371895aef22d915e5cc4ae2199dd1c944c1f32ca62",
+    "linux-x64/System.Threading.Overlapped.dll": "761f9f7970ee9730223651fb69d6b7e1545a4f3de1e8a7ea62e6ae04370736ed",
+    "linux-x64/System.Threading.Tasks.Dataflow.dll": "186c8cc9c191519aad109655279b148bf329b6f45e10b660f1efa275daae43aa",
+    "linux-x64/System.Threading.Tasks.Extensions.dll": "61291e7cb64bc007a3b8e319262fbf765f7d4324f7bd554205cb53d8c7afafa8",
+    "linux-x64/System.Threading.Tasks.Parallel.dll": "2c27db018e88f57efd9cb4c65e6dadbd582036ccf6298cb7eebe768064f5d9b1",
+    "linux-x64/System.Threading.Tasks.dll": "4aa42ce41246168bee60dc9a9c6214e0382d5307d3010df0dcdf00289ec22d69",
+    "linux-x64/System.Threading.Thread.dll": "4eea6069434ca0313f1f93af52426ff41e7e762473be6265f758ed86a6ab2a07",
+    "linux-x64/System.Threading.ThreadPool.dll": "4eaed45e4d620b65605a0599e26d636ff357d13c88ed2d55de759d4c883673a2",
+    "linux-x64/System.Threading.Timer.dll": "747720da19966d24fbfa2eb6f35e6dee0ea9b0c82aa3d11667f40c23a8f38a86",
+    "linux-x64/System.Threading.dll": "41c7d2fdc6198ef1d38c6964dfd4382c6d270ab226052064ba8174fa7eb728f9",
+    "linux-x64/System.Transactions.Local.dll": "24782018caebee69868aef541b2ccd468148558f0a50b9510e3f77157ffa8800",
+    "linux-x64/System.Transactions.dll": "2c359705f01e6b125a2f2923eda26be791606b7d797945dadf31544053e99d4a",
+    "linux-x64/System.ValueTuple.dll": "f875bbd5223afcd31b76592655eab6b3c4de7d1f86752ba3bc9c83ccbf9235d1",
+    "linux-x64/System.Web.HttpUtility.dll": "cffb4e5a498144740a2183505e99995edd7f4221410ead3c602a07da672298f0",
+    "linux-x64/System.Web.dll": "769f69b4ec924f8bd4e8a16318de784dcd45b24d1aca587b7fa7bd5443f85032",
+    "linux-x64/System.Windows.dll": "0c2dfd3db7b9a197e0422a8b851bb5c8404f2bc04e96b32ce7e410edf74cab9b",
+    "linux-x64/System.Xml.Linq.dll": "c4b1ecbd2f7e892d230f54376f8648f4d2684928c5d615f6f163f52fe353fab3",
+    "linux-x64/System.Xml.ReaderWriter.dll": "57834d8a5e64e1d88dbee4506a1d5dde57ea46e1004952932c30f5b46b3308a1",
+    "linux-x64/System.Xml.Serialization.dll": "97fffd360b2dcf451ce5cdf7d5d1446aeda721756b40192e522d29ccf3daa0d5",
+    "linux-x64/System.Xml.XDocument.dll": "c18be631c02b082e061316db32b92a9fde9db7985853ad9e3d491dd5d58da339",
+    "linux-x64/System.Xml.XPath.XDocument.dll": "3125e10206a96225d3e153a0ded59594d90012ec749eb005fbb9945905d41b4e",
+    "linux-x64/System.Xml.XPath.dll": "896c018be1b70a65ad563bfdaec12afbe4a44363a14239dfbc53fbe7c11bebc3",
+    "linux-x64/System.Xml.XmlDocument.dll": "f58b8b287f7967877d9497328de2ac64315e0d4b8f483034a5a6525c410121c0",
+    "linux-x64/System.Xml.XmlSerializer.dll": "5703fad638e9a36d6370cddb0aa6ccd6cfbe7f69aed372b330345b3d6f1a5e76",
+    "linux-x64/System.Xml.dll": "62e36f7638fbd07b58bb3f351c3a4a25ad97d379faa03a016342cf5a4f170e46",
+    "linux-x64/System.dll": "774ff2eeec8f47d9c65ef5c861ae114a26a309dd018563799c603f6cd1d62ffa",
+    "linux-x64/WindowsBase.dll": "bc3bc3920f6aeef1128f1a991e37797fad848f4f664e40f366a80a0666422e18",
+    "linux-x64/createdump": "6801551b25041ac1114f6d6eb5a08f8ba3886f1bb48163afb085236762e02a69",
+    "linux-x64/cs/System.CommandLine.resources.dll": "15981e39eb96e3f1ccea6745b53ce358c85b6b30659af54cdfdfa2adf0536c20",
+    "linux-x64/de/System.CommandLine.resources.dll": "5cdcd1ce61a638cebe1fbd2ef4c3fc83d046670a4f6b43aeadd82d032b1af03a",
+    "linux-x64/dotcc.deps.json": "0a7bd44b793aa9928bf80a304a48b38664ec38ee9959bbf6bd98573a026ec8a4",
+    "linux-x64/dotcc.dll": "d3e488c5e06b84e44fab09702c5f6e82d4b8d58d0e77b312b960221f222aed82",
+    "linux-x64/dotcc.pdb": "7832b49e85e9dcd4876d0646ce248f8adca98344ee502a79e3bcec99b19f1d2c",
+    "linux-x64/dotcc.runtimeconfig.json": "0bc509840727979f19cecd1d25211c30e6babea690845a15926c25c147849a0d",
+    "linux-x64/es/System.CommandLine.resources.dll": "1931512c78045dc88f68bc71f9fe7dcf1e3a679ace15b42ddbfc6235978ebc72",
+    "linux-x64/fr/System.CommandLine.resources.dll": "d161253276bd0079e6edd24c689b7e8c36c115c787af0bd528cd86422f94b32d",
+    "linux-x64/it/System.CommandLine.resources.dll": "a9a0ab1041642a0c1a3b7bef39151e2ef393a79a3e5cccd538bd7639bb11f2f9",
+    "linux-x64/ja/System.CommandLine.resources.dll": "ea81cd7153ca5e2ebb6419a76510c241a9d87c8ddba7b850d56bed4d7240e668",
+    "linux-x64/ko/System.CommandLine.resources.dll": "cea119f65a5114c40c32ed06f77f3454d7971ae14397b5e0500005ec136375ad",
+    "linux-x64/libSystem.Globalization.Native.so": "4390454b0fda2c70cb8aa27ff7c335267bdf878bae0560c8a733b537da3e6b77",
+    "linux-x64/libSystem.IO.Compression.Native.so": "968e38e12879e8d0cc2565fd3850eaf09c247db384c635e75ea12a4286fc5d1d",
+    "linux-x64/libSystem.Native.so": "d3ddb0cc008c0f5598f8de748423de8d06a0239950856139fe0638a7dcf679a4",
+    "linux-x64/libSystem.Net.Security.Native.so": "ea056e6b69dd593bddda60b21193231cc30ab71cbd4928fdbdb996079a66b376",
+    "linux-x64/libSystem.Security.Cryptography.Native.OpenSsl.so": "8b89efe48bb4a49d3f3b7c35746ed757c25ec79a596e01c4bb3de50af39a67e3",
+    "linux-x64/libclrgc.so": "7be7619343dae3babe59b9bc03f0d3ec847bafd958c3640f85e964ee8e88decd",
+    "linux-x64/libclrgcexp.so": "a790bf809dd8b6573e5623929fae43ca5f1dd001219de2aaf82cdf516b58999d",
+    "linux-x64/libclrjit.so": "fe82345dda7ea15de66a5f75dbb2d3b98dac843c834ccaf2b8ddb88147fdafbd",
+    "linux-x64/libcoreclr.so": "3ebe90cd92b1edf6742a41fa921a0c6326216fd1cca45fdb5e055bea33351bea",
+    "linux-x64/libcoreclrtraceptprovider.so": "72a69a665f1fc13959853d0d3b17d6c7a70313edc55ee35b6b13065e2e9da278",
+    "linux-x64/libhostfxr.so": "261524c6971b43a9b8733fb4058eb0c3e8e02415149ec8fc88027aaf153e7bee",
+    "linux-x64/libhostpolicy.so": "f00ae2f70454c2ba99b66c2d13025f3505f6a6c43d57d478370e711d76ad96bf",
+    "linux-x64/libmscordaccore.so": "ef163aaf8d8c956c2ee32d95e34ca3762d0911d39492cc39f690ccdb84f378e9",
+    "linux-x64/libmscordbi.so": "001ef982937c5fa861f79853fcb002c34d0d0f133289174c19c663802b53d73a",
+    "linux-x64/mscorlib.dll": "aabcd45db014886b4da80d85803654ba474e4ec8c39b96ea7b936bd6e48fec30",
+    "linux-x64/native/dotcc": "db989371a390320f0280091b11a6fb93ba2c3c8a8013d9ac7a32c25ab15bd2ce",
+    "linux-x64/native/dotcc.dbg": "6ed7a889b8dee0f059615629a569470a2f676603799044915138aef91d5c0eec",
+    "linux-x64/netstandard.dll": "7af7dadbd50b36c17d0cb692f6b0dd81f1927e1dd90d8c668e921e761585624b",
+    "linux-x64/pl/System.CommandLine.resources.dll": "d1b332ac112bd517fcd4ac8f97353fb075b1fd40dacf516101c505a303988f6c",
+    "linux-x64/pt-BR/System.CommandLine.resources.dll": "15dfe1a5101b90c0cc3c8d8ed9a483786788a2dbeb0e0df75c70d9df938e5f8e",
+    "linux-x64/ru/System.CommandLine.resources.dll": "3a7bf2fb8c47b2ee365981260324715fc5abb810f92dde4e2e7be094f5734340",
+    "linux-x64/tr/System.CommandLine.resources.dll": "8ad9d45e731598c6fc67ec85a33e90920595b7ab25a88170a7a3a74a7cd9e9a6",
+    "linux-x64/zh-Hans/System.CommandLine.resources.dll": "70ccd79ef38beb16dfd5736a68e60d5812dcc5ab531f63e6c5e33e8a88cae253",
+    "linux-x64/zh-Hant/System.CommandLine.resources.dll": "5141ce74409ee7fb9aa343813f24ebfb7a20871b03df81891447d929d70ac008",
+    "pl/System.CommandLine.resources.dll": "d1b332ac112bd517fcd4ac8f97353fb075b1fd40dacf516101c505a303988f6c",
+    "pt-BR/System.CommandLine.resources.dll": "15dfe1a5101b90c0cc3c8d8ed9a483786788a2dbeb0e0df75c70d9df938e5f8e",
+    "ru/System.CommandLine.resources.dll": "3a7bf2fb8c47b2ee365981260324715fc5abb810f92dde4e2e7be094f5734340",
+    "tr/System.CommandLine.resources.dll": "8ad9d45e731598c6fc67ec85a33e90920595b7ab25a88170a7a3a74a7cd9e9a6",
+    "zh-Hans/System.CommandLine.resources.dll": "70ccd79ef38beb16dfd5736a68e60d5812dcc5ab531f63e6c5e33e8a88cae253",
+    "zh-Hant/System.CommandLine.resources.dll": "5141ce74409ee7fb9aa343813f24ebfb7a20871b03df81891447d929d70ac008"
+  },
+  "generated": {
+    "raw": {
+      "MsQuic.00000.cs": "14344704b1367aa3ebee7a650a77a1806c986087bef7c3010d8886999de8c2c8",
+      "MsQuic.00001.cs": "a1e51b2f7b60bfef198c834f47279a53826740c0ad59f59938e33403d5d3d237",
+      "MsQuic.00002.cs": "e1d6e5142548ff93b65c188d9df249d993b59b07349583a22fca5dc55bf88385",
+      "MsQuic.00003.cs": "a84a2d588703e700ddfa48931ebf17ffbac20aac760beccd01ab450fde6f854d",
+      "MsQuic.00004.cs": "7460b274bc5808b5d383ba3ac0ccd35dc9cc21f1e43a08457bbf4f384b71f7a6",
+      "MsQuic.00005.cs": "c7674ef027ee8871df437ec4b438fd11cc3a1a38bd9c14c196f216391b9e9fc3",
+      "MsQuic.00006.cs": "0d770fe3a7bd99bd80e6c354fe8395715ba26073001f5797ecf78fc2c277f022",
+      "MsQuic.00007.cs": "ec47c2816113178cc52208980977e8fe6c04a1284a3d49600940f9f3a47d0982",
+      "MsQuic.00008.cs": "41ab8234445c882eba0b26f9e7de9420a618a032b5aa1606a6942c32a5e189af",
+      "MsQuic.00009.cs": "c8107e8bbe0740adaffc4580dc8e5352a399fc34df6b9cc15c6d18e0c12f329d",
+      "MsQuic.00010.cs": "318cee4d06c1862bb2740aca3e23c052d002f18a85bad5e5e68e2939020982e0",
+      "MsQuic.00011.cs": "927c5b1678c6706487dd8ce0896968ce8675a7aadc464313f24928f945db9f2b",
+      "MsQuic.00012.cs": "0a3efe4c3acf5da82657eec2b8b1ef2b5f573883ff8ef8bfeaf7e4fb17ed6ea3",
+      "MsQuic.00013.cs": "29269552d609a3ff476b3a53483c2dd37defda94e5197cac3baf809514c67be2",
+      "MsQuic.00014.cs": "b8f54860891db378cc5907b4675da8ef03352c8b4ca9c5135819d148339c86e7",
+      "MsQuic.00015.cs": "37f66005b0d1bd896bea9e88e37198d5ea4805e2c828da7fb3c2c99287e6ef5b",
+      "MsQuic.00016.cs": "c60098e199948523a8b94848b51c6fc327559089a0027dd09c128d5935f38f9e",
+      "MsQuic.00017.cs": "14614c03f853bed5955eafe9c2cf0557a24dfe491e86f15bd205f697337c05eb",
+      "MsQuic.00018.cs": "1ffacf2c718435a4d29a3253763e61fbbece49cea327ecdea61efb4c550865b0",
+      "MsQuic.00019.cs": "04c10f11326bdd0a279255298b5a55472ed1266d00efd1245bb181257c987066",
+      "MsQuic.00020.cs": "b97e246c05ca1d93464e11386f948637263b295f4503f591ef4158fe009e6bb8",
+      "MsQuic.00021.cs": "8bc3bc4e401961cb1ef0b2d09028210bfc7ec21942759e86e65bbdbbd6657731",
+      "MsQuic.00022.cs": "1bab124fda7ae48054151d6b35b1223221162b8ba2ec69945064684ad4e1e0dd",
+      "MsQuic.00023.cs": "58427c156de9a1fc77c4d4db03a480f9ff31844930341f2abe3de9361373d283",
+      "MsQuic.00024.cs": "5a526d255853bc2d8e1c987af6d4449551e0b54b305f7bde6025b0a9dd92f9be",
+      "MsQuic.00025.cs": "fcdfaeb6ad1dbe026dde5ff218112b8e0e82086782d4ae0c212b8d0a2e70b178",
+      "MsQuic.00026.cs": "ee15459e4151a3fa9805c22517a279b302b04a03636c33b7965bd7d6e413a309",
+      "MsQuic.00027.cs": "976f5c2d359746f9714009287463ee77c1f2fc2d4693619a30729c61b7b6130d",
+      "MsQuic.00028.cs": "93b1a5d14027834c1740268b020229e87f4add36f071d2e634c54afc0df64583",
+      "MsQuic.GlobalUsings.g.cs": "5ecb3c6dc683e135e73eb78a84741617ef085466978934fd409c5ea9cd46217b",
+      "MsQuic.cs": "17416411b9c45021fe77112da5b6420ca918b292923455a8d2024d7e6fc81981",
+      "Dotcc.SourceFiles.txt": "b3b603a9f68617c4e84004fc7d72a16f9e2ef4236ccdcb32b136c5233f83889a",
+      "TranslatedMsQuic.csproj": "a54187881927f36b03a514cbd9c248ca3a578852746cf232a6a676007b363e86"
+    },
+    "optimized": {
+      "MsQuic.00000.cs": "74156ded8442f69e62910503b9aa0a88892a94bce0a0116ca8d1aeed0e6a84f5",
+      "MsQuic.00001.cs": "f095cbbc79a6f31bc0ed333faf3055f6639cff14f6a6f5ecfd3ed7a60802fa79",
+      "MsQuic.00002.cs": "20640c0d58269b2a4b24b0c8d4b5d7775cb006efcf263d75f5d8ec4bfb2d1b6d",
+      "MsQuic.00003.cs": "4b350dc3563a4fbb586d39849bc725af1c862281b3fba4691346c3d35fa78457",
+      "MsQuic.00004.cs": "24771db493083f4398c80874e7bb2cbe73a8b60d004d65b7cc063c0b22f27850",
+      "MsQuic.00005.cs": "8cefb160f3d7a669fa27e427d97b89999ea8c80ab9c96f8e0b2e2bbb242a51e9",
+      "MsQuic.00006.cs": "10d3ec6ce39cbd25322bf5c400165d6e2c99b399d2e1d90be4fc5a6b3822189a",
+      "MsQuic.00007.cs": "aaac8c3b12e7d49f20af53cb32ec4722b5fd7aefd51cc8dec7a75757f4a6a5f5",
+      "MsQuic.00008.cs": "76228b4fee4c67b90fe653e083af00a8953f327f04db95885398cd79b1328380",
+      "MsQuic.00009.cs": "abe20dc560be7605edb2479a9efb9a4828f2c73557f715afcd6e26e5e5988dd3",
+      "MsQuic.00010.cs": "3eac4cdaedb89cb12d78d72d32a17b194d4b6cca0e1d0a6e1ee449c832662b04",
+      "MsQuic.00011.cs": "636a0d666e9b524379ad57faa638a81023bae9e71021ea431989fed6b1790c05",
+      "MsQuic.00012.cs": "657ec70ea94d93b2b71000da710de7e36590460f3b3397ac6c7d9760f472e764",
+      "MsQuic.00013.cs": "d8676e9266e11f1f8f543ad30d99b6222c361c244a90ee10f72c89419995126a",
+      "MsQuic.00014.cs": "7bb6c5c24c0305b14232340e34a5fcf813f34329cbe197a418c90241ba09aa1b",
+      "MsQuic.00015.cs": "c2582a08cc94100de3758ae47e18f21c0e5442008823e911608c51d371cf2b0d",
+      "MsQuic.00016.cs": "e41967f38b67087ff5c8b6b9c9c01dee43c8ae65d8df959467e943e6a61f799a",
+      "MsQuic.00017.cs": "30cc93f0d3bffcfaba33f744104ae336e00150c0c20db40ad41316ba744dd236",
+      "MsQuic.00018.cs": "58b85a9a1da4713d2c0af468a05f24ad64f33d0cc23713b469d9287c65e4a0c6",
+      "MsQuic.00019.cs": "406921795e7e8cd154152c1b9848322892b883b89202b8316d2cbd3d2151f881",
+      "MsQuic.00020.cs": "707de089b591cd9d2845b27f23319842c4d9f18dc9fe0ae8977ebee87f5e8e50",
+      "MsQuic.00021.cs": "729f0f8baf608a5ba005d00302c002f22fefc2175056792347de8c04259e5d8a",
+      "MsQuic.00022.cs": "366ca0a1fd8d130f582ea535ebc4aa5aa2b4653c61d5c629a035369463be0038",
+      "MsQuic.00023.cs": "ef1b9bb71c2c2848dd07b9219ece8c3e11b5e9bf4ce5f920cdfd170e2e8acb09",
+      "MsQuic.00024.cs": "c2a4d571df12880f1a73a4694598be37f62217a6acc9421ca61cd1f280f63690",
+      "MsQuic.00025.cs": "cabe4d14b39c4be26ccaf3a188c30d3e1c9c51128e8de3a9fe601dbc4c1ae07c",
+      "MsQuic.00026.cs": "7596b76af55b7c46083eba5365992ed44296518eb89a2575269dfeaa8eb5307d",
+      "MsQuic.00027.cs": "710004e62433322419e016372d37de2f10dd369d0889d5146c5ad7d951726953",
+      "MsQuic.00028.cs": "7a22163e59ed37e1a2ed6f61fee785d710cae8fe587c904d3a02cf3af998dbde",
+      "MsQuic.GlobalUsings.g.cs": "5ecb3c6dc683e135e73eb78a84741617ef085466978934fd409c5ea9cd46217b",
+      "MsQuic.cs": "17416411b9c45021fe77112da5b6420ca918b292923455a8d2024d7e6fc81981",
+      "Dotcc.SourceFiles.txt": "b3b603a9f68617c4e84004fc7d72a16f9e2ef4236ccdcb32b136c5233f83889a",
+      "TranslatedMsQuic.csproj": "a54187881927f36b03a514cbd9c248ca3a578852746cf232a6a676007b363e86"
+    }
+  },
+  "gates": {
+    "host_abi_native_records": 60,
+    "public_abi_native_records": 29,
+    "unit_tests_passed": 2146,
+    "functional_tests_passed": 439,
+    "optional_oracle_skipped": 1003,
+    "raw_optimized_jit_nativeaot": true,
+    "entire_generated_assembly_rooted_for_aot": true,
+    "host_services_implemented": false,
+    "transport_validated": false
+  }
+}

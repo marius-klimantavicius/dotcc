@@ -1,0 +1,272 @@
+{
+  "revision": "80a065112426bce68c1da42d026478d3e40fd45e",
+  "role": "compiler survey candidates",
+  "product_closure_frozen": false,
+  "data_model": "LP64, little-endian, Linux x64 first; host ABI not yet validated",
+  "units": [
+    {
+      "path": "src/core/ack_tracker.c",
+      "sha256": "8087d5a0e3b5d23a77caa276f3b02eab9516ebc3a5f6b7b05adc383352d9233e",
+      "lines": 367,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/api.c",
+      "sha256": "fa7fcc249059c3989f6625025edb8862e03aa1a2ae8a391c969da01eaa7bbd12",
+      "lines": 2146,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/binding.c",
+      "sha256": "0f60af1aaae3d174d3f075c293ebc18b3d69af72dec1602a7f975e46595bd839",
+      "lines": 1882,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/configuration.c",
+      "sha256": "8655e7165c51c8ab8454dbd0f256e1f8bf523eb84468cb584c18b1900f044e4a",
+      "lines": 598,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/congestion_control.c",
+      "sha256": "4510921f9b234f58df9f2df7a4632f5706103a2c5ffb2c42b0b8464bd7024739",
+      "lines": 44,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/connection.c",
+      "sha256": "7bf1eb16839824c35f3e5d03a3165bee5e03aa2e6b1e9ef036dc59ddfd24e036",
+      "lines": 8275,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/connection_pool.c",
+      "sha256": "faace017ec76e6d26ab5794ec4b3adaf4b9b65b53a0f2d360f26b20673ee40b8",
+      "lines": 725,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/crypto.c",
+      "sha256": "9338ce8f59ca7d5617eac33660dea3c9531ef6ed0ba9022e2c691cbefb250402",
+      "lines": 3193,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/crypto_tls.c",
+      "sha256": "fe8da55534bf33cec61d6a8cd0ae97ba05fd67600294d8b39969719881072a40",
+      "lines": 2041,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/cubic.c",
+      "sha256": "134be5cf476f7bc6d87b089785f1ed10b148eeae0f8bd0dfb8a9694ac8c02fd6",
+      "lines": 940,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/bbr.c",
+      "sha256": "690a73e2ad45bc348a0de1f09a6dda9b00ec05a36f5a8450d6625978df11813e",
+      "lines": 1162,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/datagram.c",
+      "sha256": "be9044ffd37d5baa5224e76dc92b3ace2cde0803539d6cc03a31793ab395d322",
+      "lines": 633,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/frame.c",
+      "sha256": "9349609e7c8cef24d6cae2d69eec7fd7b22f6212bc89958aec993806cc0f5c79",
+      "lines": 2047,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/partition.c",
+      "sha256": "77ed6ba0bdb0837763cad05b56b15c8d5132c7e3fb8b321d7179b1edece0a9c2",
+      "lines": 182,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/library.c",
+      "sha256": "927bee2e637a2c31e657104967510339a04cab23c0fee24e58ce7e26694178bd",
+      "lines": 3097,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/listener.c",
+      "sha256": "c15179aa80d606b1497045c2cb4f6a4f30e02664d361da7e89a01d4a2b58bb55",
+      "lines": 1125,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/lookup.c",
+      "sha256": "d49d68ffb9d666ad60735eba238a8802f64ea497e5c02a1cd21cc0489bb2afab",
+      "lines": 940,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/loss_detection.c",
+      "sha256": "00e17d74934f66c2e956943326ad1f31ade4dbdd95b9424af8e12bbbadb7bcf1",
+      "lines": 1874,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/mtu_discovery.c",
+      "sha256": "b41f1c3cc3b2689b5c2fdf1024ff277ac155bdb09a4735d7738ff95920d3fda1",
+      "lines": 266,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/operation.c",
+      "sha256": "624f57a2c783065680f6e97b707ac63a164f7a73f2fea295af018c9692e8363f",
+      "lines": 307,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/packet.c",
+      "sha256": "0b80b81fff3f63265817293346073ca6dc288d1fdfc5b6643c0b09ca44adf682",
+      "lines": 870,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/packet_builder.c",
+      "sha256": "2005aaeb60a4f1ee5d4335f0e4b0078d4b007c15e1b74546d039435e76ad24fc",
+      "lines": 1115,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/packet_space.c",
+      "sha256": "e9e37e3bac2e364b7ef92078055eed7c176707d8acb16b3a40f34749982921a9",
+      "lines": 75,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/path.c",
+      "sha256": "513f3abf655fb1efffcbc3cece374aed2f72d081e728eac01a346dd0c7b027a5",
+      "lines": 420,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/range.c",
+      "sha256": "5a36ac713c24aa99bce0350080e99205f54c358813b0f7bd8cb214ab64f30f4f",
+      "lines": 465,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/recv_buffer.c",
+      "sha256": "c7446204f5ee14ebb90ad96adb194fbce4e40435cdd0d7389676800692d03225",
+      "lines": 1149,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/registration.c",
+      "sha256": "f0a00253a9e023da7d4a68b2c32ed6d847013a711e6f75804d935b581fb19f15",
+      "lines": 560,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/send.c",
+      "sha256": "8ca6caa35c3684047a170f90831ec94db3fa99681a5a12bafc74119bd88145b9",
+      "lines": 1607,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/send_buffer.c",
+      "sha256": "626209cb76703ae37a7238313fdc7bd8ef99d97e1b77d6ce55809560481dcdb4",
+      "lines": 286,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/sent_packet_metadata.c",
+      "sha256": "8e0a3ea63ba49b87f5f4e0cd14ca1e5507d6c4534659f3eb35033f96db3dfb94",
+      "lines": 136,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/settings.c",
+      "sha256": "e5161a97a6ba6ce616125a54d09570970e82bef8d47b73f805b7b1f643bdadc6",
+      "lines": 2247,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/stream.c",
+      "sha256": "66b2455227028286a6cfeb4f10528f82118caa2d0aea6acd210c34575925450c",
+      "lines": 1057,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/stream_recv.c",
+      "sha256": "426854b5b81b254ee0a30debceb19e9f9505bd806038b8197216e0ce8b3abe7b",
+      "lines": 1259,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/stream_send.c",
+      "sha256": "cf759db551a01e94721b92cf0acce18a3881205cb7584457cd3c47957ee47799",
+      "lines": 1753,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/stream_set.c",
+      "sha256": "772cf792e1ffa12acb20a2adb702f50d7ef7bebd6e7eccc4fdab250a88553f8a",
+      "lines": 894,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/timer_wheel.c",
+      "sha256": "b1d10b32b6049324a1789c05261e56cde77bdc52fd2a6a7606da5fab3f293497",
+      "lines": 435,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/worker.c",
+      "sha256": "ef480fb34b1a6399b355fcd3bfca4bd85b9fed45d2a8c0f7317a709bf19683ae",
+      "lines": 1125,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/version_neg.c",
+      "sha256": "e9671fcd4f3c9227dad33a5ec0d430a9ea63797509a697b501e60756fa0c9e4f",
+      "lines": 384,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/core/sliding_window_extremum.c",
+      "sha256": "1c2173d58bab687a8a5b41f890c6a463d7ef3d5ce1cdcbc4c86ed11550c44f1b",
+      "lines": 170,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/platform/crypt.c",
+      "sha256": "4bb8612b472faa4a909e6755e3444e1e60f933843b03747248244bc07344d3f1",
+      "lines": 541,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/platform/hashtable.c",
+      "sha256": "bf49212d7afdd017de87b566ab067cd739a4c8ce86e84108cf7113462456cbfe",
+      "lines": 1475,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/platform/pcp.c",
+      "sha256": "7f70c28b27ee7e1e4baccc292aefb51f63c686f98f45234e5abfa865c6b9e0d2",
+      "lines": 562,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/platform/platform_worker.c",
+      "sha256": "6afac3581894c0cfdef9b0aa33c574bdfe563752441e79fcb943314aa3b8d13a",
+      "lines": 841,
+      "selection": "candidate; host/feature closure review pending"
+    },
+    {
+      "path": "src/platform/toeplitz.c",
+      "sha256": "cd6fa774a890b4462f361876a5b699e5bc15e0df551e7be3b7d453351a631512",
+      "lines": 167,
+      "selection": "candidate; host/feature closure review pending"
+    }
+  ]
+}

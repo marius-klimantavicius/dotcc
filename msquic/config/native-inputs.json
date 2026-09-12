@@ -1,0 +1,37 @@
+{
+  "upstream_gitlinks": [
+    {
+      "path": "submodules/clog",
+      "revision": "33bd2b6fe3969386fa98758d358dd2d0453c63e4",
+      "product": false
+    },
+    {
+      "path": "submodules/googletest",
+      "revision": "e273a2d81ee3dc263cb58d7a78d403b6791b0b4b",
+      "product": false
+    },
+    {
+      "path": "submodules/openssl",
+      "revision": "5b09bb7d1159a31a7ae0a8f654262dc8858b95c8",
+      "product": false
+    },
+    {
+      "path": "submodules/quictls",
+      "revision": "ff36838bb69801cad56823159a036977bcbe5c75",
+      "product": false
+    },
+    {
+      "path": "submodules/xdp-for-windows",
+      "revision": "d372b52577a724e04fa4c06acb90bbfa4719fc25",
+      "product": false
+    }
+  ],
+  "quictls": {
+    "revision": "ff36838bb69801cad56823159a036977bcbe5c75",
+    "url": "https://codeload.github.com/quictls/openssl/tar.gz/ff36838bb69801cad56823159a036977bcbe5c75",
+    "archive": "quictls-ff36838bb69801cad56823159a036977bcbe5c75.tar.gz",
+    "sha256": "0419330d8f30ca9437474cf7ae239661698d7796f9522ab2912c9e4ed01e0150",
+    "license": "Apache-2.0 (LICENSE.txt in archive)",
+    "use": "Separate native MsQuic reference only"
+  }
+}

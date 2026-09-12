@@ -1,0 +1,563 @@
+{
+  "revision": "80a065112426bce68c1da42d026478d3e40fd45e",
+  "support_policy": "No managed API is available yet. Every entry needs an explicit implementation or rejection before P8.",
+  "api_table": [
+    {
+      "name": "SetContext",
+      "type": "QUIC_SET_CONTEXT_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "GetContext",
+      "type": "QUIC_GET_CONTEXT_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "SetCallbackHandler",
+      "type": "QUIC_SET_CALLBACK_HANDLER_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "SetParam",
+      "type": "QUIC_SET_PARAM_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "GetParam",
+      "type": "QUIC_GET_PARAM_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "RegistrationOpen",
+      "type": "QUIC_REGISTRATION_OPEN_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "RegistrationClose",
+      "type": "QUIC_REGISTRATION_CLOSE_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "RegistrationShutdown",
+      "type": "QUIC_REGISTRATION_SHUTDOWN_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConfigurationOpen",
+      "type": "QUIC_CONFIGURATION_OPEN_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConfigurationClose",
+      "type": "QUIC_CONFIGURATION_CLOSE_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConfigurationLoadCredential",
+      "type": "QUIC_CONFIGURATION_LOAD_CREDENTIAL_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ListenerOpen",
+      "type": "QUIC_LISTENER_OPEN_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ListenerClose",
+      "type": "QUIC_LISTENER_CLOSE_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ListenerStart",
+      "type": "QUIC_LISTENER_START_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ListenerStop",
+      "type": "QUIC_LISTENER_STOP_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionOpen",
+      "type": "QUIC_CONNECTION_OPEN_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionClose",
+      "type": "QUIC_CONNECTION_CLOSE_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionShutdown",
+      "type": "QUIC_CONNECTION_SHUTDOWN_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionStart",
+      "type": "QUIC_CONNECTION_START_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionSetConfiguration",
+      "type": "QUIC_CONNECTION_SET_CONFIGURATION_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionSendResumptionTicket",
+      "type": "QUIC_CONNECTION_SEND_RESUMPTION_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "StreamOpen",
+      "type": "QUIC_STREAM_OPEN_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "StreamClose",
+      "type": "QUIC_STREAM_CLOSE_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "StreamStart",
+      "type": "QUIC_STREAM_START_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "StreamShutdown",
+      "type": "QUIC_STREAM_SHUTDOWN_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "StreamSend",
+      "type": "QUIC_STREAM_SEND_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "StreamReceiveComplete",
+      "type": "QUIC_STREAM_RECEIVE_COMPLETE_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "StreamReceiveSetEnabled",
+      "type": "QUIC_STREAM_RECEIVE_SET_ENABLED_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "DatagramSend",
+      "type": "QUIC_DATAGRAM_SEND_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionResumptionTicketValidationComplete",
+      "type": "QUIC_CONNECTION_COMP_RESUMPTION_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionCertificateValidationComplete",
+      "type": "QUIC_CONNECTION_COMP_CERT_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionOpenInPartition",
+      "type": "QUIC_CONNECTION_OPEN_IN_PARTITION_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "StreamProvideReceiveBuffers",
+      "type": "QUIC_STREAM_PROVIDE_RECEIVE_BUFFERS_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionPoolCreate",
+      "type": "QUIC_CONN_POOL_CREATE_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ExecutionCreate",
+      "type": "QUIC_EXECUTION_CREATE_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ExecutionDelete",
+      "type": "QUIC_EXECUTION_DELETE_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ExecutionPoll",
+      "type": "QUIC_EXECUTION_POLL_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "RegistrationClose2",
+      "type": "QUIC_REGISTRATION_CLOSE2_FN",
+      "status": "required later; not implemented"
+    },
+    {
+      "name": "ConnectionExportKeyingMaterial",
+      "type": "QUIC_CONNECTION_EXPORT_KEYING_MATERIAL_FN",
+      "status": "required later; not implemented"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "QUIC_PARAM_PREFIX_GLOBAL",
+      "declaration": "0x01000000",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_REGISTRATION",
+      "declaration": "0x02000000",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_CONFIGURATION",
+      "declaration": "0x03000000",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_LISTENER",
+      "declaration": "0x04000000",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_CONNECTION",
+      "declaration": "0x05000000",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_TLS",
+      "declaration": "0x06000000",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_TLS_SCHANNEL",
+      "declaration": "0x07000000",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_STREAM",
+      "declaration": "0x08000000",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_HIGH_PRIORITY",
+      "declaration": "0x40000000 // Combine with any param to make it high priority.",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_RETRY_MEMORY_PERCENT",
+      "declaration": "0x01000000  // uint16_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_SUPPORTED_VERSIONS",
+      "declaration": "0x01000001  // uint32_t[] - network byte order",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_LOAD_BALACING_MODE",
+      "declaration": "0x01000002  // uint16_t - QUIC_LOAD_BALANCING_MODE",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_PERF_COUNTERS",
+      "declaration": "0x01000003  // uint64_t[] - Array size is QUIC_PERF_COUNTER_MAX",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_LIBRARY_VERSION",
+      "declaration": "0x01000004  // uint32_t[4]",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_SETTINGS",
+      "declaration": "0x01000005  // QUIC_SETTINGS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_GLOBAL_SETTINGS",
+      "declaration": "0x01000006  // QUIC_GLOBAL_SETTINGS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_VERSION_SETTINGS",
+      "declaration": "0x01000007  // QUIC_VERSION_SETTINGS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_LIBRARY_GIT_HASH",
+      "declaration": "0x01000008  // char[64]",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_EXECUTION_CONFIG",
+      "declaration": "0x01000009  // QUIC_GLOBAL_EXECUTION_CONFIG",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_TLS_PROVIDER",
+      "declaration": "0x0100000A  // QUIC_TLS_PROVIDER",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_STATELESS_RESET_KEY",
+      "declaration": "0x0100000B  // uint8_t[] - Array size is QUIC_STATELESS_RESET_KEY_LENGTH",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_STATISTICS_V2_SIZES",
+      "declaration": "0x0100000C  // uint32_t[] - Array of sizes for each QUIC_STATISTICS_V2 version. Get-only. Pass a buffer of uint32_t, output count is variable. See documentation for details.",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_STATELESS_RETRY_CONFIG",
+      "declaration": "0x0100000D  // QUIC_STATELESS_RETRY_CONFIG",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_XDP_MAP_CONFIG",
+      "declaration": "0x0100000E  // QUIC_XDP_MAP_CONFIG[]",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_SETTINGS",
+      "declaration": "0x03000000  // QUIC_SETTINGS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_TICKET_KEYS",
+      "declaration": "0x03000001  // QUIC_TICKET_KEY_CONFIG[]",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_VERSION_SETTINGS",
+      "declaration": "0x03000002  // QUIC_VERSION_SETTINGS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_SCHANNEL_CREDENTIAL_ATTRIBUTE_W",
+      "declaration": "0x03000003  // QUIC_SCHANNEL_CREDENTIAL_ATTRIBUTE_W",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_LOCAL_ADDRESS",
+      "declaration": "0x04000000  // QUIC_ADDR",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_STATS",
+      "declaration": "0x04000001  // QUIC_LISTENER_STATISTICS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_CIBIR_ID",
+      "declaration": "0x04000002  // uint8_t[] {offset, id[]}",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_PARTITION_INDEX",
+      "declaration": "0x04000005  // uint16_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_DOS_MODE_EVENTS",
+      "declaration": "0x04000004  // BOOLEAN",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_QUIC_VERSION",
+      "declaration": "0x05000000  // uint32_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_ADDRESS",
+      "declaration": "0x05000001  // QUIC_ADDR",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_REMOTE_ADDRESS",
+      "declaration": "0x05000002  // QUIC_ADDR",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_IDEAL_PROCESSOR",
+      "declaration": "0x05000003  // uint16_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_SETTINGS",
+      "declaration": "0x05000004  // QUIC_SETTINGS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS",
+      "declaration": "0x05000005  // QUIC_STATISTICS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS_PLAT",
+      "declaration": "0x05000006  // QUIC_STATISTICS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_SHARE_UDP_BINDING",
+      "declaration": "0x05000007  // uint8_t (BOOLEAN)",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_BIDI_STREAM_COUNT",
+      "declaration": "0x05000008  // uint16_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_UNIDI_STREAM_COUNT",
+      "declaration": "0x05000009  // uint16_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_MAX_STREAM_IDS",
+      "declaration": "0x0500000A  // uint64_t[4]",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_CLOSE_REASON_PHRASE",
+      "declaration": "0x0500000B  // char[]",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STREAM_SCHEDULING_SCHEME",
+      "declaration": "0x0500000C  // QUIC_STREAM_SCHEDULING_SCHEME",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_DATAGRAM_RECEIVE_ENABLED",
+      "declaration": "0x0500000D  // uint8_t (BOOLEAN)",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_DATAGRAM_SEND_ENABLED",
+      "declaration": "0x0500000E  // uint8_t (BOOLEAN)",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_DISABLE_1RTT_ENCRYPTION",
+      "declaration": "0x0500000F  // uint8_t (BOOLEAN)",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_RESUMPTION_TICKET",
+      "declaration": "0x05000010  // uint8_t[]",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_PEER_CERTIFICATE_VALID",
+      "declaration": "0x05000011  // uint8_t (BOOLEAN)",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_INTERFACE",
+      "declaration": "0x05000012  // uint32_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_TLS_SECRETS",
+      "declaration": "0x05000013  // QUIC_TLS_SECRETS (SSLKEYLOGFILE compatible)",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_VERSION_SETTINGS",
+      "declaration": "0x05000014  // QUIC_VERSION_SETTINGS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_CIBIR_ID",
+      "declaration": "0x05000015  // uint8_t[] {offset, id[]}",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS_V2",
+      "declaration": "0x05000016  // QUIC_STATISTICS_V2",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS_V2_PLAT",
+      "declaration": "0x05000017  // QUIC_STATISTICS_V2",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_ORIG_DEST_CID",
+      "declaration": "0x05000018  // uint8_t[]",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_SEND_DSCP",
+      "declaration": "0x05000019  // uint8_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_NETWORK_STATISTICS",
+      "declaration": "0x05000020  // struct QUIC_NETWORK_STATISTICS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_CLOSE_ASYNC",
+      "declaration": "0x0500001A  // uint8_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_HANDSHAKE_INFO",
+      "declaration": "0x06000000  // QUIC_HANDSHAKE_INFO",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_NEGOTIATED_ALPN",
+      "declaration": "0x06000001  // uint8_t[] (max 255 bytes)",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_SCHANNEL_CONTEXT_ATTRIBUTE_W",
+      "declaration": "0x07000000  // QUIC_SCHANNEL_CONTEXT_ATTRIBUTE_W",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_SCHANNEL_CONTEXT_ATTRIBUTE_EX_W",
+      "declaration": "0x07000001  // QUIC_SCHANNEL_CONTEXT_ATTRIBUTE_EX_W",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_SCHANNEL_SECURITY_CONTEXT_TOKEN",
+      "declaration": "0x07000002  // HANDLE",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_ID",
+      "declaration": "0x08000000  // QUIC_UINT62",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_0RTT_LENGTH",
+      "declaration": "0x08000001  // uint64_t",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_IDEAL_SEND_BUFFER_SIZE",
+      "declaration": "0x08000002  // uint64_t - bytes",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_PRIORITY",
+      "declaration": "0x08000003  // uint16_t - 0 (low) to 0xFFFF (high) - 0x7FFF (default)",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_STATISTICS",
+      "declaration": "0X08000004  // QUIC_STREAM_STATISTICS",
+      "status": "not exposed; individual profile review pending"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_RELIABLE_OFFSET",
+      "declaration": "0x08000005  // uint64_t",
+      "status": "not exposed; individual profile review pending"
+    }
+  ]
+}

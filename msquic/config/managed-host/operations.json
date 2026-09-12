@@ -1,0 +1,501 @@
+{
+  "version": 1,
+  "status": "provisional until selected generated core closure and host ABI pass",
+  "operations": [
+    {
+      "name": "CxPlatAlloc",
+      "returns": "void*",
+      "parameters": "size_t ByteCount, uint32_t Tag"
+    },
+    {
+      "name": "CxPlatAllocUninitialized",
+      "returns": "void*",
+      "parameters": "size_t ByteCount, uint32_t Tag"
+    },
+    {
+      "name": "CxPlatConvertFromMappedV6",
+      "returns": "void",
+      "parameters": "const QUIC_ADDR* InAddr, QUIC_ADDR* OutAddr"
+    },
+    {
+      "name": "CxPlatConvertToMappedV6",
+      "returns": "void",
+      "parameters": "const QUIC_ADDR* InAddr, QUIC_ADDR* OutAddr"
+    },
+    {
+      "name": "CxPlatCurThreadID",
+      "returns": "CXPLAT_THREAD_ID",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatDataPathGetLocalAddressForRemote",
+      "returns": "unsigned int",
+      "parameters": "const QUIC_ADDR* RemoteAddress, QUIC_ADDR* LocalAddress"
+    },
+    {
+      "name": "CxPlatDataPathGetLocalAddresses",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_DATAPATH* Datapath, CXPLAT_ADAPTER_ADDRESS** Addresses, uint32_t* AddressesCount"
+    },
+    {
+      "name": "CxPlatDataPathGetSupportedFeatures",
+      "returns": "CXPLAT_DATAPATH_FEATURES",
+      "parameters": "CXPLAT_DATAPATH* Datapath, CXPLAT_SOCKET_FLAGS SocketFlags"
+    },
+    {
+      "name": "CxPlatDataPathInitialize",
+      "returns": "unsigned int",
+      "parameters": "uint32_t ClientRecvContextLength, const CXPLAT_UDP_DATAPATH_CALLBACKS* UdpCallbacks, const CXPLAT_TCP_DATAPATH_CALLBACKS* TcpCallbacks, CXPLAT_WORKER_POOL* WorkerPool, CXPLAT_DATAPATH_INIT_CONFIG* InitConfig, CXPLAT_DATAPATH** NewDatapath"
+    },
+    {
+      "name": "CxPlatDataPathIsPaddingPreferred",
+      "returns": "BOOLEAN",
+      "parameters": "CXPLAT_DATAPATH* Datapath, CXPLAT_SEND_DATA* SendData"
+    },
+    {
+      "name": "CxPlatDataPathResolveAddress",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_DATAPATH* Datapath, const char* HostName, QUIC_ADDR* Address"
+    },
+    {
+      "name": "CxPlatDataPathRssConfigFree",
+      "returns": "void",
+      "parameters": "CXPLAT_RSS_CONFIG* RssConfig"
+    },
+    {
+      "name": "CxPlatDataPathRssConfigGet",
+      "returns": "unsigned int",
+      "parameters": "uint32_t InterfaceIndex, CXPLAT_RSS_CONFIG** RssConfig"
+    },
+    {
+      "name": "CxPlatDataPathUninitialize",
+      "returns": "void",
+      "parameters": "CXPLAT_DATAPATH* Datapath"
+    },
+    {
+      "name": "CxPlatDataPathUpdatePollingIdleTimeout",
+      "returns": "void",
+      "parameters": "CXPLAT_DATAPATH* Datapath, uint32_t PollingIdleTimeoutUs"
+    },
+    {
+      "name": "CxPlatDecrypt",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_KEY* Key, const uint8_t* const Iv, uint16_t AuthDataLength, const uint8_t* const AuthData, uint16_t BufferLength, uint8_t* Buffer"
+    },
+    {
+      "name": "CxPlatEncrypt",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_KEY* Key, const uint8_t* const Iv, uint16_t AuthDataLength, const uint8_t* const AuthData, uint16_t BufferLength, uint8_t* Buffer"
+    },
+    {
+      "name": "CxPlatEventInitialize",
+      "returns": "void",
+      "parameters": "CXPLAT_EVENT* Event, BOOLEAN ManualReset, BOOLEAN InitialState"
+    },
+    {
+      "name": "CxPlatEventQCleanup",
+      "returns": "void",
+      "parameters": "CXPLAT_EVENTQ* Queue"
+    },
+    {
+      "name": "CxPlatEventQDequeue",
+      "returns": "uint32_t",
+      "parameters": "CXPLAT_EVENTQ* Queue, CXPLAT_CQE* Events, uint32_t Count, uint32_t WaitTime"
+    },
+    {
+      "name": "CxPlatEventQEnqueue",
+      "returns": "BOOLEAN",
+      "parameters": "CXPLAT_EVENTQ* Queue, CXPLAT_SQE* Sqe"
+    },
+    {
+      "name": "CxPlatEventQInitialize",
+      "returns": "BOOLEAN",
+      "parameters": "CXPLAT_EVENTQ* Queue"
+    },
+    {
+      "name": "CxPlatEventQReturn",
+      "returns": "void",
+      "parameters": "CXPLAT_EVENTQ* Queue, uint32_t Count"
+    },
+    {
+      "name": "CxPlatFree",
+      "returns": "void",
+      "parameters": "void* Mem, uint32_t Tag"
+    },
+    {
+      "name": "CxPlatGetAbsoluteTime",
+      "returns": "void",
+      "parameters": "unsigned long DeltaMs, struct timespec *Time"
+    },
+    {
+      "name": "CxPlatGetTimerResolution",
+      "returns": "uint64_t",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatHashCompute",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_HASH* Hash, const uint8_t* const Input, uint32_t InputLength, uint32_t OutputLength, uint8_t* const Output"
+    },
+    {
+      "name": "CxPlatHashCreate",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_HASH_TYPE HashType, const uint8_t* const Salt, uint32_t SaltLength, CXPLAT_HASH** Hash"
+    },
+    {
+      "name": "CxPlatHashFree",
+      "returns": "void",
+      "parameters": "CXPLAT_HASH* Hash"
+    },
+    {
+      "name": "CxPlatHpComputeMask",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_HP_KEY* Key, uint8_t BatchSize, const uint8_t* const Cipher, uint8_t* Mask"
+    },
+    {
+      "name": "CxPlatHpKeyCreate",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_AEAD_TYPE AeadType, const uint8_t* const RawKey, CXPLAT_HP_KEY** Key"
+    },
+    {
+      "name": "CxPlatHpKeyFree",
+      "returns": "void",
+      "parameters": "CXPLAT_HP_KEY* Key"
+    },
+    {
+      "name": "CxPlatInitialize",
+      "returns": "unsigned int",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatInternalEventReset",
+      "returns": "void",
+      "parameters": "CXPLAT_EVENT* Event"
+    },
+    {
+      "name": "CxPlatInternalEventSet",
+      "returns": "void",
+      "parameters": "CXPLAT_EVENT* Event"
+    },
+    {
+      "name": "CxPlatInternalEventUninitialize",
+      "returns": "void",
+      "parameters": "CXPLAT_EVENT* Event"
+    },
+    {
+      "name": "CxPlatInternalEventWaitForever",
+      "returns": "void",
+      "parameters": "CXPLAT_EVENT* Event"
+    },
+    {
+      "name": "CxPlatInternalEventWaitWithTimeout",
+      "returns": "BOOLEAN",
+      "parameters": "CXPLAT_EVENT* Event, uint32_t TimeoutMs"
+    },
+    {
+      "name": "CxPlatKbKdfDerive",
+      "returns": "unsigned int",
+      "parameters": "const uint8_t* Secret, uint32_t SecretLength, const char* Label, const uint8_t* Context, uint32_t ContextLength, uint32_t OutputLength, uint8_t* Output"
+    },
+    {
+      "name": "CxPlatKeyCreate",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_AEAD_TYPE AeadType, const uint8_t* const RawKey, CXPLAT_KEY** Key"
+    },
+    {
+      "name": "CxPlatKeyFree",
+      "returns": "void",
+      "parameters": "CXPLAT_KEY* Key"
+    },
+    {
+      "name": "CxPlatLockAcquire",
+      "returns": "void",
+      "parameters": "CXPLAT_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatLockInitialize",
+      "returns": "void",
+      "parameters": "CXPLAT_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatLockRelease",
+      "returns": "void",
+      "parameters": "CXPLAT_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatLockUninitialize",
+      "returns": "void",
+      "parameters": "CXPLAT_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatLogAssert",
+      "returns": "void",
+      "parameters": "const char* File, int Line, const char* Expr"
+    },
+    {
+      "name": "CxPlatProcCurrentNumber",
+      "returns": "uint32_t",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatRandom",
+      "returns": "unsigned int",
+      "parameters": "uint32_t BufferLen, void* Buffer"
+    },
+    {
+      "name": "CxPlatRecvDataReturn",
+      "returns": "void",
+      "parameters": "CXPLAT_RECV_DATA* RecvDataChain"
+    },
+    {
+      "name": "CxPlatResolveRoute",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_SOCKET* Socket, CXPLAT_ROUTE* Route, uint8_t PathId, void* Context, CXPLAT_ROUTE_RESOLUTION_CALLBACK_HANDLER Callback"
+    },
+    {
+      "name": "CxPlatResolveRouteComplete",
+      "returns": "void",
+      "parameters": "void* Context, CXPLAT_ROUTE* Route, const uint8_t* PhysicalAddress, uint8_t PathId"
+    },
+    {
+      "name": "CxPlatRwLockAcquireExclusive",
+      "returns": "void",
+      "parameters": "CXPLAT_RW_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatRwLockAcquireShared",
+      "returns": "void",
+      "parameters": "CXPLAT_RW_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatRwLockInitialize",
+      "returns": "void",
+      "parameters": "CXPLAT_RW_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatRwLockReleaseExclusive",
+      "returns": "void",
+      "parameters": "CXPLAT_RW_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatRwLockReleaseShared",
+      "returns": "void",
+      "parameters": "CXPLAT_RW_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatRwLockUninitialize",
+      "returns": "void",
+      "parameters": "CXPLAT_RW_LOCK* Lock"
+    },
+    {
+      "name": "CxPlatSchedulerYield",
+      "returns": "void",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatSendDataAlloc",
+      "returns": "CXPLAT_SEND_DATA*",
+      "parameters": "CXPLAT_SOCKET* Socket, CXPLAT_SEND_CONFIG* Config"
+    },
+    {
+      "name": "CxPlatSendDataAllocBuffer",
+      "returns": "QUIC_BUFFER*",
+      "parameters": "CXPLAT_SEND_DATA* SendData, uint16_t MaxBufferLength"
+    },
+    {
+      "name": "CxPlatSendDataFree",
+      "returns": "void",
+      "parameters": "CXPLAT_SEND_DATA* SendData"
+    },
+    {
+      "name": "CxPlatSendDataFreeBuffer",
+      "returns": "void",
+      "parameters": "CXPLAT_SEND_DATA* SendData, QUIC_BUFFER* Buffer"
+    },
+    {
+      "name": "CxPlatSendDataIsFull",
+      "returns": "BOOLEAN",
+      "parameters": "CXPLAT_SEND_DATA* SendData"
+    },
+    {
+      "name": "CxPlatSleep",
+      "returns": "void",
+      "parameters": "uint32_t DurationMs"
+    },
+    {
+      "name": "CxPlatSocketCreateUdp",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_DATAPATH* Datapath, const CXPLAT_UDP_CONFIG* Config, CXPLAT_SOCKET** Socket"
+    },
+    {
+      "name": "CxPlatSocketDelete",
+      "returns": "void",
+      "parameters": "CXPLAT_SOCKET* Socket"
+    },
+    {
+      "name": "CxPlatSocketGetLocalAddress",
+      "returns": "void",
+      "parameters": "CXPLAT_SOCKET* Socket, QUIC_ADDR* Address"
+    },
+    {
+      "name": "CxPlatSocketGetLocalMtu",
+      "returns": "uint16_t",
+      "parameters": "CXPLAT_SOCKET* Socket, CXPLAT_ROUTE* Route"
+    },
+    {
+      "name": "CxPlatSocketGetQtipEnabled",
+      "returns": "BOOLEAN",
+      "parameters": "CXPLAT_SOCKET* Socket"
+    },
+    {
+      "name": "CxPlatSocketGetRemoteAddress",
+      "returns": "void",
+      "parameters": "CXPLAT_SOCKET* Socket, QUIC_ADDR* Address"
+    },
+    {
+      "name": "CxPlatSocketSend",
+      "returns": "void",
+      "parameters": "CXPLAT_SOCKET* Socket, const CXPLAT_ROUTE* Route, CXPLAT_SEND_DATA* SendData"
+    },
+    {
+      "name": "CxPlatSocketUpdateQeo",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_SOCKET* Socket, const CXPLAT_QEO_CONNECTION* Offloads, uint32_t OffloadCount"
+    },
+    {
+      "name": "CxPlatSqeCleanup",
+      "returns": "void",
+      "parameters": "CXPLAT_EVENTQ* Queue, CXPLAT_SQE* Sqe"
+    },
+    {
+      "name": "CxPlatSqeInitialize",
+      "returns": "BOOLEAN",
+      "parameters": "CXPLAT_EVENTQ* Queue, CXPLAT_EVENT_COMPLETION_HANDLER Completion, CXPLAT_SQE* Sqe"
+    },
+    {
+      "name": "CxPlatStorageClose",
+      "returns": "void",
+      "parameters": "CXPLAT_STORAGE* Storage"
+    },
+    {
+      "name": "CxPlatStorageOpen",
+      "returns": "unsigned int",
+      "parameters": "const char * Path, CXPLAT_STORAGE_CHANGE_CALLBACK_HANDLER Callback, void* CallbackContext, CXPLAT_STORAGE_OPEN_FLAGS Flags, CXPLAT_STORAGE** NewStorage"
+    },
+    {
+      "name": "CxPlatStorageReadValue",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_STORAGE* Storage, const char * Name, uint8_t * Buffer, uint32_t * BufferLength"
+    },
+    {
+      "name": "CxPlatSystemLoad",
+      "returns": "void",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatSystemUnload",
+      "returns": "void",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatThreadCreate",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_THREAD_CONFIG* Config, CXPLAT_THREAD* Thread"
+    },
+    {
+      "name": "CxPlatThreadDelete",
+      "returns": "void",
+      "parameters": "CXPLAT_THREAD* Thread"
+    },
+    {
+      "name": "CxPlatThreadWait",
+      "returns": "void",
+      "parameters": "CXPLAT_THREAD* Thread"
+    },
+    {
+      "name": "CxPlatTimeEpochMs64",
+      "returns": "int64_t",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatTimeUs64",
+      "returns": "uint64_t",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatTlsExportKeyingMaterial",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_TLS* TlsContext, const char* Label, const uint8_t* Context, uint32_t ContextLength, uint8_t* Output, uint32_t OutputLength"
+    },
+    {
+      "name": "CxPlatTlsGetProvider",
+      "returns": "QUIC_TLS_PROVIDER",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatTlsInitialize",
+      "returns": "unsigned int",
+      "parameters": "const CXPLAT_TLS_CONFIG* Config, CXPLAT_TLS_PROCESS_STATE* State, CXPLAT_TLS** NewTlsContext"
+    },
+    {
+      "name": "CxPlatTlsParamGet",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_TLS* TlsContext, uint32_t Param, uint32_t* BufferLength, void* Buffer"
+    },
+    {
+      "name": "CxPlatTlsParamSet",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_TLS* TlsContext, uint32_t Param, uint32_t BufferLength, const void* Buffer"
+    },
+    {
+      "name": "CxPlatTlsProcessData",
+      "returns": "CXPLAT_TLS_RESULT_FLAGS",
+      "parameters": "CXPLAT_TLS* TlsContext, CXPLAT_TLS_DATA_TYPE DataType, const uint8_t * Buffer, uint32_t * BufferLength, CXPLAT_TLS_PROCESS_STATE* State"
+    },
+    {
+      "name": "CxPlatTlsSecConfigCreate",
+      "returns": "unsigned int",
+      "parameters": "const QUIC_CREDENTIAL_CONFIG* CredConfig, CXPLAT_TLS_CREDENTIAL_FLAGS TlsCredFlags, const CXPLAT_TLS_CALLBACKS* TlsCallbacks, void* Context, CXPLAT_SEC_CONFIG_CREATE_COMPLETE_HANDLER CompletionHandler"
+    },
+    {
+      "name": "CxPlatTlsSecConfigDelete",
+      "returns": "void",
+      "parameters": "CXPLAT_SEC_CONFIG* SecurityConfig"
+    },
+    {
+      "name": "CxPlatTlsSecConfigSetTicketKeys",
+      "returns": "unsigned int",
+      "parameters": "CXPLAT_SEC_CONFIG* SecurityConfig, QUIC_TICKET_KEY_CONFIG* KeyConfig, uint8_t KeyCount"
+    },
+    {
+      "name": "CxPlatTlsUninitialize",
+      "returns": "void",
+      "parameters": "CXPLAT_TLS* TlsContext"
+    },
+    {
+      "name": "CxPlatTlsUpdateHkdfLabels",
+      "returns": "void",
+      "parameters": "CXPLAT_TLS* TlsContext, const QUIC_HKDF_LABELS* const Labels"
+    },
+    {
+      "name": "CxPlatUninitialize",
+      "returns": "void",
+      "parameters": "void"
+    },
+    {
+      "name": "CxPlatUpdateRoute",
+      "returns": "void",
+      "parameters": "CXPLAT_ROUTE* DstRoute, CXPLAT_ROUTE* SrcRoute"
+    },
+    {
+      "name": "QuicTlsPopulateOffloadKeys",
+      "returns": "BOOLEAN",
+      "parameters": "CXPLAT_TLS* TlsContext, const QUIC_PACKET_KEY* const PacketKey, const char* const SecretName, CXPLAT_QEO_CONNECTION* Offload"
+    },
+    {
+      "name": "quic_bugcheck",
+      "returns": "void",
+      "parameters": "const char* File, int Line, const char* Expr"
+    }
+  ]
+}

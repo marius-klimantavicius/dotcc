@@ -1,0 +1,1959 @@
+{
+  "schema_version": 1,
+  "profile": "managed-linux-x64-quic-v1",
+  "revision": "80a065112426bce68c1da42d026478d3e40fd45e",
+  "status": "selection contract only; no managed API implementation or runtime qualification claimed",
+  "inventory_sha256": "aef3c0e04a938a2815296123db099e0e340901764079e3af13dad8519f0c94d2",
+  "counts": {
+    "api_slots": 39,
+    "parameter_identifiers": 72,
+    "actual_parameters": 63,
+    "namespace_prefixes": 8,
+    "priority_modifiers": 1
+  },
+  "gate": "No selected-pending operation is advertised until its runtime, ownership, error-path and raw/optimized JIT/NativeAOT gates pass.",
+  "error_policy": {
+    "unsupported": "Recognized excluded/deferred operations or option values: QUIC_STATUS_NOT_SUPPORTED / owning-facade NotSupportedException before dispatch or mutation.",
+    "invalid": "Unknown identifiers, reserved bits, wrong scope, invalid sizes and getter/setter direction: QUIC_STATUS_INVALID_PARAMETER; preserve stricter upstream INVALID_STATE/BUFFER_TOO_SMALL on selected paths.",
+    "void_api": "Excluded void slots are not exposed by the facade. Do not invent a C status return or success no-op; retain raw ABI shape internally without claiming raw API parity.",
+    "atomic_profile_validation": "Check the entire requested payload before forwarding, including global/configuration/connection QUIC_SETTINGS and credential flags.",
+    "future_identifiers": "Default deny; inventory/profile update and tests required before exposure."
+  },
+  "api_table": [
+    {
+      "slot_index": 0,
+      "name": "SetContext",
+      "type": "QUIC_SET_CONTEXT_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Facade owns rooted contexts; no movable managed object pointer in C storage.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1887
+      }
+    },
+    {
+      "slot_index": 1,
+      "name": "GetContext",
+      "type": "QUIC_GET_CONTEXT_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Return only the owning facade context association with lifetime checks.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1888
+      }
+    },
+    {
+      "slot_index": 2,
+      "name": "SetCallbackHandler",
+      "type": "QUIC_SET_CALLBACK_HANDLER_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Static AOT-compatible callbacks with exact signature; replacement follows upstream handle/state rules.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1889
+      }
+    },
+    {
+      "slot_index": 3,
+      "name": "SetParam",
+      "type": "QUIC_SET_PARAM_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Validate profile policy, directions, flags and entire setting payload before forwarding; no partial mutation on profile rejection.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1891
+      }
+    },
+    {
+      "slot_index": 4,
+      "name": "GetParam",
+      "type": "QUIC_GET_PARAM_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Apply per-parameter query policy, report actual state and upstream size/state errors; never infer qualification from compiled fields.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1892
+      }
+    },
+    {
+      "slot_index": 5,
+      "name": "RegistrationOpen",
+      "type": "QUIC_REGISTRATION_OPEN_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Default low-latency profile only initially; reject unqualified execution profiles.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1894
+      }
+    },
+    {
+      "slot_index": 6,
+      "name": "RegistrationClose",
+      "type": "QUIC_REGISTRATION_CLOSE_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Drain all child handles off callback/worker threads; upstream close may block.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1895
+      }
+    },
+    {
+      "slot_index": 7,
+      "name": "RegistrationShutdown",
+      "type": "QUIC_REGISTRATION_SHUTDOWN_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1896
+      }
+    },
+    {
+      "slot_index": 8,
+      "name": "ConfigurationOpen",
+      "type": "QUIC_CONFIGURATION_OPEN_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "QUIC v1 only; validate the complete settings mask and ALPN lifetime.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1898
+      }
+    },
+    {
+      "slot_index": 9,
+      "name": "ConfigurationClose",
+      "type": "QUIC_CONFIGURATION_CLOSE_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1899
+      }
+    },
+    {
+      "slot_index": 10,
+      "name": "ConfigurationLoadCredential",
+      "type": "QUIC_CONFIGURATION_LOAD_CREDENTIAL_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Only explicitly owned managed credentials and real trust/name validation under credential_policy; reject native credential handles and insecure flags.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1901
+      }
+    },
+    {
+      "slot_index": 11,
+      "name": "ListenerOpen",
+      "type": "QUIC_LISTENER_OPEN_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1903
+      }
+    },
+    {
+      "slot_index": 12,
+      "name": "ListenerClose",
+      "type": "QUIC_LISTENER_CLOSE_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1904
+      }
+    },
+    {
+      "slot_index": 13,
+      "name": "ListenerStart",
+      "type": "QUIC_LISTENER_START_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1905
+      }
+    },
+    {
+      "slot_index": 14,
+      "name": "ListenerStop",
+      "type": "QUIC_LISTENER_STOP_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1906
+      }
+    },
+    {
+      "slot_index": 15,
+      "name": "ConnectionOpen",
+      "type": "QUIC_CONNECTION_OPEN_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1908
+      }
+    },
+    {
+      "slot_index": 16,
+      "name": "ConnectionClose",
+      "type": "QUIC_CONNECTION_CLOSE_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1909
+      }
+    },
+    {
+      "slot_index": 17,
+      "name": "ConnectionShutdown",
+      "type": "QUIC_CONNECTION_SHUTDOWN_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1910
+      }
+    },
+    {
+      "slot_index": 18,
+      "name": "ConnectionStart",
+      "type": "QUIC_CONNECTION_START_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1911
+      }
+    },
+    {
+      "slot_index": 19,
+      "name": "ConnectionSetConfiguration",
+      "type": "QUIC_CONNECTION_SET_CONFIGURATION_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1913
+      }
+    },
+    {
+      "slot_index": 20,
+      "name": "ConnectionSendResumptionTicket",
+      "type": "QUIC_CONNECTION_SEND_RESUMPTION_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Preserve ticket envelope and callback ownership; do not enable 0-RTT.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1914
+      }
+    },
+    {
+      "slot_index": 21,
+      "name": "StreamOpen",
+      "type": "QUIC_STREAM_OPEN_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1916
+      }
+    },
+    {
+      "slot_index": 22,
+      "name": "StreamClose",
+      "type": "QUIC_STREAM_CLOSE_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1917
+      }
+    },
+    {
+      "slot_index": 23,
+      "name": "StreamStart",
+      "type": "QUIC_STREAM_START_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1918
+      }
+    },
+    {
+      "slot_index": 24,
+      "name": "StreamShutdown",
+      "type": "QUIC_STREAM_SHUTDOWN_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Retain upstream transport, callback, state and handle ownership semantics; selected first-profile runtime gate remains pending.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1919
+      }
+    },
+    {
+      "slot_index": 25,
+      "name": "StreamSend",
+      "type": "QUIC_STREAM_SEND_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Preserve buffer lifetime until completion; apply api_flags.send and reject unqualified early-data/optional send flags.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1920
+      }
+    },
+    {
+      "slot_index": 26,
+      "name": "StreamReceiveComplete",
+      "type": "QUIC_STREAM_RECEIVE_COMPLETE_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Complete only outstanding received bytes; preserve backpressure and callback lifetime.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1921
+      }
+    },
+    {
+      "slot_index": 27,
+      "name": "StreamReceiveSetEnabled",
+      "type": "QUIC_STREAM_RECEIVE_SET_ENABLED_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Preserve upstream flow-control/backpressure transitions.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1922
+      }
+    },
+    {
+      "slot_index": 28,
+      "name": "DatagramSend",
+      "type": "QUIC_DATAGRAM_SEND_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Require negotiated datagram capability and payload limit; preserve completion/cancellation ownership.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1924
+      }
+    },
+    {
+      "slot_index": 29,
+      "name": "ConnectionResumptionTicketValidationComplete",
+      "type": "QUIC_CONNECTION_COMP_RESUMPTION_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Complete actual pending ticket validation exactly once; no 0-RTT acceptance policy.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1926
+      }
+    },
+    {
+      "slot_index": 30,
+      "name": "ConnectionCertificateValidationComplete",
+      "type": "QUIC_CONNECTION_COMP_CERT_FN",
+      "policy": "selected-pending",
+      "implementation": "unqualified",
+      "behavior": "Only the owning validator completes a pending validation with the actual trust/name result and TLS alert.",
+      "exposure": "expose only after corresponding runtime and ownership gates pass",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1927
+      }
+    },
+    {
+      "slot_index": 31,
+      "name": "ConnectionOpenInPartition",
+      "type": "QUIC_CONNECTION_OPEN_IN_PARTITION_FN",
+      "policy": "deferred",
+      "implementation": "unqualified",
+      "behavior": "Explicit worker partition assignment is deferred.",
+      "exposure": "not exposed; managed facade returns NotSupported before dispatch",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1930
+      }
+    },
+    {
+      "slot_index": 32,
+      "name": "StreamProvideReceiveBuffers",
+      "type": "QUIC_STREAM_PROVIDE_RECEIVE_BUFFERS_FN",
+      "policy": "deferred",
+      "implementation": "unqualified",
+      "behavior": "Application-owned receive-buffer provisioning is deferred; baseline receive-complete/backpressure remains selected.",
+      "exposure": "not exposed; managed facade returns NotSupported before dispatch",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1934
+      }
+    },
+    {
+      "slot_index": 33,
+      "name": "ConnectionPoolCreate",
+      "type": "QUIC_CONN_POOL_CREATE_FN",
+      "policy": "deferred",
+      "implementation": "unqualified",
+      "behavior": "Native preview pooled-connection/partition API is deferred; the owning facade manages individual connections.",
+      "exposure": "not exposed; managed facade returns NotSupported before dispatch",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1936
+      }
+    },
+    {
+      "slot_index": 34,
+      "name": "ExecutionCreate",
+      "type": "QUIC_EXECUTION_CREATE_FN",
+      "policy": "deferred",
+      "implementation": "unqualified",
+      "behavior": "External event-loop execution is deferred; retain translated platform_worker.c with managed PAL services.",
+      "exposure": "not exposed; managed facade returns NotSupported before dispatch",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1940
+      }
+    },
+    {
+      "slot_index": 35,
+      "name": "ExecutionDelete",
+      "type": "QUIC_EXECUTION_DELETE_FN",
+      "policy": "deferred",
+      "implementation": "unqualified",
+      "behavior": "No external execution context is exposed or created in this profile.",
+      "exposure": "not exposed; managed facade returns NotSupported before dispatch",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1941
+      }
+    },
+    {
+      "slot_index": 36,
+      "name": "ExecutionPoll",
+      "type": "QUIC_EXECUTION_POLL_FN",
+      "policy": "deferred",
+      "implementation": "unqualified",
+      "behavior": "No external polling loop is exposed in this profile.",
+      "exposure": "not exposed; managed facade returns NotSupported before dispatch",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1942
+      }
+    },
+    {
+      "slot_index": 37,
+      "name": "RegistrationClose2",
+      "type": "QUIC_REGISTRATION_CLOSE2_FN",
+      "policy": "deferred",
+      "implementation": "unqualified",
+      "behavior": "Preview callback-based registration close is deferred; facade drains child objects and uses baseline close off callbacks.",
+      "exposure": "not exposed; managed facade returns NotSupported before dispatch",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1944
+      }
+    },
+    {
+      "slot_index": 38,
+      "name": "ConnectionExportKeyingMaterial",
+      "type": "QUIC_CONNECTION_EXPORT_KEYING_MATERIAL_FN",
+      "policy": "deferred",
+      "implementation": "unqualified",
+      "behavior": "TLS exporter API is deferred beyond transport authentication/resumption requirements.",
+      "exposure": "not exposed; managed facade returns NotSupported before dispatch",
+      "source": {
+        "path": "src/inc/msquic.h",
+        "line": 1947
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "QUIC_PARAM_PREFIX_GLOBAL",
+      "declaration": "0x01000000",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/inc/msquic.h",
+          "line": 975
+        }
+      ],
+      "kind": "namespace-prefix",
+      "policy": "syntax-only",
+      "set": "not a standalone operation",
+      "get": "not a standalone operation",
+      "behavior": "Decode by full parameter ID and handle scope. Prefix values may equal valid parameter IDs; never blacklist this numeric value as a prefix."
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_REGISTRATION",
+      "declaration": "0x02000000",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1998
+        }
+      ],
+      "kind": "namespace-prefix",
+      "policy": "syntax-only",
+      "set": "not a standalone operation",
+      "get": "not a standalone operation",
+      "behavior": "Decode by full parameter ID and handle scope. Prefix values may equal valid parameter IDs; never blacklist this numeric value as a prefix."
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_CONFIGURATION",
+      "declaration": "0x03000000",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 2006
+        }
+      ],
+      "kind": "namespace-prefix",
+      "policy": "syntax-only",
+      "set": "not a standalone operation",
+      "get": "not a standalone operation",
+      "behavior": "Decode by full parameter ID and handle scope. Prefix values may equal valid parameter IDs; never blacklist this numeric value as a prefix."
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_LISTENER",
+      "declaration": "0x04000000",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 2014
+        }
+      ],
+      "kind": "namespace-prefix",
+      "policy": "syntax-only",
+      "set": "not a standalone operation",
+      "get": "not a standalone operation",
+      "behavior": "Decode by full parameter ID and handle scope. Prefix values may equal valid parameter IDs; never blacklist this numeric value as a prefix."
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_CONNECTION",
+      "declaration": "0x05000000",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 2022
+        }
+      ],
+      "kind": "namespace-prefix",
+      "policy": "syntax-only",
+      "set": "not a standalone operation",
+      "get": "not a standalone operation",
+      "behavior": "Decode by full parameter ID and handle scope. Prefix values may equal valid parameter IDs; never blacklist this numeric value as a prefix."
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_TLS",
+      "declaration": "0x06000000",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 2030
+        }
+      ],
+      "kind": "namespace-prefix",
+      "policy": "syntax-only",
+      "set": "not a standalone operation",
+      "get": "not a standalone operation",
+      "behavior": "Decode by full parameter ID and handle scope. Prefix values may equal valid parameter IDs; never blacklist this numeric value as a prefix."
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_TLS_SCHANNEL",
+      "declaration": "0x07000000",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 2031
+        }
+      ],
+      "kind": "namespace-prefix",
+      "policy": "syntax-only",
+      "set": "not a standalone operation",
+      "get": "not a standalone operation",
+      "behavior": "Decode by full parameter ID and handle scope. Prefix values may equal valid parameter IDs; never blacklist this numeric value as a prefix."
+    },
+    {
+      "name": "QUIC_PARAM_PREFIX_STREAM",
+      "declaration": "0x08000000",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 2039
+        }
+      ],
+      "kind": "namespace-prefix",
+      "policy": "syntax-only",
+      "set": "not a standalone operation",
+      "get": "not a standalone operation",
+      "behavior": "Decode by full parameter ID and handle scope. Prefix values may equal valid parameter IDs; never blacklist this numeric value as a prefix."
+    },
+    {
+      "name": "QUIC_PARAM_HIGH_PRIORITY",
+      "declaration": "0x40000000 // Combine with any param to make it high priority.",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/inc/msquic.h",
+          "line": 984
+        }
+      ],
+      "kind": "priority-modifier",
+      "policy": "selected-pending",
+      "set": "allowed only combined with an allowed setter",
+      "get": "allowed only combined with an allowed getter",
+      "behavior": "Mask for dispatch and preserve upstream operation priority; does not bypass profile restrictions. Bare modifier is invalid."
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_RETRY_MEMORY_PERCENT",
+      "declaration": "0x01000000  // uint16_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1105
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Upstream retry resource threshold; preserve range and pre-initialization restrictions.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_SUPPORTED_VERSIONS",
+      "declaration": "0x01000001  // uint32_t[] - network byte order",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1577
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Returns actual compiled version list; not a managed qualification list. Effective connection/configuration version lists must contain only QUIC v1.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_LOAD_BALACING_MODE",
+      "declaration": "0x01000002  // uint16_t - QUIC_LOAD_BALANCING_MODE",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1127
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Only QUIC_LOAD_BALANCING_DISABLED; reject server-ID/IP/fixed load-balancing modes.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_PERF_COUNTERS",
+      "declaration": "0x01000003  // uint64_t[] - Array size is QUIC_PERF_COUNTER_MAX",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1618
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual translated counters with upstream output-size negotiation; unavailable measurements must not be invented.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_LIBRARY_VERSION",
+      "declaration": "0x01000004  // uint32_t[4]",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1661
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Report pinned upstream library version; distinguish owning-facade version separately.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_SETTINGS",
+      "declaration": "0x01000005  // QUIC_SETTINGS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1162
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Apply settings_policy to every set IsSet bit, then upstream validation; get actual effective settings.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_GLOBAL_SETTINGS",
+      "declaration": "0x01000006  // QUIC_GLOBAL_SETTINGS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1197
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "RetryMemoryLimit allowed; LoadBalancingMode only DISABLED; FixedServerID and reserved bits rejected.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_VERSION_SETTINGS",
+      "declaration": "0x01000007  // QUIC_VERSION_SETTINGS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1232
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Acceptable/Offered/FullyDeployed version lists restricted to QUIC v1; no QUIC v2 negotiation.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_LIBRARY_GIT_HASH",
+      "declaration": "0x01000008  // char[64]",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1680
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Report the actual pinned source revision.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_EXECUTION_CONFIG",
+      "declaration": "0x01000009  // QUIC_GLOBAL_EXECUTION_CONFIG",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1269
+        }
+      ],
+      "kind": "parameter",
+      "policy": "deferred",
+      "native_directions": "rw",
+      "behavior": "External execution, processor affinity and polling configuration are not exposed; retain internal upstream worker policy.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_TLS_PROVIDER",
+      "declaration": "0x0100000A  // QUIC_TLS_PROVIDER",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1729
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Return MSQUIC_HOST_TLS_PROVIDER_PICOTLS = (QUIC_TLS_PROVIDER)0x10000, an explicit managed-host ABI extension. Never report SCHANNEL or OPENSSL for this provider.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_STATELESS_RESET_KEY",
+      "declaration": "0x0100000B  // uint8_t[] - Array size is QUIC_STATELESS_RESET_KEY_LENGTH",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1435
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "w",
+      "behavior": "32-byte key provisioning through translated core; do not expose key material through GetParam.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "QUIC_STATUS_INVALID_PARAMETER"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_STATISTICS_V2_SIZES",
+      "declaration": "0x0100000C  // uint32_t[] - Array of sizes for each QUIC_STATISTICS_V2 version. Get-only. Pass a buffer of uint32_t, output count is variable. See documentation for details.",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1828
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Report sizes actually supported by this compiled statistics layout, not native-platform guesses.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_STATELESS_RETRY_CONFIG",
+      "declaration": "0x0100000D  // QUIC_STATELESS_RETRY_CONFIG",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1459
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "w; r only in DEBUG builds",
+      "behavior": "Retain upstream AES-GCM key/rotation validation for setters. Secret-bearing getter is DEBUG-only upstream and NOT_SUPPORTED in this NDEBUG first profile.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_XDP_MAP_CONFIG",
+      "declaration": "0x0100000E  // QUIC_XDP_MAP_CONFIG[]",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/library.c",
+          "line": 1469
+        }
+      ],
+      "kind": "parameter",
+      "policy": "excluded",
+      "native_directions": "rw",
+      "behavior": "Native XDP maps are outside the BCL UDP host.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_SETTINGS",
+      "declaration": "0x03000000  // QUIC_SETTINGS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/configuration.c",
+          "line": 451
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Apply settings_policy and preserve upstream configuration state rules.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_TICKET_KEYS",
+      "declaration": "0x03000001  // QUIC_TICKET_KEY_CONFIG[]",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/configuration.c",
+          "line": 553
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "w",
+      "behavior": "Map explicit ticket keys into the picotls ticket-envelope provider; preserve ownership, rotation and failure behavior.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "QUIC_STATUS_INVALID_PARAMETER"
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_VERSION_SETTINGS",
+      "declaration": "0x03000002  // QUIC_VERSION_SETTINGS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/configuration.c",
+          "line": 454
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "All effective version lists restricted to QUIC v1.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_SCHANNEL_CREDENTIAL_ATTRIBUTE_W",
+      "declaration": "0x03000003  // QUIC_SCHANNEL_CREDENTIAL_ATTRIBUTE_W",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/configuration.c",
+          "line": 583
+        }
+      ],
+      "kind": "parameter",
+      "policy": "excluded",
+      "native_directions": "w",
+      "behavior": "Schannel credential handles/attributes are not managed picotls credentials.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_LOCAL_ADDRESS",
+      "declaration": "0x04000000  // QUIC_ADDR",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/listener.c",
+          "line": 952
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Report actual bound IPv4/IPv6 address, selected interface and port.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_STATS",
+      "declaration": "0x04000001  // QUIC_LISTENER_STATISTICS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/listener.c",
+          "line": 971
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual listener acceptance/rejection/drop counters.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_CIBIR_ID",
+      "declaration": "0x04000002  // uint8_t[] {offset, id[]}",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/listener.c",
+          "line": 865
+        }
+      ],
+      "kind": "parameter",
+      "policy": "deferred",
+      "native_directions": "rw",
+      "behavior": "Custom connection-ID routing is not needed for core-managed CID rotation or NAT rebinding.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_PARTITION_INDEX",
+      "declaration": "0x04000005  // uint16_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/listener.c",
+          "line": 907
+        }
+      ],
+      "kind": "parameter",
+      "policy": "deferred",
+      "native_directions": "rw",
+      "behavior": "Explicit listener/worker partition affinity requires separate host qualification.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_DOS_MODE_EVENTS",
+      "declaration": "0x04000004  // BOOLEAN",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/listener.c",
+          "line": 897
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Preserve upstream notification and retry-mode transitions; no managed substitute for core retry policy.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_QUIC_VERSION",
+      "declaration": "0x05000000  // uint32_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7233
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Report actual negotiated version; a qualified first-profile connection must use v1.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_ADDRESS",
+      "declaration": "0x05000001  // QUIC_ADDR",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6441
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Preserve upstream state rules and validated IPv4/IPv6 source/bind selection; unqualified required BCL behavior blocks the profile.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_REMOTE_ADDRESS",
+      "declaration": "0x05000002  // QUIC_ADDR",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6544
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Preserve upstream client/start-state restrictions and actual peer address updates.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_IDEAL_PROCESSOR",
+      "declaration": "0x05000003  // uint16_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7306
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Report actual upstream logical worker assignment; do not imply OS thread affinity.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_SETTINGS",
+      "declaration": "0x05000004  // QUIC_SETTINGS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6568
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Apply settings_policy and upstream per-connection mutability rules.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS",
+      "declaration": "0x05000005  // QUIC_STATISTICS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7335
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual legacy core statistics with upstream buffer-size rules.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS_PLAT",
+      "declaration": "0x05000006  // QUIC_STATISTICS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7336
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual platform-clock statistics; host clock is monotonic microseconds and CxPlatTimeUs64ToPlat is identity.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_SHARE_UDP_BINDING",
+      "declaration": "0x05000007  // uint8_t (BOOLEAN)",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6622
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Retain requested upstream binding semantics; actual same-port/wildcard integration must qualify before advertising support.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_BIDI_STREAM_COUNT",
+      "declaration": "0x05000008  // uint16_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7415
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual peer-advertised remaining local bidirectional stream capacity.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_UNIDI_STREAM_COUNT",
+      "declaration": "0x05000009  // uint16_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7422
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual peer-advertised remaining local unidirectional stream capacity.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_MAX_STREAM_IDS",
+      "declaration": "0x0500000A  // uint64_t[4]",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7448
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual core-maintained stream limits.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_CLOSE_REASON_PHRASE",
+      "declaration": "0x0500000B  // char[]",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6646
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Preserve byte length, termination and shutdown state validation.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STREAM_SCHEDULING_SCHEME",
+      "declaration": "0x0500000C  // QUIC_STREAM_SCHEDULING_SCHEME",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6686
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Upstream FIFO/round-robin stream scheduling; no competing managed stream scheduler.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_DATAGRAM_RECEIVE_ENABLED",
+      "declaration": "0x0500000D  // uint8_t (BOOLEAN)",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6714
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Selected QUIC DATAGRAM behavior; preserve pre-start negotiation constraints.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_DATAGRAM_SEND_ENABLED",
+      "declaration": "0x0500000E  // uint8_t (BOOLEAN)",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7532
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual peer-negotiated send capability; false until negotiation permits datagrams.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_DISABLE_1RTT_ENCRYPTION",
+      "declaration": "0x0500000F  // uint8_t (BOOLEAN)",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6738
+        }
+      ],
+      "kind": "parameter",
+      "policy": "excluded",
+      "native_directions": "rw",
+      "behavior": "Insecure transport bypass is excluded; no setter or getter exposure through the first owning facade.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_RESUMPTION_TICKET",
+      "declaration": "0x05000010  // uint8_t[]",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6770
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "w",
+      "behavior": "Accept the upstream MsQuic ticket envelope and use fresh 1-RTT application data only; preserve pre-start validation.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "QUIC_STATUS_INVALID_PARAMETER"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_PEER_CERTIFICATE_VALID",
+      "declaration": "0x05000011  // uint8_t (BOOLEAN)",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6805
+        }
+      ],
+      "kind": "parameter",
+      "policy": "deferred",
+      "native_directions": "w",
+      "behavior": "Legacy certificate-validation completion parameter is hidden; use the typed completion operation through the owning validator.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_INTERFACE",
+      "declaration": "0x05000012  // uint32_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6818
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "w",
+      "behavior": "Client pre-start interface selection with actual BCL IPv4/IPv6 binding; required missing support is a blocker.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "QUIC_STATUS_INVALID_PARAMETER"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_TLS_SECRETS",
+      "declaration": "0x05000013  // QUIC_TLS_SECRETS (SSLKEYLOGFILE compatible)",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6843
+        }
+      ],
+      "kind": "parameter",
+      "policy": "deferred",
+      "native_directions": "w",
+      "behavior": "Diagnostic key-log pointer ownership/lifetime needs separate opt-in API; no raw secret export in the first facade.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_VERSION_SETTINGS",
+      "declaration": "0x05000014  // QUIC_VERSION_SETTINGS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6594
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "All effective version lists restricted to QUIC v1.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_CIBIR_ID",
+      "declaration": "0x05000015  // uint8_t[] {offset, id[]}",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6860
+        }
+      ],
+      "kind": "parameter",
+      "policy": "deferred",
+      "native_directions": "rw",
+      "behavior": "Custom connection-ID routing is deferred; ordinary upstream CID rotation remains required.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS_V2",
+      "declaration": "0x05000016  // QUIC_STATISTICS_V2",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7570
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual size-versioned core counters; do not fabricate unavailable ECN/TTL/platform observations.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS_V2_PLAT",
+      "declaration": "0x05000017  // QUIC_STATISTICS_V2",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7571
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual platform-clock variant with the documented monotonic-microsecond host clock.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_ORIG_DEST_CID",
+      "declaration": "0x05000018  // uint8_t[]",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7582
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Read actual original destination CID with upstream availability and length checks.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_SEND_DSCP",
+      "declaration": "0x05000019  // uint8_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6905
+        }
+      ],
+      "kind": "parameter",
+      "policy": "deferred",
+      "native_directions": "rw",
+      "behavior": "Per-send DSCP behavior has not been qualified in the BCL datapath; effective initial marking remains zero.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_NETWORK_STATISTICS",
+      "declaration": "0x05000020  // struct QUIC_NETWORK_STATISTICS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 7635
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual translated congestion/network statistics, without claiming extra datapath telemetry.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_CONN_CLOSE_ASYNC",
+      "declaration": "0x0500001A  // uint8_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/connection.c",
+          "line": 6930
+        }
+      ],
+      "kind": "parameter",
+      "policy": "deferred",
+      "native_directions": "rw",
+      "behavior": "Preview native async-close parameter is hidden; first facade supplies ownership and draining over baseline close/shutdown operations.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_HANDSHAKE_INFO",
+      "declaration": "0x06000000  // QUIC_HANDSHAKE_INFO",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/platform/tls_openssl.c",
+          "line": 3521
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Populate from the real picotls negotiated version/cipher/group and report only actual handshake results.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_NEGOTIATED_ALPN",
+      "declaration": "0x06000001  // uint8_t[] (max 255 bytes)",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/platform/tls_openssl.c",
+          "line": 3553
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Return actual negotiated ALPN bytes with upstream output-size behavior.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_SCHANNEL_CONTEXT_ATTRIBUTE_W",
+      "declaration": "0x07000000  // QUIC_SCHANNEL_CONTEXT_ATTRIBUTE_W",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/inc/msquic.h",
+          "line": 1093
+        }
+      ],
+      "kind": "parameter",
+      "policy": "excluded",
+      "native_directions": "r",
+      "behavior": "No Schannel security context exists in the managed picotls provider.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_SCHANNEL_CONTEXT_ATTRIBUTE_EX_W",
+      "declaration": "0x07000001  // QUIC_SCHANNEL_CONTEXT_ATTRIBUTE_EX_W",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/inc/msquic.h",
+          "line": 1099
+        }
+      ],
+      "kind": "parameter",
+      "policy": "excluded",
+      "native_directions": "r",
+      "behavior": "No Schannel security context exists in the managed picotls provider.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_TLS_SCHANNEL_SECURITY_CONTEXT_TOKEN",
+      "declaration": "0x07000002  // HANDLE",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/inc/msquic.h",
+          "line": 1100
+        }
+      ],
+      "kind": "parameter",
+      "policy": "excluded",
+      "native_directions": "r",
+      "behavior": "No native Windows security token exists in this host.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_ID",
+      "declaration": "0x08000000  // QUIC_UINT62",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/stream.c",
+          "line": 666
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Return the actual stream identifier with upstream start-state checks.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_0RTT_LENGTH",
+      "declaration": "0x08000001  // uint64_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/stream.c",
+          "line": 667
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Report actual early-data length, necessarily zero in this profile; this getter does not enable 0-RTT.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_IDEAL_SEND_BUFFER_SIZE",
+      "declaration": "0x08000002  // uint64_t - bytes",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/stream.c",
+          "line": 668
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual core send-buffer recommendation for backpressure.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_PRIORITY",
+      "declaration": "0x08000003  // uint16_t - 0 (low) to 0xFFFF (high) - 0x7FFF (default)",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/stream.c",
+          "line": 672
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "rw",
+      "behavior": "Upstream uint16 stream priority and scheduling behavior.",
+      "set": "validate profile then preserve upstream semantics",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_STATISTICS",
+      "declaration": "0X08000004  // QUIC_STREAM_STATISTICS",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/stream.c",
+          "line": 860
+        }
+      ],
+      "kind": "parameter",
+      "policy": "selected-pending",
+      "native_directions": "r",
+      "behavior": "Actual translated stream counters and upstream output-size behavior.",
+      "set": "QUIC_STATUS_INVALID_PARAMETER",
+      "get": "validate profile then preserve upstream semantics"
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_RELIABLE_OFFSET",
+      "declaration": "0x08000005  // uint64_t",
+      "implementation": "unqualified",
+      "source": [
+        {
+          "path": "src/core/stream.c",
+          "line": 700
+        }
+      ],
+      "kind": "parameter",
+      "policy": "deferred",
+      "native_directions": "rw",
+      "behavior": "Preview reliable-reset extension is outside the initial stream reset profile.",
+      "set": "QUIC_STATUS_NOT_SUPPORTED",
+      "get": "QUIC_STATUS_NOT_SUPPORTED"
+    }
+  ],
+  "settings_policy": {
+    "source": "src/inc/msquic.h:QUIC_SETTINGS and src/core/settings.c",
+    "ordinary_selected_pending_fields": [
+      "MaxBytesPerKey",
+      "HandshakeIdleTimeoutMs",
+      "IdleTimeoutMs",
+      "MtuDiscoverySearchCompleteTimeoutUs",
+      "TlsClientMaxSendBuffer",
+      "TlsServerMaxSendBuffer",
+      "StreamRecvWindowDefault",
+      "StreamRecvBufferDefault",
+      "ConnFlowControlWindow",
+      "MaxWorkerQueueDelayUs",
+      "MaxStatelessOperations",
+      "InitialWindowPackets",
+      "SendIdleTimeoutMs",
+      "InitialRttMs",
+      "MaxAckDelayMs",
+      "DisconnectTimeoutMs",
+      "KeepAliveIntervalMs",
+      "PeerBidiStreamCount",
+      "PeerUnidiStreamCount",
+      "MaxBindingStatelessOperations",
+      "StatelessOperationExpirationMs",
+      "MinimumMtu",
+      "MaximumMtu",
+      "SendBufferingEnabled",
+      "PacingEnabled",
+      "MigrationEnabled",
+      "DatagramReceiveEnabled",
+      "MaxOperationsPerDrain",
+      "MtuDiscoveryMissingProbeCount",
+      "DestCidUpdateIdleTimeoutMs",
+      "GreaseQuicBitEnabled",
+      "HyStartEnabled",
+      "StreamRecvWindowBidiLocalDefault",
+      "StreamRecvWindowBidiRemoteDefault",
+      "StreamRecvWindowUnidiDefault"
+    ],
+    "restricted_fields": {
+      "CongestionControlAlgorithm": [
+        "QUIC_CONGESTION_CONTROL_ALGORITHM_CUBIC"
+      ],
+      "ServerResumptionLevel": [
+        "QUIC_SERVER_NO_RESUME",
+        "QUIC_SERVER_RESUME_ONLY"
+      ]
+    },
+    "disabled_only_fields": [
+      "EncryptionOffloadAllowed",
+      "ReliableResetEnabled",
+      "OneWayDelayEnabled",
+      "NetStatsEventEnabled",
+      "StreamMultiReceiveEnabled",
+      "XdpEnabled",
+      "QTIPEnabled",
+      "ReservedRioEnabled",
+      "EcnEnabled"
+    ],
+    "disabled_behavior": "Effective initial value false; explicitly setting false is allowed, true returns NOT_SUPPORTED. Apply at every settings entry point before upstream changes state.",
+    "reserved_behavior": "Reject every unknown/reserved IsSet bit and nonzero reserved flag. Preserve upstream numeric range, size/version and state validation on all allowed fields.",
+    "version_policy": "Explicitly initialize all effective acceptable/offered/fully-deployed lists to v1; refuse other versions. Compiling v2 does not qualify or enable it.",
+    "transport_policy": "Selected NAT rebinding, migration/path validation, CUBIC, pacing, flow control, loss recovery, retry, stateless reset, key/CID updates and datagrams remain core-owned."
+  },
+  "credential_policy": {
+    "required_pending": [
+      "TLS1.3",
+      "P256",
+      "AES128GCM-SHA256",
+      "AES256GCM-SHA384",
+      "ECDSA server certificates",
+      "RSA-PSS server certificates",
+      "ALPN",
+      "SNI",
+      "explicit trust and hostname validation",
+      "fresh-1RTT ticket resumption"
+    ],
+    "first_facade_input": "Owned certificate/private-key and trust objects or explicitly parsed bytes mapped by the picotls adapter; native QUIC_CREDENTIAL_CONFIG is not an unrestricted facade escape hatch.",
+    "excluded": [
+      "NO_CERTIFICATE_VALIDATION",
+      "Schannel certificate hash/store/context and credential attributes",
+      "Windows security tokens",
+      "native OpenSSL credential/context handles",
+      "native revocation/OCSP/system-mapper flags",
+      "client certificate authentication",
+      "0-RTT acceptance or send flags",
+      "unqualified groups/ciphers"
+    ],
+    "flags": "Only selected_pending_flags may be mapped by the owning adapter after tests. They are not a direct public raw flag bypass: deferred validation must retain actual trust/name checks; allowed ciphers remain the two selected AES-GCM suites. Every other credential flag is rejected with NOT_SUPPORTED before mutation.",
+    "provider_query": "GLOBAL_TLS_PROVIDER returns the explicit managed-host extension MSQUIC_HOST_TLS_PROVIDER_PICOTLS = (QUIC_TLS_PROVIDER)0x10000; source enum remains unchanged. Root host contract records and tests this identity; no native provider impersonation.",
+    "selected_pending_flags": [
+      "QUIC_CREDENTIAL_FLAG_NONE",
+      "QUIC_CREDENTIAL_FLAG_CLIENT",
+      "QUIC_CREDENTIAL_FLAG_LOAD_ASYNCHRONOUS",
+      "QUIC_CREDENTIAL_FLAG_INDICATE_CERTIFICATE_RECEIVED",
+      "QUIC_CREDENTIAL_FLAG_DEFER_CERTIFICATE_VALIDATION",
+      "QUIC_CREDENTIAL_FLAG_SET_ALLOWED_CIPHER_SUITES",
+      "QUIC_CREDENTIAL_FLAG_USE_PORTABLE_CERTIFICATES"
+    ]
+  },
+  "capabilities": {
+    "selected_pending": [
+      "QUIC v1",
+      "IPv4 UDP",
+      "IPv6 UDP",
+      "client",
+      "server",
+      "bidirectional streams",
+      "unidirectional streams",
+      "QUIC DATAGRAM",
+      "ticket resumption with fresh 1-RTT data",
+      "NAT rebinding/path validation",
+      "CUBIC"
+    ],
+    "not_advertised": [
+      "0-RTT",
+      "QUIC v2",
+      "BBR",
+      "multipath",
+      "ECN",
+      "DSCP control",
+      "RSS",
+      "send segmentation",
+      "receive coalescing",
+      "encryption/QEO offload",
+      "raw datapath",
+      "TCP/QTIP",
+      "XDP",
+      "io_uring",
+      "RIO",
+      "external execution/event queues",
+      "persistent platform storage",
+      "native credential providers",
+      "native binary exports",
+      "HTTP/3",
+      "WebTransport"
+    ],
+    "query_policy": "Owning facade publishes a versioned qualification manifest only after tests; compiled API fields are not capabilities. DATAGRAM_SEND_ENABLED and actual connection/handshake queries report negotiated runtime state. CxPlatDataPathGetSupportedFeatures must not advertise absent host features; rejected options return NOT_SUPPORTED.",
+    "required_gap_policy": "Missing IPv6/source selection/binding/packet ownership or other selected behavior blocks profile completion; never silently remove it from the profile."
+  },
+  "api_flags": {
+    "stream_open": {
+      "selected_pending": [
+        "NONE",
+        "UNIDIRECTIONAL",
+        "DELAY_ID_FC_UPDATES"
+      ],
+      "reject": [
+        "0_RTT",
+        "APP_OWNED_BUFFERS"
+      ]
+    },
+    "stream_start": {
+      "selected_pending": [
+        "NONE",
+        "IMMEDIATE",
+        "FAIL_BLOCKED",
+        "SHUTDOWN_ON_FAIL",
+        "INDICATE_PEER_ACCEPT"
+      ],
+      "reject": [
+        "PRIORITY_WORK"
+      ]
+    },
+    "stream_shutdown": {
+      "selected_pending": [
+        "NONE",
+        "GRACEFUL",
+        "ABORT_SEND",
+        "ABORT_RECEIVE",
+        "ABORT",
+        "IMMEDIATE",
+        "INLINE"
+      ],
+      "constraint": "Preserve upstream valid combinations and callback-only INLINE/reentrancy semantics; NONE is not a promise that every call context permits an empty mask."
+    },
+    "send": {
+      "selected_pending": [
+        "NONE",
+        "START",
+        "FIN",
+        "DGRAM_PRIORITY",
+        "DELAY_SEND"
+      ],
+      "reject": [
+        "ALLOW_0_RTT",
+        "CANCEL_ON_LOSS",
+        "PRIORITY_WORK",
+        "CANCEL_ON_BLOCKED"
+      ],
+      "constraint": "Preserve upstream stream/datagram-specific flag checks; a selected flag is not valid on every operation."
+    },
+    "receive": {
+      "selected_pending": [
+        "NONE",
+        "FIN"
+      ],
+      "reject": [
+        "0_RTT"
+      ],
+      "constraint": "Receive flags are observations; 0_RTT must never be delivered by a qualified first-profile connection."
+    },
+    "resumption": {
+      "selected_pending": [
+        "NONE",
+        "FINAL"
+      ],
+      "constraint": "Tickets support subsequent fresh 1-RTT data only; no early-data flags."
+    },
+    "unknown_bits": "Reject before dispatch; numeric masks and valid combinations retain pinned upstream definitions."
+  }
+}

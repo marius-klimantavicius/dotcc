@@ -1,0 +1,5 @@
+/ref/
+/generated/
+/build/
+/artifacts/
+__pycache__/

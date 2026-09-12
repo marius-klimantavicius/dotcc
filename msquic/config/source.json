@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/microsoft/msquic",
+  "ref": "main",
+  "commit": "80a065112426bce68c1da42d026478d3e40fd45e",
+  "commit_date": "2026-09-09T14:02:37Z",
+  "subject": "Fix OpenSSL TLS handshake record processing (#6309)",
+  "downloaded_at": "2026-09-12T06:40:02.994663+00:00",
+  "url": "https://codeload.github.com/microsoft/msquic/tar.gz/80a065112426bce68c1da42d026478d3e40fd45e",
+  "archive": "msquic-80a065112426bce68c1da42d026478d3e40fd45e.tar.gz",
+  "sha256": "2daf1afdf1a3a4b5c8fdba882c2c702ba2a48ad2eaa0d9e50486340a89757e06",
+  "directory": "msquic-80a065112426bce68c1da42d026478d3e40fd45e"
+}
