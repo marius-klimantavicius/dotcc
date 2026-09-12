@@ -1,11 +1,22 @@
 # MsQuic translation campaign
 
-Downloaded the latest `main` snapshot resolved on 2026-09-12 into `ref/` and
-attempted dotcc translation. The user subsequently authorized implementation of
-all phases with a coordinator and sub-agents. Completed changes are being
-committed as authorized. Final toolchain-bound regeneration, the service matrices,
-80 transport pairs and all 68 owning API mode executions pass. The separate 32-case public-consumer matrix also passes. Remaining external
-interop, recovery and delivery qualification is in progress.
+The selected Linux x64 product translates and links all 47 source units from the
+MsQuic snapshot resolved on 2026-09-12. Raw and postprocessed libraries work under
+JIT and NativeAOT. The translated core uses a managed platform/UDP host, BCL packet
+cryptography and the existing translated picotls provider. Separate native MsQuic
+and aioquic processes serve as test peers.
+
+The current qualification passes 80 basic transport pairs, 68 owning API mode
+executions, 32 separate-consumer cases, 88 independent-peer cases, 152 CID cases,
+480 positive recovery exchanges and 64 live endpoint input/amplification profiles.
+SQLite was freshly regenerated with the final compiler; its normal generated
+output includes the postprocessor optimizations and passes JIT/NativeAOT checks.
+The fixed native recovery observations and full 20-pair performance comparison
+are complete. Two stronger recovery checks retain strict failures, including one
+managed harness-deadline outcome unmatched by its native control. Qualification
+is therefore not an unconditional pass. See the
+[qualification ledger](docs/qualification.md) and
+[performance measurements](docs/performance.md) for evidence and limits.
 
 See the [implementation plan and phase status](docs/PLAN.md),
 [initial compiler scope and evidence](docs/compiler-scope.md),
@@ -43,8 +54,8 @@ python3 msquic/scripts/independent-peer.py
 python3 msquic/scripts/test-independent-peer.py
 ```
 
-Current compiler iteration over **unchanged upstream source**, using only clearly
-marked diagnostic host declarations (still not a product PAL):
+Historical compiler probes over **unchanged upstream source**, using clearly
+marked diagnostic host declarations rather than the product host:
 
 ```sh
 python3 msquic/scripts/probe.py --stage headers --label unchanged-core
@@ -57,7 +68,7 @@ under JIT/NativeAOT; see [UDP evidence](docs/datapath-feasibility.md) and
 adapter and UDP gates in all four raw/optimized × JIT/NativeAOT combinations.
 Packet crypto passes 162 checks per combination; the TLS adapter passes 20 cases
 per combination, and the fresh picotls regression campaign passes. Injected
-failure paths retain targeted evidence while their final complete matrix is pending.
+failure paths pass all 40 cases, with another 48 actual-core keepalive/idle controls.
 The owning API now passes all 17 modes under raw/optimized JIT/NativeAOT,
 including streams, lifetime races, authentication, Retry/reset, key updates,
 DATAGRAM, ticket-key rotation, callback errors, registration-wide shutdown,
@@ -65,11 +76,11 @@ settings state boundaries and network parameters. Actual runtime metadata report
 the pinned source revision. Final SQLite validation, its normal optimized output
 restoration, and fresh picotls regression passed with the frozen compiler.
 The regenerated platform/UDP service matrices and all 80 transport peer pairs
-pass, with exact bidirectional payloads and clean drain. The peer harness now includes a test-only shared-binding option for CID rotation;
-all 80 refreshed baseline pairs pass, and targeted actual rotation passes both
-roles against the independent peer.
+pass, with exact bidirectional payloads and clean drain. The peer harness includes
+a test-only shared-binding option for CID rotation. All 152 ordinary, rotation
+and authentication-negative cases pass against the independent peer.
 
-The candidate product stage now contains 47 units: 43 unchanged upstream units
+The product stage contains 47 units: 43 unchanged upstream units
 and four host adapters/fragments. It emits and links as separate objects. The
 complete core ABI matches 60 native observations under JIT and NativeAOT. Raw and
 optimized managed libraries and whole-assembly-rooted AOT consumers also pass.
