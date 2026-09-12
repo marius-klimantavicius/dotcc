@@ -83,9 +83,17 @@ def validate(rows, role, managed, runtime, args, cipher, revision, require_metad
     for phase in ('load_begin', 'load_end'):
         selected = [row for row in memory if row['phase'] == phase]
         check([row['index'] for row in selected] == list(range(len(transfers))), 'Missing load memory observations')
+    shutdown = one(rows, 'metric', 'shutdown')
+    disposal = one(rows, 'metric', 'owner_disposal')
+    check(shutdown['scope'] == ('server_peer_close_wait' if role == 'server' else 'client_requested_close'),
+          'Shutdown timing scope differs')
+    check(disposal['scope'] == 'complete_local_owners_after_shutdown', 'Owner disposal timing scope differs')
+    for observation in (shutdown, disposal):
+        check(type(observation['wall_us']) is int and observation['wall_us'] >= 0, 'Invalid shutdown/disposal duration')
     samples = transfers[args.warmups:]
     rates = [(row['payload_sent'] + row['payload_received']) * 8 / row['wall_us'] for row in samples]
     return dict(identity=identity, configuration=configuration, handshake=handshake, transfers=transfers, memory=memory,
+        shutdown=shutdown, owner_disposal=disposal,
         summary=dict(measured_transfers=len(samples), aggregate_bidirectional_mbps_median=statistics.median(rates),
             transfer_wall_us_median=statistics.median(row['wall_us'] for row in samples),
             cpu_us_median=statistics.median(row['cpu_us'] for row in samples),
@@ -123,6 +131,19 @@ def report(receipt, path):
             baseline = native[(case['family'], case['cipher'])]
             ratio = case['client']['summary']['aggregate_bidirectional_mbps_median'] / baseline['client']['summary']['aggregate_bidirectional_mbps_median']
             lines.append(f"| {case['name']} | {ratio:.3f}× |")
+    lines += ['', 'Shutdown and subsequent local owner disposal are single observations per endpoint, not latency distributions. '
+        'Client requested close ends when connection shutdown completes. Server peer-close wait starts after its last transfer '
+        'and includes peer coordination; the managed server also polls close state at one-millisecond intervals. '
+        'These two roles have different timing scopes.', '',
+        '| Pair | Endpoint | Close scope | Close ms | Complete local owner disposal ms |',
+        '| --- | --- | --- | ---: | ---: |']
+    for case in receipt['cases']:
+        if not case.get('passed'):
+            continue
+        for role in ('client', 'server'):
+            endpoint = case[role]
+            lines.append(f"| {case['name']} | {role} | {endpoint['shutdown']['scope']} | "
+                         f"{endpoint['shutdown']['wall_us'] / 1000:.3f} | {endpoint['owner_disposal']['wall_us'] / 1000:.3f} |")
     lines += ['', 'The JSON receipt retains individual samples, client connection-open/start timing, '
         'server accept wait, process affinity, source/binary hashes, and every command. '
         'Server accept wait includes process launch orchestration and is not handshake latency.', '',
@@ -130,6 +151,10 @@ def report(receipt, path):
         'copied send/receive buffers, and ordinary GC. Native UDP batching/offload capabilities may differ. '
         'RSS includes runtime and prepared payloads, and peak RSS is a process lifetime high-water mark. '
         'Drained RSS does not prove memory reclamation; no endpoint forces GC. '
+        'Disposal timing spans connection/listener/configuration/registration/runtime closure, and the managed enclosing '
+        'credential/certificate scopes and async continuation. Transfers have already disposed their streams. '
+        'The native counterpart closes its public handle tree through MsQuicClose. These are whole-ownership costs, '
+        'not equivalent individual destructor calls; neither timing includes process termination. '
         'A small sequential local run does not establish statistical significance or platform portability.', '',
         f"Full requested matrix passed: {receipt['passed']}. Targeted run passed: {receipt.get('targeted_passed', False)}."]
     path.write_text('\n'.join(lines) + '\n')

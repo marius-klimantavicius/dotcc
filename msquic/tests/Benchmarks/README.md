@@ -1,4 +1,11 @@
-# Public API endpoint benchmark (full P9 matrix pending)
+# Public API endpoint benchmark
+
+The full 20-pair throughput/CPU/allocation/memory campaign passed before shutdown
+timings were added. Its sources, executable trees, complete receipts and successful
+30-second diagnostic CPU trace are preserved with hashes under
+`artifacts/final-qualification/benchmark-before-shutdown-metrics/`.
+The narrow shutdown-metric extension below is authored; its fresh full campaign
+is pending. No transport workload, product source or compiler was changed.
 
 `scripts/benchmark-product.py` builds and runs these independent endpoint
 processes, records source/binary provenance and matched process affinity, and
@@ -134,6 +141,24 @@ JSON-lines records:
   allocation counters are approximate process-wide samples; normal background
   GC and other runtime work contribute. No endpoint forces a GC or requests a
   full collection. There is no idle-time plateau guarantee in one snapshot.
+- `shutdown`: one monotonic duration per endpoint after the last transfer. The
+  client scope `client_requested_close` starts immediately before requesting
+  connection shutdown and ends after shutdown completion. The server scope
+  `server_peer_close_wait` starts after its last transfer, waits for peer close
+  and ends after local shutdown completion; it includes peer coordination and
+  the managed server's one-millisecond polling. Do not compare server wait as
+  though it were client-request latency.
+- `owner_disposal`: `complete_local_owners_after_shutdown` starts after the
+  connection shutdown measurement and ends after connection, listener,
+  configuration, registration and runtime owners close. Stream owners were
+  already disposed after each transfer. Managed timing also includes enclosing
+  credential/certificate/timeout scopes and the async return continuation;
+  native timing ends after its public handle tree reaches `MsQuicClose`.
+  These measure complete ownership cleanup for the respective consumer, not
+  equivalent destructor calls. They exclude result printing, final RSS sampling
+  and process termination. No forced GC is introduced. Zero microseconds is a
+  valid rounded observation; no timing threshold is imposed. One close per
+  process is not a shutdown latency distribution.
 - Final `passed` and `clean_close`: both must be true and both processes must
   exit zero before any aggregate rate is reported. Exclude all warmup transfer
   records from throughput and latency summaries. Derive payload throughput

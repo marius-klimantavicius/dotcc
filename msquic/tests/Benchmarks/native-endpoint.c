@@ -273,6 +273,8 @@ int main(int argc, char **argv) {
     printf("{\"metric\":\"configuration\",\"role\":\"%s\",\"bytes\":%d,\"warmups\":%d,\"iterations\":%d,\"chunk_bytes\":%d,\"pipeline\":1,\"transport_workers\":1,\"stream_window\":1048576,\"connection_window\":8388608,\"send_buffering\":false,\"pacing\":true,\"ecn\":false,\"encryption_offload\":false,\"alpn\":\"dotcc-bench-v1\",\"cipher\":%d}\n",
         options.server ? "server" : "client", options.bytes, options.warmups, options.iterations, options.chunk, options.cipher == 128 ? 0x1301 : 0x1302);
     HQUIC registration = NULL, listener = NULL;
+    uint64_t shutdown_us = 0, disposal_begin, disposal_us;
+    int shutdown_measured = 0;
     if (!check(MsQuicOpen2(&api), "MsQuicOpen2")) goto done;
     char revision[64] = {0}; uint32_t revision_size = sizeof(revision), provider_size = sizeof(QUIC_TLS_PROVIDER);
     QUIC_TLS_PROVIDER provider;
@@ -342,10 +344,15 @@ int main(int argc, char **argv) {
         options.server ? "server_accept_wait" : "client_connect_api", (unsigned long long)(now_us() - begin), (int)handshake.CipherSuite);
     print_resources("idle", -1, sample_resources());
     for (int i = 0; i < options.warmups + options.iterations; i++) if (!transfer_once(&transfers[i])) goto done;
+    begin = now_us();
     if (!options.server) api->ConnectionShutdown(connection, QUIC_CONNECTION_SHUTDOWN_FLAG_NONE, 0);
-    wait_flag(&connection_closed, 1, 0);
+    if (wait_flag(&connection_closed, 1, 0) && !has_failed()) {
+        shutdown_us = now_us() - begin;
+        shutdown_measured = 1;
+    }
 
 done:
+    disposal_begin = now_us();
     if (connection && has_failed()) api->ConnectionShutdown(connection, QUIC_CONNECTION_SHUTDOWN_FLAG_NONE, 1);
     for (int i = 0; i < MAX_TRANSFERS; i++) if (transfers[i].stream) api->StreamClose(transfers[i].stream);
     if (connection) api->ConnectionClose(connection);
@@ -353,6 +360,13 @@ done:
     if (configuration) api->ConfigurationClose(configuration);
     if (registration) api->RegistrationClose(registration);
     if (api) MsQuicClose(api);
+    disposal_us = now_us() - disposal_begin;
+    if (shutdown_measured && !has_failed()) {
+        printf("{\"metric\":\"shutdown\",\"scope\":\"%s\",\"wall_us\":%llu}\n",
+            options.server ? "server_peer_close_wait" : "client_requested_close", (unsigned long long)shutdown_us);
+        printf("{\"metric\":\"owner_disposal\",\"scope\":\"complete_local_owners_after_shutdown\",\"wall_us\":%llu}\n",
+            (unsigned long long)disposal_us);
+    }
     print_resources("drained", -1, sample_resources());
     printf("{\"passed\":%s,\"clean_close\":%s,\"transport_status\":%u,\"transport_error\":%llu,\"peer_error\":%llu}\n",
         has_failed() ? "false" : "true", has_failed() ? "false" : "true", (unsigned)transport_status,

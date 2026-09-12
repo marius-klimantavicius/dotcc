@@ -12,6 +12,11 @@ internal static class Program
     private sealed record Options(bool Server, string Certificate, string KeyOrName, IPEndPoint Endpoint,
         string ReadyFile, int Bytes, int Warmups, int Iterations, int Chunk, ushort Cipher);
     private readonly record struct Resources(long CpuUs, long RssBytes, long PeakRssBytes, long AllocatedBytes, long HeapBytes);
+    private sealed class ShutdownMeasurements
+    {
+        internal long ConnectionWallUs;
+        internal long OwnerDisposalBegin;
+    }
 
     private static async Task<int> Main(string[] args)
     {
@@ -19,7 +24,15 @@ internal static class Program
         {
             var options = Parse(args);
             PrintConfiguration(options);
-            await RunAsync(options);
+            var shutdown = new ShutdownMeasurements();
+            await RunAsync(options, shutdown);
+            // RunAsync's enclosing await-using scopes have now also drained
+            // configuration, registration and runtime, followed by credentials.
+            long disposalUs = ElapsedUs(shutdown.OwnerDisposalBegin);
+            Console.WriteLine("{\"metric\":\"shutdown\",\"scope\":\"" +
+                (options.Server ? "server_peer_close_wait" : "client_requested_close") +
+                "\",\"wall_us\":" + shutdown.ConnectionWallUs + "}");
+            Console.WriteLine("{\"metric\":\"owner_disposal\",\"scope\":\"complete_local_owners_after_shutdown\",\"wall_us\":" + disposalUs + "}");
             PrintResources("drained", -1, SampleResources());
             Console.WriteLine("{\"passed\":true,\"clean_close\":true}");
             return 0;
@@ -48,7 +61,7 @@ internal static class Program
             args[11] == "128" ? (ushort)0x1301 : (ushort)0x1302);
     }
 
-    private static async Task RunAsync(Options options)
+    private static async Task RunAsync(Options options, ShutdownMeasurements shutdown)
     {
         using var timeout = new CancellationTokenSource(TimeSpan.FromMinutes(15));
         CancellationToken cancellation = timeout.Token;
@@ -101,6 +114,7 @@ internal static class Program
             PrintResources("idle", -1, SampleResources());
             for (int index = 0; index < options.Warmups + options.Iterations; index++)
                 await TransferAsync(connection, options, index, cancellation);
+            long shutdownBegin = Stopwatch.GetTimestamp();
             if (options.Server)
             {
                 while (connection.CloseInfo == null) await Task.Delay(1, cancellation);
@@ -109,6 +123,8 @@ internal static class Program
                     throw new IOException("Peer did not close the benchmark connection cleanly.");
             }
             await connection.ShutdownAsync(cancellationToken: cancellation);
+            shutdown.ConnectionWallUs = ElapsedUs(shutdownBegin);
+            shutdown.OwnerDisposalBegin = Stopwatch.GetTimestamp();
         }
         finally
         {
