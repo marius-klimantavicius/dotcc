@@ -68,6 +68,20 @@ public sealed partial class CondInlinerTests
         return (result, result.Compilation.SyntaxTrees.First().GetRoot().ToFullString());
     }
 
+    [Fact]
+    public void Nested_helpers_are_proven_by_their_own_symbols_and_bodies()
+    {
+        var runtime = Runtime.Replace("namespace DotCC.Libc;", "namespace Nested { public static class Api {") + "\n} }";
+        var helper = Helper.Replace("DotCC.Libc.CBool", "Nested.Api.CBool");
+        helper = "namespace Nested { public static partial class HelperOwner {" + helper.Replace("static unsafe class Cond", "public static unsafe class Cond") + "} }";
+        var result = Check("""
+            public static class Case {
+                public static string Run() => Nested.HelperOwner.Cond.B((Nested.Api.CBool)3).ToString();
+            }
+            """, "True", helper, runtime).Result;
+        result.Rewritten.ShouldBe(1);
+    }
+
     [Theory]
     [InlineData("bool", "true")]
     [InlineData("bool", "false")]

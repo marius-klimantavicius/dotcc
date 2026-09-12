@@ -90,7 +90,7 @@ public sealed class CommaPointerTypedefTests
         {
             // The IR expands the fn-ptr typedef to its underlying delegate* type;
             // the function name still decays to its canonical cached address.
-            Compiler.EmitCSharp(new[] { src }).ShouldContain("delegate*<int, int> cf = global::DotCcFunctionPointers.dbl");
+            Compiler.EmitCSharp(new[] { src }).ShouldContain("delegate*<int, int> cf = global::DotCcProgramFunctionPointers.dbl");
         }
         finally { File.Delete(src); }
     }

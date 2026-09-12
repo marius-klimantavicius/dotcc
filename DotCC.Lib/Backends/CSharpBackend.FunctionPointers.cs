@@ -24,7 +24,7 @@ internal sealed partial class CSharpBackend
         if (_functionPointers.TryGetValue(name, out var previous) && previous != declaration)
             throw new IrUnsupportedException("conflicting canonical function pointer signatures for '" + name + "'");
         _functionPointers[name] = declaration;
-        return (_relocatable ? "DotCcPointers." : "global::DotCcFunctionPointers.") + name;
+        return (_relocatable ? "DotCcPointers." : "global::" + _pointerClass + ".") + name;
     }
 
     private void RegisterPublicFunctionPointers(IrBuilder unit)

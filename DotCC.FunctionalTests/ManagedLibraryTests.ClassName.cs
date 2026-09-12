@@ -49,7 +49,7 @@ public sealed partial class ManagedLibraryTests
             var consumer = Compile("NamedConsumer_" + Guid.NewGuid().ToString("N"), $$"""
                 public static unsafe class Consumer {
                     public static int Run() {
-                        if ({{identifier}}.get() != DotCcFunctionPointers.add) return -1;
+                        if ({{identifier}}.get() != {{identifier.TrimStart('@')}}FunctionPointers.add) return -1;
                         if ({{identifier}}.runtime()(-42) != 42) return -2;
                         if (System.Runtime.InteropServices.Marshal.PtrToStringUTF8((nint){{identifier}}.unchanged()) != "DotCcLib") return -3;
                         return {{identifier}}.run(40);

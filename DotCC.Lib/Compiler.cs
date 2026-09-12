@@ -140,8 +140,8 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null)
-        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName, preprocessing: preprocessing).Values.Single();
+        string? className = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
+        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions).Values.Single();
 
     /// <summary>Emit one or more named C# sources. Split modes require project output.
     /// Function boundaries come from the backend; shared declarations remain together.</summary>
@@ -155,8 +155,12 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, CPreprocessingOptions? preprocessing = null)
+        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
     {
+        ValidateOutputOptions(outputOptions, emit);
+        bool nested = outputOptions?.NestTypes == true;
+        bool usesZig = inputPaths.Any(p => p.EndsWith(".zig", StringComparison.OrdinalIgnoreCase));
+        bool includeZig = IncludeZigRuntime(outputOptions, usesZig);
         namespaceName = ResolveNamespace(namespaceName, emit);
         ValidateSourceSplit(split, splitSize, emit);
         var libraryClass = ResolveLibraryClassName(className, emit);
@@ -171,7 +175,7 @@ public static partial class Compiler
         var convGate = (warnings & WarningFlags.Conversion) != 0 ? new ConversionGate() : null;
         // Objects retain public types so managed linking requires no textual
         // rewriting of type declarations or their inline-array wrapper types.
-        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object, relocatable: asObject || namespaceName != null);
+        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object, relocatable: asObject || namespaceName != null || nested, pointerClass: HelperClass(libraryMode ? libraryClass : "DotCcProgram", "FunctionPointers"));
         if (convGate is { HasAny: true })
         {
             foreach (var d in convGate.Diagnostics) { Console.Error.WriteLine("dotcc: warning: " + d); }
@@ -222,15 +226,15 @@ public static partial class Compiler
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
             return SingleSource(SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
-                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none"));
+                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig));
         }
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
                 irBuilder.Functions.Select(f => f.Sym.TargetName).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
-        var aliases = ResolveGeneratedAliases(cg.Aliases, namespaceName) + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
-            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass, namespaceName);
-        return BuildSourceFiles(cg.Functions, cg.FunctionSources, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName,
-            (functions, fileAliases, partial) => BuildShell(cg.MainArity, RenderMacroFields(cg.TypeDeclarations, libraryMode ? libraryClass : "DotCcProgram", irBuilder.Functions.Select(f => f.Sym.TargetName).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, cg.Structs, fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName));
+        var aliases = ResolveGeneratedAliases(cg.Aliases, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName) + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
+            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass, namespaceName, nested);
+        return BuildSourceFiles(cg.Functions, cg.FunctionSources, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
+            (functions, fileAliases, partial) => BuildShell(cg.MainArity, RenderMacroFields(cg.TypeDeclarations, libraryMode ? libraryClass : "DotCcProgram", irBuilder.Functions.Select(f => f.Sym.TargetName).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, RenderTypeDeclarations(cg.TypeDeclarations!, libraryMode ? libraryClass : "DotCcProgram", emit == EmitMode.ManagedLib), fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName, nested, includeZig));
     }
 
     /// <summary>

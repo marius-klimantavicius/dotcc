@@ -17,6 +17,8 @@
 | `--override-report <path>` | Write JSONL selection/expansion/provenance diagnostics for macro overrides and runtime intrinsics. |
 | `--class-name <name>` | Set the generated API class for `--emit=managedlib` or `-shared` (default `DotCcLib`). Applies to whole-program emission and object linking; specify it at link time, not with `--emit=obj`. Accepts a single ASCII identifier, optionally `@`-escaped; keywords are escaped automatically. Executable, preprocessing and WAT modes reject this option. |
 | `--namespace <name>` | Place generated functions, aggregate types and embedded runtime in a dotted C# namespace. Default: global namespace. Supported by C# executable/library output and object linking; rejected with preprocessing, WAT and object emission. Specify at link time for objects. |
+| `--nest-types` | Place translated types, globals/cache helpers and embedded runtime inside the library wrapper. Supports managed/shared libraries and object linking. Split output uses file-local aliases so differently named translations can share a consumer namespace. |
+| `--runtime=all\|c\|auto` | Select embedded runtime modules. `all` (default) retains everything; `c` excludes Zig-only modules and requires known C-only inputs; `auto` uses source/object language provenance (unknown old objects retain all). Set at link time for objects. |
 | `--split=none\|function\|size` | C# project source layout: one file (default), one translated function per file, or groups of whole functions. Supported by csproj/build/managedlib/shared emission and object linking. File/stdout, preprocessing, WAT and object emission reject splitting. |
 | `--split-size <bytes>` | Positive UTF-8 byte target with `--split=size`, default 262144 (256 KiB). Append a complete function, then close the file on its first crossing of the target. |
 | `--emit=obj` | **Separate compilation.** Compile ONE `.c` to a `.cs` object fragment (functions + its type decls + globals, no shell/runtime). Link by passing `.cs` objects back: `dotcc a.cs b.cs -o app` merges (deduping shared types) and wraps in the shell. Drives CMake/make per file (`examples/cmake-demo/`). |
@@ -105,6 +107,33 @@ its `--in-place` mode also works with split output.
 Generated C# files disable warnings `CS0162`, `CS8909`, `CS1717`, `CS0164`,
 `CS0642`, and `CS0675` with a file-scoped `#pragma warning disable` directive.
 
+## Isolating copied translations
+
+```bash
+dotcc engine.c --emit=managedlib --class-name Sqlite --namespace Managed.Database \
+  --nest-types --runtime=c --split=size --split-size=102400 -o TranslatedSqlite
+```
+
+Types become `Managed.Database.Sqlite.sqlite3`, `Sqlite.Libc`,
+`Sqlite.SqliteGlobals`, and `Sqlite.SqliteFunctionPointers`. Import nested API
+types with `using static Managed.Database.Sqlite;`. Different wrappers may be
+copied into the same consumer project/namespace. Each owns its runtime state.
+Nesting applies to generated helpers too, including layout and inline-array types.
+The platform sidecars supplied by a translation campaign are maintained separately.
+
+With nesting, aliases are file-local; no `{class_name}.GlobalUsings.g.cs` is needed.
+Function-owner aliases appear only in the shared source; function files carry
+just the aliases they need. Without nesting, the existing global-using layout
+remains. Compiler APIs accept `outputOptions: new CSharpOutputOptions(NestTypes:
+true, Runtime: RuntimeProfile.C)` on `EmitCSharp`, `EmitCSharpFiles`, `LinkObjects`
+and `LinkObjectFiles`.
+
+C mode omits `Zig*.cs` and `Slice.cs`; compilation tests verify that the complete
+remaining C runtime has no dependency on those modules. Auto mode retains Zig
+support if any input/object needs it. C mode rejects unknown-provenance older
+objects; regenerate them or use all/auto. Preprocessor/WAT modes reject these C#
+output flags. The postprocessor also supports nested Cond/CBool helpers.
+
 ## Optional source post-processing
 
 After dotcc finishes, the separate [Roslyn post-processor](postprocess.md) can
@@ -122,9 +151,9 @@ emits `public static class Sqlite`. The corresponding APIs are
 `Compiler.EmitCSharp(..., emit: EmitMode.ManagedLib, className: "Sqlite")` and
 `Compiler.LinkObjects(..., emit: EmitMode.ManagedLib, className: "Sqlite")`.
 The selected name is used in declarations, static imports, function-owner aliases
-and native export wrapper calls. Globals, aggregate types, canonical pointer
-containers, assembly names and native export entry-point names keep their existing
-names. Choose a name that does not conflict with translated symbols or runtime
+and native export wrapper calls. Globals and canonical pointer containers are named `{class_name}Globals` and
+`{class_name}FunctionPointers`. The pointer fields are consolidated into one class.
+Aggregate names, assembly names and native export entry-point names stay unchanged. Choose a name that does not conflict with translated symbols or runtime
 helper types; infrastructure and translated-declaration collisions are diagnosed.
 
 ## Public macro constants

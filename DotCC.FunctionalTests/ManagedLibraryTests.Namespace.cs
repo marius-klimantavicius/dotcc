@@ -49,7 +49,7 @@ public sealed partial class ManagedLibraryTests
             var consumer = $$"""
                 public static unsafe class Consumer {
                     public static int Run() {
-                        if ({{owner}}.get() != global::{{escaped}}.DotCcFunctionPointers.add) return -1;
+                        if ({{owner}}.get() != global::{{escaped}}.{{(api ?? "DotCcProgram")}}FunctionPointers.add) return -1;
                         if ({{owner}}.runtime()(-42) != 42) return -2;
                         if (System.Runtime.InteropServices.Marshal.PtrToStringUTF8((nint){{owner}}.text()) != "global::DotCcFunctionPointers namespace Managed.Database") return -3;
                         return {{owner}}.run();

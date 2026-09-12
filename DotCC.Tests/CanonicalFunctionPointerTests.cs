@@ -33,8 +33,8 @@ public sealed class CanonicalFunctionPointerTests
             Regex.Matches(emitted, @"&\w+\.add\b").Count.ShouldBe(1);
             Regex.Matches(emitted, @"&\w+\.abs\b").Count.ShouldBe(1);
             emitted.ShouldContain(" = global::Libc;");
-            emitted.ShouldContain("DotCcFunctionPointers.add");
-            emitted.ShouldContain("DotCcFunctionPointers.abs");
+            emitted.ShouldContain("DotCcProgramFunctionPointers.add");
+            emitted.ShouldContain("DotCcProgramFunctionPointers.abs");
         }
         finally { File.Delete(path); }
     }

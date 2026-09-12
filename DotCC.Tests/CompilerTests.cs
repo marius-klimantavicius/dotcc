@@ -386,7 +386,7 @@ public sealed partial class CompilerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("delegate*<int, int, int> op = global::DotCcFunctionPointers.add");
+            emitted.ShouldContain("delegate*<int, int, int> op = global::DotCcProgramFunctionPointers.add");
         }
         finally { File.Delete(src); }
     }
@@ -405,7 +405,7 @@ public sealed partial class CompilerTests
             // fn-ptr param → delegate*; the pointed-to type's params don't leak
             emitted.ShouldContain("apply(delegate*<int, int, int> op, int x, int y)");
             // bare function-name arg decays to its address
-            emitted.ShouldContain("apply(global::DotCcFunctionPointers.add, 2, 3)");
+            emitted.ShouldContain("apply(global::DotCcProgramFunctionPointers.add, 2, 3)");
         }
         finally { File.Delete(src); }
     }

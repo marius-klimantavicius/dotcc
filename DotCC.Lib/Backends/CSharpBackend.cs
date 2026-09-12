@@ -44,6 +44,7 @@ internal sealed partial class CSharpBackend
     private readonly ITarget _target = new CSharpTarget();
     private bool _publicTypes;
     private bool _relocatable;
+    private string _pointerClass = "DotCcProgramFunctionPointers";
     private readonly HashSet<string> _enumAliases = new(StringComparer.Ordinal);
     private DotCC.Layout.OffsetDocument _offsetDocument = null!;
     private DotCC.Layout.OffsetLayoutModel _offsetModel = null!;
@@ -54,10 +55,10 @@ internal sealed partial class CSharpBackend
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
     private string Cs(CType t) => _target.RenderType(t);
 
-    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false)
+    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers")
     {
         VaListLifetimeValidator.Validate(unit);
-        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable };
+        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass };
         cg.RegisterPublicFunctionPointers(unit);
         cg._offsetDocument = unit.CreateOffsetDocument();
         cg._offsetRequests.UnionWith(cg._offsetDocument.Requests.Select(request => request.Name));

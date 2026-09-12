@@ -422,7 +422,7 @@ public sealed partial class CompilerTests
             emitted.ShouldContain("mtx_t mux");
             // The typed IR does not add extra parens around address-of operands
             // in call argument position.
-            emitted.ShouldContain("thrd_create(&t, global::DotCcFunctionPointers.worker, &mux)");
+            emitted.ShouldContain("thrd_create(&t, global::DotCcProgramFunctionPointers.worker, &mux)");
             // mtx_plain is the <threads.h> macro constant (0).
             emitted.ShouldContain("mtx_init(&mux, 0)");
         }

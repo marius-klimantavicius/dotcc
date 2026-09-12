@@ -78,9 +78,10 @@ public static partial class Compiler
     /// <c>../DotCC.Libc/Libc.cs</c> updates BOTH the unit-tested DLL
     /// AND every emitted program.
     /// </summary>
-    private static readonly Lazy<string> _runtimeBlock = new(LoadRuntimeBlock);
+    private static readonly Lazy<string> _runtimeBlock = new(() => LoadRuntimeBlock(true));
+    private static readonly Lazy<string> _cRuntimeBlock = new(() => LoadRuntimeBlock(false));
 
-    private static string LoadRuntimeBlock()
+    private static string LoadRuntimeBlock(bool includeZig)
     {
         const string prefix = "DotCC.Runtime.";
         var asm = typeof(Compiler).Assembly;
@@ -88,6 +89,10 @@ public static partial class Compiler
         foreach (var name in asm.GetManifestResourceNames())
         {
             if (!name.StartsWith(prefix, StringComparison.Ordinal)) { continue; }
+            var fileName = name[prefix.Length..];
+            // These modules have no inbound dependencies from the C runtime.
+            // C-profile compilation tests verify the remaining dependency closure.
+            if (!includeZig && (fileName.StartsWith("Zig", StringComparison.Ordinal) || fileName == "Slice.cs")) continue;
             using var stream = asm.GetManifestResourceStream(name)
                 ?? throw new InvalidOperationException($"missing embedded runtime resource: {name}");
             using var reader = new StreamReader(stream);

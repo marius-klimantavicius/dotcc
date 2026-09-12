@@ -60,10 +60,11 @@ public static partial class Compiler
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, string globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none")
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 1 — link with `dotcc <objs> -o <out>`.\n");
+        sb.Append("//!!dotcc-obj source-language:").Append(usesZig ? "zig" : "c").Append('\n');
         sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
         sb.Append(NamespaceNeutral).Append('\n');
         sb.Append(FragMain).Append(mainArity).Append('\n');
@@ -95,14 +96,17 @@ public static partial class Compiler
     /// </summary>
     public static string LinkObjects(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
-        ImportOptions? imports = null, string? className = null, string? namespaceName = null, TextWriter? overrideReport = null)
-        => LinkObjectFiles(objectPaths, emit, debugHeap, imports, className, namespaceName: namespaceName, overrideReport: overrideReport).Values.Single();
+        ImportOptions? imports = null, string? className = null, string? namespaceName = null, TextWriter? overrideReport = null, CSharpOutputOptions? outputOptions = null)
+        => LinkObjectFiles(objectPaths, emit, debugHeap, imports, className, namespaceName: namespaceName, overrideReport: overrideReport, outputOptions: outputOptions).Values.Single();
 
     /// <summary>Link objects into named C# project files. Older objects must be regenerated to split functions.</summary>
     public static IReadOnlyDictionary<string, string> LinkObjectFiles(
         IReadOnlyList<string> objectPaths, EmitMode emit = EmitMode.File, bool debugHeap = false,
-        ImportOptions? imports = null, string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, TextWriter? overrideReport = null)
+        ImportOptions? imports = null, string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, TextWriter? overrideReport = null, CSharpOutputOptions? outputOptions = null)
     {
+        ValidateOutputOptions(outputOptions, emit);
+        bool nested = outputOptions?.NestTypes == true;
+        bool? usesZig = false;
         namespaceName = ResolveNamespace(namespaceName, emit);
         ValidateSourceSplit(split, splitSize, emit);
         var libraryClass = ResolveLibraryClassName(className, emit);
@@ -130,13 +134,15 @@ public static partial class Compiler
         foreach (var path in objectPaths)
         {
             var text = File.ReadAllText(path).ReplaceLineEndings("\n");
+            if (text.Split('\n').Contains("//!!dotcc-obj source-language:zig", StringComparer.Ordinal)) usesZig = true;
+            else if (usesZig != true && !text.Split('\n').Contains("//!!dotcc-obj source-language:c", StringComparer.Ordinal)) usesZig = null;
             if (!text.Contains(MagicObject, StringComparison.Ordinal))
             {
                 throw new CompileException(
                     $"'{Path.GetFileName(path)}' is not a dotcc object — no '{MagicObject}' marker. " +
                     "Link expects `--emit=obj` fragments, not a program or hand-written .cs.");
             }
-            if (namespaceName != null && !text.Split('\n').Contains(NamespaceNeutral, StringComparer.Ordinal))
+            if ((namespaceName != null || nested) && !text.Split('\n').Contains(NamespaceNeutral, StringComparer.Ordinal))
                 throw new CompileException("Object is not namespace-neutral; regenerate objects before using --namespace");
             var profileLine = text.Split('\n').FirstOrDefault(l => l.StartsWith("//!!dotcc-obj override-profile:", StringComparison.Ordinal));
             CPreprocessingOptions.WriteEvent(overrideReport, "object-profile", ("path", path),
@@ -256,28 +262,31 @@ public static partial class Compiler
             if (survivors.Count > 0) { importsClass = RenderImportsClass(survivors, imports, libraryMode); }
         }
         if (className != null) CheckLibraryClassCollision(libraryClass, typeByName.Keys, definedNames);
-        aliasText = ResolveGeneratedAliases(aliasText, namespaceName) + FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName);
+        aliasText = ResolveGeneratedAliases(aliasText, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName) + FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName, nested);
+        bool includeZig = IncludeZigRuntime(outputOptions, usesZig);
         return BuildSourceFiles(functions.ToString(), missingBoundaries ? null : functionSources, aliasText,
-            emit, libraryClass, importsClass, false, split, splitSize, namespaceName,
-            (functionText, fileAliases, partial) => BuildShell(mainArity, RenderMacroFields(typeByName, libraryMode ? libraryClass : "DotCcProgram", definedNames) + functionText, structDecls.ToString(), fileAliases, globalText,
+            emit, libraryClass, importsClass, false, split, splitSize, namespaceName, nested,
+            (functionText, fileAliases, partial) => BuildShell(mainArity, RenderMacroFields(typeByName, libraryMode ? libraryClass : "DotCcProgram", definedNames) + functionText, RenderTypeDeclarations(typeByName, libraryMode ? libraryClass : "DotCcProgram", emit == EmitMode.ManagedLib), fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
-                mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName));
+                mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig));
     }
 
-    private static string FunctionPointerOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null)
+    private static string FunctionPointerOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null, bool nested = false)
     {
+        var scope = TypeScope(namespaceName, libraryClass, nested);
+        var ownerClass = libraryMode ? libraryClass : "DotCcProgram";
         var defined = new HashSet<string>(definitions, StringComparer.Ordinal);
         var aliases = new StringBuilder();
         var keys = typeKeys.Where(key => key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal))
             .OrderBy(key => key, StringComparer.Ordinal).ToArray();
-        if (keys.Length != 0) aliases.Append("using DotCcPointers = global::").Append(NamespacePrefix(namespaceName)).Append("DotCcFunctionPointers;\n");
+        if (keys.Length != 0) aliases.Append("using DotCcPointers = global::").Append(scope).Append(HelperClass(ownerClass, "FunctionPointers")).Append(";\n");
         foreach (var key in keys)
         {
             var name = key[FunctionPointerNames.TypeKeyPrefix.Length..];
-            var owner = defined.Contains(name) ? (libraryMode ? libraryClass : "DotCcProgram") : "Libc";
+            var owner = defined.Contains(name) ? NamespacePrefix(namespaceName) + ownerClass : scope + "Libc";
             aliases.Append("using ").Append(FunctionPointerNames.OwnerAlias(name))
-                .Append(" = global::").Append(NamespacePrefix(namespaceName)).Append(owner).Append(";\n");
+                .Append(" = global::").Append(owner).Append(";\n");
         }
         return aliases.ToString();
     }

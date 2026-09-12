@@ -81,7 +81,7 @@ public sealed partial class ManagedLibraryTests
             var consumer = $$"""
                 public static unsafe class SplitConsumer {
                     public static int Run() {
-                        if ({{owner}}.get() != DotCcFunctionPointers.add) return -1;
+                        if ({{owner}}.get() != {{owner}}FunctionPointers.add) return -1;
                         if (System.Runtime.InteropServices.Marshal.PtrToStringUTF8((nint){{owner}}.text()) != "braces { } and // comments é") return -2;
                         return {{owner}}.run(34) + {{owner}}.run(33);
                     }

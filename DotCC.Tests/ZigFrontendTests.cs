@@ -4483,7 +4483,7 @@ public sealed class ZigFrontendTests
             "const alias = &laterFn;\n" +
             "fn laterFn(x: i32) i32 { return x * 2; }\n" +
             "pub fn main() u8 { return @intCast(handler(10) + alias(11)); }\n"); // 20 + 22 = 42
-        cs.ShouldContain("global::DotCcFunctionPointers.laterFn");   // the function's address bound to the global
+        cs.ShouldContain("global::DotCcProgramFunctionPointers.laterFn");   // the function's address bound to the global
         cs.ShouldContain("handler(10)");
         cs.ShouldContain("alias(11)");  // the inferred fn-ptr global is callable
     }
@@ -4501,7 +4501,7 @@ public sealed class ZigFrontendTests
             "}\n");
         cs.ShouldContain("delegate*<int, int, int>");          // managed fn-ptr (NOT unmanaged[Cdecl])
         cs.ShouldNotContain("unmanaged[Cdecl]<int, int, int>"); // this fn-ptr is managed, not C-ABI
-        cs.ShouldContain("global::DotCcFunctionPointers.add");                               // the function decays to its address
+        cs.ShouldContain("global::DotCcProgramFunctionPointers.add");                               // the function decays to its address
     }
 
     [Fact]
@@ -4617,8 +4617,8 @@ public sealed class ZigFrontendTests
         // and each function lowers with the real vtable signature (Alignment + Slice<byte>).
         var cs = EmitZig(CustomAllocator);
         cs.ShouldContain("new AllocatorVTable {");
-        cs.ShouldContain("alloc = global::DotCcFunctionPointers.bumpAlloc");
-        cs.ShouldContain("free = global::DotCcFunctionPointers.bumpFree");
+        cs.ShouldContain("alloc = global::DotCcProgramFunctionPointers.bumpAlloc");
+        cs.ShouldContain("free = global::DotCcProgramFunctionPointers.bumpFree");
         cs.ShouldContain("Alignment alignment");          // the modeled std.mem.Alignment param
         cs.ShouldContain("Slice<byte> memory");           // the []u8 param
     }

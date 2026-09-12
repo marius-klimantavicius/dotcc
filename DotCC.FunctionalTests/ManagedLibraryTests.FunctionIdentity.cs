@@ -57,8 +57,8 @@ public sealed partial class ManagedLibraryTests
                 {
                     public static int Run()
                     {
-                        var canonical = DotCcFunctionPointers.add;
-                        var runtime = DotCcFunctionPointers.abs;
+                        var canonical = DotCcLibFunctionPointers.add;
+                        var runtime = DotCcLibFunctionPointers.abs;
                         if (canonical == null || runtime == null || DotCcLib.null_and_sentinel() != 1) return -1;
                         for (int i = 0; i < 30000; i++)
                         {
@@ -70,7 +70,7 @@ public sealed partial class ManagedLibraryTests
                         System.GC.Collect();
                         System.GC.WaitForPendingFinalizers();
                         System.GC.Collect();
-                        return DotCcFunctionPointers.add == canonical && DotCcLib.get_second() == canonical ? canonical(41) : -6;
+                        return DotCcLibFunctionPointers.add == canonical && DotCcLib.get_second() == canonical ? canonical(41) : -6;
                     }
                 }
                 """, references);

@@ -63,8 +63,7 @@ internal sealed class ConditionRewriter(SemanticModel model,
         SpecialType.System_SByte or SpecialType.System_Byte or SpecialType.System_Int16 or SpecialType.System_UInt16
         or SpecialType.System_Int32 or SpecialType.System_UInt32 or SpecialType.System_Int64 or SpecialType.System_UInt64
         or SpecialType.System_IntPtr or SpecialType.System_UIntPtr or SpecialType.System_Single or SpecialType.System_Double;
-    private static bool CBool(ITypeSymbol type) => type is INamedTypeSymbol { Name: "CBool", IsValueType: true }
-        && type.ContainingType == null;
+    private static bool CBool(ITypeSymbol type) => type is INamedTypeSymbol { Name: "CBool", IsValueType: true };
     private bool IsHelper(IMethodSymbol method)
     {
         if (methodProofs.TryGetValue(method, out var result)) return result;
@@ -73,7 +72,7 @@ internal sealed class ConditionRewriter(SemanticModel model,
     private bool ProveHelper(IMethodSymbol method)
     {
         var helper = method.ContainingType;
-        bool pureContainer = helper.Name == "Cond" && helper.ContainingType == null && helper.IsStatic
+        bool pureContainer = helper.Name == "Cond" && helper.IsStatic
             && helper.Arity == 0 && helper.GetAttributes().Length == 0
             && helper.GetMembers().All(m => m is IMethodSymbol { MethodKind: MethodKind.Ordinary, Name: "B" });
         if (!pureContainer || !method.IsStatic || method.Arity != 0 || method.Parameters.Length != 1

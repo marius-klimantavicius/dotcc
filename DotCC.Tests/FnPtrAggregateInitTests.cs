@@ -43,8 +43,8 @@ public sealed class FnPtrAggregateInitTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             // Each element reuses the function's canonical cached address.
-            emitted.ShouldContain("func = global::DotCcFunctionPointers.add");
-            emitted.ShouldContain("func = global::DotCcFunctionPointers.mul");
+            emitted.ShouldContain("func = global::DotCcProgramFunctionPointers.add");
+            emitted.ShouldContain("func = global::DotCcProgramFunctionPointers.mul");
             // The string field is untouched (not a fn name).
             emitted.ShouldContain("name = Libc.L(\"add\\0\"u8)");
         }
@@ -63,7 +63,7 @@ public sealed class FnPtrAggregateInitTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("func = global::DotCcFunctionPointers.neg");
+            emitted.ShouldContain("func = global::DotCcProgramFunctionPointers.neg");
         }
         finally { File.Delete(src); }
     }
@@ -79,7 +79,7 @@ public sealed class FnPtrAggregateInitTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("g = global::DotCcFunctionPointers.add1");
+            emitted.ShouldContain("g = global::DotCcProgramFunctionPointers.add1");
         }
         finally { File.Delete(src); }
     }
@@ -98,7 +98,7 @@ public sealed class FnPtrAggregateInitTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("global::DotCcFunctionPointers.cb");
+            emitted.ShouldContain("global::DotCcProgramFunctionPointers.cb");
             emitted.ShouldNotContain("((cb))");
         }
         finally { File.Delete(src); }

@@ -35,6 +35,6 @@ public sealed class FnPtrCompareTests
             """);
         // The bare `inc` reads its cached address; the IR expands `Op` to the underlying
         // delegate* type for the cast (no using-alias emitted).
-        emitted.ShouldContain("(delegate*<int, int>)(global::DotCcFunctionPointers.inc)");
+        emitted.ShouldContain("(delegate*<int, int>)(global::DotCcProgramFunctionPointers.inc)");
     }
 }

@@ -41,6 +41,8 @@ internal static class Program
         {
             Description = "Namespace for all generated C# types (default: global namespace). Set at link time for objects.",
         };
+        var nestTypesOpt = new Option<bool>("--nest-types") { Description = "Nest translated types and embedded runtime in the library wrapper; set at link time." };
+        var runtimeOpt = new Option<RuntimeProfile>("--runtime") { Description = "Embedded runtime: all (default), c, or auto (source/object languages).", DefaultValueFactory = _ => RuntimeProfile.All };
         var splitOpt = new Option<SourceSplit>("--split")
         {
             Description = "C# project source layout: none (default), function (one per file), size (whole functions grouped by bytes).",
@@ -140,7 +142,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, runtimeOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -261,7 +263,7 @@ internal static class Program
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),
-                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing);
+                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(parse.GetValue(nestTypesOpt), parse.GetValue(runtimeOpt)));
             }
             catch (Exception ex) when (ex is CompileException or IOException or UnauthorizedAccessException)
             {
@@ -319,8 +321,10 @@ internal static class Program
         bool debugHeap = false,
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null)
+        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
     {
+        if ((preprocessOnly || string.Equals(target, "wat", StringComparison.OrdinalIgnoreCase)) && outputOptions is { } layout && (layout.NestTypes || layout.Runtime != RuntimeProfile.All))
+            throw new CompileException("--nest-types and --runtime require C# output");
         if ((splitSize.HasValue && (split != SourceSplit.Size || splitSize <= 0))
             || (split != SourceSplit.None && (preprocessOnly || emit is EmitKind.File or EmitKind.Obj
                 || (target != null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase)))))
@@ -373,6 +377,8 @@ internal static class Program
         // merges objects. This is what a CMake/make toolchain calls per file.
         if (emit == EmitKind.Obj)
         {
+            if (outputOptions is { } objectLayout && (objectLayout.NestTypes || objectLayout.Runtime != RuntimeProfile.All))
+                throw new CompileException("--nest-types and --runtime must be set at link time for objects");
             if (inputPaths.Length != 1)
             {
                 Console.Error.WriteLine("dotcc: --emit=obj compiles one .c at a time");
@@ -433,13 +439,13 @@ internal static class Program
                     File.WriteAllText(temporary, fragment);
                     generatedSources = Compiler.LinkObjectFiles(objectGroup.Append(temporary).ToArray(), emit: emitMode,
                         debugHeap: debugHeap, imports: imports, className: className, split: split,
-                        splitSize: splitSize ?? 262144, namespaceName: namespaceName, overrideReport: preprocessing?.Report);
+                        splitSize: splitSize ?? 262144, namespaceName: namespaceName, overrideReport: preprocessing?.Report, outputOptions: outputOptions);
                 }
                 finally { File.Delete(temporary); }
             }
             else
             generatedSources = linking
-                ? Compiler.LinkObjectFiles(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, overrideReport: preprocessing?.Report)
+                ? Compiler.LinkObjectFiles(inputPaths, emit: emitMode, debugHeap: debugHeap, imports: imports, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, overrideReport: preprocessing?.Report, outputOptions: outputOptions)
                 : Compiler.EmitCSharpFiles(
                     inputPaths,
                     includeDirs,
@@ -448,7 +454,7 @@ internal static class Program
                     dialect: dialect,
                     debugHeap: debugHeap,
                     imports: imports,
-                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, preprocessing: preprocessing);
+                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions);
         }
         catch (CompileException ex)
         {

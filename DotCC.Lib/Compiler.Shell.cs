@@ -138,12 +138,12 @@ public static partial class Compiler
         bool mainReturnsErrUnion = false,
         bool mainErrPayloadIsVoid = false,
         bool testMode = false,
-        IReadOnlyList<(string Name, string FnName)>? tests = null, string libraryClass = "DotCcLib", bool partial = false, string? namespaceName = null)
+        IReadOnlyList<(string Name, string FnName)>? tests = null, string libraryClass = "DotCcLib", bool partial = false, string? namespaceName = null, bool nested = false, bool includeZig = true)
     {
         if (emit is EmitMode.SharedLib or EmitMode.ManagedLib)
         {
             return BuildLibraryShell(emittedFnList, structDecls, usingAliases, globals, exports, importsClass, importsAreStatic,
-                managedLibrary: emit == EmitMode.ManagedLib, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName);
+                managedLibrary: emit == EmitMode.ManagedLib, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig);
         }
         // Import mode: surface the import table by bare name and splice it into the
         // type-decls section. A GOT (-l) table is bound before main; static [DllImport]
@@ -155,7 +155,7 @@ public static partial class Compiler
         // Embedded DotCC.Libc runtime block — spliced into the heredoc
         // below so the emitted .cs is self-contained even without a
         // <PackageReference Include="DotCC.Libc"> in scope.
-        var runtimeBlock = _runtimeBlock.Value;
+        var runtimeBlock = includeZig ? _runtimeBlock.Value : _cRuntimeBlock.Value;
         var header = emit == EmitMode.File ? "#:property AllowUnsafeBlocks=true\n\n" : string.Empty;
         // -fsanitize=address: flip the checked debug heap on before any user
         // code (or the embedded runtime) allocates, so every malloc/free
@@ -277,7 +277,8 @@ public static partial class Compiler
             // initializer can take a function's address (`&fn`, the `luaL_Reg`-table
             // idiom) by bare name across the class boundary (using-static surfaces
             // the method group).
-            using static DotCcGlobals;
+            using static DotCcProgramGlobals;
+            using DotCcGlobals = global::{{NamespacePrefix(namespaceName)}}DotCcProgramGlobals;
             using static DotCcProgram;{{importsUsing}}
             using DotCcFunctions = global::{{NamespacePrefix(namespaceName)}}DotCcProgram;
 
@@ -327,7 +328,7 @@ public static partial class Compiler
             // C file-scope variables, collected as static fields. Empty
             // class when no globals are declared — harmless but kept for
             // shell-shape stability.
-            static unsafe class DotCcGlobals
+            static unsafe class DotCcProgramGlobals
             {
             {{globals}}}
 
@@ -385,18 +386,20 @@ public static partial class Compiler
         string globals,
         IReadOnlyList<EmitHelpers.Export> exports,
         string importsClass = "",
-        bool importsAreStatic = false, bool managedLibrary = false, string libraryClass = "DotCcLib", bool partial = false, string? namespaceName = null)
+        bool importsAreStatic = false, bool managedLibrary = false, string libraryClass = "DotCcLib", bool partial = false, string? namespaceName = null, bool nested = false, bool includeZig = true)
     {
+        var scope = TypeScope(namespaceName, libraryClass, nested);
+        var globalsClass = HelperClass(libraryClass, "Globals");
         // Import mode in a -shared lib: surface the table by bare name and splice it. A
         // GOT table binds in a static constructor (no entry point here); static [DllImport]
         // stubs bind at the lib's own publish. Empty when no import was requested.
         var importsUsing = importsClass.Length > 0
-            ? $"\nusing static {(importsAreStatic ? "DotCcStaticImports" : "DotCcImports")};" : "";
+            ? $"\nusing static global::{scope}{(importsAreStatic ? "DotCcStaticImports" : "DotCcImports")};" : "";
         // Same embedded DotCC.Libc runtime block as exe mode — the
         // library and exe shells share the same set of stdlib functions;
         // only the framing (DotCcLib + DotCcExports vs. top-level
         // statements + `main`) differs.
-        var runtimeBlock = _runtimeBlock.Value;
+        var runtimeBlock = includeZig ? _runtimeBlock.Value : _cRuntimeBlock.Value;
         // Visitor emits user fns as `static unsafe T name(...)` — class-member
         // default is private, which would block DotCcExports from calling
         // them. Promote to `public static unsafe …`. Managed mode exposes this
@@ -444,10 +447,11 @@ public static partial class Compiler
             using System.Text;
             using System.Net;
             using System.Net.Sockets;
-            using static Libc;
+            using static global::{{scope}}Libc;
             using static {{libraryClass}};
             using DotCcFunctions = global::{{NamespacePrefix(namespaceName)}}{{libraryClass}};
-            using static DotCcGlobals;{{importsUsing}}
+            using static global::{{scope}}{{globalsClass}};
+            using DotCcGlobals = global::{{scope}}{{globalsClass}};{{importsUsing}}
 
             // ---- typedef'd `using` aliases (same as exe mode).
             {{usingAliases}}
@@ -455,7 +459,7 @@ public static partial class Compiler
             {{(managedLibrary ? "public" : "internal")}} static {{(partial ? "partial " : "")}}class {{libraryClass}}
             {
             {{indentedFns}}
-            }
+            {{(nested ? "" : "}")}}
 
             {{exportsDeclaration}}
 
@@ -466,7 +470,7 @@ public static partial class Compiler
             // C file-scope variables, collected as static fields (same as
             // exe mode). {{libraryClass}} reaches them via `using static DotCcGlobals;`
             // — adding that import here too so library-mode emits work.
-            {{(managedLibrary ? "public " : "")}}static unsafe class DotCcGlobals
+            {{(managedLibrary ? "public " : "")}}static unsafe class {{globalsClass}}
             {
             {{globals}}}
 
@@ -500,6 +504,7 @@ public static partial class Compiler
             }
 
             {{runtimeBlock}}
+            {{(nested ? "}" : "")}}
             """;
     }
 

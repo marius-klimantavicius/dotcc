@@ -76,7 +76,7 @@ public sealed partial class ManagedLibraryTests
                     }
                     public static int Run()
                     {
-                        var pointer = DotCcFunctionPointers.total;
+                        var pointer = DotCcLibFunctionPointers.total;
                         if (pointer(0, []) != 0 || pointer(2, [20, 22]) != 42) return -1;
                         System.GC.Collect();
                         return DotCcLib.relay(Callback);
