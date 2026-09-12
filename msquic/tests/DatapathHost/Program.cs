@@ -47,12 +47,13 @@ internal static unsafe class Program
         uint result=table.CxPlatSocketCreateUdp(table.Context,datapath,&config,&socket);
         Check(result==0&&socket!=null,"UDP create: "+result);return socket;
     }
-    private static void Send(CXPLAT_SOCKET* socket,CXPLAT_ROUTE* route,ReadOnlySpan<byte> data)
+    private static void Send(CXPLAT_SOCKET* socket,CXPLAT_ROUTE* route,ReadOnlySpan<byte> data,ushort maximumHint=1472)
     {
-        CXPLAT_SEND_CONFIG config=default; config.Route=route;config.MaxPacketSize=1472;
+        CXPLAT_SEND_CONFIG config=default; config.Route=route;config.MaxPacketSize=maximumHint;
         var send=table.CxPlatSendDataAlloc(table.Context,socket,&config);
         Check(send!=null,"send allocation");
         Check(table.CxPlatSendDataIsFull(table.Context,send)==0,"empty send context");
+        Check(table.CxPlatSendDataAllocBuffer(table.Context,send,1473)==null,"actual payload remains bounded regardless of hint");
         var buffer=table.CxPlatSendDataAllocBuffer(table.Context,send,(ushort)Math.Max(1,data.Length));
         Check(buffer!=null,"send buffer");data.CopyTo(new Span<byte>(buffer->Buffer,data.Length));buffer->Length=(uint)data.Length;
         Check(table.CxPlatSendDataIsFull(table.Context,send)==1,"no unadvertised segmentation");
@@ -61,7 +62,7 @@ internal static unsafe class Program
         Check(new ReadOnlySpan<byte>(buffer->Buffer,data.Length).SequenceEqual(data),"send pointer retained across GC");
         table.CxPlatSocketSend(table.Context,socket,route,send);
     }
-    private static void Echo(MsQuicHost host,CXPLAT_SOCKET* socket,IPAddress destination,int length)
+    private static void Echo(MsQuicHost host,CXPLAT_SOCKET* socket,IPAddress destination,int length,ushort maximumHint=1472)
     {
         QUIC_ADDR local;table.CxPlatSocketGetLocalAddress(table.Context,socket,&local);
         int port=MsQuicHost.DatagramEndpoint(&local).Port;
@@ -79,7 +80,7 @@ internal static unsafe class Program
         Check(remoteRoute.Port==((IPEndPoint)peer.LocalEndPoint!).Port,"source port/NAT rebinding");
         GC.Collect(2,GCCollectionMode.Forced,true,true);
         Check(((byte*)(packet+1))[36]==0xa5&&new ReadOnlySpan<byte>(packet->Buffer,length).SequenceEqual(payload),"receive lease survives forced GC");
-        Send(socket,packet->Route,payload);
+        Send(socket,packet->Route,payload,maximumHint);
         byte[] response=new byte[Math.Max(1,length)];EndPoint from=new IPEndPoint(bind,0);
         int count=peer.ReceiveFrom(response,ref from);
         Check(count==length&&response.AsSpan(0,count).SequenceEqual(payload),"reply datagram");
@@ -237,6 +238,11 @@ internal static unsafe class Program
         if(args.Length!=0&&args[0]=="callback-delete") { deleteInsideReceive=true;Echo(host,ipv4,IPAddress.Loopback,1);throw new InvalidOperationException("Callback-local deletion unexpectedly returned."); }
         AddressQueries(path);RejectCapabilities(path,ipv4);ListenerSocketFlags(host,path);
         foreach(int length in new[]{0,1,1200,1472})Echo(host,ipv4,IPAddress.Loopback,length);
+        // The unchanged packet builder/stateless binding paths pass a zero
+        // segmentation hint. A no-segmentation datapath must accept it.
+        Echo(host,ipv4,IPAddress.Loopback,1200,maximumHint:0);
+        Echo(host,ipv4,IPAddress.Loopback,1472,maximumHint:0);
+        Echo(host,ipv4,IPAddress.Loopback,1200,maximumHint:1);
         Echo(host,ipv4,IPAddress.Parse("127.0.0.2"),1200);Echo(host,ipv4,IPAddress.Loopback,1200);Truncation(host,ipv4);
         table.CxPlatSocketDelete(table.Context,ipv4);
         var dual=Create(path,IPAddress.IPv6Any);Echo(host,dual,IPAddress.IPv6Loopback,1200);Echo(host,dual,IPAddress.Loopback,1200);table.CxPlatSocketDelete(table.Context,dual);

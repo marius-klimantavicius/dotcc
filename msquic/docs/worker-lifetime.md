@@ -123,3 +123,23 @@ These remain the broader ongoing stress/integration obligations; the completed b
 - Run required cases in raw and optimized generated libraries under JIT and NativeAOT. Socket packet completion ownership is an additional datapath gate; passing coalesced worker-control SQEs does not establish it.
 
 The passing bounded matrix establishes the implemented platform-services baseline. Sustained race/soak testing, full datapath completion ownership and complete transport shutdown still require their later phase gates. The harness supplies no runtime-success fallback for absent services and does not change the upstream worker or host ABI.
+
+## P6 global rundown lifetime repair
+
+The first complete transport run exposed one retained `PlatformEvent` after
+library and credential close, with zero allocations and receive leases. The
+retained token exactly matched the generated
+`MsQuicGlobals.MsQuicLib.RegistrationCloseCleanupRundown.RundownComplete.Handle`.
+Pinned `library.c` initializes this rundown at line 517 and drains it during
+normal uninitialization at line 747, but omits `CxPlatRundownUninitialize`; the
+initialization failure path does call that cleanup.
+
+The authored BCL `PlatformUninitialize` repairs only this exact event after
+checking that shutdown is set, the cleanup worker has joined and its handle is
+zero, and the rundown reference count is zero. It calls the existing typed event
+cleanup and clears the actual generated field. Generic rundown behavior and the
+upstream source remain unchanged. Every other live resource still blocks host
+disposal. The peer harness now exercises three actual library open/registration/
+close cycles while retaining an unrelated event, checks its preservation and
+host-disposal rejection, then explicitly releases that unrelated owner. This control passes in each endpoint of the 20-pair optimized JIT transport
+campaign. Raw/optimized NativeAOT transport revalidation remains pending.

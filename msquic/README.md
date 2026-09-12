@@ -51,11 +51,14 @@ python3 msquic/scripts/build-probe.py --label unchanged-core
 
 P1 BCL UDP and raw translated-picotls QUIC feasibility are independently validated
 under JIT/NativeAOT; see [UDP evidence](docs/datapath-feasibility.md) and
-[TLS evidence](docs/tls-feasibility.md). The current closure also passes the actual platform, packet crypto, TLS adapter
-and UDP service gates in all four raw/optimized × JIT/NativeAOT combinations.
+[TLS evidence](docs/tls-feasibility.md). The committed service baseline passes the actual platform, packet crypto, TLS
+adapter and UDP gates in all four raw/optimized × JIT/NativeAOT combinations.
 Packet crypto passes 162 checks per combination; the TLS adapter passes 20 cases
 per combination, and the fresh picotls regression campaign passes. Full transport,
 injected failure paths, owning API and final SQLite validation remain open.
+The first transport integration repairs now pass 20 optimized JIT peer pairs
+with exact bidirectional payloads and clean drain. Full four-way revalidation
+of the changed platform/UDP services and full transport remain pending.
 
 The candidate product stage now contains 47 units: 43 unchanged upstream units
 and four host adapters/fragments. It emits and links as separate objects. The

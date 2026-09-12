@@ -239,15 +239,26 @@ temporary directories. Never execute native oracle code inside the product.
 
 Current execution status (2026-09-12):
 
+The committed P3/P4/P5 service checkpoint is `0a0c124`. Initial P6 integration
+then exposed two PAL contract gaps: non-segmented send allocation incorrectly
+honored the segmentation size hint, and pinned upstream normal shutdown omitted
+uninitialization of its global registration-cleanup rundown event. The send fix
+restores exact 65,537-byte bidirectional stream payloads and FIN with no decryption
+errors. The targeted event-lifetime repair now passes 20 optimized JIT transport pairs
+with clean teardown, three repeated library open/close controls per endpoint,
+and preservation of an unrelated event. Full raw/optimized NativeAOT transport
+and recovery qualification remain open.
+
+
 | Phase | Status and evidence |
 | --- | --- |
 | P0 | Passed: immutable source integrity verified; native44-unit syntax control passes. Native peer validates8 certificate/cipher/IP cases and2 authentication negatives. Pinned independent aioquic cross-connects both roles in16 positive and4 negative cases. The validated47-unit source/host closure is pinned in `config/product-closure.json` with exact source, compiler, generated and evidence hashes. |
 | P1 | Passed: [UDP feasibility](datapath-feasibility.md) passes14 cases in JIT and AOT; [raw picotls QUIC TLS](tls-feasibility.md) passes11 cases in each raw/optimized × JIT/AOT combination. Public upstream ABI matches29 records in JIT/AOT. The managed99-slot host contract, TLS and complete core ABI match all60 native records under JIT/AOT. Feasibility and ABI subgates pass. |
 | P2 | Passed: [compiler implementation](compiler-implementation.md) records validated preprocessing, declarations, anonymous members, alignment storage, high-bit conversions, and GNU intrinsics. The complete staged core emits, links and passes JIT/AOT ABI checks. Fullunit2146 and executedfunctional447 pass (1005 optionaloracle skips); Raw and optimized managed libraries and wholeassembly-rooted JIT/NativeAOT consumers pass. Runtime host services remain separate gates. Generic promoted-member value accessors are committed as `c786b9c`; the new compiler and complete raw/optimized closure pass refreshed60 host/core and29 public native ABI records plus whole-assembly JIT/AOT consumers. The prior checkpoint remains preserved. |
-| P3 | Service gate passed on the current compiler and generated closure: actual translated worker execution, synchronization, all 11 allocation rollback positions and shutdown drain pass raw/optimized × JIT/NativeAOT. See `artifacts/platform-host/results.json` and [worker lifetime](worker-lifetime.md). |
+| P3 | The committed service baseline passed raw/optimized × JIT/NativeAOT, including actual workers and all 11 allocation rollback positions. The subsequent global rundown lifetime repair has passed optimized JIT service and transport refresh; fresh full four-way service revalidation remains pending. See `artifacts/platform-host/results.json` and [worker lifetime](worker-lifetime.md). |
 | P4 | Service gate passed: packet crypto passes 162 checks in each raw/optimized × JIT/NativeAOT combination plus native controls; the actual CxPlatTls adapter passes 20 cases in each combination, including imported-key resumption and credential paths. Fresh translated picotls full JIT/AOT regression passes. See `artifacts/packet-crypto/results.json`, `artifacts/tls-adapter/results.json` and [TLS adapter contract](tls-adapter-contract.md). Transport and facade policy approval remain separate gates. |
-| P5 | Real UDP service gate passed on the current closure in raw/optimized × JIT/NativeAOT: exact listener flags, source/interface routing, retained asynchronous sends, cancellation/drain, GC lifetime and callback-delete controls pass. See [datapath host](datapath-host.md) and `artifacts/datapath-host/results.json`. The typed host table supplies an injection seam; virtual time and injected send/receive failures remain unqualified until exercised with P7. |
-| P6 | Typed actual-core peer harness authored, including ListenerStart preflight, 8 managed-to-managed and 64 native interoperability cases. The prerequisite service gates now pass; execution is next. No translated transport success is claimed yet. |
+| P5 | The committed real UDP service baseline passed raw/optimized × JIT/NativeAOT. The subsequent non-segmented size-hint fix and rundown repair have passed optimized JIT UDP and transport refresh; fresh full four-way revalidation remains pending. See [datapath host](datapath-host.md) and `artifacts/datapath-host/results.json`. The typed host table supplies an injection seam; virtual time and injected send/receive failures remain unqualified until exercised with P7. |
+| P6 | Optimized JIT basic transport passes 20 pairs: 4 translated-to-translated and 16 native interoperability cases, with exact bidirectional 65,537-byte payloads, FIN, authenticated profile and clean resource drain. Binary/source hashes are recorded in `artifacts/managed-peer/results.json`. Full raw/optimized × JIT/NativeAOT, authentication negatives and broader stream/lifetime gates remain open. |
 | P7 | Fault proxy and bounded controls are authored; advanced transport, resumption, migration, deterministic loss and injected failure gates remain mandatory. |
 | P8 | Owning runtime, configuration, stream and credential wrappers are being implemented. Complete facade build, connection/listener integration, deferred/partial receive completion, canceled sends and asynchronous disposal remain required. |
 | P9 | Final clean regeneration, complete regression/audit/performance campaign and fresh SQLite JIT/AOT correctness validation remain pending. |

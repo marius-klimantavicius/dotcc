@@ -143,6 +143,20 @@ public sealed unsafe partial class MsQuicHost
     private static void PlatformUninitialize(void* context)
     {
         if (Interlocked.CompareExchange(ref FromContext(context)._platformInitialized, 0, 1) != 1) FatalInvariant("Platform is not initialized");
+        // Pinned library.c drains this one global rundown during normal teardown
+        // but omits its event uninitialization (the failure path does uninitialize
+        // it). Native inline event storage hid the lifetime; our PAL owns a token.
+        // CxPlatUninitialize runs after the cleanup thread and worker pool join.
+        // Repair only this exact drained owner, never sweep unrelated resources.
+        ref var library = ref MsQuicGlobals.MsQuicLib;
+        if (library.RegistrationCloseCleanupRundown.RundownComplete.Handle != 0)
+        {
+            if (library.RegistrationCloseCleanupShutdown == 0 || library.RegistrationCloseCleanupWorker != 0 ||
+                library.RegistrationCloseCleanupRundown.RefCount != 0)
+                FatalInvariant("Global registration cleanup rundown is not drained.");
+            fixed (CXPLAT_EVENT* complete = &library.RegistrationCloseCleanupRundown.RundownComplete)
+                PlatformEventDelete(context, complete);
+        }
     }
     private static void PlatformUnload(void* context)
     {

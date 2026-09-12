@@ -82,11 +82,15 @@ public sealed unsafe partial class MsQuicHost
     }
     private static CXPLAT_SEND_DATA* DatapathSendAlloc(void* context, CXPLAT_SOCKET* socket, CXPLAT_SEND_CONFIG* config)
     {
-        if (config == null || config->ECN != 0 || config->DSCP != 0 || (config->Flags & ~1) != 0 || config->MaxPacketSize == 0 || config->MaxPacketSize > 1472) return null;
+        if (config == null || config->ECN != 0 || config->DSCP != 0 || (config->Flags & ~1) != 0 || config->MaxPacketSize > 1472) return null;
         try
         {
             var host = FromContext(context);
-            var send = new DatagramSend(host.Resource<DatagramSocket>(socket), config->MaxPacketSize);
+            // MaxPacketSize is a segmentation hint. Upstream deliberately uses
+            // zero for PMTU probes and stateless responses; the native datapath
+            // ignores this hint when segmentation is unavailable. Bound actual
+            // allocations by our supported UDP payload size instead.
+            var send = new DatagramSend(host.Resource<DatagramSocket>(socket), 1472);
             send.Token = host.AddResource(send); return (CXPLAT_SEND_DATA*)send.Token;
         }
         catch (OutOfMemoryException) { return null; }
