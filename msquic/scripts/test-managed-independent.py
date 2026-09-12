@@ -49,8 +49,11 @@ def verify_oracle():
                 python_sha256=sha(PYTHON), source_sha256=sha(PEER))
 
 
-def exchange(args, receipt, variant, runtime, algorithm, cipher, family, managed_role, negative=None):
-    name = '-'.join((variant, runtime, algorithm, cipher, family, managed_role, negative or 'positive'))
+def exchange(args, receipt, variant, runtime, algorithm, cipher, family, managed_role, negative=None,
+             rotate_cid=False, cid_baseline=None):
+    check(not (negative and rotate_cid), 'CID rotation cannot be credited by an authentication rejection')
+    name = '-'.join((variant, runtime, algorithm, cipher, family, managed_role,
+                     negative or ('rotate-cid' if rotate_cid else 'positive')))
     directory = args.output / name
     directory.mkdir(parents=True, exist_ok=True)
     ready, aio_receipt = directory / 'server.ready', directory / 'aioquic.json'
@@ -61,8 +64,14 @@ def exchange(args, receipt, variant, runtime, algorithm, cipher, family, managed
     hostname = 'wrong.example.invalid' if negative == 'wrong-name' else 'localhost'
     managed = (['dotnet', str(BUILD / variant / 'bin/Release/net10.0/ManagedPeer.dll')]
                if runtime == 'jit' else [str(BUILD / variant / 'aot/ManagedPeer')])
+    # A client without SHARE_BINDING uses a zero-length source CID upstream, so
+    # aioquic cannot obtain a spare destination CID. Match this profile for both
+    # the ordinary control and its rotation row; leave authentication/default
+    # campaigns unchanged and do not inherit an ambient shell override.
+    share_binding = args.rotate_cid and managed_role == 'client' and negative is None
     case = dict(name=name, variant=variant, runtime=runtime, certificate=algorithm, cipher=cipher,
-                family=family, managed_role=managed_role, negative=negative, passed=False, commands=[])
+                family=family, managed_role=managed_role, negative=negative, rotate_cid=rotate_cid,
+                managed_client_share_udp_binding=share_binding, passed=False, commands=[])
     receipt['cases'].append(case)
     processes = []
 
@@ -72,7 +81,7 @@ def exchange(args, receipt, variant, runtime, algorithm, cipher, family, managed
         return [str(PYTHON), str(PEER), role, '--certificate', str(certificate), '--key', str(key),
                 '--trust', str(trust), '--cipher', cipher, '--family', family, '--port', str(port),
                 '--server-name', hostname, '--alpn', 'different-protocol' if negative == 'alpn' else 'dotcc-probe',
-                '--ready', str(ready), '--receipt', str(aio_receipt)]
+                '--ready', str(ready), '--receipt', str(aio_receipt), *(['--rotate-cid'] if rotate_cid else [])]
 
     def start(role, port, log, environment):
         arguments = command(role, port)
@@ -87,6 +96,7 @@ def exchange(args, receipt, variant, runtime, algorithm, cipher, family, managed
             environment = dict(os.environ, TMPDIR=isolated_tmp, OPENSSL_CONF=str(BUILD / 'p256.cnf'), SSL_CERT_FILE=str(trust))
             environment.pop('SSLKEYLOGFILE', None)
             environment.pop('PYTHONPATH', None)
+            environment['DOTCC_PEER_SHARE_UDP_BINDING'] = '1' if share_binding else '0'
             with (directory / 'server.log').open('w') as server_log, (directory / 'client.log').open('w') as client_log:
                 server = start('server', 0, server_log, environment)
                 port = controls.wait_ready(server, ready)
@@ -118,6 +128,13 @@ def exchange(args, receipt, variant, runtime, algorithm, cipher, family, managed
             else:
                 check(case['client_exit'] == case['server_exit'] == 0, 'Interop peer exited unsuccessfully')
                 controls.validate_peer(managed_result, managed_role, True, runtime, cipher, family)
+                check(managed_result.get('share_udp_binding_requested') is share_binding,
+                      'Managed shared-binding request differs from this paired control profile')
+                if managed_role == 'client':
+                    check(managed_result.get('share_udp_binding') is share_binding
+                          and managed_result.get('share_udp_binding_query_status') == 0
+                          and managed_result.get('share_udp_binding_configured_before_start') is True,
+                          'Managed client did not configure/query the selected binding profile before Start')
                 check(independent['passed'] and independent['family'] == family
                       and independent['cipher'] == managed_result['cipher'] and independent['group'] == 23
                       and independent['quic_version'] == 1 and independent['alpn'] == 'dotcc-probe'
@@ -125,6 +142,26 @@ def exchange(args, receipt, variant, runtime, algorithm, cipher, family, managed
                       and not independent['early_data'] and not independent['resumed']
                       and independent['received_bytes'] == independent['sent_bytes'] == 65537,
                       'Independent peer profile or payload mismatch')
+                check(independent.get('rotate_cid') is rotate_cid, 'Independent CID scenario differs from the requested mode')
+                if rotate_cid:
+                    rotation = independent.get('cid_rotation', {})
+                    check(rotation.get('calls') == 1
+                          and rotation.get('api') == 'QuicConnectionProtocol.change_connection_id'
+                          and rotation.get('post_rotation_ping_acknowledged') is True
+                          and rotation['after_sequence'] > rotation['before_sequence']
+                          and rotation['after_cid'] != rotation['before_cid'],
+                          'Independent peer did not rotate and acknowledge a real CID')
+                    # The separate nonrotating control has otherwise identical
+                    # settings/payload. This is a paired-connection comparison,
+                    # not a fabricated pre-rotation snapshot of the live peer.
+                    updates = managed_result.get('dest_cid_updates')
+                    check(isinstance(cid_baseline, int) and isinstance(updates, int) and updates > cid_baseline,
+                          'Translated destination-CID update counter did not exceed its paired nonrotating control')
+                    check((rotation['received_bytes_before'] > 0 if managed_role == 'client'
+                           else rotation['sent_bytes_before'] == 65537 // 2),
+                          'CID rotation did not occur during the existing stream exchange')
+                    case.update(cid_rotation_verified=True, paired_control_dest_cid_updates=cid_baseline,
+                                dest_cid_update_delta_from_control=updates - cid_baseline)
             case['passed'] = True
             print(name + ': PASS', flush=True)
     except BaseException as error:
@@ -136,6 +173,7 @@ def exchange(args, receipt, variant, runtime, algorithm, cipher, family, managed
                 process.kill()
             process.wait()
         case['elapsed_seconds'] = time.monotonic() - started
+    return case
 
 
 def main():
@@ -147,6 +185,8 @@ def main():
     parser.add_argument('--ciphers', nargs='+', choices=['128', '256'], default=['128', '256'])
     parser.add_argument('--certificates', nargs='+', choices=['ecdsa', 'rsa'], default=['ecdsa', 'rsa'])
     parser.add_argument('--skip-negatives', action='store_true')
+    parser.add_argument('--rotate-cid', action='store_true',
+                        help='Add a real aioquic CID rotation after each matching nonrotating stream control')
     parser.add_argument('--peer-receipt', type=Path, default=ROOT / 'artifacts/managed-peer/results.json')
     parser.add_argument('--output', type=Path, default=ROOT / 'artifacts/managed-independent')
     args = parser.parse_args()
@@ -155,7 +195,9 @@ def main():
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     if hasattr(os, 'sched_getaffinity'):
         os.sched_setaffinity(0, sorted(os.sched_getaffinity(0))[:4])
-    receipt = dict(passed=False, targeted_passed=False, phase='P7 independent basic stream and authentication subset',
+    receipt = dict(passed=False, targeted_passed=False,
+                   phase='P7 independent stream, authentication and selected CID rotation subset',
+                   cid_rotation_requested=args.rotate_cid, cid_rotation_qualified=False,
                    entire_p7_qualified=False, cases=[], source_hashes={str(path.relative_to(REPO)): sha(path)
                        for path in (Path(__file__), HELPERS, PEER, ROOT / 'config/independent-inputs.json')})
     try:
@@ -186,7 +228,10 @@ def main():
                                           and case['managed_role'] == role and case['certificate'] == algorithm
                                           and case['cipher'] == cipher and case['family'] == family
                                           for case in baseline['cases']), 'Missing selected native baseline case')
-                                exchange(args, receipt, variant, runtime, algorithm, cipher, family, role)
+                                ordinary = exchange(args, receipt, variant, runtime, algorithm, cipher, family, role)
+                                if args.rotate_cid:
+                                    exchange(args, receipt, variant, runtime, algorithm, cipher, family, role,
+                                             rotate_cid=True, cid_baseline=ordinary['managed'].get('dest_cid_updates'))
                     if not args.skip_negatives:
                         for negative in ('untrusted', 'wrong-name', 'alpn'):
                             exchange(args, receipt, variant, runtime, args.certificates[0], args.ciphers[0], args.families[0], role, negative)
@@ -197,7 +242,9 @@ def main():
         full = (set(args.variants) == {'raw', 'optimized'} and not args.jit_only and not args.skip_negatives
                 and set(args.roles) == {'client', 'server'} and set(args.families) == {'ipv4', 'ipv6'}
                 and set(args.ciphers) == {'128', '256'} and set(args.certificates) == {'ecdsa', 'rsa'})
-        receipt.update(passed=full, targeted_passed=not full, cases_passed=len(receipt['cases']))
+        receipt.update(passed=full, targeted_passed=not full, cases_passed=len(receipt['cases']),
+                       cid_rotation_qualified=full and args.rotate_cid,
+                       cid_rotation_cases_passed=sum(case.get('cid_rotation_verified', False) for case in receipt['cases']))
     except BaseException as error:
         receipt['error'] = str(error)
         raise

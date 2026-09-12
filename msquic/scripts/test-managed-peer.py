@@ -126,9 +126,13 @@ def exchange(managed, variant, runtime, algorithm, cipher, family, managed_role)
     key = BUILD / (algorithm + '.key')
     environment = dict(os.environ, OPENSSL_CONF=str(BUILD / 'p256.cnf'), SSL_CERT_FILE=str(certificate))
     environment.pop('SSLKEYLOGFILE', None)
+    # Ordinary P6 controls always use the default client binding profile,
+    # regardless of a shell setting used by a separate CID rotation campaign.
+    environment['DOTCC_PEER_SHARE_UDP_BINDING'] = '0'
     processes = []
     case = dict(name=name, variant=variant, runtime=runtime, certificate=algorithm,
-                cipher=cipher, family=family, managed_role=managed_role, passed=False)
+                cipher=cipher, family=family, managed_role=managed_role, passed=False,
+                managed_client_share_udp_binding=False)
     receipt['cases'].append(case)
 
     def command(role, port):
@@ -169,6 +173,10 @@ def exchange(managed, variant, runtime, algorithm, cipher, family, managed_role)
                     valid &= result['connected'] == result['finished'] == result['closed'] == 1
                     valid &= result['transport_status'] == result['transport_error'] == result['peer_error'] == 0
                     valid &= result['aot'] == (runtime == 'aot')
+                    valid &= result['share_udp_binding_requested'] is False
+                    if role == 'client':
+                        valid &= result['share_udp_binding'] is False and result['share_udp_binding_query_status'] == 0
+                        valid &= result['share_udp_binding_configured_before_start'] is True
             case['passed'] = bool(valid)
             if not valid:
                 raise RuntimeError('Peer interop validation failed: ' + name)

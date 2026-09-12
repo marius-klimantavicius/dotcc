@@ -22,7 +22,7 @@ def main():
     parser.add_argument('--variants', nargs='+', choices=['raw', 'optimized'], default=['raw', 'optimized'])
     parser.add_argument('--jit-only', action='store_true')
     parser.add_argument('--families', nargs='+', choices=['ipv4', 'ipv6'], default=['ipv4', 'ipv6'])
-    parser.add_argument('--scenarios', nargs='+', choices=SCENARIOS, default=SCENARIOS)
+    parser.add_argument('--scenarios', nargs='+', choices=SCENARIOS + ['keepalive'], default=SCENARIOS)
     parser.add_argument('--certificate', type=Path, default=ROOT / 'build/managed-peer/ecdsa.pem')
     parser.add_argument('--output', type=Path, default=ROOT / 'artifacts/injected-host')
     args = parser.parse_args()
@@ -30,8 +30,8 @@ def main():
     build = ROOT / 'build/injected-host'
     build.mkdir(parents=True, exist_ok=True)
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
-    receipt = dict(passed=False, targeted_passed=False, entire_p7_qualified=False, cases=[], commands=[])
-    authored = sorted((ROOT / 'src/BclHost').glob('*.cs')) + sorted((ROOT / 'tests/InjectedHost').glob('*.cs'))
+    receipt = dict(passed=False, targeted_passed=False, keepalive_qualified=False, entire_p7_qualified=False, selected_scenarios=args.scenarios, cases=[], commands=[])
+    authored = sorted((ROOT / 'src/BclHost').glob('*.cs')) + sorted((ROOT / 'tests/InjectedHost').glob('*.cs')) + [ROOT / 'tests/TlsAdapter/Credentials.cs']
     # Source linking permits test-only partial implementations without exposing
     # injection controls in the delivered host or modifying generated libraries.
     tracked = authored + sorted((REPO / 'picotls/src/BclProvider').glob('*.cs')) + [Path(__file__).resolve(), ROOT / 'config/product-closure.json']
@@ -53,11 +53,11 @@ def main():
         return result.stdout
 
     try:
-        # This trust anchor is only configuration input: the bound sink never
-        # participates in TLS, and no unauthenticated connection is accepted.
-        if not args.certificate.is_file():
+        # The original five controls need the supplied trust input for their UDP
+        # sink. Keepalive creates its own actual authenticated peer credentials.
+        if any(scenario != 'keepalive' for scenario in args.scenarios) and not args.certificate.is_file():
             raise RuntimeError('Missing trust certificate: pass --certificate from the native peer setup')
-        receipt['certificate_sha256'] = sha(args.certificate)
+        receipt['certificate_sha256'] = sha(args.certificate) if args.certificate.is_file() else None
         closure = json.loads((ROOT / 'config/product-closure.json').read_text())
         for variant in args.variants:
             generated = ROOT / 'generated' / variant / 'TranslatedMsQuic'
@@ -86,9 +86,13 @@ def main():
                 for family in args.families:
                     for scenario in args.scenarios:
                         name = '-'.join([variant, runtime, family, scenario])
-                        output = run([*command, args.certificate, family, scenario], name, timeout=30)
+                        output = run([*command, args.certificate, family, scenario], name, timeout=120 if scenario == 'keepalive' else 30)
                         case = json.loads(output.strip().splitlines()[-1])
                         case.update(name=name, variant=variant, runtime=runtime)
+                        if scenario == 'keepalive':
+                            case['observations'] = [line for line in output.splitlines() if line.startswith('EVIDENCE keepalive ')]
+                            if case.get('completed_controls') != 6 or len(case['observations']) != 6:
+                                raise RuntimeError(name + ' did not exercise both AES suites and all three timer settings')
                         receipt['cases'].append(case)
                         if not case.get('passed') or case.get('aot') != (runtime == 'aot'):
                             raise RuntimeError(name + ' did not qualify the requested runtime')
@@ -99,13 +103,14 @@ def main():
         if receipt['input_sha256'] != {str(path.relative_to(REPO)): sha(path) for path in tracked}:
             raise RuntimeError('Inputs changed during injected host qualification')
         receipt['targeted_passed'] = True
+        receipt['keepalive_qualified'] = not args.jit_only and set(args.variants) == {'raw', 'optimized'} and set(args.families) == {'ipv4', 'ipv6'} and 'keepalive' in args.scenarios and all(case.get('completed_controls') == 6 for case in receipt['cases'] if case.get('scenario') == 'keepalive')
         receipt['passed'] = not args.jit_only and set(args.variants) == {'raw', 'optimized'} and set(args.families) == {'ipv4', 'ipv6'} and set(args.scenarios) == set(SCENARIOS)
     except Exception as error:
         receipt['error'] = str(error)
         raise
     finally:
         (args.output / 'results.json').write_text(json.dumps(receipt, indent=2) + '\n')
-    print(json.dumps({key: receipt[key] for key in ['passed', 'targeted_passed', 'entire_p7_qualified']}), flush=True)
+    print(json.dumps({key: receipt[key] for key in ['passed', 'targeted_passed', 'keepalive_qualified', 'entire_p7_qualified']}), flush=True)
 
 
 if __name__ == '__main__':

@@ -74,7 +74,8 @@ internal static unsafe class Program
     private static int Main(string[] arguments)
     {
         if (arguments.Length != 3 || arguments[1] is not ("ipv4" or "ipv6") || arguments[2] is not
-            ("virtual-timeout" or "send-allocation" or "send-error" or "receive-error" or "socket-create")) return 2;
+            ("virtual-timeout" or "send-allocation" or "send-error" or "receive-error" or "socket-create" or "keepalive")) return 2;
+        if (arguments[2] == "keepalive") return KeepAliveControls.Run(arguments[1]);
         scenario = arguments[2];
         var wall = Stopwatch.StartNew();
         QUIC_API_TABLE* api = null;

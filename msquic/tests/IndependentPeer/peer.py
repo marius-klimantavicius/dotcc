@@ -2,7 +2,6 @@
 """Separate, pinned aioquic reference peer. Never a product backend."""
 import argparse
 import asyncio
-import functools
 import json
 from pathlib import Path
 import ssl
@@ -28,6 +27,10 @@ class Peer(QuicConnectionProtocol):
         self.received = bytearray()
         self.finished = False
         self.stream_id = None
+        self.rotation_task = None
+        self.rotation_finished = False
+        self.response_sent = False
+        self.received_packet = asyncio.Event()
         # This release exposes ciphers in configuration but groups only on TLS.
         # Apply the group before any handshake messages; preserve upstream code.
         # These private seams are audited against the immutable source pin.
@@ -38,6 +41,68 @@ class Peer(QuicConnectionProtocol):
             quic.tls._supported_groups = [Group.SECP256R1]
 
         quic._initialize = initialize_profile
+
+    def datagram_received(self, data, addr):
+        super().datagram_received(data, addr)
+        # NEW_CONNECTION_ID has no public peer-CID-available event in this pin.
+        # Wake the observer after upstream has handled the complete UDP packet.
+        self.received_packet.set()
+
+    def begin_rotation(self):
+        if self.rotation_task is None:
+            self.rotation_task = asyncio.create_task(self.rotate_and_continue())
+
+    async def rotate_and_continue(self):
+        try:
+            async with asyncio.timeout(8):
+                # The pinned method is a no-op without a spare peer CID. Read
+                # upstream state only; all issuance/retirement/packets remain
+                # owned by the unmodified aioquic implementation.
+                while True:
+                    self.received_packet.clear()
+                    if self._quic._handshake_confirmed and self._quic._peer_cid_available:
+                        break
+                    await self.received_packet.wait()
+                await self.ping()
+                before = self._quic._peer_cid
+                self.change_connection_id()  # Public protocol API also transmits.
+                after = self._quic._peer_cid
+                assert after.cid != before.cid and after.sequence_number > before.sequence_number, 'CID rotation was a no-op'
+                self.receipt['cid_rotation'] = dict(
+                    calls=1, api='QuicConnectionProtocol.change_connection_id',
+                    before_sequence=before.sequence_number, after_sequence=after.sequence_number,
+                    before_cid=before.cid.hex(), after_cid=after.cid.hex(),
+                    sent_bytes_before=self.receipt['sent_bytes'], received_bytes_before=len(self.received),
+                    post_rotation_ping_acknowledged=False)
+                # An actual acknowledged packet sent with the new CID proves
+                # acceptance before the rest of the payload / FIN is submitted.
+                await self.ping()
+                self.receipt['cid_rotation']['post_rotation_ping_acknowledged'] = True
+                self.rotation_finished = True
+                if self.server:
+                    if self.finished:
+                        self.send_server_response()
+                else:
+                    self._quic.send_stream_data(self.stream_id, payload(0)[SIZE // 2:], end_stream=True)
+                    self.receipt['sent_bytes'] = SIZE
+                    self.transmit()
+        except asyncio.CancelledError:
+            raise
+        except Exception as error:
+            self.fail(error)
+
+    def send_server_response(self):
+        assert self.finished and not self.response_sent
+        self.response_sent = True
+        self._quic.send_stream_data(self.stream_id, payload(1), end_stream=True)
+        self.receipt['sent_bytes'] = SIZE
+        self.transmit()
+
+    async def drain_background(self):
+        if self.rotation_task is not None:
+            if not self.rotation_task.done():
+                self.rotation_task.cancel()
+            await asyncio.gather(self.rotation_task, return_exceptions=True)
 
     def fail(self, error):
         self.receipt['error'] = str(error)
@@ -62,9 +127,12 @@ class Peer(QuicConnectionProtocol):
                                     quic_version=1, early_data=False, resumed=False)
                 if not self.server:
                     self.stream_id = self._quic.get_next_available_stream_id()
-                    self._quic.send_stream_data(self.stream_id, payload(0), end_stream=True)
-                    self.receipt['sent_bytes'] = SIZE
+                    length = SIZE // 2 if self.args.rotate_cid else SIZE
+                    self._quic.send_stream_data(self.stream_id, payload(0)[:length], end_stream=not self.args.rotate_cid)
+                    self.receipt['sent_bytes'] = length
                     self.transmit()
+                    if self.args.rotate_cid:
+                        self.begin_rotation()
             elif isinstance(event, StreamDataReceived):
                 assert self.receipt.get('handshake'), 'application data before verified handshake'
                 if self.stream_id is None:
@@ -74,14 +142,15 @@ class Peer(QuicConnectionProtocol):
                 self.received.extend(event.data)
                 assert len(self.received) <= SIZE
                 self.receipt['received_bytes'] = len(self.received)
+                if self.server and self.args.rotate_cid and event.data:
+                    self.begin_rotation()
                 if event.end_stream:
                     assert self.received == payload(int(not self.server)), 'payload mismatch'
                     self.finished = True
                     self.receipt['verified_fin'] = True
                     if self.server:
-                        self._quic.send_stream_data(self.stream_id, payload(1), end_stream=True)
-                        self.receipt['sent_bytes'] = SIZE
-                        self.transmit()
+                        if not self.args.rotate_cid or self.rotation_finished:
+                            self.send_server_response()
                     elif not self.done.done():
                         self.done.set_result(None)
             elif isinstance(event, StreamReset):
@@ -109,12 +178,20 @@ async def run(args, receipt):
         configuration.load_cert_chain(args.certificate, args.key)
     else:
         configuration.load_verify_locations(cafile=args.trust)
-    factory = functools.partial(Peer, args=args, done=done, receipt=receipt)
+    protocols = []
+
+    def factory(quic, **kwargs):
+        protocol = Peer(quic, args=args, done=done, receipt=receipt, **kwargs)
+        protocols.append(protocol)
+        return protocol
     host = '127.0.0.1' if args.family == 'ipv4' else '::1'
     async with asyncio.timeout(20):
         if args.role == 'client':
-            async with connect(host, args.port, configuration=configuration, create_protocol=factory):
-                await done
+            async with connect(host, args.port, configuration=configuration, create_protocol=factory) as protocol:
+                try:
+                    await done
+                finally:
+                    await protocol.drain_background()
         else:
             server = await serve(host, args.port, configuration=configuration, create_protocol=factory)
             try:
@@ -122,9 +199,14 @@ async def run(args, receipt):
                 Path(args.ready).write_text(str(port) + '\n')
                 await done
             finally:
+                for protocol in protocols:
+                    await protocol.drain_background()
                 server.close()
     assert receipt.get('handshake') and receipt.get('verified_fin')
     assert receipt['received_bytes'] == SIZE and receipt['sent_bytes'] == SIZE
+    if args.rotate_cid:
+        assert receipt['cid_rotation']['post_rotation_ping_acknowledged']
+        assert receipt['cid_rotation']['calls'] == 1
 
 
 if __name__ == '__main__':
@@ -138,11 +220,13 @@ if __name__ == '__main__':
     parser.add_argument('--port', type=int, default=0)
     parser.add_argument('--server-name', default='localhost')
     parser.add_argument('--alpn', default=ALPN)
+    parser.add_argument('--rotate-cid', action='store_true', help='Rotate a real peer CID during the stream exchange')
     parser.add_argument('--ready')
     parser.add_argument('--receipt', required=True)
     args = parser.parse_args()
     receipt = dict(passed=False, role=args.role, family=args.family, received_bytes=0, sent_bytes=0,
-                   certificate_validation=args.role == 'client', product_dependency=False)
+                   certificate_validation=args.role == 'client', product_dependency=False,
+                   rotate_cid=args.rotate_cid)
     try:
         asyncio.run(run(args, receipt))
         receipt['passed'] = True

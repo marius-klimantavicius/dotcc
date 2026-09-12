@@ -27,6 +27,10 @@ internal static unsafe class Program
     private static readonly ConcurrentDictionary<nint, SendLease> sends = new();
     private static long nextSend;
     private static int settleMilliseconds;
+    private static bool requestSharedUdpBinding;
+    private static bool sharedUdpBindingConfiguredBeforeStart;
+    private static bool? observedSharedUdpBinding;
+    private static uint sharedUdpBindingQueryStatus = uint.MaxValue;
     private static int finalRemotePort;
     private static bool finalActivePathValidated;
     private static string finalPathsJson = "[]";
@@ -78,6 +82,7 @@ internal static unsafe class Program
             }
             if (includeConnection && api != null && peer.Connection != null)
             {
+                ReadSharedUdpBinding(peer.Connection);
                 QUIC_STATISTICS_V2 stats = default; uint size = (uint)sizeof(QUIC_STATISTICS_V2);
                 uint status = api->GetParam(peer.Connection, MsQuic.QUIC_PARAM_CONN_STATISTICS_V2, &size, &stats);
                 finalStatistics = stats;
@@ -120,6 +125,15 @@ internal static unsafe class Program
     {
         if (!Status.Failed(status)) return true;
         Fail(operation + " failed: 0x" + status.ToString("x")); return false;
+    }
+    private static bool ReadSharedUdpBinding(QUIC_HANDLE* connection)
+    {
+        byte enabled = 0; uint length = sizeof(byte);
+        sharedUdpBindingQueryStatus = api->GetParam(connection, MsQuic.QUIC_PARAM_CONN_SHARE_UDP_BINDING, &length, &enabled);
+        if (!Check(sharedUdpBindingQueryStatus, "shared UDP binding query")) return false;
+        if (length != sizeof(byte) || enabled > 1) { Fail("Invalid shared UDP binding query result"); return false; }
+        observedSharedUdpBinding = enabled != 0;
+        return true;
     }
     private static Peer FromContext(void* context)
         => GCHandle.FromIntPtr((nint)context).Target as Peer ?? throw new InvalidOperationException("Missing peer callback owner");
@@ -338,6 +352,10 @@ internal static unsafe class Program
         string? settling = Environment.GetEnvironmentVariable("DOTCC_PEER_SETTLE_MS");
         if (settling != null && (!int.TryParse(settling, out settleMilliseconds) || settleMilliseconds is < 0 or > 5000))
         { Console.Error.WriteLine("DOTCC_PEER_SETTLE_MS must be in 0..5000."); return 2; }
+        string? sharedBinding = Environment.GetEnvironmentVariable("DOTCC_PEER_SHARE_UDP_BINDING");
+        if (sharedBinding is not (null or "0" or "1"))
+        { Console.Error.WriteLine("DOTCC_PEER_SHARE_UDP_BINDING must be 0 or 1 (client connections only)."); return 2; }
+        requestSharedUdpBinding = sharedBinding == "1";
         peer = new Peer(arguments[6] == "server"); peer.Root = GCHandle.Alloc(peer);
         ushort suite = arguments[2] == "128" ? (ushort)0x1301 : (ushort)0x1302;
         QUIC_HANDLE* registration = null; QUIC_HANDLE* listener = null;
@@ -395,6 +413,15 @@ internal static unsafe class Program
                     QUIC_HANDLE* openedConnection = null;
                     if (!Check(api->ConnectionOpen(registration, &ConnectionCallback, peer.Context, &openedConnection), "ConnectionOpen")) goto Complete;
                     peer.Connection = openedConnection;
+                    // Pinned connection.c generates a nonempty client source CID
+                    // only for shared bindings. CID rotation qualification uses
+                    // this actual byte-sized public parameter before Start.
+                    byte shared = requestSharedUdpBinding ? (byte)1 : (byte)0;
+                    if (!Check(api->SetParam(openedConnection, MsQuic.QUIC_PARAM_CONN_SHARE_UDP_BINDING,
+                        sizeof(byte), &shared), "shared UDP binding") || !ReadSharedUdpBinding(openedConnection)) goto Complete;
+                    if (observedSharedUdpBinding != requestSharedUdpBinding)
+                    { Fail("Shared UDP binding parameter did not round trip before Start"); goto Complete; }
+                    sharedUdpBindingConfiguredBeforeStart = true;
                     if (!Check(api->SetParam(openedConnection, MsQuic.QUIC_PARAM_CONN_REMOTE_ADDRESS, (uint)sizeof(QUIC_ADDR), &address), "remote address")) goto Complete;
                     byte[] hostname = Encoding.UTF8.GetBytes(arguments[5] + "\0");
                     fixed (byte* name = hostname)
@@ -465,6 +492,10 @@ internal static unsafe class Program
             ",\"core_sent_stream_bytes\":" + finalStatistics.SendTotalStreamBytes + ",\"core_received_stream_bytes\":" + finalStatistics.RecvTotalStreamBytes +
             ",\"valid_ack_frames\":" + finalStatistics.RecvValidAckFrames + ",\"path_mtu\":" + finalStatistics.SendPathMtu +
             ",\"settle_ms\":" + settleMilliseconds + ",\"remote_port\":" + finalRemotePort + ",\"active_path_validated\":" + (finalActivePathValidated ? "true" : "false") + ",\"dest_cid_updates\":" + finalStatistics.DestCidUpdateCount +
+            ",\"share_udp_binding_requested\":" + (requestSharedUdpBinding ? "true" : "false") +
+            ",\"share_udp_binding\":" + (observedSharedUdpBinding is bool shared ? (shared ? "true" : "false") : "null") +
+            ",\"share_udp_binding_query_status\":" + sharedUdpBindingQueryStatus +
+            ",\"share_udp_binding_configured_before_start\":" + (sharedUdpBindingConfiguredBeforeStart ? "true" : "false") +
             ",\"paths\":" + finalPathsJson + ",\"paths_validated\":" + finalPathsValidated + ",\"path_failures\":" + finalPathFailures +
             ",\"host_resources\":" + finalHostResources + ",\"host_allocations\":" + finalHostAllocations + ",\"host_receive_leases\":" + finalHostReceiveLeases +
             ",\"host_send_errors\":" + finalSendErrors + ",\"host_receive_errors\":" + finalReceiveErrors + ",\"host_truncations\":" + finalTruncations +

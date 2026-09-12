@@ -1,0 +1,5144 @@
+{
+  "schema_version": 1,
+  "profile": "managed-linux-x64-quic-v1",
+  "source_revision": "80a065112426bce68c1da42d026478d3e40fd45e",
+  "audit_utc": "2026-09-12T13:30:22.599828+00:00",
+  "api_profile_sha256": "10ea863ab58f5318cfc024963bd7b0174230306db3c98a465a9cae93a9db5be3",
+  "status": "Current full facade matrix PASS:17 modes x raw/optimized x JIT/NativeAOT=68 executions with exact pin metadata and matching inputs. Optional G05 allocation-injection/G06 exhaustive-counter breadth remains explicit; separate consumer/P7/P9 gates are not promoted.",
+  "counts": {
+    "selected_api_slots": 31,
+    "selected_parameter_identifiers": 49,
+    "selected_api_flags": 24,
+    "selected_credential_flags": 7
+  },
+  "evidence_rules": [
+    "Authored method presence never establishes qualification.",
+    "Mapped facade controls are qualified by the current complete68-execution receipt; per-entry scope and optional breadth limits remain explicit.",
+    "Lower-layer TLS/provider/native peer results do not by themselves prove owning facade paths.",
+    "Historical targeted and failed receipts retain their actual hashes/mismatches; current qualification uses the separate coherent full receipt.",
+    "Separate public-consumer/P7/P9 gates are not promoted by the source-linked facade matrix."
+  ],
+  "test_groups": {
+    "default": {
+      "sources": [
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "receipt": "artifacts/managed-api/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "aef09a44a9c75e1450223e11d2647144648c4b31ff049f8899d9880a93537faf",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicObject.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "src/BclHost/MsQuicHost.Datapath.Lifetime.cs",
+        "src/BclHost/BclHost.csproj",
+        "tests/ManagedApi/PacketScenarios.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS managed API configuration control: global/configuration/connection QUIC v1; sync/async credentials; copied ALPN; settings; lease drain; rejection before dispatch"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicStream.Callbacks.cs",
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/CallbackControls.cs",
+        "tests/ManagedApi/CertificatePolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/NetworkParameters.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/TicketRotation.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/Program.cs",
+          "line": 11,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "configuration"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "queries": {
+      "sources": [
+        "tests/ManagedApi/ConnectionQueries.cs",
+        "tests/ManagedApi/ConnectionParameterInputs.cs"
+      ],
+      "receipt": "artifacts/managed-api-resumption/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "109d6e2bd2d1abb6801681d022c10e7cba0ae0f86609ac31e6cba45a2b6e627a",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicObject.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "src/BclHost/BclHost.csproj",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/PacketScenarios.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS managed API configuration control: server resumption sync/async approve/reject, full-handshake fallback, copied appstate, fresh 1-RTT data, pending close/cancel"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicStream.Callbacks.cs",
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/CallbackControls.cs",
+        "tests/ManagedApi/CertificatePolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/NetworkParameters.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/TicketRotation.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "configuration",
+          "resumption"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "versions": {
+      "sources": [
+        "tests/ManagedApi/VersionPolicy.cs"
+      ],
+      "receipt": "artifacts/managed-api/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "aef09a44a9c75e1450223e11d2647144648c4b31ff049f8899d9880a93537faf",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicObject.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "src/BclHost/MsQuicHost.Datapath.Lifetime.cs",
+        "src/BclHost/BclHost.csproj",
+        "tests/ManagedApi/PacketScenarios.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS managed API configuration control: global/configuration/connection QUIC v1; sync/async credentials; copied ALPN; settings; lease drain; rejection before dispatch"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicStream.Callbacks.cs",
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/CallbackControls.cs",
+        "tests/ManagedApi/CertificatePolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/NetworkParameters.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/TicketRotation.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "configuration"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "callbacks": {
+      "sources": [
+        "tests/ManagedApi/CallbackControls.cs"
+      ],
+      "receipt": "artifacts/managed-api-callbacks/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "d274c8da1ec252e3ed807aa2d0e75860521f10281670d6f16df38b47aba3f5d0",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade callback controls: listener DoS transitions and public stream observers"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/CertificatePolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/NetworkParameters.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/TicketRotation.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/CallbackControls.cs",
+          "line": 11,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "callbacks"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "handshake": {
+      "sources": [
+        "tests/ManagedApi/HandshakeFaults.cs"
+      ],
+      "receipt": "artifacts/managed-api-handshake-faults/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "73478564cb6967483554662418ddd644e813e5e35c9355ee876dce7e8614411c",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade handshake fault controls cipher=0x1302 family=InterNetworkV6"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/CertificatePolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/NetworkParameters.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/TicketRotation.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/HandshakeFaults.cs",
+          "line": 11,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "handshake-faults"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "packets": {
+      "sources": [
+        "tests/ManagedApi/PacketScenarios.cs"
+      ],
+      "receipt": "artifacts/managed-api-packets/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "67909a675abe060fcd474bd9fff543fdf8868a41d66372523e9127a05bfc4770",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade packet controls cipher=0x1302 family=InterNetworkV6"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/CertificatePolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/NetworkParameters.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/TicketRotation.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/PacketScenarios.cs",
+          "line": 12,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "packets"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "resumption": {
+      "sources": [
+        "tests/ManagedApi/ResumptionScenarios.cs"
+      ],
+      "receipt": "artifacts/managed-api-resumption/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "109d6e2bd2d1abb6801681d022c10e7cba0ae0f86609ac31e6cba45a2b6e627a",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicObject.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "src/BclHost/BclHost.csproj",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/PacketScenarios.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS managed API configuration control: server resumption sync/async approve/reject, full-handshake fallback, copied appstate, fresh 1-RTT data, pending close/cancel"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicStream.Callbacks.cs",
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/CallbackControls.cs",
+        "tests/ManagedApi/CertificatePolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/NetworkParameters.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/TicketRotation.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/ResumptionScenarios.cs",
+          "line": 7,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "resumption"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "datagram_host": {
+      "sources": [
+        "tests/DatapathHost/Program.cs"
+      ],
+      "receipt": "artifacts/datapath-host/results.json",
+      "qualifies_current_facade": false,
+      "receipt_sha256": "1955e2d4fa20170469ec266f0dcafc782eb4ce7489f40501f2013a193653f018",
+      "recorded_passed": true,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [],
+      "runtime_results": [
+        {
+          "variant": "raw",
+          "passed": true,
+          "runtimes": []
+        },
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": []
+        }
+      ],
+      "execution_observation": "lower-layer passing evidence; does not independently qualify facade paths",
+      "recorded_summary": [],
+      "receipt_input_matches_current": false,
+      "source_locations": []
+    },
+    "peer": {
+      "sources": [
+        "tests/ManagedPeer/Program.cs"
+      ],
+      "receipt": "artifacts/managed-peer/results.json",
+      "qualifies_current_facade": false,
+      "receipt_sha256": "4e7e05c8a25f39d2226dabb18dcc6a04a1a40cf8a5be54817c810eb2bcc59bcc",
+      "recorded_passed": true,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [],
+      "runtime_results": [],
+      "execution_observation": "lower-layer passing evidence; does not independently qualify facade paths",
+      "receipt_input_matches_current": false,
+      "source_locations": []
+    },
+    "transport": {
+      "sources": [
+        "tests/ManagedApi/Transport.cs"
+      ],
+      "receipt": "artifacts/managed-api-transport/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "be603db8c757890d144daf2d0e0c7e7932a8404bcc88a8823ec6276b4012896b",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicObject.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "src/BclHost/BclHost.csproj",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/PacketScenarios.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade stream/lifetime InterNetworkV6"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicStream.Callbacks.cs",
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/CallbackControls.cs",
+        "tests/ManagedApi/CertificatePolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/NetworkParameters.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/TicketRotation.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/Transport.cs",
+          "line": 20,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "transport"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "tls": {
+      "sources": [
+        "tests/TlsAdapter/Program.cs",
+        "tests/TlsAdapter/AdapterPeer.cs"
+      ],
+      "receipt": "artifacts/tls-adapter/results.json",
+      "qualifies_current_facade": false,
+      "receipt_sha256": "d3487193d0e9166e20c8f0267fed3b0b54e2ebeda488e749709204c50501962d",
+      "recorded_passed": true,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [],
+      "runtime_results": [
+        {
+          "variant": "raw",
+          "passed": true,
+          "runtimes": [
+            "jit",
+            "aot"
+          ]
+        },
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit",
+            "aot"
+          ]
+        }
+      ],
+      "execution_observation": "lower-layer passing evidence; does not independently qualify facade paths",
+      "receipt_input_matches_current": true,
+      "source_locations": []
+    },
+    "certificates": {
+      "sources": [
+        "tests/ManagedApi/CertificatePolicies.cs"
+      ],
+      "receipt": "artifacts/managed-api-certificates/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "0f5985b7af796fb6bfcbb61fbcb70e0ad71e5649cedb631e854aa3dbddfc3ba2",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade certificate policies: sync/async approve/reject/throw; native name/trust failure cannot be approved; pending close/cancel and late approval; owned DER/peer PKCS7; zero rejected app bytes; IPv4/IPv6 ECDSA AES128"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/NetworkParameters.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/TicketRotation.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/CertificatePolicies.cs",
+          "line": 46,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "certificates"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "flags": {
+      "sources": [
+        "tests/ManagedApi/FlagControls.cs"
+      ],
+      "receipt": "artifacts/managed-api-flags/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "bbf3ba801501a0d602f54e404cc52d0898a863f0f1626916901fd9df4b7057f5",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicConfiguration.cs",
+        "src/ManagedApi/QuicConnection.Parameters.cs",
+        "src/ManagedApi/QuicConnection.cs",
+        "src/ManagedApi/QuicError.cs",
+        "src/ManagedApi/QuicStream.cs",
+        "tests/ManagedApi/FlagControls.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade flag controls: delayed credit, blocked start, peer acceptance, priority datagram, delayed send and final ticket"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/HandshakeSnapshots.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs",
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/FlagControls.cs",
+          "line": 10,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "flags"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "ticket_rotation": {
+      "sources": [
+        "tests/ManagedApi/TicketRotation.cs"
+      ],
+      "receipt": "artifacts/managed-api-ticket-rotation/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "f7e8e689aad1c22b5c4757c1c2e58bfc51bcf967cb0c8f2098384d6e32183cdc",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade ticket-key rotation cipher=0x1302 family=InterNetworkV6: copied inputs, cross-config resume, new-first issuance, removal fallback, rejected-update atomicity, fresh data and close"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/TicketRotation.cs",
+          "line": 12,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "ticket-rotation"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "network": {
+      "sources": [
+        "tests/ManagedApi/NetworkParameters.cs"
+      ],
+      "receipt": "artifacts/managed-api-network/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "78a9241d48836b833a3c347f9889a1bf028dc638ae329666abf911155cc909f8",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade network parameters: explicit endpoint/interface/shared binding; pinned live remote rejection and actual local rebinding; FIFO/RoundRobin multistream delivery; real posted-byte backpressure/counter evolution and CUBIC units; IPv4/IPv6"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/NetworkParameters.cs",
+          "line": 13,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "network"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "scoped_versions": {
+      "sources": [
+        "tests/ManagedApi/VersionPolicies.cs"
+      ],
+      "receipt": "artifacts/managed-api-versions/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "e998d3124c588381b0e2c4c8f9f416a1818077a17ce3b09ffef7f2c7ccd72980",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade scoped version policies: actual config/connection lists, updates, copies, rejection and lifetime"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/VersionPolicies.cs",
+          "line": 10,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "versions"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "late_ack": {
+      "sources": [
+        "tests/ManagedApi/DatagramLateAck.cs"
+      ],
+      "receipt": "artifacts/managed-api-datagram-late-ack/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "580816b5753d66b1a7d56090a480fd54e70b62300b9492f18f9714d027099a52",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade DATAGRAM late ACK cipher=0x1302 family=InterNetworkV6: actual AcknowledgedAfterLoss, exact payload and ownership drain"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/DatagramLateAck.cs",
+          "line": 15,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "datagram-late-ack"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "handshake_snapshots": {
+      "sources": [
+        "tests/ManagedApi/HandshakeSnapshots.cs"
+      ],
+      "receipt": "artifacts/managed-api-handshake-snapshots/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "5ac8570c79188c2ab9fc14b6780c54652855bc2136c460c0521befa2ef019e61",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "scripts/test-managed-api.py",
+        "config/product-closure.json",
+        "../picotls/artifacts/translation/success.json",
+        "src/ManagedApi/QuicVersionPolicies.cs",
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/Program.cs",
+        "tests/ManagedApi/RuntimeParameters.cs"
+      ],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade handshake snapshots: no-resumption server TLS retired; copied negotiated values; priority and closed lifetime; both AES and IP families"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [
+        "tests/ManagedApi/DatagramLateAck.cs",
+        "tests/ManagedApi/ReceiveFailures.cs",
+        "tests/ManagedApi/RegistrationShutdown.cs",
+        "tests/ManagedApi/SettingsStates.cs",
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/HandshakeSnapshots.cs",
+          "line": 8,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "handshake-snapshots"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "receive_failures": {
+      "sources": [
+        "tests/ManagedApi/ReceiveFailures.cs"
+      ],
+      "receipt": "artifacts/managed-api-receive-failures/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "2a7b73b4455e07f0a3cf0cf07ee351d26654974043534bfd6c64daa089ea15d9",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade receive failures: concurrent observer replacement, observer throw with delivered pending lease, standalone AbortReceive and surviving send direction; IPv4/IPv6; drained owners"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/ReceiveFailures.cs",
+          "line": 16,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "receive-failures"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "registration_shutdown": {
+      "sources": [
+        "tests/ManagedApi/RegistrationShutdown.cs"
+      ],
+      "receipt": "artifacts/managed-api-registration-shutdown/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "0fcb98746cf1fdbaaea6b74f668179386e20e1e8283d54b9e7f6cdf1d504de12",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade registration shutdown family=InterNetworkV6 initiator=server mode=concurrent-parent-disposal peers=3 application_error=0x123456789abc blocked_sends=6 blocked_reads=6 ownership_drained=true"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/RegistrationShutdown.cs",
+          "line": 16,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "registration-shutdown"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "settings_states": {
+      "sources": [
+        "tests/ManagedApi/SettingsStates.cs"
+      ],
+      "receipt": "artifacts/managed-api-settings-states/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "a8d68d396aac6500b73d67b4fb8b2a15e148727ae510d2eae4b26cd20ee2d310",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade settings state InterNetworkV6: concurrent sparse updates, compound rejection atomicity, live MTU boundary and direct/aggregate DATAGRAM distinction"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/SettingsStates.cs",
+          "line": 18,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "settings-states"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    },
+    "stateless_secrets": {
+      "sources": [
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "receipt": "artifacts/managed-api-stateless-secrets/results.json",
+      "qualifies_current_facade": true,
+      "receipt_sha256": "d78ff634d956e333064f68a42519b20dba53c42df6ed3bfd744a976fd37cd20b",
+      "recorded_passed": false,
+      "recorded_targeted_passed": true,
+      "recorded_input_mismatches": [
+        "tests/ManagedApi/HandshakeFaults.cs",
+        "tests/ManagedApi/StatelessSecrets.cs"
+      ],
+      "receipt_input_matches_current": false,
+      "unrecorded_current_facade_inputs": [],
+      "runtime_results": [
+        {
+          "variant": "optimized",
+          "passed": true,
+          "runtimes": [
+            "jit"
+          ]
+        }
+      ],
+      "execution_observation": "Historical targeted receipt retained with its own mismatch fields; mapped modes also PASS in coherent current full facade matrix.",
+      "recorded_summary": [
+        "PASS facade stateless secrets cipher=0x1302 family=InterNetworkV6: copied keys, real Retry epoch rotation, emitted Retry/reset key binding, independent wrong-key/tag controls, payload and reset drain"
+      ],
+      "source_locations": [
+        {
+          "path": "tests/ManagedApi/StatelessSecrets.cs",
+          "line": 16,
+          "symbol_or_call": "RunAsync("
+        }
+      ],
+      "full_receipt_evidence": {
+        "receipt": "artifacts/managed-api-all/results.json",
+        "sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+        "modes": [
+          "stateless-secrets"
+        ],
+        "runtime_variants": [
+          "raw/jit",
+          "raw/aot",
+          "optimized/jit",
+          "optimized/aot"
+        ],
+        "passed": true,
+        "input_matches_current": true
+      }
+    }
+  },
+  "api_slots": [
+    {
+      "name": "SetContext",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicObject.cs",
+        "line": 21,
+        "symbol_or_call": "public object? ApplicationContext"
+      },
+      "authored_test_groups": [
+        "callbacks",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G01"
+      ],
+      "full_facade_test_groups": [
+        "callbacks",
+        "receive_failures"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G01"
+      ]
+    },
+    {
+      "name": "GetContext",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicObject.cs",
+        "line": 21,
+        "symbol_or_call": "public object? ApplicationContext"
+      },
+      "authored_test_groups": [
+        "callbacks",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G01"
+      ],
+      "full_facade_test_groups": [
+        "callbacks",
+        "receive_failures"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G01"
+      ]
+    },
+    {
+      "name": "SetCallbackHandler",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Callbacks.cs",
+        "line": 29,
+        "symbol_or_call": "public void SetCallbackHandler"
+      },
+      "authored_test_groups": [
+        "callbacks",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G01"
+      ],
+      "full_facade_test_groups": [
+        "callbacks",
+        "receive_failures"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G01"
+      ]
+    },
+    {
+      "name": "SetParam",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 145,
+        "symbol_or_call": "ValidateUpdate"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "network",
+        "scoped_versions",
+        "flags",
+        "ticket_rotation",
+        "settings_states"
+      ],
+      "uncovered_gaps": [
+        "G05",
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G02"
+      ],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "network",
+        "scoped_versions",
+        "flags",
+        "ticket_rotation",
+        "settings_states"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G02"
+      ]
+    },
+    {
+      "name": "GetParam",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 294,
+        "symbol_or_call": "public unsafe QuicConnectionStatistics GetStatistics"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "network",
+        "scoped_versions",
+        "handshake_snapshots"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "network",
+        "scoped_versions",
+        "handshake_snapshots"
+      ]
+    },
+    {
+      "name": "RegistrationOpen",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.cs",
+        "line": 101,
+        "symbol_or_call": "OpenRegistrationAsync"
+      },
+      "authored_test_groups": [
+        "default",
+        "transport"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "transport"
+      ]
+    },
+    {
+      "name": "RegistrationClose",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRegistration.cs",
+        "line": 78,
+        "symbol_or_call": "public override ValueTask DisposeAsync"
+      },
+      "authored_test_groups": [
+        "default",
+        "transport",
+        "resumption"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "transport",
+        "resumption"
+      ]
+    },
+    {
+      "name": "RegistrationShutdown",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRegistration.cs",
+        "line": 62,
+        "symbol_or_call": "public async Task ShutdownAsync"
+      },
+      "authored_test_groups": [
+        "transport",
+        "registration_shutdown"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G07"
+      ],
+      "full_facade_test_groups": [
+        "transport",
+        "registration_shutdown"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G07"
+      ]
+    },
+    {
+      "name": "ConfigurationOpen",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 43,
+        "symbol_or_call": "internal static async ValueTask<QuicConfiguration> CreateAsync"
+      },
+      "authored_test_groups": [
+        "default",
+        "scoped_versions",
+        "flags",
+        "settings_states"
+      ],
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "scoped_versions",
+        "flags",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "ConfigurationClose",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 206,
+        "symbol_or_call": "public override ValueTask DisposeAsync"
+      },
+      "authored_test_groups": [
+        "default",
+        "transport"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "transport"
+      ]
+    },
+    {
+      "name": "ConfigurationLoadCredential",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 61,
+        "symbol_or_call": "LoadCredential"
+      },
+      "authored_test_groups": [
+        "default",
+        "tls",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G03"
+      ],
+      "full_facade_test_groups": [
+        "default",
+        "certificates"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G03"
+      ]
+    },
+    {
+      "name": "ListenerOpen",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicListener.cs",
+        "line": 79,
+        "symbol_or_call": "private unsafe void InitializeCore"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "name": "ListenerClose",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicListener.cs",
+        "line": 297,
+        "symbol_or_call": "public override ValueTask DisposeAsync"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks"
+      ]
+    },
+    {
+      "name": "ListenerStart",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicListener.cs",
+        "line": 116,
+        "symbol_or_call": "public async ValueTask StartAsync"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "name": "ListenerStop",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicListener.cs",
+        "line": 148,
+        "symbol_or_call": "public async ValueTask StopAsync"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "name": "ConnectionOpen",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.cs",
+        "line": 66,
+        "symbol_or_call": "private unsafe void OpenAndStart"
+      },
+      "authored_test_groups": [
+        "transport",
+        "network",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "network",
+        "certificates"
+      ]
+    },
+    {
+      "name": "ConnectionClose",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.cs",
+        "line": 266,
+        "symbol_or_call": "public override ValueTask DisposeAsync"
+      },
+      "authored_test_groups": [
+        "transport",
+        "resumption",
+        "packets",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "resumption",
+        "packets",
+        "receive_failures"
+      ]
+    },
+    {
+      "name": "ConnectionShutdown",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.cs",
+        "line": 136,
+        "symbol_or_call": "public async Task ShutdownAsync"
+      },
+      "authored_test_groups": [
+        "handshake",
+        "registration_shutdown"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G07"
+      ],
+      "full_facade_test_groups": [
+        "handshake",
+        "registration_shutdown"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G07"
+      ]
+    },
+    {
+      "name": "ConnectionStart",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRegistration.cs",
+        "line": 54,
+        "symbol_or_call": "public ValueTask<QuicConnection> ConnectAsync"
+      },
+      "authored_test_groups": [
+        "transport",
+        "resumption",
+        "packets",
+        "network",
+        "certificates",
+        "ticket_rotation"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G02"
+      ],
+      "full_facade_test_groups": [
+        "transport",
+        "resumption",
+        "packets",
+        "network",
+        "certificates",
+        "ticket_rotation"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G02"
+      ]
+    },
+    {
+      "name": "ConnectionSetConfiguration",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.cs",
+        "line": 95,
+        "symbol_or_call": "ConnectionSetConfiguration"
+      },
+      "authored_test_groups": [
+        "transport",
+        "resumption"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "resumption"
+      ]
+    },
+    {
+      "name": "ConnectionSendResumptionTicket",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 453,
+        "symbol_or_call": "public unsafe void SendResumptionTicket"
+      },
+      "authored_test_groups": [
+        "resumption",
+        "tls",
+        "flags",
+        "ticket_rotation",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G04"
+      ],
+      "full_facade_test_groups": [
+        "resumption",
+        "flags",
+        "ticket_rotation",
+        "receive_failures"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G04"
+      ]
+    },
+    {
+      "name": "StreamOpen",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.cs",
+        "line": 50,
+        "symbol_or_call": "CreateAsync"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks",
+        "flags",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G04",
+        "G12"
+      ],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks",
+        "flags",
+        "receive_failures"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G04",
+        "G12"
+      ]
+    },
+    {
+      "name": "StreamClose",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.cs",
+        "line": 442,
+        "symbol_or_call": "public override ValueTask DisposeAsync"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks",
+        "receive_failures"
+      ]
+    },
+    {
+      "name": "StreamStart",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.cs",
+        "line": 118,
+        "symbol_or_call": "public ValueTask StartAsync"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks",
+        "flags",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G04",
+        "G12"
+      ],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks",
+        "flags",
+        "receive_failures"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G04",
+        "G12"
+      ]
+    },
+    {
+      "name": "StreamShutdown",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 57,
+        "symbol_or_call": "public unsafe void Shutdown"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks",
+        "flags",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G01",
+        "G04"
+      ],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks",
+        "flags",
+        "receive_failures"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G01",
+        "G04"
+      ]
+    },
+    {
+      "name": "StreamSend",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.cs",
+        "line": 137,
+        "symbol_or_call": "public async ValueTask SendAsync"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks",
+        "packets",
+        "flags",
+        "network",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G04",
+        "G08",
+        "G12"
+      ],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks",
+        "packets",
+        "flags",
+        "network",
+        "receive_failures"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G04",
+        "G08",
+        "G12"
+      ]
+    },
+    {
+      "name": "StreamReceiveComplete",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicReceiveLease.cs",
+        "line": 46,
+        "symbol_or_call": "Complete("
+      },
+      "authored_test_groups": [
+        "transport",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "receive_failures"
+      ]
+    },
+    {
+      "name": "StreamReceiveSetEnabled",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.cs",
+        "line": 289,
+        "symbol_or_call": "StreamReceiveSetEnabled"
+      },
+      "authored_test_groups": [
+        "transport",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "receive_failures"
+      ]
+    },
+    {
+      "name": "DatagramSend",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "line": 27,
+        "symbol_or_call": "public async ValueTask<QuicDatagramSendResult> SendDatagramAsync"
+      },
+      "authored_test_groups": [
+        "packets",
+        "flags",
+        "late_ack"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G08"
+      ],
+      "full_facade_test_groups": [
+        "packets",
+        "flags",
+        "late_ack"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G08"
+      ]
+    },
+    {
+      "name": "ConnectionResumptionTicketValidationComplete",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Resumption.cs",
+        "line": 89,
+        "symbol_or_call": "ConnectionResumptionTicketValidationComplete"
+      },
+      "authored_test_groups": [
+        "resumption",
+        "ticket_rotation"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "resumption",
+        "ticket_rotation"
+      ]
+    },
+    {
+      "name": "ConnectionCertificateValidationComplete",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.cs",
+        "line": 220,
+        "symbol_or_call": "private async Task ValidateCertificateAsync"
+      },
+      "authored_test_groups": [
+        "tls",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G03"
+      ],
+      "full_facade_test_groups": [
+        "certificates"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G03"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "QUIC_PARAM_HIGH_PRIORITY",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 29,
+        "symbol_or_call": "internal static uint Apply"
+      },
+      "authored_test_groups": [
+        "queries",
+        "transport",
+        "callbacks"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "transport",
+        "callbacks"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_RETRY_MEMORY_PERCENT",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 135,
+        "symbol_or_call": "GetRetryMemoryLimit"
+      },
+      "authored_test_groups": [
+        "default",
+        "handshake",
+        "callbacks"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "handshake",
+        "callbacks"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_SUPPORTED_VERSIONS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 231,
+        "symbol_or_call": "GetCompiledProtocolVersions"
+      },
+      "authored_test_groups": [
+        "default"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_LOAD_BALACING_MODE",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 149,
+        "symbol_or_call": "GetLoadBalancingMode"
+      },
+      "authored_test_groups": [
+        "default"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_PERF_COUNTERS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 305,
+        "symbol_or_call": "GetPerformanceCounters"
+      },
+      "authored_test_groups": [
+        "default",
+        "handshake",
+        "network"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "handshake",
+        "network"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_LIBRARY_VERSION",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 275,
+        "symbol_or_call": "GetLibraryVersion"
+      },
+      "authored_test_groups": [
+        "default"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_SETTINGS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 171,
+        "symbol_or_call": "public unsafe void SetSettings"
+      },
+      "authored_test_groups": [
+        "default",
+        "settings_states"
+      ],
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_GLOBAL_SETTINGS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 120,
+        "symbol_or_call": "public unsafe void SetParameters"
+      },
+      "authored_test_groups": [
+        "default"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_VERSION_SETTINGS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 263,
+        "symbol_or_call": "public unsafe void SetVersionPolicy"
+      },
+      "authored_test_groups": [
+        "default",
+        "versions",
+        "settings_states"
+      ],
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "versions",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_LIBRARY_GIT_HASH",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 287,
+        "symbol_or_call": "GetLibrarySourceRevision"
+      },
+      "authored_test_groups": [
+        "default"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_TLS_PROVIDER",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 299,
+        "symbol_or_call": "GetTlsProvider"
+      },
+      "authored_test_groups": [
+        "default",
+        "tls"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_STATELESS_RESET_KEY",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 188,
+        "symbol_or_call": "ProvisionStatelessResetKey"
+      },
+      "authored_test_groups": [
+        "default",
+        "handshake",
+        "stateless_secrets"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G09"
+      ],
+      "full_facade_test_groups": [
+        "default",
+        "handshake",
+        "stateless_secrets"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G09"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_STATISTICS_V2_SIZES",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 317,
+        "symbol_or_call": "GetStatisticsV2Sizes"
+      },
+      "authored_test_groups": [
+        "default"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_GLOBAL_STATELESS_RETRY_CONFIG",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicRuntime.Parameters.cs",
+        "line": 205,
+        "symbol_or_call": "ConfigureStatelessRetry"
+      },
+      "authored_test_groups": [
+        "default",
+        "handshake",
+        "stateless_secrets"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G09"
+      ],
+      "full_facade_test_groups": [
+        "default",
+        "handshake",
+        "stateless_secrets"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G09"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_SETTINGS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 161,
+        "symbol_or_call": "public unsafe void SetSettings"
+      },
+      "authored_test_groups": [
+        "default",
+        "settings_states"
+      ],
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_TICKET_KEYS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 174,
+        "symbol_or_call": "public unsafe void SetTicketKeys"
+      },
+      "authored_test_groups": [
+        "default",
+        "tls",
+        "ticket_rotation"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G10"
+      ],
+      "full_facade_test_groups": [
+        "default",
+        "ticket_rotation"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G10"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONFIGURATION_VERSION_SETTINGS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicVersionPolicies.cs",
+        "line": 10,
+        "symbol_or_call": "public unsafe QuicVersionPolicy GetVersionPolicy"
+      },
+      "authored_test_groups": [
+        "versions",
+        "scoped_versions"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "additional_implementations": [
+        {
+          "path": "src/ManagedApi/QuicVersionPolicies.cs",
+          "line": 19,
+          "symbol_or_call": "public unsafe void SetVersionPolicy"
+        }
+      ],
+      "full_facade_test_groups": [
+        "versions",
+        "scoped_versions"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_LOCAL_ADDRESS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicListener.cs",
+        "line": 100,
+        "symbol_or_call": "GetLocalEndPoint"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_LISTENER_STATS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicListener.cs",
+        "line": 34,
+        "symbol_or_call": "GetStatistics"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_DOS_MODE_EVENTS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicListener.cs",
+        "line": 50,
+        "symbol_or_call": "SetDosModeEventsEnabled"
+      },
+      "authored_test_groups": [
+        "callbacks",
+        "receive_failures"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G01"
+      ],
+      "full_facade_test_groups": [
+        "callbacks",
+        "receive_failures"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G01"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_QUIC_VERSION",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 205,
+        "symbol_or_call": "GetProtocolVersion"
+      },
+      "authored_test_groups": [
+        "queries",
+        "handshake",
+        "versions"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "handshake",
+        "versions"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_ADDRESS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 193,
+        "symbol_or_call": "public unsafe void SetLocalEndPoint"
+      },
+      "authored_test_groups": [
+        "queries",
+        "network"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G02"
+      ],
+      "full_facade_test_groups": [
+        "queries",
+        "network"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G02"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_REMOTE_ADDRESS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 182,
+        "symbol_or_call": "SetRemoteEndPoint"
+      },
+      "authored_test_groups": [
+        "queries",
+        "network"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G02"
+      ],
+      "full_facade_test_groups": [
+        "queries",
+        "network"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G02"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_IDEAL_PROCESSOR",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 372,
+        "symbol_or_call": "GetIdealProcessor"
+      },
+      "authored_test_groups": [
+        "queries"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_SETTINGS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 254,
+        "symbol_or_call": "public unsafe void SetSettings"
+      },
+      "authored_test_groups": [
+        "queries",
+        "resumption",
+        "settings_states"
+      ],
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "resumption",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 334,
+        "symbol_or_call": "GetLegacyStatistics"
+      },
+      "authored_test_groups": [
+        "queries",
+        "network",
+        "late_ack"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "network",
+        "late_ack"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS_PLAT",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 334,
+        "symbol_or_call": "GetLegacyStatistics"
+      },
+      "authored_test_groups": [
+        "queries",
+        "network",
+        "late_ack"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "network",
+        "late_ack"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_SHARE_UDP_BINDING",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 378,
+        "symbol_or_call": "GetUdpBindingShared"
+      },
+      "authored_test_groups": [
+        "queries",
+        "network"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G02"
+      ],
+      "full_facade_test_groups": [
+        "queries",
+        "network"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G02"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_BIDI_STREAM_COUNT",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 239,
+        "symbol_or_call": "GetCapabilities"
+      },
+      "authored_test_groups": [
+        "queries"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_UNIDI_STREAM_COUNT",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 239,
+        "symbol_or_call": "GetCapabilities"
+      },
+      "authored_test_groups": [
+        "queries"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_MAX_STREAM_IDS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 384,
+        "symbol_or_call": "GetMaximumStreamIds"
+      },
+      "authored_test_groups": [
+        "queries",
+        "flags"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "flags"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_CLOSE_REASON_PHRASE",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 407,
+        "symbol_or_call": "SetCloseReasonPhrase"
+      },
+      "authored_test_groups": [
+        "queries"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STREAM_SCHEDULING_SCHEME",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 277,
+        "symbol_or_call": "SetStreamScheduling"
+      },
+      "authored_test_groups": [
+        "queries",
+        "network"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G02"
+      ],
+      "full_facade_test_groups": [
+        "queries",
+        "network"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G02"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_DATAGRAM_RECEIVE_ENABLED",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 155,
+        "symbol_or_call": "ApplyConnectionOptions"
+      },
+      "authored_test_groups": [
+        "packets",
+        "settings_states"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G11"
+      ],
+      "full_facade_test_groups": [
+        "packets",
+        "settings_states"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G11"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_DATAGRAM_SEND_ENABLED",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 239,
+        "symbol_or_call": "GetCapabilities"
+      },
+      "authored_test_groups": [
+        "packets",
+        "queries"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "packets",
+        "queries"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_RESUMPTION_TICKET",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 128,
+        "symbol_or_call": "ApplyResumptionTicket"
+      },
+      "authored_test_groups": [
+        "resumption",
+        "tls",
+        "ticket_rotation",
+        "flags"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G10"
+      ],
+      "full_facade_test_groups": [
+        "resumption",
+        "ticket_rotation",
+        "flags"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G10"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_LOCAL_INTERFACE",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 155,
+        "symbol_or_call": "ApplyConnectionOptions"
+      },
+      "authored_test_groups": [
+        "queries",
+        "network"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G02"
+      ],
+      "full_facade_test_groups": [
+        "queries",
+        "network"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G02"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_VERSION_SETTINGS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicVersionPolicies.cs",
+        "line": 32,
+        "symbol_or_call": "public unsafe QuicVersionPolicy GetVersionPolicy"
+      },
+      "authored_test_groups": [
+        "versions",
+        "scoped_versions"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "additional_implementations": [
+        {
+          "path": "src/ManagedApi/QuicVersionPolicies.cs",
+          "line": 41,
+          "symbol_or_call": "public unsafe void SetVersionPolicy"
+        }
+      ],
+      "full_facade_test_groups": [
+        "versions",
+        "scoped_versions"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS_V2",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 294,
+        "symbol_or_call": "GetStatistics"
+      },
+      "authored_test_groups": [
+        "queries",
+        "packets",
+        "handshake",
+        "network",
+        "late_ack"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "packets",
+        "handshake",
+        "network",
+        "late_ack"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_STATISTICS_V2_PLAT",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 294,
+        "symbol_or_call": "GetStatistics"
+      },
+      "authored_test_groups": [
+        "queries",
+        "network",
+        "late_ack"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "network",
+        "late_ack"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_ORIG_DEST_CID",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 394,
+        "symbol_or_call": "GetOriginalDestinationConnectionId"
+      },
+      "authored_test_groups": [
+        "queries",
+        "handshake"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "handshake"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_CONN_NETWORK_STATISTICS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 287,
+        "symbol_or_call": "GetNetworkStatistics"
+      },
+      "authored_test_groups": [
+        "queries",
+        "network"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "queries",
+        "network"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_TLS_HANDSHAKE_INFO",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 223,
+        "symbol_or_call": "GetHandshakeInformation"
+      },
+      "authored_test_groups": [
+        "queries",
+        "tls",
+        "handshake_snapshots"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "additional_implementations": [
+        {
+          "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+          "line": 230,
+          "symbol_or_call": "private unsafe void CaptureHandshakeInformation"
+        }
+      ],
+      "behavior_note": "Copied during the actual CONNECTED callback before a no-resumption server retires TLS; public getter returns immutable snapshot with lifetime/priority validation. Raw getter may then return INVALID_STATE1; this is deliberately tested.",
+      "full_facade_test_groups": [
+        "queries",
+        "handshake_snapshots"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_TLS_NEGOTIATED_ALPN",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.cs",
+        "line": 29,
+        "symbol_or_call": "NegotiatedApplicationProtocol"
+      },
+      "authored_test_groups": [
+        "transport",
+        "tls"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_ID",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.cs",
+        "line": 48,
+        "symbol_or_call": "public ulong Id"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_0RTT_LENGTH",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 35,
+        "symbol_or_call": "GetObservedEarlyDataLength"
+      },
+      "authored_test_groups": [
+        "transport",
+        "packets",
+        "handshake"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "packets",
+        "handshake"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_IDEAL_SEND_BUFFER_SIZE",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 31,
+        "symbol_or_call": "GetIdealSendBufferSize"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_PRIORITY",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 25,
+        "symbol_or_call": "SetPriority"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "name": "QUIC_PARAM_STREAM_STATISTICS",
+      "selected_policy": "selected-pending",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 37,
+        "symbol_or_call": "GetStatistics"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "uncovered_gaps": [
+        "G06"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    }
+  ],
+  "api_flags": [
+    {
+      "group": "stream_open",
+      "name": "NONE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 32,
+        "symbol_or_call": "public enum QuicStreamOpenOptions"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "stream_open",
+      "name": "UNIDIRECTIONAL",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 32,
+        "symbol_or_call": "public enum QuicStreamOpenOptions"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "stream_open",
+      "name": "DELAY_ID_FC_UPDATES",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 32,
+        "symbol_or_call": "public enum QuicStreamOpenOptions"
+      },
+      "authored_test_groups": [
+        "flags"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "Accepted-stream configuration option updates the actual PEER_STREAM_STARTED flags before callback return. Local open flag alone is not represented as controlling peer-issued MAX_STREAMS.",
+      "additional_implementations": [
+        {
+          "path": "src/ManagedApi/QuicConfiguration.cs",
+          "line": 10,
+          "symbol_or_call": "public bool DelayAcceptedStreamCreditUntilClose"
+        },
+        {
+          "path": "src/ManagedApi/QuicConnection.cs",
+          "line": 169,
+          "symbol_or_call": "DelayAcceptedStreamCreditUntilClose"
+        }
+      ],
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "flags"
+      ]
+    },
+    {
+      "group": "stream_start",
+      "name": "NONE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 34,
+        "symbol_or_call": "public enum QuicStreamStartOptions"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "stream_start",
+      "name": "IMMEDIATE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 34,
+        "symbol_or_call": "public enum QuicStreamStartOptions"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks"
+      ]
+    },
+    {
+      "group": "stream_start",
+      "name": "FAIL_BLOCKED",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 34,
+        "symbol_or_call": "public enum QuicStreamStartOptions"
+      },
+      "authored_test_groups": [
+        "flags"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "flags"
+      ]
+    },
+    {
+      "group": "stream_start",
+      "name": "SHUTDOWN_ON_FAIL",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 34,
+        "symbol_or_call": "public enum QuicStreamStartOptions"
+      },
+      "authored_test_groups": [
+        "flags"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "flags"
+      ]
+    },
+    {
+      "group": "stream_start",
+      "name": "INDICATE_PEER_ACCEPT",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 34,
+        "symbol_or_call": "public enum QuicStreamStartOptions"
+      },
+      "authored_test_groups": [
+        "flags"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "flags"
+      ]
+    },
+    {
+      "group": "stream_shutdown",
+      "name": "NONE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 4,
+        "symbol_or_call": "public enum QuicStreamShutdownOptions"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "NONE shutdown has an invalid-empty-mask control, not successful dispatch",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "stream_shutdown",
+      "name": "GRACEFUL",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 4,
+        "symbol_or_call": "public enum QuicStreamShutdownOptions"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "stream_shutdown",
+      "name": "ABORT_SEND",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 4,
+        "symbol_or_call": "public enum QuicStreamShutdownOptions"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "stream_shutdown",
+      "name": "ABORT_RECEIVE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 4,
+        "symbol_or_call": "public enum QuicStreamShutdownOptions"
+      },
+      "authored_test_groups": [
+        "receive_failures"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "receive_failures"
+      ]
+    },
+    {
+      "group": "stream_shutdown",
+      "name": "ABORT",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 4,
+        "symbol_or_call": "public enum QuicStreamShutdownOptions"
+      },
+      "authored_test_groups": [
+        "transport",
+        "callbacks"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "callbacks"
+      ]
+    },
+    {
+      "group": "stream_shutdown",
+      "name": "IMMEDIATE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 4,
+        "symbol_or_call": "public enum QuicStreamShutdownOptions"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "stream_shutdown",
+      "name": "INLINE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.Parameters.cs",
+        "line": 4,
+        "symbol_or_call": "public enum QuicStreamShutdownOptions"
+      },
+      "authored_test_groups": [
+        "callbacks"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "callbacks"
+      ]
+    },
+    {
+      "group": "send",
+      "name": "NONE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 36,
+        "symbol_or_call": "public enum QuicSendOptions"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "send",
+      "name": "START",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 36,
+        "symbol_or_call": "public enum QuicSendOptions"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "send",
+      "name": "FIN",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 36,
+        "symbol_or_call": "public enum QuicSendOptions"
+      },
+      "authored_test_groups": [
+        "transport",
+        "packets",
+        "callbacks"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport",
+        "packets",
+        "callbacks"
+      ]
+    },
+    {
+      "group": "send",
+      "name": "DGRAM_PRIORITY",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Datagrams.cs",
+        "line": 5,
+        "symbol_or_call": "public enum QuicDatagramSendOptions"
+      },
+      "authored_test_groups": [
+        "flags"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "Operation-specific: SendDatagramAsync options Priority=8 forwards actual native datagram priority; stream send rejects this inapplicable bit. No promised peer delivery order.",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "flags"
+      ]
+    },
+    {
+      "group": "send",
+      "name": "DELAY_SEND",
+      "implementation": {
+        "path": "src/ManagedApi/QuicError.cs",
+        "line": 36,
+        "symbol_or_call": "public enum QuicSendOptions"
+      },
+      "authored_test_groups": [
+        "flags"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "flags"
+      ]
+    },
+    {
+      "group": "receive",
+      "name": "NONE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.cs",
+        "line": 376,
+        "symbol_or_call": "case QUIC_STREAM_EVENT_RECEIVE"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "receive",
+      "name": "FIN",
+      "implementation": {
+        "path": "src/ManagedApi/QuicStream.cs",
+        "line": 376,
+        "symbol_or_call": "case QUIC_STREAM_EVENT_RECEIVE"
+      },
+      "authored_test_groups": [
+        "transport"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "transport"
+      ]
+    },
+    {
+      "group": "resumption",
+      "name": "NONE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 36,
+        "symbol_or_call": "public enum QuicResumptionTicketFlags"
+      },
+      "authored_test_groups": [
+        "resumption"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "resumption"
+      ]
+    },
+    {
+      "group": "resumption",
+      "name": "FINAL",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+        "line": 36,
+        "symbol_or_call": "public enum QuicResumptionTicketFlags"
+      },
+      "authored_test_groups": [
+        "flags"
+      ],
+      "coverage": "Mapped behavior controls PASS in current full facade matrix; no exhaustive combination claim.",
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "note": "",
+      "uncovered_gaps": [],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "flags"
+      ]
+    }
+  ],
+  "credential_flags": [
+    {
+      "name": "QUIC_CREDENTIAL_FLAG_NONE",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 61,
+        "symbol_or_call": "LoadCredential"
+      },
+      "owning_input": "QuicCredentials.Client/Server loadAsynchronously, cipherSuite and validateCertificate options; no raw credential flag escape",
+      "authored_test_groups": [
+        "default",
+        "tls",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "certificates"
+      ]
+    },
+    {
+      "name": "QUIC_CREDENTIAL_FLAG_CLIENT",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 61,
+        "symbol_or_call": "LoadCredential"
+      },
+      "owning_input": "QuicCredentials.Client/Server loadAsynchronously, cipherSuite and validateCertificate options; no raw credential flag escape",
+      "authored_test_groups": [
+        "default",
+        "tls",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "certificates"
+      ]
+    },
+    {
+      "name": "QUIC_CREDENTIAL_FLAG_LOAD_ASYNCHRONOUS",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 61,
+        "symbol_or_call": "LoadCredential"
+      },
+      "owning_input": "QuicCredentials.Client/Server loadAsynchronously, cipherSuite and validateCertificate options; no raw credential flag escape",
+      "authored_test_groups": [
+        "default",
+        "tls",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "certificates"
+      ]
+    },
+    {
+      "name": "QUIC_CREDENTIAL_FLAG_INDICATE_CERTIFICATE_RECEIVED",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 61,
+        "symbol_or_call": "LoadCredential"
+      },
+      "owning_input": "QuicCredentials.Client/Server loadAsynchronously, cipherSuite and validateCertificate options; no raw credential flag escape",
+      "authored_test_groups": [
+        "default",
+        "tls",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G03"
+      ],
+      "full_facade_test_groups": [
+        "default",
+        "certificates"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G03"
+      ]
+    },
+    {
+      "name": "QUIC_CREDENTIAL_FLAG_DEFER_CERTIFICATE_VALIDATION",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 61,
+        "symbol_or_call": "LoadCredential"
+      },
+      "owning_input": "QuicCredentials.Client/Server loadAsynchronously, cipherSuite and validateCertificate options; no raw credential flag escape",
+      "authored_test_groups": [
+        "default",
+        "tls",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G03"
+      ],
+      "full_facade_test_groups": [
+        "default",
+        "certificates"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G03"
+      ]
+    },
+    {
+      "name": "QUIC_CREDENTIAL_FLAG_SET_ALLOWED_CIPHER_SUITES",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 61,
+        "symbol_or_call": "LoadCredential"
+      },
+      "owning_input": "QuicCredentials.Client/Server loadAsynchronously, cipherSuite and validateCertificate options; no raw credential flag escape",
+      "authored_test_groups": [
+        "default",
+        "tls",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "certificates"
+      ]
+    },
+    {
+      "name": "QUIC_CREDENTIAL_FLAG_USE_PORTABLE_CERTIFICATES",
+      "implementation": {
+        "path": "src/ManagedApi/QuicConfiguration.cs",
+        "line": 61,
+        "symbol_or_call": "LoadCredential"
+      },
+      "owning_input": "QuicCredentials.Client/Server loadAsynchronously, cipherSuite and validateCertificate options; no raw credential flag escape",
+      "authored_test_groups": [
+        "default",
+        "tls",
+        "certificates"
+      ],
+      "uncovered_gaps": [],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "resolved_by_targeted_evidence": [
+        "G03"
+      ],
+      "full_facade_test_groups": [
+        "default",
+        "certificates"
+      ],
+      "resolved_by_full_facade_evidence": [
+        "G03"
+      ]
+    }
+  ],
+  "ordinary_settings": [
+    {
+      "name": "MaxBytesPerKey",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 9,
+        "symbol_or_call": "MaxBytesPerKey"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "HandshakeIdleTimeoutMs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 10,
+        "symbol_or_call": "HandshakeIdleTimeoutMs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "IdleTimeoutMs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 10,
+        "symbol_or_call": "IdleTimeoutMs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MtuDiscoverySearchCompleteTimeoutUs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 12,
+        "symbol_or_call": "MtuDiscoverySearchCompleteTimeoutUs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "TlsClientMaxSendBuffer",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 13,
+        "symbol_or_call": "TlsClientMaxSendBuffer"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "TlsServerMaxSendBuffer",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 14,
+        "symbol_or_call": "TlsServerMaxSendBuffer"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "StreamRecvWindowDefault",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 15,
+        "symbol_or_call": "StreamRecvWindowDefault"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "StreamRecvBufferDefault",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 16,
+        "symbol_or_call": "StreamRecvBufferDefault"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "ConnFlowControlWindow",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 17,
+        "symbol_or_call": "ConnFlowControlWindow"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MaxWorkerQueueDelayUs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 18,
+        "symbol_or_call": "MaxWorkerQueueDelayUs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MaxStatelessOperations",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 19,
+        "symbol_or_call": "MaxStatelessOperations"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "InitialWindowPackets",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 20,
+        "symbol_or_call": "InitialWindowPackets"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "SendIdleTimeoutMs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 21,
+        "symbol_or_call": "SendIdleTimeoutMs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "InitialRttMs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 22,
+        "symbol_or_call": "InitialRttMs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MaxAckDelayMs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 23,
+        "symbol_or_call": "MaxAckDelayMs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "DisconnectTimeoutMs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 24,
+        "symbol_or_call": "DisconnectTimeoutMs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "KeepAliveIntervalMs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 25,
+        "symbol_or_call": "KeepAliveIntervalMs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "PeerBidiStreamCount",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 26,
+        "symbol_or_call": "PeerBidiStreamCount"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "PeerUnidiStreamCount",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 27,
+        "symbol_or_call": "PeerUnidiStreamCount"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MaxBindingStatelessOperations",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 28,
+        "symbol_or_call": "MaxBindingStatelessOperations"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "StatelessOperationExpirationMs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 29,
+        "symbol_or_call": "StatelessOperationExpirationMs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MinimumMtu",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 30,
+        "symbol_or_call": "MinimumMtu"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MaximumMtu",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 31,
+        "symbol_or_call": "MaximumMtu"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "SendBufferingEnabled",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 32,
+        "symbol_or_call": "SendBufferingEnabled"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "PacingEnabled",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 33,
+        "symbol_or_call": "PacingEnabled"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MigrationEnabled",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 34,
+        "symbol_or_call": "MigrationEnabled"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "DatagramReceiveEnabled",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 35,
+        "symbol_or_call": "DatagramReceiveEnabled"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MaxOperationsPerDrain",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 36,
+        "symbol_or_call": "MaxOperationsPerDrain"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "MtuDiscoveryMissingProbeCount",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 37,
+        "symbol_or_call": "MtuDiscoveryMissingProbeCount"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "DestCidUpdateIdleTimeoutMs",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 38,
+        "symbol_or_call": "DestCidUpdateIdleTimeoutMs"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "GreaseQuicBitEnabled",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 39,
+        "symbol_or_call": "GreaseQuicBitEnabled"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "HyStartEnabled",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 40,
+        "symbol_or_call": "HyStartEnabled"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "StreamRecvWindowBidiLocalDefault",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 41,
+        "symbol_or_call": "StreamRecvWindowBidiLocalDefault"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "StreamRecvWindowBidiRemoteDefault",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 42,
+        "symbol_or_call": "StreamRecvWindowBidiRemoteDefault"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    },
+    {
+      "name": "StreamRecvWindowUnidiDefault",
+      "implementation": {
+        "path": "src/ManagedApi/QuicSettings.cs",
+        "line": 43,
+        "symbol_or_call": "StreamRecvWindowUnidiDefault"
+      },
+      "authored_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ],
+      "qualification": "Mapped facade controls passed current raw/optimized JIT/NativeAOT matrix; entry-specific scope and optional breadth limits remain explicit.",
+      "uncovered_gaps": [
+        "G05"
+      ],
+      "resolved_by_targeted_evidence": [],
+      "full_facade_test_groups": [
+        "default",
+        "queries",
+        "transport",
+        "packets",
+        "settings_states"
+      ]
+    }
+  ],
+  "uncovered_gaps": {
+    "G05": "Remaining optional failure-injection breadth: SettingsStates now passes concurrent sparse configuration/live connection setters, valid-early/invalid-later rejection atomicity, configured MTU bounds and started-connection MTU rejection on IPv4/IPv6. Scoped version rw is already full facade matrix PASS. No dedicated per-allocation settings/version-list OOM-injection matrix is claimed. Actual general allocation rollback belongs to the separately qualified P3 PlatformHost eleven-position control; selected resource-budget exhaustion belongs to PacketScenarios. Neither is relabeled as settings-specific allocation failure coverage.",
+    "G06": "Optional exhaustive counter breadth, not an additional selected-profile implementation gap: actual network backpressure, exact application bytes, UDP evolution, CUBIC units and stream credit advancement have controls passing the full facade matrix; all selected typed query surfaces are mapped. Every mutable legacy/stream counter and V2 queue average/maximum is not independently forced against an oracle. High priority dispatch acceptance does not promise global scheduling order."
+  },
+  "current_authored_source_sha256": {
+    "src/ManagedApi/ManagedApi.csproj": "4ff983b185aaa00467d12edfa7250f528cee614bdabbd2262dac633e44ae696a",
+    "src/ManagedApi/QuicBudgetLease.cs": "45417d3d40228ece4b56106f0b96e19e7120663921d2bb821c7fe149efc27850",
+    "src/ManagedApi/QuicConfiguration.cs": "fde0bedeba92088e4327f6fbbe7c2790236ebce79ea2074cfe1bb7fbf6ae52a9",
+    "src/ManagedApi/QuicConnection.Datagrams.cs": "e2c3d28583bba9518dbbd233888882b68773112d7b61d25d041f4cfbb2a762ae",
+    "src/ManagedApi/QuicConnection.Parameters.cs": "8d6349145d5f0e9bb524e139024310af06aa1d32fbe1c26f619aca3c493f3457",
+    "src/ManagedApi/QuicConnection.Resumption.cs": "7d15af25a7b84d62f5f90385115c95cb223ca6bd9a1bdcbc16555d30a1395e8e",
+    "src/ManagedApi/QuicConnection.cs": "0a6947f2af050d8cd54a49866300d41314597cf1f7ca89919b6d4d1e8f2d17b5",
+    "src/ManagedApi/QuicCredentials.cs": "1d865058a430be88eeafd0974a1aff0c75e48ef45ad3f1175adc8d672e28bf86",
+    "src/ManagedApi/QuicError.cs": "259d7415f7eccd3f8caba4d03452d3dd3f28a8c6e15a8fd12f736302035cfa1f",
+    "src/ManagedApi/QuicListener.cs": "5864308a3fc983cee817631d104925537d2b5bf820bbae960da14eda8bc1c79e",
+    "src/ManagedApi/QuicObject.cs": "6155a04c47efc241e736f083aed4d47e65c0782060f28689912247477a4f310d",
+    "src/ManagedApi/QuicReceiveLease.cs": "ed31c7486c1889fead766bf5bfbe8a55ba8cfbd73f12e1069b0db37a7a08c601",
+    "src/ManagedApi/QuicRegistration.cs": "baae84d28d69ae595ef336513f1ae03c9b7ddc2adbbbd7ee4b6db4818aac56ab",
+    "src/ManagedApi/QuicRuntime.Parameters.cs": "1b98d0178f8a0aaf1c0a669da7b91a194435d2b2d3d8d352a3581146e9c112f5",
+    "src/ManagedApi/QuicRuntime.cs": "cde76b398fe47ac8453ef4d323ef919a8cfb5126684089c54476fc17b9613ce7",
+    "src/ManagedApi/QuicSendOperation.cs": "cee0f6642ecf78512a973a446e7fd72192b33ce2ffc91ae0d09923be9ea8034c",
+    "src/ManagedApi/QuicSettings.cs": "651f24db4bf450b5a09d2e746637987c606c77e7d6d1a4c628b709fcefff544d",
+    "src/ManagedApi/QuicStream.Callbacks.cs": "496128e9a1c415ba8d93bbab5d956feff038c5600c28e3dad7c37af9c3d43ea0",
+    "src/ManagedApi/QuicStream.Parameters.cs": "b8a40b8a6b2cfb30895efd60507e2a57084e0e6e8e524faf7f7f560352921334",
+    "src/ManagedApi/QuicStream.cs": "da6bc7ee20cb83add798fa1b7717711beaa0412b67565569168082d5c1071b71",
+    "src/ManagedApi/QuicVersionPolicies.cs": "c9258a513444e9c192e41836d73a863b6a60ea78459fd6a893f5687e65b058e5",
+    "tests/ManagedApi/CallbackControls.cs": "7af7c7a4b239ed60a6c328d80311d39879a6c3d31e52bfa1cfc02f9294b3248d",
+    "tests/ManagedApi/CertificatePolicies.cs": "5c22a8e1565a8a16dc6b4bc6a5461c3a83dc0060ca6e455092134c6348bbdae8",
+    "tests/ManagedApi/ConnectionParameterInputs.cs": "b0c9af1ab9afd3be75eb654839f09ab2328d6754d5991f2c6adf1308f4aaafe8",
+    "tests/ManagedApi/ConnectionQueries.cs": "8401eb72fd0e23fde603855499abe8c8c3af61089ab3952bdc8c3f5552ec5879",
+    "tests/ManagedApi/DatagramLateAck.cs": "c7468c2e65da301b9754c55378534931cd6e710545ee48d7e45bd6342b920136",
+    "tests/ManagedApi/FlagControls.cs": "5916b40e54c6be2fc3dfde601b293461912dd099fd49e807b3a212941f74ed0c",
+    "tests/ManagedApi/HandshakeFaults.cs": "89dfd800d539eeb30f8b17e8d9167b983709abb0e0e0082b5102368cecb59787",
+    "tests/ManagedApi/HandshakeSnapshots.cs": "7a2579977ffd9671c366033c0de120682a2648f769085573a0fcc388997af91f",
+    "tests/ManagedApi/ManagedApi.csproj": "b0edbd5effff888adc30eb071abccd639c9e20d60f5abf412ad8ce1bf037c71f",
+    "tests/ManagedApi/NetworkParameters.cs": "5786a1c3245743800d8c8f31db52ba9525a3bcb641463023a4c3ed148160ead0",
+    "tests/ManagedApi/PacketScenarios.cs": "e0cb306b638c6e15331bd93d31cecc14392a3f415ef77f48a2c93a186665081b",
+    "tests/ManagedApi/Program.cs": "a660786fd751bdb82b2102ff897b2ce1144f8db8c7f3d77d1c99ce925733b025",
+    "tests/ManagedApi/ReceiveFailures.cs": "1089ded4bda4fa3e7fcd2f346d445cb90bad22a3c52a4ecf58a66972e664f0d1",
+    "tests/ManagedApi/RegistrationShutdown.cs": "e1b3beead546bfe3f3b688078a7013f7ac7ec7244537110fecb5cabe88e98d2e",
+    "tests/ManagedApi/ResumptionScenarios.cs": "ab24cc7110c0c3177569df460a5c048659a1e1d8931d3f5c111f79a1ea0dbc45",
+    "tests/ManagedApi/RuntimeParameters.cs": "ad25ebc6cf75bc76673fe1d699e76593a8408e83763fd35b908ee512abe2106b",
+    "tests/ManagedApi/SettingsStates.cs": "8cd8dfd18f32ce2eea766e0018131c08c1e1f7175f4734327ca47a277816a117",
+    "tests/ManagedApi/StatelessSecrets.cs": "4197f90d3f7cbadc1cf5d99ea6ded8c92ccf1898ede94689a2b5e69193a9d805",
+    "tests/ManagedApi/TicketRotation.cs": "1f6462f78abe21a20610ad8f7cd60d939202cbfbc79543641e10429a6e0402b5",
+    "tests/ManagedApi/Transport.cs": "fbee16f6009702dcb65707b3213c00e0704f4b17396453646a4e63541d7bf4e3",
+    "tests/ManagedApi/VersionPolicies.cs": "234b85e364c4b6047992202bc95111c3e99ac5ae0f3250cb9e9ad1e1efb41734",
+    "tests/ManagedApi/VersionPolicy.cs": "9bb62e23a8d8ffacfef11e2f77f968591c00c1a50dc1e4ea371e73044afe0a6f"
+  },
+  "resolved_gaps": {
+    "G02": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "network"
+      ],
+      "details": "Actual IPv4/IPv6 local interface/source binding, simultaneous shared source port, invalid interface99, pin-correct live remote update INVALID_STATE1/no mutation, successful client local rebind and actual PATH_RESPONSE counter, both scheduling modes with concurrent stream delivery. No claim of deterministic inter-stream receive order."
+    },
+    "G03": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "certificates"
+      ],
+      "details": "24 actual facade certificate-policy cases: sync/async approve/reject/throw, trust/name failures cannot be approved, close/cancel while pending and late approval, owned DER/peer PKCS7 after drain, zero rejected application bytes. Facade matrix here uses ECDSA/AES128 across IPv4/IPv6; wider cipher/cert algorithm matrix remains separately evidenced at TLS layer."
+    },
+    "G08": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "packets",
+        "flags",
+        "late_ack"
+      ],
+      "details": "Typed datagram Priority now forwards actual flag8; stream DGRAM_PRIORITY is rejected as operation-inapplicable. Real key updates and DATAGRAM size/ownership controls pass. LateAck holds/releases one encrypted UDP packet after eight later payloads and requires actual AcknowledgedAfterLoss, suspected/spurious loss counters, exact once payload and drained ownership for both AES/IP families."
+    },
+    "G10": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "ticket_rotation",
+        "flags",
+        "resumption",
+        "tls"
+      ],
+      "details": "28 actual facade connections across two server configurations, two AES suites and both IP families prove copied imported keys, cross-config resume, new-first issuance, retained decrypt key, removal/unknown-key fallback, rejected updates and fresh bidirectional bytes. FINAL ticket delivered, subsequent issuance rejected with actual status1, ticket remains usable. Provider/TLS expiry/tamper evidence remains a distinct lower-layer scope; no claim that facade rotation test itself advances clocks."
+    },
+    "G12": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "flags"
+      ],
+      "details": "QuicStream.ValidateFlags now separates known masks open15/start31/send255 from operation-selected masks5/15/22. Unknown/reserved bits throw ArgumentException, recognized excluded or operation-inapplicable flags throw NotSupportedException. Typed datagram options have matching distinction. Invalid operations preserve later valid start and callback-root ownership."
+    },
+    "G01": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "callbacks",
+        "receive_failures"
+      ],
+      "details": "Six receive controls on IPv4/IPv6 include cross-thread observer replacement during a real pending receive, retained original context and published replacement, unchanged held-lease backpressure, exact suffix/FIN, observer throw after lease delivery, public pending-accept exception propagation, duplicate close waits for the held lease, terminal callback cardinality and zero owners. Existing INLINE/self-replacement/clear/DoS controls remain separately attributed. ECDSA/AES128 facade scope."
+    },
+    "G04": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "flags",
+        "receive_failures"
+      ],
+      "details": "Standalone AbortReceive flag4 now proves actual peer STOP_SENDING application error0x214365, cancellation of the backpressured send, successful opposite-direction65537-byte/FIN transfer while original receive lease remains held, close waits for release, one terminal callback and a healthy later stream. IPv4/IPv6 ECDSA/AES128. Other selected stream/datagram/ticket flags retain their FlagControls evidence."
+    },
+    "G07": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "registration_shutdown"
+      ],
+      "details": "Eight profiles: both initiating roles, IPv4/IPv6, keep-children versus concurrent parent disposal. Each has3 actual connections and6 blocked sends/reads, exact peer application error0x123456789abc, repeated admitted shutdown, invalid error rejection, held-lease disposal ordering and final context/buffer/host drain. The exact wire error is observed before racing disposal default-zero shutdown; no claim of deterministic first-writer order for different simultaneous error codes."
+    },
+    "G09": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "stateless_secrets"
+      ],
+      "details": "Four profiles across both AES suites/IP families observe actual core Retry/reset packets after copied secret provisioning and epoch rotation. Independent BCL derivation/authentication verifies Retry originalCID under configured secret, rejects wrong/prior secret and mutated tag; reset token matches configured HMAC and differs under wrong/prior key. Actual connection consumes Retry, exchanges exact payloads, then real reset counter/status125/error1 and drain. Wrong-key/tag negatives authenticate captured packets independently; they are not claimed as a separate on-wire corrupted-token replay campaign."
+    },
+    "G11": {
+      "status": "resolved within mapped full raw/optimized JIT/NativeAOT facade scope",
+      "test_groups": [
+        "settings_states"
+      ],
+      "details": "IPv4/IPv6 actual direct DATAGRAM_RECEIVE_ENABLED post-start setter returns state1 without mutation; facade aggregate SetSettings disables/restores actual capability according to pinned original semantics. Real datagram payload and acknowledgment succeed after restoration; owners drain. Direct and aggregate state rules are deliberately distinct."
+    }
+  },
+  "implemented_behavior_updates": [
+    {
+      "name": "scoped VERSION_SETTINGS rw",
+      "test_groups": [
+        "scoped_versions"
+      ],
+      "methods": [
+        {
+          "path": "src/ManagedApi/QuicVersionPolicies.cs",
+          "line": 10,
+          "symbol_or_call": "public unsafe QuicVersionPolicy GetVersionPolicy"
+        },
+        {
+          "path": "src/ManagedApi/QuicVersionPolicies.cs",
+          "line": 32,
+          "symbol_or_call": "public unsafe QuicVersionPolicy GetVersionPolicy"
+        }
+      ]
+    },
+    {
+      "name": "actual datagram priority",
+      "test_groups": [
+        "flags"
+      ],
+      "methods": [
+        {
+          "path": "src/ManagedApi/QuicConnection.Datagrams.cs",
+          "line": 27,
+          "symbol_or_call": "public async ValueTask<QuicDatagramSendResult> SendDatagramAsync"
+        }
+      ]
+    },
+    {
+      "name": "accepted stream credit held until owning close",
+      "test_groups": [
+        "flags"
+      ],
+      "methods": [
+        {
+          "path": "src/ManagedApi/QuicConfiguration.cs",
+          "line": 10,
+          "symbol_or_call": "public bool DelayAcceptedStreamCreditUntilClose"
+        }
+      ]
+    },
+    {
+      "name": "CONNECTED handshake snapshot survives TLS retirement",
+      "test_groups": [
+        "handshake_snapshots"
+      ],
+      "methods": [
+        {
+          "path": "src/ManagedApi/QuicConnection.Parameters.cs",
+          "line": 230,
+          "symbol_or_call": "private unsafe void CaptureHandshakeInformation"
+        }
+      ]
+    },
+    {
+      "name": "known-excluded vs unknown flag classification",
+      "test_groups": [
+        "flags"
+      ],
+      "methods": [
+        {
+          "path": "src/ManagedApi/QuicStream.cs",
+          "line": 486,
+          "symbol_or_call": "private static void ValidateFlags"
+        }
+      ]
+    }
+  ],
+  "gap_classification": {
+    "G05": {
+      "classification": "optional settings-specific allocation-failure breadth after required state/concurrency controls",
+      "phase_blocking": false,
+      "targeted_resolution_groups": [
+        "settings_states",
+        "scoped_versions"
+      ],
+      "separate_failure_evidence": [
+        {
+          "receipt": "artifacts/platform-host/results.json",
+          "scope": "P3 allocation rollback, not settings-specific allocation injection"
+        },
+        {
+          "receipt": "artifacts/managed-api-packets/results.json",
+          "scope": "actual facade bounded buffer/resource exhaustion, not arbitrary OOM"
+        }
+      ]
+    },
+    "G06": {
+      "classification": "optional exhaustive per-counter oracle breadth",
+      "phase_blocking": false
+    }
+  },
+  "partial_resolutions": {
+    "G05": {
+      "test_groups": [
+        "settings_states",
+        "scoped_versions"
+      ],
+      "resolved_behavior": "Concurrent sparse setters, effective-settings preflight rejection atomicity, MTU before/after-start distinction, owned scoped version rw. Settings-specific allocation injection remains explicitly unclaimed."
+    }
+  },
+  "remaining_selected_profile_behavior_gaps": [],
+  "qualification_pending": [
+    "Separate public-consumer, P7 recovery/interop/fault and P9 delivery/platform gates require their own coherent receipts. This full facade receipt does not qualify them."
+  ],
+  "full_facade_qualification": {
+    "receipt": "artifacts/managed-api-all/results.json",
+    "receipt_sha256": "b6af048ec33bd1bea32313e03b8dd3af76ab4f594273688f984b65a20e47219e",
+    "passed": true,
+    "modes": [
+      "callbacks",
+      "certificates",
+      "configuration",
+      "datagram-late-ack",
+      "flags",
+      "handshake-faults",
+      "handshake-snapshots",
+      "network",
+      "packets",
+      "receive-failures",
+      "registration-shutdown",
+      "resumption",
+      "settings-states",
+      "stateless-secrets",
+      "ticket-rotation",
+      "transport",
+      "versions"
+    ],
+    "execution_count": 68,
+    "runtime_variants": [
+      "raw/jit",
+      "raw/aot",
+      "optimized/jit",
+      "optimized/aot"
+    ],
+    "all_recorded_inputs_match_current": true,
+    "current_facade_input_inventory_complete": true,
+    "generated_manifest_and_hashes_match_current": true,
+    "exact_source_metadata_required": true,
+    "source_revision": "80a065112426bce68c1da42d026478d3e40fd45e",
+    "source_manifest_sha256": "ffc292c11d5d09f18348f318ce812c394aa7ddf6fbcd6c47b208d487b2607a4e",
+    "closure_sha256": "7439fb111285863904055f525882f63431605039dafd8d07c859eb58afe9fb78",
+    "metadata_control": {
+      "entry": "tests/ManagedApi/Program.cs:9",
+      "check": "tests/ManagedApi/RuntimeParameters.cs:6",
+      "behavior": "Every mode creates an actual runtime and compares GetLibrarySourceRevision to DOTCC_REQUIRED_SOURCE_REVISION before dispatch."
+    },
+    "scope": "Source-linked owning facade and real loopback transport controls on Linux x64. Separate public consumer, P7 and P9 phase gates are not qualified by this receipt."
+  },
+  "preserved_failure_evidence": {
+    "receipt": "artifacts/managed-api-all-before-reset-race/results.json",
+    "receipt_sha256": "adc2380e5f0a9252ca25eeace85b567f7ae614dfbab851e670248ef6d0c246d8",
+    "recorded_passed": false,
+    "failed_log": "artifacts/managed-api-all-before-reset-race/optimized-handshake-faults-aot.log",
+    "failed_log_sha256": "84efba7fb8f10878319c057bb49c23e5f6db45acd3c8ff0d0e2d193dabbed98c",
+    "failure": "Optimized NativeAOT HandshakeFaults assumed client CloseInfo was still null after silent server disposal. Real queued traffic could already have caused the required stateless reset.",
+    "changed_inputs": [
+      "tests/ManagedApi/HandshakeFaults.cs",
+      "tests/ManagedApi/StatelessSecrets.cs"
+    ],
+    "product_source_changed_between_attempts": false,
+    "repair": "Both tests require client open before silent shutdown and arm reset evidence before it can arrive. After disposal they accept either an already-observed real reset or explicitly send a trigger. Exact125/error1, actual reset counter, captured secret binding and ownership drain remain required; no protocol success/error requirement was removed."
+  }
+}
