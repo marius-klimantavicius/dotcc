@@ -1,0 +1,5460 @@
+{
+  "format": "dotcc-msquic-upstream-test-inventory-v1",
+  "commit": "80a065112426bce68c1da42d026478d3e40fd45e",
+  "source_archive_sha256": "2daf1afdf1a3a4b5c8fdba882c2c702ba2a48ad2eaa0d9e50486340a89757e06",
+  "source_pin_sha256": "ffc292c11d5d09f18348f318ce812c394aa7ddf6fbcd6c47b208d487b2607a4e",
+  "scope": "Literal GoogleTest declarations in src C/C++ sources; all preprocessor branches included",
+  "execution_claim": false,
+  "parameter_expansions_counted": false,
+  "files": [
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "sha256": "c32d19804d80f6af948115d00e4297b5c6793543c3063ea4b2bbe369c20f4ffb",
+      "declarations": 76,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "sha256": "41cef5f9e4b5a30c3aa951bb1f402becfd7f74ba675af708695571ec6eefe604",
+      "declarations": 53,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "sha256": "b4a3d44b455a4a247511c94fa9f9dd6b4f882add0870be3826035d989cb2a714",
+      "declarations": 34,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/PacketNumberTest.cpp",
+      "sha256": "526ad195c6279f3f365be8448ee40cec7eebb9488ba3c9ca5d746c22d0a816d3",
+      "declarations": 1,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/PartitionTest.cpp",
+      "sha256": "0715eed71ff39e0e52afc4a0e55c1cfe6731457acd05f79690139d1545535d2b",
+      "declarations": 1,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "sha256": "89c333aa781066c69da77ba19d8fd0b55349a377c8137e7f7e4143f318d33cc9",
+      "declarations": 36,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "sha256": "488442e864d8711d7a05070faf6c4bf8d03bf47b85589428570aae5849dcc14d",
+      "declarations": 60,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "sha256": "2440ce91002e1ad2f1c7bb45251f0d9bc84fb64bfee5e55d1a60c68bc42ab0cd",
+      "declarations": 17,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/SlidingWindowExtremumTest.cpp",
+      "sha256": "eb955e2d471ce884e031721bd55aebbf043e8167ef9840ea183d437a5aea260f",
+      "declarations": 3,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/SpinFrame.cpp",
+      "sha256": "5afcf74d3f1576dbe88e80f662d34efa896f0fcef944db91a4d602e9e09b84e8",
+      "declarations": 1,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "sha256": "a571cd9eb3edbf2144e774c773f07ef2427080959780dccf6566ee86de714578",
+      "declarations": 15,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "sha256": "2f6af4a4ffb05a99b0db531695fea951516b99db5e1affc3da80b6d52d6b1371",
+      "declarations": 13,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/VarIntTest.cpp",
+      "sha256": "e185aea407f797791ac26c0c4f6e727c46d4b7a92bd52d1645fed3a76486d3f8",
+      "declarations": 3,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/core/unittest/VersionNegExtTest.cpp",
+      "sha256": "8e09eb751863e64999781e78f23eb5f2680265f165195b550af385220fb3a59b",
+      "declarations": 3,
+      "category": "core-unit"
+    },
+    {
+      "path": "src/platform/unittest/AllocTest.cpp",
+      "sha256": "50b589801b741073f164b277a668722cf8f68a6a6bc93be896f21fe62ddddd86",
+      "declarations": 4,
+      "category": "platform-unit"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "sha256": "61e6b9b37946de0e19bbb6c0bef2426ed889b4878993d1237ba2031bfa5c7488",
+      "declarations": 11,
+      "category": "platform-unit"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "sha256": "fe18f6afd1c119ed9f803ad845224ee44b5ba6a2447be65a2a1c57890119475e",
+      "declarations": 26,
+      "category": "platform-unit"
+    },
+    {
+      "path": "src/platform/unittest/PlatformTest.cpp",
+      "sha256": "15101fcf2468c2b83256148a0c9b78fe396c71433bca09c9c4b299eea193786e",
+      "declarations": 6,
+      "category": "platform-unit"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "sha256": "742c06c6fb4c7a050d01097156387c0bf1cf9b369c36f97706606ed6172207e3",
+      "declarations": 53,
+      "category": "platform-unit"
+    },
+    {
+      "path": "src/platform/unittest/ToeplitzTest.cpp",
+      "sha256": "92fe9acfc1ac1998490a51d2bee5fcf4cd830167fdfee1edfde9468266be9c0e",
+      "declarations": 2,
+      "category": "platform-unit"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "sha256": "13dff6e634fea3e6175cd0a094aca4aa3342047aafc0989e70c435b792abbe3b",
+      "declarations": 172,
+      "category": "transport-api"
+    }
+  ],
+  "cases": [
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 350,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataLost_EnterRecovery",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 371,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataLost_PersistentCongestion",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 395,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataLost_NonPersistent",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 423,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataLost_AlreadyInRecovery",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 462,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_MinRttUpdate",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 481,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_MinRttExpired",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 506,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_MinRttNotValid",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 525,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_MinRttNoUpdate",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 549,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_NewRoundTrip",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 569,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_RecoveryExit",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 599,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_RecoveryStayUpdateWindow",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 630,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_TransitToProbeRtt",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 644,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_ExitingQuiescenceSuppressesProbeRtt",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 681,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_BtlbwFoundDetection",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 695,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_StartupToDrain",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 762,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_DrainToProbeBw",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 779,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "HandleAckInProbeRtt_StartTimer",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 798,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "HandleAckInProbeRtt_ExitToStartup",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 825,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "HandleAckInProbeRtt_ExitToProbeBw",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 867,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BtlbwFound_BandwidthGrowingResetsCounter",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 895,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "RecoveryWindow_GrowthAddsBytes",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 941,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "CanSend_BelowCW",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 953,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "CanSend_WithExemptions",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 972,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetSendAllowance_CcBlocked",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 989,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetSendAllowance_NoPacing_TimeSinceLastSendInvalid",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1005,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetSendAllowance_PacingDisabled",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1020,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetCongestionWindow_Normal",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1033,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetCongestionWindow_InRecovery",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1052,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetCongestionWindow_ProbeRtt",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1071,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetNetworkStatistics",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1089,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "SpuriousCongestionEvent_ReturnsFalse",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1101,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "LogOutFlowStatus_NoCrash",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1113,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "UpdateBlockedState_BecameBlocked",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1129,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "UpdateBlockedState_BecameUnblocked",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1149,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "SetAppLimited_BelowCW",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1162,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "SetAppLimited_AboveCW",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1180,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "SetExemption_GetExemptions",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1195,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetBytesInFlightMax",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1207,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataSent_DecrementExemptions",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1225,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataSent_NoExemptionDecrement",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1245,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataInvalidated_BecomesUnblocked",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1275,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetSendAllowance_MinRttMax",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1293,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetTargetCwnd_NoMinRttSample",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1332,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetSendAllowance_MinRttBelowPacingInterval",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1355,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetSendAllowance_StartupPacing",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1381,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetSendAllowance_CappedByQuarter",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1403,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "GetSendAllowance_NonStartupPacing",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1425,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "Initialize_DefaultState",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1458,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "Reset_FullReset",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1482,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "Reset_PartialReset",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1501,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataSent_Basic",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1516,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataSent_QuiescenceExit",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1530,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataInvalidated_Basic",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1547,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_Implicit",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1571,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_ImplicitWithNetStats",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1593,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_WithNetStats",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1616,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "OnDataAcknowledged_AppLimitedPacket",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1644,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "UpdateCongestionWindow_StartupGrowth",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1663,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "UpdateCongestionWindow_ProbeRttNoUpdate",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1685,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "UpdateCongestionWindow_AckHeightFilterEntry",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1725,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "UpdateAckAggregation_FirstCall",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1748,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "SetSendQuantum_MediumPacingRate",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1790,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "SetSendQuantum_HighPacingRate",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1831,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_WithLastAckedInfo",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1858,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_NoLastAckedInfo",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1881,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_ZeroSendElapsed",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1910,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_AckElapsedSecondBranch",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1940,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_ZeroAckElapsed",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1969,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_ZeroLengthSkipped",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 1991,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_BothRatesMaxSkip",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 2015,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_AppLimitedExit",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 2042,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_AppLimitedNoUpdate",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 2073,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "BandwidthFilter_MultiplePackets",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 2119,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "ProbeBw_DrainGainAdvancesCycle",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 2169,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "ProbeBw_HighGainSuppressesCycleAdvance",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/BbrTest.cpp",
+      "line": 2214,
+      "macro": "TEST_F",
+      "suite": "BbrTest_DeepTest",
+      "name": "SetExemption_Zero",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 32,
+      "macro": "TEST_P",
+      "suite": "CubeRootTest",
+      "name": "ReturnsExpectedValue",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 272,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "OnDataAcknowledged_BasicAck",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 301,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "OnDataLost_WindowReduction",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 333,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "OnEcn_CongestionSignal",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 364,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "FastConvergence_AdditionalReduction",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 408,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "Recovery_ExitOnNewAck",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 442,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "Recovery_StayOnOldAck",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 486,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "Recovery_DoubleLossNoDoubleReduction",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 519,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "MinimumWindowFloor_AfterLoss",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 549,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "SlowStart_BytesInFlightMaxClamp",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 575,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "CongestionAvoidance_AIMDvsCubicSelection",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 635,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "AIMD_SequentialLinearConvergence",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 695,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "CongestionAvoidance_RenoFriendlyRegion",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 732,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "CongestionAvoidance_BoundedGrowthClamp",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 778,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "SpuriousCongestion_StateRollback",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 833,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_NotStartedToDone_ViaLoss",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 856,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_NotStartedToDone_ViaECN",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 883,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_ActiveToDone_ViaLoss",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 910,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_ActiveToDone_ViaECN",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 939,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_AnyToDone_ViaPersistentCongestion",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 970,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_TerminalState_DoneIsAbsorbing",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1007,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_DelayIncreaseDetection_TriggerActiveTransition",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1027,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_RttDecreaseDetection_ReturnToNotStarted",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1097,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_ConservativeSlowStartRounds_TransitionToDone",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1159,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "CanSendScenarios",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1190,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "GetSendAllowanceScenarios",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1227,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "CongestionWindowCalculation",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1241,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "GetNetworkStatistics_RetrieveStats",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1283,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "GetNetworkStatistics_ZeroSmoothedRtt_BandwidthIsZero",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1325,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "OnDataAcknowledged_NetStats_ZeroSmoothedRtt_BandwidthIsZero",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1365,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "CongestionControlOnSpuriousCongestionEvent",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1379,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "ZeroBytesAcked_EarlyExit",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1401,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "AppLimited_APICoverage",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1435,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "ResetScenarios",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1506,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "OnDataSent_IncrementsBytesInFlight",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1550,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "OnDataInvalidated_DecrementsBytesInFlight",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1569,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "Pacing_SlowStartWindowEstimation",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1612,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "Pacing_CongestionAvoidanceEstimation",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1663,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "Pacing_LastSendAllowanceCarryover",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1692,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "AIMD_AccumulatorBelowWindowPrior",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1720,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "AIMD_AccumulatorAboveWindowPrior",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1752,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "AIMD_AccumulatorTriggersWindowGrowth",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1789,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "CubicWindow_OverflowToBytesInFlightMax",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1833,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "TimeGap_IdlePeriodHandling",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1900,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "CongestionAvoidance_TimeGapOverflowProtection",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 1948,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "ECN_SpuriousRollbackRestoresStaleState",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 2002,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "SlowStart_WindowOverflowAfterPersistentCongestion",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 2080,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_InitialStateVerification",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 2105,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_Disabled_NoTransitions",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 2153,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_StateInvariant_GrowthDivisor",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 2183,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_RecoveryExit_StatePersistence",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 2216,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_SpuriousCongestion_StateNotRolledBack",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/CubicTest.cpp",
+      "line": 2263,
+      "macro": "TEST_F",
+      "suite": "CubicTest",
+      "name": "HyStart_DelayIncreaseDetection_EtaCalculationAndCondition",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 20,
+      "macro": "TEST_P",
+      "suite": "AckFrameTest",
+      "name": "AckFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 74,
+      "macro": "TEST_P",
+      "suite": "AckFrameTest",
+      "name": "DecodeAckFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 209,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "ResetStreamFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 227,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "ReliableResetStreamFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 274,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "TestQuicAckTrackerDidHitReorderingThreshold",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 344,
+      "macro": "TEST_P",
+      "suite": "ResetStreamFrameTest",
+      "name": "DecodeResetStreamFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 355,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "StopSendingFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 406,
+      "macro": "TEST_P",
+      "suite": "StopSendingFrameTest",
+      "name": "DecodeStopSendingFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 414,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "CryptoFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 472,
+      "macro": "TEST_P",
+      "suite": "CryptoFrameTest",
+      "name": "DecodeCryptoFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 480,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "NewTokenFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 522,
+      "macro": "TEST_P",
+      "suite": "NewTokenFrameTest",
+      "name": "DecodeNewTokenFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 533,
+      "macro": "TEST_P",
+      "suite": "StreamFrameTest",
+      "name": "StreamFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 585,
+      "macro": "TEST_P",
+      "suite": "StreamFrameTest",
+      "name": "DecodeStreamFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 695,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "MaxDataFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 729,
+      "macro": "TEST_P",
+      "suite": "MaxDataFrameTest",
+      "name": "DecodeMaxDataFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 737,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "MaxStreamDataFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 785,
+      "macro": "TEST_P",
+      "suite": "MaxStreamDataFrameTest",
+      "name": "DecodeMaxStreamDataFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 797,
+      "macro": "TEST_P",
+      "suite": "MaxStreamsFrameTest",
+      "name": "MaxStreamsFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 814,
+      "macro": "TEST_P",
+      "suite": "MaxStreamsFrameTest",
+      "name": "DecodeMaxStreamsFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 839,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "DataBlockedFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 873,
+      "macro": "TEST_P",
+      "suite": "DataBlockedFrameTest",
+      "name": "DecodeDataBlockedFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 881,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "StreamDataBlockedFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 929,
+      "macro": "TEST_P",
+      "suite": "StreamDataBlockedFrameTest",
+      "name": "DecodeStreamDataBlockedFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 941,
+      "macro": "TEST_P",
+      "suite": "StreamsBlockedFrameTest",
+      "name": "StreamsBlockedFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 958,
+      "macro": "TEST_P",
+      "suite": "StreamsBlockedFrameTest",
+      "name": "DecodeStreamsBlockedFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 983,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "NewConnectionIdFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 1129,
+      "macro": "TEST_P",
+      "suite": "NewConnectionIdFrameTest",
+      "name": "DecodeNewConnectionIdFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 1137,
+      "macro": "TEST",
+      "suite": "FrameTest",
+      "name": "RetireConnectionIdFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 1170,
+      "macro": "TEST_P",
+      "suite": "RetireConnectionIdFrameTest",
+      "name": "DecodeRetireConnectionIdFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 1182,
+      "macro": "TEST_P",
+      "suite": "PathChallengeResponseFrameTest",
+      "name": "PathChallengeResponseFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 1201,
+      "macro": "TEST_P",
+      "suite": "PathChallengeResponseFrameTest",
+      "name": "DecodePathChallengeResponseFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 1220,
+      "macro": "TEST_P",
+      "suite": "ConnectionCloseFrameTest",
+      "name": "ConnectionCloseFrameEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/FrameTest.cpp",
+      "line": 1301,
+      "macro": "TEST_P",
+      "suite": "ConnectionCloseFrameDecodeTest",
+      "name": "DecodeConnectionCloseFrameFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/PacketNumberTest.cpp",
+      "line": 24,
+      "macro": "TEST",
+      "suite": "PacketNumberTest",
+      "name": "WellKnownDecompress",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/PartitionTest.cpp",
+      "line": 23,
+      "macro": "TEST",
+      "suite": "PartitionTest",
+      "name": "RandomPartitionId",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 79,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddSingle",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 88,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddTwoAdjacentBefore",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 98,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddTwoAdjacentAfter",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 108,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddTwoSeparateBefore",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 118,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddTwoSeparateAfter",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 128,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddThreeMerge",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 139,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddBetween",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 150,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeSingle",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 159,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeBetween",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 170,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeTwoAdjacentBefore",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 180,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeTwoAdjacentAfter",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 190,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeTwoSeparateBefore",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 200,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeTwoSeparateAfter",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 210,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeTwoOverlapBefore1",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 220,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeTwoOverlapBefore2",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 230,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeTwoOverlapBefore3",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 240,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeTwoOverlapAfter1",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 250,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeTwoOverlapAfter2",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 260,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeThreeMerge",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 271,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeThreeOverlapAndAdjacentAfter1",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 282,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeThreeOverlapAndAdjacentAfter2",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 293,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeThreeOverlapAndAdjacentAfter3",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 304,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddRangeThreeOverlapAndAdjacentAfter4",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 315,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "ExampleAckTest",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 354,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "ExampleAckWithLossTest",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 403,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "AddLots",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 420,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "HitMax",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 447,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "SearchZero",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 455,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "SearchOne",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 478,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "SearchTwo",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 502,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "SearchThree",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 533,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "SearchFour",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 568,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "SearchRangeZero",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 576,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "SearchRangeOne",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 605,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "SearchRangeTwo",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RangeTest.cpp",
+      "line": 668,
+      "macro": "TEST",
+      "suite": "RangeTest",
+      "name": "SearchRangeThree",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 355,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "Alloc",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 361,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "AllocWithChunk",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 403,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteFrontAndReadAll",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 408,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteFrontAndReadPartial",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 413,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteGap",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 418,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "DrainZero",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 423,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteFillGap",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 460,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "Overwrite",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 489,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "OverwritePartial",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 518,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteTooMuch",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 534,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteTooMuch2",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 550,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteWhilePendingRead",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 589,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteLargeWhilePendingRead",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 637,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteLargeWhilePendingReadWithPartialDrain",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 698,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "WriteLarge",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 718,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "MultiWriteLarge",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 756,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "MultiWriteLargeWhileReadPending",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 816,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "ReadPartial",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 879,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "ReadPendingMultiWrite",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 935,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "RecvCrypto",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 994,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "DrainFrontChunkWithPendingGap",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1062,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "DrainFrontChunkWithPendingGap2",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1106,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "DrainFrontChunkExactly",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1147,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "DrainFrontChunkExactly_NoGap",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1185,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "IncreaseVirtualLength",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1220,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "GapEdge",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1254,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "GapCycleEdge",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1291,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "PartialDrainGrow",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1325,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "PartialDrainGapGrow",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1364,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "PartialDrainGapEdgeGrow",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1401,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "PartialDrainGapCycleEdgeGrow",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1439,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "PartialDrainSmallWriteAppend",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1481,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "PartialDrainBigWriteAppend",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1525,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "TwoGapWithTwoChunk",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1573,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "TwoGapCycleEdgeWithTwoChunk",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1612,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "ReadCycleSpan",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1650,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "MultiGap",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1679,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "MultiGapOverwrap",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1719,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "MultiGapDead",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1754,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "ReadDrainCycleSpan",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1790,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "Dead1stChunk",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1823,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "Grow1stChunk",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1839,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "Grow2ndChunk",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1857,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "Grow3rdChunk",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1886,
+      "macro": "TEST",
+      "suite": "MultiRecvTest",
+      "name": "ReadPendingOver2Chunk",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1907,
+      "macro": "TEST",
+      "suite": "AppOwnedBuffersTest",
+      "name": "ProvideChunks",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1936,
+      "macro": "TEST",
+      "suite": "AppOwnedBuffersTest",
+      "name": "ProvideChunksOverflow",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 1993,
+      "macro": "TEST",
+      "suite": "AppOwnedBuffersTest",
+      "name": "PartialDrain",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2017,
+      "macro": "TEST",
+      "suite": "AppOwnedBuffersTest",
+      "name": "ReadWriteManyChunks",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2046,
+      "macro": "TEST",
+      "suite": "AppOwnedBuffersTest",
+      "name": "NumberOfBufferNeededForRead",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2091,
+      "macro": "TEST",
+      "suite": "AppOwnedBuffersTest",
+      "name": "WriteTooLong",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2108,
+      "macro": "TEST",
+      "suite": "AppOwnedBuffersTest",
+      "name": "OutOfBuffers",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2153,
+      "macro": "TEST",
+      "suite": "AppOwnedBuffersTest",
+      "name": "FreeBufferBeforeDrain",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2193,
+      "macro": "TEST",
+      "suite": "RecvBufferResetReadTest",
+      "name": "ResetClearsPendingAndExternalReference_SingleMode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2247,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "OverlapWritePreservesExistingData",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2305,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "OverlapWriteAtFront",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2359,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "OverlapWriteExactDuplicate",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2394,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "OverlapWriteMultipleGaps",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2456,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "OverlapWriteThreeRangesTwoOverlaps",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/RecvBufferTest.cpp",
+      "line": 2511,
+      "macro": "TEST_P",
+      "suite": "WithMode",
+      "name": "OverlapWriteThreeContiguousNonOverlapping",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 81,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "TestAllSettingsFieldsSet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 141,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "TestAllGlobalSettingsFieldsSet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 171,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "TestAllSettingsFieldsGet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 232,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "TestAllGlobalSettingsFieldsGet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 248,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "StreamRecvWindowDefaultSetsIndividualLimits",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 268,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "StreamRecvWindowDefaultDoesNotOverrideIndividualLimitsWhenSetAtDestination",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 298,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "StreamRecvWindowDefaultGetsOverridenByIndividualLimits",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 344,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "QuicSettingsSetDefault_DoesNotOverwriteSetFields",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 432,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "QuicSettingsLoad_SetsFieldsFromStorage",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 506,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "QuicSettingsLoad_DoesNotOverwriteSetFields",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 552,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "QuicSettingsLoad_UsesDefaultIfStorageMissing",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 585,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "SettingsSizesGet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 637,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "SettingsSizesSet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 685,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "GlobalSettingsSizesGet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 737,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "GlobalSettingsSizesSet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 785,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "GlobalLoadBalancingServerIDSet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SettingsTest.cpp",
+      "line": 811,
+      "macro": "TEST",
+      "suite": "SettingsTest",
+      "name": "GlobalExecutionConfigSetAndGet",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SlidingWindowExtremumTest.cpp",
+      "line": 17,
+      "macro": "TEST",
+      "suite": "SlidingWindowExtremumTest",
+      "name": "EmptyWindow",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SlidingWindowExtremumTest.cpp",
+      "line": 39,
+      "macro": "TEST",
+      "suite": "SlidingWindowExtremumTest",
+      "name": "SlidingWindowMinima",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SlidingWindowExtremumTest.cpp",
+      "line": 104,
+      "macro": "TEST",
+      "suite": "SlidingWindowExtremumTest",
+      "name": "SlidingWindowMaxima",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/SpinFrame.cpp",
+      "line": 40,
+      "macro": "TEST",
+      "suite": "SpinFrame",
+      "name": "SpinFrame1000000",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 33,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ClientEncDec",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 126,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ClientDecFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 459,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ServerEncDec",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 523,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ServerEncDecNoAppDataNoCR",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 585,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ServerEncDecNoAppDataWithIpV4CR",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 691,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ServerEncDecAppData250WithIpV4ClassBCR",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 791,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ServerEncDecNoAppDataWithIpV6CR",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 897,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ServerEncDecAppData250WithIpV6CR",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 996,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ServerTicketDecodeFailureCases",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 1565,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ServerTicketDecodeFailureCasesWithCR",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 1739,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "ClientServerEndToEnd",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 1908,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "IsQuicIncomingResumptionTicketSupported",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 1929,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "QuicCryptoEncodeAddr",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 1976,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "QuicCryptoDecodeAddrFailureCases",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TicketTest.cpp",
+      "line": 2021,
+      "macro": "TEST",
+      "suite": "ResumptionTicketTest",
+      "name": "QuicCryptoDecodeCRStateFailureCases",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 142,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "Preset1",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 151,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "Preset1DecodeTwice",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 160,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "ZeroTP",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 177,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "VersionNegotiationExtension",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 189,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "VersionNegotiationExtensionDecodeTwice",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 201,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "CibirEncodingOne",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 210,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "CibirEncodingMax",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 219,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "CibirEncodingMax2",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 229,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "CibirEncodingZero",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 237,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "CibirEncodingOverMax",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 246,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "CibirEncodingOverMax2",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 256,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "GreaseQuicBit",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/TransportParamTest.cpp",
+      "line": 265,
+      "macro": "TEST",
+      "suite": "TransportParamTest",
+      "name": "ReliableResetEnabled",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/VarIntTest.cpp",
+      "line": 33,
+      "macro": "TEST",
+      "suite": "VarIntTest",
+      "name": "WellKnownEncode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/VarIntTest.cpp",
+      "line": 45,
+      "macro": "TEST",
+      "suite": "VarIntTest",
+      "name": "WellKnownDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/VarIntTest.cpp",
+      "line": 57,
+      "macro": "TEST",
+      "suite": "VarIntTest",
+      "name": "RandomEncodeDecode",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/VersionNegExtTest.cpp",
+      "line": 33,
+      "macro": "TEST_P",
+      "suite": "WithType",
+      "name": "ParseVersionInfoFail",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/VersionNegExtTest.cpp",
+      "line": 107,
+      "macro": "TEST_P",
+      "suite": "WithType",
+      "name": "EncodeDecodeVersionInfo",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/core/unittest/VersionNegExtTest.cpp",
+      "line": 157,
+      "macro": "TEST",
+      "suite": "VersionNegExtTest",
+      "name": "GeneratedCompatibleVersionList",
+      "category": "core-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/AllocTest.cpp",
+      "line": 37,
+      "macro": "TEST",
+      "suite": "AllocTest",
+      "name": "NonPagedAllocIsZeroInitialized",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/AllocTest.cpp",
+      "line": 63,
+      "macro": "TEST",
+      "suite": "AllocTest",
+      "name": "PagedAllocIsZeroInitialized",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/AllocTest.cpp",
+      "line": 87,
+      "macro": "TEST",
+      "suite": "AllocTest",
+      "name": "PoolAllocIsZeroInitializedOnReuse",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/AllocTest.cpp",
+      "line": 116,
+      "macro": "TEST",
+      "suite": "AllocTest",
+      "name": "PoolAllocIsZeroInitializedFresh",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 394,
+      "macro": "TEST_F",
+      "suite": "CryptTest",
+      "name": "WellKnownClientInitialv1",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 409,
+      "macro": "TEST_F",
+      "suite": "CryptTest",
+      "name": "WellKnownClientInitialv2",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 425,
+      "macro": "TEST_F",
+      "suite": "CryptTest",
+      "name": "WellKnownChaChaPolyv1",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 439,
+      "macro": "TEST_F",
+      "suite": "CryptTest",
+      "name": "WellKnownChaChaPolyv2",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 453,
+      "macro": "TEST_F",
+      "suite": "CryptTest",
+      "name": "HpMaskChaCha20",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 480,
+      "macro": "TEST_F",
+      "suite": "CryptTest",
+      "name": "HpMaskAes256",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 506,
+      "macro": "TEST_F",
+      "suite": "CryptTest",
+      "name": "HpMaskAes128",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 532,
+      "macro": "TEST_F",
+      "suite": "CryptTest",
+      "name": "KbKdfDerive",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 570,
+      "macro": "TEST_P",
+      "suite": "CryptTest",
+      "name": "Encryption",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 622,
+      "macro": "TEST_P",
+      "suite": "CryptTest",
+      "name": "HashWellKnown",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/CryptTest.cpp",
+      "line": 658,
+      "macro": "TEST_P",
+      "suite": "CryptTest",
+      "name": "HashRandom",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 686,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "Initialize",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 730,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "InitializeInvalid",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 747,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "UdpBind",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 759,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "UdpRebind",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 776,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "UdpQeo",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 815,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "UdpData",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 856,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "UdpDataShareCibirUdpPort",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 896,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "UdpDataPolling",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 937,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "UdpDataRebind",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 996,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "UdpDataECT0",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1037,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "UdpShareClientSocket",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1103,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "MultiBindListener",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1124,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "MultiBindListenerSingleProcessor",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1143,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "TcpListener",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1159,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "TcpConnect",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1202,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "TcpRejectConnect",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1239,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "TcpDisconnect",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1275,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "TcpDataClient",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1317,
+      "macro": "TEST_P",
+      "suite": "DataPathTest",
+      "name": "TcpDataServer",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1367,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "XdpRuleAddOomCleanup",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1423,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "XdpMapMode_ZeroConfigUsesNormalPath",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1461,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "XdpMapMode_InitFailsWithoutRawDatapath",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1498,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "XdpMapMode_InitSucceedsWithRawDatapath",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1537,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "XdpMapMode_SingleUnknownIfIndex",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1575,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "XdpMapMode_MultipleUnknownIfIndex",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/DataPathTest.cpp",
+      "line": 1615,
+      "macro": "TEST_F",
+      "suite": "DataPathTest",
+      "name": "XdpMapMode_SocketSkipsRulePlumbing",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/PlatformTest.cpp",
+      "line": 32,
+      "macro": "TEST",
+      "suite": "PlatformTest",
+      "name": "QuicAddrParsing",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/PlatformTest.cpp",
+      "line": 90,
+      "macro": "TEST",
+      "suite": "PlatformTest",
+      "name": "QuicAddrToString",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/PlatformTest.cpp",
+      "line": 123,
+      "macro": "TEST",
+      "suite": "PlatformTest",
+      "name": "QuicAddrIpToString",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/PlatformTest.cpp",
+      "line": 156,
+      "macro": "TEST",
+      "suite": "PlatformTest",
+      "name": "CxPlatIsIpLiteral",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/PlatformTest.cpp",
+      "line": 182,
+      "macro": "TEST",
+      "suite": "PlatformTest",
+      "name": "EventQueue",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/PlatformTest.cpp",
+      "line": 257,
+      "macro": "TEST",
+      "suite": "PlatformTest",
+      "name": "EventQueueWorker",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 872,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "Initialize",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 881,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "Handshake",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 894,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ExportKeyingMaterial",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 964,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeCertFromFile",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 977,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeParamInfoDefault",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1022,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeParamInfoAES256GCM",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1069,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeParamInfoAES128GCM",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1117,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeParamInfoChaCha20",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1167,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeParamNegotiatedAlpn",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1202,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeParallel",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1232,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeResumption",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1256,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeResumptionRejection",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1281,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeResumptionClientDisabled",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1297,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeResumptionServerDisabled",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1326,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeMultiAlpnServer",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1336,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeMultiAlpnClient",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1346,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeMultiAlpnBoth",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1356,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeFragmented",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1366,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakeVeryFragmented",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1376,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakesSerial",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1394,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "HandshakesInterleaved",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1435,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CertificateError",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1458,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "DeferredCertificateValidationAllow",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1488,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ServerCertificateReferenceIdentityMismatch",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1509,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "DeferredCertificateValidationAllowCa",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1536,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "DeferredCertificateValidationReject",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1560,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CustomCertificateValidationAllow",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1583,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CustomCertificateValidationReject",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1608,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CustomCertificateValidationServerIndicateNoCert",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1620,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CustomClientCertificateValidationServerIndicate",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1634,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ExtraCertificateValidation",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1659,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "PortableCertificateValidation",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1684,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "InProcPortableCertificateValidation",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1711,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "InProcCertificateValidation",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1738,
+      "macro": "TEST_P",
+      "suite": "TlsTest",
+      "name": "One1RttKey",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1795,
+      "macro": "TEST_P",
+      "suite": "TlsTest",
+      "name": "KeyUpdate",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1881,
+      "macro": "TEST_P",
+      "suite": "TlsTest",
+      "name": "PacketEncryptionPerf",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 1994,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "LockPerfTest",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2023,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ClientCertificateFailValidation",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2034,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ClientCertificateDeferValidation",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2050,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ClientCertificateDeferValidationCa",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2067,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ClientCertificateDeferValidationNoCertSchannel",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2084,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ClientCertificateNoValidationNoCertSchannel",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2102,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ClientCertificateDeferValidationNoCert",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2128,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "ClientCertificateNoValidationNoCert",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2154,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CipherSuiteSuccess1",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2169,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CipherSuiteSuccess2",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2185,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CipherSuiteSuccess3",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2203,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CipherSuiteMismatch",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2226,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "CipherSuiteInvalid",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2325,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "PlatformSpecificFlagsSchannel",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2425,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "PlatformSpecificFlagsOpenSsl",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/TlsTest.cpp",
+      "line": 2489,
+      "macro": "TEST_F",
+      "suite": "TlsTest",
+      "name": "PortableCertFlags",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/ToeplitzTest.cpp",
+      "line": 109,
+      "macro": "TEST_F",
+      "suite": "ToeplitzTest",
+      "name": "IPv4WithTcp",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/platform/unittest/ToeplitzTest.cpp",
+      "line": 144,
+      "macro": "TEST_F",
+      "suite": "ToeplitzTest",
+      "name": "IPv6WithTcp",
+      "category": "platform-unit",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 320,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateApi",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 329,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateRegistration",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 338,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateGlobalParam",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 348,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateXdpMapConfigParam",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 364,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateCommonParam",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 373,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateRegistrationParam",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 382,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateConfigurationParam",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 391,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateListenerParam",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 400,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateConnectionParam",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 409,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateTlsParam",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 418,
+      "macro": "TEST_P",
+      "suite": "WithBool",
+      "name": "ValidateTlsHandshakeInfo",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 430,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateStreamParam",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 439,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateGetPerfCounters",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 449,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateEncryptDecryptPerfCounters",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 458,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ConnQueueDelayStatistics",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 468,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateConfiguration",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 482,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateListener",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 491,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateConnection",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 501,
+      "macro": "TEST",
+      "suite": "Handshake",
+      "name": "ConnectionExportKeyingMaterial",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 510,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateConnectionExportKeyingMaterial",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 519,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateConnectionPoolCreate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 528,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateExecutionContext",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 536,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidatePartition",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 546,
+      "macro": "TEST",
+      "suite": "OwnershipValidation",
+      "name": "RegistrationShutdownBeforeConnOpen",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 555,
+      "macro": "TEST",
+      "suite": "OwnershipValidation",
+      "name": "RegistrationShutdownAfterConnOpen",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 564,
+      "macro": "TEST",
+      "suite": "OwnershipValidation",
+      "name": "RegistrationShutdownAfterConnOpenBeforeStart",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 573,
+      "macro": "TEST",
+      "suite": "OwnershipValidation",
+      "name": "RegistrationShutdownAfterConnOpenAndStart",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 582,
+      "macro": "TEST",
+      "suite": "OwnershipValidation",
+      "name": "ConnectionCloseBeforeStreamClose",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 591,
+      "macro": "TEST_P",
+      "suite": "WithBool",
+      "name": "ValidateStream",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 600,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "CloseConnBeforeStreamFlush",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 623,
+      "macro": "TEST_P",
+      "suite": "WithValidateConnectionEventArgs",
+      "name": "ValidateConnectionEvents",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 654,
+      "macro": "TEST_P",
+      "suite": "WithValidateNetStatsConnEventArgs",
+      "name": "ValidateNetStatConnEvent",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 684,
+      "macro": "TEST_P",
+      "suite": "WithValidateStreamEventArgs",
+      "name": "ValidateStreamEvents",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 699,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateVersionSettings",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 709,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "ValidateParamApi",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 790,
+      "macro": "TEST_P",
+      "suite": "WithValidateTlsConfigArgs",
+      "name": "ValidateTlsConfig",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 833,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "RegistrationOpenClose",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 843,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "CreateListener",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 852,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "StartListener",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 861,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "StartListenerMultiAlpns",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 870,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "StartListenerImplicit",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 879,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "StartTwoListeners",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 888,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "StartTwoListenersSameALPN",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 897,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "StartListenerExplicit",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 906,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "CreateConnection",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 915,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "ConnectionCloseFromCallback",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 924,
+      "macro": "TEST_P",
+      "suite": "WithBool",
+      "name": "RejectConnection",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 934,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "Ecn",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 943,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "LocalPathChanges",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 952,
+      "macro": "TEST",
+      "suite": "Mtu",
+      "name": "Settings",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 979,
+      "macro": "TEST_P",
+      "suite": "WithMtuArgs",
+      "name": "MtuDiscovery",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 996,
+      "macro": "TEST",
+      "suite": "Alpn",
+      "name": "ValidAlpnLengths",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1008,
+      "macro": "TEST",
+      "suite": "Alpn",
+      "name": "InvalidAlpnLengths",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1017,
+      "macro": "TEST",
+      "suite": "Alpn",
+      "name": "ChangeAlpn",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1027,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "BindConnectionImplicit",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1036,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "BindConnectionExplicit",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1045,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "TestAddrFunctions",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1079,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs1",
+      "name": "Connect",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1089,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs1",
+      "name": "Resume",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1098,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs1",
+      "name": "ResumeAsync",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1110,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs1",
+      "name": "ResumeRejection",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1122,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs1",
+      "name": "ResumeRejectionByServerApp",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1134,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs1",
+      "name": "ResumeRejectionByServerAppAsync",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1154,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "ClientSharedLocalPort",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1164,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "InterfaceBinding",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1176,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "RetryMemoryLimitConnect",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1202,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs2",
+      "name": "OldVersion",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1230,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs3",
+      "name": "AsyncSecurityConfig",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1239,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs3",
+      "name": "AsyncSecurityConfig_Delayed",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1277,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "VersionNegotiation",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1286,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "VersionNegotiationRetry",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1295,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "CompatibleVersionNegotiationRetry",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1304,
+      "macro": "TEST_P",
+      "suite": "WithVersionNegotiationExtArgs",
+      "name": "CompatibleVersionNegotiation",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1313,
+      "macro": "TEST_P",
+      "suite": "WithVersionNegotiationExtArgs",
+      "name": "CompatibleVersionNegotiationDefaultServer",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1322,
+      "macro": "TEST_P",
+      "suite": "WithVersionNegotiationExtArgs",
+      "name": "CompatibleVersionNegotiationDefaultClient",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1336,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "IncompatibleVersionNegotiation",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1345,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "FailedVersionNegotiation",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1374,
+      "macro": "TEST_P",
+      "suite": "WithFeatureSupportArgs",
+      "name": "ReliableResetNegotiation",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1383,
+      "macro": "TEST_P",
+      "suite": "WithFeatureSupportArgs",
+      "name": "OneWayDelayNegotiation",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1418,
+      "macro": "TEST_P",
+      "suite": "WithCustomCertificateValidationArgs",
+      "name": "CustomServerCertificateValidation",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1427,
+      "macro": "TEST_P",
+      "suite": "WithCustomCertificateValidationArgs",
+      "name": "CustomClientCertificateValidation",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1436,
+      "macro": "TEST",
+      "suite": "Handshake",
+      "name": "CustomServerCertValidationAfterShutdown",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1445,
+      "macro": "TEST",
+      "suite": "Handshake",
+      "name": "CustomClientCertValidationAfterShutdown",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1463,
+      "macro": "TEST_P",
+      "suite": "WithAcceptTicket",
+      "name": "CustomTicketValidationAfterShutdown",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1501,
+      "macro": "TEST_P",
+      "suite": "WithClientCertificateArgs",
+      "name": "ConnectClientCertificate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1540,
+      "macro": "TEST_P",
+      "suite": "WithCibirExtensionParams",
+      "name": "CibirExtension",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1577,
+      "macro": "TEST_P",
+      "suite": "WithOddSizeVnTpParams",
+      "name": "OddSizeVnTp",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1595,
+      "macro": "TEST_P",
+      "suite": "WithVpnVersionParams",
+      "name": "VnTpChosenVersionMismatch",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1604,
+      "macro": "TEST_P",
+      "suite": "WithVpnVersionParams",
+      "name": "VnTpChosenVersionZero",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1613,
+      "macro": "TEST_P",
+      "suite": "WithVpnVersionParams",
+      "name": "VnTpOtherVersionZero",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1631,
+      "macro": "TEST",
+      "suite": "CredValidation",
+      "name": "ConnectExpiredServerCertificate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1676,
+      "macro": "TEST",
+      "suite": "CredValidation",
+      "name": "ConnectValidServerCertificate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1720,
+      "macro": "TEST",
+      "suite": "CredValidation",
+      "name": "ConnectExpiredClientCertificate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1769,
+      "macro": "TEST",
+      "suite": "CredValidation",
+      "name": "ConnectValidClientCertificate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1846,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs4",
+      "name": "RandomLoss",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1856,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs4",
+      "name": "RandomLossResume",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1865,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeArgs4",
+      "name": "RandomLossResumeRejection",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1885,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "Unreachable",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1895,
+      "macro": "TEST",
+      "suite": "HandshakeTest",
+      "name": "InvalidAddress",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1904,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "BadALPN",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1913,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "BadSNI",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1922,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "IpSNI",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1931,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "ServerRejected",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1940,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "ClientBlockedSourcePort",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1950,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "RebindPort",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 1984,
+      "macro": "TEST_P",
+      "suite": "WithRebindPaddingArgs",
+      "name": "RebindPortPadded",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2006,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "RebindAddr",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2023,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "RebindDatapathAddr",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2038,
+      "macro": "TEST_P",
+      "suite": "WithRebindPaddingArgs",
+      "name": "RebindAddrPadded",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2055,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "PathValidationTimeout",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2064,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "PathValidationLastPathClose",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2074,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "ChangeMaxStreamIDs",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2084,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "LoadBalanced",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2118,
+      "macro": "TEST_P",
+      "suite": "WithHandshakeLossPatternsArgs",
+      "name": "HandshakeSpecificLossPatterns",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2148,
+      "macro": "TEST_P",
+      "suite": "WithShutdownDuringHandshakeArgs",
+      "name": "ShutdownDuringHandshake",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2193,
+      "macro": "TEST_P",
+      "suite": "WithConnectionPoolCreateArgs",
+      "name": "ConnectionPoolCreate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2236,
+      "macro": "TEST_P",
+      "suite": "WithSendArgs",
+      "name": "Send",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2251,
+      "macro": "TEST_P",
+      "suite": "WithSendArgs",
+      "name": "SendQtip",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2305,
+      "macro": "TEST_P",
+      "suite": "WithSendLargeArgs",
+      "name": "SendLarge",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2343,
+      "macro": "TEST_P",
+      "suite": "WithSendIntermittentlyArgs",
+      "name": "SendIntermittently",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2385,
+      "macro": "TEST_P",
+      "suite": "WithSend0RttArgs1",
+      "name": "Send0Rtt",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2427,
+      "macro": "TEST_P",
+      "suite": "WithSend0RttArgs2",
+      "name": "Reject0Rtt",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2452,
+      "macro": "TEST_P",
+      "suite": "WithBool",
+      "name": "IdleTimeout",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2461,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "IdleDestCidChange",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2470,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "ServerDisconnect",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2479,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "ClientDisconnect",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2488,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StatelessResetKey",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2497,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "ForcedKeyUpdate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2506,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "KeyUpdate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2535,
+      "macro": "TEST_P",
+      "suite": "WithKeyUpdateRandomLossArgs",
+      "name": "RandomLoss",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2585,
+      "macro": "TEST_P",
+      "suite": "WithAbortiveArgs",
+      "name": "AbortiveShutdown",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2616,
+      "macro": "TEST_P",
+      "suite": "WithCancelOnLossArgs",
+      "name": "CancelOnLossSend",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2650,
+      "macro": "TEST_P",
+      "suite": "WithCidUpdateArgs",
+      "name": "CidUpdate",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2690,
+      "macro": "TEST_P",
+      "suite": "WithReceiveResumeArgs",
+      "name": "ReceiveResume",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2722,
+      "macro": "TEST_P",
+      "suite": "WithReceiveResumeNoDataArgs",
+      "name": "ReceiveResumeNoData",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2736,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "AckSendDelay",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2745,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "AbortPausedReceive",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2754,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "AbortPendingReceive",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2763,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "AbortIncompleteReceive",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2772,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "SlowReceive",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2783,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "NthAllocFail",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2795,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "NthPacketDrop",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2805,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamPriority",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2814,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamPriorityInfiniteLoop",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2823,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamDifferentAbortErrors",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2832,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamAbortRecvFinRace",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2842,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamReliableReset",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2851,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamReliableResetMultipleSends",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2862,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamMultiReceive",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2889,
+      "macro": "TEST_P",
+      "suite": "WithAppProvidedBuffersConfigArgs",
+      "name": "StreamAppProvidedBuffers_ClientSend",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2898,
+      "macro": "TEST_P",
+      "suite": "WithAppProvidedBuffersConfigArgs",
+      "name": "StreamAppProvidedBuffers_ServerSend",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2907,
+      "macro": "TEST_P",
+      "suite": "WithAppProvidedBuffersConfigArgs",
+      "name": "StreamAppProvidedBuffersOutOfSpace_ClientSend_AbortStream",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2916,
+      "macro": "TEST_P",
+      "suite": "WithAppProvidedBuffersConfigArgs",
+      "name": "StreamAppProvidedBuffersOutOfSpace_ClientSend_ProvideMoreBuffer",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2925,
+      "macro": "TEST_P",
+      "suite": "WithAppProvidedBuffersConfigArgs",
+      "name": "StreamAppProvidedBuffersOutOfSpace_ServerSend_AbortStream",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2934,
+      "macro": "TEST_P",
+      "suite": "WithAppProvidedBuffersConfigArgs",
+      "name": "StreamAppProvidedBuffersOutOfSpace_ServerSend_ProvideMoreBuffer",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2950,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamBlockUnblockBidiConnFlowControl",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2959,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamBlockUnblockUnidiConnFlowControl",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2968,
+      "macro": "TEST",
+      "suite": "Misc",
+      "name": "StreamAbortConnFlowControl",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2977,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "OperationPriority",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2986,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "ConnectionPriority",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 2997,
+      "macro": "TEST",
+      "suite": "Drill",
+      "name": "VarIntEncoder",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3030,
+      "macro": "TEST_P",
+      "suite": "WithDrillInitialPacketCidArgs",
+      "name": "DrillInitialPacketCids",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3060,
+      "macro": "TEST_P",
+      "suite": "WithDrillInitialPacketTokenArgs",
+      "name": "DrillInitialPacketToken",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3069,
+      "macro": "TEST_P",
+      "suite": "WithDrillInitialPacketTokenArgs",
+      "name": "QuicDrillTestServerVNPacket",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3078,
+      "macro": "TEST_P",
+      "suite": "WithDrillInitialPacketTokenArgs",
+      "name": "QuicDrillTestKeyUpdateDuringHandshake",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3110,
+      "macro": "TEST_P",
+      "suite": "WithDatagramNegotiationArgs",
+      "name": "DatagramNegotiation",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3124,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "DatagramSend",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3133,
+      "macro": "TEST_P",
+      "suite": "WithFamilyArgs",
+      "name": "DatagramDrop",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3146,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "TestStorage",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3160,
+      "macro": "TEST",
+      "suite": "Basic",
+      "name": "TestVersionStorage",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3175,
+      "macro": "TEST",
+      "suite": "ParameterValidation",
+      "name": "RetryConfigSetting",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    },
+    {
+      "path": "src/test/bin/quic_gtest.cpp",
+      "line": 3232,
+      "macro": "TEST_P",
+      "suite": "WithXdpMapModeArgs",
+      "name": "Handshake",
+      "category": "transport-api",
+      "direct_port_status": "unqualified"
+    }
+  ],
+  "declaration_count": 590,
+  "category_counts": {
+    "core-unit": 316,
+    "platform-unit": 102,
+    "transport-api": 172
+  },
+  "macro_counts": {
+    "TEST": 217,
+    "TEST_F": 201,
+    "TEST_P": 172
+  }
+}

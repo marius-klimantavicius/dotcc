@@ -11,6 +11,9 @@ namespace Managed.Transport.Hosting;
 
 public sealed unsafe partial class MsQuicHost
 {
+    // Erased from production builds. Source-linked fault tests throw after rent
+    // and before submission, so the real receive catch must return the lease.
+    static partial void ObserveBeforeDatagramReceive();
     private sealed class DatagramPath : IDisposable
     {
         internal readonly MsQuicHost Host;
@@ -210,6 +213,7 @@ public sealed unsafe partial class MsQuicHost
                     try
                     {
                         packet = Path.Rent();
+                        ObserveBeforeDatagramReceive();
                         EndPoint peer = new IPEndPoint(entry.Socket.AddressFamily == AddressFamily.InterNetwork ? IPAddress.Any : IPAddress.IPv6Any, 0);
                         var result = entry.Socket.ReceiveMessageFromAsync(packet.Memory.Memory, SocketFlags.None, peer).AsTask().GetAwaiter().GetResult();
                         int length = result.ReceivedBytes;
