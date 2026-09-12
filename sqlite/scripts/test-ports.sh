@@ -4,6 +4,11 @@ export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
 export SQLITE_EXECUTION_TIMEOUT="${SQLITE_PORT_TIMEOUT:-600}"
 mkdir -p "$TMPDIR"
 compiler="$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll"
+# A prior emitter may have used another source filename (for example Program.cs
+# instead of DotCcProgram.cs). Keep each run in a fresh output tree so MSBuild's
+# source glob cannot combine old and current translations. Preserve old runs.
+port_output=$(mktemp -d "$SQLITE_ROOT/generated/Regression-Ports-XXXXXXXX")
+echo "Regression translation outputs: $port_output"
 
 # Mirror the repository's Lua workflow, retaining its original upstream runner.
 lua_source="$DOTCC_ROOT/examples/lua/lua-src"
@@ -12,7 +17,7 @@ lua_units=(lapi lcode lctype ldebug ldo ldump lfunc lgc llex lmem lobject lopcod
   liolib lmathlib loadlib loslib lstrlib ltablib lutf8lib linit lua)
 lua_inputs=()
 for unit in "${lua_units[@]}"; do lua_inputs+=("$lua_source/$unit.c"); done
-lua_output="$SQLITE_ROOT/generated/Regression-Lua"
+lua_output="$port_output/Regression-Lua"
 dotnet "$compiler" --emit=csproj -I "$lua_source" "${lua_inputs[@]}" -o "$lua_output" \
   > "$SQLITE_ROOT/artifacts/regression-lua-emission.log" 2>&1
 dotnet build "$lua_output/Regression-Lua.csproj" -c Release --nologo \
@@ -35,7 +40,7 @@ chibi_inputs=()
 for unit in gc sexp bignum gc_heap opcodes vm eval simplify main; do
   chibi_inputs+=("$chibi_source/$unit.c")
 done
-chibi_output="$SQLITE_ROOT/generated/Regression-Chibi"
+chibi_output="$port_output/Regression-Chibi"
 dotnet "$compiler" --emit=csproj -I "$chibi_root/gen-include" -I "$chibi_source/include" \
   -D SEXP_USE_INTTYPES -D SEXP_USE_NTPGETTIME -D SEXP_USE_DL=0 -D SEXP_USE_POLL_PORT=0 \
   -D SEXP_USE_STATIC_LIBS=1 -D SEXP_USE_STATIC_LIBS_NO_INCLUDE=0 \

@@ -1572,3 +1572,44 @@ Log: `artifacts/preupdate-consumer.log`.
 with the new flag: 41 offsetof contracts, 67 actual field offsets, 48 aggregate
 size/alignment checks and eight inline-array storage checks under both JIT and
 NativeAOT. Log: `artifacts/preupdate-product-layout.log`.
+
+## Fresh regression after MsQuic compiler changes (2026-09-12)
+
+SQLite 3.53.4 was freshly translated and qualified with the compiler built at
+`ce54ee2`, after the MsQuic declaration/layout/intrinsic and promoted-member
+changes. The CLI SHA-256 is
+`b433a0d5d61a68da5fbf1f7bfada1824f7b591aa90a727dcb817438e2ecd9338`;
+`DotCC.Lib.dll` is
+`4fe035206c4f7cad69a80de48da2f334a38d3627557e29f0be0b1e812431a855`.
+The build uses the packaged LALR dependency (`UseLocalLalrCc=false`).
+
+The complete SQLite campaign passes its eight native baselines, translated
+core/API/VFS/virtual-table/allocation/JSONB/FTS5 corpora, layout and endian
+checks, copied-translation isolation, callbacks and function identity,
+threading, independent-process VFS/WAL locking and crash recovery, and database
+image exchange. A separately regenerated raw engine and isolated optimized
+snapshot both pass all four consumer groups under JIT and Linux x64 NativeAOT,
+plus native comparisons for the core/API/JSONB/FTS5 corpora. The IDE SQLite
+Fix All test also produces exactly the standalone optimizer's source output.
+
+Compiler regression results are 2,146 unit tests and 447 functional tests
+passing, with 1,005 explicit optional-oracle skips in the default run. The
+additional WAT run passes all 146 enabled cases, Lua passes its upstream
+conformance runner, and Chibi passes all 1,225 R7RS cases. Postprocessor tests
+pass 65 cases; analyzer tests pass 31 ordinary cases and the separately enabled
+SQLite snapshot case.
+
+The first `verify.sh --with-ports` attempt completed every SQLite check, then
+failed the Lua build because an old `Program.cs` remained beside the new
+`DotCcProgram.cs`. `test-ports.sh` now uses a fresh output tree for each run;
+the repaired Lua/Chibi/WAT campaign passes without compiler changes. The
+original failed receipt remains in `artifacts/msquic-final-20260912-114440`.
+The completed prefix was reused only after checking unchanged compiler and
+SQLite inputs, with the port-harness repair recorded explicitly.
+
+The final composite receipt is
+`artifacts/msquic-final-20260912-120752/results.json`. It binds the original
+failure, completed-prefix logs, repaired script, each resumed stage's compiler
+hashes, snapshot manifest and all 103 snapshot source/project/manifest files.
+The two postprocessor unit receipts are in the same directory. This establishes
+Linux x64 regression evidence; it does not qualify unavailable platform runners.
