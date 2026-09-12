@@ -663,3 +663,17 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
 - [x] Verify native/LE/BE UTF-16 APIs and cross-encoding native database exchange,
       core/JSONB/FTS5 consumer, WAL recovery/interoperability, layout and NativeAOT.
       See [validation and commands](macro-overrides.md).
+
+
+### Isolated copied translations and offset audit
+
+- [x] Confirm `sqlite3BtreeCursorZero` uses `offsetof(BtCursor, pBt)` intentionally;
+      add a sentinel-byte regression proving only the 32-byte prefix is cleared.
+- [x] Add `--nest-types` and `--runtime=c/all/auto` with source/object provenance,
+      local split-file aliases and nested Cond/CBool postprocessor support.
+- [x] Emit one `{class_name}FunctionPointers` declaration and rename the globals
+      helper to `{class_name}Globals`, preserving canonical addresses and state order.
+- [x] Enable nesting/C-only runtime for Sqlite and update HostVfs/consumers.
+- [x] Verify two copied translations in one namespace/consumer assembly under
+      JIT/NativeAOT, plus raw/postprocessed SQLite, cursor boundary, and native
+      offset/size/alignment contracts. See [output-isolation.md](output-isolation.md).

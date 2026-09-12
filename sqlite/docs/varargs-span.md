@@ -63,7 +63,7 @@ does not carry a `params` modifier. For a C `int sum(int count, ...)`:
 
 ```csharp
 private static readonly unsafe delegate*<int, ReadOnlySpan<VaArg>, int> Sum =
-    DotCcFunctionPointers.sum;
+    DotCcLibFunctionPointers.sum;
 // Inside an unsafe method:
 int result = Sum(3, [1, 2, 3]);
 ```

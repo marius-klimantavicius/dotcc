@@ -19,6 +19,11 @@ map the upstream runtime probes to `BitConverter.IsLittleEndian`. The profile is
 auditable `artifacts/engine-overrides.jsonl`. Run `scripts/test-endian.sh` for
 native/managed UTF-16 database exchange (add `SQLITE_AOT=1` for NativeAOT).
 
+Generated types/runtime are [nested under `Sqlite`](output-isolation.md), with
+`SqliteGlobals` and one `SqliteFunctionPointers` cache. The product omits Zig-only
+runtime sources. `sqlite3BtreeCursorZero` intentionally clears only the 32-byte
+prefix; the new consumer regression verifies that the remaining bytes survive.
+
 Prerequisites are .NET SDK 10, Python 3, GCC, a POSIX shell and GNU coreutils.
 NativeAOT also requires the .NET Linux native linker prerequisites (the CI recipe
 installs Clang and zlib development headers). Initial fetch/restore requires

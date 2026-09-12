@@ -10,7 +10,7 @@ internal static unsafe partial class Program
 {
     private static int destroyed;
     private static int ftsDestroyed;
-    private static readonly delegate*<void*, void> FreePointer = DotCcFunctionPointers.sqlite3_free;
+    private static readonly delegate*<void*, void> FreePointer = SqliteFunctionPointers.sqlite3_free;
     private static readonly delegate*<sqlite3_context*, int, sqlite3_value**, void> CallbackPointer = &AddBias;
     private static readonly delegate*<void*, void> DestroyPointer = &Destroy;
     private static readonly delegate*<void*, void> Transient = (delegate*<void*, void>)(nint)(-1);
@@ -419,6 +419,7 @@ internal static unsafe partial class Program
             CheckSqlWorkloads(db);
             CheckFullTextSearch(db);
             CheckFunctionIdentity();
+            CheckCursorInitialization();
 
             var state = (ExtensionState*)NativeMemory.AllocZeroed((nuint)sizeof(ExtensionState));
             state->Bias = 35;

@@ -4,6 +4,24 @@ Campaign commands run from `sqlite/`; scripts resolve their own absolute roots.
 Evidence is recorded in milestone order; later checkpoints supersede earlier
 pending statements. Reproduction commands are in `usage.md`.
 
+## Nested C-only output and cursor boundary (2026-09-12)
+
+The product now uses `--nest-types --runtime=c`. Aggregates, runtime and helpers
+live under `Managed.Database.Sqlite`; split-file aliases are local. One
+`SqliteFunctionPointers` cache replaces the consecutive partial declarations,
+and globals live in `SqliteGlobals`. Two copied translations compile together
+without project references and preserve separate runtime/global state under JIT
+and NativeAOT. Compiler suites (2,096 unit / 394 functional, 969 opt-in skips) and
+65 postprocessor tests pass. Raw/postprocessed SQLite and its NativeAOT consumer
+pass with zero product build warnings.
+
+The priority offset audit found that upstream intentionally clears only the
+32-byte BtCursor prefix before `pBt`; `.Value` is correct, while `.Size` describes
+all 296 bytes. ManagedConsumer now verifies that every trailing byte survives.
+All 41 native offset contracts and the actual size/alignment/field/storage tests
+also pass under JIT and NativeAOT. Details and commands:
+[output-isolation.md](output-isolation.md).
+
 ## Generic runtime endian overrides (2026-09-11)
 
 The product now selects SQLite's original BIGENDIAN/LITTLEENDIAN pointer probes

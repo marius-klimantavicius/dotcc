@@ -1,5 +1,6 @@
 #nullable enable
 global using static Managed.Database.HostMutex;
+using static global::Managed.Database.Sqlite;
 
 using System;
 using System.Runtime.CompilerServices;

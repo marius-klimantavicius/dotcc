@@ -1,4 +1,5 @@
 #nullable enable
+using static global::Managed.Database.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +28,7 @@ public static unsafe partial class HostVfs
         private MemoryMappedViewAccessor? view;
         private byte* address;
         private long length;
-        private long limit = Math.Max(0, DotCcGlobals.sqlite3Config.szMmap);
+        private long limit = Math.Max(0, SqliteGlobals.sqlite3Config.szMmap);
         private int references;
 
         private void Unmap()
@@ -54,7 +55,7 @@ public static unsafe partial class HostVfs
                 // prevents a limit change that could invalidate its address.
                 if (requested >= 0 && references == 0)
                 {
-                    requested = Math.Min(requested, Math.Max(0, DotCcGlobals.sqlite3Config.mxMmap));
+                    requested = Math.Min(requested, Math.Max(0, SqliteGlobals.sqlite3Config.mxMmap));
                     if (requested != limit) { Unmap(); limit = requested; }
                 }
                 return Ok;

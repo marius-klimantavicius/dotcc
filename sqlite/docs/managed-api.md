@@ -2,7 +2,9 @@
 
 The compiler's `--emit=managedlib` output is an ordinary reusable C# class library.
 It exposes translated functions through `Sqlite`, C globals through
-`DotCcGlobals`, and aggregate/enum types as public declarations. This is a low-level
+`Sqlite.SqliteGlobals`, and aggregate/enum types as public nested declarations.
+The product uses `--nest-types --runtime=c`; `using static Managed.Database.Sqlite;`
+imports these types. See [output isolation](output-isolation.md). This is a low-level
 unsafe API, including generated helpers; C ownership and lifetime rules still
 apply. Function-pointer signatures use managed `delegate*` calling conventions.
 
@@ -84,12 +86,12 @@ set `SQLITE_AOT=1` to repeat with NativeAOT. Detailed current-phase evidence is 
 
 Generated function designators and address expressions now read canonical static
 readonly fields. In managed-library output, translated definitions (including variadic methods)
-are available through `DotCcFunctionPointers`, including functions whose addresses
+are available through `Sqlite.SqliteFunctionPointers`, including functions whose addresses
 were not taken by the C input. A C# consumer should reuse that field:
 
 ```csharp
 private static readonly unsafe delegate*<void*, void> FreePointer =
-    DotCcFunctionPointers.sqlite3_free;
+    Sqlite.SqliteFunctionPointers.sqlite3_free;
 ```
 
 Capture each application callback once in its own static readonly field and reuse
