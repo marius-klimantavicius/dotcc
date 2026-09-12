@@ -1550,3 +1550,25 @@ Logs: `artifacts/product-layout-emission.log`,
 The separate upstream Unix VFS experiment was regenerated with the same filenames
 and passes its disk CRUD, cross-process locking, WAL, mmap, JSONB and FTS5 checks
 (`artifacts/class-filenames-upstream-unix.log`).
+
+
+## Preupdate hook (2026-09-12)
+
+Enabled `SQLITE_ENABLE_PREUPDATE_HOOK` in the shared native/translated profile
+and regenerated the managed product with its normal in-place postprocessing.
+The newly active C paths translate and compile without compiler changes or
+warnings. All six preupdate APIs are emitted on `Managed.Database.Sqlite`.
+
+`SQLITE_AOT=1 scripts/test-managed-consumer.sh` passes under JIT and linux-x64
+NativeAOT. The new callback test checks the compile option, retained managed
+context across GC, connection/database/table identity, INSERT/UPDATE/DELETE
+operation codes, old/new values (including NULL and UTF-8 text), changing rowids,
+column counts, trigger depth, the ordinary-operation blob-write marker, and
+unregistration with the returned context and no subsequent delivery. Existing
+SQL, JSONB, FTS5, WAL, endian and callback workloads also pass.
+Log: `artifacts/preupdate-consumer.log`.
+
+`SQLITE_AOT=1 scripts/test-product-layout.sh` passes against the native profile
+with the new flag: 41 offsetof contracts, 67 actual field offsets, 48 aggregate
+size/alignment checks and eight inline-array storage checks under both JIT and
+NativeAOT. Log: `artifacts/preupdate-product-layout.log`.

@@ -416,6 +416,7 @@ internal static unsafe partial class Program
             Expect(db, "SELECT json_valid(jsonb('[1,2,3]'),8)", "1");
             CheckEndianDatabases(directory, write: true);
             CheckOptionalFeatures(db);
+            CheckPreupdateHook(db);
             CheckSqlWorkloads(db);
             CheckFullTextSearch(db);
             CheckFunctionIdentity();

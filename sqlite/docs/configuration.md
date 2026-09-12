@@ -4,10 +4,11 @@
 `SQLITE_OS_OTHER=1`, `SQLITE_THREADSAFE=0`, `SQLITE_TEMP_STORE=3`,
 `SQLITE_MAX_MMAP_SIZE=0`, `SQLITE_ENABLE_FTS5`,
 `SQLITE_ENABLE_MATH_FUNCTIONS`, `SQLITE_ENABLE_PERCENTILE`,
-`SQLITE_ENABLE_COLUMN_METADATA`, and `SQLITE_OMIT_LOAD_EXTENSION`. Default SQLite core, JSON/JSONB, and statically
+`SQLITE_ENABLE_COLUMN_METADATA`, `SQLITE_ENABLE_PREUPDATE_HOOK`, and
+`SQLITE_OMIT_LOAD_EXTENSION`. Default SQLite core, JSON/JSONB, and statically
 compiled FTS5 are enabled, together with SQL math functions, median/percentile
-aggregates and windows, and UTF-8/UTF-16 result-column origin metadata. FTS3 and
-FTS4 remain deferred. There is no native SQLite interop or dynamic
+aggregates and windows, UTF-8/UTF-16 result-column origin metadata, and preupdate
+callbacks. FTS3 and FTS4 remain deferred. There is no native SQLite interop or dynamic
 extension loading. Deterministic C corpora use the portable memory VFS. The
 managed-library build applies `config/host-defines.txt` afterward, enabling
 `SQLITE_THREADSAFE=1`, `SQLITE_MUTEX_APPDEF=1`, `DOTCC_HOST_VFS=1`,
@@ -100,3 +101,23 @@ These APIs retain SQLite's borrowed-string lifetime rules; copy names before
 reset/reprepare/finalize or other calls that invalidate their storage.
 `tests/optional_features.h` runs in the native/translated API corpus, and the
 separate managed consumer calls all six UTF-8/UTF-16 origin APIs directly.
+
+## Preupdate callbacks
+
+`SQLITE_ENABLE_PREUPDATE_HOOK` enables `sqlite3_preupdate_hook` and the
+`sqlite3_preupdate_old`, `sqlite3_preupdate_new`, `sqlite3_preupdate_count`,
+`sqlite3_preupdate_depth`, and `sqlite3_preupdate_blobwrite` APIs in both profiles.
+Register a cached managed function pointer and an optional context pointer;
+native interop is not required. Registering a null callback disables the hook
+and returns the previous context pointer.
+
+Read old values only for UPDATE/DELETE and new values only for INSERT/UPDATE,
+inside the callback on the supplied connection. Copy any values needed afterward:
+SQLite owns them and invalidates them when the callback returns. Rowid arguments
+are defined only for rowid tables: the old rowid on UPDATE/DELETE and the new rowid
+on INSERT/UPDATE. Hooks cover real tables, including changes made by triggers;
+they do not report virtual-table changes directly.
+
+`tests/ManagedConsumer/PreupdateHook.cs` demonstrates registration and cleanup,
+captures INSERT/UPDATE/DELETE old/new values, checks trigger depth and rowid
+changes, and verifies that unregistering stops delivery.

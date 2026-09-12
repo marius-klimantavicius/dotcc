@@ -69,6 +69,9 @@ CTEs/windows, JSONB, updates/upserts/deletes, transactions/savepoints, and integ
 It also exercises SQL math, median/percentile aggregates and moving windows,
 and all six UTF-8/UTF-16 database/table/column origin APIs through aliases, views,
 joins and attached databases.
+Preupdate coverage registers a cached C# callback with a retained GCHandle
+context, captures old/new values for INSERT/UPDATE/DELETE and a triggered INSERT,
+checks rowid changes and trigger depth, and unregisters before releasing context.
 FTS5 coverage includes CRUD/MATCH/highlight, an explicitly registered C# auxiliary
 function, and the unicode61 tokenizer API. Auxiliary context destruction is
 checked once on close; no extension loading is involved.

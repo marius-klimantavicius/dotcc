@@ -12,6 +12,8 @@ Windows/macOS implementations and JIT/AOT CI are present but have not run locall
 M12 is complete for Linux x64 on SQLite 3.53.4: real shared-memory WAL,
 checkpoints/recovery and native interoperability pass under JIT and NativeAOT.
 M13 is complete: SQL math functions, percentiles and column metadata are enabled.
+The shared profile also enables `SQLITE_ENABLE_PREUPDATE_HOOK`; managed consumer
+coverage exercises row values, trigger depth and callback registration lifetime.
 M14 is complete on Linux x64: BCL mutexes support concurrent connections, and
 read-only database mmap defaults to 64 MiB with a 256 MiB maximum per file.
 The full SQLite/Lua/Chibi/WAT campaign passes, including JIT and NativeAOT gates.

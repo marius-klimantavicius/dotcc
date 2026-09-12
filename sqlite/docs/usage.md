@@ -6,8 +6,9 @@ serialized connections by default, and the real file-backed `dotcc-host` VFS
 for the managed library. Deterministic C
 corpora retain their process-local memory VFS. Windows/macOS host implementations
 and CI are provided, but local execution evidence is Linux x64. See
-[host VFS](host-vfs.md). Core SQLite, JSON/JSONB, FTS5, SQL math/percentile functions and column metadata
-are enabled. Database mmap defaults to 64 MiB with a 256 MiB maximum per file.
+[host VFS](host-vfs.md). Core SQLite, JSON/JSONB, FTS5, SQL math/percentile functions,
+column metadata and preupdate hooks are enabled. Database mmap defaults to 64 MiB
+with a 256 MiB maximum per file.
 FTS3/FTS4 and dynamic extensions remain excluded. WAL is supported
 on the host VFS; select it with `PRAGMA journal_mode=WAL`.
 See `configuration.md` for corpus and host-product definitions and
