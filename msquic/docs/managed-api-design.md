@@ -1,11 +1,16 @@
 # Owning managed API contract
 
-The API is implemented, with optimized JIT configuration, stream lifetime and
-resumption controls passing. This document describes its contract; individual
-receipts and the phase ledger define the qualified scope. The selected contract remains [`api-profile.json`](../config/api-profile.json);
-its pending requirements must not disappear merely because a first sample does
-not exercise them. P8 requires separate consumers without internal APIs, and P9
-requires the final raw/optimized, JIT/NativeAOT and shared regression campaigns.
+The owning API is implemented. Its [full facade matrix](../artifacts/managed-api-all/results.json)
+passes 17 modes × raw/optimized × JIT/NativeAOT: 68 executions with exact pinned
+revision metadata and matching source inputs. The [coverage inventory](api-coverage.md)
+records the exercised ownership, transport and error paths and their limits.
+This document describes the implemented contract. The preserved planning labels in
+[`api-profile.json`](../config/api-profile.json) define selection; they are not the
+current execution-status ledger. The separate [public-consumer receipt](../artifacts/public-consumer/results.json)
+passes all 32 raw/optimized JIT/NativeAOT cases using public project references,
+with streaming/FIN, resumption, authentication errors, exact revision metadata
+and clean shutdown. P7 recovery/interop campaigns and P9 delivery, performance
+and platform gates remain separate; this API result does not declare them complete.
 
 ## Public types and ownership
 
@@ -16,32 +21,35 @@ credential structures, generated anonymous types or arbitrary parameter blobs.
 
 | Type | Public operations | Owns or retains |
 | --- | --- | --- |
-| `QuicRuntime : IAsyncDisposable` | `CreateAsync`, `OpenRegistrationAsync`, immutable `Capabilities` and typed global queries/settings | One installed `MsQuicHost`, one `MsQuicOpenVersion(2)` result, all registrations and a cleanup executor |
+| `QuicRuntime : IAsyncDisposable` | `CreateAsync`, `OpenRegistrationAsync`, `ProtocolVersion` and typed global queries/settings | One installed `MsQuicHost`, one `MsQuicOpenVersion(2)` result, all registrations and a cleanup executor |
 | `QuicRegistration : IAsyncDisposable` | `CreateConfigurationAsync`, `ListenAsync`, `ConnectAsync`, `ShutdownAsync` | Registration handle; configuration, listener and connection children |
 | `QuicConfiguration : IAsyncDisposable` | Immutable ALPN/settings/credential snapshots; typed permitted updates; ticket-key replacement | Configuration handle and credential registration; leases held by listeners, connecting and accepted connections |
 | `QuicListener : IAsyncDisposable` | `AcceptConnectionAsync`, `StopAsync`, actual `LocalEndPoint`, statistics | Listener handle, configuration lease, bounded pending-accept admissions |
 | `QuicConnection : IAsyncDisposable` | Open/accept bidirectional or unidirectional streams, datagrams, ticket operations, typed parameters, `ShutdownAsync`, negotiated metadata | Connection handle, parent/configuration leases, stream children, pending validation and callback contexts |
 | `QuicStream : IAsyncDisposable` | `ReadAsync`, `ReceiveAsync`, `SendAsync`, `CompleteWritesAsync`, `AbortRead`, `AbortWrite`, statistics | Stream handle, connection lease, send operations and at most one deferred receive offer |
 | `QuicReceiveLease : IDisposable` | `AbsoluteOffset`, `Buffers`, `HasFin`, `Complete(consumed, resume)`, `Dispose` | A single receive offer and its stream lease; managed payload copies plus deferred core ownership until completion |
-| `QuicClientCredentials`, `QuicServerCredentials` | Owned trust/identity construction and selected validation options | Copied trust/chain data and retained private-key owner; no insecure validation bypass |
+| `QuicCredentials`, `QuicTicketKey` | `QuicCredentials.Client/Server`, owned trust/identity and imported ticket-key construction | Copied trust/chain data and retained private-key owner; no insecure validation bypass |
 | `QuicTransportException`, `QuicCloseInfo` | Actual status, transport/application error, TLS alert and initiator | Immutable copied diagnostics |
 
 Configuration dependencies are leases, not an assumed strict tree: one
 configuration may serve several listeners/connections. A configuration's close
-request prevents new leases and waits for existing leases. Registration shutdown
-first closes its users of configurations, then releases the configurations.
+request prevents new leases and waits for existing leases. Registration disposal
+first closes users of configurations, then releases the configurations.
+`Registration.ShutdownAsync` requests actual connection shutdown and waits for it;
+child handles remain owned until disposal.
 Stopping a listener stops admission; accepted connections remain registration
 children and are not silently destroyed by listener disposal.
 
-The initial implementation should support one runtime per generated-library
-instance, matching `MsQuicHost.Install`. A second active runtime fails before
+The implementation supports one active runtime per generated-library instance,
+matching `MsQuicHost.Install`. A second active runtime fails before
 opening upstream state. Do not imply isolation between registrations when they
 share generated global state. Runtime construction/teardown is serialized.
 
 ## Validation before dispatch
 
-Every entry point builds and validates a complete temporary request before
-calling the generated table. Validation also applies to global, configuration
+Mutating entry points validate their typed requests before calling the generated
+table; settings updates preflight the complete effective settings on a temporary
+value through the original conversion/apply routines. Validation also applies to global, configuration
 and connection settings updates, not only construction.
 
 1. Validate object ownership, non-closing state and required parent leases.
@@ -67,7 +75,8 @@ and connection settings updates, not only construction.
    support and the current payload limit before admission.
 6. Map owned credentials through the real host helpers
    `CreateClientCredential`, `CreateServerCredential` and `LoadCredential`.
-   The managed type/provider extension `0x10000` remains internal. Native
+   The managed credential-type extension stays behind owned credentials; the public
+   `QuicTlsProvider.Picotls` value `0x10000` identifies the actual provider. Native
    credential handles, validation bypasses, unsupported algorithms and excluded
    flags are rejected before configuration mutation.
 
@@ -81,8 +90,9 @@ a state already completed inline. Do not force a callback to be deferred merely
 to simplify the facade. Indication requires the client/portable combination;
 the adapter supplies a DER leaf and PKCS7 chain and preserves actual trust/name
 failure under deferred application approval. The direct TLS adapter matrix covers these seams under raw/optimized JIT and
-NativeAOT; facade and separate-consumer qualification remains distinct. A checked-in profile-to-validator
-coverage test must prevent missing entries and accidental future-bit acceptance.
+NativeAOT. The facade matrix also covers credential loading, policy completion,
+invalid flags and ownership; separate-consumer qualification remains distinct.
+The coverage inventory identifies the actual selected/excluded-option controls.
 
 ## Handle and callback states
 
@@ -110,7 +120,7 @@ failure, not an empty callback that reports success.
 Callbacks update owner state and complete task sources created with
 `RunContinuationsAsynchronously`. They must not run arbitrary user continuations
 under a core worker, owner gate or host queue lock. Copy callback-scoped event
-data before asynchronous publication. User callback replacement, if exposed,
+data before asynchronous publication. Public stream callback replacement
 updates the managed association behind the stable C trampoline; replacement
 must retain the old association through callbacks already in progress.
 
@@ -118,7 +128,8 @@ The listener's NEW_CONNECTION path reserves a bounded accept slot and roots the
 new connection before installing its callback and applying configuration. It
 cannot await user acceptance on the core worker. Failure returns the appropriate
 rejection and unwinds exactly the ownership the upstream callback contract gave
-the application. P6 must pin the rejection/handle-transfer boundary. Accept tasks
+the application. The handle-transfer boundary follows the original callback
+contract and is part of the transport/ownership evidence. Accept tasks
 return a connected connection; incomplete handshakes still consume backlog slots.
 
 ## Send memory and cancellation
@@ -131,7 +142,9 @@ their operation is canceled. A future explicit ownership-transfer send buffer
 can add a qualified copy-avoidance path without weakening this contract.
 
 An operation moves through
-`WaitingForBudget → Prepared → Submitting → InFlight → Completed → Released`.
+`WaitingForStreamAdmission → Prepared → Submitting → InFlight → Completed → Released`.
+The stream admission semaphore serializes sends; failure to reserve the configured
+copy budget rejects rather than waiting on an unbounded budget queue.
 Reserve its token and install the pending operation before calling `StreamSend`,
 because completion may race the return. A synchronous failed status releases the
 operation if C did not accept ownership. After successful/pending admission,
@@ -140,12 +153,12 @@ task was canceled or shutdown was requested. A per-operation atomic completion
 claim prevents the synchronous-failure path and callback from both releasing.
 
 Cancellation before admission prevents submission and releases the budget. The
-proposed default after admission is to cancel the caller's wait only: it does
+implemented behavior after admission cancels the caller's wait only: it does
 not promise to retract bytes already handed to QUIC. The internal operation and
 copied memory remain until completion. `AbortWrite(errorCode)` explicitly aborts
 the write direction and can affect all queued writes. Do not simulate per-send
 wire cancellation, which the selected upstream stream API does not provide.
-This public cancellation choice requires coordinator acceptance before coding.
+This behavior is exercised by the stream lifetime and receive-failure controls.
 
 `CompleteWritesAsync` submits/requests FIN in the upstream-supported way and
 distinguishes send-buffer release from peer acknowledgment/write-shutdown
@@ -174,8 +187,9 @@ For deferred delivery, publish an owned `QuicReceiveLease`, return
 `QUIC_STATUS_PENDING` and leave its entire offered length pending. The lease
 moves through `Offered → Pending → Completing → Released`; only one completion
 claim is permitted. Publication and completion can race callback return; the
-core has an explicit active-receive completion flag for this case. P6 must test
-the inline/concurrent completion path, not rely on a scheduling delay.
+core has an explicit active-receive completion flag for this case. The transport
+and receive-failure controls exercise actual deferred ownership and completion
+rather than substituting a receive callback.
 
 `Complete(consumed, resume)` accepts `0 ≤ consumed ≤ OfferedLength`, revokes the
 **whole offer**, relinquishes native receive ownership and calls
@@ -206,11 +220,11 @@ Shutdown stops new receive publication but cannot free storage still borrowed
 by application leases. Retain the stream handle until every lease is returned;
 then close it. After a reset/abort, completing a lease releases the borrow and
 must not claim new flow-control credit if the core ignores that completion.
-Payload validity across remote reset and connection shutdown while the app
-handle remains open is a required P6 test. Public leases always use managed
+The transport and receive-failure controls verify payload validity across
+abort/shutdown while the application retains its lease. Public leases always use managed
 copies with internal deferred ownership: `ReadOnlyMemory` cannot revoke a span
 that a caller already obtained. Retaining an old view after completion or raw
-stream close must remain memory-safe and is a required ownership test. The
+stream close remains memory-safe and is checked by the ownership controls. The
 runtime stops accounting a completed copy as an outstanding receive; retained
 managed views then have ordinary application-owned managed-memory lifetime.
 
@@ -225,8 +239,9 @@ an application policy callback runs asynchronously.
 
 The current portable indication seam exposes a DER leaf and PKCS7 chain. Copy
 these during the callback into the facade's owned certificate request rather
-than exposing provider allocation addresses. Await its qualification before
-advertising the selected credential flags.
+than exposing provider allocation addresses. The complete facade matrix exercises
+selected credential flags and synchronous/asynchronous approval, failure and
+close behavior; provider algorithm coverage remains separately attributed.
 
 For certificate validation, the real validator determines acceptance and the TLS
 alert. `ConnectionCertificateValidationComplete` is dispatched only for that
@@ -239,29 +254,30 @@ the TLS ticket-decryption plaintext is zeroed/freed after the callback. Rejectio
 must follow the core's fallback/error path, with no early-data acceptance.
 
 Ticket receipt and provisioning retain the upstream envelope, selected cipher,
-ALPN/SNI/trust policy and key-rotation ownership. Fresh 1-RTT resumption must be
-qualified separately from the full-handshake stream sample. A ticket is secret
+ALPN/SNI/trust policy and key-rotation ownership. Fresh 1-RTT resumption, policy completion and imported-key rotation have their
+own modes in the full facade matrix, separate from full-handshake stream tests. A ticket is secret
 material: no diagnostic output includes its contents or imported key bytes.
 
 ## Disposal, errors and failure cleanup
 
 `DisposeAsync` is idempotent and returns the same underlying close task to all
 callers. It first closes admission, then schedules the blocking work on an
-executor independent of MsQuic workers. The proposed executor is one dedicated
-BCL thread per runtime for blocking close calls; normal I/O and core scheduling
+executor independent of MsQuic workers. The executor is one dedicated BCL thread
+per runtime for blocking close calls; normal I/O and core scheduling
 remain unchanged. Each executor item performs one already-eligible raw close;
 the asynchronous orchestration waits for child/lease prerequisites outside that
 thread. It must not queue a parent operation that blocks waiting for child close
 work behind it on the same executor, or hold a parent lock while awaiting a child.
 
-Shutdown order is: stop listeners/admission; request connection shutdown;
-resolve/cancel pending application work; wait for borrowed receives and terminal
-send/callback ownership; close streams; close connections; close listeners;
-release configuration/credential leases; close configurations; close
-registrations; close the API table; verify host allocations/resources drain;
-uninstall and dispose the host. Configuration/registration close cannot run ahead
-of a connection that still uses them. Host disposal currently checks for live
-resources rather than draining them; the facade supplies this ordering.
+Registration disposal closes listeners first to stop admission, then disposes
+connections, then configurations. Connection disposal cancels pending validation
+and publication, requests native shutdown, closes stream children after their
+borrowed receive/send ownership drains, and closes the connection before releasing
+its configuration lease. Registration close follows its children; runtime close
+follows registrations, closes the API table and verifies host/resource drain before
+uninstalling the host. These dependencies are implemented without placing a parent
+close ahead of child work on the cleanup executor. Host disposal checks for live
+resources; it does not forcibly reclaim application-held receive leases.
 
 Calling `DisposeAsync` from a callback schedules work and returns without waiting.
 Never expose a convenience synchronous wait on that worker. A canceled or timed
@@ -280,22 +296,22 @@ upstream status, TLS alert/error and cancellation origin. Handle construction
 failure unwinds completed acquisitions in reverse order, including credentials,
 callback token, parent admission slot and any accepted raw handle.
 
-## Implementation gates and open decisions
+## Implemented choices and qualification boundaries
 
-Before P8 implementation, P6 must pin callback/close transfer on listener
-rejection, pending receive storage across reset/shutdown, partial-prefix
-redelivery, completion racing callback return, and accepted/canceled sends during
-close. Then add isolated public-consumer tests for every state transition and
-allocation failure boundary, raw/optimized under JIT/NativeAOT. Profile tests
-cover all selected/excluded identifiers and mixed valid/invalid settings payloads.
-No internal-friend test application substitutes for the P8 consumer gate.
+The API uses copied-send/cancel-wait semantics, restartable listeners after actual
+STOP_COMPLETE, owned certificate and resumption policies with mandatory provider
+trust/name validation, and configurable bounded accept/send/receive budgets.
+The complete facade matrix includes partial/deferred receives, held memory across
+shutdown, canceled admitted sends, callback replacement/INLINE/failure, standalone
+receive abort, registration-wide shutdown and settings state/concurrency controls.
 
-Decisions sent to the coordinator: accept copied-send/cancel-wait semantics;
-accept one-shot listeners or implement upstream restart explicitly; choose the
-public pending-validation policy surface while preserving mandatory trust/name
-checks; and set bounded accept/send/receive budgets based on measurements rather
-than an undocumented unbounded queue. None is an authorization to drop selected
-profile operations.
+The [coverage inventory](api-coverage.md) maps current methods and evidence. It
+preserves optional settings-specific allocation-injection and exhaustive per-counter
+oracle breadth without claiming those were executed. P3 allocation rollback and
+facade buffer-budget exhaustion retain their distinct scopes. No source-linked or
+internal-friend test application substitutes for the separate public-consumer gate.
+That public project-reference matrix now passes all 32 cases; P7 and P9 still
+require their own final campaign evidence.
 
 Source anchors: [receive return/temporary descriptors](../ref/msquic-80a065112426bce68c1da42d026478d3e40fd45e/src/core/stream_recv.c#L1000),
 [single-receive partial completion](../ref/msquic-80a065112426bce68c1da42d026478d3e40fd45e/src/core/stream_recv.c#L1133),
@@ -317,4 +333,7 @@ may request `Inline` stream shutdown while that actual callback is executing.
 They must not block on QUIC work or disposal; ordinary asynchronous continuations
 remain outside this callback context. Exceptions fault the connection without
 escaping into C or changing an outstanding receive's `PENDING` ownership result.
-These new observer controls are authored and await runtime qualification.
+The complete facade matrix qualifies these observer controls, including external
+replacement during an in-flight receive and an exception after lease delivery.
+The held lease still blocks raw close until its one completion, and exact peer
+error/terminal callbacks and resource drain remain checked.

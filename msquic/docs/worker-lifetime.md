@@ -122,7 +122,7 @@ These remain the broader ongoing stress/integration obligations; the completed b
 - Recursive lock acquisition/release and real RW read/write interactions; actual aligned pool addresses, zeroed allocation and reuse behavior, and allocator-domain accounting under failure.
 - Run required cases in raw and optimized generated libraries under JIT and NativeAOT. Socket packet completion ownership is an additional datapath gate; passing coalesced worker-control SQEs does not establish it.
 
-The passing bounded matrix establishes the implemented platform-services baseline. Sustained race/soak testing, full datapath completion ownership and complete transport shutdown still require their later phase gates. The harness supplies no runtime-success fallback for absent services and does not change the upstream worker or host ABI.
+The passing bounded matrix establishes the implemented platform-services baseline. The final datapath matrix, 80 transport pairs and 68 owning API mode executions separately cover packet completion and transport shutdown. These bounded controls do not claim sustained race/soak testing. The harness supplies no runtime-success fallback for absent services and does not change the upstream worker or host ABI.
 
 ## P6 global rundown lifetime repair
 
@@ -141,5 +141,5 @@ cleanup and clears the actual generated field. Generic rundown behavior and the
 upstream source remain unchanged. Every other live resource still blocks host
 disposal. The peer harness now exercises three actual library open/registration/
 close cycles while retaining an unrelated event, checks its preservation and
-host-disposal rejection, then explicitly releases that unrelated owner. This control passes in each endpoint of the 20-pair optimized JIT transport
-campaign. Raw/optimized NativeAOT transport revalidation remains pending.
+host-disposal rejection, then explicitly releases that unrelated owner. This control passes in every translated endpoint of the refreshed 80-pair
+raw/optimized × JIT/NativeAOT transport campaign.

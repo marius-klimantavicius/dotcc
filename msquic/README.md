@@ -4,8 +4,8 @@ Downloaded the latest `main` snapshot resolved on 2026-09-12 into `ref/` and
 attempted dotcc translation. The user subsequently authorized implementation of
 all phases with a coordinator and sub-agents. Completed changes are being
 committed as authorized. Final toolchain-bound regeneration, the service matrices,
-80 transport pairs and all 68 owning API mode executions pass. Remaining external
-interop, recovery, public-consumer and delivery qualification is in progress.
+80 transport pairs and all 68 owning API mode executions pass. The separate 32-case public-consumer matrix also passes. Remaining external
+interop, recovery and delivery qualification is in progress.
 
 See the [implementation plan and phase status](docs/PLAN.md),
 [initial compiler scope and evidence](docs/compiler-scope.md),

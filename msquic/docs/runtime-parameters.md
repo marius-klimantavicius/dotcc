@@ -1,11 +1,10 @@
 # Managed runtime parameters
 
-The owning API builds successfully. Runtime and four-way qualification of these
-new methods remains pending; compilation alone does not qualify the profile.
-The current staged build omits `VER_GIT_HASH`, so the revision getter truthfully
-returns upstream's default `Unknown`. Final regeneration must supply the pinned
-revision through that build define before the source-revision requirement passes;
-the facade must not replace the getter with a hardcoded provenance string.
+The selected runtime methods pass the coherent owning API campaign in all four
+raw/optimized × JIT/NativeAOT forms. The regenerated core compiles the pinned
+`VER_GIT_HASH`; `GetLibrarySourceRevision()` returns those actual bytes and each
+test mode verifies the pin. The facade does not substitute a provenance string.
+See [API coverage](api-coverage.md) for the mapped controls and their limits.
 
 `QuicRuntime` exposes typed operations for the selected global parameters.
 Queries return values from the translated core. They do not turn compiled fields

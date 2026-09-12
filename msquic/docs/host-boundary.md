@@ -123,11 +123,12 @@ context roots outlive all upstream work and pending I/O.
 The TLS bridge keeps the two generated allocator domains separate. It copies
 picotls handshake output/transport parameters into MsQuic-owned buffers when
 ownership crosses the boundary, and frees each source buffer in its origin
-library. The passing [raw TLS spike](tls-feasibility.md) demonstrates epochs,
-parameters and secrets; it does not yet implement the `CxPlatTlsProcessData`
-consumed-length/result-flags contract, QUIC ticket envelope or shutdown ownership.
+library. The [raw TLS spike](tls-feasibility.md) first demonstrated epochs, parameters
+and secrets. The implemented [TLS adapter](tls-adapter-contract.md) now passes
+20 cases in each raw/optimized JIT/NativeAOT form, including the consumed-length/
+result-flags contract, QUIC ticket envelope and shutdown ownership.
 
-## Remaining gates
+## Validation
 
 `scripts/test-host-contract.py` compares native and generated storage using the
 same overlays. The binding case passes 18 records in JIT and NativeAOT, covering
@@ -140,10 +141,12 @@ transport-parameter callback. The core-header case adds 17 matching records for
 the actual core types and storage, including pool alignment and packed fields;
 it links all 47 product objects plus the harness object. These receipts live
 under `artifacts/host-contract/`. The passing run uses compiler library SHA-256
-`4f625631a75897990d35ec44dfa5e6af50b68d2526925d4729856709a6e75d17`;
+`4fe035206c4f7cad69a80de48da2f334a38d3627557e29f0be0b1e812431a855`;
 all 48 object sidecars bind source, object, compiler and staged-input hashes.
 
 The validated header/source closure and raw/optimized library build gates are
 complete. A build-only host declaration has no runtime success status. The
 [API profile](api-profile.md) records selected/deferred/rejected behavior for the
-owning facade; its selected entries still require runtime implementation.
+owning facade. Its implementation and coherent 68-mode runtime campaign are
+mapped in [API coverage](api-coverage.md); external consumer and remaining
+transport/recovery gates have separate evidence in [qualification](qualification.md).

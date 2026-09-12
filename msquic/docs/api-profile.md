@@ -1,8 +1,14 @@
 # First managed API profile
 
 This is the selected scope for `managed-linux-x64-quic-v1`, pinned to
-`80a065112426bce68c1da42d026478d3e40fd45e`. It is an implementation contract, **not a claim that any managed API is ready**.
-Every selected operation remains pending its transport, lifetime, error-path and raw/optimized JIT/NativeAOT gates.
+`80a065112426bce68c1da42d026478d3e40fd45e`. The owning API is implemented, and its
+mapped facade controls pass the complete raw/optimized × JIT/NativeAOT matrix:
+17 modes and 68 executions with actual source-revision checks. See the
+[coverage inventory](api-coverage.md) and [full qualification receipt](../artifacts/managed-api-all/results.json)
+for exact behavior and evidence limits. The separate [public-consumer matrix](../artifacts/public-consumer/results.json)
+also passes all 32 cases, covering streaming/FIN, resumption and authentication
+errors through public project references. P7 recovery/interop and P9 delivery,
+performance and platform gates remain separately qualified.
 The [machine-readable profile](../config/api-profile.json) contains every entry from the
 [source inventory](../config/public-api-inventory.json), source locations, direction-specific behavior, settings masks and capability policy.
 
@@ -10,11 +16,24 @@ The inventory has **39 API-table slots and 72 parameter identifiers**. Of the la
 
 ## Selection and enforcement
 
-`selected-pending` means required or accepted in the first profile after qualification. `deferred` means a possible later feature, with an explicit first-profile rejection. `excluded` means a native-provider or insecure facility outside this host. `syntax-only` marks namespace constants rather than operations. None means implemented.
+The JSON and tables preserve their original planning selection labels and rule
+text so their derivation from the pinned inventory stays intact. `selected-pending`
+means selected for the first profile, not a live assertion that its implementation
+is still missing. Table phrases about pending gates are retained planning rules;
+[api-coverage.md](api-coverage.md) records current qualification. `deferred` means a
+possible later feature with an explicit first-profile rejection. `excluded` means
+a native-provider or insecure facility outside this host; `syntax-only` marks
+namespace constants rather than operations. Selection labels alone never establish
+implementation or qualification.
 
 The owning facade must reject recognized deferred/excluded operations and unsupported option values before dispatch or mutation: `QUIC_STATUS_NOT_SUPPORTED` at status-bearing C boundaries, or `NotSupportedException` in C#. Unknown IDs, wrong scope/direction, reserved bits and malformed sizes produce `QUIC_STATUS_INVALID_PARAMETER`; selected calls retain upstream state and buffer-size errors. Validate an entire settings/credential payload before forwarding it. Unsupported void-returning slots are not exposed: do not invent a C return status or a successful no-op.
 
-This policy is **not yet wired into the generated core or owning facade**. The raw table keeps its upstream ABI shape and may contain compiled optional operations. Callers must not treat raw-table presence as public managed support. Runtime enforcement and negative tests remain required before exposure.
+The owning facade implements typed scope, flag, credential and settings
+validation, including complete effective-settings preflight before updates. Its
+positive/negative behavior and ownership controls are recorded in the full facade
+matrix. The raw table keeps its upstream ABI shape and may contain compiled
+optional operations; it is not itself the managed profile enforcement boundary.
+Raw-table presence must not be treated as public managed support.
 
 ## Required transport and optional facilities
 
@@ -28,7 +47,9 @@ Capability queries must distinguish **compiled**, **qualified**, and **negotiate
 
 ## API-table slots
 
-Indices preserve the inventoried preview-enabled table order. All rows currently have unqualified implementation status. Base lifecycle/transport slots are selected; preview partition/pool/receive-buffer/external-loop/exporter slots remain deferred.
+Indices preserve the inventoried preview-enabled table order. Policy labels and
+required-behavior text below are the preserved selection inventory; current
+implementation/qualification is tracked separately in the coverage inventory. Base lifecycle/transport slots are selected; preview partition/pool/receive-buffer/external-loop/exporter slots remain deferred.
 
 | Index | Slot | Policy | Required behavior or reason |
 | --- | --- | --- | --- |
@@ -167,4 +188,10 @@ The selected authentication path uses translated picotls TLS 1.3, P256, AES-128-
 
 Classification follows the pinned `src/inc/msquic.h` declarations and actual dispatch in `src/core/library.c`, `configuration.c`, `listener.c`, `connection.c` and `stream.c`. The native TLS query reference is `src/platform/tls_openssl.c`; it describes expected outputs, not permission to substitute a native provider. For example, ticket-key configuration calls `CxPlatTlsSecConfigSetTicketKeys`, resumption input decodes the MsQuic ticket envelope, local-interface selection writes the route scope ID before client start, and retry-secret querying is DEBUG-only. Per-entry source locations are recorded in JSON.
 
-This completes the selection inventory only. The [plan](PLAN.md), [host boundary](host-boundary.md) and [UDP feasibility limits](datapath-feasibility.md) still govern qualification. Implement facade/adapter rejection and selected behavior, verify capability responses and invalid mixed settings, then exercise every selected operation and excluded option in the runtime matrix. The unchanged raw table is not an enforcement boundary by itself.
+This document defines selection, while [api-coverage.md](api-coverage.md) maps the
+implemented facade to its current complete 68-execution qualification and remaining
+coverage limits. The [plan](PLAN.md), [host boundary](host-boundary.md) and
+[UDP feasibility limits](datapath-feasibility.md) still govern separate phase and
+platform qualification. The unchanged raw table is not an enforcement boundary
+by itself, and this selection inventory is not a claim of complete native-suite
+parity or completion of the separate P7/P9 gates.
