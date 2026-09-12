@@ -3,7 +3,7 @@
 Downloaded the latest `main` snapshot resolved on 2026-09-12 into `ref/` and
 attempted dotcc translation. The user subsequently authorized implementation of
 all phases with a coordinator and sub-agents. Completed changes are being
-committed as authorized; runtime adapter implementation continues.
+committed as authorized; transport and owning API integration continue.
 
 See the [implementation plan and phase status](docs/PLAN.md),
 [initial compiler scope and evidence](docs/compiler-scope.md),
@@ -12,8 +12,8 @@ See the [implementation plan and phase status](docs/PLAN.md),
 [pinned source](config/source.json), and [reduced examples](probes/).
 
 The reference source is unchanged. Diagnostic source copies, generated C#,
-binaries, and logs are ignored. Generic compiler fixes are now in progress in
-the compiler projects with reduced regression fixtures. The initial scope report
+binaries, and logs are ignored. Generic compiler fixes and reduced regression fixtures have passed the complete
+compiler suite. The initial scope report
 is historical evidence from before those fixes. Its receipts are preserved in
 `artifacts/initial-compiler-scope.tar.gz` before subsequent probe runs.
 
@@ -28,7 +28,7 @@ python3 msquic/scripts/probe-reduced.py --build
 
 Probe scripts save failures as evidence; their successful completion does not
 mean the generated library compiles. Inspect the recorded stage exit codes.
-Nothing produced here is a working QUIC library.
+These diagnostic probes do not establish transport correctness.
 
 Separate native reference (test peer only):
 
@@ -51,14 +51,16 @@ python3 msquic/scripts/build-probe.py --label unchanged-core
 
 P1 BCL UDP and raw translated-picotls QUIC feasibility are independently validated
 under JIT/NativeAOT; see [UDP evidence](docs/datapath-feasibility.md) and
-[TLS evidence](docs/tls-feasibility.md). The actual core, owning host/API and
-transport integration gates remain open. Platform, crypto/TLS and UDP host
-implementations are now in progress against the validated core.
+[TLS evidence](docs/tls-feasibility.md). The current closure also passes the actual platform, packet crypto, TLS adapter
+and UDP service gates in all four raw/optimized × JIT/NativeAOT combinations.
+Packet crypto passes 162 checks per combination; the TLS adapter passes 20 cases
+per combination, and the fresh picotls regression campaign passes. Full transport,
+injected failure paths, owning API and final SQLite validation remain open.
 
 The candidate product stage now contains 47 units: 43 unchanged upstream units
 and four host adapters/fragments. It emits and links as separate objects. The
-complete core ABI matches60 native observations under JIT and NativeAOT. Raw and
-optimized managed libraries and wholeassembly-rooted AOT consumers also pass.
+complete core ABI matches 60 native observations under JIT and NativeAOT. Raw and
+optimized managed libraries and whole-assembly-rooted AOT consumers also pass.
 The exact closure and evidence hashes are pinned in `config/product-closure.json`.
 See the [managed host contract](docs/host-boundary.md) and the explicit
 [API selection policy](docs/api-profile.md), which covers all 39 table slots and

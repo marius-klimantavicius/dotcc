@@ -1,6 +1,6 @@
 # Translate MsQuic with dotcc
 
-Status: implementation authorized and in progress; no phase gate is complete.
+Status: P0–P2 and P3/P4/P5 service gates passed on the current translated closure; full transport, injected failure paths, owning API and final qualification remain in progress.
 Created 2026-09-11; execution started 2026-09-12.
 Branch: `sqlite`. Campaign directory: `<repo>/msquic/`.
 Current authorization: the user requested implementation of all phases through a
@@ -81,7 +81,7 @@ passes its gates, not that every optional native MsQuic facility is implemented.
 | Transport | QUIC v1 client and server over real UDP; IPv4 and IPv6 |
 | Streams | Concurrent bidirectional/unidirectional streams; flow control, backpressure, FIN, reset, cancellation |
 | TLS | Translated picotls TLS 1.3; P256; AES-128-GCM/SHA-256 and AES-256-GCM/SHA-384; ECDSA and RSA-PSS certificates |
-| Authentication | ALPN/SNI, explicit trust and name validation, failure propagation; no insecure default |
+| Authentication | ALPN/SNI, explicit trust and name validation, failure propagation; no insecure default. ALPN is 1..255 bytes without embedded NUL because pinned picotls serializes it as a C string; reject unsupported identifiers before dispatch. |
 | Lifecycle | Listener/connection/stream ownership, asynchronous completion, reentrant callbacks, orderly shutdown |
 | Recovery | Loss, duplication, reordering, congestion control using CUBIC initially, idle timeout and keepalive |
 | Additional transport behavior | Retry/address validation, stateless reset, QUIC key updates, connection-ID rotation, NAT rebinding/path validation |
@@ -243,9 +243,14 @@ Current execution status (2026-09-12):
 | --- | --- |
 | P0 | Passed: immutable source integrity verified; native44-unit syntax control passes. Native peer validates8 certificate/cipher/IP cases and2 authentication negatives. Pinned independent aioquic cross-connects both roles in16 positive and4 negative cases. The validated47-unit source/host closure is pinned in `config/product-closure.json` with exact source, compiler, generated and evidence hashes. |
 | P1 | Passed: [UDP feasibility](datapath-feasibility.md) passes14 cases in JIT and AOT; [raw picotls QUIC TLS](tls-feasibility.md) passes11 cases in each raw/optimized × JIT/AOT combination. Public upstream ABI matches29 records in JIT/AOT. The managed99-slot host contract, TLS and complete core ABI match all60 native records under JIT/AOT. Feasibility and ABI subgates pass. |
-| P2 | Passed: [compiler implementation](compiler-implementation.md) records validated preprocessing, declarations, anonymous members, alignment storage, high-bit conversions, and GNU intrinsics. The complete staged core emits, links and passes JIT/AOT ABI checks. Fullunit2146 and executedfunctional439 pass (1003 optionaloracle skips); Raw and optimized managed libraries and wholeassembly-rooted JIT/NativeAOT consumers pass. Runtime host services remain a separate gate. |
-| P3–P5 | Starting: managed platform, packet/TLS and UDP host implementations; their runtime gates remain open. |
-| P6–P9 | Not started; dependent integration and delivery gates remain mandatory. |
+| P2 | Passed: [compiler implementation](compiler-implementation.md) records validated preprocessing, declarations, anonymous members, alignment storage, high-bit conversions, and GNU intrinsics. The complete staged core emits, links and passes JIT/AOT ABI checks. Fullunit2146 and executedfunctional447 pass (1005 optionaloracle skips); Raw and optimized managed libraries and wholeassembly-rooted JIT/NativeAOT consumers pass. Runtime host services remain separate gates. Generic promoted-member value accessors are committed as `c786b9c`; the new compiler and complete raw/optimized closure pass refreshed60 host/core and29 public native ABI records plus whole-assembly JIT/AOT consumers. The prior checkpoint remains preserved. |
+| P3 | Service gate passed on the current compiler and generated closure: actual translated worker execution, synchronization, all 11 allocation rollback positions and shutdown drain pass raw/optimized × JIT/NativeAOT. See `artifacts/platform-host/results.json` and [worker lifetime](worker-lifetime.md). |
+| P4 | Service gate passed: packet crypto passes 162 checks in each raw/optimized × JIT/NativeAOT combination plus native controls; the actual CxPlatTls adapter passes 20 cases in each combination, including imported-key resumption and credential paths. Fresh translated picotls full JIT/AOT regression passes. See `artifacts/packet-crypto/results.json`, `artifacts/tls-adapter/results.json` and [TLS adapter contract](tls-adapter-contract.md). Transport and facade policy approval remain separate gates. |
+| P5 | Real UDP service gate passed on the current closure in raw/optimized × JIT/NativeAOT: exact listener flags, source/interface routing, retained asynchronous sends, cancellation/drain, GC lifetime and callback-delete controls pass. See [datapath host](datapath-host.md) and `artifacts/datapath-host/results.json`. The typed host table supplies an injection seam; virtual time and injected send/receive failures remain unqualified until exercised with P7. |
+| P6 | Typed actual-core peer harness authored, including ListenerStart preflight, 8 managed-to-managed and 64 native interoperability cases. The prerequisite service gates now pass; execution is next. No translated transport success is claimed yet. |
+| P7 | Fault proxy and bounded controls are authored; advanced transport, resumption, migration, deterministic loss and injected failure gates remain mandatory. |
+| P8 | Owning runtime, configuration, stream and credential wrappers are being implemented. Complete facade build, connection/listener integration, deferred/partial receive completion, canceled sends and asynchronous disposal remain required. |
+| P9 | Final clean regeneration, complete regression/audit/performance campaign and fresh SQLite JIT/AOT correctness validation remain pending. |
 
 The initial diagnostic experiment emits 44/44 adjusted translation units but its
 managed library does not build. Its modified source copies and declaration-only
@@ -382,6 +387,15 @@ resumption, and clean shutdown under JIT/AOT without repository-internal APIs.
   and report tradeoffs; do not invent a performance threshold before measuring.
 - Run full compiler/libc tests and existing SQLite and picotls validation after
   shared changes. Preserve reproducible logs and case-level pass/fail/skip counts.
+- The user's final SQLite acceptance explicitly requires fresh translation with
+  the final compiler. Run `SQLITE_AOT=1 sqlite/scripts/verify.sh`, covering native
+  corpora, managed consumers, real-file VFS/WAL interoperation, threading, layout,
+  callback identity and JIT/NativeAOT. Then regenerate a raw engine, postprocess
+  an isolated optimized snapshot, and run
+  `sqlite/scripts/test-postprocess.py SNAPSHOT --aot --corpora` for both forms.
+  Record the exact compiler hashes; the SQLite NuGet compiler build can replace
+  shared CLI outputs, so keep the MsQuic frozen compiler receipts and recheck
+  the product if its validated compiler inputs change.
 
 **Gate:** clean regeneration, documented consumption, passing required feature
 matrix, dependency audit, and regression evidence. Skipped or unavailable gates

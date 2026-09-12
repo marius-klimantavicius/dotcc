@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsAotCompatible>true</IsAotCompatible>
+    <MsQuicProject Condition="'$(MsQuicProject)' == ''">../../generated/optimized/TranslatedMsQuic/TranslatedMsQuic.csproj</MsQuicProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(MsQuicProject)" />
+    <Compile Include="../../src/BclHost/Crypto.cs" Link="Product/Crypto.cs" />
+    <Compile Include="../../src/BclHost/MsQuicHost.Resources.cs" Link="Product/MsQuicHost.Resources.cs" />
+    <Compile Include="../../src/BclHost/Status.cs" Link="Product/Status.cs" />
+    <Compile Include="../../build/packet-crypto-common/Unexercised.cs" Link="Unexercised.cs" />
+    <None Update="vectors.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

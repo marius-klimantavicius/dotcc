@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>MsQuic.BclHost</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+    <MsQuicProject Condition="'$(MsQuicProject)' == ''">$(MSBuildThisFileDirectory)../../generated/optimized/TranslatedMsQuic/TranslatedMsQuic.csproj</MsQuicProject>
+    <PicotlsProject Condition="'$(PicotlsProject)' == ''">$(MSBuildThisFileDirectory)../../../picotls/generated/TranslatedPicotls/TranslatedPicotls.csproj</PicotlsProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(MsQuicProject)" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)../../../picotls/src/BclProvider/BclProvider.csproj" AdditionalProperties="PicotlsProject=$(PicotlsProject)" />
+    <InternalsVisibleTo Include="PlatformHost" />
+    <InternalsVisibleTo Include="PacketCrypto" />
+    <InternalsVisibleTo Include="DatapathHost" />
+    <InternalsVisibleTo Include="TlsAdapter" />
+    <InternalsVisibleTo Include="MsQuic.ManagedApi" />
+    <InternalsVisibleTo Include="ManagedPeer" />
+  </ItemGroup>
+</Project>

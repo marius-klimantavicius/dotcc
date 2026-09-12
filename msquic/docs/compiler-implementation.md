@@ -30,11 +30,11 @@ allocating generated value types in arbitrary consumer-owned managed arrays
 does not inherit that storage guarantee. The future owning API must allocate
 through its managed CxPlat memory contract.
 
-The full upstream ABI and selected-core gates remain open. Current original-source
-probes emit all44 units without any source rewrites, using only the explicitly
+At the intermediate diagnostic checkpoint, the full upstream ABI and selected-core
+gates remained open. The original-source probes emitted all44 units without any source rewrites, using only the explicitly
 diagnostic host declarations. The frozen compiler and dependency hashes are in
 `artifacts/unchanged-core/results.json`; linking uses that exact compiler snapshot.
-The full Roslyn build still fails:6,841 unique diagnostics comprise6,721 unresolved
+That intermediate Roslyn build failed:6,841 unique diagnostics comprise6,721 unresolved
 host/runtime references,91 missing members,27 returned-aggregate fixed-buffer
 storage errors and2 promoted-member initializer errors. These are fewer than the
 initial8,182 diagnostics but remain a failed library build. Those three remaining compiler categories now have generic fixes: structural
@@ -47,8 +47,8 @@ functional cases pass (4 optional oracle skips). Five new/expanded fixtures matc
 fresh GCC output under NativeAOT, and a separate-object namespace-linked AOT
 fixture validates opaque completion and shared/private anonymous identities.
 Receipts are `artifacts/compiler-integration-*.log` and
-`artifacts/compiler-object-native/`. Full selected-core and regression checks
-are in progress; these reduced passes do not replace those gates.
+`artifacts/compiler-object-native/`. The reduced passes did not replace the complete selected-core and regression
+gates recorded below.
 
 Missing POSIX rwlock
 and event-loop header declarations are host-boundary work; declaration-only probe
@@ -58,7 +58,7 @@ layout functional checks pass26 cases with8 explicitly gated oracle skips. Packi
 state propagates through includes and macro declarations; mid-aggregate pack
 changes fail explicitly. Public upstream ABI now matches29 records in JIT and AOT,
 including callback invocation and actual field addresses. TLS/core original-POSIX
-ABI probes remain blocked on missing real pthread header contracts; the managed
+ABI probes were blocked on missing real pthread header contracts; the managed
 host overlay needs its own matched native/generated ABI. The initial12 grouped
 gaps were not a bound on total scope.
 
@@ -69,7 +69,7 @@ transport traffic, independent interoperability and full regression campaigns.
 
 ## Complete selected-core gate
 
-The final compiler (`4f625631a75897990d35ec44dfa5e6af50b68d2526925d4729856709a6e75d17`
+The completed compiler checkpoint (`4f625631a75897990d35ec44dfa5e6af50b68d2526925d4729856709a6e75d17`
 for DotCC.Lib.dll) passes2146 unit tests and439 executed functional tests. The
 1003 skipped cases are explicitly gated native/oracle campaigns, itemized in
 `artifacts/compiler-full-isolated-receipt.json`. The complete47-unit product
@@ -89,3 +89,29 @@ claimed; a fresh isolated temporary directory completed all2146 cases in82second
 
 These are P0–P2 compiler, ABI and feasibility gates. The BCL platform, TLS and UDP
 host services, owning API and end-to-end transport remain separate runtime work.
+
+## Typed managed anonymous-member access
+
+The runtime adapters exposed a public projection problem: the C core could access
+promoted anonymous members, while authored C# saw only generated physical field
+names. Explicit anonymous-container metadata now emits typed value forwarding
+properties in managed-library and object output. These preserve physical fields,
+union overlap and ABI; const members are getter-only, and atomic/volatile scalar
+and pointer properties use fenced primitives inside a fixed owner scope. Nested
+aggregate values use explicit read-modify-write. Arrays, qualified aggregate or
+bit-field copies and a member equal to its enclosing managed type retain physical
+access instead of an invalid convenience property. C ambiguity is rejected.
+
+Seven direct/object-linked managed-consumer tests pass, including function pointers,
+const-pointee versus const-pointer behavior, nested bit-fields, atomic/volatile
+access, and a valid C member matching its enclosing tag. A native C control agrees
+on all values and the 48-byte layout with offsets8/16/40. Two standalone consumers
+pass JIT and NativeAOT with no publication warnings. Receipts are
+`artifacts/promoted-managed-final/results.json`. Final full-suite validation passes
+2146 units and447 functional cases, with1005 explicitly gated oracle skips; see
+`artifacts/compiler-promoted-final-results.json`. The old validated P2 receipts
+and object provenance are retained in `artifacts/checkpoint-4f625631/`. The new
+compiler `6bd81abfd99e00e605067b3f75260449475ab7b243377aa8c6c470f0709e284a`
+and committed fix `c786b9c` pass all60 host/core and29 public native ABI records
+in JIT/AOT. Both refreshed raw/optimized libraries and whole-assembly-rooted
+JIT/AOT consumers pass; `config/product-closure.json` binds the new receipts.

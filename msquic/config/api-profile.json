@@ -130,7 +130,7 @@
       "type": "QUIC_CONFIGURATION_OPEN_FN",
       "policy": "selected-pending",
       "implementation": "unqualified",
-      "behavior": "QUIC v1 only; validate the complete settings mask and ALPN lifetime.",
+      "behavior": "QUIC v1 only; validate the complete settings mask and ALPN lifetime. ALPN identifiers are 1..255 bytes without embedded NUL, an explicit pinned-picotls backend restriction; reject unsupported identifiers before dispatch.",
       "exposure": "expose only after corresponding runtime and ownership gates pass",
       "source": {
         "path": "src/inc/msquic.h",
@@ -1843,7 +1843,8 @@
       "QUIC_CREDENTIAL_FLAG_DEFER_CERTIFICATE_VALIDATION",
       "QUIC_CREDENTIAL_FLAG_SET_ALLOWED_CIPHER_SUITES",
       "QUIC_CREDENTIAL_FLAG_USE_PORTABLE_CERTIFICATES"
-    ]
+    ],
+    "managed_identity": "Credential type 0x10000 is an explicit managed-host ABI extension; CertificateContext carries a checked host-owned credential token, Reserved is null. It does not reinterpret a native certificate context."
   },
   "capabilities": {
     "selected_pending": [

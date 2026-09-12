@@ -1,7 +1,11 @@
 # picotls adapter contract review
 
-This is the implementation contract for P4, not a passing runtime receipt. The
-raw picotls feasibility matrix establishes the handshake-message API only.
+The actual adapter passes 20 cases in each raw/optimized × JIT/NativeAOT variant
+on Linux x64, recorded by `scripts/test-tls-adapter.py` under
+`artifacts/tls-adapter/results.json`. This establishes the typed TLS services,
+packet-key integration and ownership. Complete QUIC transport scheduling and UDP
+interoperability are separate gates. The earlier raw picotls feasibility matrix
+establishes only the handshake-message API.
 
 ## Input and result mapping
 
@@ -43,12 +47,43 @@ TLS handshake parser is incorrect. Calling picotls's private
 `send_session_ticket` after handshake completion is also incorrect: that routine
 temporarily computes a hypothetical client Finished transcript.
 
-The adapter must resolve this ordering explicitly. A possible bounded stateful
-design retains generated ticket output until the application requests release
-and associates the protected ticket with the later application/transport state.
-This requires a reviewed lifetime, capacity, expiry, rotation, replay, and
-multiple-ticket policy before implementation. No ticket-resumption gate is
-satisfied by the existing raw feasibility test alone.
+The authored adapter discards the automatic pre-Finished tickets and invokes
+`dotcc_ptls_send_quic_ticket` for each application request. This small authored C
+boundary includes the unchanged reference core in the same translation unit,
+checks the server post-handshake state, and calls the existing
+`encode_session_identifier` with the completed transcript and a fresh 32-byte
+ticket nonce. It uses the existing buffer macros with a null transcript argument
+to encode NewSessionTicket. It does not change handshake state, traffic keys,
+epochs, or the transcript. Each request receives its own PSK, age-add, issue time,
+and full lifetime, including requests on long-lived connections. Its temporary
+session secret is cleared before returning. `picotls/config/core-wrappers.json`
+and the translation provenance record this explicit authored input.
+
+The reused BCL ticket protector authenticates one versioned envelope containing
+the fresh TLS session identifier, its expiry, and the MsQuic application and
+transport state. Original picotls algorithms generate the session identifier;
+the adapter handles the opaque ticket identity only.
+
+The server authenticates and bounds the entire envelope before passing its
+application bytes to the original core ReceiveTicket callback and its session
+identifier to picotls. The latter still checks issue time, context, cipher, ALPN,
+and the PSK binder. Every accepted ticket rejects early data and requires fresh
+DHE. The envelope uses the currently configured protector ring at release, so
+shared imported keys support cross-instance resumption without a stateful
+ticket lookup. Replacing the ring removes omitted decrypt keys immediately.
+The native helper control passes both ciphers and both certificate types,
+including issuance two hours after a 60-second original lifetime, two distinct
+nonce/PSK pairs, actual resumption of both tickets with fresh P256 exchanges,
+invalid-state rejection, and failed-protector output rollback. The actual adapter
+also passes delayed ticket delivery, distinct ticket PSKs, cross-configuration
+imported-key resumption, key removal, authenticated application rejection and
+corrupted-identity fallback. Real transport acceptance remains a separate gate.
+
+Transport-parameter collection validates repeated extensions. Only the client
+calls the core ReceiveTP callback: the server's core has already parsed the
+ClientHello parameters before selecting the TLS configuration. The managed
+profile requires nonempty ALPN identifiers without NUL bytes, matching the
+picotls negotiated-protocol accessor's string representation.
 
 ## Ownership and verification
 
@@ -63,10 +98,29 @@ and packet keys keep their original allocator ownership. Picotls temporary
 buffers use the picotls allocator. Security configuration creation, connection
 initialization, and callback failure must clean up partial ownership transfers.
 
-P4 validation must include fragmented inputs and output growth, exact consumed
-lengths and result flags, both roles and both ciphers, HelloRetryRequest,
-transport parameters, certificate/name/trust failures, ALPN failure, wrong
-epochs, TLS KeyUpdate close `0x010a`, ticket lifecycle, and repeated disposal.
+The passing adapter cases include fragmented inputs, exact consumed lengths and
+result flags, both roles and both ciphers with ECDSA/RSA certificates,
+HelloRetryRequest including bytewise fragments and a separate raw-peer bridge,
+transport parameters, certificate/name/trust failures, ALPN failure, TLS KeyUpdate
+alert 10, ticket lifecycle, and disposal of original certificate/credential/
+configuration owners before the handshake. The core maps alert 10 to close
+`0x010a`; the actual transport close remains an integration gate.
 Packet tests call translated derivation helpers and compare Initial secrets,
 keys, IVs, header protection, Retry integrity, and key updates with RFC/native
 vectors. Decryption authenticates into private storage before exposing output.
+
+## Credential callbacks
+
+The authored loader accepts the selected managed flags only. Asynchronous load
+invokes completion inline and returns PENDING, matching the pinned OpenSSL
+loader's observable ordering. Certificate indication is client-only in this
+profile and requires portable certificates: a DER leaf and PKCS7 chain are
+borrowed only during the callback. The owning facade must copy them if needed
+after return. The reused provider still validates explicit trust, hostname,
+certificate purpose, and the CertificateVerify signature. Deferred application
+approval cannot override a failed trust/name check. Original core callbacks own
+pending approval and completion; an application rejection releases the provider's
+pending signature verification key. Portable DER/PKCS7 acceptance/rejection,
+deferred failed-trust rejection, inline asynchronous completion and invalid flag
+combinations pass the adapter matrix. Pending approval through the actual core
+and owning facade remains a P6/P8 integration gate.
