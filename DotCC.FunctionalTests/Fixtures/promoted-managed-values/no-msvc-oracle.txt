@@ -1,0 +1,1 @@
+GNU LP64 unsigned long and bit-field layout, matching the managed product ABI.

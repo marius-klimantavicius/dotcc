@@ -21,7 +21,7 @@ internal sealed record ObjectAggregateMetadata(bool IsIncomplete, bool IsUnion, 
         foreach (var field in type.Fields)
             shape.Append('|').Append(Atom(field.Name)).Append(':').Append(Describe(field.Type))
                 .Append(':').Append(field.BitWidth?.ToString(CultureInfo.InvariantCulture) ?? "-")
-                .Append(':').Append(field.Alignment);
+                .Append(':').Append(field.Alignment).Append(':').Append(field.IsAnonymousAggregate);
         return new(type.IsIncomplete, type.IsUnion,
             Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(shape.ToString()))));
     }

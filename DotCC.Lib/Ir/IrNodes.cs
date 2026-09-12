@@ -625,7 +625,7 @@ public sealed record StructTypeDef(string Name, IReadOnlyList<StructField> Field
 /// (MSVC storage-unit layout) + masked/sign-extended accessor properties — so
 /// <c>sizeof</c> and member offsets match C's layout while reads/writes keep C's
 /// exact value semantics (modular truncation, signed sign-extension).</summary>
-public readonly record struct StructField(string Name, CType Type, int? BitWidth = null, int Alignment = 0)
+public readonly record struct StructField(string Name, CType Type, int? BitWidth = null, int Alignment = 0, bool IsAnonymousAggregate = false)
 {
     /// <summary>True for any bit-field — named, anonymous, or zero-width.</summary>
     public bool IsBitField => BitWidth is not null;

@@ -1344,6 +1344,10 @@ internal sealed partial class IrBuilder
             }
         }
         Member(memberList);
+        if (_promoted.TryGetValue(owner, out var promotedMembers))
+            foreach (var field in fields)
+                if (!field.IsAnonymousAggregate && promotedMembers.ContainsKey(field.Name))
+                    throw new IrUnsupportedException("ambiguous anonymous member: " + field.Name);
         foreach (var field in fields) RequireCompleteObject(field.Type, "member '" + owner + "." + field.Name + "'");
         return fields;
     }
@@ -1372,7 +1376,7 @@ internal sealed partial class IrBuilder
             throw new IrUnsupportedException("anonymous member requires a complete struct or union type");
         var nested = named.Name;
         var hidden = "__anon_" + nested;
-        parentFields.Add(new StructField(hidden, type));
+        parentFields.Add(new StructField(hidden, type, IsAnonymousAggregate: true));
         if (!_promoted.TryGetValue(owner, out var pm)) _promoted[owner] = pm = new(StringComparer.Ordinal);
         void Promote(string field)
         {
@@ -1380,7 +1384,8 @@ internal sealed partial class IrBuilder
             if (!pm.TryAdd(field, (hidden, nested)))
                 throw new IrUnsupportedException("ambiguous anonymous member: " + field);
         }
-        foreach (var f in innerFields) Promote(f.Name);
+        foreach (var f in innerFields)
+            if (!f.IsAnonymousAggregate) Promote(f.Name);
         if (_promoted.TryGetValue(nested, out var innerPromoted))
             foreach (var name in innerPromoted.Keys) Promote(name);
     }

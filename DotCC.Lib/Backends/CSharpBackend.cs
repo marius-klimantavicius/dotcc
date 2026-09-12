@@ -51,6 +51,7 @@ internal sealed partial class CSharpBackend
     private DotCC.Layout.OffsetLayoutModel _offsetModel = null!;
     private readonly HashSet<string> _offsetRequests = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> _aggregateFactories = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, StructTypeDef> _aggregateDefinitions = new(StringComparer.Ordinal);
 
     /// <summary>Project a neutral <see cref="CType"/> onto the target's type
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
@@ -60,6 +61,7 @@ internal sealed partial class CSharpBackend
     {
         VaListLifetimeValidator.Validate(unit);
         var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass };
+        foreach (var type in unit.Types) cg._aggregateDefinitions.Add(type.Name, type);
         cg.RegisterPublicFunctionPointers(unit);
         cg._offsetDocument = unit.CreateOffsetDocument();
         cg._offsetRequests.UnionWith(cg._offsetDocument.Requests.Select(request => request.Name));
@@ -330,6 +332,7 @@ internal sealed partial class CSharpBackend
             sb.Append("    public ").Append(Cs(f.Type)).Append(' ').Append(DotCC.EmitHelpers.Id(f.Name)).Append(";\n");
             fi++;
         }
+        if (_publicTypes) AppendPromotedProperties(sb, t);
         sb.Append("}\n\n");
         return wrappers.Append(sb).ToString();
     }
