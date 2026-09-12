@@ -211,7 +211,10 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
     ready, proxy_ready, stats_path = (directory / filename for filename in ('server.ready', 'proxy.ready.json', 'proxy.stats.json'))
     barrier = directory / 'proxy-drain'
     barrier_ready, barrier_release = Path(str(barrier) + '.ready'), Path(str(barrier) + '.release')
-    for path in (ready, proxy_ready, stats_path, barrier_ready, barrier_release):
+    client_transfer, server_transfer, transfer_release = (Path(str(barrier) + suffix) for suffix in
+        ('.client.transfer-ready', '.server.transfer-ready', '.transfer-release'))
+    for path in (ready, proxy_ready, stats_path, barrier_ready, barrier_release,
+                 client_transfer, server_transfer, transfer_release):
         path.unlink(missing_ok=True)
     certificate, key = BUILD / 'ecdsa.pem', BUILD / 'ecdsa.key'
     managed = (['dotnet', str(BUILD / variant / 'bin/Release/net10.0/ManagedPeer.dll')]
@@ -257,6 +260,24 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
                                '--server-pid', str(server.pid)], proxy_log, environment)
                 proxy_port = wait_ready(proxy, proxy_ready, as_json=True)
                 client = start(peer_command('client', proxy_port), client_log, environment)
+                deadline = time.monotonic() + 60
+                case['both_stream_fin_acknowledged_before_close'] = False
+                while time.monotonic() < deadline:
+                    if (client_transfer.exists() and client_transfer.read_text().strip() == str(client.pid)
+                            and server_transfer.exists() and server_transfer.read_text().strip() == str(server.pid)):
+                        release_tmp = transfer_release.with_suffix('.tmp')
+                        release_tmp.write_text('streams-acknowledged\n')
+                        release_tmp.replace(transfer_release)
+                        case['both_stream_fin_acknowledged_before_close'] = True
+                        break
+                    if (client.poll() is not None or server.poll() is not None
+                            or (barrier_ready.exists() and barrier_ready.read_text().strip() == str(server.pid))):
+                        # Preserve genuine incomplete/idle outcomes for strict
+                        # negative observations; never release a partial stream.
+                        break
+                    time.sleep(0.01)
+                else:
+                    raise TimeoutError('Recovery stream FIN acknowledgment barrier timed out')
                 case['client_exit'] = client.wait(timeout=60)
                 deadline = time.monotonic() + 20
                 while not (barrier_ready.exists() and barrier_ready.read_text().strip() == str(server.pid)):
@@ -282,8 +303,10 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
             case['proxy'] = stats
             check(case['client_exit'] == case['server_exit'] == case['proxy_exit'] == 0,
                   'Peer or proxy exit failed: ' + name)
+            check(case['both_stream_fin_acknowledged_before_close'], 'Endpoints closed before both stream FIN acknowledgments')
             for peer_role in ('client', 'server'):
                 validate_peer(case[peer_role], peer_role, role in (peer_role, 'both'), runtime, cipher, family)
+                check(case[peer_role]['send_fin_acknowledged'], peer_role + ' lacks actual send FIN acknowledgment')
                 if role in (peer_role, 'both'):
                     check(case[peer_role].get('share_udp_binding_requested') is False,
                           'Recovery peer differs from the ordinary baseline binding profile')

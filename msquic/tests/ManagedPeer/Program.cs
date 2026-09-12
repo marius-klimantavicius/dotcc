@@ -47,7 +47,7 @@ internal static unsafe class Program
         internal QUIC_HANDLE* Connection;
         internal QUIC_HANDLE* Stream;
         internal ulong Received, Sent;
-        internal int Connected, Finished, Closed, SendCompleted;
+        internal int Connected, Finished, Closed, SendCompleted, SendFinAcknowledged;
         internal uint Version;
         internal QUIC_HANDSHAKE_INFO Handshake;
         internal uint TransportStatus;
@@ -134,6 +134,30 @@ internal static unsafe class Program
         }
         Require(File.ReadAllText(barrier + ".release").Trim() == "proxy-stopped", "Invalid proxy drain release");
     }
+
+    private static bool WaitForRecoveryTransfer()
+    {
+        string? barrier = Environment.GetEnvironmentVariable("DOTCC_PEER_PROXY_DRAIN");
+        if (barrier == null) return false;
+        long deadline = Environment.TickCount64 + 20000;
+        while (Volatile.Read(ref peer.Finished) == 0 || Volatile.Read(ref peer.SendFinAcknowledged) == 0)
+        {
+            if (Volatile.Read(ref peer.Closed) != 0 || Volatile.Read(ref failed) != 0) return false;
+            if (Environment.TickCount64 >= deadline) throw new TimeoutException("Recovery stream FIN acknowledgment timed out");
+            Thread.Sleep(1);
+        }
+        string role = peer.Server ? "server" : "client";
+        File.WriteAllText(barrier + "." + role + ".transfer-ready", Environment.ProcessId + "\n");
+        while (!File.Exists(barrier + ".transfer-release"))
+        {
+            if (Volatile.Read(ref peer.Closed) != 0 || Volatile.Read(ref failed) != 0) return false;
+            if (Environment.TickCount64 >= deadline) throw new TimeoutException("Recovery transfer barrier timed out");
+            Thread.Sleep(1);
+        }
+        Require(File.ReadAllText(barrier + ".transfer-release").Trim() == "streams-acknowledged",
+                "Invalid recovery transfer release");
+        return Volatile.Read(ref failed) == 0;
+    }
     private static void Fail(string error) { errors.Enqueue(error); Console.Error.WriteLine(error); Volatile.Write(ref failed, 1); }
     private static void Require(bool condition, string error) { if (!condition) Fail(error); }
     private static bool Check(uint status, string operation)
@@ -206,6 +230,10 @@ internal static unsafe class Program
                     Require(sends.TryRemove((nint)completed.ClientContext, out _), "Unknown or repeated send completion");
                     Require(completed.Canceled == 0, "Stream send was canceled");
                     Interlocked.Increment(ref owner.SendCompleted);
+                    break;
+                case QUIC_STREAM_EVENT_SEND_SHUTDOWN_COMPLETE:
+                    if (notification->SEND_SHUTDOWN_COMPLETE.Graceful != 0)
+                        Volatile.Write(ref owner.SendFinAcknowledged, 1);
                     break;
                 case QUIC_STREAM_EVENT_PEER_SEND_ABORTED:
                     Fail("Peer aborted send: " + notification->PEER_SEND_ABORTED.ErrorCode); break;
@@ -421,6 +449,8 @@ internal static unsafe class Program
                     // Atomic publication prevents the orchestrator observing an empty ready file.
                     File.WriteAllText(arguments[8] + ".tmp", MsQuicHost.DatagramEndpoint(&address).Port + "\n");
                     File.Move(arguments[8] + ".tmp", arguments[8], overwrite: true);
+                    if (WaitForRecoveryTransfer())
+                        api->ConnectionShutdown(peer.Connection, QUIC_CONNECTION_SHUTDOWN_FLAGS.QUIC_CONNECTION_SHUTDOWN_FLAG_NONE, 0);
                     Wait(ref peer.Closed, "server connection shutdown");
                     // Keep the listener's UDP binding alive until the fault
                     // proxy has flushed/stopped, before any owning cleanup.
@@ -445,6 +475,7 @@ internal static unsafe class Program
                     fixed (byte* name = hostname)
                         if (Check(api->ConnectionStart(openedConnection, configuration, address.Ip.sa_family, name, port), "ConnectionStart")) Wait(ref peer.Finished, "client payload FIN");
                     if (Volatile.Read(ref peer.Finished) != 0 && settleMilliseconds != 0) Thread.Sleep(settleMilliseconds);
+                    WaitForRecoveryTransfer();
                     api->ConnectionShutdown(openedConnection, QUIC_CONNECTION_SHUTDOWN_FLAGS.QUIC_CONNECTION_SHUTDOWN_FLAG_NONE, 0);
                     Wait(ref peer.Closed, "client connection shutdown", stopOnFailure: false);
                 }
@@ -502,6 +533,7 @@ internal static unsafe class Program
             ",\"client_bytes\":" + (peer.Server ? 0 : peer.Received) + ",\"server_bytes\":" + (peer.Server ? peer.Received : 0) +
             ",\"sent_bytes\":" + peer.Sent + ",\"send_completions\":" + peer.SendCompleted +
             ",\"connected\":" + peer.Connected + ",\"finished\":" + peer.Finished + ",\"closed\":" + peer.Closed +
+            ",\"send_fin_acknowledged\":" + (peer.SendFinAcknowledged != 0 ? "true" : "false") +
             ",\"transport_status\":" + peer.TransportStatus + ",\"transport_error\":" + peer.TransportError + ",\"peer_error\":" + peer.PeerError +
             ",\"statistics_status\":" + statisticsStatus + ",\"udp_sent_packets\":" + finalStatistics.SendTotalPackets +
             ",\"udp_received_packets\":" + finalStatistics.RecvTotalPackets + ",\"decrypt_failures\":" + finalStatistics.RecvDecryptionFailures +

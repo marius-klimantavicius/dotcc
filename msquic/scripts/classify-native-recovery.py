@@ -46,9 +46,11 @@ def validate_case(case):
     check(case['proxy_exit'] == 0, 'Proxy exit failed')
     if scenario in POSITIVE or scenario == 'rebinding':
         check(case['client_exit'] == case['server_exit'] == 0, 'Successful payload pair exited unsuccessfully')
+        check(case['both_stream_fin_acknowledged_before_close'], 'Missing pre-close stream FIN acknowledgment barrier')
         for endpoint in ('client', 'server'):
             peer = case[endpoint]
             recovery.validate_peer(peer, endpoint, role == 'both', case['runtime'], case['cipher'], case['family'])
+            check(peer['send_fin_acknowledged'], 'Endpoint did not acknowledge its send FIN')
             check(peer['connected'] == peer['finished'] == peer['closed'] == 1, 'Endpoint did not complete')
             check(peer['transport_status'] == peer['transport_error'] == peer['peer_error'] == 0, 'Unexpected terminal error')
     else:

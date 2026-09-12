@@ -24,7 +24,7 @@ typedef struct Peer {
     HQUIC connection;
     HQUIC stream;
     uint64_t received;
-    atomic_int connected, finished, closed;
+    atomic_int connected, finished, closed, send_fin_acknowledged;
     QUIC_HANDSHAKE_INFO handshake;
     uint32_t version;
     uint16_t remote_port;
@@ -83,6 +83,9 @@ static QUIC_STATUS QUIC_API stream_callback(HQUIC stream, void *context, QUIC_ST
     case QUIC_STREAM_EVENT_SEND_COMPLETE:
         free(event->SEND_COMPLETE.ClientContext);
         if (event->SEND_COMPLETE.Canceled) atomic_store(&failure, 1);
+        break;
+    case QUIC_STREAM_EVENT_SEND_SHUTDOWN_COMPLETE:
+        if (event->SEND_SHUTDOWN_COMPLETE.Graceful) atomic_store(&peer->send_fin_acknowledged, 1);
         break;
     case QUIC_STREAM_EVENT_PEER_SEND_ABORTED:
     case QUIC_STREAM_EVENT_PEER_RECEIVE_ABORTED:
@@ -183,6 +186,40 @@ static void wait_for_proxy_drain(void) {
         nanosleep(&pause, NULL);
     }
     atomic_store(&failure, 1);
+}
+
+static int wait_for_recovery_transfer(Peer *peer) {
+    const char *barrier = getenv("DOTCC_PEER_PROXY_DRAIN");
+    if (!barrier) return 0;
+    char ready_path[4096], release_path[4096];
+    if (strlen(barrier) > sizeof(ready_path) - 32) { atomic_store(&failure, 1); return 0; }
+    snprintf(ready_path, sizeof(ready_path), "%s.%s.transfer-ready", barrier, peer->server ? "server" : "client");
+    snprintf(release_path, sizeof(release_path), "%s.transfer-release", barrier);
+    struct timespec pause = {0, 1000000};
+    int published = 0;
+    for (int i = 0; i < 20000; i++) {
+        if (atomic_load(&peer->closed) || atomic_load(&failure)) return 0;
+        if (!published && atomic_load(&peer->finished) && atomic_load(&peer->send_fin_acknowledged)) {
+            FILE *ready = fopen(ready_path, "w");
+            if (!ready) { atomic_store(&failure, 1); return 0; }
+            fprintf(ready, "%ld\n", (long)getpid());
+            if (fclose(ready)) { atomic_store(&failure, 1); return 0; }
+            published = 1;
+        }
+        if (published) {
+            FILE *release = fopen(release_path, "r");
+            if (release) {
+                char token[32] = {0};
+                int valid = fgets(token, sizeof(token), release) && !strcmp(token, "streams-acknowledged\n");
+                fclose(release);
+                if (!valid) atomic_store(&failure, 1);
+                return valid;
+            }
+        }
+        nanosleep(&pause, NULL);
+    }
+    atomic_store(&failure, 1);
+    return 0;
 }
 
 static void snapshot_connection(Peer *peer) {
@@ -310,10 +347,15 @@ int main(int argc, char **argv) {
             struct timespec remaining = {settle_ms / 1000, (settle_ms % 1000) * 1000000};
             while (nanosleep(&remaining, &remaining) != 0 && errno == EINTR) { }
         }
+        wait_for_recovery_transfer(&client_peer);
         api->ConnectionShutdown(client_peer.connection, QUIC_CONNECTION_SHUTDOWN_FLAG_NONE, 0);
         wait_for(&client_peer.closed, 0);
     }
-    if (run_server) wait_for(&server_peer.closed, 0);
+    if (run_server) {
+        if (wait_for_recovery_transfer(&server_peer))
+            api->ConnectionShutdown(server_peer.connection, QUIC_CONNECTION_SHUTDOWN_FLAG_NONE, 0);
+        wait_for(&server_peer.closed, 0);
+    }
     // Keep the listener binding alive through the proxy's bounded drain.
     if (run_server) wait_for_proxy_drain();
     snapshot_connection(&client_peer);
@@ -358,6 +400,7 @@ int main(int argc, char **argv) {
         atomic_load(&report->connected), atomic_load(&report->finished), atomic_load(&report->closed));
     printf(",\"statistics_status\":%u,\"statistics_sampled\":%s", (unsigned)report->statistics_status,
         report->statistics_sampled ? "true" : "false");
+    printf(",\"send_fin_acknowledged\":%s", atomic_load(&report->send_fin_acknowledged) ? "true" : "false");
     printf(",\"udp_sent_packets\":%llu,\"udp_received_packets\":%llu,\"decrypt_failures\":%llu,\"dropped_packets\":%llu,\"suspected_lost_packets\":%llu,\"spurious_lost_packets\":%llu,\"udp_sent_bytes\":%llu,\"udp_received_bytes\":%llu,\"core_sent_stream_bytes\":%llu,\"core_received_stream_bytes\":%llu,\"valid_ack_frames\":%llu,\"path_mtu\":%u}\n",
         (unsigned long long)report->statistics.SendTotalPackets, (unsigned long long)report->statistics.RecvTotalPackets,
         (unsigned long long)report->statistics.RecvDecryptionFailures, (unsigned long long)report->statistics.RecvDroppedPackets,
