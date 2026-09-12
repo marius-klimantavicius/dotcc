@@ -45,7 +45,11 @@ def generated(directory, recorded):
     names = (directory / 'Dotcc.SourceFiles.txt').read_text().splitlines()
     if not names or len(names) != len(set(names)) or any(Path(n).name != n or not n.endswith('.cs') for n in names):
         raise RuntimeError('Invalid source manifest: ' + str(directory))
-    if set(names) != {p.name for p in directory.glob('*.cs')}:
+    # The SDK compiles nested sources by default, so a top-level glob misses
+    # stale inputs that are absent from the compiler's source manifest.
+    actual = {str(p.relative_to(directory)) for p in directory.rglob('*.cs')
+              if not {'bin', 'obj'}.intersection(p.relative_to(directory).parts)}
+    if set(names) != actual:
         raise RuntimeError('Unmanifested or missing generated sources')
     current = {n: sha(directory / n) for n in names}
     if current != {n: h for n, h in recorded.items() if n.endswith('.cs')}:
@@ -287,6 +291,11 @@ try:
             entry['runtimes'][runtime] = dict(passed=True, binary_sha256=binaries, output=str(output))
         if snapshot(paths) != frozen: raise RuntimeError('Product/sample/dependency inputs changed during matrix')
         entry['passed'] = True
+    # Rediscover sources after execution: hashing the original path list alone
+    # cannot detect a new nested file introduced during the matrix.
+    for variant in args.variants:
+        generated(ROOT / 'generated' / variant / 'TranslatedMsQuic', closure['generated'][variant])
+        generated(PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls'), pico[variant])
     receipt['targeted_passed'] = True
     receipt['passed'] = FULL
 except BaseException as error:

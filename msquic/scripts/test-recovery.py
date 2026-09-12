@@ -259,7 +259,10 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variants', nargs='+', choices=['raw', 'optimized'], default=['raw', 'optimized'])
-    parser.add_argument('--jit-only', action='store_true')
+    runtime_selection = parser.add_mutually_exclusive_group()
+    runtime_selection.add_argument('--jit-only', action='store_true')
+    runtime_selection.add_argument('--runtimes', nargs='+', choices=['jit', 'aot'],
+                                   help='Select runtimes, including isolated strict NativeAOT observations')
     parser.add_argument('--roles', nargs='+', choices=['both', 'client', 'server', 'native'], default=['both', 'client', 'server'],
                         help='native selects an additional test-only native-to-native control')
     parser.add_argument('--families', nargs='+', choices=['ipv4', 'ipv6'], default=['ipv4', 'ipv6'])
@@ -277,7 +280,9 @@ def main():
     receipt = dict(passed=False, targeted_passed=False, phase='P7 packet recovery subset',
                    entire_p7_qualified=False, cases=[], source_hashes={
                        str(path.relative_to(REPO)): sha(path) for path in (Path(__file__), PROXY)})
-    runtimes = ['jit'] if args.jit_only else ['jit', 'aot']
+    runtimes = args.runtimes or (['jit'] if args.jit_only else ['jit', 'aot'])
+    if len(runtimes) != len(set(runtimes)):
+        parser.error('Runtimes must be unique')
     try:
         baseline = json.loads(args.peer_receipt.read_text())
         validate_baseline(baseline, args.variants)
@@ -300,7 +305,7 @@ def main():
         validate_baseline(baseline, args.variants)
         bind_files(receipt['source_hashes'], 'Recovery source')
         check(sha(args.peer_receipt) == receipt['peer_receipt']['sha256'], 'Baseline receipt changed during recovery')
-        full = (set(args.variants) == {'raw', 'optimized'} and not args.jit_only
+        full = (set(args.variants) == {'raw', 'optimized'} and set(runtimes) == {'jit', 'aot'}
                 and set(args.roles) == {'both', 'client', 'server'} and set(args.families) == {'ipv4', 'ipv6'}
                 and set(args.ciphers) == {'128', '256'} and set(args.scenarios) == set(SCENARIOS))
         receipt.update(passed=full, targeted_passed=not full, cases_passed=len(receipt['cases']))
