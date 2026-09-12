@@ -31,6 +31,7 @@ SCENARIOS = {
                             'duplicate_every': 11, 'delay_ms': 2, 'jitter_ms': 3}
                  for direction in DIRECTIONS},
     'rebinding': {'rebind_after_client_packets': 12},
+    'rebinding-expired-mapping': {'rebind_after_client_packets': 12, 'retire_old_backend_on_rebind': True},
     'mtu-probe-loss': {direction: {'mtu_bytes': 1300} for direction in DIRECTIONS},
     'payload-ceiling-up': {direction: {'mtu_bytes': 1300, 'mtu_change_after': 12,
                                      'mtu_bytes_after': 1472} for direction in DIRECTIONS},
@@ -142,9 +143,12 @@ def validate_faults(stats, scenario):
                   'Traffic ended before the payload ceiling changed')
     if scenario == 'handshake-loss':
         check(counts['client_to_server']['rule_drops'] == 1, 'Initial loss count mismatch')
-    if scenario == 'rebinding':
+    if scenario.startswith('rebinding'):
         check(len(stats['rebindings']) == 1 and len(set(stats['backend_ports'])) == 2,
               'Source port did not change exactly once')
+        if scenario == 'rebinding-expired-mapping':
+            check(stats['configuration']['retire_old_backend_on_rebind'], 'Old mapping expiry not configured')
+            check(counts['server_to_client']['retired_mapping_drops'] > 0, 'No replies exercised the expired old mapping')
     else:
         check(not stats['rebindings'], 'Unexpected source port change')
     if scenario == 'baseline':
@@ -166,7 +170,7 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
     proxy = None
     case = dict(name=name, variant=variant, runtime=runtime, managed_role=role,
                 family=family, cipher=cipher, scenario=scenario, passed=False,
-                post_exchange_settle_ms=2000 if scenario == 'rebinding' else 0)
+                post_exchange_settle_ms=2000 if scenario.startswith('rebinding') else 0)
     receipt['cases'].append(case)
     started = time.monotonic()
 
@@ -219,9 +223,16 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
             if role in ('client', 'both'):
                 check(case['client']['settle_ms'] == case['post_exchange_settle_ms'], 'Client did not apply the requested validation interval')
             validate_faults(stats, scenario)
-            if scenario == 'rebinding' and role in ('server', 'both'):
-                check(case['server']['remote_port'] == stats['backend_ports'][-1]
-                      and case['server']['active_path_validated'], 'Server did not validate the new source port')
+            if scenario.startswith('rebinding'):
+                server_result = case['server']
+                active = [path for path in server_result.get('paths', []) if path['in_use'] and path['active']]
+                check(len(active) == 1, 'Missing or ambiguous actual server active-path snapshot')
+                if role not in ('server', 'both'):
+                    check(server_result.get('private_paths_snapshot'), 'Native server lacks exact core-header path diagnostics')
+                check(server_result['remote_port'] == active[0]['remote_port'] == stats['backend_ports'][-1]
+                      and active[0]['peer_validated'], 'Server did not validate the new source port')
+                if role in ('server', 'both'):
+                    check(server_result['active_path_validated'], 'Managed active-path summaries disagree')
                 case['new_server_path_validated'] = True
             case['passed'] = True
             print(name + ': PASS', flush=True)

@@ -29,6 +29,8 @@ internal static unsafe class Program
     private static int settleMilliseconds;
     private static int finalRemotePort;
     private static bool finalActivePathValidated;
+    private static string finalPathsJson = "[]";
+    private static long finalPathsValidated, finalPathFailures;
     private static bool listenerPreflightPassed;
     private static QUIC_STATISTICS_V2 finalStatistics;
     private static uint statisticsStatus = uint.MaxValue;
@@ -85,7 +87,26 @@ internal static unsafe class Program
                 // Test-only actual core storage, sampled after SHUTDOWN_COMPLETE
                 // and before close: the active path is kept in slot zero upstream.
                 var path = ((QUIC_CONNECTION*)peer.Connection)->Paths[0];
-                finalActivePathValidated = path.InUse != 0 && path.IsActive != 0 && path.IsPeerValidated != 0; statisticsStatus = status;
+                finalActivePathValidated = path.InUse != 0 && path.IsActive != 0 && path.IsPeerValidated != 0;
+                var connection = (QUIC_CONNECTION*)peer.Connection;
+                var paths = new List<string>();
+                for (int i = 0; i < connection->PathsCount; i++)
+                {
+                    var observed = connection->Paths[i];
+                    int port = MsQuicHost.DatagramEndpoint(&observed.Route.RemoteAddress).Port;
+                    paths.Add("{\"id\":" + observed.ID + ",\"in_use\":" + observed.InUse + ",\"active\":" + observed.IsActive +
+                        ",\"peer_validated\":" + observed.IsPeerValidated + ",\"send_challenge\":" + observed.SendChallenge +
+                        ",\"send_response\":" + observed.SendResponse + ",\"allowance\":" + observed.Allowance +
+                        ",\"validation_start_us\":" + observed.PathValidationStartTime + ",\"remote_port\":" + port + "}");
+                }
+                finalPathsJson = "[" + string.Join(",", paths) + "]";
+                long* counters = stackalloc long[(int)QUIC_PERFORMANCE_COUNTERS.QUIC_PERF_COUNTER_MAX];
+                uint counterLength = (uint)((int)QUIC_PERFORMANCE_COUNTERS.QUIC_PERF_COUNTER_MAX * sizeof(long));
+                if (api->GetParam(null, MsQuic.QUIC_PARAM_GLOBAL_PERF_COUNTERS, &counterLength, counters) == 0)
+                {
+                    finalPathsValidated = counters[(int)QUIC_PERFORMANCE_COUNTERS.QUIC_PERF_COUNTER_PATH_VALIDATED];
+                    finalPathFailures = counters[(int)QUIC_PERFORMANCE_COUNTERS.QUIC_PERF_COUNTER_PATH_FAILURE];
+                } statisticsStatus = status;
                 Console.Error.WriteLine($"connection_statistics phase={phase} status={status} mtu={stats.SendPathMtu} sent_packets={stats.SendTotalPackets} lost_packets={stats.SendSuspectedLostPackets} sent_bytes={stats.SendTotalBytes} sent_stream_bytes={stats.SendTotalStreamBytes} recv_packets={stats.RecvTotalPackets} recv_dropped={stats.RecvDroppedPackets} recv_bytes={stats.RecvTotalBytes} recv_stream_bytes={stats.RecvTotalStreamBytes} decrypt_failures={stats.RecvDecryptionFailures} ack_frames={stats.RecvValidAckFrames}");
             }
         }
@@ -444,6 +465,7 @@ internal static unsafe class Program
             ",\"core_sent_stream_bytes\":" + finalStatistics.SendTotalStreamBytes + ",\"core_received_stream_bytes\":" + finalStatistics.RecvTotalStreamBytes +
             ",\"valid_ack_frames\":" + finalStatistics.RecvValidAckFrames + ",\"path_mtu\":" + finalStatistics.SendPathMtu +
             ",\"settle_ms\":" + settleMilliseconds + ",\"remote_port\":" + finalRemotePort + ",\"active_path_validated\":" + (finalActivePathValidated ? "true" : "false") + ",\"dest_cid_updates\":" + finalStatistics.DestCidUpdateCount +
+            ",\"paths\":" + finalPathsJson + ",\"paths_validated\":" + finalPathsValidated + ",\"path_failures\":" + finalPathFailures +
             ",\"host_resources\":" + finalHostResources + ",\"host_allocations\":" + finalHostAllocations + ",\"host_receive_leases\":" + finalHostReceiveLeases +
             ",\"host_send_errors\":" + finalSendErrors + ",\"host_receive_errors\":" + finalReceiveErrors + ",\"host_truncations\":" + finalTruncations +
             ",\"listener_preflight\":" + (listenerPreflightPassed ? "true" : "false") +

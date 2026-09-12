@@ -6,17 +6,22 @@ duplication, delay, and combined-fault exchanges pass in
 `artifacts/recovery-checked/results.json`. Rebinding delivers both payloads and
 updates the server's remote port, but the required active-path validation remains
 false even with a two-second client settling interval
-(`artifacts/recovery-settled/results.json`). That case remains a failure under
-investigation. MTU and full build/runtime matrices remain pending.
+(`artifacts/recovery-settled/results.json`). Exact native private-path diagnostics
+reproduce this failure (`artifacts/recovery-native-private-rebinding/results.json`).
+With the old mapping explicitly expired, strict new-path validation passes for
+native pairs, translated pairs, and both mixed roles in the targeted optimized
+JIT IPv4/AES-128 run (`artifacts/recovery-expired-mapping/results.json`). The
+original dual-live-mapping case remains a strict failure. Full MTU and
+build/runtime matrices remain pending.
 
-The managed-server/independent-client positive and three authentication-negative
-rows pass in `artifacts/managed-independent-server/results.json`. Initial
-managed-client positive, untrusted-root, and wrong-name rows also passed; its
-ALPN rejection exposed a harness expectation mismatch described below and needs
-a rerun with the corrected expectation. Each receipt binds its own checkpoint;
+Both managed endpoint roles now pass positive exchange and the three
+authentication-negative rows in the refreshed eight-case optimized JIT
+IPv4/ECDSA/AES-128 run
+(`artifacts/managed-independent-refreshed/results.json`). The corrected
+peer-specific ALPN expectation described below is confirmed. Each receipt binds its own checkpoint;
 subsequent baseline source changes require a new baseline and dependent rerun.
 
-The UDP fault proxy's seven isolated controls pass; those controls exercise the
+The UDP fault proxy's nine isolated controls pass; those controls exercise the
 proxy with opaque datagrams rather than QUIC.
 
 Both drivers reuse executables from `scripts/test-managed-peer.py`. Before and
@@ -31,9 +36,9 @@ library is loaded by the managed application; oracle peers run separately.
 python3 msquic/scripts/test-recovery.py
 ```
 
-The complete packet recovery subset contains 528 exchanges: raw/optimized,
+The complete packet recovery subset contains 576 exchanges: raw/optimized,
 JIT/NativeAOT, IPv4/IPv6, AES-128/AES-256, translated pairs and both roles against
-native MsQuic, across eleven scenarios:
+native MsQuic, across twelve scenarios:
 
 | Scenario | Required observation |
 | --- | --- |
@@ -45,6 +50,7 @@ native MsQuic, across eleven scenarios:
 | Delay | Configured bounded delay and seeded jitter are applied. |
 | Combined | Loss, reordering, duplication, and delay all occur. |
 | Rebinding | The server-facing source port changes during the exchange. |
+| Rebinding with expired mapping | The source port changes and replies arriving on the old mapping are explicitly discarded; the new server path must validate. |
 | MTU probe loss | Oversized probes are dropped while baseline-sized data can pass. |
 | Payload ceiling increase | Initial probe drops occur before the ceiling rises. |
 | Payload ceiling decrease | Oversized datagrams are dropped after the ceiling changes. |
@@ -57,11 +63,12 @@ checks every byte and offset independently. Proxy assertions cover effective fau
 queues. Counters distinguish intentional faults from queue overflow, truncation,
 foreign traffic, socket errors, and shutdown abandonment.
 
-When the server is translated, the source-port case also requires its final
-remote port to match the proxy's new port and its actual active path to be
-validated. Native-server rows initially establish continued delivery; equivalent
-native endpoint path evidence remains required for that role's stronger path
-qualification. Likewise the payload ceiling models loss above a
+For both translated and native servers, source-port cases require the final
+remote port to match the proxy's new port and the actual active path to be
+validated. Native snapshots use the exact pinned native core headers and
+compilation defines, with their provenance bound in the baseline receipt.
+Earlier native rows with public counters alone establish continued delivery but
+cannot identify the validated path. Likewise the payload ceiling models loss above a
 threshold; it does not synthesize ICMP or by itself establish MTU discovery.
 The pinned upstream discovery algorithm increases MTU monotonically. A ceiling
 decrease may produce a bounded failure in native MsQuic as well; that requires
@@ -69,6 +76,28 @@ a native-to-native control before diagnosing a compiler or host regression.
 `--roles native` selects such an additional test-only control. The current driver
 still requires successful delivery and records a failure otherwise; a bounded
 native-equivalent failure policy has not yet been qualified or implemented.
+
+The original rebinding case preserves both reply mappings, which causes the
+server to challenge both paths while the client observes one proxy endpoint.
+Both translated diagnostics and exact native core-header diagnostics show the
+old path validated and the new active path unvalidated. This establishes a
+pinned native behavior rather than a translated-core divergence. Source review
+suggests that two challenges arriving through one perceived client path overwrite
+its single pending response; that causal explanation remains an inference.
+The separate expired-mapping case models disappearance of the old NAT mapping
+and counts those discarded replies explicitly. Its new-path validation assertion
+is identical and passes the targeted four-role comparison. The original failing
+case remains in the campaign and is never relabeled as validated migration.
+
+Targeted optimized JIT IPv4/AES-128 MTU controls now pass probe loss and a ceiling
+increase for both native pairs and translated pairs. A ceiling decrease fails
+delivery in both (`artifacts/recovery-native-mtu/results.json` and
+`artifacts/recovery-managed-mtu/results.json`). Translated peers report actual
+connection-idle status 62 and drain all host ownership. Refreshed native
+terminal diagnostics (`artifacts/recovery-native-mtu-terminal/results.json`)
+also show both endpoints connected, unfinished, then closed with status 62 and
+transport error 1. The strict delivery test remains failed for both, as expected
+from the pinned monotonically increasing discovery algorithm.
 
 For a diagnostic subset:
 

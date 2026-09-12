@@ -60,7 +60,8 @@ def atomic_json(path, value):
 class Proxy:
     def __init__(self, config):
         allowed = {'family', 'listen_host', 'listen_port', 'server_host', 'server_port', 'seed',
-                   'max_queue_packets', 'max_queue_bytes', 'rebind_after_client_packets', *DIRECTIONS}
+                   'max_queue_packets', 'max_queue_bytes', 'rebind_after_client_packets',
+                   'retire_old_backend_on_rebind', *DIRECTIONS}
         if not isinstance(config, dict) or set(config) - allowed:
             raise ValueError('Unknown proxy configuration field')
         family = config.get('family', 'ipv4')
@@ -80,6 +81,9 @@ class Proxy:
         self.packet_limit = config.get('max_queue_packets', 1024)
         self.byte_limit = config.get('max_queue_bytes', 8 * 1024 * 1024)
         self.rebind_after = config.get('rebind_after_client_packets', 0)
+        self.retire_old_backend = config.get('retire_old_backend_on_rebind', False)
+        if type(self.retire_old_backend) is not bool:
+            raise ValueError('retire_old_backend_on_rebind must be boolean')
         bounds = [(self.listen_port, 0, 65535), (self.server_port, 1, 65535),
                   (self.seed, 0, (1 << 64) - 1), (self.packet_limit, 1, 65536),
                   (self.byte_limit, 1, 64 * 1024 * 1024), (self.rebind_after, 0, 1_000_000)]
@@ -90,11 +94,13 @@ class Proxy:
                            server_host=self.server_host, server_port=self.server_port, seed=self.seed,
                            max_queue_packets=self.packet_limit, max_queue_bytes=self.byte_limit,
                            rebind_after_client_packets=self.rebind_after,
+                           retire_old_backend_on_rebind=self.retire_old_backend,
                            **{direction: vars(rule) for direction, rule in self.rules.items()})
         self.selector = selectors.DefaultSelector()
         self.front = None
         self.back = None
         self.sockets = []
+        self.retired_backends = set()
         self.client = None
         self.pending = []
         self.queue_bytes = 0
@@ -106,7 +112,7 @@ class Proxy:
         counters = ('received_packets', 'received_bytes', 'forwarded_packets', 'forwarded_bytes',
                     'rule_drops', 'mtu_drops', 'queue_drops', 'shutdown_drops', 'truncated_drops', 'foreign_drops',
                     'send_errors', 'receive_errors', 'delayed_scheduled', 'reordered_scheduled', 'forwarded_out_of_order',
-                    'duplicates_scheduled', 'duplicates_forwarded')
+                    'duplicates_scheduled', 'duplicates_forwarded', 'retired_mapping_drops')
         self.stats = dict(format='dotcc-udp-fault-proxy-v1', outcome='starting', configuration=self.config,
                           source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                           peak_queue_packets=0, peak_queue_bytes=0, backend_ports=[], rebindings=[],
@@ -170,6 +176,9 @@ class Proxy:
             count['received_packets'] += 1
             count['received_bytes'] += len(payload)
             ordinal = count['received_packets']
+            if value in self.retired_backends:
+                count['retired_mapping_drops'] += 1
+                continue
             if flags & socket.MSG_TRUNC:
                 count['truncated_drops'] += 1
                 continue
@@ -211,12 +220,15 @@ class Proxy:
             count = self.stats['directions'][direction]
             if direction == 'client_to_server' and self.rebind_after and not self.rebound and count['forwarded_packets'] >= self.rebind_after:
                 previous = self.back.getsockname()[1]
+                if self.retire_old_backend:
+                    self.retired_backends.add(self.back)
                 self.back = self.create_backend()
                 self.rebound = True
                 self.stats['rebindings'].append(dict(after_forwarded_packets=count['forwarded_packets'],
                                                     old_port=previous, new_port=self.back.getsockname()[1]))
-                # Keep the previous socket receiving until shutdown. This avoids
-                # introducing an undocumented packet blackhole during validation.
+                # Both explicit modes retain the socket until shutdown to avoid
+                # unintended ICMP. Expired mappings discard subsequent replies;
+                # the default continues forwarding them through the old mapping.
             try:
                 sent = self.back.send(payload) if direction == 'client_to_server' else self.front.sendto(payload, self.client)
                 if sent != len(payload):

@@ -10,6 +10,8 @@ import json
 import os
 from pathlib import Path
 import resource
+import re
+import shlex
 import subprocess
 import tempfile
 import time
@@ -196,11 +198,37 @@ try:
     receipt['picotls_generated_hashes'] = {variant: picotls_hashes(variant) for variant in args.variants}
     pin = json.loads((ROOT / 'config/source.json').read_text())
     receipt['revision'] = pin['commit']
+    # Private diagnostic layouts come from the exact native oracle compilation,
+    # never from a managed layout mirror or independently chosen feature flags.
+    native_source = ROOT / 'build/native-oracle-source'
+    pinned_source = ROOT / 'ref' / pin['directory']
+    ninja = ROOT / 'build/native-oracle/build.ninja'
+    stanza = re.search(r'^build src/core/CMakeFiles/core\.dir/connection\.c\.o:[^\n]*\n((?:  [^\n]*\n)+)',
+                       ninja.read_text(), re.MULTILINE)
+    if stanza is None:
+        raise RuntimeError('Missing native connection compilation provenance')
+    fields = dict(re.findall(r'^  (DEFINES|FLAGS|INCLUDES) = (.*)$', stanza.group(1), re.MULTILINE))
+    if set(fields) != {'DEFINES', 'FLAGS', 'INCLUDES'}:
+        raise RuntimeError('Incomplete native connection compilation provenance')
+    native_flags = [argument for field in ('DEFINES', 'FLAGS', 'INCLUDES')
+                    for argument in shlex.split(fields[field])]
+    native_inputs = sorted((native_source / 'src/inc').rglob('*.h'))
+    native_inputs += sorted((native_source / 'src/core').rglob('*.h'))
+    native_inputs += [native_source / 'src/core/connection.c']
+    for source in native_inputs:
+        upstream = pinned_source / source.relative_to(native_source)
+        if not upstream.is_file() or sha(source) != sha(upstream):
+            raise RuntimeError('Native private diagnostic input differs from pin: ' + str(source))
+    sources += [ninja, ROOT / 'config/source.json', *native_inputs]
+    receipt['source_hashes'] = {str(p.relative_to(REPO)): sha(p) for p in sources}
+    receipt['native_private_diagnostics'] = dict(compilation_stanza=stanza.group(0),
+        flags=native_flags, headers_match_pinned_source=True, mirrored_layout=False)
     library = ROOT / 'build/native-oracle/bin/Release'
     receipt['native_library_sha256'] = sha(library / 'libmsquic.so')
     receipt['native_library_product_dependency'] = False
-    run(['gcc', '-std=c17', '-D_GNU_SOURCE', '-DCX_PLATFORM_LINUX', '-I', ROOT / 'ref' / pin['directory'] / 'src/inc',
-         ROOT / 'tests/NativePeer/peer.c', '-L', library, '-Wl,-rpath,' + str(library), '-lmsquic', '-o', BUILD / 'native-peer'], 'native-build')
+    run(['gcc', '-std=c17', *native_flags, '-DDOTCC_NATIVE_CORE_DIAGNOSTICS',
+         '-I', native_source / 'src/core', ROOT / 'tests/NativePeer/peer.c',
+         '-L', library, '-Wl,-rpath,' + str(library), '-lmsquic', '-o', BUILD / 'native-peer'], 'native-build')
     receipt['native_peer_sha256'] = sha(BUILD / 'native-peer')
     configuration = 'openssl_conf = init\n[init]\nssl_conf = config\n[config]\nsystem_default = profile\n[profile]\nGroups = P-256\n'
     (BUILD / 'p256.cnf').write_text(configuration)

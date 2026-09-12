@@ -9,6 +9,11 @@ CONFIG selects `ipv4` or `ipv6`, a required `server_port`, optional loopback
 addresses/listen port, a seed, packet/byte queue bounds, and optional
 `rebind_after_client_packets`. Rebinding changes the source port seen by the
 server while retaining old sockets for replies. It never changes packet bytes.
+The optional boolean `retire_old_backend_on_rebind` explicitly expires the old
+mapping: subsequent replies received on that socket are discarded and counted
+as `retired_mapping_drops`. The old socket remains bound to avoid introducing
+ICMP errors. The default preserves both mappings. These modes represent different
+network behavior and must be qualified separately; neither changes QUIC frames.
 
 The `client_to_server` and `server_to_client` objects independently accept
 `drop_first`, `drop_every`, `reorder_every`, `duplicate_every`, `delay_ms`,
@@ -32,10 +37,13 @@ counts are recorded. Endpoint payload, negotiation and lifetime assertions must
 remain in the real peer driver; this process never decodes or implements QUIC.
 
 Run `python3 msquic/tests/UdpFaultProxy/test_proxy.py` from the repository root.
-All seven controls passed on Linux x64: IPv4/IPv6 packet preservation, loss,
+All nine controls pass on Linux x64: IPv4/IPv6 packet preservation, loss,
 reordering, duplication, source-port changes, queue bounds, changing payload
 ceilings, and reproducible jitter. These controls validate the proxy; they do
 not qualify QUIC recovery, path validation, or NAT rebinding by themselves.
+The two IPv4/IPv6 old-mapping expiry controls verify that only replies received
+through the new mapping reach the client and that retired replies are counted.
+The refreshed run is recorded in `artifacts/udp-proxy-expired-controls.log`.
 
 `msquic/scripts/test-recovery.py` orchestrates qualified ManagedPeer and native
 peer binaries through this proxy. It checks the baseline source/executable
@@ -43,4 +51,4 @@ hashes before reuse, requires successful payload/FIN/shutdown results, and
 rejects a case when its requested fault did not actually occur. Selected runs
 produce `targeted_passed`; only the complete packet recovery subset can produce
 `passed`. Neither qualifies the entire P7 feature matrix. The recovery driver
-is authored and awaits successful baseline transport qualification.
+has targeted results described in [the recovery campaign](../../docs/recovery-campaign.md).

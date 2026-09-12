@@ -161,6 +161,48 @@ class ProxyControls(unittest.TestCase):
     def test_changing_payload_ceiling(self):
         self.exchange(socket.AF_INET, mtu=True)
 
+    def expired_mapping(self, family):
+        host = '127.0.0.1' if family == socket.AF_INET else '::1'
+        with socket.socket(family, socket.SOCK_DGRAM) as server, socket.socket(family, socket.SOCK_DGRAM) as client:
+            server.bind((host, 0)); server.settimeout(1)
+            client.bind((host, 0)); client.settimeout(1)
+            proxy = Proxy(dict(family='ipv4' if family == socket.AF_INET else 'ipv6',
+                server_port=server.getsockname()[1], rebind_after_client_packets=1,
+                retire_old_backend_on_rebind=True))
+            try:
+                with tempfile.TemporaryDirectory(prefix='dotcc-expired-mapping-') as temporary:
+                    proxy.start(Path(temporary) / 'ready.json')
+                    target = (host, proxy.stats['listen_port'])
+                    client.sendto(b'first', target)
+                    proxy.receive(proxy.front, 'client_to_server'); proxy.forward_due()
+                    data, old_address = server.recvfrom(32)
+                    self.assertEqual(data, b'first')
+                    old_backend = proxy.back
+                    client.sendto(b'second', target)
+                    proxy.receive(proxy.front, 'client_to_server'); proxy.forward_due()
+                    data, new_address = server.recvfrom(32)
+                    self.assertEqual(data, b'second')
+                    self.assertNotEqual(old_address[1], new_address[1])
+                    server.sendto(b'old-mapping', old_address)
+                    server.sendto(b'new-mapping', new_address)
+                    proxy.receive(old_backend, 'server_to_client')
+                    proxy.receive(proxy.back, 'server_to_client'); proxy.forward_due()
+                    self.assertEqual(client.recv(32), b'new-mapping')
+                    row = proxy.stats['directions']['server_to_client']
+                    self.assertEqual(row['retired_mapping_drops'], 1)
+                    self.assertEqual(row['forwarded_packets'], 1)
+                    self.assertEqual(len(proxy.sockets), 3)
+                    self.assertEqual(len(proxy.retired_backends), 1)
+            finally:
+                proxy.close()
+            self.assertEqual(proxy.stats['remaining_queue_packets'], 0)
+
+    def test_ipv4_expired_mapping(self):
+        self.expired_mapping(socket.AF_INET)
+
+    def test_ipv6_expired_mapping(self):
+        self.expired_mapping(socket.AF_INET6)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

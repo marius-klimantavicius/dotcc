@@ -17,5 +17,6 @@
     <InternalsVisibleTo Include="TlsAdapter" />
     <InternalsVisibleTo Include="MsQuic.ManagedApi" />
     <InternalsVisibleTo Include="ManagedPeer" />
+    <InternalsVisibleTo Include="MalformedCorpus" />
   </ItemGroup>
 </Project>
