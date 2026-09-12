@@ -69,22 +69,25 @@ internal static class StatelessSecrets
                 "server did not recover original CID from its authenticated Retry token");
             if (round != 0) Check(observed.KeyIndex > previousIndex, "Retry key epoch did not rotate");
             previousIndex = observed.KeyIndex;
+            // Arm before the final live traffic. An in-flight ACK/STREAM packet
+            // can elicit a valid reset as soon as the server handle is removed.
+            relay.ObserveReset(observed.CidLength, reset, priorReset);
             await Transfer(client, server, 31 + round, timeout.Token);
             await Transfer(server, client, 47 + round, timeout.Token);
             await using var writer = await client.OpenStreamAsync(QuicStreamOpenOptions.Unidirectional).AsTask().WaitAsync(timeout.Token);
+            Check(client.CloseInfo is null, "client closed before silent server shutdown");
+            long before = runtime.GetPerformanceCounters()[QuicPerformanceCounter.StatelessResetsSent];
             await server.ShutdownAsync(options: QuicConnectionShutdownOptions.Silent).WaitAsync(timeout.Token);
             await server.DisposeAsync().AsTask().WaitAsync(timeout.Token);
-            Check(client.CloseInfo is null, "silent close notified the client");
-            relay.ObserveReset(observed.CidLength, reset, priorReset);
-            long before = runtime.GetPerformanceCounters()[QuicPerformanceCounter.StatelessResetsSent];
-            Task send = writer.SendAsync(Material(1024, 113 + round), QuicSendOptions.Fin).AsTask();
+            Task? send = client.CloseInfo is null
+                ? writer.SendAsync(Material(1024, 113 + round), QuicSendOptions.Fin).AsTask() : null;
             await relay.Reset.WaitAsync(timeout.Token);
             await client.ShutdownCompletion.WaitAsync(timeout.Token);
             Check(client.CloseInfo is { Status: 125, ErrorCode: 1, PeerInitiated: false, ApplicationInitiated: false },
                 "observed reset did not produce the actual pinned-core reset close");
             Check(runtime.GetPerformanceCounters()[QuicPerformanceCounter.StatelessResetsSent] > before,
                 "reset observation did not come from the core");
-            try { await send.WaitAsync(timeout.Token); }
+            try { if (send != null) await send.WaitAsync(timeout.Token); }
             catch (OperationCanceledException) { }
             catch (QuicTransportException error) when (error.Status == 125) { }
             relay.ThrowIfFailed();
@@ -243,7 +246,7 @@ internal static class StatelessSecrets
                     {
                         if (resetKey != null && (packet[0] & 0x80) == 0)
                         {
-                            if (!fromServer && packet.Length > 100 && destinationCid == null)
+                            if (!fromServer && packet.Length >= 1 + cidLength + 16)
                                 destinationCid = packet.Slice(1, cidLength).ToArray();
                             if (fromServer && destinationCid != null && packet.Length is >= 39 and < 100)
                             {

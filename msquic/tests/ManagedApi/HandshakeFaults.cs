@@ -62,13 +62,18 @@ internal static class HandshakeFaults
                 await Transfer(reset.Server, reset.Client, 404);
                 await using var writer = await reset.Client.OpenStreamAsync(QuicStreamOpenOptions.Unidirectional).AsTask().WaitAsync(Limit);
                 long resetsBefore = runtime.GetPerformanceCounters()[QuicPerformanceCounter.StatelessResetsSent];
+                Check(reset.Client.CloseInfo is null, "client closed before silent shutdown");
                 await reset.Server.ShutdownAsync(options: QuicConnectionShutdownOptions.Silent).WaitAsync(Limit);
                 await reset.Server.DisposeAsync().AsTask().WaitAsync(Limit);
-                Check(reset.Client.CloseInfo is null, "silent shutdown sent a peer close notification");
-
-                // A bare keepalive can be too short for binding.c:1143's reset
-                // minimum; a real 1 KiB STREAM packet exceeds that minimum.
-                Task send = writer.SendAsync(Payload(1024, 505), QuicSendOptions.Fin).AsTask();
+                // An already queued packet can reach the surviving listener
+                // after the connection is removed and trigger the reset before
+                // DisposeAsync returns. Both timings require the exact reset
+                // status and counter below; a peer CONNECTION_CLOSE must fail.
+                // Otherwise a real 1 KiB STREAM packet exceeds the minimum
+                // reset-trigger size at binding.c:1143 (a bare keepalive may not).
+                Task? send = reset.Client.CloseInfo is null
+                    ? writer.SendAsync(Payload(1024, 505), QuicSendOptions.Fin).AsTask()
+                    : null;
                 await reset.Client.ShutdownCompletion.WaitAsync(Limit);
                 var close = reset.Client.CloseInfo ?? throw new InvalidOperationException("Reset did not publish transport close information");
                 // connection.c:4324 closes with QUIC_STATUS_ABORTED (LP64
@@ -77,7 +82,7 @@ internal static class HandshakeFaults
                     $"reset close mismatch: {close}");
                 Check(runtime.GetPerformanceCounters()[QuicPerformanceCounter.StatelessResetsSent] > resetsBefore,
                     "client closed without an actual core-generated stateless reset");
-                try { await send.WaitAsync(Limit); }
+                try { if (send != null) await send.WaitAsync(Limit); }
                 catch (OperationCanceledException) { }
                 catch (QuicTransportException error) when (error.Status == 125) { }
             }
