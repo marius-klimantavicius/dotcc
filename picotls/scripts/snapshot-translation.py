@@ -48,6 +48,7 @@ def input_state():
         path.resolve().relative_to(ROOT)
         host_sources.append({"path": name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
     return {"inputs": inputs,
+            "core_wrappers": json.loads((config / "core-wrappers.json").read_text()),
             "core_sources": core_sources,
             "core_source_sha256": {name: hashlib.sha256((source / name).read_bytes()).hexdigest()
                                    for name in core_sources if name.strip() and not name.startswith("#")},

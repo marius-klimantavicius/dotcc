@@ -7,7 +7,7 @@ namespace Managed.Security;
 public static unsafe partial class BclCryptoProvider
 {
     private const int TicketNotFound = 0x205, TicketRejectEarlyData = 0x209;
-    private const int TicketHeaderSize = 49, TicketTagSize = 16, MaximumTicketSize = 65535;
+    private const int TicketHeaderSize = 49, ImportedTicketHeaderSize = 81, TicketTagSize = 16, MaximumTicketSize = 65535;
     private const ulong TicketEncryptionsPerKey = 1UL << 32;
     private static int liveTicketKeys;
     internal static int LiveTicketKeysForTesting => Volatile.Read(ref liveTicketKeys);
@@ -18,6 +18,7 @@ public static unsafe partial class BclCryptoProvider
     private sealed class TicketKey : IDisposable
     {
         internal readonly byte[] Id = new byte[16], NoncePrefix = new byte[4];
+        internal readonly byte[]? Master, Salt;
         private bool disposed;
         internal readonly AesGcm Cipher;
         internal ulong Counter;
@@ -34,8 +35,40 @@ public static unsafe partial class BclCryptoProvider
             catch { Clear(); throw; }
             finally { CryptographicOperations.ZeroMemory(material); }
         }
+        internal TicketKey(TicketKeyImport source)
+        {
+            try
+            {
+                ProviderFaultInjection.BeforeAllocation();
+                Master = source.Material.ToArray();
+                source.Id.Span.CopyTo(Id);
+                ProviderFaultInjection.BeforeAllocation();
+                Salt = new byte[32]; RandomNumberGenerator.Fill(Salt);
+                ProviderFaultInjection.BeforeAllocation();
+                Cipher = DeriveCipher(Salt);
+                Interlocked.Increment(ref liveTicketKeys);
+            }
+            catch { Clear(); throw; }
+        }
+        internal AesGcm DeriveCipher(ReadOnlySpan<byte> salt)
+        {
+            Span<byte> material = stackalloc byte[32];
+            ReadOnlySpan<byte> label = "Managed.Security.TicketProtector/v2/AES-256-GCM"u8;
+            Span<byte> info = stackalloc byte[label.Length + 16];
+            label.CopyTo(info); Id.CopyTo(info[label.Length..]);
+            try
+            {
+                HKDF.DeriveKey(HashAlgorithmName.SHA256, Master!, material, salt, info);
+                return new AesGcm(material, TicketTagSize);
+            }
+            finally { CryptographicOperations.ZeroMemory(material); }
+        }
         private void Clear()
-        { CryptographicOperations.ZeroMemory(Id); CryptographicOperations.ZeroMemory(NoncePrefix); }
+        {
+            CryptographicOperations.ZeroMemory(Id); CryptographicOperations.ZeroMemory(NoncePrefix);
+            if (Master != null) CryptographicOperations.ZeroMemory(Master);
+            if (Salt != null) CryptographicOperations.ZeroMemory(Salt);
+        }
         public void Dispose()
         {
             if (disposed) return;
@@ -49,7 +82,8 @@ public static unsafe partial class BclCryptoProvider
         internal readonly object Gate = new();
         internal readonly long LifetimeMilliseconds;
         internal readonly int PreviousKeys;
-        internal readonly List<TicketKey> Keys;
+        internal List<TicketKey> Keys;
+        internal bool Imported;
         internal nint BoundContext;
         internal bool Disposed;
         internal TicketState(uint lifetimeSeconds, int previousKeys)
@@ -59,6 +93,9 @@ public static unsafe partial class BclCryptoProvider
         }
         internal void Prune(long now)
         {
+            // Imported peers may have minted tickets this instance has never seen.
+            // Only explicit replacement may remove configured decrypt keys.
+            if (Imported) return;
             for (int i = Keys.Count - 1; i >= 1; i--)
                 if (i > PreviousKeys || Keys[i].LastExpiry <= now)
                 { var key = Keys[i]; Keys.RemoveAt(i); key.Dispose(); }
@@ -68,6 +105,7 @@ public static unsafe partial class BclCryptoProvider
             lock (Gate)
             {
                 ObjectDisposedException.ThrowIf(Disposed, this);
+                if (Imported) throw new InvalidOperationException("Use ImportKeys to rotate an explicitly configured ticket key ring.");
                 long now = TicketClock.Now(this);
                 var replacement = new TicketKey();
                 try
@@ -81,6 +119,38 @@ public static unsafe partial class BclCryptoProvider
                 Prune(now);
             }
         }
+        internal void Import(ReadOnlySpan<TicketKeyImport> sources)
+        {
+            lock (Gate)
+            {
+                ObjectDisposedException.ThrowIf(Disposed, this);
+                if (sources.Length is < 1 or > 16) throw new ArgumentOutOfRangeException(nameof(sources), "Import between 1 and 16 ticket keys.");
+                foreach (var source in sources)
+                    if (source.Id.Length != 16 || source.Material.Length != 64)
+                        throw new ArgumentException("Ticket key identifiers require 16 bytes and master material requires 64 bytes.", nameof(sources));
+                ProviderFaultInjection.BeforeAllocation();
+                var replacement = new List<TicketKey>(sources.Length);
+                try
+                {
+                    foreach (var source in sources)
+                    {
+                        var key = new TicketKey(source);
+                        replacement.Add(key); // Capacity allocated before any secret ownership.
+                        foreach (var other in replacement)
+                            if (!ReferenceEquals(key, other) && CryptographicOperations.FixedTimeEquals(key.Id, other.Id))
+                                throw new ArgumentException("Duplicate imported ticket key identifier.", nameof(sources));
+                        foreach (var old in Keys)
+                            if (CryptographicOperations.FixedTimeEquals(key.Id, old.Id) &&
+                                (old.Master == null || !CryptographicOperations.FixedTimeEquals(key.Master!, old.Master)))
+                                throw new ArgumentException("An existing ticket key identifier cannot select different material.", nameof(sources));
+                    }
+                }
+                catch { foreach (var key in replacement) key.Dispose(); throw; }
+                var previous = Keys;
+                Keys = replacement; Imported = true;
+                foreach (var key in previous) key.Dispose();
+            }
+        }
         public void Dispose()
         {
             lock (Gate)
@@ -92,6 +162,10 @@ public static unsafe partial class BclCryptoProvider
             }
         }
     }
+
+    /// <summary>Borrowed import input. ImportKeys copies both buffers; callers retain
+    /// responsibility for clearing their originals and must not mutate during import.</summary>
+    public readonly record struct TicketKeyImport(ReadOnlyMemory<byte> Id, ReadOnlyMemory<byte> Material);
 
     /// <summary>Owns server ticket protection keys. Bind to exactly one immutable
     /// server context, and retain until all its connections end. Explicit rotation
@@ -142,6 +216,27 @@ public static unsafe partial class BclCryptoProvider
             {
                 ObjectDisposedException.ThrowIf(disposeRequested, this);
                 State<TicketState>(context->Handle).Rotate();
+            }
+        }
+        /// <summary>Atomically replaces the configured ring (1..16 entries). The first
+        /// key encrypts; all keys decrypt. Omitted keys are removed immediately. Each
+        /// successful import starts a new random derivation domain, including a repeat
+        /// import of identical keys. Rotate is unavailable after the first import.</summary>
+        public void ImportKeys(ReadOnlySpan<TicketKeyImport> keys)
+        {
+            lock (lifetimeGate)
+            {
+                ObjectDisposedException.ThrowIf(disposeRequested, this);
+                State<TicketState>(context->Handle).Import(keys);
+            }
+        }
+        internal void SetCounterForTesting(ulong counter)
+        {
+            lock (lifetimeGate)
+            {
+                ObjectDisposedException.ThrowIf(disposeRequested, this);
+                var state = State<TicketState>(context->Handle);
+                lock (state.Gate) state.Keys[0].Counter = counter;
             }
         }
         private void ApplyCore(st_ptls_context_t* target)
@@ -232,7 +327,7 @@ public static unsafe partial class BclCryptoProvider
         {
             if (!BeginCallback()) return ErrorLibrary;
             if (self == null || destination == null || encrypt is not (0 or 1)) throw new ArgumentException("Invalid ticket callback arguments.");
-            int bound = encrypt != 0 ? MaximumTicketSize - TicketHeaderSize - TicketTagSize : MaximumTicketSize;
+            int bound = MaximumTicketSize;
             if (source.len > (ulong)bound || (source.@base == null && source.len != 0))
                 return encrypt == 0 ? TicketNotFound : ErrorLibrary;
             var input = ReadBytes(source.@base, source.len, bound);
@@ -244,36 +339,43 @@ public static unsafe partial class BclCryptoProvider
                     return encrypt == 0 ? TicketNotFound : ErrorLibrary;
                 long now = TicketClock.Now(state);
                 state.Prune(now);
+                int headerSize = state.Imported ? ImportedTicketHeaderSize : TicketHeaderSize;
                 if (encrypt != 0)
                 {
+                    if (input.Length > MaximumTicketSize - headerSize - TicketTagSize) return ErrorLibrary;
                     if (now < 0) throw new InvalidOperationException("Ticket clock precedes the Unix epoch.");
                     var key = state.Keys[0];
                     if (key.Counter >= TicketEncryptionsPerKey) throw new CryptographicException("Rotate ticket keys before the per-key encryption limit.");
                     long expires = checked(now + state.LifetimeMilliseconds);
-                    privateResult = new byte[checked(input.Length + TicketHeaderSize + TicketTagSize)];
-                    var header = privateResult.AsSpan(0, TicketHeaderSize);
-                    "DPTK"u8.CopyTo(header); header[4] = 1;
+                    privateResult = new byte[checked(input.Length + headerSize + TicketTagSize)];
+                    var header = privateResult.AsSpan(0, headerSize);
+                    "DPTK"u8.CopyTo(header); header[4] = state.Imported ? (byte)2 : (byte)1;
                     key.Id.CopyTo(header[5..21]);
                     BinaryPrimitives.WriteInt64BigEndian(header[21..29], now);
                     BinaryPrimitives.WriteInt64BigEndian(header[29..37], expires);
                     key.NoncePrefix.CopyTo(header[37..41]);
                     BinaryPrimitives.WriteUInt64BigEndian(header[41..49], key.Counter++);
+                    if (state.Imported) key.Salt!.CopyTo(header[49..81]);
                     key.Cipher.Encrypt(header[37..49], input,
-                        privateResult.AsSpan(TicketHeaderSize, input.Length), privateResult.AsSpan(TicketHeaderSize + input.Length, TicketTagSize), header);
+                        privateResult.AsSpan(headerSize, input.Length), privateResult.AsSpan(headerSize + input.Length, TicketTagSize), header);
                     key.LastExpiry = Math.Max(key.LastExpiry, expires);
                 }
                 else
                 {
-                    if (input.Length < TicketHeaderSize + TicketTagSize || !input[..4].SequenceEqual("DPTK"u8) || input[4] != 1)
+                    if (input.Length < headerSize + TicketTagSize || !input[..4].SequenceEqual("DPTK"u8) || input[4] != (state.Imported ? 2 : 1))
                         return TicketNotFound;
-                    var header = input[..TicketHeaderSize];
+                    var header = input[..headerSize];
                     TicketKey? key = null;
                     foreach (var candidate in state.Keys)
                         if (CryptographicOperations.FixedTimeEquals(header[5..21], candidate.Id)) { key = candidate; break; }
                     if (key == null) return TicketNotFound;
-                    int length = input.Length - TicketHeaderSize - TicketTagSize;
+                    int length = input.Length - headerSize - TicketTagSize;
                     privateResult = new byte[length];
-                    try { key.Cipher.Decrypt(header[37..49], input.Slice(TicketHeaderSize, length), input[^TicketTagSize..], privateResult, header); }
+                    try
+                    {
+                        using var derived = state.Imported ? key.DeriveCipher(header[49..81]) : null;
+                        (derived ?? key.Cipher).Decrypt(header[37..49], input.Slice(headerSize, length), input[^TicketTagSize..], privateResult, header);
+                    }
                     catch (AuthenticationTagMismatchException) { return TicketNotFound; }
                     long issued = BinaryPrimitives.ReadInt64BigEndian(header[21..29]);
                     long expires = BinaryPrimitives.ReadInt64BigEndian(header[29..37]);

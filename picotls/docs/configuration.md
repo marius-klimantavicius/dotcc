@@ -6,9 +6,15 @@ remain unchanged. Revisions, archive hashes and licenses are in
 
 ## Translated source closure
 
-[core-sources.txt](../config/core-sources.txt) selects three separate upstream
-translation units: `lib/hpke.c`, `lib/picotls.c`, and `lib/pembase64.c`.
-Use the parent source's `include/` plus dotcc's supplied C/POSIX headers;
+[core-sources.txt](../config/core-sources.txt) selects three unchanged upstream
+sources: `lib/hpke.c`, `lib/picotls.c`, and `lib/pembase64.c`.
+[core-wrappers.json](../config/core-wrappers.json) explicitly selects the authored
+`src/Host/picotls-quic.c` wrapper for `lib/picotls.c`. It includes that exact
+reference source in the same translation unit and adds a small post-handshake
+ticket encoder for the separate MsQuic adapter. The existing core algorithms and
+reference files remain unchanged. `host-sources.txt` records both authored C
+inputs, and translation provenance hashes the wrapper selection and sources.
+Use the reference root and its `include/` plus dotcc's supplied C/POSIX headers;
 `picotls/pembase64.h` is an additional upstream header used by `pembase64.c`.
 Do not add the native test dependencies to the translated provider.
 

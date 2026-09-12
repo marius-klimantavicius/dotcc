@@ -20,7 +20,7 @@ The audit discovers raw and optimized generated sources through the compiler's
 `Dotcc.SourceFiles.txt`. It rejects missing files, duplicate entries, path escapes,
 symlinks and additional source files outside the manifest. Source, project and
 manifest hashes must match `artifacts/translation/success.json`. Pinned archive
-configuration, core source list and file hashes, all upstream include header hashes,
+configuration, core source list, explicit authored-wrapper selection and file hashes, all upstream include header hashes,
 defines, authored host source hashes and the three
 compiler/postprocessor tool hashes must also match that translation record. The
 report independently records hashes of every authored provider source file.

@@ -115,6 +115,13 @@ lists authored adapters. Translation provenance records those inputs, actual
 core/header and adapter hashes, compiler/postprocessor assembly hashes, and every
 manifest-owned raw/optimized generated file.
 
+[core-wrappers.json](../config/core-wrappers.json) records the authored same-unit
+QUIC ticket boundary around unchanged `lib/picotls.c`. It reuses the existing
+session encoder at a completed handshake transcript and does not change TLS
+state or add QUIC transport to the picotls facade. Native controls are reproducible
+with `python3 scripts/test-quic-ticket-helper.py`; the separate MsQuic adapter's
+raw/optimized JIT/NativeAOT tests validate its managed use.
+
 For an upgrade, edit the pinned revision/archive hash deliberately, fetch it,
 review upstream header/core changes and license notices, rerun the native oracle
 and compiler/boundary probes, then translate, build and run `test.sh --all --aot`.

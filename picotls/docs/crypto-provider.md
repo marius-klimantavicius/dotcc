@@ -172,6 +172,15 @@ leases end. Invalid, tampered, unknown-key, future-issued and expired tickets
 leave the destination unchanged. Successful ticket decryption explicitly rejects
 early data, and the context requires fresh DHE for resumed sessions.
 
+`ImportKeys` selects a separate explicit configuration mode: one to sixteen
+copied 16-byte IDs and 64-byte masters, first key encrypting and the entire ring
+decrypting. Imported keys remain configured until replacement. A version-two
+envelope carries a random 256-bit derivation salt and uses HKDF-SHA256 to derive
+an AES-256-GCM key for that import domain. This separates encryption keys when
+the same master is installed in another instance or reimported with a reset
+counter. See [ticket import contract](ticket-import.md) for format, rotation,
+ownership, validation and interoperability limits.
+
 Client tickets are connection-local owning `SavedSessionTicket` objects.
 `TakeSessionTickets` transfers them to the caller; disposal clears their stored
 PSK-bearing bytes. `Export` returns a separate caller-owned copy. The facade

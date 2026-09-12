@@ -115,6 +115,7 @@ def input_state():
             path.resolve().relative_to(ROOT)
             host.append({"path": name, "sha256": sha(path)})
     return {"inputs": inputs, "core_sources": core_sources,
+            "core_wrappers": json.loads((config / "core-wrappers.json").read_text()),
             "core_source_sha256": {name: sha(source / name)
                                    for name in core_sources if name.strip() and not name.startswith("#")},
             "upstream_header_sha256": {str(path.relative_to(source)): sha(path)

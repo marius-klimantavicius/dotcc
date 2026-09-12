@@ -127,6 +127,8 @@ def main():
                 recorded[key] != (ROOT / "config" / name).read_text().splitlines()
                 for key, name in (("core_sources", "core-sources.txt"), ("defines", "core-defines.txt"))):
             raise RuntimeError("Source pins or compiler configuration changed since translation")
+        if recorded.get("core_wrappers") != json.loads((ROOT / "config/core-wrappers.json").read_text()):
+            raise RuntimeError("Authored core wrapper selection changed since translation")
         core_paths = [source / name for name in recorded["core_sources"] if name.strip() and not name.startswith("#")]
         if recorded.get("core_source_sha256") != {str(path.relative_to(source)): digest(path) for path in core_paths}:
             raise RuntimeError("Pinned core source hashes differ from translation provenance; retranslate")

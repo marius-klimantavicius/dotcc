@@ -6,11 +6,11 @@ static unsafe class TicketVectors
     internal static void Run()
     {
         int handles = BclCryptoProvider.LiveManagedContexts, keys = BclCryptoProvider.LiveTicketKeysForTesting;
-        RoundTripsAndRotation(); BindingAndLifetime(); AllocationFailures();
+        RoundTripsAndRotation(); BindingAndLifetime(); AllocationFailures(); ImportedTicketVectors.Run();
         Program.Check(BclCryptoProvider.LiveManagedContexts == handles && BclCryptoProvider.LiveTicketKeysForTesting == keys,
             "ticket callbacks release all keys and managed handles");
     }
-    private static byte[] Invoke(BclCryptoProvider.TicketProtector protector, bool encrypt, byte[] input, int expected)
+    internal static byte[] Invoke(BclCryptoProvider.TicketProtector protector, bool encrypt, byte[] input, int expected)
     {
         using var scope = CallbackScope.Enter();
         st_ptls_buffer_t destination = PicotlsBuffer.Create();
