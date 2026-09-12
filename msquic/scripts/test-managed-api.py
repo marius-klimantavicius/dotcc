@@ -13,6 +13,10 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--variants', nargs='+', choices=['raw', 'optimized'], default=['raw', 'optimized'])
 parser.add_argument('--jit-only', action='store_true')
 MODES = {
+    'receive-failures': ('pending receive observers and standalone receive abort', 'PASS facade receive failures:'),
+    'registration-shutdown': ('registration application errors and concurrent shutdown', 'PASS facade registration shutdown'),
+    'settings-states': ('concurrent settings and state boundaries', 'PASS facade settings state'),
+    'stateless-secrets': ('provisioned Retry/reset packet binding and key rotation', 'PASS facade stateless secrets'),
     'datagram-late-ack': ('actual late DATAGRAM acknowledgment after loss', 'PASS facade DATAGRAM late ACK'),
     'versions': ('scoped version policy ownership and validation', 'PASS facade scoped version policies:'),
     'handshake-snapshots': ('negotiated metadata after native TLS retirement', 'PASS facade handshake snapshots:'),

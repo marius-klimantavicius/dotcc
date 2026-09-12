@@ -6,9 +6,12 @@ internal static class Program
 {
     private static async Task Main(string[] args)
     {
-        string? requiredRevision = Environment.GetEnvironmentVariable("DOTCC_REQUIRED_SOURCE_REVISION");
-        if (requiredRevision != null && Managed.Transport.MsQuic.VER_GIT_HASH_STR != requiredRevision)
-            throw new InvalidOperationException("Full facade qualification requires exact pinned source revision metadata.");
+        await using (var metadataRuntime = await QuicRuntime.CreateAsync(new() { ProcessorCount = 1 }))
+            RuntimeParameterControls.CheckRevision(metadataRuntime);
+        if (args is ["--receive-failures"]) { await ReceiveFailures.RunAsync(); return; }
+        if (args is ["--registration-shutdown"]) { await RegistrationShutdown.RunAsync(); return; }
+        if (args is ["--settings-states"]) { await SettingsStates.RunAsync(); return; }
+        if (args is ["--stateless-secrets"]) { await StatelessSecrets.RunAsync(); return; }
         if (args is ["--datagram-late-ack"]) { await DatagramLateAck.RunAsync(); return; }
         if (args is ["--versions"]) { await VersionPolicyControls.RunAsync(); return; }
         if (args is ["--handshake-snapshots"]) { await HandshakeSnapshots.RunAsync(); return; }

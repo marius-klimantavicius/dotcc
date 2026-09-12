@@ -3,6 +3,16 @@ using Managed.Transport.Api;
 
 internal static class RuntimeParameterControls
 {
+    internal static void CheckRevision(QuicRuntime runtime)
+    {
+        // Macro spellings can disappear after preprocessing. The real query
+        // must report compiled revision bytes, including in the trimmed product.
+        string revision = runtime.GetLibrarySourceRevision();
+        string? required = Environment.GetEnvironmentVariable("DOTCC_REQUIRED_SOURCE_REVISION");
+        Require(revision.Length == 40 && revision.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f') &&
+            (required == null || revision == required), "Actual compiled library revision metadata");
+    }
+
     internal static async Task InvalidCreationAsync()
     {
         try
@@ -20,11 +30,7 @@ internal static class RuntimeParameterControls
     {
         var version = runtime.GetLibraryVersion();
         Require(version.Major == 2 && version.Minor == 7 && version.Patch == 0, "Pinned library version");
-        // Exercise the actual getter without manufacturing pin metadata. The
-        // final regeneration must set VER_GIT_HASH to the immutable source pin;
-        // current objects still carry upstream's default "Unknown".
-        Require(runtime.GetLibrarySourceRevision() == Managed.Transport.MsQuic.VER_GIT_HASH_STR,
-            "Actual compiled library revision metadata");
+        CheckRevision(runtime);
         Require(runtime.GetTlsProvider() == QuicTlsProvider.Picotls, "Explicit picotls provider identity");
         Require(runtime.GetCompiledProtocolVersions().Contains(1u), "Compiled version host-order decoding");
         var policy = runtime.GetVersionPolicy();
