@@ -26,6 +26,20 @@ def check(condition, reason):
         raise RuntimeError(reason)
 
 
+def validate_generated(directory, recorded):
+    names = (directory / 'Dotcc.SourceFiles.txt').read_text().splitlines()
+    check(names and len(names) == len(set(names))
+          and all(Path(name).name == name and name.endswith('.cs') for name in names),
+          'Invalid benchmark generated manifest')
+    actual = {str(path.relative_to(directory)) for path in directory.rglob('*.cs')
+              if not {'bin', 'obj'}.intersection(path.relative_to(directory).parts)}
+    expected = {name for name in recorded if name.endswith('.cs')}
+    check(actual == set(names) == expected, 'Benchmark generated source inventory differs from frozen closure')
+    for name, digest in recorded.items():
+        check(Path(name).name == name and sha(directory / name) == digest,
+              'Benchmark generated input differs from frozen closure: ' + name)
+
+
 def records(path):
     return [json.loads(line) for line in path.read_text().splitlines() if line.startswith('{')]
 
@@ -222,9 +236,9 @@ def main():
         receipt['compiler_provenance'] = dict(commit=closure['compiler_commit'], dotcc_lib_sha256=closure['compiler_hashes']['DotCC.Lib.dll'])
         for variant in args.variants:
             generated = ROOT / 'generated' / variant / 'TranslatedMsQuic'
-            check(all(closure['generated'][variant].get(p.name) == sha(p) for p in generated.glob('*.cs')), 'Generated benchmark library differs from frozen closure')
+            validate_generated(generated, closure['generated'][variant])
             pico = REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
-            check(all(pico_provenance[variant].get(p.name) == sha(p) for p in pico.glob('*.cs')), 'Benchmark picotls differs from validated translation')
+            validate_generated(pico, pico_provenance[variant])
         receipt['environment']['dotnet_info'] = run(['dotnet', '--info'], 'dotnet-info')
         receipt['environment']['gcc_version'] = run(['gcc', '--version'], 'gcc-version').splitlines()[0]
         source = ROOT / 'ref' / pin['directory']
@@ -257,6 +271,10 @@ def main():
                     for family in args.families:
                         for cipher in args.ciphers: exchange(variant, runtime, pair, family, cipher, executable)
         check(receipt['input_sha256'] == {str(p.relative_to(REPO)): sha(p) for p in inputs}, 'Benchmark inputs changed during measurement')
+        for variant in args.variants:
+            validate_generated(ROOT / 'generated' / variant / 'TranslatedMsQuic', closure['generated'][variant])
+            validate_generated(REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls'),
+                               pico_provenance[variant])
         check(all(sha(Path(p)) == h for p, h in receipt['native_dependency_sha256'].items()), 'Native benchmark dependency changed')
         check(all(sha(REPO / p) == h for p, h in receipt['binary_sha256'].items()), 'Executed benchmark binary changed')
         receipt['targeted_passed'] = True
