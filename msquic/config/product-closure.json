@@ -1,8 +1,13 @@
 {
   "schema_version": 1,
-  "status": "P0-P2 selected managed closure validated; runtime host and transport qualification remain pending",
+  "status": "Final compiler/metadata closure passed P2; dependent full runtime qualification is separate",
   "revision": "80a065112426bce68c1da42d026478d3e40fd45e",
-  "stage_manifest_sha256": "d2cade3f173b442cc14ca63648e96a61ae1b82a1ba207bc50a89bc76a3983b17",
+  "compiler_commit": "ce54ee2aea43996ae3ff841bba9318914c01944b",
+  "compiler_informational_versions": {
+    "dotcc.dll": "1.0.0+ce54ee2aea43996ae3ff841bba9318914c01944b",
+    "DotCC.Lib.dll": "1.0.0+ce54ee2aea43996ae3ff841bba9318914c01944b"
+  },
+  "stage_manifest_sha256": "55e4b102442dc621b67674540b5c9b3ff73b98ef482e679167b2c120fa380006",
   "units": [
     "src/core/ack_tracker.c",
     "src/core/api.c",
@@ -1205,23 +1210,23 @@
   ],
   "api_profile_sha256": "10ea863ab58f5318cfc024963bd7b0174230306db3c98a465a9cae93a9db5be3",
   "evidence_sha256": {
-    "artifacts/host-contract/results.json": "b09775d17d39157104c00685cd8d78b904924ed7068ba183c6ea4bbcf9a2832b",
-    "artifacts/abi/results.json": "0a0e7b731ad7dfa17d9374ccf3eb52cd694df911827d84284f1398a750cecca5",
-    "artifacts/product-build/results.json": "6ab3701204275f0e34bf4161f0f179bef75fa278434cf0ef684b58bb5d741945",
-    "artifacts/compiler-promoted-final-results.json": "96a29a4245f573d6f62266ff5aab918f92a3688ffc45f0326564ddf419b8c8ba",
-    "artifacts/promoted-managed-final/results.json": "5c7d22cef4ec5937f6774cf5bd6582f829c9edce8551d96ba87e3e3188053603"
+    "artifacts/host-contract/results.json": "8cf76a67cfbd63c8489da58c94978330c04cef28e2c650933978a9828e89f0d0",
+    "artifacts/abi/results.json": "47f311abc533d24f014c804a1d20bb3a7492222f5b5f20a8df5779cdd62cfbbf",
+    "artifacts/product-build/results.json": "3d896f75322e1667185b153201ae38d00f25c46876a0966943e69e0726125255",
+    "../sqlite/artifacts/msquic-final-20260912-120752/results.json": "bcaa67731e1d584650941c0fbe81095f12fb5f61dfb40e5da85e32a7a025ddd4",
+    "../sqlite/artifacts/msquic-final-20260912-120752/normal-optimized-product/results.json": "b220a493a7aeffb9e99c7b8bb6bc9cdbb7c7161223aed4409b6468fa4e257dd6"
   },
   "compiler_hashes": {
-    "DotCC.Lib.dll": "6bd81abfd99e00e605067b3f75260449475ab7b243377aa8c6c470f0709e284a",
-    "DotCC.Lib.pdb": "3587579406d110fc3bf8309eb9c76bda1abe9c8564924811d0cead633bb96e3c",
+    "DotCC.Lib.dll": "4fe035206c4f7cad69a80de48da2f334a38d3627557e29f0be0b1e812431a855",
+    "DotCC.Lib.pdb": "9bc8c87ce5a5db9dfc76b723e34e0d27117ad59213928017bc58c9c59c73b51e",
     "LALR.CC.dll": "04a73c3f6b3bcbf049de660830d7b2257cc63f7afe820ad30d22ac80e2b4bc8b",
     "System.CommandLine.dll": "0b7790b44a438c6c2f4714ec9d408e02c5ed98145d7c89ecd9a9d11acf0932cb",
     "cs/System.CommandLine.resources.dll": "15981e39eb96e3f1ccea6745b53ce358c85b6b30659af54cdfdfa2adf0536c20",
     "de/System.CommandLine.resources.dll": "5cdcd1ce61a638cebe1fbd2ef4c3fc83d046670a4f6b43aeadd82d032b1af03a",
     "dotcc": "697c93db673d26e6ff5be786db486ec0f30632587abf55f0bc92a7fb3916933e",
     "dotcc.deps.json": "535861a6fbc41a112eb2b3796f05eadd0788c86bced063ef9c1b7d73db82a1d5",
-    "dotcc.dll": "26329e8c80030a6b8390cfd31b0f8ad9b8eb9e783254074cdd436e3b9d4053d7",
-    "dotcc.pdb": "89361b04b67b42e818e49733fc999e77aef67eb7c2a707910c3c5e305a799331",
+    "dotcc.dll": "b433a0d5d61a68da5fbf1f7bfada1824f7b591aa90a727dcb817438e2ecd9338",
+    "dotcc.pdb": "e6829f16916ed53a508408befeac78746c0d842043c59423efc3e65a45724536",
     "dotcc.runtimeconfig.json": "5acdb16a460772054343c970894d62b803d3afa33dc719a66317f94d58119b1b",
     "es/System.CommandLine.resources.dll": "1931512c78045dc88f68bc71f9fe7dcf1e3a679ace15b42ddbfc6235978ebc72",
     "fr/System.CommandLine.resources.dll": "d161253276bd0079e6edd24c689b7e8c36c115c787af0bd528cd86422f94b32d",
@@ -1458,7 +1463,7 @@
       "MsQuic.00008.cs": "41ab8234445c882eba0b26f9e7de9420a618a032b5aa1606a6942c32a5e189af",
       "MsQuic.00009.cs": "c8107e8bbe0740adaffc4580dc8e5352a399fc34df6b9cc15c6d18e0c12f329d",
       "MsQuic.00010.cs": "318cee4d06c1862bb2740aca3e23c052d002f18a85bad5e5e68e2939020982e0",
-      "MsQuic.00011.cs": "927c5b1678c6706487dd8ce0896968ce8675a7aadc464313f24928f945db9f2b",
+      "MsQuic.00011.cs": "dacefe5cc08b088dc87d03e2188f31358434d7bfc4066f0ef352c7a3cb4802be",
       "MsQuic.00012.cs": "0a3efe4c3acf5da82657eec2b8b1ef2b5f573883ff8ef8bfeaf7e4fb17ed6ea3",
       "MsQuic.00013.cs": "29269552d609a3ff476b3a53483c2dd37defda94e5197cac3baf809514c67be2",
       "MsQuic.00014.cs": "b8f54860891db378cc5907b4675da8ef03352c8b4ca9c5135819d148339c86e7",
@@ -1477,7 +1482,7 @@
       "MsQuic.00027.cs": "976f5c2d359746f9714009287463ee77c1f2fc2d4693619a30729c61b7b6130d",
       "MsQuic.00028.cs": "93b1a5d14027834c1740268b020229e87f4add36f071d2e634c54afc0df64583",
       "MsQuic.GlobalUsings.g.cs": "5ecb3c6dc683e135e73eb78a84741617ef085466978934fd409c5ea9cd46217b",
-      "MsQuic.cs": "24ce10f998eedb2ede1fa7e17533c5385930b35c1ac971a4ceff195502d712b0",
+      "MsQuic.cs": "2579d2c864f3173e33defe23ccb794458906eb762298ddb9148438e929a00cbd",
       "Dotcc.SourceFiles.txt": "b3b603a9f68617c4e84004fc7d72a16f9e2ef4236ccdcb32b136c5233f83889a",
       "TranslatedMsQuic.csproj": "a54187881927f36b03a514cbd9c248ca3a578852746cf232a6a676007b363e86"
     },
@@ -1493,7 +1498,7 @@
       "MsQuic.00008.cs": "76228b4fee4c67b90fe653e083af00a8953f327f04db95885398cd79b1328380",
       "MsQuic.00009.cs": "abe20dc560be7605edb2479a9efb9a4828f2c73557f715afcd6e26e5e5988dd3",
       "MsQuic.00010.cs": "3eac4cdaedb89cb12d78d72d32a17b194d4b6cca0e1d0a6e1ee449c832662b04",
-      "MsQuic.00011.cs": "636a0d666e9b524379ad57faa638a81023bae9e71021ea431989fed6b1790c05",
+      "MsQuic.00011.cs": "c77a6af109263dd9f7da7ad5a78b6c7ff6e83b4a1e7755cc74ff8447b3f3ec8e",
       "MsQuic.00012.cs": "657ec70ea94d93b2b71000da710de7e36590460f3b3397ac6c7d9760f472e764",
       "MsQuic.00013.cs": "d8676e9266e11f1f8f543ad30d99b6222c361c244a90ee10f72c89419995126a",
       "MsQuic.00014.cs": "7bb6c5c24c0305b14232340e34a5fcf813f34329cbe197a418c90241ba09aa1b",
@@ -1512,7 +1517,7 @@
       "MsQuic.00027.cs": "710004e62433322419e016372d37de2f10dd369d0889d5146c5ad7d951726953",
       "MsQuic.00028.cs": "7a22163e59ed37e1a2ed6f61fee785d710cae8fe587c904d3a02cf3af998dbde",
       "MsQuic.GlobalUsings.g.cs": "5ecb3c6dc683e135e73eb78a84741617ef085466978934fd409c5ea9cd46217b",
-      "MsQuic.cs": "24ce10f998eedb2ede1fa7e17533c5385930b35c1ac971a4ceff195502d712b0",
+      "MsQuic.cs": "2579d2c864f3173e33defe23ccb794458906eb762298ddb9148438e929a00cbd",
       "Dotcc.SourceFiles.txt": "b3b603a9f68617c4e84004fc7d72a16f9e2ef4236ccdcb32b136c5233f83889a",
       "TranslatedMsQuic.csproj": "a54187881927f36b03a514cbd9c248ca3a578852746cf232a6a676007b363e86"
     }
@@ -1520,18 +1525,13 @@
   "gates": {
     "host_abi_native_records": 60,
     "public_abi_native_records": 29,
-    "unit_tests_passed": 2146,
-    "functional_tests_passed": 447,
-    "optional_oracle_skipped": 1005,
     "raw_optimized_jit_nativeaot": true,
     "entire_generated_assembly_rooted_for_aot": true,
-    "host_services_implemented": false,
-    "transport_validated": false
+    "shared_compiler_sqlite_campaign_passed": true,
+    "normal_optimized_sqlite_product_passed": true
   },
   "previous_checkpoint": {
-    "closure": "artifacts/checkpoint-4f625631/product-closure.json",
-    "sha256": "31652eb535d121ad7e5376955974298f307893eb0e592866985eb267d758ca4f",
-    "compiler_commit": "cdae2b9"
-  },
-  "compiler_commit": "c786b9c"
+    "closure": "artifacts/closure-16c850865669c8c1/msquic/config/product-closure.json",
+    "sha256": "16c850865669c8c1b03a825e47f9e160ca1e579b9f3376598a7cea4d561379dc"
+  }
 }

@@ -33,7 +33,11 @@ try:
     manifest = json.loads((stage / 'manifest.json').read_text())
     receipt['stage_manifest_sha256'] = hashlib.sha256((stage / 'manifest.json').read_bytes()).hexdigest()
     compiler = build / 'compiler'
-    shutil.copytree(REPO / 'DotCC/bin/Release/net10.0', compiler, dirs_exist_ok=True)
+    # This directory is an owned tool snapshot. Replacing it prevents stale
+    # dependencies from surviving a local/package compiler dependency switch.
+    if compiler.exists():
+        shutil.rmtree(compiler)
+    shutil.copytree(REPO / 'DotCC/bin/Release/net10.0', compiler)
     receipt['compiler_hashes'] = {str(p.relative_to(compiler)): hashlib.sha256(p.read_bytes()).hexdigest()
                                  for p in sorted(compiler.rglob('*')) if p.is_file()}
     flags = ['-D' + value for value in manifest['defines']]

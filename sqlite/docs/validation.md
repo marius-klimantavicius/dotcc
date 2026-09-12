@@ -1613,3 +1613,12 @@ failure, completed-prefix logs, repaired script, each resumed stage's compiler
 hashes, snapshot manifest and all 103 snapshot source/project/manifest files.
 The two postprocessor unit receipts are in the same directory. This establishes
 Linux x64 regression evidence; it does not qualify unavailable platform runners.
+
+After the isolated comparison, the normal `generated/TranslatedSqlite` product
+was regenerated with in-place postprocessing and its usual managed consumer
+rechecked under JIT and NativeAOT. The optimizer rewrote 24,231 `Cond.B` calls
+and removed 2,208 standalone empty blocks. All 42 emitted source files and five
+linked authored VFS source files match the qualified optimized snapshot.
+The separate `normal-optimized-product/results.json` receipt records this final
+working-tree state and the optimizer identities. The default product is left
+optimized.
