@@ -33,5 +33,5 @@ public enum QuicStreamOpenOptions : uint { None = 0, Unidirectional = 1, DelayId
 [Flags]
 public enum QuicStreamStartOptions : uint { None = 0, Immediate = 1, FailBlocked = 2, ShutdownOnFail = 4, IndicatePeerAccept = 8 }
 [Flags]
-public enum QuicSendOptions : uint { None = 0, Start = 2, Fin = 4, DatagramPriority = 8, DelaySend = 16 }
+public enum QuicSendOptions : uint { None = 0, Start = 2, Fin = 4, DelaySend = 16 }
 public sealed record QuicCloseInfo(uint Status, ulong ErrorCode, bool PeerInitiated, bool ApplicationInitiated);

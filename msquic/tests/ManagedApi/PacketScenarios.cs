@@ -39,8 +39,14 @@ internal static class PacketScenarios
                 await RepeatedKeyUpdates(pair.Client, pair.Server);
                 await DatagramSizes(pair.Client, pair.Server);
                 await DatagramSizes(pair.Server, pair.Client);
-                await DroppedAndQueuedDatagrams(pair.Client, pair.Server, relay);
             }
+            // Start with the initial congestion window. The preceding megabyte
+            // transfer can grow its window enough to transmit all 64 datagrams,
+            // which legitimately leaves no queued work for close to cancel.
+            var partitioned = await Connect(registration, clientConfig, listener, relay.LocalEndPoint);
+            await using (partitioned.Client)
+            await using (partitioned.Server)
+                await DroppedAndQueuedDatagrams(partitioned.Client, partitioned.Server, relay);
             // A fresh direct connection isolates receive/close races from the
             // intentional preceding network partition and its loss recovery.
             var race = await Connect(registration, clientConfig, listener, listener.LocalEndPoint);

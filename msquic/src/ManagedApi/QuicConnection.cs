@@ -16,11 +16,13 @@ public sealed partial class QuicConnection : QuicObject
     private readonly TaskCompletionSource connected = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly TaskCompletionSource shutdown = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly CancellationTokenSource validationLifetime = new();
+    private readonly CancellationToken validationToken;
     private long bufferedBytes;
     private byte[] negotiatedAlpn = [];
+    private QuicHandshakeInformation? negotiatedHandshake;
     private QuicCloseInfo? closeInfo;
     private QuicConnection(QuicRegistration registration, QuicConfiguration configuration) : base(registration.Runtime)
-    { this.registration = registration; this.configuration = configuration; }
+    { this.registration = registration; this.configuration = configuration; validationToken = validationLifetime.Token; }
     internal unsafe QUIC_HANDLE* StreamParentHandle => Handle;
     internal Task ConnectedCompletion => connected.Task;
     internal Task ShutdownCompletion => shutdown.Task;
@@ -158,9 +160,17 @@ public sealed partial class QuicConnection : QuicObject
                 case QUIC_CONNECTION_EVENT_CONNECTED:
                     var value = notification->CONNECTED;
                     owner.negotiatedAlpn = new ReadOnlySpan<byte>(value.NegotiatedAlpn, value.NegotiatedAlpnLength).ToArray();
+                    // The pinned server retires TLS immediately after CONNECTED
+                    // when resumption is disabled. Snapshot before publishing.
+                    owner.CaptureHandshakeInformation();
                     owner.connected.TrySetResult(); break;
                 case QUIC_CONNECTION_EVENT_PEER_STREAM_STARTED:
                     var offered = notification->PEER_STREAM_STARTED;
+                    if (owner.configuration.DelayAcceptedStreamCreditUntilClose)
+                    {
+                        offered.Flags |= QUIC_STREAM_OPEN_FLAGS.QUIC_STREAM_OPEN_FLAG_DELAY_ID_FC_UPDATES;
+                        notification->PEER_STREAM_STARTED = offered;
+                    }
                     QuicStream stream;
                     try { stream = QuicStream.Accept(owner, offered.Stream, offered.Flags); }
                     catch { return Status.ConnectionRefused; } // Core still owns and closes the rejected raw stream.
@@ -209,15 +219,36 @@ public sealed partial class QuicConnection : QuicObject
     { if (buffer == null) return []; return new ReadOnlySpan<byte>(buffer->Buffer, checked((int)buffer->Length)).ToArray(); }
     private async Task ValidateCertificateAsync(QuicCertificateValidation observation)
     {
+        bool providerFailed = QuicError.Failed(observation.ValidationStatus);
+        if (providerFailed)
+        {
+            // The core pauses TLS result processing while certificate approval
+            // is pending. Release it immediately with the provider's real alert;
+            // arbitrary delayed application observation cannot override trust.
+            uint status = observation.ValidationStatus;
+            ushort alert = status switch
+            {
+                Status.CertificateExpired => 45,
+                Status.CertificateUntrustedRoot => 48,
+                Status.CertificateMissing => 116,
+                >= 200000256 and <= 200000511 => (ushort)(status - 200000256),
+                _ => 80
+            };
+            FinishCertificateApproval(false, alert);
+        }
         bool approve = false;
         try
         {
             var policy = configuration.CertificateValidation;
-            bool applicationApproved = policy != null && await policy(observation, validationLifetime.Token).ConfigureAwait(false);
-            approve = applicationApproved && !QuicError.Failed(observation.ValidationStatus);
+            bool applicationApproved = policy != null && await policy(observation, validationToken).ConfigureAwait(false);
+            approve = applicationApproved && !providerFailed;
         }
         catch (Exception error) { RecordCallbackFailure(error); }
-        try { using var operation = EnterOperation(); CompleteCertificate(approve); }
+        if (!providerFailed) FinishCertificateApproval(approve, 42);
+    }
+    private void FinishCertificateApproval(bool approve, ushort alert)
+    {
+        try { using var operation = EnterOperation(); CompleteCertificate(approve, alert); }
         catch (ObjectDisposedException) { }
         catch (Exception error) { Fault(error); }
     }
@@ -227,9 +258,9 @@ public sealed partial class QuicConnection : QuicObject
         catch (Exception error) { RecordCallbackFailure(error); }
         finally { validationLifetime.Dispose(); }
     }
-    private unsafe void CompleteCertificate(bool approve)
+    private unsafe void CompleteCertificate(bool approve, ushort alert)
         => QuicError.ThrowIfFailed(Runtime.Api->ConnectionCertificateValidationComplete(Handle, approve ? (byte)1 : (byte)0,
-            (QUIC_TLS_ALERT_CODES)42), "certificate validation completion");
+            (QUIC_TLS_ALERT_CODES)alert), "certificate validation completion");
     private unsafe void CloseNative()
     { if (Handle != null) { Runtime.Api->ConnectionClose(Handle); Handle = null; } }
     public override ValueTask DisposeAsync()

@@ -50,7 +50,7 @@ public sealed partial class QuicStream : QuicObject
     internal static async ValueTask<QuicStream> CreateAsync(QuicConnection owner, QuicStreamOpenOptions openOptions,
         CancellationToken cancellationToken)
     {
-        ValidateFlags((uint)openOptions, 5, nameof(openOptions));
+        ValidateFlags((uint)openOptions, 5, 15, nameof(openOptions));
         cancellationToken.ThrowIfCancellationRequested();
         var stream = new QuicStream(owner, ((uint)openOptions & 1) != 0, remote: false);
         try
@@ -64,7 +64,7 @@ public sealed partial class QuicStream : QuicObject
     internal static async ValueTask<QuicStream> OpenAsync(QuicConnection owner, QuicStreamOpenOptions openOptions,
         QuicStreamStartOptions startOptions, CancellationToken cancellationToken)
     {
-        ValidateFlags((uint)startOptions, 15, nameof(startOptions));
+        ValidateFlags((uint)startOptions, 15, 31, nameof(startOptions));
         var stream = await CreateAsync(owner, openOptions, cancellationToken).ConfigureAwait(false);
         try
         {
@@ -85,7 +85,7 @@ public sealed partial class QuicStream : QuicObject
     internal static unsafe QuicStream Accept(QuicConnection owner, QUIC_HANDLE* handle, QUIC_STREAM_OPEN_FLAGS flags)
     {
         if (handle == null) throw new ArgumentNullException(nameof(handle));
-        ValidateFlags((uint)flags, 5, nameof(flags));
+        ValidateFlags((uint)flags, 5, 15, nameof(flags));
         var stream = new QuicStream(owner, ((uint)flags & 1) != 0, remote: true);
         try
         {
@@ -117,7 +117,7 @@ public sealed partial class QuicStream : QuicObject
 
     public ValueTask StartAsync(QuicStreamStartOptions options = 0, CancellationToken cancellationToken = default)
     {
-        ValidateFlags((uint)options, 15, nameof(options)); cancellationToken.ThrowIfCancellationRequested();
+        ValidateFlags((uint)options, 15, 31, nameof(options)); cancellationToken.ThrowIfCancellationRequested();
         StartCore(options);
         return new ValueTask(started.Task.WaitAsync(cancellationToken));
     }
@@ -136,7 +136,8 @@ public sealed partial class QuicStream : QuicObject
     /// <summary>Copies the input for transport ownership. Cancellation after admission cancels the wait; it does not retract sent bytes.</summary>
     public async ValueTask SendAsync(ReadOnlyMemory<byte> buffer, QuicSendOptions options = 0, CancellationToken cancellationToken = default)
     {
-        ValidateFlags((uint)options, 30, nameof(options));
+        if (((uint)options & 8u) != 0) throw new ArgumentException("Datagram priority is not a stream-send option", nameof(options));
+        ValidateFlags((uint)options, 22, 255, nameof(options));
         if (buffer.Length > Runtime.Options.MaximumCopiedSendBytes) throw new ArgumentOutOfRangeException(nameof(buffer), "Send exceeds the configured copied-send limit");
         if (!canWrite) throw new InvalidOperationException("This unidirectional stream cannot send");
         await sendAdmission.WaitAsync(cancellationToken).ConfigureAwait(false);
@@ -334,7 +335,14 @@ public sealed partial class QuicStream : QuicObject
         var owner = FromContext<QuicStream>(context);
         lock (owner.Gate) { if (owner.callbacks++ == 0) owner.callbacksDrain = NewCompletion(); }
         var previousCallback = callbackOwner; callbackOwner = owner;
-        try { return owner.ProcessEvent(notification); }
+        try
+        {
+            uint status = owner.ProcessEvent(notification);
+            // Preserve the receive PENDING result even when an observer faults.
+            try { owner.NotifyApplication(notification); }
+            catch (Exception error) { owner.RecordCallbackFailure(error); owner.connection.Fault(error); }
+            return status;
+        }
         catch (Exception error)
         {
             owner.RecordCallbackFailure(error); owner.connection.Fault(error);
@@ -457,6 +465,7 @@ public sealed partial class QuicStream : QuicObject
         foreach (var send in abandoned) { send.Finish(new OperationCanceledException("Stream closed")); sendAdmission.Release(); }
         started.TrySetException(new ObjectDisposedException(nameof(QuicStream)));
         writeShutdown.TrySetException(new ObjectDisposedException(nameof(QuicStream)));
+        lock (Gate) managedCallback = null;
         RetireContext();
         if (registered) { registered = false; connection.StreamClosed(this); }
     }
@@ -474,8 +483,9 @@ public sealed partial class QuicStream : QuicObject
         Runtime.Api->StreamClose(Handle); Handle = null;
     }
     private static bool Failed(uint status) => unchecked((int)status) > 0;
-    private static void ValidateFlags(uint value, uint supported, string name)
+    private static void ValidateFlags(uint value, uint supported, uint known, string name)
     {
+        if ((value & ~known) != 0) throw new ArgumentException("Unknown or reserved " + name + " flags", name);
         if ((value & ~supported) != 0) throw new NotSupportedException("Unsupported " + name + " flags");
     }
 }

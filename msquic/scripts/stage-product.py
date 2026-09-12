@@ -20,7 +20,8 @@ manifest = dict(revision=pin['commit'], source_archive_sha256=pin['sha256'],
     data_model='LP64, little-endian, Linux x64; host ABI validation required',
     product_closure_frozen=False, files=[], units=[], excluded_units=['src/platform/pcp.c'],
     defines=['CX_PLATFORM_LINUX=1', '__linux__=1', '_GNU_SOURCE=1', 'NDEBUG=1',
-             'QUIC_BUILD_STATIC=1', 'QUIC_EVENTS_STUB=1', 'QUIC_LOGS_STUB=1'],
+             'QUIC_BUILD_STATIC=1', 'QUIC_EVENTS_STUB=1', 'QUIC_LOGS_STUB=1',
+             'VER_GIT_HASH=' + pin['commit']],
     include_dirs=['src/inc', 'src/core', 'src/platform', 'host', 'system'])
 
 

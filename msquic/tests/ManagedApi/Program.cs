@@ -9,6 +9,14 @@ internal static class Program
         string? requiredRevision = Environment.GetEnvironmentVariable("DOTCC_REQUIRED_SOURCE_REVISION");
         if (requiredRevision != null && Managed.Transport.MsQuic.VER_GIT_HASH_STR != requiredRevision)
             throw new InvalidOperationException("Full facade qualification requires exact pinned source revision metadata.");
+        if (args is ["--datagram-late-ack"]) { await DatagramLateAck.RunAsync(); return; }
+        if (args is ["--versions"]) { await VersionPolicyControls.RunAsync(); return; }
+        if (args is ["--handshake-snapshots"]) { await HandshakeSnapshots.RunAsync(); return; }
+        if (args is ["--network"]) { await NetworkParameters.RunAsync(); return; }
+        if (args is ["--flags"]) { await FlagControls.RunAsync(); return; }
+        if (args is ["--ticket-rotation"]) { await TicketRotation.RunAsync(); return; }
+        if (args is ["--certificates"]) { await CertificatePolicies.RunAsync(); return; }
+        if (args is ["--callbacks"]) { await CallbackControls.RunAsync(); return; }
         if (args is ["--handshake-faults"]) { await HandshakeFaults.RunAsync(); return; }
         if (args is ["--packets"]) { await PacketScenarios.RunAsync(); return; }
         if (args is ["--transport"]) { await Transport.RunAsync(); return; }

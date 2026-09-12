@@ -2,6 +2,8 @@ using System.Threading.Channels;
 
 namespace Managed.Transport.Api;
 
+[Flags] public enum QuicDatagramSendOptions : uint { None = 0, Priority = 8 }
+
 public enum QuicDatagramSendResult { Lost = 3, Acknowledged = 4, AcknowledgedAfterLoss = 5, Canceled = 6 }
 
 public sealed partial class QuicConnection
@@ -22,14 +24,17 @@ public sealed partial class QuicConnection
     public ushort MaximumDatagramSendLength { get { lock (Gate) return datagramSendEnabled ? maximumDatagramLength : (ushort)0; } }
 
     /// <summary>Copies one datagram. Cancellation after admission stops waiting; the native send retains its copied storage until final completion.</summary>
-    public async ValueTask<QuicDatagramSendResult> SendDatagramAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
+    public async ValueTask<QuicDatagramSendResult> SendDatagramAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default, QuicDatagramSendOptions options = QuicDatagramSendOptions.None)
     {
+        uint flags = (uint)options;
+        if ((flags & ~255u) != 0) throw new ArgumentException("Unknown or reserved DATAGRAM flags", nameof(options));
+        if ((flags & ~8u) != 0) throw new NotSupportedException("This DATAGRAM flag is outside the selected profile.");
         cancellationToken.ThrowIfCancellationRequested();
         DatagramSend send;
-        using (EnterOperation()) send = SubmitDatagram(data.Span);
+        using (EnterOperation()) send = SubmitDatagram(data.Span, options);
         return await send.Completion.Task.WaitAsync(cancellationToken).ConfigureAwait(false);
     }
-    private unsafe DatagramSend SubmitDatagram(ReadOnlySpan<byte> data)
+    private unsafe DatagramSend SubmitDatagram(ReadOnlySpan<byte> data, QuicDatagramSendOptions options)
     {
         lock (Gate)
             if (!datagramSendEnabled || data.Length > maximumDatagramLength) throw new InvalidOperationException("Datagram exceeds the negotiated send limit or datagram sending is disabled.");
@@ -50,7 +55,7 @@ public sealed partial class QuicConnection
             }
             uint status;
             fixed (QUIC_BUFFER* buffers = descriptors)
-                status = Runtime.Api->DatagramSend(Handle, buffers, 1, QUIC_SEND_FLAGS.QUIC_SEND_FLAG_NONE, (void*)token);
+                status = Runtime.Api->DatagramSend(Handle, buffers, 1, (QUIC_SEND_FLAGS)options, (void*)token);
             if (QuicError.Failed(status))
             {
                 lock (Gate) datagramSends.Remove(token);

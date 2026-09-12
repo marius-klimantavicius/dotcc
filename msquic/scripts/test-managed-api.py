@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Serial source-linked managed facade configuration control; no transport."""
+"""Serial source-linked owning facade and actual transport controls."""
 import argparse
 import hashlib
 import json
@@ -12,15 +12,28 @@ PICO = ROOT.parent / 'picotls'
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--variants', nargs='+', choices=['raw', 'optimized'], default=['raw', 'optimized'])
 parser.add_argument('--jit-only', action='store_true')
+MODES = {
+    'datagram-late-ack': ('actual late DATAGRAM acknowledgment after loss', 'PASS facade DATAGRAM late ACK'),
+    'versions': ('scoped version policy ownership and validation', 'PASS facade scoped version policies:'),
+    'handshake-snapshots': ('negotiated metadata after native TLS retirement', 'PASS facade handshake snapshots:'),
+    'network': ('endpoint/interface/binding/scheduling/statistics', 'PASS facade network parameters:'),
+    'flags': ('selected flags and stream credit', 'PASS facade flag controls:'),
+    'ticket-rotation': ('imported ticket-key rotation', 'PASS facade ticket-key rotation'),
+    'certificates': ('certificate policy completion and lifetime', 'PASS facade certificate policies:'),
+    'callbacks': ('callback replacement, INLINE and DoS notifications', 'PASS facade callback controls'),
+    'resumption': ('server ticket policy', 'PASS managed API configuration control:'),
+    'transport': ('owning stream and lifetime transport', 'PASS facade stream/lifetime'),
+    'packets': ('key updates and DATAGRAM transport', 'PASS facade packet controls'),
+    'handshake-faults': ('Retry and stateless reset', 'PASS facade handshake fault controls'),
+}
 group = parser.add_mutually_exclusive_group()
-group.add_argument('--resumption', action='store_true', help='Run real endpoint server ticket policy controls')
-group.add_argument('--transport', action='store_true', help='Run owning stream and lifetime transport controls')
-group.add_argument('--packets', action='store_true', help='Run actual key update and DATAGRAM transport controls')
-group.add_argument('--handshake-faults', action='store_true', help='Run actual Retry and stateless reset controls')
+group.add_argument('--all', action='store_const', const='all', dest='mode', help='Run every facade group after one build/publish per variant')
+for name, (description, _) in MODES.items():
+    group.add_argument('--' + name, action='store_const', const=name, dest='mode', help='Run ' + description + ' controls')
 args = parser.parse_args()
-LOG = ROOT / 'artifacts' / ('managed-api-resumption' if args.resumption else 'managed-api-transport' if args.transport else 'managed-api-packets' if args.packets else 'managed-api-handshake-faults' if args.handshake_faults else 'managed-api')
+LOG = ROOT / 'artifacts' / ('managed-api' + ('-' + args.mode if args.mode else ''))
 LOG.mkdir(parents=True, exist_ok=True)
-receipt = dict(passed=False, transport_validated=False, variants=[], commands=[])
+receipt = dict(passed=False, transport_validated=False, selected_mode=args.mode or 'configuration', variants=[], commands=[])
 
 
 def sha(path):
@@ -32,6 +45,16 @@ def generated(directory):
     if not names or len(names) != len(set(names)) or any(Path(n).name != n or not n.endswith('.cs') for n in names):
         raise RuntimeError('Invalid generated source manifest')
     return {name: sha(directory / name) for name in names}
+
+
+def stable_transcript(value):
+    if isinstance(value, dict):
+        return {name: stable_transcript(output) for name, output in value.items()}
+    # This exact evidence record contains randomized encrypted UDP bytes and
+    # scheduling-dependent loss counts. Keep it unchanged in logs/receipts; the
+    # test asserts its invariants before emitting a separate stable PASS row.
+    return '\n'.join(line for line in value.splitlines()
+                     if not line.startswith('EVIDENCE datagram-late-ack '))
 
 
 def run(command, name, environment=None):
@@ -79,17 +102,19 @@ try:
                  '-o', destination, '--nologo', *properties], variant + '-aot-build')
             commands.append(('aot', [destination / 'MsQuic.ManagedApi']))
         entry = dict(name=variant, passed=False, generated_sha256=hashes, picotls_generated_sha256=pico_hashes)
+        modes = [None, *MODES] if args.mode == 'all' else [args.mode]
         for runtime, command in commands:
-            if args.resumption: command = [*command, '--resumption']
-            elif args.transport: command = [*command, '--transport']
-            elif args.packets: command = [*command, '--packets']
-            elif args.handshake_faults: command = [*command, '--handshake-faults']
-            output = run(command, variant + '-' + runtime, runtime_environment)
-            expected = 'PASS facade stream/lifetime' if args.transport else 'PASS facade packet controls' if args.packets else 'PASS facade handshake fault controls' if args.handshake_faults else 'PASS managed API configuration control:'
-            if not any(line.startswith(expected) for line in output.splitlines()):
-                raise RuntimeError('Missing facade consumer success receipt')
-            entry[runtime] = output.strip()
-        if not args.jit_only and entry['jit'] != entry['aot']:
+            outputs = {}
+            for mode in modes:
+                invocation = [*command, '--' + mode] if mode else command
+                name = variant + '-' + ((mode or 'configuration') + '-' if args.mode == 'all' else '') + runtime
+                output = run(invocation, name, runtime_environment)
+                expected = MODES[mode][1] if mode else 'PASS managed API configuration control:'
+                if not any(line.startswith(expected) for line in output.splitlines()):
+                    raise RuntimeError('Missing facade consumer success receipt: ' + str(mode))
+                outputs[mode or 'configuration'] = output.strip()
+            entry[runtime] = outputs if args.mode == 'all' else next(iter(outputs.values()))
+        if not args.jit_only and stable_transcript(entry['jit']) != stable_transcript(entry['aot']):
             raise RuntimeError('JIT/NativeAOT control results differ')
         if hashes != generated(msquic) or pico_hashes != generated(picotls):
             raise RuntimeError('Translation changed during control')
@@ -98,7 +123,7 @@ try:
     if receipt['input_sha256'] != {os.path.relpath(p, ROOT): sha(p) for p in sources}:
         raise RuntimeError('Authored inputs changed during control')
     receipt['targeted_passed'] = True
-    receipt['transport_validated'] = bool(args.transport or args.resumption or args.packets or args.handshake_faults)
+    receipt['transport_validated'] = args.mode is not None
     receipt['passed'] = set(args.variants) == {'raw', 'optimized'} and not args.jit_only
 finally:
     (LOG / 'results.json').write_text(json.dumps(receipt, indent=2) + '\n')

@@ -1,8 +1,8 @@
-# Proposed owning managed API
+# Owning managed API contract
 
-This is an implementation design, not a shipped API or a qualification receipt.
-P6 must confirm the ownership assumptions below before implementation. The
-selected contract remains [`api-profile.json`](../config/api-profile.json);
+The API is implemented, with optimized JIT configuration, stream lifetime and
+resumption controls passing. This document describes its contract; individual
+receipts and the phase ledger define the qualified scope. The selected contract remains [`api-profile.json`](../config/api-profile.json);
 its pending requirements must not disappear merely because a first sample does
 not exercise them. P8 requires separate consumers without internal APIs, and P9
 requires the final raw/optimized, JIT/NativeAOT and shared regression campaigns.
@@ -14,7 +14,7 @@ Use `Managed.Transport.Api` for the facade, keeping generated C types in
 signatures expose managed values, not `QUIC_HANDLE*`, API table pointers, native
 credential structures, generated anonymous types or arbitrary parameter blobs.
 
-| Proposed type | Public operations | Owns or retains |
+| Type | Public operations | Owns or retains |
 | --- | --- | --- |
 | `QuicRuntime : IAsyncDisposable` | `CreateAsync`, `OpenRegistrationAsync`, immutable `Capabilities` and typed global queries/settings | One installed `MsQuicHost`, one `MsQuicOpenVersion(2)` result, all registrations and a cleanup executor |
 | `QuicRegistration : IAsyncDisposable` | `CreateConfigurationAsync`, `ListenAsync`, `ConnectAsync`, `ShutdownAsync` | Registration handle; configuration, listener and connection children |
@@ -71,7 +71,7 @@ and connection settings updates, not only construction.
    credential handles, validation bypasses, unsupported algorithms and excluded
    flags are rejected before configuration mutation.
 
-The host now has an unvalidated overload
+The host provides the tested overload
 `LoadCredential(configuration, credential, additionalFlags, asyncHandler)` with
 the exact `delegate*<QUIC_HANDLE*, void*, uint, void>` completion signature. Its
 asynchronous mode can invoke completion inline and then return `PENDING`.
@@ -80,8 +80,8 @@ settle it once from callback plus return status; a `PENDING` return must not res
 a state already completed inline. Do not force a callback to be deferred merely
 to simplify the facade. Indication requires the client/portable combination;
 the adapter supplies a DER leaf and PKCS7 chain and preserves actual trust/name
-failure under deferred application approval. These new seams still require
-their TlsAdapter tests before qualification. A checked-in profile-to-validator
+failure under deferred application approval. The direct TLS adapter matrix covers these seams under raw/optimized JIT and
+NativeAOT; facade and separate-consumer qualification remains distinct. A checked-in profile-to-validator
 coverage test must prevent missing entries and accidental future-bit acceptance.
 
 ## Handle and callback states
@@ -96,7 +96,7 @@ callback inline or wait for a worker which needs the gate.
 | Runtime | `Creating → Open → Closing → Closed` | Reverse each completed startup step on failure. `Closed` requires all children, API close, host resource drain and successful uninstall. |
 | Registration | `Opening → Open → Closing → Closed` | Stop child admission, shutdown connections, close children on the independent executor, then `RegistrationClose`. |
 | Configuration | `Opening → LoadingCredential → Ready → Closing → Closed` | No listener/connect dispatch before real load completion. Failure closes the C handle and credential lease; asynchronous completion retains input/context until fired or canceled and drained. |
-| Listener | `Opening → Starting → Listening → Stopping → Stopped → Closing → Closed` | `STOP_COMPLETE` settles `StopAsync`; raw `ListenerClose` and callback drain settle disposal. Pending accepts complete with the actual stop/error. Initial design is one-shot; reuse/restart remains an explicit design choice. |
+| Listener | `Opening → Starting → Listening → Stopping → Stopped → Closing → Closed` | `STOP_COMPLETE` settles `StopAsync`; raw `ListenerClose` and callback drain settle disposal. Pending accepts complete with the actual stop/error. Restart is allowed after actual STOP_COMPLETE and is covered by the owning transport controls. |
 | Connection | `Opening/Accepting → Handshaking → Connected → ShutdownRequested → ShutdownComplete → Closing → Closed` | A failed handshake retains its actual transport/TLS status. A shutdown event may arrive without `Connected`. Rooting lasts through raw close and active callback drain, not merely task cancellation. |
 | Stream | `Opening → Starting → Active → ShutdownRequested → ShutdownComplete → Closing → Closed` | Track read and write directions separately: FIN on one does not close the other. Close waits for application receive leases and send/callback ownership before retiring the handle. |
 
@@ -302,3 +302,19 @@ Source anchors: [receive return/temporary descriptors](../ref/msquic-80a06511242
 [concurrent receive completion](../ref/msquic-80a065112426bce68c1da42d026478d3e40fd45e/src/core/api.c#L1432),
 [pending ticket validation](../ref/msquic-80a065112426bce68c1da42d026478d3e40fd45e/src/core/connection.c#L2225),
 [host lifetime contract](worker-lifetime.md), and [current host disposal](../src/BclHost/MsQuicHost.cs#L55).
+
+## Synchronous stream observers
+
+`ApplicationContext` associates an arbitrary managed object with an owner under
+its lifetime checks; the native callback token remains the stable rooted owner.
+`QuicStream.SetCallbackHandler` atomically replaces a synchronous typed observer
+and its context. Each invocation holds its delegate/context snapshot until it
+returns, including when the handler replaces itself. Clearing the observer keeps
+the owning trampoline and asynchronous stream operations active.
+
+Observers receive copied event values after internal owner state updates. They
+may request `Inline` stream shutdown while that actual callback is executing.
+They must not block on QUIC work or disposal; ordinary asynchronous continuations
+remain outside this callback context. Exceptions fault the connection without
+escaping into C or changing an outstanding receive's `PENDING` ownership result.
+These new observer controls are authored and await runtime qualification.

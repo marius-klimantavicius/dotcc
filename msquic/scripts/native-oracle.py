@@ -59,7 +59,7 @@ def main():
     build = ROOT / 'build/native-oracle'
     run(['cmake', '-S', str(work), '-B', str(build), '-G', 'Ninja',
          '-DCMAKE_BUILD_TYPE=Release', '-DQUIC_TLS_LIB=quictls',
-         '-DCMAKE_C_FLAGS=-DIS_OPENSSL_3=1',
+         '-DCMAKE_C_FLAGS=-DIS_OPENSSL_3=1 -DVER_GIT_HASH=' + source['commit'],
          '-DQUIC_BUILD_TOOLS=ON', '-DQUIC_BUILD_TEST=OFF',
          '-DQUIC_BUILD_PERF=OFF', '-DQUIC_ENABLE_LOGGING=OFF',
          '-DQUIC_EMBED_GIT_HASH=OFF', '-DQUIC_SOURCE_LINK=OFF'], 'configure')

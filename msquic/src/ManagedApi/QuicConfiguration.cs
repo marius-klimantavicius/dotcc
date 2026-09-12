@@ -5,6 +5,9 @@ namespace Managed.Transport.Api;
 
 public sealed record QuicConfigurationOptions
 {
+    /// <summary>Retains a peer-opened stream's ID credit until its owning stream
+    /// is disposed, instead of returning that credit when transport shutdown ends.</summary>
+    public bool DelayAcceptedStreamCreditUntilClose { get; init; }
     /// <summary>Validates copied server resumption application state after the
     /// core authenticates and validates the ticket. Null accepts that state.
     /// The initial invocation runs on the core worker and must not block. An
@@ -15,7 +18,7 @@ public sealed record QuicConfigurationOptions
 
 /// <summary>An owning QUIC v1 configuration. Listener/connection leases keep its
 /// handle and credentials alive until those children finish closing.</summary>
-public sealed class QuicConfiguration : QuicObject
+public sealed partial class QuicConfiguration : QuicObject
 {
     private readonly QuicRegistration registration;
     private readonly object settingsGate = new();
@@ -23,6 +26,7 @@ public sealed class QuicConfiguration : QuicObject
     private TaskCompletionSource<uint>? credentialCompletion;
     private bool registered;
     public bool IsServer { get; }
+    internal bool DelayAcceptedStreamCreditUntilClose { get; }
     internal byte[][] ProtocolBytes { get; }
     internal Func<QuicCertificateValidation, CancellationToken, ValueTask<bool>>? CertificateValidation { get; }
     internal Func<ReadOnlyMemory<byte>, CancellationToken, ValueTask<bool>>? ServerResumptionValidation { get; }
@@ -33,6 +37,7 @@ public sealed class QuicConfiguration : QuicObject
         registration = owner; ProtocolBytes = protocols; IsServer = credentials.IsServer;
         CertificateValidation = credentials.CertificateValidation;
         ServerResumptionValidation = options?.ServerResumptionValidation;
+        DelayAcceptedStreamCreditUntilClose = options?.DelayAcceptedStreamCreditUntilClose ?? false;
     }
 
     internal static async ValueTask<QuicConfiguration> CreateAsync(QuicRegistration owner,

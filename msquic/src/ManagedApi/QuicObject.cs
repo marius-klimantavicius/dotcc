@@ -14,6 +14,15 @@ public abstract class QuicObject : IAsyncDisposable
     private TaskCompletionSource? operationsDrained;
     private Task? closeTask;
     private Exception? callbackFailure;
+    private protected object? applicationContext;
+
+    /// <summary>A managed association retained by this owner. It never replaces
+    /// the rooted native callback token and cannot be accessed after close begins.</summary>
+    public object? ApplicationContext
+    {
+        get { using var operation = EnterOperation(); lock (Gate) return applicationContext; }
+        set { using var operation = EnterOperation(); lock (Gate) applicationContext = value; }
+    }
     private protected readonly object Gate = new();
     private protected bool IsClosing { get; private set; }
     internal QuicRuntime Runtime { get; }
@@ -67,6 +76,7 @@ public abstract class QuicObject : IAsyncDisposable
             if (contextState == 1 && !contexts.TryRemove(new KeyValuePair<nint, QuicObject>(context, this)))
                 throw new InvalidOperationException("QUIC callback context ownership was lost.");
             contextState = 2;
+            applicationContext = null;
         }
     }
 

@@ -177,14 +177,26 @@ public sealed partial class QuicConnection
                 (uint)sizeof(QUIC_SETTINGS), &requested), "Set initial connection settings");
         }
     }
-    /// <summary>Requests the upstream connection's supported remote-address update.
-    /// The core retains its state and role restrictions and performs path validation.</summary>
+    /// <summary>Forwards the pinned core's remote-address setter. It rejects started
+    /// connections with InvalidState; the initial address is selected by ConnectAsync.</summary>
     public unsafe void SetRemoteEndPoint(IPEndPoint endpoint, QuicParameterPriority priority = QuicParameterPriority.Normal)
     {
         ArgumentNullException.ThrowIfNull(endpoint);
         using var operation = EnterOperation();
         QUIC_ADDR remote = default; MsQuicHost.DatagramAddress(endpoint, &remote);
         QuicError.ThrowIfFailed(Runtime.Api->SetParam(Handle, QuicParameterDispatch.Apply(MsQuic.QUIC_PARAM_CONN_REMOTE_ADDRESS, priority), (uint)sizeof(QUIC_ADDR), &remote), "remote endpoint update");
+    }
+
+    /// <summary>Requests actual client rebinding after handshake confirmation.
+    /// The core preserves role/state validation and owns binding/path transitions.
+    /// Port zero selects an ephemeral port; read GetLocalEndPoint afterward.</summary>
+    public unsafe void SetLocalEndPoint(IPEndPoint endpoint, QuicParameterPriority priority = QuicParameterPriority.Normal)
+    {
+        ArgumentNullException.ThrowIfNull(endpoint);
+        using var operation = EnterOperation();
+        QUIC_ADDR local = default; MsQuicHost.DatagramAddress(endpoint, &local);
+        QuicError.ThrowIfFailed(Runtime.Api->SetParam(Handle, QuicParameterDispatch.Apply(MsQuic.QUIC_PARAM_CONN_LOCAL_ADDRESS, priority),
+            (uint)sizeof(QUIC_ADDR), &local), "local endpoint update");
     }
 
     // Called before client ConnectionStart and before accepting a server handle.
@@ -206,13 +218,23 @@ public sealed partial class QuicConnection
         return MsQuicHost.DatagramEndpoint(&address);
     }
 
+    /// <summary>Returns the immutable negotiated handshake snapshot captured during
+    /// CONNECTED, including when the core has retired its temporary TLS context.</summary>
     public unsafe QuicHandshakeInformation GetHandshakeInformation(QuicParameterPriority priority = QuicParameterPriority.Normal)
     {
         using var operation = EnterOperation();
-        var info = ReadParameter<QUIC_HANDSHAKE_INFO>(MsQuic.QUIC_PARAM_TLS_HANDSHAKE_INFO, priority);
-        return new((QuicTlsProtocol)info.TlsProtocolVersion, (QuicTlsCipherSuite)info.CipherSuite,
-            (QuicTlsNamedGroup)info.TlsGroup, info.CipherStrength, info.HashStrength, info.KeyExchangeStrength);
+        _ = QuicParameterDispatch.Apply(MsQuic.QUIC_PARAM_TLS_HANDSHAKE_INFO, priority);
+        lock (Gate) if (negotiatedHandshake is { } snapshot) return snapshot;
+        return ConvertHandshakeInformation(ReadParameter<QUIC_HANDSHAKE_INFO>(MsQuic.QUIC_PARAM_TLS_HANDSHAKE_INFO, priority));
     }
+    private unsafe void CaptureHandshakeInformation()
+    {
+        var info = ReadParameter<QUIC_HANDSHAKE_INFO>(MsQuic.QUIC_PARAM_TLS_HANDSHAKE_INFO, QuicParameterPriority.Normal);
+        lock (Gate) negotiatedHandshake = ConvertHandshakeInformation(info);
+    }
+    private static QuicHandshakeInformation ConvertHandshakeInformation(QUIC_HANDSHAKE_INFO info)
+        => new((QuicTlsProtocol)info.TlsProtocolVersion, (QuicTlsCipherSuite)info.CipherSuite,
+            (QuicTlsNamedGroup)info.TlsGroup, info.CipherStrength, info.HashStrength, info.KeyExchangeStrength);
 
     public unsafe QuicConnectionCapabilities GetCapabilities(QuicParameterPriority priority = QuicParameterPriority.Normal)
     {
