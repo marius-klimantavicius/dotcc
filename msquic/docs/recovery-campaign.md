@@ -74,8 +74,11 @@ The pinned upstream discovery algorithm increases MTU monotonically. A ceiling
 decrease may produce a bounded failure in native MsQuic as well; that requires
 a native-to-native control before diagnosing a compiler or host regression.
 `--roles native` selects such an additional test-only control. The current driver
-still requires successful delivery and records a failure otherwise; a bounded
-native-equivalent failure policy has not yet been qualified or implemented.
+still requires successful delivery and records a failure otherwise.
+The separate `scripts/classify-native-recovery.py` observation classifier has
+validated an optimized JIT IPv4/AES-128 set of current-baseline observations in
+`artifacts/recovery-native-observations/results.json`. It does not change the
+strict driver's failures or claim successful recovery.
 
 The original rebinding case preserves both reply mappings, which causes the
 server to challenge both paths while the client observes one proxy endpoint.
@@ -98,6 +101,25 @@ terminal diagnostics (`artifacts/recovery-native-mtu-terminal/results.json`)
 also show both endpoints connected, unfinished, then closed with status 62 and
 transport error 1. The strict delivery test remains failed for both, as expected
 from the pinned monotonically increasing discovery algorithm.
+
+The observation classifier accepts recovery receipt paths as positional
+arguments. Every receipt must bind the same current, qualified peer baseline,
+executed binaries, generated sources, certificates, and unchanged driver/proxy
+sources. For each observed variant/runtime/IP/cipher profile it requires both
+native/native and managed/managed rows for the two failing scenarios, plus
+passing expired-mapping, probe-loss, and increasing-ceiling controls. It checks
+actual terminal status, lifecycle, path snapshots and drained ownership, while
+retaining the original strict failure. Ephemeral ports, timing-dependent packet
+counts, partial byte counts and MTU discovery progress are not falsely required
+to be identical. A validated observation still emits `strict_passed: false` and
+`entire_p7_qualified: false`; it is evidence of a pinned native limitation, not a
+waiver or a passing transport gate.
+In the decreasing-ceiling observation, actual client-direction drops prevent
+the request from completing, so the response direction never reaches its change
+ordinal. The classifier requires the real triggering decrease and drops; it
+does not claim both directions exercised a decrease. Four altered-receipt
+controls reject a stale peer baseline, a relabeled strict pass, a wrong terminal
+status and a missing positive control.
 
 For a diagnostic subset:
 
