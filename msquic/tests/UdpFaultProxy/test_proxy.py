@@ -25,7 +25,8 @@ _recovery_spec.loader.exec_module(recovery)
 
 class ProxyControls(unittest.TestCase):
     def test_rule_validation_and_reproducible_jitter(self):
-        for value in ({'unknown': 1}, {'drop_first': -1}, {'delay_ms': True}, {'jitter_ms': 10001}):
+        for value in ({'unknown': 1}, {'drop_first': -1}, {'delay_ms': True}, {'jitter_ms': 10001},
+                      {'mtu_change_after': 2, 'mtu_change_after_drops': 1}):
             with self.assertRaises(ValueError):
                 Rules.parse(value)
         first, second = Proxy({'server_port': 9, 'seed': 76}), Proxy({'server_port': 9, 'seed': 76})
@@ -39,7 +40,7 @@ class ProxyControls(unittest.TestCase):
             first.close()
             second.close()
 
-    def exchange(self, family, fault=False, bounded=False, mtu=False):
+    def exchange(self, family, fault=False, bounded=False, mtu=False, mtu_after_drop=False):
         host = '127.0.0.1' if family == socket.AF_INET else '::1'
         server = socket.socket(family, socket.SOCK_DGRAM)
         server.bind((host, 0))
@@ -81,6 +82,9 @@ class ProxyControls(unittest.TestCase):
                                  client_to_server=dict(delay_ms=200))
         if mtu:
             configuration['client_to_server'] = dict(mtu_bytes=116, mtu_change_after=20, mtu_bytes_after=144)
+            if mtu_after_drop:
+                configuration['client_to_server'].pop('mtu_change_after')
+                configuration['client_to_server']['mtu_change_after_drops'] = 1
         try:
             with tempfile.TemporaryDirectory(prefix='dotcc-udp-proxy-') as temporary:
                 directory = Path(temporary)
@@ -120,9 +124,17 @@ class ProxyControls(unittest.TestCase):
                     client_counts = report['directions']['client_to_server']
                     self.assertEqual(client_counts['received_packets'], len(payloads))
                     if mtu:
-                        expected = [payload for ordinal, payload in enumerate(payloads, 1)
-                                    if len(payload) <= (116 if ordinal <= 20 else 144)]
+                        expected, drops, before_change = [], 0, 0
+                        for ordinal, payload in enumerate(payloads, 1):
+                            changed = drops >= 1 if mtu_after_drop else ordinal > 20
+                            before_change += not changed
+                            if len(payload) <= (144 if changed else 116):
+                                expected.append(payload)
+                            else:
+                                drops += 1
                         self.assertEqual(client_counts['mtu_drops'], len(payloads) - len(expected))
+                        self.assertEqual(client_counts['mtu_packets_before_change'], before_change)
+                        self.assertEqual(client_counts['mtu_packets_after_change'], len(payloads) - before_change)
                         self.assertEqual(received, expected)
                         self.assertEqual(seen, expected)
                     elif bounded:
@@ -332,6 +344,9 @@ if sys.stdin.readline().strip() != 'exit':
 
     def test_changing_payload_ceiling(self):
         self.exchange(socket.AF_INET, mtu=True)
+
+    def test_changing_payload_ceiling_after_drop(self):
+        self.exchange(socket.AF_INET, mtu=True, mtu_after_drop=True)
 
     def expired_mapping(self, family):
         host = '127.0.0.1' if family == socket.AF_INET else '::1'

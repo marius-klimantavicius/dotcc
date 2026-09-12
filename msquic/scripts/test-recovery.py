@@ -34,7 +34,7 @@ SCENARIOS = {
     'rebinding': {'rebind_after_client_packets': 12},
     'rebinding-expired-mapping': {'rebind_after_client_packets': 12, 'retire_old_backend_on_rebind': True},
     'mtu-probe-loss': {direction: {'mtu_bytes': 1300} for direction in DIRECTIONS},
-    'payload-ceiling-up': {direction: {'mtu_bytes': 1300, 'mtu_change_after': 12,
+    'payload-ceiling-up': {direction: {'mtu_bytes': 1300, 'mtu_change_after_drops': 1,
                                      'mtu_bytes_after': 1472} for direction in DIRECTIONS},
     'payload-ceiling-down': {direction: {'mtu_bytes': 1472, 'mtu_change_after': 20,
                                        'mtu_bytes_after': 1300} for direction in DIRECTIONS},
@@ -182,8 +182,12 @@ def validate_faults(stats, scenario, completed_pid=None):
         check(total(counter) > 0, 'Configured fault did not occur: ' + scenario + ' ' + counter)
     if scenario in ('payload-ceiling-up', 'payload-ceiling-down'):
         for direction in DIRECTIONS:
-            check(counts[direction]['received_packets'] > stats['configuration'][direction]['mtu_change_after'],
+            check(counts[direction]['mtu_packets_before_change'] > 0
+                  and counts[direction]['mtu_packets_after_change'] > 0,
                   'Traffic ended before the payload ceiling changed')
+            if scenario == 'payload-ceiling-up':
+                check(counts[direction]['mtu_drops'] >= stats['configuration'][direction]['mtu_change_after_drops'] > 0,
+                      'Increasing ceiling did not follow an actual oversized-packet drop')
     if scenario == 'handshake-loss':
         check(counts['client_to_server']['rule_drops'] == 1, 'Initial loss count mismatch')
     if scenario.startswith('rebinding'):

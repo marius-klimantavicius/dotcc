@@ -35,6 +35,7 @@ class Rules:
     duplicate_delay_ms: int = 1
     mtu_bytes: int = 0
     mtu_change_after: int = 0
+    mtu_change_after_drops: int = 0
     mtu_bytes_after: int = 0
 
     @classmethod
@@ -49,6 +50,8 @@ class Rules:
                 raise ValueError('Fault delay exceeds ten seconds')
             if name in ('mtu_bytes', 'mtu_bytes_after') and number > 65535:
                 raise ValueError('Invalid UDP payload ceiling')
+        if result.mtu_change_after and result.mtu_change_after_drops:
+            raise ValueError('Select one payload ceiling change trigger')
         return result
 
 
@@ -114,7 +117,8 @@ class Proxy:
         counters = ('received_packets', 'received_bytes', 'forwarded_packets', 'forwarded_bytes',
                     'rule_drops', 'mtu_drops', 'queue_drops', 'shutdown_drops', 'truncated_drops', 'foreign_drops',
                     'send_errors', 'receive_errors', 'delayed_scheduled', 'reordered_scheduled', 'forwarded_out_of_order',
-                    'duplicates_scheduled', 'duplicates_forwarded', 'retired_mapping_drops')
+                    'duplicates_scheduled', 'duplicates_forwarded', 'retired_mapping_drops',
+                    'mtu_packets_before_change', 'mtu_packets_after_change')
         self.stats = dict(format='dotcc-udp-fault-proxy-v1', outcome='starting', configuration=self.config,
                           source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                           peak_queue_packets=0, peak_queue_bytes=0, backend_ports=[], rebindings=[],
@@ -212,7 +216,11 @@ class Proxy:
                 count['foreign_drops'] += 1
                 continue
             rule = self.rules[direction]
-            ceiling = rule.mtu_bytes_after if rule.mtu_change_after and ordinal > rule.mtu_change_after else rule.mtu_bytes
+            changed = ((rule.mtu_change_after and ordinal > rule.mtu_change_after)
+                       or (rule.mtu_change_after_drops and count['mtu_drops'] >= rule.mtu_change_after_drops))
+            ceiling = rule.mtu_bytes_after if changed else rule.mtu_bytes
+            if rule.mtu_change_after or rule.mtu_change_after_drops:
+                count['mtu_packets_after_change' if changed else 'mtu_packets_before_change'] += 1
             if ceiling and len(payload) > ceiling:
                 count['mtu_drops'] += 1
                 continue
