@@ -55,7 +55,7 @@ class Peer(QuicConnectionProtocol):
                 curves = [key.curve.name for key in context._ec_private_keys]
                 assert curves == ['secp256r1'], curves
                 assert context._x25519_private_key is None and context._x448_private_key is None
-                assert cipher == expected and event.alpn_protocol == ALPN
+                assert cipher == expected and event.alpn_protocol == self.args.alpn
                 assert not event.early_data_accepted and not event.session_resumed
                 assert self._quic._version == 1
                 self.receipt.update(handshake=True, cipher=cipher, group=23, alpn=event.alpn_protocol,
@@ -102,7 +102,7 @@ async def run(args, receipt):
     # exception too; await still propagates it on the normal connected path.
     done.add_done_callback(lambda future: None if future.cancelled() else future.exception())
     cipher = CipherSuite.AES_128_GCM_SHA256 if args.cipher == '128' else CipherSuite.AES_256_GCM_SHA384
-    configuration = QuicConfiguration(is_client=args.role == 'client', alpn_protocols=[ALPN],
+    configuration = QuicConfiguration(is_client=args.role == 'client', alpn_protocols=[args.alpn],
         cipher_suites=[cipher], supported_versions=[1], server_name=args.server_name,
         idle_timeout=10.0, verify_mode=ssl.CERT_REQUIRED if args.role == 'client' else None)
     if args.role == 'server':
@@ -137,6 +137,7 @@ if __name__ == '__main__':
     parser.add_argument('--family', choices=['ipv4', 'ipv6'], required=True)
     parser.add_argument('--port', type=int, default=0)
     parser.add_argument('--server-name', default='localhost')
+    parser.add_argument('--alpn', default=ALPN)
     parser.add_argument('--ready')
     parser.add_argument('--receipt', required=True)
     args = parser.parse_args()
