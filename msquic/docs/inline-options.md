@@ -45,6 +45,34 @@ compiler merges same-named static global storage; keeping distinct methods never
 fixed that limitation. In particular, the earlier loopback copies below all read
 one emitted global, despite having different method names.
 
+## Regeneration with compiler c0ab93d
+
+All 47 product units were rebuilt and postprocessed into
+`generated/TranslatedMsQuic` (raw output remains in
+`generated/raw/TranslatedMsQuic`).
+
+| Final generated source | Previous | Current |
+|---|---:|---:|
+| C# files | 10 | 9 |
+| UTF-8 bytes | 3,937,152 | 3,916,798 |
+| Methods with a `__unit_` suffix | 79 | 32 |
+| `QuicAddrSetToLoopback` definitions | 47 | 1 |
+
+`MsQuic.QuicAddrSetToLoopback` now has one normal managed name. The remaining
+32 unit methods are non-inline static functions. The 60 host/core and 29 public
+ABI observations match native execution under JIT and NativeAOT. Both raw and
+postprocessed libraries pass the rooted JIT/NativeAOT consumer, including direct
+calls to the loopback helper that check IPv4 `127.0.0.1` and IPv6 `::1` bytes.
+Postprocessing rewrites 7,921 `Cond.B` calls and removes 1,057 empty blocks.
+
+Compiler validation passes 2,195 unit tests and 455 functional tests (1,005
+optional oracle tests skipped). The NativeAOT compiler also emits and links
+constant-backed inline proofs. SQLite was regenerated with the postprocessor and
+passes its JIT/NativeAOT SQL, JSONB, FTS5, WAL, UTF-16, callback and integrity
+consumer checks. Logs and measurements are saved under
+`artifacts/inline-options/static-constants`. These checks do not relabel the
+historical transport campaign below as current evidence.
+
 ## Previous regeneration with compiler 255ccfa
 
 | Final generated source | Before | After |
