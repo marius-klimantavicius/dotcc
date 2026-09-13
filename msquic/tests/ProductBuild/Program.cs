@@ -13,6 +13,18 @@ internal static unsafe class Program
         const uint badCertificate = MsQuic.QUIC_STATUS_BAD_CERTIFICATE;
         if (!pending.Equals(4294967294U) || !addressInUse.Equals(98U) || !badCertificate.Equals(200000298U))
             return 1;
+        // Selected C inline functions are callable by their original names.
+        if (MsQuic.CxPlatEwma(100, 200, 4) != 125)
+            return 1;
+        MsQuic.QUIC_ADDR address = default;
+        MsQuic.QuicAddrSetFamily(&address, (ushort)MsQuic.QUIC_ADDRESS_FAMILY_INET);
+        MsQuic.QuicAddrSetPort(&address, 443);
+        if (MsQuic.QuicAddrGetPort(&address) != 443)
+            return 1;
+        MsQuic.QuicAddrSetFamily(&address, (ushort)MsQuic.QUIC_ADDRESS_FAMILY_INET6);
+        MsQuic.QuicAddrSetPort(&address, 8443);
+        if (MsQuic.QuicAddrGetPort(&address) != 8443)
+            return 1;
         // This checks generated assembly reachability and a real rejecting boundary.
         // Runtime host services and transport behavior have separate phase gates.
         if (MsQuic.MsQuicHostInstall(null) == 0 || MsQuic.MsQuicHostUninstall() != 0)

@@ -27,7 +27,7 @@ internal sealed record ObjectAggregateMetadata(bool IsIncomplete, bool IsUnion, 
     }
 
     private static string Atom(string value) => Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
-    private static string Describe(IrType type) => ((int)type.Quals).ToString(CultureInfo.InvariantCulture) + ":" + (type switch
+    internal static string Describe(IrType type) => ((int)type.Quals).ToString(CultureInfo.InvariantCulture) + ":" + (type switch
     {
         IrType.Prim p => $"prim({Atom(p.Name)},{p.Bytes},{p.Integer},{p.Signed})",
         IrType.VoidType => "void",

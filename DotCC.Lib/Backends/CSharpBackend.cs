@@ -27,7 +27,9 @@ internal sealed record CSharpBackendResult(
     IReadOnlyList<(string Name, string FnName)>? Tests = null,
     IReadOnlyDictionary<string, string>? TypeDeclarations = null,
     IReadOnlyList<CSharpFunctionSource>? FunctionSources = null,
-    IReadOnlyDictionary<string, ObjectAggregateMetadata>? AggregateMetadata = null);
+    IReadOnlyDictionary<string, ObjectAggregateMetadata>? AggregateMetadata = null,
+    IReadOnlyDictionary<string, InlineFunctionMetadata>? InlineMetadata = null,
+    IReadOnlySet<string>? UsedFunctionAddresses = null);
 
 /// <summary>
 /// Lowers the typed IR to low-level unsafe C# text. Deliberately DUMB: every
@@ -45,6 +47,8 @@ internal sealed partial class CSharpBackend
     private readonly ITarget _target = new CSharpTarget();
     private bool _publicTypes;
     private bool _relocatable;
+    private bool _inlineMetadata;
+    private string FunctionName(Symbol symbol) => InlineFunctionReferences.Emit(symbol, _inlineMetadata);
     private string _pointerClass = "DotCcProgramFunctionPointers";
     private readonly HashSet<string> _enumAliases = new(StringComparer.Ordinal);
     private DotCC.Layout.OffsetDocument _offsetDocument = null!;
@@ -57,10 +61,10 @@ internal sealed partial class CSharpBackend
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
     private string Cs(CType t) => _target.RenderType(t);
 
-    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers")
+    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false)
     {
         VaListLifetimeValidator.Validate(unit);
-        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass };
+        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass, _inlineMetadata = inlineMetadata };
         foreach (var type in unit.Types) cg._aggregateDefinitions.Add(type.Name, type);
         cg.RegisterPublicFunctionPointers(unit);
         cg._offsetDocument = unit.CreateOffsetDocument();
@@ -192,7 +196,9 @@ internal sealed partial class CSharpBackend
             ? unit.Tests.Select(t => (t.Name, t.Sym.TargetName)).ToList()
             : null;
 
-        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources, unit.Types.ToDictionary(t => t.Name, ObjectAggregateMetadata.From));
+        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources, unit.Types.ToDictionary(t => t.Name, ObjectAggregateMetadata.From),
+            inlineMetadata ? unit.Functions.Where(f => f.Sym.IsInline).ToDictionary(f => f.Sym.TargetName,
+                f => InlineFunctionMetadata.From(f, unit, cg._usedFunctionAddresses.Contains(f.Sym.TargetName))) : null, cg._usedFunctionAddresses);
     }
 
     // ---- type declarations -----------------------------------------------
@@ -644,7 +650,7 @@ internal sealed partial class CSharpBackend
         // faithful lowering of C's "please inline this". Short spelling: the shell's
         // usings include System.Runtime.CompilerServices.
         if (fn.Sym.IsInline) { sb.Append("[MethodImpl(MethodImplOptions.AggressiveInlining)]\n"); }
-        sb.Append($"static unsafe {Cs(retTy)} {fn.Sym.TargetName}({ps})\n");
+        sb.Append($"static unsafe {Cs(retTy)} {FunctionName(fn.Sym)}({ps})\n");
         // C lets a goto jump INTO a nested block; C# scopes labels to their
         // block. Hoist labeled tails until every goto is legal (no-op for the
         // overwhelming majority of functions — see GotoScopeNormalizer).
@@ -3085,7 +3091,7 @@ internal sealed partial class CSharpBackend
         // EmitHelpers.Id), differing only for a static renamed out of the way of a
         // same-named external (BuildFuncDef). Falls back to the escaped raw name
         // for libc builtins / fn-ptr-variable / unresolved callees.
-        var target = c.CalleeSym?.TargetName ?? DotCC.EmitHelpers.Id(c.Callee);
+        var target = c.CalleeSym != null ? FunctionName(c.CalleeSym) : DotCC.EmitHelpers.Id(c.Callee);
         return $"{target}({string.Join(", ", a)})";
     }
 

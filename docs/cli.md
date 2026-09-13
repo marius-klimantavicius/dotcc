@@ -19,6 +19,8 @@
 | `--namespace <name>` | Place generated functions, aggregate types and embedded runtime in a dotted C# namespace. Default: global namespace. Supported by C# executable/library output and object linking; rejected with preprocessing, WAT and object emission. Specify at link time for objects. |
 | `--nest-types` | Place translated types, globals/cache helpers and embedded runtime inside the library wrapper. Supports managed/shared libraries and object linking. Split output uses file-local aliases so differently named translations can share a consumer namespace. |
 | `--runtime=all\|c\|auto` | Select embedded runtime modules. `all` (default) retains everything; `c` excludes Zig-only modules and requires known C-only inputs; `auto` uses source/object language provenance (unknown old objects retain all). Set at link time for objects. |
+| `--deduplicate-inline` | Merge provably equivalent static inline definitions and redirect their bound calls. Set at link time for objects. C function addresses and distinct static dependencies prevent merging. |
+| `--export-inline <pattern>` | Expose selected inline definitions under their original C names. Repeatable case-sensitive exact names or `*` / `?` globs; quote globs. Missing matches, ambiguous definitions and name collisions are errors. Set at link time for objects. |
 | `--split=none\|function\|size` | C# project source layout: one file (default), one translated function per file, or groups of whole functions. Supported by csproj/build/managedlib/shared emission and object linking. File/stdout, preprocessing, WAT and object emission reject splitting. |
 | `--split-size <bytes>` | Positive UTF-8 byte target with `--split=size`, default 262144 (256 KiB). Append a complete function, then close the file on its first crossing of the target. |
 | `--emit=obj` | **Separate compilation.** Compile ONE `.c` to a `.cs` object fragment (functions + its type decls + globals, no shell/runtime). Link by passing `.cs` objects back: `dotcc a.cs b.cs -o app` merges (deduping shared types) and wraps in the shell. Drives CMake/make per file (`examples/cmake-demo/`). |
@@ -135,6 +137,43 @@ remaining C runtime has no dependency on those modules. Auto mode retains Zig
 support if any input/object needs it. C mode rejects unknown-provenance older
 objects; regenerate them or use all/auto. Preprocessor/WAT modes reject these C#
 output flags. The postprocessor also supports nested Cond/CBool helpers.
+
+## Inline function deduplication and managed exports
+
+```sh
+dotcc --emit=managedlib --deduplicate-inline \
+  --export-inline CxPlatEwma --export-inline 'QuicAddrGet*' \
+  --nest-types --class-name MsQuic --runtime=c objects/*.cs -o TranslatedMsQuic
+```
+
+Both options also work when translating C sources together. Object compilation
+always records inline metadata; pass these options at the final link, and
+regenerate objects produced by older compilers. The library API exposes the same
+controls through `CSharpOutputOptions(DeduplicateInline: true,
+ExportInline: new[] { "CxPlatEwma", "QuicAddrGet*" })`.
+
+`--deduplicate-inline` compares typed IR, including signatures, constants,
+aggregate layouts, local bindings, control flow and bound function dependencies.
+It merges equivalent definitions of the same original name, including recursive
+groups. Calls are redirected through explicit symbol relocations. Differing
+macro expansions, static storage, unmerged static callees, C address uses, and
+IR nodes without an equivalence proof keep their definitions separate. This is
+conservative code sharing, not an attempt to prove arbitrary programs equivalent.
+Externally linked definitions and non-inline functions are not deduplicated.
+
+`--export-inline` gives one selected definition its original name, for example
+`MsQuic.QuicAddrGetPort(...)`. With deduplication enabled, it is the shared body;
+without it, other per-unit bodies remain. Selection requires either a single
+definition or one proven equivalent group. Ambiguous selections fail with a
+suggestion to provide a C wrapper in the desired translation unit. Exporting a
+single address-used function preserves its existing canonical pointer cache.
+Managed exports do not add native entry points to a shared library.
+
+When either option is enabled, inline functions receive pointer-cache fields only
+for actual C address uses (including global initializers and uses from other
+objects). Managed callers can invoke the methods directly. Defaults remain
+unchanged when neither option is selected. Unselected helpers keep their existing
+names and visibility; the options do not define a new accessibility policy.
 
 ## Optional source post-processing
 

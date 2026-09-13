@@ -1,0 +1,7 @@
+# Original C inline function names. Quote-free, case-sensitive * / ? globs.
+CxPlatEwma
+QuicAddrGet*
+QuicAddrSetFamily
+QuicAddrSetPort
+QuicAddrCompare*
+# QuicAddrSetToLoopback reads TU-local static storage, so it stays unit-specific.

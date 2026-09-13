@@ -4,4 +4,5 @@ namespace DotCC;
 public enum RuntimeProfile { All, C, Auto }
 
 /// <summary>Final output layout; set at link time when using object fragments.</summary>
-public sealed record CSharpOutputOptions(bool NestTypes = false, RuntimeProfile Runtime = RuntimeProfile.All);
+public sealed record CSharpOutputOptions(bool NestTypes = false, RuntimeProfile Runtime = RuntimeProfile.All,
+    bool DeduplicateInline = false, System.Collections.Generic.IReadOnlyList<string>? ExportInline = null);

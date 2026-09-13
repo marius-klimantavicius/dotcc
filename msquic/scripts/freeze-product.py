@@ -194,8 +194,11 @@ product = read(ROOT / 'artifacts/product-build/results.json')
 abi = read(ROOT / 'artifacts/abi/results.json')
 for name, receipt in [('host ABI', host), ('product', product), ('public ABI', abi)]:
     check(receipt.get('passed') is True, name + ' gate did not pass')
-check(product.get('output_options') == dict(nest_types=True, runtime='c'),
-      'Product was not generated with the selected nested C layout')
+inline_exports = [line.strip() for line in (ROOT / 'config/inline-exports.txt').read_text().splitlines()
+                  if line.strip() and not line.lstrip().startswith('#')]
+check(product.get('output_options') == dict(nest_types=True, runtime='c', deduplicate_inline=True,
+                                          export_inline=inline_exports),
+      'Product was not generated with the selected nested C layout and inline options')
 check(product.get('generated_directories') == dict(raw='generated/raw/TranslatedMsQuic',
                                                  optimized='generated/TranslatedMsQuic'),
       'Product output locations differ from the selected layout')

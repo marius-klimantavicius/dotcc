@@ -3,9 +3,20 @@
 The final postprocessed project is
 `msquic/generated/TranslatedMsQuic/TranslatedMsQuic.csproj`.
 Raw output is retained at `msquic/generated/raw/TranslatedMsQuic`.
-Both contain 30 manifest-owned C# source files and use
+Both use
 `--nest-types --runtime=c --class-name MsQuic --namespace Managed.Transport`.
 No generated global using directives are needed by a consumer.
+
+The product link also uses `--deduplicate-inline`. Selected helpers from
+`config/inline-exports.txt` are exported under their original names using
+`--export-inline`: initially `CxPlatEwma` and address get/set/compare helpers. Edit that file to select
+additional inline APIs. Non-equivalent definitions produce a compiler diagnostic;
+functions with distinct state or C address identities retain separate bodies.
+`QuicAddrSetToLoopback` reads TU-local static storage (`in6addr_loopback`), so
+it remains unit-specific under the conservative equivalence rules.
+Managed calls such as `MsQuic.QuicAddrGetPort(&address)` need no function-pointer
+field. The chosen selectors and deduplication setting are recorded in the product
+receipt and frozen closure.
 
 Status constants are exposed directly on `MsQuic`; full macro expansion and
 typed constant detection now discover `QUIC_STATUS_*` automatically. Regeneration

@@ -175,7 +175,7 @@ public static partial class Compiler
         var convGate = (warnings & WarningFlags.Conversion) != 0 ? new ConversionGate() : null;
         // Objects retain public types so managed linking requires no textual
         // rewriting of type declarations or their inline-array wrapper types.
-        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object, relocatable: asObject || namespaceName != null || nested, pointerClass: HelperClass(libraryMode ? libraryClass : "DotCcProgram", "FunctionPointers"));
+        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object, relocatable: asObject || namespaceName != null || nested, pointerClass: HelperClass(libraryMode ? libraryClass : "DotCcProgram", "FunctionPointers"), inlineMetadata: asObject || UsesInlineOptions(outputOptions));
         if (convGate is { HasAny: true })
         {
             foreach (var d in convGate.Diagnostics) { Console.Error.WriteLine("dotcc: warning: " + d); }
@@ -226,15 +226,22 @@ public static partial class Compiler
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
             return SingleSource(SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
-                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata));
+                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata, inlineMetadata: cg.InlineMetadata, globalNames: irBuilder.Globals.Select(g => g.Sym.TargetName), usedFunctionAddresses: cg.UsedFunctionAddresses));
+        }
+        if (UsesInlineOptions(outputOptions))
+        {
+            var inline = ProcessInlineFunctions(cg.FunctionSources!, cg.InlineMetadata!, cg.TypeDeclarations!,
+                cg.Globals, outputOptions, irBuilder.Globals.Select(g => g.Sym.TargetName));
+            cg = cg with { Functions = inline.Functions, FunctionSources = inline.Parts,
+                TypeDeclarations = inline.Types, Globals = inline.Globals };
         }
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
-                irBuilder.Functions.Select(f => f.Sym.TargetName).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
+                cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
         var aliases = ResolveGeneratedAliases(cg.Aliases, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName) + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
             irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass, namespaceName, nested);
         return BuildSourceFiles(cg.Functions, cg.FunctionSources, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
-            (functions, fileAliases, partial) => BuildShell(cg.MainArity, RenderMacroFields(cg.TypeDeclarations, libraryMode ? libraryClass : "DotCcProgram", irBuilder.Functions.Select(f => f.Sym.TargetName).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, RenderTypeDeclarations(cg.TypeDeclarations!, libraryMode ? libraryClass : "DotCcProgram", emit == EmitMode.ManagedLib), fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName, nested, includeZig));
+            (functions, fileAliases, partial) => BuildShell(cg.MainArity, RenderMacroFields(cg.TypeDeclarations, libraryMode ? libraryClass : "DotCcProgram", cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, RenderTypeDeclarations(cg.TypeDeclarations!, libraryMode ? libraryClass : "DotCcProgram", emit == EmitMode.ManagedLib), fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName, nested, includeZig));
     }
 
     /// <summary>

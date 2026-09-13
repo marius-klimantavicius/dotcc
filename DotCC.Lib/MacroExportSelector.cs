@@ -11,13 +11,13 @@ internal sealed class MacroExportSelector
 {
     private readonly Regex[] _patterns;
 
-    internal MacroExportSelector(IReadOnlyList<string> patterns)
+    internal MacroExportSelector(IReadOnlyList<string> patterns, string option = "--emit-define")
     {
         _patterns = patterns.Select(pattern =>
         {
             if (string.IsNullOrEmpty(pattern) || pattern.Length > 1024
                 || pattern.Any(c => !char.IsAsciiLetterOrDigit(c) && c is not ('_' or '*' or '?')))
-                throw new CompileException("invalid --emit-define pattern: " + pattern);
+                throw new CompileException("invalid " + option + " pattern: " + pattern);
             return new Regex("\\A" + Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".") + "\\z",
                 RegexOptions.CultureInvariant | RegexOptions.NonBacktracking);
         }).ToArray();

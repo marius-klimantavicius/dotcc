@@ -102,12 +102,17 @@ try:
     if any(sha(post_source / name) != digest for name, digest in post_hashes.items()):
         raise RuntimeError('Postprocessor changed during snapshot')
     receipt['postprocessor_hashes'] = post_hashes
-    receipt['output_options'] = dict(nest_types=True, runtime='c')
+    inline_exports = [line.strip() for line in (ROOT / 'config/inline-exports.txt').read_text().splitlines()
+                      if line.strip() and not line.lstrip().startswith('#')]
+    if not inline_exports or len(set(inline_exports)) != len(inline_exports):
+        raise RuntimeError('Inline export selectors must be nonempty and unique')
+    inline_flags = ['--deduplicate-inline', *[part for pattern in inline_exports for part in ['--export-inline', pattern]]]
+    receipt['output_options'] = dict(nest_types=True, runtime='c', deduplicate_inline=True, export_inline=inline_exports)
     receipt['generated_directories'] = dict(raw='generated/raw/TranslatedMsQuic', optimized='generated/TranslatedMsQuic')
     raw = ROOT / 'generated/raw/TranslatedMsQuic'
     optimized = ROOT / 'generated/TranslatedMsQuic'
     run(['dotnet', compiler, '--emit=managedlib', '--nest-types', '--runtime=c', '--class-name', 'MsQuic',
-         '--namespace', 'Managed.Transport', '--split=size', *objects, '-o', raw], 'raw-link')
+         '--namespace', 'Managed.Transport', '--split=size', *inline_flags, *objects, '-o', raw], 'raw-link')
     optimized.mkdir(parents=True, exist_ok=True)
     # Cleanup is limited to previously generated manifest-owned files.
     if (optimized / 'Dotcc.SourceFiles.txt').exists():

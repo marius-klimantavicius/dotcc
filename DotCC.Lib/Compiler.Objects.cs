@@ -61,12 +61,19 @@ public static partial class Compiler
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, string globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 1 — link with `dotcc <objs> -o <out>`.\n");
         sb.Append("//!!dotcc-obj source-language:").Append(usesZig ? "zig" : "c").Append('\n');
         sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
+        sb.Append(InlineFunctionMetadata.Version).Append('\n');
+        if (inlineMetadata != null)
+            foreach (var (name, metadata) in inlineMetadata) sb.Append(metadata.Serialize(name)).Append('\n');
+        if (usedFunctionAddresses != null)
+            foreach (var name in usedFunctionAddresses) sb.Append("//!!dotcc-obj function-address:").Append(name).Append('\n');
+        if (globalNames != null)
+            foreach (var name in globalNames) sb.Append("//!!dotcc-obj global-def:").Append(name).Append('\n');
         sb.Append(NamespaceNeutral).Append('\n');
         sb.Append(FragMain).Append(mainArity).Append('\n');
         if (mainReturnsVoid) { sb.Append(FragMainVoid).Append("1").Append('\n'); }
@@ -129,6 +136,9 @@ public static partial class Compiler
         var globalSeen = new HashSet<string>(StringComparer.Ordinal);
         var functions = new StringBuilder();
         var functionSources = new List<CSharpFunctionSource>();
+        var inlineMetadata = new Dictionary<string, InlineFunctionMetadata>(StringComparer.Ordinal);
+        var usedFunctionAddresses = new HashSet<string>(StringComparer.Ordinal);
+        var globalNames = new HashSet<string>(StringComparer.Ordinal);
         bool missingBoundaries = false;
         var mainArity = -1;
         var mainReturnsVoid = false;
@@ -164,6 +174,21 @@ public static partial class Compiler
                     throw new CompileException("invalid aggregate metadata in object '" + path + "'");
                 if (!objectAggregates.TryAdd(fields[0], new(fields[1] == "1", fields[2] == "1", fields[3])))
                     throw new CompileException("duplicate aggregate metadata for '" + fields[0] + "' in object '" + path + "'");
+            }
+            if (UsesInlineOptions(outputOptions) && !text.Split('\n').Contains(InlineFunctionMetadata.Version, StringComparer.Ordinal))
+                throw new CompileException("Object lacks inline metadata; regenerate objects before using --deduplicate-inline or --export-inline");
+            foreach (var line in text.Split('\n'))
+            {
+                if (line.StartsWith(InlineFunctionMetadata.Prefix, StringComparison.Ordinal))
+                {
+                    var (name, metadata) = InlineFunctionMetadata.Parse(line);
+                    if (!inlineMetadata.TryAdd(name, metadata))
+                        throw new CompileException("duplicate inline definition '" + name + "' in linked objects");
+                }
+                if (line.StartsWith("//!!dotcc-obj function-address:", StringComparison.Ordinal))
+                    usedFunctionAddresses.Add(line["//!!dotcc-obj function-address:".Length..]);
+                if (line.StartsWith("//!!dotcc-obj global-def:", StringComparison.Ordinal))
+                    globalNames.Add(line["//!!dotcc-obj global-def:".Length..]);
             }
             // Walk the fragment line by line, routing into the current bucket.
             string section = "";            // "type:<name>" | "aliases" | "globals" | "functions"
@@ -281,10 +306,20 @@ public static partial class Compiler
             throw new CompileException("no `main` function defined in any linked object.");
         }
 
+        if (UsesInlineOptions(outputOptions) && missingBoundaries)
+            throw new CompileException("Object lacks function boundaries; regenerate objects before using inline options");
+        foreach (var name in usedFunctionAddresses)
+            if (inlineMetadata.TryGetValue(name, out var entry)) inlineMetadata[name] = entry with { AddressUsed = true };
+        var inline = ProcessInlineFunctions(functionSources, inlineMetadata, typeByName,
+            string.Join("\n", globalLines), outputOptions, globalNames);
+        typeByName = new Dictionary<string, string>(inline.Types, StringComparer.Ordinal);
+        typeOrder.RemoveAll(name => !typeByName.ContainsKey(name));
+        if (!missingBoundaries) { functions.Clear(); functions.Append(inline.Functions); functionSources = inline.Parts.ToList(); }
+        definedNames.UnionWith(functionSources.Select(f => f.Name));
         var structDecls = new StringBuilder();
         foreach (var name in typeOrder.Where(name => !name.StartsWith(MacroConstantPrefix, StringComparison.Ordinal))) { structDecls.Append(typeByName[name]); }
         var aliasText = aliasLines.Count > 0 ? string.Join("\n", aliasLines) + "\n" : "";
-        var globalText = globalLines.Count > 0 ? string.Join("\n", globalLines) + "\n" : "";
+        var globalText = inline.Globals + "\n";
         // Import mode at link: bind the candidates no fragment defines (a name defined
         // in any object — function or global — is resolved internally, not imported).
         // Without `-l`, survivors stay unresolved → the same CS0103 as a normal link.
