@@ -7,9 +7,10 @@ Both use
 `--nest-types --runtime=c --class-name MsQuic --namespace Managed.Transport`.
 No generated global using directives are needed by a consumer.
 
-The product link also uses `--deduplicate-inline`. Selected helpers from
+The product link also uses `--deduplicate-inline`. Unambiguous shared helpers
+receive their original names automatically. Selected helpers from
 `config/inline-exports.txt` are exported under their original names using
-`--export-inline`: initially `CxPlatEwma` and address get/set/compare helpers. Edit that file to select
+`--export-inline`: initially `CxPlatEwma` and address get/set/compare/wildcard helpers. Edit that file to select
 additional inline APIs. Non-equivalent definitions produce a compiler diagnostic;
 functions with distinct state or C address identities retain separate bodies.
 `QuicAddrSetToLoopback` reads TU-local static storage (`in6addr_loopback`), so
