@@ -1210,10 +1210,10 @@
   ],
   "api_profile_sha256": "10ea863ab58f5318cfc024963bd7b0174230306db3c98a465a9cae93a9db5be3",
   "evidence_sha256": {
-    "artifacts/host-contract/results.json": "da4cf785f1808bd1c9c70ca1bfafc4b3b257ec9d2c8bc9f3f24f9dd7eb2207e7",
-    "artifacts/abi/results.json": "6b12166fc4dc55adc52a61644919af0615958e1350842ffa63bea18786600726",
-    "artifacts/product-build/results.json": "92b0d845c8b794fe12bfb2937c4f8240176e474cef442ed9f0105bd74506e966",
-    "artifacts/host-contract/dotcc-overrides.json": "3f6082446627c99c670bed714e44a2e7f1006b94fc30fcdbc31b97a0931bd40a"
+    "artifacts/host-contract/results.json": "96808c6e9036542221cf7cba29b04ec0a2051ac44efe7ada21f1906139aeca36",
+    "artifacts/abi/results.json": "b559ea7e394c491a2b64fe38fd200a876d109f71249f4aebb9b85632bec023de",
+    "artifacts/product-build/results.json": "6501676aeb7e6284cba274126541102f0513a5e6f7da38337176aeef6f6a5447",
+    "artifacts/host-contract/dotcc-overrides.json": "1736ee8ce07c65b507e0baaa15f281c4268a3526b60ea5594a73e67800ba0da2"
   },
   "compiler_hashes": {
     "DotCC.Lib.dll": "8e70782411ec01f7119b1d0d4bf22baad47e8b4580b4b6e96e812b266dbcc898",
@@ -1459,7 +1459,7 @@
       "MsQuic.00005.cs": "19328ac2f10070a18f50317274c5c7012bc7fc8c6ea79c063706062fc52e18f0",
       "MsQuic.00006.cs": "ce5ce5956c32b9db37a1866d7ce1b3e5bf89de5a6fa942393346927cd2386109",
       "MsQuic.00007.cs": "2fc01e49b077c8eae5b3f4f8f0e1d8f79db111ab573cad8d590daa1e3133f34d",
-      "MsQuic.cs": "3e3e52737642363df3ebab5ec71cd920042a6e46c1fa5db52caa69beb40afc44",
+      "MsQuic.cs": "a569e4a5e562243102e8936ebc32aabaf9ad27e9ef20cbb7446ae37ba9d8a970",
       "Dotcc.SourceFiles.txt": "57f02d801a9567275547a5413125c977df188ddb4aa72add5ddcc9165aeaaad6",
       "TranslatedMsQuic.csproj": "a54187881927f36b03a514cbd9c248ca3a578852746cf232a6a676007b363e86"
     },
@@ -1472,7 +1472,7 @@
       "MsQuic.00005.cs": "78bcfa585a56fa8407a045d0e2055ac88973b0e460d97433f466231ba5908583",
       "MsQuic.00006.cs": "dd5dcd34b98b41dc68f6143558958e02f41c9001aabfe853655151b59454e9ea",
       "MsQuic.00007.cs": "c0c19c7e29e4efdca969fcbca4e399feae6b63af7e8821a595cee936d884b7ba",
-      "MsQuic.cs": "3e3e52737642363df3ebab5ec71cd920042a6e46c1fa5db52caa69beb40afc44",
+      "MsQuic.cs": "a569e4a5e562243102e8936ebc32aabaf9ad27e9ef20cbb7446ae37ba9d8a970",
       "Dotcc.SourceFiles.txt": "57f02d801a9567275547a5413125c977df188ddb4aa72add5ddcc9165aeaaad6",
       "TranslatedMsQuic.csproj": "a54187881927f36b03a514cbd9c248ca3a578852746cf232a6a676007b363e86"
     }
@@ -1503,7 +1503,7 @@
   "macro_exports": [
     "QUIC_STATUS_*"
   ],
-  "translation_profile_sha256": "3f6082446627c99c670bed714e44a2e7f1006b94fc30fcdbc31b97a0931bd40a",
+  "translation_profile_sha256": "1736ee8ce07c65b507e0baaa15f281c4268a3526b60ea5594a73e67800ba0da2",
   "gates": {
     "host_abi_native_records": 60,
     "public_abi_native_records": 29,
@@ -1513,7 +1513,7 @@
     "normal_optimized_sqlite_product_passed": false
   },
   "previous_checkpoint": {
-    "closure": "artifacts/closure-f629c12b67a46887/msquic/config/product-closure.json",
-    "sha256": "f629c12b67a46887d6b5144ad4b44604242cf41f425cca7e531ccca5401f3704"
+    "closure": "artifacts/closure-53b6d470ac2ebe59/msquic/config/product-closure.json",
+    "sha256": "53b6d470ac2ebe59241e3bce20be29d6036abb0e6da6b7c036d9783b5d922602"
   }
 }

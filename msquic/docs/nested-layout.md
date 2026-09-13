@@ -114,6 +114,14 @@ passed under JIT and NativeAOT, including SQL/WAL, JSONB, FTS5, callbacks,
 preupdate hooks, encodings, integrity, GC, and cleanup. These checks retain their
 targeted scope and do not relabel historical full campaigns.
 
+The expanded eighteen-name profile in commit `b150670` adds `_DATA` to the two
+listener payload names and names seven stream payloads. Regeneration with the
+same compiler passed all 89 ABI observations, raw/postprocessed JIT/NativeAOT
+product consumers, and all 32 public transport-consumer cases. Each configured
+type appears exactly once in both output variants and is exposed by ref; the
+old listener type declarations are gone. Evidence is retained under
+`artifacts/field-type-names/stream-events/`.
+
 ## Regeneration
 
 ```sh
