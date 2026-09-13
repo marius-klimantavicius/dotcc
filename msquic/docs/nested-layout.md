@@ -97,6 +97,20 @@ profile is applied during source/object emission; the host, ABI, cached-object,
 and product receipts record its hash. Build and closure checks reject objects
 from a different profile. Regenerate after changing the mapping.
 
+Compiler commit `b879ef8` passed 2,216 unit tests and 463 functional tests
+(1,005 optional cases skipped). All eleven configured types appear exactly once
+in both raw and postprocessed output and remain exposed through ref properties.
+The regenerated product passed all 89 ABI observations and the raw/postprocessed
+JIT/NativeAOT consumers, which explicitly name all eleven types. All 32 separate
+public-consumer cases also passed. Receipts and source hashes are retained under
+`artifacts/field-type-names/`.
+
+SQLite was regenerated and postprocessed with this compiler (24,231 `Cond.B`
+rewrites, 2,208 empty blocks removed, 41 files updated). Its managed consumer
+passed under JIT and NativeAOT, including SQL/WAL, JSONB, FTS5, callbacks,
+preupdate hooks, encodings, integrity, GC, and cleanup. These checks retain their
+targeted scope and do not relabel historical full campaigns.
+
 ## Regeneration
 
 ```sh
