@@ -36,8 +36,9 @@ using ManagedQuic::System.Net.Quic;
 // QuicConnection, QuicListener, QuicStream, and their options resolve here.
 ```
 
-The executable in `msquic/tests/SystemNetQuic` is a complete listener/client and
-bidirectional stream example. This integration targets direct API use; it does
+For a listener and client exchanging messages in one app, see
+[`samples/SystemNetQuicRoundTrip`](../../samples/SystemNetQuicRoundTrip/README.md).
+The integration checks live in `msquic/tests/SystemNetQuic`. This integration targets direct API use; it does
 not replace the framework's HTTP/3 transport inside `HttpClient`.
 
 Certificate handling uses public .NET `X509Chain` and `MatchesHostname` APIs.
