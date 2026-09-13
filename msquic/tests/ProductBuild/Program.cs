@@ -40,10 +40,19 @@ internal static unsafe class Program
         if (connectionEvent.CONNECTED.SessionResumed != 1) return 1;
         connected = default;
         MsQuic.QUIC_LISTENER_EVENT listenerEvent = default;
-        ref MsQuic.QUIC_LISTENER_EVENT_NEW_CONNECTION newConnection = ref listenerEvent.NEW_CONNECTION;
-        ref MsQuic.QUIC_LISTENER_EVENT_STOP_COMPLETE stopComplete = ref listenerEvent.STOP_COMPLETE;
+        ref MsQuic.QUIC_LISTENER_EVENT_NEW_CONNECTION_DATA newConnection = ref listenerEvent.NEW_CONNECTION;
+        ref MsQuic.QUIC_LISTENER_EVENT_STOP_COMPLETE_DATA stopComplete = ref listenerEvent.STOP_COMPLETE;
         newConnection = default;
         stopComplete = default;
+        MsQuic.QUIC_STREAM_EVENT streamEvent = default;
+        ref MsQuic.QUIC_STREAM_EVENT_PEER_RECEIVE_ABORTED_DATA stream_peer_receive_aborted = ref streamEvent.PEER_RECEIVE_ABORTED;
+        ref MsQuic.QUIC_STREAM_EVENT_PEER_SEND_ABORTED_DATA stream_peer_send_aborted = ref streamEvent.PEER_SEND_ABORTED;
+        ref MsQuic.QUIC_STREAM_EVENT_RECEIVE_DATA stream_receive = ref streamEvent.RECEIVE;
+        ref MsQuic.QUIC_STREAM_EVENT_SEND_COMPLETE_DATA stream_send_complete = ref streamEvent.SEND_COMPLETE;
+        ref MsQuic.QUIC_STREAM_EVENT_SEND_SHUTDOWN_COMPLETE_DATA stream_send_shutdown_complete = ref streamEvent.SEND_SHUTDOWN_COMPLETE;
+        ref MsQuic.QUIC_STREAM_EVENT_SHUTDOWN_COMPLETE_DATA stream_shutdown_complete = ref streamEvent.SHUTDOWN_COMPLETE;
+        ref MsQuic.QUIC_STREAM_EVENT_START_COMPLETE_DATA stream_start_complete = ref streamEvent.START_COMPLETE;
+
 
         // These wrappers use typedef/primitive casts and function-like macros
         // upstream. Their public exports must be usable as C# constants.

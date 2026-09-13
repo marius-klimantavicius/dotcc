@@ -117,7 +117,8 @@ reject translation overrides; rebuild the objects after changing the profile.
 Named output remains `partial`, and promoted aggregate properties retain their
 `[UnscopedRef]` ref returns. The MsQuic profile at
 [`msquic/config/dotcc-overrides.json`](../msquic/config/dotcc-overrides.json)
-names nine connection-event payload types and two listener-event payload types.
+names nine connection-event, two listener-event, and seven stream-event payload types,
+all with a `_DATA` suffix.
 
 ## Runtime endianness
 

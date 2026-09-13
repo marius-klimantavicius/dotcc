@@ -39,11 +39,39 @@
     },
     {
       "field": "QUIC_LISTENER_EVENT.NEW_CONNECTION",
-      "name": "QUIC_LISTENER_EVENT_NEW_CONNECTION"
+      "name": "QUIC_LISTENER_EVENT_NEW_CONNECTION_DATA"
     },
     {
       "field": "QUIC_LISTENER_EVENT.STOP_COMPLETE",
-      "name": "QUIC_LISTENER_EVENT_STOP_COMPLETE"
+      "name": "QUIC_LISTENER_EVENT_STOP_COMPLETE_DATA"
+    },
+    {
+      "field": "QUIC_STREAM_EVENT.PEER_RECEIVE_ABORTED",
+      "name": "QUIC_STREAM_EVENT_PEER_RECEIVE_ABORTED_DATA"
+    },
+    {
+      "field": "QUIC_STREAM_EVENT.PEER_SEND_ABORTED",
+      "name": "QUIC_STREAM_EVENT_PEER_SEND_ABORTED_DATA"
+    },
+    {
+      "field": "QUIC_STREAM_EVENT.RECEIVE",
+      "name": "QUIC_STREAM_EVENT_RECEIVE_DATA"
+    },
+    {
+      "field": "QUIC_STREAM_EVENT.SEND_COMPLETE",
+      "name": "QUIC_STREAM_EVENT_SEND_COMPLETE_DATA"
+    },
+    {
+      "field": "QUIC_STREAM_EVENT.SEND_SHUTDOWN_COMPLETE",
+      "name": "QUIC_STREAM_EVENT_SEND_SHUTDOWN_COMPLETE_DATA"
+    },
+    {
+      "field": "QUIC_STREAM_EVENT.SHUTDOWN_COMPLETE",
+      "name": "QUIC_STREAM_EVENT_SHUTDOWN_COMPLETE_DATA"
+    },
+    {
+      "field": "QUIC_STREAM_EVENT.START_COMPLETE",
+      "name": "QUIC_STREAM_EVENT_START_COMPLETE_DATA"
     }
   ]
 }

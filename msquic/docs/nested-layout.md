@@ -90,15 +90,18 @@ data.SessionResumed = 1;
 
 The other configured fields use the same `QUIC_CONNECTION_EVENT_<FIELD>_DATA`
 pattern. The profile also names `QUIC_LISTENER_EVENT.NEW_CONNECTION` as
-`QUIC_LISTENER_EVENT_NEW_CONNECTION` and `QUIC_LISTENER_EVENT.STOP_COMPLETE` as
-`QUIC_LISTENER_EVENT_STOP_COMPLETE` (without a `_DATA` suffix).
+`QUIC_LISTENER_EVENT_NEW_CONNECTION_DATA` and `QUIC_LISTENER_EVENT.STOP_COMPLETE` as
+`QUIC_LISTENER_EVENT_STOP_COMPLETE_DATA`.
+Seven `QUIC_STREAM_EVENT` payloads (`PEER_RECEIVE_ABORTED`, `PEER_SEND_ABORTED`,
+`RECEIVE`, `SEND_COMPLETE`, `SEND_SHUTDOWN_COMPLETE`, `SHUTDOWN_COMPLETE`, and
+`START_COMPLETE`) use the `QUIC_STREAM_EVENT_<FIELD>_DATA` pattern.
 These are partial structs with the original ABI layout. The compiler
 profile is applied during source/object emission; the host, ABI, cached-object,
 and product receipts record its hash. Build and closure checks reject objects
 from a different profile. Regenerate after changing the mapping.
 
-Compiler commit `b879ef8` passed 2,216 unit tests and 463 functional tests
-(1,005 optional cases skipped). All eleven configured types appear exactly once
+The initial eleven-name profile with compiler commit `b879ef8` passed 2,216 unit tests and 463 functional tests
+(1,005 optional cases skipped). All eleven then-configured types appeared exactly once
 in both raw and postprocessed output and remain exposed through ref properties.
 The regenerated product passed all 89 ABI observations and the raw/postprocessed
 JIT/NativeAOT consumers, which explicitly name all eleven types. All 32 separate
