@@ -13,7 +13,7 @@ namespace DotCC;
 internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic, string Shape,
     bool AddressUsed, string[] Dependencies)
 {
-    internal const string Version = "//!!dotcc-obj inline-metadata:2";
+    internal const string Version = "//!!dotcc-obj inline-metadata:3";
     internal const string Prefix = "//!!dotcc-obj inline:";
     internal string Serialize(string name) => Prefix + string.Join(" ", name, OriginalName,
         IsStatic ? "1" : "0", Shape, AddressUsed ? "1" : "0", string.Join(",", Dependencies));
@@ -55,6 +55,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
         internal bool Supported = true;
         private readonly Dictionary<Symbol, int> _locals = new();
         private readonly HashSet<string> _types = new(StringComparer.Ordinal);
+        private bool _observesIdentity;
 
         internal void Atom(object? value)
         {
@@ -106,14 +107,63 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
             else if (symbol.Kind == SymKind.EnumConst) { Atom("enum"); Atom(symbol.Name); Atom(symbol.ConstValue); }
             else if (symbol.IsGlobal && symbol.Storage != Storage.Static)
             { Atom("global"); Atom(symbol.TargetName); Atom(symbol.IsThreadLocal); }
-            else Supported = false; // TU storage, static locals, or unbound references.
+            else if (symbol.IsGlobal && symbol.Storage == Storage.Static && symbol.Type.IsConst
+                && !symbol.IsThreadLocal && !symbol.AddressTaken && !_observesIdentity
+                && IsConstantValueType(symbol.Type, new HashSet<string>(StringComparer.Ordinal))
+                && unit.Globals.FirstOrDefault(g => ReferenceEquals(g.Sym, symbol)) is { } global
+                && IsConstantInitializer(global.Init))
+            {
+                // These bodies read equal immutable values. Include the bound
+                // declaration and initializer, not just the source spelling: two
+                // object files may initialize the same name differently.
+                Atom("static-constant-value"); Atom(symbol.TargetName);
+                Expression(global.Init);
+            }
+            else Supported = false; // Mutable/identity-sensitive TU storage or unbound references.
         }
+        private bool IsConstantValueType(CType type, HashSet<string> visiting)
+        {
+            if (type.IsVolatile || type.IsAtomic) return false;
+            switch (type)
+            {
+                case CType.Prim or CType.Enum or CType.ComplexType or CType.Float128Type: return true;
+                case CType.Array a: return a.Count != null && IsConstantValueType(a.Element, visiting);
+                case CType.Named n:
+                    if (!visiting.Add(n.Name)) return false;
+                    var definition = unit.Types.FirstOrDefault(t => t.Name == n.Name && !t.IsIncomplete);
+                    var result = definition != null && definition.Fields.All(f => IsConstantValueType(f.Type, visiting));
+                    visiting.Remove(n.Name);
+                    return result;
+                default: return false; // Pointers can depend on distinct objects, even in const aggregates.
+            }
+        }
+        private static bool IsConstantInitializer(CExpr? e) => e switch
+        {
+            null or LitInt or LitFloat or LitBool or DefaultLit or EnumConstRef or SizeOfExpr or OffsetOf => true,
+            Unary u when u.Op is UnOp.Plus or UnOp.Neg or UnOp.BitNot or UnOp.LogNot => IsConstantInitializer(u.Operand),
+            Binary b => IsConstantInitializer(b.Left) && IsConstantInitializer(b.Right),
+            Cast c => IsConstantInitializer(c.Operand),
+            Paren p => IsConstantInitializer(p.Inner),
+            CondExpr c => IsConstantInitializer(c.Cond) && IsConstantInitializer(c.Then) && IsConstantInitializer(c.Else),
+            StructInit s => s.Members.All(m => IsConstantInitializer(m.Value)),
+            InlineArrayInit a => a.Elems.All(IsConstantInitializer),
+            _ => false,
+        };
         private void Expressions(IReadOnlyList<CExpr>? expressions)
         {
             Atom(expressions?.Count ?? -1);
             if (expressions != null) foreach (var e in expressions) Expression(e);
         }
         private void Expression(CExpr? expression)
+        {
+            // Pointer/array results can expose storage identity (including &g.member
+            // and implicit array decay, which Symbol.AddressTaken does not record).
+            var previous = _observesIdentity;
+            _observesIdentity |= expression?.Type.Unqualified is CType.Pointer or CType.Array or CType.Func;
+            try { ExpressionCore(expression); }
+            finally { _observesIdentity = previous; }
+        }
+        private void ExpressionCore(CExpr? expression)
         {
             if (expression == null) { Atom("null-expression"); return; }
             Type(expression.Type); Atom(expression.IsLValue);

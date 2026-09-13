@@ -31,7 +31,7 @@ public sealed class InlineFunctionTests
         finally { Directory.Delete(dir, true); }
     }
     private static int Methods(string source, string name) => Regex.Matches(source,
-        @"static unsafe \w+ " + name + @"(?:__\w+)?\(").Count;
+        @"static unsafe \w+\** " + name + @"(?:__\w+)?\(").Count;
     private const string First = "#include \"shared.h\"\nint first(void) { return helper(20); }";
     private const string Second = "#include \"shared.h\"\nint second(void) { return helper(30); }";
 
@@ -186,6 +186,59 @@ public sealed class InlineFunctionTests
             new(DeduplicateInline: true))).Message.ShouldContain("conflicting aggregate");
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Identical_static_constants_allow_value_readers_and_callers_to_merge(bool link)
+    {
+        const string header = "struct Value { int parts[2]; }; static const struct Value value = {{3, 7}}; "
+            + "static const int offset = 2; "
+            + "static inline int leaf(int x) { struct Value copy = value; return copy.parts[0] + copy.parts[1] + offset + x; } "
+            + "static inline int helper(int x) { return leaf(x); }";
+        Methods(Translate(link, header, First, Second, null), "helper").ShouldBe(2);
+        var source = Translate(link, header, First, Second, new(DeduplicateInline: true, ExportInline: new[] { "helper" }));
+        Methods(source, "helper").ShouldBe(1);
+        Methods(source, "leaf").ShouldBe(1);
+        source.ShouldContain("int helper(int x)");
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Static_storage_with_mutability_or_observable_identity_does_not_enable_merging(bool link)
+    {
+        foreach (var header in new[] {
+            "static int value = 3; static inline int helper(int x) { return value + x; }",
+            "static const volatile int value = 3; static inline int helper(int x) { return value + x; }",
+            "static const int value = 3; static inline const int *helper(int x) { return &value; }",
+            "struct Value { int n; }; static const struct Value value = {3}; static inline const int *helper(int x) { return &value.n; }",
+            "struct Value { int n[2]; }; static const struct Value value = {{3, 7}}; static inline const int *helper(int x) { return value.n; }",
+            "static int state; static int *const value = &state; static inline int helper(int x) { return *value + x; }",
+        })
+        {
+            var source = Translate(link, header, First, Second, new(DeduplicateInline: true));
+            Methods(source, "helper").ShouldBe(2, header);
+        }
+    }
+
+    [Fact]
+    public void Different_static_constant_initializers_have_different_object_proofs()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "dotcc-constant-proof-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dir);
+        try
+        {
+            string Shape(int value)
+            {
+                var path = Path.Combine(dir, "source.c");
+                File.WriteAllText(path, $"static const int value = {value}; static inline int helper(int x) {{ return value + x; }}");
+                return Compiler.EmitObject(path).Split('\n').Single(l => l.StartsWith("//!!dotcc-obj inline:"));
+            }
+            Shape(3).ShouldNotBe(Shape(7));
+        }
+        finally { Directory.Delete(dir, true); }
+    }
+
     [Fact]
     public void Older_objects_require_regeneration_only_when_inline_options_are_used()
     {
@@ -197,7 +250,7 @@ public sealed class InlineFunctionTests
             var obj = Path.Combine(dir, "source.o");
             File.WriteAllText(source, "static inline int helper(int x) { return x; }");
             var fragment = Compiler.EmitObject(source);
-            File.WriteAllText(obj, fragment.Replace("//!!dotcc-obj inline-metadata:2\n", ""));
+            File.WriteAllText(obj, fragment.Replace("//!!dotcc-obj inline-metadata:3\n", ""));
             Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib).ShouldContain("int helper__unit_");
             Should.Throw<CompileException>(() => Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib,
                 outputOptions: new(DeduplicateInline: true))).Message.ShouldContain("regenerate objects");

@@ -28,6 +28,12 @@ public sealed partial class ManagedLibraryTests
                 struct Hidden;
                 typedef struct Holder { int value; struct Hidden* context; } Holder;
                 static inline int auto_value(Holder* p) { return p->value; }
+                static const Pair shared_pair = { 3, 7 };
+                static const int shared_offset = 2;
+                static inline int api_constant(int x) {
+                    Pair copy = shared_pair;
+                    return copy.x + copy.y + shared_offset + x;
+                }
                 static inline int leaf(int x) { return x + 1; }
                 static inline int api_sum(Pair* p) {
                     int result = 0;
@@ -95,7 +101,7 @@ public sealed partial class ManagedLibraryTests
                         var solo = Api.solo_pointer();
                         var external = Api.external_pointer();
                         return Api.auto_value(&holder) == 23 && Api.api_sum(&pair) == 15 && Api.first(&pair) == 26 && Api.second(&pair) == 32
-                            && Api.api_recursive(5) == 42 && a != b && a(3) == 10 && b(4) == 11
+                            && Api.api_constant(5) == 17 && Api.api_recursive(5) == 42 && a != b && a(3) == 10 && b(4) == 11
                             && a == Api.first_pointer() && b == Api.second_pointer()
                             && Api.first_state() == 1 && Api.first_state() == 2 && Api.second_state() == 1
                             && external(7) == 12 && Api.external_inline(7) == 12

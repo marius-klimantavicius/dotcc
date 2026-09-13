@@ -158,9 +158,16 @@ dependencies. Complete aggregate layouts are checked separately by the linker;
 an unrelated forward declaration becoming complete does not change a function.
 It merges equivalent definitions of the same original name, including recursive
 groups. Calls are redirected through explicit symbol relocations. Differing
-macro expansions, static storage, unmerged static callees, C address uses, and
+macro expansions, mutable static storage, unmerged static callees, C address uses, and
 IR nodes without an equivalence proof keep their definitions separate. This is
 conservative code sharing, not an attempt to prove arbitrary programs equivalent.
+Value reads from `static const` scalars and pointer-free aggregates can also
+match: their typed initializers participate in the proof. This allows readers
+of an already shared constant to share a body. Volatile/atomic data, thread-local
+objects, pointer-bearing constants, address uses and array decay remain excluded.
+This does not repair the existing per-translation-unit mutable-global storage
+limitation; retaining separate methods does not establish separate global storage.
+
 Externally linked definitions and non-inline functions are not deduplicated.
 
 `--export-inline` gives one selected definition its original name, for example

@@ -32,7 +32,20 @@ The final postprocessed output stays in `generated/TranslatedMsQuic`; raw output
 stays in `generated/raw/TranslatedMsQuic`. Regenerate both with
 `scripts/translate.sh`. Older objects must be rebuilt to add inline metadata.
 
-## Regeneration with compiler 255ccfa
+## Constant-backed helper sharing
+
+The inline proof now includes typed initializers for value reads from `static
+const` scalars and pointer-free aggregates. `QuicAddrSetToLoopback` reads the
+same `in6addr_loopback` value in every unit, so it can share a body and receive
+its original managed name. Mutable, volatile, thread-local and identity-sensitive
+static dependencies remain excluded. Rebuild objects for inline metadata version 3.
+
+This changes function sharing, not global storage isolation. The existing
+compiler merges same-named static global storage; keeping distinct methods never
+fixed that limitation. In particular, the earlier loopback copies below all read
+one emitted global, despite having different method names.
+
+## Previous regeneration with compiler 255ccfa
 
 | Final generated source | Before | After |
 |---|---:|---:|
@@ -44,10 +57,9 @@ stays in `generated/raw/TranslatedMsQuic`. Regenerate both with
 The reduction in suffixes includes both removed duplicate bodies and functions
 receiving their original names automatically or through export selection. `QuicAddrIsWildCard`, `QuicConnIsServer` and
 `QuicPathGetDatagramPayloadSize` each have exactly one cleanly named definition.
-The remaining 79 unit methods comprise 32 non-inline static functions and 47
-copies of `QuicAddrSetToLoopback`. That helper reads the header's
-TU-local `static const in6addr_loopback`. Its addresses/storage are not assumed
-interchangeable. Identical-looking C# text alone is not an equivalence proof.
+That snapshot retained 79 unit methods: 32 non-inline static functions and 47
+copies of `QuicAddrSetToLoopback`. The old inline proof rejected its reference
+to `static const in6addr_loopback`; this was independent of the global merger.
 
 All 47 product units were regenerated. The 60 host/core and 29 public ABI
 observations match native execution under JIT and NativeAOT. Raw and optimized
