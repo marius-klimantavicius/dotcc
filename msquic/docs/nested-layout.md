@@ -13,8 +13,8 @@ receive their original names automatically. Selected helpers from
 `--export-inline`: initially `CxPlatEwma` and address get/set/compare/wildcard helpers. Edit that file to select
 additional inline APIs. Non-equivalent definitions produce a compiler diagnostic;
 functions with distinct state or C address identities retain separate bodies.
-`QuicAddrSetToLoopback` reads TU-local static storage (`in6addr_loopback`), so
-it remains unit-specific under the conservative equivalence rules.
+`QuicAddrSetToLoopback` now shares one exported body: the compiler recognizes
+equivalent reads of the immutable `in6addr_loopback` initializer across units.
 Managed calls such as `MsQuic.QuicAddrGetPort(&address)` need no function-pointer
 field. The chosen selectors and deduplication setting are recorded in the product
 receipt and frozen closure.
@@ -37,6 +37,44 @@ postprocessed directory.
 
 See [inline regeneration results](inline-options.md) for the measured source
 reduction and validation of the selected managed methods.
+
+## Mutable promoted members and partial structs
+
+Promoted aggregate members now return a managed reference annotated with
+`UnscopedRef`, so this consumer code updates the original settings storage:
+
+```csharp
+using static Managed.Transport.MsQuic;
+
+QUIC_SETTINGS settings = default;
+settings.IsSet.PeerUnidiStreamCount = 1;
+settings.PeerUnidiStreamCount = 10;
+```
+
+Scalar and bitfield projections keep their value properties. Const, volatile,
+and atomic aggregates retain their existing projection behavior. The reference
+adds no storage and preserves the native layout; references into managed owners
+remain valid across compacting garbage collection.
+
+All translated structs, unions, and generated aggregate helpers are `partial`.
+The enclosing `MsQuic` class is also partial. When copying generated source into
+a project, another declaration in the same namespace and containing class can
+override `Equals`, `GetHashCode`, or `ToString`. Both declarations must compile
+into the same assembly; see [the compiler guide](../../docs/cli.md#extending-copied-translated-structs).
+
+Compiler commit `8372ce2` passed 2,195 unit tests and 459 functional tests
+(1,005 optional cases skipped), including separate-assembly consumers, custom
+partial overrides, nested member mutation, copying, and compacting GC. A fresh
+MsQuic regeneration passed all 89 native/JIT/NativeAOT ABI observations and the
+raw/postprocessed JIT/NativeAOT product checks, including the settings assignment
+above. All 32 public-consumer cases passed; the targeted optimized JIT platform
+check also passed. Evidence is retained under `artifacts/promoted-refs/`.
+
+SQLite was regenerated and postprocessed with the same compiler: 24,231 `Cond.B`
+calls rewritten, 2,208 empty blocks removed, and 41 files updated. Its managed
+consumer passed under JIT and NativeAOT, covering SQL and WAL workloads, JSONB,
+FTS5, callbacks, preupdate hooks, encodings, integrity, GC, and cleanup. These
+targeted checks do not relabel the historical full transport or SQLite campaigns.
 
 ## Regeneration
 
