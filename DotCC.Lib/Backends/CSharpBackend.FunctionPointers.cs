@@ -32,8 +32,11 @@ internal sealed partial class CSharpBackend
         // Managed consumers need a stable API even when the C source itself never
         // takes an exported method's address. Variadic pointers include the explicit
         // span tail used by the emitted method's managed calling convention.
+        // Macro-generated helpers are callable methods, but do not need an API
+        // address unless an actual C designator use requests one via FunctionPointer.
         if (_publicTypes)
             foreach (var function in unit.Functions)
-                FunctionPointer(function.Sym);
+                if (!function.Sym.IsMacroGenerated)
+                    FunctionPointer(function.Sym);
     }
 }

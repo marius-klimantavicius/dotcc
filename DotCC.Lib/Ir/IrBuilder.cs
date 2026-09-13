@@ -812,6 +812,7 @@ internal sealed partial class IrBuilder
                 {
                     // Identical re-definition: one emitted copy serves all TUs —
                     // re-bind this TU's references to it and build nothing.
+                    site.Sym.IsMacroGenerated &= sig.MacroGenerated;
                     _symbols.DeclareAlias(site.Sym);
                     return;
                 }
@@ -869,6 +870,7 @@ internal sealed partial class IrBuilder
             _fnDefSites[sig.Name] = new List<FnDefSite> { new() { Sig = fnSig, Block = block, Sym = funcSym } };
         }
 
+        funcSym.IsMacroGenerated = sig.MacroGenerated;
         ApplyFnMarkers(funcSym);
         _symbols.BeginFunction();
         _setjmpCalls.Clear(); // per-function stray-setjmp tracking (see the field)
@@ -956,28 +958,28 @@ internal sealed partial class IrBuilder
 
     // ---- function signatures --------------------------------------------
 
-    private readonly record struct FnSig(CType Return, string Name, List<ParamInfo> Params, bool Variadic, bool IsStatic);
+    private readonly record struct FnSig(CType Return, string Name, List<ParamInfo> Params, bool Variadic, bool IsStatic, bool MacroGenerated = false);
 
     private FnSig ExtractFnSig(Item it) => it.Content switch
     {
-        C.FnSig n => new(ResolveType(n.Arg0), Tok(n.Arg1), BuildParams(n.Arg3, out var v0), v0, false),
-        C.FnSigNoArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false),
-        C.FnSigVoidArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false),
+        C.FnSig n => new(ResolveType(n.Arg0), Tok(n.Arg1), BuildParams(n.Arg3, out var v0), v0, false, FunctionMacroOrigin.Contains(n.Arg1)),
+        C.FnSigNoArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false, FunctionMacroOrigin.Contains(n.Arg1)),
+        C.FnSigVoidArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false, FunctionMacroOrigin.Contains(n.Arg1)),
         C.FnSigStaticDeclarator n => ExtractFnSig(n.Arg1) with { IsStatic = true },
         // Parenthesized declarator name `T (name)(args)` — identical to
         // `T name(args)`; the parens are pure grouping around the name (public
         // headers wrap API names so a same-named function-like macro can't expand
         // at the declaration). Name is Arg2, the param list Arg5.
-        C.FnSigParen n => new(ResolveType(n.Arg0), Tok(n.Arg2), BuildParams(n.Arg5, out var vp), vp, false),
-        C.FnSigParenNoArgs n => new(ResolveType(n.Arg0), Tok(n.Arg2), new(), false, false),
-        C.FnSigParenVoidArgs n => new(ResolveType(n.Arg0), Tok(n.Arg2), new(), false, false),
+        C.FnSigParen n => new(ResolveType(n.Arg0), Tok(n.Arg2), BuildParams(n.Arg5, out var vp), vp, false, FunctionMacroOrigin.Contains(n.Arg2)),
+        C.FnSigParenNoArgs n => new(ResolveType(n.Arg0), Tok(n.Arg2), new(), false, false, FunctionMacroOrigin.Contains(n.Arg2)),
+        C.FnSigParenVoidArgs n => new(ResolveType(n.Arg0), Tok(n.Arg2), new(), false, false, FunctionMacroOrigin.Contains(n.Arg2)),
         // Function returning a function pointer: `Ret (*name(params))(fnPtrParams)`
         // (e.g. <signal.h>'s `void (*signal(int, void(*)(int)))(int)`). The result
         // type is the function-pointer `Ret (*)(fnPtrParams)`; name + params are the
         // outer declarator's.
-        C.FnSigRetFnPtr n => new(FnPtrType(n.Arg0, n.Arg9), Tok(n.Arg3), BuildParams(n.Arg5, out var vr), vr, false),
-        C.FnSigRetFnPtrNoArgs n => new(FnPtrType(n.Arg0, null), Tok(n.Arg3), BuildParams(n.Arg5, out var vrn), vrn, false),
-        C.FnSigRetFnPtrVoid n => new(FnPtrType(n.Arg0, null), Tok(n.Arg3), BuildParams(n.Arg5, out var vrv), vrv, false),
+        C.FnSigRetFnPtr n => new(FnPtrType(n.Arg0, n.Arg9), Tok(n.Arg3), BuildParams(n.Arg5, out var vr), vr, false, FunctionMacroOrigin.Contains(n.Arg3)),
+        C.FnSigRetFnPtrNoArgs n => new(FnPtrType(n.Arg0, null), Tok(n.Arg3), BuildParams(n.Arg5, out var vrn), vrn, false, FunctionMacroOrigin.Contains(n.Arg3)),
+        C.FnSigRetFnPtrVoid n => new(FnPtrType(n.Arg0, null), Tok(n.Arg3), BuildParams(n.Arg5, out var vrv), vrv, false, FunctionMacroOrigin.Contains(n.Arg3)),
         _ => throw new IrUnsupportedException(TypeName(it.Content)),
     };
 
@@ -3379,6 +3381,8 @@ internal sealed partial class IrBuilder
         if (name == RuntimeIntrinsicNames.IsLittleEndian)
             throw new IrUnsupportedException("runtime intrinsic must be invoked with zero arguments; its address cannot be taken");
         var sym = _symbols.Resolve(name);
+        if (_macroEvaluation && sym == null)
+            throw new IrUnsupportedException("unresolved name in macro constant: " + name);
         if (sym is { Kind: SymKind.EnumConst })
         {
             // An enumerator of a real (named) enum renders as EnumName.Member; one of
@@ -3428,6 +3432,8 @@ internal sealed partial class IrBuilder
         // A simple named callee — a function, a fn-ptr variable, or a libc builtin.
         if (TryCalleeName(calleeItem, out var name))
         {
+            if (_macroEvaluation && _symbols.Resolve(name) == null)
+                throw new IrUnsupportedException("unresolved function in macro constant: " + name);
             if (TryBuildGnuIntrinsic(name, args) is { } gnuIntrinsic) return gnuIntrinsic;
             if (name == RuntimeIntrinsicNames.IsLittleEndian)
             {

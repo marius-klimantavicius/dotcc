@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Buffers.Binary;
 using System.Security.Cryptography;
 using Managed.Security;
@@ -168,7 +169,7 @@ static unsafe class ImportedTicketVectors
                 }
                 tickets[i] = new ReadOnlySpan<byte>(destination.@base, checked((int)destination.off)).ToArray();
             }
-            finally { Picotls.dotcc_ptls_buffer_dispose(&destination); }
+            finally { PicoTls.dotcc_ptls_buffer_dispose(&destination); }
         });
         using var peerClock = peer.UseClockForTesting(() => Epoch);
         var pairs = new HashSet<string>();

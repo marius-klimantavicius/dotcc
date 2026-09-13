@@ -248,7 +248,7 @@ try:
         if sha(path) != item['sha256']: raise RuntimeError('Changed picotls host source')
         paths.append(path)
     for variant in args.variants:
-        msquic = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+        msquic = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
         picotls = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
         ms_hashes = generated(msquic, closure['generated'][variant])
         pico_hashes = generated(picotls, pico[variant])
@@ -260,7 +260,7 @@ try:
     if FULL: environment['DOTCC_REQUIRED_SOURCE_REVISION'] = pin['commit']
     else: environment.pop('DOTCC_REQUIRED_SOURCE_REVISION', None)
     for variant in args.variants:
-        msquic = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+        msquic = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
         picotls = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
         properties = ['-p:MsQuicProject=' + str(msquic / 'TranslatedMsQuic.csproj'),
                       '-p:PicotlsProject=' + str(picotls / 'TranslatedPicotls.csproj'),
@@ -294,7 +294,7 @@ try:
     # Rediscover sources after execution: hashing the original path list alone
     # cannot detect a new nested file introduced during the matrix.
     for variant in args.variants:
-        generated(ROOT / 'generated' / variant / 'TranslatedMsQuic', closure['generated'][variant])
+        generated(ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic'), closure['generated'][variant])
         generated(PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls'), pico[variant])
     receipt['targeted_passed'] = True
     receipt['passed'] = FULL

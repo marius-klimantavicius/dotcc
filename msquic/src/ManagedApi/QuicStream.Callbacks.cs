@@ -1,4 +1,5 @@
-using static Managed.Transport.QUIC_STREAM_EVENT_TYPE;
+using static Managed.Transport.MsQuic;
+using static Managed.Transport.MsQuic.QUIC_STREAM_EVENT_TYPE;
 
 namespace Managed.Transport.Api;
 

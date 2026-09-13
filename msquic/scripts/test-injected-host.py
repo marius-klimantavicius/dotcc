@@ -36,7 +36,7 @@ def main():
     # injection controls in the delivered host or modifying generated libraries.
     tracked = authored + sorted((REPO / 'picotls/src/BclProvider').glob('*.cs')) + [Path(__file__).resolve(), ROOT / 'config/product-closure.json']
     for variant in args.variants:
-        generated = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+        generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
         picotls = REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
         tracked += sorted(generated.glob('*.cs')) + sorted(generated.glob('*.csproj'))
         tracked += sorted(picotls.glob('*.cs')) + sorted(picotls.glob('*.csproj'))
@@ -60,7 +60,7 @@ def main():
         receipt['certificate_sha256'] = sha(args.certificate) if args.certificate.is_file() else None
         closure = json.loads((ROOT / 'config/product-closure.json').read_text())
         for variant in args.variants:
-            generated = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+            generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
             if any(closure['generated'][variant].get(p.name) != sha(p) for p in generated.glob('*.cs')):
                 raise RuntimeError(variant + ' generated sources differ from frozen product closure')
             picotls = REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')

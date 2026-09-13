@@ -168,7 +168,7 @@ def main():
         native_checks = native_values.read_text().splitlines()
         if len(native_checks) != 92 or len({line.split("=", 1)[0] for line in native_checks}) != 92:
             raise RuntimeError("Native ABI oracle did not produce the expected 92 distinct checks")
-        suites = ("TranslatedAbi", "ProviderVectors", "UpstreamVectors", "TlsTests")
+        suites = ("CopiedConsumer", "TranslatedAbi", "ProviderVectors", "UpstreamVectors", "TlsTests")
         for variant, product in projects.items():
             properties = ["-p:PicotlsProject=" + str(product)]
             for suite in suites:

@@ -1,3 +1,4 @@
+using static Managed.Transport.MsQuic;
 namespace Managed.Transport.Api;
 
 public enum QuicCongestionControl : ushort { Cubic = 0 }

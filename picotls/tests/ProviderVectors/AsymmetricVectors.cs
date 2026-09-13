@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -153,7 +154,7 @@ static unsafe class AsymmetricVectors
             Program.Check(buffer.off == previous, "failed signature selection does not append output");
             scope.ThrowIfFailed();
         }
-        finally { Picotls.ptls_buffer__release_memory(&buffer); }
+        finally { PicoTls.ptls_buffer__release_memory(&buffer); }
     }
 
     private static void Certificates(X509Certificate2 root, RSA rootKey, X509Certificate2 ecLeaf, X509Certificate2 rsaLeaf,
@@ -164,8 +165,8 @@ static unsafe class AsymmetricVectors
         st_ptls_context_t context = new() { random_bytes = RandomPointer, get_time = &time,
             key_exchanges = BclCryptoProvider.AsymmetricKeyExchanges, cipher_suites = BclCryptoProvider.SymmetricCipherSuites };
         using var scope = CallbackScope.Enter();
-        st_ptls_t* client = Picotls.ptls_client_new(&context);
-        st_ptls_t* server = Picotls.ptls_server_new(&context);
+        st_ptls_t* client = PicoTls.ptls_client_new(&context);
+        st_ptls_t* server = PicoTls.ptls_server_new(&context);
         Program.Check(client != null && server != null, "real translated connection instances for certificate callback tests");
         try
         {
@@ -207,7 +208,7 @@ static unsafe class AsymmetricVectors
             CheckCertificate(foreignVerifier, client, chainedLeaf, "localhost", 48, intermediate: intermediate);
             scope.ThrowIfFailed();
         }
-        finally { if (client != null) Picotls.ptls_free(client); if (server != null) Picotls.ptls_free(server); }
+        finally { if (client != null) PicoTls.ptls_free(client); if (server != null) PicoTls.ptls_free(server); }
     }
     private static void CheckCertificate(BclCryptoProvider.CertificateVerifier verifier, st_ptls_t* tls,
         X509Certificate2 leaf, string name, int expected, int signatureError = 0, bool cleanup = false, bool malformedSignature = false,

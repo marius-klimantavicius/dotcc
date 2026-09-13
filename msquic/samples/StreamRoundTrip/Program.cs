@@ -42,14 +42,17 @@ internal static class Program
             if (rounds is < 1 or > 32) return Usage();
             var endpoint = new IPEndPoint(IPAddress.Parse(args[3]), port);
             using var cancellation = new CancellationTokenSource(TimeSpan.FromMinutes(2));
-            ConsoleCancelEventHandler cancel = (_, e) => { e.Cancel = true; cancellation.Cancel(); };
-            Console.CancelKeyPress += cancel;
-            try
+            // This executable owns the handler until process exit. A parent can
+            // request cancellation after transport failure has already unwound
+            // the owners, while Main is still writing its terminal result.
+            Console.CancelKeyPress += (_, e) =>
             {
-                if (server) await RunServerAsync(args[1], args[2], endpoint, args[5], rounds, cancellation.Token);
-                else await RunClientAsync(args[1], args[2], endpoint, rounds, cancellation.Token);
-            }
-            finally { Console.CancelKeyPress -= cancel; }
+                e.Cancel = true;
+                try { cancellation.Cancel(); }
+                catch (ObjectDisposedException) { } // Owner cleanup already completed.
+            };
+            if (server) await RunServerAsync(args[1], args[2], endpoint, args[5], rounds, cancellation.Token);
+            else await RunClientAsync(args[1], args[2], endpoint, rounds, cancellation.Token);
             // Printed only after every owner (including the runtime) has drained.
             Console.WriteLine("{\"passed\":true,\"clean_close\":true,\"role\":\"" + args[0] + "\",\"connections\":" + rounds + "}");
             return 0;

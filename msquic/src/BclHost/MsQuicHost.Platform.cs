@@ -1,10 +1,11 @@
+using static Managed.Transport.MsQuic;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading;
-using static Managed.Transport.Libc;
+using static Managed.Transport.MsQuic.Libc;
 
 namespace Managed.Transport.Hosting;
 

@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Text;
@@ -46,7 +47,7 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
         {
             var rawContext = configuration.Acquire(); context = configuration;
             properties = (st_ptls_handshake_properties_t*)PicotlsContext.Allocate(sizeof(st_ptls_handshake_properties_t));
-            if (configuration.IsServer) Picotls.dotcc_ptls_server_properties(properties, configuration.EnforceRetry ? 1 : 0);
+            if (configuration.IsServer) PicoTls.dotcc_ptls_server_properties(properties, configuration.EnforceRetry ? 1 : 0);
             else
             {
                 if (!sessionTicket.IsEmpty)
@@ -54,10 +55,10 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
                     ticket = (byte*)PicotlsContext.Allocate(sessionTicket.Length); ticketLength = sessionTicket.Length;
                     sessionTicket.CopyTo(new Span<byte>(ticket, ticketLength));
                 }
-                Picotls.dotcc_ptls_client_properties(properties, configuration.Protocols, (ulong)configuration.ProtocolCount,
+                PicoTls.dotcc_ptls_client_properties(properties, configuration.Protocols, (ulong)configuration.ProtocolCount,
                     new st_ptls_iovec_t { @base = ticket, len = (ulong)ticketLength }, configuration.NegotiateBeforeKeyExchange ? 1 : 0);
             }
-            native = configuration.IsServer ? Picotls.ptls_server_new(rawContext) : Picotls.ptls_client_new(rawContext);
+            native = configuration.IsServer ? PicoTls.ptls_server_new(rawContext) : PicoTls.ptls_client_new(rawContext);
             scope.ThrowIfFailed();
             if (native == null) throw new OutOfMemoryException("picotls could not allocate a connection.");
             if (configuration.SaveSessionTickets) InitializeSavedTickets();
@@ -67,7 +68,7 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
                 string name = System.Net.IPAddress.TryParse(endpointName, out _) ? endpointName! : new System.Globalization.IdnMapping().GetAscii(endpointName!);
                 byte[] bytes = Encoding.UTF8.GetBytes(name);
                 if (bytes.Length > 255) throw new ArgumentException("Encoded endpoint name exceeds 255 bytes.", nameof(endpointName));
-                fixed (byte* data = bytes) Check(Picotls.ptls_set_server_name(native, data, (ulong)bytes.Length));
+                fixed (byte* data = bytes) Check(PicoTls.ptls_set_server_name(native, data, (ulong)bytes.Length));
             }
             scope.ThrowIfFailed();
         }
@@ -99,12 +100,12 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
                         if (!complete)
                         {
                             // Upstream distinguishes initial client entry by a null input.
-                            result = Picotls.ptls_handshake(native, &outgoing, startClient ? null : source + consumed,
+                            result = PicoTls.ptls_handshake(native, &outgoing, startClient ? null : source + consumed,
                                 &count, properties);
                             if (startClient) count = 0;
                             started = true; startClient = false;
                         }
-                        else result = Picotls.ptls_receive(native, &plaintext, source + consumed, &count);
+                        else result = PicoTls.ptls_receive(native, &plaintext, source + consumed, &count);
                         scope.ThrowIfFailed();
                         if (count > (ulong)(input.Length - consumed)) throw new InvalidDataException("Core consumed more input than supplied.");
                         consumed += (int)count;
@@ -116,7 +117,7 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
                             break;
                         }
                         if (result is not (0 or 0x202)) throw new PicotlsException(result, CopyBuffer(outgoing));
-                        if (!complete && Picotls.ptls_handshake_is_complete(native) != 0) FinishHandshake();
+                        if (!complete && PicoTls.ptls_handshake_is_complete(native) != 0) FinishHandshake();
                         scope.ThrowIfFailed();
                         if (count == 0 && consumed < input.Length && !initialCall)
                             throw new InvalidDataException("TLS processing made no progress.");
@@ -142,7 +143,7 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
             st_ptls_buffer_t output = PicotlsBuffer.Create();
             try
             {
-                fixed (byte* data = plaintext) Check(Picotls.ptls_send(native, &output, data, (ulong)plaintext.Length));
+                fixed (byte* data = plaintext) Check(PicoTls.ptls_send(native, &output, data, (ulong)plaintext.Length));
                 scope.ThrowIfFailed();
                 return CopyBuffer(output);
             }
@@ -158,7 +159,7 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
             RequireHandshake();
             if (localClosed) throw new InvalidOperationException("The TLS write side is closed.");
             using var scope = CallbackScope.Enter();
-            try { Check(Picotls.ptls_update_key(native, requestPeerUpdate ? 1 : 0)); scope.ThrowIfFailed(); return Send([]); }
+            try { Check(PicoTls.ptls_update_key(native, requestPeerUpdate ? 1 : 0)); scope.ThrowIfFailed(); return Send([]); }
             catch (Exception error) { Abort(error); throw; }
         }
     }
@@ -176,7 +177,7 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
             try
             {
                 fixed (byte* target = output, encoded = encodedLabel, value = exporterContext)
-                    Check(Picotls.ptls_export_secret(native, target, (ulong)length, encoded,
+                    Check(PicoTls.ptls_export_secret(native, target, (ulong)length, encoded,
                         new st_ptls_iovec_t { @base = value, len = (ulong)exporterContext.Length }, 0));
                 scope.ThrowIfFailed(); return output;
             }
@@ -193,7 +194,7 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
             st_ptls_buffer_t output = PicotlsBuffer.Create();
             try
             {
-                Check(Picotls.ptls_send_alert(native, &output, 1, 0));
+                Check(PicoTls.ptls_send_alert(native, &output, 1, 0));
                 scope.ThrowIfFailed(); localClosed = true; return CopyBuffer(output);
             }
             catch (Exception error) { Abort(error); throw; }
@@ -214,14 +215,14 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
     }
     private void FinishHandshake()
     {
-        if (Picotls.ptls_get_protocol_version(native) != 0x0304)
+        if (PicoTls.ptls_get_protocol_version(native) != 0x0304)
             throw new AuthenticationException("The peer did not negotiate TLS 1.3.");
-        cipher = Picotls.ptls_get_cipher(native)->id;
-        protocol = ReadCString(Picotls.ptls_get_negotiated_protocol(native));
+        cipher = PicoTls.ptls_get_cipher(native)->id;
+        protocol = ReadCString(PicoTls.ptls_get_negotiated_protocol(native));
         if (string.IsNullOrEmpty(protocol) || !context!.OffersProtocol(protocol))
             throw new AuthenticationException("The peer did not select an offered ALPN protocol.");
-        serverName = ReadCString(Picotls.ptls_get_server_name(native));
-        resumed = Picotls.ptls_is_psk_handshake(native) != 0;
+        serverName = ReadCString(PicoTls.ptls_get_server_name(native));
+        resumed = PicoTls.ptls_is_psk_handshake(native) != 0;
         complete = true;
     }
     private static string? ReadCString(byte* value)
@@ -240,7 +241,7 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
     }
     private static void ReleaseBuffer(ref st_ptls_buffer_t buffer)
     {
-        fixed (st_ptls_buffer_t* value = &buffer) Picotls.ptls_buffer__release_memory(value);
+        fixed (st_ptls_buffer_t* value = &buffer) PicoTls.ptls_buffer__release_memory(value);
         buffer = default;
     }
     private static void Check(int result)
@@ -269,7 +270,7 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
         try
         {
             var previous = native; native = null;
-            if (previous != null) Picotls.ptls_free(previous);
+            if (previous != null) PicoTls.ptls_free(previous);
         }
         finally
         {

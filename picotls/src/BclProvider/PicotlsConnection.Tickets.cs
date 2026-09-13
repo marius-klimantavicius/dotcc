@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
@@ -47,7 +48,7 @@ public sealed unsafe partial class PicotlsConnection
     private void InitializeSavedTickets()
     {
         savedTicketHandle = GCHandle.ToIntPtr(GCHandle.Alloc(new SavedTicketState()));
-        *Picotls.ptls_get_data_ptr(native) = (void*)savedTicketHandle;
+        *PicoTls.ptls_get_data_ptr(native) = (void*)savedTicketHandle;
     }
     private void ReleaseSavedTickets()
     {
@@ -77,7 +78,7 @@ public sealed unsafe partial class PicotlsConnection
             if (CallbackScope.HasFailure) return 0x203;
             if (properties == null || tls == null || input.len > 65536 || input.@base == null) return 47;
             if (properties->lifetime is 0 or > 604800) return 0; // Discard out-of-profile lifetimes.
-            nint opaque = (nint)(*Picotls.ptls_get_data_ptr(tls));
+            nint opaque = (nint)(*PicoTls.ptls_get_data_ptr(tls));
             if (opaque == 0) throw new InvalidOperationException("A client ticket callback requires connection-owned state.");
             var state = (SavedTicketState)GCHandle.FromIntPtr(opaque).Target!;
             saved = new(new ReadOnlySpan<byte>(input.@base, (int)input.len).ToArray(), properties->lifetime);

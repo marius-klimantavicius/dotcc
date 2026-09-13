@@ -36,9 +36,9 @@ internal sealed record SourceFileOrigin(string Name, string Identity)
     }
 
     internal static Item Rewrite(Item origin, int id, object? content) =>
-        Of(origin) is { } source
+        FunctionMacroOrigin.Copy<Item>(origin, Of(origin) is { } source
             ? new SourceLocatedItem(id, content, origin.Position, source, SourcePacking.Of(origin))
-            : new SourcePackingItem(new Item(id, content, origin.Position), SourcePacking.Of(origin));
+            : new SourcePackingItem(new Item(id, content, origin.Position), SourcePacking.Of(origin)));
 }
 
 internal sealed class SourceLocatedItem(int id, object? content, SourcePosition position, SourceFileOrigin sourceFile, int packing = 0)

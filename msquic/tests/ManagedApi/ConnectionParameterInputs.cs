@@ -1,3 +1,4 @@
+using static Managed.Transport.MsQuic;
 using Managed.Transport.Api;
 using Managed.Transport;
 

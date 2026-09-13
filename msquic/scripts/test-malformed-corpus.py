@@ -116,7 +116,7 @@ def main():
             receipt['product_closure_sha256'] = sha(closure)
             receipt['picotls_provenance_sha256'] = sha(provenance)
             for variant in args.variants:
-                msquic = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+                msquic = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
                 pico = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
                 hashes, pico_hashes = generated(msquic), generated(pico)
                 if any(frozen['generated'][variant].get(n) != h for n, h in hashes.items()):

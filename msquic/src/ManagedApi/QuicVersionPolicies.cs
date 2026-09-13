@@ -1,3 +1,4 @@
+using static Managed.Transport.MsQuic;
 using System.Buffers.Binary;
 using Managed.Transport.Hosting;
 

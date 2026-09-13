@@ -1,3 +1,4 @@
+using static Managed.Transport.MsQuic;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -10,8 +11,8 @@ using System.Text;
 using System.Threading;
 using Managed.Transport;
 using Managed.Transport.Hosting;
-using static Managed.Transport.QUIC_CONNECTION_EVENT_TYPE;
-using static Managed.Transport.QUIC_STREAM_EVENT_TYPE;
+using static Managed.Transport.MsQuic.QUIC_CONNECTION_EVENT_TYPE;
+using static Managed.Transport.MsQuic.QUIC_STREAM_EVENT_TYPE;
 
 // Test-only, one external connection per process. All transport storage and
 // callbacks are the compiler's generated types; no mirrored event/handle ABI.

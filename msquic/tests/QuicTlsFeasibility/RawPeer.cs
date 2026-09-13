@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -19,11 +20,11 @@ internal sealed unsafe class RawPeer : IDisposable
     internal byte[] ReceivedParameters = [];
     internal int SavedTickets;
     internal readonly Dictionary<(ulong Epoch, bool Encryption), byte[]> Secrets = [];
-    public bool Complete => tls != null && Picotls.ptls_handshake_is_complete(tls) != 0;
-    public ulong ReadEpoch => Picotls.ptls_get_read_epoch(tls);
-    public ushort Cipher => Picotls.ptls_get_cipher(tls)->id;
-    public string Protocol => Marshal.PtrToStringUTF8((nint)Picotls.ptls_get_negotiated_protocol(tls)) ?? "";
-    public string ServerName => Marshal.PtrToStringUTF8((nint)Picotls.ptls_get_server_name(tls)) ?? "";
+    public bool Complete => tls != null && PicoTls.ptls_handshake_is_complete(tls) != 0;
+    public ulong ReadEpoch => PicoTls.ptls_get_read_epoch(tls);
+    public ushort Cipher => PicoTls.ptls_get_cipher(tls)->id;
+    public string Protocol => Marshal.PtrToStringUTF8((nint)PicoTls.ptls_get_negotiated_protocol(tls)) ?? "";
+    public string ServerName => Marshal.PtrToStringUTF8((nint)PicoTls.ptls_get_server_name(tls)) ?? "";
 
     public RawPeer(bool server, ushort suite, BclCryptoProvider.CertificateVerifier? verifier,
         BclCryptoProvider.SigningIdentity? identity, string protocol, string serverName, bool retry,
@@ -64,7 +65,7 @@ internal sealed unsafe class RawPeer : IDisposable
             {
                 context->on_client_hello = (st_ptls_on_client_hello_t*)Allocate(sizeof(st_ptls_on_client_hello_t));
                 context->on_client_hello->cb = &ClientHello;
-                Picotls.dotcc_ptls_server_properties(properties, retry ? 1 : 0);
+                PicoTls.dotcc_ptls_server_properties(properties, retry ? 1 : 0);
             }
             else
             {
@@ -73,7 +74,7 @@ internal sealed unsafe class RawPeer : IDisposable
                 var protocols = (st_ptls_iovec_t*)Allocate(sizeof(st_ptls_iovec_t));
                 byte[] encoded = Encoding.ASCII.GetBytes(protocol);
                 protocols[0] = new() { @base = Copy(encoded), len = (ulong)encoded.Length };
-                Picotls.dotcc_ptls_client_properties(properties, protocols, 1, default, 0);
+                PicoTls.dotcc_ptls_client_properties(properties, protocols, 1, default, 0);
             }
             var extensions = (st_ptls_raw_extension_t*)Allocate(2 * sizeof(st_ptls_raw_extension_t));
             extensions[0] = new() { type = TransportParametersExtension,
@@ -82,16 +83,16 @@ internal sealed unsafe class RawPeer : IDisposable
             properties->additional_extensions = extensions;
             properties->collect_extension = &CollectExtension;
             properties->collected_extensions = &CollectedExtensions;
-            tls = server ? Picotls.ptls_server_new(context) : Picotls.ptls_client_new(context);
+            tls = server ? PicoTls.ptls_server_new(context) : PicoTls.ptls_client_new(context);
             scope.ThrowIfFailed();
             if (tls == null) throw new OutOfMemoryException("translated picotls context");
             handle = GCHandle.Alloc(this);
-            *Picotls.ptls_get_data_ptr(tls) = (void*)GCHandle.ToIntPtr(handle);
+            *PicoTls.ptls_get_data_ptr(tls) = (void*)GCHandle.ToIntPtr(handle);
             if (!server)
             {
                 byte[] name = Encoding.ASCII.GetBytes(serverName);
                 fixed (byte* data = name)
-                    Program.Require(Picotls.ptls_set_server_name(tls, data, (ulong)name.Length) == 0, "set SNI");
+                    Program.Require(PicoTls.ptls_set_server_name(tls, data, (ulong)name.Length) == 0, "set SNI");
             }
             scope.ThrowIfFailed();
         }
@@ -109,7 +110,7 @@ internal sealed unsafe class RawPeer : IDisposable
         {
             int code;
             fixed (byte* bytes = input)
-                code = Picotls.ptls_handle_message(tls, &output, offsets, epoch,
+                code = PicoTls.ptls_handle_message(tls, &output, offsets, epoch,
                     startClient ? null : bytes, (ulong)input.Length, properties);
             scope.ThrowIfFailed();
             Program.Require(output.off <= 1024 * 1024, "bounded raw TLS output");
@@ -123,7 +124,7 @@ internal sealed unsafe class RawPeer : IDisposable
             }
             return new(code, flights);
         }
-        finally { Picotls.dotcc_ptls_buffer_dispose(&output); }
+        finally { PicoTls.dotcc_ptls_buffer_dispose(&output); }
     }
 
     private void* Allocate(int size)
@@ -142,7 +143,7 @@ internal sealed unsafe class RawPeer : IDisposable
     }
     private static RawPeer Peer(st_ptls_t* tls)
     {
-        var token = (nint)(*Picotls.ptls_get_data_ptr(tls));
+        var token = (nint)(*PicoTls.ptls_get_data_ptr(tls));
         return (RawPeer)GCHandle.FromIntPtr(token).Target!;
     }
     private static void RandomBytes(void* output, ulong length)
@@ -167,7 +168,7 @@ internal sealed unsafe class RawPeer : IDisposable
             CallbackScope.RequireActive();
             if (input->server_name.len != 0)
             {
-                int status = Picotls.ptls_set_server_name(tls, input->server_name.@base, input->server_name.len);
+                int status = PicoTls.ptls_set_server_name(tls, input->server_name.@base, input->server_name.len);
                 if (status != 0) return status;
             }
             byte[] protocol = Encoding.ASCII.GetBytes(Peer(tls).protocol);
@@ -176,7 +177,7 @@ internal sealed unsafe class RawPeer : IDisposable
                 var offered = input->negotiated_protocols.list[i];
                 if (offered.len == (ulong)protocol.Length && new ReadOnlySpan<byte>(offered.@base, protocol.Length).SequenceEqual(protocol))
                     fixed (byte* selected = protocol)
-                        return Picotls.ptls_set_negotiated_protocol(tls, selected, (ulong)protocol.Length);
+                        return PicoTls.ptls_set_negotiated_protocol(tls, selected, (ulong)protocol.Length);
             }
             return 120;
         }
@@ -188,7 +189,7 @@ internal sealed unsafe class RawPeer : IDisposable
         {
             CallbackScope.RequireActive();
             Program.Require(epoch is 2 or 3, "unexpected TLS traffic key epoch");
-            int length = checked((int)Picotls.ptls_get_cipher(tls)->hash->digest_size);
+            int length = checked((int)PicoTls.ptls_get_cipher(tls)->hash->digest_size);
             Program.Require(length is 32 or 48, "unexpected traffic secret size");
             var peer = Peer(tls);
             var key = (epoch, encryption != 0);
@@ -233,7 +234,7 @@ internal sealed unsafe class RawPeer : IDisposable
         if (disposed) return;
         disposed = true;
         using var scope = CallbackScope.Enter();
-        try { if (tls != null) { Picotls.ptls_free(tls); tls = null; } }
+        try { if (tls != null) { PicoTls.ptls_free(tls); tls = null; } }
         finally
         {
             if (handle.IsAllocated) handle.Free();

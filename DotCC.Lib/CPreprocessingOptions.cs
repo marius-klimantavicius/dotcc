@@ -27,9 +27,15 @@ public sealed class CPreprocessingOptions
     public string ProfileHash { get; }
     public TextWriter? Report { get; }
     public bool HasOverrides => Rules.Length != 0;
+    /// <summary>Additional macro names or glob patterns to emit as public fields.</summary>
+    public IReadOnlyList<string> EmitDefines { get; }
+    public bool HasMacroExports => EmitDefines.Count != 0;
+    internal MacroExportSelector ExportSelector { get; }
 
-    public CPreprocessingOptions(IReadOnlyList<MacroOverride> macroOverrides, string? profilePath = null, TextWriter? report = null)
+    public CPreprocessingOptions(IReadOnlyList<MacroOverride> macroOverrides, string? profilePath = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null)
     {
+        EmitDefines = Array.AsReadOnly((emitDefines ?? Array.Empty<string>()).ToArray());
+        ExportSelector = new MacroExportSelector(EmitDefines);
         ProfilePath = profilePath is null ? null : Path.GetFullPath(profilePath);
         Report = report;
         var lexer = C.BuildLexer();
@@ -50,10 +56,10 @@ public sealed class CPreprocessingOptions
         ProfileHash = Convert.ToHexString(SHA256.HashData(bytes.ToArray())).ToLowerInvariant();
     }
 
-    public CPreprocessingOptions WithoutReport() => new(Rules.Select(r => r.Rule).ToArray(), ProfilePath);
+    public CPreprocessingOptions WithoutReport() => new(Rules.Select(r => r.Rule).ToArray(), ProfilePath, emitDefines: EmitDefines);
 
     /// <summary>Load strict version-1 JSON and optionally replace a name's profile rules with a literal CLI rule.</summary>
-    public static CPreprocessingOptions Load(string? profilePath = null, IReadOnlyList<string>? overrides = null, TextWriter? report = null)
+    public static CPreprocessingOptions Load(string? profilePath = null, IReadOnlyList<string>? overrides = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null)
     {
         var rules = new List<MacroOverride>();
         if (profilePath is not null)
@@ -104,7 +110,7 @@ public sealed class CPreprocessingOptions
                 WriteEvent(report, "cli-precedence", ("name", name), ("action", "replaced profile rules"));
             rules.Add(new(name, definition[(equals + 1)..], Literal: true, Origin: "--override-macro"));
         }
-        return new(rules, profilePath, report);
+        return new(rules, profilePath, report, emitDefines);
     }
 
     private static void Fields(JsonElement element, params string[] allowed)

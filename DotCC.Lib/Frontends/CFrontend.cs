@@ -48,7 +48,7 @@ internal sealed class CFrontend : IFrontend
         // carrier tokens back in BuildEmbed). Keyed by content hash → cross-TU dedup.
         var embeds = new Dictionary<string, byte[]>(StringComparer.Ordinal);
         var overrides = req.Preprocessing is { } options ? new MacroOverrideSession(options, defines) : null;
-        var macroBodies = new List<(string Name, IReadOnlyList<Item> Body)>();
+        var macroBodies = new List<(string Name, IReadOnlyList<Item> Body, bool Selected)>();
 
         // Build the lexer → preprocessor → rewriter → parser pipeline for one
         // translation unit and parse it with the given (visitor-bound) parser.
@@ -121,7 +121,7 @@ internal sealed class CFrontend : IFrontend
             {
                 throw new CompileException($"parse failed in {Path.GetFileName(unitPath)}: {result}");
             }
-            macroBodies.AddRange(pre.ConstantMacroBodies(defines));
+            macroBodies.AddRange(pre.ConstantMacroBodies(defines, req.Preprocessing?.ExportSelector));
             return result;
         }
 
@@ -144,6 +144,18 @@ internal sealed class CFrontend : IFrontend
         {
             var root = ParseUnit(unitPath, irParser, quiet: false, gate);
             irBuilder.AddUnit(root, Path.GetFileName(unitPath));
+            // Lower before the next TU can replace typedef/enum bindings.
+            var macroEvaluator = irBuilder.CreateMacroEvaluator();
+            foreach (var macro in macroBodies)
+            {
+                var value = CConstantMacros.TryLower(macro.Body, macroEvaluator, activeDialect);
+                if (macro.Selected && value == null)
+                    throw new CompileException($"cannot export selected macro '{macro.Name}' in {Path.GetFileName(unitPath)}: unsupported or nonconstant expression");
+                irBuilder.MacroConstants.Add((macro.Name, value, macro.Selected));
+                if (macro.Body.Any(t => t.Content?.ToString() == RuntimeIntrinsicNames.IsLittleEndian))
+                    overrides?.Event("macro-export-skipped", ("name", macro.Name), ("reason", "runtime intrinsic is not a constant"));
+            }
+            macroBodies.Clear();
         }
         overrides?.Complete();
         irBuilder.FinishAggregateTypes();
@@ -151,12 +163,6 @@ internal sealed class CFrontend : IFrontend
             if (global.Init is { } init) Ir.IrBuilder.RequireNoRuntimeIntrinsic(init, "static initializer of " + global.Sym.Name);
         foreach (var intrinsic in irBuilder.RuntimeIntrinsicsUsed.OrderBy(x => x))
             overrides?.Event("intrinsic", ("name", intrinsic.ToString()), ("type", "_Bool"), ("evaluation", "runtime"));
-        foreach (var macro in macroBodies)
-        {
-            irBuilder.MacroConstants.Add((macro.Name, CConstantMacros.TryLower(macro.Body)));
-            if (macro.Body.Any(t => t.Content?.ToString() == RuntimeIntrinsicNames.IsLittleEndian))
-                overrides?.Event("macro-export-skipped", ("name", macro.Name), ("reason", "runtime intrinsic is not a constant"));
-        }
         var irErrors = irBuilder.Diagnostics.Where(d => d.Severity == Ir.Severity.Error).ToList();
         if (irErrors.Count > 0)
         {

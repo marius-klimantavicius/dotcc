@@ -56,6 +56,8 @@ public enum Storage { None, Auto, Static, Extern, Register, Typedef }
 /// </summary>
 public sealed class Symbol
 {
+    internal Symbol CopyForEvaluation() => (Symbol)MemberwiseClone();
+
     /// <summary>Explicit C object alignment; zero uses the type's natural alignment.</summary>
     public int Alignment { get; set; }
 
@@ -95,6 +97,10 @@ public sealed class Symbol
     /// <em>global</em> as <c>nint</c> (see <c>CSharpBackend.NintStorage</c>); the wat backend
     /// gives any address-taken local/param a linear-memory frame slot.</summary>
     public bool AddressTaken { get; set; }
+
+    /// <summary>The function definition's declarator came from a function-like
+    /// macro expansion. Its address is emitted on demand, not as API metadata.</summary>
+    public bool IsMacroGenerated { get; set; }
 
     /// <summary>True when the function is declared to never return to its caller —
     /// the C11 <c>_Noreturn</c> specifier, its C23 <c>noreturn</c> spelling, or the
@@ -168,6 +174,20 @@ public sealed class SymbolTable
     {
         _names = names;
         _scopes.Add(new Dictionary<string, Symbol>(StringComparer.Ordinal)); // file scope
+    }
+
+    internal SymbolTable CopyForEvaluation()
+    {
+        var copy = new SymbolTable(_names);
+        copy._scopes.Clear();
+        foreach (var scope in _scopes)
+        {
+            var cloned = new Dictionary<string, Symbol>(StringComparer.Ordinal);
+            foreach (var entry in scope) cloned.Add(entry.Key, entry.Value.CopyForEvaluation());
+            copy._scopes.Add(cloned);
+        }
+        copy._usedNames.UnionWith(_usedNames);
+        return copy;
     }
 
     /// <summary>Escape a raw source name to a legal target identifier via the

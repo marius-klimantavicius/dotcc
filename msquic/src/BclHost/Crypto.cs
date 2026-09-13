@@ -1,3 +1,4 @@
+using static Managed.Transport.MsQuic;
 using System.Buffers;
 using System.Security.Cryptography;
 

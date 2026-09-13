@@ -88,7 +88,7 @@ try:
         runtime_environment.pop('DOTCC_REQUIRED_SOURCE_REVISION', None)
     receipt['exact_source_metadata_required'] = require_metadata
     for variant in args.variants:
-        msquic = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+        msquic = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
         picotls = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
         hashes, pico_hashes = generated(msquic), generated(picotls)
         if any(frozen['generated'][variant].get(n) != h for n, h in hashes.items()):

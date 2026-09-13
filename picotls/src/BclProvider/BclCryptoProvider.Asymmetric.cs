@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -322,7 +323,7 @@ public static unsafe partial class BclCryptoProvider
                     : state.Rsa!.SignData(bytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
             fixed (byte* data = signature)
             {
-                int result = Picotls.ptls_buffer__do_pushv(output, data, (ulong)signature.Length);
+                int result = PicoTls.ptls_buffer__do_pushv(output, data, (ulong)signature.Length);
                 if (result == 0) *selected = state.Algorithm;
                 return result;
             }
@@ -472,7 +473,7 @@ public static unsafe partial class BclCryptoProvider
                 certificates.Add(X509CertificateLoader.LoadCertificate(ReadBytes(certificateData[i].@base, (ulong)size, MaximumCertificateBytes).ToArray()));
             }
             var policy = State<VerificationPolicy>(((VerifyContext*)self)->Handle);
-            bool server = Picotls.ptls_is_server(tls) != 0;
+            bool server = PicoTls.ptls_is_server(tls) != 0;
             using var chain = new X509Chain();
             chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
             chain.ChainPolicy.CustomTrustStore.AddRange(policy.Roots);

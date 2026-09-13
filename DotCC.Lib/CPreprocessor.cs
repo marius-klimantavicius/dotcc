@@ -181,13 +181,17 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     }
 
     /// <summary>Final user macro definitions, expanded without freezing contextual macros.</summary>
-    internal IEnumerable<(string Name, IReadOnlyList<Item> Body)> ConstantMacroBodies(IReadOnlyList<string>? explicitDefines)
+    internal IEnumerable<(string Name, IReadOnlyList<Item> Body, bool Selected)> ConstantMacroBodies(IReadOnlyList<string>? explicitDefines, MacroExportSelector? selector = null)
     {
-        var names = _sourceMacroNames.Concat((explicitDefines ?? Array.Empty<string>()).Select(d => d.Split('=')[0]));
+        var names = _sourceMacroNames.Concat((explicitDefines ?? Array.Empty<string>()).Select(d => d.Split('=')[0]))
+            .Concat(_macros.Keys.Where(name => selector?.Matches(name) == true));
         foreach (var name in names.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal))
             if (_macros.TryGetValue(name, out var macro))
+            {
+                var selected = !macro.IsFunctionLike && selector?.Matches(name) == true;
                 yield return (name, macro.IsFunctionLike ? Array.Empty<Item>()
-                    : ExpandObjectLikeBody(macro.Body, new HashSet<string>(StringComparer.Ordinal) { name }, preserveContext: true));
+                    : MacroExpander.ExpandConstantBody(this, macro), selected);
+            }
     }
 
     /// <summary>

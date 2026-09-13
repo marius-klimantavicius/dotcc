@@ -1,6 +1,12 @@
 # Translate MsQuic with dotcc
 
-Status: all 47 selected source units are translated and linked. Service, transport,
+Current output: all 47 units have been regenerated with `--nest-types`; the final
+postprocessed project is `generated/TranslatedMsQuic/TranslatedMsQuic.csproj`.
+Fresh ABI, JIT/NativeAOT, public-consumer and selected service checks pass; see
+[nested-layout evidence](nested-layout.md). The full phase ledger below describes
+the preceding campaign and is not recredited by this layout regeneration.
+
+Prior full campaign: all 47 selected source units were translated and linked. Service, transport,
 owning API, independent-peer, positive recovery, SQLite and picotls gates pass
 against the frozen raw/optimized × JIT/NativeAOT closure. Evidence collection and
 performance measurements are complete. Stronger recovery checks remain

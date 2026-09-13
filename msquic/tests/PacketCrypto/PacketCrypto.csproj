@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsAotCompatible>true</IsAotCompatible>
-    <MsQuicProject Condition="'$(MsQuicProject)' == ''">../../generated/optimized/TranslatedMsQuic/TranslatedMsQuic.csproj</MsQuicProject>
+    <MsQuicProject Condition="'$(MsQuicProject)' == ''">../../generated/TranslatedMsQuic/TranslatedMsQuic.csproj</MsQuicProject>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(MsQuicProject)" />

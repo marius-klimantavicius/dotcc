@@ -9,6 +9,49 @@ namespace DotCC.Tests;
 public sealed class CanonicalFunctionPointerTests
 {
     [Fact]
+    public void Macro_generated_helpers_have_addresses_only_when_C_uses_them()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "dotcc-macro-pointers-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dir);
+        var path = Path.Combine(dir, "main.c");
+        File.WriteAllText(Path.Combine(dir, "helpers.h"), """
+            #define MAKE(name) static int name(int x) { return x + 1; }
+            #define PASTED(name) MAKE(helper_ ## name)
+            MAKE(unused_address)
+            MAKE(callback)
+            PASTED(pasted)
+            #undef MAKE
+            """);
+        File.WriteAllText(path, """
+            #include "helpers.h"
+            #define TYPE(x) x
+            TYPE(int) ordinary(int x) { return x; }
+            int (*get_callback(void))(int) { return callback; }
+            int call(void) { return unused_address(1) + helper_pasted(2); }
+            """);
+        try
+        {
+            foreach (var link in new[] { false, true })
+            {
+                string emitted;
+                if (link)
+                {
+                    var obj = Path.Combine(dir, "main.o");
+                    File.WriteAllText(obj, Compiler.EmitObject(path));
+                    emitted = Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib);
+                }
+                else emitted = Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib);
+                System.Text.RegularExpressions.Regex.IsMatch(emitted, @" unused_address(?:__unit_[A-F0-9]+)? = &").ShouldBeFalse();
+                System.Text.RegularExpressions.Regex.IsMatch(emitted, @" helper_pasted(?:__unit_[A-F0-9]+)? = &").ShouldBeFalse();
+                System.Text.RegularExpressions.Regex.IsMatch(emitted, @" callback(?:__unit_[A-F0-9]+)? = &").ShouldBeTrue();
+                emitted.ShouldContain(" ordinary = &");
+                System.Text.RegularExpressions.Regex.IsMatch(emitted, @"int unused_address(?:__unit_[A-F0-9]+)?\(int x\)").ShouldBeTrue();
+            }
+        }
+        finally { Directory.Delete(dir, true); }
+    }
+
+    [Fact]
     public void Every_function_designator_reuses_one_typed_static_address()
     {
         var path = Path.Combine(Path.GetTempPath(), "dotcc-canonical-" + Guid.NewGuid().ToString("N") + ".c");

@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Text;
 using Managed.Security;
 
@@ -21,7 +22,7 @@ static unsafe class Program
         {
             byte[] text = Encoding.UTF8.GetBytes(name + "\0");
             fixed (byte* p = text)
-                Check((Picotls.ptls_server_name_is_ipaddr(p) != 0) == (name is "1.1.1.1" or "2001:db8::2:1"), "is_ipaddr: " + name);
+                Check((PicoTls.ptls_server_name_is_ipaddr(p) != 0) == (name is "1.1.1.1" or "2001:db8::2:1"), "is_ipaddr: " + name);
         }
     }
     static void QuicInteger()
@@ -37,13 +38,13 @@ static unsafe class Program
         fixed (byte* start = encoded)
         {
             byte* cursor = start;
-            Check(Picotls.ptls_decode_quicint(&cursor, start + encoded.Length) == value, "quicint decode");
+            Check(PicoTls.ptls_decode_quicint(&cursor, start + encoded.Length) == value, "quicint decode");
             Check(cursor == start + encoded.Length, "quicint cursor");
             // Additional bounded truncation coverage, including every prefix.
             for (int length = 0; length < encoded.Length; length++)
             {
                 cursor = start;
-                Check(Picotls.ptls_decode_quicint(&cursor, start + length) == ulong.MaxValue, "quicint truncated");
+                Check(PicoTls.ptls_decode_quicint(&cursor, start + length) == ulong.MaxValue, "quicint truncated");
                 Check(cursor >= start && cursor <= start + length, "quicint truncated cursor bound");
             }
         }
@@ -51,9 +52,9 @@ static unsafe class Program
         foreach (ulong value in new ulong[] { 0, 1, 63, 64, 16383, 16384, 1073741823, 1073741824, (1UL << 62) - 1 })
         {
             new Span<byte>(buffer, 9).Fill(123);
-            byte* end = Picotls.dotcc_ptls_encode_quicint(buffer, value), cursor = buffer;
+            byte* end = PicoTls.dotcc_ptls_encode_quicint(buffer, value), cursor = buffer;
             Check(end - buffer is >= 1 and <= 8, "quicint encoded length");
-            Check(Picotls.ptls_decode_quicint(&cursor, buffer + 9) == value, "quicint round trip");
+            Check(PicoTls.ptls_decode_quicint(&cursor, buffer + 9) == value, "quicint round trip");
             Check(cursor == end && *cursor == 123, "quicint sentinel");
         }
     }
@@ -66,10 +67,10 @@ static unsafe class Program
             foreach (byte[] text in new byte[][] { "aGVsbG8gd29ybGQ=\0"u8.ToArray(), "a$b\0"u8.ToArray(), [0x61, 0xff, 0x62, 0] })
             {
                 buffer.off = 0;
-                Picotls.ptls_base64_decode_init(&state);
+                PicoTls.ptls_base64_decode_init(&state);
                 fixed (byte* p = text)
                 {
-                    int result = Picotls.ptls_base64_decode(p, &state, &buffer);
+                    int result = PicoTls.ptls_base64_decode(p, &state, &buffer);
                     if (text.Length > 5)
                     {
                         Check(result == 0 && buffer.off == 11, "base64 valid length");
@@ -79,7 +80,7 @@ static unsafe class Program
                 }
             }
         }
-        finally { Picotls.dotcc_ptls_buffer_dispose(&buffer); }
+        finally { PicoTls.dotcc_ptls_buffer_dispose(&buffer); }
     }
     static void JsonEscape()
     {
@@ -95,7 +96,7 @@ static unsafe class Program
             new Span<byte>(output, 256).Fill(0xa5);
             fixed (byte* p = bytes)
             {
-                byte* end = Picotls.ptls_jsonescape(output, p, (ulong)bytes.Length);
+                byte* end = PicoTls.ptls_jsonescape(output, p, (ulong)bytes.Length);
                 Check(end - output == want.Length && *end == 0, "jsonescape length and terminator");
                 Check(new ReadOnlySpan<byte>(output, want.Length).SequenceEqual(want), "jsonescape bytes");
                 Check(end[1] == 0xa5, "jsonescape sentinel");
@@ -108,7 +109,7 @@ static unsafe class Program
         byte[] key = Enumerable.Repeat((byte)0x0b, 20).ToArray();
         byte[] expected = Convert.FromHexString("b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7");
         st_ptls_hash_context_t* context;
-        fixed (byte* p = key) context = Picotls.ptls_hmac_create(BclCryptoProvider.HashSha256, p, (ulong)key.Length);
+        fixed (byte* p = key) context = PicoTls.ptls_hmac_create(BclCryptoProvider.HashSha256, p, (ulong)key.Length);
         scope.ThrowIfFailed();
         Check(context != null, "hmac create");
         byte* output = stackalloc byte[32];
@@ -140,26 +141,26 @@ static unsafe class Program
             {
                 fixed (byte* p = input)
                 {
-                    Check(Picotls.dotcc_ptls_buffer_push_block(&buffer, capacity, new() { @base = p, len = (ulong)size }) == 0, "upstream block push");
+                    Check(PicoTls.dotcc_ptls_buffer_push_block(&buffer, capacity, new() { @base = p, len = (ulong)size }) == 0, "upstream block push");
                     st_ptls_iovec_t body = default;
-                    Check(Picotls.dotcc_ptls_decode_block(new() { @base = buffer.@base, len = buffer.off }, capacity, &body) == 0, "upstream block decode");
+                    Check(PicoTls.dotcc_ptls_decode_block(new() { @base = buffer.@base, len = buffer.off }, capacity, &body) == 0, "upstream block decode");
                     Check(body.len == (ulong)size && new ReadOnlySpan<byte>(body.@base, size).SequenceEqual(input), "upstream block content");
-                    Check(Picotls.dotcc_ptls_decode_block(new() { @base = buffer.@base, len = buffer.off - 1 }, capacity, &body) == 50, "block truncation rejected");
+                    Check(PicoTls.dotcc_ptls_decode_block(new() { @base = buffer.@base, len = buffer.off - 1 }, capacity, &body) == 50, "block truncation rejected");
                     Check(body.@base == null && body.len == 0, "failed decode publishes no body");
                 }
                 if (capacity != ulong.MaxValue)
                 {
                     byte[] tooLong = new byte[size + 1];
                     fixed (byte* p = tooLong)
-                        Check(Picotls.dotcc_ptls_buffer_push_block(&buffer, capacity, new() { @base = p, len = (ulong)tooLong.Length }) == 0x20c, "upstream block overflow");
+                        Check(PicoTls.dotcc_ptls_buffer_push_block(&buffer, capacity, new() { @base = p, len = (ulong)tooLong.Length }) == 0x20c, "upstream block overflow");
                 }
             }
-            finally { Picotls.dotcc_ptls_buffer_dispose(&buffer); }
+            finally { PicoTls.dotcc_ptls_buffer_dispose(&buffer); }
         }
         byte* extra = stackalloc byte[] { 1, 42, 99 };
         st_ptls_iovec_t decoded = default;
-        Check(Picotls.dotcc_ptls_decode_block(new() { @base = extra, len = 3 }, 1, &decoded) == 50, "block trailing bytes rejected");
+        Check(PicoTls.dotcc_ptls_decode_block(new() { @base = extra, len = 3 }, 1, &decoded) == 50, "block trailing bytes rejected");
         Check(decoded.@base == null && decoded.len == 0, "trailing data publishes no body");
-        Check(Picotls.dotcc_ptls_decode_block(new() { @base = extra, len = 3 }, 0, &decoded) == 47, "zero length-width rejected");
+        Check(PicoTls.dotcc_ptls_decode_block(new() { @base = extra, len = 3 }, 0, &decoded) == 47, "zero length-width rejected");
     }
 }

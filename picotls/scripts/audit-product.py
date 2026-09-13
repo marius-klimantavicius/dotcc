@@ -248,12 +248,12 @@ class AuditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
             (directory / PROJECT).write_text('<Project/>')
-            source = directory / 'Picotls.cs'
-            source.write_text('class Picotls {}')
-            for names in ('../escape.cs\n', 'Picotls.cs\nPicotls.cs\n', ''):
+            source = directory / 'PicoTls.cs'
+            source.write_text('class PicoTls {}')
+            for names in ('../escape.cs\n', 'PicoTls.cs\nPicoTls.cs\n', ''):
                 (directory / MANIFEST).write_text(names)
                 with self.assertRaises(ValueError): generated_files(directory)
-            (directory / MANIFEST).write_text('Picotls.cs\n')
+            (directory / MANIFEST).write_text('PicoTls.cs\n')
             self.assertEqual(len(generated_files(directory)), 3)
             extra = directory / 'extra.cs'; extra.write_text('')
             with self.assertRaises(ValueError): generated_files(directory)

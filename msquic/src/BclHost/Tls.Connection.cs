@@ -1,8 +1,10 @@
+using static Managed.Transport.MsQuic;
+using static Managed.Security.PicoTls;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using Managed.Security;
-using Ptls = Managed.Security.Picotls;
+using Ptls = Managed.Security.PicoTls;
 
 namespace Managed.Transport.Hosting;
 

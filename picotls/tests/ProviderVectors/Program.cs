@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Security.Cryptography;
 using Managed.Security;
 
@@ -72,9 +73,9 @@ static unsafe class Program
         byte[] prk = new byte[32], okm = new byte[42];
         fixed (byte* i = ikm, s = salt, f = info, p = prk, o = okm)
         {
-            Check(Picotls.ptls_hkdf_extract(BclCryptoProvider.HashSha256, p, Vector(s, salt.Length), Vector(i, ikm.Length)) == 0, "translated HKDF extract status");
+            Check(PicoTls.ptls_hkdf_extract(BclCryptoProvider.HashSha256, p, Vector(s, salt.Length), Vector(i, ikm.Length)) == 0, "translated HKDF extract status");
             scope.ThrowIfFailed();
-            Check(Picotls.ptls_hkdf_expand(BclCryptoProvider.HashSha256, o, (ulong)okm.Length, Vector(p, prk.Length), Vector(f, info.Length)) == 0, "translated HKDF expand status");
+            Check(PicoTls.ptls_hkdf_expand(BclCryptoProvider.HashSha256, o, (ulong)okm.Length, Vector(p, prk.Length), Vector(f, info.Length)) == 0, "translated HKDF expand status");
             scope.ThrowIfFailed();
         }
         Equal(prk, Hex("077709362c2e32df0ddc3f0dc47bba6390b6c73bb50f9c3122ec844ad7c2b3e5"), "RFC5869 case1 PRK");
@@ -91,8 +92,8 @@ static unsafe class Program
             byte[] output = new byte[17];
             fixed (byte* k = key, p = plaintext, o = output)
             {
-                var encrypt = Picotls.ptls_cipher_new(algorithm, 1, k); scope.ThrowIfFailed();
-                var decrypt = Picotls.ptls_cipher_new(algorithm, 0, k); scope.ThrowIfFailed();
+                var encrypt = PicoTls.ptls_cipher_new(algorithm, 1, k); scope.ThrowIfFailed();
+                var decrypt = PicoTls.ptls_cipher_new(algorithm, 0, k); scope.ThrowIfFailed();
                 try
                 {
                     encrypt->do_transform(encrypt, o, p, 16); scope.ThrowIfFailed();
@@ -100,7 +101,7 @@ static unsafe class Program
                     decrypt->do_transform(decrypt, o + 1, o, 16); scope.ThrowIfFailed();
                     Equal(output.AsSpan(1, 16), plaintext, "AES ECB decrypt partial overlap");
                 }
-                finally { Picotls.ptls_cipher_free(encrypt); Picotls.ptls_cipher_free(decrypt); }
+                finally { PicoTls.ptls_cipher_free(encrypt); PicoTls.ptls_cipher_free(decrypt); }
             }
         }
         byte[] ctrPlaintext = Hex("6bc1bee22e409f96e93d7e117393172aae2d8a571e03ac9c9eb76fac45af8e5130c81c46a35ce411e5fbc1191a0a52eff69f2445df4f9b17ad2b417be66c3710");
@@ -113,7 +114,7 @@ static unsafe class Program
             var algorithm = variant == 0 ? BclCryptoProvider.Aes128Ctr : BclCryptoProvider.Aes256Ctr;
             fixed (byte* k = key, v = iv, o = output)
             {
-                var context = Picotls.ptls_cipher_new(algorithm, 1, k); scope.ThrowIfFailed();
+                var context = PicoTls.ptls_cipher_new(algorithm, 1, k); scope.ThrowIfFailed();
                 try
                 {
                     context->do_init(context, v); context->do_transform(context, o, o, 13);
@@ -122,7 +123,7 @@ static unsafe class Program
                     context->do_init(context, v); context->do_transform(context, o, o, 64); scope.ThrowIfFailed();
                     Equal(output, ctrPlaintext, "AES CTR reinit/decrypt");
                 }
-                finally { Picotls.ptls_cipher_free(context); }
+                finally { PicoTls.ptls_cipher_free(context); }
             }
         }
     }
@@ -136,8 +137,8 @@ static unsafe class Program
             var algorithm = variant == 0 ? BclCryptoProvider.Aes128Gcm : BclCryptoProvider.Aes256Gcm;
             fixed (byte* k = key, v = iv, p = plaintext, o = output)
             {
-                var encrypt = Picotls.ptls_aead_new_direct(algorithm, 1, k, v); scope.ThrowIfFailed();
-                var decrypt = Picotls.ptls_aead_new_direct(algorithm, 0, k, v); scope.ThrowIfFailed();
+                var encrypt = PicoTls.ptls_aead_new_direct(algorithm, 1, k, v); scope.ThrowIfFailed();
+                var decrypt = PicoTls.ptls_aead_new_direct(algorithm, 0, k, v); scope.ThrowIfFailed();
                 try
                 {
                     encrypt->do_encrypt(encrypt, o, p, 16, 0, null, 0, null); scope.ThrowIfFailed();
@@ -169,7 +170,7 @@ static unsafe class Program
                     Equal(output.AsSpan(0, 32), expected, "big-endian TLS nonce XOR");
                     encrypt->do_encrypt(encrypt, o, null, 0, 0x0102030405060708, null, 0, null); scope.ThrowIfFailed();
                     Equal(output.AsSpan(0, 16), Hex(variant == 0 ? "58e2fccefa7e3061367f1d57a4e7455a" : "530f8afbc74536b9a963b4f1c4cb738b"), "empty GCM vector");
-                    var cipher = Picotls.ptls_cipher_new(algorithm->ctr_cipher, 1, k); scope.ThrowIfFailed();
+                    var cipher = PicoTls.ptls_cipher_new(algorithm->ctr_cipher, 1, k); scope.ThrowIfFailed();
                     try
                     {
                         st_ptls_aead_supplementary_encryption_t supplementary = default;
@@ -178,9 +179,9 @@ static unsafe class Program
                         using var aes = System.Security.Cryptography.Aes.Create(); aes.Key = key;
                         Equal(new ReadOnlySpan<byte>(supplementary.output, 16), aes.EncryptEcb(expected.AsSpan(0, 16), PaddingMode.None), "supplementary reads ciphertext after encryption");
                     }
-                    finally { Picotls.ptls_cipher_free(cipher); }
+                    finally { PicoTls.ptls_cipher_free(cipher); }
                 }
-                finally { Picotls.ptls_aead_free(encrypt); Picotls.ptls_aead_free(decrypt); }
+                finally { PicoTls.ptls_aead_free(encrypt); PicoTls.ptls_aead_free(decrypt); }
             }
         }
     }
@@ -241,9 +242,9 @@ static unsafe class Program
             using var scope = CallbackScope.Enter();
             using var fault = ProviderFaultInjection.FailAllocation(1);
             if (kind == 0)
-                Check(Picotls.ptls_cipher_new(BclCryptoProvider.Aes128Ctr, 1, key) == null, "core cipher allocation handles setup failure");
+                Check(PicoTls.ptls_cipher_new(BclCryptoProvider.Aes128Ctr, 1, key) == null, "core cipher allocation handles setup failure");
             else
-                Check(Picotls.ptls_aead_new_direct(BclCryptoProvider.Aes128Gcm, 1, key, iv) == null, "core AEAD allocation handles setup failure");
+                Check(PicoTls.ptls_aead_new_direct(BclCryptoProvider.Aes128Gcm, 1, key, iv) == null, "core AEAD allocation handles setup failure");
             bool caught = false;
             try { scope.ThrowIfFailed(); } catch (OutOfMemoryException) { caught = true; }
             Check(caught && fault.DisposedStates == 1 && BclCryptoProvider.LiveManagedContexts == baseline,
@@ -312,7 +313,7 @@ static unsafe class Program
         using (var scope = CallbackScope.Enter())
         {
             byte* iv = stackalloc byte[12]; new Span<byte>(iv, 12).Clear();
-            var context = Picotls.ptls_aead_new_direct(BclCryptoProvider.Aes128Gcm, 1, null, iv);
+            var context = PicoTls.ptls_aead_new_direct(BclCryptoProvider.Aes128Gcm, 1, null, iv);
             Check(context == null, "AEAD setup failure returns null through core");
             bool caught = false;
             try { scope.ThrowIfFailed(); } catch (ArgumentNullException) { caught = true; }

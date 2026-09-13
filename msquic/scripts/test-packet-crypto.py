@@ -68,7 +68,7 @@ try:
     for variant in ['raw', 'optimized']:
         directory = BUILD / variant
         directory.mkdir(exist_ok=True)
-        generated = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+        generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
         generated_sources = (generated / 'Dotcc.SourceFiles.txt').read_text().splitlines()
         hashes = {name: sha(generated / name) for name in generated_sources}
         source_items = '\n'.join('    <Compile Include="' + escape(str(path)) + '" />' for path in sources)

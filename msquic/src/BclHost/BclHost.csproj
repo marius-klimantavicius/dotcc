@@ -5,7 +5,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <IsAotCompatible>true</IsAotCompatible>
-    <MsQuicProject Condition="'$(MsQuicProject)' == ''">$(MSBuildThisFileDirectory)../../generated/optimized/TranslatedMsQuic/TranslatedMsQuic.csproj</MsQuicProject>
+    <MsQuicProject Condition="'$(MsQuicProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedMsQuic/TranslatedMsQuic.csproj</MsQuicProject>
     <PicotlsProject Condition="'$(PicotlsProject)' == ''">$(MSBuildThisFileDirectory)../../../picotls/generated/TranslatedPicotls/TranslatedPicotls.csproj</PicotlsProject>
   </PropertyGroup>
   <ItemGroup>

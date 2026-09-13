@@ -1,3 +1,4 @@
+using static Managed.Transport.MsQuic;
 using System.Runtime.InteropServices;
 
 namespace Managed.Transport.Hosting;

@@ -57,4 +57,22 @@
 #define EOWNERDEAD 130
 #define EILSEQ   84
 
+/* Socket/network errors, matching DotCC.Libc/ErrnoLib.cs. */
+#define ENOTSOCK         88
+#define EMSGSIZE         90
+#define EPROTONOSUPPORT  93
+#define EOPNOTSUPP       95
+#define EAFNOSUPPORT     97
+#define EADDRINUSE       98
+#define EADDRNOTAVAIL    99
+#define ENETUNREACH      101
+#define ECONNABORTED     103
+#define ECONNRESET       104
+#define ENOBUFS          105
+#define EISCONN          106
+#define ENOTCONN         107
+#define ECONNREFUSED     111
+#define EHOSTUNREACH     113
+#define EINPROGRESS      115
+
 #endif

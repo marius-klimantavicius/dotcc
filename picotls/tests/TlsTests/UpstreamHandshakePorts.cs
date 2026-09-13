@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Buffers.Binary;
 using Managed.Security;
 
@@ -111,29 +112,29 @@ internal static partial class Program
         st_ptls_buffer_t clientOutput = PicotlsBuffer.Create(), serverOutput = PicotlsBuffer.Create();
         try
         {
-            client = Picotls.ptls_client_new(&clientContext); server = Picotls.ptls_server_new(&serverContext);
+            client = PicoTls.ptls_client_new(&clientContext); server = PicoTls.ptls_server_new(&serverContext);
             scope.ThrowIfFailed(); Check(client != null && server != null, "raw send-gate peers allocated");
             ulong consumed = 0;
-            Check(Picotls.ptls_handshake(client, &clientOutput, null, &consumed, null) == 0x202, "raw initial CH status");
+            Check(PicoTls.ptls_handshake(client, &clientOutput, null, &consumed, null) == 0x202, "raw initial CH status");
             scope.ThrowIfFailed(); Check(clientOutput.off != 0, "raw initial CH bytes");
             consumed = clientOutput.off;
-            Check(Picotls.ptls_handshake(server, &serverOutput, clientOutput.@base, &consumed, null) == 0, "raw server flight status");
+            Check(PicoTls.ptls_handshake(server, &serverOutput, clientOutput.@base, &consumed, null) == 0, "raw server flight status");
             scope.ThrowIfFailed();
             Check(consumed == clientOutput.off && serverOutput.off > 5, "raw server consumed CH");
             ulong firstRecord = 5UL + ((ulong)serverOutput.@base[3] << 8) + serverOutput.@base[4];
             Check(firstRecord <= serverOutput.off, "raw ServerHello record bounds");
             clientOutput.off = 0; consumed = firstRecord;
-            Check(Picotls.ptls_handshake(client, &clientOutput, serverOutput.@base, &consumed, null) == 0x202, "handshake keys only status");
+            Check(PicoTls.ptls_handshake(client, &clientOutput, serverOutput.@base, &consumed, null) == 0x202, "handshake keys only status");
             scope.ThrowIfFailed(); Check(consumed == firstRecord && clientOutput.off == 0, "only ServerHello consumed");
             fixed (byte* hello = "hello"u8)
-                Check(Picotls.ptls_send(client, &clientOutput, hello, 5) == 0x202, "raw send rejects handshake traffic key");
+                Check(PicoTls.ptls_send(client, &clientOutput, hello, 5) == 0x202, "raw send rejects handshake traffic key");
             scope.ThrowIfFailed(); Check(clientOutput.off == 0, "raw early send emits no application ciphertext");
         }
         finally
         {
-            if (client != null) Picotls.ptls_free(client);
-            if (server != null) Picotls.ptls_free(server);
-            Picotls.dotcc_ptls_buffer_dispose(&clientOutput); Picotls.dotcc_ptls_buffer_dispose(&serverOutput);
+            if (client != null) PicoTls.ptls_free(client);
+            if (server != null) PicoTls.ptls_free(server);
+            PicoTls.dotcc_ptls_buffer_dispose(&clientOutput); PicoTls.dotcc_ptls_buffer_dispose(&serverOutput);
         }
         scope.ThrowIfFailed();
     }

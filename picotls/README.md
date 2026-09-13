@@ -15,6 +15,10 @@ supports P256, both AES-GCM TLS suites, ECDSA/RSA-PSS authentication, explicit
 certificate trust/name checks, ALPN/SNI, key updates and protected session tickets.
 Early data and follow-up algorithms remain disabled.
 
+The generated class is `Managed.Security.PicoTls`. Its types and runtime helpers
+are nested, and its aliases are file-local, so copied sources need no global
+usings. See the usage guide for copying the core or referencing the owning API.
+
 Run these commands serially from this directory (scripts also resolve paths when
 invoked elsewhere):
 

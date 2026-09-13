@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Security.Cryptography;
 using Managed.Security;
 
@@ -14,7 +15,7 @@ static unsafe class TicketVectors
     {
         using var scope = CallbackScope.Enter();
         st_ptls_buffer_t destination = PicotlsBuffer.Create();
-        Program.Check(Picotls.ptls_buffer_reserve(&destination, 8) == 0, "ticket test destination reserve");
+        Program.Check(PicoTls.ptls_buffer_reserve(&destination, 8) == 0, "ticket test destination reserve");
         new Span<byte>(destination.@base, 4).Fill(0xa5); destination.off = 4;
         byte* priorBase = destination.@base;
         ulong priorCapacity = destination.capacity;
@@ -39,7 +40,7 @@ static unsafe class TicketVectors
         finally
         {
             CryptographicOperations.ZeroMemory(new Span<byte>(destination.@base, checked((int)destination.off)));
-            Picotls.dotcc_ptls_buffer_dispose(&destination);
+            PicoTls.dotcc_ptls_buffer_dispose(&destination);
         }
     }
     private static void RoundTripsAndRotation()

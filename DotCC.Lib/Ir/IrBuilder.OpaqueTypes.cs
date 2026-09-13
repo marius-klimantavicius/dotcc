@@ -14,6 +14,8 @@ internal sealed partial class IrBuilder
     private CType ReferenceAggregate(global::LALR.CC.LexicalGrammar.Item tag, bool isUnion)
     {
         var name = Tok(tag);
+        if (_macroEvaluation && !_aggregateTags.ContainsKey(name) && !_structFields.ContainsKey(name))
+            throw new IrUnsupportedException("unknown aggregate in macro constant: " + name);
         // time.h and locale.h deliberately omit these bodies: the library owns
         // their storage and imported APIs. Recognize this header contract only
         // at synthetic declarations, never by an arbitrary user's tag spelling.

@@ -1,5 +1,10 @@
 # Linux x64 qualification
 
+The subsequent [nested-layout regeneration](nested-layout.md) has its own refreshed
+ABI, consumer and service evidence. The compiler hashes and full campaign ledger
+below describe the preceding checkpoint; they are historical evidence, not a
+claim that every matrix was rerun after changing the generated layout.
+
 Evidence collection is complete for this campaign. The rows below use the frozen
 compiler and regenerated product closure. This is not unconditional qualification:
 the stronger recovery checks retain strict failures, and one managed terminal

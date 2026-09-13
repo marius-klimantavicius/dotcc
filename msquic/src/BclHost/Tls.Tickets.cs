@@ -1,7 +1,8 @@
+using static Managed.Security.PicoTls;
 using System.Buffers.Binary;
 using System.Security.Cryptography;
 using Managed.Security;
-using Ptls = Managed.Security.Picotls;
+using Ptls = Managed.Security.PicoTls;
 
 namespace Managed.Transport.Hosting;
 

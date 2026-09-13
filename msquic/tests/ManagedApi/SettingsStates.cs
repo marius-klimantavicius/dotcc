@@ -1,3 +1,4 @@
+using static Managed.Transport.MsQuic;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Managed.Transport;

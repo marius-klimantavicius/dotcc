@@ -52,6 +52,11 @@ internal static class Program
         {
             Description = "UTF-8 byte target for --split=size (default 262144); close a file after its first complete function crosses the target.",
         };
+        var emitDefineOpt = new Option<string[]>("--emit-define")
+        {
+            Description = "Export additional object-like macros as const/static readonly fields. Repeatable exact names or * / ? patterns (quote globs).",
+            AllowMultipleArgumentsPerToken = false
+        };
         var overrideOpt = new Option<string[]>("--override-macro")
         {
             Description = "Replace active C macro definitions: NAME=BODY. Repeatable; use --overrides-file for selectors/templates.",
@@ -142,7 +147,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, runtimeOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, emitDefineOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, runtimeOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -258,8 +263,9 @@ internal static class Program
                 using var report = parse.GetValue(overrideReportOpt) is { } reportPath ? new StreamWriter(reportPath) : null;
                 var profile = parse.GetValue(overridesFileOpt);
                 var overrides = parse.GetValue(overrideOpt) ?? Array.Empty<string>();
-                var preprocessing = profile != null || overrides.Length != 0 || report != null
-                    ? CPreprocessingOptions.Load(profile, overrides, report) : null;
+                var emitDefines = parse.GetValue(emitDefineOpt) ?? Array.Empty<string>();
+                var preprocessing = profile != null || overrides.Length != 0 || report != null || emitDefines.Length != 0
+                    ? CPreprocessingOptions.Load(profile, overrides, report, emitDefines) : null;
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),
@@ -421,8 +427,8 @@ internal static class Program
             && System.Array.TrueForAll(inputPaths, p =>
                 !p.EndsWith(".c", System.StringComparison.OrdinalIgnoreCase)
                 && !p.EndsWith(".zig", System.StringComparison.OrdinalIgnoreCase));
-        if (linking && preprocessing is { HasOverrides: true })
-            throw new CompileException("macro overrides require C source; rebuild objects to change their definitions");
+        if (linking && (preprocessing is { HasOverrides: true } or { HasMacroExports: true }))
+            throw new CompileException("macro overrides/exports require C source; rebuild objects to change their definitions");
         IReadOnlyDictionary<string, string> generatedSources;
         var emitMode = emit.ToEmitMode(libraryMode);
         try

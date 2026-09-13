@@ -68,7 +68,7 @@ try:
     for variant in args.variants:
         directory = BUILD / variant
         directory.mkdir(exist_ok=True)
-        generated = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+        generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
         picotls = PICOTLS / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
         hashes, pico_hashes = generated_hashes(generated), generated_hashes(picotls)
         if any(frozen['generated'][variant].get(name) != digest for name, digest in hashes.items()):

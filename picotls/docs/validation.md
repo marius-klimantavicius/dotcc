@@ -362,3 +362,27 @@ comparison and a reduced shared-layout repair where required, preserving the
 actual picotls ABI. Neither the expected outputs nor the oracle flags have been
 changed to hide these differences. Remaining SQLite stages are paused at this
 gate while that profile investigation runs.
+
+## 2026-09-12 — Isolated PicoTls sources
+
+The translation recipe now selects `--nest-types --runtime=c --class-name PicoTls`.
+Both raw and optimized output contain nine manifest-owned `PicoTls*.cs` files,
+with no global using directives or global-usings sidecar. Regeneration removed
+the old manifest-owned `Picotls.*` files. Provider and direct consumers import
+the nested API types locally.
+
+`./scripts/test.sh --all --aot --runtime linux-x64` passes in
+`artifacts/tests/run-_ofyv5ic`. All four variants pass the new copied-source
+consumer (implicit usings disabled, colliding consumer names, nested allocation
+and callback invocation), 92 actual ABI checks, provider/failure vectors, upstream
+ports, TLS tests, and 224 peer executions. The dependency audit also passes with
+zero violations and zero missing prerequisites; its report is
+`artifacts/dependencies-picotls-rename.json`.
+
+`python3 ../msquic/scripts/test-tls-feasibility.py` also passes the direct QUIC
+handshake-message probes for raw/optimized × JIT/NativeAOT. Its receipt is
+`../msquic/artifacts/tls-feasibility-run.json`.
+
+This change uses existing compiler nesting support; it changes no shared compiler
+or libc implementation. These results qualify Linux x64; they do not establish
+additional platform support or requalify concurrent MsQuic changes.

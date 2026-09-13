@@ -1,3 +1,4 @@
+using static Managed.Transport.MsQuic;
 using System.Text;
 using System.Text.Json;
 using Managed.Transport;

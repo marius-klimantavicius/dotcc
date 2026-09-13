@@ -38,7 +38,7 @@ def sha(path):
 
 
 def generated_hashes(variant):
-    return {p.name: sha(p) for p in sorted((ROOT / 'generated' / variant / 'TranslatedMsQuic').glob('*.cs'))}
+    return {p.name: sha(p) for p in sorted((ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')).glob('*.cs'))}
 
 
 def picotls_directory(variant):
@@ -73,7 +73,7 @@ def require_receipt(name, path):
             raise RuntimeError(name + ' lacks ' + variant + ' qualification')
         hashes = match.get('generated_hashes', match.get('generated_sha256'))
         validate_generated_record(name + ' ' + variant, hashes,
-            ROOT / 'generated' / variant / 'TranslatedMsQuic', generated_hashes(variant))
+            ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic'), generated_hashes(variant))
         if name == 'tls-adapter':
             validate_generated_record(name + ' picotls ' + variant, match.get('picotls_generated_sha256'),
                 picotls_directory(variant), picotls_hashes(variant))
@@ -256,7 +256,7 @@ try:
             '</PropertyGroup><ItemGroup><ProjectReference Include="' + escape(str(ROOT / 'src/BclHost/BclHost.csproj')) + '"/>'
             '<Compile Include="' + escape(str(ROOT / 'tests/ManagedPeer/Program.cs')) + '"/>'
             '<TrimmerRootAssembly Include="TranslatedMsQuic"/><TrimmerRootAssembly Include="TranslatedPicotls"/></ItemGroup></Project>\n')
-        library_project = ROOT / 'generated' / variant / 'TranslatedMsQuic/TranslatedMsQuic.csproj'
+        library_project = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic') / 'TranslatedMsQuic.csproj'
         property_args = ['-p:MsQuicProject=' + str(library_project),
                          '-p:PicotlsProject=' + str(picotls_directory(variant) / 'TranslatedPicotls.csproj')]
         with tempfile.TemporaryDirectory(prefix='dotcc-managed-peer-build-') as isolated_tmp:

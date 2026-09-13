@@ -107,6 +107,8 @@ internal class SourceMappedItem : Item
         _map = (origin as SourceMappedItem)?._map;
         _origin = origin is SourceMappedItem mapped ? mapped._origin : origin.Position;
         Packing = SourcePacking.Recorded(origin);
+        FunctionMacroOrigin.Copy(item, this);
+        FunctionMacroOrigin.Copy(origin, this);
     }
     internal SourceMappedItem(Item item, PhysicalSourceMap map) : base(item.ID, item.Content, item.Position)
     {
@@ -164,9 +166,9 @@ internal sealed class PhysicalPositionRewriter(ISyncIterator<Item> inner) : Rewr
     protected override void ProcessToken(Item token)
     {
         var position = SourceMappedItem.Physical(token);
-        Emit(SourceMappedItem.FileOf(token) is { } source
+        Emit(FunctionMacroOrigin.Copy(token, SourceMappedItem.FileOf(token) is { } source
             ? new SourceLocatedItem(token.ID, token.Content, position, source, SourcePacking.Of(token))
             : token is SourceMappedItem
-                ? new SourcePackingItem(new Item(token.ID, token.Content, position), SourcePacking.Of(token)) : token);
+                ? new SourcePackingItem(new Item(token.ID, token.Content, position), SourcePacking.Of(token)) : token));
     }
 }

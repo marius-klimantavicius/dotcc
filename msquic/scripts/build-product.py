@@ -67,6 +67,9 @@ try:
             raise RuntimeError('Host ABI compiler changed: ' + name)
     receipt['stage_manifest_sha256'] = stage_hash
     receipt['compiler_hashes'] = host_result['compiler_hashes']
+    if host_result.get('macro_exports') != ['QUIC_STATUS_*']:
+        raise RuntimeError('Rebuild host ABI objects with QUIC_STATUS_* macro exports')
+    receipt['macro_exports'] = host_result['macro_exports']
     receipt['objects'] = []
     objects = []
     commands = {record['name']: record['arguments'] for record in host_result['commands']}
@@ -79,7 +82,8 @@ try:
         if (cached['source'] != str(STAGE / unit) or cached['source_sha256'] != sha(STAGE / unit)
                 or cached['object'] != str(obj) or cached['object_sha256'] != sha(obj)
                 or cached['stage_manifest_sha256'] != stage_hash
-                or cached['compiler_hashes'] != host_result['compiler_hashes']):
+                or cached['compiler_hashes'] != host_result['compiler_hashes']
+                or cached.get('macro_exports') != host_result['macro_exports']):
             raise RuntimeError('Stale or changed object cache: ' + unit)
         objects.append(obj)
         receipt['objects'].append(dict(source=unit, source_sha256=sha(STAGE / unit),
@@ -98,9 +102,11 @@ try:
     if any(sha(post_source / name) != digest for name, digest in post_hashes.items()):
         raise RuntimeError('Postprocessor changed during snapshot')
     receipt['postprocessor_hashes'] = post_hashes
+    receipt['output_options'] = dict(nest_types=True, runtime='c')
+    receipt['generated_directories'] = dict(raw='generated/raw/TranslatedMsQuic', optimized='generated/TranslatedMsQuic')
     raw = ROOT / 'generated/raw/TranslatedMsQuic'
-    optimized = ROOT / 'generated/optimized/TranslatedMsQuic'
-    run(['dotnet', compiler, '--emit=managedlib', '--class-name', 'MsQuic',
+    optimized = ROOT / 'generated/TranslatedMsQuic'
+    run(['dotnet', compiler, '--emit=managedlib', '--nest-types', '--runtime=c', '--class-name', 'MsQuic',
          '--namespace', 'Managed.Transport', '--split=size', *objects, '-o', raw], 'raw-link')
     optimized.mkdir(parents=True, exist_ok=True)
     # Cleanup is limited to previously generated manifest-owned files.

@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Security.Cryptography;
 using Managed.Security;
 
@@ -62,7 +63,7 @@ internal static partial class Program
         fixed (byte* start = storage)
         {
             st_ptls_cipher_suite_t* selected = null;
-            int result = Picotls.select_cipher(&selected, candidates, start, start + offered.Length,
+            int result = PicoTls.select_cipher(&selected, candidates, start, start + offered.Length,
                 preferServer, chachaPriority, null);
             Check(result == (expected.HasValue ? 0 : 40), "select_cipher exact status");
             if (expected.HasValue)
@@ -120,7 +121,7 @@ internal static partial class Program
         }
         finally
         {
-            Picotls.dotcc_ptls_buffer_dispose(&tls.recvbuf.mess);
+            PicoTls.dotcc_ptls_buffer_dispose(&tls.recvbuf.mess);
             upstreamFragments = null;
         }
         scope.ThrowIfFailed();
@@ -131,7 +132,7 @@ internal static partial class Program
         fixed (byte* data = bytes)
         {
             st_ptls_record_t record = new() { type = 22, version = 0x0301, length = (ulong)bytes.Length, fragment = data };
-            return Picotls.handle_handshake_record(tls, UpstreamFragmentPointer, null, &record, null);
+            return PicoTls.handle_handshake_record(tls, UpstreamFragmentPointer, null, &record, null);
         }
     }
     private static void CheckFragment(int index, byte[] expected, bool endOfRecord)
@@ -174,14 +175,14 @@ internal static partial class Program
         {
             byte[] packet = Convert.FromHexString(encoded);
             upstreamLegacyHello = null; upstreamLegacyCallbacks = 0;
-            st_ptls_t* server = Picotls.ptls_server_new(&context);
+            st_ptls_t* server = PicoTls.ptls_server_new(&context);
             st_ptls_buffer_t outgoing = PicotlsBuffer.Create();
             try
             {
                 scope.ThrowIfFailed(); Check(server != null, "legacy raw server allocation");
                 ulong consumed = (ulong)packet.Length;
                 fixed (byte* source = packet)
-                    Check(Picotls.ptls_handshake(server, &outgoing, source, &consumed, null) == (name == "ssl2" ? 50 : 70),
+                    Check(PicoTls.ptls_handshake(server, &outgoing, source, &consumed, null) == (name == "ssl2" ? 50 : 70),
                         "pinned " + name + " exact rejection alert");
                 scope.ThrowIfFailed();
                 if (name == "ssl2")
@@ -198,8 +199,8 @@ internal static partial class Program
             }
             finally
             {
-                if (server != null) Picotls.ptls_free(server);
-                Picotls.dotcc_ptls_buffer_dispose(&outgoing);
+                if (server != null) PicoTls.ptls_free(server);
+                PicoTls.dotcc_ptls_buffer_dispose(&outgoing);
                 upstreamLegacyHello = null;
             }
             scope.ThrowIfFailed();
@@ -277,16 +278,16 @@ internal static partial class Program
     {
         using var scope = CallbackScope.Enter();
         using var server = serverContext.CreateConnection();
-        st_ptls_t* client = Picotls.ptls_client_new(context);
+        st_ptls_t* client = PicoTls.ptls_client_new(context);
         st_ptls_handshake_properties_t properties = default;
         st_ptls_iovec_t alpn = new() { @base = Libc.L("dotcc-picotls\0"u8), len = (ulong)"dotcc-picotls"u8.Length };
         try
         {
             scope.ThrowIfFailed(); Check(client != null, "GREASE raw client allocation");
-            Check(Picotls.ptls_set_server_name(client, Libc.L("localhost\0"u8), 9) == 0, "GREASE authenticated hostname");
+            Check(PicoTls.ptls_set_server_name(client, Libc.L("localhost\0"u8), 9) == 0, "GREASE authenticated hostname");
             fixed (byte* ticketBytes = ticket)
             {
-                Picotls.dotcc_ptls_client_properties(&properties, &alpn, 1,
+                PicoTls.dotcc_ptls_client_properties(&properties, &alpn, 1,
                     new st_ptls_iovec_t { @base = ticketBytes, len = (ulong)ticket.Length }, 0);
                 properties.__anon___Anon16.client.ech.configs = new() { @base = Libc.L("\0"u8), len = 0 };
                 byte[] hello = StepUpstreamGreaseClient(client, &properties, [], true);
@@ -309,25 +310,25 @@ internal static partial class Program
                     if (output.Length != 0) pending.Enqueue((!packet.ToServer, output));
                 }
             }
-            Check(Picotls.ptls_handshake_is_complete(client) != 0 && server.HandshakeComplete, "GREASE handshake completes");
-            Check((Picotls.ptls_is_psk_handshake(client) != 0) == resumed && server.IsResumed == resumed, "GREASE full or PSK-DHE resumed status");
-            Check(Picotls.ptls_is_ech_handshake(client, null, null, null) == 0, "GREASE falls back without real ECH acceptance");
+            Check(PicoTls.ptls_handshake_is_complete(client) != 0 && server.HandshakeComplete, "GREASE handshake completes");
+            Check((PicoTls.ptls_is_psk_handshake(client) != 0) == resumed && server.IsResumed == resumed, "GREASE full or PSK-DHE resumed status");
+            Check(PicoTls.ptls_is_ech_handshake(client, null, null, null) == 0, "GREASE falls back without real ECH acceptance");
             st_ptls_buffer_t application = PicotlsBuffer.Create();
             try
             {
                 fixed (byte* bytes = "GREASE resumed application"u8)
-                    Check(Picotls.ptls_send(client, &application, bytes, (ulong)"GREASE resumed application"u8.Length) == 0,
+                    Check(PicoTls.ptls_send(client, &application, bytes, (ulong)"GREASE resumed application"u8.Length) == 0,
                         "GREASE authenticated application send");
                 scope.ThrowIfFailed();
                 var accepted = server.Process(new ReadOnlySpan<byte>(application.@base, checked((int)application.off)));
                 Check(accepted.Plaintext.AsSpan().SequenceEqual("GREASE resumed application"u8), "GREASE application payload survives fallback and resumption");
             }
-            finally { Picotls.dotcc_ptls_buffer_dispose(&application); }
+            finally { PicoTls.dotcc_ptls_buffer_dispose(&application); }
             byte[] saved = upstreamGreaseTicket ?? [];
             upstreamGreaseTicket = null;
             return saved;
         }
-        finally { if (client != null) Picotls.ptls_free(client); }
+        finally { if (client != null) PicoTls.ptls_free(client); }
     }
 
     private static unsafe byte[] StepUpstreamGreaseClient(st_ptls_t* client, st_ptls_handshake_properties_t* properties,
@@ -343,9 +344,9 @@ internal static partial class Program
                 do
                 {
                     ulong consumed = initial ? 0 : (ulong)(input.Length - offset);
-                    int status = Picotls.ptls_handshake_is_complete(client) == 0
-                        ? Picotls.ptls_handshake(client, &outgoing, initial ? null : source + offset, &consumed, properties)
-                        : Picotls.ptls_receive(client, &plaintext, source + offset, &consumed);
+                    int status = PicoTls.ptls_handshake_is_complete(client) == 0
+                        ? PicoTls.ptls_handshake(client, &outgoing, initial ? null : source + offset, &consumed, properties)
+                        : PicoTls.ptls_receive(client, &plaintext, source + offset, &consumed);
                     scope.ThrowIfFailed();
                     Check(status is 0 or 0x202, "GREASE raw client handshake status");
                     Check(consumed <= (ulong)(input.Length - offset), "GREASE raw input consumption bounded");
@@ -359,8 +360,8 @@ internal static partial class Program
         }
         finally
         {
-            Picotls.dotcc_ptls_buffer_dispose(&outgoing);
-            Picotls.dotcc_ptls_buffer_dispose(&plaintext);
+            PicoTls.dotcc_ptls_buffer_dispose(&outgoing);
+            PicoTls.dotcc_ptls_buffer_dispose(&plaintext);
         }
     }
 

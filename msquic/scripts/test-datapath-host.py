@@ -27,7 +27,7 @@ try:
  receipt['source_hashes']={str(p.relative_to(ROOT)):sha(p) for p in sourcefiles}
  for variant in args.variants:
   project=BUILD/variant;project.mkdir(exist_ok=True)
-  generated=ROOT/'generated'/variant/'TranslatedMsQuic';library=generated/'TranslatedMsQuic.csproj'
+  generated=ROOT/'generated'/('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic');library=generated/'TranslatedMsQuic.csproj'
   generated_hashes={p.name:sha(p) for p in generated.glob('*.cs')}
   write_test_host(generated,project,register_calls='RegisterPlatform(ref table);RegisterDatapath(ref table);',method_name='CreateDatapathTable')
   (project/'DatapathHost.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><IsAotCompatible>true</IsAotCompatible><NoWarn>CS0162</NoWarn></PropertyGroup><ItemGroup><ProjectReference Include="'+escape(str(library))+'"/>'+''.join('<Compile Include="'+escape(str(p))+'"/>' for p in sourcefiles)+'<TrimmerRootAssembly Include="TranslatedMsQuic"/></ItemGroup></Project>\n')

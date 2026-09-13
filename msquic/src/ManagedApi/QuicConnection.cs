@@ -1,8 +1,9 @@
+using static Managed.Transport.MsQuic;
 using System.Net;
 using System.Text;
 using System.Threading.Channels;
 using Managed.Transport.Hosting;
-using static Managed.Transport.QUIC_CONNECTION_EVENT_TYPE;
+using static Managed.Transport.MsQuic.QUIC_CONNECTION_EVENT_TYPE;
 
 namespace Managed.Transport.Api;
 

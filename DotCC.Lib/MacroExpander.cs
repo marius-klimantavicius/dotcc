@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LALR.CC;
 using LALR.CC.LexicalGrammar;
 
@@ -10,6 +11,10 @@ namespace DotCC;
 internal sealed class MacroExpander : RewritingTokenStream
 {
     private readonly CPreprocessor _cpp;
+    private bool _metadata;
+    private int _metadataTokens;
+    private int _metadataCharacters;
+    private sealed class MetadataExpansionLimit : Exception;
     private readonly int _idSymbol, _openParenSymbol, _closeParenSymbol;
     private readonly int _commaSymbol, _stringSymbol, _hashSymbol, _hashHashSymbol;
     private const string VaArgsName = "__VA_ARGS__";
@@ -18,7 +23,7 @@ internal sealed class MacroExpander : RewritingTokenStream
     // Whitespace belongs to the token boundary, independently of source locations.
     // Substitution combines tokens from different definitions/arguments, so their
     // original positions cannot reconstruct adjacency after replacement.
-    private readonly record struct Token(Item Item, bool LeadingSpace)
+    private readonly record struct Token(Item Item, bool LeadingSpace, bool Contextual = false)
     {
         public int ID => Item.ID;
         public object? Content => Item.Content;
@@ -44,6 +49,30 @@ internal sealed class MacroExpander : RewritingTokenStream
         _stringSymbol = map["STRING"];
         _hashSymbol = map["#"];
         _hashHashSymbol = map["##"];
+    }
+
+    // Reuse ordinary substitution/prescan/rescan, but metadata must not freeze
+    // contextual built-ins or count as an expansion in the source report.
+    internal static IReadOnlyList<Item> ExpandConstantBody(CPreprocessor cpp, MacroDef macro)
+    {
+        using var lexer = BytesLexer.FromString("", C.BuildLexer());
+        using var expander = new MacroExpander(lexer, cpp) { _metadata = true };
+        try
+        {
+            var tokens = ReadTokens(macro.Body);
+            var hiding = new HashSet<string>(StringComparer.Ordinal) { macro.Name };
+            // A replacement's final function name can meet parentheses from
+            // its caller (ALIAS(1), where ALIAS expands to WRAP). Rescan that
+            // boundary too; token hidesets keep recursive macros disabled.
+            for (;;)
+            {
+                var expanded = expander.ExpandTokenList(tokens, hiding);
+                if (expanded.Select(t => t.Content).SequenceEqual(tokens.Select(t => t.Content)))
+                    return expanded.Any(t => t.Contextual) ? Array.Empty<Item>() : expanded.Select(token => token.Item).ToArray();
+                tokens = expanded;
+            }
+        }
+        catch (MetadataExpansionLimit) { return Array.Empty<Item>(); }
     }
 
     private static bool Separated(Item previous, Item next)
@@ -76,7 +105,7 @@ internal sealed class MacroExpander : RewritingTokenStream
             {
                 if (next.ID == _openParenSymbol)
                 {
-                    _cpp.RecordExpansion(macro, token);
+                    if (!_metadata) _cpp.RecordExpansion(macro, token);
                     var args = CollectArgsFromStream(next);
                     var substituted = Substitute(macro, args, new HashSet<string>(StringComparer.Ordinal), token);
                     // A function name may come from an object replacement while
@@ -94,11 +123,17 @@ internal sealed class MacroExpander : RewritingTokenStream
 
     private List<Token> ExpandTokenList(IReadOnlyList<Token> tokens, HashSet<string> hiding)
     {
+        // An unused macro must not make API discovery consume unbounded work.
+        if (_metadata && ((_metadataTokens += tokens.Count + 1) > 8192 || hiding.Count > 128))
+            throw new MetadataExpansionLimit();
         var result = new List<Token>();
         var pendingSpace = false;
         for (var i = 0; i < tokens.Count; ++i)
         {
             var token = tokens[i] with { LeadingSpace = tokens[i].LeadingSpace || pendingSpace };
+            if (_metadata && (_metadataCharacters += token.Content?.ToString()?.Length ?? 0) > 1_048_576)
+                throw new MetadataExpansionLimit();
+            if (_metadata && token.Content is "__LINE__" or "__FILE__") token = token with { Contextual = true };
             pendingSpace = false;
             if (token.ID == _idSymbol && token.Content is string name && !hiding.Contains(name)
                 && !MacroExpansionItem.IsDisabled(token.Item, name))
@@ -113,7 +148,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                             var (args, end) = CollectArgsFromList(tokens, i + 2);
                             if (end >= 0)
                             {
-                                _cpp.RecordExpansion(macro, token.Item);
+                                if (!_metadata) _cpp.RecordExpansion(macro, token.Item);
                                 var substituted = Substitute(macro, args,
                                     new HashSet<string>(hiding, StringComparer.Ordinal), token.Item);
                                 var functionHiding = MacroExpansionItem.IntersectDisabled(token.Item, args.Closing);
@@ -129,7 +164,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                     }
                     else
                     {
-                        _cpp.RecordExpansion(macro, token.Item);
+                        if (!_metadata) _cpp.RecordExpansion(macro, token.Item);
                         activeHiding.Add(name);
                         var replacement = ExpandTokenList(ReadBody(macro.Body, token.Item), activeHiding);
                         AppendReplacement(result, replacement, token.LeadingSpace);
@@ -137,7 +172,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                         continue;
                     }
                 }
-                else if (name == "__LINE__" || name == "__FILE__")
+                else if (!_metadata && (name == "__LINE__" || name == "__FILE__"))
                 {
                     // Raw argument capture defers these predefined macros too.
                     foreach (var expanded in _cpp.Rewrite(token.Item))
@@ -242,6 +277,9 @@ internal sealed class MacroExpander : RewritingTokenStream
         var result = new List<Token>(macro.Body.Count);
         SubstituteInto(result, ReadBody(macro.Body, invocation), macro, raw, expanded,
             macro.Params.Count > 0 && args.Values.Count <= macro.Params.Count);
+        // Clone before marking: a parameter may still be shared with raw input.
+        for (var i = 0; i < result.Count; ++i)
+            result[i] = result[i] with { Item = FunctionMacroOrigin.Mark(MacroExpansionItem.AtInvocation(result[i].Item, result[i].Item)) };
         return result;
     }
 
@@ -312,7 +350,8 @@ internal sealed class MacroExpander : RewritingTokenStream
             if (token.ID == _hashSymbol && i + 1 < body.Count && body[i + 1].Content is string name
                 && raw.TryGetValue(name, out var argument))
             {
-                result.Add(new Token(SourceMappedItem.Create(_stringSymbol, "\"" + Stringify(argument) + "\"", token.Item), token.LeadingSpace));
+                result.Add(new Token(SourceMappedItem.Create(_stringSymbol, "\"" + Stringify(argument) + "\"", token.Item), token.LeadingSpace,
+                    argument.Any(t => t.Contextual)));
                 ++i;
                 continue;
             }
@@ -340,7 +379,7 @@ internal sealed class MacroExpander : RewritingTokenStream
             output.Add(i == 0 ? left[i] with { LeadingSpace = location.LeadingSpace } : left[i]);
         var text = (left[^1].Content?.ToString() ?? string.Empty) + (right[0].Content?.ToString() ?? string.Empty);
         output.Add(new Token(SourceMappedItem.Create(_idSymbol, text, location.Item),
-            left.Count == 1 ? location.LeadingSpace : left[^1].LeadingSpace));
+            left.Count == 1 ? location.LeadingSpace : left[^1].LeadingSpace, left[^1].Contextual || right[0].Contextual));
         for (var i = 1; i < right.Count; ++i) output.Add(right[i]);
     }
 

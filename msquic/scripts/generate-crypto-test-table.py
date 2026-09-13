@@ -4,16 +4,16 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-generated = ROOT / 'generated/optimized/TranslatedMsQuic'
+generated = ROOT / 'generated/TranslatedMsQuic'
 sources = (generated / 'Dotcc.SourceFiles.txt').read_text().splitlines()
 tables = []
 nonce_helpers = []
 for name in sources:
     source = (generated / name).read_text()
     nonce_helpers.extend(re.findall(r'public static readonly delegate\*<byte\*, byte\*, byte\*, void> (QuicCryptoCombineIvAndPacketNumber__unit_\w+) =', source))
-    match = re.search(r'public unsafe struct MSQUIC_HOST_TABLE\s*\{(.*?)\n\}', source, re.S)
+    match = re.search(r'(?m)^(?P<indent>[ \t]*)public unsafe struct MSQUIC_HOST_TABLE\s*\{(?P<body>.*?)\n(?P=indent)\}', source, re.S)
     if match:
-        tables.append(match.group(1))
+        tables.append(match.group('body'))
 if len(tables) != 1:
     raise RuntimeError('Expected exactly one host table declaration')
 callbacks = re.findall(r'public delegate\*<(.+?)> (\w+);', tables[0])
@@ -33,7 +33,7 @@ def split_types(text):
 
 
 lines = ['// Generated test-only fail-fast table; never compiled into the product host.',
-         'using static Managed.Transport.Libc;',
+         'using static Managed.Transport.MsQuic;\nusing static Managed.Transport.MsQuic.Libc;',
          'namespace Managed.Transport.Hosting;',
          'public sealed unsafe partial class MsQuicHost', '{',
          '    private static void RegisterUnexercised(ref MSQUIC_HOST_TABLE table)', '    {']

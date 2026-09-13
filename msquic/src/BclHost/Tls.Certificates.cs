@@ -1,3 +1,5 @@
+using static Managed.Transport.MsQuic;
+using static Managed.Security.PicoTls;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Managed.Security;

@@ -138,7 +138,7 @@ internal sealed partial class IrBuilder
         v >= long.MinValue && v <= long.MaxValue;
 
     /// <summary>Optional API metadata; null records a definition with no constant value.</summary>
-    internal List<(string Name, CExpr? Value)> MacroConstants { get; } = new();
+    internal List<(string Name, CExpr? Value, bool Selected)> MacroConstants { get; } = new();
 
     internal CExpr? FoldMacroConstant(CExpr expression)
     {
@@ -147,14 +147,19 @@ internal sealed partial class IrBuilder
         // for layout/comptime work; exported C constants need C-width wrapping.
         CExpr? normalized = expression switch
         {
-            LitStr or LitInt or LitFloat or LitBool => expression,
+            LitStr or LitInt or LitFloat or LitBool or EnumConstRef or SizeOfExpr or OffsetOf => expression,
+            VarRef { Sym.IsConstexpr: true } => expression,
             Paren p => FoldMacroConstant(p.Inner),
             Cast c when FoldMacroConstant(c.Operand) is { } operand => c with { Operand = operand },
             Unary u when FoldMacroConstant(u.Operand) is { } operand => u with { Operand = operand },
+            Binary { Op: BinOp.LogAnd or BinOp.LogOr } b
+                when FoldMacroConstant(b.Left) is { } left && TryEvalTop(left, allowCalls: false) is { } leftValue
+                    && (b.Op == BinOp.LogAnd ? !Truthy(leftValue) : Truthy(leftValue))
+                => new LitInt(b.Op == BinOp.LogAnd ? "0" : "1", b.Op == BinOp.LogAnd ? 0 : 1) { Type = CType.Int },
             Binary b when FoldMacroConstant(b.Left) is { } left && FoldMacroConstant(b.Right) is { } right
                 => b with { Left = left, Right = right },
-            CondExpr c when FoldMacroConstant(c.Cond) is { } foldedCondition && ConstEval(foldedCondition) is { } condition
-                => FoldMacroConstant(condition != 0 ? c.Then : c.Else) is { } chosen
+            CondExpr c when FoldMacroConstant(c.Cond) is { } foldedCondition && TryEvalTop(foldedCondition, allowCalls: false) is { } condition
+                => FoldMacroConstant(Truthy(condition) ? c.Then : c.Else) is { } chosen
                     ? new Cast(expression.Type, chosen) { Type = expression.Type } : null,
             _ => null,
         };
@@ -168,17 +173,28 @@ internal sealed partial class IrBuilder
             if (left == null || right == null) return null;
             normalized = binary with { Left = left, Right = right };
         }
+        // C pointer sentinels are constant addresses, but C# requires readonly
+        // fields for pointer types. Keep the typed cast over a folded integer.
+        if (normalized is Cast { Target.Unqualified: CType.Pointer or CType.Func, Operand: var address } pointer
+            && address.Type.Unqualified is CType.Prim { Integer: true })
+            return pointer;
+        if (normalized is Cast { Target.Unqualified: CType.Prim { Name: "_Bool" } } booleanCast
+            && TryEvalTop(booleanCast.Operand, allowCalls: false) is { } booleanValue)
+            return new LitInt(Truthy(booleanValue) ? "1" : "0", Truthy(booleanValue) ? 1 : 0) { Type = CType.Bool };
         var value = TryEvalTop(normalized, allowCalls: false);
         if (value is CtBool boolean)
             return new LitInt(boolean.Value ? "1" : "0", boolean.Value ? 1 : 0) { Type = CType.Int };
-        if (expression.Type.Unqualified is not CType.Prim { Bytes: > 0 and <= 8 } type) return null;
+        var scalarType = expression.Type.Unqualified is CType.Enum enumeration ? enumeration.Underlying : expression.Type;
+        if (scalarType.Unqualified is not CType.Prim { Bytes: > 0 and <= 8 } type) return null;
         if (value is CtInt integer && type.Integer)
         {
             int bits = type.Bytes * 8;
             var modulus = System.Int128.One << bits;
             var number = integer.Value & (modulus - 1);
             if (type.Signed && number >= (modulus >> 1)) number -= modulus;
-            return SpliceInt(new CtInt(number, expression.Type));
+            var literal = SpliceInt(new CtInt(number, scalarType));
+            return expression.Type.Unqualified is CType.Enum
+                ? new Cast(expression.Type, literal) { Type = expression.Type } : literal;
         }
         if (value is CtFloat floating && double.IsFinite(floating.Value))
         {

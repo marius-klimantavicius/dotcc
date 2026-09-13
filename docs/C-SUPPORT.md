@@ -17,8 +17,13 @@ Source of truth for the grammar: `DotCC.Lib/c.lalr.yaml`. Source of truth for th
 
 Object-like numeric and UTF-8 string macros from user sources/headers and explicit
 `-D` options are exported as public C# `const` fields on the generated API class.
-Typed expression folding preserves integer widths and float types; split output
-and object linking retain this metadata. See [macro constants](cli.md#public-macro-constants)
+Full object/function macro expansion (including `#`, `##`, and variadics) precedes
+typed detection against the translation unit's typedefs, enums and aggregate
+layout. Integer widths and float types are preserved; integer-cast pointer
+sentinels and `_Bool` values emit as `static readonly`. Discovery uses isolated
+symbols and diagnostics and never executes calls. `--emit-define` exact/glob
+selectors additionally include system-header macros and require selected values
+to be exportable. Split output and object linking retain this metadata. See [macro constants](cli.md#public-macro-constants)
 for supported expressions and omission/collision rules.
 
 ## Coverage at a glance

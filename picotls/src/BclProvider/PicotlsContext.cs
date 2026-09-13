@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -196,7 +197,7 @@ public sealed unsafe class PicotlsContext : IDisposable
             if (input->server_name.len != 0)
             {
                 if (input->server_name.@base == null || new ReadOnlySpan<byte>(input->server_name.@base, (int)input->server_name.len).Contains((byte)0)) return 47;
-                int result = Picotls.ptls_set_server_name(tls, input->server_name.@base, input->server_name.len);
+                int result = PicoTls.ptls_set_server_name(tls, input->server_name.@base, input->server_name.len);
                 if (result != 0) return result;
             }
             var policy = (HelloPolicy)GCHandle.FromIntPtr(((HelloRegistration*)self)->Handle).Target!;
@@ -206,7 +207,7 @@ public sealed unsafe class PicotlsContext : IDisposable
                     var offered = input->negotiated_protocols.list[i];
                     if (offered.len == (ulong)protocol.Length && offered.@base != null &&
                         protocol.AsSpan().SequenceEqual(new ReadOnlySpan<byte>(offered.@base, protocol.Length)))
-                        fixed (byte* selected = protocol) return Picotls.ptls_set_negotiated_protocol(tls, selected, (ulong)protocol.Length);
+                        fixed (byte* selected = protocol) return PicoTls.ptls_set_negotiated_protocol(tls, selected, (ulong)protocol.Length);
                 }
             return 120; // no_application_protocol; every facade connection requires ALPN.
         }

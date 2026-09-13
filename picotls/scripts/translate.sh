@@ -25,7 +25,7 @@ rm -f "$logs/success.json"
 python3 "$PICOTLS_ROOT/scripts/snapshot-translation.py" inputs
 timeout --kill-after=10s "${PICOTLS_TRANSLATE_TIMEOUT:-600}s" \
     dotnet "$compiler" -std=c17 "${PICOTLS_DEFINES[@]}" -I "$source_dir/include" -I "$source_dir" \
-    "${sources[@]}" --emit=managedlib --class-name Picotls --namespace Managed.Security \
+    "${sources[@]}" --emit=managedlib --nest-types --runtime=c --class-name PicoTls --namespace Managed.Security \
     --split=size --split-size=102400 -o "$(dirname -- "$PICOTLS_PROJECT")" \
     2>&1 | tee "$logs/emit.log"
 require_picotls_project "$PICOTLS_PROJECT"

@@ -106,6 +106,8 @@ its `--in-place` mode also works with split output.
 
 Generated C# files disable warnings `CS0162`, `CS8909`, `CS1717`, `CS0164`,
 `CS0642`, and `CS0675` with a file-scoped `#pragma warning disable` directive.
+The primary source file containing types additionally suppresses `CS8981`
+(lowercase type names). Split function and alias files retain the common list.
 
 ## Isolating copied translations
 
@@ -153,6 +155,10 @@ emits `public static class Sqlite`. The corresponding APIs are
 The selected name is used in declarations, static imports, function-owner aliases
 and native export wrapper calls. Globals and canonical pointer containers are named `{class_name}Globals` and
 `{class_name}FunctionPointers`. The pointer fields are consolidated into one class.
+Functions whose declarator names come from function-like macro expansion get
+pointer fields only when their addresses are used by translated C code. Ordinary
+functions retain automatic public pointer fields; macro expansion in a return
+type or function body alone does not suppress a field.
 Aggregate names, assembly names and native export entry-point names stay unchanged. Choose a name that does not conflict with translated symbols or runtime
 helper types; infrastructure and translated-declaration collisions are diagnosed.
 
@@ -163,17 +169,55 @@ object-like string and numeric macros from source/user headers and explicit
 `-D` options. For example, SQLite exports `Sqlite.SQLITE_CHECKPOINT_TRUNCATE`
 and `Sqlite.SQLITE_VERSION`. Function bodies still use preprocessed values.
 
-The frontend expands object-like aliases and uses the C parser and typed
-constant evaluator for literals, arithmetic/bitwise/comparison expressions and
-primitive casts. Integer widths/signedness and float suffixes are retained.
+The frontend fully expands object/function macro wrappers, aliases, argument
+prescan/rescan, stringification, token pasting and variadic replacements before
+using the C parser and typed constant evaluator. The evaluator resolves the
+translation unit's typedefs, enum constants, `sizeof`, `_Alignof`, and `offsetof`,
+as well as arithmetic, bitwise, comparison and conditional expressions. Integer
+widths/signedness and float suffixes are retained. Numeric/string/enum values
+become `public const`; integer-cast pointer sentinels and C `_Bool` (`CBool`)
+values become `public static readonly`. For example, MsQuic's `QUIC_STATUS_*`
+values wrapped in `QUIC_STATUS_DEF(...)` are discovered automatically.
 Ordinary UTF-8 C string literals become C# strings, without an implicit terminal
 NUL; explicit embedded NULs remain. Synthetic system-header macros and seeded
-compiler built-ins are not exported unless explicitly defined by the caller.
+compiler built-ins are not exported unless explicitly defined or selected by the caller.
 
 Function-like, empty, undefined, contextual (`__LINE__`/`__FILE__`), nonconstant,
-non-UTF-8 string and unsupported replacement lists are omitted. Expressions
-requiring typedef names, function-like macro calls, or nonprimitive C# constant
-types are currently omitted. Macro names colliding with emitted members/types
+non-UTF-8 string and unsupported replacement lists are omitted. Discovery uses
+a separate evaluator so unused macros cannot add imports, diagnostics, or change
+the generated program's storage. Calls are never executed; unevaluated operands
+such as `sizeof(declared_function())` can still yield constants. Expansion is
+bounded to 8,192 visited tokens, 1 MiB of visited token text, and 128 nested disabled macros; replacement
+lists over 256 tokens and declaration/statement bodies are omitted.
+Macro names colliding with emitted members/types
 or the API class are omitted too. Across translation units/objects, identical
 fields coalesce and conflicting definitions are omitted rather than picking one
 translation unit's value. Constants remain in `{class_name}.cs` for every split mode.
+
+Use repeatable `--emit-define` selectors to export additional object-like macros:
+
+```bash
+dotcc --emit=managedlib --emit-define 'QUIC_STATUS_*' --emit-define MY_HANDLE_INVALID source.c -o generated/
+```
+
+Each selector matches the entire, case-sensitive macro name: an exact name,
+`*` for any sequence, or `?` for one character. Quote patterns to prevent shell
+expansion. Selection adds to automatic discovery and may include system-header
+macros. Active definitions at the end of each translation unit are used, after
+macro overrides; undefined macros and function-like definitions themselves are
+ignored, so `QUIC_STATUS_*` can include helper names such as `QUIC_STATUS_DEF`.
+
+Selected replacement lists use the same expansion and typed evaluation as
+automatic discovery. Selection is useful for system-header macros and for
+requiring a named definition to be exportable: an unsupported,
+contextual, empty or nonconstant selected definition is a compile error naming
+the macro. Collision and cross-unit conflict rules above still apply.
+
+Pass selectors when compiling C sources, including `--emit=obj`; they cannot be
+applied to existing objects at link time. The library API accepts the same list:
+
+```csharp
+var preprocessing = new CPreprocessingOptions(
+    Array.Empty<MacroOverride>(), emitDefines: new[] { "QUIC_STATUS_*", "MY_HANDLE_INVALID" });
+var source = Compiler.EmitCSharp(inputs, emit: EmitMode.ManagedLib, preprocessing: preprocessing);
+```

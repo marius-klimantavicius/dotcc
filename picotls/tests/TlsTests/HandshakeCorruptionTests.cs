@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Security.Cryptography;
 using Managed.Security;
 
@@ -105,34 +106,34 @@ internal static partial class Program
                     st_ptls_buffer_t output = PicotlsBuffer.Create();
                     try
                     {
-                        client = Picotls.ptls_client_new(&clientContext); server = Picotls.ptls_server_new(&serverContext);
+                        client = PicoTls.ptls_client_new(&clientContext); server = PicoTls.ptls_server_new(&serverContext);
                         Check(client != null && server != null, "real corruption-test core connections");
-                        fixed (byte* name = "localhost\0"u8) Check(Picotls.ptls_set_server_name(client, name, 9) == 0, "corruption-test endpoint");
+                        fixed (byte* name = "localhost\0"u8) Check(PicoTls.ptls_set_server_name(client, name, 9) == 0, "corruption-test endpoint");
                         ulong consumed = 0;
-                        Check(Picotls.ptls_handshake(client, &output, null, &consumed, null) == 0x202, "corruption-test ClientHello");
+                        Check(PicoTls.ptls_handshake(client, &output, null, &consumed, null) == 0x202, "corruption-test ClientHello");
                         byte[] hello = new ReadOnlySpan<byte>(output.@base, checked((int)output.off)).ToArray(); output.off = 0;
                         consumed = (ulong)hello.Length;
                         int serverResult;
                         fixed (byte* bytes = hello)
-                            serverResult = Picotls.ptls_handshake(server, &output, bytes, &consumed, null);
+                            serverResult = PicoTls.ptls_handshake(server, &output, bytes, &consumed, null);
                         scope.ThrowIfFailed();
                         Check(serverResult == 0, $"server emits authenticated corrupted flight (0x{serverResult:x})");
                         Check(corruptions == 1, "exact requested handshake message was modified before GCM");
                         byte[] flight = new ReadOnlySpan<byte>(output.@base, checked((int)output.off)).ToArray(); output.off = 0;
                         consumed = (ulong)flight.Length;
                         int result;
-                        fixed (byte* bytes = flight) result = Picotls.ptls_handshake(client, &output, bytes, &consumed, null);
+                        fixed (byte* bytes = flight) result = PicoTls.ptls_handshake(client, &output, bytes, &consumed, null);
                         scope.ThrowIfFailed();
                         // The pinned core maps a bad Finished to handshake_failure;
                         // the certificate verifier maps a bad signature to decrypt_error.
                         Check(result == (type == 15 ? 51 : 40), $"invalid {(type == 15 ? "CertificateVerify" : "Finished")} rejected (0x{result:x})");
-                        Check(Picotls.ptls_handshake_is_complete(client) == 0, "corrupted authenticated handshake never completes");
+                        Check(PicoTls.ptls_handshake_is_complete(client) == 0, "corrupted authenticated handshake never completes");
                     }
                     finally
                     {
-                        Picotls.ptls_buffer__release_memory(&output);
-                        if (client != null) Picotls.ptls_free(client);
-                        if (server != null) Picotls.ptls_free(server);
+                        PicoTls.ptls_buffer__release_memory(&output);
+                        if (client != null) PicoTls.ptls_free(client);
+                        if (server != null) PicoTls.ptls_free(server);
                     }
                     scope.ThrowIfFailed();
                     Check(BclCryptoProvider.LiveManagedContexts == baseline, "corruption failure releases all connection crypto state");

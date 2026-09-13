@@ -1,3 +1,4 @@
+using static Managed.Security.PicoTls;
 using System.Buffers.Binary;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -335,7 +336,7 @@ public static unsafe partial class BclCryptoProvider
             lock (state.Gate)
             {
                 ObjectDisposedException.ThrowIf(state.Disposed, state);
-                if (state.BoundContext != 0 && (tls == null || (nint)Picotls.ptls_get_context(tls) != state.BoundContext))
+                if (state.BoundContext != 0 && (tls == null || (nint)PicoTls.ptls_get_context(tls) != state.BoundContext))
                     return encrypt == 0 ? TicketNotFound : ErrorLibrary;
                 long now = TicketClock.Now(state);
                 state.Prune(now);
@@ -388,7 +389,7 @@ public static unsafe partial class BclCryptoProvider
             ulong count = (ulong)privateResult.Length;
             if (destination->off > destination->capacity || count > ulong.MaxValue - destination->off)
                 throw new ArgumentException("Invalid destination ticket buffer.");
-            int result = Picotls.ptls_buffer_reserve(destination, count);
+            int result = PicoTls.ptls_buffer_reserve(destination, count);
             if (result != 0) return result;
             privateResult.CopyTo(WriteBytes(destination->@base + destination->off, count, MaximumTicketSize));
             destination->off += count;

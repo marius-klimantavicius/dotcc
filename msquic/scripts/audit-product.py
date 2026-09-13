@@ -227,7 +227,7 @@ try:
             require(not any(n.tag.split('}')[-1] in ('PackageReference', 'Reference') for n in nodes), 'Unexpected external authored project dependency: ' + str(path))
     marker = lex.RUNTIME_MARKER
     for variant in ['raw', 'optimized']:
-        directory = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+        directory = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
         check_hashes(closure['generated'][variant], directory, variant + ' generated closure')
         names = (directory / 'Dotcc.SourceFiles.txt').read_text().splitlines()
         require(bool(names) and len(names) == len(set(names)) and

@@ -1,15 +1,42 @@
 # MsQuic translation campaign
 
+Regenerate the selected core and its postprocessed product with:
+
+```sh
+msquic/scripts/translate.sh
+```
+
+The final project is
+`msquic/generated/TranslatedMsQuic/TranslatedMsQuic.csproj`. Translation links
+with `--nest-types --runtime=c`; ABI types and runtime helpers live inside
+`Managed.Transport.MsQuic`. Low-level consumers can import these types with
+`using static Managed.Transport.MsQuic;`. The owning API keeps its existing
+`Managed.Transport.Api` surface and references this final project by default.
+
+Full macro expansion and typed detection automatically expose status values such
+as `MsQuic.QUIC_STATUS_PENDING`, preserving their unsigned C values. Object
+compilation retains `--emit-define 'QUIC_STATUS_*'` to require these API exports. Macro-generated function helpers
+receive canonical pointer fields only when translated C uses their addresses.
+
+The script preserves raw nested output at `generated/raw/TranslatedMsQuic`,
+postprocesses the final project in place, and checks native/JIT/NativeAOT ABI and
+whole-assembly consumers. `--no-build-tools` reuses already-built compiler and
+postprocessor binaries. Earlier closure evidence is archived before regeneration;
+the new closure does not claim a fresh SQLite or full transport campaign unless
+those gates have actually been rerun.
+See [nested-layout validation](docs/nested-layout.md) for the refreshed ABI,
+consumer and service checks.
+
 The selected Linux x64 product translates and links all 47 source units from the
 MsQuic snapshot resolved on 2026-09-12. Raw and postprocessed libraries work under
 JIT and NativeAOT. The translated core uses a managed platform/UDP host, BCL packet
 cryptography and the existing translated picotls provider. Separate native MsQuic
 and aioquic processes serve as test peers.
 
-The current qualification passes 80 basic transport pairs, 68 owning API mode
+Before the nested-layout change, qualification passed 80 basic transport pairs, 68 owning API mode
 executions, 32 separate-consumer cases, 88 independent-peer cases, 152 CID cases,
 480 positive recovery exchanges and 64 live endpoint input/amplification profiles.
-SQLite was freshly regenerated with the final compiler; its normal generated
+That campaign also freshly regenerated SQLite; its normal generated
 output includes the postprocessor optimizations and passes JIT/NativeAOT checks.
 The fixed native recovery observations and full 20-pair performance comparison
 are complete. Two stronger recovery checks retain strict failures, including one

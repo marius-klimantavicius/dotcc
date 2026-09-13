@@ -1,5 +1,9 @@
 # Owning managed API contract
 
+The API contract is unchanged by [nested generated types](nested-layout.md).
+That page records current layout validation; the comprehensive facade campaign
+described below predates the layout change.
+
 The owning API is implemented. Its [full facade matrix](../artifacts/managed-api-all/results.json)
 passes 17 modes × raw/optimized × JIT/NativeAOT: 68 executions with exact pinned
 revision metadata and matching source inputs. The [coverage inventory](api-coverage.md)
@@ -15,7 +19,7 @@ and platform gates remain separate; this API result does not declare them comple
 ## Public types and ownership
 
 Use `Managed.Transport.Api` for the facade, keeping generated C types in
-`Managed.Transport` and host services in `Managed.Transport.Hosting`. Public
+`Managed.Transport.MsQuic` and host services in `Managed.Transport.Hosting`. Public
 signatures expose managed values, not `QUIC_HANDLE*`, API table pointers, native
 credential structures, generated anonymous types or arbitrary parameter blobs.
 

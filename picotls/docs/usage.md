@@ -8,7 +8,7 @@ The native OpenSSL adapter and independent `SslStream` peer are test oracles.
 campaign passes, including actual ABI, provider/failure, upstream, TLS and
 independent-peer checks. The dependency audit and broad compiler/SQLite
 regressions also pass. Receipt: `artifacts/tests/PASS.json`, run
-`artifacts/tests/run-lqwhjcso`; detailed evidence is in [validation.md](validation.md).
+`artifacts/tests/run-_ofyv5ic`; detailed evidence is in [validation.md](validation.md).
 Windows/macOS and other architectures remain unverified.
 
 ## Prepare, translate, build, test
@@ -40,8 +40,9 @@ builds just the optimized translated project; `--raw` builds just its raw
 counterpart. It performs no fetch, translation, tests or NativeAOT publish.
 
 `test.sh` uses existing translations and prepared native reference inputs. It
-builds test consumers, then runs actual emitted ABI storage checks (92 native
-sizes/alignments/member offsets), provider vectors, upstream test ports, the TLS
+builds test consumers, including a direct copied-source consumer, then runs
+actual emitted ABI storage checks (92 native sizes/alignments/member offsets),
+provider vectors, upstream test ports, the TLS
 API suite, and the managed/native/independent process peers in that order. It
 does not fetch or translate anything. Missing products, source provenance or
 native oracle libraries cause a clear failure.
@@ -66,6 +67,21 @@ passes with unchanged inputs. Older run receipts remain historical evidence for
 their recorded inputs.
 
 ## Consume the managed API
+
+The generated wrapper is `Managed.Security.PicoTls`. Translation uses
+`--nest-types --runtime=c`, matching SQLite's isolated source layout. Generated
+types and runtime helpers are nested inside `PicoTls`; callback aliases are
+file-local, so no `PicoTls.GlobalUsings.g.cs` is emitted. For direct unsafe API
+types, add `using static Managed.Security.PicoTls;` to the individual consumer
+files that need them, or qualify names such as `PicoTls.st_ptls_context_t` and
+`PicoTls.Libc`.
+
+To copy the translated core into another project, take the `.cs` files listed in
+`generated/TranslatedPicotls/Dotcc.SourceFiles.txt`. Its manifest also removes the
+old `Picotls.*` files when regenerating in place. The copied-source test compiles
+the actual output in a consumer assembly with implicit usings disabled and
+colliding consumer type names, under JIT and NativeAOT. The BCL provider/owning API
+is supplied separately under `src/BclProvider/`.
 
 Reference `src/BclProvider/BclProvider.csproj`; it references the generated
 `TranslatedPicotls.csproj`. The public namespace is `Managed.Security`. The

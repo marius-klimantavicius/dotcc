@@ -117,7 +117,7 @@ def main():
             paths.append(path)
         generated_inputs = {}
         for variant in args.variants:
-            ms = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+            ms = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
             tls = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
             selected = generated(ms, closure['generated'][variant]) + generated(tls, pico[variant])
             paths += selected

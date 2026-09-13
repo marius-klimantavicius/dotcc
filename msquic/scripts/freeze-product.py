@@ -15,6 +15,8 @@ parser = argparse.ArgumentParser(description=__doc__)
 mode = parser.add_mutually_exclusive_group(required=True)
 mode.add_argument('--archive-current', action='store_true')
 mode.add_argument('--sqlite-receipt', type=Path)
+mode.add_argument('--without-sqlite', action='store_true',
+                  help='Freeze the MsQuic ABI/build gates without claiming a fresh shared SQLite campaign')
 args = parser.parse_args()
 
 
@@ -71,7 +73,7 @@ if args.archive_current:
     files.extend(compiler / name for name in previous['compiler_hashes'])
     closure_bound.update({(compiler / name).resolve(): digest for name, digest in previous['compiler_hashes'].items()})
     for variant in ['raw', 'optimized']:
-        directory = ROOT / 'generated' / variant / 'TranslatedMsQuic'
+        directory = ROOT / previous.get('generated_directories', {}).get(variant, 'generated/' + variant + '/TranslatedMsQuic')
         verified(previous['generated'][variant], directory, 'Previous generated closure')
         files.extend(directory / name for name in previous['generated'][variant])
         closure_bound.update({(directory / name).resolve(): digest for name, digest in previous['generated'][variant].items()})
@@ -112,90 +114,97 @@ if args.archive_current:
     print(archive)
     raise SystemExit(0)
 
-sqlite_path = args.sqlite_receipt.resolve()
-sqlite = read(sqlite_path)
-check(sqlite.get('passed') is True, 'Final SQLite/compiler campaign did not pass')
-prefix = sqlite.get('reused_sqlite_prefix')
-expected_stages = ['repaired-port-regressions' if prefix else 'sqlite-campaign-with-ports',
-                   'fresh-raw-engine', 'postprocess-tool-build', 'raw-engine-restore',
-                   'raw-optimized-snapshot', 'raw-optimized-jit-aot-corpora']
-check([row['label'] for row in sqlite['commands']] == expected_stages and
-      all(row.get('completed') and row.get('exit_code') == 0 for row in sqlite['commands']), 'Incomplete SQLite/compiler stages')
-verified(sqlite['source_hashes'], REPO, 'Final SQLite sources')
-verified(sqlite['compiler_after'], REPO, 'Final SQLite compiler')
-identity = sqlite['compiler_after']
-check(identity and sqlite.get('compiler_post_build') == identity, 'Missing matching post-build SQLite compiler identity')
-for index, row in enumerate(sqlite['commands']):
-    check(row.get('compiler_after') == identity and
-          (row.get('compiler_before') == identity or (index == 0 and not prefix)),
-          'Compiler changed across a SQLite translation/test stage: ' + row['label'])
-if prefix:
-    original_path = Path(prefix['receipt'])
-    check(sha(original_path) == prefix['receipt_sha256'], 'Original failed SQLite receipt changed')
-    original = read(original_path)
-    check(original.get('passed') is False and original['compiler_after'] == identity and
-          len(original['commands']) == 1 and original['commands'][0]['label'] == 'sqlite-campaign-with-ports' and
-          original['commands'][0].get('completed') and original['commands'][0].get('exit_code') == 1 and
-          prefix['original_command_exit_code'] == 1, 'Composite prefix is not the preserved port-only campaign failure')
-    repair = prefix['repaired_script']
-    check(repair['path'] == 'sqlite/scripts/test-ports.sh' and
-          original['source_hashes'][repair['path']] == repair['before_sha256'] and
-          sqlite['source_hashes'][repair['path']] == repair['after_sha256'] and
-          repair['before_sha256'] != repair['after_sha256'], 'Composite script repair differs from recorded inputs')
-    check({k: v for k, v in original['source_hashes'].items() if k != repair['path']} ==
-          {k: v for k, v in sqlite['source_hashes'].items() if k != repair['path']},
-          'Other SQLite inputs changed after the reused prefix')
-    verified(prefix['log_sha256'], REPO, 'Completed SQLite prefix logs')
-    required_markers = ['PASS native ' + name for name in
-                        ['core', 'api', 'vfs', 'vtable', 'allocation', 'upstream', 'fts5', 'layout']]
-    required_markers += ['PASS translated ' + name for name in
-                         ['core', 'api', 'vfs', 'vtable', 'allocation', 'upstream', 'fts5']]
-    original_log = Path(original['commands'][0]['log'])
-    check(str(original_log.relative_to(REPO)) in prefix['log_sha256'] and
-          prefix['completed_markers'] == required_markers and
-          all(marker in original_log.read_text() for marker in required_markers) and
-          'sqlite/artifacts/campaign-image-exchange.log' in prefix['log_sha256'],
-          'Reused SQLite prefix lacks completed native/translated/image-exchange evidence')
-    failure = prefix['original_port_failure']
-    check(sha(Path(failure['path'])) == failure['sha256'], 'Original Lua failure log changed')
-snapshot = Path(sqlite['snapshot'])
-check(snapshot.is_dir() and sha(snapshot / 'manifest.json') == sqlite['snapshot_manifest_sha256'],
-      'Final SQLite snapshot manifest changed')
-snapshot_files = sqlite['snapshot_file_sha256']
-check(snapshot_files, 'Missing final SQLite snapshot file identities')
-verified(snapshot_files, REPO, 'Final SQLite snapshot files')
-actual_snapshot = {str(path.relative_to(REPO)): sha(path) for path in snapshot.rglob('*')
-                   if path.is_file() and not {'bin', 'obj'}.intersection(path.relative_to(snapshot).parts)
-                   and (path.suffix in {'.cs', '.csproj'} or path.name == 'manifest.json')}
-check(snapshot_files == actual_snapshot, 'Final SQLite snapshot file set differs from its evidence')
-normal_path = sqlite_path.parent / 'normal-optimized-product/results.json'
-normal = read(normal_path)
-check(normal.get('passed') and normal.get('exit_code') == 0 and
-      normal.get('matches_qualified_optimized_snapshot') is True and
-      normal['snapshot_receipt_sha256'] == sha(sqlite_path) and normal['compiler_sha256'] == identity,
-      'Normal optimized SQLite product is not qualified against this snapshot/compiler')
-verified(normal['product_source_sha256'], REPO, 'Normal optimized SQLite emitted sources')
-verified(normal['linked_host_source_sha256'], REPO, 'Normal SQLite linked host sources')
-normal_directory = REPO / 'sqlite/generated/TranslatedSqlite'
-selected = (normal_directory / 'Dotcc.SourceFiles.txt').read_text().splitlines()
-check(selected and len(selected) == len(set(selected)) and
-      {str((normal_directory / name).relative_to(REPO)) for name in selected} == set(normal['product_source_sha256']),
-      'Normal SQLite generated source manifest differs from qualified product')
-check(sha(normal_directory / 'TranslatedSqlite.csproj') == normal['product_project_sha256'] and
-      sha(normal_path.parent / 'consumer.log') == normal['log_sha256'], 'Normal SQLite project/consumer evidence changed')
-verified(normal['restoration_optimizer_sha256'], normal_path.parent / 'restoration-optimizer', 'Archived restoration optimizer')
-verified(normal['restored_frozen_optimizer_sha256'], REPO / 'DotCC.PostProcess/bin/Release/net10.0', 'Frozen postprocessor restoration')
+if args.sqlite_receipt is not None:
+    sqlite_path = args.sqlite_receipt.resolve()
+    sqlite = read(sqlite_path)
+    check(sqlite.get('passed') is True, 'Final SQLite/compiler campaign did not pass')
+    prefix = sqlite.get('reused_sqlite_prefix')
+    expected_stages = ['repaired-port-regressions' if prefix else 'sqlite-campaign-with-ports',
+                       'fresh-raw-engine', 'postprocess-tool-build', 'raw-engine-restore',
+                       'raw-optimized-snapshot', 'raw-optimized-jit-aot-corpora']
+    check([row['label'] for row in sqlite['commands']] == expected_stages and
+          all(row.get('completed') and row.get('exit_code') == 0 for row in sqlite['commands']), 'Incomplete SQLite/compiler stages')
+    verified(sqlite['source_hashes'], REPO, 'Final SQLite sources')
+    verified(sqlite['compiler_after'], REPO, 'Final SQLite compiler')
+    identity = sqlite['compiler_after']
+    check(identity and sqlite.get('compiler_post_build') == identity, 'Missing matching post-build SQLite compiler identity')
+    for index, row in enumerate(sqlite['commands']):
+        check(row.get('compiler_after') == identity and
+              (row.get('compiler_before') == identity or (index == 0 and not prefix)),
+              'Compiler changed across a SQLite translation/test stage: ' + row['label'])
+    if prefix:
+        original_path = Path(prefix['receipt'])
+        check(sha(original_path) == prefix['receipt_sha256'], 'Original failed SQLite receipt changed')
+        original = read(original_path)
+        check(original.get('passed') is False and original['compiler_after'] == identity and
+              len(original['commands']) == 1 and original['commands'][0]['label'] == 'sqlite-campaign-with-ports' and
+              original['commands'][0].get('completed') and original['commands'][0].get('exit_code') == 1 and
+              prefix['original_command_exit_code'] == 1, 'Composite prefix is not the preserved port-only campaign failure')
+        repair = prefix['repaired_script']
+        check(repair['path'] == 'sqlite/scripts/test-ports.sh' and
+              original['source_hashes'][repair['path']] == repair['before_sha256'] and
+              sqlite['source_hashes'][repair['path']] == repair['after_sha256'] and
+              repair['before_sha256'] != repair['after_sha256'], 'Composite script repair differs from recorded inputs')
+        check({k: v for k, v in original['source_hashes'].items() if k != repair['path']} ==
+              {k: v for k, v in sqlite['source_hashes'].items() if k != repair['path']},
+              'Other SQLite inputs changed after the reused prefix')
+        verified(prefix['log_sha256'], REPO, 'Completed SQLite prefix logs')
+        required_markers = ['PASS native ' + name for name in
+                            ['core', 'api', 'vfs', 'vtable', 'allocation', 'upstream', 'fts5', 'layout']]
+        required_markers += ['PASS translated ' + name for name in
+                             ['core', 'api', 'vfs', 'vtable', 'allocation', 'upstream', 'fts5']]
+        original_log = Path(original['commands'][0]['log'])
+        check(str(original_log.relative_to(REPO)) in prefix['log_sha256'] and
+              prefix['completed_markers'] == required_markers and
+              all(marker in original_log.read_text() for marker in required_markers) and
+              'sqlite/artifacts/campaign-image-exchange.log' in prefix['log_sha256'],
+              'Reused SQLite prefix lacks completed native/translated/image-exchange evidence')
+        failure = prefix['original_port_failure']
+        check(sha(Path(failure['path'])) == failure['sha256'], 'Original Lua failure log changed')
+    snapshot = Path(sqlite['snapshot'])
+    check(snapshot.is_dir() and sha(snapshot / 'manifest.json') == sqlite['snapshot_manifest_sha256'],
+          'Final SQLite snapshot manifest changed')
+    snapshot_files = sqlite['snapshot_file_sha256']
+    check(snapshot_files, 'Missing final SQLite snapshot file identities')
+    verified(snapshot_files, REPO, 'Final SQLite snapshot files')
+    actual_snapshot = {str(path.relative_to(REPO)): sha(path) for path in snapshot.rglob('*')
+                       if path.is_file() and not {'bin', 'obj'}.intersection(path.relative_to(snapshot).parts)
+                       and (path.suffix in {'.cs', '.csproj'} or path.name == 'manifest.json')}
+    check(snapshot_files == actual_snapshot, 'Final SQLite snapshot file set differs from its evidence')
+    normal_path = sqlite_path.parent / 'normal-optimized-product/results.json'
+    normal = read(normal_path)
+    check(normal.get('passed') and normal.get('exit_code') == 0 and
+          normal.get('matches_qualified_optimized_snapshot') is True and
+          normal['snapshot_receipt_sha256'] == sha(sqlite_path) and normal['compiler_sha256'] == identity,
+          'Normal optimized SQLite product is not qualified against this snapshot/compiler')
+    verified(normal['product_source_sha256'], REPO, 'Normal optimized SQLite emitted sources')
+    verified(normal['linked_host_source_sha256'], REPO, 'Normal SQLite linked host sources')
+    normal_directory = REPO / 'sqlite/generated/TranslatedSqlite'
+    selected = (normal_directory / 'Dotcc.SourceFiles.txt').read_text().splitlines()
+    check(selected and len(selected) == len(set(selected)) and
+          {str((normal_directory / name).relative_to(REPO)) for name in selected} == set(normal['product_source_sha256']),
+          'Normal SQLite generated source manifest differs from qualified product')
+    check(sha(normal_directory / 'TranslatedSqlite.csproj') == normal['product_project_sha256'] and
+          sha(normal_path.parent / 'consumer.log') == normal['log_sha256'], 'Normal SQLite project/consumer evidence changed')
+    verified(normal['restoration_optimizer_sha256'], normal_path.parent / 'restoration-optimizer', 'Archived restoration optimizer')
+    verified(normal['restored_frozen_optimizer_sha256'], REPO / 'DotCC.PostProcess/bin/Release/net10.0', 'Frozen postprocessor restoration')
 compiler = ROOT / 'build/host-contract/compiler'
 host = read(ROOT / 'artifacts/host-contract/results.json')
 product = read(ROOT / 'artifacts/product-build/results.json')
 abi = read(ROOT / 'artifacts/abi/results.json')
 for name, receipt in [('host ABI', host), ('product', product), ('public ABI', abi)]:
     check(receipt.get('passed') is True, name + ' gate did not pass')
+check(product.get('output_options') == dict(nest_types=True, runtime='c'),
+      'Product was not generated with the selected nested C layout')
+check(product.get('generated_directories') == dict(raw='generated/raw/TranslatedMsQuic',
+                                                 optimized='generated/TranslatedMsQuic'),
+      'Product output locations differ from the selected layout')
 verified(host['compiler_hashes'], compiler, 'Frozen emitter')
 check(product['compiler_hashes'] == host['compiler_hashes'], 'Product and host compiler differ')
-for name, expected in sqlite['compiler_after'].items():
-    relative = Path(name).relative_to('DotCC/bin/Release/net10.0')
-    check(host['compiler_hashes'].get(str(relative)) == expected, 'Frozen emitter differs from SQLite compiler: ' + name)
+if args.sqlite_receipt is not None:
+    for name, expected in sqlite['compiler_after'].items():
+        relative = Path(name).relative_to('DotCC/bin/Release/net10.0')
+        check(host['compiler_hashes'].get(str(relative)) == expected, 'Frozen emitter differs from SQLite compiler: ' + name)
 check(abi.get('compiler_stable') and abi['compiler_sha256'] == abi['compiler_sha256_after'], 'Public ABI compiler changed')
 for name, expected in abi['compiler_sha256'].items():
     check(host['compiler_hashes'].get(Path(name).name) == expected, 'Public ABI used another compiler')
@@ -240,7 +249,9 @@ for index, record in enumerate(product['objects'], 1):
     expected_includes = ['-I' + str(stage_path.parent / path) for path in ['system', 'src/inc', 'src/core', 'src/platform', 'host']]
     expected_includes.extend(['-I' + str(ROOT / 'tests/Abi'), '-I' + str(ROOT / 'tests/HostContract')])
     check(cached['includes'] == expected_includes, 'Object include roots differ from the host ABI campaign')
-    expected_command = ['dotnet', str(compiler / 'dotcc.dll'), '--emit=obj', *cached['flags'], *cached['includes'],
+    check(cached.get('macro_exports') == host.get('macro_exports') == product.get('macro_exports') == ['QUIC_STATUS_*'],
+          'Object macro export selection differs from the product')
+    expected_command = ['dotnet', str(compiler / 'dotcc.dll'), '--emit=obj', '--emit-define', 'QUIC_STATUS_*', *cached['flags'], *cached['includes'],
                         str(source), '-o', str(obj)]
     check(record['arguments'] == host_commands.get(f'core-object-{index:02d}') == expected_command,
           'Product/ABI object emission command differs: ' + record['source'])
@@ -251,7 +262,7 @@ for variant in product['variants']:
     check(variant.get('passed') and variant.get('complete_assembly_rooted_for_aot') and
           variant.get('jit') == 'jit: boundary rejection passed' and
           variant.get('aot') == 'nativeaot: boundary rejection passed', 'Incomplete product consumer gate: ' + name)
-    directory = ROOT / 'generated' / name / 'TranslatedMsQuic'
+    directory = ROOT / 'generated' / ('raw/TranslatedMsQuic' if name == 'raw' else 'TranslatedMsQuic')
     verified(variant['generated_sha256'], directory, 'Generated product')
     generated[name] = variant['generated_sha256']
 # Record the SDK build revision from the generated attribute and require the
@@ -269,17 +280,21 @@ check(len(set(versions.values())) == 1, 'CLI and compiler library build revision
 revision = next(iter(versions.values())).split('+')[-1]
 check(re.fullmatch(r'[0-9a-f]{40}', revision) is not None, 'Compiler build revision is not an exact commit')
 operations = read(ROOT / 'config/managed-host/operations.json')
-evidence = [ROOT / 'artifacts' / name / 'results.json' for name in ['host-contract', 'abi', 'product-build']] + [sqlite_path, normal_path]
-value = dict(schema_version=1, status='Final compiler/metadata closure passed P2; dependent full runtime qualification is separate',
+evidence = [ROOT / 'artifacts' / name / 'results.json' for name in ['host-contract', 'abi', 'product-build']]
+if args.sqlite_receipt is not None:
+    evidence += [sqlite_path, normal_path]
+value = dict(schema_version=1, status='Nested MsQuic ABI/build closure passed; dependent runtime and shared regression qualification is separate',
     revision=pin['commit'], compiler_commit=revision, compiler_informational_versions=versions,
     stage_manifest_sha256=sha(stage_path), units=stage['units'],
     host_table_version=operations['version'], host_callback_slots=len(operations['operations']),
     data_model=stage['data_model'], source_files=stage['files'], api_profile_sha256=sha(ROOT / 'config/api-profile.json'),
     evidence_sha256={os.path.relpath(p, ROOT): sha(p) for p in evidence}, compiler_hashes=host['compiler_hashes'], generated=generated,
+    generated_directories=product['generated_directories'], output_options=product['output_options'],
+    macro_exports=product['macro_exports'],
     gates=dict(host_abi_native_records=sum(row['native_records'] for row in host['cases']),
         public_abi_native_records=public['native_records'], raw_optimized_jit_nativeaot=True,
-        entire_generated_assembly_rooted_for_aot=True, shared_compiler_sqlite_campaign_passed=True,
-        normal_optimized_sqlite_product_passed=True))
+        entire_generated_assembly_rooted_for_aot=True, shared_compiler_sqlite_campaign_passed=args.sqlite_receipt is not None,
+        normal_optimized_sqlite_product_passed=args.sqlite_receipt is not None))
 # Validate all current evidence above before considering a no-op. Reusing an
 # unchanged valid closure keeps its original checkpoint and byte identity, so
 # dependent receipts are not invalidated by running this command twice.

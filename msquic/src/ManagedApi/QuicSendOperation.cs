@@ -1,3 +1,4 @@
+using static Managed.Transport.MsQuic;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

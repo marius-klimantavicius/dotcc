@@ -158,7 +158,7 @@ dotnet ../DotCC/bin/Release/net10.0/dotcc.dll -std=c17 \
   -DPTLS_HAVE_LOG=0 -DPICOTLS_USE_DTRACE=0 -I "$source_root/include" \
   "$source_root/lib/hpke.c" "$source_root/lib/picotls.c" \
   "$source_root/lib/pembase64.c" --emit=managedlib \
-  --class-name Picotls --namespace Managed.Security \
+  --nest-types --runtime=c --class-name PicoTls --namespace Managed.Security \
   --split=size --split-size=102400 -o generated/TranslatedPicotls
 ```
 

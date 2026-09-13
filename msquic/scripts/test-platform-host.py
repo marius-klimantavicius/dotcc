@@ -37,7 +37,7 @@ try:
  expected=run([BUILD/'status-native'],'status-native')
  for variant in args.variants:
   project=BUILD/variant;project.mkdir(exist_ok=True)
-  generated=ROOT/'generated'/variant/'TranslatedMsQuic'
+  generated=ROOT/'generated'/('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
   library=generated/'TranslatedMsQuic.csproj'
   generated_hashes={p.name:sha(p) for p in generated.glob('*.cs')}
   if any(closure_data['generated'][variant].get(name)!=digest for name,digest in generated_hashes.items()):raise RuntimeError('Generated library does not match frozen product closure')

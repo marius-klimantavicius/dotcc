@@ -207,9 +207,11 @@ phases are authorized.
       on actual failures, rather than speculative rewrites.
 - [x] Resolve remaining platform needs using dotcc runtime/BCL adapters, including
       default time helpers even when a custom context callback is supplied.
-- [x] Emit `TranslatedPicotls` with class `Picotls`, namespace `Managed.Security`,
-      and approximately 100 KiB function groups. Retain shared `Picotls.cs` and
-      `Picotls.GlobalUsings.g.cs`; whole functions may exceed the byte target.
+- [x] Emit `TranslatedPicotls` with class `PicoTls`, namespace `Managed.Security`,
+      and approximately 100 KiB function groups. Use `--nest-types --runtime=c`:
+      shared `PicoTls.cs` contains nested types and runtime helpers, with
+      file-local aliases and no global-usings sidecar.
+      Whole functions may exceed the byte target.
 - [x] Build the unoptimized generated project with typed provider scaffolding.
       Temporary failure-returning scaffolds are test-only and cannot satisfy P3/P4.
 

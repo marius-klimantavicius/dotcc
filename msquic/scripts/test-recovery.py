@@ -64,7 +64,7 @@ def validate_baseline(baseline, variants):
     check(baseline['closure_sha256'] == sha(ROOT / 'config/product-closure.json'), 'Baseline closure changed')
     for variant in variants:
         directories = (
-            ('generated_hashes', ROOT / 'generated' / variant / 'TranslatedMsQuic'),
+            ('generated_hashes', ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')),
             ('picotls_generated_hashes', REPO / 'picotls/generated' /
                 ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')),
         )

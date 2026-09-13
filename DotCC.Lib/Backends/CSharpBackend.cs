@@ -2620,7 +2620,12 @@ internal sealed partial class CSharpBackend
         {
             return ($"({Cs(c.Target)})({Cs(fv.Type)}){FunctionPointer(fv.Sym)}", PUnary);
         }
-        var text = $"({Cs(c.Target)}){Sub(c.Operand, PUnary)}";
+        // C# parses (EnumName)-value as subtraction unless the signed operand
+        // is parenthesized. This also applies to folded enum flag constants
+        // whose high bit makes the underlying signed value negative.
+        var operand = c.Target.Unqualified is CType.Enum && c.Operand is Unary { Op: UnOp.Neg or UnOp.Plus }
+            ? $"({Expr(c.Operand)})" : Sub(c.Operand, PUnary);
+        var text = $"({Cs(c.Target)}){operand}";
         var integerTarget = c.Target.Unqualified is CType.Enum enumeration
             ? enumeration.Underlying : c.Target.Unqualified;
         if (integerTarget is CType.Prim { Integer: true } pt
