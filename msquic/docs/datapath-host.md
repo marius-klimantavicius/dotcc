@@ -12,6 +12,34 @@ close, listener flags and explicit interface tests also passed all four runtime
 variants. Their current source-bound receipt is
 `artifacts/datapath-host/results.json`.
 
+## Generated helpers used by the host
+
+The BCL bridge uses `QuicAddrGetFamily`, `QuicAddrSetFamily`,
+`QuicAddrGetPort`, `QuicAddrSetPort`, `QuicAddrSetToLoopback` and
+`QuicAddrIsWildCard` for native address operations. BCL conversion still supplies
+IP bytes and normalizes mapped IPv4 and scope IDs. Route wildcard checks apply
+the upstream predicate to that normalized address; route selection retains the
+bound socket port. Scoped IPv6 socket selection uses the full BCL endpoint.
+
+The advertised MTU comes from `CXPLAT_MAX_MTU`; the existing maximum UDP payload
+is computed by `MaxUdpPayloadSizeFromMTU`. The host uses `CxPlatTimeDiff64` and
+`CxPlatTimeAtOrBefore64` for deadline comparisons, and `CxPlatKeyLength` /
+`CxPlatHashLength` for validated supported algorithms. Unknown algorithms return
+`NotSupported` before reaching the upstream helpers' assertion paths. `Status`
+contains aliases to generated `QUIC_STATUS_*` constants rather than a second
+numeric platform table.
+
+`config/inline-exports.txt` pins these managed helper names at link time.
+The datapath harness checks raw address bytes and network-order ports, ordinary
+and mapped loopback, mapped wildcard routes, and link-local scope preservation.
+
+The inline migration passes the platform and datapath harnesses, 167 packet
+crypto checks per runtime variant (including unknown-algorithm rejection), and
+all 32 public stream/FIN/resumption/authentication cases. Both raw and
+postprocessed libraries were tested under JIT and Linux x64 NativeAOT. The
+packet test generator now calls the nonce inline by its normal managed name.
+Copied receipts and source hashes are in `artifacts/host-inline-use`.
+
 ## Ownership and completion
 
 A datapath holds an upstream worker-pool reference until all sockets, borrowed

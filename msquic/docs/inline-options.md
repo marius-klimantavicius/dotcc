@@ -4,9 +4,12 @@ The product link uses `--deduplicate-inline` and the `--export-inline` selectors
 in `config/inline-exports.txt`. This is a compiler/linker transformation over
 metadata derived from typed IR; no generated C# is hand-edited.
 
-The selected managed methods are `CxPlatEwma`, `QuicAddrCompare`,
+The selected managed methods include `CxPlatEwma`, `QuicAddrCompare`,
 `QuicAddrCompareIp`, `QuicAddrGetFamily`, `QuicAddrGetPort`, `QuicAddrSetFamily`,
-`QuicAddrSetPort` and `QuicAddrIsWildCard`. They can be called directly, for example:
+`QuicAddrSetPort` and `QuicAddrIsWildCard`. The host also pins
+`QuicAddrSetToLoopback`, `MaxUdpPayloadSizeFromMTU`, `CxPlatTimeAtOrBefore64`,
+`CxPlatTimeDiff64`, `CxPlatKeyLength` and `CxPlatHashLength`.
+They can be called directly, for example:
 
 ```csharp
 MsQuic.QUIC_ADDR address = default;

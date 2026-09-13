@@ -7,10 +7,8 @@ ROOT = Path(__file__).resolve().parents[1]
 generated = ROOT / 'generated/TranslatedMsQuic'
 sources = (generated / 'Dotcc.SourceFiles.txt').read_text().splitlines()
 tables = []
-nonce_helpers = []
 for name in sources:
     source = (generated / name).read_text()
-    nonce_helpers.extend(re.findall(r'public static readonly delegate\*<byte\*, byte\*, byte\*, void> (QuicCryptoCombineIvAndPacketNumber__unit_\w+) =', source))
     match = re.search(r'(?m)^(?P<indent>[ \t]*)public unsafe struct MSQUIC_HOST_TABLE\s*\{(?P<body>.*?)\n(?P=indent)\}', source, re.S)
     if match:
         tables.append(match.group('body'))
@@ -40,10 +38,8 @@ lines = ['// Generated test-only fail-fast table; never compiled into the produc
 for signature, name in callbacks:
     lines.append(f'        table.{name} = &Unexercised_{name};')
 lines.append('    }')
-if not nonce_helpers:
-    raise RuntimeError('Missing translated inline nonce helper')
-lines.append('    internal static void CombineIv(byte* iv, byte* number, byte* output) => MsQuic.'
-             + sorted(nonce_helpers)[0] + '(iv, number, output);')
+lines.append('    internal static void CombineIv(byte* iv, byte* number, byte* output) => '
+             'QuicCryptoCombineIvAndPacketNumber(iv, number, output);')
 for signature, name in callbacks:
     types = split_types(signature)
     args = ', '.join(f'{kind} arg{i}' for i, kind in enumerate(types[:-1]))

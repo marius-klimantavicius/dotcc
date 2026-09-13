@@ -283,8 +283,8 @@ public sealed unsafe partial class MsQuicHost
     {
         if (deadline == ulong.MaxValue) return Timeout.Infinite;
         var now = MonotonicMicroseconds();
-        if (now >= deadline) return 0;
-        return (int)Math.Min((deadline - now + 999) / 1000, (ulong)int.MaxValue);
+        if (CxPlatTimeAtOrBefore64(deadline, now) != 0) return 0;
+        return (int)Math.Min((CxPlatTimeDiff64(now, deadline) + 999) / 1000, (ulong)int.MaxValue);
     }
     private static void PlatformEventInitialize(void* context, CXPLAT_EVENT* value, byte manual, byte initial)
     {

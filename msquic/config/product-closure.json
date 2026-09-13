@@ -1212,7 +1212,7 @@
   "evidence_sha256": {
     "artifacts/host-contract/results.json": "35f30efc72edbde765a9ede52bd0c0592ecbe6ae249c867439ba8690a96c2e59",
     "artifacts/abi/results.json": "323e434fbccea5310d2546508c9aa0dac36ff3a72a663d4a0dd421b68a0738ea",
-    "artifacts/product-build/results.json": "47873a78877a2ca8c479ecafad66386acb952deaf19f3a2c7b8ed5be57a61f04"
+    "artifacts/product-build/results.json": "634e61c92ecc5f644ec7165380379603b777f343972860fc22c0b062c6fbd294"
   },
   "compiler_hashes": {
     "DotCC.Lib.dll": "a3fb059d80433f79dcb8751e6cfe6df895ac1e182aa088e814d991ffee2495af",
@@ -1490,7 +1490,13 @@
       "QuicAddrIsWildCard",
       "QuicAddrSetFamily",
       "QuicAddrSetPort",
-      "QuicAddrCompare*"
+      "QuicAddrCompare*",
+      "QuicAddrSetToLoopback",
+      "MaxUdpPayloadSizeFromMTU",
+      "CxPlatTimeAtOrBefore64",
+      "CxPlatTimeDiff64",
+      "CxPlatKeyLength",
+      "CxPlatHashLength"
     ]
   },
   "macro_exports": [
@@ -1505,7 +1511,7 @@
     "normal_optimized_sqlite_product_passed": false
   },
   "previous_checkpoint": {
-    "closure": "artifacts/closure-8e3cd8790087f51d/msquic/config/product-closure.json",
-    "sha256": "8e3cd8790087f51da2a838f7654b2be9eac288c83de1f9c2942d95317af0f512"
+    "closure": "artifacts/closure-3c4d9f896d8fde52/msquic/config/product-closure.json",
+    "sha256": "3c4d9f896d8fde521654f132b29d8944e40e2b7de5b06eb4c945fc3f2cb23f02"
   }
 }

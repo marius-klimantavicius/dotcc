@@ -136,7 +136,7 @@ public sealed unsafe partial class MsQuicHost
             if (Partition >= MsQuic.CxPlatWorkerPoolGetCount(path.Workers)) throw new ArgumentException("Invalid worker partition.");
             Remote = config.RemoteAddress == null ? null : DatagramEndpoint(config.RemoteAddress);
             if (Remote != null && IsWildcard(Remote.Address)) throw new ArgumentException("Remote endpoint must not be wildcard.");
-            var local = config.LocalAddress == null || config.LocalAddress->Ip.sa_family == 0
+            var local = config.LocalAddress == null || QuicAddrGetFamily(config.LocalAddress) == QUIC_ADDRESS_FAMILY_UNSPEC
                 ? new IPEndPoint(Remote?.AddressFamily == AddressFamily.InterNetwork ? IPAddress.Any : IPAddress.IPv6Any, 0)
                 : DatagramEndpoint(config.LocalAddress);
             queue = MsQuic.CxPlatWorkerPoolGetEventQ(path.Workers, Partition);

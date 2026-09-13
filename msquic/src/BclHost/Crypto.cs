@@ -82,12 +82,11 @@ public sealed unsafe partial class MsQuicHost
         }
     }
 
-    private static int PacketKeyLength(CXPLAT_AEAD_TYPE type) => type switch
-    {
-        CXPLAT_AEAD_TYPE.CXPLAT_AEAD_AES_128_GCM => 16,
-        CXPLAT_AEAD_TYPE.CXPLAT_AEAD_AES_256_GCM => 32,
-        _ => 0
-    };
+    // Validate the host's supported algorithms before calling the upstream
+    // helper: its default case is a fatal C assertion, not a status return.
+    private static int PacketKeyLength(CXPLAT_AEAD_TYPE type)
+        => type is CXPLAT_AEAD_TYPE.CXPLAT_AEAD_AES_128_GCM or CXPLAT_AEAD_TYPE.CXPLAT_AEAD_AES_256_GCM
+            ? CxPlatKeyLength(type) : 0;
 
     private static bool PacketReadable(void* pointer, uint length)
         => length <= int.MaxValue && (length == 0 || pointer != null);
@@ -225,14 +224,15 @@ public sealed unsafe partial class MsQuicHost
     {
         if (output == null) return Status.InvalidParameter;
         *output = null;
-        var (algorithm, length) = type switch
+        var algorithm = type switch
         {
-            CXPLAT_HASH_TYPE.CXPLAT_HASH_SHA256 => (HashAlgorithmName.SHA256, 32),
-            CXPLAT_HASH_TYPE.CXPLAT_HASH_SHA384 => (HashAlgorithmName.SHA384, 48),
-            CXPLAT_HASH_TYPE.CXPLAT_HASH_SHA512 => (HashAlgorithmName.SHA512, 64),
-            _ => (default(HashAlgorithmName), 0)
+            CXPLAT_HASH_TYPE.CXPLAT_HASH_SHA256 => HashAlgorithmName.SHA256,
+            CXPLAT_HASH_TYPE.CXPLAT_HASH_SHA384 => HashAlgorithmName.SHA384,
+            CXPLAT_HASH_TYPE.CXPLAT_HASH_SHA512 => HashAlgorithmName.SHA512,
+            _ => default(HashAlgorithmName)
         };
-        if (length == 0) return Status.NotSupported;
+        if (algorithm.Name == null) return Status.NotSupported;
+        int length = CxPlatHashLength(type);
         if (!PacketReadable(salt, saltLength)) return Status.InvalidParameter;
         PacketHash? owner = null;
         try

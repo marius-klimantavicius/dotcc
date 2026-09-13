@@ -14,7 +14,9 @@ namespace Managed.Transport.Hosting;
 public sealed unsafe partial class MsQuicHost
 {
     private const uint DatagramAllocationTag = 0x55647048;
-    private const int DatagramCapacity = 1500;
+    private const ushort DatagramMtu = CXPLAT_MAX_MTU;
+    private const int DatagramCapacity = DatagramMtu;
+    private static readonly ushort DatagramMaxPayload = MaxUdpPayloadSizeFromMTU(DatagramMtu);
     private readonly ConcurrentDictionary<nint, DatagramReceive> datagramReceives = new();
     private long datagramTruncations, datagramSendErrors, datagramReceiveErrors;
     public long DatagramTruncations => Interlocked.Read(ref datagramTruncations);
@@ -58,15 +60,15 @@ public sealed unsafe partial class MsQuicHost
     internal static IPEndPoint DatagramEndpoint(QUIC_ADDR* address)
     {
         if (address == null) throw new ArgumentNullException(nameof(address));
-        IPAddress ip = address->Ip.sa_family switch
+        IPAddress ip = QuicAddrGetFamily(address) switch
         {
-            2 => new IPAddress(new ReadOnlySpan<byte>(&address->Ipv4.sin_addr, 4)),
-            10 => new IPAddress(new ReadOnlySpan<byte>(&address->Ipv6.sin6_addr, 16), address->Ipv6.sin6_scope_id),
+            QUIC_ADDRESS_FAMILY_INET => new IPAddress(new ReadOnlySpan<byte>(&address->Ipv4.sin_addr, sizeof(in_addr))),
+            QUIC_ADDRESS_FAMILY_INET6 => new IPAddress(new ReadOnlySpan<byte>(&address->Ipv6.sin6_addr, sizeof(in6_addr)), address->Ipv6.sin6_scope_id),
             _ => throw new ArgumentException("Unsupported address family.")
         };
         if (ip.IsIPv4MappedToIPv6) ip = ip.MapToIPv4();
         if (ip.AddressFamily == AddressFamily.InterNetworkV6 && !ip.IsIPv6LinkLocal && ip.ScopeId != 0) ip = new IPAddress(ip.GetAddressBytes());
-        return new IPEndPoint(ip, unchecked((ushort)IPAddress.NetworkToHostOrder((short)address->Ipv4.sin_port)));
+        return new IPEndPoint(ip, QuicAddrGetPort(address));
     }
 
     internal static void DatagramAddress(IPEndPoint endpoint, QUIC_ADDR* address, bool mapped = false)
@@ -77,16 +79,18 @@ public sealed unsafe partial class MsQuicHost
         if (mapped && ip.AddressFamily == AddressFamily.InterNetwork) ip = ip.MapToIPv6();
         if (ip.AddressFamily == AddressFamily.InterNetwork)
         {
-            address->Ipv4.sin_family = 2;
-            ip.TryWriteBytes(new Span<byte>(&address->Ipv4.sin_addr, 4), out _);
+            QuicAddrSetFamily(address, QUIC_ADDRESS_FAMILY_INET);
+            if (ip.Equals(IPAddress.Loopback)) QuicAddrSetToLoopback(address);
+            else ip.TryWriteBytes(new Span<byte>(&address->Ipv4.sin_addr, sizeof(in_addr)), out _);
         }
         else
         {
-            address->Ipv6.sin6_family = 10;
+            QuicAddrSetFamily(address, QUIC_ADDRESS_FAMILY_INET6);
             address->Ipv6.sin6_scope_id = checked((uint)ip.ScopeId);
-            ip.TryWriteBytes(new Span<byte>(&address->Ipv6.sin6_addr, 16), out _);
+            if (ip.Equals(IPAddress.IPv6Loopback)) QuicAddrSetToLoopback(address);
+            else ip.TryWriteBytes(new Span<byte>(&address->Ipv6.sin6_addr, sizeof(in6_addr)), out _);
         }
-        address->Ipv4.sin_port = unchecked((ushort)IPAddress.HostToNetworkOrder((short)endpoint.Port));
+        QuicAddrSetPort(address, checked((ushort)endpoint.Port));
     }
 
     private static uint DatagramStatus(Exception error) => error switch
@@ -153,10 +157,10 @@ public sealed unsafe partial class MsQuicHost
         try
         {
             var text = Marshal.PtrToStringUTF8((nint)name)!;
-            var family = output->Ip.sa_family;
-            int port = unchecked((ushort)IPAddress.NetworkToHostOrder((short)output->Ipv4.sin_port));
+            var family = QuicAddrGetFamily(output);
+            int port = QuicAddrGetPort(output);
             foreach (var ip in Dns.GetHostAddresses(text))
-                if (family == 0 || (family == 2 && ip.AddressFamily == AddressFamily.InterNetwork) || (family == 10 && ip.AddressFamily == AddressFamily.InterNetworkV6))
+                if (family == QUIC_ADDRESS_FAMILY_UNSPEC || (family == QUIC_ADDRESS_FAMILY_INET && ip.AddressFamily == AddressFamily.InterNetwork) || (family == QUIC_ADDRESS_FAMILY_INET6 && ip.AddressFamily == AddressFamily.InterNetworkV6))
                 { DatagramAddress(new IPEndPoint(ip, port), output); return Status.Success; }
             return Status.NotFound;
         }
@@ -244,7 +248,7 @@ public sealed unsafe partial class MsQuicHost
     { try { DatagramAddress(FromContext(c).Resource<DatagramSocket>(p).Local, output); } catch (Exception e) { FatalInvariant(e.ToString()); } }
     private static void DatapathSocketRemote(void* c, CXPLAT_SOCKET* p, QUIC_ADDR* output)
     { try { var remote = FromContext(c).Resource<DatagramSocket>(p).Remote; if (remote == null) *output = default; else DatagramAddress(remote, output); } catch (Exception e) { FatalInvariant(e.ToString()); } }
-    private static ushort DatapathSocketMtu(void* c, CXPLAT_SOCKET* p, CXPLAT_ROUTE* route) => 1500;
+    private static ushort DatapathSocketMtu(void* c, CXPLAT_SOCKET* p, CXPLAT_ROUTE* route) => DatagramMtu;
     private static byte DatapathSocketQtip(void* c, CXPLAT_SOCKET* p) => 0;
     private static uint DatapathSocketQeo(void* c, CXPLAT_SOCKET* p, CXPLAT_QEO_CONNECTION* q, uint count) => Status.NotSupported;
     private static uint DatapathResolveRoute(void* c, CXPLAT_SOCKET* p, CXPLAT_ROUTE* route, byte path, void* context, delegate*<void*, byte*, byte, byte, void> callback)
@@ -254,13 +258,18 @@ public sealed unsafe partial class MsQuicHost
         try
         {
             var socket = FromContext(c).Resource<DatagramSocket>(p);
-            if (route->LocalAddress.Ip.sa_family == 0 || IsWildcard(DatagramEndpoint(&route->LocalAddress).Address))
+            // Normalize mapped IPv4 and scope IDs before applying the C address
+            // predicate, just as the socket endpoint conversion does.
+            var local = route->LocalAddress;
+            if (QuicAddrGetFamily(&local) != QUIC_ADDRESS_FAMILY_UNSPEC)
+                DatagramAddress(DatagramEndpoint(&local), &local);
+            if (QuicAddrGetFamily(&local) == QUIC_ADDRESS_FAMILY_UNSPEC || QuicAddrIsWildCard(&local) != 0)
             {
                 QUIC_ADDR selected;
                 uint status = DatapathLocalForRemote(c, &route->RemoteAddress, &selected);
                 if (status != 0) return status;
-                var endpoint = DatagramEndpoint(&selected);
-                DatagramAddress(new IPEndPoint(endpoint.Address, socket.Local.Port), &route->LocalAddress);
+                QuicAddrSetPort(&selected, checked((ushort)socket.Local.Port));
+                route->LocalAddress = selected;
             }
             socket.SelectSocket(DatagramEndpoint(&route->LocalAddress));
             route->DatapathType = 1; route->State = CXPLAT_ROUTE_STATE.RouteResolved;

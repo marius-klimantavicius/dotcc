@@ -5,4 +5,10 @@ QuicAddrIsWildCard
 QuicAddrSetFamily
 QuicAddrSetPort
 QuicAddrCompare*
-# QuicAddrSetToLoopback reads TU-local static storage, so it stays unit-specific.
+# Stable managed entry points used by the BCL host.
+QuicAddrSetToLoopback
+MaxUdpPayloadSizeFromMTU
+CxPlatTimeAtOrBefore64
+CxPlatTimeDiff64
+CxPlatKeyLength
+CxPlatHashLength

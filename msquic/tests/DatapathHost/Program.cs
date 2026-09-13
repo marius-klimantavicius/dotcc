@@ -104,6 +104,51 @@ internal static unsafe class Program
         CXPLAT_ROUTE route=default;MsQuicHost.DatagramAddress(remote,&route.RemoteAddress);table.CxPlatSocketGetLocalAddress(table.Context,socket,&route.LocalAddress);
         Send(socket,&route,new byte[]{1});Check(unreachable.Wait(5000),"connected UDP unreachable callback");table.CxPlatSocketDelete(table.Context,socket);
     }
+    private static void AddressHelpers()
+    {
+        // Check the host bridge against BCL address bytes and explicit wire-order
+        // ports, rather than round-tripping through the same helper alone.
+        foreach (var text in new[] { "0.0.0.0", "127.0.0.1", "127.0.0.2", "::", "::1", "2001:db8::1", "fe80::1%7" })
+        foreach (ushort port in new ushort[] { 0, 1, 0x1234, 65535 })
+        {
+            var ip = IPAddress.Parse(text);
+            var endpoint = new IPEndPoint(ip, port);
+            QUIC_ADDR address;
+            MsQuicHost.DatagramAddress(endpoint, &address);
+            bool ipv4 = ip.AddressFamily == AddressFamily.InterNetwork;
+            Check(address.Ip.sa_family == (ipv4 ? 2 : 10), "host address family");
+            byte* wirePort = (byte*)&address.Ipv4.sin_port;
+            Check(wirePort[0] == (byte)(port >> 8) && wirePort[1] == (byte)port, "host port wire order");
+            var bytes = ipv4 ? new ReadOnlySpan<byte>(&address.Ipv4.sin_addr, 4) : new ReadOnlySpan<byte>(&address.Ipv6.sin6_addr, 16);
+            Check(bytes.SequenceEqual(ip.GetAddressBytes()), "host address bytes including loopback");
+            Check(MsQuicHost.DatagramEndpoint(&address).Equals(endpoint), "host address scope and port round trip");
+            Check((QuicAddrIsWildCard(&address) != 0) == (text is "0.0.0.0" or "::"), "upstream wildcard predicate");
+        }
+        QUIC_ADDR mapped;
+        MsQuicHost.DatagramAddress(new IPEndPoint(IPAddress.Loopback, 65535), &mapped, mapped: true);
+        Check(mapped.Ip.sa_family == 10 && new ReadOnlySpan<byte>(&mapped.Ipv6.sin6_addr, 16)
+            .SequenceEqual(IPAddress.Parse("::ffff:127.0.0.1").GetAddressBytes()), "mapped loopback is not IPv6 loopback");
+        Check(MsQuicHost.DatagramEndpoint(&mapped).Equals(new IPEndPoint(IPAddress.Loopback, 65535)), "mapped endpoint normalization");
+        MsQuicHost.DatagramAddress(new IPEndPoint(IPAddress.Parse("2001:db8::1%7"), 443), &mapped);
+        Check(MsQuicHost.DatagramEndpoint(&mapped).Address.ScopeId == 0, "non-link-local scope normalization");
+    }
+
+    private static void ResolveWildcardRoutes(CXPLAT_SOCKET* socket)
+    {
+        QUIC_ADDR bound;
+        table.CxPlatSocketGetLocalAddress(table.Context, socket, &bound);
+        ushort port = QuicAddrGetPort(&bound);
+        foreach (var text in new[] { "0.0.0.0", "::", "::ffff:0.0.0.0" })
+        {
+            CXPLAT_ROUTE route = default;
+            MsQuicHost.DatagramAddress(new IPEndPoint(IPAddress.Parse(text), 0), &route.LocalAddress, mapped: text.Contains(':'));
+            MsQuicHost.DatagramAddress(new IPEndPoint(IPAddress.Loopback, 443), &route.RemoteAddress);
+            Check(table.CxPlatResolveRoute(table.Context, socket, &route, 0, null, null) == 0, "wildcard route resolves");
+            Check(MsQuicHost.DatagramEndpoint(&route.LocalAddress).Equals(new IPEndPoint(IPAddress.Loopback, port)),
+                "wildcard route uses selected IP and bound port");
+        }
+    }
+
     private static void AddressQueries(CXPLAT_DATAPATH* path)
     {
         QUIC_ADDR address;var expected=new IPEndPoint(IPAddress.Parse("127.0.0.2"),43210);MsQuicHost.DatagramAddress(expected,&address);
@@ -237,7 +282,7 @@ internal static unsafe class Program
         Check(table.CxPlatDataPathInitialize(table.Context,37,&callbacks,null,workers,null,&path)==0,"typed datapath init");
         var ipv4=Create(path,IPAddress.Any);
         if(args.Length!=0&&args[0]=="callback-delete") { deleteInsideReceive=true;Echo(host,ipv4,IPAddress.Loopback,1);throw new InvalidOperationException("Callback-local deletion unexpectedly returned."); }
-        AddressQueries(path);RejectCapabilities(path,ipv4);ListenerSocketFlags(host,path);
+        AddressHelpers();ResolveWildcardRoutes(ipv4);AddressQueries(path);RejectCapabilities(path,ipv4);ListenerSocketFlags(host,path);
         foreach(int length in new[]{0,1,1200,1472})Echo(host,ipv4,IPAddress.Loopback,length);
         // The unchanged packet builder/stateless binding paths pass a zero
         // segmentation hint. A no-segmentation datapath must accept it.

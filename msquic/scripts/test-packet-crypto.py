@@ -86,7 +86,7 @@ try:
 ''')
         run(['dotnet', 'build', project, '-c', 'Release', '--nologo', '-p:BuildProjectReferences=false'], variant + '-build')
         jit = run(['dotnet', directory / 'bin/Release/net10.0/PacketCrypto.dll'], variant + '-jit')
-        if jit.strip() != 'packet-crypto: 162 checks passed; resources drained':
+        if jit.strip() != 'packet-crypto: 167 checks passed; resources drained':
             raise RuntimeError('Unexpected JIT receipt')
         run(['dotnet', 'publish', project, '-c', 'Release', '-r', 'linux-x64', '-p:PublishAot=true',
              '-p:BuildProjectReferences=false', '-o', directory / 'aot', '--nologo'], variant + '-aot-build')
@@ -97,7 +97,7 @@ try:
             generated_sha256=hashes, aot_sha256=sha(directory / 'aot/PacketCrypto')))
         if any(sha(generated / name) != value for name, value in hashes.items()):
             raise RuntimeError('Generated source changed during packet tests')
-        print(variant + ': 162 packet checks PASS under JIT and NativeAOT', flush=True)
+        print(variant + ': 167 packet checks PASS under JIT and NativeAOT', flush=True)
     if sha(closure) != receipt['product_closure_sha256']:
         raise RuntimeError('Frozen product closure changed during packet tests')
     if any(sha(ROOT / path) != value for path, value in receipt['input_sha256'].items()):

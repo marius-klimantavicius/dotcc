@@ -152,6 +152,9 @@ internal static unsafe class Program
             "daa833b7d6b8a702038b274eaea3f4e4be9d914eeb61f1702e696c203a126854"];
         fixed (byte* k = key, d = data)
         {
+            CXPLAT_HASH* invalid = (CXPLAT_HASH*)123;
+            Require(MsQuic.CxPlatHashCreate((CXPLAT_HASH_TYPE)99, k, (uint)key.Length, &invalid) == Status.NotSupported && invalid == null,
+                "Unknown hash rejected before the inline length helper asserts");
             for (int type = 0; type < 3; type++)
             {
                 CXPLAT_HASH* hash = null;
@@ -214,6 +217,11 @@ internal static unsafe class Program
                 finally { MsQuic.CxPlatKeyFree(key); }
                 key = (CXPLAT_KEY*)123;
                 Require(MsQuic.CxPlatKeyCreate((CXPLAT_AEAD_TYPE)2, k, &key) == Status.NotSupported && key == null, "Unsupported cipher clears output");
+                key = (CXPLAT_KEY*)123;
+                Require(MsQuic.CxPlatKeyCreate((CXPLAT_AEAD_TYPE)99, k, &key) == Status.NotSupported && key == null, "Unknown cipher rejected before inline assertion");
+                CXPLAT_HP_KEY* invalidHeader = (CXPLAT_HP_KEY*)123;
+                Require(MsQuic.CxPlatHpKeyCreate((CXPLAT_AEAD_TYPE)99, k, &invalidHeader) == Status.NotSupported && invalidHeader == null,
+                    "Unknown header cipher rejected before inline assertion");
             }
         }
         MsQuic.CxPlatKeyFree(null); MsQuic.CxPlatHpKeyFree(null); MsQuic.CxPlatHashFree(null);
