@@ -34,6 +34,9 @@ Generated ABI types, globals and runtime helpers are nested in
 `Managed.Transport.Api`; its default project reference points to the final
 postprocessed directory.
 
+See [inline regeneration results](inline-options.md) for the measured source
+reduction and validation of the selected managed methods.
+
 ## Regeneration
 
 ```sh
