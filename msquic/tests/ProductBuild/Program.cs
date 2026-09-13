@@ -19,11 +19,11 @@ internal static unsafe class Program
         MsQuic.QUIC_ADDR address = default;
         MsQuic.QuicAddrSetFamily(&address, (ushort)MsQuic.QUIC_ADDRESS_FAMILY_INET);
         MsQuic.QuicAddrSetPort(&address, 443);
-        if (MsQuic.QuicAddrGetPort(&address) != 443)
+        if (MsQuic.QuicAddrGetPort(&address) != 443 || (int)MsQuic.QuicAddrIsWildCard(&address) != 1)
             return 1;
         MsQuic.QuicAddrSetFamily(&address, (ushort)MsQuic.QUIC_ADDRESS_FAMILY_INET6);
         MsQuic.QuicAddrSetPort(&address, 8443);
-        if (MsQuic.QuicAddrGetPort(&address) != 8443)
+        if (MsQuic.QuicAddrGetPort(&address) != 8443 || (int)MsQuic.QuicAddrIsWildCard(&address) != 1)
             return 1;
         // This checks generated assembly reachability and a real rejecting boundary.
         // Runtime host services and transport behavior have separate phase gates.

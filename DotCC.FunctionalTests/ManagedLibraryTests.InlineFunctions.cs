@@ -25,6 +25,9 @@ public sealed partial class ManagedLibraryTests
             File.WriteAllText(Path.Combine(dir, "shared.h"), """
                 typedef int (*Callback)(int);
                 typedef struct Pair { int x; int y; } Pair;
+                struct Hidden;
+                typedef struct Holder { int value; struct Hidden* context; } Holder;
+                static inline int auto_value(Holder* p) { return p->value; }
                 static inline int leaf(int x) { return x + 1; }
                 static inline int api_sum(Pair* p) {
                     int result = 0;
@@ -56,6 +59,7 @@ public sealed partial class ManagedLibraryTests
                 #define STATE second_counter
                 #define VALUE 17
                 #include "shared.h"
+                struct Hidden { long spare; };
                 int external_inline(int x);
                 Callback external_saved = external_inline;
                 Callback external_pointer(void) { return external_saved; }
@@ -85,11 +89,12 @@ public sealed partial class ManagedLibraryTests
                 public static unsafe class Consumer {
                     public static bool Check() {
                         Pair pair = new Pair { x = 4, y = 3 };
+                        Holder holder = new Holder { value = 23 };
                         var a = Api.first_pointer();
                         var b = Api.second_pointer();
                         var solo = Api.solo_pointer();
                         var external = Api.external_pointer();
-                        return Api.api_sum(&pair) == 15 && Api.first(&pair) == 26 && Api.second(&pair) == 32
+                        return Api.auto_value(&holder) == 23 && Api.api_sum(&pair) == 15 && Api.first(&pair) == 26 && Api.second(&pair) == 32
                             && Api.api_recursive(5) == 42 && a != b && a(3) == 10 && b(4) == 11
                             && a == Api.first_pointer() && b == Api.second_pointer()
                             && Api.first_state() == 1 && Api.first_state() == 2 && Api.second_state() == 1

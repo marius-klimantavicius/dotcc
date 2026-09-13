@@ -13,7 +13,7 @@ namespace DotCC;
 internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic, string Shape,
     bool AddressUsed, string[] Dependencies)
 {
-    internal const string Version = "//!!dotcc-obj inline-metadata:1";
+    internal const string Version = "//!!dotcc-obj inline-metadata:2";
     internal const string Prefix = "//!!dotcc-obj inline:";
     internal string Serialize(string name) => Prefix + string.Join(" ", name, OriginalName,
         IsStatic ? "1" : "0", Shape, AddressUsed ? "1" : "0", string.Join(",", Dependencies));
@@ -69,12 +69,11 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
                 case CType.Pointer p: Type(p.Pointee); break;
                 case CType.Array a: Type(a.Element); break;
                 case CType.Func f: Type(f.Return); foreach (var p in f.Params) Type(p); break;
-                case CType.Named n when _types.Add(n.Name):
-                    var definition = unit.Types.FirstOrDefault(t => t.Name == n.Name);
-                    if (definition == null) { Supported = false; break; }
-                    Atom(ObjectAggregateMetadata.From(definition).Signature);
-                    foreach (var field in definition.Fields) Type(field.Type);
-                    break;
+                // Named aggregate identity is shared by the final module. The
+                // object linker separately validates every complete layout and
+                // resolves forward declarations. Walking the entire pointer graph
+                // here would confuse an unrelated opaque type's completion with
+                // a change in this function (e.g. reading Wrapper.value).
                 case CType.Enum e when _types.Add(e.Name):
                     var enumeration = unit.Enums.FirstOrDefault(t => t.Name == e.Name);
                     if (enumeration == null) { Supported = false; break; }

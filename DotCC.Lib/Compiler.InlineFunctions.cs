@@ -58,6 +58,21 @@ public static partial class Compiler
                 if (!entries.Any(p => selector.Matches(p.Value.OriginalName)))
                     throw new CompileException("--export-inline pattern '" + pattern + "' matched no inline definitions");
             var occupied = new HashSet<string>(globalNames.Concat(types.Keys), StringComparer.Ordinal);
+            // A single proven implementation no longer belongs to one TU.
+            // Give it the original spelling when that spelling is unambiguous.
+            // Explicit exports below still diagnose rather than silently skip a
+            // requested name, and can name a single unmerged implementation.
+            if (options?.DeduplicateInline == true)
+                foreach (var original in entries.GroupBy(p => p.Value.OriginalName))
+                {
+                    var candidates = original.Select(p => partition[p.Key]).Distinct().ToArray();
+                    if (candidates.Length != 1 || original.Any(p => !p.Value.IsStatic
+                        || p.Value.Shape == "-" || p.Value.AddressUsed)) continue;
+                    var representative = representatives[candidates[0]];
+                    var cleanName = EmitHelpers.Id(original.Key);
+                    if (!occupied.Contains(cleanName) && !sources.Any(s => s.Name == cleanName && s.Name != representative))
+                        names[representative] = cleanName;
+                }
             foreach (var original in entries.Where(p => selectors.Any(s => s.Selector.Matches(p.Value.OriginalName)))
                          .GroupBy(p => p.Value.OriginalName))
             {

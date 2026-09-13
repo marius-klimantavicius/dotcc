@@ -148,6 +148,44 @@ public sealed class InlineFunctionTests
             .Message.ShouldContain("conflicts with an existing declaration");
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Unambiguous_shared_helpers_get_clean_names_without_export_selectors(bool link)
+    {
+        const string header = "static inline int helper(int x) { return x + 1; }";
+        var source = Translate(link, header, First, Second, new(DeduplicateInline: true));
+        source.ShouldContain("int helper(int x)");
+        source.ShouldNotContain("helper__");
+        source = Translate(link, "", header, "int helper(int x) { return x - 1; }", new(DeduplicateInline: true));
+        Methods(source, "helper").ShouldBe(2); // An external name prevents automatic renaming.
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Unrelated_opaque_type_completion_does_not_split_a_shared_helper(bool link)
+    {
+        const string header = "struct Opaque; struct Wrapper { int value; struct Opaque *context; }; "
+            + "static inline int helper(struct Wrapper *p) { return p->value; }";
+        var source = Translate(link, header, "#include \"shared.h\"\nint first(struct Wrapper *p) { return helper(p); }",
+            "#include \"shared.h\"\nstruct Opaque { long other; }; int second(struct Wrapper *p) { return helper(p); }",
+            new(DeduplicateInline: true));
+        Methods(source, "helper").ShouldBe(1);
+        source.ShouldNotContain("helper__");
+        source.ShouldContain("p->value");
+    }
+
+    [Fact]
+    public void Incompatible_complete_layouts_are_rejected_before_deduplicating()
+    {
+        const string helper = "static inline int helper(struct Wrapper *p) { return p->value; }";
+        Should.Throw<CompileException>(() => Translate(true, "",
+            "struct Wrapper { int value; }; " + helper,
+            "struct Wrapper { long pad; int value; }; " + helper,
+            new(DeduplicateInline: true))).Message.ShouldContain("conflicting aggregate");
+    }
+
     [Fact]
     public void Older_objects_require_regeneration_only_when_inline_options_are_used()
     {
@@ -159,7 +197,7 @@ public sealed class InlineFunctionTests
             var obj = Path.Combine(dir, "source.o");
             File.WriteAllText(source, "static inline int helper(int x) { return x; }");
             var fragment = Compiler.EmitObject(source);
-            File.WriteAllText(obj, fragment.Replace("//!!dotcc-obj inline-metadata:1\n", ""));
+            File.WriteAllText(obj, fragment.Replace("//!!dotcc-obj inline-metadata:2\n", ""));
             Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib).ShouldContain("int helper__unit_");
             Should.Throw<CompileException>(() => Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib,
                 outputOptions: new(DeduplicateInline: true))).Message.ShouldContain("regenerate objects");

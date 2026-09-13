@@ -1,6 +1,7 @@
 # Original C inline function names. Quote-free, case-sensitive * / ? globs.
 CxPlatEwma
 QuicAddrGet*
+QuicAddrIsWildCard
 QuicAddrSetFamily
 QuicAddrSetPort
 QuicAddrCompare*

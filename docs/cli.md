@@ -153,7 +153,9 @@ controls through `CSharpOutputOptions(DeduplicateInline: true,
 ExportInline: new[] { "CxPlatEwma", "QuicAddrGet*" })`.
 
 `--deduplicate-inline` compares typed IR, including signatures, constants,
-aggregate layouts, local bindings, control flow and bound function dependencies.
+aggregate type identities, local bindings, control flow and bound function
+dependencies. Complete aggregate layouts are checked separately by the linker;
+an unrelated forward declaration becoming complete does not change a function.
 It merges equivalent definitions of the same original name, including recursive
 groups. Calls are redirected through explicit symbol relocations. Differing
 macro expansions, static storage, unmerged static callees, C address uses, and
@@ -172,8 +174,10 @@ Managed exports do not add native entry points to a shared library.
 When either option is enabled, inline functions receive pointer-cache fields only
 for actual C address uses (including global initializers and uses from other
 objects). Managed callers can invoke the methods directly. Defaults remain
-unchanged when neither option is selected. Unselected helpers keep their existing
-names and visibility; the options do not define a new accessibility policy.
+unchanged when neither option is selected. Unambiguous, proven static inline groups receive their original names
+automatically. Conflicting names and unproven groups retain their existing names.
+`--export-inline` pins a requested managed name: it diagnoses ambiguity instead of
+falling back to unit names when new source units are added. Visibility is unchanged.
 
 ## Optional source post-processing
 
