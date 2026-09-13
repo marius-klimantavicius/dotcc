@@ -11,7 +11,7 @@
     <InternalsVisibleTo Include="TlsAdapter" />
     <InternalsVisibleTo Include="ProviderVectors" />
     <InternalsVisibleTo Include="InjectedHost" />
-    <InternalsVisibleTo Include="Managed.System.Net.Quic" />
+    <InternalsVisibleTo Include="Managed.Net.Quic" />
     <ProjectReference Include="$(PicotlsProject)" />
   </ItemGroup>
 </Project>
