@@ -9,6 +9,7 @@ public sealed class PostProcessAnalyzer : DiagnosticAnalyzer
 {
     public const string InlineConditionId = "DCCPP001";
     public const string EmptyBlockId = "DCCPP002";
+    public const string BooleanComparisonId = "DCCPP003";
 
     private static readonly DiagnosticDescriptor InlineCondition = new(InlineConditionId,
         "Inline Cond.B", "Inline this proven Cond.B truth conversion", "Readability",
@@ -19,7 +20,12 @@ public sealed class PostProcessAnalyzer : DiagnosticAnalyzer
         DiagnosticSeverity.Info, isEnabledByDefault: true,
         description: "Remove an empty block statement while retaining required bodies and source trivia.");
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [InlineCondition, EmptyBlock];
+    private static readonly DiagnosticDescriptor BooleanComparison = new(BooleanComparisonId,
+        "Simplify boolean comparison", "Simplify this comparison of a boolean encoded as 0/1", "Readability",
+        DiagnosticSeverity.Info, isEnabledByDefault: true,
+        description: "Replace a built-in comparison of a 0/1 conditional with its condition or logical negation.");
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [InlineCondition, EmptyBlock, BooleanComparison];
 
     public override void Initialize(AnalysisContext context)
     {
@@ -39,6 +45,8 @@ public sealed class PostProcessAnalyzer : DiagnosticAnalyzer
         var root = model.SyntaxTree.GetRoot(token);
         ConditionRewriter.Create(model, token, onRewritten: node =>
             context.ReportDiagnostic(Diagnostic.Create(InlineCondition, node.GetLocation())))?.Visit(root);
+        new BooleanComparisonRewriter(model, token, onSimplified: node =>
+            context.ReportDiagnostic(Diagnostic.Create(BooleanComparison, node.GetLocation()))).Visit(root);
         new EmptyBlockRewriter(model, token, onRemoved: node =>
             context.ReportDiagnostic(Diagnostic.Create(EmptyBlock, node.GetLocation()))).Visit(root);
     }

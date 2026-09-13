@@ -11,7 +11,8 @@ namespace DotCC.PostProcess.CodeFixes;
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(PostProcessCodeFixProvider)), Shared]
 public sealed class PostProcessCodeFixProvider : CodeFixProvider
 {
-    public override ImmutableArray<string> FixableDiagnosticIds => [PostProcessAnalyzer.InlineConditionId, PostProcessAnalyzer.EmptyBlockId];
+    public override ImmutableArray<string> FixableDiagnosticIds =>
+        [PostProcessAnalyzer.InlineConditionId, PostProcessAnalyzer.EmptyBlockId, PostProcessAnalyzer.BooleanComparisonId];
     public override FixAllProvider GetFixAllProvider() => new DocumentFixAllProvider();
 
     public override Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -26,8 +27,12 @@ public sealed class PostProcessCodeFixProvider : CodeFixProvider
         return Task.CompletedTask;
     }
 
-    private static string Title(string id) => id == PostProcessAnalyzer.InlineConditionId
-        ? "Inline Cond.B" : "Remove standalone empty block";
+    private static string Title(string id) => id switch
+    {
+        PostProcessAnalyzer.InlineConditionId => "Inline Cond.B",
+        PostProcessAnalyzer.BooleanComparisonId => "Simplify boolean comparison",
+        _ => "Remove standalone empty block"
+    };
 
     private static async Task<Document> RewriteAsync(Document document, string id, IEnumerable<TextSpan> spans, CancellationToken token)
     {
@@ -38,9 +43,14 @@ public sealed class PostProcessCodeFixProvider : CodeFixProvider
         var selected = new SpanSelection(spans);
         // Selection uses original spans. Fixing an outer expression/block also
         // fixes its eligible descendants, but never unrelated siblings.
-        var rewritten = id == PostProcessAnalyzer.InlineConditionId
-            ? ConditionRewriter.Create(model, token, include: node => selected.Contains(node.Span))?.Visit(root) ?? root
-            : new EmptyBlockRewriter(model, token, include: node => selected.Contains(node.Span)).Visit(root)!;
+        var rewritten = id switch
+        {
+            PostProcessAnalyzer.InlineConditionId =>
+                ConditionRewriter.Create(model, token, include: node => selected.Contains(node.Span))?.Visit(root) ?? root,
+            PostProcessAnalyzer.BooleanComparisonId =>
+                new BooleanComparisonRewriter(model, token, include: node => selected.Contains(node.Span)).Visit(root)!,
+            _ => new EmptyBlockRewriter(model, token, include: node => selected.Contains(node.Span)).Visit(root)!
+        };
         // Text round-trip avoids formatter/simplifier passes by the code-action
         // host and rebinds exactly what Rider will save to disk.
         var changed = document.WithText(SourceText.From(rewritten.ToFullString(), (await document.GetTextAsync(token).ConfigureAwait(false)).Encoding));
@@ -79,7 +89,7 @@ public sealed class PostProcessCodeFixProvider : CodeFixProvider
         public override async Task<CodeAction?> GetFixAsync(FixAllContext context)
         {
             var id = context.CodeActionEquivalenceKey;
-            if (id is not (PostProcessAnalyzer.InlineConditionId or PostProcessAnalyzer.EmptyBlockId)) return null;
+            if (id is not (PostProcessAnalyzer.InlineConditionId or PostProcessAnalyzer.EmptyBlockId or PostProcessAnalyzer.BooleanComparisonId)) return null;
             var documents = context.Scope switch
             {
                 FixAllScope.Document => context.Document == null ? [] : new[] { context.Document },

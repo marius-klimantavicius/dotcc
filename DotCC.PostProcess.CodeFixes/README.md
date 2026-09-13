@@ -1,15 +1,16 @@
 # DotCC post-processing for Rider
 
-This development-only Roslyn package provides two suggestions and code fixes:
+This development-only Roslyn package provides three suggestions and code fixes:
 
 - **DCCPP001**: inline proven dotcc `Cond.B` calls, including CBool conversions.
 - **DCCPP002**: remove standalone empty blocks, retaining required bodies and trivia.
+- **DCCPP003**: simplify comparisons of boolean 0/1 conditionals.
 
 Use Rider's quick-fix menu (Alt+Enter) to preview and apply an edit in place.
 Fix All supports document, project and solution scopes for each rule. No source
 is changed by analysis or a build. Generated C# is intentionally analyzed.
 
-Both passes share the standalone postprocessor's safety checks. Unknown helpers,
+All passes share the standalone postprocessor's safety checks. Unknown helpers,
 observable caller-argument text and directives are retained. Documents with
 compiler errors are skipped until their bindings are valid.
 

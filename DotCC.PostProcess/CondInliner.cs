@@ -7,6 +7,7 @@ public sealed record RewriteResult(CSharpCompilation Compilation, int Rewritten,
     IReadOnlyList<string> Diagnostics)
 {
     public int RemovedEmptyBlocks { get; init; }
+    public int SimplifiedBooleanComparisons { get; init; }
 }
 
 /// <summary>Optional, post-emission tree rewrite. All bindings come from the

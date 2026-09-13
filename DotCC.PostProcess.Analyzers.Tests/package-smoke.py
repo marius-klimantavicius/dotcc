@@ -50,18 +50,19 @@ with tempfile.TemporaryDirectory(prefix='dotcc-analyzer-package-') as temporary:
     path.write_text(ET.tostring(project, encoding='unicode'))
     source = root / 'Program.cs'
     source.write_text('''static class Cond { public static bool B(int x) => x != 0; }
-static class Program { static void Main() { {} System.Console.WriteLine(Cond.B(1)); } }
+static class Program { static void Main() { {} System.Console.WriteLine((Cond.B(1) ? 1 : 0) != 0); } }
 ''')
     (root / '.editorconfig').write_text('''root = true
 [*.cs]
 dotnet_diagnostic.DCCPP001.severity = warning
 dotnet_diagnostic.DCCPP002.severity = warning
+dotnet_diagnostic.DCCPP003.severity = warning
 ''')
     before = hashlib.sha256(source.read_bytes()).hexdigest()
     # A fresh cache ensures the test cannot accidentally use an older package.
     run('dotnet', 'restore', path, '--packages', root / 'packages')
     output = run('dotnet', 'build', path, '--no-restore', '-c', 'Release', '-v:minimal')
-    assert 'warning DCCPP001:' in output and 'warning DCCPP002:' in output, output
+    assert all('warning ' + rule + ':' in output for rule in ('DCCPP001', 'DCCPP002', 'DCCPP003')), output
     for failure in ['AD0001', 'CS8032', 'CS9057']:
         assert failure not in output, output
     assert hashlib.sha256(source.read_bytes()).hexdigest() == before
@@ -77,4 +78,4 @@ if args.sqlite_project:
         analyzers = [i for i in evaluated['Items']['Analyzer'] if 'DotCC.PostProcess.' in i['Identity']]
         assert not analyzers, analyzers
 
-print('PASS package: analyzer discovery, both diagnostics, no runtime dependency, unchanged source, SQLite analyzer isolation')
+print('PASS package: analyzer discovery, all three diagnostics, no runtime dependency, unchanged source, SQLite analyzer isolation')

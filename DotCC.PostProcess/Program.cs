@@ -32,6 +32,7 @@ internal static class Program
             {
                 int updated = InPlaceWriter.Write(original, result.Compilation, input.SourceHashes, cancellation.Token);
                 Console.WriteLine($"Rewrote {result.Rewritten} Cond.B calls; skipped {result.Skipped}.");
+                Console.WriteLine($"Simplified {result.SimplifiedBooleanComparisons} boolean comparisons.");
                 Console.WriteLine($"Removed {result.RemovedEmptyBlocks} standalone empty blocks.");
                 Console.WriteLine($"Updated {updated} source files in place.");
                 foreach (var diagnostic in result.Diagnostics) Console.Error.WriteLine(diagnostic);
@@ -61,6 +62,7 @@ internal static class Program
                     result.Rewritten,
                     result.Skipped,
                     result.RemovedEmptyBlocks,
+                    result.SimplifiedBooleanComparisons,
                     Diagnostics = result.Diagnostics.Order(StringComparer.Ordinal).ToArray(),
                     Notes = new[]
                     {
@@ -83,6 +85,7 @@ internal static class Program
                     throw new InvalidOperationException("Output appeared during processing; refusing to overwrite it.");
                 Directory.Move(staging, paths.Output);
                 Console.WriteLine($"Rewrote {result.Rewritten} Cond.B calls; skipped {result.Skipped}.");
+                Console.WriteLine($"Simplified {result.SimplifiedBooleanComparisons} boolean comparisons.");
                 Console.WriteLine($"Removed {result.RemovedEmptyBlocks} standalone empty blocks.");
                 Console.WriteLine(Path.Combine(paths.Output, Relative(staging, projects.OptimizedProjectPath)));
                 return 0;

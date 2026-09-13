@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>DotCC.PostProcess.Rider</PackageId>
     <Version>0.1.0</Version>
-    <Description>Roslyn diagnostics and in-place fixes for dotcc Cond.B calls and standalone empty blocks.</Description>
+    <Description>Roslyn diagnostics and in-place fixes for dotcc Cond.B calls, boolean comparisons, and standalone empty blocks.</Description>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <DevelopmentDependency>true</DevelopmentDependency>

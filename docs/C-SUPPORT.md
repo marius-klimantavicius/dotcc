@@ -838,7 +838,8 @@ The grammar conventions (precedence ladder, dangling-else handling, lexer orderi
 The separate [Roslyn Cond.B inliner](postprocess.md) runs only after normal dotcc
 actions. It preserves the existing C truth conversions while rewriting proven
 helper calls in place (`--in-place`) or in a copied output project. CBool stores and arithmetic normalization
-remain unchanged. A subsequent syntax-tree cleanup removes standalone empty
+remain unchanged. Comparisons of numeric 0/1 conditionals simplify to their
+boolean condition or its negation when proven safe. A subsequent syntax-tree cleanup removes standalone empty
 blocks while retaining required bodies, comments and directives.
 Semantic/execution regressions live in `DotCC.PostProcess.Tests`;
 this adds no new C syntax, compiler behavior, or runtime dependency.

@@ -21,6 +21,7 @@ public sealed partial class AnalyzerTests
         using var manifest = JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(snapshot, "manifest.json"), Token));
         int calls = manifest.RootElement.GetProperty("Rewritten").GetInt32();
         int blocks = manifest.RootElement.GetProperty("RemovedEmptyBlocks").GetInt32();
+        int comparisons = manifest.RootElement.GetProperty("SimplifiedBooleanComparisons").GetInt32();
         calls.ShouldBeGreaterThan(0);
         blocks.ShouldBeGreaterThan(0);
         var originalDirectory = Path.Combine(snapshot, "Original");
@@ -48,6 +49,9 @@ public sealed partial class AnalyzerTests
         diagnostics.Count(d => d.Id == CondId).ShouldBe(calls);
         diagnostics.Count(d => d.Id == BlockId).ShouldBe(blocks);
         var solution = await FixAll(project.Documents.First(), CondId, FixAllScope.Project);
+        (await Diagnostics(solution.GetProject(project.Id)!, Token)).Count(d => d.Id == ComparisonId).ShouldBe(comparisons);
+        if (comparisons != 0)
+            solution = await FixAll(solution.GetProject(project.Id)!.Documents.First(), ComparisonId, FixAllScope.Project);
         solution = await FixAll(solution.GetProject(project.Id)!.Documents.First(), BlockId, FixAllScope.Project);
         foreach (var document in solution.GetProject(project.Id)!.Documents)
         {
@@ -58,6 +62,6 @@ public sealed partial class AnalyzerTests
         using var output = new MemoryStream();
         var emit = (await solution.GetProject(project.Id)!.GetCompilationAsync(Token))!.Emit(output, cancellationToken: Token);
         Assert.True(emit.Success, string.Join("\n", emit.Diagnostics));
-        TestContext.Current.TestOutputHelper!.WriteLine($"SQLite IDE Fix All: {calls} calls, {blocks} blocks; exact standalone source match; {timer.Elapsed.TotalSeconds:F2}s including diagnostics, revalidation and emit.");
+        TestContext.Current.TestOutputHelper!.WriteLine($"SQLite IDE Fix All: {calls} calls, {comparisons} comparisons, {blocks} blocks; exact standalone source match; {timer.Elapsed.TotalSeconds:F2}s including diagnostics, revalidation and emit.");
     }
 }

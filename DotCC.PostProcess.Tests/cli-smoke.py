@@ -48,7 +48,7 @@ static class Program {
   using var reader = new System.IO.StreamReader(typeof(Program).Assembly.GetManifestResourceStream("payload")!);
   { /* standalone */ }
   if (Value.Number == 0) {}
-  System.Console.WriteLine($"{Cond.B(Value.Number)}|{Value.Number}|{reader.ReadToEnd()}|{File()}");
+  System.Console.WriteLine($"{Cond.B(Value.Number > 0 ? 0 : 1)}|{Value.Number}|{reader.ReadToEnd()}|{File()}");
 #endif
  }
 }
@@ -61,6 +61,7 @@ static class Program {
     manifest = json.loads((output / 'manifest.json').read_text())
     assert manifest['Rewritten'] == 1, manifest
     assert manifest['RemovedEmptyBlocks'] == 1, manifest
+    assert manifest['SimplifiedBooleanComparisons'] == 1, manifest
     assert before == hashlib.sha256(code.read_bytes()).hexdigest()
     for item in manifest['Files']:
         assert hashlib.sha256((output / item['Path']).read_bytes()).hexdigest() == item['Sha256']

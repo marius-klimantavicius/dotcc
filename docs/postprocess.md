@@ -6,7 +6,8 @@ Run it after dotcc finishes its normal emission/linking/build actions. SQLite’
 no Roslyn dependency into
 `DotCC.Lib`, the dotcc executable, or translated applications. The tool references
 the Roslyn assemblies shipped with the .NET 10 SDK used to build it. It inlines
-proven `Cond.B` calls, then removes standalone empty blocks for readability.
+proven `Cond.B` calls, simplifies comparisons of boolean 0/1 conditionals, then
+removes standalone empty blocks for readability.
 The optional [Rider analyzer and code fix](#rider-in-place-fixes) applies the same
 rewrites directly to documents through IDE quick-fixes.
 
@@ -65,6 +66,8 @@ input configuration: building the snapshot with another configuration does not
 change its preprocessor symbols or checked/unsafe settings. The manifest records
 input hashes, compiler arguments, output hashes, rewrite counts and skip reasons.
 `RemovedEmptyBlocks` counts the empty blocks removed by the cleanup pass.
+`SimplifiedBooleanComparisons` counts the numeric conditional comparisons folded
+back to boolean expressions.
 It is deterministic for identical evaluated inputs.
 
 ## Tree and semantic analysis
@@ -107,9 +110,35 @@ across preprocessor directives. Unknown helper implementations are retained too.
 Skip diagnostics include the original source location. CBool stores, arithmetic,
 API signatures and the helper definitions themselves are not rewritten.
 
+## Boolean comparison cleanup
+
+After `Cond.B`/CBool inlining, the tool rebinds the compilation and simplifies
+built-in comparisons of numeric 0/1 conditionals:
+
+```csharp
+if ((condition ? 0 : 1) != 0)  // becomes if (!(condition))
+if ((condition ? 0 : 1) == 0)  // becomes if ((condition))
+if ((condition ? 1 : 0) != 0)  // becomes if ((condition))
+if ((condition ? 1 : 0) == 0)  // becomes if (!(condition))
+```
+
+The pass also handles comparisons against 1, reversed operands and relational
+operators (`<`, `<=`, `>`, `>=`) when the two branches produce opposite comparison
+results. It works in any boolean expression context, including nested
+conditions, and does not require a remaining `Cond.B` call. Numeric casts around
+the conditional are accepted only when they preserve its 0/1 values.
+
+The condition must already have type `bool`, the arms and comparison constant
+must be numeric constants exactly equal to 0 or 1, and the comparison must be
+built-in and non-lifted. User-defined truth conversions/operators, nullable
+comparisons and unsupported constants are retained. Comparisons that always
+produce the same result are also retained, preserving evaluation of the
+condition. Comments, newlines, expression trees, query expressions and captured
+caller-argument text receive the same protection as in condition inlining.
+
 ## Empty block cleanup
 
-After condition inlining, a syntax-tree pass removes empty block statements from
+After boolean comparison cleanup, a syntax-tree pass removes empty block statements from
 method/block statement lists, switch sections and top-level code. It also removes
 blocks that become empty after their nested empty blocks are removed. This pass
 works even when the input has no `Cond` helper.
@@ -162,22 +191,25 @@ Select a suggestion and use **Alt+Enter** to preview/apply its quick-fix:
 | --- | --- |
 | `DCCPP001` | Inline the proven `Cond.B` call, including supported CBool normalization/read pairs. |
 | `DCCPP002` | Remove the standalone empty block, including nested blocks that become empty. |
+| `DCCPP003` | Simplify a built-in comparison of a boolean encoded as 0/1. |
 
 Each action offers **Fix All in document, project or solution**. Fix All handles
 each affected document in one tree pass per rule instead of compiling once per
-diagnostic. Run it once for each rule to apply both transformations. A single
+diagnostic. Apply `DCCPP001`, then `DCCPP003`, then `DCCPP002` to match the standalone
+pipeline; inlining can expose new comparison suggestions. A single
 fix includes eligible nested expressions/blocks within the selected diagnostic,
 while leaving unrelated siblings alone. Analysis and builds only report
 suggestions; applying a code action is what edits the source. Regenerating with
 dotcc will replace edits to generated files.
 
-Both diagnostics have default severity `suggestion` and intentionally analyze
+All three diagnostics have default severity `suggestion` and intentionally analyze
 generated files. They honor standard diagnostic suppression. For example:
 
 ```ini
 [*.cs]
 dotnet_diagnostic.DCCPP001.severity = suggestion
 dotnet_diagnostic.DCCPP002.severity = suggestion
+dotnet_diagnostic.DCCPP003.severity = suggestion
 ```
 
 Rider's **Editor | Inspection Settings | Roslyn Analyzers** setting must be
@@ -213,7 +245,7 @@ before feeding the project to the standalone command, whose input contract
 still rejects custom analyzers.
 
 The IDE and standalone tool compile the same source files for rewrite proofs,
-observable-context checks and empty-block cleanup. Documents with compiler
+observable-context checks, boolean comparison simplification and empty-block cleanup. Documents with compiler
 errors are skipped until bindings are valid. Edits retain trivia and are
 serialized/reparsed and semantically checked before being returned to the IDE;
 no whole-document formatter is invoked. Source-generator outputs are not editable
@@ -243,7 +275,8 @@ See [SQLite validation](../sqlite/docs/validation.md) for measured results.
 The IDE tests run real diagnostic and code-action APIs, including MEF discovery,
 single fixes, all three Fix All scopes, generated files and suppressions. To
 check packaging and compare the IDE Fix All output against a standalone SQLite
-snapshot (absolute path required for the test environment variable):
+snapshot generated with the current tool (absolute path required for the test
+environment variable):
 
 ```sh
 python3 DotCC.PostProcess.Analyzers.Tests/package-smoke.py \
