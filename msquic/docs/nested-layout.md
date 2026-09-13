@@ -76,6 +76,27 @@ consumer passed under JIT and NativeAOT, covering SQL and WAL workloads, JSONB,
 FTS5, callbacks, preupdate hooks, encodings, integrity, GC, and cleanup. These
 targeted checks do not relabel the historical full transport or SQLite campaigns.
 
+## Stable event payload names
+
+`config/dotcc-overrides.json` selects the anonymous types of nine
+`QUIC_CONNECTION_EVENT` fields through `fieldTypeNames`. For example, `CONNECTED`
+uses `QUIC_CONNECTION_EVENT_CONNECTED_DATA`, which can be named directly:
+
+```csharp
+QUIC_CONNECTION_EVENT connectionEvent = default;
+ref QUIC_CONNECTION_EVENT_CONNECTED_DATA data = ref connectionEvent.CONNECTED;
+data.SessionResumed = 1;
+```
+
+The other configured fields use the same `QUIC_CONNECTION_EVENT_<FIELD>_DATA`
+pattern. The profile also names `QUIC_LISTENER_EVENT.NEW_CONNECTION` as
+`QUIC_LISTENER_EVENT_NEW_CONNECTION` and `QUIC_LISTENER_EVENT.STOP_COMPLETE` as
+`QUIC_LISTENER_EVENT_STOP_COMPLETE` (without a `_DATA` suffix).
+These are partial structs with the original ABI layout. The compiler
+profile is applied during source/object emission; the host, ABI, cached-object,
+and product receipts record its hash. Build and closure checks reject objects
+from a different profile. Regenerate after changing the mapping.
+
 ## Regeneration
 
 ```sh

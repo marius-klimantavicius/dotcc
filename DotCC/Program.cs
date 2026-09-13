@@ -68,8 +68,8 @@ internal static class Program
             Description = "Replace active C macro definitions: NAME=BODY. Repeatable; use --overrides-file for selectors/templates.",
             AllowMultipleArgumentsPerToken = false,
         };
-        var overridesFileOpt = new Option<string?>("--overrides-file") { Description = "Version-1 JSON C macro override profile." };
-        var overrideReportOpt = new Option<string?>("--override-report") { Description = "Write macro override provenance and matches as JSON Lines." };
+        var overridesFileOpt = new Option<string?>("--overrides-file") { Description = "Version-1 JSON translation profile (macro overrides and field type names)." };
+        var overrideReportOpt = new Option<string?>("--override-report") { Description = "Write translation override provenance and matches as JSON Lines." };
         var targetOpt = new Option<string?>("--target")
         {
             Description = "Output target (the M in N×M): cs (C#, default) or wat (WebAssembly text). wat emits a .wat module to -o, else stdout.",
@@ -434,7 +434,7 @@ internal static class Program
                 !p.EndsWith(".c", System.StringComparison.OrdinalIgnoreCase)
                 && !p.EndsWith(".zig", System.StringComparison.OrdinalIgnoreCase));
         if (linking && (preprocessing is { HasOverrides: true } or { HasMacroExports: true }))
-            throw new CompileException("macro overrides/exports require C source; rebuild objects to change their definitions");
+            throw new CompileException("translation overrides/macro exports require C source; rebuild objects to change their definitions");
         IReadOnlyDictionary<string, string> generatedSources;
         var emitMode = emit.ToEmitMode(libraryMode);
         try

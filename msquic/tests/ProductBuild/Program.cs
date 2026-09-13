@@ -24,6 +24,27 @@ internal static unsafe class Program
         if (owner.Settings.IsSetFlags != (1UL << 19))
             return 1;
 
+        // Stable field-type names must cross an assembly boundary in both
+        // raw/postprocessed JIT and NativeAOT consumers.
+        MsQuic.QUIC_CONNECTION_EVENT connectionEvent = default;
+        ref MsQuic.QUIC_CONNECTION_EVENT_CONNECTED_DATA connected = ref connectionEvent.CONNECTED;
+        ref MsQuic.QUIC_CONNECTION_EVENT_LOCAL_ADDRESS_CHANGED_DATA local_address_changed = ref connectionEvent.LOCAL_ADDRESS_CHANGED;
+        ref MsQuic.QUIC_CONNECTION_EVENT_PEER_ADDRESS_CHANGED_DATA peer_address_changed = ref connectionEvent.PEER_ADDRESS_CHANGED;
+        ref MsQuic.QUIC_CONNECTION_EVENT_PEER_CERTIFICATE_RECEIVED_DATA peer_certificate_received = ref connectionEvent.PEER_CERTIFICATE_RECEIVED;
+        ref MsQuic.QUIC_CONNECTION_EVENT_PEER_STREAM_STARTED_DATA peer_stream_started = ref connectionEvent.PEER_STREAM_STARTED;
+        ref MsQuic.QUIC_CONNECTION_EVENT_STREAMS_AVAILABLE_DATA streams_available = ref connectionEvent.STREAMS_AVAILABLE;
+        ref MsQuic.QUIC_CONNECTION_EVENT_SHUTDOWN_COMPLETE_DATA shutdown_complete = ref connectionEvent.SHUTDOWN_COMPLETE;
+        ref MsQuic.QUIC_CONNECTION_EVENT_SHUTDOWN_INITIATED_BY_PEER_DATA shutdown_initiated_by_peer = ref connectionEvent.SHUTDOWN_INITIATED_BY_PEER;
+        ref MsQuic.QUIC_CONNECTION_EVENT_SHUTDOWN_INITIATED_BY_TRANSPORT_DATA shutdown_initiated_by_transport = ref connectionEvent.SHUTDOWN_INITIATED_BY_TRANSPORT;
+        connected.SessionResumed = 1;
+        if (connectionEvent.CONNECTED.SessionResumed != 1) return 1;
+        connected = default;
+        MsQuic.QUIC_LISTENER_EVENT listenerEvent = default;
+        ref MsQuic.QUIC_LISTENER_EVENT_NEW_CONNECTION newConnection = ref listenerEvent.NEW_CONNECTION;
+        ref MsQuic.QUIC_LISTENER_EVENT_STOP_COMPLETE stopComplete = ref listenerEvent.STOP_COMPLETE;
+        newConnection = default;
+        stopComplete = default;
+
         // These wrappers use typedef/primitive casts and function-like macros
         // upstream. Their public exports must be usable as C# constants.
         const uint pending = MsQuic.QUIC_STATUS_PENDING;

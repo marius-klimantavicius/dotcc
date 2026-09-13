@@ -71,7 +71,7 @@ public static partial class Compiler
             inputPaths, includeDirs, defines, dialect, names, warnings, testMode, preprocessing, objectMode);
         var anyZig = inputPaths.Any(IsZigSource);
         var anyC = inputPaths.Any(p => !IsZigSource(p));
-        if (!anyC && (preprocessing is { HasOverrides: true } or { HasMacroExports: true })) throw new CompileException("C macro overrides/exports require C source input");
+        if (!anyC && (preprocessing is { HasOverrides: true } or { HasMacroExports: true })) throw new CompileException("C translation overrides/macro exports require C source input");
         if (anyZig && anyC) { return BuildMixedIr(request); }
         Frontends.IFrontend frontend = anyZig ? new Frontends.ZigFrontend() : new Frontends.CFrontend();
         return frontend.BuildIr(request);

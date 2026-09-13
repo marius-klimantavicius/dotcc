@@ -70,6 +70,10 @@ try:
     if host_result.get('macro_exports') != ['QUIC_STATUS_*']:
         raise RuntimeError('Rebuild host ABI objects with QUIC_STATUS_* macro exports')
     receipt['macro_exports'] = host_result['macro_exports']
+    profile_hash = sha(ROOT / 'config/dotcc-overrides.json')
+    if host_result.get('translation_profile_sha256') != profile_hash:
+        raise RuntimeError('Rebuild host ABI objects with the current translation profile')
+    receipt['translation_profile_sha256'] = profile_hash
     receipt['objects'] = []
     objects = []
     commands = {record['name']: record['arguments'] for record in host_result['commands']}
@@ -83,7 +87,8 @@ try:
                 or cached['object'] != str(obj) or cached['object_sha256'] != sha(obj)
                 or cached['stage_manifest_sha256'] != stage_hash
                 or cached['compiler_hashes'] != host_result['compiler_hashes']
-                or cached.get('macro_exports') != host_result['macro_exports']):
+                or cached.get('macro_exports') != host_result['macro_exports']
+                or cached.get('translation_profile_sha256') != profile_hash):
             raise RuntimeError('Stale or changed object cache: ' + unit)
         objects.append(obj)
         receipt['objects'].append(dict(source=unit, source_sha256=sha(STAGE / unit),

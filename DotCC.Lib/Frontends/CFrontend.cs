@@ -138,26 +138,60 @@ internal sealed class CFrontend : IFrontend
         // parse (preprocessor-era) and IR build (emit-pass), then flush as warnings
         // (-pedantic) or one collected error (-pedantic-errors). Off by default.
         var gate = (pedantic || pedanticErrors) ? new DialectGate(activeDialect) : null;
-        var irBuilder = new Ir.IrBuilder(gate, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings) { StableAnonymousNames = req.ObjectMode };
+        var naming = req.Preprocessing is { FieldTypeNames.Count: > 0 };
+        Ir.IrBuilder NewBuilder(IReadOnlyDictionary<string, string>? typeNames = null) =>
+            new(typeNames is null ? gate : null, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings)
+            { StableAnonymousNames = req.ObjectMode || naming, AnonymousTypeNames = typeNames };
+        var irBuilder = NewBuilder();
+        var parsed = new List<(Item Root, string File, (string Name, IReadOnlyList<Item> Body, bool Selected)[] Macros)>();
+        var typeNames = new Dictionary<string, string>(StringComparer.Ordinal);
+        var matchedNames = new HashSet<string>(StringComparer.Ordinal);
         var irParser = C.BuildSourceLocatedParser();
         foreach (var unitPath in inputPaths)
         {
             var root = ParseUnit(unitPath, irParser, quiet: false, gate);
-            irBuilder.AddUnit(root, Path.GetFileName(unitPath));
-            // Lower before the next TU can replace typedef/enum bindings.
-            var macroEvaluator = irBuilder.CreateMacroEvaluator();
-            foreach (var macro in macroBodies)
-            {
-                var value = CConstantMacros.TryLower(macro.Body, macroEvaluator, activeDialect);
-                if (macro.Selected && value == null)
-                    throw new CompileException($"cannot export selected macro '{macro.Name}' in {Path.GetFileName(unitPath)}: unsupported or nonconstant expression");
-                irBuilder.MacroConstants.Add((macro.Name, value, macro.Selected));
-                if (macro.Body.Any(t => t.Content?.ToString() == RuntimeIntrinsicNames.IsLittleEndian))
-                    overrides?.Event("macro-export-skipped", ("name", macro.Name), ("reason", "runtime intrinsic is not a constant"));
-            }
+            if (naming) parsed.Add((root, Path.GetFileName(unitPath), macroBodies.ToArray()));
+            BindUnit(root, Path.GetFileName(unitPath), macroBodies);
+            if (naming) irBuilder.ResolveFieldTypeNames(req.Preprocessing!, typeNames, matchedNames);
             macroBodies.Clear();
         }
         overrides?.Complete();
+        if (naming)
+        {
+            irBuilder.FinishAggregateTypes();
+            irBuilder.ValidateFieldTypeNames(typeNames);
+            foreach (var rule in req.Preprocessing!.FieldTypeNames)
+                if (!matchedNames.Contains(rule.Field))
+                {
+                    if (rule.RequireMatch) throw new CompileException("fieldTypeNames requireMatch was not satisfied: " + rule.Field);
+                    overrides?.Event("field-type-name-unmatched", ("field", rule.Field));
+                }
+            if (typeNames.Count != 0)
+            {
+                // Rebind cached syntax with the selected identities in place from
+                // their creation. All expressions, layouts, typedefs, initializers
+                // and object metadata then agree without a text rewrite or an
+                // incomplete IR-node visitor. Preprocessing/parsing run only once.
+                irBuilder = NewBuilder(typeNames);
+                foreach (var unit in parsed) BindUnit(unit.Root, unit.File, unit.Macros);
+                parsed.Clear();
+            }
+        }
+        void BindUnit(Item root, string file, IEnumerable<(string Name, IReadOnlyList<Item> Body, bool Selected)> macros)
+        {
+            irBuilder.AddUnit(root, file);
+            // Lower before the next TU can replace typedef/enum bindings.
+            var macroEvaluator = irBuilder.CreateMacroEvaluator();
+            foreach (var macro in macros)
+            {
+                var value = CConstantMacros.TryLower(macro.Body, macroEvaluator, activeDialect);
+                if (macro.Selected && value == null)
+                    throw new CompileException($"cannot export selected macro '{macro.Name}' in {file}: unsupported or nonconstant expression");
+                irBuilder.MacroConstants.Add((macro.Name, value, macro.Selected));
+                if (irBuilder.AnonymousTypeNames is null && macro.Body.Any(t => t.Content?.ToString() == RuntimeIntrinsicNames.IsLittleEndian))
+                    overrides?.Event("macro-export-skipped", ("name", macro.Name), ("reason", "runtime intrinsic is not a constant"));
+            }
+        }
         irBuilder.FinishAggregateTypes();
         foreach (var global in irBuilder.Globals)
             if (global.Init is { } init) Ir.IrBuilder.RequireNoRuntimeIntrinsic(init, "static initializer of " + global.Sym.Name);

@@ -19,21 +19,24 @@ public sealed record MacroOverride(string Name, string Replacement, string? Exac
     bool Literal = false, string Origin = "API");
 
 /// <summary>Immutable rules; invocation-local match state permits concurrent/repeated compiler calls.</summary>
-public sealed class CPreprocessingOptions
+public sealed partial class CPreprocessingOptions
 {
     internal const int MaxText = 1024 * 1024;
     internal readonly CompiledMacroOverride[] Rules;
     public string? ProfilePath { get; }
     public string ProfileHash { get; }
     public TextWriter? Report { get; }
-    public bool HasOverrides => Rules.Length != 0;
+    public bool HasOverrides => Rules.Length != 0 || FieldTypeNames.Count != 0;
+    /// <summary>Stable names for anonymous aggregate types selected through C fields.</summary>
+    public IReadOnlyList<FieldTypeNameOverride> FieldTypeNames { get; }
     /// <summary>Additional macro names or glob patterns to emit as public fields.</summary>
     public IReadOnlyList<string> EmitDefines { get; }
     public bool HasMacroExports => EmitDefines.Count != 0;
     internal MacroExportSelector ExportSelector { get; }
 
-    public CPreprocessingOptions(IReadOnlyList<MacroOverride> macroOverrides, string? profilePath = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null)
+    public CPreprocessingOptions(IReadOnlyList<MacroOverride> macroOverrides, string? profilePath = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null, IReadOnlyList<FieldTypeNameOverride>? fieldTypeNames = null)
     {
+        FieldTypeNames = ValidateFieldTypeNames(fieldTypeNames);
         EmitDefines = Array.AsReadOnly((emitDefines ?? Array.Empty<string>()).ToArray());
         ExportSelector = new MacroExportSelector(EmitDefines);
         ProfilePath = profilePath is null ? null : Path.GetFullPath(profilePath);
@@ -51,27 +54,40 @@ public sealed class CPreprocessingOptions
         {
             json.WriteStartArray();
             foreach (var rule in Rules) rule.WriteProfile(json);
+            foreach (var rule in FieldTypeNames)
+            {
+                json.WriteStartObject(); json.WriteString("field", rule.Field); json.WriteString("name", rule.Name);
+                json.WriteBoolean("requireMatch", rule.RequireMatch); json.WriteEndObject();
+            }
             json.WriteEndArray();
         }
         ProfileHash = Convert.ToHexString(SHA256.HashData(bytes.ToArray())).ToLowerInvariant();
     }
 
-    public CPreprocessingOptions WithoutReport() => new(Rules.Select(r => r.Rule).ToArray(), ProfilePath, emitDefines: EmitDefines);
+    public CPreprocessingOptions WithoutReport() => new(Rules.Select(r => r.Rule).ToArray(), ProfilePath, emitDefines: EmitDefines, fieldTypeNames: FieldTypeNames);
 
     /// <summary>Load strict version-1 JSON and optionally replace a name's profile rules with a literal CLI rule.</summary>
     public static CPreprocessingOptions Load(string? profilePath = null, IReadOnlyList<string>? overrides = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null)
     {
         var rules = new List<MacroOverride>();
+        var fieldTypeNames = new List<FieldTypeNameOverride>();
         if (profilePath is not null)
         {
             try
             {
                 using var doc = JsonDocument.Parse(File.ReadAllText(profilePath));
                 var root = doc.RootElement;
-                Fields(root, "version", "macroOverrides");
-                if (root.GetProperty("version").GetInt32() != 1) throw new CompileException("unsupported macro override profile version");
+                Fields(root, "version", "macroOverrides", "fieldTypeNames");
+                if (root.TryGetProperty("fieldTypeNames", out var names))
+                    foreach (var entry in names.EnumerateArray())
+                    {
+                        Fields(entry, "field", "name", "requireMatch");
+                        fieldTypeNames.Add(new(RequiredString(entry, "field"), RequiredString(entry, "name"),
+                            entry.TryGetProperty("requireMatch", out var required) && required.GetBoolean()));
+                    }
+                if (root.GetProperty("version").GetInt32() != 1) throw new CompileException("unsupported translation override profile version");
                 var index = 0;
-                foreach (var entry in root.GetProperty("macroOverrides").EnumerateArray())
+                foreach (var entry in root.TryGetProperty("macroOverrides", out var macros) ? macros.EnumerateArray() : Enumerable.Empty<JsonElement>())
                 {
                     Fields(entry, "name", "replacement", "match", "signature", "requireMatch", "expect");
                     string? exact = null, pattern = null;
@@ -97,7 +113,7 @@ public sealed class CPreprocessingOptions
                 }
             }
             catch (Exception ex) when (ex is JsonException or InvalidOperationException or KeyNotFoundException or FormatException or IOException)
-            { throw new CompileException($"invalid macro override profile '{profilePath}': {ex.Message}", ex); }
+            { throw new CompileException($"invalid translation override profile '{profilePath}': {ex.Message}", ex); }
         }
         var cliNames = new HashSet<string>(StringComparer.Ordinal);
         foreach (var definition in overrides ?? Array.Empty<string>())
@@ -110,7 +126,7 @@ public sealed class CPreprocessingOptions
                 WriteEvent(report, "cli-precedence", ("name", name), ("action", "replaced profile rules"));
             rules.Add(new(name, definition[(equals + 1)..], Literal: true, Origin: "--override-macro"));
         }
-        return new(rules, profilePath, report, emitDefines);
+        return new(rules, profilePath, report, emitDefines, fieldTypeNames);
     }
 
     private static void Fields(JsonElement element, params string[] allowed)
@@ -118,13 +134,13 @@ public sealed class CPreprocessingOptions
         var seen = new HashSet<string>(StringComparer.Ordinal);
         foreach (var property in element.EnumerateObject())
             if (!seen.Add(property.Name) || !allowed.Contains(property.Name, StringComparer.Ordinal))
-                throw new CompileException("unknown or duplicate macro profile field: " + property.Name);
+                throw new CompileException("unknown or duplicate translation profile field: " + property.Name);
     }
     private static string RequiredString(JsonElement e, string name) => e.GetProperty(name).GetString()
-        ?? throw new CompileException("null macro profile string: " + name);
+        ?? throw new CompileException("null translation profile string: " + name);
     private static string? OptionalString(JsonElement e, string name) => e.TryGetProperty(name, out _) ? RequiredString(e, name) : null;
     private static string[] Strings(JsonElement e) => e.EnumerateArray().Select(v => v.GetString()
-        ?? throw new CompileException("null macro profile string")).ToArray();
+        ?? throw new CompileException("null translation profile string")).ToArray();
     internal static bool Identifier(string name) => name.Length != 0 && (char.IsAsciiLetter(name[0]) || name[0] == '_')
         && name.All(c => char.IsAsciiLetterOrDigit(c) || c == '_');
     internal static CompileException Error(MacroOverride rule, string message) => new($"macro override '{rule.Name}' ({rule.Origin}): {message}");

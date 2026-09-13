@@ -84,6 +84,7 @@ def main():
                    'No diagnostic source copies or declaration-only replacement headers are used.'],
         'verified_reference_files': verify_reference(),
         'source_sha256': {str(p.relative_to(ROOT)): sha256(p) for p in [Path(__file__).resolve(), *sorted((ROOT / 'tests/Abi').glob('*'))] if p.is_file()},
+        'translation_profile_sha256': sha256(ROOT / 'config/dotcc-overrides.json'),
         'compiler_sha256': {str(p): sha256(p) for p in
             [compiler, compiler.parent / 'DotCC.Lib.dll'] if p.is_file()},
         'groups': [], 'commands': commands, 'passed': False,
@@ -138,7 +139,7 @@ def main():
             outcome['status'] = 'native-reference-only'
             continue
         generated = destination / 'generated'
-        code, _ = run(group, 'emit', ['dotnet', str(compiler), '-std=c17'] + define_args + include_args +
+        code, _ = run(group, 'emit', ['dotnet', str(compiler), '-std=c17', '--overrides-file', str(ROOT / 'config/dotcc-overrides.json')] + define_args + include_args +
             [str(source), '--emit=csproj', '-o', str(generated)])
         if code:
             outcome['status'] = 'blocked-translation'
@@ -180,6 +181,7 @@ def main():
         outcome['passed'] = bool(outcome['runtimes']) and all(value['passed'] for value in outcome['runtimes'].values())
         outcome['status'] = ('passed-jit-only' if args.jit_only else 'passed-jit-and-aot') if outcome['passed'] else 'failed-runtime-or-comparison'
         write_report()
+    report['translation_profile_sha256_after'] = sha256(ROOT / 'config/dotcc-overrides.json')
     report['compiler_sha256_after'] = {str(p): sha256(p) for p in
         [compiler, compiler.parent / 'DotCC.Lib.dll'] if p.is_file()}
     report['compiler_stable'] = report['compiler_sha256'] == report['compiler_sha256_after']

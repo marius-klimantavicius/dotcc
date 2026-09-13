@@ -1,7 +1,8 @@
-# C macro overrides and runtime intrinsics
+# Translation overrides and runtime intrinsics
 
-A translation profile can replace selected macro definitions without editing C
-sources. This is separate from the runtime intrinsic API; either works alone.
+A translation profile can replace selected macro definitions and assign stable
+names to anonymous field types without editing C sources. Its optional sections
+are independent, leaving room for additional translation settings.
 
 ```bash
 dotcc source.c --overrides-file translation.json \
@@ -19,6 +20,8 @@ change a function-like macro's arity.
 ## Profile format
 
 Version 1 is strict JSON: unknown/duplicate fields and malformed values are errors.
+Both `macroOverrides` and `fieldTypeNames` are optional arrays; existing macro-only
+profiles remain valid.
 
 ```json
 {
@@ -70,6 +73,52 @@ Regexes use culture-invariant matching, a 100 ms timeout, no compiled/dynamic
 code, and a 16,384-character pattern limit. Regex input bodies, exact selectors and replacement templates are
 limited to 1,048,576 characters. These are character limits, not UTF-8 byte limits.
 
+## Stable names for anonymous field types
+
+```json
+{
+  "version": 1,
+  "fieldTypeNames": [
+    {
+      "field": "QUIC_CONNECTION_EVENT.CONNECTED",
+      "name": "QUIC_CONNECTION_EVENT_CONNECTED_DATA",
+      "requireMatch": true
+    }
+  ]
+}
+```
+
+`field` selects the **type of the field**, starting with a C aggregate tag or
+typedef. Both `Event.CONNECTED` and `Event::CONNECTED` work. Longer field paths
+are supported, and lookup follows C anonymous-member promotion automatically.
+The final field must have an anonymous struct or union type; pointers, arrays,
+scalars, and already named aggregate types are rejected. The rule names that
+existing type everywhere it is used; it does not rename the field, create a
+wrapper, change layout, or introduce a typedef into the C source.
+
+`name` must be a nonreserved ASCII identifier. Duplicate selectors, conflicting
+names for one type, names shared by distinct types, and collisions with existing
+types/symbols or the renamed type's own members are errors. Multiple selectors
+through typedef aliases may give the same underlying type the same name.
+
+An absent root type is skipped, allowing one profile to cover several source
+units. Set `requireMatch` (default `false`) to require a selection somewhere in
+the current source invocation. If the root exists, an invalid field path always
+fails. The report records `field-type-name` and `field-type-name-unmatched` events.
+Preprocess-only and dependency-only operations do not resolve type selectors.
+
+Names are chosen from the bound type graph. When rules match, cached syntax is
+bound again with the chosen identities, keeping all expressions and layout and
+object metadata consistent. Preprocessing and parsing happen once; profiles
+without naming rules keep the existing single binding pass. Apply the profile
+while compiling **each source object**, then link normally. Object-only links
+reject translation overrides; rebuild the objects after changing the profile.
+
+Named output remains `partial`, and promoted aggregate properties retain their
+`[UnscopedRef]` ref returns. The MsQuic profile at
+[`msquic/config/dotcc-overrides.json`](../msquic/config/dotcc-overrides.json)
+names nine connection-event payload types and two listener-event payload types.
+
 ## Runtime endianness
 
 `__dotcc_is_little_endian()` is a reserved, zero-argument C expression returning
@@ -96,15 +145,17 @@ alternatives remain unchanged.
 
 Pass `CPreprocessingOptions` to `Compiler.Preprocess`, `EmitCSharp`,
 `EmitCSharpFiles`, `EmitWat`, `EmitObject` or `EmitDependencyRule`. Load a profile
-with `CPreprocessingOptions.Load(...)`, or construct `MacroOverride` and
-`MacroSignature` records directly. Rules are snapshotted; match counters belong
+with `CPreprocessingOptions.Load(...)`, or construct `MacroOverride`,
+`MacroSignature`, and `FieldTypeNameOverride` records directly (pass the latter
+through the constructor's `fieldTypeNames` argument). The existing API name is
+retained for compatibility. Rules are snapshotted; match counters belong
 to each invocation. A report writer is caller-owned and should not be shared
 between concurrent invocations without synchronization.
 
 `--override-report` writes JSON Lines for profile hash, precedence, original and
 effective bodies, signatures, captures, nonmatches, selected/shadowed rules,
 expansions, rule summaries, intrinsic usage and skipped runtime macro exports.
-The profile hash covers effective normalized rules. Constant harvesting and CLI
+The profile hash covers effective normalized macro and field-type naming rules. Constant harvesting and CLI
 dependency passes do not inflate expansion counts.
 
 The JSON profile is included in generated Make dependencies. Dependency-only

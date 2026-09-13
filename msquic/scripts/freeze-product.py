@@ -194,6 +194,11 @@ product = read(ROOT / 'artifacts/product-build/results.json')
 abi = read(ROOT / 'artifacts/abi/results.json')
 for name, receipt in [('host ABI', host), ('product', product), ('public ABI', abi)]:
     check(receipt.get('passed') is True, name + ' gate did not pass')
+profile = ROOT / 'config/dotcc-overrides.json'
+profile_hash = sha(profile)
+check(host.get('translation_profile_sha256') == product.get('translation_profile_sha256')
+      == abi.get('translation_profile_sha256') == abi.get('translation_profile_sha256_after') == profile_hash,
+      'Translation profile differs between the validated sources and product')
 inline_exports = [line.strip() for line in (ROOT / 'config/inline-exports.txt').read_text().splitlines()
                   if line.strip() and not line.lstrip().startswith('#')]
 check(product.get('output_options') == dict(nest_types=True, runtime='c', deduplicate_inline=True,
@@ -254,7 +259,9 @@ for index, record in enumerate(product['objects'], 1):
     check(cached['includes'] == expected_includes, 'Object include roots differ from the host ABI campaign')
     check(cached.get('macro_exports') == host.get('macro_exports') == product.get('macro_exports') == ['QUIC_STATUS_*'],
           'Object macro export selection differs from the product')
-    expected_command = ['dotnet', str(compiler / 'dotcc.dll'), '--emit=obj', '--emit-define', 'QUIC_STATUS_*', *cached['flags'], *cached['includes'],
+    check(cached.get('translation_profile_sha256') == profile_hash, 'Object translation profile differs from the product')
+    expected_command = ['dotnet', str(compiler / 'dotcc.dll'), '--emit=obj', '--emit-define', 'QUIC_STATUS_*',
+                        '--overrides-file', str(profile), *cached['flags'], *cached['includes'],
                         str(source), '-o', str(obj)]
     check(record['arguments'] == host_commands.get(f'core-object-{index:02d}') == expected_command,
           'Product/ABI object emission command differs: ' + record['source'])
@@ -284,6 +291,9 @@ revision = next(iter(versions.values())).split('+')[-1]
 check(re.fullmatch(r'[0-9a-f]{40}', revision) is not None, 'Compiler build revision is not an exact commit')
 operations = read(ROOT / 'config/managed-host/operations.json')
 evidence = [ROOT / 'artifacts' / name / 'results.json' for name in ['host-contract', 'abi', 'product-build']]
+profile_snapshot = ROOT / 'artifacts/host-contract/dotcc-overrides.json'
+check(sha(profile_snapshot) == profile_hash, 'Saved translation profile differs from the product')
+evidence.append(profile_snapshot)
 if args.sqlite_receipt is not None:
     evidence += [sqlite_path, normal_path]
 value = dict(schema_version=1, status='Nested MsQuic ABI/build closure passed; dependent runtime and shared regression qualification is separate',
@@ -293,7 +303,7 @@ value = dict(schema_version=1, status='Nested MsQuic ABI/build closure passed; d
     data_model=stage['data_model'], source_files=stage['files'], api_profile_sha256=sha(ROOT / 'config/api-profile.json'),
     evidence_sha256={os.path.relpath(p, ROOT): sha(p) for p in evidence}, compiler_hashes=host['compiler_hashes'], generated=generated,
     generated_directories=product['generated_directories'], output_options=product['output_options'],
-    macro_exports=product['macro_exports'],
+    macro_exports=product['macro_exports'], translation_profile_sha256=profile_hash,
     gates=dict(host_abi_native_records=sum(row['native_records'] for row in host['cases']),
         public_abi_native_records=public['native_records'], raw_optimized_jit_nativeaot=True,
         entire_generated_assembly_rooted_for_aot=True, shared_compiler_sqlite_campaign_passed=args.sqlite_receipt is not None,

@@ -44,6 +44,10 @@ try:
     macro_exports = ['QUIC_STATUS_*']
     export_flags = [part for pattern in macro_exports for part in ['--emit-define', pattern]]
     receipt['macro_exports'] = macro_exports
+    profile = ROOT / 'config/dotcc-overrides.json'
+    profile_flags = ['--overrides-file', str(profile)]
+    receipt['translation_profile_sha256'] = hashlib.sha256(profile.read_bytes()).hexdigest()
+    (logs / 'dotcc-overrides.json').write_bytes(profile.read_bytes())
     includes = ['-I' + str(stage / path) for path in ['system', 'src/inc', 'src/core', 'src/platform', 'host']]
     includes.extend(['-I' + str(ROOT / 'tests/Abi'), '-I' + str(ROOT / 'tests/HostContract')])
     for case, source in [('binding', ROOT / 'tests/HostContract/binding.c'),
@@ -67,20 +71,21 @@ try:
             paths = []
             for index, input_path in enumerate(inputs):
                 output = objects / f'{index:02d}-{Path(input_path).stem}.cs'
-                run(['dotnet', str(compiler / 'dotcc.dll'), '--emit=obj', *export_flags, *flags, *includes,
+                run(['dotnet', str(compiler / 'dotcc.dll'), '--emit=obj', *export_flags, *profile_flags, *flags, *includes,
                      input_path, '-o', str(output)], f'core-object-{index:02d}')
                 object_receipt = dict(source=input_path,
                     source_sha256=hashlib.sha256(Path(input_path).read_bytes()).hexdigest(),
                     object=str(output), object_sha256=hashlib.sha256(output.read_bytes()).hexdigest(),
                     compiler_hashes=receipt['compiler_hashes'], flags=flags, includes=includes, macro_exports=macro_exports,
-                    stage_manifest_sha256=receipt['stage_manifest_sha256'])
+                    stage_manifest_sha256=receipt['stage_manifest_sha256'],
+                    translation_profile_sha256=receipt['translation_profile_sha256'])
                 (objects / (output.stem + '.json')).write_text(json.dumps(object_receipt, indent=2) + '\n')
                 paths.append(str(output))
                 print(f'core object {index + 1}/{len(inputs)}: emitted', flush=True)
             run(['dotnet', str(compiler / 'dotcc.dll'), '--emit=csproj', '--split=size',
                  *paths, '-o', str(project)], case + '-link')
         else:
-            run(['dotnet', str(compiler / 'dotcc.dll'), '--emit=csproj', *export_flags, *flags, *includes,
+            run(['dotnet', str(compiler / 'dotcc.dll'), '--emit=csproj', *export_flags, *profile_flags, *flags, *includes,
                  *inputs, '-o', str(project)], case + '-emit')
         csproj = project / (case + '.csproj')
         run(['dotnet', 'build', str(csproj), '-c', 'Release'], case + '-jit-build')

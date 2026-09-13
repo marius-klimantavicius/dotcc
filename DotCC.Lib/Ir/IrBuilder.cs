@@ -34,9 +34,9 @@ internal sealed partial class IrBuilder
 
     private string AnonymousAggregateName(Item origin, bool isUnion)
     {
-        if (!StableAnonymousNames) return $"__Anon{_anonAggrSeq++}";
+        if (!StableAnonymousNames) return NameAnonymousAggregate($"__Anon{_anonAggrSeq++}");
         var identity = (object?)origin.Content ?? origin;
-        if (_anonymousNames.TryGetValue(identity, out var existing)) return existing;
+        if (_anonymousNames.TryGetValue(identity, out var existing)) return NameAnonymousAggregate(existing);
         var source = SourceFileOrigin.Of(origin)?.Identity ?? _file;
         var location = source + "\n" + SourceMappedItem.Physical(origin).ByteOffset.ToString(System.Globalization.CultureInfo.InvariantCulture)
             + (isUnion ? "\nunion" : "\nstruct");
@@ -45,7 +45,7 @@ internal sealed partial class IrBuilder
         var key = location + "\n" + occurrence.ToString(System.Globalization.CultureInfo.InvariantCulture);
         var name = "__Anon" + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(key)));
         _anonymousNames.Add(identity, name);
-        return name;
+        return NameAnonymousAggregate(name);
     }
 
     private readonly SymbolTable _symbols;
