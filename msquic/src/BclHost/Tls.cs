@@ -40,11 +40,11 @@ public sealed unsafe partial class MsQuicHost
     {
         if (config == null || callbacks == null || completion == null) return Status.InvalidParameter;
         uint flags = (uint)config->Flags;
-        if ((int)config->Type != ManagedCredentialType || (flags & ~0x6033u) != 0 || ((uint)tlsFlags & ~1u) != 0)
+        if ((int)config->Type != ManagedCredentialType || (flags & ~0x6077u) != 0 || ((uint)tlsFlags & ~1u) != 0)
             return Status.NotSupported;
         if (((flags & 2) != 0) != (config->AsyncHandler != null) || ((flags & 0x20) != 0 && (flags & 0x10) == 0))
             return Status.InvalidParameter;
-        if ((flags & 0x10) != 0 && ((flags & 0x4001) != 0x4001 || callbacks->CertificateReceived == null))
+        if ((flags & 0x10) != 0 && ((flags & 0x4000) == 0 || callbacks->CertificateReceived == null))
             return Status.NotSupported;
         if (config->CertificateContext == null || config->Reserved != null || config->Principal != null ||
             config->CaCertificateFile != null || callbacks->ReceiveTP == null)
@@ -58,6 +58,15 @@ public sealed unsafe partial class MsQuicHost
         {
             var credentials = host.Resource<TlsCredentials>(config->CertificateContext);
             if (credentials.Server == ((flags & 1) != 0)) return Status.InvalidParameter;
+            if ((flags & 0x10) != 0 && credentials.Verifier == null) return Status.NotSupported;
+            bool applicationApproval = (flags & 0x14) == 0x14;
+            bool needsPeerCertificate = !credentials.Server || (flags & 0x40) != 0;
+            if ((flags & 4) != 0 && !applicationApproval) return Status.InvalidParameter;
+            if (credentials.ApplicationValidation && needsPeerCertificate && !applicationApproval)
+                return Status.InvalidParameter;
+            if (!credentials.ApplicationValidation && (flags & (4u | 0x40u)) != 0)
+                return Status.NotSupported;
+            if ((flags & 0x40) != 0 && !credentials.Server) return Status.InvalidParameter;
             owner = new TlsSecurityConfig(credentials, *callbacks, ((uint)tlsFlags & 1) == 0, allowed, flags);
             token = (CXPLAT_SEC_CONFIG*)host.AddResource(owner);
             owner = null;
@@ -106,7 +115,7 @@ public sealed unsafe partial class MsQuicHost
         if (config == null || state == null || config->SecConfig == null || config->HkdfLabels == null ||
             config->TPType != 0x39 || config->LocalTPLength > ushort.MaxValue ||
             !PacketReadable(config->LocalTPBuffer, config->LocalTPLength) ||
-            !PacketReadable(config->ResumptionTicketBuffer, config->ResumptionTicketLength) || config->TlsSecrets != null)
+            !PacketReadable(config->ResumptionTicketBuffer, config->ResumptionTicketLength))
             return Status.InvalidParameter;
         var host = FromContext(context);
         TlsConnection? connection = null;

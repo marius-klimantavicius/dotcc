@@ -187,6 +187,13 @@ static unsafe class AsymmetricVectors
             CheckCertificate(verifier, client, ecLeaf, "localhost", 0, signatureError: 47);
             CheckCertificate(verifier, client, ecLeaf, "localhost", 0, signatureError: 51, malformedSignature: true);
             CheckCertificate(verifier, client, ecLeaf, "localhost", 0, cleanup: true);
+            // Application trust approval must never approve a forged CertificateVerify.
+            using var applicationVerifier = BclCryptoProvider.CertificateVerifier.CreateForApplicationValidation();
+            CheckCertificate(applicationVerifier, client, ecLeaf, "wrong.invalid", 0);
+            CheckCertificate(applicationVerifier, client, expired, "localhost", 0);
+            CheckCertificate(applicationVerifier, client, ecLeaf, "wrong.invalid", 0, signatureError: 51);
+            CheckCertificate(applicationVerifier, client, rsaLeaf, "localhost", 0, signatureError: 51);
+            CheckCertificate(applicationVerifier, client, ecLeaf, "localhost", 0, cleanup: true);
             using var foreignKey = RSA.Create(2048);
             var request = new CertificateRequest("CN=untrusted root", foreignKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             request.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));

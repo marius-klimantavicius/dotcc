@@ -42,12 +42,13 @@ public sealed unsafe partial class MsQuicHost
         private readonly object gate = new();
         private int references = 1;
         internal readonly bool Server;
+        internal readonly bool ApplicationValidation;
         internal readonly ushort CipherSuite;
         internal readonly BclCryptoProvider.SigningIdentity? Identity;
         internal readonly BclCryptoProvider.CertificateVerifier? Verifier;
         internal TlsCredentials(bool server, ushort cipherSuite, BclCryptoProvider.SigningIdentity? identity,
-            BclCryptoProvider.CertificateVerifier? verifier)
-        { Server = server; CipherSuite = cipherSuite; Identity = identity; Verifier = verifier; }
+            BclCryptoProvider.CertificateVerifier? verifier, bool applicationValidation = false)
+        { Server = server; CipherSuite = cipherSuite; Identity = identity; Verifier = verifier; ApplicationValidation = applicationValidation; }
         internal void Retain()
         {
             lock (gate)
@@ -89,6 +90,23 @@ public sealed unsafe partial class MsQuicHost
         catch { identity.Dispose(); throw; }
     }
 
+    // The facade owns trust/name validation and may override policy errors in its callback.
+    // TLS signature verification remains in the provider, including for client identities.
+    internal CredentialRegistration CreateApplicationCredential(bool server, X509Certificate2? leaf,
+        IEnumerable<X509Certificate2>? intermediates = null)
+    {
+        if (server) ArgumentNullException.ThrowIfNull(leaf);
+        BclCryptoProvider.SigningIdentity? identity = null;
+        BclCryptoProvider.CertificateVerifier? verifier = null;
+        try
+        {
+            if (leaf != null) identity = new BclCryptoProvider.SigningIdentity(leaf, intermediates);
+            verifier = BclCryptoProvider.CertificateVerifier.CreateForApplicationValidation();
+            return new CredentialRegistration(this, new TlsCredentials(server, 0, identity, verifier, true));
+        }
+        catch { identity?.Dispose(); verifier?.Dispose(); throw; }
+    }
+
     private static void ValidateTlsSuite(ushort cipherSuite)
     {
         if (cipherSuite is not (0 or 0x1301 or 0x1302))
@@ -99,7 +117,8 @@ public sealed unsafe partial class MsQuicHost
         => LoadCredential(configuration, credential, 0, null);
 
     internal uint LoadCredential(QUIC_HANDLE* configuration, CredentialRegistration credential,
-        QUIC_CREDENTIAL_FLAGS additionalFlags, delegate*<QUIC_HANDLE*, void*, uint, void> asyncHandler)
+        QUIC_CREDENTIAL_FLAGS additionalFlags, delegate*<QUIC_HANDLE*, void*, uint, void> asyncHandler,
+        uint? allowedCipherSuites = null)
     {
         ArgumentNullException.ThrowIfNull(credential);
         if (!credential.BelongsTo(this)) throw new ArgumentException("Credential belongs to another host", nameof(credential));
@@ -111,8 +130,8 @@ public sealed unsafe partial class MsQuicHost
             config.Flags = (QUIC_CREDENTIAL_FLAGS)(0x2000 | (credential.Server ? 0 : 1)) | additionalFlags;
             config.AsyncHandler = asyncHandler;
             config.CertificateContext = (void*)credential.Token;
-            config.AllowedCipherSuites = (QUIC_ALLOWED_CIPHER_SUITE_FLAGS)(credential.CipherSuite switch
-            { 0x1301 => 1, 0x1302 => 2, _ => 3 });
+            config.AllowedCipherSuites = (QUIC_ALLOWED_CIPHER_SUITE_FLAGS)(allowedCipherSuites ?? (credential.CipherSuite switch
+            { 0x1301 => 1u, 0x1302 => 2u, _ => 3u }));
             return MsQuic.MsQuicConfigurationLoadCredential(configuration, &config);
         }
     }
@@ -186,6 +205,7 @@ public sealed unsafe partial class MsQuicHost
                 Context->cipher_suites = suites;
                 Context->max_buffer_size = 1024 * 1024;
                 Context->require_dhe_on_psk = 1;
+                Context->require_client_authentication = (credentialFlags & 0x40) != 0 ? 1u : 0u;
                 Context->omit_end_of_early_data = 1;
                 Context->send_change_cipher_spec = 0;
                 Context->max_early_data_size = 0;

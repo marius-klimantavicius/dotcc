@@ -18,6 +18,13 @@ public sealed unsafe partial class MsQuicHost
         try
         {
             var owner = TlsOwner(tls);
+            if (count == 0 && owner.Server && owner.Security.Credentials.ApplicationValidation)
+            {
+                // An empty client Certificate must reach the callback too: it may explicitly
+                // approve RemoteCertificateNotAvailable. MsQuic gates completion while pending.
+                return owner.Security.Callbacks.CertificateReceived(owner.Connection,
+                    null, null, 0, Status.CertificateMissing) != 0 ? 0 : 116;
+            }
             var verifier = owner.Security.Credentials.Verifier!.Callback;
             int status = verifier->cb(verifier, tls, name, signature, signatureContext, certificates, count);
             // Deferred application approval cannot bypass explicit trust/name checks.

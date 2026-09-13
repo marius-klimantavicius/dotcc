@@ -7,6 +7,11 @@
     <PicotlsProject Condition="'$(PicotlsProject)' == ''">../../generated/TranslatedPicotls/TranslatedPicotls.csproj</PicotlsProject>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="MsQuic.BclHost" />
+    <InternalsVisibleTo Include="TlsAdapter" />
+    <InternalsVisibleTo Include="ProviderVectors" />
+    <InternalsVisibleTo Include="InjectedHost" />
+    <InternalsVisibleTo Include="Managed.System.Net.Quic" />
     <ProjectReference Include="$(PicotlsProject)" />
   </ItemGroup>
 </Project>

@@ -352,7 +352,8 @@ public static unsafe partial class BclCryptoProvider
         public void Dispose() { foreach (var certificate in Roots) certificate.Dispose(); Roots.Clear(); }
     }
     /// <summary>Owns an explicit certificate trust/revocation policy and callback.
-    /// The caller must retain it for all referring connections; there is no trust bypass.</summary>
+    /// The caller must retain it for all referring connections. The public constructor enforces its trust policy.</summary>
+    /// <remarks>Managed host adapters can delegate trust decisions to their application while retaining signature verification.</remarks>
     public sealed class CertificateVerifier : IDisposable
     {
         private readonly object lifetimeGate = new();
@@ -373,6 +374,16 @@ public static unsafe partial class BclCryptoProvider
                 context->Header.algos = &asymmetric->Ecdsa;
             }
             catch { if (policy != null) DisposeState(policy); Dispose(); throw; }
+        }
+        // Only host adapters that enforce application certificate approval may use this.
+        // CertificateVerify is still cryptographically verified by VerifySignature.
+        internal static CertificateVerifier CreateForApplicationValidation() => new();
+        private CertificateVerifier()
+        {
+            InitializeAsymmetric();
+            context = (VerifyContext*)AllocateZeroed(sizeof(VerifyContext));
+            context->Header.cb = VerifyCertificatePointer;
+            context->Header.algos = &asymmetric->Ecdsa;
         }
         public st_ptls_verify_certificate_t* Callback => context != null ? &context->Header : throw new ObjectDisposedException(nameof(CertificateVerifier));
         public void ApplyTo(st_ptls_context_t* target)
@@ -472,27 +483,30 @@ public static unsafe partial class BclCryptoProvider
                 if (total > MaximumCertificateBytes) return AlertBadCertificate;
                 certificates.Add(X509CertificateLoader.LoadCertificate(ReadBytes(certificateData[i].@base, (ulong)size, MaximumCertificateBytes).ToArray()));
             }
-            var policy = State<VerificationPolicy>(((VerifyContext*)self)->Handle);
-            bool server = PicoTls.ptls_is_server(tls) != 0;
-            using var chain = new X509Chain();
-            chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
-            chain.ChainPolicy.CustomTrustStore.AddRange(policy.Roots);
-            chain.ChainPolicy.RevocationMode = policy.RevocationMode;
-            chain.ChainPolicy.RevocationFlag = X509RevocationFlag.ExcludeRoot;
-            chain.ChainPolicy.DisableCertificateDownloads = true;
-            chain.ChainPolicy.UrlRetrievalTimeout = TimeSpan.FromSeconds(2);
-            chain.ChainPolicy.ApplicationPolicy.Add(new Oid(server ? "1.3.6.1.5.5.7.3.2" : "1.3.6.1.5.5.7.3.1"));
-            for (int i = 1; i < certificates.Count; i++) chain.ChainPolicy.ExtraStore.Add(certificates[i]);
-            if (!chain.Build(certificates[0]))
+            if (((VerifyContext*)self)->Handle != 0)
             {
-                var flags = chain.ChainStatus.Aggregate(X509ChainStatusFlags.NoError, (status, item) => status | item.Status);
-                if ((flags & X509ChainStatusFlags.Revoked) != 0) return AlertCertificateRevoked;
-                if ((flags & X509ChainStatusFlags.NotTimeValid) != 0) return AlertCertificateExpired;
-                if ((flags & (X509ChainStatusFlags.UntrustedRoot | X509ChainStatusFlags.PartialChain)) != 0) return AlertUnknownCa;
-                return AlertBadCertificate;
+                var policy = State<VerificationPolicy>(((VerifyContext*)self)->Handle);
+                bool server = PicoTls.ptls_is_server(tls) != 0;
+                using var chain = new X509Chain();
+                chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
+                chain.ChainPolicy.CustomTrustStore.AddRange(policy.Roots);
+                chain.ChainPolicy.RevocationMode = policy.RevocationMode;
+                chain.ChainPolicy.RevocationFlag = X509RevocationFlag.ExcludeRoot;
+                chain.ChainPolicy.DisableCertificateDownloads = true;
+                chain.ChainPolicy.UrlRetrievalTimeout = TimeSpan.FromSeconds(2);
+                chain.ChainPolicy.ApplicationPolicy.Add(new Oid(server ? "1.3.6.1.5.5.7.3.2" : "1.3.6.1.5.5.7.3.1"));
+                for (int i = 1; i < certificates.Count; i++) chain.ChainPolicy.ExtraStore.Add(certificates[i]);
+                if (!chain.Build(certificates[0]))
+                {
+                    var flags = chain.ChainStatus.Aggregate(X509ChainStatusFlags.NoError, (status, item) => status | item.Status);
+                    if ((flags & X509ChainStatusFlags.Revoked) != 0) return AlertCertificateRevoked;
+                    if ((flags & X509ChainStatusFlags.NotTimeValid) != 0) return AlertCertificateExpired;
+                    if ((flags & (X509ChainStatusFlags.UntrustedRoot | X509ChainStatusFlags.PartialChain)) != 0) return AlertUnknownCa;
+                    return AlertBadCertificate;
+                }
+                if (!server && !certificates[0].MatchesHostname(ReadServerName(serverName), policy.AllowWildcards, allowCommonName: false))
+                    return AlertBadCertificate;
             }
-            if (!server && !certificates[0].MatchesHostname(ReadServerName(serverName), policy.AllowWildcards, allowCommonName: false))
-                return AlertBadCertificate;
             RequireDigitalSignature(certificates[0]);
             try { key = new VerificationKey(certificates[0]); }
             catch (CryptographicException) { return AlertUnsupportedCertificate; }

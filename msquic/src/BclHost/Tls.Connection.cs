@@ -24,6 +24,7 @@ public sealed unsafe partial class MsQuicHost
         internal readonly byte* ServerAlpn;
         internal QUIC_HKDF_LABELS Labels;
         internal st_ptls_t* Tls;
+        internal readonly QUIC_TLS_SECRETS* Secrets;
         internal st_ptls_handshake_properties_t* Properties;
         internal CXPLAT_TLS_PROCESS_STATE* State;
         internal CXPLAT_TLS_RESULT_FLAGS Results;
@@ -40,6 +41,7 @@ public sealed unsafe partial class MsQuicHost
             Host = host; Security = security; Connection = config->Connection;
             Server = config->IsServer != 0; Labels = *config->HkdfLabels; State = state;
             ServerAlpn = config->AlpnBuffer;
+            Secrets = config->TlsSecrets;
             security.Retain();
             try
             {

@@ -69,6 +69,25 @@ public sealed unsafe partial class MsQuicHost
             if (suite == null || suite->id is not (0x1301 or 0x1302)) return 80;
             int length = suite->id == 0x1301 ? 32 : 48;
             if (suite->hash->digest_size != (ulong)length || bytes == null) return 80;
+            if (owner.Secrets != null)
+            {
+                var random = Ptls.ptls_get_client_random(tls);
+                if (random.len != 32 || random.@base == null) return 80;
+                new ReadOnlySpan<byte>(random.@base, 32).CopyTo(new Span<byte>(owner.Secrets->ClientRandom, 32));
+                owner.Secrets->IsSet.ClientRandom = 1;
+                owner.Secrets->SecretLength = (byte)length;
+                bool clientSecret = owner.Server ? encryption == 0 : encryption != 0;
+                byte* destination;
+                if (epoch == 2 && clientSecret)
+                { destination = owner.Secrets->ClientHandshakeTrafficSecret; owner.Secrets->IsSet.ClientHandshakeTrafficSecret = 1; }
+                else if (epoch == 2)
+                { destination = owner.Secrets->ServerHandshakeTrafficSecret; owner.Secrets->IsSet.ServerHandshakeTrafficSecret = 1; }
+                else if (clientSecret)
+                { destination = owner.Secrets->ClientTrafficSecret0; owner.Secrets->IsSet.ClientTrafficSecret0 = 1; }
+                else
+                { destination = owner.Secrets->ServerTrafficSecret0; owner.Secrets->IsSet.ServerTrafficSecret0 = 1; }
+                new ReadOnlySpan<byte>(bytes, length).CopyTo(new Span<byte>(destination, length));
+            }
             secret.Hash = suite->id == 0x1301 ? CXPLAT_HASH_TYPE.CXPLAT_HASH_SHA256 : CXPLAT_HASH_TYPE.CXPLAT_HASH_SHA384;
             secret.Aead = suite->id == 0x1301 ? CXPLAT_AEAD_TYPE.CXPLAT_AEAD_AES_128_GCM : CXPLAT_AEAD_TYPE.CXPLAT_AEAD_AES_256_GCM;
             new ReadOnlySpan<byte>(bytes, length).CopyTo(new Span<byte>(secret.Secret, length));
