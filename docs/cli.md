@@ -186,6 +186,21 @@ automatically. Conflicting names and unproven groups retain their existing names
 `--export-inline` pins a requested managed name: it diagnoses ambiguity instead of
 falling back to unit names when new source units are added. Visibility is unchanged.
 
+## Extending copied translated structs
+
+Generated structs are `partial`, including union representations and anonymous
+aggregate/inline-array helper structs. With `--nest-types`, the enclosing API
+class is partial even when output is not split. Additional partial declarations
+can supply methods such as `Equals`, `GetHashCode` and `ToString` in the same
+namespace and containing type, compiled together with the generated sources.
+Methods add no storage; the generated C layout remains authoritative.
+
+Promoted mutable struct/union members use `[UnscopedRef]` ref-returning
+properties. For example, `settings.IsSet.PeerUnidiStreamCount = 1` updates the
+embedded flags without a read-modify-write temporary. Const/volatile/atomic
+restrictions and bit-field value accessors remain in effect. Rebuild object
+fragments and regenerate source to pick up the new declarations.
+
 ## Optional source post-processing
 
 After dotcc finishes, the separate [Roslyn post-processor](postprocess.md) can

@@ -1549,7 +1549,7 @@ public sealed partial class CompilerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("unsafe struct __Anon0");                    // nested union type
+            emitted.ShouldContain("unsafe partial struct __Anon0");                    // nested union type
             emitted.ShouldContain("FieldOffset(0)]\n    public int i;");        // overlapping
             emitted.ShouldContain("FieldOffset(0)]\n    public double d;");
             emitted.ShouldContain("public __Anon0 __anon___Anon0;");           // synth field in Value
@@ -1602,7 +1602,7 @@ public sealed partial class CompilerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("unsafe struct Point");
+            emitted.ShouldContain("unsafe partial struct Point");
             emitted.ShouldContain("new Point { x = 3, y = 4 }");
         }
         finally { File.Delete(src); }
@@ -1628,7 +1628,7 @@ public sealed partial class CompilerTests
             var emitted = Compiler.EmitCSharp(new[] { src });
             // Full struct decl is present (forward decl shouldn't have
             // duplicated it).
-            emitted.ShouldContain("unsafe struct Node");
+            emitted.ShouldContain("unsafe partial struct Node");
             emitted.ShouldContain("public int val");
             emitted.ShouldContain("public Node* next");
         }

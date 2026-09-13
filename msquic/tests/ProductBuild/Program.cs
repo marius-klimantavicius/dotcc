@@ -4,8 +4,26 @@ using Managed.Transport;
 
 internal static unsafe class Program
 {
+    private sealed class SettingsOwner { public MsQuic.QUIC_SETTINGS Settings; }
+
     private static int Main()
     {
+        MsQuic.QUIC_SETTINGS settings = default(MsQuic.QUIC_SETTINGS);
+        settings.IsSet.PeerUnidiStreamCount = 1;
+        settings.PeerUnidiStreamCount = (ushort)10;
+        if (settings.IsSetFlags != (1UL << 19) || settings.PeerUnidiStreamCount != 10)
+            return 1;
+        var copy = settings;
+        copy.IsSet.PeerUnidiStreamCount = 0;
+        if (settings.IsSetFlags != (1UL << 19) || copy.IsSetFlags != 0)
+            return 1;
+        var owner = new SettingsOwner();
+        ref var flags = ref owner.Settings.IsSet;
+        GC.Collect(2, GCCollectionMode.Forced, true, true);
+        flags.PeerUnidiStreamCount = 1;
+        if (owner.Settings.IsSetFlags != (1UL << 19))
+            return 1;
+
         // These wrappers use typedef/primitive casts and function-like macros
         // upstream. Their public exports must be usable as C# constants.
         const uint pending = MsQuic.QUIC_STATUS_PENDING;

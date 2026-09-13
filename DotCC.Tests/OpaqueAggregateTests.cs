@@ -15,9 +15,9 @@ public sealed class OpaqueAggregateTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { path });
-            emitted.ShouldNotContain("unsafe struct tm");
-            emitted.ShouldNotContain("unsafe struct timespec");
-            emitted.ShouldNotContain("unsafe struct lconv");
+            emitted.ShouldNotContain("unsafe partial struct tm");
+            emitted.ShouldNotContain("unsafe partial struct timespec");
+            emitted.ShouldNotContain("unsafe partial struct lconv");
         }
         finally { File.Delete(path); }
     }

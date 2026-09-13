@@ -1394,7 +1394,7 @@ public sealed class ZigFrontendTests
         var cs = EmitZig(
             "const Point = struct { x: i32, y: i32 };\n" +
             "pub fn main() u8 { const p: Point = .{ .x = 40, .y = 2 }; return @as(u8, p.x + p.y); }\n");
-        cs.ShouldContain("unsafe struct Point");   // struct → C# struct (shared StructText)
+        cs.ShouldContain("unsafe partial struct Point");   // struct → C# struct (shared StructText)
         cs.ShouldContain("public int x;");          // i32 field
         cs.ShouldContain("new Point {");            // `.{…}` → object initializer
         cs.ShouldContain("x = 40");                 // designated field init
@@ -1419,7 +1419,7 @@ public sealed class ZigFrontendTests
             "    _ = n;\n" +
             "    return @intCast(p.x + @as(i32, @intFromEnum(k)));\n" +
             "}\n");
-        cs.ShouldContain("unsafe struct Point");   // pub struct still emits the struct
+        cs.ShouldContain("unsafe partial struct Point");   // pub struct still emits the struct
         cs.ShouldContain("enum Kind");             // pub enum → real C# enum
         cs.ShouldContain("Num");                   // pub union emitted
     }
@@ -1805,7 +1805,7 @@ public sealed class ZigFrontendTests
             "    return @intCast(p.b);\n" +
             "}\n");
         cs.ShouldContain("LayoutKind.Sequential)]");   // explicit C-ABI layout
-        cs.ShouldContain("unsafe struct P");
+        cs.ShouldContain("unsafe partial struct P");
         cs.ShouldNotContain("Pack = 1");               // extern is NOT packed
     }
 
@@ -1821,7 +1821,7 @@ public sealed class ZigFrontendTests
             "    return @intCast(@as(u32, p.a) + p.b + p.c + p.d);\n" +
             "}\n");
         cs.ShouldContain("LayoutKind.Sequential, Pack = 1)]");
-        cs.ShouldContain("unsafe struct P");
+        cs.ShouldContain("unsafe partial struct P");
     }
 
     [Fact]
@@ -1838,7 +1838,7 @@ public sealed class ZigFrontendTests
             "    return @intCast(a.small);\n" +
             "}\n");
         cs.ShouldContain("LayoutKind.Explicit)]");      // overlapping storage
-        cs.ShouldContain("unsafe struct Box");
+        cs.ShouldContain("unsafe partial struct Box");
         cs.ShouldContain("new Box { small = 10 }");     // ordinary struct construction
         cs.ShouldNotContain("__tag");                   // no discriminant
         cs.ShouldNotContain("Box_Payload");             // no nested payload union (it IS the union)

@@ -7,8 +7,8 @@ namespace DotCC.Backends;
 internal sealed partial class CSharpBackend
 {
     // C promotion is semantic metadata, not a convention inferred from generated
-    // field names. These value properties add no storage and never return a ref
-    // into a potentially movable managed struct.
+    // field names. Promoted properties add no storage. Aggregate references use
+    // managed byrefs, which remain valid when a containing managed object moves.
     private void AppendPromotedProperties(StringBuilder output, StructTypeDef owner)
     {
         var names = new HashSet<string>(System.StringComparer.Ordinal);
@@ -44,6 +44,14 @@ internal sealed partial class CSharpBackend
                     AppendQualifiedPromotedProperty(output, owner, field, type, access);
                     continue;
                 }
+                if (!field.IsBitField && type.Unqualified is CType.Named
+                    && !ContainsQualifiers(type, TypeQual.Const | TypeQual.Volatile | TypeQual.Atomic))
+                {
+                    output.Append("    [global::System.Diagnostics.CodeAnalysis.UnscopedRef]\n")
+                        .Append("    public ref ").Append(Cs(field.Type)).Append(' ').Append(EmitHelpers.Id(field.Name))
+                        .Append(" => ref ").Append(access).Append(";\n");
+                    continue;
+                }
                 output.Append("    public ").Append(Cs(field.Type)).Append(' ').Append(EmitHelpers.Id(field.Name))
                     .Append("\n    {\n        get => ").Append(access).Append(";\n");
                 if (!type.IsConst && !ContainsConst(field.Type))
@@ -71,13 +79,15 @@ internal sealed partial class CSharpBackend
         output.Append("    }\n");
     }
 
-    private bool ContainsConst(CType type)
+    private bool ContainsConst(CType type) => ContainsQualifiers(type, TypeQual.Const);
+
+    private bool ContainsQualifiers(CType type, TypeQual qualifiers)
     {
-        if (type.IsConst) return true;
-        if (type.Unqualified is CType.Array array) return ContainsConst(array.Element);
+        if ((type.Quals & qualifiers) != 0) return true;
+        if (type.Unqualified is CType.Array array) return ContainsQualifiers(array.Element, qualifiers);
         if (type.Unqualified is CType.Named named && _aggregateDefinitions.TryGetValue(named.Name, out var aggregate))
             foreach (var field in aggregate.Fields)
-                if (ContainsConst(field.Type)) return true;
+                if (ContainsQualifiers(field.Type, qualifiers)) return true;
         return false;
     }
 }

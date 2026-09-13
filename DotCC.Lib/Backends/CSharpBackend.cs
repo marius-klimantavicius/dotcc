@@ -250,7 +250,7 @@ internal sealed partial class CSharpBackend
             // Zig `packed struct` — byte-pack with no inter-field padding (V1: Pack=1, not bit-packed).
             sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]\n");
         }
-        sb.Append(_publicTypes ? "public unsafe struct " : "unsafe struct ").Append(t.Name).Append("\n{\n");
+        sb.Append(_publicTypes ? "public unsafe partial struct " : "unsafe partial struct ").Append(t.Name).Append("\n{\n");
         if (headerLayout is not null)
         {
             // Preserve the model's alignment even if only unnamed bitfields or
@@ -323,12 +323,12 @@ internal sealed partial class CSharpBackend
                         // and lets managed consumers index or form spans of cells.
                         // Translated C still accesses the same storage through T*.
                         var cell = wrap + "_Element";
-                        wrappers.Append(_publicTypes ? "public unsafe struct " : "unsafe struct ")
+                        wrappers.Append(_publicTypes ? "public unsafe partial struct " : "unsafe partial struct ")
                             .Append(cell).Append("\n{\n    public ").Append(element).Append(" Value;\n}\n\n");
                         element = cell;
                     }
                     wrappers.Append("[System.Runtime.CompilerServices.InlineArray(").Append(count).Append(")]\n")
-                        .Append(_publicTypes ? "public unsafe struct " : "unsafe struct ")
+                        .Append(_publicTypes ? "public unsafe partial struct " : "unsafe partial struct ")
                         .Append(wrap).Append("\n{\n    public ").Append(element).Append(" _e;\n}\n\n");
                     sb.Append("    public ").Append(wrap).Append(' ').Append(fid).Append(";\n");
                 }

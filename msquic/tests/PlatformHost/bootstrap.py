@@ -12,7 +12,7 @@ def write_test_host(generated, project, register_calls="RegisterPlatform(ref tab
  sources=(generated/'Dotcc.SourceFiles.txt').read_text().splitlines()
  bodies=[]
  for name in sources:
-  match=re.search(r'(?m)^(?P<indent>[ \t]*)public unsafe struct MSQUIC_HOST_TABLE\s*\{(?P<body>.*?)\n(?P=indent)\}', (generated/name).read_text(), re.S)
+  match=re.search(r'(?m)^(?P<indent>[ \t]*)public unsafe (?:partial )?struct MSQUIC_HOST_TABLE\s*\{(?P<body>.*?)\n(?P=indent)\}', (generated/name).read_text(), re.S)
   if match:bodies.append(match.group('body'))
  if len(bodies)!=1:raise RuntimeError('Expected exactly one generated host table')
  body=bodies[0]

@@ -9,7 +9,7 @@ sources = (generated / 'Dotcc.SourceFiles.txt').read_text().splitlines()
 tables = []
 for name in sources:
     source = (generated / name).read_text()
-    match = re.search(r'(?m)^(?P<indent>[ \t]*)public unsafe struct MSQUIC_HOST_TABLE\s*\{(?P<body>.*?)\n(?P=indent)\}', source, re.S)
+    match = re.search(r'(?m)^(?P<indent>[ \t]*)public unsafe (?:partial )?struct MSQUIC_HOST_TABLE\s*\{(?P<body>.*?)\n(?P=indent)\}', source, re.S)
     if match:
         tables.append(match.group('body'))
 if len(tables) != 1:

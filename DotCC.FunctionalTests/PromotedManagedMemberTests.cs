@@ -98,10 +98,8 @@ public sealed class PromotedManagedMemberTests
                     public static int Main() {
                         Example value = default;
                         Api.initialize(&value);
-                        var bits = value.bits;
-                        bits.enabled = 1;
-                        bits.mode = 5;
-                        value.bits = bits;
+                        value.bits.enabled = 1;
+                        value.bits.mode = 5;
                         value.unsigned_number = uint.MaxValue;
                         value.callback = &Add;
                         int pointee = 17;

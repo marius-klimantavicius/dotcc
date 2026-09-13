@@ -457,7 +457,7 @@ public static partial class Compiler
             // ---- typedef'd `using` aliases (same as exe mode).
             {{usingAliases}}
             // Translated methods use direct calls and managed function pointers.
-            {{(managedLibrary ? "public" : "internal")}} static {{(partial ? "partial " : "")}}class {{libraryClass}}
+            {{(managedLibrary ? "public" : "internal")}} static {{(partial || nested ? "partial " : "")}}class {{libraryClass}}
             {
             {{indentedFns}}
             {{(nested ? "" : "}")}}

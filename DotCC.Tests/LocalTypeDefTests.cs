@@ -41,7 +41,7 @@ public sealed class LocalTypeDefTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             // the type is hoisted (lives in the top-level type-decls section)
-            emitted.ShouldContain("unsafe struct cD");
+            emitted.ShouldContain("unsafe partial struct cD");
             // the definition statement itself emits nothing — there's no inline
             // `struct cD {` left in the method body
             emitted.ShouldContain("cD x = default;");
@@ -84,7 +84,7 @@ public sealed class LocalTypeDefTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("LayoutKind.Explicit");
-            emitted.ShouldContain("unsafe struct local_u");
+            emitted.ShouldContain("unsafe partial struct local_u");
         }
         finally { File.Delete(src); }
     }
@@ -103,7 +103,7 @@ public sealed class LocalTypeDefTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("unsafe struct cD");
+            emitted.ShouldContain("unsafe partial struct cD");
         }
         finally { File.Delete(src); }
     }

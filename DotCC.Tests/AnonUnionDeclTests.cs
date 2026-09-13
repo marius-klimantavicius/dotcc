@@ -38,7 +38,7 @@ public sealed class AnonUnionDeclTests
             var emitted = Compiler.EmitCSharp(new[] { src });
             // explicit-layout (overlapping = C union) synth type
             emitted.ShouldContain("LayoutKind.Explicit");
-            emitted.ShouldContain("unsafe struct __Anon0");
+            emitted.ShouldContain("unsafe partial struct __Anon0");
             emitted.ShouldContain("FieldOffset(0)]\n    public int dummy;");
             // brace init targets the first union member
             emitted.ShouldContain("new __Anon0 { dummy = 0x04030201 }");
@@ -56,7 +56,7 @@ public sealed class AnonUnionDeclTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("LayoutKind.Explicit");
-            emitted.ShouldContain("unsafe struct __Anon0");
+            emitted.ShouldContain("unsafe partial struct __Anon0");
             emitted.ShouldContain("__Anon0 v = default;");
         }
         finally { File.Delete(src); }
@@ -75,7 +75,7 @@ public sealed class AnonUnionDeclTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("unsafe struct U");
+            emitted.ShouldContain("unsafe partial struct U");
             emitted.ShouldNotContain("__NestU");
         }
         finally { File.Delete(src); }

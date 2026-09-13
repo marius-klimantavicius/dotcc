@@ -625,7 +625,7 @@ public sealed partial class CompilerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { a, b });
-            System.Text.RegularExpressions.Regex.Matches(emitted, @"unsafe struct P\b").Count
+            System.Text.RegularExpressions.Regex.Matches(emitted, @"unsafe partial struct P\b").Count
                 .ShouldBe(1);
         }
         finally { File.Delete(a); File.Delete(b); }

@@ -19,7 +19,7 @@ public sealed class OffsetLayoutTests
             var fragment = System.IO.Path.Combine(directory, "main.cs");
             System.IO.File.WriteAllText(source, "struct S { char a; double b; }; int main(void) { return offsetof(struct S, b) == 8 ? 0 : 1; }");
             var emitted = DotCC.Compiler.EmitObject(source);
-            emitted.ShouldContain("unsafe struct S");
+            emitted.ShouldContain("unsafe partial struct S");
             emitted.ShouldContain("dotcc-layout-v1");
             System.IO.File.WriteAllText(fragment, emitted);
             var linked = DotCC.Compiler.LinkObjects(new[] { fragment });
