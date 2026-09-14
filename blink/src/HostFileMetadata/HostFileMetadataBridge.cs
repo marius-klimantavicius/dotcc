@@ -10,7 +10,7 @@ public static partial class Blink
         => FileMetadataPath(path, destination);
     public static unsafe int blink_host_lstat(byte* path, blink_host_stat_record* destination)
         => FileMetadataPath(path, destination);
-    private static unsafe int FileMetadataPath(byte* path, blink_host_stat_record* destination)
+    private static unsafe int FileMetadataPath(byte* path, blink_host_stat_record* destination, int directoryFd = -100)
     {
         try
         {
@@ -22,7 +22,7 @@ public static partial class Blink
             string name;
             try { name = PathEncoding.GetString(new ReadOnlySpan<byte>(path, length)); }
             catch (DecoderFallbackException) { return IoError(22); }
-            var result = io.Stat(name);
+            var result = io.StatAt(directoryFd, name);
             if (!result.Succeeded) return IoError((int)result.Error);
             FillFileMetadata(destination, result.Value);
             return 0;
@@ -50,12 +50,7 @@ public static partial class Blink
             if (path == null || destination == null) return IoError(14);
             if ((flags & ~256) != 0) return IoError(95); // AT_SYMLINK_NOFOLLOW only.
             if (path[0] == 0) return IoError(2);
-            if (path[0] != (byte)'/' && fd != -100)
-            {
-                var descriptor = io.FStat(fd);
-                return IoError(descriptor.Error == GuestError.BadDescriptor ? 9 : 20);
-            }
-            return FileMetadataPath(path, destination);
+            return FileMetadataPath(path, destination, fd);
         }
         catch (Exception error) { return IoException(error); }
     }

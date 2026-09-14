@@ -8,14 +8,16 @@ namespace Managed.Emulation.Host;
 public sealed partial class InstanceIo : IAsyncDisposable
 {
     private enum Kind { Input, Output, Error, File, Socket }
-    private sealed class Description(Kind kind, int handle = -1)
+    private sealed class Description(Kind kind, int handle = -1, int statusFlags = 0)
     {
         internal readonly Kind Kind = kind;
         internal readonly int Handle = handle;
         internal int References = 1;
+        internal int StatusFlags = kind is Kind.Output or Kind.Error ? 1 : kind == Kind.Socket ? 2 : statusFlags;
     }
     private readonly object sync = new();
     private readonly Dictionary<int, Description> descriptors = new();
+    private readonly HashSet<int> closeOnExec = new();
     private readonly VirtualFileSystem files;
     private readonly VirtualTcpNetwork network;
     private byte[] input;
@@ -48,22 +50,44 @@ public sealed partial class InstanceIo : IAsyncDisposable
         get { lock (sync) return (output.ToArray(), error.ToArray()); }
     }
     public HostResult<int> OpenFile(string path, FileAccessMode access, bool create = false,
-        bool exclusive = false, bool truncate = false, bool append = false, string cwd = "/")
+        bool exclusive = false, bool truncate = false, bool append = false, string cwd = "/",
+        bool closeOnExecFlag = false, bool allowDirectory = false, bool requireDirectory = false, bool noFollow = false)
     {
         lock (sync)
         {
             if (disposed) return Fail<int>(GuestError.BadDescriptor);
             int fd = Allocate();
             if (fd < 0) return Fail<int>(GuestError.TooManyFiles);
-            var result = files.Open(path, access, create, exclusive, truncate, append, cwd);
+            var result = files.Open(path, access, create, exclusive, truncate, append, cwd, allowDirectory, requireDirectory);
             if (!result.Succeeded) return result;
-            descriptors.Add(fd, new(Kind.File, result.Value));
+            int mode = access == FileAccessMode.Read ? 0 : access == FileAccessMode.Write ? 1 : 2;
+            descriptors.Add(fd, new(Kind.File, result.Value, mode | (append ? 1024 : 0) | (requireDirectory ? 65536 : 0) | (noFollow ? 131072 : 0)));
+            if (closeOnExecFlag) closeOnExec.Add(fd);
             return HostResult<int>.Success(fd);
+        }
+    }
+    public HostResult<int> OpenFileAt(int directoryFd, string path, FileAccessMode access, bool create = false,
+        bool exclusive = false, bool truncate = false, bool append = false, bool closeOnExecFlag = false,
+        bool requireDirectory = false, bool noFollow = false)
+    {
+        lock (sync)
+        {
+            var directory = ResolveDirectory(directoryFd, path);
+            return directory.Succeeded ? OpenFile(path, access, create, exclusive, truncate, append, directory.Value,
+                closeOnExecFlag, true, requireDirectory, noFollow) : Fail<int>(directory.Error);
         }
     }
     public HostResult<VirtualFileStat> Stat(string path, string cwd = "/")
     {
         lock (sync) return disposed ? Fail<VirtualFileStat>(GuestError.BadDescriptor) : files.Stat(path, cwd);
+    }
+    public HostResult<VirtualFileStat> StatAt(int directoryFd, string path)
+    {
+        lock (sync)
+        {
+            var directory = ResolveDirectory(directoryFd, path);
+            return directory.Succeeded ? files.Stat(path, directory.Value) : Fail<VirtualFileStat>(directory.Error);
+        }
     }
     public HostResult<long> Seek(int fd, long offset, SeekOrigin origin)
     {
@@ -94,7 +118,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
             return HostResult<int>.Success(fd);
         }
     }
-    public HostResult<int> Duplicate(int fd, int minimum = 0)
+    public HostResult<int> Duplicate(int fd, int minimum = 0, bool closeOnExecFlag = false)
     {
         lock (sync)
         {
@@ -104,7 +128,62 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (target < 0) return Fail<int>(GuestError.TooManyFiles);
             ++description.References;
             descriptors.Add(target, description);
+            if (closeOnExecFlag) closeOnExec.Add(target);
             return HostResult<int>.Success(target);
+        }
+    }
+    public HostResult<int> GetDescriptorFlags(int fd)
+    {
+        lock (sync) return Find(fd, out _) ? HostResult<int>.Success(closeOnExec.Contains(fd) ? 1 : 0) : Fail<int>(GuestError.BadDescriptor);
+    }
+    public HostResult<int> SetDescriptorFlags(int fd, int flags)
+    {
+        lock (sync)
+        {
+            if (!Find(fd, out _)) return Fail<int>(GuestError.BadDescriptor);
+            if ((flags & ~1) != 0) return Fail<int>(GuestError.Invalid);
+            if (flags == 1) closeOnExec.Add(fd); else closeOnExec.Remove(fd);
+            return HostResult<int>.Success(0);
+        }
+    }
+    public HostResult<int> GetStatusFlags(int fd)
+    {
+        lock (sync) return Find(fd, out var description) ? HostResult<int>.Success(description.StatusFlags) : Fail<int>(GuestError.BadDescriptor);
+    }
+    public HostResult<int> SetStatusFlags(int fd, int flags)
+    {
+        lock (sync)
+        {
+            if (!Find(fd, out var description)) return Fail<int>(GuestError.BadDescriptor);
+            // Access and retained lookup flags are not mutable with F_SETFL.
+            // Nonblocking, async, direct and synchronous modes need real host contracts.
+            if ((flags & ~(3 | 1024 | 65536 | 131072)) != 0) return Fail<int>(GuestError.Unsupported);
+            bool append = (flags & 1024) != 0;
+            if (description.Kind == Kind.File)
+            {
+                var result = files.SetAppend(description.Handle, append);
+                if (!result.Succeeded) return result;
+            }
+            else if (append) return Fail<int>(GuestError.Unsupported);
+            description.StatusFlags = (description.StatusFlags & ~1024) | (append ? 1024 : 0);
+            return HostResult<int>.Success(0);
+        }
+    }
+    /// <summary>Owner transition only; call after a successful exec decision.
+    /// This API does not implement guest exec or change the process image.</summary>
+    public HostResult<int> CloseOnExecDescriptors()
+    {
+        lock (sync)
+        {
+            if (disposed) return Fail<int>(GuestError.BadDescriptor);
+            int count = 0;
+            foreach (int fd in closeOnExec.ToArray())
+            {
+                var result = Close(fd);
+                if (!result.Succeeded) return result;
+                ++count;
+            }
+            return HostResult<int>.Success(count);
         }
     }
     public HostResult<int> Close(int fd)
@@ -112,6 +191,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
         lock (sync)
         {
             if (!descriptors.Remove(fd, out var description)) return Fail<int>(GuestError.BadDescriptor);
+            closeOnExec.Remove(fd);
             if (--description.References != 0) return HostResult<int>.Success(0);
             return description.Kind switch
             {
@@ -247,7 +327,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
         {
             owner = shutdown == null;
             shutdown ??= new(TaskCreationOptions.RunContinuationsAsynchronously); completion = shutdown;
-            if (owner) { disposed = true; descriptors.Clear(); input = []; inputPosition = 0; accepting = pending.ToArray(); }
+            if (owner) { disposed = true; descriptors.Clear(); closeOnExec.Clear(); input = []; inputPosition = 0; accepting = pending.ToArray(); }
         }
         if (owner)
         {
@@ -273,6 +353,14 @@ public sealed partial class InstanceIo : IAsyncDisposable
     }
     private HostResult<int> SocketHandle(int fd) => !Find(fd, out var description) ? Fail<int>(GuestError.BadDescriptor)
         : description.Kind != Kind.Socket ? Fail<int>(GuestError.NotSocket) : HostResult<int>.Success(description.Handle);
+    private HostResult<string> ResolveDirectory(int fd, string path)
+    {
+        if (disposed) return Fail<string>(GuestError.BadDescriptor);
+        if (string.IsNullOrEmpty(path)) return Fail<string>(GuestError.NoEntry);
+        if (path.StartsWith('/') || fd == -100) return HostResult<string>.Success("/");
+        if (!Find(fd, out var description)) return Fail<string>(GuestError.BadDescriptor);
+        return description.Kind == Kind.File ? files.DirectoryPath(description.Handle) : Fail<string>(GuestError.NotDirectory);
+    }
     private bool Find(int fd, out Description description)
     {
         description = null!;

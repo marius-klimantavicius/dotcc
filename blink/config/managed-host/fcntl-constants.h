@@ -2,6 +2,7 @@
 #define BLINK_HOST_FCNTL_CONSTANTS_H
 /* Observed Linux x64 C host values; not guest Linux ABI constants. */
 #define F_DUPFD (0)
+#define F_DUPFD_CLOEXEC (1030)
 #define F_GETFD (1)
 #define F_SETFD (2)
 #define F_GETFL (3)
@@ -22,6 +23,7 @@
 #define O_TRUNC (512)
 #define O_APPEND (1024)
 #define O_NONBLOCK (2048)
+#define O_NDELAY (2048)
 #define O_CLOEXEC (524288)
 #define O_NOFOLLOW (131072)
 #define O_DIRECTORY (65536)

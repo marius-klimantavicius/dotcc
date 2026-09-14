@@ -328,3 +328,20 @@ filesystem owner; no host identity is queried or changed. Native C invariants
 and raw/optimized JIT/AOT pass, including exact injected IDs, errno preservation,
 unbound errors, concurrent workers and compacting GC. Full-core startup must
 bind this before NewSystem; credential/process mutation remains unsupported.
+
+## Significant progress: directory-relative opens and descriptor flags
+
+Private openat now resolves real directory descriptions, and metadata fstatat
+uses the same lookup. Per-descriptor close-on-exec state is distinct from shared
+file status; dup clears it, explicit CLOEXEC duplication sets it, and changing
+append status affects the shared open description. Unsupported nonblocking and
+locking requests fail atomically. A C variadic adapter evaluates all arguments
+and consumes only the integer arguments required by supported commands.
+
+Native C/raw/optimized JIT/AOT and refreshed metadata matrices pass, together
+with the older file/descriptor regressions. A native real-exec oracle verifies
+CLOEXEC behavior; the managed owner exposes the equivalent explicit transition
+without claiming guest exec startup. Writable payload and fd counts are bounded,
+but zero-length node/path metadata still need a separate allocation quota.
+Measured PATH_MAX/PIPE_BUF declarations also let actual overlays.c emit; they
+do not themselves implement path policy or atomic pipe writes.

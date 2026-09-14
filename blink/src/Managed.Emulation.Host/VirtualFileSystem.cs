@@ -34,11 +34,12 @@ public sealed class VirtualFileSystem : IDisposable
         internal long ModifyTicks = DateTime.UtcNow.Ticks;
         internal long ChangeTicks = DateTime.UtcNow.Ticks;
     }
-    private sealed class Description(Node node, FileAccessMode access, bool append)
+    private sealed class Description(Node node, FileAccessMode access, bool append, string? directoryPath = null)
     {
         internal readonly Node Node = node;
         internal readonly FileAccessMode Access = access;
-        internal readonly bool Append = append;
+        internal bool Append = append;
+        internal readonly string? DirectoryPath = directoryPath;
         internal long Position;
     }
     private readonly object sync = new();
@@ -93,7 +94,8 @@ public sealed class VirtualFileSystem : IDisposable
     public int OpenDescriptors { get { lock (sync) return descriptors.Count; } }
 
     public HostResult<int> Open(string path, FileAccessMode access, bool create = false,
-        bool exclusive = false, bool truncate = false, bool append = false, string cwd = "/")
+        bool exclusive = false, bool truncate = false, bool append = false, string cwd = "/",
+        bool allowDirectory = false, bool requireDirectory = false)
     {
         lock (sync)
         {
@@ -103,7 +105,17 @@ public sealed class VirtualFileSystem : IDisposable
             var resolved = Resolve(path, cwd);
             if (!resolved.Succeeded) return Fail<int>(resolved.Error);
             var name = resolved.Value;
-            if (directories.Contains(name)) return Fail<int>(GuestError.IsDirectory);
+            if (directoryNodes.TryGetValue(name, out var directory))
+            {
+                if (create && exclusive) return Fail<int>(GuestError.Exists);
+                if (!allowDirectory || access != FileAccessMode.Read || create || truncate) return Fail<int>(GuestError.IsDirectory);
+                if (append) return Fail<int>(GuestError.Unsupported);
+                if (descriptors.Count >= descriptorLimit) return Fail<int>(GuestError.TooManyFiles);
+                int directoryFd = NextDescriptor();
+                descriptors.Add(directoryFd, new(directory, access, false, name));
+                return HostResult<int>.Success(directoryFd);
+            }
+            if (requireDirectory) return Fail<int>(files.ContainsKey(name) ? GuestError.NotDirectory : GuestError.NoEntry);
             if (!directories.Contains(Parent(name))) return Fail<int>(files.ContainsKey(Parent(name)) ? GuestError.NotDirectory : GuestError.NoEntry);
             bool exists = files.TryGetValue(name, out var node);
             if (exists && create && exclusive) return Fail<int>(GuestError.Exists);
@@ -135,6 +147,7 @@ public sealed class VirtualFileSystem : IDisposable
         lock (sync)
         {
             if (!TryDescription(descriptor, out var file) || !file.Access.HasFlag(FileAccessMode.Read)) return Fail<int>(GuestError.BadDescriptor);
+            if (file.DirectoryPath != null) return Fail<int>(GuestError.IsDirectory);
             int count = (int)Math.Min(destination.Length, Math.Max(0, file.Node.Bytes.LongLength - file.Position));
             if (count != 0) file.Node.Bytes.AsSpan((int)file.Position, count).CopyTo(destination);
             file.Position += count;
@@ -176,6 +189,7 @@ public sealed class VirtualFileSystem : IDisposable
         lock (sync)
         {
             if (!TryDescription(descriptor, out var file)) return Fail<long>(GuestError.BadDescriptor);
+            if (file.DirectoryPath != null) return Fail<long>(GuestError.Unsupported);
             long start;
             switch (origin)
             {
@@ -227,8 +241,28 @@ public sealed class VirtualFileSystem : IDisposable
     public HostResult<VirtualFileStat> FStat(int descriptor)
     {
         lock (sync) return TryDescription(descriptor, out var file)
-            ? HostResult<VirtualFileStat>.Success(Metadata(file.Node, false))
+            ? file.DirectoryPath != null ? Stat(file.DirectoryPath) : HostResult<VirtualFileStat>.Success(Metadata(file.Node, false))
             : Fail<VirtualFileStat>(GuestError.BadDescriptor);
+    }
+
+    public HostResult<string> DirectoryPath(int descriptor)
+    {
+        lock (sync)
+        {
+            if (!TryDescription(descriptor, out var file)) return Fail<string>(GuestError.BadDescriptor);
+            return file.DirectoryPath != null ? HostResult<string>.Success(file.DirectoryPath) : Fail<string>(GuestError.NotDirectory);
+        }
+    }
+
+    public HostResult<int> SetAppend(int descriptor, bool append)
+    {
+        lock (sync)
+        {
+            if (!TryDescription(descriptor, out var file)) return Fail<int>(GuestError.BadDescriptor);
+            if (append && file.DirectoryPath != null) return Fail<int>(GuestError.Unsupported);
+            file.Append = append;
+            return HostResult<int>.Success(0);
+        }
     }
 
     private static VirtualFileStat Metadata(Node node, bool directory) => new(

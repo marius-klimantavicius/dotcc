@@ -5,6 +5,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 int blink_io_open(const char *, int);
+int blink_io_open_at(int, const char *, int);
+int blink_io_control(int, int, int);
 int blink_io_close(int);
 int blink_io_dup(int);
 off_t blink_io_seek(int, off_t, int);
@@ -14,8 +16,8 @@ ssize_t blink_io_readv(int, const struct iovec *, int);
 ssize_t blink_io_writev(int, const struct iovec *, int);
 /* This opt-in boundary overrides only explicitly implemented file/stream calls. */
 #undef open
-/* Optional mode is evaluated by the normal C variadic call. Virtual files have
- * no host permission bits; namespace ownership supplies access control. */
+/* Optional mode is evaluated by the normal C variadic call. Creation retains
+ * the documented fixed private mode0600; chmod/umask are not implemented. */
 static inline int blink_io_open_mode(const char *path, int flags, ...) {
   return blink_io_open(path, flags);
 }

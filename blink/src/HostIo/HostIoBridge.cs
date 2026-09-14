@@ -25,22 +25,44 @@ public static partial class Blink
     private static int IoException(Exception exception) => IoError(exception is OutOfMemoryException ? 12 : 5);
 
     public static unsafe int blink_io_open(byte* path, int flags)
+        => blink_io_open_at(-100, path, flags);
+    public static unsafe int blink_io_open_at(int directoryFd, byte* path, int flags)
     {
         try
         {
             if (io == null) return IoError(19);
             if (path == null) return IoError(14);
-            const int supported = 3 | 64 | 128 | 512 | 1024;
+            const int supported = 3 | 64 | 128 | 256 | 512 | 1024 | 65536 | 131072 | 524288;
             if ((flags & ~supported) != 0) return IoError(95);
             if ((flags & 3) == 3) return IoError(22);
+            if ((flags & (64 | 65536)) == (64 | 65536)) return IoError(22);
             int length = 0;
             while (length < PathLimit && path[length] != 0) ++length;
             if (length == PathLimit) return IoError(36);
             string name;
             try { name = PathEncoding.GetString(new ReadOnlySpan<byte>(path, length)); }
             catch (DecoderFallbackException) { return IoError(22); }
-            return (int)IoResult(io.OpenFile(name, (flags & 3) == 0 ? FileAccessMode.Read : (flags & 3) == 1 ? FileAccessMode.Write : FileAccessMode.Read | FileAccessMode.Write,
-                (flags & 64) != 0, (flags & 128) != 0, (flags & 512) != 0, (flags & 1024) != 0));
+            return (int)IoResult(io.OpenFileAt(directoryFd, name, (flags & 3) == 0 ? FileAccessMode.Read : (flags & 3) == 1 ? FileAccessMode.Write : FileAccessMode.Read | FileAccessMode.Write,
+                (flags & 64) != 0, (flags & 128) != 0, (flags & 512) != 0, (flags & 1024) != 0,
+                (flags & 524288) != 0, (flags & 65536) != 0, (flags & 131072) != 0));
+        }
+        catch (Exception error) { return IoException(error); }
+    }
+    public static int blink_io_control(int fd, int command, int argument)
+    {
+        try
+        {
+            if (io == null) return IoError(19);
+            return (int)IoResult(command switch
+            {
+                0 => io.Duplicate(fd, argument),
+                1 => io.GetDescriptorFlags(fd),
+                2 => io.SetDescriptorFlags(fd, argument),
+                3 => io.GetStatusFlags(fd),
+                4 => io.SetStatusFlags(fd, argument),
+                1030 => io.Duplicate(fd, argument, true),
+                _ => HostResult<int>.Failure(io.GetDescriptorFlags(fd).Error == GuestError.BadDescriptor ? GuestError.BadDescriptor : GuestError.Unsupported)
+            });
         }
         catch (Exception error) { return IoException(error); }
     }

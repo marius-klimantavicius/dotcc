@@ -54,7 +54,8 @@ within one instance. Device 1 and uid/gid 0 identify its single virtual device
 and owner; these are never host identities. Inodes survive separate opens,
 descriptor duplication, writes, and truncation. File link count is one; directory
 link count is two plus its immediate subdirectories. The model has no hard links,
-symlinks, unlink, rename, or directory descriptors.
+symlinks, unlink, or rename. Read-only directory descriptors are now available
+through the [openat/control boundary](HOST-FILE-CONTROL.md).
 
 Image files report mode `0444`; paths explicitly passed in the constructor's
 `executablePaths` set report `0555`. That set must name existing image files.
@@ -84,9 +85,9 @@ descriptors return `EBADF`.
 symlinks. `fstatat` accepts relative paths with `AT_FDCWD` (the current private
 root), or absolute paths regardless of dirfd, and optionally
 `AT_SYMLINK_NOFOLLOW`. Other flags, including `AT_EMPTY_PATH`, return `ENOTSUP`.
-A relative path with a bad dirfd returns `EBADF`; an existing non-directory
-descriptor returns `ENOTDIR`. Directory-relative traversal and changing cwd
-remain unsupported. Missing paths, file-as-directory traversal, root escape,
+A relative path uses the actual private directory description when supplied;
+a bad dirfd returns `EBADF` and an existing non-directory descriptor returns
+`ENOTDIR`. Changing cwd remains unsupported. Missing paths, file-as-directory traversal, root escape,
 invalid UTF-8, and overlong C paths return their explicit existing errors.
 An unbound worker returns `ENODEV`.
 
@@ -115,3 +116,8 @@ unsupported flags/descriptors, UTF-8/path limits, zero reserved bytes, preserved
 errno on success, and no binding after worker unbind. Existing `HostFiles` and
 `InstanceIo` regression programs also pass against the frozen Host sources,
 including socket/shared-fd behavior and disposal.
+
+The metadata matrix was refreshed after directory/control integration at
+`artifacts/host-file-metadata/attempt-tcod0686/receipt.json`. The separate control
+matrix adds native/managed directory-relative `fstatat` and absolute-path
+dirfd-ignore checks.

@@ -289,7 +289,9 @@
     "AT_FDCWD": 18446744073709551516,
     "AT_REMOVEDIR": 512,
     "AT_SYMLINK_NOFOLLOW": 256,
-    "AT_EACCESS": 512
+    "AT_EACCESS": 512,
+    "F_DUPFD_CLOEXEC": 1030,
+    "O_NDELAY": 2048
   },
   "timer": {
     "ITIMER_REAL": 0,
@@ -325,5 +327,9 @@
     "FIONREAD": 21531,
     "TIOCOUTQ": 21521,
     "TIOCSTI": 21522
+  },
+  "limits": {
+    "PATH_MAX": 4096,
+    "PIPE_BUF": 4096
   }
 }
