@@ -150,10 +150,11 @@ yet executed guest instructions. P1–P6 remain open. The B004 exclusion mismatc
 is corrected and tested as documented in HOST-CPU.md; broader CPU/host capability
 qualification remains separate.
 
-## B016 — static-local array multi-declarators (active)
+## B016 — static-local array multi-declarators (fixed)
 
 Actual strace.c declares `static char abuf[64], sabuf[80]` after its TLS marker
-is intentionally removed by upstream DISABLE_THREADS. Existing single static
-arrays work; the generic multi-declarator lowering needs to reuse that rooted
-backing per declarator. Block-scope TLS is separate and is not required by this
-observed profile. The failing source and diagnostics are preserved.
+is intentionally removed by upstream DISABLE_THREADS. Generic multi-declarator lowering now reuses rooted pinned storage separately
+for every array, preserving nested dimensions and initializers. Block-scope TLS is separate and is not required by this
+observed profile. Native/direct/object tests pass across forced GC, actual
+strace.c emits, and the full repository suite passes 2235 unit tests and
+517 functional tests, with 1039 explicit skips.

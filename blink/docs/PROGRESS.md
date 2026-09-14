@@ -360,3 +360,13 @@ modes. Unexpected C exit/abort paths produce typed worker failures instead of
 terminating the controller; normal guest exit remains the upstream trap. The
 last known source parser gap is strace.c's ordinary static-local array declaration
 with multiple declarators; upstream removes its TLS marker in this profile.
+
+## Significant progress: static-local array declarations
+
+Generic lowering now gives every static-local array in a declaration list its
+own rooted pinned storage, preserving dimensions and initializers. Native and
+direct/object-linked tests pass across compacting GC, and actual strace.c emits.
+The full repository suite passes 2235 units and 517 functional tests, with 1039
+explicit skips. All 83 native-selected core translation units now have at least
+one historical successful isolated emission; a single frozen profile, complete
+link and actual managed instruction execution remain the next gates.

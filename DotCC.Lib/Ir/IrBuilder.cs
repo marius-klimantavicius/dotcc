@@ -2513,12 +2513,23 @@ internal sealed partial class IrBuilder
     {
         WalkDeclList(n.Arg1, n.Arg2, (name, initItem, type) =>
         {
-            // A static-local ARRAY has its own production (pinned GlobalArray
-            // lowering under a mangled name); an array tail here would silently
-            // become a plain static field.
-            if (type.Unqualified is CType.Array)
+            if (type.Unqualified is CType.Array array)
             {
-                throw new IrUnsupportedException("array declarator in a static-local multi-declarator list (split it into its own declaration)");
+                RequireCompleteObject(type, "static local array '" + name + "'");
+                var dimensions = new List<int>();
+                var total = 1;
+                for (CType current = array; current.Unqualified is CType.Array dimension; current = dimension.Element)
+                {
+                    var count = dimension.Count ?? throw new IrUnsupportedException("static-local array requires constant bounds");
+                    dimensions.Add(count);
+                    total = checked(total * count);
+                }
+                var element = array.FlatElement;
+                var initializer = initItem is { } values
+                    ? new PinnedArray(element, BuildArrayElems(element, dimensions, ParseInitList(values)), null) { Type = new CType.Pointer(element) }
+                    : new PinnedArray(element, null, new LitInt(total.ToString(System.Globalization.CultureInfo.InvariantCulture), total) { Type = CType.Int }) { Type = new CType.Pointer(element) };
+                AddGlobalArray(name, type, initializer, $"{_symbols.Escape(name)}__s{_staticLocalSeq++}", DeclarationAlignment(n.Arg1));
+                return;
             }
             var sym = new Symbol
             {
