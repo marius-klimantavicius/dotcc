@@ -12,7 +12,9 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Actual upstream decoder | Native/staged/raw JIT/raw AOT/optimized JIT/optimized AOT outputs agree for 11 encodings and ABI fields | `scripts/probe-decoder.sh` |
 | Actual interpreter embedding | Native arithmetic, guest memory, illegal instruction, unmapped memory and seven-step budget pass twice | `scripts/probe-core.sh --native-only` |
 | Managed interpreter embedding | Translation in progress; no managed instruction execution claimed | `scripts/probe-core.sh` |
-| Managed host/service runner | Not implemented or qualified | P4/P5 open |
+| Private memory filesystem | Four independent assertion groups pass Linux JIT/AOT; guest callback integration pending | `scripts/test-host-files.sh` |
+| Host storage ABI | 174 measurements match native in raw/optimized JIT/AOT, including real field addresses/strides | `tests/HostAbi/run-managed.py` |
+| Managed service runner | Not implemented or qualified | P4/P5 open |
 | Repository baseline | Build pass; 2218 unit pass; 490 functional pass, 1009 skipped | `scripts/test-repository.sh` |
 | Bit-field repair regressions | Build pass; 2218 unit pass; 491 functional pass, 1011 skipped | `scripts/test-repository.sh` |
 | Array parameter / tagged return repairs | Build pass; 2218 unit pass; 494 functional pass, 1017 skipped | `scripts/test-repository.sh` |
