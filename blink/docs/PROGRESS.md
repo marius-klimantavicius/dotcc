@@ -638,3 +638,13 @@ Native and raw/optimized JIT/AOT pass at host-socket-queries/attempt-mheqynnb,
 including actual option changes, callback pointers and two independent sockets
 across GC. Unsupported levels/options remain explicit errors; no unqualified
 SO_ERROR or ancillary option support is inferred.
+
+## Significant progress: real private filesystem capacity
+
+statvfs/fstatvfs now report actual immutable-image bytes, writable-byte limits
+and usage, and node quotas/counts. Fragment size1 exposes exact byte accounting;
+preferred transfer size4096, private fsid and capability flags are explicit.
+Other path/descriptor/allocation limits remain independent. Native ABI/common
+invariants and all4 pass at host-capacity/attempt-7y2zni_0, including growth,
+shrink, failed quotas, output atomicity, cwd/duplicates, independent owners and
+GC, plus existing HostFiles/InstanceIo regressions. No host disk is consulted.

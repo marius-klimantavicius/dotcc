@@ -22,6 +22,7 @@ public readonly record struct HostResult<T>(T Value, GuestError Error)
 public enum FileAccessMode { Read = 1, Write = 2 }
 public readonly record struct VirtualFileStat(long Length, bool Immutable, bool Directory,
     ulong Inode = 0, uint Mode = 0, long AccessTicks = 0, long ModifyTicks = 0, long ChangeTicks = 0, ulong Links = 1);
+public readonly record struct VirtualFileSystemCapacity(ulong TotalBytes, ulong FreeBytes, ulong TotalNodes, ulong FreeNodes);
 
 /// <summary>A private Linux-path namespace. It never consults the host filesystem.</summary>
 public sealed class VirtualFileSystem : IDisposable
@@ -50,6 +51,7 @@ public sealed class VirtualFileSystem : IDisposable
     private readonly Dictionary<string, Node> directoryNodes = new(StringComparer.Ordinal);
     private readonly Dictionary<int, Description> descriptors = new();
     private readonly long writableLimit;
+    private readonly long imageBytes;
     private readonly int descriptorLimit;
     private readonly int nodeLimit;
     private readonly long pathBytesLimit;
@@ -102,12 +104,34 @@ public sealed class VirtualFileSystem : IDisposable
                     throw new ArgumentException("Executable path must name an image file: " + path, nameof(executablePaths));
                 files[normalized.Value] = new(node.Bytes, true, node.Inode, 0x8000 | 0x16d);
             }
+        this.imageBytes = imageBytes;
     }
 
     public long WritableBytes { get { lock (sync) return writableBytes; } }
     public int OpenDescriptors { get { lock (sync) return descriptors.Count; } }
     public int NodeCount { get { lock (sync) return files.Count + directoryNodes.Count; } }
     public long PathBytes { get { lock (sync) return pathBytes; } }
+
+    /// <summary>Exact private byte and node quotas. Namespace and allocation
+    /// limits remain independent constraints on future writes/creation.</summary>
+    public HostResult<VirtualFileSystemCapacity> Capacity(string path, string cwd = "/")
+    {
+        lock (sync)
+        {
+            var resolved = CanonicalPath(path, cwd);
+            return resolved.Succeeded ? HostResult<VirtualFileSystemCapacity>.Success(CapacitySnapshot())
+                : Fail<VirtualFileSystemCapacity>(resolved.Error);
+        }
+    }
+    public HostResult<VirtualFileSystemCapacity> Capacity(int descriptor)
+    {
+        lock (sync) return TryDescription(descriptor, out _)
+            ? HostResult<VirtualFileSystemCapacity>.Success(CapacitySnapshot())
+            : Fail<VirtualFileSystemCapacity>(GuestError.BadDescriptor);
+    }
+    private VirtualFileSystemCapacity CapacitySnapshot() => new(
+        (ulong)imageBytes + (ulong)writableLimit, (ulong)(writableLimit - writableBytes),
+        (ulong)nodeLimit, (ulong)(nodeLimit - files.Count - directoryNodes.Count));
 
     private bool CanAddName(string name) => files.Count + directoryNodes.Count < nodeLimit &&
         Encoding.UTF8.GetByteCount(name) <= pathBytesLimit - pathBytes;
