@@ -593,3 +593,12 @@ masks remain unchanged. Native/staged and raw/optimized JIT/AOT pass through bot
 direct emission and separate object linking, including actual callback pointers,
 independent workers and GC (host-signal-actions/attempt-1qbw0fxz). Asynchronous
 signal delivery and unqualified action flags remain outside this module.
+
+## Significant progress: atomic private descriptor replacement
+
+Real dup2/dup3 now reuse the existing descriptor table and description reference
+counts, preserving shared cursor/socket lifetimes and independent CLOEXEC flags.
+Native and raw/optimized JIT/AOT pass at host-descriptors/attempt-u1mzbw4k, with
+full-table replacement, failed-target atomicity, C function pointers, two-worker
+GC, last-socket port release and captured-stream redirection. Existing file/I/O
+regressions also pass. No operating-system descriptor duplication is used.
