@@ -1,0 +1,12 @@
+--- a/Marius.Pinta/src/api.c
++++ b/Marius.Pinta/src/api.c
+@@ -46,6 +46,9 @@
+     core->environment = core_environment;
+ 
+     core->internal_functions = (PintaCoreInternalFunction*)pinta_memory_alloc(memory, 1 * sizeof(PintaCoreInternalFunction));
++    if (core->internal_functions == NULL)
++        return NULL;
++
+     core->internal_functions_length = 1;
+ 
+     core->internal_functions[0] = pinta_api_internal_out;

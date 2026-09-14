@@ -1,0 +1,15 @@
+{
+  "format": "authored fixed Pinta bytecode",
+  "sha256": "5ef5dd52ffcee8c70a9afa6473db916b607c1a9d83a6ae30c63248e69e353a61",
+  "bytes": 256,
+  "swapped_sha256": "5bfb68931e3eff39b45bf596f5d671dcaf56d7beeb5fa1d84487a059022632bc",
+  "invalid_opcode_sha256": "5f25e772386b14d217fcf2525bb9c05d73f4d4795f600ac67bd3418adcb9c2d9",
+  "globals": {
+    "customer": "Ada",
+    "quantity": 3,
+    "unitPrice": "12.50"
+  },
+  "expected_total": "37.5",
+  "expected_output": "Customer: Ada\nTotal: 37.5\n",
+  "expected_output_utf16le_hex": "43007500730074006f006d00650072003a0020004100640061000a0054006f00740061006c003a002000330037002e0035000a00"
+}

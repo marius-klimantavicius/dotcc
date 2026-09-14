@@ -1,0 +1,17 @@
+{
+  "format": "authored fixed Pinta bytecode",
+  "sha256": "5d5745f9f310c96533a2d6c039986d9e007f9d9e398f90f07b3303edf9ca66c9",
+  "bytes": 128,
+  "code_hex": "1b010025002e",
+  "callback_token": 1,
+  "callback_argument_count": 0,
+  "result_global": "answer",
+  "expected_result": "Ą😀",
+  "expected_utf16_units": [
+    260,
+    55357,
+    56832
+  ],
+  "expected_utf16le_hex": "04013dd800de",
+  "contract": "Callback assigns its caller-rooted return slot, forces Pinta compaction, and returns; guest stores that exact result in answer."
+}

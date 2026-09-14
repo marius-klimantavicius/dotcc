@@ -1,0 +1,65 @@
+[
+  {
+    "path": "Marius.Pinta/src/memory.c",
+    "before_sha256": "dd0fa06aebf2dafef8ad26c712d2098aa8b6a026cd9c830a740e542954da8116",
+    "after_sha256": "ba053746db6d347b1cb4fd07c44c3d80495cf1869affc0ca70c79e6fa0382101",
+    "patch": "patches/memory-creation-safety.patch",
+    "patch_sha256": "6ab0316a6269a31a0928a2567ef5c8ab22b35718949703e876d4c89fdbdf8e5a"
+  },
+  {
+    "path": "Marius.Pinta/src/api.c",
+    "before_sha256": "138bf65ccbe3884193ceddf32af2149ec4e8eeaeb3bb071e2d09dce72bae307d",
+    "after_sha256": "5bfb20688558e3c8dbc3f4888670e5d075fd707d2b39e714357e0d85c7a482fd",
+    "patch": "patches/api-creation-safety.patch",
+    "patch_sha256": "3cb73ddf9f99bde15e7a6cabed54e96ade4cc1a320007af496f2ad0d432658db"
+  },
+  {
+    "path": "Marius.Pinta/src/stack.c",
+    "before_sha256": "3c92462c2480dbcdd67f72fa8ab70de5d4645e48d0ade89371164df267c59084",
+    "after_sha256": "97ace71e7b418842ac09a3b6f4f9500920d3b110efe5330f5787235a4a05d67c",
+    "patch": "patches/stack-creation-safety.patch",
+    "patch_sha256": "0d88e3b72d38dd769ead41db18ef18e7235c00cf868e30237edd577c08f62a3e"
+  },
+  {
+    "path": "Marius.Pinta/src/core.c",
+    "before_sha256": "30fd07886e6d4ca11069d6d21d1a1184f052cc08c27b40b2fdf5746a5ac9f207",
+    "after_sha256": "aa31a7f71a05d90ba9b4bde948a369071d08527ca53fd5cdacb3c35dde3b27d5",
+    "patch": "patches/core-creation-safety.patch",
+    "patch_sha256": "cab5838b68575ec9333c8a121bab884a4100c4aead45d1750191d61373579412"
+  },
+  {
+    "path": "Marius.Pinta/tests/weak_tests.c",
+    "before_sha256": "db08b56887e59b8d1c5197f2de5ba93f838a84627aa74d3e9c61ed6bd2691681",
+    "after_sha256": "07af5411b50c27297c54bc30b9dea95b6bded8117c348d92e982d337891c2145",
+    "patch": "patches/weak_tests-registration.patch",
+    "patch_sha256": "d22d1ba8c60f8b4e4e0c43f8ee7715544d133d62db9edb12b365d88ddf7cee94"
+  },
+  {
+    "path": "Marius.Pinta/tests/encoding_tests.c",
+    "before_sha256": "f4a104f438694d14bf4264e6e516583abaa7f66bdfb1d132fa48f6247a0eddf5",
+    "after_sha256": "549a37abfad224d20817429a2d7e687339171ae71e39d566700e06ada6209268",
+    "patch": "patches/encoding_tests-registration.patch",
+    "patch_sha256": "d8334741e1192021ddb8b2ece8b822e8f065c97341984b1d231c1001e1cd6149"
+  },
+  {
+    "path": "Marius.Pinta/src/heap.c",
+    "before_sha256": "060e99222cc35209bc6635c8ce5ea001b044fa9e05f7c27c08d0af64d34ea3ef",
+    "after_sha256": "fdc6b22198e5d76c4bcc37d912bd1684d9fd818d5bf5b2fd3ac3703b286fccee",
+    "patch": "patches/heap-creation-safety.patch",
+    "patch_sha256": "10790379ddf4c3ceb1d5d639cc0bf0cad5458ea79cb38881ef531d369c536521"
+  },
+  {
+    "path": "Marius.Pinta/src/string.c",
+    "before_sha256": "4a71dea30c03d099f073e8390311cea44cabf6e95c44be28f38e690fc9c2b8ff",
+    "after_sha256": "97258233228b35f849b395f5d8e0ef17d732c99e7dd2f37306566136228df436",
+    "patch": "patches/string-allocation-safety.patch",
+    "patch_sha256": "8e10b882cc78d5db88e9c988105a441ae4d9de0d5ab0a7471ce8a8935802a32b"
+  },
+  {
+    "path": "Marius.Pinta/src/weak.c",
+    "before_sha256": "c0bd96640aa63d8cd4f4afef9af7b326680b1122be5c84b3fdecff7c6bed06c9",
+    "after_sha256": "6406abf3b2a584f369956dcd9e85b447982b84de27197d2c5d6b57fb10dbaa40",
+    "patch": "patches/weak-allocation-safety.patch",
+    "patch_sha256": "0c27ac97e544e7b35aa4c657005cd774a2b7d5b788b339f04e44dd86f0c83f10"
+  }
+]

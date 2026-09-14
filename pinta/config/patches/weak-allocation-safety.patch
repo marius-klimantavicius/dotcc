@@ -1,0 +1,11 @@
+--- a/Marius.Pinta/src/weak.c
++++ b/Marius.Pinta/src/weak.c
+@@ -122,6 +122,8 @@
+     pinta_assert(core != NULL);
+ 
+     result = pinta_core_alloc(core, PINTA_KIND_WEAK, PINTA_FLAG_NONE, 1);
++    if (result == NULL)
++        return NULL;
+ 
+     if (target != NULL)
+         pinta_weak_set_target(result, target->reference);

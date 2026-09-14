@@ -1,0 +1,541 @@
+{
+  "repository": "https://github.com/marius-klimantavicius/pinta",
+  "commit": "b8aeef8f0a97ef8072c9460f9da1c21226f20b1c",
+  "archive_url": "https://codeload.github.com/marius-klimantavicius/pinta/tar.gz/b8aeef8f0a97ef8072c9460f9da1c21226f20b1c",
+  "archive_sha256": "0dc43754c26735f42d645e6bd7dd10e5640d648c060cc03cb4853db6a59009d3",
+  "license": "MIT",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "a1d2a2ddee99116c917711658d0b1abdd90ac2e18b9de26d33963838ce7b7038",
+      "size": 1088
+    },
+    {
+      "path": "Marius.Pinta/Marius.Pinta.vcxproj",
+      "sha256": "05ba316dc6409ec058600fa66579cdaa600e102da4f93bca14c769b2765bf7f1",
+      "size": 6044
+    },
+    {
+      "path": "Marius.Pinta/inc/pinta-api.h",
+      "sha256": "05ebd007e37bb6799bbb5a43c174e93a016cbed20e926d849fc69056a3513e3d",
+      "size": 3113
+    },
+    {
+      "path": "Marius.Pinta/inc/pinta.h",
+      "sha256": "bb8e6ace46e8d590064004847eee7241f9f68ca36503f2c7b3be5af884c133d8",
+      "size": 109085
+    },
+    {
+      "path": "Marius.Pinta/src/api.c",
+      "sha256": "138bf65ccbe3884193ceddf32af2149ec4e8eeaeb3bb071e2d09dce72bae307d",
+      "size": 28202
+    },
+    {
+      "path": "Marius.Pinta/src/array.c",
+      "sha256": "432db4a9c08ec55031b89560ec33ab152d1590635e85047bf2da6d42ff30ea4a",
+      "size": 16934
+    },
+    {
+      "path": "Marius.Pinta/src/binary.c",
+      "sha256": "7a18072bd616e92867ab7eadf55f12711bd3bd7f07e697644dc94764f0d4b040",
+      "size": 5018
+    },
+    {
+      "path": "Marius.Pinta/src/buffer.c",
+      "sha256": "4c7c17cbe77a8cae13a05afd488f8a2a91a641f6c98f3633db1ee8ae0178847b",
+      "size": 74864
+    },
+    {
+      "path": "Marius.Pinta/src/code-rt.c",
+      "sha256": "c81587f949b74fd58b1546a754123a05e6fea67f944149969f319cef42517f4a",
+      "size": 3344
+    },
+    {
+      "path": "Marius.Pinta/src/code.c",
+      "sha256": "d28af5e3f57c1f0c448a5f19b9ebf4274eec5942027187515f7d68a657b3e677",
+      "size": 84074
+    },
+    {
+      "path": "Marius.Pinta/src/core.c",
+      "sha256": "30fd07886e6d4ca11069d6d21d1a1184f052cc08c27b40b2fdf5746a5ac9f207",
+      "size": 15476
+    },
+    {
+      "path": "Marius.Pinta/src/debug.c",
+      "sha256": "22975aaafdfee56e6d704838bffc4d1c8a2bcaa531f60a2c20c3636e2c91ce8d",
+      "size": 4901
+    },
+    {
+      "path": "Marius.Pinta/src/decimal.c",
+      "sha256": "8fe4ddf73b71ac028bf2f6e918224b754b96356ffd7de90b042c1fae8beeeb35",
+      "size": 33938
+    },
+    {
+      "path": "Marius.Pinta/src/decompress.c",
+      "sha256": "e2159f7bced38c62d8779d8e18742d5fdb09ab700ee1ef4f933696e63eb57e56",
+      "size": 1823
+    },
+    {
+      "path": "Marius.Pinta/src/domain-global.c",
+      "sha256": "e757777bba34961887d35bf2932ec31f22204e61ebb051cf4d692111828318a4",
+      "size": 11657
+    },
+    {
+      "path": "Marius.Pinta/src/encoding.c",
+      "sha256": "6461b52bc8819bdf991f0e7e5b61dbdc5141da1edc70ec08069b995fde9bab92",
+      "size": 13703
+    },
+    {
+      "path": "Marius.Pinta/src/format.c",
+      "sha256": "8c57ffc07fa826617fc25d5eaa6cf2dd5e5317a83ec3eec0d604611ab640bc48",
+      "size": 22249
+    },
+    {
+      "path": "Marius.Pinta/src/function-body.c",
+      "sha256": "e87ffa2a18d8050e7c7a97d82a3cd771755a9e5a04f55cdb196d6bc5949ff52e",
+      "size": 4065
+    },
+    {
+      "path": "Marius.Pinta/src/function-managed.c",
+      "sha256": "57d95ac7d9b427b5e42ad0bf8494a5e1a8ab54a5d84fd61aa9173c1defd47ebd",
+      "size": 17797
+    },
+    {
+      "path": "Marius.Pinta/src/function-native.c",
+      "sha256": "38bef6f2de75a93b86eb5cf73e76372ebab7b31b93c5ece61a517a79fc0a846b",
+      "size": 16657
+    },
+    {
+      "path": "Marius.Pinta/src/gc.c",
+      "sha256": "e11e6511879e529262f1cd997655a7fbc701a8d1ceebc47f36773f6cbcb6d736",
+      "size": 24722
+    },
+    {
+      "path": "Marius.Pinta/src/global-object.c",
+      "sha256": "352bac079267ff16b8f94f3a75d6aac5b5e36f60849f8d6e4b49061d65cbe1cd",
+      "size": 10554
+    },
+    {
+      "path": "Marius.Pinta/src/heap.c",
+      "sha256": "060e99222cc35209bc6635c8ce5ea001b044fa9e05f7c27c08d0af64d34ea3ef",
+      "size": 8866
+    },
+    {
+      "path": "Marius.Pinta/src/integer.c",
+      "sha256": "b1fcc02530c018cb9dcf576ecf4809ef67dd7737633235eddf307e9b5d227d06",
+      "size": 10557
+    },
+    {
+      "path": "Marius.Pinta/src/json.c",
+      "sha256": "675f3b279bc22369312195b9fff3181d2cce1e7be5f2dc8ad7fef9dc03821647",
+      "size": 14586
+    },
+    {
+      "path": "Marius.Pinta/src/memory.c",
+      "sha256": "dd0fa06aebf2dafef8ad26c712d2098aa8b6a026cd9c830a740e542954da8116",
+      "size": 8367
+    },
+    {
+      "path": "Marius.Pinta/src/module.c",
+      "sha256": "e051934af70694d2d60b2a484fa9e4a239fea29fd4bc1a98b0797fdf3dade446",
+      "size": 15558
+    },
+    {
+      "path": "Marius.Pinta/src/native-function.c",
+      "sha256": "658b9177ca9e0be3390dbc54e2fd34b8e810cfdd8c6a9fc9a174d1d81a5e4061",
+      "size": 202
+    },
+    {
+      "path": "Marius.Pinta/src/object.c",
+      "sha256": "25decf361cfce639895524efee1e348dba3347f79dc99f690adcd0058d6fbc21",
+      "size": 20009
+    },
+    {
+      "path": "Marius.Pinta/src/pattern.c",
+      "sha256": "fdbed0ed9318701f51c04e1815e3058881d9e44c89d718414bc5d05da2a0773c",
+      "size": 6675
+    },
+    {
+      "path": "Marius.Pinta/src/platform-windows.c",
+      "sha256": "7a9d9092acf018f7e348e4c13dcd520fe53d46ddb5f7d1a7d0e73a46409d6d7c",
+      "size": 1784
+    },
+    {
+      "path": "Marius.Pinta/src/property.c",
+      "sha256": "790aec967db78c02ad404881f69bdbb4bfd22433cdfdc0ca3762343c66da9a42",
+      "size": 40730
+    },
+    {
+      "path": "Marius.Pinta/src/sample.c",
+      "sha256": "cde551ae36c4302cce2fd589cbabafcc680268f679e3b57dfcd37be73b316e89",
+      "size": 5407
+    },
+    {
+      "path": "Marius.Pinta/src/stack.c",
+      "sha256": "3c92462c2480dbcdd67f72fa8ab70de5d4645e48d0ade89371164df267c59084",
+      "size": 10617
+    },
+    {
+      "path": "Marius.Pinta/src/string.c",
+      "sha256": "4a71dea30c03d099f073e8390311cea44cabf6e95c44be28f38e690fc9c2b8ff",
+      "size": 61985
+    },
+    {
+      "path": "Marius.Pinta/src/weak.c",
+      "sha256": "c0bd96640aa63d8cd4f4afef9af7b326680b1122be5c84b3fdecff7c6bed06c9",
+      "size": 6126
+    },
+    {
+      "path": "Marius.Pinta/tests/array_tests.c",
+      "sha256": "b910c468963e1fc0845c93ee201dc9f2f51263f5347679a008d0392e8770b71d",
+      "size": 1600
+    },
+    {
+      "path": "Marius.Pinta/tests/buffer_tests.c",
+      "sha256": "1239200e3a7a0b6a4c6e8f0eedf97ce9df33175402f636b88b925d9227eeb44f",
+      "size": 9294
+    },
+    {
+      "path": "Marius.Pinta/tests/code_tests.c",
+      "sha256": "d2fc3795cb58f10e2c8b83e9407a5073004fe919aa36c5c93a7c3b0b81b3e238",
+      "size": 32912
+    },
+    {
+      "path": "Marius.Pinta/tests/code_tests_v2.c",
+      "sha256": "e9bc216d7146c178953974d6511fceda114fb0d3702fbdfeb2277011c4bdc8bf",
+      "size": 20795
+    },
+    {
+      "path": "Marius.Pinta/tests/decimal_tests.c",
+      "sha256": "246b684493e4bc79ac8ef8b09bac0d31b42660224373c2207a7b8282cd3df194",
+      "size": 65186
+    },
+    {
+      "path": "Marius.Pinta/tests/encoding_tests.c",
+      "sha256": "f4a104f438694d14bf4264e6e516583abaa7f66bdfb1d132fa48f6247a0eddf5",
+      "size": 1826
+    },
+    {
+      "path": "Marius.Pinta/tests/format_tests.c",
+      "sha256": "394e29ec61c660a7312b5c3483611f18b61e21c0bcbe25a3c0eb985d9fdd73f7",
+      "size": 45039
+    },
+    {
+      "path": "Marius.Pinta/tests/function_tests.c",
+      "sha256": "61751e8526737460459a88a0d33cfbd5d558121634d83016509ac667487cafd6",
+      "size": 3845
+    },
+    {
+      "path": "Marius.Pinta/tests/gc_tests.c",
+      "sha256": "7c5604bdc8edf6ea2a54f89e3619c4a19a7ae951796f9646ecab2803af7b2857",
+      "size": 8530
+    },
+    {
+      "path": "Marius.Pinta/tests/integer_tests.c",
+      "sha256": "08130f81894e5d449810af1da38ef47f73b95b24766551081f425f5bf17b8bda",
+      "size": 10998
+    },
+    {
+      "path": "Marius.Pinta/tests/json_tests.c",
+      "sha256": "b402af5d7f0638399d3b584aadfe32301e6ae894870e79a145e003fcb253657c",
+      "size": 3324
+    },
+    {
+      "path": "Marius.Pinta/tests/main.c",
+      "sha256": "5599893c4b69e630ad404fc878721d4b579a92ab533e4bf32289726c699442a7",
+      "size": 481
+    },
+    {
+      "path": "Marius.Pinta/tests/memory_tests.c",
+      "sha256": "bd7c666925bc400c98c9a6a19fae8ff491b505638c89f5848f3f023dfc5eb4e0",
+      "size": 4474
+    },
+    {
+      "path": "Marius.Pinta/tests/object_tests.c",
+      "sha256": "09d761e757c4cf756e894559a000772737ae07d59263e2b7644bf86b15610059",
+      "size": 5968
+    },
+    {
+      "path": "Marius.Pinta/tests/pattern_tests.c",
+      "sha256": "cf5672153fc4590252c1d0268517250cd363567f90cd0acf5e5aa718ebd774f7",
+      "size": 2214
+    },
+    {
+      "path": "Marius.Pinta/tests/pinta_tests.h",
+      "sha256": "f8a8c03e21d3aa64749ddbad8ddba10a47a580e696e2cfafa6183cf15657e281",
+      "size": 3688
+    },
+    {
+      "path": "Marius.Pinta/tests/property_tests.c",
+      "sha256": "d68b06a4e3bef65d578d6131b7ff90cf72dac4ec92a6317e5308a5f345833039",
+      "size": 1561
+    },
+    {
+      "path": "Marius.Pinta/tests/sput.h",
+      "sha256": "0e74f74da7aadd888a6a8aa3b5dfa92e9e6eadf8f3999799fe47fb913b1c98a4",
+      "size": 15651
+    },
+    {
+      "path": "Marius.Pinta/tests/tests_common.c",
+      "sha256": "2ba4d2ff87f03c2cfe3244984aa236f28d5e529a343f5a076ef44f6212691fed",
+      "size": 1455
+    },
+    {
+      "path": "Marius.Pinta/tests/weak_tests.c",
+      "sha256": "db08b56887e59b8d1c5197f2de5ba93f838a84627aa74d3e9c61ed6bd2691681",
+      "size": 1869
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "Marius.Pinta.Test.Files/array-sum-v2.pint",
+      "sha256": "e8912ca5ac22ec0aad9a14fbfc33f3569f2fec0c5bcf1e22ed24ebd650941508",
+      "size": 216
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/array-sum.pint",
+      "sha256": "74a9375ef8a4589b99c28bede2c0ea6f8af6d8491f7677d29f107ae63a196f93",
+      "size": 220
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/compare-numbers-v2.pint",
+      "sha256": "00dc8922e9516a6b9bc95fb92d116858bece034c5e98e419c824b88858a0ce32",
+      "size": 400
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/compare-numbers.pint",
+      "sha256": "1c78ba5796150de9f4f438a2e57941b30843a746973870d2525a01cb34983c92",
+      "size": 404
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/construct-v2.pint",
+      "sha256": "aca8f3136fac49f80b0df18f024ab7b752c06b4d32369e2662ccb5de82f0f360",
+      "size": 256
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/exit-on-global-return-v2.pint",
+      "sha256": "9a152fee988eef65de839b3342be75bd8acb1417d0e3d2270ce80c59f8a9befd",
+      "size": 168
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/exit-on-global-return.pint",
+      "sha256": "4e01601c708b74440b09e53884624cb1ad3820be7f6ca1c8a29ae5ced72eabcc",
+      "size": 140
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/global-function-v2.pint",
+      "sha256": "cafbe995b5a327add50d2038dd696a1cc3aa6d7c8c5066982d367c3754319be6",
+      "size": 136
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/globals-properties-v2.pint",
+      "sha256": "7eb9565edb7178687f498c0615ebed37ad6ac517696ff0e87e5a9cf92fdc2a51",
+      "size": 1136
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/load-const-v2.pint",
+      "sha256": "c1e9cf60b703548e7e8d85ae296f12be89370291ceb9c47a9b023247f620eaa2",
+      "size": 608
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/load-const.pint",
+      "sha256": "a71fd8f7727eb6645677daecab8e0378c26f04c86860f34aa05f4fcb6d2d6291",
+      "size": 608
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/native-call-managed-v2.pint",
+      "sha256": "4f19228709a26b25c2dadb224815d2ddb27d067c951a7a0c84c6c5d733d024dc",
+      "size": 212
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/new-function-v2.pint",
+      "sha256": "43fa07d630b0701e5dc496697bc1b3bf44cb3915295a7537b5ca8b6bdbb6adbe",
+      "size": 452
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/object-literal-v2.pint",
+      "sha256": "3df932eed8aaa751773c7e418fca2c0301352d4ff604bbebdbb3b40b4d311ba5",
+      "size": 224
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/operations-script-v2.pint",
+      "sha256": "995a418b8cabb46088ebc9c940e46d25efa60363d5d4f558c30ae4fd1010dfb1",
+      "size": 1940
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/operations-script.pint",
+      "sha256": "8b7867d302a1b0712291d06c578016b3e567b7f801e8e063c48e25c0690648d7",
+      "size": 1952
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/pattern-pan-v2.pint",
+      "sha256": "7476ae2a1a9ce725f410adebe19e2f09c4ec18a3fa6ff904f5d1e3d97354affb",
+      "size": 352
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/pattern-simple-v2.pint",
+      "sha256": "b5eb4c44cd0e1ad7d672b795a724f2e86ae95857271051a3ad8c60c46f2b56ef",
+      "size": 560
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/require-exports-sub-v2.pint",
+      "sha256": "b783dd6733bddfcbd9d55e3c875e94c53c3d36d66bd536b9b9e5f459820b05fb",
+      "size": 308
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/require-exports-v2.pint",
+      "sha256": "e22c1f56a1e417c1e5c325d2f5fa540744e4b97e4be20e967bcc4d50c005dc3a",
+      "size": 292
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/require-sub-v2.pint",
+      "sha256": "38262d75ba406cc43cd4bfc934fa852f0025b88a32f89f0fad6c6b571092f367",
+      "size": 336
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/require-v2.pint",
+      "sha256": "5a2cfeecd1a1b324416a5f88f9a138fb71b2fe6f126e7cdea9f61808bcc50c16",
+      "size": 304
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/sample.pint",
+      "sha256": "3f6f4673e94fa3c91c98e395adb6eefc37e9adb9774ac2afe6c4db9af12bdb68",
+      "size": 392
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/script-closure-v2.pint",
+      "sha256": "0a63a71692edcd559f42b273f87bf79e33a83041b2fb6aaa272dce07a9917497",
+      "size": 396
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-for-loop-v2.pint",
+      "sha256": "cb16a520ea2be574ffc10e70900588fdc140c79560707980a0bc4f1ae1a6210c",
+      "size": 212
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-for-loop.pint",
+      "sha256": "772ee2b38fe53969920ec62566e560f9d9875ee2034ffe71d63099f545106838",
+      "size": 204
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-internal-function-v2.pint",
+      "sha256": "7803891e856a6812c465b8e7c1f3dfff8f8be9f6b77f28e54d3e613a0fb0df4d",
+      "size": 168
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-internal-function.pint",
+      "sha256": "6e015bbc31d1f1b77f501a9f1ae681ed73b78a61d67ec529d527f43b1a50ea8b",
+      "size": 168
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-receipt-script-v2.pint",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-receipt-script.pint",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-script-v2.pint",
+      "sha256": "a6afe5d9b112050ee2b4ceedb1a4828d9761c375716192ca2304e853921010f0",
+      "size": 216
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-script.pint",
+      "sha256": "55e3b85188162d37cfbbfcbf73d6b332728387e87bd99c444b7ea6e89851aded",
+      "size": 216
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-substring-v2.pint",
+      "sha256": "4543b4c62ca48573e1e09e9e753da3406dd60800b2cc63f311d8005eb428e485",
+      "size": 192
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/simple-substring.pint",
+      "sha256": "6fafc7e95610f4570285d2941ec41816149dc653bc14307a70f2167f227b40a1",
+      "size": 192
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/string-operations-with-global-variables-v2.pint",
+      "sha256": "a0a949ce65f181ee1259240d1d3e2a45215ccc0777395549de7c3521fc3ff649",
+      "size": 188
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/string-operations-with-global-variables.pint",
+      "sha256": "85f8f359f16f3033b7a07c9a16db1f53abbfb22241684e3d8679ce0664234267",
+      "size": 188
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/sub-buffer-v2.pint",
+      "sha256": "3e44e82aec92329280bbc694c68897096c3e32185ee353d6c05a571fbb55016f",
+      "size": 404
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/sub-buffer.pint",
+      "sha256": "a81d5c2b19ded3ab56a3d0c874109a9f8a9db25d75460e537afbee18ff142c85",
+      "size": 400
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/subtract-two-strings-v2.pint",
+      "sha256": "d8057062bb3cfa5ef5919b32d4d25c285ff11ca0ce34080568ef8d24601ee7cb",
+      "size": 176
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/subtract-two-strings.pint",
+      "sha256": "f7a0882aed26879eeb2d25784c5d54f5c4eeb9ee027789865a5daa242f7e25ac",
+      "size": 176
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/swed-receipt-v2.pint",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/swed-receipt.pint",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/tail-call-invoke.pint",
+      "sha256": "54015e0b79fdf0ed0f493a13f51e3e993250af444500ac8180aa4c9ca3bdeb30",
+      "size": 300
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/tail-call-simple.pint",
+      "sha256": "06e091471c0d51b307ad7c36e41b3cc7988025119563c0dc282e0ae22ebfa3db",
+      "size": 216
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/test-app-config-v2.pint",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/test-app-config.pint",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/unicode-outline-v2.pint",
+      "sha256": "d5d280d21a1c2ff5d7b602cddfc5baaacd620f7d5a40600d6c86d514ae8ce605",
+      "size": 128
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/unicode-outline.pint",
+      "sha256": "c48b8474633625c255264d2055f422f8506d99274898d4338ae0d880a02a5c0a",
+      "size": 128
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/unicode-string-v2.pint",
+      "sha256": "a55d257802d94d313cfaf2827c09a07c79740b9e56646d3188cf76a5f95a2999",
+      "size": 308
+    },
+    {
+      "path": "Marius.Pinta.Test.Files/unicode-string.pint",
+      "sha256": "de6d030b11b2e7ab24a1bbec2da8bffda3f8c00b998a15a79e340889c342bb3c",
+      "size": 312
+    }
+  ]
+}

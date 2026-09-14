@@ -378,7 +378,8 @@ internal sealed class MacroExpander : RewritingTokenStream
         for (var i = 0; i < left.Count - 1; ++i)
             output.Add(i == 0 ? left[i] with { LeadingSpace = location.LeadingSpace } : left[i]);
         var text = (left[^1].Content?.ToString() ?? string.Empty) + (right[0].Content?.ToString() ?? string.Empty);
-        output.Add(new Token(SourceMappedItem.Create(_idSymbol, text, location.Item),
+        var symbol = _cpp.ClassifyPastedToken(text, _idSymbol);
+        output.Add(new Token(SourceMappedItem.Create(symbol, text, location.Item),
             left.Count == 1 ? location.LeadingSpace : left[^1].LeadingSpace, left[^1].Contextual || right[0].Contextual));
         for (var i = 1; i < right.Count; ++i) output.Add(right[i]);
     }

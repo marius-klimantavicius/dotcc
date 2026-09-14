@@ -45,19 +45,16 @@ internal static class EmitHelpers
         // `true` and `false` ARE escaped: they now lower to the integer
         // literals 1/0 (via <stdbool.h> and the c23 LitTrue/LitFalse path), so
         // the spelling `true`/`false` only ever reaches Visit(Var) as a real
-        // user identifier — safe to @-escape. `null` is still EXCLUDED: dotcc
-        // emits it as the bare C# `null` literal (the only expression that
-        // implicitly converts to any pointer type — see <stddef.h>'s
-        // `#define NULL null`), and a macro-supplied `null` is indistinguishable
-        // from a user variable named `null`, so a variable named `null` stays
-        // the lone residual edge. `default` is also omitted: it's a C keyword
+        // user identifier — safe to @-escape. Likewise `null` is an ordinary
+        // C identifier: NULL expands to ((void*)0), and typed null literals are
+        // rendered separately from identifier names. `default` is omitted: it's a C keyword
         // (never a C identifier) and dotcc emits it for value-init.
         "abstract", "as", "base", "bool", "break", "byte", "case", "catch",
         "char", "checked", "class", "const", "continue", "decimal",
         "delegate", "do", "double", "else", "enum", "event", "explicit",
         "extern", "false", "finally", "fixed", "float", "for", "foreach",
         "goto", "if", "implicit", "in", "int", "interface", "internal", "is",
-        "lock", "long", "namespace", "new", "object", "operator", "out",
+        "lock", "long", "namespace", "new", "null", "object", "operator", "out",
         "override", "params", "private", "protected", "public", "readonly",
         "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc",
         "static", "string", "struct", "switch", "this", "throw", "true", "try",

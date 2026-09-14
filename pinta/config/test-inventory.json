@@ -1,0 +1,699 @@
+{
+  "test_files": [
+    {
+      "file": "Marius.Pinta/tests/array_tests.c",
+      "registered": [
+        "array_data_should_move_in_compaction",
+        "array_elements_are_gc_roots"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "array_data_should_move_in_compaction",
+        "array_elements_are_gc_roots"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/buffer_tests.c",
+      "registered": [
+        "buffer_write_to_empty",
+        "buffer_write_resize",
+        "buffer_write_types",
+        "buffer_sub_buffer",
+        "buffer_out_of_memory"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "buffer_write_to_empty",
+        "buffer_write_resize",
+        "buffer_write_types",
+        "buffer_sub_buffer",
+        "buffer_out_of_memory"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/code_tests.c",
+      "registered": [
+        "code_array_sum",
+        "code_load_const",
+        "code_simple_substring",
+        "code_internal_function",
+        "code_simple_script",
+        "code_simple_for_loop",
+        "code_operations",
+        "code_exit_on_global_return",
+        "code_unicode_strings_are_correct",
+        "code_unicode_outline",
+        "code_sub_buffer_outline",
+        "code_string_operations_with_globals",
+        "code_subtract_two_strings",
+        "code_compare_numbers"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "code_array_sum",
+        "code_load_const",
+        "code_simple_substring",
+        "code_internal_function",
+        "code_simple_script",
+        "code_simple_for_loop",
+        "code_operations",
+        "code_exit_on_global_return",
+        "code_unicode_strings_are_correct",
+        "code_unicode_outline",
+        "code_sub_buffer_outline",
+        "code_string_operations_with_globals",
+        "code_subtract_two_strings",
+        "code_compare_numbers"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/code_tests_v2.c",
+      "registered": [
+        "code_array_sum_v2",
+        "code_load_const_v2",
+        "code_simple_substring_v2",
+        "code_internal_function_v2",
+        "code_simple_script_v2",
+        "code_script_closure_v2",
+        "code_simple_for_loop_v2",
+        "code_operations_v2",
+        "code_exit_on_global_return_v2",
+        "code_unicode_strings_are_correct_v2",
+        "code_unicode_outline_v2",
+        "code_sub_buffer_outline_v2",
+        "code_string_operations_with_globals_v2",
+        "code_new_function_v2",
+        "code_globals_properties_v2",
+        "code_object_literal_v2",
+        "code_subtract_two_strings_v2",
+        "code_tail_call_simple_v2",
+        "code_tail_call_invoke_v2",
+        "code_compare_numbers_v2"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "code_array_sum_v2",
+        "code_load_const_v2",
+        "code_simple_substring_v2",
+        "code_internal_function_v2",
+        "code_simple_script_v2",
+        "code_script_closure_v2",
+        "code_simple_for_loop_v2",
+        "code_operations_v2",
+        "code_exit_on_global_return_v2",
+        "code_unicode_strings_are_correct_v2",
+        "code_unicode_outline_v2",
+        "code_sub_buffer_outline_v2",
+        "code_string_operations_with_globals_v2",
+        "code_new_function_v2",
+        "code_construct_v2",
+        "code_object_literal_v2",
+        "code_globals_properties_v2",
+        "code_subtract_two_strings_v2",
+        "code_tail_call_simple_v2",
+        "code_tail_call_invoke_v2",
+        "code_compare_numbers_v2"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/decimal_tests.c",
+      "registered": [
+        "decimal_from_string_tests",
+        "decimal_format_general_tests",
+        "decimal_format_decimal_tests",
+        "decimal_format_exponential_tests",
+        "decimal_arithmetic_tests"
+      ],
+      "commented_registrations": [],
+      "defined_tests": []
+    },
+    {
+      "file": "Marius.Pinta/tests/encoding_tests.c",
+      "registered": [],
+      "commented_registrations": [],
+      "defined_tests": [
+        "encoding_decode_long_utf8"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/format_tests.c",
+      "registered": [
+        "pinta_test_format_strings",
+        "format_multiple_arguments"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "format_multiple_arguments"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/function_tests.c",
+      "registered": [
+        "native_function_should_call_managed_function",
+        "require_module",
+        "require_module_should_return_replaced_exports"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "native_function_should_call_managed_function",
+        "require_module",
+        "require_module_should_return_replaced_exports"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/gc_tests.c",
+      "registered": [
+        "no_objects_after_collection",
+        "native_stack_is_gc_root",
+        "locals_are_gc_root",
+        "automatic_gc_in_loop",
+        "pinned_should_not_move",
+        "multiple_pinned_should_not_move",
+        "move_unpinned_to_start",
+        "cyclic_reference_should_be_freed",
+        "heap_handle_should_survive_gc_and_be_moved"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "no_objects_after_collection",
+        "native_stack_is_gc_root",
+        "locals_are_gc_root",
+        "automatic_gc_in_loop",
+        "pinned_should_not_move",
+        "multiple_pinned_should_not_move",
+        "move_unpinned_to_start",
+        "cyclic_reference_should_be_freed",
+        "heap_handle_should_survive_gc_and_be_moved"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/integer_tests.c",
+      "registered": [
+        "integer_to_string_tests"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "integer_to_string_tests"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/json_tests.c",
+      "registered": [
+        "json_write_object"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "json_write_object"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/memory_tests.c",
+      "registered": [
+        "native_memory_alloc",
+        "native_memory_free_complex"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "native_memory_alloc",
+        "native_memory_free_complex"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/object_tests.c",
+      "registered": [
+        "object_should_set_and_get_single_value",
+        "object_should_define_and_get_property",
+        "object_should_define_and_get_property_native"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "object_should_set_and_get_single_value",
+        "object_should_define_and_get_property",
+        "object_should_define_and_get_property_native"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/pattern_tests.c",
+      "registered": [
+        "pattern_simple_tests",
+        "pattern_pan_tests"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "pattern_simple_tests",
+        "pattern_pan_tests"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/property_tests.c",
+      "registered": [
+        "property_data_should_move_in_compaction"
+      ],
+      "commented_registrations": [],
+      "defined_tests": [
+        "property_data_should_move_in_compaction"
+      ]
+    },
+    {
+      "file": "Marius.Pinta/tests/weak_tests.c",
+      "registered": [],
+      "commented_registrations": [],
+      "defined_tests": [
+        "weak_does_not_prevent_collection",
+        "weak_survives_compaction"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "array-sum-v2.pint",
+      "bytes": 216,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "array-sum.pint",
+      "bytes": 220,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "compare-numbers-v2.pint",
+      "bytes": 400,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "compare-numbers.pint",
+      "bytes": 404,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "construct-v2.pint",
+      "bytes": 256,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "exit-on-global-return-v2.pint",
+      "bytes": 168,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "exit-on-global-return.pint",
+      "bytes": 140,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "global-function-v2.pint",
+      "bytes": 136,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "globals-properties-v2.pint",
+      "bytes": 1136,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "load-const-v2.pint",
+      "bytes": 608,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "load-const.pint",
+      "bytes": 608,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "native-call-managed-v2.pint",
+      "bytes": 212,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "function_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "new-function-v2.pint",
+      "bytes": 452,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "object-literal-v2.pint",
+      "bytes": 224,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "operations-script-v2.pint",
+      "bytes": 1940,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "operations-script.pint",
+      "bytes": 1952,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "pattern-pan-v2.pint",
+      "bytes": 352,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "pattern_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "pattern-simple-v2.pint",
+      "bytes": 560,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "pattern_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "require-exports-sub-v2.pint",
+      "bytes": 308,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "require-exports-v2.pint",
+      "bytes": 292,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "function_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "require-sub-v2.pint",
+      "bytes": 336,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "require-v2.pint",
+      "bytes": 304,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "function_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "sample.pint",
+      "bytes": 392,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "script-closure-v2.pint",
+      "bytes": 396,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-for-loop-v2.pint",
+      "bytes": 212,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-for-loop.pint",
+      "bytes": 204,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-internal-function-v2.pint",
+      "bytes": 168,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-internal-function.pint",
+      "bytes": 168,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-receipt-script-v2.pint",
+      "bytes": 0,
+      "header_hex": "",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-receipt-script.pint",
+      "bytes": 0,
+      "header_hex": "",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-script-v2.pint",
+      "bytes": 216,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-script.pint",
+      "bytes": 216,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-substring-v2.pint",
+      "bytes": 192,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "simple-substring.pint",
+      "bytes": 192,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "string-operations-with-global-variables-v2.pint",
+      "bytes": 188,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "string-operations-with-global-variables.pint",
+      "bytes": 188,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "sub-buffer-v2.pint",
+      "bytes": 404,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "sub-buffer.pint",
+      "bytes": 400,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "subtract-two-strings-v2.pint",
+      "bytes": 176,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "subtract-two-strings.pint",
+      "bytes": 176,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "swed-receipt-v2.pint",
+      "bytes": 0,
+      "header_hex": "",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "swed-receipt.pint",
+      "bytes": 0,
+      "header_hex": "",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "tail-call-invoke.pint",
+      "bytes": 300,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "tail-call-simple.pint",
+      "bytes": 216,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "test-app-config-v2.pint",
+      "bytes": 0,
+      "header_hex": "",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "test-app-config.pint",
+      "bytes": 0,
+      "header_hex": "",
+      "referencing_test_files": [],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "unicode-outline-v2.pint",
+      "bytes": 128,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "unicode-outline.pint",
+      "bytes": 128,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "unicode-string-v2.pint",
+      "bytes": 308,
+      "header_hex": "746e4950010001000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests_v2.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    },
+    {
+      "name": "unicode-string.pint",
+      "bytes": 312,
+      "header_hex": "746e4950000000000000000000000000000000000000000000000000000000000000000000000000",
+      "referencing_test_files": [
+        "code_tests.c"
+      ],
+      "compatibility": "unqualified; see native logs"
+    }
+  ]
+}

@@ -56,9 +56,14 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     private readonly int _structSymbol;
     private readonly int _unionSymbol;
     private readonly int _enumSymbol;
+    private readonly int _dotSymbol;
+    private readonly int _arrowSymbol;
+    private readonly HashSet<int> _pointerQualifiers;
     private readonly HashSet<string> _typeNames;
     private readonly HashSet<string> _seedTypeNames;
     private readonly Stack<HashSet<string>> _scopeTypeNames = new();
+    private readonly Stack<HashSet<string>> _scopeShadowedTypeNames = new();
+    private readonly Stack<bool> _aggregateScopes = new();
 
     // True when the previous token forwarded through ProcessToken was a
     // `struct` / `union` / `enum` keyword — so the NEXT ID is a tag, not a
@@ -67,6 +72,9 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     // `typedef struct lua_State lua_State;` idiom). Reset across the typedef
     // path (its body is consumed wholesale, ending at `;`).
     private bool _afterTagKeyword;
+    private int _previousSymbol = -1;
+    private bool _afterTypedefType;
+    private bool _aggregateHead;
 
     /// <summary>
     /// Construct a rewriter over <paramref name="inner"/>, optionally
@@ -103,6 +111,9 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         _structSymbol = map["struct"];
         _unionSymbol = map["union"];
         _enumSymbol = map["enum"];
+        _dotSymbol = map["."];
+        _arrowSymbol = map["->"];
+        _pointerQualifiers = new HashSet<int> { _starSymbol, map["const"], map["volatile"], map["restrict"] };
 
         // Seed set lives separately from the dynamic set populated by
         // user `typedef`s, so Reset() can clear the dynamic side without
@@ -120,10 +131,14 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         if (token.ID == _openBraceSymbol)
         {
             _scopeTypeNames.Push(new HashSet<string>(StringComparer.Ordinal));
+            _scopeShadowedTypeNames.Push(new HashSet<string>(StringComparer.Ordinal));
+            _aggregateScopes.Push(_aggregateHead);
         }
         else if (token.ID == _closeBraceSymbol && _scopeTypeNames.Count > 0)
         {
             foreach (var local in _scopeTypeNames.Pop()) _typeNames.Remove(local);
+            foreach (var shadowed in _scopeShadowedTypeNames.Pop()) _typeNames.Add(shadowed);
+            _aggregateScopes.Pop();
         }
 
         // Did a struct/union/enum keyword just go by? Snapshot it, then update
@@ -132,6 +147,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         _afterTagKeyword = token.ID == _structSymbol
             || token.ID == _unionSymbol
             || token.ID == _enumSymbol;
+        _aggregateHead = _afterTagKeyword || (afterTag && token.ID == _idSymbol);
 
         // Promote a known typedef-name ID to TYPE_NAME so the parser routes it
         // through `Type -> TYPE_NAME`. The original ID's content (the
@@ -139,15 +155,33 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         // a `struct`/`union`/`enum` keyword: there the ID is a TAG (a distinct C
         // namespace that may collide with a typedef-name), so leave it as ID —
         // otherwise `struct lua_State { … }` / `struct lua_State *p` would feed a
-        // TYPE_NAME where the grammar wants a plain ID.
+        // TYPE_NAME where the grammar wants a plain ID. A member after . or ->
+        // likewise belongs to a distinct namespace. Two consecutive typedef
+        // names cannot form a type specifier: the second is a declarator name
+        // (Pinta's `PintaDecimal decimal;` is a field, not two types).
         if (token.ID == _idSymbol
             && token.Content is string name
             && !afterTag
+            && !_afterTypedefType
+            && _previousSymbol != _dotSymbol
+            && _previousSymbol != _arrowSymbol
             && _typeNames.Contains(name))
         {
             Emit(SourceFileOrigin.Rewrite(token, _typeNameSymbol, name));
+            _previousSymbol = _typeNameSymbol;
+            _afterTypedefType = true;
             return;
         }
+
+        // A block-local declaration can hide a typedef until that block exits.
+        // Aggregate fields have their own namespace and must not hide the type.
+        if (_afterTypedefType && token.ID == _idSymbol && token.Content is string localName
+            && _typeNames.Contains(localName) && _aggregateScopes.Count > 0 && !_aggregateScopes.Peek())
+        {
+            _typeNames.Remove(localName);
+            _scopeShadowedTypeNames.Peek().Add(localName);
+        }
+        if (!_pointerQualifiers.Contains(token.ID)) _afterTypedefType = false;
 
         if (token.ID == _typedefSymbol)
         {
@@ -156,6 +190,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         }
 
         Emit(token);
+        _previousSymbol = token.ID;
     }
 
     /// <summary>
@@ -209,6 +244,8 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         // position itself stays as ID because we've identified it from the
         // raw token list, not from the promoted stream.
         Emit(typedefToken);
+        _previousSymbol = typedefToken.ID;
+        var afterTypedefType = false;
         for (var i = 0; i < body.Count; i++)
         {
             var t = body[i];
@@ -221,21 +258,30 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             if (i != aliasIndex
                 && t.ID == _idSymbol
                 && !afterTag
+                && !afterTypedefType
+                && _previousSymbol != _dotSymbol
+                && _previousSymbol != _arrowSymbol
                 && t.Content is string s
                 && _typeNames.Contains(s)
                 && s != aliasName)
             {
                 Emit(SourceFileOrigin.Rewrite(t, _typeNameSymbol, s));
+                _previousSymbol = _typeNameSymbol;
+                afterTypedefType = true;
             }
             else
             {
                 Emit(t);
+                _previousSymbol = t.ID;
+                if (!_pointerQualifiers.Contains(t.ID)) afterTypedefType = false;
             }
         }
 
         // The typedef body was consumed wholesale (it ended at `;`), so the next
         // ProcessToken token is not after a tag keyword.
         _afterTagKeyword = false;
+        _afterTypedefType = false;
+        _aggregateHead = false;
     }
 
     private int FindAliasIndex(List<Item> body)
@@ -293,8 +339,13 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         // names survive across reuse but per-TU typedef'd aliases don't.
         _typeNames.Clear();
         _scopeTypeNames.Clear();
+        _scopeShadowedTypeNames.Clear();
+        _aggregateScopes.Clear();
         foreach (var name in _seedTypeNames) { _typeNames.Add(name); }
         _afterTagKeyword = false;
+        _previousSymbol = -1;
+        _afterTypedefType = false;
+        _aggregateHead = false;
         base.Reset();
     }
 }

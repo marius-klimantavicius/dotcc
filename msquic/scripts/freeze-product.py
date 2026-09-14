@@ -7,6 +7,7 @@ import os
 import re
 from pathlib import Path
 import shutil
+import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
@@ -275,17 +276,26 @@ for variant in product['variants']:
     directory = ROOT / 'generated' / ('raw/TranslatedMsQuic' if name == 'raw' else 'TranslatedMsQuic')
     verified(variant['generated_sha256'], directory, 'Generated product')
     generated[name] = variant['generated_sha256']
-# Record the SDK build revision from the generated attribute and require the
-# same informational-version bytes in each already-hashed compiler assembly.
+# Read the actual assembly attribute from the already-verified snapshot. Repository
+# obj files and HEAD can change independently of these frozen compiler binaries.
+# The BCL helper inspects PE metadata without loading or executing either assembly.
 # Binary hashes, not this human-facing revision label, establish compiler identity.
-versions = {}
-for project in ['DotCC', 'DotCC.Lib']:
-    metadata = REPO / project / 'obj/Release/net10.0' / (project + '.AssemblyInfo.cs')
-    match = re.search(r'AssemblyInformationalVersionAttribute\("([^"\n]+)"\)', metadata.read_text())
-    check(match is not None, 'Missing SDK compiler build metadata: ' + project)
-    assembly = 'dotcc.dll' if project == 'DotCC' else 'DotCC.Lib.dll'
-    check(match[1].encode() in (compiler / assembly).read_bytes(), 'SDK metadata differs from frozen compiler assembly')
-    versions[assembly] = match[1]
+metadata_project = ROOT / 'scripts/CompilerMetadata/CompilerMetadata.csproj'
+metadata_output = ROOT / 'build/compiler-metadata'
+build_metadata = subprocess.run(['dotnet', 'build', str(metadata_project), '-c', 'Release', '--nologo',
+    '--artifacts-path', str(metadata_output / 'intermediate'), '-o', str(metadata_output / 'app')],
+    cwd=REPO, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+check(build_metadata.returncode == 0, 'Compiler metadata helper build failed:\n' + build_metadata.stdout)
+assemblies = ['dotcc.dll', 'DotCC.Lib.dll']
+metadata = subprocess.run(['dotnet', str(metadata_output / 'app/CompilerMetadata.dll'),
+    *(str(compiler / name) for name in assemblies)], cwd=REPO, text=True,
+    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+check(metadata.returncode == 0, 'Cannot read frozen compiler metadata:\n' + metadata.stderr)
+versions = json.loads(metadata.stdout)
+check(isinstance(versions, dict) and set(versions) == set(assemblies) and
+      all(isinstance(value, str) and value for value in versions.values()),
+      'Incomplete frozen compiler informational-version metadata')
+verified(host['compiler_hashes'], compiler, 'Frozen emitter after metadata inspection')
 check(len(set(versions.values())) == 1, 'CLI and compiler library build revisions differ')
 revision = next(iter(versions.values())).split('+')[-1]
 check(re.fullmatch(r'[0-9a-f]{40}', revision) is not None, 'Compiler build revision is not an exact commit')

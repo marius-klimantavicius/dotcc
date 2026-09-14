@@ -48,6 +48,16 @@ Bird's-eye scorecard — the detailed per-area tables below are the source of tr
 
 ### Additional declaration and preprocessing coverage
 
+Typedef-based member declarations may reuse a typedef name (`Number decimal;`),
+including pointer fields, without hiding that typedef. Member access after `.`
+and `->` preserves this separate namespace. Block-local pointer declarations
+through a typedef may hide another typedef until the containing block exits.
+`null` is escaped as an ordinary C identifier; null pointer constants remain
+typed zero expressions. Switch subjects explicitly apply C integer promotions,
+including narrow characters and switches with nested entry labels. Token pasting reclassifies complete C tokens, including
+`L ## 'x'`, `u ## 'x'`, wide strings, numeric constants, and operators. Fixtures
+`typedef-colliding-member/` and `pasted-wide-literal/` exercise these paths.
+
 `#pragma pack` supports reset, caps 0/1/2/4/8/16, and push/pop with optional
 labels/caps. State follows includes and macro-generated aggregate declarations.
 The structural C packing cap clamps member alignment and supports bitfields that
@@ -107,7 +117,7 @@ same-width Interlocked primitives without reading adjacent objects.
 | Line comments `// …` | ✅ | `LINE_COMMENT` lexer rule, action `ignore` |
 | Other preprocessing tokens | ✅ | Unmatched characters such as `$`, `@`, backticks and stray backslashes survive tokenization for inactive conditional groups, discarded macro arguments and stringification. `-E` retains active preprocessing tokens; compilation rejects any that survive macro expansion into C code, with physical source diagnostics. Evaluated conditional expressions reject them too. Tests `PreprocessingOtherTokenTests`, fixture `preprocessor-inactive-script/`. |
 | Block comments `/* … */` | ✅ | `BLOCK_COMMENT` lexer rule, the canonical C-comment regex `/\*([^*]\|\*+[^*/])*\*+/` (alternation, supported since LALR.CC ≥ 4.0.0). A run of stars before the slash belongs to the terminator, so a comment closed with `**/` (Lua's doc-comment style, e.g. lfunc.c's `newupval`) ends there. (The earlier no-alternation form `(\*[^/][^*]*)*` mis-scanned `**/` — the slash fell through into the body — and ran the comment on to the next `*/`, swallowing the code between.) Fixture `block-comment-close/`, unit tests `BlockCommentTests`. |
-| Identifiers `[a-zA-Z_][a-zA-Z_0-9]*` | ✅ | `ID` token. A C identifier that collides with a **C# reserved keyword** (`new`, `lock`, `is`, `string`, `this`, `ref`, `object`, `in`, `out`, …) is `@`-escaped on emit (`@new`) — consistently at every declaration and reference (locals, params, function names + calls, struct fields + member access, labels, enum constants), since the escape is a pure function of the name. Fixtures `cs-keyword-idents/`, `keyword-true-false-ident/`. **Not escaped:** `null` (dotcc emits it as the bare C# `null` literal — the only expression that implicitly converts to any pointer type — so a variable named `null` is a residual edge; `true`/`false` are NO LONGER in this bucket — they lower to `1`/`0` and so escape correctly), and **type names** (struct/enum/union tags, typedef-names) — a `struct lock` tag isn't escaped yet. |
+| Identifiers `[a-zA-Z_][a-zA-Z_0-9]*` | ✅ | `ID` token. A C identifier that collides with a **C# reserved keyword** (`new`, `lock`, `is`, `string`, `this`, `ref`, `object`, `in`, `out`, …) is `@`-escaped on emit (`@new`) — consistently at every declaration and reference (locals, params, function names + calls, struct fields + member access, labels, enum constants), since the escape is a pure function of the name. Fixtures `cs-keyword-idents/`, `keyword-true-false-ident/`. **Also escaped:** `null`, `true`, and `false` when used as C identifiers; typed null and boolean constants have separate emission paths. **Not escaped:** **type names** (struct/enum/union tags, typedef-names) — a `struct lock` tag isn't escaped yet. |
 | Decimal int literal | ✅ | `NUM` token |
 | Hex int literal `0xFF` | ✅ | Lexer rule above NUM (longest-match wins); visitor passes through — C# accepts identical syntax. Fixture `bitwise/` |
 | Octal int literal `0755` | ✅ | Lexed by the decimal `NUM` rule (a `0`-prefixed run), then **converted** in `Visit(C.Num)` to its value (`0755` → `493`) — C# has no octal syntax (a leading `0` is plain decimal there), so emitting verbatim would silently mean 755. Digits validated `0`–`7` (`0789` → clear error). C89, no dialect gate. Fixture `octal-binary-literals/`. |

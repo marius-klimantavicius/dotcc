@@ -1,0 +1,20 @@
+--- a/Marius.Pinta/src/core.c
++++ b/Marius.Pinta/src/core.c
+@@ -133,6 +133,8 @@
+     core->threads = thread;
+ 
+     core->cache = pinta_core_cache_init(memory);
++    if (core->cache == NULL)
++        return NULL;
+ 
+     return core;
+ }
+@@ -268,6 +270,8 @@
+     PintaHeapCache *result;
+ 
+     result = (PintaHeapCache*)pinta_memory_alloc(memory, sizeof(PintaHeapCache));
++    if (result == NULL)
++        return NULL;
+ 
+     for (index = 0; index < 101; index++)
+     {

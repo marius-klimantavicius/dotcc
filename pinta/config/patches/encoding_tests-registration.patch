@@ -1,0 +1,10 @@
+--- a/Marius.Pinta/tests/encoding_tests.c
++++ b/Marius.Pinta/tests/encoding_tests.c
+@@ -21,6 +21,6 @@
+ void pinta_tests_encoding()
+ {
+     sput_enter_suite("Encoding tests");
+-    encoding_decode_long_utf8();
++    sput_run_test(encoding_decode_long_utf8);
+     sput_leave_suite();
+ }

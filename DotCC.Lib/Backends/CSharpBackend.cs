@@ -1095,7 +1095,7 @@ internal sealed partial class CSharpBackend
         // may carry enumerator labels and vice versa (C# rejects the mixed forms).
         var subjectValue = DecayEnum(sw.Subject);
         var promotedType = CType.IntegerPromote(subjectValue.Type);
-        var subj = Hoist(sb, pad, () => Coerced(subjectValue, promotedType));
+        var subj = Hoist(sb, pad, () => SwitchSubject(subjectValue, promotedType));
 
         // A C case section `case X: { … }` parses as one wrapping Block; the labels
         // we reconcile (ret/l_tforcall/…) live INSIDE it. Work on each section's
@@ -1487,6 +1487,13 @@ internal sealed partial class CSharpBackend
     /// <paramref name="target"/>-typed sink, inserting any cast C# needs.</summary>
     private string Coerced(CExpr value, CType target) =>
         TryCoerceCast(value, target, out var t) ? t : Expr(value);
+
+    // Unlike assignment, switch supplies no target-typed conversion context.
+    // C's integer promotion must therefore appear in the governing expression,
+    // including char/short cases whose constants lie outside the original type.
+    private string SwitchSubject(CExpr value, CType promoted) =>
+        value.Type.Unqualified == promoted.Unqualified ? Expr(value)
+            : Expr(new Cast(promoted, value) { Type = promoted });
 
     /// <summary>Coerce a call argument to its parameter type, falling back to the
     /// argument rendered at assignment precedence (so a bare comma operator can't

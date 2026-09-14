@@ -1,0 +1,12 @@
+--- a/Marius.Pinta/tests/weak_tests.c
++++ b/Marius.Pinta/tests/weak_tests.c
+@@ -54,7 +54,7 @@
+ void pinta_tests_weak()
+ {
+     sput_enter_suite("Weak tests");
+-    weak_does_not_prevent_collection();
+-    weak_survives_compaction();
++    sput_run_test(weak_does_not_prevent_collection);
++    sput_run_test(weak_survives_compaction);
+     sput_leave_suite();
+ }

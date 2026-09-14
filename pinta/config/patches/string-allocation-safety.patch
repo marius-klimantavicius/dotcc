@@ -1,0 +1,20 @@
+--- a/Marius.Pinta/src/string.c
++++ b/Marius.Pinta/src/string.c
+@@ -546,6 +546,8 @@
+ #endif
+ 
+     result = pinta_core_alloc(core, PINTA_KIND_STRING, PINTA_FLAG_NONE, 1);
++    if (result == NULL)
++        return NULL;
+ 
+     pinta_string_set_length(result, length);
+     pinta_string_set_data(result, data);
+@@ -1948,6 +1950,8 @@
+         return &core->cache->chars[value];
+ 
+     result = pinta_core_alloc(core, PINTA_KIND_CHAR, PINTA_FLAG_NONE, 1);
++    if (result == NULL)
++        return NULL;
+     pinta_char_set_value(result, value);
+ 
+     return result;

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <PintaProject Condition="'$(PintaProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedPinta/TranslatedPinta.csproj</PintaProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(PintaProject)" />
+  </ItemGroup>
+</Project>

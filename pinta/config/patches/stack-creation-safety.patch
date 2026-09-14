@@ -1,0 +1,15 @@
+--- a/Marius.Pinta/src/stack.c
++++ b/Marius.Pinta/src/stack.c
+@@ -84,7 +84,12 @@
+     if (length_in_bytes < sizeof(PintaStackFrame))
+         return PINTA_EXCEPTION_INVALID_ARGUMENTS;
+ 
++    if (length_in_bytes > UINT32_MAX - sizeof(PintaStackFrame))
++        return PINTA_EXCEPTION_INVALID_ARGUMENTS;
++
+     frame = (PintaStackFrame*)pinta_memory_alloc(memory, sizeof(PintaStackFrame) + length_in_bytes);
++    if (frame == NULL)
++        return PINTA_EXCEPTION_OUT_OF_MEMORY;
+ 
+     stack_start = (u8*)&frame[1];
+     stack_end = ((u8*)frame) + (sizeof(PintaStackFrame) + length_in_bytes);

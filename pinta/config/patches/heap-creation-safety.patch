@@ -1,0 +1,17 @@
+--- a/Marius.Pinta/src/heap.c
++++ b/Marius.Pinta/src/heap.c
+@@ -50,10 +50,14 @@
+         return NULL;
+ 
+     heap = (PintaHeap*)pinta_memory_alloc(memory, sizeof(PintaHeap));
++    if (heap == NULL)
++        return NULL;
+ 
+     elements = length_in_bytes / sizeof(PintaHeapObject);
+ 
+     heap->start = (PintaHeapObject*)pinta_memory_alloc(memory, length_in_bytes);
++    if (heap->start == NULL)
++        return NULL;
+     heap->top = heap->start;
+     heap->end = (PintaHeapObject*)&heap->start[elements]; // past the heap (last valid element is at heap->end[-1])
+ 

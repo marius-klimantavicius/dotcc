@@ -1,0 +1,12 @@
+--- a/Marius.Pinta/src/memory.c
++++ b/Marius.Pinta/src/memory.c
+@@ -15,6 +15,9 @@
+     {
+         uintptr_t remainder = 0x40 - (memory_pointer & 0x3F);
+         
++        if (length < remainder)
++            return NULL;
++
+         length -= (u32)remainder;
+         memory_pointer = memory_pointer + remainder;
+     }

@@ -56,7 +56,7 @@ internal sealed partial class CSharpBackend
                 .Append(count.ToString(System.Globalization.CultureInfo.InvariantCulture)).Append("];\n");
         }
         var subject = DecayEnum(statement.Subject);
-        var value = Hoist(output, bodyPad, () => Coerced(subject, CType.IntegerPromote(subject.Type)));
+        var value = Hoist(output, bodyPad, () => SwitchSubject(subject, CType.IntegerPromote(subject.Type)));
         output.Append(bodyPad).Append("switch (").Append(value).Append(")\n").Append(bodyPad).Append("{\n");
         var hasDefault = false;
         void Dispatch(SwitchLabel label, string destination)

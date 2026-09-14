@@ -180,6 +180,21 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         return list.ToArray();
     }
 
+    internal int ClassifyPastedToken(string text, int fallback)
+    {
+        // ## can create literals, operators, and keywords as well as identifiers.
+        // An intermediate paste can still be a pp-number that only becomes a C
+        // token at a later ##, so retain its spelling until that rescan succeeds.
+        try
+        {
+            using var lexer = BytesLexer.FromString(text, _lexerTable);
+            if (!lexer.MoveNext()) return fallback;
+            var token = lexer.Current;
+            return !lexer.MoveNext() && token.Content?.ToString() == text ? token.ID : fallback;
+        }
+        catch (LexerException) { return fallback; }
+    }
+
     /// <summary>Final user macro definitions, expanded without freezing contextual macros.</summary>
     internal IEnumerable<(string Name, IReadOnlyList<Item> Body, bool Selected)> ConstantMacroBodies(IReadOnlyList<string>? explicitDefines, MacroExportSelector? selector = null)
     {
