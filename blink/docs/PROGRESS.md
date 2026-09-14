@@ -698,3 +698,13 @@ fresh profiles include these four sources through the binding manifest. The
 consumer binds its directory owner and releases its snapshots/descriptor leases
 after translated main returns, before disposing I/O. This integration still
 awaits the complete C# build and actual guest execution.
+
+## Significant progress: actual native ELF loader seam
+
+The unchanged LoadProgram path loads the pinned service twice with matching
+entry bytes/program headers and actual guest stack argv/env/auxv/random data.
+Receipt: loader-seam/attempt-ujcb9q9w. It extracts88 upstream sources, adding
+argv.c, biosrom.c, endswith.c, loader.c and tainted.c to the83-source interpreter
+oracle closure. Absolute paths require the owner's SetOverlays initialization;
+the initial omission and SIGSEGV are retained at attempt-bly5yapz. No managed
+profile changed, guest instructions ran, or malformed-ELF gate passed here.
