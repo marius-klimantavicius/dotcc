@@ -9,19 +9,28 @@
     "src/HostIdentity/host-identity.h",
     "src/HostTermination/host-termination.h",
     "src/HostMemory/HostFileMapping.h",
-    "src/HostSignals/HostSignalOps.h"
+    "src/HostSignals/HostSignalOps.h",
+    "src/HostPaths/host-paths.h",
+    "src/HostVariables/host-variables.h",
+    "src/HostEnvironment/host-calendar.h"
   ],
   "includeHeaders": [
+    "host-errors.h",
     "host-io.h",
     "host-clock.h",
     "host-identity.h",
     "host-termination.h",
-    "HostFileMapping.h"
+    "HostFileMapping.h",
+    "host-paths.h",
+    "host-variables.h",
+    "host-calendar.h"
   ],
   "cSources": [
     "src/HostIo/HostFileControl.c",
     "src/HostMemory/HostFileMapping.c",
-    "src/HostSignals/HostSignalOps.c"
+    "src/HostSignals/HostSignalOps.c",
+    "src/HostTerminal/HostTerminal.c",
+    "src/HostTerminal/HostTermios.c"
   ],
   "managedSources": [
     "src/HostIo/HostIoBridge.cs",
@@ -31,18 +40,18 @@
     "src/HostEnvironment/HostEnvironmentBridge.cs",
     "src/HostIdentity/HostIdentityBridge.cs",
     "src/HostTermination/HostTerminationBridge.cs",
-    "src/HostEnvironment/HostClockBridge.cs"
+    "src/HostEnvironment/HostClockBridge.cs",
+    "src/HostTerminal/HostTerminalBridge.cs",
+    "src/HostPaths/HostPathsBridge.cs",
+    "src/HostVariables/HostVariablesBridge.cs",
+    "src/HostEnvironment/HostCalendarBridge.cs",
+    "src/HostIdentity/HostIdentityDetailsBridge.cs"
   ],
   "isolate": [
-    "getenv",
     "setenv",
     "unsetenv",
-    "realpath",
     "system",
     "atexit",
-    "getcwd",
-    "chdir",
-    "fchdir",
     "execv",
     "execve",
     "execvp",
@@ -61,13 +70,10 @@
     "alarm",
     "wait",
     "waitpid",
-    "gethostname",
     "getdomainname",
     "uname",
-    "sysconf",
     "pathconf",
     "fpathconf",
-    "getgroups",
     "setgroups",
     "setuid",
     "setgid",
@@ -77,11 +83,7 @@
     "setregid",
     "setresuid",
     "setresgid",
-    "getresuid",
-    "getresgid",
-    "getpgid",
     "setpgid",
-    "getsid",
     "setsid",
     "fopen",
     "freopen",
@@ -135,11 +137,8 @@
     "sched_setaffinity",
     "sched_yield",
     "sysinfo",
-    "time",
     "localtime",
-    "localtime_r",
     "gmtime",
-    "gmtime_r",
     "tzset"
   ]
 }

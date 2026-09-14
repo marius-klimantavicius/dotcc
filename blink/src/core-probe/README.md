@@ -251,3 +251,16 @@ host operations as unresolved names. Initial binding-preamble checks emitted
 remaining declarations or callbacks link. The driver enables private file
 mappings after memory ownership begins, and its owning C# consumer must bind
 private IO, environment and identity before entering the driver.
+
+The first complete frozen pass emitted all 90 objects, then correctly rejected
+an aggregate conflict during linkage (`objects/7a1db6909ce280aadd2053f4316c285e31c0fdc7afc4b1963e67faaab3702abb/link.log`).
+The original cache layout copied headers beneath each translation unit's unique
+path, which changed anonymous aggregate identities. The corrected layout uses
+one shared content-addressed header tree and separate canonical source paths.
+The real `abort.c` and `address.c` objects now have matching `blink_host_siginfo`
+metadata and link successfully without generated-source rewrites
+(`objects/ef07e0cebdc37b11925e7e26363a9e0df29bb661fabbe471af885b7a0f66eece/two-object-link.json`).
+A changed consumer-only snapshot reuses both corrected objects with their
+original provenance (`objects/5227a9f241306a2c78f9ec6bb51c2fc35b738309ea3c702b7fa93dcf9fdab722/receipt.json`).
+The prior full set remains failed evidence and cannot be reused under the new
+layout identity. A complete corrected link and real execution remain required.

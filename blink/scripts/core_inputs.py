@@ -70,7 +70,7 @@ def emission_identity(profile: Path, campaign: Path, inputs: dict, entry: dict) 
         if Path(name).suffix == '.c' and any(name == item or name.endswith('/' + item) for item in included):
             dependencies[name] = digest
     dependencies['overrides.json'] = files['overrides.json']
-    return dict(version=1, source=entry['path'], source_sha256=entry['sha256'],
+    return dict(version=2, source=entry['path'], source_sha256=entry['sha256'],
                 dependencies=dependencies, compiler_sha256=inputs['compiler'],
                 options=OBJECT_OPTIONS, include_order=['snapshot', 'pinned-upstream', 'authored', 'host'],
                 source_inventory_sha256=sha(campaign / 'config/source-inventory.json'),
@@ -81,35 +81,49 @@ def emission_identity(profile: Path, campaign: Path, inputs: dict, entry: dict) 
 def canonical_emission(profile: Path, campaign: Path, inputs: dict, entry: dict) -> tuple[Path, Path, dict, str]:
     """Materialize immutable exact C inputs at stable paths across profile copies."""
     import json
-    import os
     import shutil
     import tempfile
     identity = emission_identity(profile, campaign, inputs, entry)
     key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
     parent = campaign / 'generated/core-emission'
-    parent.mkdir(parents=True, exist_ok=True)
-    target = parent / key
+    # Anonymous aggregate identities use the physical header path. Therefore
+    # every TU must share the same canonical header tree, while each selected
+    # source retains its own canonical path for static symbol qualification.
+    header_identity = dict(dependencies=identity['dependencies'],
+                           source_inventory_sha256=identity['source_inventory_sha256'])
+    header_key = hashlib.sha256(json.dumps(header_identity, sort_keys=True).encode()).hexdigest()
+    header_target = parent / 'headers' / header_key
+    source_target = parent / 'units' / key
     relative_source = Path('source') / Path(entry['path']).name
-    if not target.exists():
-        temporary = Path(tempfile.mkdtemp(prefix='.pending-', dir=parent))
-        try:
-            for name in identity['dependencies']:
-                destination = temporary / name
-                destination.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(profile / name, destination)
-            (temporary / relative_source).parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(campaign / entry['staged_path'], temporary / relative_source)
-            (temporary / 'identity.json').write_text(json.dumps(identity, indent=2) + '\n')
+
+    def publish(target, files, metadata):
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if not target.exists():
+            temporary = Path(tempfile.mkdtemp(prefix='.pending-', dir=target.parent))
             try:
-                temporary.rename(target)
-            except FileExistsError:
-                pass  # another identical emission won publication
-        finally:
-            if temporary.exists():
-                shutil.rmtree(temporary)
-    if json.loads((target / 'identity.json').read_text()) != identity:
-        raise RuntimeError('canonical identity mismatch: ' + str(target))
-    for name, expected in dict(identity['dependencies'], **{str(relative_source):entry['sha256']}).items():
-        if hashlib.sha256((target / name).read_bytes()).hexdigest() != expected:
-            raise RuntimeError('canonical C input checksum mismatch: ' + str(target / name))
-    return target, target / relative_source, identity, key
+                for name, original in files.items():
+                    destination = temporary / name
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(original, destination)
+                (temporary / 'identity.json').write_text(json.dumps(metadata, indent=2) + '\n')
+                try:
+                    temporary.rename(target)
+                except OSError:
+                    if not target.is_dir():
+                        raise
+                    # Concurrent different TUs can publish the same header set.
+            finally:
+                if temporary.exists():
+                    shutil.rmtree(temporary)
+        if json.loads((target / 'identity.json').read_text()) != metadata:
+            raise RuntimeError('canonical identity mismatch: ' + str(target))
+
+    publish(header_target, {name:profile / name for name in identity['dependencies']}, header_identity)
+    publish(source_target, {str(relative_source):campaign / entry['staged_path']}, identity)
+    for name, expected in identity['dependencies'].items():
+        if hashlib.sha256((header_target / name).read_bytes()).hexdigest() != expected:
+            raise RuntimeError('canonical header checksum mismatch: ' + str(header_target / name))
+    selected = source_target / relative_source
+    if hashlib.sha256(selected.read_bytes()).hexdigest() != entry['sha256']:
+        raise RuntimeError('canonical source checksum mismatch: ' + str(selected))
+    return header_target, selected, identity, key

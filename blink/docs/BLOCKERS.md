@@ -165,7 +165,8 @@ The first frozen full core build emitted 90 objects but could not link anonymous
 signal-info structs, because each TU used a distinct physical copy of abi.h.
 Anonymous names include header paths. The staging helper now shares one canonical
 content-addressed header tree and keeps stable per-source paths. Actual two-object
-and 17-object links pass; full 92-object linkage is pending. This was campaign
+and 17-object links pass. All 92 objects emit, but full linkage reports a distinct
+linger_linux conflict (address.c/describesignal.c), under investigation. This was campaign
 staging identity, not an upstream instruction or compiler algorithm change.
 
 ## B018 — generic Libc System.IO.Path shadowing (open)

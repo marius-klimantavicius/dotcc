@@ -527,3 +527,20 @@ four managed modes at attempt-t2f68dzt, including actual C function pointers,
 argument evaluation, worker isolation and GC. Process execution support remains
 open. An authored helper rename avoided an observed generic Path namespace
 collision; that compiler defect remains recorded rather than claimed fixed.
+
+## Significant progress: shared header identity and core consumer preparation
+
+Core staging now uses one content-addressed header tree for every TU and stable
+separate source paths. The prior 90-object run is retained as failed evidence:
+per-TU physical headers changed anonymous signal-info identities. Corrected actual
+two-object and 17-object links pass, and a consumer-only snapshot demonstrably
+reuses objects with their original provenance. All 92 objects in the corrected
+full profile emit, but full linkage now reports a distinct linger_linux aggregate
+conflict between address.c and describesignal.c; investigation continues.
+
+The separate ManagedCore library and owning JIT/AOT consumer runner are prepared
+and snapshot-checked. It compares actual instruction/fault/exit rows with native,
+uses a separate explicit-profile ABI oracle, binds private owners and verifies
+memory accounting. Preparation is validated; complete managed core execution is
+still unqualified and P1 remains open. Current failed linkage receipt:
+objects/92682452e55497bb04f491b8938eaa6a6304c8c1a3073fc2558a6f34486f1576.
