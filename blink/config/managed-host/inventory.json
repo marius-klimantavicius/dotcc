@@ -1,0 +1,1174 @@
+{
+  "kind": "core-closure-recursive-lexical-header-and-type-inventory-not-managed-runtime-coverage",
+  "coreClosureSha256": "b8c3c29a903d086f3980e2abfeae6acb415b281d7a6facb66d1a710f39ed6ef5",
+  "upstreamRevision": "f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580",
+  "headers": [
+    {
+      "header": "OS.h",
+      "referencedBy": [
+        "blink/ioctl.c",
+        "blink/syscall.c",
+        "blink/thread.h"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "arpa/inet.h",
+      "referencedBy": [
+        "blink/strace.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "ctype.h",
+      "referencedBy": [
+        "blink/commandv.c",
+        "blink/disinst.c",
+        "blink/uop.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "dirent.h",
+      "referencedBy": [
+        "blink/fds.h",
+        "blink/syscall.c",
+        "blink/vfs.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "emscripten.h",
+      "referencedBy": [
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "errno.h",
+      "referencedBy": [
+        "blink/assert.c",
+        "blink/close.c",
+        "blink/debug.c",
+        "blink/debug2.c",
+        "blink/demangle.c",
+        "blink/describehosterrno.c",
+        "blink/errfd.c",
+        "blink/errno.c",
+        "blink/ioctl.c",
+        "blink/log.c",
+        "blink/machine.c",
+        "blink/map.c",
+        "blink/map.h",
+        "blink/memory.c",
+        "blink/open.c",
+        "blink/overlays.c",
+        "blink/random.c",
+        "blink/statfs.c",
+        "blink/strace.c",
+        "blink/syscall.c",
+        "blink/timespec.h",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "fcntl.h",
+      "referencedBy": [
+        "blink/ancillary.c",
+        "blink/close.c",
+        "blink/commandv.c",
+        "blink/debug.c",
+        "blink/debug2.c",
+        "blink/demangle.c",
+        "blink/errfd.c",
+        "blink/fds.c",
+        "blink/ioctl.c",
+        "blink/log.c",
+        "blink/ndelay.h",
+        "blink/open.c",
+        "blink/overlays.c",
+        "blink/random.c",
+        "blink/syscall.c",
+        "blink/syscall.h",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "grp.h",
+      "referencedBy": [
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "inttypes.h",
+      "referencedBy": [
+        "blink/disarg.c",
+        "blink/elf.c",
+        "blink/jit.h",
+        "blink/map.c",
+        "blink/pml4tfmt.c",
+        "blink/strace.c",
+        "blink/syscall.c",
+        "blink/throw.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "libc/dce.h",
+      "referencedBy": [
+        "blink/machine.h"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "libkern/OSCacheControl.h",
+      "referencedBy": [
+        "blink/map.h"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "libunwind-x86_64.h",
+      "referencedBy": [
+        "blink/debug.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "libunwind.h",
+      "referencedBy": [
+        "blink/debug.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "limits.h",
+      "referencedBy": [
+        "blink/alu1.c",
+        "blink/alu2.c",
+        "blink/builtin.h",
+        "blink/bus.c",
+        "blink/bus.h",
+        "blink/close.c",
+        "blink/commandv.c",
+        "blink/demangle.c",
+        "blink/divmul.c",
+        "blink/elf.c",
+        "blink/fds.c",
+        "blink/fds.h",
+        "blink/iovs.c",
+        "blink/iovs.h",
+        "blink/limits.h",
+        "blink/log.c",
+        "blink/machine.c",
+        "blink/machine.h",
+        "blink/map.c",
+        "blink/syscall.c",
+        "blink/xadd.c",
+        "blink/xchg.c",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "math.h",
+      "referencedBy": [
+        "blink/cvt.c",
+        "blink/fpu.c",
+        "blink/pml4tfmt.c",
+        "blink/reset.c",
+        "blink/ssefloat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "net/if.h",
+      "referencedBy": [
+        "blink/ioctl.c",
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "netdb.h",
+      "referencedBy": [
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "netinet/in.h",
+      "referencedBy": [
+        "blink/fds.h",
+        "blink/syscall.c",
+        "blink/xlat.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "netinet/ip.h",
+      "referencedBy": [
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "netinet/tcp.h",
+      "referencedBy": [
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "netinet/udp.h",
+      "referencedBy": [
+        "blink/xlat.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "poll.h",
+      "referencedBy": [
+        "blink/fds.h",
+        "blink/syscall.c",
+        "blink/vfs.h"
+      ],
+      "status": "campaign-declaration-only"
+    },
+    {
+      "header": "pthread.h",
+      "referencedBy": [
+        "blink/thread.h"
+      ],
+      "status": "campaign-declaration-only"
+    },
+    {
+      "header": "sched.h",
+      "referencedBy": [
+        "blink/debug.c",
+        "blink/syscall.c",
+        "blink/throw.c",
+        "blink/time.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "setjmp.h",
+      "referencedBy": [
+        "blink/debug.c",
+        "blink/machine.h"
+      ],
+      "status": "campaign-declaration-only"
+    },
+    {
+      "header": "signal.h",
+      "referencedBy": [
+        "blink/debug.c",
+        "blink/log.c",
+        "blink/machine.h",
+        "blink/signal.c",
+        "blink/sigwinch.h",
+        "blink/syscall.c",
+        "blink/thread.h",
+        "blink/throw.c",
+        "blink/xlat.c",
+        "blink/xlat.h"
+      ],
+      "status": "campaign-declaration-only"
+    },
+    {
+      "header": "stdarg.h",
+      "referencedBy": [
+        "blink/log.c",
+        "blink/strace.c",
+        "blink/syscall.c",
+        "blink/uop.c",
+        "blink/util.h",
+        "blink/vfs.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "stdatomic.h",
+      "referencedBy": [
+        "blink/atomic.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "stdbool.h",
+      "referencedBy": [
+        "blink/alu.h",
+        "blink/bus.h",
+        "blink/describeflags.c",
+        "blink/dis.h",
+        "blink/disspec.c",
+        "blink/fds.h",
+        "blink/flag.h",
+        "blink/high.h",
+        "blink/jit.h",
+        "blink/machine.h",
+        "blink/overlays.h",
+        "blink/random.c",
+        "blink/stats.h",
+        "blink/util.h",
+        "blink/vfs.h",
+        "blink/x86.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "stdckdint.h",
+      "referencedBy": [
+        "blink/checked.h"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "stddef.h",
+      "referencedBy": [
+        "blink/commandv.c",
+        "blink/debug.h",
+        "blink/describeflags.h",
+        "blink/dis.h",
+        "blink/dll.h",
+        "blink/elf.h",
+        "blink/iovs.h",
+        "blink/memory.c",
+        "blink/util.h",
+        "blink/x86.h",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "stdint.h",
+      "referencedBy": [
+        "blink/limits.h",
+        "blink/swap.h",
+        "blink/tunables.h",
+        "blink/types.h",
+        "blink/util.h",
+        "blink/x86.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "stdio.h",
+      "referencedBy": [
+        "blink/assert.c",
+        "blink/commandv.c",
+        "blink/disarg.c",
+        "blink/elf.c",
+        "blink/fpu.c",
+        "blink/high.c",
+        "blink/log.h",
+        "blink/machine.c",
+        "blink/op101.c",
+        "blink/pml4tfmt.c",
+        "blink/strace.c",
+        "blink/syscall.c",
+        "blink/throw.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "stdlib.h",
+      "referencedBy": [
+        "blink/abort.c",
+        "blink/ancillary.c",
+        "blink/commandv.c",
+        "blink/debug2.c",
+        "blink/demangle.c",
+        "blink/diself.c",
+        "blink/disfree.c",
+        "blink/disinst.c",
+        "blink/elf.c",
+        "blink/errfd.c",
+        "blink/fds.c",
+        "blink/fpu.c",
+        "blink/fspath.c",
+        "blink/ioctl.c",
+        "blink/iovs.c",
+        "blink/log.c",
+        "blink/machine.c",
+        "blink/map.c",
+        "blink/memory.c",
+        "blink/memorymalloc.c",
+        "blink/open.c",
+        "blink/overlays.c",
+        "blink/pml4tfmt.c",
+        "blink/signal.c",
+        "blink/startdir.c",
+        "blink/string.c",
+        "blink/syscall.c",
+        "blink/throw.c",
+        "blink/uop.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "string.h",
+      "referencedBy": [
+        "blink/ancillary.c",
+        "blink/commandv.c",
+        "blink/cvt.c",
+        "blink/debug.c",
+        "blink/debug2.c",
+        "blink/demangle.c",
+        "blink/describesignal.c",
+        "blink/disarg.c",
+        "blink/diself.c",
+        "blink/disfree.c",
+        "blink/disinst.c",
+        "blink/disspec.c",
+        "blink/elf.c",
+        "blink/errfd.c",
+        "blink/fds.c",
+        "blink/fpu.c",
+        "blink/fspath.c",
+        "blink/high.c",
+        "blink/instruction.c",
+        "blink/ioctl.c",
+        "blink/iovs.c",
+        "blink/log.c",
+        "blink/machine.c",
+        "blink/map.c",
+        "blink/memory.c",
+        "blink/memorymalloc.c",
+        "blink/open.c",
+        "blink/overlays.c",
+        "blink/pml4tfmt.c",
+        "blink/reset.c",
+        "blink/signal.c",
+        "blink/sse.c",
+        "blink/sse2.c",
+        "blink/ssefloat.c",
+        "blink/ssemov.c",
+        "blink/stack.c",
+        "blink/startdir.c",
+        "blink/statfs.c",
+        "blink/strace.c",
+        "blink/string.c",
+        "blink/syscall.c",
+        "blink/sysinfo.c",
+        "blink/throw.c",
+        "blink/x86.c",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "sys/disklabel.h",
+      "referencedBy": [
+        "blink/statfs.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/epoll.h",
+      "referencedBy": [
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/file.h",
+      "referencedBy": [
+        "blink/syscall.c",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "sys/ioctl.h",
+      "referencedBy": [
+        "blink/ioctl.c",
+        "blink/syscall.c",
+        "blink/xlat.c",
+        "blink/xlat.h"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/mman.h",
+      "referencedBy": [
+        "blink/debug.c",
+        "blink/ioctl.c",
+        "blink/iovs.c",
+        "blink/map.h",
+        "blink/memory.c",
+        "blink/memorymalloc.c",
+        "blink/statfs.c",
+        "blink/syscall.c",
+        "blink/xlat.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/mount.h",
+      "referencedBy": [
+        "blink/statfs.c",
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/param.h",
+      "referencedBy": [
+        "blink/statfs.c",
+        "blink/syscall.c",
+        "blink/sysinfo.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/prctl.h",
+      "referencedBy": [
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/random.h",
+      "referencedBy": [
+        "blink/random.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/resource.h",
+      "referencedBy": [
+        "blink/syscall.c",
+        "blink/xlat.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "sys/select.h",
+      "referencedBy": [
+        "blink/syscall.c",
+        "blink/vfs.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "sys/socket.h",
+      "referencedBy": [
+        "blink/ancillary.c",
+        "blink/ancillary.h",
+        "blink/fds.h",
+        "blink/ioctl.c",
+        "blink/syscall.c",
+        "blink/vfs.h",
+        "blink/xlat.c",
+        "blink/xlat.h"
+      ],
+      "status": "campaign-declaration-only"
+    },
+    {
+      "header": "sys/sockio.h",
+      "referencedBy": [
+        "blink/ioctl.c",
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/stat.h",
+      "referencedBy": [
+        "blink/debug.c",
+        "blink/debug2.c",
+        "blink/fds.c",
+        "blink/open.c",
+        "blink/overlays.c",
+        "blink/overlays.h",
+        "blink/syscall.h",
+        "blink/vfs.h",
+        "blink/xlat.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "sys/statvfs.h",
+      "referencedBy": [
+        "blink/statfs.c",
+        "blink/syscall.c",
+        "blink/xlat.h"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/syscall.h",
+      "referencedBy": [
+        "blink/random.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/sysctl.h",
+      "referencedBy": [
+        "blink/random.c",
+        "blink/sysinfo.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/sysinfo.h",
+      "referencedBy": [
+        "blink/sysinfo.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/time.h",
+      "referencedBy": [
+        "blink/fds.c",
+        "blink/syscall.c",
+        "blink/sysinfo.c",
+        "blink/xlat.c",
+        "blink/xlat.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "sys/times.h",
+      "referencedBy": [
+        "blink/syscall.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/types.h",
+      "referencedBy": [
+        "blink/debug.c",
+        "blink/fds.c",
+        "blink/open.c",
+        "blink/overlays.h",
+        "blink/preadv.h",
+        "blink/random.c",
+        "blink/random.h",
+        "blink/statfs.c",
+        "blink/syscall.c",
+        "blink/syscall.h",
+        "blink/sysinfo.c",
+        "blink/util.h",
+        "blink/vfs.h",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "sys/uio.h",
+      "referencedBy": [
+        "blink/demangle.c",
+        "blink/fds.h",
+        "blink/iovs.h",
+        "blink/preadv.h",
+        "blink/vfs.h"
+      ],
+      "status": "campaign-declaration-only"
+    },
+    {
+      "header": "sys/un.h",
+      "referencedBy": [
+        "blink/ancillary.c",
+        "blink/vfs.h",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "sys/vfs.h",
+      "referencedBy": [
+        "blink/statfs.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "sys/wait.h",
+      "referencedBy": [
+        "blink/demangle.c",
+        "blink/strace.c",
+        "blink/syscall.c",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "termios.h",
+      "referencedBy": [
+        "blink/fds.h",
+        "blink/ioctl.c",
+        "blink/vfs.h",
+        "blink/xlat.h"
+      ],
+      "status": "campaign-declaration-only"
+    },
+    {
+      "header": "time.h",
+      "referencedBy": [
+        "blink/log.c",
+        "blink/random.c",
+        "blink/syscall.c",
+        "blink/time.c",
+        "blink/timespec.h",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "unistd.h",
+      "referencedBy": [
+        "blink/ancillary.c",
+        "blink/close.c",
+        "blink/commandv.c",
+        "blink/debug.c",
+        "blink/demangle.c",
+        "blink/errfd.c",
+        "blink/fds.c",
+        "blink/ioctl.c",
+        "blink/limits.h",
+        "blink/log.c",
+        "blink/map.c",
+        "blink/memorymalloc.c",
+        "blink/open.c",
+        "blink/overlays.c",
+        "blink/overlays.h",
+        "blink/random.c",
+        "blink/signal.c",
+        "blink/startdir.c",
+        "blink/syscall.c",
+        "blink/vfs.h",
+        "blink/xlat.c"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    },
+    {
+      "header": "w32api/_mingw.h",
+      "referencedBy": [
+        "blink/random.c"
+      ],
+      "status": "missing-or-native-conditional-requires-profile-review"
+    },
+    {
+      "header": "wchar.h",
+      "referencedBy": [
+        "blink/strace.c",
+        "blink/util.h"
+      ],
+      "status": "shared-header-exists-needs-semantics-review"
+    }
+  ],
+  "typeUsers": {
+    "jmp_buf": [
+      "blink/debug.c"
+    ],
+    "nfds_t": [
+      "blink/fds.h",
+      "blink/syscall.c",
+      "blink/vfs.h"
+    ],
+    "off_t": [
+      "blink/machine.h",
+      "blink/map.c",
+      "blink/map.h",
+      "blink/memorymalloc.c",
+      "blink/preadv.h",
+      "blink/syscall.c",
+      "blink/vfs.h"
+    ],
+    "pid_t": [
+      "blink/syscall.c",
+      "blink/vfs.h"
+    ],
+    "pthread_attr_t": [
+      "blink/syscall.c"
+    ],
+    "pthread_mutex_t": [
+      "blink/thread.h"
+    ],
+    "pthread_once_t": [
+      "blink/thread.h"
+    ],
+    "pthread_t": [
+      "blink/machine.h",
+      "blink/syscall.c"
+    ],
+    "siginfo_t": [
+      "blink/machine.c",
+      "blink/machine.h",
+      "blink/signal.h",
+      "blink/syscall.c"
+    ],
+    "sigjmp_buf": [
+      "blink/machine.h"
+    ],
+    "sigset_t": [
+      "blink/close.c",
+      "blink/debug.c",
+      "blink/demangle.c",
+      "blink/machine.h",
+      "blink/open.c",
+      "blink/syscall.c",
+      "blink/vfs.h",
+      "blink/xlat.c",
+      "blink/xlat.h"
+    ],
+    "socklen_t": [
+      "blink/ancillary.c",
+      "blink/fds.c",
+      "blink/linux.h",
+      "blink/syscall.c",
+      "blink/vfs.h",
+      "blink/xlat.c",
+      "blink/xlat.h"
+    ],
+    "ssize_t": [
+      "blink/ancillary.c",
+      "blink/demangle.c",
+      "blink/fds.h",
+      "blink/iovs.c",
+      "blink/overlays.c",
+      "blink/overlays.h",
+      "blink/preadv.h",
+      "blink/random.c",
+      "blink/random.h",
+      "blink/syscall.c",
+      "blink/util.h",
+      "blink/vfs.h"
+    ],
+    "struct cmsghdr": [
+      "blink/ancillary.c"
+    ],
+    "struct iovec": [
+      "blink/demangle.c",
+      "blink/fds.h",
+      "blink/iovs.c",
+      "blink/iovs.h",
+      "blink/preadv.h",
+      "blink/syscall.c",
+      "blink/vfs.h"
+    ],
+    "struct linger": [
+      "blink/syscall.c"
+    ],
+    "struct msghdr": [
+      "blink/ancillary.c",
+      "blink/ancillary.h",
+      "blink/syscall.c",
+      "blink/vfs.h"
+    ],
+    "struct pollfd": [
+      "blink/fds.h",
+      "blink/syscall.c",
+      "blink/vfs.h"
+    ],
+    "struct sigaction": [
+      "blink/debug.c",
+      "blink/syscall.c"
+    ],
+    "struct sockaddr": [
+      "blink/fds.c",
+      "blink/fds.h",
+      "blink/ioctl.c",
+      "blink/syscall.c",
+      "blink/vfs.h",
+      "blink/xlat.c",
+      "blink/xlat.h"
+    ],
+    "struct sockaddr_storage": [
+      "blink/ioctl.c",
+      "blink/syscall.c",
+      "blink/xlat.c",
+      "blink/xlat.h"
+    ],
+    "struct termios": [
+      "blink/fds.h",
+      "blink/ioctl.c",
+      "blink/vfs.h",
+      "blink/xlat.c",
+      "blink/xlat.h"
+    ],
+    "struct ucred": [
+      "blink/ancillary.c"
+    ]
+  },
+  "redirectedFunctions": {
+    "poll": {
+      "target": "blink_host_poll",
+      "header": "poll.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "setjmp": {
+      "target": "blink_host_setjmp",
+      "header": "setjmp.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "_setjmp": {
+      "target": "blink_host_plain_setjmp",
+      "header": "setjmp.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "longjmp": {
+      "target": "blink_host_longjmp",
+      "header": "setjmp.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigsetjmp": {
+      "target": "blink_host_sigsetjmp",
+      "header": "setjmp.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "siglongjmp": {
+      "target": "blink_host_siglongjmp",
+      "header": "setjmp.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigaction": {
+      "target": "blink_host_sigaction",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "signal": {
+      "target": "blink_host_signal",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigprocmask": {
+      "target": "blink_host_sigprocmask",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigemptyset": {
+      "target": "blink_host_sigemptyset",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigfillset": {
+      "target": "blink_host_sigfillset",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigaddset": {
+      "target": "blink_host_sigaddset",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigdelset": {
+      "target": "blink_host_sigdelset",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigismember": {
+      "target": "blink_host_sigismember",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigsuspend": {
+      "target": "blink_host_sigsuspend",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sigaltstack": {
+      "target": "blink_host_sigaltstack",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "kill": {
+      "target": "blink_host_kill",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "raise": {
+      "target": "blink_host_raise",
+      "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "socket": {
+      "target": "blink_host_socket",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "bind": {
+      "target": "blink_host_bind",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "listen": {
+      "target": "blink_host_listen",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "accept": {
+      "target": "blink_host_accept",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "connect": {
+      "target": "blink_host_connect",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "send": {
+      "target": "blink_host_send",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "recv": {
+      "target": "blink_host_recv",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sendto": {
+      "target": "blink_host_sendto",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "recvfrom": {
+      "target": "blink_host_recvfrom",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sendmsg": {
+      "target": "blink_host_sendmsg",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "recvmsg": {
+      "target": "blink_host_recvmsg",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "setsockopt": {
+      "target": "blink_host_setsockopt",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "getsockopt": {
+      "target": "blink_host_getsockopt",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "getsockname": {
+      "target": "blink_host_getsockname",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "getpeername": {
+      "target": "blink_host_getpeername",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "shutdown": {
+      "target": "blink_host_shutdown",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "sockatmark": {
+      "target": "blink_host_sockatmark",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "CMSG_NXTHDR": {
+      "target": "blink_host_cmsg_nxthdr",
+      "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "readv": {
+      "target": "blink_host_readv",
+      "header": "sys/uio.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "writev": {
+      "target": "blink_host_writev",
+      "header": "sys/uio.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "preadv": {
+      "target": "blink_host_preadv",
+      "header": "sys/uio.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "pwritev": {
+      "target": "blink_host_pwritev",
+      "header": "sys/uio.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "tcgetattr": {
+      "target": "blink_host_tcgetattr",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "tcsetattr": {
+      "target": "blink_host_tcsetattr",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "cfgetospeed": {
+      "target": "blink_host_cfgetospeed",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "cfgetispeed": {
+      "target": "blink_host_cfgetispeed",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "cfsetospeed": {
+      "target": "blink_host_cfsetospeed",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "cfsetispeed": {
+      "target": "blink_host_cfsetispeed",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "tcdrain": {
+      "target": "blink_host_tcdrain",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "tcflow": {
+      "target": "blink_host_tcflow",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "tcflush": {
+      "target": "blink_host_tcflush",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "tcsendbreak": {
+      "target": "blink_host_tcsendbreak",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "tcgetpgrp": {
+      "target": "blink_host_tcgetpgrp",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "tcsetpgrp": {
+      "target": "blink_host_tcsetpgrp",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "tcgetsid": {
+      "target": "blink_host_tcgetsid",
+      "header": "termios.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    }
+  },
+  "unsupported": [
+    "pthread ABI and guest threads",
+    "signal delivery and handler lifecycle",
+    "synchronous nonlocal unwind and mask restoration",
+    "socket and ancillary operation implementations",
+    "remaining host syscall implementations"
+  ]
+}
