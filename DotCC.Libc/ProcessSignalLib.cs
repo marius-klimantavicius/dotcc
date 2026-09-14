@@ -102,7 +102,7 @@ public static unsafe partial class Libc
     /// signal interrupts it on .NET, so the full interval always elapses).</summary>
     public static uint sleep(uint seconds)
     {
-        System.Threading.Thread.Sleep((int)Math.Min(seconds, int.MaxValue / 1000) * 1000);
+        global::System.Threading.Thread.Sleep((int)Math.Min(seconds, int.MaxValue / 1000) * 1000);
         return 0;
     }
 

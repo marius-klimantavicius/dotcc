@@ -134,6 +134,52 @@ public sealed class SetjmpValueCaptureTests
     }
 
     [Fact]
+    public void Negated_assignment_guard_preserves_value_and_restart()
+    {
+        var emitted = Emit("""
+            #include <setjmp.h>
+            static jmp_buf env;
+            int main(void) {
+                int rc;
+                for (;;) {
+                    if (!(rc = setjmp(env))) longjmp(env, 5);
+                    else if (rc == 5) break;
+                }
+                return rc == 5 ? 0 : 1;
+            }
+            """);
+        emitted.ShouldContain("rc = 0;");
+        emitted.ShouldContain("rc = (int)__jmp.Value;");
+        emitted.ShouldContain("goto __setjmp_");
+        emitted.ShouldContain("Libc.ArmJumpBuffer(env)");
+    }
+
+    [Fact]
+    public void Assignment_capture_evaluates_buffer_before_resetting_target()
+    {
+        var emitted = Emit("""
+            #include <setjmp.h>
+            static jmp_buf env;
+            static void *pick(int old) { return env; }
+            int main(void) { int rc = 42; rc = setjmp(pick(rc)); if (!rc) longjmp(env, 1); return 0; }
+            """);
+        var arm = emitted.IndexOf("Libc.ArmJumpBuffer(", System.StringComparison.Ordinal);
+        var reset = emitted.IndexOf("rc = 0;", System.StringComparison.Ordinal);
+        arm.ShouldBeGreaterThan(0);
+        reset.ShouldBeGreaterThan(arm);
+    }
+
+    [Fact]
+    public void Assignment_guard_with_side_effecting_lvalue_is_rejected()
+    {
+        Should.Throw<CompileException>(() => Emit("""
+            #include <setjmp.h>
+            static jmp_buf env;
+            int main(void) { int x[2]; int i = 0; if (!(x[i++] = setjmp(env))) longjmp(env, 1); return 0; }
+            """));
+    }
+
+    [Fact]
     public void Setjmp_in_while_condition_is_rejected()
     {
         var ex = Should.Throw<CompileException>(() => Emit("""

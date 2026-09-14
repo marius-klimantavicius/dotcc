@@ -80,7 +80,7 @@ public static unsafe partial class Libc
     /// <see cref="NativeMemory"/> route when false; free additionally recognizes
     /// live posix_memalign allocations through their ownership table.</summary>
     internal static bool _dbgHeap =
-        System.Environment.GetEnvironmentVariable("DOTCC_DEBUG_HEAP") == "1";
+        global::System.Environment.GetEnvironmentVariable("DOTCC_DEBUG_HEAP") == "1";
 
     /// <summary>Route subsequent malloc/calloc/realloc/free through the checked
     /// debug heap. The emitted program shell calls this once at startup when the
@@ -93,7 +93,7 @@ public static unsafe partial class Libc
     /// so an overflow is caught even on a block that is never freed (chibi's GC
     /// heap / context object) — at the next allocation, not the offending write.</summary>
     private static readonly bool _dbgScan =
-        System.Environment.GetEnvironmentVariable("DOTCC_DEBUG_HEAP_SCAN") == "1";
+        global::System.Environment.GetEnvironmentVariable("DOTCC_DEBUG_HEAP_SCAN") == "1";
     private const nuint _dbgHdr = 32;                       // 32-aligned user ptr
     private const nuint _dbgRed = 32;                       // trailing redzone
     private const ulong _dbgMagic = 0xD07CCA11ABCDEF01UL;
@@ -137,8 +137,8 @@ public static unsafe partial class Libc
             {
                 if (*(ulong*)h != _dbgMagic)
                 {
-                    System.Console.Error.WriteLine(
-                        $"[dotcc debug-heap] {where}-scan: corrupt header at 0x{(nuint)(h + _dbgHdr):x} (magic=0x{*(ulong*)h:x})\n{System.Environment.StackTrace}");
+                    global::System.Console.Error.WriteLine(
+                        $"[dotcc debug-heap] {where}-scan: corrupt header at 0x{(nuint)(h + _dbgHdr):x} (magic=0x{*(ulong*)h:x})\n{(global::System.Environment.StackTrace)}");
                     return;
                 }
                 var size = *(nuint*)(h + 8);
@@ -147,8 +147,8 @@ public static unsafe partial class Libc
                 {
                     if (red[i] != _dbgCanary)
                     {
-                        System.Console.Error.WriteLine(
-                            $"[dotcc debug-heap] {where}-scan: write past {size}-byte block 0x{(nuint)(h + _dbgHdr):x} (redzone[{i}]=0x{red[i]:x2})\n{System.Environment.StackTrace}");
+                        global::System.Console.Error.WriteLine(
+                            $"[dotcc debug-heap] {where}-scan: write past {size}-byte block 0x{(nuint)(h + _dbgHdr):x} (redzone[{i}]=0x{red[i]:x2})\n{(global::System.Environment.StackTrace)}");
                         return;
                     }
                 }
@@ -177,8 +177,8 @@ public static unsafe partial class Libc
         var magic = *(ulong*)basep;
         if (magic != _dbgMagic)
         {
-            System.Console.Error.WriteLine(
-                $"[dotcc debug-heap] {where}: invalid or double free of 0x{(nuint)user:x} (magic=0x{magic:x})\n{System.Environment.StackTrace}");
+            global::System.Console.Error.WriteLine(
+                $"[dotcc debug-heap] {where}: invalid or double free of 0x{(nuint)user:x} (magic=0x{magic:x})\n{(global::System.Environment.StackTrace)}");
             ok = false;
             return 0;
         }
@@ -188,8 +188,8 @@ public static unsafe partial class Libc
         {
             if (red[i] != _dbgCanary)
             {
-                System.Console.Error.WriteLine(
-                    $"[dotcc debug-heap] {where}: write past end of {size}-byte block 0x{(nuint)user:x} (redzone[{i}]=0x{red[i]:x2})\n{System.Environment.StackTrace}");
+                global::System.Console.Error.WriteLine(
+                    $"[dotcc debug-heap] {where}: write past end of {size}-byte block 0x{(nuint)user:x} (redzone[{i}]=0x{red[i]:x2})\n{(global::System.Environment.StackTrace)}");
                 break;
             }
         }
@@ -348,7 +348,7 @@ public static unsafe partial class Libc
             exp += 4 * skipped;  // cap-skipped digits: restore the exponent
             // Compute: sig * 2^exp. ScaleB handles the power-of-two multiply
             // and produces the correctly-rounded double result.
-            double hexVal = double.IsNaN(sig) ? sig : System.Math.ScaleB(sig, exp);
+            double hexVal = double.IsNaN(sig) ? sig : global::System.Math.ScaleB(sig, exp);
             if (endptr != null) { *endptr = p; }
             return neg ? -hexVal : hexVal;
         }
@@ -556,7 +556,7 @@ public static unsafe partial class Libc
         int len = strlen(s);
         // For a file-backed stream WriterFor returns an unbuffered UTF-8
         // writer, so decode→write round-trips back to the original bytes.
-        w.Write(System.Text.Encoding.UTF8.GetString(s, len));
+        w.Write(global::System.Text.Encoding.UTF8.GetString(s, len));
         return len;
     }
 
@@ -614,7 +614,7 @@ public static unsafe partial class Libc
     public static ScanfReader sscanf(byte* src, byte* fmt)
     {
         int len = strlen(src);
-        var s = System.Text.Encoding.UTF8.GetString(src, len);
+        var s = global::System.Text.Encoding.UTF8.GetString(src, len);
         return new ScanfReader(new StringReader(s), fmt);
     }
 
@@ -639,7 +639,7 @@ public static unsafe partial class Libc
     // Instead pin its UTF-16 data on the Pinned Object Heap ONCE, cached per
     // distinct literal — a program-lifetime pool, mirroring how C places string
     // literals in .rodata. Pinning per use would leak a frame under a loop.
-    private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, IntPtr> _u16Literals =
+    private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<string, IntPtr> _u16Literals =
         new(StringComparer.Ordinal);
 
     /// <summary><c>L16("…")</c> — return a stable <c>char*</c> (= char16_t*) to a
@@ -665,7 +665,7 @@ public static unsafe partial class Libc
 
     // char32_t (UTF-32) string-literal pool — the 32-bit sibling of the L16 pool.
     // C# has no `u32` literal; pin UTF-32 data on the POH once per distinct literal.
-    private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, IntPtr> _u32Literals =
+    private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<string, IntPtr> _u32Literals =
         new(StringComparer.Ordinal);
 
     /// <summary><c>L32("…")</c> — return a stable <c>uint*</c> (= char32_t*) to a
@@ -680,9 +680,9 @@ public static unsafe partial class Libc
         if (_u32Literals.TryGetValue(s, out var hit)) { return (uint*)hit; }   // lock-free hot path
         // Reuse the BCL's UTF-16 → UTF-32 fold: GetBytes yields LE 4-byte scalars,
         // no BOM, and encodes the trailing '\0' as a zero code unit (the terminator).
-        var bytes = System.Text.Encoding.UTF32.GetBytes(s);
+        var bytes = global::System.Text.Encoding.UTF32.GetBytes(s);
         var arr = GC.AllocateUninitializedArray<uint>(bytes.Length / 4, pinned: true);
-        System.Buffer.BlockCopy(bytes, 0, arr, 0, bytes.Length);
+        global::System.Buffer.BlockCopy(bytes, 0, arr, 0, bytes.Length);
         var ptr = (IntPtr)Unsafe.AsPointer(ref MemoryMarshal.GetArrayDataReference(arr));
         var actual = _u32Literals.GetOrAdd(s, ptr);
         if (actual == ptr) { lock (_globalArrayRoots) { _globalArrayRoots.Add(arr); } }

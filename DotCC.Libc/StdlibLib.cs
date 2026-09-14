@@ -338,7 +338,7 @@ public static unsafe partial class Libc
         var vars = Environment.GetEnvironmentVariables();
         var arr = (byte**)NativeMemory.Alloc((nuint)(vars.Count + 1), (nuint)sizeof(byte*));
         var i = 0;
-        foreach (System.Collections.DictionaryEntry e in vars)
+        foreach (global::System.Collections.DictionaryEntry e in vars)
         {
             var entry = $"{e.Key}={e.Value}";
             var need = Encoding.UTF8.GetByteCount(entry) + 1;
@@ -385,7 +385,7 @@ public static unsafe partial class Libc
         // C: system(NULL) probes for a command processor — we always have one.
         if (command == null) { return 1; }
         var cmd = Encoding.UTF8.GetString(command, strlen(command));
-        var psi = new System.Diagnostics.ProcessStartInfo { UseShellExecute = false };
+        var psi = new global::System.Diagnostics.ProcessStartInfo { UseShellExecute = false };
         if (OperatingSystem.IsWindows())
         {
             // Mirror the MSVC CRT: ComSpec (cmd.exe) with /c, the whole string
@@ -403,7 +403,7 @@ public static unsafe partial class Libc
         }
         try
         {
-            using var proc = System.Diagnostics.Process.Start(psi);
+            using var proc = global::System.Diagnostics.Process.Start(psi);
             if (proc == null) { return -1; }
             proc.WaitForExit();
             return proc.ExitCode;

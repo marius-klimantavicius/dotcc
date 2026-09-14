@@ -1,0 +1,4 @@
+loop rounds=1 calls=2 rc=1
+tail hits=3 rc=9
+positive rc=4
+evaluation old=42 calls=4 rc=8

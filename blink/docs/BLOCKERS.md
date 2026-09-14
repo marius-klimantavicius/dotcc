@@ -61,3 +61,38 @@ Dotcc adds each input translation unit's directory to its include map. Passing
 shadow system `<string.h>` and `<signal.h>`. Core/decoder scripts stage verified
 source copies in a directory without those colliding headers. Initial signal
 parse messages must not be misreported as proven signal-language defects.
+
+## B006 — CLR references in unmanaged jump buffers (fixed)
+
+The allocated jump-buffer reproducer emitted CLR `LongJmpToken` references inside
+native C storage, which the GC cannot trace. Generic ordinary jump storage now
+contains a numeric identity and handlers capture a fresh identity per execution.
+The independent compacting-GC consumer matches native behavior under raw/optimized
+JIT/NativeAOT. Signal-aware mask semantics use the separately measured adapter;
+see NONLOCAL-JUMPS.md. Full ordinary-jump/declaration regression passes 2222 unit
+and 500 functional tests, with 1025 functional rows skipped.
+
+## B007 — Function-form parameters and global array typedefs (fixed)
+
+Actual syscall prototypes use parameters written as functions, which C adjusts
+to function pointers. Actual debug storage uses a global array typedef. Generic
+parameter adjustment and global/TLS array storage now preserve those declarations.
+Native-checked fixtures and direct/object-linked thread/GC tests pass, and the
+actual sources retry beyond both defects. Validation shares the B006 full suite.
+
+## B008 — Negated assignment setjmp guards (fixed)
+
+Actual machine.c and syscall.c contain valid controlling expressions such as
+`if (!(rc = sigsetjmp(m->onhalt, 1)))`. Generic capture recognition now preserves branches, loop exits, late/repeated
+jumps and the assignment target's old value while evaluating the buffer. Native
+fixtures and forced-GC raw/optimized JIT/NativeAOT consumers pass; actual machine.c
+and syscall.c both emit past this guard.
+
+## B009 — C System type shadows the BCL namespace (nested library fixed)
+
+The actual Machine/System storage probe emits but fails C# compilation because
+Blink's `struct System` shadows BCL namespace references. Authored runtime sources and backend-generated BCL references now use global
+namespace qualification. The C type name is preserved in planned nested library
+output. Direct/object-linked separate consumers and the actual 236-row core ABI
+probe pass raw/optimized JIT/NativeAOT. Global executable output still collides
+with the root namespace and is not the selected Blink library layout.

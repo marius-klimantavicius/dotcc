@@ -46,7 +46,7 @@ public sealed class BitfieldTailLayoutTests
             """);
         emitted.ShouldContain($"public const ulong Value = {offset}UL;");
         emitted.ShouldContain("LayoutKind.Explicit, Size = 4, Pack = 4");
-        emitted.ShouldContain($"[System.Runtime.InteropServices.FieldOffset({offset})]\n    public byte next;");
+        emitted.ShouldContain($"[global::System.Runtime.InteropServices.FieldOffset({offset})]\n    public byte next;");
         emitted.ShouldContain($"private {storage} __bf0;");
         if (offset == 3)
         {
@@ -70,8 +70,8 @@ public sealed class BitfieldTailLayoutTests
             """);
         emitted.ShouldContain("public const ulong Value = 9UL;");
         emitted.ShouldContain("LayoutKind.Explicit, Size = 24, Pack = 8");
-        emitted.ShouldContain("[System.Runtime.InteropServices.FieldOffset(8)]\n    private byte __bf0;");
-        emitted.ShouldContain("[System.Runtime.InteropServices.FieldOffset(16)]\n    public ulong suffix;");
+        emitted.ShouldContain("[global::System.Runtime.InteropServices.FieldOffset(8)]\n    private byte __bf0;");
+        emitted.ShouldContain("[global::System.Runtime.InteropServices.FieldOffset(16)]\n    public ulong suffix;");
     }
 
     [Theory]

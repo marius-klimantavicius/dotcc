@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import xml.etree.ElementTree as ET
 
@@ -18,12 +19,14 @@ out = ROOT / 'artifacts/jump-storage' / attempt.name
 out.mkdir(parents=True, exist_ok=True)
 cli = REPO / 'DotCC/bin/Release/net10.0/dotcc.dll'
 postprocess = REPO / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
-fixture = REPO / 'DotCC.FunctionalTests/Fixtures/setjmp-heap-state/main.c'
+fixture_name = 'setjmp-assignment-guard' if '--assignment-guards' in sys.argv else 'setjmp-heap-state'
+fixture = REPO / 'DotCC.FunctionalTests/Fixtures' / fixture_name / 'main.c'
 source = attempt / 'main.c'
 shutil.copy2(fixture, source)
 hooks = ROOT / 'tests/JumpStorage/GcHooks.cs'
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 receipt = dict(scope='ordinary-unmanaged-jump-slots-with-forced-gc-not-signal-unwind',
+               fixture=fixture_name,
                sourceSha256=sha(source), hookSha256=sha(hooks),
                compilerSha256=sha(cli.with_name('DotCC.Lib.dll')), results={}, passed=False)
 receipt['postprocessorSha256'] = sha(postprocess)
@@ -103,7 +106,7 @@ try:
     receipt['passed'] = True
     receipt['stdoutSha256'] = hashlib.sha256(expected).hexdigest()
     save()
-    print(f'Heap/nested/rearmed jump buffers match native under forced-GC raw/optimized JIT/NativeAOT, CS8500 forbidden. Receipt: {out / "receipt.json"}')
+    print(f'{fixture_name} matches native under forced-GC raw/optimized JIT/NativeAOT, CS8500 forbidden. Receipt: {out / "receipt.json"}')
 except Exception as error:
     receipt['error'] = str(error)
     save()

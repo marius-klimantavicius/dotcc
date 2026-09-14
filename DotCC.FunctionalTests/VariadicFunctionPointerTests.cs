@@ -60,14 +60,14 @@ public sealed partial class ManagedLibraryTests
                 emitted = Compiler.LinkObjects(new[] { fragment }, emit: EmitMode.ManagedLib);
             }
             else emitted = Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib);
-            emitted.ShouldContain("delegate*<int, System.ReadOnlySpan<VaArg>, int>");
+            emitted.ShouldContain("delegate*<int, global::System.ReadOnlySpan<VaArg>, int>");
             var references = RuntimeReferences();
             var library = Compile("SpanCallbackLibrary_" + Guid.NewGuid().ToString("N"), emitted, references);
             references.Add(MetadataReference.CreateFromImage(library));
             var consumer = Compile("SpanCallbackConsumer_" + Guid.NewGuid().ToString("N"), """
                 public static unsafe class Consumer
                 {
-                    private static readonly delegate*<int, System.ReadOnlySpan<Libc.VaArg>, int> Callback = &Read;
+                    private static readonly delegate*<int, global::System.ReadOnlySpan<Libc.VaArg>, int> Callback = &Read;
                     private static int Read(int count, System.ReadOnlySpan<Libc.VaArg> args)
                     {
                         int total = 0;

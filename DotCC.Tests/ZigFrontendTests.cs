@@ -618,7 +618,7 @@ public sealed class ZigFrontendTests
         // Milestone ß ("sharp-s"): Zig i128/u128 → C# System.Int128 / System.UInt128 (BCL
         // primitives — arithmetic comes for free; no clean-room type like Float128 needed).
         var cs = EmitZig("fn f(a: i128, b: u128) i128 { return a; }\npub fn main() u8 { return 0; }\n");
-        cs.ShouldContain("f(System.Int128 a, System.UInt128 b)");
+        cs.ShouldContain("f(global::System.Int128 a, global::System.UInt128 b)");
     }
 
     [Fact]
@@ -637,7 +637,7 @@ public sealed class ZigFrontendTests
             "    const z: i7 = -3;\n" +
             "    return @intCast(@as(i32, x) + y + z);\n" +
             "}\n");
-        cs.ShouldContain("wide(byte a, ushort b, sbyte c, System.UInt128 d)");   // width mapping in a signature
+        cs.ShouldContain("wide(byte a, ushort b, sbyte c, global::System.UInt128 d)");   // width mapping in a signature
         cs.ShouldContain("(int)x + y + z");                                       // the u4/u12/i7 arithmetic lowered
     }
 
@@ -2666,13 +2666,13 @@ public sealed class ZigFrontendTests
         // The headline use (Milestone G): a function returns a tuple `struct { u8, u8 }` and the
         // caller destructures it with `const a, const b = mm();`. The tuple type → C#
         // `System.ValueTuple<byte, byte>`; the positional `.{ 3, 7 }` at that sink →
-        // `new System.ValueTuple<byte, byte>(3, 7)`; the destructure single-evals into a temp,
+        // `new global::System.ValueTuple<byte, byte>(3, 7)`; the destructure single-evals into a temp,
         // then binds each name to its positional element (`.Item1`/`.Item2`).
         var cs = EmitZig(
             "fn mm() struct { u8, u8 } { return .{ 3, 7 }; }\n" +
             "pub fn main() u8 { const a, const b = mm(); return a + b; }\n");
         cs.ShouldContain("System.ValueTuple<byte, byte> mm()");        // tuple TYPE return
-        cs.ShouldContain("new System.ValueTuple<byte, byte>(3, 7)");   // positional literal at the tuple sink
+        cs.ShouldContain("new global::System.ValueTuple<byte, byte>(3, 7)");   // positional literal at the tuple sink
         cs.ShouldContain("__tup");                                      // single-eval temp
         cs.ShouldContain(".Item1");                                     // binder a ← element 0
         cs.ShouldContain(".Item2");                                     // binder b ← element 1
@@ -2689,7 +2689,7 @@ public sealed class ZigFrontendTests
         cs.ShouldContain("byte a = (byte)4;");
         cs.ShouldContain("byte b = (byte)6;");
         cs.ShouldNotContain("__tup");                   // no snapshot temp for a literal RHS
-        cs.ShouldNotContain("new System.ValueTuple");   // no tuple value constructed at all (the spliced
+        cs.ShouldNotContain("new global::System.ValueTuple");   // no tuple value constructed at all (the spliced
                                                         // runtime mentions "ValueTuple" in doc comments, so
                                                         // assert against the CONSTRUCTION, not the substring)
     }
@@ -2718,7 +2718,7 @@ public sealed class ZigFrontendTests
             "    const t = .{ @as(u8, 1), @as(u8, 2), @as(u8, 3), @as(u8, 4), @as(u8, 5), @as(u8, 6), @as(u8, 7), @as(u8, 8), @as(u8, 9) };\n" +
             "    return t[0] + t[7] + t[8];\n" + // 1 + 8 + 9 = 18
             "}\n");
-        cs.ShouldContain("default(System.ValueTuple)");   // empty tuple `.{}`
+        cs.ShouldContain("default(global::System.ValueTuple)");   // empty tuple `.{}`
         cs.ShouldContain("System.ValueTuple<byte, byte>>"); // the nested TRest (>7 arity)
         cs.ShouldContain(".Rest.Item1");                   // t[7] reads through the nested tuple
         cs.ShouldContain(".Rest.Item2");                   // t[8]

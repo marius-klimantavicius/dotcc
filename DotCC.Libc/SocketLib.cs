@@ -546,7 +546,7 @@ public static unsafe partial class Libc
             if (i == bestStart) { text.Append("::"); i += bestLength; continue; }
             if (text.Length != 0 && text[text.Length - 1] != ':') text.Append(':');
             if (i == 6 && dotted) { text.Append(new IPAddress(address[12..]).ToString()); break; }
-            text.Append(words[i++].ToString("x", System.Globalization.CultureInfo.InvariantCulture));
+            text.Append(words[i++].ToString("x", global::System.Globalization.CultureInfo.InvariantCulture));
         }
         return text.ToString();
     }

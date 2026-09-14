@@ -49,7 +49,7 @@ public readonly struct Slice<T> where T : unmanaged
     /// <summary>A <see cref="System.Span{T}"/> view, for span-based BCL APIs. The length is
     /// narrowed to <see cref="int"/> (a <c>Span</c> can only address <c>int.MaxValue</c>
     /// elements), checked.</summary>
-    public unsafe System.Span<T> AsSpan() => new((void*)_ptr, checked((int)Len));
+    public unsafe global::System.Span<T> AsSpan() => new((void*)_ptr, checked((int)Len));
 
     /// <summary>A mutable slice is usable wherever a <c>[]const T</c> is expected (Zig's
     /// <c>[]T</c> → <c>[]const T</c> coercion). The reverse is not allowed.</summary>
@@ -95,5 +95,5 @@ public readonly struct ConstSlice<T> where T : unmanaged
     public unsafe ConstSlice<T> Sub(ulong lo, ulong hi) => new((T*)_ptr + lo, hi - lo);
 
     /// <summary>A <see cref="System.ReadOnlySpan{T}"/> view, for span-based BCL APIs.</summary>
-    public unsafe System.ReadOnlySpan<T> AsSpan() => new((void*)_ptr, checked((int)Len));
+    public unsafe global::System.ReadOnlySpan<T> AsSpan() => new((void*)_ptr, checked((int)Len));
 }

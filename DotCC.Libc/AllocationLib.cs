@@ -67,8 +67,8 @@ public static unsafe partial class Libc
         {
             if (red[i] != _dbgCanary)
             {
-                System.Console.Error.WriteLine(
-                    $"[dotcc debug-heap] {where}: write past end of {block.Size}-byte block 0x{address:x} (redzone[{i}]=0x{red[i]:x2})\n{System.Environment.StackTrace}");
+                global::System.Console.Error.WriteLine(
+                    $"[dotcc debug-heap] {where}: write past end of {block.Size}-byte block 0x{address:x} (redzone[{i}]=0x{red[i]:x2})\n{(global::System.Environment.StackTrace)}");
                 break;
             }
         }

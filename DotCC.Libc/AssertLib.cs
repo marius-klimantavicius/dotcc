@@ -115,7 +115,7 @@ public static unsafe partial class Libc
     /// <c>_Noreturn</c> plays — so it composes as the "can't get here" arm of a
     /// value-returning function without a bogus CS0161.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+    [global::System.Diagnostics.CodeAnalysis.DoesNotReturn]
     public static void __dotcc_unreachable() =>
-        throw new System.Diagnostics.UnreachableException("unreachable() reached");
+        throw new global::System.Diagnostics.UnreachableException("unreachable() reached");
 }

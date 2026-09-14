@@ -628,7 +628,7 @@ public sealed partial class CompilerTests
             // and the specifier surfaces as [DoesNotReturn] on the emitted method.
             var emitted = Compiler.EmitCSharp(new[] { src }, dialect: CDialect.Parse("c17"));
             emitted.ShouldContain("internal static unsafe int die()");
-            emitted.ShouldContain("[System.Diagnostics.CodeAnalysis.DoesNotReturn]");
+            emitted.ShouldContain("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]");
         }
         finally { File.Delete(src); }
     }
@@ -669,7 +669,7 @@ public sealed partial class CompilerTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("internal static unsafe void die()");
-            emitted.ShouldContain("[System.Diagnostics.CodeAnalysis.DoesNotReturn]");
+            emitted.ShouldContain("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]");
         }
         finally { File.Delete(src); }
     }
@@ -707,7 +707,7 @@ public sealed partial class CompilerTests
             {
                 var emitted = Compiler.EmitCSharp(new[] { src }, dialect: CDialect.Parse(std));
                 emitted.ShouldContain("internal static unsafe void die()");
-                emitted.ShouldContain("[System.Diagnostics.CodeAnalysis.DoesNotReturn]");
+                emitted.ShouldContain("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]");
             }
         }
         finally { File.Delete(src); }
@@ -777,7 +777,7 @@ public sealed partial class CompilerTests
             // [DoesNotReturn]), parse error pre-C23.
             var emitted = Compiler.EmitCSharp(new[] { asKeyword }, dialect: CDialect.Parse("c23"));
             emitted.ShouldContain("internal static unsafe void die()");
-            emitted.ShouldContain("[System.Diagnostics.CodeAnalysis.DoesNotReturn]");
+            emitted.ShouldContain("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]");
             Should.Throw<CompileException>(
                 () => Compiler.EmitCSharp(new[] { asKeyword }, dialect: CDialect.Parse("c17")));
         }

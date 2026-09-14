@@ -102,7 +102,7 @@ public static partial class Compiler
     /// output is non-deterministic (timing), so it is deliberately NOT byte-matched.</summary>
     private static string BuildTestEntry(IReadOnlyList<(string Name, string FnName)> tests)
     {
-        var sb = new System.Text.StringBuilder();
+        var sb = new global::System.Text.StringBuilder();
         sb.Append("int __passed = 0, __failed = 0;\n");
         foreach (var (name, fn) in tests)
         {
@@ -196,7 +196,7 @@ public static partial class Compiler
         // reporting per-test OK/FAIL and a summary, exit 0 iff all pass. Built here so the shell frame
         // (big-stack worker thread, `using static DotCcProgram;` bare-name calls) is reused verbatim.
         var entry = testMode
-            ? BuildTestEntry(tests ?? System.Array.Empty<(string, string)>())
+            ? BuildTestEntry(tests ?? global::System.Array.Empty<(string, string)>())
             : mainArity switch
         {
             0 => Wrap("main()", mainReturnsVoid),
@@ -213,14 +213,14 @@ public static partial class Compiler
                     byte** argv = (byte**)NativeMemory.Alloc((nuint)(argc + 1) * (nuint)sizeof(byte*));
                     static byte* EncodeUtf8Nul(string s)
                     {
-                        var bytes = System.Text.Encoding.UTF8.GetBytes(s);
+                        var bytes = global::System.Text.Encoding.UTF8.GetBytes(s);
                         var slot = (byte*)NativeMemory.Alloc((nuint)(bytes.Length + 1));
                         for (int k = 0; k < bytes.Length; k++) { slot[k] = bytes[k]; }
                         slot[bytes.Length] = 0;
                         return slot;
                     }
                     argv[0] = EncodeUtf8Nul(
-                        System.Environment.ProcessPath ?? System.AppContext.BaseDirectory);
+                        global::System.Environment.ProcessPath ?? global::System.AppContext.BaseDirectory);
                     for (int i = 0; i < args.Length; i++)
                     {
                         argv[i + 1] = EncodeUtf8Nul(args[i]);
@@ -298,7 +298,7 @@ public static partial class Compiler
             // such programs reach their own recursion guards and fault gracefully.
             {{(namespaceName == null ? "" : "static unsafe class DotCcEntryPoint\n{\npublic static int Main(string[] args)\n{\n")}}
             {{debugHeapInit}}int __dotccExit = 0;
-            var __dotccThread = new System.Threading.Thread(
+            var __dotccThread = new global::System.Threading.Thread(
                 () => { __dotccExit = __DotCcEntry(); }, 64 * 1024 * 1024);
             __dotccThread.Start();
             __dotccThread.Join();

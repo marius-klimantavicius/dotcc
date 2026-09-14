@@ -60,7 +60,7 @@ public unsafe ref struct SprintfBuilder
         // same value, which is exactly printf %c semantics (and all other
         // printf output — literals, %d, %s, etc. — is ASCII, which both
         // encodings handle identically).
-        var latin1 = System.Text.Encoding.GetEncoding(28591);
+        var latin1 = global::System.Text.Encoding.GetEncoding(28591);
         var bytes = latin1.GetBytes(_buf.ToString());
         int writeCount = _capacity < 0 ? bytes.Length : Math.Min(bytes.Length, _capacity);
         for (int i = 0; i < writeCount; i++) { _dst[i] = bytes[i]; }

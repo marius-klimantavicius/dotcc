@@ -139,8 +139,8 @@ internal sealed partial class CSharpBackend
             fns.Append("    static unsafe ConstSlice<byte> __zigErrorName(ushort code) => code switch\n    {\n");
             foreach (var kv in errNames.OrderBy(kv => kv.Value))
             {
-                var len = System.Text.Encoding.UTF8.GetByteCount(kv.Key);
-                var literal = cg._literals.Add(System.Text.Encoding.UTF8.GetBytes(kv.Key).Append((byte)0));
+                var len = global::System.Text.Encoding.UTF8.GetByteCount(kv.Key);
+                var literal = cg._literals.Add(global::System.Text.Encoding.UTF8.GetBytes(kv.Key).Append((byte)0));
                 fns.Append($"        {kv.Value} => new ConstSlice<byte>({literal}, {len}),\n");
             }
             var unknown = cg._literals.Add("(unknown)\0"u8.ToArray());
@@ -236,28 +236,28 @@ internal sealed partial class CSharpBackend
             // Both StructLayout constants and the pointer getter use emitted constants.
             Expr(new OffsetOf(new CType.Named(t.Name), new[] { flexibleField.Name }, flexibleField.Type) { Type = CType.SizeT });
             var layoutClass = DotCC.Layout.OffsetDocument.RequestName(t.Name, new[] { flexibleField.Name });
-            sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
+            sb.Append("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
                 .Append(layoutClass).Append(".Size, Pack = ").Append(layoutClass).Append(".Alignment)]\n");
         }
         else if (bitFieldLayout is not null || alignedLayout is not null)
         {
             headerLayout = bitFieldLayout ?? alignedLayout!;
-            sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
+            sb.Append("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
                 .Append(headerLayout.Size).Append(", Pack = ").Append(headerLayout.Alignment).Append(")]\n");
         }
         else if (t.IsUnion)
         {
-            sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]\n");
+            sb.Append("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit)]\n");
         }
         else if (t.Layout == AggregateLayout.Sequential)
         {
             // Zig `extern struct` — pin guaranteed C-ABI sequential layout.
-            sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]\n");
+            sb.Append("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential)]\n");
         }
         else if (t.Layout == AggregateLayout.Packed)
         {
             // Zig `packed struct` — byte-pack with no inter-field padding (V1: Pack=1, not bit-packed).
-            sb.Append("[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]\n");
+            sb.Append("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]\n");
         }
         sb.Append(_publicTypes ? "public unsafe partial struct " : "unsafe partial struct ").Append(t.Name).Append("\n{\n");
         if (headerLayout is not null)
@@ -266,7 +266,7 @@ internal sealed partial class CSharpBackend
             // a flexible tail impose storage/alignment requirements. The anchor
             // overlays real header bytes and never reserves a tail element.
             var anchor = headerLayout.Alignment switch { 1 => "byte", 2 => "ushort", 4 => "uint", _ => "ulong" };
-            sb.Append("    [System.Runtime.InteropServices.FieldOffset(0)]\n    private ").Append(anchor).Append(" __dotcc_flex_alignment;\n");
+            sb.Append("    [global::System.Runtime.InteropServices.FieldOffset(0)]\n    private ").Append(anchor).Append(" __dotcc_flex_alignment;\n");
         }
         var bitUnitCounter = 0;
         for (var fi = 0; fi < t.Fields.Count; )
@@ -304,8 +304,8 @@ internal sealed partial class CSharpBackend
                 continue;
             }
             if (headerLayout is not null)
-                sb.Append("    [System.Runtime.InteropServices.FieldOffset(").Append(headerLayout.Offsets[f.Name]).Append(")]\n");
-            else if (t.IsUnion) { sb.Append("    [System.Runtime.InteropServices.FieldOffset(0)]\n"); }
+                sb.Append("    [global::System.Runtime.InteropServices.FieldOffset(").Append(headerLayout.Offsets[f.Name]).Append(")]\n");
+            else if (t.IsUnion) { sb.Append("    [global::System.Runtime.InteropServices.FieldOffset(0)]\n"); }
             // An array member is C-inline storage, not a pointer field. A primitive
             // element lowers to a C# `fixed` buffer (inline, indexable, decays to a
             // pointer with no bounds check — both for free, matching C). A
@@ -336,7 +336,7 @@ internal sealed partial class CSharpBackend
                             .Append(cell).Append("\n{\n    public ").Append(element).Append(" Value;\n}\n\n");
                         element = cell;
                     }
-                    wrappers.Append("[System.Runtime.CompilerServices.InlineArray(").Append(count).Append(")]\n")
+                    wrappers.Append("[global::System.Runtime.CompilerServices.InlineArray(").Append(count).Append(")]\n")
                         .Append(_publicTypes ? "public unsafe partial struct " : "unsafe partial struct ")
                         .Append(wrap).Append("\n{\n    public ").Append(element).Append(" _e;\n}\n\n");
                     sb.Append("    public ").Append(wrap).Append(' ').Append(fid).Append(";\n");
@@ -362,7 +362,7 @@ internal sealed partial class CSharpBackend
         foreach (var m in e.Members)
         {
             sb.Append("    ").Append(DotCC.EmitHelpers.Id(m.Name)).Append(" = ")
-              .Append(m.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)).Append(",\n");
+              .Append(m.Value.ToString(global::System.Globalization.CultureInfo.InvariantCulture)).Append(",\n");
         }
         sb.Append("}\n\n");
         return sb.ToString();
@@ -425,8 +425,8 @@ internal sealed partial class CSharpBackend
             var id = "__bf" + unitCounter++;
             var (ut, _) = BitStorage(bytes);
             if (explicitOffsets is not null)
-                sb.Append("    [System.Runtime.InteropServices.FieldOffset(").Append(explicitOffsets[storageIndex++]).Append(")]\n");
-            else if (isUnion) { sb.Append("    [System.Runtime.InteropServices.FieldOffset(0)]\n"); }
+                sb.Append("    [global::System.Runtime.InteropServices.FieldOffset(").Append(explicitOffsets[storageIndex++]).Append(")]\n");
+            else if (isUnion) { sb.Append("    [global::System.Runtime.InteropServices.FieldOffset(0)]\n"); }
             sb.Append("    private ").Append(ut).Append(' ').Append(id).Append(";\n");
             foreach (var (f, off) in members)
             {
@@ -450,7 +450,7 @@ internal sealed partial class CSharpBackend
             {
                 unit = "__bf" + nextUnit++;
                 units.Add(key, unit);
-                sb.Append("    [System.Runtime.InteropServices.FieldOffset(").Append(offset)
+                sb.Append("    [global::System.Runtime.InteropServices.FieldOffset(").Append(offset)
                     .Append(")]\n    private ").Append(BitStorage(bytes).Cs).Append(' ').Append(unit).Append(";\n");
             }
             return unit;
@@ -582,7 +582,7 @@ internal sealed partial class CSharpBackend
     /// ORs in the value truncated to the field width — exactly C's value semantics.</summary>
     private string BitFieldAccessor(StructField f, string unit, int unitBytes, int off)
     {
-        var inv = System.Globalization.CultureInfo.InvariantCulture;
+        var inv = global::System.Globalization.CultureInfo.InvariantCulture;
         var bt = Cs(f.Type);                          // declared type spelling ("int" / "uint" / …)
         var fid = DotCC.EmitHelpers.Id(f.Name);
         var (ut, ub) = BitStorage(unitBytes);         // unsigned backing type + its bit width
@@ -609,7 +609,7 @@ internal sealed partial class CSharpBackend
     /// literal, 4-byte a <c>u</c> suffix, 8-byte a <c>UL</c> suffix.</summary>
     private static string LitForUnit(ulong v, int bytes)
     {
-        var inv = System.Globalization.CultureInfo.InvariantCulture;
+        var inv = global::System.Globalization.CultureInfo.InvariantCulture;
         return bytes switch
         {
             1 or 2 => v.ToString(inv),
@@ -648,13 +648,13 @@ internal sealed partial class CSharpBackend
         // C compiler's deprecation warning (C's is a warning, so no error:true).
         if (fn.Sym.Deprecated is { } dep)
         {
-            sb.Append(dep.Length == 0 ? "[System.Obsolete]\n" : $"[System.Obsolete({CsQuote(dep)})]\n");
+            sb.Append(dep.Length == 0 ? "[global::System.Obsolete]\n" : $"[global::System.Obsolete({CsQuote(dep)})]\n");
         }
         // `_Noreturn` (C11) / `noreturn` / `[[noreturn]]` (C23) → [DoesNotReturn] —
         // a real flow-analysis hint (C#'s nullable analysis honors it), the faithful
         // lowering of "control never comes back". Fully qualified: the emitted
         // program has no `using System.Diagnostics.CodeAnalysis`.
-        if (fn.Sym.IsNoReturn) { sb.Append("[System.Diagnostics.CodeAnalysis.DoesNotReturn]\n"); }
+        if (fn.Sym.IsNoReturn) { sb.Append("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]\n"); }
         // `inline` (C99) → [MethodImpl(AggressiveInlining)] — a real JIT hint, the
         // faithful lowering of C's "please inline this". Short spelling: the shell's
         // usings include System.Runtime.CompilerServices.
@@ -753,7 +753,7 @@ internal sealed partial class CSharpBackend
 
     /// <summary>Render a statement-level expression with comma-hoisting enabled, emit
     /// any hoisted leading statements, and return the (value) text for the statement.</summary>
-    private string Hoist(StringBuilder sb, string pad, System.Func<string> render)
+    private string Hoist(StringBuilder sb, string pad, global::System.Func<string> render)
     {
         var prev = _canHoist;
         _canHoist = true;
@@ -767,7 +767,7 @@ internal sealed partial class CSharpBackend
     /// operand of <c>&amp;&amp;</c>/<c>||</c>, a ternary arm) with hoisting disabled —
     /// a comma there must keep its side effect conditional (the inline closure form),
     /// not lift it out where it would run unconditionally.</summary>
-    private string NoHoist(System.Func<string> render)
+    private string NoHoist(global::System.Func<string> render)
     {
         var prev = _canHoist;
         _canHoist = false;
@@ -848,7 +848,7 @@ internal sealed partial class CSharpBackend
                 // any non-statement-position use.)
                 if (IsUnreachableCall(inner))
                 {
-                    sb.Append(pad).Append("throw new System.Diagnostics.UnreachableException(\"unreachable() reached\");\n");
+                    sb.Append(pad).Append("throw new global::System.Diagnostics.UnreachableException(\"unreachable() reached\");\n");
                     break;
                 }
                 if (CFlowFacts.IsNoReturnCall(inner))
@@ -859,7 +859,7 @@ internal sealed partial class CSharpBackend
                     sb.Append(pad).Append("{\n");
                     var call = Hoist(sb, Pad(ind + 1), () => RenderStmtExpr(inner));
                     sb.Append(Pad(ind + 1)).Append(call).Append(";\n");
-                    sb.Append(Pad(ind + 1)).Append("throw new System.Diagnostics.UnreachableException(\"A noreturn function returned.\");\n");
+                    sb.Append(Pad(ind + 1)).Append("throw new global::System.Diagnostics.UnreachableException(\"A noreturn function returned.\");\n");
                     sb.Append(pad).Append("}\n");
                     break;
                 }
@@ -960,7 +960,7 @@ internal sealed partial class CSharpBackend
                 // disambiguates nested setjmps: a longjmp reads the SAME env (matches
                 // here), while one aimed at a different env carries a different token
                 // and propagates past this catch.
-                var env = Hoist(sb, pad, () => Expr(sj.Env));
+                var env = Hoist(sb, pad, () => Coerced(sj.Env, new CType.Pointer(CType.ULongLong)));
                 var identity = $"__jmpIdentity{_clCounter++}";
                 sb.Append(pad).Append($"ulong {identity} = Libc.ArmJumpBuffer({env});\n");
                 sb.Append(pad).Append("try\n");
@@ -973,13 +973,15 @@ internal sealed partial class CSharpBackend
             {
                 // Value-capturing setjmp — real C's "returns twice" via goto-restart. Arm a
                 // fresh token, label the try, and on a matching longjmp write the jump value
-                // into the capture target and re-run the body from the label. The target was
-                // reset to 0 by a preceding decl/assignment (the direct-return value), so the
+                // into the capture target and re-run the body from the label. The target is
+                // reset to 0 after env evaluation, or by its preceding declaration, so the
                 // body's switch/if on it takes the normal path first, the recovery path after.
-                var envc = Hoist(sb, pad, () => Expr(sc.Env));
+                var envc = Hoist(sb, pad, () => Coerced(sc.Env, new CType.Pointer(CType.ULongLong)));
                 var captureIdentity = $"__jmpIdentity{_clCounter++}";
                 var label = $"__setjmp_{sc.Id}";
                 sb.Append(pad).Append($"ulong {captureIdentity} = Libc.ArmJumpBuffer({envc});\n");
+                if (sc.ResetTargetAfterArm)
+                    sb.Append(pad).Append($"{Expr(sc.Target)} = 0;\n");
                 sb.Append(pad).Append(label).Append(":\n");
                 sb.Append(pad).Append("try\n");
                 GuardBody(sb, sc.Body, ind);
@@ -1068,7 +1070,7 @@ internal sealed partial class CSharpBackend
     /// <summary>Render with <c>break</c> bound to its normal target (loop/switch
     /// exit) — used around a loop or switch body nested inside a hoisted switch tail,
     /// where the surrounding <see cref="_breakAsGoto"/> redirection must not leak in.</summary>
-    private void WithNormalBreak(System.Action render)
+    private void WithNormalBreak(global::System.Action render)
     {
         var saved = _breakAsGoto;
         var savedContinue = _continueAsGoto;
@@ -1436,7 +1438,7 @@ internal sealed partial class CSharpBackend
         Member { Arrow: false } member =>
             $"&(({Cs(member.Base.Type)}*){GlobalStorageAddress(member.Base)})->{DotCC.EmitHelpers.Id(member.Field)}",
         VarRef variable =>
-            $"System.Runtime.CompilerServices.Unsafe.AsPointer(ref {GlobalName(variable.Sym)})",
+            $"global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref {GlobalName(variable.Sym)})",
         _ => throw new IrUnsupportedException("global storage address without a global root"),
     };
 
@@ -1616,7 +1618,7 @@ internal sealed partial class CSharpBackend
         "long" or "ulong" or "nint" or "nuint" => 8,
         // 128-bit (C __int128 / Zig i128|u128). Without these the coercion machinery treats a
         // 128-bit sink as non-integer and silently drops the narrowing cast (CS0266), same as char.
-        "System.Int128" or "System.UInt128" => 16,
+        "global::System.Int128" or "global::System.UInt128" => 16,
         _ => null,
     };
 
@@ -1650,8 +1652,8 @@ internal sealed partial class CSharpBackend
         // plain unsigned source below may emit a harmless redundant `(ushort)` for the
         // genuinely-implicit `char → ushort` — accepted, see the plan's honest limits.)
         if (tgt is "char") { return false; }
-        var srcUnsigned = src is "byte" or "ushort" or "uint" or "ulong" or "nuint" or "char" or "System.UInt128";
-        var tgtUnsigned = tgt is "byte" or "ushort" or "uint" or "ulong" or "nuint" or "System.UInt128";
+        var srcUnsigned = src is "byte" or "ushort" or "uint" or "ulong" or "nuint" or "char" or "global::System.UInt128";
+        var tgtUnsigned = tgt is "byte" or "ushort" or "uint" or "ulong" or "nuint" or "global::System.UInt128";
         return srcUnsigned ? tw > sw : (!tgtUnsigned && tw > sw);
     }
 
@@ -1695,7 +1697,7 @@ internal sealed partial class CSharpBackend
         if (ContainsPointerCast(ce) && FoldConst(ce, out var v))
         {
             var st = subject.Unqualified is CType.Prim { Integer: true } sp ? Cs(sp) : "long";
-            return $"unchecked(({st})({v.ToString(System.Globalization.CultureInfo.InvariantCulture)}))";
+            return $"unchecked(({st})({v.ToString(global::System.Globalization.CultureInfo.InvariantCulture)}))";
         }
         var value = DecayEnum(ce);
         var target = CType.IntegerPromote(subject.Unqualified is CType.Enum enumeration ? enumeration.Underlying : subject);
@@ -2074,7 +2076,7 @@ internal sealed partial class CSharpBackend
                 // Zig `@bitCast` — same-size bit reinterpret. `Unsafe.BitCast<TFrom, TTo>` is the
                 // AOT-clean primitive (it static-asserts the size match); the source type is the
                 // operand's lowered type, the destination the result-location sink.
-                return ($"System.Runtime.CompilerServices.Unsafe.BitCast<{Cs(bc.Operand.Type)}, {Cs(bc.Target)}>({Sub(bc.Operand, PAssign)})", PPrimary);
+                return ($"global::System.Runtime.CompilerServices.Unsafe.BitCast<{Cs(bc.Operand.Type)}, {Cs(bc.Target)}>({Sub(bc.Operand, PAssign)})", PPrimary);
             case SizeOfExpr so:
                 // C's `sizeof` yields `size_t` — unsigned, `ulong` in dotcc's
                 // model — but C#'s `sizeof` operator is `int`. Emit the `(ulong)`
@@ -2146,7 +2148,7 @@ internal sealed partial class CSharpBackend
                     // Array decay/address-taking needs an unmanaged storage
                     // expression. Static aggregate fields live in stable static
                     // storage; use the same address projection as explicit &g.
-                    dot = $"(({Cs(m.Base.Type)}*)System.Runtime.CompilerServices.Unsafe.AsPointer(ref {BareLValue(m.Base)}))->{DotCC.EmitHelpers.Id(m.Field)}";
+                    dot = $"(({Cs(m.Base.Type)}*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref {BareLValue(m.Base)}))->{DotCC.EmitHelpers.Id(m.Field)}";
                 }
                 // A non-primitive array member is stored as an [InlineArray]; its
                 // access decays to the element pointer `(T*)&field` (C#'s InlineArray
@@ -2776,7 +2778,7 @@ internal sealed partial class CSharpBackend
         // typed shape identifies a factory, so separately compiled initializers
         // can deduplicate identical helpers without colliding with other shapes.
         var name = "__DotccAggregateInit_" + Convert.ToHexString(
-            System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(body)));
+            global::System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(body)));
         _aggregateFactories.TryAdd(name, "internal static class " + name + "\n{\n" + body + "}\n\n");
         return name + ".Create(" + string.Join(", ", arguments) + ")";
     }
@@ -2906,8 +2908,8 @@ internal sealed partial class CSharpBackend
         var last = items[^1];
         // A pointer value can't be a Func<> type argument either — round-trip nint.
         return IsPointerType(last.Type)
-            ? $"(({Cs(last.Type)})((System.Func<nint>)(() => {{ {body}return (nint)({Expr(last)}); }}))())"
-            : $"((System.Func<{Cs(last.Type)}>)(() => {{ {body}return {Expr(last)}; }}))()";
+            ? $"(({Cs(last.Type)})((global::System.Func<nint>)(() => {{ {body}return (nint)({Expr(last)}); }}))())"
+            : $"((global::System.Func<{Cs(last.Type)}>)(() => {{ {body}return {Expr(last)}; }}))()";
     }
 
     // ---- <stdatomic.h> generic functions ---------------------------------
@@ -2995,18 +2997,18 @@ internal sealed partial class CSharpBackend
     /// that is itself a nested ValueTuple ctor of the remaining elements (C#'s ValueTuple nesting).</summary>
     private string BuildValueTupleCtor(IReadOnlyList<CType> types, IReadOnlyList<string> vals)
     {
-        if (types.Count == 0) { return "default(System.ValueTuple)"; }
+        if (types.Count == 0) { return "default(global::System.ValueTuple)"; }
         if (types.Count <= 7)
         {
             var ta = string.Join(", ", types.Select(t => Cs(t.Unqualified)));
-            return $"new System.ValueTuple<{ta}>({string.Join(", ", vals)})";
+            return $"new global::System.ValueTuple<{ta}>({string.Join(", ", vals)})";
         }
         var headTypes = string.Join(", ", types.Take(7).Select(t => Cs(t.Unqualified)));
         var restTypes = types.Skip(7).ToList();
         var restTypeStr = Cs(new CType.Tuple(restTypes));   // the nested TRest ValueTuple type
         var headVals = string.Join(", ", vals.Take(7));
         var restCtor = BuildValueTupleCtor(restTypes, vals.Skip(7).ToList());
-        return $"new System.ValueTuple<{headTypes}, {restTypeStr}>({headVals}, {restCtor})";
+        return $"new global::System.ValueTuple<{headTypes}, {restTypeStr}>({headVals}, {restCtor})";
     }
 
     private string DefaultPromotedArgument(CExpr argument)

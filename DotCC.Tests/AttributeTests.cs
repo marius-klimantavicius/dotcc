@@ -13,7 +13,7 @@ namespace DotCC.Tests;
 /// two ordinary `]` tokens, so nested subscripts (`a[b[0]]`) are unaffected.
 /// The recognized attrs are LOWERED: `[[noreturn]]` (and the `_Noreturn` /
 /// C23-promoted `noreturn` specifier) → `[DoesNotReturn]` on the emitted method,
-/// `[[deprecated[("msg")]]]` → `[System.Obsolete(…)]`, `[[nodiscard]]` → a
+/// `[[deprecated[("msg")]]]` → `[global::System.Obsolete(…)]`, `[[nodiscard]]` → a
 /// discard warning, and `[[maybe_unused]]` on a block-scope declaration →
 /// `#pragma warning disable/restore CS0168, CS0219` bracketing the local so C#
 /// doesn't warn if it stays unused. `[[fallthrough]];` parses as an
@@ -87,7 +87,7 @@ public sealed class AttributeTests
             emitted.ShouldNotContain("deprecated");
             // …but the recognized `deprecated` lowers to [Obsolete] with the
             // decoded message (the C warning surfaces at the .NET build's call sites).
-            emitted.ShouldContain("[System.Obsolete(\"use answer\")]");
+            emitted.ShouldContain("[global::System.Obsolete(\"use answer\")]");
             // …and the block-scope [[maybe_unused]] local is bracketed so the
             // emitted C# doesn't warn that `local` is never read. (`maybe_unused`
             // on the FUNCTION old_answer stays a no-op — C# never warns on an
@@ -168,7 +168,7 @@ public sealed class AttributeTests
             emitted.ShouldContain("rep_id");
             // No attribute SYNTAX leaks, and specifically no cosmetic [Pure] lowering…
             emitted.ShouldNotContain("[[");
-            emitted.ShouldNotContain("[System.Diagnostics.Contracts.Pure]");
+            emitted.ShouldNotContain("[global::System.Diagnostics.Contracts.Pure]");
             // …and neither hint trips the [[maybe_unused]] local suppression.
             emitted.ShouldNotContain("#pragma warning disable CS0168");
         }
@@ -185,8 +185,8 @@ public sealed class AttributeTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("[System.Obsolete]");
-            emitted.ShouldNotContain("[System.Obsolete(");
+            emitted.ShouldContain("[global::System.Obsolete]");
+            emitted.ShouldNotContain("[global::System.Obsolete(");
         }
         finally { File.Delete(src); }
     }
@@ -206,7 +206,7 @@ public sealed class AttributeTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src }, dialect: CDialect.Parse("c17"));
-            emitted.ShouldContain("[System.Diagnostics.CodeAnalysis.DoesNotReturn]");
+            emitted.ShouldContain("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]");
             emitted.ShouldContain("static unsafe void die()");
         }
         finally { File.Delete(src); }
@@ -261,7 +261,7 @@ public sealed class AttributeTests
             emitted.ShouldNotContain("[[");
             // The keyword-shaped Attr production feeds the same marker as the
             // bare-ID path: [DoesNotReturn] lands on the emitted method.
-            emitted.ShouldContain("[System.Diagnostics.CodeAnalysis.DoesNotReturn]");
+            emitted.ShouldContain("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]");
         }
         finally { File.Delete(src); }
     }

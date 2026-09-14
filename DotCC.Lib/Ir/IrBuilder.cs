@@ -2298,6 +2298,7 @@ internal sealed partial class IrBuilder
     /// </list></summary>
     private CStmt? SetjmpGuardOf(CExpr cond, CStmt then, CStmt? els, SrcPos pos)
     {
+        if (SetjmpAssignmentGuardOf(cond, then, els, pos) is { } capture) return capture;
         // Bare `if (setjmp(env)) …` — truthy only on the longjmp re-entry, so the
         // then-branch is the recovery (catch) and the absent/else side is the
         // normal (try) path.
@@ -2381,6 +2382,17 @@ internal sealed partial class IrBuilder
     {
         for (var i = 0; i < stmts.Count; i++)
         {
+            // An assignment inside an if condition retains its handler for the
+            // remainder of this block, just like a standalone value capture.
+            if (stmts[i] is Seq { Stmts: [var resetGuard, SetjmpCapture guard] })
+            {
+                var tail = RewriteSetjmpCaptures(stmts.GetRange(i + 1, stmts.Count - i - 1));
+                var result = stmts.GetRange(0, i);
+                result.Add(resetGuard);
+                tail.Insert(0, guard.Body);
+                result.Add(guard with { Body = new Block(tail) { Pos = guard.Pos } });
+                return result;
+            }
             // Shape #1: `T r = setjmp(env);` (a sole-declarator decl).
             if (stmts[i] is DeclStmt { Decls: { Count: 1 } ds } declStmt
                 && ds[0].Init is { } init && IsSetjmpCall(init, out var env1, out var call1))
@@ -2413,8 +2425,10 @@ internal sealed partial class IrBuilder
         var pos = stmts[i].Pos;
         var tail = RewriteSetjmpCaptures(stmts.GetRange(i + 1, stmts.Count - i - 1));
         var result = stmts.GetRange(0, i);
-        result.Add(reset);
-        result.Add(new SetjmpCapture(env, target, new Block(tail) { Pos = pos }, _setjmpSeq++) { Pos = pos });
+        var resetAfterArm = reset is ExprStmt;
+        if (!resetAfterArm) result.Add(reset);
+        result.Add(new SetjmpCapture(env, target, new Block(tail) { Pos = pos }, _setjmpSeq++)
+            { Pos = pos, ResetTargetAfterArm = resetAfterArm });
         return result;
     }
 

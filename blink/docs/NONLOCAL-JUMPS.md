@@ -59,6 +59,30 @@ subsequent runs preserve separate attempt directories. No generated C# was
 edited to add the hook. Before-fix diagnostics remain separately preserved under
 `artifacts/jump-storage/`.
 
+## Assignment guards and evaluation order
+
+Actual unchanged Blink code captures its jump result inside
+`if (!(rc = sigsetjmp(m->onhalt, 1)))`, including a repeated execution loop and
+an else-if branch inspecting the nonzero value. The generic compiler now
+recognizes negated and positive simple-variable assignment guards. It reuses
+value-capture restart lowering, retaining the handler through the rest of the
+enclosing block. The new fixture covers loop continue/break, else-if dispatch,
+jumps initiated after the if statement, and repeated jumps to the same site.
+Side-effecting assignment lvalues remain explicitly rejected.
+
+Existing-target assignment captures now evaluate and arm the buffer before
+writing the direct-return zero into the target. Native-checked selectors read
+the old target value 42 in both a condition capture and a standalone assignment;
+each selector runs once. The setjmp intrinsic also preserves C's implicit
+`void *` conversion to the numeric jump-slot pointer.
+
+`python3 blink/tests/JumpStorage/run.py --assignment-guards` runs this fixture
+through the same forced-GC raw/optimized JIT/NativeAOT comparison as ordinary
+heap-held buffers. Its generated code and authored GC hooks remain separate.
+All four variants passed in `artifacts/jump-storage/attempt-rdxy9ji1/receipt.json`;
+19 focused units and all eight setjmp functional fixtures passed (16 configured
+external-oracle rows skipped).
+
 ## Qualified virtual host-delivery-mask jumps
 
 `src/HostSignals/` implements an explicit signal-aware unwind adapter. The
@@ -94,8 +118,8 @@ The semantic runner compares a separate real POSIX sigsetjmp/siglongjmp oracle,
 a native build of the authored virtual adapter with real ordinary jump storage,
 and raw/optimized emitted C# under JIT and NativeAOT. All agree for save=0,
 save=1, zero-to-one normalization, nested buffers, rearming a record without
-saving, repeated jumps to the same active site, and a side-effecting buffer
-selector evaluated once. Native contract checks query the real host mask;
+saving, repeated jumps to the same active site, a side-effecting buffer
+selector evaluated once, and the exact negated assignment guard used by Blink. Native contract checks query the real host mask;
 managed test-only hooks observe the executing thread's `/proc/thread-self/status`
 mask before each deep jump and at completion. Those masks remain unchanged.
 Managed hooks also force compacting garbage collection before jumps, and all
@@ -103,7 +127,7 @@ consumer builds treat CS8500 as an error. Hooks are supplied by an authored test
 consumer without hand-editing generated C#.
 
 The four-mode semantic receipt is
-`artifacts/host-signals/attempt-5ovnu550/receipt.json`; the updated standalone
+`artifacts/host-signals/attempt-_r4ncjta/receipt.json`; the updated standalone
 99-case native/198-output emitted storage matrix is
 `artifacts/host-abi/managed/attempt-54lu91nd/receipt.json`. The signal record's
 larger size deliberately changes containing Machine layouts; untouched native

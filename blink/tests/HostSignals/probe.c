@@ -65,6 +65,7 @@ static void Deeper(Jump env, int value) { Deep(env, value); }
 static void *Select(void) { ++selector_calls; return first; }
 
 int main(void) {
+  int rc;
 #ifndef BLINK_TEST_MANAGED
   if (sigprocmask(SIG_SETMASK, NULL, &original_host_mask)) abort();
 #endif
@@ -113,6 +114,14 @@ int main(void) {
       break;
     default: abort();
   }
+  SetMask(1);
+  if (!(rc = Capture(first, 1))) {
+    SetMask(2);
+    Deeper(first, 6);
+  } else if (rc == 6) {
+    Require(ReadMask() == 1);
+    puts("assignment value=6 mask=1");
+  } else abort();
 #ifdef BLINK_REAL_POSIX_ORACLE
   if (sigprocmask(SIG_SETMASK, &original_host_mask, NULL)) abort();
 #else

@@ -31,7 +31,7 @@ public sealed class EntryStackThreadTests
     public void entry_runs_on_a_large_stack_thread_and_returns_its_exit_code()
     {
         var emitted = Compiler.EmitCSharp(new[] { WriteTemp("int main(void) { return 0; }") });
-        emitted.ShouldContain("new System.Threading.Thread(");
+        emitted.ShouldContain("new global::System.Threading.Thread(");
         emitted.ShouldContain("64 * 1024 * 1024");   // 64 MB stack reservation
         emitted.ShouldContain(".Join();");
         emitted.ShouldContain("return main();");      // arity-0 entry, inside the thunk
@@ -42,7 +42,7 @@ public sealed class EntryStackThreadTests
     {
         var emitted = Compiler.EmitCSharp(
             new[] { WriteTemp("int main(int argc, char **argv) { return argc; }") });
-        emitted.ShouldContain("new System.Threading.Thread(");
+        emitted.ShouldContain("new global::System.Threading.Thread(");
         emitted.ShouldContain("64 * 1024 * 1024");
         emitted.ShouldContain("return main(argc, argv);");   // argv path preserved
     }

@@ -520,12 +520,18 @@ public sealed record SetjmpGuard(CExpr Env, CStmt? TryBody, CStmt? CatchBody) : 
 ///   catch (JumpBufferException __jmp) when (__jmp.Identity == identity)
 ///   { Target = (T)__jmp.Value; goto __setjmp_Id; }
 /// </code>
-/// <see cref="Body"/> runs first with <see cref="Target"/> already reset to 0 (a
-/// preceding decl/assignment the builder emits); a matching <c>longjmp</c> is caught,
+/// <see cref="Body"/> runs first with <see cref="Target"/> reset to 0. Declaration
+/// captures have a preceding initialized declaration; assignment captures reset
+/// after evaluating and arming Env. A matching <c>longjmp</c> is caught,
 /// <see cref="Target"/> takes the jump value, and the body re-runs from the label —
 /// so its own branch on the value diverges to the recovery path exactly as C resumes
 /// after <c>setjmp</c>. The synthetic label is unique via <see cref="Id"/>.</summary>
-public sealed record SetjmpCapture(CExpr Env, CExpr Target, CStmt Body, int Id) : CStmt;
+public sealed record SetjmpCapture(CExpr Env, CExpr Target, CStmt Body, int Id) : CStmt
+{
+    // An assignment evaluates its RHS before changing its existing target.
+    // Declaration captures already have a preceding initialized declaration.
+    public bool ResetTargetAfterArm { get; init; }
+}
 
 /// <summary>A Zig <c>defer</c> / <c>errdefer</c>-guarded region (Milestone H). Produced
 /// by <c>ZigLowering</c>'s block restructuring: each <c>defer</c>/<c>errdefer</c> wraps the

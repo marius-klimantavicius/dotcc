@@ -89,7 +89,7 @@ public struct ZigList<T> where T : unmanaged
         var ok = EnsureCap(a, Len + s.Len, oom);
         if (ok.IsErr) { return ok; }
         long bytes = (long)(s.Len * (ulong)sizeof(T));
-        System.Buffer.MemoryCopy(s.Ptr, (T*)_ptr + Len, bytes, bytes);
+        global::System.Buffer.MemoryCopy(s.Ptr, (T*)_ptr + Len, bytes, bytes);
         Len += s.Len;
         return ErrUnion<Unit>.Ok(default);
     }

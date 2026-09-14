@@ -44,7 +44,7 @@ public static class ZigTesting
 
     /// <summary><c>std.testing.expectEqual(expected, actual)</c> — <c>Ok</c> when the two are
     /// equal, else an error union carrying <see cref="TestExpectedEqual"/>.</summary>
-    public static ErrUnion<Unit> expectEqual<T>(T expected, T actual) where T : unmanaged, System.IEquatable<T> =>
+    public static ErrUnion<Unit> expectEqual<T>(T expected, T actual) where T : unmanaged, global::System.IEquatable<T> =>
         expected.Equals(actual) ? ErrUnion<Unit>.Ok(default) : ErrUnion<Unit>.Err(TestExpectedEqual);
 
     /// <summary><c>std.testing.expectError(expected, actual)</c> — <c>Ok</c> when <paramref name="actual"/>
@@ -62,6 +62,6 @@ public static class ZigTesting
     /// (the element type <c>T</c> is inferred by C# from the operands), <c>Ok</c> when equal else
     /// <see cref="TestExpectedEqualSlices"/>.</summary>
     public static ErrUnion<Unit> expectEqualSlices<T>(ConstSlice<T> expected, ConstSlice<T> actual)
-        where T : unmanaged, System.IEquatable<T> =>
+        where T : unmanaged, global::System.IEquatable<T> =>
         expected.AsSpan().SequenceEqual(actual.AsSpan()) ? ErrUnion<Unit>.Ok(default) : ErrUnion<Unit>.Err(TestExpectedEqualSlices);
 }

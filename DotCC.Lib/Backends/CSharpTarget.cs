@@ -31,11 +31,11 @@ internal sealed class CSharpTarget : ITarget
         // unchanged — `&fn` of dotcc's own methods stays a managed delegate*.
         CType.Func f => (f.IsNativeCallConv ? "delegate* unmanaged[Cdecl]<" : "delegate*<")
             + string.Join(", ", f.Params.Select(RenderType)
-                .Concat(f.Variadic && !f.IsNativeCallConv ? new[] { "System.ReadOnlySpan<VaArg>" } : System.Array.Empty<string>())
+                .Concat(f.Variadic && !f.IsNativeCallConv ? new[] { "global::System.ReadOnlySpan<VaArg>" } : global::System.Array.Empty<string>())
                 .Append(RenderType(f.Return))) + ">",
         CType.Named n => n.Name,
         CType.Enum e => e.Name,
-        CType.ComplexType => "System.Numerics.Complex",
+        CType.ComplexType => "global::System.Numerics.Complex",
         CType.Float128Type => "Float128",
         // A Zig value optional `?T` → C# Nullable<T> (`T?`): null = none, `.?` = .Value,
         // `orelse` = `??`. (An optional POINTER `?*T` is a bare nullable `T*`, never this.)
@@ -76,14 +76,14 @@ internal sealed class CSharpTarget : ITarget
     /// ValueTuple nesting).</summary>
     private string RenderValueTuple(IReadOnlyList<CType> elems)
     {
-        if (elems.Count == 0) { return "System.ValueTuple"; }
+        if (elems.Count == 0) { return "global::System.ValueTuple"; }
         if (elems.Count <= 7)
         {
-            return "System.ValueTuple<" + string.Join(", ", elems.Select(e => RenderType(e.Unqualified))) + ">";
+            return "global::System.ValueTuple<" + string.Join(", ", elems.Select(e => RenderType(e.Unqualified))) + ">";
         }
         var head = string.Join(", ", elems.Take(7).Select(e => RenderType(e.Unqualified)));
         var rest = RenderValueTuple(elems.Skip(7).ToList());
-        return "System.ValueTuple<" + head + ", " + rest + ">";
+        return "global::System.ValueTuple<" + head + ", " + rest + ">";
     }
 
     public string RenderIntLit(LitInt lit) =>
@@ -98,7 +98,7 @@ internal sealed class CSharpTarget : ITarget
     /// decimal magnitude (any sign rides on an outer <c>Unary(Neg)</c>).</summary>
     private static string Render128Lit(string digits, bool signed)
     {
-        var ty = signed ? "System.Int128" : "System.UInt128";
+        var ty = signed ? "global::System.Int128" : "global::System.UInt128";
         return ulong.TryParse(digits, out _) ? $"({ty}){digits}UL" : $"{ty}.Parse(\"{digits}\")";
     }
 
@@ -140,8 +140,8 @@ internal sealed class CSharpTarget : ITarget
         "unsigned long" => "ulong",
         "long long" => "long",
         "unsigned long long" => "ulong",
-        "__int128" => "System.Int128",            // C __int128 / Zig i128 → BCL Int128
-        "unsigned __int128" => "System.UInt128",  // C unsigned __int128 / Zig u128 → BCL UInt128
+        "__int128" => "global::System.Int128",            // C __int128 / Zig i128 → BCL Int128
+        "unsigned __int128" => "global::System.UInt128",  // C unsigned __int128 / Zig u128 → BCL UInt128
         "float" => "float",
         "double" => "double",
         "long double" => "double",

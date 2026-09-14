@@ -26,8 +26,8 @@ public static class ZigMem
     public static bool Eql<T>(ConstSlice<T> a, ConstSlice<T> b) where T : unmanaged
     {
         if (a.Len != b.Len) { return false; }
-        var ab = System.Runtime.InteropServices.MemoryMarshal.AsBytes(a.AsSpan());
-        var bb = System.Runtime.InteropServices.MemoryMarshal.AsBytes(b.AsSpan());
+        var ab = global::System.Runtime.InteropServices.MemoryMarshal.AsBytes(a.AsSpan());
+        var bb = global::System.Runtime.InteropServices.MemoryMarshal.AsBytes(b.AsSpan());
         return ab.SequenceEqual(bb);
     }
 

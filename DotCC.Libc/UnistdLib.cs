@@ -23,7 +23,7 @@ public static unsafe partial class Libc
     /// requests round up to 1ms (a sleep may always be longer than asked).</summary>
     public static int usleep(uint usec)
     {
-        System.Threading.Thread.Sleep(usec == 0 ? 0 : (int)System.Math.Max(1, usec / 1000));
+        global::System.Threading.Thread.Sleep(usec == 0 ? 0 : (int)global::System.Math.Max(1, usec / 1000));
         return 0;
     }
 
@@ -32,9 +32,9 @@ public static unsafe partial class Libc
     /// (including unknown fds; dotcc has no other fd table).</summary>
     public static int isatty(int fd) => fd switch
     {
-        0 => System.Console.IsInputRedirected ? 0 : 1,
-        1 => System.Console.IsOutputRedirected ? 0 : 1,
-        2 => System.Console.IsErrorRedirected ? 0 : 1,
+        0 => global::System.Console.IsInputRedirected ? 0 : 1,
+        1 => global::System.Console.IsOutputRedirected ? 0 : 1,
+        2 => global::System.Console.IsErrorRedirected ? 0 : 1,
         _ => 0,
     };
 
@@ -53,5 +53,5 @@ public static unsafe partial class Libc
     /// <summary>POSIX <c>select</c> — unsupported on .NET; throws so a caller
     /// fails loudly at the use site instead of spin-looping on a fake "ready".</summary>
     public static int select(int nfds, long* readfds, long* writefds, long* errorfds, void* timeout)
-        => throw new System.NotSupportedException("select() is not supported by the dotcc runtime");
+        => throw new global::System.NotSupportedException("select() is not supported by the dotcc runtime");
 }

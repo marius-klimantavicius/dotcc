@@ -454,7 +454,7 @@ public static unsafe partial class Libc
     // Wide formatted INPUT (w*scanf) lowers the same way to ScanfReader.
     // ---------------------------------------------------------------------
 
-    private static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, IntPtr> _wideFmtToUtf8 =
+    private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<IntPtr, IntPtr> _wideFmtToUtf8 =
         new();
 
     /// <summary>Transcode a wide (UTF-16) printf/scanf format to a pinned,
@@ -471,7 +471,7 @@ public static unsafe partial class Libc
         // GetOrAdd. Two threads racing the same new key both allocate; the loser
         // frees its buffer (otherwise the dropped NativeMemory block would leak — the
         // reason a value cache like this can't use the naive factory GetOrAdd).
-        var bytes = System.Text.Encoding.UTF8.GetBytes(new string(wfmt, 0, wcslen(wfmt)));
+        var bytes = global::System.Text.Encoding.UTF8.GetBytes(new string(wfmt, 0, wcslen(wfmt)));
         byte* buf = (byte*)NativeMemory.Alloc((nuint)bytes.Length + 1);
         for (int i = 0; i < bytes.Length; i++) { buf[i] = bytes[i]; }
         buf[bytes.Length] = 0;

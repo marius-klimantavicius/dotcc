@@ -49,7 +49,7 @@ public sealed class UnreachableTests
         {
             var emitted = Emit(src);
             // The call becomes a real C# throw (the CS0161-satisfying terminator).
-            emitted.ShouldContain("throw new System.Diagnostics.UnreachableException(\"unreachable() reached\")");
+            emitted.ShouldContain("throw new global::System.Diagnostics.UnreachableException(\"unreachable() reached\")");
             // ...and NO plain call to the helper survives at the site. The runtime
             // helper's own definition is `__dotcc_unreachable() =>` (arrow, no `;`),
             // so this uniquely catches an un-rewritten statement-position call.
@@ -68,7 +68,7 @@ public sealed class UnreachableTests
         try
         {
             var emitted = Emit(src);
-            emitted.ShouldContain("[System.Diagnostics.CodeAnalysis.DoesNotReturn]");
+            emitted.ShouldContain("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]");
             emitted.ShouldContain("__dotcc_unreachable()");
         }
         finally { File.Delete(src); }

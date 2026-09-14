@@ -48,7 +48,7 @@ public unsafe ref struct PrintfBuilder
     private void Emit(string s)
     {
         _w.Write(s);
-        _count += System.Text.Encoding.UTF8.GetByteCount(s);
+        _count += global::System.Text.Encoding.UTF8.GetByteCount(s);
     }
 
     /// <summary>
@@ -179,7 +179,7 @@ public unsafe ref struct PrintfBuilder
         }
         if (v == 0.0)
         {
-            var sb0 = new System.Text.StringBuilder();
+            var sb0 = new global::System.Text.StringBuilder();
             if (double.IsNegative(v)) { sb0.Append('-'); }
             sb0.Append(upper ? "0X0" : "0x0");
             if (precision > 0 || (precision < 0 && precision != 0))
@@ -242,7 +242,7 @@ public unsafe ref struct PrintfBuilder
         // Build the result string.
         char toHex(int n) => n < 10 ? (char)('0' + n)
             : upper ? (char)('A' + n - 10) : (char)('a' + n - 10);
-        var sb = new System.Text.StringBuilder(30);
+        var sb = new global::System.Text.StringBuilder(30);
         if (neg) { sb.Append('-'); }
         sb.Append(upper ? "0X" : "0x");
         sb.Append(toHex(firstNibble));
@@ -359,7 +359,7 @@ public unsafe ref struct PrintfBuilder
         {
             int len = 0;
             while (v[len] != 0) { len++; }
-            s = System.Text.Encoding.UTF8.GetString(v, len);
+            s = global::System.Text.Encoding.UTF8.GetString(v, len);
             // Precision on `%s` caps the string length per C99.
             if (spec.Precision >= 0 && spec.Precision < s.Length)
             {
@@ -384,7 +384,7 @@ public unsafe ref struct PrintfBuilder
             // Wrong spec for a pointer → print the address. System-qualified
             // because emitted user code can `typedef int* IntPtr;` and
             // shadow the BCL type at file scope via `using unsafe IntPtr = int*;`.
-            s = ((System.IntPtr)v).ToString("X");
+            s = ((global::System.IntPtr)v).ToString("X");
         }
         Emit(ApplyWidth(s, spec));
         return this;
@@ -425,7 +425,7 @@ public unsafe ref struct PrintfBuilder
         }
         else
         {
-            s = ((System.IntPtr)v).ToString("X");
+            s = ((global::System.IntPtr)v).ToString("X");
         }
         Emit(ApplyWidth(s, spec));
         return this;
@@ -571,7 +571,7 @@ public unsafe ref struct PrintfBuilder
         if ((b & 0xE0) == 0xC0) { len = 2; }
         else if ((b & 0xF0) == 0xE0) { len = 3; }
         else if ((b & 0xF8) == 0xF0) { len = 4; }
-        _w.Write(System.Text.Encoding.UTF8.GetString(p, len));
+        _w.Write(global::System.Text.Encoding.UTF8.GetString(p, len));
         _count += len;
         p += len;
     }

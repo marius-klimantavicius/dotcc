@@ -73,7 +73,7 @@ public readonly struct Unit { }
 /// The Zig analogue of <see cref="Libc.LongJmpException"/>, and lowered by the same
 /// machinery — early-return-out-of-an-expression that structured C# can't express.
 /// </summary>
-public sealed class ZigErrorReturn : System.Exception
+public sealed class ZigErrorReturn : global::System.Exception
 {
     /// <summary>The propagating error's code (from the originating error union).</summary>
     public ushort Code { get; }

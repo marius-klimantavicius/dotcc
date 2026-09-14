@@ -11,7 +11,7 @@ internal sealed partial class CSharpBackend
         var name = call.Callee;
         var args = call.Args;
         if (name is "__builtin_bswap16" or "__builtin_bswap32" or "__builtin_bswap64")
-            return $"System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(unchecked(({Cs(call.Type)})({Expr(args[0])})))";
+            return $"global::System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(unchecked(({Cs(call.Type)})({Expr(args[0])})))";
         if (name == "__sync_synchronize") return "Atomic.ThreadFence()";
         if (!name.StartsWith("__sync_", StringComparison.Ordinal)
             && !name.StartsWith("__atomic_", StringComparison.Ordinal)) return null;

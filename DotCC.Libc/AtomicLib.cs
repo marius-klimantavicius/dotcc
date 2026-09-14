@@ -66,7 +66,7 @@ public static class Atomic
             long old = Interlocked.Exchange(ref Unsafe.As<T, long>(ref loc), Unsafe.As<T, long>(ref value));
             return Unsafe.As<long, T>(ref old);
         }
-        throw new System.NotSupportedException("Atomic objects must be 1, 2, 4, or 8 bytes");
+        throw new global::System.NotSupportedException("Atomic objects must be 1, 2, 4, or 8 bytes");
     }
 
     /// <summary>The value observed by the single CAS operation, whether or not
@@ -97,7 +97,7 @@ public static class Atomic
                 Unsafe.As<T, long>(ref desired), Unsafe.As<T, long>(ref comparand));
             return Unsafe.As<long, T>(ref old);
         }
-        throw new System.NotSupportedException("Atomic objects must be 1, 2, 4, or 8 bytes");
+        throw new global::System.NotSupportedException("Atomic objects must be 1, 2, 4, or 8 bytes");
     }
 
     private static bool BitsEqual<T>(T a, T b) where T : unmanaged => Unsafe.SizeOf<T>() switch
@@ -106,7 +106,7 @@ public static class Atomic
         2 => Unsafe.As<T, short>(ref a) == Unsafe.As<T, short>(ref b),
         4 => Unsafe.As<T, int>(ref a) == Unsafe.As<T, int>(ref b),
         8 => Unsafe.As<T, long>(ref a) == Unsafe.As<T, long>(ref b),
-        _ => throw new System.NotSupportedException("Atomic objects must be 1, 2, 4, or 8 bytes"),
+        _ => throw new global::System.NotSupportedException("Atomic objects must be 1, 2, 4, or 8 bytes"),
     };
 
     public static bool CompareExchangeMatches<T>(ref T loc, T desired, T comparand) where T : unmanaged =>

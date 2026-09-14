@@ -1333,7 +1333,7 @@ public readonly struct Float128 : IEquatable<Float128>, IComparable<Float128>,
         if (IsNaN(this)) { return "nan"; }
         if (IsInfinity(this)) { return SignBit ? "-inf" : "inf"; }
         BigInteger n = AbsScaledByPow10(prec);
-        string digits = n.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        string digits = n.ToString(global::System.Globalization.CultureInfo.InvariantCulture);
         string body;
         if (prec == 0)
         {
@@ -1362,12 +1362,12 @@ public readonly struct Float128 : IEquatable<Float128>, IComparable<Float128>,
         }
         int exp = EstimateExp10();
         BigInteger s = AbsScaledByPow10(prec - exp);
-        string ds = s.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        string ds = s.ToString(global::System.Globalization.CultureInfo.InvariantCulture);
         // Correct a ±1 estimate so we land on exactly prec+1 digits.
         if (ds.Length == prec + 2) { exp++; s = AbsScaledByPow10(prec - exp); ds = s.ToString(); }
         else if (ds.Length == prec) { exp--; s = AbsScaledByPow10(prec - exp); ds = s.ToString(); }
         string mant = prec == 0 ? ds : ds[..1] + "." + ds[1..];
-        string expStr = (exp < 0 ? "-" : "+") + Math.Abs(exp).ToString("D2", System.Globalization.CultureInfo.InvariantCulture);
+        string expStr = (exp < 0 ? "-" : "+") + Math.Abs(exp).ToString("D2", global::System.Globalization.CultureInfo.InvariantCulture);
         return (SignBit ? "-" : "") + mant + e + expStr;
     }
 
@@ -1486,7 +1486,7 @@ public readonly struct Float128 : IEquatable<Float128>, IComparable<Float128>,
     // IEEE field serialization (value = significand · 2^exponent).
     int IFloatingPoint<Float128>.GetExponentByteCount() => sizeof(short);
     int IFloatingPoint<Float128>.GetExponentShortestBitLength()
-        => 32 - System.Numerics.BitOperations.LeadingZeroCount((uint)Math.Abs(FieldExponent()));
+        => 32 - global::System.Numerics.BitOperations.LeadingZeroCount((uint)Math.Abs(FieldExponent()));
     int IFloatingPoint<Float128>.GetSignificandByteCount() => 16;
     int IFloatingPoint<Float128>.GetSignificandBitLength() => 113;
 

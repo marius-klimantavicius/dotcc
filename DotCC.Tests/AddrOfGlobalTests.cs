@@ -34,7 +34,7 @@ public sealed class AddrOfGlobalTests
             int* take(void) { return &g; }
             int main(void) { return *take(); }
             """);
-        emitted.ShouldContain("(int*)System.Runtime.CompilerServices.Unsafe.AsPointer(ref g)");
+        emitted.ShouldContain("(int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref g)");
         emitted.ShouldNotContain("(&g)");
     }
 
@@ -47,7 +47,7 @@ public sealed class AddrOfGlobalTests
             S* take(void) { return &s; }
             int main(void) { return take()->a; }
             """);
-        emitted.ShouldContain("(S*)System.Runtime.CompilerServices.Unsafe.AsPointer(ref s)");
+        emitted.ShouldContain("(S*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref s)");
     }
 
     [Fact]

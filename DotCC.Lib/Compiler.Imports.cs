@@ -112,7 +112,7 @@ public static partial class Compiler
         sb.Append("        var __dirs = new string[] { ");
         sb.Append(string.Join(", ", imports.LibraryDirs.Select(CsStringLiteral)));
         sb.Append(" };\n");
-        sb.Append("        var __libs = new System.IntPtr[]\n        {\n");
+        sb.Append("        var __libs = new global::System.IntPtr[]\n        {\n");
         foreach (var lib in imports.LinkLibraries)
         {
             sb.Append($"            NativeImports.LoadLibrary({CsStringLiteral(lib)}, __dirs),\n");
@@ -125,7 +125,7 @@ public static partial class Compiler
             // The NATIVE symbol looked up is the raw C name; the C# field name is the
             // keyword-escaped form the call sites also emit (so they bind to this field).
             sb.Append($"        if (!NativeImports.TryResolveExport(__libs, {CsStringLiteral(name)}, out __p))\n");
-            sb.Append($"            throw new System.DllNotFoundException(\"dotcc: undefined symbol '{name}' — not exported by any of: {libList}\");\n");
+            sb.Append($"            throw new global::System.DllNotFoundException(\"dotcc: undefined symbol '{name}' — not exported by any of: {libList}\");\n");
             sb.Append($"        {EmitHelpers.Id(name)} = ({ft})__p;\n");
         }
         sb.Append("    }\n}\n");
@@ -162,8 +162,8 @@ public static partial class Compiler
     {
         var target = new Backends.CSharpTarget();
         var libName = StaticArchiveDllName(imports.StaticArchives[0]);
-        const string dll = "System.Runtime.InteropServices.DllImport";
-        const string cdecl = "System.Runtime.InteropServices.CallingConvention.Cdecl";
+        const string dll = "global::System.Runtime.InteropServices.DllImport";
+        const string cdecl = "global::System.Runtime.InteropServices.CallingConvention.Cdecl";
         var sb = new StringBuilder();
         sb.Append("// ---- native imports (static .a/.lib) — DirectPInvoke extern stubs ----\n");
         sb.Append("// Resolved at NativeAOT publish against the linked archives (the csproj's\n");

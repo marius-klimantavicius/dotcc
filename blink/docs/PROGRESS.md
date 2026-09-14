@@ -116,3 +116,28 @@ assignment setjmp condition that needs generic recognition. Full-core translatio
 remains open. The new actual Machine/System ABI probe reached C# compilation and
 exposed the upstream System type colliding with the BCL namespace; planned nested
 library output is being checked before selecting a structural repair.
+
+## Significant progress: actual core ABI and final compiler repairs
+
+The planned nested managed library now preserves Blink's `System` type while
+qualified BCL references prevent namespace collisions. Assignment-guard setjmp
+lowering preserves the buffer expression's evaluation order, loop exits and
+late/repeated jumps. Full Release build passes without warnings; 2225 unit tests
+and 505 functional tests pass, with 1027 explicitly skipped functional rows and
+zero failures.
+
+After the final shared rebuild, decoder qualification again matches native in
+all four generated/runtime modes. A separate consumer of the actual upstream
+core type library also passes 236 exact ABI/register outputs under raw/optimized
+JIT/NativeAOT with the entire library rooted for AOT. It checks real offsets,
+strides, register aliases/vector bytes, 16-byte alignment, callbacks, ELF and Linux
+records. The explicit signal profile changes Machine 22432→22576 bytes; System
+remains 3016 bytes. This completes P1's storage comparison item, not its actual
+instruction execution gate.
+
+Actual machine.c, memory.c, instruction.c, sse2.c and syscall.c now emit as
+isolated objects after measured host declarations and generic fixes. Full
+83-source nested-library emission is running with a frozen profile and 1800-second
+bound. The memory worker is implementing explicit bounded host allocation and
+capabilities to replace arbitrary native address probing and temporary-file
+fallback; upstream guest memory algorithms remain unchanged.

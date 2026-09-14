@@ -47,24 +47,24 @@ public static class ZigMath
 {
     /// <summary>Saturating add — <c>a +| b</c> clamped to <typeparamref name="T"/>'s range.</summary>
     public static T SatAdd<T>(T a, T b)
-        where T : System.Numerics.IBinaryInteger<T>, System.Numerics.IMinMaxValue<T>
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
         => T.IsNegative(T.MinValue)
-            ? ClampSigned<T>(System.Int128.CreateTruncating(a) + System.Int128.CreateTruncating(b))
-            : ClampUnsigned<T>(System.UInt128.CreateTruncating(a) + System.UInt128.CreateTruncating(b));
+            ? ClampSigned<T>(global::System.Int128.CreateTruncating(a) + global::System.Int128.CreateTruncating(b))
+            : ClampUnsigned<T>(global::System.UInt128.CreateTruncating(a) + global::System.UInt128.CreateTruncating(b));
 
     /// <summary>Saturating subtract — <c>a -| b</c> clamped to <typeparamref name="T"/>'s range.
     /// Always evaluated in the signed accumulator (the difference can be negative even for an
     /// unsigned <typeparamref name="T"/>, whose <c>MinValue</c> of <c>0</c> is then the floor).</summary>
     public static T SatSub<T>(T a, T b)
-        where T : System.Numerics.IBinaryInteger<T>, System.Numerics.IMinMaxValue<T>
-        => ClampSigned<T>(System.Int128.CreateTruncating(a) - System.Int128.CreateTruncating(b));
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
+        => ClampSigned<T>(global::System.Int128.CreateTruncating(a) - global::System.Int128.CreateTruncating(b));
 
     /// <summary>Saturating multiply — <c>a *| b</c> clamped to <typeparamref name="T"/>'s range.</summary>
     public static T SatMul<T>(T a, T b)
-        where T : System.Numerics.IBinaryInteger<T>, System.Numerics.IMinMaxValue<T>
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
         => T.IsNegative(T.MinValue)
-            ? ClampSigned<T>(System.Int128.CreateTruncating(a) * System.Int128.CreateTruncating(b))
-            : ClampUnsigned<T>(System.UInt128.CreateTruncating(a) * System.UInt128.CreateTruncating(b));
+            ? ClampSigned<T>(global::System.Int128.CreateTruncating(a) * global::System.Int128.CreateTruncating(b))
+            : ClampUnsigned<T>(global::System.UInt128.CreateTruncating(a) * global::System.UInt128.CreateTruncating(b));
 
     // ---- Overflow-detecting arithmetic (road-to-zig-std B3) — @addWithOverflow & friends.
     // Each returns Zig's `struct { T, u1 }` as a C# `(T, byte)` ValueTuple: the WRAPPED result
@@ -78,32 +78,32 @@ public static class ZigMath
 
     /// <summary><c>@addWithOverflow(a, b)</c> → <c>.{ a +% b, overflow }</c>.</summary>
     public static (T, byte) AddWithOverflow<T>(T a, T b)
-        where T : System.Numerics.IBinaryInteger<T>, System.Numerics.IMinMaxValue<T>
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
         => T.IsNegative(T.MinValue)
-            ? OverflowSigned<T>(System.Int128.CreateTruncating(a) + System.Int128.CreateTruncating(b))
-            : OverflowUnsigned<T>(System.UInt128.CreateTruncating(a) + System.UInt128.CreateTruncating(b));
+            ? OverflowSigned<T>(global::System.Int128.CreateTruncating(a) + global::System.Int128.CreateTruncating(b))
+            : OverflowUnsigned<T>(global::System.UInt128.CreateTruncating(a) + global::System.UInt128.CreateTruncating(b));
 
     /// <summary><c>@subWithOverflow(a, b)</c> → <c>.{ a -% b, overflow }</c>. Always the signed
     /// accumulator (the difference can be negative even for an unsigned <typeparamref name="T"/>).</summary>
     public static (T, byte) SubWithOverflow<T>(T a, T b)
-        where T : System.Numerics.IBinaryInteger<T>, System.Numerics.IMinMaxValue<T>
-        => OverflowSigned<T>(System.Int128.CreateTruncating(a) - System.Int128.CreateTruncating(b));
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
+        => OverflowSigned<T>(global::System.Int128.CreateTruncating(a) - global::System.Int128.CreateTruncating(b));
 
     /// <summary><c>@mulWithOverflow(a, b)</c> → <c>.{ a *% b, overflow }</c>.</summary>
     public static (T, byte) MulWithOverflow<T>(T a, T b)
-        where T : System.Numerics.IBinaryInteger<T>, System.Numerics.IMinMaxValue<T>
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
         => T.IsNegative(T.MinValue)
-            ? OverflowSigned<T>(System.Int128.CreateTruncating(a) * System.Int128.CreateTruncating(b))
-            : OverflowUnsigned<T>(System.UInt128.CreateTruncating(a) * System.UInt128.CreateTruncating(b));
+            ? OverflowSigned<T>(global::System.Int128.CreateTruncating(a) * global::System.Int128.CreateTruncating(b))
+            : OverflowUnsigned<T>(global::System.UInt128.CreateTruncating(a) * global::System.UInt128.CreateTruncating(b));
 
     /// <summary><c>@shlWithOverflow(a, shift)</c> → <c>.{ a &lt;&lt;% shift, overflow }</c>; the overflow
     /// bit is set when the shift loses any high bits (truncating the exact 128-bit shift changed the
     /// value). The shift amount is a small non-negative count (Zig's <c>Log2(T)</c>).</summary>
     public static (T, byte) ShlWithOverflow<T>(T a, int shift)
-        where T : System.Numerics.IBinaryInteger<T>, System.Numerics.IMinMaxValue<T>
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
         => T.IsNegative(T.MinValue)
-            ? OverflowSigned<T>(System.Int128.CreateTruncating(a) << shift)
-            : OverflowUnsigned<T>(System.UInt128.CreateTruncating(a) << shift);
+            ? OverflowSigned<T>(global::System.Int128.CreateTruncating(a) << shift)
+            : OverflowUnsigned<T>(global::System.UInt128.CreateTruncating(a) << shift);
 
     // ---- Zig math builtins (road-to-zig-std B3) — each maps to a BCL/generic-math primitive.
     // The Zig front-end coerces both operands to their peer integer type, so C# infers T and the
@@ -113,25 +113,25 @@ public static class ZigMath
 
     /// <summary><c>@min(a, b)</c> — the lesser operand (Zig's variadic <c>@min</c>, V1 binary).</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T Min<T>(T a, T b) where T : System.Numerics.IBinaryInteger<T> => a < b ? a : b;
+    public static T Min<T>(T a, T b) where T : global::System.Numerics.IBinaryInteger<T> => a < b ? a : b;
 
     /// <summary><c>@max(a, b)</c> — the greater operand.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T Max<T>(T a, T b) where T : System.Numerics.IBinaryInteger<T> => a > b ? a : b;
+    public static T Max<T>(T a, T b) where T : global::System.Numerics.IBinaryInteger<T> => a > b ? a : b;
 
     /// <summary><c>@rem(a, b)</c> — truncated remainder (sign of the DIVIDEND) — identical to C#'s
     /// <c>%</c>, wrapped for a uniform builtin surface.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T Rem<T>(T a, T b) where T : System.Numerics.IBinaryInteger<T> => a % b;
+    public static T Rem<T>(T a, T b) where T : global::System.Numerics.IBinaryInteger<T> => a % b;
 
     /// <summary><c>@divTrunc(a, b)</c> — division rounding toward zero — identical to C#'s <c>/</c>.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T DivTrunc<T>(T a, T b) where T : System.Numerics.IBinaryInteger<T> => a / b;
+    public static T DivTrunc<T>(T a, T b) where T : global::System.Numerics.IBinaryInteger<T> => a / b;
 
     /// <summary><c>@mod(a, b)</c> — floored modulo: the result takes the sign of the DIVISOR (unlike
     /// C#'s <c>%</c>, sign of the dividend). For an unsigned <typeparamref name="T"/> the two coincide.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T Mod<T>(T a, T b) where T : System.Numerics.IBinaryInteger<T>
+    public static T Mod<T>(T a, T b) where T : global::System.Numerics.IBinaryInteger<T>
     {
         var r = a % b;
         return !T.IsZero(r) && (T.IsNegative(r) != T.IsNegative(b)) ? r + b : r;
@@ -140,7 +140,7 @@ public static class ZigMath
     /// <summary><c>@divFloor(a, b)</c> — division rounding toward negative infinity (unlike C#'s <c>/</c>,
     /// toward zero). For non-negative operands the two coincide.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T DivFloor<T>(T a, T b) where T : System.Numerics.IBinaryInteger<T>
+    public static T DivFloor<T>(T a, T b) where T : global::System.Numerics.IBinaryInteger<T>
     {
         var q = a / b;
         var r = a % b;
@@ -152,7 +152,7 @@ public static class ZigMath
     /// <typeparamref name="T"/>'s own width matches Zig's logical width. Returns <c>int</c>
     /// (a small count), as Zig's <c>@popCount</c> yields a suitably-sized integer.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int PopCount<T>(T x) where T : System.Numerics.IBinaryInteger<T>
+    public static int PopCount<T>(T x) where T : global::System.Numerics.IBinaryInteger<T>
         => int.CreateTruncating(T.PopCount(x));
 
     /// <summary><c>@clz(x)</c> — count LEADING zero bits, within <typeparamref name="T"/>'s bit width
@@ -160,14 +160,14 @@ public static class ZigMath
     /// <c>@clz(u16)</c> in 16 — matching Zig for the standard widths dotcc maps 1:1). <c>@clz(0)</c> is
     /// the full bit width. Returns <c>int</c>.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int Clz<T>(T x) where T : System.Numerics.IBinaryInteger<T>
+    public static int Clz<T>(T x) where T : global::System.Numerics.IBinaryInteger<T>
         => int.CreateTruncating(T.LeadingZeroCount(x));
 
     /// <summary><c>@ctz(x)</c> — count TRAILING zero bits, within <typeparamref name="T"/>'s bit width.
     /// <c>@ctz(0)</c> is the full bit width (<c>T.TrailingZeroCount(T.Zero)</c> yields it). Returns
     /// <c>int</c>.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int Ctz<T>(T x) where T : System.Numerics.IBinaryInteger<T>
+    public static int Ctz<T>(T x) where T : global::System.Numerics.IBinaryInteger<T>
         => int.CreateTruncating(T.TrailingZeroCount(x));
 
     /// <summary><c>@byteSwap(x)</c> — reverse the byte order of <typeparamref name="T"/>. Writes the
@@ -176,10 +176,10 @@ public static class ZigMath
     /// widths dotcc maps 1:1; a `u8` byteswap is the identity). The read signedness is derived from
     /// <c>T.AllBitsSet</c> (−1 for a signed <typeparamref name="T"/>, max for unsigned) — immaterial at
     /// the exact width, but the API requires it.</summary>
-    public static T ByteSwap<T>(T x) where T : System.Numerics.IBinaryInteger<T>
+    public static T ByteSwap<T>(T x) where T : global::System.Numerics.IBinaryInteger<T>
     {
         var n = x.GetByteCount();
-        System.Span<byte> buf = stackalloc byte[n];
+        global::System.Span<byte> buf = stackalloc byte[n];
         x.WriteLittleEndian(buf);
         buf.Reverse();
         return T.ReadLittleEndian(buf, isUnsigned: !T.IsNegative(T.AllBitsSet));
@@ -190,17 +190,17 @@ public static class ZigMath
     /// which a signed <c>Math.Abs</c> would overflow). The lowering casts this result to the operand's
     /// unsigned peer type.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.UInt128 Abs128<T>(T x) where T : System.Numerics.IBinaryInteger<T>
-        => System.UInt128.CreateTruncating(System.Int128.Abs(System.Int128.CreateTruncating(x)));
+    public static global::System.UInt128 Abs128<T>(T x) where T : global::System.Numerics.IBinaryInteger<T>
+        => global::System.UInt128.CreateTruncating(global::System.Int128.Abs(global::System.Int128.CreateTruncating(x)));
 
     /// <summary>Clamp an exact signed 128-bit result to <c>[T.MinValue, T.MaxValue]</c> and
     /// truncate back to <typeparamref name="T"/> (used for every signed op and for all
     /// subtraction).</summary>
-    private static T ClampSigned<T>(System.Int128 wide)
-        where T : System.Numerics.IBinaryInteger<T>, System.Numerics.IMinMaxValue<T>
+    private static T ClampSigned<T>(global::System.Int128 wide)
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
     {
-        var lo = System.Int128.CreateTruncating(T.MinValue);
-        var hi = System.Int128.CreateTruncating(T.MaxValue);
+        var lo = global::System.Int128.CreateTruncating(T.MinValue);
+        var hi = global::System.Int128.CreateTruncating(T.MaxValue);
         if (wide < lo) { return T.MinValue; }
         if (wide > hi) { return T.MaxValue; }
         return T.CreateTruncating(wide);
@@ -208,10 +208,10 @@ public static class ZigMath
 
     /// <summary>Clamp an exact unsigned 128-bit result to <c>[0, T.MaxValue]</c> and truncate back
     /// to <typeparamref name="T"/> (used for unsigned add/mul, whose result is never negative).</summary>
-    private static T ClampUnsigned<T>(System.UInt128 wide)
-        where T : System.Numerics.IBinaryInteger<T>, System.Numerics.IMinMaxValue<T>
+    private static T ClampUnsigned<T>(global::System.UInt128 wide)
+        where T : global::System.Numerics.IBinaryInteger<T>, global::System.Numerics.IMinMaxValue<T>
     {
-        var hi = System.UInt128.CreateTruncating(T.MaxValue);
+        var hi = global::System.UInt128.CreateTruncating(T.MaxValue);
         return wide > hi ? T.MaxValue : T.CreateTruncating(wide);
     }
 
@@ -219,19 +219,19 @@ public static class ZigMath
     /// 0/1 overflow flag — set when widening the truncated value back doesn't recover the exact result
     /// (i.e. bits were lost). Used for every signed op, all subtraction, and unsigned results carried
     /// through the signed accumulator.</summary>
-    private static (T, byte) OverflowSigned<T>(System.Int128 wide)
-        where T : System.Numerics.IBinaryInteger<T>
+    private static (T, byte) OverflowSigned<T>(global::System.Int128 wide)
+        where T : global::System.Numerics.IBinaryInteger<T>
     {
         T wrapped = T.CreateTruncating(wide);
-        return (wrapped, System.Int128.CreateTruncating(wrapped) != wide ? (byte)1 : (byte)0);
+        return (wrapped, global::System.Int128.CreateTruncating(wrapped) != wide ? (byte)1 : (byte)0);
     }
 
     /// <summary>Truncate an exact UNSIGNED 128-bit result to <typeparamref name="T"/> and pair it with a
     /// 0/1 overflow flag (set when truncation lost bits). Used for unsigned add/mul/shl.</summary>
-    private static (T, byte) OverflowUnsigned<T>(System.UInt128 wide)
-        where T : System.Numerics.IBinaryInteger<T>
+    private static (T, byte) OverflowUnsigned<T>(global::System.UInt128 wide)
+        where T : global::System.Numerics.IBinaryInteger<T>
     {
         T wrapped = T.CreateTruncating(wide);
-        return (wrapped, System.UInt128.CreateTruncating(wrapped) != wide ? (byte)1 : (byte)0);
+        return (wrapped, global::System.UInt128.CreateTruncating(wrapped) != wide ? (byte)1 : (byte)0);
     }
 }

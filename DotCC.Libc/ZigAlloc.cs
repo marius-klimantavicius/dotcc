@@ -146,7 +146,7 @@ public unsafe struct Allocator
         var fresh = Alloc<T>(n, oom);
         if (fresh.IsErr) { return fresh; }
         ulong keep = old.Len < n ? old.Len : n;
-        System.Buffer.MemoryCopy(old.Ptr, fresh.Value.Ptr, (long)(n * (ulong)sizeof(T)), (long)(keep * (ulong)sizeof(T)));
+        global::System.Buffer.MemoryCopy(old.Ptr, fresh.Value.Ptr, (long)(n * (ulong)sizeof(T)), (long)(keep * (ulong)sizeof(T)));
         Free(old);
         return fresh;
     }
@@ -489,7 +489,7 @@ public static unsafe class ZigAlloc
         byte* p = FbaAlloc(self, bytes, AlignOf<T>(), 0);
         if (p == null) { return ErrUnion<Slice<T>>.Err(oom); }
         ulong keep = old.Len < n ? old.Len : n;
-        System.Buffer.MemoryCopy(old.Ptr, p, (long)bytes, (long)(keep * (ulong)sizeof(T)));
+        global::System.Buffer.MemoryCopy(old.Ptr, p, (long)bytes, (long)(keep * (ulong)sizeof(T)));
         return ErrUnion<Slice<T>>.Ok(new Slice<T>((T*)p, n));
     }
 
@@ -573,8 +573,8 @@ public static unsafe class ZigAlloc
     public static T* CopyArrayResult<T>(T* src, int n) where T : unmanaged
     {
         nuint bytes = (nuint)n * (nuint)sizeof(T);
-        var dst = (T*)System.Runtime.InteropServices.NativeMemory.Alloc(bytes);
-        System.Buffer.MemoryCopy(src, dst, (long)bytes, (long)bytes);
+        var dst = (T*)global::System.Runtime.InteropServices.NativeMemory.Alloc(bytes);
+        global::System.Buffer.MemoryCopy(src, dst, (long)bytes, (long)bytes);
         return dst;
     }
 }

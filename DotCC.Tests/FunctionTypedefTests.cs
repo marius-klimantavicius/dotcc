@@ -56,8 +56,8 @@ public sealed class FunctionTypedefTests
     {
         var code = Emit("_Noreturn void stop(void) { for (;;) {} } typedef int Callback(void); Callback target; int target(void) { return 42; } int main(void) { return target(); }");
         var baseline = Emit("int main(void) { return 0; }");
-        code.Split("[System.Diagnostics.CodeAnalysis.DoesNotReturn]").Length
-            .ShouldBe(baseline.Split("[System.Diagnostics.CodeAnalysis.DoesNotReturn]").Length + 1);
+        code.Split("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]").Length
+            .ShouldBe(baseline.Split("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]").Length + 1);
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public sealed class FunctionTypedefTests
     {
         var code = Emit("__attribute__((noinline, noreturn)) void stop(void) { for (;;) {} } __attribute__((always_inline, no_instrument_function)) int main(void) { return 0; }");
         var baseline = Emit("int main(void) { return 0; }");
-        code.Split("[System.Diagnostics.CodeAnalysis.DoesNotReturn]").Length
-            .ShouldBe(baseline.Split("[System.Diagnostics.CodeAnalysis.DoesNotReturn]").Length + 1);
+        code.Split("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]").Length
+            .ShouldBe(baseline.Split("[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]").Length + 1);
     }
 }

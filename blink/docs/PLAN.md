@@ -235,7 +235,7 @@ source/host/profile manifest. Do not mark a source inspection as a passed probe.
 ### P1 — Prove the interpreter and embedding seams
 
 - [ ] Translate a decoder/instruction subset with a real guest memory harness.
-- [ ] Compare actual emitted ABI/register storage to matching native probes.
+- [x] Compare actual emitted ABI/register storage to matching native probes.
 - [ ] Demonstrate budgeted stepping, faults, and nonlocal unwind without host exit.
 - [ ] Map every remaining platform dependency and planned adaptation explicitly.
 
