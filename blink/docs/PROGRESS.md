@@ -516,3 +516,14 @@ execute bit on regular files; immutable image write checks return EROFS, while
 directory access reflects the writable private layer. Native common tests,
 actual UID0 behavior in an isolated user namespace and all four managed modes
 pass. No generic host access or second path resolver is used.
+
+## Significant progress: explicit private process refusal policy
+
+The bound private process namespace now returns ENOSYS for creation/exec, EPERM
+for identity/group/session mutation, and ECHILD for valid waitpid requests.
+Callbacks preserve failed outputs and never invoke host process APIs. Native
+fork/wait baseline and the separately specified managed denial policy pass all
+four managed modes at attempt-t2f68dzt, including actual C function pointers,
+argument evaluation, worker isolation and GC. Process execution support remains
+open. An authored helper rename avoided an observed generic Path namespace
+collision; that compiler defect remains recorded rather than claimed fixed.

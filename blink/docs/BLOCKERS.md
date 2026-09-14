@@ -158,3 +158,20 @@ for every array, preserving nested dimensions and initializers. Block-scope TLS 
 observed profile. Native/direct/object tests pass across forced GC, actual
 strace.c emits, and the full repository suite passes 2235 unit tests and
 517 functional tests, with 1039 explicit skips.
+
+## B017 — physical shared-header identity (fixed in orchestration)
+
+The first frozen full core build emitted 90 objects but could not link anonymous
+signal-info structs, because each TU used a distinct physical copy of abi.h.
+Anonymous names include header paths. The staging helper now shares one canonical
+content-addressed header tree and keeps stable per-source paths. Actual two-object
+and 17-object links pass; full 92-object linkage is pending. This was campaign
+staging identity, not an upstream instruction or compiler algorithm change.
+
+## B018 — generic Libc System.IO.Path shadowing (open)
+
+The first HostProcessPolicy fixture defined a C helper named Path. Its generated
+owner member shadowed System.IO.Path references in embedded Libc, producing
+CS0119. Renaming the authored test helper SelectExecutable makes that fixture
+qualify; generic namespace qualification still needs a reduced repair and full
+validation. No corresponding pinned-core definition has yet been observed.
