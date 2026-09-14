@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "macroOverrides": [
+    {
+      "name": "pureconst",
+      "match": { "exact": "__attribute__((__const__))" },
+      "replacement": "",
+      "requireMatch": true
+    }
+  ]
+}
