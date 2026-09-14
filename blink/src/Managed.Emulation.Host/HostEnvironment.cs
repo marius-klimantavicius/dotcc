@@ -41,6 +41,28 @@ public sealed class HostEnvironment(TimeProvider? time = null, IHostEntropy? ent
         catch (ArgumentOutOfRangeException) { return HostResult<HostTimestamp>.Failure(GuestError.Invalid); }
         catch (Exception) { return HostResult<HostTimestamp>.Failure(GuestError.Io); }
     }
+    /// <summary>The software clock's output quantum, not clock accuracy. UTC
+    /// uses DateTime ticks; elapsed time also respects the provider tick rate.</summary>
+    public HostResult<HostTimestamp> GetResolution(HostClock clock)
+    {
+        try
+        {
+            long nanoseconds;
+            lock (sync)
+            {
+                if (clock == HostClock.Realtime) nanoseconds = 100;
+                else if (clock == HostClock.Monotonic)
+                {
+                    long frequency = time.TimestampFrequency;
+                    if (frequency <= 0) return HostResult<HostTimestamp>.Failure(GuestError.Io);
+                    nanoseconds = Math.Max(100, 1_000_000_000 / frequency + (1_000_000_000 % frequency == 0 ? 0 : 1));
+                }
+                else return HostResult<HostTimestamp>.Failure(GuestError.Invalid);
+            }
+            return HostResult<HostTimestamp>.Success(new(nanoseconds / 1_000_000_000, nanoseconds % 1_000_000_000));
+        }
+        catch (Exception) { return HostResult<HostTimestamp>.Failure(GuestError.Io); }
+    }
     public HostResult<int> GetRandom(Span<byte> destination, uint flags = 0)
     {
         if ((flags & ~3u) != 0) return HostResult<int>.Failure(GuestError.Invalid);

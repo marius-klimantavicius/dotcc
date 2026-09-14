@@ -32,7 +32,7 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 ## Next actions
 
-Continue actual core translation with individually recorded units and measured host declarations. Qualify the signal-aware unwind adapter, then integrate host callbacks into the bounded interpreter seam. The unified instance I/O module needs C marshalling and callback binding before a guest-service gate can run.
+Freeze the combined host-binding profile, emit/cache the complete selected core object set, then link and build the actual bounded interpreter consumer. All 83 native-selected sources have historical isolated emission receipts; the combined profile must still pass. Qualified I/O, memory, identity, signal masks, clocks and termination bindings are being integrated. Audit every unresolved host operation before execution. Actual managed instruction/exit/fault execution is the next P1 gate.
 
 ## Observed validation (initial campaign baseline)
 
@@ -397,3 +397,13 @@ The measured statvfs record and flags now let actual statfs.c translate without
 pretending to implement capacity reporting. Native and emitted layout/constant
 checks pass in all four managed modes (36 rows). Calls retain isolated names
 until a private filesystem capacity policy exists.
+
+## Significant progress: injected time-of-day and clock resolution
+
+Actual gettimeofday and clock_getres callbacks now share the bound instance
+TimeProvider. Native and raw/optimized JIT/AOT checks pass, including normalized
+pre-epoch time, private worker values, provider failures and unchanged outputs
+on errors. Reported resolution is the software output quantum, not a claim of
+physical clock accuracy. Selected-core native import evidence and lexical binding
+hints are reproducible. Sleep/timer behavior remains open: unchanged upstream
+wait code requires a real interruption/remaining-time contract.

@@ -6,4 +6,6 @@
 #define CLOCK_MONOTONIC 1
 #define clock_gettime blink_host_clock_gettime
 int clock_gettime(int, struct timespec *);
+#define clock_getres blink_host_clock_getres
+int clock_getres(int, struct timespec *);
 #endif
