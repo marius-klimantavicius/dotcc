@@ -220,6 +220,22 @@ public sealed partial class InstanceIo : IAsyncDisposable
             return Task.FromResult(result);
         }
     }
+    public HostResult<int> ReadAt(int fd, Span<byte> destination, long offset)
+    {
+        lock (sync)
+        {
+            if (!Find(fd, out var description)) return Fail<int>(GuestError.BadDescriptor);
+            return description.Kind == Kind.File ? files.ReadAt(description.Handle, destination, offset) : Fail<int>(GuestError.IllegalSeek);
+        }
+    }
+    public HostResult<long> ReadAtLength(int fd)
+    {
+        lock (sync)
+        {
+            if (!Find(fd, out var description)) return Fail<long>(GuestError.BadDescriptor);
+            return description.Kind == Kind.File ? files.ReadAtLength(description.Handle) : Fail<long>(GuestError.Unsupported);
+        }
+    }
     public Task<HostResult<int>> WriteAsync(int fd, ReadOnlyMemory<byte> source, CancellationToken cancellation = default)
     {
         lock (sync)

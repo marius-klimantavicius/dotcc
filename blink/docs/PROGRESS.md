@@ -370,3 +370,14 @@ The full repository suite passes 2235 units and 517 functional tests, with 1039
 explicit skips. All 83 native-selected core translation units now have at least
 one historical successful isolated emission; a single frozen profile, complete
 link and actual managed instruction execution remain the next gates.
+
+## Significant progress: private file-backed host mappings
+
+The authored host mmap adapter can copy existing private file pages into bounded
+owned aligned storage through positional reads. Cursor state is preserved, a
+partial EOF page is zero filled, mappings survive descriptor/instance disposal,
+and failures roll back all allocations. Unsupported protection/shared/fixed and
+whole absent file pages return explicit errors; native SIGBUS is independently
+observed rather than simulated by readable zero pages. Native, all four managed
+modes, ASan/leak checks, and anonymous/diagnostic regressions pass. Full loader
+execution remains open; startup must bind I/O, begin memory, then enable files.

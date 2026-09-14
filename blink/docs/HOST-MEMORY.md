@@ -1,9 +1,10 @@
 # Non-linear host memory boundary
 
 `src/HostMemory/` supplies bounded private anonymous host allocations for the
-interpreter's explicit guest address translation. It does not implement guest
-page tables, guest mmap algorithms, file mappings, host page protection, or JIT
-memory. Those remain upstream code or separate unsupported host operations.
+interpreter's explicit guest address translation, plus explicitly enabled
+[private file snapshots](HOST-FILE-MAPPING.md). It does not implement guest
+page tables, guest mmap algorithms, host page protection, or JIT memory.
+Those remain upstream code or separate unsupported host operations.
 
 ## Reached calls and source boundary
 
@@ -49,9 +50,11 @@ entries and native allocator bookkeeping add per-allocation overhead. Each slab 
 managed runtime implements with NativeMemory allocation and a live ownership
 table. Payload bytes start at zero and addresses are aligned to 4096.
 
-Only a null-address, private anonymous, read/write request with fd=-1 and
-offset=0 is supported. Fixed addresses, file/shared mappings and other
-protections return MAP_FAILED with ENOTSUP. Zero/overflowing lengths return
+Without file-reader registration, only a null-address, private anonymous,
+read/write request with fd=-1 and offset=0 is supported. An explicitly enabled
+owner can also copy existing private file pages under the separate file-mapping
+contract. Fixed addresses, shared mappings and other protections return
+MAP_FAILED with ENOTSUP. Zero/overflowing lengths return
 EINVAL; exceeding the owner's budget returns ENOMEM without changing its live
 state. mprotect and msync return ENOTSUP, never pretend to protect or flush.
 
@@ -101,6 +104,9 @@ separate, unfinished gate.
 The final complete receipt is
 `artifacts/host-memory/attempt-p2rrmgaz/receipt.json`; successful reruns update
 `artifacts/host-memory/latest.json` without overwriting earlier attempts.
+The anonymous/actual-native-core matrix was refreshed after file-reader support
+at `artifacts/host-memory/attempt-ywdxk6r8/receipt.json`. Safe diagnostic reads
+also remain green at `artifacts/host-diagnostic/attempt-2dfnxpxb/receipt.json`.
 
 The honest managed profile selects bus.h's 32-bit-host helper path because it
 does not advertise a native CPU platform. Its emitted inline functions therefore

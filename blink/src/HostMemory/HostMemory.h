@@ -6,6 +6,11 @@
 /* One active allocation owner per worker. The limit includes rounded payload
  * and ownership record storage. No persistent CLR references live in C memory. */
 int BlinkHostMemoryBegin(size_t);
+typedef ssize_t (*BlinkHostMemoryReadAt)(int, void *, size_t, off_t);
+typedef int (*BlinkHostMemoryReadLength)(int, off_t *);
+/* Explicit per-owner callbacks; anonymous mappings need no file binding.
+ * Callbacks borrow host buffers synchronously and must preserve fd position. */
+int BlinkHostMemorySetFileReader(BlinkHostMemoryReadAt, BlinkHostMemoryReadLength);
 size_t BlinkHostMemoryBytes(void);
 size_t BlinkHostMemoryMappings(void);
 /* Nonempty range wholly within one live mapping on the current owner. Pure

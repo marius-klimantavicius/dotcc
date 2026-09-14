@@ -99,6 +99,30 @@ public static partial class Blink
         }
         catch (Exception error) { return IoException(error); }
     }
+    public static unsafe long blink_io_pread(int fd, void* destination, ulong length, long offset)
+    {
+        try
+        {
+            if (io == null) return IoError(19);
+            if (destination == null && length != 0) return IoError(14);
+            int count = (int)global::System.Math.Min(length, (ulong)IoChunk);
+            return IoResult(io.ReadAt(fd, new Span<byte>(destination, count), offset));
+        }
+        catch (Exception error) { return IoException(error); }
+    }
+    public static unsafe int blink_io_read_at_length(int fd, long* length)
+    {
+        try
+        {
+            if (io == null) return IoError(19);
+            if (length == null) return IoError(14);
+            var result = io.ReadAtLength(fd);
+            if (!result.Succeeded) return IoError((int)result.Error);
+            *length = result.Value;
+            return 0;
+        }
+        catch (Exception error) { return IoException(error); }
+    }
     public static unsafe long blink_io_write(int fd, void* source, ulong length)
     {
         try

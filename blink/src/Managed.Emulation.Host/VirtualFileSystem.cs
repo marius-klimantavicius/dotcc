@@ -155,6 +155,27 @@ public sealed class VirtualFileSystem : IDisposable
             return HostResult<int>.Success(count);
         }
     }
+    public HostResult<int> ReadAt(int descriptor, Span<byte> destination, long offset)
+    {
+        lock (sync)
+        {
+            if (!TryDescription(descriptor, out var file) || !file.Access.HasFlag(FileAccessMode.Read)) return Fail<int>(GuestError.BadDescriptor);
+            if (file.DirectoryPath != null) return Fail<int>(GuestError.IsDirectory);
+            if (offset < 0) return Fail<int>(GuestError.Invalid);
+            int count = (int)Math.Min(destination.Length, Math.Max(0, file.Node.Bytes.LongLength - offset));
+            if (count != 0) file.Node.Bytes.AsSpan((int)offset, count).CopyTo(destination);
+            if (destination.Length != 0) file.Node.AccessTicks = DateTime.UtcNow.Ticks;
+            return HostResult<int>.Success(count);
+        }
+    }
+    public HostResult<long> ReadAtLength(int descriptor)
+    {
+        lock (sync)
+        {
+            if (!TryDescription(descriptor, out var file) || !file.Access.HasFlag(FileAccessMode.Read)) return Fail<long>(GuestError.BadDescriptor);
+            return file.DirectoryPath != null ? Fail<long>(GuestError.IsDirectory) : HostResult<long>.Success(file.Node.Bytes.LongLength);
+        }
+    }
 
     public HostResult<int> Write(int descriptor, ReadOnlySpan<byte> source)
     {
