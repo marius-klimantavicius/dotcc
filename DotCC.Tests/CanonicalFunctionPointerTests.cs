@@ -72,9 +72,9 @@ public sealed class CanonicalFunctionPointerTests
         {
             var emitted = Compiler.EmitCSharp(new[] { path });
             Regex.IsMatch(emitted, @"public static delegate\*<int, int> add\s*\{\s*get\s*\{\s*if \(field == null\) field = &\w+\.add;\s*return field;").ShouldBeTrue();
-            Regex.IsMatch(emitted, @"public static delegate\*<int, int> abs\s*\{\s*get\s*\{\s*if \(field == null\) field = &\w+\.abs;\s*return field;").ShouldBeTrue();
+            Regex.IsMatch(emitted, @"public static delegate\*<int, int> abs\s*\{\s*get\s*\{\s*if \(field == null\) field = DotCcFunctions\.\w+\(\);\s*return field;").ShouldBeTrue();
             Regex.Matches(emitted, @"&\w+\.add\b").Count.ShouldBe(1);
-            Regex.Matches(emitted, @"&\w+\.abs\b").Count.ShouldBe(1);
+            Regex.Matches(emitted, @"=> &abs;").Count.ShouldBe(1);
             emitted.ShouldContain(" = global::Libc;");
             emitted.ShouldContain("DotCcProgramFunctionPointers.add");
             emitted.ShouldContain("DotCcProgramFunctionPointers.abs");

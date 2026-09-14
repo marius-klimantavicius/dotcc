@@ -509,6 +509,9 @@ productions:
       # Storage class applies to every declarator shape, including callbacks
       # returned by functions and parenthesized function names.
       - { lhs: FnSig, rhs: ['static', FnSig], action: fnSigStaticDeclarator }
+      # Function specifiers may precede the storage class as well as follow it.
+      - { lhs: FnSig, rhs: ['_Noreturn', 'static', FnSig], action: fnSigNoreturnStatic }
+      - { lhs: FnSig, rhs: ['inline', 'static', FnSig], action: fnSigInlineStatic }
       # Parenthesized function-name declarator: `T (name)(args)` ≡ `T name(args)`.
       # The parens are pure grouping around the declarator name. Lua wraps every
       # public API name this way in lua.h prototypes — `LUA_API lua_State

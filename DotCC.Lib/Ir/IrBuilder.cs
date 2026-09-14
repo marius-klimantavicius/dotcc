@@ -992,6 +992,8 @@ internal sealed partial class IrBuilder
         C.FnSigNoArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false, FunctionMacroOrigin.Contains(n.Arg1)),
         C.FnSigVoidArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false, FunctionMacroOrigin.Contains(n.Arg1)),
         C.FnSigStaticDeclarator n => ExtractFnSig(n.Arg1) with { IsStatic = true },
+        C.FnSigNoreturnStatic n => ExtractSpecifierBeforeStatic(n.Arg2, noreturn: true),
+        C.FnSigInlineStatic n => ExtractSpecifierBeforeStatic(n.Arg2, noreturn: false),
         // Parenthesized declarator name `T (name)(args)` — identical to
         // `T name(args)`; the parens are pure grouping around the name (public
         // headers wrap API names so a same-named function-like macro can't expand
@@ -1008,6 +1010,14 @@ internal sealed partial class IrBuilder
         C.FnSigRetFnPtrVoid n => new(FnPtrType(n.Arg0, null), Tok(n.Arg3), BuildParams(n.Arg5, out var vrv), vrv, false, FunctionMacroOrigin.Contains(n.Arg3)),
         _ => throw new IrUnsupportedException(TypeName(it.Content)),
     };
+
+    private FnSig ExtractSpecifierBeforeStatic(Item signature, bool noreturn)
+    {
+        var result = ExtractFnSig(signature) with { IsStatic = true };
+        if (noreturn) _sawNoreturnSpec = true;
+        else _sawInlineSpec = true;
+        return result;
+    }
 
     private List<ParamInfo> BuildParams(Item paramList, out bool variadic)
     {

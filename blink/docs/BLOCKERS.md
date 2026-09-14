@@ -124,19 +124,21 @@ it. The new bounded cursor formatter passes native and all four managed modes;
 log.c emits, and the full suite passes 2234 unit/509 functional rows (`1e10b72`).
 Wide character/string and long-double cursor conversions reject explicitly.
 
-## B014 — authored callback function-pointer owner (active)
+## B014 — authored callback function-pointer owner (fixed)
 
 Direct calls resolve authored partial Blink methods, but address thunks route
 undefined callbacks to Blink.Libc, producing CS0117. The termination boundary's
 native direct/indirect probe passes, while its preserved generated consumer fails
-at compile time. Generic lexical ownership resolution is in progress; no emitted
-C# was patched and no termination guard runtime result is claimed yet.
+at compile time. Generic lexical ownership resolution now passes direct/object-linked callback
+and runtime fallback tests. The complete termination guard matrix passes
+raw/optimized JIT/AOT, including real C function pointers; no emitted C# was patched.
 
-## B015 — declaration specifier order (active)
+## B015 — declaration specifier order (fixed)
 
 Actual memorymalloc.c declares `_Noreturn static void PanicDueToMmap(void)`.
 The parser currently rejects that legal ordering. It is a declaration-order
-defect, not an array-parameter defect; a generic reduced repair is in progress.
+defect, not an array-parameter defect. The generic reduced repair and full
+repository suite pass, and actual memorymalloc.c emits.
 
 ## Current closure and runtime gates
 
@@ -147,3 +149,11 @@ have qualified focused consumers, but the full generated interpreter has not
 yet executed guest instructions. P1–P6 remain open. The B004 exclusion mismatch
 is corrected and tested as documented in HOST-CPU.md; broader CPU/host capability
 qualification remains separate.
+
+## B016 — static-local array multi-declarators (active)
+
+Actual strace.c declares `static char abuf[64], sabuf[80]` after its TLS marker
+is intentionally removed by upstream DISABLE_THREADS. Existing single static
+arrays work; the generic multi-declarator lowering needs to reuse that rooted
+backing per declarator. Block-scope TLS is separate and is not required by this
+observed profile. The failing source and diagnostics are preserved.

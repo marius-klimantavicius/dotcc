@@ -16,6 +16,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Negated jump / nested string repairs | Warning-free build; 2228 unit pass; 507 functional pass, 1031 skipped | `scripts/test-repository.sh` |
 | Inferred outer-array dimensions | Warning-free build; 2231 unit pass; 508 functional pass, 1033 skipped | `scripts/test-repository.sh` |
 | Borrowed va_list formatting | Native/four-mode formatter matches; build clean, 2234 unit/509 functional pass, 1035 skipped | `scripts/test-repository.sh` and `artifacts/vsnprintf/attempt-cxeunj4b/receipt.json` |
+| Declaration order / external pointer ownership | Build clean; 2235 unit/514 functional pass, 1037 skipped | `scripts/test-repository.sh` |
 | Managed interpreter embedding | Translation in progress; no managed instruction execution claimed | `scripts/probe-core.sh` |
 | Private memory filesystem | Four independent assertion groups pass Linux JIT/AOT; guest callback integration pending | `scripts/test-host-files.sh` |
 | Private TCP namespace | Four assertion groups pass Linux JIT/AOT, including real backpressure/cancellation and same guest port in two instances | `scripts/test-host-sockets.sh` |
@@ -35,6 +36,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Private poll readiness | Native and four managed modes pass; real TCP, timeout, FIN/HUP, close and infinite-empty disposal | `tests/HostReadiness/run.py` |
 | Private process identity | Native C invariants and four managed modes pass; private IDs, errno and concurrent owners | `tests/HostIdentity/run.py` |
 | Private openat / fcntl | Native/four-mode control and metadata pass, native exec oracle and existing fd regressions pass | `tests/HostFileControl/run.py` |
+| Unexpected host termination | Native direct/indirect kind/status and four managed modes pass; controllers survive | `tests/HostTermination/run.py` |
 | Managed service runner | Not implemented or qualified | P4/P5 open |
 | Repository baseline | Build pass; 2218 unit pass; 490 functional pass, 1009 skipped | `scripts/test-repository.sh` |
 | Bit-field repair regressions | Build pass; 2218 unit pass; 491 functional pass, 1011 skipped | `scripts/test-repository.sh` |

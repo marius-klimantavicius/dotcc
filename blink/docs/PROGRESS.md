@@ -345,3 +345,18 @@ without claiming guest exec startup. Writable payload and fd counts are bounded,
 but zero-length node/path metadata still need a separate allocation quota.
 Measured PATH_MAX/PIPE_BUF declarations also let actual overlays.c emit; they
 do not themselves implement path policy or atomic pipe writes.
+
+## Significant progress: declaration ordering and callback ownership
+
+Generic parsing now accepts the actual `_Noreturn static` function declaration.
+Unresolved function addresses now resolve in the translated owner's lexical
+scope, matching direct calls while retaining runtime fallback and authored
+shadowing. Native reductions and direct/object-linked consumers pass; the full
+suite passes 2235 units and 514 functional rows, with 1037 explicit skips and
+a warning-free build. Actual memorymalloc.c emits beyond its declaration.
+
+The termination guard now passes native/direct/indirect and all four managed
+modes. Unexpected C exit/abort paths produce typed worker failures instead of
+terminating the controller; normal guest exit remains the upstream trap. The
+last known source parser gap is strace.c's ordinary static-local array declaration
+with multiple declarators; upstream removes its TLS marker in this profile.

@@ -344,12 +344,13 @@ public static partial class Compiler
         bool includeZig = IncludeZigRuntime(outputOptions, usesZig);
         var owner = libraryMode ? libraryClass : "DotCcProgram";
         var literals = LiteralPool.CreateOutput(typeByName, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
-        var types = RenderTypeDeclarations(typeByName, owner, emit == EmitMode.ManagedLib, literals);
+        var pointerResolvers = ResolveExternalPointerOwners(typeByName, definedNames, typeByName.Keys);
+        var types = RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals);
         globalText = literals.Rewrite(globalText);
         var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = literals.Rewrite(part.Text) }).ToArray();
         return BuildSourceFiles(literals.Rewrite(functions.ToString()), parts, aliasText,
             emit, libraryClass, importsClass, false, split, splitSize, namespaceName, nested,
-            (functionText, fileAliases, partial) => BuildShell(mainArity, RenderMacroFields(typeByName, owner, definedNames) + functionText, types, fileAliases, globalText,
+            (functionText, fileAliases, partial) => BuildShell(mainArity, pointerResolvers.Methods + RenderMacroFields(typeByName, owner, definedNames) + functionText, types, fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
                 mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig));
