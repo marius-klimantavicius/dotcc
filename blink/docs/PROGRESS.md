@@ -629,3 +629,12 @@ Current full95-source profile: generated/core-profile/attempt-wl47nc50.
 Assembly receipt: artifacts/core/objects/7a3706a7340160c6c02d5b5b2f9111d2337b0b557fa75d08c65c820ec38db2d8/receipt.json.
 All validated host bindings through exit callbacks and descriptor replacement
 are included. The raw C# build will run only after complete successful linkage.
+
+## Significant progress: actual private socket option queries
+
+getsockopt now reads real type/reuse/buffer/no-delay values from the existing
+private BCL sockets, with bounded short-output handling and unchanged failures.
+Native and raw/optimized JIT/AOT pass at host-socket-queries/attempt-mheqynnb,
+including actual option changes, callback pointers and two independent sockets
+across GC. Unsupported levels/options remain explicit errors; no unqualified
+SO_ERROR or ancillary option support is inferred.
