@@ -467,3 +467,13 @@ VFS component walk and never consult host paths or working directory. Native
 common invariants, raw/optimized JIT/AOT, and existing file/I/O regressions pass.
 Checks include two different worker cwd values, root escape rejection, unchanged
 errors, and bounded malloc/free-compatible result strings surviving GC/disposal.
+
+## Significant progress: explicit UTC calendar and instance time
+
+C time() now uses the bound realtime provider; gmtime_r/localtime_r use the
+generic pure UTC converter with an explicit UTC-only policy and declared
+years1–9999 range. Actual native calendar cases and raw/optimized JIT/AOT pass,
+including injected negative epoch times and unchanged errors. This supplies
+log.c's calendar dependency without consulting the host timezone. An initial
+copied-runner path mistake is preserved as failed harness evidence; the passing
+receipt selects and executes the intended calendar fixture.
