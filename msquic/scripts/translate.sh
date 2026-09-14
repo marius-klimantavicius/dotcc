@@ -18,7 +18,8 @@ if "$build_tools"; then
 fi
 python3 "$msquic_root/scripts/fetch.py"
 python3 "$msquic_root/scripts/test-host-contract.py"
-python3 "$msquic_root/scripts/test-abi.py" --groups public
+python3 "$msquic_root/scripts/test-abi.py" --groups public \
+  --compiler "$msquic_root/build/host-contract/compiler/dotcc.dll"
 python3 "$msquic_root/scripts/build-product.py"
 # This regeneration does not rerun or relabel historical SQLite/runtime evidence.
 python3 "$msquic_root/scripts/freeze-product.py" --without-sqlite
