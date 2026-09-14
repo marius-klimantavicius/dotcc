@@ -32,7 +32,8 @@ upstream CLI and TUI each supply their own implementation. For the fixed cases,
 the hook captures signal/code and returns. Upstream `HaltMachine` then performs
 the synchronous `siglongjmp` to `m->onhalt`. No upstream file or instruction
 algorithm is patched. This hook is qualified only for these fixed fault paths,
-without guest signal handlers, guest syscalls, or asynchronous host signals.
+without guest signal handlers or asynchronous host signals. The separate exit
+cases use actual upstream guest syscall handling.
 
 | Case | Actual guest operations | Expected result |
 | --- | --- | --- |
@@ -40,8 +41,10 @@ without guest signal handlers, guest syscalls, or asynchronous host signals.
 | Undefined | Arithmetic sequence followed by `ud2` | Four completed steps; upstream halt -3; Linux SIGILL 4/code 1; IP restored to faulting instruction |
 | Budget | `jmp` to itself | Seven completed steps; returns to caller with original IP |
 | Unmapped | `mov rax,[0]` | Zero completed steps; upstream halt -4; Linux SIGSEGV 11/code 1; original IP |
+| Exit | Linux `exit(37)` | Two completed steps; upstream halt -10; exited state with status 37 |
+| Exit group | Linux `exit_group(42)` | Two completed steps; upstream halt -10; exited state with status 42 |
 
-All four cases run twice with full `FreeMachine` cleanup between each case. The
+All six cases run twice with full `FreeMachine` cleanup between each case. The
 native adapter checks completed-step count, halt result, signal/code, RAX, memory,
 and final IP. Both repetitions passed on Linux x64 on 2026-09-14. Its ABI output
 was `Machine=22432 System=3016 ax=24 ip=0 flags=12 onhalt=1264`, in bytes.
@@ -273,5 +276,12 @@ opposite-order native/object-link/raw/optimized JIT/AOT `tests/HeaderOrder`
 regression. Four other mismatches came from the owning driver including upstream
 types without the same binding preamble. That driver now explicitly includes
 `host-bindings.h` before its probe; ordinary authored host implementation TUs
-remain separate from the upstream preamble. The next selected-object check and
-full link must validate those corrected identities before any execution claim.
+remain separate from the upstream preamble. Actual `address.c`,
+`describesignal.c` and the managed driver now link with zero aggregate conflicts
+(`objects/a5dbe30aa6538f86024de177c5c44ce54c32838083428c18a3cffd1461ecff15/three-object-link.json`).
+The next complete snapshot contains 95 sources, including the qualified private
+signal-registration, ancillary-record and exit-callback adapters. The driver
+begins callback ownership before upstream setup and runs registered callbacks
+after ordinary core destruction while its mappings and host services remain
+valid, then discards the worker. Complete linkage, C# compilation and actual
+managed execution remain required.
