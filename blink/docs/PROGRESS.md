@@ -497,3 +497,13 @@ all four managed modes pass at attempt-fwi4bpie and snapshot source hashes match
 the intended files. It also exposed missing ENAMETOOLONG in the shared header,
 which the measured host errno profile now supplies. Earlier evidence is retained
 with its actual narrower scope, not counted as detailed identity qualification.
+
+## Significant progress: complete measured host errno names
+
+The host profile now exposes 134 native-measured public errno names while
+preserving generic thread-local errno storage. All 59 existing names match;
+75 missing names are added, and preexisting mismatches fail preprocessing.
+Native and raw/optimized JIT/AOT values and thread isolation pass. This fixes
+preprocessor selection as well as unresolved names: upstream error translation
+can now include cases for errors the private callbacks already return. Fresh
+core preprocessing is required; old missing-branch objects are not reused.
