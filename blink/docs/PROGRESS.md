@@ -648,3 +648,10 @@ Other path/descriptor/allocation limits remain independent. Native ABI/common
 invariants and all4 pass at host-capacity/attempt-7y2zni_0, including growth,
 shrink, failed quotas, output atomicity, cwd/duplicates, independent owners and
 GC, plus existing HostFiles/InstanceIo regressions. No host disk is consulted.
+
+## Significant progress: actual worker scheduling hint
+
+The retained sched_yield call now invokes BCL Thread.Yield on the bound worker,
+without promising a context switch or enabling guest thread/priority features.
+Native and all4 pass at host-yield/attempt-rybwxwrz, including function pointers,
+independent worker errno and GC. Existing upstream feature selection is unchanged.
