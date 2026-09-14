@@ -184,3 +184,20 @@ with `python3 blink/tests/HostAbi/run-managed.py --timers` and `--resources`.
 `run.py` also compares their actual campaign headers against native system
 headers. These are layout and constant checks; resource-limit enforcement,
 clocks, timers, and file operations still need separately qualified host behavior.
+
+The next actual `syscall.c` diagnostic required `struct tms`. `sys/times.h`
+now supplies its four native `clock_t` fields (32 bytes/alignment 8), and maps
+`times` to an unresolved campaign declaration. Six native system/header outputs
+match under raw/optimized JIT/NativeAOT at
+`artifacts/host-abi/managed/attempt-5sm027fy/receipt.json`. Reproduce with
+`python3 blink/tests/HostAbi/run-managed.py --times`. This does not implement
+process-time accounting.
+
+`demangle.c` also retains a bare `pthread_mutexattr_t` local after Blink's own
+`DISABLE_THREADS` macros remove its mutex-attribute operations. The separate
+`retained-thread-types.h` provides native-measured opaque storage (4 bytes,
+alignment 4), exposed transitively through the campaign signal header just as
+the native headers expose the type. Guest threads and pthread operations remain
+excluded. The updated baseline passes 101 native layout comparisons and 202
+emitted observations in all four Linux variants at
+`artifacts/host-abi/managed/attempt-tbpmw7ax/receipt.json`.

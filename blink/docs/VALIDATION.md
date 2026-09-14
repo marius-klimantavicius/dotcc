@@ -17,10 +17,11 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Private memory filesystem | Four independent assertion groups pass Linux JIT/AOT; guest callback integration pending | `scripts/test-host-files.sh` |
 | Private TCP namespace | Four assertion groups pass Linux JIT/AOT, including real backpressure/cancellation and same guest port in two instances | `scripts/test-host-sockets.sh` |
 | Unified instance I/O | Four groups pass Linux JIT/AOT: common fd limits, dup lifetimes, bounded streams and disposal | `scripts/test-instance-io.sh` |
-| Host storage ABI | 198 measurements match native in raw/optimized JIT/AOT; timer14 and resource28 additional rows pass | `tests/HostAbi/run-managed.py` |
+| Host storage ABI | 202 measurements match native in raw/optimized JIT/AOT; timer14, resource28 and times6 additional rows pass | `tests/HostAbi/run-managed.py` |
 | Signal-aware virtual mask jumps | Native POSIX/virtual adapter agree with raw/optimized JIT/AOT; host OS mask unchanged | `tests/HostSignals/run.py` |
 | Unmanaged ordinary jumps | Native output matches raw/optimized JIT/AOT with forced compacting GC | `tests/JumpStorage/run.py` |
 | Jump / function parameter / array typedef repairs | Build pass; 2222 unit pass; 500 functional pass, 1025 skipped | `scripts/test-repository.sh` |
+| Bounded anonymous host memory | Native staged InitMap/allocator and raw/optimized JIT/AOT agree; staged actual native core also passes | `tests/HostMemory/run.py` |
 | Managed service runner | Not implemented or qualified | P4/P5 open |
 | Repository baseline | Build pass; 2218 unit pass; 490 functional pass, 1009 skipped | `scripts/test-repository.sh` |
 | Bit-field repair regressions | Build pass; 2218 unit pass; 491 functional pass, 1011 skipped | `scripts/test-repository.sh` |

@@ -27,12 +27,15 @@ receipt = dict(kind='executed-emitted-host-storage-not-host-runtime-or-guest-exe
                attempt=str(ATTEMPT.relative_to(ROOT)), results={}, passed=False)
 TIMERS = '--timers' in sys.argv
 RESOURCES = '--resources' in sys.argv
-HEADER_MODE = TIMERS or RESOURCES
-FAMILY = 'resource' if RESOURCES else 'timer'
+TIMES = '--times' in sys.argv
+HEADER_MODE = TIMERS or RESOURCES or TIMES
+FAMILY = 'resource' if RESOURCES else 'times' if TIMES else 'timer'
 if TIMERS:
     receipt['kind'] = 'executed-emitted-timer-header-storage-not-host-runtime'
 if RESOURCES:
     receipt['kind'] = 'executed-emitted-resource-header-storage-not-host-runtime'
+if TIMES:
+    receipt['kind'] = 'executed-emitted-process-times-header-storage-not-host-runtime'
 
 
 def sha(path):
@@ -79,8 +82,11 @@ try:
         if RESOURCES:
             shutil.copy2(ROOT / 'config/managed-host/sys/resource.h', source / 'sys/resource.h')
             shutil.copy2(ROOT / 'config/managed-host/resource-constants.h', source / 'resource-constants.h')
+        if TIMES:
+            shutil.copy2(ROOT / 'config/managed-host/sys/times.h', source / 'sys/times.h')
     else:
-        for original in [ROOT / 'tests/HostAbi/probe.c', ROOT / 'config/managed-host/abi.h']:
+        for original in [ROOT / 'tests/HostAbi/probe.c', ROOT / 'config/managed-host/abi.h',
+                         ROOT / 'config/managed-host/retained-thread-types.h']:
             shutil.copy2(original, source / original.name)
     receipt['inputs'] = {str(p.relative_to(source)):sha(p) for p in source.rglob('*') if p.is_file()}
     compiler_files = [CLI, CLI.with_name('DotCC.Lib.dll')]

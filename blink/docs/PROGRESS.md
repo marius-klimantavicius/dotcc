@@ -9,7 +9,7 @@ P0 is complete to its native baseline gate; recorded toolchain packaging limits 
 ## Ownership
 
 - Coordinator: source/host inventory, dotcc baseline and translation probes, integration, validation, and milestone/significant-progress commits.
-- Inputs worker: ordinary and signal-aware nonlocal jumps, host storage ABI qualification (after completing source/native baseline).
+- Inputs worker: bounded host memory, ordinary/signal-aware nonlocal jumps and host storage ABI qualification (after completing source/native baseline).
 - Guest worker: actual interpreter closure translation, measured host header contracts and reduced compiler blockers (after completing native guest fixture).
 
 Workers share one worktree with disjoint authored-file ownership. Shared compiler edits and repository suites are serialized by the coordinator. Generated/ref/build/artifacts content is disposable and ignored; reproducible scripts and durable summaries are committed.
@@ -32,7 +32,7 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 ## Next actions
 
-Continue actual core translation with individually recorded units and measured host declarations. Qualify the signal-aware unwind adapter, then integrate host callbacks into the bounded interpreter seam. Private filesystem/TCP modules need C marshalling and common descriptor ownership before a guest-service gate can run.
+Continue actual core translation with individually recorded units and measured host declarations. Qualify the signal-aware unwind adapter, then integrate host callbacks into the bounded interpreter seam. The unified instance I/O module needs C marshalling and callback binding before a guest-service gate can run.
 
 ## Observed validation (initial campaign baseline)
 
@@ -158,3 +158,25 @@ The full frozen core translation returned a real bare-negated setjmp diagnostic
 in debug.c after roughly six minutes. It was not a timeout. Continued isolated
 translation records progress beyond that point while the generic guard repair
 and bounded host memory adapter are qualified.
+
+## Significant progress: bounded non-linear host memory
+
+The host memory adapter owns real aligned anonymous allocations with a bounded
+payload/record budget, zero filling, exact-owner frees and explicit unsupported
+operation errors. Hash-checked staging replaces only map.c's native page/address
+discovery with 4096-byte/47-positive-bit logical capabilities and selects anonymous
+mapping without its temporary-file fallback. The guest memory algorithms remain
+upstream. Native staged InitMap and raw/optimized JIT/NativeAOT allocator tests
+agree; two independent worker-thread owners survive compacting GC.
+
+The same adapter also passes the actual native core arithmetic, budget and fault
+probe through NewSystem/page allocation. Upstream caches two mappings totaling
+270384 charged bytes after FreeSystem; final release is valid only when the
+complete worker state is discarded. The adapter does not yet bound all generic
+malloc allocations or implement mapped files/mprotect; teardown and managed core
+execution remain open. Full managed source closure now explicitly includes
+hash-pinned upstream pte32.c, which the native archive extraction omitted.
+
+Additional retained mutex-attribute storage is measured at 4-byte size/alignment.
+The host ABI baseline now passes 101 native comparisons and 202 emitted outputs
+in all four Linux modes; the times header adds six matching outputs.

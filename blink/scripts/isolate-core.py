@@ -22,6 +22,10 @@ for name, expected in profile_inputs['staged_headers'].items():
         raise SystemExit('staged profile checksum mismatch: ' + name)
 out = Path(tempfile.mkdtemp(prefix='isolate-', dir=root / 'artifacts/core'))
 closure = json.loads((root / 'artifacts/core/closure.json').read_text())
+if (profile / 'managed-additions.json').exists():
+    for entry in json.loads((profile / 'managed-additions.json').read_text())['sources']:
+        closure['sources'].append(dict(path=entry['path'], sha256=entry['sha256'],
+                                      staged_path=str(profile / 'additional' / Path(entry['path']).name)))
 command = ['dotnet', str(root.parent / 'DotCC/bin/Release/net10.0/dotcc.dll'),
            '-std=c17', '-D_GNU_SOURCE', '-DNDEBUG', '-DNOLINEAR',
            '-I', str(profile), '-I', str(root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580')]

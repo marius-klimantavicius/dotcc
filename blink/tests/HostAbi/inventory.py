@@ -19,7 +19,7 @@ types = ['sigset_t', 'siginfo_t', 'sigjmp_buf', 'jmp_buf', 'stack_t', 'sig_atomi
          'struct msghdr', 'struct cmsghdr', 'struct sockaddr', 'struct sockaddr_storage',
          'struct pollfd', 'struct sigaction', 'struct linger', 'struct ucred',
          'struct flock', 'struct timeval', 'struct timezone', 'struct itimerval',
-         'rlim_t', 'struct rlimit', 'struct rusage']
+         'rlim_t', 'struct rlimit', 'struct rusage', 'struct tms']
 while pending:
     name = pending.pop()
     if name in seen:
@@ -57,4 +57,5 @@ report = dict(kind='core-closure-recursive-lexical-header-and-type-inventory-not
               unsupported=['pthread ABI and guest threads', 'signal delivery and handler lifecycle',
                            'socket and ancillary operation implementations', 'remaining host syscall implementations'])
 (profile / 'inventory.json').write_text(json.dumps(report, indent=2)+'\n')
-print(f'Inventoried {len(headers)} header names, {len(users)} type names, {len(functions)} unresolved host operations.')
+unresolved = sum(row['implementation'] == 'unimplemented-must-remain-unresolved' for row in functions.values())
+print(f'Inventoried {len(headers)} header names, {len(users)} type names, {len(functions)} redirected host operations ({unresolved} unresolved).')

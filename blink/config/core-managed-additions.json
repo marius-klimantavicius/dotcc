@@ -1,0 +1,10 @@
+{
+  "kind": "explicit managed-profile upstream dependencies beyond native archive extraction",
+  "sources": [
+    {
+      "path": "blink/pte32.c",
+      "sha256": "33dfce2d096c6d098e3f8d0326eb012d9d6e825284066033edd22f8c5e4650a9",
+      "reason": "The honest managed bus.h profile selects CAN_64BIT=0 and needs LoadPte32_, StorePte32_, and CasPte32_; native archive extraction does not select these definitions."
+    }
+  ]
+}

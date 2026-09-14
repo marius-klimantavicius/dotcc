@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #endif
 #include "abi.h"
+#include "retained-thread-types.h"
 #ifndef BLINK_HOST_STORAGE_ONLY
 /* Reviewed staged-native signal record; never reuse libc's private padding. */
 struct NativeSignalJump {
@@ -60,6 +61,7 @@ int main(void) {
   OFFSET(struct flock, l_pid, struct blink_host_flock, l_pid);
   SIZE(sigset_t, blink_host_sigset);
   SIZE(pthread_t, blink_host_thread_id);
+  SIZE(pthread_mutexattr_t, blink_host_mutexattr_storage);
   SIZE(siginfo_t, blink_host_siginfo);
   OFFSET(siginfo_t, si_signo, blink_host_siginfo, si_signo);
   OFFSET(siginfo_t, si_errno, blink_host_siginfo, si_errno);

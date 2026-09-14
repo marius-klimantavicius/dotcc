@@ -68,6 +68,25 @@ authored=stage/'authored'
 authored.mkdir()
 for original in [p/'src/core-probe/probe.c', p/'src/HostSignals/HostSignals.c', p/'src/HostSignals/HostSignals.h']:
     shutil.copyfile(original,authored/original.name)
+additions_path=p/'config/core-managed-additions.json'
+shutil.copyfile(additions_path,stage/'managed-additions.json')
+additions=json.loads(additions_path.read_text())['sources']
+pins={row['path']:row['sha256'] for row in json.loads((p/'config/source-inventory.json').read_text())['files']}
+upstream=p/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+additional=stage/'additional'
+additional.mkdir()
+paths=[]
+for row in additions:
+    original=upstream/row['path']
+    digest=hashlib.sha256(original.read_bytes()).hexdigest()
+    if digest != row['sha256'] or digest != pins[row['path']]:
+        raise SystemExit('managed-only upstream source checksum mismatch: '+row['path'])
+    target=additional/original.name
+    shutil.copyfile(original,target)
+    if hashlib.sha256(target.read_bytes()).hexdigest() != digest:
+        raise SystemExit('staged managed-only source checksum mismatch: '+row['path'])
+    paths.append(str(target))
+(stage/'managed-source-paths.txt').write_text(''.join(path+'\n' for path in paths))
 files={str(f.relative_to(stage)):hashlib.sha256(f.read_bytes()).hexdigest() for f in stage.rglob('*') if f.is_file()}
 compiler=p.parent/'DotCC/bin/Release/net10.0'
 manifest={'staged_headers':files,'compiler':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in compiler.glob('DotCC*.dll')}}
@@ -82,6 +101,8 @@ if [[ ${1:-} == --stage-only ]]; then
   exit 0
 fi
 mapfile -t sources < "$out/source-paths.txt"
+mapfile -t additions < "$attempt/managed-source-paths.txt"
+sources+=("${additions[@]}")
 # dotcc's current include overlay uses last-wins resolution. Keep authored host
 # declarations last; unimplemented operations remain unresolved imports.
 includes=(-I "$attempt" -I "$upstream")
@@ -89,10 +110,11 @@ if [[ -d "$attempt/host" ]]; then
   includes+=(-I "$attempt/host")
 fi
 set +e
-timeout "${CORE_TRANSLATION_TIMEOUT:-180}" dotnet "$repo/DotCC/bin/Release/net10.0/dotcc.dll" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
+timeout "${CORE_TRANSLATION_TIMEOUT:-1800}" dotnet "$repo/DotCC/bin/Release/net10.0/dotcc.dll" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
   "${includes[@]}" "${sources[@]}" \
   "$attempt/authored/probe.c" "$attempt/authored/HostSignals.c" --overrides-file "$attempt/overrides.json" \
   --override-report "$attempt/override-report.jsonl" --runtime=c \
+  --emit=managedlib --nest-types --class-name Blink --namespace Managed.Emulation \
   -o "$campaign/generated/CoreProbe" > "$out/translate.log" 2>&1
 status=$?
 set -e

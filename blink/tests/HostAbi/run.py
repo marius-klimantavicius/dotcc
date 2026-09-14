@@ -87,6 +87,16 @@ resource_actual = run([str(resource_profile)])
 (OUT / 'resource-native.txt').write_text(resource_expected)
 (OUT / 'resource-profile.txt').write_text(resource_actual)
 passed = passed and resource_expected == resource_actual
+times_source = ROOT / 'tests/HostAbi/times-probe.c'
+times_native = BUILD / 'times-native'
+times_profile = BUILD / 'times-profile'
+run(compiler + [str(times_source), '-o', str(times_native)])
+run(compiler + ['-I', str(PROFILE), str(times_source), '-o', str(times_profile)])
+times_expected = run([str(times_native)])
+times_actual = run([str(times_profile)])
+(OUT / 'times-native.txt').write_text(times_expected)
+(OUT / 'times-profile.txt').write_text(times_actual)
+passed = passed and times_expected == times_actual
 receipt = dict(kind='native-host-abi-and-declaration-check-not-managed-execution',
                machine=platform.machine(), host=platform.platform(),
                compiler=run(['cc', '--version']).splitlines()[0],
@@ -94,10 +104,12 @@ receipt = dict(kind='native-host-abi-and-declaration-check-not-managed-execution
                headers={str(p.relative_to(PROFILE)):sha(p) for p in sorted(PROFILE.rglob('*.h'))},
                layouts=layouts, constants=constant_results,
                unresolvedDeclarationSymbols=unresolved, timerHeaderOutputs=len(timer_expected.splitlines()),
-               resourceHeaderOutputs=len(resource_expected.splitlines()), passed=passed)
+               resourceHeaderOutputs=len(resource_expected.splitlines()),
+               processTimesHeaderOutputs=len(times_expected.splitlines()), passed=passed)
 (OUT / 'receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
 print(f'{len(layouts)} native layout checks, {len(constant_results)} constant checks, and {len(unresolved)} isolated unresolved host declarations: {"PASS" if passed else "FAIL"}')
 print(f'{len(timer_expected.splitlines())} native timer header layout outputs: {"PASS" if timer_expected == timer_actual else "FAIL"}')
 print(f'{len(resource_expected.splitlines())} native resource header outputs: {"PASS" if resource_expected == resource_actual else "FAIL"}')
+print(f'{len(times_expected.splitlines())} native process-times header outputs: {"PASS" if times_expected == times_actual else "FAIL"}')
 if not passed:
     raise SystemExit(1)

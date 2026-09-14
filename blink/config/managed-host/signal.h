@@ -2,10 +2,12 @@
 #define BLINK_MANAGED_SIGNAL_H
 #include "abi.h"
 #include "signal-constants.h"
+#include "retained-thread-types.h"
 typedef int32_t sig_atomic_t;
 /* glibc signal.h exposes this storage type transitively; Blink uses it even
  * without guest threads. It is a scalar identity, not a pthread implementation. */
 typedef blink_host_thread_id pthread_t;
+typedef blink_host_mutexattr_storage pthread_mutexattr_t;
 typedef blink_host_sigset sigset_t;
 typedef blink_host_siginfo siginfo_t;
 typedef blink_host_signal_stack stack_t;

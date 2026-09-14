@@ -130,3 +130,43 @@ At this checkpoint, `machine.c` and `syscall.c` both reach the generic setjmp
 recognizer's unsupported `if (!(rc = sigsetjmp(...)))` shape. Object emission
 alone does not qualify linking, generated C# compilation, or guest execution;
 the actual managed core gate remains open.
+
+Full emission now uses the planned managed library shape: `--emit=managedlib
+--nest-types --class-name Blink --namespace Managed.Emulation --runtime=c`.
+The default whole-closure bound is 1800 seconds and remains configurable through
+`CORE_TRANSLATION_TIMEOUT`. The generated public upstream type remains
+`Managed.Emulation.Blink.System`; compiler/runtime framework references use
+`global::System` so that nested C name cannot capture them. Direct and object-linked
+regressions exercise the same boundary with C/all runtimes and split output.
+Default global-namespace output containing a C type named `System` is still
+unqualified: that shape requires a separate collision-safe naming design.
+
+The generic negated-assignment setjmp repair subsequently let `machine.c` emit
+in 24.6 seconds (`artifacts/core/isolate-87btc0ub/result.json`). After adding the
+native-qualified `tms` record, `syscall.c` advanced to three static assertions
+requiring `PROT_READ`, `PROT_WRITE`, and `PROT_EXEC` from the missing `sys/mman.h`
+(`artifacts/core/isolate-26kz7f86/result.json`). This is an incomplete host header
+surface, not a reason to weaken those assertions.
+
+The native-measured memory-protection header cleared those assertions, and
+`syscall.c` emitted in 28.1 seconds
+(`artifacts/core/isolate-gmmf9m7u/result.json`). `instruction.c` and `sse2.c` also
+emitted in independent bounded invocations. The complete 83-unit library is now
+attempted under one immutable profile; per-unit successes do not substitute for
+that combined emission, linking, C# build, or actual managed execution.
+
+The first combined nested-library attempt (`attempt-m53uo6gu`) completed with a
+real compiler diagnostic rather than a timeout: `debug.c:127` uses the valid
+bare negated guard `if (!setjmp(g_busted))`. Continuing source isolation after
+that unit found a retained mutex-attribute type in `demangle.c` (now qualified)
+and then the generic nested string-array initialization failure in `disarg.c`.
+The native-checked reduction is `artifacts/core/reduced/nested-string-array/`.
+
+`config/core-managed-additions.json` explicitly records unchanged upstream
+translation units required by the honest managed profile beyond the native
+archive extraction. The initial addition is `pte32.c`: the managed `CAN_64BIT=0`
+path needs its page-table helpers. Each additional source is checked against
+both this manifest and `source-inventory.json`, then copied and hashed into the
+unique profile snapshot. It is not retroactively labelled part of the native
+83-unit archive closure. The isolation script can target these additional units
+as well as the native-selected ones.

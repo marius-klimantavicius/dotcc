@@ -506,7 +506,7 @@
         "blink/syscall.c",
         "blink/xlat.c"
       ],
-      "status": "missing-or-native-conditional-requires-profile-review"
+      "status": "campaign-declaration-only"
     },
     {
       "header": "sys/mount.h",
@@ -639,7 +639,7 @@
       "referencedBy": [
         "blink/syscall.c"
       ],
-      "status": "missing-or-native-conditional-requires-profile-review"
+      "status": "campaign-declaration-only"
     },
     {
       "header": "sys/types.h",
@@ -919,6 +919,9 @@
     "struct timezone": [
       "blink/syscall.c"
     ],
+    "struct tms": [
+      "blink/syscall.c"
+    ],
     "struct ucred": [
       "blink/ancillary.c"
     ]
@@ -1002,6 +1005,26 @@
     "raise": {
       "target": "blink_host_raise",
       "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "mmap": {
+      "target": "blink_host_mmap",
+      "header": "sys/mman.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "munmap": {
+      "target": "blink_host_munmap",
+      "header": "sys/mman.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "mprotect": {
+      "target": "blink_host_mprotect",
+      "header": "sys/mman.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "msync": {
+      "target": "blink_host_msync",
+      "header": "sys/mman.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
     "getrlimit": {
@@ -1137,6 +1160,11 @@
     "setitimer": {
       "target": "blink_host_setitimer",
       "header": "sys/time.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "times": {
+      "target": "blink_host_times",
+      "header": "sys/times.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
     "readv": {
