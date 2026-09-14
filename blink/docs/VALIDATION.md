@@ -24,6 +24,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Jump / function parameter / array typedef repairs | Build pass; 2222 unit pass; 500 functional pass, 1025 skipped | `scripts/test-repository.sh` |
 | Bounded anonymous host memory | Native staged InitMap/allocator and raw/optimized JIT/AOT agree; staged actual native core also passes | `tests/HostMemory/run.py` |
 | Owned diagnostic reads / explicit byte order | Native untouched/staged and four managed modes agree; independent actual upstream load/store byte checks pass | `tests/HostMemory/run-diagnostic.py` |
+| Authored clock / entropy callbacks | Native C invariants and four managed modes pass, including injected providers and failures | `tests/HostEnvironment/run.py` |
 | Managed service runner | Not implemented or qualified | P4/P5 open |
 | Repository baseline | Build pass; 2218 unit pass; 490 functional pass, 1009 skipped | `scripts/test-repository.sh` |
 | Bit-field repair regressions | Build pass; 2218 unit pass; 491 functional pass, 1011 skipped | `scripts/test-repository.sh` |

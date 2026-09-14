@@ -208,3 +208,17 @@ Independent byte-pattern read/store checks pass. Decoder, bounded memory/native
 core, and all 236 actual core ABI observations were freshly requalified in all
 four managed modes with this profile. Full-core staging snapshots both precise
 host boundaries and its one-shot worker allocation owner.
+
+## Significant progress: real clock and entropy callbacks
+
+An authored bridge now binds per-instance BCL clock/secure entropy providers on
+an explicit C worker thread. Translated C calls are exercised against a native
+probe in raw/optimized JIT/AOT, with deterministic injection, short requests,
+provider failures and unbound errors checked by the consumer. All pass. The
+bridge contains managed exceptions and holds managed ownership outside C storage.
+Full-core capability selection and guest pointer/syscall integration remain open.
+
+Current ownership: coordinator integrates host callbacks and commits; guest
+worker owns inferred outer-array dimensions and subsequent core closure
+translation; inputs worker audits advertised CPUID against excluded handlers.
+P0 is passed. P1 remains active; P2–P6 remain open.
