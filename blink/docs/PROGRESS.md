@@ -141,3 +141,20 @@ isolated objects after measured host declarations and generic fixes. Full
 bound. The memory worker is implementing explicit bounded host allocation and
 capabilities to replace arbitrary native address probing and temporary-file
 fallback; upstream guest memory algorithms remain unchanged.
+
+## Significant progress: one instance I/O descriptor table
+
+`InstanceIo` now owns files, sockets and standard streams through one bounded
+descriptor namespace. Dup shares file/input cursors and socket lifetime; only
+the last socket close cancels its operations. Standard input is cloned/bounded,
+and stdout/stderr share a bounded capture budget with exact short writes and
+owned snapshots. Failed allocation cannot create or truncate a file. Disposal
+releases input/files, drains socket/accept operations, and retains only bounded
+captured logs for the caller. Four independent consumer assertion groups pass
+Linux JIT/NativeAOT without build warnings. Guest C callback marshalling remains
+pending, so this is host implementation progress and not guest-service startup.
+
+The full frozen core translation returned a real bare-negated setjmp diagnostic
+in debug.c after roughly six minutes. It was not a timeout. Continued isolated
+translation records progress beyond that point while the generic guard repair
+and bounded host memory adapter are qualified.

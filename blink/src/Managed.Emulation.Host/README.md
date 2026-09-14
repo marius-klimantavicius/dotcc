@@ -50,7 +50,30 @@ backpressure, bounded disposal and descriptor exhaustion. Four assertion groups
 pass under Linux x64 JIT and NativeAOT; source/binary/output receipts accompany
 both host test suites.
 
-This typed contract still needs guest callback marshalling, a descriptor table
-shared with files and standard streams, nonblocking flag translation, descriptor
-duplication, multi-descriptor poll, and any explicit outbound allowlist policy.
+`InstanceIo` supplies the common descriptor table and duplication for files,
+sockets and standard streams. Guest callback marshalling, nonblocking flag
+translation, multi-descriptor poll and any explicit outbound allowlist policy
+remain pending.
 It does not yet run a guest service or qualify P4/P5.
+
+## Common instance I/O
+
+`InstanceIo` owns both modules behind one descriptor namespace. Descriptors 0–2
+start as private input and captured output/error streams. Open/socket/dup/accept
+share one limit; released numbers are reused. Dup shares the open description
+and file/input cursor. A socket stays open until its final descriptor closes,
+including listening sockets. Failed descriptor allocation cannot create or
+truncate a file.
+
+Standard input is cloned and bounded. Output/error have one aggregate byte limit,
+report short writes at quota and return explicit errors once full. Captured
+snapshots are copies; bounded logs remain readable after disposal. Disposal
+releases input/file storage, cancels sockets and awaits pending acceptance and
+network I/O before completing. Captured logs remain owned until this managed
+object is collected.
+
+`test-instance-io.sh` passes four assertion groups in Linux JIT/NativeAOT for
+common descriptor numbers, file/input cursors, output ownership/quotas, resource
+failure atomicity, real TCP through duplicated handles, final-close cancellation,
+disposal and two-instance isolation. Guest pointer marshalling, Linux wire flags,
+vectored I/O and multi-descriptor poll still need the actual core callback bridge.
