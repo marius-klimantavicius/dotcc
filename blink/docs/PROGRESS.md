@@ -319,3 +319,12 @@ functional tests; 1035 functional rows are explicitly skipped. The next shared
 fixes are `_Noreturn static` declaration ordering and unresolved authored callback
 function-pointer ownership. The latter currently prevents the termination-guard
 probe's C# build; the failed generated snapshot remains preserved.
+
+## Significant progress: private process identity
+
+Read-only C process/credential queries now have explicit per-worker identity
+bindings. Default PID1/parent0 and uid/gid0 match the single private process and
+filesystem owner; no host identity is queried or changed. Native C invariants
+and raw/optimized JIT/AOT pass, including exact injected IDs, errno preservation,
+unbound errors, concurrent workers and compacting GC. Full-core startup must
+bind this before NewSystem; credential/process mutation remains unsupported.

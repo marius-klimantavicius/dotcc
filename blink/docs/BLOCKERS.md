@@ -96,3 +96,54 @@ namespace qualification. The C type name is preserved in planned nested library
 output. Direct/object-linked separate consumers and the actual 236-row core ABI
 probe pass raw/optimized JIT/NativeAOT. Global executable output still collides
 with the root namespace and is not the selected Blink library layout.
+
+## B010 — bare negated jump guard (fixed)
+
+Actual debug.c uses `if (!sigsetjmp(...))`. Generic lowering now protects the
+complete block tail and preserves later/repeated recovery jumps. Native and
+forced-GC four-mode jump tests and repository regressions pass (`6ceff18`).
+
+## B011 — nested string rows and omitted outer bounds (fixed)
+
+Actual disarg.c needed target-typed character string rows; disspec.c then exposed
+`table[][8][8]`. Generic initializer and grammar fixes preserve retained inner
+bounds and infer only the omitted outer extent. Native reductions and the full
+repository suite pass; both actual sources emit (`6ceff18`, `3eccb02`).
+
+## B012 — implicit preprocessor endian comparison (fixed)
+
+Undefined endian macros compared as zero and selected swapping for aligned
+16/32-bit upstream reads. The explicit measured little-endian storage profile
+fixes selection without declaring a native CPU or OS. Independent literal-byte
+load/store tests, decoder and actual core ABI matrices pass (`7b36060`).
+
+## B013 — missing borrowed va_list formatter (fixed)
+
+Actual log.c could not call vsnprintf because the generic header/runtime lacked
+it. The new bounded cursor formatter passes native and all four managed modes;
+log.c emits, and the full suite passes 2234 unit/509 functional rows (`1e10b72`).
+Wide character/string and long-double cursor conversions reject explicitly.
+
+## B014 — authored callback function-pointer owner (active)
+
+Direct calls resolve authored partial Blink methods, but address thunks route
+undefined callbacks to Blink.Libc, producing CS0117. The termination boundary's
+native direct/indirect probe passes, while its preserved generated consumer fails
+at compile time. Generic lexical ownership resolution is in progress; no emitted
+C# was patched and no termination guard runtime result is claimed yet.
+
+## B015 — declaration specifier order (active)
+
+Actual memorymalloc.c declares `_Noreturn static void PanicDueToMmap(void)`.
+The parser currently rejects that legal ordering. It is a declaration-order
+defect, not an array-parameter defect; a generic reduced repair is in progress.
+
+## Current closure and runtime gates
+
+Full source emission/linkage remains in progress. Measured terminal, stat, limits
+and statvfs declarations remove source-level gaps; unimplemented operations stay
+isolated rather than binding generic host services. The private host components
+have qualified focused consumers, but the full generated interpreter has not
+yet executed guest instructions. P1–P6 remain open. The B004 exclusion mismatch
+is corrected and tested as documented in HOST-CPU.md; broader CPU/host capability
+qualification remains separate.
