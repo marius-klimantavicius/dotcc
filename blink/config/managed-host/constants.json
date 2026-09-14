@@ -318,5 +318,12 @@
     "PRIO_PROCESS": 0,
     "PRIO_PGRP": 1,
     "PRIO_USER": 2
+  },
+  "ioctl": {
+    "TIOCGWINSZ": 21523,
+    "TIOCSWINSZ": 21524,
+    "FIONREAD": 21531,
+    "TIOCOUTQ": 21521,
+    "TIOCSTI": 21522
   }
 }

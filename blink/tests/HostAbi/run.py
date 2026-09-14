@@ -43,7 +43,7 @@ for family, values in constants.items():
                                 (PROFILE / (family + '-constants.h')).read_text(), re.M)}
     if header_values != values:
         raise SystemExit(f'{family} constant header differs from its pinned manifest')
-    header = {'socket':'sys/socket.h', 'timer':'sys/time.h', 'resource':'sys/resource.h'}.get(family, family + '.h')
+    header = {'socket':'sys/socket.h', 'timer':'sys/time.h', 'resource':'sys/resource.h', 'ioctl':'sys/ioctl.h'}.get(family, family + '.h')
     source = '#define _GNU_SOURCE 1\n#include <stdio.h>\n#include <' + header + '>\nint main(void){\n'
     for name in values:
         source += 'printf("' + name + ' %llu\\n", (unsigned long long)(' + name + '));\n'
@@ -97,6 +97,24 @@ times_actual = run([str(times_profile)])
 (OUT / 'times-native.txt').write_text(times_expected)
 (OUT / 'times-profile.txt').write_text(times_actual)
 passed = passed and times_expected == times_actual
+ioctl_source = ROOT / 'tests/HostAbi/ioctl-probe.c'
+ioctl_native = BUILD / 'ioctl-native'
+ioctl_profile = BUILD / 'ioctl-profile'
+run(compiler + [str(ioctl_source), '-o', str(ioctl_native)])
+run(compiler + ['-I', str(PROFILE), str(ioctl_source), '-o', str(ioctl_profile)])
+ioctl_expected = run([str(ioctl_native)])
+ioctl_actual = run([str(ioctl_profile)])
+(OUT / 'ioctl-native.txt').write_text(ioctl_expected)
+(OUT / 'ioctl-profile.txt').write_text(ioctl_actual)
+passed = passed and ioctl_expected == ioctl_actual
+ioctl_declaration = OUT / 'ioctl-declaration.c'
+ioctl_declaration.write_text('#include <sys/ioctl.h>\nint probe(int fd, struct winsize *ws) { return ioctl(fd, TIOCGWINSZ, ws); }\n')
+ioctl_obj = BUILD / 'ioctl-declaration.o'
+run(compiler + ['-I', str(PROFILE), '-c', str(ioctl_declaration), '-o', str(ioctl_obj)])
+ioctl_symbols = run(['nm', '-u', '-P', str(ioctl_obj)])
+(OUT / 'ioctl-declaration-symbols.txt').write_text(ioctl_symbols)
+if [line.split()[0] for line in ioctl_symbols.splitlines()] != ['blink_host_ioctl']:
+    raise SystemExit('ioctl declaration did not stay isolated: ' + ioctl_symbols)
 receipt = dict(kind='native-host-abi-and-declaration-check-not-managed-execution',
                machine=platform.machine(), host=platform.platform(),
                compiler=run(['cc', '--version']).splitlines()[0],
@@ -105,11 +123,14 @@ receipt = dict(kind='native-host-abi-and-declaration-check-not-managed-execution
                layouts=layouts, constants=constant_results,
                unresolvedDeclarationSymbols=unresolved, timerHeaderOutputs=len(timer_expected.splitlines()),
                resourceHeaderOutputs=len(resource_expected.splitlines()),
-               processTimesHeaderOutputs=len(times_expected.splitlines()), passed=passed)
+               processTimesHeaderOutputs=len(times_expected.splitlines()),
+               ioctlHeaderOutputs=len(ioctl_expected.splitlines()),
+               ioctlUnresolvedSymbols=['blink_host_ioctl'], passed=passed)
 (OUT / 'receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
 print(f'{len(layouts)} native layout checks, {len(constant_results)} constant checks, and {len(unresolved)} isolated unresolved host declarations: {"PASS" if passed else "FAIL"}')
 print(f'{len(timer_expected.splitlines())} native timer header layout outputs: {"PASS" if timer_expected == timer_actual else "FAIL"}')
 print(f'{len(resource_expected.splitlines())} native resource header outputs: {"PASS" if resource_expected == resource_actual else "FAIL"}')
 print(f'{len(times_expected.splitlines())} native process-times header outputs: {"PASS" if times_expected == times_actual else "FAIL"}')
+print(f'{len(ioctl_expected.splitlines())} native ioctl header outputs: {"PASS" if ioctl_expected == ioctl_actual else "FAIL"}')
 if not passed:
     raise SystemExit(1)

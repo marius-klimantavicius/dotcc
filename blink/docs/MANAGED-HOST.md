@@ -201,3 +201,12 @@ the native headers expose the type. Guest threads and pthread operations remain
 excluded. The updated baseline passes 101 native layout comparisons and 202
 emitted observations in all four Linux variants at
 `artifacts/host-abi/managed/attempt-tbpmw7ax/receipt.json`.
+
+The actual `ioctl.c` closure now has a measured `struct winsize` (8 bytes,
+alignment 2; four unsigned-short fields at offsets 0/2/4/6) and five Linux ioctl
+request constants. Eleven observations match native system headers under all
+four raw/optimized JIT/NativeAOT variants at
+`artifacts/host-abi/managed/attempt-ufqsvt_s/receipt.json`; reproduce with
+`python3 blink/tests/HostAbi/run-managed.py --ioctl`. The native declaration
+probe confirms the only ioctl import is `blink_host_ioctl`. Terminal operation
+behavior remains unresolved; these declarations provide no implementation.

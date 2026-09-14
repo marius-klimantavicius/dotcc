@@ -94,8 +94,8 @@ config=(stage/'config.h').read_text()
 if '#define NOLINEAR 1' not in config or '#define HAVE_MAP_ANONYMOUS 1' not in config or not (stage/'host/sys/mman.h').is_file():
     raise SystemExit('HostMemory requires NOLINEAR, HAVE_MAP_ANONYMOUS, and the campaign mman header together')
 source_overrides={}
-for basename in ('map','debug'):
-    tool=p/('src/HostMemory/stage-'+basename+'.py')
+for basename, directory in (('map','HostMemory'),('debug','HostMemory'),('cpuid','HostCpu')):
+    tool=p/('src/'+directory+'/stage-'+basename+'.py')
     snapshot=stage/tool.name
     shutil.copyfile(tool,snapshot)
     adapted=stage/'upstream'/(basename+'.c')

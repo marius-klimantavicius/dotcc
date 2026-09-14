@@ -28,14 +28,19 @@ receipt = dict(kind='executed-emitted-host-storage-not-host-runtime-or-guest-exe
 TIMERS = '--timers' in sys.argv
 RESOURCES = '--resources' in sys.argv
 TIMES = '--times' in sys.argv
-HEADER_MODE = TIMERS or RESOURCES or TIMES
-FAMILY = 'resource' if RESOURCES else 'times' if TIMES else 'timer'
+IOCTL = '--ioctl' in sys.argv
+HEADER_MODE = TIMERS or RESOURCES or TIMES or IOCTL
+FAMILY = 'ioctl' if IOCTL else 'resource' if RESOURCES else 'times' if TIMES else 'timer'
 if TIMERS:
     receipt['kind'] = 'executed-emitted-timer-header-storage-not-host-runtime'
 if RESOURCES:
     receipt['kind'] = 'executed-emitted-resource-header-storage-not-host-runtime'
 if TIMES:
     receipt['kind'] = 'executed-emitted-process-times-header-storage-not-host-runtime'
+
+
+if IOCTL:
+    receipt['kind'] = 'executed-emitted-ioctl-header-storage-not-host-runtime'
 
 
 def sha(path):
@@ -84,6 +89,9 @@ try:
             shutil.copy2(ROOT / 'config/managed-host/resource-constants.h', source / 'resource-constants.h')
         if TIMES:
             shutil.copy2(ROOT / 'config/managed-host/sys/times.h', source / 'sys/times.h')
+        if IOCTL:
+            shutil.copy2(ROOT / 'config/managed-host/sys/ioctl.h', source / 'sys/ioctl.h')
+            shutil.copy2(ROOT / 'config/managed-host/ioctl-constants.h', source / 'ioctl-constants.h')
     else:
         for original in [ROOT / 'tests/HostAbi/probe.c', ROOT / 'config/managed-host/abi.h',
                          ROOT / 'config/managed-host/retained-thread-types.h']:

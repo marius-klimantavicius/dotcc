@@ -266,3 +266,13 @@ instruction probes verify excluded x87/MMX/BMI2/ADX faults and retained SSE2/
 FXSAVE-XMM behavior. The retained-feature inventory distinguishes selected code
 from qualification. This resolves the demonstrated B004 mismatch; broad managed
 instruction/timing/entropy/syscall qualification remains open.
+
+## Significant progress: terminal ABI and continued core closure
+
+Native-measured terminal size storage and five ioctl constants now qualify in
+11 exact rows under raw/optimized JIT/AOT. Calls are isolated as blink_host_ioctl
+and remain unimplemented; the declaration never reports false success. Actual
+ioctl.c emits. Core snapshots also include the qualified CPUID adaptation.
+The next actual source gap is log.c's vsnprintf dependency: its generic header
+and runtime lacked the required va_list formatter. A reduced generic repair is
+in progress while the independent source scan continues.

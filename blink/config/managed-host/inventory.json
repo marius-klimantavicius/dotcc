@@ -491,7 +491,7 @@
         "blink/xlat.c",
         "blink/xlat.h"
       ],
-      "status": "missing-or-native-conditional-requires-profile-review"
+      "status": "campaign-declaration-only"
     },
     {
       "header": "sys/mman.h",
@@ -537,7 +537,7 @@
       "referencedBy": [
         "blink/random.c"
       ],
-      "status": "missing-or-native-conditional-requires-profile-review"
+      "status": "campaign-declaration-only"
     },
     {
       "header": "sys/resource.h",
@@ -924,6 +924,13 @@
     ],
     "struct ucred": [
       "blink/ancillary.c"
+    ],
+    "struct winsize": [
+      "blink/fds.h",
+      "blink/ioctl.c",
+      "blink/syscall.c",
+      "blink/xlat.c",
+      "blink/xlat.h"
     ]
   },
   "redirectedFunctions": {
@@ -935,6 +942,11 @@
     "open": {
       "target": "blink_host_open",
       "header": "fcntl.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "clock_gettime": {
+      "target": "blink_host_clock_gettime",
+      "header": "host-clock.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
     "poll": {
@@ -1007,6 +1019,11 @@
       "header": "signal.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
+    "ioctl": {
+      "target": "blink_host_ioctl",
+      "header": "sys/ioctl.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
     "mmap": {
       "target": "blink_host_mmap",
       "header": "sys/mman.h",
@@ -1025,6 +1042,16 @@
     "msync": {
       "target": "blink_host_msync",
       "header": "sys/mman.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "getrandom": {
+      "target": "blink_host_getrandom",
+      "header": "sys/random.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "getentropy": {
+      "target": "blink_host_getentropy",
+      "header": "sys/random.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
     "getrlimit": {

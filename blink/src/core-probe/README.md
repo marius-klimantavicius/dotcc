@@ -186,3 +186,17 @@ array-field initializer for standalone character arrays. The native-checked
 fixture includes partial rows, exact-size literals, UTF-16/UTF-32, local/static
 storage, and ordinary pointer arrays. The unchanged `disarg.c` then emitted in
 19.5 seconds (`artifacts/core/isolate-443uvfbh/result.json`).
+
+The generic omitted-outer-extent array fix lets unchanged `disspec.c` emit its
+nested name table; the reduced fixture checks brace-grouped, fully flat,
+character, pointer, static and local arrays against native C. The complete
+repository suite passes 2,231 unit and 508 functional tests (1,033 skips).
+
+New profile snapshots also apply `HostCpu/stage-cpuid.py`, preserving the
+original source hash and separately recording the staged result. Its only
+changes guard three advertised MMX/x87 bits with the existing feature switches;
+qualification lives in `tests/HostCpu`, including native flag combinations and
+actual representative instruction probes. This does not replace instruction
+execution. The terminal-size declaration addition lets actual `ioctl.c` emit
+(`artifacts/core/isolate-3dwb1gji/result.json`); complete managed linkage and the
+repeated instruction harness remain the open P1 gate.
