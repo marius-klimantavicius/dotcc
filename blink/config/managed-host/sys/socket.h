@@ -10,7 +10,9 @@ typedef uint16_t sa_family_t;
 #define sockaddr_storage blink_host_sockaddr_storage
 #define msghdr blink_host_msghdr
 #define cmsghdr blink_host_cmsghdr
-#define linger blink_host_linger
+/* Keep the standard tag local to the authored header. A token macro for
+ * linger also rewrites unrelated guest fields such as linger_linux.linger. */
+struct linger { int32_t l_onoff; int32_t l_linger; };
 #define ucred blink_host_ucred
 #define socket blink_host_socket
 #define bind blink_host_bind

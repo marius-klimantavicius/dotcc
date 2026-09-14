@@ -264,3 +264,14 @@ A changed consumer-only snapshot reuses both corrected objects with their
 original provenance (`objects/5227a9f241306a2c78f9ec6bb51c2fc35b738309ea3c702b7fa93dcf9fdab722/receipt.json`).
 The prior full set remains failed evidence and cannot be reused under the new
 layout identity. A complete corrected link and real execution remain required.
+
+The corrected shared-header pass emitted all 92 objects but exposed a separate
+binding-profile inconsistency (`objects/92682452e55497bb04f491b8938eaa6a6304c8c1a3073fc2558a6f34486f1576/all-aggregate-conflicts.json`).
+A socket tag macro changed `linger_linux.linger` in only some include orders;
+the socket header now declares the real `struct linger` tag, qualified by the
+opposite-order native/object-link/raw/optimized JIT/AOT `tests/HeaderOrder`
+regression. Four other mismatches came from the owning driver including upstream
+types without the same binding preamble. That driver now explicitly includes
+`host-bindings.h` before its probe; ordinary authored host implementation TUs
+remain separate from the upstream preamble. The next selected-object check and
+full link must validate those corrected identities before any execution claim.

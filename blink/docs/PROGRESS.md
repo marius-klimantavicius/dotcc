@@ -614,3 +614,18 @@ ABCA native callback trace, two workers and GC (host-exit-callbacks/attempt-_nkm
 Actual upstream cleanup callbacks must run after guest execution stops and before
 IO, signal/memory owners or cached environment pointers are discarded. Immediate
 exit/abort remains a separate policy. This does not qualify full core execution.
+
+## Significant progress: corrected binding profile and normal cleanup integration
+
+Socket tag macros no longer rename unrelated guest fields, and the embedding
+driver sees the same binding preamble as upstream TUs. Opposite-order native and
+all4 object-linked checks pass; actual address/describesignal/driver objects have
+no aggregate signature conflicts and link. The owning driver now begins private
+signal/exit contexts, runs genuine cleanup callbacks before owner teardown, and
+the C# consumer binds its sleep owner. Consumer preparation passes against the
+frozen snapshot; this is not complete interpreter execution evidence.
+
+Current full95-source profile: generated/core-profile/attempt-wl47nc50.
+Assembly receipt: artifacts/core/objects/7a3706a7340160c6c02d5b5b2f9111d2337b0b557fa75d08c65c820ec38db2d8/receipt.json.
+All validated host bindings through exit callbacks and descriptor replacement
+are included. The raw C# build will run only after complete successful linkage.

@@ -166,7 +166,7 @@ signal-info structs, because each TU used a distinct physical copy of abi.h.
 Anonymous names include header paths. The staging helper now shares one canonical
 content-addressed header tree and keeps stable per-source paths. Actual two-object
 and 17-object links pass. All 92 objects emit, but full linkage reports a distinct
-linger_linux conflict (address.c/describesignal.c), under investigation. This was campaign
+linger_linux conflict (address.c/describesignal.c), subsequently resolved by B021. This was campaign
 staging identity, not an upstream instruction or compiler algorithm change.
 
 ## B018 — generic Libc System.IO.Path shadowing (open)
@@ -195,3 +195,19 @@ backend-generated members, preserving attributes and bodies while retaining
 identical-definition deduplication. Actual signal registry object-link all4 passes.
 Combined full suite: warning-free build,2238 unit and520 functional tests pass,
 1041 explicit skips; artifacts/repository-tls-global-member.log.
+
+## B021 — binding macros change aggregate identity across include orders (fixed)
+
+A socket tag macro rewrote upstream linger_linux.linger only when socket.h was
+included first. The authored socket header now declares its actual struct linger
+tag without that token macro. Four other aggregate mismatches came from the
+embedding driver including upstream types without the shared binding preamble;
+the driver now includes host-bindings.h before its probe. No upstream guest
+record or instruction algorithm was changed.
+
+Opposite include orders pass native, separate object linking, raw/optimized JIT
+and NativeAOT (header-order/attempt-017h8krz). Actual address.c, describesignal.c
+and managed-driver.c also link with zero conflicting aggregate signatures:
+objects/a5dbe30aa6538f86024de177c5c44ce54c32838083428c18a3cffd1461ecff15/three-object-link.json.
+The new 95-source frozen full profile is building; full managed execution remains
+an open gate, not implied by this reduced linkage.
