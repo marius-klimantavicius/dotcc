@@ -12,11 +12,13 @@ namespace DotCC.FunctionalTests;
 public sealed partial class ManagedLibraryTests
 {
     [Theory]
-    [InlineData(false, false, SourceSplit.None)]
-    [InlineData(false, true, SourceSplit.Function)]
-    [InlineData(true, false, SourceSplit.Size)]
-    [InlineData(true, true, SourceSplit.Function)]
-    public void Inline_exports_execute_with_distinct_callbacks_and_state(bool link, bool nested, SourceSplit split)
+    [InlineData(false, false, SourceSplit.None, false)]
+    [InlineData(false, true, SourceSplit.Function, false)]
+    [InlineData(true, false, SourceSplit.Size, false)]
+    [InlineData(true, true, SourceSplit.Function, false)]
+    [InlineData(false, true, SourceSplit.Function, true)]
+    [InlineData(true, false, SourceSplit.Size, true)]
+    public void Inline_exports_execute_with_distinct_callbacks_and_state(bool link, bool nested, SourceSplit split, bool literalPool)
     {
         var dir = Path.Combine(Path.GetTempPath(), "dotcc-inline-consumer-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(dir);
@@ -41,6 +43,7 @@ public sealed partial class ManagedLibraryTests
                     return result;
                 }
                 static inline int api_recursive(int x) { return x ? api_recursive(x - 1) : 42; }
+                static inline const char *api_text(void) { return "inline literal"; }
                 static inline int callback(int x) { return x + 7; }
                 static inline int state(void) { static int STATE; return ++STATE; }
                 static inline int variant(void) { return VALUE; }
@@ -77,10 +80,11 @@ public sealed partial class ManagedLibraryTests
             if (link)
                 paths = paths.Select(p => { var obj = Path.ChangeExtension(p, ".o"); File.WriteAllText(obj, Compiler.EmitObject(p)); return obj; }).ToArray();
             var options = new CSharpOutputOptions(NestTypes: nested, Runtime: RuntimeProfile.C,
-                DeduplicateInline: true, ExportInline: new[] { "api_*" });
+                DeduplicateInline: true, ExportInline: new[] { "api_*" }, LiteralPool: literalPool);
             var files = link
                 ? Compiler.LinkObjectFiles(paths, emit: EmitMode.ManagedLib, className: "Api", namespaceName: "Example", split: split, outputOptions: options)
                 : Compiler.EmitCSharpFiles(paths, emit: EmitMode.ManagedLib, className: "Api", namespaceName: "Example", split: split, outputOptions: options);
+            string.Join("\n", files.Values).Contains("DotCcLiterals.Pointer", StringComparison.Ordinal).ShouldBe(literalPool);
             var references = RuntimeReferences();
             var compilation = CSharpCompilation.Create("InlineLibrary" + Guid.NewGuid().ToString("N"),
                 files.Select(f => ParseSource(f.Value, path: f.Key)), references,
@@ -100,7 +104,8 @@ public sealed partial class ManagedLibraryTests
                         var b = Api.second_pointer();
                         var solo = Api.solo_pointer();
                         var external = Api.external_pointer();
-                        return Api.auto_value(&holder) == 23 && Api.api_sum(&pair) == 15 && Api.first(&pair) == 26 && Api.second(&pair) == 32
+                        return System.Runtime.InteropServices.Marshal.PtrToStringUTF8((nint)Api.api_text()) == "inline literal"
+                            && Api.auto_value(&holder) == 23 && Api.api_sum(&pair) == 15 && Api.first(&pair) == 26 && Api.second(&pair) == 32
                             && Api.api_constant(5) == 17 && Api.api_recursive(5) == 42 && a != b && a(3) == 10 && b(4) == 11
                             && a == Api.first_pointer() && b == Api.second_pointer()
                             && Api.first_state() == 1 && Api.first_state() == 2 && Api.second_state() == 1

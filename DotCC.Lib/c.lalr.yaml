@@ -377,8 +377,8 @@ symbols:
   # byte side-table — deliberately NOT the standard's comma-separated list of
   # integer constants, which for a multi-MB file would explode into millions of
   # tokens/AST nodes. The single carrier rides the existing char-array
-  # productions (the `'{' EMBED '}'` forms below) and lowers to an RVA blob
-  # (const) or a pinned writable array (non-const) — see CSharpBackend. Same
+  # productions (the `'{' EMBED '}'` forms below); the backend selects storage
+  # based on constness and --literal-pool — see CSharpBackend. Same
   # injection pattern as TYPE_NAME/the sizeof fold: a terminal produced by an
   # upstream stage, never lexed.
   - EMBED          # 164 synthetic terminal (C23 #embed) — file-bytes carrier
@@ -469,7 +469,7 @@ symbols:
 
   # C23 char8_t literals (<uchar.h>). `u8"…"` is a UTF-8 string (char8_t* → C#
   # byte*); `u8'x'` is a char8_t constant. dotcc's plain narrow strings are
-  # ALREADY UTF-8, so u8"…" lowers on the SAME byte path (Libc.L(…u8)) — the
+  # ALREADY UTF-8, so u8"…" lowers on the SAME byte string path — the
   # `u8`-prefixed lexer rules below must precede the `u"…"` / STRING rules.
   - U8STRING       # 189 char8_t string literal — u8"…"
   - U8CHAR         # 190 char8_t char constant — u8'x'
@@ -866,8 +866,8 @@ productions:
       # every Type position (decl, member, param, cast, return) — no per-form
       # blow-up. The visitor drops the qualifier from the emitted C# type string
       # (C# has no C-`const` local and no aliasing model) but flags the CType:
-      # `const` drives the const-correctness check + the read-only-array RVA fast
-      # path; `volatile` drives `Volatile.Read`/`Volatile.Write` lowering.
+      # `const` drives the const-correctness check; `volatile` drives
+      # `Volatile.Read`/`Volatile.Write` lowering.
       # NOTE: pre+post on the SAME core (`volatile int volatile`) is grammatically
       # ambiguous but semantically idempotent (Quals OR-in), so the enclosing
       # precedence group resolves it deterministically. Interspersing a qualifier
@@ -1302,7 +1302,7 @@ productions:
       - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', '{', InitList, '}'], action: declArrInitImplicit }
       # `char s[] = "…"` / `char s[N] = "…"` — char array initialized from a
       # string literal (C89). Decodes the string to bytes and stackalloc's a
-      # MUTABLE copy (a bare string literal is a pinned read-only RVA; a char[]
+      # MUTABLE copy (a bare string literal has read-only C semantics; a char[]
       # is writable). StringSeq → adjacent literals concatenate; the sized form
       # zero-pads to N. Conflict-free with the `{ … }` forms above: after `=`,
       # `{` → brace init, a STRING → these. Sized form via ArrDims (shares the
@@ -1730,7 +1730,7 @@ productions:
       # mixed list `{1,#embed"f",2}`, and a single-byte scalar `int x=#embed"b"`.
       # The embed-ness is recognised STRUCTURALLY by the consumers in the IR
       # (the array-init builders + the scalar-init path), which expand the bytes
-      # to a byte blob (char arrays, RVA when const) or to int constants
+      # to a byte buffer (char arrays) or to int constants
       # (other element types / scalar), under the size guard. EMBED reaching any
       # other expression position is rejected loudly in the IR.
       - { lhs: Primary, rhs: ['EMBED'],     action: embed }

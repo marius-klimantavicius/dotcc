@@ -73,7 +73,7 @@ public static unsafe partial class Libc
     // The "C" locale's lconv, built once and kept for the process lifetime
     // (real localeconv returns a pointer to static storage the caller mustn't
     // modify). Native memory so the pointer never moves; the string members
-    // point at pinned UTF-8 RVA literals via L(...).
+    // point into the rooted pinned literal pool.
     private static lconv* _lconv;
     private static readonly Lock _lconvLock = new();
 
@@ -93,8 +93,8 @@ public static unsafe partial class Libc
         {
             if (_lconv != null) { return _lconv; }
             var p = (lconv*)NativeMemory.AllocZeroed((nuint)sizeof(lconv));
-            byte* empty = L("\0"u8);
-            p->decimal_point     = L(".\0"u8);
+            byte* empty = (LiteralPool.Pointer + LiteralPool.Empty);
+            p->decimal_point     = (LiteralPool.Pointer + LiteralPool.DecimalPoint);
             p->thousands_sep     = empty;
             p->grouping          = empty;
             p->int_curr_symbol   = empty;
@@ -124,8 +124,8 @@ public static unsafe partial class Libc
     /// accepted but ignored.</summary>
     public static byte* setlocale(int category, byte* locale)
     {
-        if (locale == null) { return L("C\0"u8); }  // query — always "C"
+        if (locale == null) { return (LiteralPool.Pointer + LiteralPool.LocaleC); }  // query — always "C"
         var name = Encoding.UTF8.GetString(locale, (int)strlen(locale));
-        return name is "" or "C" or "POSIX" ? L("C\0"u8) : null;
+        return name is "" or "C" or "POSIX" ? (LiteralPool.Pointer + LiteralPool.LocaleC) : null;
     }
 }

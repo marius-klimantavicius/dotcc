@@ -64,7 +64,7 @@ public static partial class Compiler
         bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null)
     {
         var sb = new StringBuilder();
-        sb.Append(MagicObject).Append(" 1 — link with `dotcc <objs> -o <out>`.\n");
+        sb.Append(MagicObject).Append(" 2 — link with `dotcc <objs> -o <out>`.\n");
         sb.Append("//!!dotcc-obj source-language:").Append(usesZig ? "zig" : "c").Append('\n');
         sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
         sb.Append(InlineFunctionMetadata.Version).Append('\n');
@@ -75,6 +75,7 @@ public static partial class Compiler
         if (globalNames != null)
             foreach (var name in globalNames) sb.Append("//!!dotcc-obj global-def:").Append(name).Append('\n');
         sb.Append(NamespaceNeutral).Append('\n');
+        sb.Append("//!!dotcc-obj literal-pool:2\n");
         sb.Append(FragMain).Append(mainArity).Append('\n');
         if (mainReturnsVoid) { sb.Append(FragMainVoid).Append("1").Append('\n'); }
         if (mainReturnsErrUnion) { sb.Append(FragMainErr).Append(mainErrPayloadIsVoid ? "v" : "i").Append('\n'); }
@@ -162,6 +163,8 @@ public static partial class Compiler
             }
             if ((namespaceName != null || nested) && !text.Split('\n').Contains(NamespaceNeutral, StringComparer.Ordinal))
                 throw new CompileException("Object is not namespace-neutral; regenerate objects before using --namespace");
+            if (!text.Split('\n').Contains("//!!dotcc-obj literal-pool:2", StringComparer.Ordinal))
+                throw new CompileException("Object lacks relocatable literal storage; regenerate objects before linking");
             var profileLine = text.Split('\n').FirstOrDefault(l => l.StartsWith("//!!dotcc-obj override-profile:", StringComparison.Ordinal));
             CPreprocessingOptions.WriteEvent(overrideReport, "object-profile", ("path", path),
                 ("profile", profileLine?["//!!dotcc-obj override-profile:".Length..] ?? "unknown (older object)"));
@@ -229,6 +232,9 @@ public static partial class Compiler
                     else if (name.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
                         && typeByName[name] != buf.ToString())
                         throw new CompileException("conflicting canonical function pointer declarations for '" + name + "'");
+                    else if (name.StartsWith(LiteralPool.TypeKeyPrefix, StringComparison.Ordinal)
+                        && typeByName[name] != buf.ToString())
+                        throw new CompileException("conflicting literal records for '" + name + "'; regenerate objects");
                 }
                 buf.Clear();
             }
@@ -334,22 +340,29 @@ public static partial class Compiler
             if (survivors.Count > 0) { importsClass = RenderImportsClass(survivors, imports, libraryMode); }
         }
         if (className != null) CheckLibraryClassCollision(libraryClass, typeByName.Keys, definedNames);
-        aliasText = ResolveGeneratedAliases(aliasText, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName) + FunctionPointerOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName, nested);
+        aliasText = ResolveGeneratedAliases(aliasText, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName) + GeneratedOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName, nested, outputOptions?.LiteralPool == true);
         bool includeZig = IncludeZigRuntime(outputOptions, usesZig);
-        return BuildSourceFiles(functions.ToString(), missingBoundaries ? null : functionSources, aliasText,
+        var owner = libraryMode ? libraryClass : "DotCcProgram";
+        var literals = LiteralPool.CreateOutput(typeByName, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
+        var types = RenderTypeDeclarations(typeByName, owner, emit == EmitMode.ManagedLib, literals);
+        globalText = literals.Rewrite(globalText);
+        var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = literals.Rewrite(part.Text) }).ToArray();
+        return BuildSourceFiles(literals.Rewrite(functions.ToString()), parts, aliasText,
             emit, libraryClass, importsClass, false, split, splitSize, namespaceName, nested,
-            (functionText, fileAliases, partial) => BuildShell(mainArity, RenderMacroFields(typeByName, libraryMode ? libraryClass : "DotCcProgram", definedNames) + functionText, RenderTypeDeclarations(typeByName, libraryMode ? libraryClass : "DotCcProgram", emit == EmitMode.ManagedLib), fileAliases, globalText,
+            (functionText, fileAliases, partial) => BuildShell(mainArity, RenderMacroFields(typeByName, owner, definedNames) + functionText, types, fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
                 mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig));
     }
 
-    private static string FunctionPointerOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null, bool nested = false)
+    private static string GeneratedOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null, bool nested = false, bool literalPool = false)
     {
         var scope = TypeScope(namespaceName, libraryClass, nested);
         var ownerClass = libraryMode ? libraryClass : "DotCcProgram";
         var defined = new HashSet<string>(definitions, StringComparer.Ordinal);
         var aliases = new StringBuilder();
+        if (literalPool && typeKeys.Any(key => key.StartsWith(LiteralPool.TypeKeyPrefix, StringComparison.Ordinal)))
+            aliases.Append("using DotCcLiterals = global::").Append(scope).Append(HelperClass(ownerClass, "Literals")).Append(";\n");
         var keys = typeKeys.Where(key => key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal))
             .OrderBy(key => key, StringComparer.Ordinal).ToArray();
         if (keys.Length != 0) aliases.Append("using DotCcPointers = global::").Append(scope).Append(HelperClass(ownerClass, "FunctionPointers")).Append(";\n");

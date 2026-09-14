@@ -80,6 +80,7 @@ dotcc app.c -lfoo -L/path          # import mode: bind undefined prototypes to a
 | `-o <path>` | Output file or directory (inferred from `--emit` when omitted, and vice versa) |
 | `--emit=` | `csproj` (default) / `file` / `build` / `obj` |
 | `--target=` | `cs` (default) / `wat` — WebAssembly text module |
+| `--literal-pool` | Use rooted pinned literal storage with short names and usage comments; default is `Libc.L(...)`. Set at link time for objects. See [literal storage](docs/literal-storage.md). |
 | `-std=` | `c90` `c99` `c11` `c17` (default) `c18` `c23` — sets `__STDC_VERSION__`, drives keyword promotion |
 | `-pedantic` / `-pedantic-errors` | Diagnose features newer than the selected `-std=` (gcc model) |
 | `-I` / `-D` | Header search dirs / predefined macros, repeatable |

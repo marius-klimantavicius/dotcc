@@ -238,10 +238,15 @@ public static partial class Compiler
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
                 cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
-        var aliases = ResolveGeneratedAliases(cg.Aliases, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName) + FunctionPointerOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
-            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass, namespaceName, nested);
-        return BuildSourceFiles(cg.Functions, cg.FunctionSources, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
-            (functions, fileAliases, partial) => BuildShell(cg.MainArity, RenderMacroFields(cg.TypeDeclarations, libraryMode ? libraryClass : "DotCcProgram", cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, RenderTypeDeclarations(cg.TypeDeclarations!, libraryMode ? libraryClass : "DotCcProgram", emit == EmitMode.ManagedLib), fileAliases, cg.Globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName, nested, includeZig));
+        var aliases = ResolveGeneratedAliases(cg.Aliases, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName) + GeneratedOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
+            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass, namespaceName, nested, outputOptions?.LiteralPool == true);
+        var owner = libraryMode ? libraryClass : "DotCcProgram";
+        var literals = LiteralPool.CreateOutput(cg.TypeDeclarations!, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
+        var types = RenderTypeDeclarations(cg.TypeDeclarations!, owner, emit == EmitMode.ManagedLib, literals);
+        var globals = literals.Rewrite(cg.Globals);
+        var parts = cg.FunctionSources?.Select(part => part with { Text = literals.Rewrite(part.Text) }).ToArray();
+        return BuildSourceFiles(literals.Rewrite(cg.Functions), parts, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
+            (functions, fileAliases, partial) => BuildShell(cg.MainArity, RenderMacroFields(cg.TypeDeclarations, owner, cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, types, fileAliases, globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName, nested, includeZig));
     }
 
     /// <summary>

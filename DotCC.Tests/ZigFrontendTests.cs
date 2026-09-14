@@ -3133,15 +3133,14 @@ public sealed class ZigFrontendTests
     public void Lowers_escaped_quote_and_unicode_escape_in_a_string()
     {
         // `\"` is an escaped quote (the old `"[^"]*"` rule truncated there); `\u{NNNN}` expands to
-        // its UTF-8 bytes — U+2764 (❤) = E2 9D A4, which (being > 0x7F) routes to the byte-array path.
+        // its UTF-8 bytes — U+2764 (❤) = E2 9D A4, which a C# u8 literal preserves.
         // A non-BMP codepoint (U+1F600 😀 = F0 9F 98 80, 4 bytes) also works: `char.ConvertFromUtf32`
         // yields the surrogate-pair string that UTF-8 then encodes as four bytes — no special handling.
         var cs = EmitZig(
             "extern fn printf(format: [*c]const u8, ...) c_int;\n" +
             "pub fn main() u8 { _ = printf(\"a\\\"b\"); _ = printf(\"\\u{2764}\\u{1F600}\"); return 0; }\n");
         cs.ShouldContain("a\\\"b");                            // the escaped quote survived into the u8 literal
-        cs.ShouldContain("0xE2, 0x9D, 0xA4");                  // U+2764 UTF-8 bytes (BMP)
-        cs.ShouldContain("0xF0, 0x9F, 0x98, 0x80");            // U+1F600 UTF-8 bytes (non-BMP, surrogate-safe)
+        cs.ShouldContain("Libc.L(\"❤😀\\0\"u8)");              // BMP and non-BMP UTF-8 scalars
     }
 
     [Fact]
@@ -4698,7 +4697,7 @@ public sealed class ZigFrontendTests
             "}\n");
         cs.ShouldContain("__zigErrorName(");                  // the builtin lowers to the table lookup
         cs.ShouldContain("ConstSlice<byte> __zigErrorName");  // the table helper is emitted
-        cs.ShouldContain("L(\"Foo\"u8)");                     // the name is RVA-pinned in the table
+        cs.ShouldContain("L(\"Foo\\0\"u8)");                  // explicit terminator; slice length excludes it
     }
 
     [Fact]

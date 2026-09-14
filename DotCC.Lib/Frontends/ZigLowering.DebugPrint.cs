@@ -70,7 +70,7 @@ internal sealed partial class ZigLowering
         // Translate the Zig format → a C printf format string, pairing placeholders with arg types.
         var cFmtLexeme = TranslateZigDebugFormat(Tok(fmtLit.Arg0), argExprs);
         var segs = new List<string> { cFmtLexeme };
-        DotCC.EmitHelpers.EncodeStringLiteral(segs, out var byteLen);
+        var byteLen = DotCC.EmitHelpers.StringByteLength(segs);
         var fmtExpr = new LitStr(segs) { Type = new CType.Array(CType.Char, byteLen) };
 
         // `fprintf(stderr, fmt).Arg(a).Arg(b)….Done()` — the backend's printf-family fluent lowering

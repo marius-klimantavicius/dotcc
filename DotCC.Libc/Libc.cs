@@ -21,7 +21,7 @@ namespace DotCC.Libc;
 /// Unsafe-by-design — every entry takes/returns raw pointers because that's
 /// what real C code passes around. The library never allocates a GC object on
 /// any hot path (Printf's <see cref="PrintfBuilder"/> is a ref struct,
-/// <see cref="L"/> pins RVA data, strlen/strcmp/memset are bare loops).
+/// strlen/strcmp/memset are bare loops).
 /// </remarks>
 public static unsafe partial class Libc
 {
@@ -622,32 +622,20 @@ public static unsafe partial class Libc
     // String literal lowering
     // ---------------------------------------------------------------------
 
-    /// <summary>
-    /// <c>L(u8)</c> — pin a UTF-8 RVA byte literal's address and return it
-    /// as <c>byte*</c>. Used by the emitter to lower C string literals
-    /// (<c>"foo"</c>) to a NUL-terminated pointer into the assembly's
-    /// read-only data section. No GC pinning required — RVA data lives at a
-    /// fixed address for program lifetime.
-    /// </summary>
+    /// <summary>Return the address of literal RVA data without retaining its owner.
+    /// Used by default emission; --literal-pool selects rooted translated storage instead.
+    /// The caller must ensure the backing data stays at a fixed address and remains alive.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static byte* L(ReadOnlySpan<byte> u8) =>
         (byte*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(u8));
 
-    /// <summary>
-    /// <c>L&lt;T&gt;(data)</c> — the multi-byte sibling of <see cref="L(ReadOnlySpan{byte})"/>:
-    /// return a constant RVA array literal's address as <c>T*</c>. Used by the
-    /// emitter to lower a read-only (<c>const</c>) non-byte array
-    /// (<c>const int tab[] = {…}</c>) to a pointer into the assembly's read-only
-    /// data section. Roslyn folds a <c>ReadOnlySpan&lt;T&gt;</c> over an
-    /// all-constant array to a fixed RVA blob (no allocation, no GC pin, program
-    /// lifetime). LP64 little-endian only — dotcc's target.
-    /// </summary>
+    /// <summary>Typed counterpart of <see cref="L(ReadOnlySpan{byte})"/> with the same
+    /// backing-storage lifetime requirements.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T* L<T>(ReadOnlySpan<T> data) where T : unmanaged =>
         (T*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(data));
 
-    // char16_t (UTF-16) string-literal pool. C# has no `u16` RVA literal (only the
-    // byte `u8` form), so a u"…" literal can't ride the zero-copy L(...) path.
+    // char16_t (UTF-16) string-literal pool. C# has no `u16` literal.
     // Instead pin its UTF-16 data on the Pinned Object Heap ONCE, cached per
     // distinct literal — a program-lifetime pool, mirroring how C places string
     // literals in .rodata. Pinning per use would leak a frame under a loop.
@@ -676,8 +664,7 @@ public static unsafe partial class Libc
     }
 
     // char32_t (UTF-32) string-literal pool — the 32-bit sibling of the L16 pool.
-    // C# has no `u32` RVA literal, so a U"…" literal can't ride the zero-copy L(...)
-    // path either; pin its UTF-32 data on the POH ONCE, cached per distinct literal.
+    // C# has no `u32` literal; pin UTF-32 data on the POH once per distinct literal.
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, IntPtr> _u32Literals =
         new(StringComparer.Ordinal);
 

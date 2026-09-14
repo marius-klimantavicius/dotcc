@@ -1707,7 +1707,7 @@ internal sealed partial class ZigLowering
                 // `@errorName(e)` → the error's name as `[]const u8` (real zig: `[:0]const u8`).
                 // The operand is a flat `ushort` error code; the name comes from the runtime
                 // `__zigErrorName(code)` code→name table the backend emits from `ir.ZigErrorCodes`
-                // (Milestone X, part 1). Returns a `ConstSlice<byte>` over the RVA-pinned name bytes.
+                // (Milestone X, part 1). Returns a `ConstSlice<byte>` over the rooted pinned name bytes.
                 if (bargs.Count != 1)
                 {
                     throw new IrUnsupportedException($"zig `@errorName` expects (error); got {bargs.Count} argument(s)");
@@ -1804,7 +1804,7 @@ internal sealed partial class ZigLowering
     private static LitStr ZigStringLiteral(string text)
     {
         var segs = new List<string> { "\"" + text + "\"" };
-        DotCC.EmitHelpers.EncodeStringLiteral(segs, out var byteLen);
+        var byteLen = DotCC.EmitHelpers.StringByteLength(segs);
         return new LitStr(segs) { Type = new CType.Array(CType.Char, byteLen) };
     }
 

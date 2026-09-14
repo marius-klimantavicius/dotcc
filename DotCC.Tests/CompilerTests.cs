@@ -636,14 +636,13 @@ public sealed partial class CompilerTests
     }
 
     [Fact]
-    public void Octal_string_escapes_emit_greedy_safe_hex()
+    public void Octal_string_escapes_decode_to_exact_bytes()
     {
-        // C# u8 has no octal escape, and its \x is greedy — so octal escapes
-        // become \-delimited \xHH (each followed by the next \x, never a digit).
+        // Decode octal before formatting the u8 literal; these bytes are ASCII digits.
         var src = WriteTemp("int puts(char*s); int main() { return puts(\"\\063\\064\\065\"); }");
         try
         {
-            Compiler.EmitCSharp(new[] { src }).ShouldContain("L(\"\\x33\\x34\\x35\\0\"u8)");
+            Compiler.EmitCSharp(new[] { src }).ShouldContain("L(\"345\\0\"u8)");
         }
         finally { File.Delete(src); }
     }
@@ -662,7 +661,7 @@ public sealed partial class CompilerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("L(new byte[]{ 0xFF, 0x5A, 0 })");
+            emitted.ShouldContain("L(new byte[]{ 0xFF, 0x5A, 0x00 })");
         }
         finally { File.Delete(src); }
     }
@@ -674,7 +673,7 @@ public sealed partial class CompilerTests
         var src = WriteTemp("int puts(char*s); int main() { return puts(\"\\377\"); }");
         try
         {
-            Compiler.EmitCSharp(new[] { src }).ShouldContain("L(new byte[]{ 0xFF, 0 })");
+            Compiler.EmitCSharp(new[] { src }).ShouldContain("L(new byte[]{ 0xFF, 0x00 })");
         }
         finally { File.Delete(src); }
     }

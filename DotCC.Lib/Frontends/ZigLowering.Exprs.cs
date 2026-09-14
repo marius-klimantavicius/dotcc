@@ -46,7 +46,7 @@ internal sealed partial class ZigLowering
             // (`\n`/`\t`/`\\`/`\"`/`\xNN`), so we reuse the C string machinery: the (escape-expanded)
             // quoted lexeme becomes a single LitStr segment, typed `char[N]` (decoded byte count incl.
             // NUL) so it decays to `char*` exactly like a C literal — the C# backend lowers it to the
-            // same pooled `Libc.L("…"u8)` pointer. Two Zig-specific reshapes happen FIRST so the shared
+            // same pooled byte pointer. Two Zig-specific reshapes happen FIRST so the shared
             // decoder is untouched: a `\\`-prefixed multiline string is folded to one quoted lexeme of
             // its raw (un-escaped) content; a `\u{…}` unicode escape is expanded to `\xNN` UTF-8 bytes.
             case Zig.StrLit s:
@@ -56,7 +56,7 @@ internal sealed partial class ZigLowering
                     ? FoldZigMultilineString(raw)
                     : ExpandZigUnicodeEscapes(raw);
                 var segs = new List<string> { lexeme };
-                DotCC.EmitHelpers.EncodeStringLiteral(segs, out var byteLen);
+                var byteLen = DotCC.EmitHelpers.StringByteLength(segs);
                 return new LitStr(segs) { Type = new CType.Array(CType.Char, byteLen) };
             }
             case Zig.Ident id:
@@ -681,7 +681,7 @@ internal sealed partial class ZigLowering
             var segs = new List<string>(ls.Segments.Count + rs.Segments.Count);
             segs.AddRange(ls.Segments);
             segs.AddRange(rs.Segments);
-            DotCC.EmitHelpers.EncodeStringLiteral(segs, out var byteLen);
+            var byteLen = DotCC.EmitHelpers.StringByteLength(segs);
             return new LitStr(segs) { Type = new CType.Array(CType.Char, byteLen) };
         }
         return null;
@@ -708,7 +708,7 @@ internal sealed partial class ZigLowering
         {
             var segs = new List<string>(ls.Segments.Count * (int)n);
             for (var i = 0; i < n; i++) { segs.AddRange(ls.Segments); }
-            DotCC.EmitHelpers.EncodeStringLiteral(segs, out var byteLen);
+            var byteLen = DotCC.EmitHelpers.StringByteLength(segs);
             return new LitStr(segs) { Type = new CType.Array(CType.Char, byteLen) };
         }
         // Array-literal fold — a typed `[N]T{…}` or a `const` bound to one (an anon `.{…} ** n` has no
@@ -775,7 +775,7 @@ internal sealed partial class ZigLowering
         {
             var segs = new List<string>(ls.Segments.Count * (int)n);
             for (var i = 0; i < n; i++) { segs.AddRange(ls.Segments); }
-            DotCC.EmitHelpers.EncodeStringLiteral(segs, out var byteLen);
+            var byteLen = DotCC.EmitHelpers.StringByteLength(segs);
             return new LitStr(segs) { Type = new CType.Array(CType.Char, byteLen) };
         }
         return null;

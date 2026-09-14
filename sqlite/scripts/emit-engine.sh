@@ -25,7 +25,7 @@ dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   --overrides-file "$SQLITE_ROOT/config/dotcc-overrides.json" \
   --override-report "$SQLITE_ROOT/artifacts/engine-overrides.jsonl" \
   -MD -MF "$SQLITE_ROOT/artifacts/engine.d" \
-  --emit=managedlib --nest-types --runtime=c --class-name Sqlite --namespace Managed.Database "${split_args[@]}" -o "$SQLITE_ROOT/generated/TranslatedSqlite"
+  --emit=managedlib --literal-pool --nest-types --runtime=c --class-name Sqlite --namespace Managed.Database "${split_args[@]}" -o "$SQLITE_ROOT/generated/TranslatedSqlite"
 
 if "$postprocess"; then
   dotnet build "$DOTCC_ROOT/DotCC.PostProcess/DotCC.PostProcess.csproj" -c Release --nologo

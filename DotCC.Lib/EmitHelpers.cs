@@ -10,8 +10,7 @@ namespace DotCC;
 /// Stateless C#-emission helpers shared by the typed-IR backend
 /// (<see cref="DotCC.Ir.IrBuilder"/> / <see cref="DotCC.Backends.CSharpBackend"/>) and the
 /// <see cref="Compiler"/> shell: C#-keyword escaping (<see cref="Id"/>),
-/// C string-literal decoding/encoding (<see cref="EncodeStringLiteral(IReadOnlyList{string})"/>
-/// / <see cref="StringByteValues"/>), and the <see cref="Export"/> descriptor for
+/// C string-literal decoding (<see cref="StringByteValues"/>), and the <see cref="Export"/> descriptor for
 /// library-mode wrappers.
 /// </summary>
 /// <remarks>
@@ -147,149 +146,32 @@ internal static class EmitHelpers
         return DecodeEscapeOrChar(body, ref i).Value;
     }
 
-    // Re-emit decoded items as a greedy-safe C# u8-literal body, returning the
-    // escaped text and byte length. Source chars pass through (the u8 literal
-    // UTF-8-encodes them — matching C's UTF-8 source bytes); decoded escape
-    // bytes become a named escape or `\xHH`, and a `\xHH` is never left next to
-    // a literal hex digit (C# would greedily fold it into the escape). A decoded
-    // escape byte > 0x7F can't be one byte in a u8 literal (C# UTF-8-encodes
-    // `\x80`+ as multi-byte); the string-literal lowering routes such strings to
-    // EmitByteArray before reaching here, so the guard below is defensive.
-    private static (string Escaped, int ByteLen) EmitU8(List<StrItem> items)
-    {
-        var sb = new StringBuilder(items.Count + 8);
-        var len = 0;
-        var prevHex = false;
-        foreach (var it in items)
-        {
-            if (!it.IsByte)
-            {
-                char ch = (char)it.Value;
-                if (ch < 0x80)
-                {
-                    len += 1;
-                    if (ch == '"') { sb.Append("\\\""); prevHex = false; }
-                    else if (ch == '\\') { sb.Append("\\\\"); prevHex = false; }
-                    else if (ch is >= (char)0x20 and <= (char)0x7E)
-                    {
-                        if (prevHex && Uri.IsHexDigit(ch)) { sb.Append("\\x").Append(((int)ch).ToString("X2")); prevHex = true; }
-                        else { sb.Append(ch); prevHex = false; }
-                    }
-                    else { sb.Append("\\x").Append(((int)ch).ToString("X2")); prevHex = true; }
-                }
-                else
-                {
-                    // Non-ASCII source char → emit literally; the u8 literal
-                    // UTF-8-encodes it (matches C's UTF-8 source bytes).
-                    len += System.Text.Encoding.UTF8.GetByteCount(ch.ToString());
-                    sb.Append(ch);
-                    prevHex = false;
-                }
-            }
-            else
-            {
-                int b = it.Value;
-                if (b > 0x7F)
-                {
-                    // Defensive: the string lowering sends high-byte strings to
-                    // the byte-array path, so this should be unreachable.
-                    throw new CompileException(
-                        $"string escape byte 0x{b:X2} > 0x7F reached the u8-literal path "
-                        + "(expected the byte-array lowering) — please report this.");
-                }
-                len += 1;
-                switch (b)
-                {
-                    case 0x0A: sb.Append("\\n"); prevHex = false; break;
-                    case 0x0D: sb.Append("\\r"); prevHex = false; break;
-                    case 0x09: sb.Append("\\t"); prevHex = false; break;
-                    case 0x22: sb.Append("\\\""); prevHex = false; break;
-                    case 0x5C: sb.Append("\\\\"); prevHex = false; break;
-                    default: sb.Append("\\x").Append(b.ToString("X2")); prevHex = true; break;
-                }
-            }
-        }
-        return (sb.ToString(), len);
-    }
-
-    // Build the EXACT C byte sequence as a C# constant byte-array initializer
-    // (`new byte[]{ 0xHH, …, 0 }`, NUL-terminated). Used when a decoded escape
-    // byte > 0x7F can't ride a u8 literal (C# would UTF-8 re-encode `\x80`+ into
-    // two bytes). Each decoded escape byte goes in verbatim; a source char is
-    // expanded to its UTF-8 bytes (matching C's UTF-8 source encoding, exactly
-    // as the u8 path does). Roslyn lowers `new byte[]{consts}` in a
-    // ReadOnlySpan<byte> position to an RVA blob — fixed address, no allocation,
-    // no GC move — so L()'s pinned pointer stays valid for the program lifetime,
-    // identical to the u8-literal case. Returns the initializer text and the
-    // byte length (excluding the NUL the caller accounts for).
-    private static (string Text, int ByteLen) EmitByteArray(List<StrItem> items)
-    {
-        var bytes = new List<int>(items.Count + 1);
-        foreach (var it in items)
-        {
-            if (it.IsByte) { bytes.Add(it.Value & 0xFF); }
-            else
-            {
-                foreach (var u in System.Text.Encoding.UTF8.GetBytes(((char)it.Value).ToString()))
-                {
-                    bytes.Add(u);
-                }
-            }
-        }
-        var sb = new StringBuilder("new byte[]{ ");
-        foreach (var b in bytes) { sb.Append("0x").Append(b.ToString("X2")).Append(", "); }
-        sb.Append("0 }");  // NUL terminator
-        return (sb.ToString(), bytes.Count);
-    }
-
-    /// <summary>Decode adjacent C string-literal segments to their exact byte
-    /// values — UTF-8 for source chars, verbatim for escapes — EXCLUDING the NUL
-    /// terminator (the caller appends and zero-pads). Used by the IR to lower
-    /// <c>char s[] = "…"</c> to a mutable byte buffer.</summary>
+    /// <summary>Decode adjacent C string segments to exact bytes, excluding the
+    /// implicit terminator. Escape bytes are verbatim; source text is UTF-8.</summary>
     internal static List<int> StringByteValues(IReadOnlyList<string> rawQuotedSegments)
     {
         var items = new List<StrItem>();
-        foreach (var seg in rawQuotedSegments) { DecodeCStringBody(StripStrQuotes(seg), items); }
-        var bytes = new List<int>(items.Count);
-        foreach (var it in items)
+        foreach (var seg in rawQuotedSegments) DecodeCStringBody(StripStrQuotes(seg), items);
+        var bytes = new List<int>();
+        var text = new StringBuilder();
+        void FlushText()
         {
-            if (it.IsByte) { bytes.Add(it.Value & 0xFF); }
-            else { foreach (var u in System.Text.Encoding.UTF8.GetBytes(((char)it.Value).ToString())) { bytes.Add(u); } }
+            if (text.Length == 0) return;
+            // Encode runs, not individual UTF-16 chars: a surrogate pair is one scalar.
+            foreach (byte b in Encoding.UTF8.GetBytes(text.ToString())) bytes.Add(b);
+            text.Clear();
         }
+        foreach (var item in items)
+        {
+            if (item.IsByte) { FlushText(); bytes.Add(item.Value & 0xFF); }
+            else text.Append((char)item.Value);
+        }
+        FlushText();
         return bytes;
     }
 
-    /// <summary>
-    /// Encode one or more adjacent C string-literal segments (each the RAW
-    /// quoted lexeme, e.g. <c>"a\n"</c>) to the lowered <c>Libc.L(…)</c>
-    /// expression — decoding escapes per-segment and concatenating. Exposed so
-    /// the C# backend (<see cref="DotCC.Backends.CSharpBackend"/>) reuses this escape logic
-    /// rather than reimplementing it — single source of truth for string lowering.
-    /// </summary>
-    internal static string EncodeStringLiteral(IReadOnlyList<string> rawQuotedSegments)
-        => EncodeStringLiteral(rawQuotedSegments, out _);
-
-    /// <summary>
-    /// As <see cref="EncodeStringLiteral(IReadOnlyList{string})"/>, additionally
-    /// reporting <paramref name="byteLength"/> — the C array size of the literal
-    /// (decoded byte count INCLUDING the NUL terminator). That is exactly
-    /// <c>sizeof</c> of the string literal, which the IR uses to type a string as
-    /// <c>char[N]</c> (a string literal does NOT decay under <c>sizeof</c>).
-    /// </summary>
-    internal static string EncodeStringLiteral(IReadOnlyList<string> rawQuotedSegments, out int byteLength)
-    {
-        var items = new List<StrItem>();
-        foreach (var seg in rawQuotedSegments) { DecodeCStringBody(StripStrQuotes(seg), items); }
-        if (items.Exists(it => it.IsByte && it.Value > 0x7F))
-        {
-            var (arr, n) = EmitByteArray(items);
-            byteLength = n + 1;   // + NUL
-            return $"Libc.L({arr})";
-        }
-        var (escaped, len) = EmitU8(items);
-        byteLength = len + 1;     // + NUL
-        return $"Libc.L(\"{escaped}\\0\"u8)";
-    }
+    internal static int StringByteLength(IReadOnlyList<string> segments) =>
+        checked(StringByteValues(segments).Count + 1);
 
     // ---- char16_t (UTF-16) literals -------------------------------------
     // A char16_t literal is a sequence of UTF-16 code units. A decoded source

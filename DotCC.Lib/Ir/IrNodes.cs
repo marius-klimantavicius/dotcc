@@ -57,8 +57,8 @@ public sealed record LitFloat(string Text) : CExpr;
 
 /// <summary>A string literal — the raw adjacent quoted C segments (e.g.
 /// <c>["\"a\\n\"", "\"b\""]</c>), NOT yet encoded. The backend decodes the C
-/// escapes and emits its own representation (the C# backend: <c>Libc.L("…"u8)</c>
-/// or a byte-array); keeping the IR free of target text is what lets a different
+/// escapes and emits its own representation (the C# backend: <c>Libc.L</c> or an
+/// offset into an optional rooted pool); keeping the IR free of target text lets a different
 /// backend lower the same literal differently.</summary>
 public sealed record LitStr(IReadOnlyList<string> Segments) : CExpr;
 

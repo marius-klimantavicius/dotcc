@@ -89,6 +89,7 @@ public sealed partial class ManagedLibraryTests
     [InlineData("Api {}")]
     [InlineData("DotCcGlobals")]
     [InlineData("Libc")]
+    [InlineData("DotCcLiterals")]
     public void Invalid_class_names_fail_before_reading_input(string name)
     {
         Should.Throw<CompileException>(() => Compiler.EmitCSharp(Array.Empty<string>(), emit: EmitMode.ManagedLib, className: name))

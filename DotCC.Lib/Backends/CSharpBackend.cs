@@ -45,6 +45,7 @@ internal sealed partial class CSharpBackend
     /// into). The statement / expression emitter in this class is still the
     /// C#-specific one.</summary>
     private readonly ITarget _target = new CSharpTarget();
+    private readonly DotCC.LiteralPool _literals = new();
     private bool _publicTypes;
     private bool _relocatable;
     private bool _inlineMetadata;
@@ -124,7 +125,7 @@ internal sealed partial class CSharpBackend
 
         // Zig `@errorName` (Milestone X, part 1): emit the flat code→name table as a helper in
         // DotCcProgram — one arm per registered `error.Foo`, returning its name as a
-        // `ConstSlice<byte>` over the RVA-pinned UTF-8 bytes (`using static Libc` surfaces `L`; the
+        // `ConstSlice<byte>` over the translated UTF-8 literal storage (the
         // spliced runtime block defines `ConstSlice`). Error names are Zig identifiers (ASCII, no
         // escaping). Emitted only when the program names ≥1 error (so a `@errorName` call resolves).
         if (unit.ZigErrorCodes is { Count: > 0 } errNames)
@@ -139,9 +140,11 @@ internal sealed partial class CSharpBackend
             foreach (var kv in errNames.OrderBy(kv => kv.Value))
             {
                 var len = System.Text.Encoding.UTF8.GetByteCount(kv.Key);
-                fns.Append($"        {kv.Value} => new ConstSlice<byte>(L(\"{kv.Key}\"u8), {len}),\n");
+                var literal = cg._literals.Add(System.Text.Encoding.UTF8.GetBytes(kv.Key).Append((byte)0));
+                fns.Append($"        {kv.Value} => new ConstSlice<byte>({literal}, {len}),\n");
             }
-            fns.Append("        _ => new ConstSlice<byte>(L(\"(unknown)\"u8), 9),\n    };");
+            var unknown = cg._literals.Add("(unknown)\0"u8.ToArray());
+            fns.Append($"        _ => new ConstSlice<byte>({unknown}, 9),\n    }};");
             functionSources.Add(new("__zigErrorName", fns.ToString(helperStart, fns.Length - helperStart)));
         }
 
@@ -188,6 +191,7 @@ internal sealed partial class CSharpBackend
         }
         foreach (var declaration in typeDeclarations.Values) structs.Append(declaration);
         cg.AddMacroConstants(unit, typeDeclarations);
+        cg._literals.AddDeclarations(typeDeclarations);
 
         // Zig test-mode manifest (empty for a normal build): each test's display name paired with the
         // emitted method name (TargetName — the same spelling `Func` above prints at line ~411), so the
@@ -1832,7 +1836,7 @@ internal sealed partial class CSharpBackend
             case RuntimeIntrinsic { Kind: RuntimeIntrinsicKind.IsLittleEndian }:
                 return ("((CBool)global::System.BitConverter.IsLittleEndian)", PPrimary);
             case LitFloat f: return (_target.RenderFloatLit(f), PPrimary);
-            case LitStr s: return (DotCC.EmitHelpers.EncodeStringLiteral(s.Segments), PPrimary);
+            case LitStr s: return (_literals.Add(DotCC.EmitHelpers.StringByteValues(s.Segments).Select(b => (byte)b).Append((byte)0)), PPrimary);
             case LitU16Str s: return (DotCC.EmitHelpers.EncodeU16StringLiteral(s.Segments), PPrimary);
             case LitU32Str s: return (DotCC.EmitHelpers.EncodeU32StringLiteral(s.Segments), PPrimary);
             case NullPtr: return ("null", PPrimary);
@@ -2695,32 +2699,14 @@ internal sealed partial class CSharpBackend
             return $"({elemCs}*)Libc.GlobalArrayFrom<nint>(new nint[]{{ {ptr} }})";
         }
         var vals = string.Join(", ", pa.Elems.Select(e => Coerced(e, pa.Element)));
-        // const-driven RVA: a const primitive array (incl. a const #embed blob) is
-        // read-only, so point straight at the PE .rodata blob via Libc.L — the
-        // zero-copy string-literal path (Roslyn RVA-folds an all-constant
-        // `new T[]{…}` in a ReadOnlySpan<T> position: no alloc, no GC root, no
-        // startup copy) — instead of the writable GlobalArrayFrom POH copy. Both
-        // forms return T*, so the global's type and every use are unchanged. Sound
-        // because writing to a const object is UB and the const-correctness check
-        // rejects in-source writes; reads / sizeof / address-of are unaffected.
-        // GUARD: only when every element is a compile-time constant — otherwise
-        // Roslyn allocates a transient heap array and L() would return a pointer
-        // into it (dangling). `byte` keeps the non-generic L (the string-literal
-        // form); other primitives use the generic L<T> (LP64 little-endian).
-        if (pa.Element.IsConst && pa.Element.Unqualified is CType.Prim && pa.Elems.All(IsRvaConstant))
-        {
+        // Keep storage selection relocatable until the final --literal-pool choice.
+        if (pa.Element.IsConst && pa.Element.Unqualified is CType.Prim && pa.Elems.All(e => e is LitInt or LitFloat))
             return elemCs == "byte"
-                ? $"Libc.L(new byte[]{{ {vals} }})"
-                : $"Libc.L<{elemCs}>(new {elemCs}[]{{ {vals} }})";
-        }
+                ? $"DotCcLiterals.ConstBytes(new byte[]{{ {vals} }})"
+                : $"DotCcLiterals.ConstArray<{elemCs}>(new {elemCs}[]{{ {vals} }})";
+        // Other arrays use rooted storage, one allocation per C object.
         return $"Libc.GlobalArrayFrom<{elemCs}>(new {elemCs}[]{{ {vals} }})";
     }
-
-    /// <summary>An array element that lowers to a C# compile-time constant — the
-    /// precondition for Roslyn to RVA-fold the backing <c>new T[]{…}</c> into the
-    /// PE data section (so <see cref="PinnedArrayText"/> can point at it via
-    /// <c>Libc.L</c>). Numeric literals only; anything else keeps the writable copy.</summary>
-    private static bool IsRvaConstant(CExpr e) => e is LitInt or LitFloat;
 
     /// <summary>Render a positional aggregate initializer as a C# object
     /// initializer — <c>new Point { x = 3, y = 4 }</c>. Each value is coerced to

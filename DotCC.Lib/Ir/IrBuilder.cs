@@ -1464,7 +1464,7 @@ internal sealed partial class IrBuilder
         C.TypePtrQualConst t => PointerType(ResolveType(t.Arg0)).WithQuals(TypeQual.Const),
         C.TypePtrQualVolatile t => PointerType(ResolveType(t.Arg0)),
         // `const T` / `T const` — leading or trailing const qualifier. Carries the
-        // flag on the type; drives the const-correctness check + read-only-array RVA.
+        // flag on the type; drives the const-correctness check.
         C.TypeConstPre t => ResolveType(t.Arg1).WithQuals(TypeQual.Const),
         C.TypeConstPost t => ResolveType(t.Arg0).WithQuals(TypeQual.Const),
         // `volatile T` / `T volatile` — leading or trailing qualifier prefix. Carry
@@ -3257,8 +3257,8 @@ internal sealed partial class IrBuilder
 
     /// <summary>Diagnose a write through a <c>const</c>-qualified lvalue (assignment
     /// or <c>++</c>/<c>--</c>) as a hard error — writing to a const object is a C
-    /// constraint violation (gcc/clang reject it), and it is also what licenses the
-    /// read-only-array RVA lowering. The lvalue's own type carries the qualifier, so
+    /// constraint violation (gcc/clang reject it). The lvalue's own type carries
+    /// the qualifier, so
     /// this fires for a const variable, a write through a pointer-to-const
     /// (<c>*p</c> where <c>p</c> is <c>const T*</c>), and a const array element.
     /// Skipped when the write's position is in a system header (the user isn't to
@@ -3415,7 +3415,7 @@ internal sealed partial class IrBuilder
         if (name is "__func__" && _currentFnName.Length != 0)
         {
             var fnSegs = new[] { $"\"{_currentFnName}\"" };
-            DotCC.EmitHelpers.EncodeStringLiteral(fnSegs, out var fnLen);
+            var fnLen = DotCC.EmitHelpers.StringByteLength(fnSegs);
             return new LitStr(fnSegs) { Type = new CType.Array(CType.Char, fnLen) };
         }
         // Unresolved (a macro-substituted token, a builtin not in a header). Surface
@@ -3626,7 +3626,7 @@ internal sealed partial class IrBuilder
         // the array type is carried rather than the decayed pointer. The byte
         // length is decoded here for the TYPE; the backend re-decodes the segments
         // to emit the literal text (the IR carries no target text).
-        DotCC.EmitHelpers.EncodeStringLiteral(segs, out var byteLen);
+        var byteLen = DotCC.EmitHelpers.StringByteLength(segs);
         return new LitStr(segs) { Type = new CType.Array(CType.Char, byteLen) };
     }
 
@@ -3634,10 +3634,10 @@ internal sealed partial class IrBuilder
     {
         // u8"…" — a C23 char8_t (UTF-8) string literal. dotcc's plain narrow strings
         // are ALREADY UTF-8, so this reuses the byte LitStr node and the exact same
-        // Libc.L(…u8) lowering; only the element type differs (char8_t vs char — both
+        // narrow-byte lowering; only the element type differs (char8_t vs char — both
         // render to C# byte), carried for sizeof / _Generic fidelity.
         var segs = CollectWideStrSegments(((C.U8str)it.Content).Arg0);
-        DotCC.EmitHelpers.EncodeStringLiteral(segs, out var byteLen);
+        var byteLen = DotCC.EmitHelpers.StringByteLength(segs);
         return new LitStr(segs) { Type = new CType.Array(CType.Char8, byteLen) };
     }
 

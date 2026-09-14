@@ -348,7 +348,7 @@ public abstract record CType
     /// <summary>C23 <c>char8_t</c> (<c>&lt;uchar.h&gt;</c>) — an unsigned 8-bit UTF-8
     /// code unit (<c>unsigned char</c>). dotcc lowers it to C# <c>byte</c>, exactly
     /// like <see cref="Char"/> (dotcc's <c>char</c> IS <c>byte</c>), so a <c>u8"…"</c>
-    /// literal rides the existing narrow UTF-8 string path (<c>Libc.L(…u8)</c>) with
+    /// literal rides the existing narrow UTF-8 string path with
     /// no new machinery. A distinct Prim (not <see cref="Char"/> / <see cref="UChar"/>)
     /// purely for type fidelity (<c>_Generic</c>, diagnostics); it renders to
     /// <c>byte</c>, so every byte-coercion rule applies unchanged.</summary>

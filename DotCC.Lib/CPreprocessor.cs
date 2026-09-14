@@ -313,7 +313,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     /// multi-MB file would explode into millions of tokens. The single carrier
     /// rides the existing initializer-list productions and is expanded to byte
     /// constants in the IR (<c>IrBuilder.ParseInitList</c>), where a
-    /// <c>const char[]</c> target lowers to a zero-copy RVA blob.
+    /// <c>const char[]</c> target's storage is selected by the backend.
     /// </summary>
     /// <remarks>
     /// V1 handles the simple <c>"name"</c> / <c>&lt;name&gt;</c> forms; the

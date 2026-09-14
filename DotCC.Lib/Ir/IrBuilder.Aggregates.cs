@@ -37,9 +37,8 @@ internal sealed partial class IrBuilder
         // A C23 #embed element expands IN PLACE to its file bytes as integer
         // constants — so `{ #embed "f" }` fills a char array, `{ 1, #embed "f", 2 }`
         // splices into a mixed list, and a non-char element type takes one int per
-        // byte. This single chokepoint serves every initializer-list shape; the
-        // const→RVA fast path then recognises a const char[] of constant bytes in
-        // the backend (string- and embed-init converge on the same node).
+        // byte. This serves every initializer-list shape; string and embed
+        // initializers converge on the same array node.
         void AddElem(Init e)
         {
             if (e is InitVal { Value: EmbedData ed })
@@ -69,8 +68,8 @@ internal sealed partial class IrBuilder
 
     /// <summary>Upper bound on a single <c>#embed</c>'s byte count. The bytes
     /// ultimately materialise as a <c>new byte[]{…}</c> source-text literal, so
-    /// the ceiling is source-emit size, not runtime cost (the RVA blob is free at
-    /// runtime). Exceeding it is a loud error, never a silent truncation.</summary>
+    /// the ceiling limits source size and any startup copy. Exceeding it
+    /// is a loud error, never a silent truncation.</summary>
     private const int MaxEmbedBytes = 4 * 1024 * 1024;
 
     private static void GuardEmbedSize(int count)

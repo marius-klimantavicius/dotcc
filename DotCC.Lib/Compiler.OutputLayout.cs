@@ -12,8 +12,8 @@ public static partial class Compiler
         if (options is null) return;
         if (!Enum.IsDefined(options.Runtime)) throw new CompileException("unknown runtime profile");
         if (options.ExportInline != null) _ = new MacroExportSelector(options.ExportInline, "--export-inline");
-        if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options)))
-            throw new CompileException("--nest-types, --runtime, --deduplicate-inline and --export-inline must be set at link time for objects");
+        if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options) || options.LiteralPool))
+            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline and --literal-pool must be set at link time for objects");
         if (options.NestTypes && emit is not (EmitMode.ManagedLib or EmitMode.SharedLib))
             throw new CompileException("--nest-types requires managed-library or shared-library output");
     }
@@ -31,14 +31,15 @@ public static partial class Compiler
 
     // The object contract stores one independently keyed cache property per function.
     // Coalesce those records only after linking/definition ownership is resolved.
-    private static string RenderTypeDeclarations(IReadOnlyDictionary<string, string> declarations, string owner, bool isPublic)
+    private static string RenderTypeDeclarations(IReadOnlyDictionary<string, string> declarations, string owner, bool isPublic, LiteralPool.Output literals)
     {
         var types = new StringBuilder();
         var pointers = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var (key, text) in declarations)
         {
-            if (key.StartsWith(MacroConstantPrefix, StringComparison.Ordinal)) continue;
-            if (!key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)) { types.Append(text); continue; }
+            if (key.StartsWith(MacroConstantPrefix, StringComparison.Ordinal)
+                || key.StartsWith(LiteralPool.TypeKeyPrefix, StringComparison.Ordinal)) continue;
+            if (!key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)) { types.Append(literals.Rewrite(text)); continue; }
             int start = text.IndexOf('{'), end = text.LastIndexOf('}');
             if (start < 0 || end <= start) throw new CompileException("invalid function-pointer object record; regenerate objects");
             pointers.Add(key[FunctionPointerNames.TypeKeyPrefix.Length..].TrimStart('@'),
@@ -77,6 +78,7 @@ public static partial class Compiler
                 parent = name;
             }
         }
+        types.Append(literals.Source);
         return types.ToString();
     }
 }

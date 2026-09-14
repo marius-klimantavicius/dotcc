@@ -134,8 +134,8 @@ public sealed class Char8Tests
     [Fact]
     public void u8_string_keeps_raw_utf8_bytes()
     {
-        // u8"\xC3\xA9" is the two raw UTF-8 bytes of U+00E9; high bytes (>0x7F) can't
-        // ride a C# u8 literal, so the string lowering routes to the byte-array RVA.
+        // u8"\xC3\xA9" is the valid UTF-8 encoding of U+00E9 and can be emitted
+        // as that scalar without changing the bytes.
         var src = WriteTemp("""
             int main(void) {
                 const char8_t *p = u8"\xC3\xA9";
@@ -145,7 +145,7 @@ public sealed class Char8Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.L(new byte[]{ 0xC3, 0xA9, 0 })");
+            emitted.ShouldContain("Libc.L(\"é\\0\"u8)");
         }
         finally { File.Delete(src); }
     }
