@@ -77,13 +77,30 @@ Descriptor capacity still applies to the single private fd namespace, including
 directory opens and both duplication commands. Exhaustion is checked before
 file creation/truncation, and failing operations leave metadata and flags intact.
 
-**Writable payload bytes and open descriptors are bounded, but node count is
-not.** A caller can repeatedly create and close zero-length files without
-consuming the writable-byte quota. Image byte limits likewise do not charge
-path strings or zero-length image nodes. Dictionaries, nodes, path storage,
-timestamp fields, and temporary CLR allocations are not covered by the byte
-quota. A separate file/node/path budget is still required before claiming full
-instance allocation bounds; this change records that gap and does not mask it.
+The subsequent namespace quota change closes the zero-length-file gap. The
+owner now accepts `nodeLimit` (default 1024) and `pathBytesLimit` (default
+256 KiB), separate from payload and descriptor limits. Root, image files,
+implicit image parent directories, and writable files count as nodes. Each
+canonical node name is charged once by its UTF-8 byte length, including `/`.
+Image namespace overflow rejects construction. New-file quota failures return
+ENOSPC before inserting the file or allocating a descriptor; closing a file does
+not remove its node charge. Existing opens/truncations do not add another charge.
+Disposal clears all accounting. Paths and resolved names also have a 4096-byte
+UTF-8 limit, matching the C boundary rather than counting Unicode characters.
+
+These are logical resource limits, not exact CLR heap accounting. Bounded node
+counts and name bytes bound retained namespace metadata; temporary allocations,
+generic translated malloc, runtime overhead and total worker memory still need
+the broader execution/worker limits. They are not claimed as complete instance
+allocation bounds.
+
+`python3 blink/tests/HostFiles/run.py` passes the owning BCL module under JIT and
+NativeAOT (`artifacts/host-files/attempt-oq71eiku/receipt.json`). It verifies
+zero-length create/close exhaustion, unchanged failure state, UTF-8 accounting,
+exact image-parent limits and disposal, alongside the previous filesystem cases.
+The unified InstanceIo regression consumer also passes. Earlier translated C
+control/mapping receipts below retain their earlier source snapshots; this new
+receipt does not retroactively change them.
 
 ## Evidence
 

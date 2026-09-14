@@ -75,9 +75,9 @@ and byte charges unchanged. Exact-owner munmap and diagnostic range checks use
 the same registry as anonymous allocations. There is no new guest memory
 algorithm or separate unbounded mapped-file cache.
 
-The [zero-length-file/node-count quota gap](HOST-FILE-CONTROL.md#allocation-limits-and-remaining-gap)
-remains open. Payload and mapping limits do not claim complete CLR or instance
-allocation bounds.
+The owning VFS now has separate [node/name quotas](HOST-FILE-CONTROL.md#allocation-limits-and-remaining-gap),
+qualified after this mapping matrix. Payload, namespace and mapping limits do
+not claim complete CLR or instance allocation bounds.
 
 ## Validation
 

@@ -101,3 +101,39 @@ try
 }
 catch (ArgumentException) { }
 Console.WriteLine("aggregate quota, seek overflow, image limit: PASS");
+
+// Zero-length files consume namespace resources even when payload usage is zero.
+using var nodes = new VirtualFileSystem(new Dictionary<string, ReadOnlyMemory<byte>>(), nodeLimit: 3, pathBytesLimit: 100);
+int n1 = Ok(nodes.Open("/one", FileAccessMode.Write, create: true));
+Ok(nodes.Close(n1));
+int n2 = Ok(nodes.Open("/two", FileAccessMode.Write, create: true));
+Ok(nodes.Close(n2));
+Equal(3, nodes.NodeCount); Equal(9L, nodes.PathBytes); Equal(0L, nodes.WritableBytes);
+Error(GuestError.NoSpace, nodes.Open("/three", FileAccessMode.Write, create: true));
+Error(GuestError.NoEntry, nodes.Stat("/three"));
+Equal(0, nodes.OpenDescriptors); Equal(3, nodes.NodeCount); Equal(9L, nodes.PathBytes);
+int reopen = Ok(nodes.Open("/one", FileAccessMode.Write, truncate: true));
+Ok(nodes.Close(reopen)); // Existing names never consume another node quota.
+
+using var names = new VirtualFileSystem(new Dictionary<string, ReadOnlyMemory<byte>>(), nodeLimit: 10, pathBytesLimit: 7);
+int named = Ok(names.Open("/é", FileAccessMode.Write, create: true)); // UTF-8 bytes: root1 + slash1 + é2.
+Ok(names.Close(named)); Equal(4L, names.PathBytes);
+Error(GuestError.NoSpace, names.Open("/long", FileAccessMode.Write, create: true));
+Equal(4L, names.PathBytes); Error(GuestError.NoEntry, names.Stat("/long"));
+int lastName = Ok(names.Open("/ab", FileAccessMode.Write, create: true));
+Ok(names.Close(lastName)); Equal(7L, names.PathBytes);
+Error(GuestError.NameTooLong, names.Open("/" + new string('é', 2048), FileAccessMode.Read));
+
+var nestedImage = new Dictionary<string, ReadOnlyMemory<byte>> { ["/a/b/file"] = ReadOnlyMemory<byte>.Empty };
+using var exactImage = new VirtualFileSystem(nestedImage, nodeLimit: 4, pathBytesLimit: 16);
+Equal(4, exactImage.NodeCount); Equal(16L, exactImage.PathBytes); // /, /a, /a/b, /a/b/file.
+static void RejectImage(Action action)
+{
+    try { action(); }
+    catch (ArgumentException) { return; }
+    throw new Exception("Oversized namespace accepted");
+}
+RejectImage(() => { using var fs = new VirtualFileSystem(nestedImage, nodeLimit: 3); });
+RejectImage(() => { using var fs = new VirtualFileSystem(nestedImage, pathBytesLimit: 15); });
+nodes.Dispose(); Equal(0, nodes.NodeCount); Equal(0L, nodes.PathBytes);
+Console.WriteLine("node/path quotas, UTF-8 accounting, image parents and atomic failure: PASS");

@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Managed.Emulation.Host;
 
 public enum GuestError
@@ -49,21 +51,29 @@ public sealed class VirtualFileSystem : IDisposable
     private readonly Dictionary<int, Description> descriptors = new();
     private readonly long writableLimit;
     private readonly int descriptorLimit;
+    private readonly int nodeLimit;
+    private readonly long pathBytesLimit;
+    private long pathBytes = 1; // The root directory's UTF-8 name.
     private long writableBytes;
     private ulong nextInode = 1;
     private bool disposed;
 
     public VirtualFileSystem(IReadOnlyDictionary<string, ReadOnlyMemory<byte>> image,
         long writableLimit = 1 << 20, int descriptorLimit = 128, long imageLimit = 16 << 20,
-        IReadOnlySet<string>? executablePaths = null)
+        IReadOnlySet<string>? executablePaths = null, int nodeLimit = 1024,
+        long pathBytesLimit = 256 << 10)
     {
         ArgumentNullException.ThrowIfNull(image);
         if (writableLimit < 0 || writableLimit > int.MaxValue) throw new ArgumentOutOfRangeException(nameof(writableLimit));
         if (descriptorLimit < 1) throw new ArgumentOutOfRangeException(nameof(descriptorLimit));
         if (imageLimit < 0) throw new ArgumentOutOfRangeException(nameof(imageLimit));
+        if (nodeLimit < 1) throw new ArgumentOutOfRangeException(nameof(nodeLimit));
+        if (pathBytesLimit < 1) throw new ArgumentOutOfRangeException(nameof(pathBytesLimit));
         long imageBytes = 0;
         this.writableLimit = writableLimit;
         this.descriptorLimit = descriptorLimit;
+        this.nodeLimit = nodeLimit;
+        this.pathBytesLimit = pathBytesLimit;
         directoryNodes.Add("/", new([], true, nextInode++, 0x4000 | 0x1ed));
         foreach (var (path, contents) in image)
         {
@@ -71,10 +81,14 @@ public sealed class VirtualFileSystem : IDisposable
             if (!normalized.Succeeded || normalized.Value == "/") throw new ArgumentException("Invalid image file path: " + path, nameof(image));
             if (contents.Length > imageLimit - imageBytes) throw new ArgumentException("Image byte limit exceeded.", nameof(image));
             imageBytes += contents.Length;
-            if (!files.TryAdd(normalized.Value, new Node(contents.ToArray(), true, nextInode++, 0x8000 | 0x124))) throw new ArgumentException("Duplicate image path: " + path, nameof(image));
+            if (files.ContainsKey(normalized.Value)) throw new ArgumentException("Duplicate image path: " + path, nameof(image));
+            ReserveImageName(normalized.Value);
+            files.Add(normalized.Value, new Node(contents.ToArray(), true, nextInode++, 0x8000 | 0x124));
             var parent = Parent(normalized.Value);
-            while (directories.Add(parent))
+            while (!directories.Contains(parent))
             {
+                ReserveImageName(parent);
+                directories.Add(parent);
                 directoryNodes.Add(parent, new([], true, nextInode++, 0x4000 | 0x1ed));
                 parent = Parent(parent);
             }
@@ -92,6 +106,17 @@ public sealed class VirtualFileSystem : IDisposable
 
     public long WritableBytes { get { lock (sync) return writableBytes; } }
     public int OpenDescriptors { get { lock (sync) return descriptors.Count; } }
+    public int NodeCount { get { lock (sync) return files.Count + directoryNodes.Count; } }
+    public long PathBytes { get { lock (sync) return pathBytes; } }
+
+    private bool CanAddName(string name) => files.Count + directoryNodes.Count < nodeLimit &&
+        Encoding.UTF8.GetByteCount(name) <= pathBytesLimit - pathBytes;
+
+    private void ReserveImageName(string name)
+    {
+        if (!CanAddName(name)) throw new ArgumentException("Image namespace limit exceeded.", "image");
+        pathBytes += Encoding.UTF8.GetByteCount(name);
+    }
 
     public HostResult<int> Open(string path, FileAccessMode access, bool create = false,
         bool exclusive = false, bool truncate = false, bool append = false, string cwd = "/",
@@ -123,10 +148,12 @@ public sealed class VirtualFileSystem : IDisposable
             if (node?.Immutable == true && access.HasFlag(FileAccessMode.Write)) return Fail<int>(GuestError.ReadOnly);
             // Validate every failing condition before creation or truncation.
             if (descriptors.Count >= descriptorLimit) return Fail<int>(GuestError.TooManyFiles);
+            if (!exists && !CanAddName(name)) return Fail<int>(GuestError.NoSpace);
             node ??= new Node([], false, nextInode++, 0x8000 | 0x180);
             if (!exists)
             {
                 files.Add(name, node);
+                pathBytes += Encoding.UTF8.GetByteCount(name);
                 var parent = directoryNodes[Parent(name)];
                 parent.ModifyTicks = parent.ChangeTicks = DateTime.UtcNow.Ticks;
             }
@@ -300,6 +327,7 @@ public sealed class VirtualFileSystem : IDisposable
             directories.Clear();
             directoryNodes.Clear();
             writableBytes = 0;
+            pathBytes = 0;
         }
     }
 
@@ -320,7 +348,7 @@ public sealed class VirtualFileSystem : IDisposable
         if (!directory.Succeeded) return directory;
         if (!directories.Contains(directory.Value)) return Fail<string>(GuestError.NotDirectory);
         if (string.IsNullOrEmpty(path)) return Fail<string>(GuestError.NoEntry);
-        if (path.Length > 4096) return Fail<string>(GuestError.NameTooLong);
+        if (path.Length > 4096 || Encoding.UTF8.GetByteCount(path) > 4096) return Fail<string>(GuestError.NameTooLong);
         if (path.Contains('\0')) return Fail<string>(GuestError.Invalid);
         string current = path.StartsWith('/') ? "/" : directory.Value;
         foreach (var part in path.Split('/', StringSplitOptions.RemoveEmptyEntries))
@@ -334,13 +362,14 @@ public sealed class VirtualFileSystem : IDisposable
             }
             else current = (current == "/" ? "" : current) + "/" + part;
         }
+        if (Encoding.UTF8.GetByteCount(current) > 4096) return Fail<string>(GuestError.NameTooLong);
         if (path.EndsWith('/') && !directories.Contains(current)) return Fail<string>(files.ContainsKey(current) ? GuestError.NotDirectory : GuestError.NoEntry);
         return HostResult<string>.Success(current);
     }
     private static HostResult<string> Normalize(string path, string cwd)
     {
         if (string.IsNullOrEmpty(path)) return Fail<string>(GuestError.NoEntry);
-        if (path.Length > 4096) return Fail<string>(GuestError.NameTooLong);
+        if (path.Length > 4096 || Encoding.UTF8.GetByteCount(path) > 4096) return Fail<string>(GuestError.NameTooLong);
         if (path.Contains('\0')) return Fail<string>(GuestError.Invalid);
         var parts = new List<string>();
         foreach (var part in (path.StartsWith('/') ? path : cwd + "/" + path).Split('/'))
@@ -353,7 +382,8 @@ public sealed class VirtualFileSystem : IDisposable
             }
             else parts.Add(part);
         }
-        return HostResult<string>.Success("/" + string.Join('/', parts));
+        string result = "/" + string.Join('/', parts);
+        return Encoding.UTF8.GetByteCount(result) > 4096 ? Fail<string>(GuestError.NameTooLong) : HostResult<string>.Success(result);
     }
     private static string Parent(string path) => path[..Math.Max(1, path.LastIndexOf('/'))];
     private static HostResult<T> Fail<T>(GuestError error) => HostResult<T>.Failure(error);

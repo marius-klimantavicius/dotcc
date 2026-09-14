@@ -427,3 +427,13 @@ independent consumer changes without mixing unverified C inputs.
 Actual address, pte32, prog and machine sources pass the combined preamble. The
 frozen attempt-7cn5o6ww full set (90 sources) is now emitting with two workers.
 Linkage, initializer/import audit and actual managed execution remain open.
+
+## Significant progress: bounded namespace metadata
+
+VFS nodes and canonical UTF-8 path names now have separate owner limits, including
+empty files, image nodes, implicit parent directories and root. Repeated empty
+create/close can no longer bypass payload limits. Image overflow rejects setup;
+new-file quota errors preserve namespace/descriptors, and existing opens consume
+no extra charge. Focused JIT/NativeAOT and InstanceIo regressions pass. Logical
+namespace bounds do not claim exact CLR allocation or total worker memory bounds.
+The active core build keeps its earlier immutable Host snapshot.
