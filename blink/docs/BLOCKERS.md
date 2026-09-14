@@ -23,12 +23,14 @@ with the exact upstream DISABLE_METAL `Mode` expansion. Untouched and staged
 native decoder probes agree on all 11 cases and ABI output. This scoped decoder
 seam does not resolve the complete core's POSIX dependencies.
 
-## B003 — Multidimensional array parameters (open)
+## B003 — Multidimensional and unnamed array parameters (fixed)
 
 The staged decoder reaches `xed_set_simmz_imm_width_eosz` with parameter
-`const u8 eosz[2][2][3]`; dotcc rejects the second array dimension. This requires
-generic parameter declarator support preserving pointer-to-row stride, with a
-native-checked regression and retry of the actual upstream decoder.
+`const u8 eosz[2][2][3]`; dotcc rejects the second array dimension. Generic parameter declarators now preserve pointer-to-row stride and permit
+unnamed array prototypes. Both native-checked reduced fixtures pass; the actual
+decoder passes raw/optimized JIT/NativeAOT with matching outputs. Full post-fix
+Release build, 2218 unit cases and 494 functional cases pass; 1017 functional
+rows remain skipped.
 
 ## B004 — Restricted CPU feature advertisement (open)
 
@@ -42,3 +44,20 @@ Linux x64 is the only observed execution host. Windows execution and the complet
 raw/optimized × JIT/NativeAOT matrix have not run. Native host GCC/binutils/.NET
 binaries are recorded by version/hash; their distribution packages are not yet
 archived as hermetic toolchain inputs.
+
+## B005 — Function specifiers preceding tagged return types (fixed)
+
+After staging core translation units away from the upstream header directory,
+actual translation reaches `static inline struct Dll *dll_last(...)` in dll.h.
+The grammar supports `inline` before builtins/typedefs but missed struct/union/enum
+tags. A native-checked reduced functional fixture and generic specifier handling
+pass, and the actual core retries past this declaration. The full shared suite
+passes (2218 unit, 494 functional, 1017 functional skipped).
+
+## Include staging requirement
+
+Dotcc adds each input translation unit's directory to its include map. Passing
+`ref/.../blink/*.c` directly consequently lets `blink/string.h` and `blink/signal.h`
+shadow system `<string.h>` and `<signal.h>`. Core/decoder scripts stage verified
+source copies in a directory without those colliding headers. Initial signal
+parse messages must not be misreported as proven signal-language defects.

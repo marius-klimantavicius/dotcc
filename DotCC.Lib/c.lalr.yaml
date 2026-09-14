@@ -769,6 +769,15 @@ productions:
       # so we drop it entirely and emit a pointer parameter.
       - { lhs: Param, rhs: [Type, ID, '[', ']'],     action: paramArrayUnsized }
       - { lhs: Param, rhs: [Type, ID, '[', E, ']'],  action: paramArraySized }
+      # Only the outermost bound is discarded; inner dimensions determine
+      # pointer-to-row stride, indexing and sizeof(*parameter).
+      - { lhs: Param, rhs: [Type, ID, '[', E, ']', ArrDims], action: paramArrayRowsSized }
+      - { lhs: Param, rhs: [Type, ID, '[', ']', ArrDims], action: paramArrayRowsUnsized }
+      # Abstract array declarators in prototypes undergo the same adjustment.
+      - { lhs: Param, rhs: [Type, '[', ']'], action: paramUnnamedArrayUnsized }
+      - { lhs: Param, rhs: [Type, '[', E, ']'], action: paramUnnamedArraySized }
+      - { lhs: Param, rhs: [Type, '[', ']', ArrDims], action: paramUnnamedArrayRowsUnsized }
+      - { lhs: Param, rhs: [Type, '[', E, ']', ArrDims], action: paramUnnamedArrayRowsSized }
       # Function-pointer parameter — `void qsort(…, int (*cmp)(const void*, const void*))`.
       # Same `( * ID ) ( … )` shape as the local fn-ptr declarator; lowers to a
       # `delegate*<args…, ret>` parameter. (The typedef'd form `Comparator cmp`
@@ -857,6 +866,9 @@ productions:
       # parses via typeVolatile. Conflict-free: a bare TYPE_NAME still reduces via
       # `Type → TYPE_NAME`; only a TypeSpecList *followed by* a TYPE_NAME shifts here.
       - { lhs: Type, rhs: [TypeSpecList, TYPE_NAME], action: typeSpecThenName }
+      - { lhs: Type, rhs: [TypeSpecList, 'struct', ID], action: typeSpecThenStruct }
+      - { lhs: Type, rhs: [TypeSpecList, 'union', ID], action: typeSpecThenUnion }
+      - { lhs: Type, rhs: [TypeSpecList, 'enum', ID], action: typeSpecThenEnum }
       # Type qualifiers `const` / `volatile` — modelled as Type PREFIX *and*
       # POSTFIX (NOT TypeSpecs), so every position parses: west `const int` /
       # `const MyT` / `const struct X`, east `int const` / `MyT const` /

@@ -1003,6 +1003,12 @@ internal sealed partial class IrBuilder
                 case C.ParamUnnamed p: acc.Add(new(DecayParam(ResolveType(p.Arg0)), "_p" + unnamed++)); break;
                 case C.ParamArrayUnsized p: acc.Add(new(new CType.Pointer(ResolveType(p.Arg0)), Tok(p.Arg1))); break;
                 case C.ParamArraySized p: acc.Add(new(new CType.Pointer(ResolveType(p.Arg0)), Tok(p.Arg1))); break;
+                case C.ParamArrayRowsSized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg5), Tok(p.Arg1))); break;
+                case C.ParamArrayRowsUnsized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg4), Tok(p.Arg1))); break;
+                case C.ParamUnnamedArrayUnsized p: acc.Add(new(new CType.Pointer(ResolveType(p.Arg0)), "_p" + unnamed++)); break;
+                case C.ParamUnnamedArraySized p: acc.Add(new(new CType.Pointer(ResolveType(p.Arg0)), "_p" + unnamed++)); break;
+                case C.ParamUnnamedArrayRowsUnsized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg3), "_p" + unnamed++)); break;
+                case C.ParamUnnamedArrayRowsSized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg4), "_p" + unnamed++)); break;
                 // Function-pointer parameter: `Ret (*name)(paramTypes)`.
                 case C.ParamFnPtr p: acc.Add(new(FnPtrType(p.Arg0, p.Arg6), Tok(p.Arg3))); break;
                 case C.ParamFnPtrNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg3))); break;
@@ -1010,6 +1016,11 @@ internal sealed partial class IrBuilder
                 case C.ParamFnPtrOutputNoArgs p: acc.Add(new(new CType.Pointer(FnPtrType(p.Arg0, null)), Tok(p.Arg4))); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
+        }
+        CType ArrayRowParameter(Item element, Item dimensions)
+        {
+            var dims = TryConstDims(dimensions) ?? throw new IrUnsupportedException("array parameter inner dimensions must be constant");
+            return new CType.Pointer(MakeArrayType(ResolveType(element), dims));
         }
         Walk(paramList);
         variadic = vararg;
@@ -1509,6 +1520,9 @@ internal sealed partial class IrBuilder
         // `inline` (→ [MethodImpl(AggressiveInlining)]) and `_Noreturn` (gated C11,
         // → [DoesNotReturn]). The TYPE_NAME is the whole base type.
         C.TypeSpecThenName t => SpecsThenName(t, it),
+        C.TypeSpecThenStruct t => SpecsThenType(t.Arg0, ReferenceAggregate(t.Arg2, false), it),
+        C.TypeSpecThenUnion t => SpecsThenType(t.Arg0, ReferenceAggregate(t.Arg2, true), it),
+        C.TypeSpecThenEnum t => SpecsThenType(t.Arg0, _enumTypes.TryGetValue(Tok(t.Arg2), out var type) ? type : CType.Int, it),
         // C23 `typeof(expr)` / `typeof(type)` — the expr form reads the operand's
         // synthesized CType (qualifiers dropped, as `typeof_unqual` does); the type
         // form unwraps to that type. The expr isn't evaluated (only its type taken).
@@ -1577,10 +1591,12 @@ internal sealed partial class IrBuilder
     /// `_Thread_local` — see <see cref="RecordDeclSpecs"/>); the typedef-name is
     /// the whole base type.</summary>
     private CType SpecsThenName(C.TypeSpecThenName t, Item it)
+        => SpecsThenType(t.Arg0, ResolveTypeName(Tok(t.Arg1)), it);
+
+    private CType SpecsThenType(Item specList, CType type, Item source)
     {
-        var specs = CollectSpecs(t.Arg0);
-        RecordDeclSpecs(specs, SrcPos.From(it));
-        var type = ResolveTypeName(Tok(t.Arg1));
+        var specs = CollectSpecs(specList);
+        RecordDeclSpecs(specs, SrcPos.From(source));
         if (specs.Contains("const")) type = type.WithQuals(TypeQual.Const);
         if (specs.Contains("volatile")) type = type.WithQuals(TypeQual.Volatile);
         return type;
