@@ -690,3 +690,11 @@ declaration errors: nested C tag/function collisions (B023) and repeated
 per-object static-local identities (B024). The latter can also silently merge
 identical storage declarations. Reduced generic repairs are being qualified
 separately; this build is failure evidence, not interpreted guest execution.
+
+The next consumer overlay, generated/core-profile/attempt-vhtbyjga, adds the
+separately qualified capacity, socket-query, scheduling and directory bridges
+with the current Host project. It again proves all95 C inputs unchanged. Future
+fresh profiles include these four sources through the binding manifest. The
+consumer binds its directory owner and releases its snapshots/descriptor leases
+after translated main returns, before disposing I/O. This integration still
+awaits the complete C# build and actual guest execution.

@@ -67,7 +67,11 @@
     "src/HostProcessPolicy/HostProcessPolicyBridge.cs",
     "src/HostSleep/HostSleepBridge.cs",
     "src/HostFileUpdates/HostFileUpdatesBridge.cs",
-    "src/HostDescriptors/HostDescriptorsBridge.cs"
+    "src/HostDescriptors/HostDescriptorsBridge.cs",
+    "src/HostCapacity/HostCapacityBridge.cs",
+    "src/HostSocketQueries/HostSocketQueriesBridge.cs",
+    "src/HostYield/HostYieldBridge.cs",
+    "src/HostDirectories/HostDirectoriesBridge.cs"
   ],
   "isolate": [
     "setenv",

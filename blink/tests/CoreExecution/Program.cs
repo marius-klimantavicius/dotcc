@@ -8,9 +8,11 @@ using Blink = Managed.Emulation.BlinkCore;
 using var variables = new HostVariables();
 using var sleep = new HostSleep();
 var io = new InstanceIo(new Dictionary<string, ReadOnlyMemory<byte>>());
+var directories = new HostDirectories(io);
 try
 {
     Blink.BindHostIo(io);
+    Blink.BindHostDirectories(directories);
     Blink.BindHostVariables(variables);
     Blink.BindHostSleep(sleep);
     Blink.BindHostEnvironment(new HostEnvironment());
@@ -22,6 +24,8 @@ finally
 {
     Blink.UnbindHostIdentity();
     Blink.UnbindHostEnvironment();
+    Blink.UnbindHostDirectories();
+    directories.Dispose();
     Blink.UnbindHostIo();
     Blink.UnbindHostVariables();
     Blink.UnbindHostSleep();
