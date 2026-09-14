@@ -1,0 +1,14 @@
+{
+  "fixture": "static-musl-http-v1",
+  "qualified_executable_sha256": "916eeadfde4092c55bd2d05d5cacbe20482f4cabda8c0436fcfb68d690f2a9b8",
+  "musl": {
+    "version": "1.2.5",
+    "url": "https://musl.libc.org/releases/musl-1.2.5.tar.gz",
+    "sha256": "a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4",
+    "license": "MIT; see preserved musl-1.2.5/COPYRIGHT for component exceptions"
+  },
+  "sources": {
+    "service.c": "2b0fa7def196fb2da7c5bbc166563b55f0b89957d31152a7c3798c077ae892b9",
+    "instance.txt": "98717b4bc0549083353f1525231ec5f017fbf4eff1146c9c532a7782e4e5d7c4"
+  }
+}

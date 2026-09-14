@@ -1,0 +1,3740 @@
+{
+  "kind": "lexical-source-inventory-not-link-closure",
+  "revision": "f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580",
+  "files": [
+    {
+      "path": "blink/abort.c",
+      "sha256": "1ad85af65026875091380b7a6d162482d965b61132ffb74f862772c8ea8f91dd",
+      "headers": [
+        "stdlib.h",
+        "blink/assert.h",
+        "blink/macros.h",
+        "blink/stats.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/address.c",
+      "sha256": "a27cf83ba39129995416082afbdd9d141fd7d396b5971196e265d27a558c8294",
+      "headers": [
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/alu.c",
+      "sha256": "673ddd60cb6fb1de6ea9f02a4e8e958f3c299a522dd754b4e82950e7a21fc4f4",
+      "headers": [
+        "blink/alu.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/log.h",
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/alu.h",
+      "sha256": "76045217a50aece3f996437066e76e443db4d4b99795576b2840dc0f33af229b",
+      "headers": [
+        "stdbool.h",
+        "blink/builtin.h",
+        "blink/intrin.h",
+        "blink/machine.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern const aluop_f kAlu[12][4];",
+        "extern const aluop_f kBsu[8][4];",
+        "extern const aluop_f kJustAlu[8];",
+        "extern const aluop_f kJustBsu[8];",
+        "extern const aluop_f kFastDec[4];",
+        "extern const aluop_f kJustBsu32[8];",
+        "extern const aluop_f kAluFast[8][4];",
+        "extern const aluop_f kJustBsuCl32[8];",
+        "extern const aluop_f kJustBsuCl64[8];"
+      ]
+    },
+    {
+      "path": "blink/alu1.c",
+      "sha256": "a83ba99f5be1dae8fc1847e2d4f8ef605a73ddea43df0c722aa446b81eb0662d",
+      "headers": [
+        "limits.h",
+        "blink/alu.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/stats.h",
+        "blink/swap.h",
+        "blink/thread.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/alu2.c",
+      "sha256": "025d76e70d3f7d3b36869ad90628c7dac5cfef82ec34e452c1379f52b4a6b510",
+      "headers": [
+        "limits.h",
+        "blink/alu.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/stats.h",
+        "blink/swap.h",
+        "blink/thread.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/alui.c",
+      "sha256": "c10803658e87f919d8ad375ad404302340c3efbdc99fa77caebf8ce7fd1c9b9a",
+      "headers": [
+        "blink/alu.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/flags.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/stats.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ancillary.c",
+      "sha256": "f478833a0e39e8ce720379a9577c2b141e640f51d479a6bed68106f8822cdbe1",
+      "headers": [
+        "blink/ancillary.h",
+        "fcntl.h",
+        "stdlib.h",
+        "string.h",
+        "sys/socket.h",
+        "sys/un.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/fds.h",
+        "blink/linux.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/util.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ancillary.h",
+      "sha256": "e9ff00016c3cf0cbf0c3d64670b966a26a51e5fe5e1825ea24a429ef115daee8",
+      "headers": [
+        "sys/socket.h",
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/argv.c",
+      "sha256": "8bca1c72bd6ef32457f03eb351def7fc9423d308ff032296c4d7f11a4c34d708",
+      "headers": [
+        "stdlib.h",
+        "string.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/endian.h",
+        "blink/flag.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/map.h",
+        "blink/syscall.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/assert.c",
+      "sha256": "28d242ddff0b60ae057a90be64a3891a47a2389745cff32ba613b75959e6928a",
+      "headers": [
+        "blink/assert.h",
+        "errno.h",
+        "stdio.h",
+        "blink/debug.h",
+        "blink/flag.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/thread.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/assert.h",
+      "sha256": "92977dc319015f1ae2704128a0a1e6aaafc6cdb207ce6c884821199168d00ddd",
+      "headers": [
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/atomic.h",
+      "sha256": "9e912e322d5f4b301a5061b2ffe2156f8281d94b37661bb7ad69dce76e88f592",
+      "headers": [
+        "blink/builtin.h",
+        "blink/thread.h",
+        "stdatomic.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/bcd.c",
+      "sha256": "10ed84650f616b045036d7dfd9c776c58b9ec213730010a914b24d9f2bc579ef",
+      "headers": [
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/machine.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/bda.h",
+      "sha256": "aed2f8e42a525177e11540a4126f364647dfba10fcc7bbf80c1e3c5bddedd653",
+      "headers": [
+        "blink/blinkenlights.h",
+        "blink/machine.h",
+        "blink/endian.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/bios.c",
+      "sha256": "e3ea96cdc21febcf0abbcbab866b1e153816dfc3500af3f4ba45f7d426fb0118",
+      "headers": [
+        "errno.h",
+        "fcntl.h",
+        "poll.h",
+        "stdbool.h",
+        "stdlib.h",
+        "string.h",
+        "sys/stat.h",
+        "blink/assert.h",
+        "blink/bda.h",
+        "blink/biosrom.h",
+        "blink/blinkenlights.h",
+        "blink/bus.h",
+        "blink/cga.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/loader.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/mda.h",
+        "blink/pty.h",
+        "blink/timespec.h",
+        "blink/util.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/biosrom.c",
+      "sha256": "652bcab94fd2c1c65b6af44db082128e9a14918f407aac3773e5a251398ac50f",
+      "headers": [
+        "blink/biosrom.h",
+        "errno.h",
+        "fcntl.h",
+        "stdlib.h",
+        "string.h",
+        "blink/bda.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/overlays.h",
+        "blink/util.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/biosrom.h",
+      "sha256": "e5059f38e03f394d03a3c29a4e8d62bbe5cfe170e6c5bc9712e2dafad0906b32",
+      "headers": [
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/likely.h",
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/bit.c",
+      "sha256": "9208bb4c1d675bc8c2dc6399ba4cc333e13d6acf66cd846abbfc646d2e55038b",
+      "headers": [
+        "blink/bus.h",
+        "blink/flags.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/rde.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/bitscan.c",
+      "sha256": "3654d1b4be3a1b68855f06c29f8a291dbd5a5a6561b0ec14d8c979dc54d9992e",
+      "headers": [
+        "blink/bitscan.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/bitscan.h",
+      "sha256": "7eb0e6570ceab4046e6159dc961f6d44de8fba2d63a937912b8c17f3eb324cf3",
+      "headers": [
+        "blink/builtin.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/blink.c",
+      "sha256": "1a3a80cdadd87d6191a9e1bd37f1a41c4fc63cf3a7102d2e98705f108f16f2f0",
+      "headers": [
+        "locale.h",
+        "signal.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "sys/resource.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/case.h",
+        "blink/debug.h",
+        "blink/dll.h",
+        "blink/endian.h",
+        "blink/flag.h",
+        "blink/jit.h",
+        "blink/loader.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/overlays.h",
+        "blink/pml4t.h",
+        "blink/signal.h",
+        "blink/sigwinch.h",
+        "blink/stats.h",
+        "blink/syscall.h",
+        "blink/thread.h",
+        "blink/tunables.h",
+        "blink/util.h",
+        "blink/vfs.h",
+        "blink/web.h",
+        "blink/x86.h",
+        "blink/xlat.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern char **environ;"
+      ]
+    },
+    {
+      "path": "blink/blinkenlights.c",
+      "sha256": "3f64f535df90c99e5946eb9b36486bc54d27008be08bc0e6d70d32b940385b19",
+      "headers": [
+        "blink/blinkenlights.h",
+        "ctype.h",
+        "errno.h",
+        "fcntl.h",
+        "inttypes.h",
+        "locale.h",
+        "poll.h",
+        "signal.h",
+        "stdarg.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "sys/ioctl.h",
+        "sys/mman.h",
+        "sys/stat.h",
+        "sys/time.h",
+        "sys/types.h",
+        "time.h",
+        "unistd.h",
+        "wchar.h",
+        "wctype.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/bda.h",
+        "blink/biosrom.h",
+        "blink/bitscan.h",
+        "blink/breakpoint.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/case.h",
+        "blink/cga.h",
+        "blink/debug.h",
+        "blink/dis.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/fds.h",
+        "blink/flag.h",
+        "blink/flags.h",
+        "blink/fpu.h",
+        "blink/high.h",
+        "blink/linux.h",
+        "blink/loader.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/mda.h",
+        "blink/overlays.h",
+        "blink/panel.h",
+        "blink/pml4t.h",
+        "blink/pty.h",
+        "blink/rde.h",
+        "blink/signal.h",
+        "blink/sigwinch.h",
+        "blink/stats.h",
+        "blink/strwidth.h",
+        "blink/syscall.h",
+        "blink/thompike.h",
+        "blink/timespec.h",
+        "blink/tsan.h",
+        "blink/types.h",
+        "blink/util.h",
+        "blink/vfs.h",
+        "blink/watch.h",
+        "blink/web.h",
+        "blink/xlat.h",
+        "blink/xmmtype.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern char **environ;"
+      ]
+    },
+    {
+      "path": "blink/blinkenlights.h",
+      "sha256": "67dcd1c69195620e9b444bb45767c82b35d58cc233991482e3efad2da3c03b91",
+      "headers": [
+        "stdbool.h",
+        "stdlib.h",
+        "wchar.h",
+        "sys/types.h",
+        "blink/likely.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern int ttyin;",
+        "extern int vidya;",
+        "extern bool tuimode;",
+        "extern struct Pty *pty;",
+        "extern struct Machine *m;",
+        "extern bool ptyisenabled;"
+      ]
+    },
+    {
+      "path": "blink/bmi2.c",
+      "sha256": "48d32992fcb0d10256f2ad29f453fe5f1b7143bd44e1a574e43bb79e1142888e",
+      "headers": [
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/rde.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/breakpoint.c",
+      "sha256": "295107add25aa6c2c602d87d91540cb78f787698fc48168ba885587065267d11",
+      "headers": [
+        "blink/breakpoint.h",
+        "stdlib.h",
+        "string.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/breakpoint.h",
+      "sha256": "85ff140d5a52d7c84f0cb414f5fe44db1b5a5e9cdc7f189e2727501633e1b617",
+      "headers": [
+        "stdbool.h",
+        "stddef.h",
+        "sys/types.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/breg.c",
+      "sha256": "d1592dcdb995cb4278f5222a93d15ed759e1b6c82b946f608e8b9428c261c9ea",
+      "headers": [
+        "blink/modrm.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/buffer.c",
+      "sha256": "005ad3ff524e2ac9b9e68ccf256810e1a36627fcd156515c4e20f0d08fc21dba",
+      "headers": [
+        "blink/buffer.h",
+        "errno.h",
+        "stdarg.h",
+        "stdbool.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "unistd.h",
+        "blink/macros.h",
+        "blink/memcpy.h",
+        "blink/stats.h",
+        "blink/util.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/buffer.h",
+      "sha256": "874880fb3f1c8ebd87ef6eee21faf3fe92b860f3c3c882cbcbc20399bccefcd5",
+      "headers": [
+        "sys/types.h",
+        "wchar.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/builtin.h",
+      "sha256": "c31706d513c771644bd3e5e2f813f0506a7a8fc3f4c8150f0e6fae49c8fa98c4",
+      "headers": [
+        "limits.h",
+        "config.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/bus.c",
+      "sha256": "0b961d132aacef5f297bc8e98f6831253a9f206fa426b43b338c13ee6ca9a65e",
+      "headers": [
+        "blink/bus.h",
+        "limits.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/dll.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/rde.h",
+        "blink/swap.h",
+        "blink/thread.h",
+        "blink/tsan.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/bus.h",
+      "sha256": "f7d2546849910933845503924c2e4d67feb7b9cec43cf4dadaf081fdff947288",
+      "headers": [
+        "limits.h",
+        "stdbool.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/dll.h",
+        "blink/endian.h",
+        "blink/thread.h",
+        "blink/tsan.h",
+        "blink/tunables.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern struct Bus *g_bus;"
+      ]
+    },
+    {
+      "path": "blink/case.h",
+      "sha256": "40629b8a82f58728e19c41e80ad2b01312453199876a0c48f47f37e5a3cff366",
+      "headers": [],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/cga.c",
+      "sha256": "6ec5cc5053616726748de1b504c9794fea11ebd8942a9351cec36ccaae372bf1",
+      "headers": [
+        "blink/cga.h",
+        "blink/bda.h",
+        "stdio.h",
+        "termios.h",
+        "blink/blinkenlights.h",
+        "blink/buffer.h",
+        "blink/macros.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/cga.h",
+      "sha256": "aede9776842491bd81790e11eb89e925ce312b3e8c7a3e6892089f98632db2d0",
+      "headers": [
+        "blink/panel.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/checked.h",
+      "sha256": "07f7a389f116e20730ae34aa1db3da52cda83034342db0eb7aa3dd2dfb6de862",
+      "headers": [
+        "stdckdint.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/clmul.c",
+      "sha256": "6930dd03678a5d0909d8ed4e60a4fe7bbefbe2a465165eb6aa3ba4051151867e",
+      "headers": [
+        "blink/bitscan.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/rde.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/close.c",
+      "sha256": "40afe183ee90d0b8690c9576f410b89419fdca8da59c8589e461209d15b6ba50",
+      "headers": [
+        "errno.h",
+        "fcntl.h",
+        "limits.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/debug.h",
+        "blink/dll.h",
+        "blink/errno.h",
+        "blink/fds.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/syscall.h",
+        "blink/thread.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/cmpxchg.c",
+      "sha256": "40e1c61a28b09b6316fd900957bb46d6f890d30237cbe04f011b434958a9d984",
+      "headers": [
+        "blink/alu.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/thread.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/commandv.c",
+      "sha256": "5b6ac8d16a8f6012d71ab41ca159b9cc96e5c6c1071fb09f6a1eda821dc79ec2",
+      "headers": [
+        "ctype.h",
+        "fcntl.h",
+        "limits.h",
+        "stddef.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "unistd.h",
+        "blink/builtin.h",
+        "blink/overlays.h",
+        "blink/util.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/compress.c",
+      "sha256": "5ca505db7c67d86cce6d5b1f403245042769ff4d984c862c9b0d388c6694a85c",
+      "headers": [
+        "stdlib.h",
+        "zlib.h",
+        "blink/assert.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/cp437.c",
+      "sha256": "043d5162994e988b1111e19e2cea5a75b217587145886ffe2a70abf706a57cdb",
+      "headers": [
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/cpucount.c",
+      "sha256": "a69c40d2781dfea096979b832c854aa59340d0f5ff8047333b49ad53419827cc",
+      "headers": [
+        "sys/param.h",
+        "sys/types.h",
+        "unistd.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/macros.h",
+        "blink/util.h",
+        "sched.h",
+        "sys/sysctl.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/cpuid.c",
+      "sha256": "0675b9d86847b17398936d052f863762b3ef367ad6d964f7bb64fade3d74abca",
+      "headers": [
+        "blink/assert.h",
+        "blink/endian.h",
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/crc32.c",
+      "sha256": "1dd636b087336e5c506c146c4ceacfd55494b1c43726a31c0f670dc4fbd9030f",
+      "headers": [
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/swap.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/cvt.c",
+      "sha256": "0d036a0c30c19a6063859ebcd22fbc7623209d528e017003abe018d257e75d86",
+      "headers": [
+        "math.h",
+        "string.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/fpu.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/modrm.h",
+        "blink/pun.h",
+        "blink/stats.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/debug.c",
+      "sha256": "09ffcc0e51c93b3f9382cc5e5c384b4cabe3144694a6e70cb1ba037e12665c3b",
+      "headers": [
+        "blink/debug.h",
+        "errno.h",
+        "fcntl.h",
+        "setjmp.h",
+        "signal.h",
+        "string.h",
+        "sys/mman.h",
+        "sys/stat.h",
+        "sys/types.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/dis.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/loader.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/overlays.h",
+        "blink/stats.h",
+        "blink/thread.h",
+        "blink/tsan.h",
+        "blink/util.h",
+        "blink/x86.h",
+        "sched.h",
+        "libunwind-x86_64.h",
+        "libunwind.h"
+      ],
+      "thread_local_declarations": [
+        "_Thread_local static jmp_buf g_busted;"
+      ],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/debug.h",
+      "sha256": "b9a65b7f44ebf2c96bc8b37d010720f1fdce4366d19a2d5ffec2738ef0b6b1f6",
+      "headers": [
+        "stddef.h",
+        "blink/fds.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/debug2.c",
+      "sha256": "a628d20cbd6024a137661ab491b7e32d619609eaa20f0e29ec5207fda30f250a",
+      "headers": [
+        "errno.h",
+        "fcntl.h",
+        "stdlib.h",
+        "string.h",
+        "sys/stat.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/dis.h",
+        "blink/dll.h",
+        "blink/elf.h",
+        "blink/endian.h",
+        "blink/fspath.h",
+        "blink/loader.h",
+        "blink/machine.h",
+        "blink/map.h",
+        "blink/overlays.h",
+        "blink/util.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/demangle.c",
+      "sha256": "44d037e11b75e0a0f9e043b3ae760f97f47f19a5a1486c6f35ce0bd2b76f61df",
+      "headers": [
+        "errno.h",
+        "fcntl.h",
+        "limits.h",
+        "stdlib.h",
+        "string.h",
+        "sys/uio.h",
+        "sys/wait.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/debug.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/sigwinch.h",
+        "blink/thread.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/deps.c",
+      "sha256": "1881dc6ea4f1dedb59bfd3f93b30be321fc5d1b99a69f337d534e4eed00c5805",
+      "headers": [
+        "blink/flags.h",
+        "blink/rde.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/describeflags.c",
+      "sha256": "103db14a28d1fc353dbbc3ab0537f4f96aa6b965038c2099e9beb64fcc35cf62",
+      "headers": [
+        "blink/describeflags.h",
+        "stdbool.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/describeflags.h",
+      "sha256": "ffaa241d73a7b9dfe4e81c305d091fce521dfd275bff30e1b44dcf4dcd0d1f9a",
+      "headers": [
+        "stddef.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/describehosterrno.c",
+      "sha256": "d226b0cb5d5b823e329ab4954f5fb2a1ac2b41df05da5ecaa71dedd7b9cb263e",
+      "headers": [
+        "errno.h",
+        "blink/thread.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/describeprot.c",
+      "sha256": "d23fc885425e4caee88fc73b60c7dd563e5b34592d1254e9d0b4b7cabe46a1fc",
+      "headers": [
+        "string.h",
+        "sys/mman.h",
+        "blink/debug.h",
+        "blink/thread.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/describesignal.c",
+      "sha256": "91808ae443ca15f8796d56f23e1d790306a9c1cf2cdc8b04356e2c3ab3f6e7da",
+      "headers": [
+        "string.h",
+        "blink/linux.h",
+        "blink/thread.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/devfs.c",
+      "sha256": "54c858fd2a8cb1fb7ef09dd9c01c29a8a1b2bb962af2f72c7d64a146bf006198",
+      "headers": [
+        "blink/devfs.h",
+        "stdlib.h",
+        "string.h",
+        "blink/errno.h",
+        "blink/hostfs.h",
+        "blink/log.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/devfs.h",
+      "sha256": "6c8a828eb0cb9d89a2c67ef6d169853ab20adf9439c19da3507fdf3c80ff7623",
+      "headers": [
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern struct VfsSystem g_devfs;"
+      ]
+    },
+    {
+      "path": "blink/dis.c",
+      "sha256": "a3b4702bca394dd49b8a5c238b5ec175e7f7d7b75c91bf6ba5db8724df250132",
+      "headers": [
+        "blink/dis.h",
+        "limits.h",
+        "stdlib.h",
+        "string.h",
+        "blink/assert.h",
+        "blink/debug.h",
+        "blink/endian.h",
+        "blink/high.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/types.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/dis.h",
+      "sha256": "854e6286992cfdff4dad1acb8a66b3f98dba9920aaf318b414216df7e08c342c",
+      "headers": [
+        "stdbool.h",
+        "stddef.h",
+        "blink/loader.h",
+        "blink/types.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/disarg.c",
+      "sha256": "1c8481817c91f87139319d834a37a0ee5955a067dc81b4b5395d77c00d389466",
+      "headers": [
+        "inttypes.h",
+        "stdio.h",
+        "string.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/dis.h",
+        "blink/endian.h",
+        "blink/high.h",
+        "blink/macros.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/diself.c",
+      "sha256": "6f01bbc59ab7fa230ae7accf4a5dab230dd757f58a956eb03a34aa7d60660f26",
+      "headers": [
+        "stdlib.h",
+        "string.h",
+        "blink/assert.h",
+        "blink/dis.h",
+        "blink/elf.h",
+        "blink/endian.h",
+        "blink/log.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/disfree.c",
+      "sha256": "e63febe6af728bb9e311ff0aa5597ec06f11a0be741cc3256cd86bf72dbd7cc8",
+      "headers": [
+        "stdlib.h",
+        "string.h",
+        "blink/dis.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/disinst.c",
+      "sha256": "653a81bb5368ce5fec5281499b48688ed90c1487a04af228a74064df8a39b20a",
+      "headers": [
+        "ctype.h",
+        "stdlib.h",
+        "string.h",
+        "blink/assert.h",
+        "blink/dis.h",
+        "blink/high.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/disspec.c",
+      "sha256": "1fee5d54ff86c9c52a0b6bbb36f9953083a1328695e28d18ae4cd0db6afb1861",
+      "headers": [
+        "stdbool.h",
+        "string.h",
+        "blink/builtin.h",
+        "blink/case.h",
+        "blink/rde.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/divmul.c",
+      "sha256": "5b8ba8685b4275d589dbc0eead0901c0ee96a0d6ed9a1741c468e8fab9bb2e62",
+      "headers": [
+        "limits.h",
+        "blink/alu.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/machine.h",
+        "blink/modrm.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/dll.c",
+      "sha256": "59d8160a2a54d715368df0ab626fa4a37d06321ac4c1bd9c105724a7a8ab08e3",
+      "headers": [
+        "blink/dll.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/dll.h",
+      "sha256": "17ece79b0264b4fc953b25cd5d0f76ecf18407eb96c9b56d0c35de4ca0af7906",
+      "headers": [
+        "stddef.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/doublenul.c",
+      "sha256": "87a0cbbe82435d9fa25c3a1e409298345cf95b751e1f26abe964ed3957f3f974",
+      "headers": [
+        "string.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/elf.c",
+      "sha256": "5b87e045d728ca8abbbb133ad9144f7013dfd6c429255d32ed68e6d2a727629b",
+      "headers": [
+        "blink/elf.h",
+        "inttypes.h",
+        "limits.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "blink/builtin.h",
+        "blink/checked.h",
+        "blink/endian.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/elf.h",
+      "sha256": "01695052df2cf13e886ff3d7cae360370bb599eb749040a3959edd3e2d03e7eb",
+      "headers": [
+        "stddef.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/end.h",
+      "sha256": "f9048ca19dae080f17293eee82c86a7e7c47b1f845bf3d904f7b1a72cb2d566d",
+      "headers": [
+        "blink/flag.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/endian.h",
+      "sha256": "630c0a03219a13ef0382cb77f30ebe9b9a65c41bdf76621311e3720e91384e8c",
+      "headers": [
+        "blink/builtin.h",
+        "blink/swap.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/endswith.c",
+      "sha256": "28f48e89d079661e22bdfaa01d082caaf19d5073d0fcc16e2093f7a71686f2a8",
+      "headers": [
+        "string.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/errfd.c",
+      "sha256": "d9ab47972b68abd19f9824ca17d6652c7c133eab7c2a8d12bdbffb2907016706",
+      "headers": [
+        "errno.h",
+        "fcntl.h",
+        "stdlib.h",
+        "string.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/log.h",
+        "blink/thread.h",
+        "blink/tunables.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/errno.c",
+      "sha256": "2bc90ff110d0b0543865e7ef1742ccad5c8eaa0dcb9ff46a8d4ef3ec0dee3f8d",
+      "headers": [
+        "blink/errno.h",
+        "errno.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/errno.h",
+      "sha256": "5c973228adede194e75202912ed0a20b995ddafa8e2b44aae51b01d266371259",
+      "headers": [],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/fds.c",
+      "sha256": "70762c3061198e92d07b8dd14b345e17bdb675485a9302fe7e7a34ed9f1c7dda",
+      "headers": [
+        "blink/fds.h",
+        "fcntl.h",
+        "limits.h",
+        "stdlib.h",
+        "string.h",
+        "sys/stat.h",
+        "sys/time.h",
+        "sys/types.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/errno.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/thread.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/fds.h",
+      "sha256": "4cc0c14326637d49085f7b3d2dd8f6fa71969320601c00f082a202cec644dc9d",
+      "headers": [
+        "dirent.h",
+        "limits.h",
+        "netinet/in.h",
+        "poll.h",
+        "stdbool.h",
+        "sys/socket.h",
+        "sys/uio.h",
+        "termios.h",
+        "blink/dll.h",
+        "blink/thread.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern const struct FdCb kFdCbHost;"
+      ]
+    },
+    {
+      "path": "blink/flag.c",
+      "sha256": "1fed6b7bfaf6c63ace2512d0921e341f4085af4524cfc2b94b8f2faf5de4e7e9",
+      "headers": [
+        "blink/flag.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/flag.h",
+      "sha256": "2654c33bcb2ee445466beb57503fe8922101db21223e355bd6dbbe14082e3b81",
+      "headers": [
+        "stdbool.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern bool FLAG_zero;",
+        "extern bool FLAG_wantjit;",
+        "extern bool FLAG_nolinear;",
+        "extern bool FLAG_noconnect;",
+        "extern bool FLAG_nologstderr;",
+        "extern bool FLAG_alsologtostderr;",
+        "extern int FLAG_strace;",
+        "extern int FLAG_vabits;",
+        "extern long FLAG_pagesize;",
+        "extern u64 FLAG_skew;",
+        "extern u64 FLAG_vaspace;",
+        "extern u64 FLAG_stacktop;",
+        "extern u64 FLAG_aslrmask;",
+        "extern u64 FLAG_imagestart;",
+        "extern i64 FLAG_automapend;",
+        "extern i64 FLAG_automapstart;",
+        "extern u64 FLAG_dyninterpaddr;",
+        "extern const char *FLAG_logpath;",
+        "extern const char *FLAG_overlays;",
+        "extern const char *FLAG_prefix;",
+        "extern const char *FLAG_bios;"
+      ]
+    },
+    {
+      "path": "blink/flags.c",
+      "sha256": "5afdfac034c269d9644a8f59c3e667ebf746f1adfb280e9c7832de2549d4f3cd",
+      "headers": [
+        "blink/flags.h",
+        "blink/builtin.h",
+        "blink/debug.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/rde.h",
+        "blink/stats.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/flags.h",
+      "sha256": "07f6efe1ac5902e6015e756cee36f1433906fb1596c5d5abd1ed69d7de10f21c",
+      "headers": [
+        "blink/builtin.h",
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/formatint64.c",
+      "sha256": "6da43c414409340c7208cbdda31181646323971840639a7c8e62246de2c38d01",
+      "headers": [
+        "blink/builtin.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/formatint64thousands.c",
+      "sha256": "346daeaedd065339f30048ba06449dcf6439534efa53db982d6ed634ac2839f3",
+      "headers": [
+        "blink/builtin.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/formatsize.c",
+      "sha256": "235720743d044d90a228f873a7ae130e0bb8aa580afa8267a456f9b3c302b1c4",
+      "headers": [
+        "blink/macros.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/fpu.c",
+      "sha256": "a0b3542825b9c91ad07b6c35b2ad40688caeaafd66efc94be7487245d410843f",
+      "headers": [
+        "blink/fpu.h",
+        "math.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "blink/builtin.h",
+        "blink/case.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/ldbl.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/modrm.h",
+        "blink/pun.h",
+        "blink/rde.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/fpu.h",
+      "sha256": "64df8a1de5174a39405b540a416ee08d2efa254c3c477504fe55f87b80a2f4a9",
+      "headers": [
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/fspath.c",
+      "sha256": "04eee2de97d0a3f58886647f382fe56d2b6617e66a5526765f1c2d4d68e87b65",
+      "headers": [
+        "blink/fspath.h",
+        "stdlib.h",
+        "string.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/fspath.h",
+      "sha256": "bbddb47f63f76e5620af2a4b27c0841b0b891125f1566d8b0537f60441e7af6e",
+      "headers": [],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/fusion.c",
+      "sha256": "e2c159b0f14861dbef2b82564d09e24d7ec1eb936803ff87e929562ae976c486",
+      "headers": [
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/debug.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/machine.h",
+        "blink/rde.h",
+        "blink/stats.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/getopt.c",
+      "sha256": "cfb96f04ba8c23e2b7ba6dfdcd170d9fa3c954d01552cfa87f37e2cd665d84ef",
+      "headers": [
+        "string.h",
+        "unistd.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/hex.c",
+      "sha256": "cfd5e378f8aac6b4ebd0c9135e1d85b143a15dd5f2027dc592440ee6a5801dfe",
+      "headers": [
+        "ctype.h",
+        "stdio.h",
+        "stdlib.h",
+        "blink/debug.h",
+        "blink/log.h",
+        "blink/tsan.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/high.c",
+      "sha256": "85411fdf79229e63bd37e64acb4603cd2028de27aa8d1ec8cb4203179fc90861",
+      "headers": [
+        "blink/high.h",
+        "stdio.h",
+        "string.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/high.h",
+      "sha256": "06627db410850b48cfe65e5e1839ae9f3017abb549d1f1bea06a3cfb4aab2afc",
+      "headers": [
+        "stdbool.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern struct High g_high;"
+      ]
+    },
+    {
+      "path": "blink/hostfs.c",
+      "sha256": "b7d89432fa592ff88603f97ac49025369472a6398c88989f2e2ef2e2f63dfa53",
+      "headers": [
+        "blink/hostfs.h",
+        "errno.h",
+        "fcntl.h",
+        "stdarg.h",
+        "stdlib.h",
+        "string.h",
+        "sys/file.h",
+        "sys/ioctl.h",
+        "sys/mman.h",
+        "sys/types.h",
+        "blink/assert.h",
+        "blink/errno.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/syscall.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/hostfs.h",
+      "sha256": "3db570cad3e52097415921b20c148f4767483184e73e169ccba0098533db53cc",
+      "headers": [
+        "sys/types.h",
+        "sys/un.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern struct VfsSystem g_hostfs;"
+      ]
+    },
+    {
+      "path": "blink/instruction.c",
+      "sha256": "fa6756cf8a0cbf547da2ac161258d690bc130764a21affc48d5afa6cf53d1d47",
+      "headers": [
+        "string.h",
+        "blink/assert.h",
+        "blink/bitscan.h",
+        "blink/endian.h",
+        "blink/linux.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/stats.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/intrin.h",
+      "sha256": "bb8bc2d8bb2ce92c4f091fe95cdc58120fa84ebd22eebd025079c2a09ab59402",
+      "headers": [],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ioctl.c",
+      "sha256": "7b1fdf59253465f30a137a907d2f449ca4a3b620e83e893985534a763d4fa7d2",
+      "headers": [
+        "errno.h",
+        "fcntl.h",
+        "net/if.h",
+        "stdlib.h",
+        "string.h",
+        "sys/ioctl.h",
+        "sys/mman.h",
+        "sys/socket.h",
+        "termios.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/fds.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/ndelay.h",
+        "blink/syscall.h",
+        "blink/thread.h",
+        "blink/types.h",
+        "blink/vfs.h",
+        "blink/xlat.h",
+        "OS.h",
+        "sys/sockio.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ioports.c",
+      "sha256": "8f5740e033cf87134ac8b3121b3b76f8287e993b507161f1418ff9b0d206a8c5",
+      "headers": [
+        "poll.h",
+        "sys/uio.h",
+        "blink/debug.h",
+        "blink/machine.h",
+        "blink/syscall.h",
+        "blink/thread.h",
+        "blink/uart.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/iovs.c",
+      "sha256": "d9bf9c2d724a7e1c93e4ab2c46ab63d03984d48da8e1398d3235a1e9e2c0caee",
+      "headers": [
+        "blink/iovs.h",
+        "limits.h",
+        "stdlib.h",
+        "string.h",
+        "sys/mman.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/limits.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/stats.h",
+        "blink/types.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/iovs.h",
+      "sha256": "d86003f9e69d16867cd37da07c3bd6d4ab4728fceab87a8a316f5a2f2a14419e",
+      "headers": [
+        "limits.h",
+        "stddef.h",
+        "sys/uio.h",
+        "blink/machine.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/jit.c",
+      "sha256": "22a35a45b3895236f1f69719fe181a53e83496e71ce816739af058ad052badaf",
+      "headers": [
+        "blink/jit.h",
+        "errno.h",
+        "limits.h",
+        "stdlib.h",
+        "string.h",
+        "sys/mman.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/bitscan.h",
+        "blink/builtin.h",
+        "blink/checked.h",
+        "blink/debug.h",
+        "blink/dll.h",
+        "blink/end.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/flag.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/memcpy.h",
+        "blink/stats.h",
+        "blink/thread.h",
+        "blink/tsan.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/jit.h",
+      "sha256": "82b4b0790cc4e4bde0e99a4542531b7352e8102855e5118d5f0a737949662d49",
+      "headers": [
+        "inttypes.h",
+        "stdbool.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/dll.h",
+        "blink/thread.h",
+        "blink/tunables.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern const u8 kJitRes[2];",
+        "extern const u8 kJitSav[5];",
+        "extern const u8 kJitArg[4];"
+      ]
+    },
+    {
+      "path": "blink/jitflush.c",
+      "sha256": "1640d18d108db975af29da84c8bb4f575fbe381699f505f1b981f5f7fa713c07",
+      "headers": [
+        "blink/dll.h",
+        "blink/flag.h",
+        "blink/jit.h",
+        "blink/macros.h",
+        "blink/thread.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ldbl.c",
+      "sha256": "93b0468f1f4015daabe052246e9af19ddcbc39c8a37c4bef1533fb21ada0f0f5",
+      "headers": [
+        "blink/ldbl.h",
+        "blink/endian.h",
+        "blink/macros.h",
+        "blink/pun.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ldbl.h",
+      "sha256": "7a6bef0a436971bdb652ec9e49fc6c082a199b52fd712a7790e9586cb9a19df5",
+      "headers": [
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/legacy.c",
+      "sha256": "43fbc0c9d392baf6943d92d78ee0251b704a34431a1f39a3622b3b22b3ec0853",
+      "headers": [
+        "string.h",
+        "blink/alu.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/likely.h",
+      "sha256": "169b6754d185f3b74821ebae3eded50355f98a7400bb62048a6578716c40d38b",
+      "headers": [
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/limits.h",
+      "sha256": "faf35c1688c37f08dd137928c28188129ee453fb6703b0f6cf75c18d7129dd54",
+      "headers": [
+        "limits.h",
+        "stdint.h",
+        "unistd.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/lines.c",
+      "sha256": "ab2577f3a2aae0c1d5fb9e52b846bb138493fb80c7fca0ed490a850563d591a2",
+      "headers": [
+        "blink/lines.h",
+        "stdlib.h",
+        "string.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/lines.h",
+      "sha256": "347c0abae738156a34258a5dd6fda62e7dac7582efd1c6e31cf5a72bf3e18c16",
+      "headers": [
+        "stddef.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/linux.h",
+      "sha256": "5c8cab0b8d6e434b51773fdd75819843506bd09c6fb7fb8a1d35889cd1ff2d43",
+      "headers": [
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/loader.c",
+      "sha256": "8175b61a1de47f9decf91e71f682e73f5260b66ca1eba6686c2d4d302bcd751c",
+      "headers": [
+        "blink/loader.h",
+        "errno.h",
+        "fcntl.h",
+        "inttypes.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "sys/mman.h",
+        "sys/stat.h",
+        "sys/types.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/biosrom.h",
+        "blink/builtin.h",
+        "blink/end.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/overlays.h",
+        "blink/procfs.h",
+        "blink/random.h",
+        "blink/tunables.h",
+        "blink/util.h",
+        "blink/vfs.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/loader.h",
+      "sha256": "4ee41a4790c34f26ecfd70fe83f5427fcb15798d6c469697f162dbe641a817da",
+      "headers": [
+        "blink/elf.h",
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/log.c",
+      "sha256": "9533e90c58f8607ffb9da61e27c6ec369ef17fdd629ce6888fdbf64edd283f1f",
+      "headers": [
+        "blink/log.h",
+        "errno.h",
+        "fcntl.h",
+        "limits.h",
+        "signal.h",
+        "stdarg.h",
+        "stdlib.h",
+        "string.h",
+        "time.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/fspath.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/thread.h",
+        "blink/tsan.h",
+        "blink/types.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/log.h",
+      "sha256": "50285d4659d91bb2e83630c8561c9520fc62c13414fbd9f66b5a34d2accce800",
+      "headers": [
+        "stdio.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/flag.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern char *g_progname;"
+      ]
+    },
+    {
+      "path": "blink/logcpu.c",
+      "sha256": "38baf39a48b9d9f4ddb4c831365b395eb554e060ce52c063702bbc4ee70a85ae",
+      "headers": [
+        "inttypes.h",
+        "stdio.h",
+        "blink/debug.h",
+        "blink/endian.h",
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/machine.c",
+      "sha256": "73a32c95fbc191394c116bd2f41ebba464c963718b3785adaca22c5a93e8dc89",
+      "headers": [
+        "blink/machine.h",
+        "errno.h",
+        "limits.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "blink/alu.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/biosrom.h",
+        "blink/bitscan.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/case.h",
+        "blink/debug.h",
+        "blink/endian.h",
+        "blink/flag.h",
+        "blink/flags.h",
+        "blink/fpu.h",
+        "blink/jit.h",
+        "blink/likely.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/modrm.h",
+        "blink/random.h",
+        "blink/signal.h",
+        "blink/sse.h",
+        "blink/stats.h",
+        "blink/string.h",
+        "blink/swap.h",
+        "blink/syscall.h",
+        "blink/thread.h",
+        "blink/time.h",
+        "blink/util.h",
+        "blink/x86.h",
+        "blink/xlat.h"
+      ],
+      "thread_local_declarations": [
+        "_Thread_local siginfo_t g_siginfo;",
+        "_Thread_local struct Machine *g_machine;"
+      ],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/machine.h",
+      "sha256": "337f3a3a56e560994b269e667be5e84597f5da989bcd94d1ef8519c4a8cc780f",
+      "headers": [
+        "limits.h",
+        "setjmp.h",
+        "signal.h",
+        "stdbool.h",
+        "libc/dce.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/dll.h",
+        "blink/elf.h",
+        "blink/fds.h",
+        "blink/jit.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/thread.h",
+        "blink/tsan.h",
+        "blink/tunables.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern struct HostPages g_hostpages;",
+        "extern _Thread_local siginfo_t g_siginfo;",
+        "extern _Thread_local struct Machine *g_machine;",
+        "extern const nexgen32e_f kConvert[3];",
+        "extern const nexgen32e_f kSax[3];",
+        "extern const putreg64_f kPutReg64[16];",
+        "extern const cc_f kConditionCode[16];",
+        "extern void (*AddPath_StartOp_Hook)(P);"
+      ]
+    },
+    {
+      "path": "blink/macros.h",
+      "sha256": "cb492578d681555bfd707e7b465c882130adc2097a10eb28fba0a8ad02bbca70",
+      "headers": [],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/magikarp.c",
+      "sha256": "a41b32363df4dbc43dce09908edf6733e9c05d8b64934135120d8bfa14d9073c",
+      "headers": [
+        "stdlib.h",
+        "string.h",
+        "blink/macros.h",
+        "blink/types.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/map.c",
+      "sha256": "f35096d88178f3acf3e6bf475974379d7e7b2ce116325c2a3ea9b355cbc93267",
+      "headers": [
+        "blink/map.h",
+        "errno.h",
+        "inttypes.h",
+        "limits.h",
+        "stdlib.h",
+        "string.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/bitscan.h",
+        "blink/bus.h",
+        "blink/debug.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/tunables.h",
+        "blink/types.h",
+        "blink/util.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/map.h",
+      "sha256": "44f753ab3dce44e44aa47148181b14ef4cc1680a2d891b490dd3e2a81a9b5500",
+      "headers": [
+        "errno.h",
+        "sys/mman.h",
+        "blink/builtin.h",
+        "blink/thread.h",
+        "blink/types.h",
+        "libkern/OSCacheControl.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/mda.c",
+      "sha256": "70a40211d43f910fbff7cecc361d2158c03773c42ecd07bcbd6c5296de21fbff",
+      "headers": [
+        "blink/mda.h",
+        "blink/bda.h",
+        "blink/blinkenlights.h",
+        "blink/buffer.h",
+        "blink/macros.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/mda.h",
+      "sha256": "e1024390d277c6ee61035507f0d252b517f1f4e7a18f82c16c108da1c93bd40a",
+      "headers": [
+        "blink/panel.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/memccpy.c",
+      "sha256": "4c4a71f136df29403f783331064fbae45829e7452dcb6464d885e766767fccd9",
+      "headers": [
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/memcpy.h",
+      "sha256": "5c37e8f13983309be58b03c6d08d7fc5f021daf5c4815889879a2eec5fccd3f5",
+      "headers": [
+        "stddef.h",
+        "stdint.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/memory.c",
+      "sha256": "47966cd086fb5f2960156e55468b058928fd8cb053ba906267800b08daf399a3",
+      "headers": [
+        "errno.h",
+        "stddef.h",
+        "stdlib.h",
+        "string.h",
+        "sys/mman.h",
+        "blink/assert.h",
+        "blink/biosrom.h",
+        "blink/bus.h",
+        "blink/checked.h",
+        "blink/debug.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/pml4t.h",
+        "blink/stats.h",
+        "blink/thread.h",
+        "blink/util.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/memorymalloc.c",
+      "sha256": "589becd0e214d5f422e75a9b63b1bf5d5280b3f8ca4e00dc212ede120e945b12",
+      "headers": [
+        "stdlib.h",
+        "string.h",
+        "sys/mman.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/bitscan.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/debug.h",
+        "blink/errno.h",
+        "blink/fds.h",
+        "blink/jit.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/pml4t.h",
+        "blink/random.h",
+        "blink/thread.h",
+        "blink/timespec.h",
+        "blink/types.h",
+        "blink/util.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/message.c",
+      "sha256": "ff1cf54463f40d27bf83a2ddea8abf152a076ba537face15064f1c0cebc525af",
+      "headers": [
+        "errno.h",
+        "math.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "wchar.h",
+        "blink/buffer.h",
+        "blink/lines.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/panel.h",
+        "blink/strwidth.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/metal.c",
+      "sha256": "88412f7aeb8882c086726a1d0c2f7f3f78c051e9b6f862c55c002da37c25fab6",
+      "headers": [
+        "string.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/msr.h",
+        "blink/rde.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/mkfifo.c",
+      "sha256": "800ac3bc61c4657bf82e130b1b772f99ac98ce32662ea38c5d66e4c00e3cebb7",
+      "headers": [
+        "fcntl.h",
+        "sys/stat.h",
+        "blink/errno.h",
+        "blink/log.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/mkfifoat.c",
+      "sha256": "bb872766bc684655d2b5cb9b908f1d4710030ffe44a2c5d6c5bb2537fc149c3b",
+      "headers": [
+        "fcntl.h",
+        "sys/stat.h",
+        "blink/errno.h",
+        "blink/log.h",
+        "blink/syscall.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/mmx.c",
+      "sha256": "861e0ca987c3f7f635d08f079a5416c1b2b062e47cddd690306cef6dda99b78d",
+      "headers": [
+        "string.h",
+        "blink/endian.h",
+        "blink/macros.h",
+        "blink/sse.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/modrm.c",
+      "sha256": "dbdb74c3599a966107f8e6b04461517bafb7b3cecc60c3f15fc2b5e2ae7c3c7e",
+      "headers": [
+        "blink/modrm.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/modrm.h",
+      "sha256": "46c08c2bc2a0de27577656ced4836aa22f286e3f3525c0506d4fda5ffaa4a911",
+      "headers": [
+        "blink/builtin.h",
+        "blink/machine.h",
+        "blink/rde.h",
+        "blink/thread.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern const u8 kByteReg[32];"
+      ]
+    },
+    {
+      "path": "blink/msr.h",
+      "sha256": "46b70ba1f4207fcc0633ce4260530c37fdf8dbc42637ee7958ca4efa94da5631",
+      "headers": [],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/name.c",
+      "sha256": "0b35ca247a18434463c8f5629f6bd74c37b8ff6611b29e1d86deda1e4bbee0c8",
+      "headers": [
+        "blink/builtin.h",
+        "blink/case.h",
+        "blink/debug.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ndelay.h",
+      "sha256": "3e46b5cc39610502f0e9702a27dd2fb987afc1cfc79b000b411806302c2bd094",
+      "headers": [
+        "fcntl.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/oneoff.c",
+      "sha256": "9a9720ead4bc6f44bd8bc9c5903faf4cddc3d424970e57d8dc339852eca7631e",
+      "headers": [
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "sys/socket.h",
+        "time.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/bitscan.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/timespec.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/op101.c",
+      "sha256": "66371088b466c4148f31aea0302f8a620daa6bab89114c917a1fb55994f35e52",
+      "headers": [
+        "stdio.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/jit.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/time.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/open.c",
+      "sha256": "6ab0bd58b614f319c14e022ca3aeb385e9854cbc38adc8ad83d3aedca3b02ab8",
+      "headers": [
+        "errno.h",
+        "fcntl.h",
+        "stdlib.h",
+        "string.h",
+        "sys/stat.h",
+        "sys/types.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/debug.h",
+        "blink/errno.h",
+        "blink/fds.h",
+        "blink/fspath.h",
+        "blink/log.h",
+        "blink/overlays.h",
+        "blink/random.h",
+        "blink/syscall.h",
+        "blink/thread.h",
+        "blink/vfs.h",
+        "blink/xlat.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/overlays.c",
+      "sha256": "1b652e20e694ff16a35e55f53bd8e68d38d310de321f39892c6376ab0914a331",
+      "headers": [
+        "blink/overlays.h",
+        "errno.h",
+        "fcntl.h",
+        "stdlib.h",
+        "string.h",
+        "sys/stat.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/debug.h",
+        "blink/errno.h",
+        "blink/fspath.h",
+        "blink/likely.h",
+        "blink/log.h",
+        "blink/syscall.h",
+        "blink/thompike.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/overlays.h",
+      "sha256": "9e81b40a02533c53dc84e9ba76e3e37e66fd6e82decb28df02d2d2378b1a16eb",
+      "headers": [
+        "stdbool.h",
+        "sys/stat.h",
+        "sys/types.h",
+        "unistd.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/panel.c",
+      "sha256": "2bdcad7182aef32bb82ddc5ba939e22c0107ee6430ff8212f4085e93c4112292",
+      "headers": [
+        "blink/panel.h",
+        "stdlib.h",
+        "string.h",
+        "blink/assert.h",
+        "blink/bitscan.h",
+        "blink/buffer.h",
+        "blink/builtin.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/types.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/panel.h",
+      "sha256": "332d85419827aaa2c7cfe1c58f98e501683367b58384b2f1d34f7df334fc114d",
+      "headers": [
+        "stddef.h",
+        "sys/types.h",
+        "blink/buffer.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/path.c",
+      "sha256": "0137a236c1f6a9dda10b465641796a62af384d8693f818ca0d9710052dd9a108",
+      "headers": [
+        "errno.h",
+        "fcntl.h",
+        "stdarg.h",
+        "string.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/debug.h",
+        "blink/dis.h",
+        "blink/high.h",
+        "blink/jit.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/modrm.h",
+        "blink/overlays.h",
+        "blink/rde.h",
+        "blink/stats.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/pipe.c",
+      "sha256": "5a90d5b67616659930352ea6a35dd97fd5db4f960e64d28e13460b20bcbfe9ac",
+      "headers": [
+        "errno.h",
+        "fcntl.h",
+        "sys/mman.h",
+        "sys/stat.h",
+        "sys/types.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/fds.h",
+        "blink/log.h",
+        "blink/ndelay.h",
+        "blink/syscall.h",
+        "blink/thread.h",
+        "blink/vfs.h",
+        "blink/xlat.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/pml4t.c",
+      "sha256": "499f3003d34304e8d30cc5817418c8bb30e5ec919a1c2ff9b528a454ade986c7",
+      "headers": [
+        "blink/pml4t.h",
+        "stdlib.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/pml4t.h",
+      "sha256": "08442860ba48a8a7450a34c0a37ba70666bb799a8a60c39d0d1b8d7fb5a9ba6c",
+      "headers": [
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/pml4tfmt.c",
+      "sha256": "8f263a8339a7babf927455547203de9630d1b7d988940d7d21797c7cb675ace5",
+      "headers": [
+        "inttypes.h",
+        "math.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "blink/assert.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/flag.h",
+        "blink/high.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/pml4t.h",
+        "blink/rde.h",
+        "blink/thread.h",
+        "blink/util.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/popcount.c",
+      "sha256": "92dbcf00fad6630e8c253d681e8ff4460f29c4826517fcd5b528913139e72a01",
+      "headers": [
+        "blink/bitscan.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ppc.c",
+      "sha256": "542d1d5a2e57647254812b1525cf3d96725a0a02ce3e8bc6ef841031576a757d",
+      "headers": [
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/preadv.c",
+      "sha256": "10ee5239f67228813c3cf8058e1240336695f5c59504bb95bba331200452db87",
+      "headers": [
+        "blink/preadv.h",
+        "stdlib.h",
+        "string.h",
+        "unistd.h",
+        "blink/errno.h",
+        "blink/iovs.h",
+        "blink/limits.h",
+        "blink/macros.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/preadv.h",
+      "sha256": "64f585d8d38827663a0bd8bc111cc1e3fe86e6123787534cc40f4cc1a950add8",
+      "headers": [
+        "sys/types.h",
+        "sys/uio.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/procfs.c",
+      "sha256": "9602cdadc6e6a227573a44a49186c61899ff0342800fbdeca84ae6c6e00668cc",
+      "headers": [
+        "blink/procfs.h",
+        "fcntl.h",
+        "stdlib.h",
+        "string.h",
+        "blink/atomic.h",
+        "blink/errno.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/timespec.h",
+        "blink/vfs.h",
+        "emscripten.h",
+        "windows.h",
+        "winternl.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/procfs.h",
+      "sha256": "2c89e66d1ff67379b080ec31956deab16d3343dfb9a8487910b4f3a1cdca0c8f",
+      "headers": [
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern struct VfsSystem g_procfs;"
+      ]
+    },
+    {
+      "path": "blink/prog.c",
+      "sha256": "6700646e755e9a2862337ef47ec4f99401159838774a4508f57b3663c2062316",
+      "headers": [
+        "blink/log.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/pte32.c",
+      "sha256": "33dfce2d096c6d098e3f8d0326eb012d9d6e825284066033edd22f8c5e4650a9",
+      "headers": [
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/thread.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/pty.c",
+      "sha256": "63021c3678bca48d8e9d597b7782256884497157dac394639310b94b7309fed5",
+      "headers": [
+        "blink/pty.h",
+        "ctype.h",
+        "errno.h",
+        "limits.h",
+        "stdbool.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "wchar.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/macros.h",
+        "blink/thompike.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/pty.h",
+      "sha256": "3d01e3ee67debcd9b420f08fbe7725176b47067a59d7650177acd557f64ca9b3",
+      "headers": [
+        "blink/buffer.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/pun.h",
+      "sha256": "2d9eef119fc978d861f5976c7422f445a3d10f66f9177d989cdd0998d9ca11f3",
+      "headers": [
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/random.c",
+      "sha256": "25233fe630cdc3c748a51bea6f6154ecac316259815754767f262e5a420af97c",
+      "headers": [
+        "blink/random.h",
+        "errno.h",
+        "fcntl.h",
+        "stdbool.h",
+        "sys/types.h",
+        "time.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/errno.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/types.h",
+        "blink/util.h",
+        "sys/sysctl.h",
+        "sys/syscall.h",
+        "w32api/_mingw.h",
+        "sys/random.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/random.h",
+      "sha256": "26c3563b089bc438520aaec9c5d646f810c08b2863eec5972f842ff34b6cb2de",
+      "headers": [
+        "sys/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/rde.h",
+      "sha256": "3e61f4a965222e85b479fe7f6cfc61d46c11f2c72ec7137bdff389be50f1150b",
+      "headers": [],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/rdrand.c",
+      "sha256": "5a351e650ed2eb575f39c364f07d02af7703fce417f0da52fac96128429f60ea",
+      "headers": [
+        "blink/assert.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/random.h",
+        "blink/thread.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/readansi.c",
+      "sha256": "1786890f9dee839473990e831e7fc65cb275be2308f3b25ced1857c152fc075d",
+      "headers": [
+        "ctype.h",
+        "errno.h",
+        "poll.h",
+        "unistd.h",
+        "emscripten.h",
+        "blink/builtin.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/thompike.h",
+        "blink/util.h",
+        "blink/vfs.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/realpath.c",
+      "sha256": "91d1a7eb78804398b8a47fcf721c0996aa3b4659d232a34044c041e87b81db67",
+      "headers": [
+        "errno.h",
+        "limits.h",
+        "stdlib.h",
+        "string.h",
+        "unistd.h",
+        "blink/limits.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/reset.c",
+      "sha256": "7c2ddd7d9354bee1112e45397c0f4b75cc538e7401e56d9cb1b2b7c993f5e715",
+      "headers": [
+        "math.h",
+        "string.h",
+        "blink/flags.h",
+        "blink/machine.h",
+        "blink/stats.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/signal.c",
+      "sha256": "e4a1a44787a5e99022a5d8224165e0c551275b4706b9f689f4f826e4f0b95c5a",
+      "headers": [
+        "blink/signal.h",
+        "signal.h",
+        "stdlib.h",
+        "string.h",
+        "unistd.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/bitscan.h",
+        "blink/endian.h",
+        "blink/ldbl.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/syscall.h",
+        "blink/thread.h",
+        "blink/util.h",
+        "blink/xlat.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/signal.h",
+      "sha256": "3f6f2b1fa25ded70132a0ce9d428a2ac69075362db3c4e80ffa19e7e145dba24",
+      "headers": [
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/sigwinch.h",
+      "sha256": "3301130f21f2394979d92f2ad37f77cf01943a5bceb056eb264de97ff1973a99",
+      "headers": [
+        "signal.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/smc.c",
+      "sha256": "18cccb5762714362b15a57fb758feddd91f3c7c0d34e7de02f3ccfe1ccc2bce2",
+      "headers": [
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/flag.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/stats.h",
+        "blink/tunables.h",
+        "blink/util.h",
+        "blink/xlat.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/sse.c",
+      "sha256": "1ff208c9ca2687eb884151de567af3cec745f9506120820ce39577c336f4022e",
+      "headers": [
+        "blink/sse.h",
+        "string.h",
+        "blink/case.h",
+        "blink/endian.h",
+        "blink/intrin.h",
+        "blink/likely.h",
+        "blink/machine.h",
+        "blink/macros.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/sse.h",
+      "sha256": "32cee6baa0b11c18d917a0859721ed0112d7c282b10c4c337ec11d509563a126",
+      "headers": [
+        "blink/builtin.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/tsan.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/sse2.c",
+      "sha256": "52900b3018c6cb0b59bf491d1a15556a38cacd2c30f62a4e2724844337a0c5ef",
+      "headers": [
+        "string.h",
+        "blink/endian.h",
+        "blink/intrin.h",
+        "blink/macros.h",
+        "blink/sse.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ssefloat.c",
+      "sha256": "cec86d3109804688d07e519d92d96b056899d1d36f0c0ccf644b933299dcaa09",
+      "headers": [
+        "math.h",
+        "string.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/fpu.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/modrm.h",
+        "blink/pun.h",
+        "blink/stats.h",
+        "blink/tsan.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/ssemov.c",
+      "sha256": "808c3f481b6df209d7c51437d2fdfec282dbe8b9b933668e9aae28416c99154b",
+      "headers": [
+        "string.h",
+        "blink/biosrom.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/intrin.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/stats.h",
+        "blink/tsan.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/stack.c",
+      "sha256": "d17a2dcd451fe4e75da3e327bf311ab54939360b9d9d81583c5d818ecc7dd36f",
+      "headers": [
+        "string.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/tsan.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/startdir.c",
+      "sha256": "9a15d2e883d2ceb2b5e11ac2be2d73efe58922a3f713ec056a0fd731a753499c",
+      "headers": [
+        "stdlib.h",
+        "string.h",
+        "unistd.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/startswith.c",
+      "sha256": "0f7d3d4f076666702e7776fb8527f55f92c232e3bd4e032a599d73e3af75515e",
+      "headers": [
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/statfs.c",
+      "sha256": "ca9f67b75f1367e61dcf1bc39e638f4710a3eb014dbd4c4d3c0470530f8bde10",
+      "headers": [
+        "sys/types.h",
+        "errno.h",
+        "string.h",
+        "sys/mman.h",
+        "sys/param.h",
+        "sys/statvfs.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/linux.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/syscall.h",
+        "blink/types.h",
+        "sys/vfs.h",
+        "sys/mount.h",
+        "sys/disklabel.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/stats.c",
+      "sha256": "05e1c9c3259f14ca01767e743ff8bb54b290ef245704c5a94bc4385960a2e7b1",
+      "headers": [
+        "blink/stats.h",
+        "blink/log.h",
+        "blink/stats.inc",
+        "blink/stats.inc"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/stats.h",
+      "sha256": "394ba5718f5b640a122eafb79caac027153655eb73ded5c341dc8f65d69f0525",
+      "headers": [
+        "stdbool.h",
+        "blink/builtin.h",
+        "blink/tsan.h",
+        "blink/stats.inc"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern bool FLAG_statistics;"
+      ]
+    },
+    {
+      "path": "blink/strace.c",
+      "sha256": "fd1f9923223f128cdd823c83be54ad0c442aab766127b784b136df34fd8a83d3",
+      "headers": [
+        "blink/strace.h",
+        "arpa/inet.h",
+        "errno.h",
+        "inttypes.h",
+        "stdarg.h",
+        "stdio.h",
+        "string.h",
+        "sys/wait.h",
+        "wchar.h",
+        "blink/assert.h",
+        "blink/bitscan.h",
+        "blink/describeflags.h",
+        "blink/endian.h",
+        "blink/fds.h",
+        "blink/flag.h",
+        "blink/linux.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/thread.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/strace.h",
+      "sha256": "7acb08b121061685f6004e0a91746311344b84bf04bff2c81c40755a718a29ea",
+      "headers": [
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/strchrnul.c",
+      "sha256": "25f8d36a0853454e453ed7373c414a4c9e327af6aa2f18e52328fe4100b65ce9",
+      "headers": [
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/string.c",
+      "sha256": "6b1a4d522dbc48eff3d25a109ad45e938c40307e926807b538851c9315026575",
+      "headers": [
+        "blink/string.h",
+        "stdlib.h",
+        "string.h",
+        "blink/alu.h",
+        "blink/atomic.h",
+        "blink/biosrom.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/tsan.h",
+        "blink/util.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/string.h",
+      "sha256": "c827121c418a9a36ab74d320296c31c0fe9a10788c8b0f63a101f74ce9206f88",
+      "headers": [
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/strwidth.c",
+      "sha256": "7096d9a1669f320060c9faca04652efc5a9a663869ec9088b99a10cd7ae86ed2",
+      "headers": [
+        "blink/strwidth.h",
+        "wchar.h",
+        "blink/builtin.h",
+        "blink/macros.h",
+        "blink/thompike.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/strwidth.h",
+      "sha256": "2f34d9dcae64625ab4eda1d60c6908c2fd1de50cec5198e6cfad29d6f49ce748",
+      "headers": [
+        "stddef.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/swap.h",
+      "sha256": "ce00462ce0cf05153e9a301b333aac9ebd7d2e07a06d23b5fd44bf7689ea2a11",
+      "headers": [
+        "stdint.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/syscall.c",
+      "sha256": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3",
+      "headers": [
+        "blink/syscall.h",
+        "dirent.h",
+        "errno.h",
+        "fcntl.h",
+        "grp.h",
+        "inttypes.h",
+        "limits.h",
+        "net/if.h",
+        "netdb.h",
+        "netinet/in.h",
+        "netinet/ip.h",
+        "poll.h",
+        "signal.h",
+        "stdarg.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "sys/file.h",
+        "sys/ioctl.h",
+        "sys/mman.h",
+        "sys/param.h",
+        "sys/resource.h",
+        "sys/select.h",
+        "sys/socket.h",
+        "sys/statvfs.h",
+        "sys/time.h",
+        "sys/times.h",
+        "sys/types.h",
+        "sys/wait.h",
+        "time.h",
+        "unistd.h",
+        "blink/ancillary.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/bitscan.h",
+        "blink/bus.h",
+        "blink/case.h",
+        "blink/checked.h",
+        "blink/debug.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/flag.h",
+        "blink/iovs.h",
+        "blink/limits.h",
+        "blink/linux.h",
+        "blink/loader.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/ndelay.h",
+        "blink/overlays.h",
+        "blink/pml4t.h",
+        "blink/preadv.h",
+        "blink/random.h",
+        "blink/signal.h",
+        "blink/stats.h",
+        "blink/strace.h",
+        "blink/swap.h",
+        "blink/thread.h",
+        "blink/timespec.h",
+        "blink/util.h",
+        "blink/vfs.h",
+        "blink/xlat.h",
+        "sys/prctl.h",
+        "emscripten.h",
+        "OS.h",
+        "sys/sockio.h",
+        "sched.h",
+        "sys/epoll.h",
+        "sys/mount.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/syscall.h",
+      "sha256": "c53fcecbad10b91cce9554611b17ff9bcbf28f1fdc74a0a312bef81fd6687a7e",
+      "headers": [
+        "fcntl.h",
+        "sys/stat.h",
+        "sys/types.h",
+        "blink/builtin.h",
+        "blink/fds.h",
+        "blink/machine.h",
+        "blink/ndelay.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern char *g_blink_path;"
+      ]
+    },
+    {
+      "path": "blink/sysinfo.c",
+      "sha256": "e87011758b1eb55350a5324433bb4ce517128bea1d4abc9b4da138568c003157",
+      "headers": [
+        "string.h",
+        "sys/param.h",
+        "sys/time.h",
+        "sys/types.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/linux.h",
+        "blink/macros.h",
+        "blink/timespec.h",
+        "blink/types.h",
+        "sys/sysinfo.h",
+        "sys/sysctl.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/tainted.c",
+      "sha256": "2f708e3aee10e7bfc6c90e3dea5e958bf483e18e469c0a8d17eff55b524b8305",
+      "headers": [
+        "unistd.h",
+        "sys/auxv.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/thompike.h",
+      "sha256": "ef4ef7b03e4293f312e41f1b4b6fe6f355d50598b30e318e8ba07aece0efb56e",
+      "headers": [
+        "blink/bitscan.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/thread.h",
+      "sha256": "62c32a5eaefbb63ef1664b2237116f62d1b8cac242b829a5e9fabd3760e3bb9e",
+      "headers": [
+        "blink/builtin.h",
+        "pthread.h",
+        "blink/assert.h",
+        "blink/log.h",
+        "OS.h",
+        "signal.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/throw.c",
+      "sha256": "5df4b02be0d089b25c6318841cb072c5af9ca1b3e5aa9e11982bdc73ca7e2eed",
+      "headers": [
+        "inttypes.h",
+        "sched.h",
+        "signal.h",
+        "stdio.h",
+        "stdlib.h",
+        "string.h",
+        "blink/assert.h",
+        "blink/debug.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/signal.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/time.c",
+      "sha256": "4f7bb4a814278fb200d4f9c325bf1236f3c34fe3ab2721b8b434e7978e7902d2",
+      "headers": [
+        "blink/time.h",
+        "time.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/jit.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "sched.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/time.h",
+      "sha256": "e8fefe46c87964018f151f849f86a9c63638c1d5bd3eb44b03d5052fa505158b",
+      "headers": [
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/timespec.c",
+      "sha256": "d7a16784dcf4f4c95fe4804e8dbc01d64a454a4dbee52618df24d127c6425c98",
+      "headers": [
+        "blink/timespec.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/timespec.h",
+      "sha256": "d4671900d8aa1ab1cefc1f115699eb5fa8412876a41e3d299e25ab2306e1fa3c",
+      "headers": [
+        "errno.h",
+        "time.h",
+        "blink/assert.h",
+        "blink/limits.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/tpenc.c",
+      "sha256": "d755a19103e5cf9b6e187f8314d6f8cffc9d7e520d721780ff5a9f21f1ec75cd",
+      "headers": [
+        "blink/bitscan.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/tsan.h",
+      "sha256": "d54f8ff062c48efdb618dd7072da9eb378bcce91874852b6963b9b33c7c6ed60",
+      "headers": [
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern \"C\" {\n#endif\nvoid AnnotateIgnoreWritesBegin(const char *file, int line);"
+      ]
+    },
+    {
+      "path": "blink/tunables.h",
+      "sha256": "f9126c9f4f52f17afe9fee2ad65ab3797391e32868dd3823f9ef8989e9268f90",
+      "headers": [
+        "stdint.h",
+        "blink/builtin.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/types.h",
+      "sha256": "99c285ad5988a520fc3b815feca32d6f91a387c6aa7ab214d0fa1a73d3175736",
+      "headers": [
+        "stdint.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/uart.h",
+      "sha256": "8e148d9bed26cb87c7debc33f33ebf118c0336d4b3a47f5b4b284e2de2c775de",
+      "headers": [],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/uop.c",
+      "sha256": "5aec691023af02e77c64ec5227ca3f99e07e51bccef52155f5d0ef982833bc4b",
+      "headers": [
+        "ctype.h",
+        "stdarg.h",
+        "stdlib.h",
+        "blink/alu.h",
+        "blink/assert.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/flags.h",
+        "blink/intrin.h",
+        "blink/jit.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/macros.h",
+        "blink/modrm.h",
+        "blink/pun.h",
+        "blink/rde.h",
+        "blink/stats.h",
+        "blink/swap.h",
+        "blink/thread.h",
+        "blink/types.h",
+        "blink/x86.h",
+        "blink/xmm.h"
+      ],
+      "thread_local_declarations": [
+        "_Thread_local static long i;",
+        "_Thread_local static u8 stack[8];"
+      ],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/util.h",
+      "sha256": "76b01be561c53c00d805e3f57aa7e6550ddae3f18880b1ea81075dbf861b521a",
+      "headers": [
+        "stdarg.h",
+        "stdbool.h",
+        "stddef.h",
+        "stdint.h",
+        "sys/types.h",
+        "wchar.h",
+        "blink/builtin.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern int optind_;",
+        "extern char *optarg_;",
+        "extern const short kCp437[256];"
+      ]
+    },
+    {
+      "path": "blink/vasprintf.c",
+      "sha256": "6dc102747125f7a3d3fde9de85d15b702936ad3410a15280ff5f94224b6a4451",
+      "headers": [
+        "stdio.h",
+        "stdlib.h",
+        "blink/assert.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/vfs.c",
+      "sha256": "06f09eeaca22de23c51df8bd970a043de829f6424643a7268a42e87f93051f7a",
+      "headers": [
+        "blink/vfs.h",
+        "errno.h",
+        "fcntl.h",
+        "stdarg.h",
+        "stdlib.h",
+        "string.h",
+        "sys/mman.h",
+        "sys/stat.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/devfs.h",
+        "blink/errno.h",
+        "blink/hostfs.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/procfs.h",
+        "blink/thread.h",
+        "blink/tunables.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/vfs.h",
+      "sha256": "4276bf553bbf570b873286a2086aabd6cdc91c898373d763dfd063333b12a7e8",
+      "headers": [
+        "dirent.h",
+        "poll.h",
+        "stdarg.h",
+        "stdbool.h",
+        "sys/select.h",
+        "sys/socket.h",
+        "sys/stat.h",
+        "sys/types.h",
+        "sys/uio.h",
+        "sys/un.h",
+        "termios.h",
+        "unistd.h",
+        "blink/dll.h",
+        "blink/macros.h",
+        "blink/overlays.h",
+        "blink/preadv.h",
+        "blink/thread.h",
+        "blink/tsan.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern struct Vfs g_vfs;",
+        "extern struct VfsInfo *g_cwdinfo;",
+        "extern struct VfsInfo *g_rootinfo;",
+        "extern struct VfsInfo *g_actualrootinfo;"
+      ]
+    },
+    {
+      "path": "blink/vigna.c",
+      "sha256": "530a1f53b0c9b5dd58ec73682b3b88035b47d7aab432cf074c47eb7a30d6ed5e",
+      "headers": [
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/watch.c",
+      "sha256": "18302e3647d61e5c762f3c98777c0eca64e7165b34053dfd3e890674df390e77",
+      "headers": [
+        "blink/watch.h",
+        "stdlib.h",
+        "string.h",
+        "blink/debug.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/watch.h",
+      "sha256": "554eddab7b4d27fd48978a557c3bad22c6100b97270f75fb8ef60ac30b5215f3",
+      "headers": [
+        "sys/types.h",
+        "blink/machine.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/wcwidth.c",
+      "sha256": "477659cd47cae1e7ed29a0b92f7043a1bceab13295a98a95928157fc856aa5d4",
+      "headers": [
+        "wctype.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/web.h",
+      "sha256": "04c19f4064ca24f88183dfdba9094c5f54bf41f835d09e6abef06a8f95f529f9",
+      "headers": [
+        "blink/builtin.h",
+        "emscripten.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/x86.c",
+      "sha256": "b6b9967c680be89b9e1f7f6670eb1f4e829af8f4b0dc1ce0d30215a01e2139e9",
+      "headers": [
+        "blink/x86.h",
+        "stdbool.h",
+        "string.h",
+        "blink/assert.h",
+        "blink/bitscan.h",
+        "blink/builtin.h",
+        "blink/endian.h",
+        "blink/macros.h",
+        "blink/modrm.h",
+        "blink/rde.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/x86.h",
+      "sha256": "a0262ea0be7783554a1095e40b28fd7cc31e3980b3d1aef60675cf202c5af0ce",
+      "headers": [
+        "stddef.h",
+        "stdint.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": [
+        "extern const char kXedCopyright[];",
+        "extern const char kXedErrorNames[];"
+      ]
+    },
+    {
+      "path": "blink/x86error.c",
+      "sha256": "632747b1a19266b4c2d41d03507f17bda545c57bca3ac3db7bb8c9c7c1571c5e",
+      "headers": [
+        "blink/x86.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/xadd.c",
+      "sha256": "30a8f8054948bddd70ec8fda75d122b58ca14d26364954d416b5f2602afa6e96",
+      "headers": [
+        "limits.h",
+        "blink/alu.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/log.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/swap.h",
+        "blink/thread.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/xchg.c",
+      "sha256": "4fc99c14a3fbda61e1c36a25369fcf2722c9d96602059016ef4180ac96a0767b",
+      "headers": [
+        "limits.h",
+        "blink/assert.h",
+        "blink/atomic.h",
+        "blink/builtin.h",
+        "blink/bus.h",
+        "blink/endian.h",
+        "blink/machine.h",
+        "blink/modrm.h",
+        "blink/thread.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/xlat.c",
+      "sha256": "66809d90e13c4da7a2521edb1b9da3160806091f4edca83f338b04f03bab4966",
+      "headers": [
+        "blink/xlat.h",
+        "errno.h",
+        "fcntl.h",
+        "limits.h",
+        "netinet/tcp.h",
+        "netinet/udp.h",
+        "signal.h",
+        "stddef.h",
+        "string.h",
+        "sys/file.h",
+        "sys/ioctl.h",
+        "sys/mman.h",
+        "sys/socket.h",
+        "sys/time.h",
+        "sys/types.h",
+        "sys/un.h",
+        "sys/wait.h",
+        "time.h",
+        "unistd.h",
+        "blink/builtin.h",
+        "blink/case.h",
+        "blink/endian.h",
+        "blink/errno.h",
+        "blink/linux.h",
+        "blink/log.h",
+        "blink/macros.h",
+        "blink/map.h",
+        "blink/ndelay.h",
+        "blink/sigwinch.h",
+        "blink/util.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/xlat.h",
+      "sha256": "a24d0491c0042af1cc8d9d39402d219f7f350bbd9c216a337aa05d62ded498ea",
+      "headers": [
+        "netinet/in.h",
+        "signal.h",
+        "sys/ioctl.h",
+        "sys/resource.h",
+        "sys/socket.h",
+        "sys/stat.h",
+        "sys/statvfs.h",
+        "sys/time.h",
+        "termios.h",
+        "blink/linux.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/xmm.h",
+      "sha256": "f326b7c6bc33c3b3b948fbfeb1d8715d588aa32e05bbda4144355dd4ba81073a",
+      "headers": [
+        "blink/builtin.h",
+        "blink/types.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/xmmtype.c",
+      "sha256": "81fd7200bac14f7ed08e7cbbd423f48baa34d1f00d3d633d11cc675baaad2545",
+      "headers": [
+        "blink/xmmtype.h",
+        "blink/rde.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/xmmtype.h",
+      "sha256": "a2d682611a3d960e96f922880dee71d70096e55c11b702f38620fc716d453c15",
+      "headers": [
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    },
+    {
+      "path": "blink/xnu.c",
+      "sha256": "6f7747cc25d0e9e1c2585daf8fdcd871f964ad63a25cf44dd979e2ae750a8df6",
+      "headers": [
+        "blink/machine.h"
+      ],
+      "thread_local_declarations": [],
+      "extern_declarations": []
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "fixture": "static-musl-http-v1",
+  "elf": "ELF64 little-endian x86-64 ET_EXEC, no PT_INTERP",
+  "executable_sha256": "916eeadfde4092c55bd2d05d5cacbe20482f4cabda8c0436fcfb68d690f2a9b8",
+  "source_sha256": "2b0fa7def196fb2da7c5bbc166563b55f0b89957d31152a7c3798c077ae892b9",
+  "musl_archive_sha256": "a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4",
+  "musl_libc_sha256": "5bce38f1258c5a771417a9a8afe504db4887ce244ebf48f80a0a4fe25e19fa27",
+  "flags": [
+    "-std=c11",
+    "-D_POSIX_C_SOURCE=200809L",
+    "-O2",
+    "-static",
+    "-fno-pie",
+    "-no-pie",
+    "-Wl,--build-id=none",
+    "-Wall",
+    "-Wextra",
+    "-Werror"
+  ],
+  "tools": {
+    "cc": {
+      "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+      "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+    },
+    "ld": {
+      "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+      "version": "GNU ld (GNU Binutils for Ubuntu) 2.42"
+    },
+    "as": {
+      "sha256": "21aff249b692b5c31a44007491f922dcb49f41323e362c57d2ada3f52eddb7f0",
+      "version": "GNU assembler (GNU Binutils for Ubuntu) 2.42"
+    },
+    "ar": {
+      "sha256": "6452af2eea333b8c65e1adb92964fc8f97863ab003fa13f9d12bff5345cd7dbe",
+      "version": "GNU ar (GNU Binutils for Ubuntu) 2.42"
+    },
+    "make": {
+      "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965",
+      "version": "GNU Make 4.3"
+    },
+    "cc1": {
+      "sha256": "5d1679131184e2de4435b426eb264bf13472fe026db8e5c6bc97445814e8e2f4"
+    }
+  }
+}

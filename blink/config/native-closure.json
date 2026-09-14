@@ -1,0 +1,5796 @@
+{
+  "schemaVersion": 1,
+  "kind": "observed-native-cli-link-not-managed-embedding-closure",
+  "upstreamRevision": "f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580",
+  "binarySha256": "fac5c0d9db337243d2cb90579d22cef25116122414aaf21df010f3b013bc6e7b",
+  "archiveSha256": "a3ef97be4597ceffe146552bc84923d67b7e6ed5e983c6b76c77b36fd2277b67",
+  "nativeConfigSha256": "f5d3de0c0e43b8e2fae316fde009efce8f79191535a3857f5462edb3127317c0",
+  "sourceManifestSha256": "8252bb5c939695f5a0c2bc0aef23c969bc1b6908b05025f59504b25abfff318b",
+  "summary": {
+    "archiveMembers": 147,
+    "extractedArchiveMembers": 89,
+    "unextractedArchiveMembers": 58,
+    "cliEntryObjects": 1,
+    "dynamicImports": 185,
+    "hostObjectSymbols": 185,
+    "mutableStorageCandidates": 151,
+    "relocationReadonlyCandidates": 28
+  },
+  "objects": {
+    "abort.o": {
+      "source": "blink/abort.c",
+      "sourceSha256": "1ad85af65026875091380b7a6d162482d965b61132ffb74f862772c8ea8f91dd",
+      "objectSha256": "54a6d30f004ae7cb886e3e9903aba6aa688f939e0b9d4d5aa10f124bc2b0e5de",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "AtAbort"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_aborthooks",
+          "size": 40,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "abort"
+      ]
+    },
+    "address.o": {
+      "source": "blink/address.c",
+      "sourceSha256": "a27cf83ba39129995416082afbdd9d141fd7d396b5971196e265d27a558c8294",
+      "objectSha256": "a8006181f8d1effaf1dfd47361d07f4099ba26908a2eabcae64f812ad86e8be1",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(debug.o)",
+        "triggerSymbol": "GetPc"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "alu.o": {
+      "source": "blink/alu.c",
+      "sourceSha256": "673ddd60cb6fb1de6ea9f02a4e8e958f3c299a522dd754b4e82950e7a21fc4f4",
+      "objectSha256": "ea22ffa96af5eb6b84e3c273134d0cedac6894e51c5de69fcb6954886ec48733",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(xadd.o)",
+        "triggerSymbol": "Add8"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "kBsu",
+          "size": 256,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kAlu",
+          "size": 384,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro",
+          "category": "relocation-readonly-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": []
+    },
+    "alu1.o": {
+      "source": "blink/alu1.c",
+      "sourceSha256": "a83ba99f5be1dae8fc1847e2d4f8ef605a73ddea43df0c722aa446b81eb0662d",
+      "objectSha256": "f36e7ac433c823cc20618ec1bf1fa4e713fd5df9091abdff0d0c463ba6a7e913",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpNotEb"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "alu2.o": {
+      "source": "blink/alu2.c",
+      "sourceSha256": "025d76e70d3f7d3b36869ad90628c7dac5cfef82ec34e452c1379f52b4a6b510",
+      "objectSha256": "babd5db734e4e98b6bf12c8e63296d6ddae927a7bd62c8745aa2e2881a4edea6",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpAlub"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "alui.o": {
+      "source": "blink/alui.c",
+      "sourceSha256": "c10803658e87f919d8ad375ad404302340c3efbdc99fa77caebf8ce7fd1c9b9a",
+      "objectSha256": "6b76da12107e8300d83476ec33ad7dfc6c2080347034a9001719269d2ee45751",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpAlui"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "ancillary.o": {
+      "source": "blink/ancillary.c",
+      "sourceSha256": "f478833a0e39e8ce720379a9577c2b141e640f51d479a6bed68106f8822cdbe1",
+      "objectSha256": "78be9f6dbd83a12a15b0ccd2f379adc28de606df5d93767291758fe4008c11da",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "SendAncillary"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "calloc",
+        "close",
+        "fcntl64"
+      ]
+    },
+    "argv.o": {
+      "source": "blink/argv.c",
+      "sourceSha256": "8bca1c72bd6ef32457f03eb351def7fc9423d308ff032296c4d7f11a4c34d708",
+      "objectSha256": "b40502430a16ea7e01a2a4ed4ab8f3a7a781b64c3aa89d878163c4847a7ba8b0",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(loader.o)",
+        "triggerSymbol": "LoadArgv"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "free",
+        "getegid",
+        "geteuid",
+        "getgid",
+        "getuid",
+        "malloc",
+        "strlen",
+        "sysconf"
+      ]
+    },
+    "assert.o": {
+      "source": "blink/assert.c",
+      "sourceSha256": "28d242ddff0b60ae057a90be64a3891a47a2389745cff32ba613b75959e6928a",
+      "objectSha256": "a21dd89dbbf153d711c1c842ef505db273307a2410b97aaa4eca7a2ac92a5acb",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "AssertFailed"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "noreentry.1",
+          "size": 1,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "bp.0",
+          "size": 20000,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "snprintf"
+      ]
+    },
+    "biosrom.o": {
+      "source": "blink/biosrom.c",
+      "sourceSha256": "652bcab94fd2c1c65b6af44db082128e9a14918f407aac3773e5a251398ac50f",
+      "objectSha256": "daa5c74466db4550e092fe41a2962182b5d1b66261dea70d04be59683c117138",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(loader.o)",
+        "triggerSymbol": "LoadBios"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "exit",
+        "fstat64",
+        "read"
+      ]
+    },
+    "bit.o": {
+      "source": "blink/bit.c",
+      "sourceSha256": "9208bb4c1d675bc8c2dc6399ba4cc333e13d6acf66cd846abbfc646d2e55038b",
+      "objectSha256": "33f6cc765ae47c7b66c7321ef810fa7bf91aee7bb02c504b44303bc0daab15c1",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpBit"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "blink.o": {
+      "source": "blink/blink.c",
+      "sourceSha256": "1a3a80cdadd87d6191a9e1bd37f1a41c4fc63cf3a7102d2e98705f108f16f2f0",
+      "objectSha256": "aa20a153f93e22fa41402b0fd65eca3df8b1cd50c5a4746c4e91dbec1b2c7aba",
+      "disposition": "exclude-cli-entry-or-helper",
+      "extractedBy": null,
+      "stateCandidates": [
+        {
+          "symbol": "g_pathbuf",
+          "size": 4096,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "_GLOBAL_OFFSET_TABLE_",
+        "environ",
+        "exit",
+        "getenv",
+        "getpid",
+        "getrlimit64",
+        "kill",
+        "setlocale",
+        "sigaction",
+        "sigemptyset",
+        "sigfillset",
+        "siglongjmp",
+        "signal",
+        "sigprocmask",
+        "strlen",
+        "write"
+      ]
+    },
+    "breg.o": {
+      "source": "blink/breg.c",
+      "sourceSha256": "d1592dcdb995cb4278f5222a93d15ed759e1b6c82b946f608e8b9428c261c9ea",
+      "objectSha256": "cb4927017dad30f7e5d4dd1268d3938e84d45cb2f1e821d64bcc913203718fdc",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "kByteReg"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "bus.o": {
+      "source": "blink/bus.c",
+      "sourceSha256": "0b961d132aacef5f297bc8e98f6831253a9f206fa426b43b338c13ee6ca9a65e",
+      "objectSha256": "2bc4f2623d3e55132a0f4ad985f1948fab7917235e7e5399d61c295181039c99",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "InitBus"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_bus",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": []
+    },
+    "clmul.o": {
+      "source": "blink/clmul.c",
+      "sourceSha256": "6930dd03678a5d0909d8ed4e60a4fe7bbefbe2a465165eb6aa3ba4051151867e",
+      "objectSha256": "d719d2a29121c3842becf015f3dd7e6daef3909eaf46c02961941d8564c6d5bc",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpSsePclmulqdq"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "close.o": {
+      "source": "blink/close.c",
+      "sourceSha256": "40afe183ee90d0b8690c9576f410b89419fdca8da59c8589e461209d15b6ba50",
+      "objectSha256": "a5a59329b29e3f03250f58f9ff81a1e854a7c11c02a9b0529ba9ecb92e1095c9",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "SysClose"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "closedir",
+        "fcntl64",
+        "sigfillset",
+        "sigprocmask"
+      ]
+    },
+    "cmpxchg.o": {
+      "source": "blink/cmpxchg.c",
+      "sourceSha256": "40e1c61a28b09b6316fd900957bb46d6f890d30237cbe04f011b434958a9d984",
+      "objectSha256": "bd7947d70c434b8884a10778356d152373300ce56a45552b163630e3386d1c22",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpCmpxchgEbAlGb"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "commandv.o": {
+      "source": "blink/commandv.c",
+      "sourceSha256": "5b6ac8d16a8f6012d71ab41ca159b9cc96e5c6c1071fb09f6a1eda821dc79ec2",
+      "objectSha256": "5f73b9571ccf4a9c56b41675c5bdfc81a1ee571074363e5d455a5957ab7f41fa",
+      "disposition": "exclude-cli-entry-or-helper",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "Commandv"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__ctype_tolower_loc",
+        "__stack_chk_fail",
+        "getenv",
+        "memchr",
+        "memcpy",
+        "strlen"
+      ]
+    },
+    "cp437.o": {
+      "source": "blink/cp437.c",
+      "sourceSha256": "043d5162994e988b1111e19e2cea5a75b217587145886ffe2a70abf706a57cdb",
+      "objectSha256": "5304e4bf0029f4f3237e20b2d06724a653d9ad169169d1723606892f652400ab",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(strace.o)",
+        "triggerSymbol": "kCp437"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "cpuid.o": {
+      "source": "blink/cpuid.c",
+      "sourceSha256": "0675b9d86847b17398936d052f863762b3ef367ad6d964f7bb64fade3d74abca",
+      "objectSha256": "995a0b75821440d9a7c433e11d6ebbbc10a780eaabd3a0842fad713a3d1e9cb2",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpCpuid"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "crc32.o": {
+      "source": "blink/crc32.c",
+      "sourceSha256": "1dd636b087336e5c506c146c4ceacfd55494b1c43726a31c0f670dc4fbd9030f",
+      "objectSha256": "6565ed4f1a1680ba548ecaf95187b47a3bbba7d17b21326d139027adf5f8f296",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "Op2f01"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "kCastagnoli",
+          "size": 1024,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "once.0",
+          "size": 4,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": []
+    },
+    "cvt.o": {
+      "source": "blink/cvt.c",
+      "sourceSha256": "0d036a0c30c19a6063859ebcd22fbc7623209d528e017003abe018d257e75d86",
+      "objectSha256": "4ebba8af7142cf72d77bd6480280c76b5736f0d9798bc813ec3346def29f6821",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpCvt0f2a"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "debug.o": {
+      "source": "blink/debug.c",
+      "sourceSha256": "09ffcc0e51c93b3f9382cc5e5c384b4cabe3144694a6e70cb1ba037e12665c3b",
+      "objectSha256": "3a3c073cefe6fe702c11a686d9f627a29a6819e26c9a6735d9383dd151c95bbf",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "GetBlinkBacktrace"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_busted",
+          "size": 200,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "b.2",
+          "size": 7,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "b.1",
+          "size": 256,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "b.0",
+          "size": 16384,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "_setjmp",
+        "longjmp",
+        "sigaction",
+        "sigaddset",
+        "sigemptyset",
+        "sigprocmask",
+        "snprintf"
+      ]
+    },
+    "debug2.o": {
+      "source": "blink/debug2.c",
+      "sourceSha256": "a628d20cbd6024a137661ab491b7e32d619609eaa20f0e29ec5207fda30f250a",
+      "objectSha256": "ccce8bb9571554920816ffbee8433fbe3a08782961137b1db7bf939b2ac2fb32",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(debug.o)",
+        "triggerSymbol": "LoadDebugSymbols"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "close",
+        "fstat64",
+        "snprintf"
+      ]
+    },
+    "demangle.o": {
+      "source": "blink/demangle.c",
+      "sourceSha256": "44d037e11b75e0a0f9e043b3ae760f97f47f19a5a1486c6f35ce0bd2b76f61df",
+      "objectSha256": "b6e26a0685cd28268df5ae2db0c524c39e9fe8576eb6d5ade243f9ea33c04276",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(disarg.o)",
+        "triggerSymbol": "Demangle"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "buf.0",
+          "size": 1024,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "g_cxxfilt",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "_exit",
+        "atexit",
+        "close",
+        "dup2",
+        "execv",
+        "fcntl64",
+        "fork",
+        "getenv",
+        "memchr",
+        "memcpy",
+        "pipe",
+        "read",
+        "sigaddset",
+        "sigemptyset",
+        "sigprocmask",
+        "strlen",
+        "waitpid",
+        "writev"
+      ]
+    },
+    "describeflags.o": {
+      "source": "blink/describeflags.c",
+      "sourceSha256": "103db14a28d1fc353dbbc3ab0537f4f96aa6b965038c2099e9beb64fcc35cf62",
+      "objectSha256": "587c392254ff8d0a67f0d98ab4cc5ad4ccfcaabd068629ae623b7e4dd5aec92d",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(strace.o)",
+        "triggerSymbol": "DescribeFlagz"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "describehosterrno.o": {
+      "source": "blink/describehosterrno.c",
+      "sourceSha256": "d226b0cb5d5b823e329ab4954f5fb2a1ac2b41df05da5ecaa71dedd7b9cb263e",
+      "objectSha256": "7760bd68c42c5769a936a10869b885e1384f910111b00ff21c663b1ffd63ed6f",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(assert.o)",
+        "triggerSymbol": "DescribeHostErrno"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "buf.0",
+          "size": 21,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": []
+    },
+    "describesignal.o": {
+      "source": "blink/describesignal.c",
+      "sourceSha256": "91808ae443ca15f8796d56f23e1d790306a9c1cf2cdc8b04356e2c3ab3f6e7da",
+      "objectSha256": "5d69b9a9bca71331c66088f3dc4680193ccec76094793b86187b5be844309150",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "DescribeSignal"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "buf.0",
+          "size": 30,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": []
+    },
+    "disarg.o": {
+      "source": "blink/disarg.c",
+      "sourceSha256": "1c8481817c91f87139319d834a37a0ee5955a067dc81b4b5395d77c00d389466",
+      "objectSha256": "b6d362041277edb3a430dbcab1e9e64c005097da740ee3d5784257f0dd323ed8",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(disinst.o)",
+        "triggerSymbol": "DisArg"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "kDisArgs",
+          "size": 1472,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "snprintf",
+        "stpcpy",
+        "strlen"
+      ]
+    },
+    "diself.o": {
+      "source": "blink/diself.c",
+      "sourceSha256": "6f01bbc59ab7fa230ae7accf4a5dab230dd757f58a956eb03a34aa7d60660f26",
+      "objectSha256": "a67e57f5032b679bfa79331be97ee7dbb8f890e3d5210698efd4db8ccd86a961",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(debug.o)",
+        "triggerSymbol": "DisFindSym"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "qsort",
+        "realloc",
+        "strcmp",
+        "strdup"
+      ]
+    },
+    "disfree.o": {
+      "source": "blink/disfree.c",
+      "sourceSha256": "e63febe6af728bb9e311ff0aa5597ec06f11a0be741cc3256cd86bf72dbd7cc8",
+      "objectSha256": "9db2ab7d66f8ea02d00340b75c3734a3d6133859801b099086b69e73fd28e39a",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(debug.o)",
+        "triggerSymbol": "DisFree"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "free"
+      ]
+    },
+    "disinst.o": {
+      "source": "blink/disinst.c",
+      "sourceSha256": "653a81bb5368ce5fec5281499b48688ed90c1487a04af228a74064df8a39b20a",
+      "objectSha256": "7697ee202f6223c8bf812fccb8c398f8193a3beb12dfe1a190ade0f25b5d19d0",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(debug.o)",
+        "triggerSymbol": "DisInst"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__ctype_b_loc",
+        "__stack_chk_fail",
+        "stpcpy",
+        "strcmp",
+        "strlen",
+        "strtok_r"
+      ]
+    },
+    "disspec.o": {
+      "source": "blink/disspec.c",
+      "sourceSha256": "1fee5d54ff86c9c52a0b6bbb36f9953083a1328695e28d18ae4cd0db6afb1861",
+      "objectSha256": "2e85cb568550026d962008071ebf0b1c4c5c64e712efa70bcbf48ed330d93848",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(debug.o)",
+        "triggerSymbol": "DisSpec"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "stpcpy",
+        "strcpy"
+      ]
+    },
+    "divmul.o": {
+      "source": "blink/divmul.c",
+      "sourceSha256": "5b8ba8685b4275d589dbc0eead0901c0ee96a0d6ed9a1741c468e8fab9bb2e62",
+      "objectSha256": "cf6195ae43189a5eb0e15f0ca0fdb2b7a30bd95eccb505f28066a69bbb4ed512",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpDivAlAhAxEbSigned"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__divmodti4",
+        "__stack_chk_fail",
+        "__udivmodti4"
+      ]
+    },
+    "dll.o": {
+      "source": "blink/dll.c",
+      "sourceSha256": "59d8160a2a54d715368df0ab626fa4a37d06321ac4c1bd9c105724a7a8ab08e3",
+      "objectSha256": "2187746333d6be3764d9933f21583281b47dba18e2030d1598bb2fd6e07e7744",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(bus.o)",
+        "triggerSymbol": "dll_make_last"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "elf.o": {
+      "source": "blink/elf.c",
+      "sourceSha256": "5b87e045d728ca8abbbb133ad9144f7013dfd6c429255d32ed68e6d2a727629b",
+      "objectSha256": "35577d8586b5f46f3c7e0bb2c20b1dfb04255885ec645af4cf6e806e91a4be45",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(debug2.o)",
+        "triggerSymbol": "GetElfMemorySize"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "memchr",
+        "strcmp"
+      ]
+    },
+    "endswith.o": {
+      "source": "blink/endswith.c",
+      "sourceSha256": "28f48e89d079661e22bdfaa01d082caaf19d5073d0fcc16e2093f7a71686f2a8",
+      "objectSha256": "f6edff63c154d75ffe0b7dd4c5b407e130997a1ff3550d031a3dfddc4b90ee4c",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(loader.o)",
+        "triggerSymbol": "EndsWith"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "memcmp",
+        "strlen"
+      ]
+    },
+    "errfd.o": {
+      "source": "blink/errfd.c",
+      "sourceSha256": "d9ab47972b68abd19f9824ca17d6652c7c133eab7c2a8d12bdbffb2907016706",
+      "objectSha256": "d090ebe8a4bd0a98c3b9565939405698d353c1b9e62cab51d6753dc15502c249",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "WriteErrorString"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_errfd",
+          "size": 4,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "exit",
+        "fcntl64",
+        "strlen",
+        "write"
+      ]
+    },
+    "errno.o": {
+      "source": "blink/errno.c",
+      "sourceSha256": "2bc90ff110d0b0543865e7ef1742ccad5c8eaa0dcb9ff46a8d4ef3ec0dee3f8d",
+      "objectSha256": "e2bd049e2b034242ddab3eea6f5cf66f8bd4cdd4f8164f5e82091daf395e7c95",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(fds.o)",
+        "triggerSymbol": "ebadf"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__errno_location"
+      ]
+    },
+    "fds.o": {
+      "source": "blink/fds.c",
+      "sourceSha256": "70762c3061198e92d07b8dd14b345e17bdb675485a9302fe7e7a34ed9f1c7dda",
+      "objectSha256": "c289604e6755dda93d2e3810eb054f735ec17229de95f1adfc6894c54359b007",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "AddStdFd"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "calloc",
+        "fcntl64",
+        "free",
+        "getsockname",
+        "getsockopt",
+        "strdup"
+      ]
+    },
+    "flag.o": {
+      "source": "blink/flag.c",
+      "sourceSha256": "1fed6b7bfaf6c63ace2512d0921e341f4085af4524cfc2b94b8f2faf5de4e7e9",
+      "objectSha256": "265e5c2f99e8be305f88679c49c715bd315ded33c9861822ec24fb09f4c77a65",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "FLAG_overlays"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "FLAG_bios",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_overlays",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_logpath",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_dyninterpaddr",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_automapstart",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_automapend",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_imagestart",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_stacktop",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_aslrmask",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_vaspace",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_skew",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_pagesize",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_vabits",
+          "size": 4,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_strace",
+          "size": 4,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_alsologtostderr",
+          "size": 1,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_nologstderr",
+          "size": 1,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_noconnect",
+          "size": 1,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_nolinear",
+          "size": 1,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_wantjit",
+          "size": 1,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "FLAG_zero",
+          "size": 1,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": []
+    },
+    "flags.o": {
+      "source": "blink/flags.c",
+      "sourceSha256": "5afdfac034c269d9644a8f59c3e667ebf746f1adfb280e9c7832de2549d4f3cd",
+      "objectSha256": "6f1f961b3e4abb1c750a4169e6e322e084fcc3128351a045d2594ffd7dd25dd0",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "GetParity"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "formatint64.o": {
+      "source": "blink/formatint64.c",
+      "sourceSha256": "6da43c414409340c7208cbdda31181646323971840639a7c8e62246de2c38d01",
+      "objectSha256": "0833d45754fbaf6640c2a08df14d0c3fa6369c1c9a2172969be99ba3700709fb",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(describehosterrno.o)",
+        "triggerSymbol": "FormatInt64"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "formatsize.o": {
+      "source": "blink/formatsize.c",
+      "sourceSha256": "235720743d044d90a228f873a7ae130e0bb8aa580afa8267a456f9b3c302b1c4",
+      "objectSha256": "13f61639bd176d445e735d9ab9ede790d4b2e358b06371cd7b9dd81fd03b30b8",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(pml4tfmt.o)",
+        "triggerSymbol": "FormatSize"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "fpu.o": {
+      "source": "blink/fpu.c",
+      "sourceSha256": "a0b3542825b9c91ad07b6c35b2ad40688caeaafd66efc94be7487245d410843f",
+      "objectSha256": "ac8979de0032c6fa43c4f0d4b0be5c953eff92d35e165809eea6eb33553b4ea0",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpFpu"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "fspath.o": {
+      "source": "blink/fspath.c",
+      "sourceSha256": "04eee2de97d0a3f58886647f382fe56d2b6617e66a5526765f1c2d4d68e87b65",
+      "objectSha256": "6ae573e5a8d11045722acd56e2c9b17b18de48047c1865a726a37b6d22183892",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(log.o)",
+        "triggerSymbol": "JoinPath"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "getenv",
+        "malloc",
+        "memcpy",
+        "strdup",
+        "strlen"
+      ]
+    },
+    "getopt.o": {
+      "source": "blink/getopt.c",
+      "sourceSha256": "cfb96f04ba8c23e2b7ba6dfdcd170d9fa3c954d01552cfa87f37e2cd665d84ef",
+      "objectSha256": "dd0d87b85d3b3bedfb219e02512a875af331adad226c83e9d4f4b97eab6ce0d5",
+      "disposition": "exclude-cli-entry-or-helper",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "GetOpt"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "getopt_place",
+          "size": 8,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "getopt_emsg",
+          "size": 1,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "optind_",
+          "size": 4,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "optarg_",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "strchr",
+        "write"
+      ]
+    },
+    "high.o": {
+      "source": "blink/high.c",
+      "sourceSha256": "85411fdf79229e63bd37e64acb4603cd2028de27aa8d1ec8cb4203179fc90861",
+      "objectSha256": "c3bc23b58613f02b4812226db90d1e8306da26bffc01fbc09dc7b8740b684ef9",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(disinst.o)",
+        "triggerSymbol": "HighStart"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_high",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "snprintf"
+      ]
+    },
+    "instruction.o": {
+      "source": "blink/instruction.c",
+      "sourceSha256": "fa6756cf8a0cbf547da2ac161258d690bc130764a21affc48d5afa6cf53d1d47",
+      "objectSha256": "3800dd2ea3915a6f3b127f142f0dff80356892ab35178ad21cd7f8c83ace37af",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "LoadInstruction"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "memcmp",
+        "memcpy"
+      ]
+    },
+    "ioctl.o": {
+      "source": "blink/ioctl.c",
+      "sourceSha256": "7b1fdf59253465f30a137a907d2f449ca4a3b620e83e893985534a763d4fa7d2",
+      "objectSha256": "a1a0cd84b18b58a6f7d949f62146ac1fa005511f99aeb08f07b6912444f4f02f",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "SysIoctl"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "fcntl64",
+        "ioctl",
+        "malloc",
+        "sockatmark",
+        "tcdrain",
+        "tcflow",
+        "tcflush",
+        "tcgetpgrp",
+        "tcgetsid",
+        "tcsendbreak",
+        "tcsetpgrp"
+      ]
+    },
+    "iovs.o": {
+      "source": "blink/iovs.c",
+      "sourceSha256": "d9bf9c2d724a7e1c93e4ab2c46ab63d03984d48da8e1398d3235a1e9e2c0caee",
+      "objectSha256": "eee5a2ef1623a8061d0d9ad80f98bc782a7dacbca5483c35447fe63b3d7e0612",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "InitIovs"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "free",
+        "malloc",
+        "realloc"
+      ]
+    },
+    "loader.o": {
+      "source": "blink/loader.c",
+      "sourceSha256": "8175b61a1de47f9decf91e71f682e73f5260b66ca1eba6686c2d4d302bcd751c",
+      "objectSha256": "a9edb21576dd9ce46ab05132d1400be86952e3104d8fc21d8ebf6f587f11de37",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "LoadProgram"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "once.0",
+          "size": 1,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "atexit",
+        "calloc",
+        "close",
+        "exit",
+        "free",
+        "fstat64",
+        "malloc",
+        "memset",
+        "mmap64",
+        "munmap",
+        "open64",
+        "pread64",
+        "read",
+        "strdup",
+        "strerror"
+      ]
+    },
+    "log.o": {
+      "source": "blink/log.c",
+      "sourceSha256": "9533e90c58f8607ffb9da61e27c6ec369ef17fdd629ce6888fdbf64edd283f1f",
+      "objectSha256": "94e391455151b6f5e7ddc5a416964728d9eed7a7e5e11fbc882ea9e8473e1b1b",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "LogErr"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_log",
+          "size": 24,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "last.2",
+          "size": 8,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "s.0",
+          "size": 27,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "tm.1",
+          "size": 56,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "atexit",
+        "clock_gettime",
+        "close",
+        "fcntl64",
+        "free",
+        "localtime_r",
+        "open64",
+        "perror",
+        "snprintf",
+        "strcmp",
+        "vsnprintf"
+      ]
+    },
+    "machine.o": {
+      "source": "blink/machine.c",
+      "sourceSha256": "73a32c95fbc191394c116bd2f41ebba464c963718b3785adaca22c5a93e8dc89",
+      "objectSha256": "926c348c0780e41d0479ba8929a4c60396ffbb9bdedc8bbc42877f7627cf3968",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "g_machine"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "kOp0f6",
+          "size": 64,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kOp0f7",
+          "size": 64,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kOp0ff",
+          "size": 64,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kNexgen32e",
+          "size": 4192,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "g_machine",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "g_siginfo",
+          "size": 128,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "_GLOBAL_OFFSET_TABLE_",
+        "__popcountdi2",
+        "__sigsetjmp",
+        "__stack_chk_fail"
+      ]
+    },
+    "map.o": {
+      "source": "blink/map.c",
+      "sourceSha256": "f35096d88178f3acf3e6bf475974379d7e7b2ce116325c2a3ea9b355cbc93267",
+      "objectSha256": "f882ea20ddaec29a2d8294e656c23086dfff7b290e05cff064466f908a9ef957",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "InitMap"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "mmap64",
+        "mprotect",
+        "msync",
+        "munmap",
+        "sysconf"
+      ]
+    },
+    "memory.o": {
+      "source": "blink/memory.c",
+      "sourceSha256": "47966cd086fb5f2960156e55468b058928fd8cb053ba906267800b08daf399a3",
+      "objectSha256": "695bdacff82a11055dd0cfc6a7ac2a67dbdd65851ad15d668ec94e565273ea38",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "SetReadAddr"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "free",
+        "malloc",
+        "memccpy",
+        "memchr",
+        "memcpy",
+        "realloc",
+        "strdup"
+      ]
+    },
+    "memorymalloc.o": {
+      "source": "blink/memorymalloc.c",
+      "sourceSha256": "589becd0e214d5f422e75a9b63b1bf5d5280b3f8ca4e00dc212ede120e945b12",
+      "objectSha256": "4f468fade4eb6bbd84db556000a02d862422e543086706568ce18b96dd2fdb02",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(memory.o)",
+        "triggerSymbol": "g_hostpages"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_hostpages",
+          "size": 24,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "g_allocator",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "g_bssmachine",
+          "size": 22432,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "calloc",
+        "exit",
+        "free",
+        "getpid",
+        "malloc",
+        "memcpy",
+        "memset",
+        "posix_memalign",
+        "realloc",
+        "strdup"
+      ]
+    },
+    "modrm.o": {
+      "source": "blink/modrm.c",
+      "sourceSha256": "dbdb74c3599a966107f8e6b04461517bafb7b3cecc60c3f15fc2b5e2ae7c3c7e",
+      "objectSha256": "af43388b032b2424d145b4898af3723402c9fbf480027ba1cf398078afd43494",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "LoadEffectiveAddress"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "op101.o": {
+      "source": "blink/op101.c",
+      "sourceSha256": "66371088b466c4148f31aea0302f8a620daa6bab89114c917a1fb55994f35e52",
+      "objectSha256": "e32e49d63a6b9b34c9cc57def62564cfaa420e3df7d33bc44f47b625bf76d665",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "Op101"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "open.o": {
+      "source": "blink/open.c",
+      "sourceSha256": "6ab0bd58b614f319c14e022ca3aeb385e9854cbc38adc8ad83d3aedca3b02ab8",
+      "objectSha256": "6c1813a8337f05ba7d210ce1ea68ea60e349c567adc87f4ea61dd0bdd0a12384",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "SysOpenat"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "close"
+      ]
+    },
+    "overlays.o": {
+      "source": "blink/overlays.c",
+      "sourceSha256": "1b652e20e694ff16a35e55f53bd8e68d38d310de321f39892c6376ab0914a331",
+      "objectSha256": "3505d16969f025020850cdf51d72e7c2cc8934491b9ab71a6db98adb2708d6f1",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "SetOverlays"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_overlays",
+          "size": 8,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "once.0",
+          "size": 4,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "atexit",
+        "chdir",
+        "close",
+        "dup2",
+        "faccessat",
+        "fchmodat",
+        "fchownat",
+        "fcntl64",
+        "free",
+        "fstatat64",
+        "getcwd",
+        "linkat",
+        "malloc",
+        "memcmp",
+        "memcpy",
+        "memmove",
+        "mkdirat",
+        "mkfifoat",
+        "open64",
+        "openat64",
+        "readlinkat",
+        "realloc",
+        "realpath",
+        "renameat",
+        "strchr",
+        "strdup",
+        "strlen",
+        "strndup",
+        "symlinkat",
+        "unlinkat",
+        "utimensat"
+      ]
+    },
+    "pml4tfmt.o": {
+      "source": "blink/pml4tfmt.c",
+      "sourceSha256": "8f263a8339a7babf927455547203de9630d1b7d988940d7d21797c7cb675ace5",
+      "objectSha256": "934a67b0b1ecfde264e044973b1feb4cbce2237601b0f8b198bc32a875b6b274",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "FormatPml4t"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "b.0",
+          "size": 16384,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "snprintf"
+      ]
+    },
+    "prog.o": {
+      "source": "blink/prog.c",
+      "sourceSha256": "6700646e755e9a2862337ef47ec4f99401159838774a4508f57b3663c2062316",
+      "objectSha256": "a50238516535f6bf6feea0f249c550129f678dce09a8f5118bea51c8f34c2577",
+      "disposition": "exclude-cli-entry-or-helper",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(debug.o)",
+        "triggerSymbol": "g_progname"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_progname",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": []
+    },
+    "random.o": {
+      "source": "blink/random.c",
+      "sourceSha256": "25233fe630cdc3c748a51bea6f6154ecac316259815754767f262e5a420af97c",
+      "objectSha256": "3e97e9bc72397b091f4ef994e30bc3a3dc2f1953d2ae0b992f5338ea6cd49345",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(loader.o)",
+        "triggerSymbol": "GetRandom"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "syscall"
+      ]
+    },
+    "rdrand.o": {
+      "source": "blink/rdrand.c",
+      "sourceSha256": "5a351e650ed2eb575f39c364f07d02af7703fce417f0da52fac96128429f60ea",
+      "objectSha256": "9cbcbfa3a884c407b638134236145bf22ee54ee6f691819e94181b0e5d67473b",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpRdrand"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_rdrand",
+          "size": 24,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "reset.o": {
+      "source": "blink/reset.c",
+      "sourceSha256": "7c2ddd7d9354bee1112e45397c0f4b75cc538e7401e56d9cb1b2b7c993f5e715",
+      "objectSha256": "f008505b3c855d003079e1543820d54bd025ebd0e8d01bb426a694c9dde870d7",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(loader.o)",
+        "triggerSymbol": "ResetCpu"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "memset"
+      ]
+    },
+    "signal.o": {
+      "source": "blink/signal.c",
+      "sourceSha256": "e4a1a44787a5e99022a5d8224165e0c551275b4706b9f689f4f826e4f0b95c5a",
+      "objectSha256": "c1888d977a34ef83288af212f53b5f5bb38382bd4f9b6debe31668d44b11d215",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "IsSignalIgnoredByDefault"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "sse.o": {
+      "source": "blink/sse.c",
+      "sourceSha256": "1ff208c9ca2687eb884151de567af3cec745f9506120820ce39577c336f4022e",
+      "objectSha256": "925ac2652a9f5a68675bea7c2af77392250a2120d4afd3133f2e2c39a8572e0c",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "Op171"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "sse2.o": {
+      "source": "blink/sse2.c",
+      "sourceSha256": "52900b3018c6cb0b59bf491d1a15556a38cacd2c30f62a4e2724844337a0c5ef",
+      "objectSha256": "faf77af191ae5a9bab4e4dfbc53b0842ee191ea541a64c603b94dbd340ec9e94",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpSsePcmpgtb"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "_GLOBAL_OFFSET_TABLE_"
+      ]
+    },
+    "ssefloat.o": {
+      "source": "blink/ssefloat.c",
+      "sourceSha256": "cec86d3109804688d07e519d92d96b056899d1d36f0c0ccf644b933299dcaa09",
+      "objectSha256": "744dc3fcad180f23184830e6af3be4771dc92004b8778d39d2162f54650c139b",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpUnpcklpsd"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "_GLOBAL_OFFSET_TABLE_",
+        "__stack_chk_fail",
+        "sqrt",
+        "sqrtf"
+      ]
+    },
+    "ssemov.o": {
+      "source": "blink/ssemov.c",
+      "sourceSha256": "808c3f481b6df209d7c51437d2fdfec282dbe8b9b933668e9aae28416c99154b",
+      "objectSha256": "e12a6f7218a00ae6c41524e5ff54bb59887a7f242266f36a01fd9aba88a64741",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpLddquVdqMdq"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "stack.o": {
+      "source": "blink/stack.c",
+      "sourceSha256": "d17a2dcd451fe4e75da3e327bf311ab54939360b9d9d81583c5d818ecc7dd36f",
+      "objectSha256": "25bb09343d3aa82790771ea074022413c16640c899d80d01c95c0c6904fa56ba",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "Push"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail"
+      ]
+    },
+    "startdir.o": {
+      "source": "blink/startdir.c",
+      "sourceSha256": "9a15d2e883d2ceb2b5e11ac2be2d73efe58922a3f713ec056a0fd731a753499c",
+      "objectSha256": "25ea061d8b129807b484a87b24e56fce17c8ebd12d4b18c769f32f3388d88b13",
+      "disposition": "exclude-cli-entry-or-helper",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "GetStartDir"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "g_startdir",
+          "size": 8,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "atexit",
+        "free",
+        "getcwd",
+        "strdup"
+      ]
+    },
+    "startswith.o": {
+      "source": "blink/startswith.c",
+      "sourceSha256": "0f7d3d4f076666702e7776fb8527f55f92c232e3bd4e032a599d73e3af75515e",
+      "objectSha256": "226e7386074f778daffc9c6f68a1611ccc16fae0cb082956d13383cb77a3bb46",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(diself.o)",
+        "triggerSymbol": "StartsWith"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "statfs.o": {
+      "source": "blink/statfs.c",
+      "sourceSha256": "ca9f67b75f1367e61dcf1bc39e638f4710a3eb014dbd4c4d3c0470530f8bde10",
+      "objectSha256": "1f9963478290c7f245daacfd9a9812d35c7ea28109fb0e370b3ada486bf20dc2",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "SysStatfs"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__stack_chk_fail",
+        "fstatvfs64",
+        "statvfs64"
+      ]
+    },
+    "stats.o": {
+      "source": "blink/stats.c",
+      "sourceSha256": "05e1c9c3259f14ca01767e743ff8bb54b290ef245704c5a94bc4385960a2e7b1",
+      "objectSha256": "8ccf061c3c679786fda7bc76a2fabafde79f1b34069b2cd62eba5159f977d9a6",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "PrintStats"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "instructions_cached",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "instructions_decoded",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "instructions_dispatched",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "instructions_jitted",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "interps",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "page_locks",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "page_overlaps",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_count",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_cycles",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_connected_total",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_connected_lazily",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_connected_directly",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_connected_interpreter",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_elements",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_elements_auto",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_longest",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_spliced",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_abandoned",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_longest_bytes",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_average_bytes",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_average_elements",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_patches",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "iov_created",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "iov_stretches",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "iov_fragments",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "iov_reallocs",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "smc_resets",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "syscalls",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jumps_recorded",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jumps_applied",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "path_ooms",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "alu_ops",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "freelisted",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "alu_unflagged",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "alu_simplified",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "fused_branches",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "tlb_hits",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "tlb_misses",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "tlb_resets",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "icache_resets",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_average_block",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_blocks_retired",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_blocks_wired",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_blocks_killed",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_max_paths_per_block",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_max_edges_per_page",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_cycles_avoided",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_pages_hits_1",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_pages_hits_2",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_hooks_staged",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_hooks_installed",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_hooks_clobbered",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_hooks_deleted",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_hash_lookups",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_hash_collisions",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_hash_elements",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_page_resets",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_page_resets_average_hooks",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_page_average_bits",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_reallocs",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_callocs",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_frees",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_ints_alloc_freelist",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_ints_alloc_slab",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_ints_alloc_system",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_jump_alloc_freelist",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_jump_alloc_system",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_NewJitJump",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_NewJitPage",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_NewJitBlock",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "jit_NewJitStage",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "smc_checks",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "smc_flushes",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "smc_enqueued",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "smc_segfaults",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "redraw_latency_us",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "redraw_compressed_bytes",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "redraw_uncompressed_bytes",
+          "size": 16,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x1",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x2",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x3",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x4",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x5",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x6",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x7",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x8",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x9",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "x10",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "snprintf"
+      ]
+    },
+    "strace.o": {
+      "source": "blink/strace.c",
+      "sourceSha256": "fd1f9923223f128cdd823c83be54ad0c442aab766127b784b136df34fd8a83d3",
+      "objectSha256": "512e52e69b495cd76c853f3e93a48dcafd0a9711eae2ea039d84605ab9a9e8a2",
+      "disposition": "diagnostic-optional-review-and-adapt",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "Strace"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "bp.3",
+          "size": 125,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "ibuf.0",
+          "size": 21,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "kMapFlags",
+          "size": 208,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kAtFlags",
+          "size": 80,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kOpenAccmode",
+          "size": 24,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kOpenFlags",
+          "size": 272,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kAccessModes",
+          "size": 48,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kProtFlags",
+          "size": 96,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kSockFlags",
+          "size": 32,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kRenameFlags",
+          "size": 48,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "abuf.2",
+          "size": 64,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "sabuf.1",
+          "size": 80,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "kSaFlags",
+          "size": 160,
+          "binding": "LOCAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kResource",
+          "size": 256,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kFcntl",
+          "size": 224,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kSocketType",
+          "size": 48,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kSocketFamily",
+          "size": 112,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kClock",
+          "size": 176,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kSigHow",
+          "size": 48,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kFlockType",
+          "size": 48,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kWhence",
+          "size": 48,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__popcountdi2",
+        "__stack_chk_fail",
+        "inet_ntop",
+        "snprintf"
+      ]
+    },
+    "string.o": {
+      "source": "blink/string.c",
+      "sourceSha256": "6b1a4d522dbc48eff3d25a109ad45e938c40307e926807b538851c9315026575",
+      "objectSha256": "694d050f5785a8f4120f3385420c15d7fa60c9c2fb323734668f77926e39d53b",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpMovs"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "memmove"
+      ]
+    },
+    "syscall.o": {
+      "source": "blink/syscall.c",
+      "sourceSha256": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3",
+      "objectSha256": "66b8692e842009fe2bdc85e8e5f6aa8877d52b811295c28626ed3063e031f6f2",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.o",
+        "triggerSymbol": "OnSignal"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "FLAG_statistics",
+          "size": 1,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        },
+        {
+          "symbol": "kFdCbHost",
+          "size": 64,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "g_blink_path",
+          "size": 8,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".bss",
+          "category": "mutable-storage-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": [
+        "_Exit",
+        "_GLOBAL_OFFSET_TABLE_",
+        "__errno_location",
+        "__stack_chk_fail",
+        "accept",
+        "alarm",
+        "bind",
+        "calloc",
+        "clock_getres",
+        "clock_gettime",
+        "clock_nanosleep",
+        "close",
+        "connect",
+        "dup",
+        "dup2",
+        "dup3",
+        "exit",
+        "fchdir",
+        "fchmod",
+        "fchown",
+        "fcntl64",
+        "fdatasync",
+        "fdopendir",
+        "flock",
+        "fstat64",
+        "fsync",
+        "ftruncate64",
+        "futimens",
+        "getdomainname",
+        "getegid",
+        "geteuid",
+        "getgid",
+        "getgroups",
+        "gethostname",
+        "getitimer",
+        "getpeername",
+        "getpgid",
+        "getppid",
+        "getresgid",
+        "getresuid",
+        "getrlimit64",
+        "getrusage",
+        "getsid",
+        "getsockname",
+        "getsockopt",
+        "gettimeofday",
+        "getuid",
+        "ioctl",
+        "listen",
+        "lseek64",
+        "malloc",
+        "nanosleep",
+        "pause",
+        "poll",
+        "prctl",
+        "pread64",
+        "preadv64",
+        "pwritev64",
+        "read",
+        "readdir64",
+        "readv",
+        "recvmsg",
+        "rewinddir",
+        "sched_getaffinity",
+        "sched_yield",
+        "seekdir",
+        "sendmsg",
+        "setegid",
+        "setgid",
+        "setgroups",
+        "setitimer",
+        "setpgid",
+        "setresgid",
+        "setresuid",
+        "setrlimit64",
+        "setsid",
+        "setsockopt",
+        "setuid",
+        "shutdown",
+        "sigaction",
+        "sigemptyset",
+        "sigfillset",
+        "sigprocmask",
+        "sigsuspend",
+        "socket",
+        "strcpy",
+        "strlen",
+        "sync",
+        "sysconf",
+        "tcgetattr",
+        "tcsetattr",
+        "telldir",
+        "time",
+        "times",
+        "umask",
+        "write",
+        "writev"
+      ]
+    },
+    "sysinfo.o": {
+      "source": "blink/sysinfo.c",
+      "sourceSha256": "e87011758b1eb55350a5324433bb4ce517128bea1d4abc9b4da138568c003157",
+      "objectSha256": "b6a7abe8d9fbb7d9ce31405658149a60129d5df824ce94d9b5774dfa847bbc08",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "sysinfo_linux"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "sysinfo"
+      ]
+    },
+    "tainted.o": {
+      "source": "blink/tainted.c",
+      "sourceSha256": "2f708e3aee10e7bfc6c90e3dea5e958bf483e18e469c0a8d17eff55b524b8305",
+      "objectSha256": "f44060546c2d98a15464699304a1594d642e0a649a3ce20efabdf2e5df62836d",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(argv.o)",
+        "triggerSymbol": "IsProcessTainted"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "throw.o": {
+      "source": "blink/throw.c",
+      "sourceSha256": "5df4b02be0d089b25c6318841cb072c5af9ca1b3e5aa9e11982bdc73ca7e2eed",
+      "objectSha256": "7a0a375b54f8016abcde32a186e87a09c2370b23bacc5ca92b3d7c1d1978c548",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(assert.o)",
+        "triggerSymbol": "RestoreIp"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "sched_yield",
+        "siglongjmp"
+      ]
+    },
+    "time.o": {
+      "source": "blink/time.c",
+      "sourceSha256": "4f7bb4a814278fb200d4f9c325bf1236f3c34fe3ab2721b8b434e7978e7902d2",
+      "objectSha256": "41dcccaeb954e21d1d2d81b7ef7f4c4a6848a1acde4edbda44cc0bc8bf2ef1bf",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpPause"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "timespec.o": {
+      "source": "blink/timespec.c",
+      "sourceSha256": "d7a16784dcf4f4c95fe4804e8dbc01d64a454a4dbee52618df24d127c6425c98",
+      "objectSha256": "ebcda9b8f7fd2631928010c529ec253ea3b35dece8bfce9320dff01938cb5a8c",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "CompareTime"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "uop.o": {
+      "source": "blink/uop.c",
+      "sourceSha256": "5aec691023af02e77c64ec5227ca3f99e07e51bccef52155f5d0ef982833bc4b",
+      "objectSha256": "4810a503a0875675f4a31019625d0e3ce5811cdcc6091d1a394b1548495c716e",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(ssefloat.o)",
+        "triggerSymbol": "OpPsdMuld1"
+      },
+      "stateCandidates": [
+        {
+          "symbol": "kConditionCode",
+          "size": 128,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kConvert",
+          "size": 24,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        },
+        {
+          "symbol": "kSax",
+          "size": 24,
+          "binding": "GLOBAL",
+          "threadLocal": false,
+          "section": ".data.rel.ro.local",
+          "category": "relocation-readonly-candidate"
+        }
+      ],
+      "unresolvedHostSymbols": []
+    },
+    "vigna.o": {
+      "source": "blink/vigna.c",
+      "sourceSha256": "530a1f53b0c9b5dd58ec73682b3b88035b47d7aab432cf074c47eb7a30d6ed5e",
+      "objectSha256": "0142a1f61c903a0ba7ee8fbab53ad88d665febd279b7f4b2bb1e5f607ccdd755",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(rdrand.o)",
+        "triggerSymbol": "Vigna"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "x86.o": {
+      "source": "blink/x86.c",
+      "sourceSha256": "b6b9967c680be89b9e1f7f6670eb1f4e829af8f4b0dc1ce0d30215a01e2139e9",
+      "objectSha256": "3277317dffe97b080b1baab18f35354b802261a310f13216b32a9d2a0c50377f",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(debug.o)",
+        "triggerSymbol": "DecodeInstruction"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__stack_chk_fail",
+        "memcpy"
+      ]
+    },
+    "xadd.o": {
+      "source": "blink/xadd.c",
+      "sourceSha256": "30a8f8054948bddd70ec8fda75d122b58ca14d26364954d416b5f2602afa6e96",
+      "objectSha256": "17663da5fd2c8a69a5b0601fe322dfe86aaf6d51a1eec76244b163a0c46330a5",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpXaddEbGb"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "xchg.o": {
+      "source": "blink/xchg.c",
+      "sourceSha256": "4fc99c14a3fbda61e1c36a25369fcf2722c9d96602059016ef4180ac96a0767b",
+      "objectSha256": "dd5909aa9b15b0f010f9a1938174c69e001e26373142b0de3e8adb25ad83662c",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(machine.o)",
+        "triggerSymbol": "OpXchgGbEb"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": []
+    },
+    "xlat.o": {
+      "source": "blink/xlat.c",
+      "sourceSha256": "66809d90e13c4da7a2521edb1b9da3160806091f4edca83f338b04f03bab4966",
+      "objectSha256": "cc4aac93c0c5dace116e4dc1c1ade26e01ac745d497efb4ef40f1234d5651ad0",
+      "disposition": "embedding-candidate-needs-reachability-and-host-review",
+      "extractedBy": {
+        "referencedBy": "o//blink/blink.a(syscall.o)",
+        "triggerSymbol": "XlatErrno"
+      },
+      "stateCandidates": [],
+      "unresolvedHostSymbols": [
+        "__errno_location",
+        "__libc_current_sigrtmax",
+        "__libc_current_sigrtmin",
+        "cfgetospeed",
+        "cfsetispeed",
+        "cfsetospeed",
+        "sigaddset",
+        "sigemptyset",
+        "sigismember",
+        "strnlen"
+      ]
+    }
+  },
+  "unextractedArchiveMembers": [
+    "bcd.o",
+    "bios.o",
+    "bitscan.o",
+    "bmi2.o",
+    "breakpoint.o",
+    "buffer.o",
+    "cga.o",
+    "compress.o",
+    "cpucount.o",
+    "deps.o",
+    "describeprot.o",
+    "devfs.o",
+    "dis.o",
+    "doublenul.o",
+    "formatint64thousands.o",
+    "fusion.o",
+    "hex.o",
+    "hostfs.o",
+    "ioports.o",
+    "jit.o",
+    "jitflush.o",
+    "ldbl.o",
+    "legacy.o",
+    "lines.o",
+    "logcpu.o",
+    "magikarp.o",
+    "mda.o",
+    "memccpy.o",
+    "message.o",
+    "metal.o",
+    "mkfifo.o",
+    "mkfifoat.o",
+    "mmx.o",
+    "name.o",
+    "oneoff.o",
+    "panel.o",
+    "path.o",
+    "pipe.o",
+    "pml4t.o",
+    "popcount.o",
+    "ppc.o",
+    "preadv.o",
+    "procfs.o",
+    "pte32.o",
+    "pty.o",
+    "readansi.o",
+    "realpath.o",
+    "smc.o",
+    "strchrnul.o",
+    "strwidth.o",
+    "tpenc.o",
+    "vasprintf.o",
+    "vfs.o",
+    "watch.o",
+    "wcwidth.o",
+    "x86error.o",
+    "xmmtype.o",
+    "xnu.o"
+  ],
+  "embeddingCandidatesExcludingCliTui": [
+    "blink/abort.c",
+    "blink/address.c",
+    "blink/alu.c",
+    "blink/alu1.c",
+    "blink/alu2.c",
+    "blink/alui.c",
+    "blink/ancillary.c",
+    "blink/argv.c",
+    "blink/assert.c",
+    "blink/biosrom.c",
+    "blink/bit.c",
+    "blink/breg.c",
+    "blink/bus.c",
+    "blink/clmul.c",
+    "blink/close.c",
+    "blink/cmpxchg.c",
+    "blink/cp437.c",
+    "blink/cpuid.c",
+    "blink/crc32.c",
+    "blink/cvt.c",
+    "blink/debug.c",
+    "blink/debug2.c",
+    "blink/demangle.c",
+    "blink/describeflags.c",
+    "blink/describehosterrno.c",
+    "blink/describesignal.c",
+    "blink/disarg.c",
+    "blink/diself.c",
+    "blink/disfree.c",
+    "blink/disinst.c",
+    "blink/disspec.c",
+    "blink/divmul.c",
+    "blink/dll.c",
+    "blink/elf.c",
+    "blink/endswith.c",
+    "blink/errfd.c",
+    "blink/errno.c",
+    "blink/fds.c",
+    "blink/flag.c",
+    "blink/flags.c",
+    "blink/formatint64.c",
+    "blink/formatsize.c",
+    "blink/fpu.c",
+    "blink/fspath.c",
+    "blink/high.c",
+    "blink/instruction.c",
+    "blink/ioctl.c",
+    "blink/iovs.c",
+    "blink/loader.c",
+    "blink/log.c",
+    "blink/machine.c",
+    "blink/map.c",
+    "blink/memory.c",
+    "blink/memorymalloc.c",
+    "blink/modrm.c",
+    "blink/op101.c",
+    "blink/open.c",
+    "blink/overlays.c",
+    "blink/pml4tfmt.c",
+    "blink/random.c",
+    "blink/rdrand.c",
+    "blink/reset.c",
+    "blink/signal.c",
+    "blink/sse.c",
+    "blink/sse2.c",
+    "blink/ssefloat.c",
+    "blink/ssemov.c",
+    "blink/stack.c",
+    "blink/startswith.c",
+    "blink/statfs.c",
+    "blink/stats.c",
+    "blink/strace.c",
+    "blink/string.c",
+    "blink/syscall.c",
+    "blink/sysinfo.c",
+    "blink/tainted.c",
+    "blink/throw.c",
+    "blink/time.c",
+    "blink/timespec.c",
+    "blink/uop.c",
+    "blink/vigna.c",
+    "blink/x86.c",
+    "blink/xadd.c",
+    "blink/xchg.c",
+    "blink/xlat.c"
+  ],
+  "explicitCliTuiExclusions": [
+    "blink/blink.c",
+    "blink/blinkenlights.c",
+    "blink/cga.c",
+    "blink/commandv.c",
+    "blink/getopt.c",
+    "blink/mda.c",
+    "blink/panel.c",
+    "blink/prog.c",
+    "blink/pty.c",
+    "blink/readansi.c",
+    "blink/startdir.c",
+    "blink/strwidth.c",
+    "blink/wcwidth.c"
+  ],
+  "dynamicImports": [
+    {
+      "symbol": "_Exit@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "_ITM_deregisterTMCloneTable",
+      "binding": "weak",
+      "category": "native-runtime-toolchain",
+      "referencedBy": [],
+      "origin": "native-linker-startup-or-toolchain"
+    },
+    {
+      "symbol": "_ITM_registerTMCloneTable",
+      "binding": "weak",
+      "category": "native-runtime-toolchain",
+      "referencedBy": [],
+      "origin": "native-linker-startup-or-toolchain"
+    },
+    {
+      "symbol": "__ctype_b_loc@GLIBC_2.3",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "disinst.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "__ctype_tolower_loc@GLIBC_2.3",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "commandv.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "__cxa_atexit@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "native-runtime-toolchain",
+      "referencedBy": [],
+      "origin": "native-linker-startup-or-toolchain"
+    },
+    {
+      "symbol": "__cxa_finalize@GLIBC_2.2.5",
+      "binding": "weak",
+      "category": "native-runtime-toolchain",
+      "referencedBy": [],
+      "origin": "native-linker-startup-or-toolchain"
+    },
+    {
+      "symbol": "__errno_location@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "assert.o",
+        "biosrom.o",
+        "close.o",
+        "demangle.o",
+        "errfd.o",
+        "errno.o",
+        "ioctl.o",
+        "loader.o",
+        "log.o",
+        "map.o",
+        "memory.o",
+        "memorymalloc.o",
+        "open.o",
+        "overlays.o",
+        "statfs.o",
+        "strace.o",
+        "syscall.o",
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "__gmon_start__",
+      "binding": "weak",
+      "category": "native-runtime-toolchain",
+      "referencedBy": [],
+      "origin": "native-linker-startup-or-toolchain"
+    },
+    {
+      "symbol": "__libc_current_sigrtmax@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "__libc_current_sigrtmin@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "__libc_start_main@GLIBC_2.34",
+      "binding": "strong",
+      "category": "native-runtime-toolchain",
+      "referencedBy": [],
+      "origin": "native-linker-startup-or-toolchain"
+    },
+    {
+      "symbol": "__sigsetjmp@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "nonlocal-control-flow",
+      "referencedBy": [
+        "machine.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "__stack_chk_fail@GLIBC_2.4",
+      "binding": "strong",
+      "category": "native-runtime-toolchain",
+      "referencedBy": [
+        "ancillary.o",
+        "biosrom.o",
+        "bit.o",
+        "close.o",
+        "commandv.o",
+        "cvt.o",
+        "debug.o",
+        "debug2.o",
+        "demangle.o",
+        "describeflags.o",
+        "disarg.o",
+        "diself.o",
+        "disinst.o",
+        "divmul.o",
+        "fds.o",
+        "formatsize.o",
+        "fpu.o",
+        "getopt.o",
+        "instruction.o",
+        "ioctl.o",
+        "loader.o",
+        "log.o",
+        "machine.o",
+        "memory.o",
+        "memorymalloc.o",
+        "overlays.o",
+        "pml4tfmt.o",
+        "rdrand.o",
+        "signal.o",
+        "sse.o",
+        "ssefloat.o",
+        "ssemov.o",
+        "stack.o",
+        "startdir.o",
+        "statfs.o",
+        "stats.o",
+        "strace.o",
+        "string.o",
+        "syscall.o",
+        "sysinfo.o",
+        "x86.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "_exit@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "demangle.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "_setjmp@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "nonlocal-control-flow",
+      "referencedBy": [
+        "debug.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "abort@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "abort.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "accept@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "alarm@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "bind@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "calloc@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "memory",
+      "referencedBy": [
+        "ancillary.o",
+        "fds.o",
+        "loader.o",
+        "memorymalloc.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "cfgetospeed@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "cfsetispeed@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "cfsetospeed@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "chdir@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "clock_getres@GLIBC_2.17",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "clock_gettime@GLIBC_2.17",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "log.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "clock_nanosleep@GLIBC_2.17",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "close@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "ancillary.o",
+        "debug2.o",
+        "demangle.o",
+        "loader.o",
+        "log.o",
+        "open.o",
+        "overlays.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "closedir@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "close.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "connect@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "dup@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "dup2@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "demangle.o",
+        "overlays.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "dup3@GLIBC_2.9",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "execv@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "demangle.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "exit@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "biosrom.o",
+        "blink.o",
+        "errfd.o",
+        "loader.o",
+        "memorymalloc.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "faccessat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fchdir@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fchmod@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fchmodat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fchown@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fchownat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fcntl64@GLIBC_2.28",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "ancillary.o",
+        "close.o",
+        "demangle.o",
+        "errfd.o",
+        "fds.o",
+        "ioctl.o",
+        "log.o",
+        "overlays.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fdatasync@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fdopendir@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "flock@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fork@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "demangle.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "free@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "memory",
+      "referencedBy": [
+        "argv.o",
+        "disfree.o",
+        "fds.o",
+        "iovs.o",
+        "loader.o",
+        "log.o",
+        "memory.o",
+        "memorymalloc.o",
+        "overlays.o",
+        "startdir.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fstat64@GLIBC_2.33",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "biosrom.o",
+        "debug2.o",
+        "loader.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fstatat64@GLIBC_2.33",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fstatvfs64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "statfs.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "fsync@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "ftruncate64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "futimens@GLIBC_2.6",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getcwd@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o",
+        "startdir.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getdomainname@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getegid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "argv.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getenv@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "blink.o",
+        "commandv.o",
+        "demangle.o",
+        "fspath.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "geteuid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "argv.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getgid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "argv.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getgroups@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "gethostname@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getitimer@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getpeername@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getpgid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getpid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "blink.o",
+        "memorymalloc.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getppid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getresgid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getresuid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getrlimit64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "blink.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getrusage@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getsid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getsockname@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "fds.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getsockopt@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "fds.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "gettimeofday@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "getuid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "argv.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "inet_ntop@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "strace.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "ioctl@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "ioctl.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "kill@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "blink.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "linkat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "listen@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "localtime_r@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "log.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "longjmp@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "nonlocal-control-flow",
+      "referencedBy": [
+        "debug.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "lseek64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "malloc@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "memory",
+      "referencedBy": [
+        "argv.o",
+        "fspath.o",
+        "ioctl.o",
+        "iovs.o",
+        "loader.o",
+        "memory.o",
+        "memorymalloc.o",
+        "overlays.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "memccpy@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "memory.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "memchr@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "commandv.o",
+        "demangle.o",
+        "elf.o",
+        "memory.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "memcmp@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "endswith.o",
+        "instruction.o",
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "memcpy@GLIBC_2.14",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "commandv.o",
+        "demangle.o",
+        "fspath.o",
+        "instruction.o",
+        "memory.o",
+        "memorymalloc.o",
+        "overlays.o",
+        "x86.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "memmove@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "overlays.o",
+        "string.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "memset@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "loader.o",
+        "memorymalloc.o",
+        "reset.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "mkdirat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "mkfifoat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "mmap64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "memory",
+      "referencedBy": [
+        "loader.o",
+        "map.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "mprotect@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "memory",
+      "referencedBy": [
+        "map.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "msync@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "memory",
+      "referencedBy": [
+        "map.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "munmap@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "memory",
+      "referencedBy": [
+        "loader.o",
+        "map.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "nanosleep@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "open64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "loader.o",
+        "log.o",
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "openat64@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "pause@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "perror@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "log.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "pipe@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "demangle.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "poll@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "readiness",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "posix_memalign@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "memory",
+      "referencedBy": [
+        "memorymalloc.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "prctl@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "pread64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "loader.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "preadv64@GLIBC_2.10",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "pwritev64@GLIBC_2.10",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "qsort@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "diself.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "read@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "biosrom.o",
+        "demangle.o",
+        "loader.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "readdir64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "readlinkat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "readv@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "realloc@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "memory",
+      "referencedBy": [
+        "diself.o",
+        "iovs.o",
+        "memory.o",
+        "memorymalloc.o",
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "realpath@GLIBC_2.3",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "recvmsg@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "renameat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "rewinddir@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sched_getaffinity@GLIBC_2.3.4",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sched_yield@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o",
+        "throw.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "seekdir@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sendmsg@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setegid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setgid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setgroups@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setitimer@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setlocale@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "blink.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setpgid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setresgid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setresuid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setrlimit64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setsid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setsockopt@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "setuid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "shutdown@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sigaction@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "blink.o",
+        "debug.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sigaddset@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "debug.o",
+        "demangle.o",
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sigemptyset@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "blink.o",
+        "debug.o",
+        "demangle.o",
+        "syscall.o",
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sigfillset@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "blink.o",
+        "close.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sigismember@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "siglongjmp@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "nonlocal-control-flow",
+      "referencedBy": [
+        "blink.o",
+        "throw.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "signal@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "blink.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sigprocmask@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "blink.o",
+        "close.o",
+        "debug.o",
+        "demangle.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sigsuspend@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "signals",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "snprintf@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "assert.o",
+        "debug.o",
+        "debug2.o",
+        "disarg.o",
+        "high.o",
+        "log.o",
+        "pml4tfmt.o",
+        "stats.o",
+        "strace.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sockatmark@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "ioctl.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "socket@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "network",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sqrt@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "ssefloat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sqrtf@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "ssefloat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "statvfs64@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "statfs.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "stpcpy@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "disarg.o",
+        "disinst.o",
+        "disspec.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "strchr@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "getopt.o",
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "strcmp@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "diself.o",
+        "disinst.o",
+        "elf.o",
+        "log.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "strcpy@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "disspec.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "strdup@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "diself.o",
+        "fds.o",
+        "fspath.o",
+        "loader.o",
+        "memory.o",
+        "memorymalloc.o",
+        "overlays.o",
+        "startdir.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "strerror@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "loader.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "strlen@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "argv.o",
+        "blink.o",
+        "commandv.o",
+        "demangle.o",
+        "disarg.o",
+        "disinst.o",
+        "endswith.o",
+        "errfd.o",
+        "fspath.o",
+        "overlays.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "strndup@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "strnlen@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "xlat.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "strtok_r@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "disinst.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "symlinkat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sync@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "syscall@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "raw-host-syscall-needs-callsite-audit",
+      "referencedBy": [
+        "random.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sysconf@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "argv.o",
+        "map.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "sysinfo@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "identity-environment-resource",
+      "referencedBy": [
+        "sysinfo.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "tcdrain@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "ioctl.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "tcflow@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "ioctl.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "tcflush@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "ioctl.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "tcgetattr@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "tcgetpgrp@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "ioctl.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "tcgetsid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "ioctl.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "tcsendbreak@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "ioctl.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "tcsetattr@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "tcsetpgrp@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "terminal-device",
+      "referencedBy": [
+        "ioctl.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "telldir@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "time@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "times@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "clock-timer",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "umask@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "unlinkat@GLIBC_2.4",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "utimensat@GLIBC_2.6",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "overlays.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "vsnprintf@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "libc-algorithm-locale-error",
+      "referencedBy": [
+        "log.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "waitpid@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "process-lifecycle",
+      "referencedBy": [
+        "demangle.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "write@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "blink.o",
+        "errfd.o",
+        "getopt.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    },
+    {
+      "symbol": "writev@GLIBC_2.2.5",
+      "binding": "strong",
+      "category": "filesystem-descriptor",
+      "referencedBy": [
+        "demangle.o",
+        "syscall.o"
+      ],
+      "origin": "blink-object-reference"
+    }
+  ],
+  "unresolvedObjectSymbols": {
+    "_Exit": [
+      "syscall.o"
+    ],
+    "_GLOBAL_OFFSET_TABLE_": [
+      "blink.o",
+      "machine.o",
+      "sse2.o",
+      "ssefloat.o",
+      "syscall.o"
+    ],
+    "__ctype_b_loc": [
+      "disinst.o"
+    ],
+    "__ctype_tolower_loc": [
+      "commandv.o"
+    ],
+    "__divmodti4": [
+      "divmul.o"
+    ],
+    "__errno_location": [
+      "assert.o",
+      "biosrom.o",
+      "close.o",
+      "demangle.o",
+      "errfd.o",
+      "errno.o",
+      "ioctl.o",
+      "loader.o",
+      "log.o",
+      "map.o",
+      "memory.o",
+      "memorymalloc.o",
+      "open.o",
+      "overlays.o",
+      "statfs.o",
+      "strace.o",
+      "syscall.o",
+      "xlat.o"
+    ],
+    "__libc_current_sigrtmax": [
+      "xlat.o"
+    ],
+    "__libc_current_sigrtmin": [
+      "xlat.o"
+    ],
+    "__popcountdi2": [
+      "machine.o",
+      "strace.o"
+    ],
+    "__sigsetjmp": [
+      "machine.o"
+    ],
+    "__stack_chk_fail": [
+      "ancillary.o",
+      "biosrom.o",
+      "bit.o",
+      "close.o",
+      "commandv.o",
+      "cvt.o",
+      "debug.o",
+      "debug2.o",
+      "demangle.o",
+      "describeflags.o",
+      "disarg.o",
+      "diself.o",
+      "disinst.o",
+      "divmul.o",
+      "fds.o",
+      "formatsize.o",
+      "fpu.o",
+      "getopt.o",
+      "instruction.o",
+      "ioctl.o",
+      "loader.o",
+      "log.o",
+      "machine.o",
+      "memory.o",
+      "memorymalloc.o",
+      "overlays.o",
+      "pml4tfmt.o",
+      "rdrand.o",
+      "signal.o",
+      "sse.o",
+      "ssefloat.o",
+      "ssemov.o",
+      "stack.o",
+      "startdir.o",
+      "statfs.o",
+      "stats.o",
+      "strace.o",
+      "string.o",
+      "syscall.o",
+      "sysinfo.o",
+      "x86.o"
+    ],
+    "__udivmodti4": [
+      "divmul.o"
+    ],
+    "_exit": [
+      "demangle.o"
+    ],
+    "_setjmp": [
+      "debug.o"
+    ],
+    "abort": [
+      "abort.o"
+    ],
+    "accept": [
+      "syscall.o"
+    ],
+    "alarm": [
+      "syscall.o"
+    ],
+    "atexit": [
+      "demangle.o",
+      "loader.o",
+      "log.o",
+      "overlays.o",
+      "startdir.o"
+    ],
+    "bind": [
+      "syscall.o"
+    ],
+    "calloc": [
+      "ancillary.o",
+      "fds.o",
+      "loader.o",
+      "memorymalloc.o",
+      "syscall.o"
+    ],
+    "cfgetospeed": [
+      "xlat.o"
+    ],
+    "cfsetispeed": [
+      "xlat.o"
+    ],
+    "cfsetospeed": [
+      "xlat.o"
+    ],
+    "chdir": [
+      "overlays.o"
+    ],
+    "clock_getres": [
+      "syscall.o"
+    ],
+    "clock_gettime": [
+      "log.o",
+      "syscall.o"
+    ],
+    "clock_nanosleep": [
+      "syscall.o"
+    ],
+    "close": [
+      "ancillary.o",
+      "debug2.o",
+      "demangle.o",
+      "loader.o",
+      "log.o",
+      "open.o",
+      "overlays.o",
+      "syscall.o"
+    ],
+    "closedir": [
+      "close.o"
+    ],
+    "connect": [
+      "syscall.o"
+    ],
+    "dup": [
+      "syscall.o"
+    ],
+    "dup2": [
+      "demangle.o",
+      "overlays.o",
+      "syscall.o"
+    ],
+    "dup3": [
+      "syscall.o"
+    ],
+    "environ": [
+      "blink.o"
+    ],
+    "execv": [
+      "demangle.o"
+    ],
+    "exit": [
+      "biosrom.o",
+      "blink.o",
+      "errfd.o",
+      "loader.o",
+      "memorymalloc.o",
+      "syscall.o"
+    ],
+    "faccessat": [
+      "overlays.o"
+    ],
+    "fchdir": [
+      "syscall.o"
+    ],
+    "fchmod": [
+      "syscall.o"
+    ],
+    "fchmodat": [
+      "overlays.o"
+    ],
+    "fchown": [
+      "syscall.o"
+    ],
+    "fchownat": [
+      "overlays.o"
+    ],
+    "fcntl64": [
+      "ancillary.o",
+      "close.o",
+      "demangle.o",
+      "errfd.o",
+      "fds.o",
+      "ioctl.o",
+      "log.o",
+      "overlays.o",
+      "syscall.o"
+    ],
+    "fdatasync": [
+      "syscall.o"
+    ],
+    "fdopendir": [
+      "syscall.o"
+    ],
+    "flock": [
+      "syscall.o"
+    ],
+    "fork": [
+      "demangle.o"
+    ],
+    "free": [
+      "argv.o",
+      "disfree.o",
+      "fds.o",
+      "iovs.o",
+      "loader.o",
+      "log.o",
+      "memory.o",
+      "memorymalloc.o",
+      "overlays.o",
+      "startdir.o"
+    ],
+    "fstat64": [
+      "biosrom.o",
+      "debug2.o",
+      "loader.o",
+      "syscall.o"
+    ],
+    "fstatat64": [
+      "overlays.o"
+    ],
+    "fstatvfs64": [
+      "statfs.o"
+    ],
+    "fsync": [
+      "syscall.o"
+    ],
+    "ftruncate64": [
+      "syscall.o"
+    ],
+    "futimens": [
+      "syscall.o"
+    ],
+    "getcwd": [
+      "overlays.o",
+      "startdir.o"
+    ],
+    "getdomainname": [
+      "syscall.o"
+    ],
+    "getegid": [
+      "argv.o",
+      "syscall.o"
+    ],
+    "getenv": [
+      "blink.o",
+      "commandv.o",
+      "demangle.o",
+      "fspath.o"
+    ],
+    "geteuid": [
+      "argv.o",
+      "syscall.o"
+    ],
+    "getgid": [
+      "argv.o",
+      "syscall.o"
+    ],
+    "getgroups": [
+      "syscall.o"
+    ],
+    "gethostname": [
+      "syscall.o"
+    ],
+    "getitimer": [
+      "syscall.o"
+    ],
+    "getpeername": [
+      "syscall.o"
+    ],
+    "getpgid": [
+      "syscall.o"
+    ],
+    "getpid": [
+      "blink.o",
+      "memorymalloc.o"
+    ],
+    "getppid": [
+      "syscall.o"
+    ],
+    "getresgid": [
+      "syscall.o"
+    ],
+    "getresuid": [
+      "syscall.o"
+    ],
+    "getrlimit64": [
+      "blink.o",
+      "syscall.o"
+    ],
+    "getrusage": [
+      "syscall.o"
+    ],
+    "getsid": [
+      "syscall.o"
+    ],
+    "getsockname": [
+      "fds.o",
+      "syscall.o"
+    ],
+    "getsockopt": [
+      "fds.o",
+      "syscall.o"
+    ],
+    "gettimeofday": [
+      "syscall.o"
+    ],
+    "getuid": [
+      "argv.o",
+      "syscall.o"
+    ],
+    "inet_ntop": [
+      "strace.o"
+    ],
+    "ioctl": [
+      "ioctl.o",
+      "syscall.o"
+    ],
+    "kill": [
+      "blink.o"
+    ],
+    "linkat": [
+      "overlays.o"
+    ],
+    "listen": [
+      "syscall.o"
+    ],
+    "localtime_r": [
+      "log.o"
+    ],
+    "longjmp": [
+      "debug.o"
+    ],
+    "lseek64": [
+      "syscall.o"
+    ],
+    "malloc": [
+      "argv.o",
+      "fspath.o",
+      "ioctl.o",
+      "iovs.o",
+      "loader.o",
+      "memory.o",
+      "memorymalloc.o",
+      "overlays.o",
+      "syscall.o"
+    ],
+    "memccpy": [
+      "memory.o"
+    ],
+    "memchr": [
+      "commandv.o",
+      "demangle.o",
+      "elf.o",
+      "memory.o"
+    ],
+    "memcmp": [
+      "endswith.o",
+      "instruction.o",
+      "overlays.o"
+    ],
+    "memcpy": [
+      "commandv.o",
+      "demangle.o",
+      "fspath.o",
+      "instruction.o",
+      "memory.o",
+      "memorymalloc.o",
+      "overlays.o",
+      "x86.o"
+    ],
+    "memmove": [
+      "overlays.o",
+      "string.o"
+    ],
+    "memset": [
+      "loader.o",
+      "memorymalloc.o",
+      "reset.o"
+    ],
+    "mkdirat": [
+      "overlays.o"
+    ],
+    "mkfifoat": [
+      "overlays.o"
+    ],
+    "mmap64": [
+      "loader.o",
+      "map.o"
+    ],
+    "mprotect": [
+      "map.o"
+    ],
+    "msync": [
+      "map.o"
+    ],
+    "munmap": [
+      "loader.o",
+      "map.o"
+    ],
+    "nanosleep": [
+      "syscall.o"
+    ],
+    "open64": [
+      "loader.o",
+      "log.o",
+      "overlays.o"
+    ],
+    "openat64": [
+      "overlays.o"
+    ],
+    "pause": [
+      "syscall.o"
+    ],
+    "perror": [
+      "log.o"
+    ],
+    "pipe": [
+      "demangle.o"
+    ],
+    "poll": [
+      "syscall.o"
+    ],
+    "posix_memalign": [
+      "memorymalloc.o"
+    ],
+    "prctl": [
+      "syscall.o"
+    ],
+    "pread64": [
+      "loader.o",
+      "syscall.o"
+    ],
+    "preadv64": [
+      "syscall.o"
+    ],
+    "pwritev64": [
+      "syscall.o"
+    ],
+    "qsort": [
+      "diself.o"
+    ],
+    "read": [
+      "biosrom.o",
+      "demangle.o",
+      "loader.o",
+      "syscall.o"
+    ],
+    "readdir64": [
+      "syscall.o"
+    ],
+    "readlinkat": [
+      "overlays.o"
+    ],
+    "readv": [
+      "syscall.o"
+    ],
+    "realloc": [
+      "diself.o",
+      "iovs.o",
+      "memory.o",
+      "memorymalloc.o",
+      "overlays.o"
+    ],
+    "realpath": [
+      "overlays.o"
+    ],
+    "recvmsg": [
+      "syscall.o"
+    ],
+    "renameat": [
+      "overlays.o"
+    ],
+    "rewinddir": [
+      "syscall.o"
+    ],
+    "sched_getaffinity": [
+      "syscall.o"
+    ],
+    "sched_yield": [
+      "syscall.o",
+      "throw.o"
+    ],
+    "seekdir": [
+      "syscall.o"
+    ],
+    "sendmsg": [
+      "syscall.o"
+    ],
+    "setegid": [
+      "syscall.o"
+    ],
+    "setgid": [
+      "syscall.o"
+    ],
+    "setgroups": [
+      "syscall.o"
+    ],
+    "setitimer": [
+      "syscall.o"
+    ],
+    "setlocale": [
+      "blink.o"
+    ],
+    "setpgid": [
+      "syscall.o"
+    ],
+    "setresgid": [
+      "syscall.o"
+    ],
+    "setresuid": [
+      "syscall.o"
+    ],
+    "setrlimit64": [
+      "syscall.o"
+    ],
+    "setsid": [
+      "syscall.o"
+    ],
+    "setsockopt": [
+      "syscall.o"
+    ],
+    "setuid": [
+      "syscall.o"
+    ],
+    "shutdown": [
+      "syscall.o"
+    ],
+    "sigaction": [
+      "blink.o",
+      "debug.o",
+      "syscall.o"
+    ],
+    "sigaddset": [
+      "debug.o",
+      "demangle.o",
+      "xlat.o"
+    ],
+    "sigemptyset": [
+      "blink.o",
+      "debug.o",
+      "demangle.o",
+      "syscall.o",
+      "xlat.o"
+    ],
+    "sigfillset": [
+      "blink.o",
+      "close.o",
+      "syscall.o"
+    ],
+    "sigismember": [
+      "xlat.o"
+    ],
+    "siglongjmp": [
+      "blink.o",
+      "throw.o"
+    ],
+    "signal": [
+      "blink.o"
+    ],
+    "sigprocmask": [
+      "blink.o",
+      "close.o",
+      "debug.o",
+      "demangle.o",
+      "syscall.o"
+    ],
+    "sigsuspend": [
+      "syscall.o"
+    ],
+    "snprintf": [
+      "assert.o",
+      "debug.o",
+      "debug2.o",
+      "disarg.o",
+      "high.o",
+      "log.o",
+      "pml4tfmt.o",
+      "stats.o",
+      "strace.o"
+    ],
+    "sockatmark": [
+      "ioctl.o"
+    ],
+    "socket": [
+      "syscall.o"
+    ],
+    "sqrt": [
+      "ssefloat.o"
+    ],
+    "sqrtf": [
+      "ssefloat.o"
+    ],
+    "statvfs64": [
+      "statfs.o"
+    ],
+    "stpcpy": [
+      "disarg.o",
+      "disinst.o",
+      "disspec.o"
+    ],
+    "strchr": [
+      "getopt.o",
+      "overlays.o"
+    ],
+    "strcmp": [
+      "diself.o",
+      "disinst.o",
+      "elf.o",
+      "log.o"
+    ],
+    "strcpy": [
+      "disspec.o",
+      "syscall.o"
+    ],
+    "strdup": [
+      "diself.o",
+      "fds.o",
+      "fspath.o",
+      "loader.o",
+      "memory.o",
+      "memorymalloc.o",
+      "overlays.o",
+      "startdir.o"
+    ],
+    "strerror": [
+      "loader.o"
+    ],
+    "strlen": [
+      "argv.o",
+      "blink.o",
+      "commandv.o",
+      "demangle.o",
+      "disarg.o",
+      "disinst.o",
+      "endswith.o",
+      "errfd.o",
+      "fspath.o",
+      "overlays.o",
+      "syscall.o"
+    ],
+    "strndup": [
+      "overlays.o"
+    ],
+    "strnlen": [
+      "xlat.o"
+    ],
+    "strtok_r": [
+      "disinst.o"
+    ],
+    "symlinkat": [
+      "overlays.o"
+    ],
+    "sync": [
+      "syscall.o"
+    ],
+    "syscall": [
+      "random.o"
+    ],
+    "sysconf": [
+      "argv.o",
+      "map.o",
+      "syscall.o"
+    ],
+    "sysinfo": [
+      "sysinfo.o"
+    ],
+    "tcdrain": [
+      "ioctl.o"
+    ],
+    "tcflow": [
+      "ioctl.o"
+    ],
+    "tcflush": [
+      "ioctl.o"
+    ],
+    "tcgetattr": [
+      "syscall.o"
+    ],
+    "tcgetpgrp": [
+      "ioctl.o"
+    ],
+    "tcgetsid": [
+      "ioctl.o"
+    ],
+    "tcsendbreak": [
+      "ioctl.o"
+    ],
+    "tcsetattr": [
+      "syscall.o"
+    ],
+    "tcsetpgrp": [
+      "ioctl.o"
+    ],
+    "telldir": [
+      "syscall.o"
+    ],
+    "time": [
+      "syscall.o"
+    ],
+    "times": [
+      "syscall.o"
+    ],
+    "umask": [
+      "syscall.o"
+    ],
+    "unlinkat": [
+      "overlays.o"
+    ],
+    "utimensat": [
+      "overlays.o"
+    ],
+    "vsnprintf": [
+      "log.o"
+    ],
+    "waitpid": [
+      "demangle.o"
+    ],
+    "write": [
+      "blink.o",
+      "errfd.o",
+      "getopt.o",
+      "syscall.o"
+    ],
+    "writev": [
+      "demangle.o",
+      "syscall.o"
+    ]
+  },
+  "notes": [
+    "Archive extraction is object-granularity link evidence, not function or workload execution reachability.",
+    "CLI/TUI exclusions are proposed embedding dispositions; removing them requires adapting references, not deleting source files blindly.",
+    "Native undefined symbols resolve through libc/libm/startup; none is permission to retain native imports in the managed product.",
+    "Writable OBJECT/TLS symbols are candidates; data.rel.ro pointer tables are reported separately and source writes require review."
+  ]
+}

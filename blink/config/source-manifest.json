@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "upstream": {
+    "name": "jart/blink",
+    "revision": "f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580",
+    "url": "https://codeload.github.com/jart/blink/tar.gz/f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580",
+    "archive": "blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580.tar.gz",
+    "directory": "blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580",
+    "sha256": "e0bad68ba2927a1ca1d53537afee1644e11a1e683d26676a36e5b9b17a63d6af"
+  },
+  "licenses": [
+    {
+      "path": "LICENSE",
+      "sha256": "033bd16010e133a62454e26853ed6a8f5fad39bf07e70e133eadbe6ccadfb2a7"
+    },
+    {
+      "path": "third_party/coi-serviceworker/LICENSE",
+      "sha256": "3ee2c88cec9f3036fd4b0cba94e94485bb8b4673be7b8e0f3b1496c5baff75cb"
+    },
+    {
+      "path": "third_party/libz/LICENSE",
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+    },
+    {
+      "path": "third_party/sectorlisp/LICENSE",
+      "sha256": "923bb053d883b9cb2f68d0441fa5382bd36d4ddf2839be99b1c427516e942006"
+    },
+    {
+      "path": "third_party/xterm.js/LICENSE",
+      "sha256": "3699413fb9ca7f5dd7513800aec575c226f86a27ee9a90cc40e061d20c6b2c83"
+    }
+  ],
+  "bootstrapTools": [
+    {
+      "path": "build/bootstrap/make.com",
+      "sha256": "710c959f3b6740964363d49fce6d6ef63880eb7716a181b1ed40542a6007be7a"
+    },
+    {
+      "path": "build/bootstrap/mkdeps.com",
+      "sha256": "0cc39be595879275b4f547c855cc2402ce9d3ae3902b1d8a781b89e2ad3c26a1"
+    }
+  ],
+  "nativeProfile": {
+    "configureArguments": [
+      "--disable-jit",
+      "--disable-x87",
+      "--disable-threads",
+      "--disable-fork",
+      "--disable-mmx",
+      "--disable-bmi2",
+      "--disable-metal",
+      "--disable-bcd",
+      "--disable-rom",
+      "CPPFLAGS=-D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -D_DEFAULT_SOURCE -DNOLINEAR"
+    ],
+    "runArguments": [
+      "-jm"
+    ],
+    "makeTarget": "o//blink/blink"
+  },
+  "selectedAssemblyTests": [
+    {
+      "path": "test/asm/exit.S",
+      "sha256": "45fd05a6133015f1397388b27981bf6a19b9fa6729d5e603d3afc3745dbdd228"
+    },
+    {
+      "path": "test/asm/write.S",
+      "sha256": "52af0e67462a727c9c399644c431ebd16e941652dab9d9ebe4a2f51f3d85dbe1"
+    },
+    {
+      "path": "test/asm/add.S",
+      "sha256": "2901150606dc844e44d140f5bea4d8b3e489adda5dd6e167ef22b78f0908a0cb"
+    },
+    {
+      "path": "test/asm/cmp.S",
+      "sha256": "7b990c72b6417ef3e45305df2a8d991b08385bd5a0c0aeda577aaeb561b9945f"
+    },
+    {
+      "path": "test/asm/cmov.S",
+      "sha256": "0883a04f22586d158ed572fe9e775fe66f178f1a457fb161698c7a2c6fc00b63"
+    },
+    {
+      "path": "test/asm/cmpxchg.S",
+      "sha256": "72e18bad5fec6eedbbbc717260362f951a0416f3c01718f32cfce72e9e1e8b5c"
+    },
+    {
+      "path": "test/asm/cmpxchg16b.S",
+      "sha256": "ada0e065ed6cb556f7940c9d48d7ed7c7e14aea3292027fb907881d631b775ef"
+    },
+    {
+      "path": "test/asm/cmc.S",
+      "sha256": "a93c1da299705cc81929b53bbbc318c87d4413934248c265ef0419b0874fa5a7"
+    },
+    {
+      "path": "test/asm/enter.S",
+      "sha256": "2730ad97dcc6678cc1400ceee3623c3a735ae268d83a8af46cdc75a976773aab"
+    },
+    {
+      "path": "test/asm/lahf.S",
+      "sha256": "0eded550d27abe45dc4376f61c1f3dd2e24c1754c5f1f34bda82a70aeb75966b"
+    },
+    {
+      "path": "test/asm/lock.S",
+      "sha256": "ba6d0c052fdd4ecafd9e6da67c4d992b46c3f4b8a62e0fd19165fdec50f3bfe0"
+    },
+    {
+      "path": "test/asm/movi.S",
+      "sha256": "728a76abb97fed3ad3f77c2283318b0c31e577304c01b3302c685f02eea84894"
+    },
+    {
+      "path": "test/asm/movsxd.S",
+      "sha256": "70316278c9add108c95ac37f37636012a92fc1ed5ede5e7dd83e856dd40f9e01"
+    },
+    {
+      "path": "test/asm/movz.S",
+      "sha256": "d42c770b7f85e177d308ce25e29748c42f756ab131fbc5ed505a9abb19a6da1e"
+    },
+    {
+      "path": "test/asm/nop.S",
+      "sha256": "7b215768edb8c548def798a8fc65f209c008d2eb0847d68c59993da6dd504abf"
+    },
+    {
+      "path": "test/asm/overflow.S",
+      "sha256": "198e03b9b8ba80fd873c9a3ef45e73105368864edd07d6c3cc6d10b50e6b75fd"
+    },
+    {
+      "path": "test/asm/push.S",
+      "sha256": "c3b5cc4ff92dfb7fbe9430272214a23db315a63f20f2d6a8f4c6356c986a3d40"
+    },
+    {
+      "path": "test/asm/repmovsb.S",
+      "sha256": "f8e772aa933093278760e57b28e6f21bbf93d8e3a95d81313b031ad399d15d60"
+    },
+    {
+      "path": "test/asm/rol.S",
+      "sha256": "d8546b74a70f285a7c6aa54c97c8c6b18c4adf7b682131638f41cc2a2deb2f2a"
+    },
+    {
+      "path": "test/asm/setcc.S",
+      "sha256": "1b982f61c20fc7e2a999cbce402e3938023da01675455024f2683f679a88c991"
+    },
+    {
+      "path": "test/asm/xchg.S",
+      "sha256": "98784e4e5a3a2b5b677b0d03254f87404f77e3b707a4e687d81d2a4f9b1bafe6"
+    },
+    {
+      "path": "test/asm/ssemov.S",
+      "sha256": "762f9da5ba078190c4dab57ca20f34d38e7854fe3438d48442bfa1a5ae99c7dd"
+    },
+    {
+      "path": "test/asm/shufpd.S",
+      "sha256": "7b30f29826ee86b96cfd6037f78fad164fd1a54bdb0f04410b87e9651f994a6f"
+    },
+    {
+      "path": "test/asm/movmskpd.S",
+      "sha256": "b9ef3c232518207838260b48c45060947d35350245d5f024d5fadea3815cef5e"
+    },
+    {
+      "path": "test/asm/movntdq.S",
+      "sha256": "7c5061e6345fc8c1663e5cfc9f3716b739a6ccc8bf563bcd440d0abcaa05ee22"
+    }
+  ],
+  "assemblyInclude": {
+    "path": "test/asm/mac.inc",
+    "sha256": "5ac10dbc9b8dfd8e81011da881e717af7a485399e126377740bfa1edbb353083"
+  }
+}
