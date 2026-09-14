@@ -381,3 +381,12 @@ whole absent file pages return explicit errors; native SIGBUS is independently
 observed rather than simulated by readable zero pages. Native, all four managed
 modes, ASan/leak checks, and anonymous/diagnostic regressions pass. Full loader
 execution remains open; startup must bind I/O, begin memory, then enable files.
+
+## Significant progress: real public signal sets and virtual mask calls
+
+The actual core's isolated sigemptyset/fillset/addset/delset/ismember and
+sigprocmask calls now have authored C implementations over the existing virtual
+worker mask. Native comparisons and all four managed modes pass for public bits,
+reserved/unmaskable signals, old-mask queries and atomic errors. The real host
+thread mask remains unchanged across forced GC. Guest signal delivery and
+handler/kill/suspend operations remain separate open contracts.
