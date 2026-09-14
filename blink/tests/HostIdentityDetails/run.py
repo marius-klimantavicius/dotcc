@@ -17,7 +17,7 @@ def run(cmd,name,timeout=180):
     if code:raise RuntimeError(name+' failed: '+str(out/(name+'.log')))
     return(out/(name+'.log')).read_bytes()
 try:
-    for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostIdentity'/name,a/name)
+    for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostIdentityDetails'/name,a/name)
     shutil.copyfile(ROOT/'src/HostIdentity/HostIdentityBridge.cs',a/'HostIdentityBridge.cs')
     shutil.copyfile(ROOT/'src/HostIdentity/HostIdentityDetailsBridge.cs',a/'HostIdentityDetailsBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')

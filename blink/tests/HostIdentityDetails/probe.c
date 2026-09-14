@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 #ifdef BLINK_MANAGED_IDENTITY
+#include "host-errors.h"
 #include "host-identity.h"
 #endif
 int Details(void) {
@@ -14,7 +15,7 @@ int Details(void) {
   if(getresuid(&real,&effective,&saved) || real!=getuid() || effective!=geteuid() || errno!=123)return 1;
   if(getresgid(&real,&effective,&saved) || real!=getgid() || effective!=getegid())return 2;
   if(getgroups(0,0)<0)return 3;
-  errno=0; if(getgroups(-1,0)!=-1 || errno!=EINVAL)return 4;
+  volatile int invalid_count=-1; errno=0; if(getgroups(invalid_count,0)!=-1 || errno!=EINVAL)return 4;
   if(getpgid(0)<=0 || getpgid(0)!=getpgid(getpid()) || getsid(0)<=0 || getsid(0)!=getsid(getpid()))return 5;
   errno=123; if(gethostname(name,sizeof(name)) || !name[0] || errno!=123)return 6;
   errno=0; if(gethostname(name,1)!=-1 || errno!=ENAMETOOLONG)return 7;

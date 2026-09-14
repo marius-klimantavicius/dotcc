@@ -487,3 +487,13 @@ errno; no host process environment is read. Native and all four managed modes
 pass, including GC, repeated pointers, independent workers and explicit teardown.
 All upstream cached pointers must be discarded before disposing that owner.
 No selected setenv/unsetenv calls exist, so mutation remains isolated.
+
+## Qualification correction: detailed identity fixture
+
+The first IdentityDetails runner accidentally copied the older basic identity
+fixture. Its bridge compiled, but the reported detailed coverage was premature.
+The corrected runner now executes the intended native and managed assertions;
+all four managed modes pass at attempt-fwi4bpie and snapshot source hashes match
+the intended files. It also exposed missing ENAMETOOLONG in the shared header,
+which the measured host errno profile now supplies. Earlier evidence is retained
+with its actual narrower scope, not counted as detailed identity qualification.

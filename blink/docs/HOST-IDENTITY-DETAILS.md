@@ -29,7 +29,7 @@ The tick declaration is a guest ABI value; process CPU accounting/times remains
 a separate implementation gate. This is not a general POSIX sysconf surface.
 
 Run `python3 blink/tests/HostIdentityDetails/run.py`. Receipt
-`artifacts/host-identity-details/attempt-e9y3kpg6/receipt.json` records native C
+`artifacts/host-identity-details/attempt-fwi4bpie/receipt.json` records native C
 invariants and raw/optimized JIT/AOT execution through the actual callbacks.
 Native comparisons cover credential queries, valid group/session queries,
 hostnames, limits and errors. The private checks additionally verify exact
@@ -37,3 +37,12 @@ instance values, empty groups, foreign process errors, unchanged failed outputs,
 unbound state, and two separately named worker identities across compacting GC.
 Whole-consumer AOT rooting and CS8500 errors are enabled. This qualifies host
 callbacks; full interpreter startup and guest uname/auxv marshalling remain open.
+
+The earlier attempt-e9y3kpg6 selected the original basic identity fixture because
+the copied runner still referenced its directory. It compiled the additional
+bridge but did not execute the detailed assertions, so the initial detailed
+coverage report was incorrect. That receipt remains preserved as basic identity
+evidence only. The corrected runner selects the intended detail fixture; its
+snapshot probe/Program hashes were independently checked. The intended fixture
+also exposed the missing ENAMETOOLONG declaration, now supplied by the measured
+host errno profile. No generated output or expected result was patched.
