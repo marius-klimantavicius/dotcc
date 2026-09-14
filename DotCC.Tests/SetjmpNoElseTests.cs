@@ -44,7 +44,7 @@ public sealed class SetjmpNoElseTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("try {");
-            emitted.ShouldContain("catch (Libc.LongJmpException __jmp) when (__jmp.Token == env)");
+            emitted.ShouldContain("catch (Libc.JumpBufferException __jmp) when (__jmp.Identity == __jmpIdentity");
             // empty recovery — no value binding
             emitted.ShouldNotContain("var __longjmp_value");
         }
@@ -72,7 +72,7 @@ public sealed class SetjmpNoElseTests
             // The IR emits the empty try body on its own line: `try\n        { }`
             emitted.ShouldContain("try");
             emitted.ShouldContain("{ }");
-            emitted.ShouldContain("catch (Libc.LongJmpException __jmp) when (__jmp.Token == env)");
+            emitted.ShouldContain("catch (Libc.JumpBufferException __jmp) when (__jmp.Identity == __jmpIdentity");
             // The IR does not emit __longjmp_value; recovery reads the value via
             // the exception object directly.
             emitted.ShouldNotContain("var __longjmp_value");

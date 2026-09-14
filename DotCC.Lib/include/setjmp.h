@@ -28,13 +28,11 @@
    setjmp in a loop/ternary condition, a nested sub-expression
    (`x = setjmp(env) + 1`), or a bare discarded call. */
 
-/* jmp_buf — opaque token identifying a particular setjmp site.
-   LongJmpToken is a C# class reachable through the `using static Libc;`
-   in every emitted shell; it's pre-registered as a known type name
-   in dotcc's TypeNameRewriter (see Compiler.PredefinedTypeNames) so
-   the typedef below parses without LongJmpToken needing to be a
-   keyword in dotcc's C grammar. */
-typedef LongJmpToken jmp_buf;
+/* An opaque numeric identity slot, not a CLR object reference. The array form
+   preserves C parameter decay and can safely live inside malloc'd aggregates.
+   This is the dotcc C ABI, not the native host's register-save record. */
+#include <stdint.h>
+typedef uint64_t jmp_buf[1];
 
 int setjmp(jmp_buf env);
 void longjmp(jmp_buf env, int value);

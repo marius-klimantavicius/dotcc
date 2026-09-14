@@ -498,12 +498,12 @@ public sealed record Labeled(string Name, CStmt Body) : CStmt;
 /// <summary>The desugared form of a recognised <c>setjmp</c>/<c>longjmp</c> guard
 /// (<c>if (setjmp(env) [== 0]) THEN [else ELSE]</c>). Real C's "setjmp returns
 /// twice" has no structured-control-flow equivalent, so codegen lowers this to
-/// <c>env = new LongJmpToken(); try { TryBody } catch (LongJmpException __jmp)
-/// when (__jmp.Token == env) { CatchBody }</c>. <see cref="TryBody"/> is the path
+/// <c>id = ArmJumpBuffer(env); try { TryBody } catch (JumpBufferException __jmp)
+/// when (__jmp.Identity == id) { CatchBody }</c>. <see cref="TryBody"/> is the path
 /// taken on setjmp's direct (zero) return; <see cref="CatchBody"/> is the longjmp
 /// re-entry path (null for the no-recovery swallow shape — Lua's <c>LUAI_TRY</c>).
-/// <see cref="Env"/> renders to the <c>jmp_buf</c> lvalue that is freshly armed
-/// and matched on, so nested setjmps stay disambiguated by token identity.</summary>
+/// <see cref="Env"/> renders to the numeric slot address evaluated once when
+/// arming, so nested setjmps stay disambiguated by captured identity.</summary>
 public sealed record SetjmpGuard(CExpr Env, CStmt? TryBody, CStmt? CatchBody) : CStmt;
 
 /// <summary>The desugared form of a VALUE-CAPTURING <c>setjmp</c> — <c>T r =
@@ -514,10 +514,10 @@ public sealed record SetjmpGuard(CExpr Env, CStmt? TryBody, CStmt? CatchBody) : 
 /// on. Real C's "setjmp returns twice" is modeled faithfully with goto-restart —
 /// the backend emits:
 /// <code>
-///   Env = new LongJmpToken();
+///   identity = ArmJumpBuffer(Env);
 ///   __setjmp_Id:
 ///   try { Body }
-///   catch (LongJmpException __jmp) when (__jmp.Token == Env)
+///   catch (JumpBufferException __jmp) when (__jmp.Identity == identity)
 ///   { Target = (T)__jmp.Value; goto __setjmp_Id; }
 /// </code>
 /// <see cref="Body"/> runs first with <see cref="Target"/> already reset to 0 (a

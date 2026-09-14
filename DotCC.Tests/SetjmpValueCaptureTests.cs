@@ -57,9 +57,9 @@ public sealed class SetjmpValueCaptureTests
             }
             """);
         emitted.ShouldContain("int r = 0;");
-        emitted.ShouldContain("env = new Libc.LongJmpToken();");
+        emitted.ShouldContain("Libc.ArmJumpBuffer(env)");
         emitted.ShouldContain("__setjmp_0:");
-        emitted.ShouldContain("catch (Libc.LongJmpException __jmp) when (__jmp.Token == env)");
+        emitted.ShouldContain("catch (Libc.JumpBufferException __jmp) when (__jmp.Identity == __jmpIdentity");
         emitted.ShouldContain("r = (int)__jmp.Value;");
         emitted.ShouldContain("goto __setjmp_0;");
     }
@@ -128,7 +128,7 @@ public sealed class SetjmpValueCaptureTests
                 return 0;
             }
             """);
-        emitted.ShouldContain("catch (Libc.LongJmpException __jmp) when (__jmp.Token == env)");
+        emitted.ShouldContain("catch (Libc.JumpBufferException __jmp) when (__jmp.Identity == __jmpIdentity");
         emitted.ShouldNotContain("__setjmp_0:");
         emitted.ShouldNotContain("goto __setjmp_0;");
     }

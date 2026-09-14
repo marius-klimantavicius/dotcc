@@ -153,6 +153,11 @@ internal sealed partial class CSharpBackend
         var globals = new StringBuilder();
         foreach (var g in unit.Globals)
         {
+            if (g.Sym.IsThreadLocal && g.Init is PinnedArray threadArray)
+            {
+                cg.EmitThreadLocalArray(globals, g, threadArray);
+                continue;
+            }
             if (cg.EmitAlignedGlobal(globals, g)) continue;
             // C11 `_Thread_local` / Zig `threadlocal` — thread storage duration:
             // every thread gets its own zero-initialized slot. (The builder rejects
@@ -955,11 +960,12 @@ internal sealed partial class CSharpBackend
                 // disambiguates nested setjmps: a longjmp reads the SAME env (matches
                 // here), while one aimed at a different env carries a different token
                 // and propagates past this catch.
-                var env = Expr(sj.Env);
-                sb.Append(pad).Append($"{env} = new Libc.LongJmpToken();\n");
+                var env = Hoist(sb, pad, () => Expr(sj.Env));
+                var identity = $"__jmpIdentity{_clCounter++}";
+                sb.Append(pad).Append($"ulong {identity} = Libc.ArmJumpBuffer({env});\n");
                 sb.Append(pad).Append("try\n");
                 GuardBody(sb, sj.TryBody, ind);
-                sb.Append(pad).Append($"catch (Libc.LongJmpException __jmp) when (__jmp.Token == {env})\n");
+                sb.Append(pad).Append($"catch (Libc.JumpBufferException __jmp) when (__jmp.Identity == {identity})\n");
                 GuardBody(sb, sj.CatchBody, ind);
                 break;
             }
@@ -970,13 +976,14 @@ internal sealed partial class CSharpBackend
                 // into the capture target and re-run the body from the label. The target was
                 // reset to 0 by a preceding decl/assignment (the direct-return value), so the
                 // body's switch/if on it takes the normal path first, the recovery path after.
-                var envc = Expr(sc.Env);
+                var envc = Hoist(sb, pad, () => Expr(sc.Env));
+                var captureIdentity = $"__jmpIdentity{_clCounter++}";
                 var label = $"__setjmp_{sc.Id}";
-                sb.Append(pad).Append($"{envc} = new Libc.LongJmpToken();\n");
+                sb.Append(pad).Append($"ulong {captureIdentity} = Libc.ArmJumpBuffer({envc});\n");
                 sb.Append(pad).Append(label).Append(":\n");
                 sb.Append(pad).Append("try\n");
                 GuardBody(sb, sc.Body, ind);
-                sb.Append(pad).Append($"catch (Libc.LongJmpException __jmp) when (__jmp.Token == {envc})\n");
+                sb.Append(pad).Append($"catch (Libc.JumpBufferException __jmp) when (__jmp.Identity == {captureIdentity})\n");
                 sb.Append(pad).Append("{\n");
                 sb.Append(Pad(ind + 1)).Append($"{Expr(sc.Target)} = ({Cs(sc.Target.Type)})__jmp.Value;\n");
                 sb.Append(Pad(ind + 1)).Append($"goto {label};\n");

@@ -784,6 +784,10 @@ productions:
       # also works.) Disambiguated from `Type ID …` by the `(` after Type.
       - { lhs: Param, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')'], action: paramFnPtr }
       - { lhs: Param, rhs: [Type, '(', '*', ID, ')', '(', ')'],            action: paramFnPtrNoArgs }
+      # Function-form parameters adjust to function pointers (C17 6.7.6.3p8),
+      # e.g. `int dispatch(int callback(int), int value)`.
+      - { lhs: Param, rhs: [Type, ID, '(', ParamList, ')'], action: paramFunction }
+      - { lhs: Param, rhs: [Type, ID, '(', ')'], action: paramFunctionNoArgs }
       # Pointer to callback storage: xFindFunction writes through **pxFunc.
       - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')'], action: paramFnPtrOutput }
       - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ')'], action: paramFnPtrOutputNoArgs }

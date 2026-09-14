@@ -489,11 +489,34 @@ internal sealed partial class IrBuilder
                 RegisterTypedefFunction(name, functionType, initItem, typeItem, isStatic);
                 return;
             }
-            // A file-scope array has its own productions (pinned GlobalArray
-            // lowering); an array TAIL here would silently become a plain field.
-            if (type.Unqualified is CType.Array)
+            // Array typedefs use ordinary declarators but still own array
+            // storage; do not lower their adjusted C# pointer as a scalar slot.
+            if (type.Unqualified is CType.Array array)
             {
-                throw new IrUnsupportedException("array declarator in a file-scope multi-declarator list (split it into its own declaration)");
+                if (initItem is not null)
+                    throw new IrUnsupportedException("initialized array in a file-scope declarator list is not supported");
+                if (_sawConstexprSpec)
+                    throw new IrUnsupportedException("constexpr array typedef objects are not supported");
+                var arrayDeclaration = RegisterScalarGlobal(new Symbol
+                {
+                    Name = name, Kind = SymKind.Var, Storage = storage, IsGlobal = true,
+                    Type = type, Alignment = DeclarationAlignment(typeItem),
+                    IsThreadLocal = _sawThreadLocalSpec,
+                }, SrcPos.From(typeItem));
+                if (arrayDeclaration is not null && storage != Storage.Extern)
+                {
+                    var count = 1;
+                    for (CType current = array; current.Unqualified is CType.Array dimension; current = dimension.Element)
+                    {
+                        if (dimension.Count is not { } bound)
+                            throw new IrUnsupportedException("file-scope array typedef requires complete constant bounds");
+                        count = checked(count * bound);
+                    }
+                    var length = new LitInt(count.ToString(System.Globalization.CultureInfo.InvariantCulture), count) { Type = CType.Int };
+                    var initializer = new PinnedArray(array.FlatElement, null, length) { Type = new CType.Pointer(array.FlatElement) };
+                    DefineRegisteredGlobal(arrayDeclaration, initializer, false, SrcPos.From(typeItem));
+                }
+                return;
             }
             var declaration = RegisterScalarGlobal(new Symbol
             {
@@ -1012,6 +1035,8 @@ internal sealed partial class IrBuilder
                 // Function-pointer parameter: `Ret (*name)(paramTypes)`.
                 case C.ParamFnPtr p: acc.Add(new(FnPtrType(p.Arg0, p.Arg6), Tok(p.Arg3))); break;
                 case C.ParamFnPtrNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg3))); break;
+                case C.ParamFunction p: acc.Add(new(FnPtrType(p.Arg0, p.Arg3), Tok(p.Arg1))); break;
+                case C.ParamFunctionNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg1))); break;
                 case C.ParamFnPtrOutput p: acc.Add(new(new CType.Pointer(FnPtrType(p.Arg0, p.Arg7)), Tok(p.Arg4))); break;
                 case C.ParamFnPtrOutputNoArgs p: acc.Add(new(new CType.Pointer(FnPtrType(p.Arg0, null)), Tok(p.Arg4))); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));

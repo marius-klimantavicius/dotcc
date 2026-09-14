@@ -2,6 +2,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace DotCC.Libc;
 
@@ -15,8 +16,8 @@ namespace DotCC.Libc;
 /// not expressible in structured C# control flow. The dotcc lowering
 /// recognises specific syntactic patterns and rewrites them into a
 /// <c>try / catch when</c> block. <c>longjmp</c> throws a
-/// <see cref="LongJmpException"/> carrying the token + value; the
-/// <c>catch when</c> filter matches the right setjmp.
+/// <see cref="JumpBufferException"/> carrying a numeric identity + value; the
+/// <c>catch when</c> filter matches the identity captured at the right setjmp.
 /// </para>
 /// <para>
 /// Supported syntactic shapes (the emitter recognises these and
@@ -40,11 +41,58 @@ namespace DotCC.Libc;
 /// </remarks>
 public static unsafe partial class Libc
 {
+    private static long _nextJumpBufferIdentity;
+
+    /// <summary>Arm an unmanaged identity slot for a newly executed setjmp.
+    /// The returned identity is captured by the emitted handler, so neither a
+    /// side-effecting buffer expression nor a later rearm changes its target.</summary>
+    public static ulong ArmJumpBuffer(ulong* buffer)
+    {
+        if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+        long previous, next;
+        do
+        {
+            previous = Volatile.Read(ref _nextJumpBufferIdentity);
+            if (previous == long.MaxValue)
+                throw new InvalidOperationException("Nonlocal jump identity space exhausted.");
+            next = previous + 1;
+        } while (Interlocked.CompareExchange(ref _nextJumpBufferIdentity, next, previous) != previous);
+        *buffer = (ulong)next;
+        return (ulong)next;
+    }
+
+    /// <summary>Managed exception transport for an unmanaged C jump buffer.
+    /// Only the numeric identity and return value cross the unwind boundary.</summary>
+    public sealed class JumpBufferException : Exception
+    {
+        public ulong Identity { get; }
+        public int Value { get; }
+        public JumpBufferException(ulong identity, int value)
+            : base($"longjmp(value={value})")
+        {
+            Identity = identity;
+            Value = value;
+        }
+    }
+
+    /// <summary>The emitter handles setjmp's returns-twice semantics. A direct
+    /// runtime call cannot establish a resumable handler and fails explicitly.</summary>
+    public static int setjmp(ulong* buffer)
+        => throw new InvalidOperationException("setjmp requires compiler control-flow lowering.");
+
+    public static void longjmp(ulong* buffer, int value)
+    {
+        if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+        ulong identity = *buffer;
+        if (identity == 0)
+            throw new InvalidOperationException("longjmp requires an armed jump buffer.");
+        throw new JumpBufferException(identity, value == 0 ? 1 : value);
+    }
+
     /// <summary>
-    /// Opaque token identifying a particular <c>setjmp</c> site. User
-    /// code declares <c>jmp_buf env;</c>; the synthetic header
-    /// typedefs <c>jmp_buf</c> to this class, so the C-level type
-    /// stays opaque while the C# side has a real identity.
+    /// Legacy managed API token retained for existing direct callers. The C
+    /// header now uses an unmanaged numeric slot and never stores this class
+    /// in translated C memory.
     /// </summary>
     public sealed class LongJmpToken { }
 

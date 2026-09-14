@@ -9,8 +9,8 @@ P0 is complete to its native baseline gate; recorded toolchain packaging limits 
 ## Ownership
 
 - Coordinator: source/host inventory, dotcc baseline and translation probes, integration, validation, and milestone/significant-progress commits.
-- Inputs worker: checksum-pinned immutable upstream, license ledger, native interpreter and upstream corpus.
-- Guest worker: static musl HTTP fixture, reproducible compiler recipe, real native service requests, and observed syscall inventory.
+- Inputs worker: ordinary and signal-aware nonlocal jumps, host storage ABI qualification (after completing source/native baseline).
+- Guest worker: actual interpreter closure translation, measured host header contracts and reduced compiler blockers (after completing native guest fixture).
 
 Workers share one worktree with disjoint authored-file ownership. Shared compiler edits and repository suites are serialized by the coordinator. Generated/ref/build/artifacts content is disposable and ignored; reproducible scripts and durable summaries are committed.
 
@@ -32,7 +32,7 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 ## Next actions
 
-Run the existing build and regression baseline serially while workers establish native inputs. Probe the actual upstream decoder and selected core with dotcc, preserve the first failure, and adapt only explicit host seams or generic compiler defects. Record each observed limitation before attempting subsequent gates.
+Continue actual core translation with individually recorded units and measured host declarations. Qualify the signal-aware unwind adapter, then integrate host callbacks into the bounded interpreter seam. Private filesystem/TCP modules need C marshalling and common descriptor ownership before a guest-service gate can run.
 
 ## Observed validation (initial campaign baseline)
 
@@ -75,3 +75,9 @@ The first long full-core retry was invalidated by editing the running shell scri
 Implemented a private memory-backed filesystem host module with typed error results, immutable cloned images, bounded writable storage/descriptors, path lookup, shared-cursor dup/close, sparse zero-fill, short writes, seek, append and cleanup. A separate consumer passes four assertion groups under Linux JIT and NativeAOT, including two-instance isolation and resource failure atomicity. The C callback/guest descriptor/socket integration is not implemented, so P4 remains pending.
 
 Host storage ABI qualification also now passes all 174 emitted measurements in raw/optimized JIT/NativeAOT against native authored storage, including actual field-address offsets, aggregate placement and array strides. This is storage compatibility, not implementation of the 53 declared host operations.
+
+## Significant progress: safe unmanaged jumps and C declarations
+
+Ordinary C jump buffers now store a numeric identity instead of a CLR reference in unmanaged memory. Lowered handlers capture a freshly armed identity and evaluate buffer expressions once. Allocated, nested, rearmed, zero-value and compacting-GC cases pass; the independent jump consumer agrees with native output under raw/optimized JIT/NativeAOT, with managed-pointer warnings treated as errors. Signal-aware mask saving remains separate work.
+
+Function-form parameters now adjust to function pointers. Global array typedefs retain full storage, including multidimensional arrays; thread-local arrays have per-thread pinned managed roots. Reduced direct/object-linked tests cover two simultaneous threads and compacting GC. Full Release regression after all three compiler repairs passes 2222 unit tests and 500 functional tests, with 1025 functional rows explicitly skipped and zero failures.
