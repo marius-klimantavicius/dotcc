@@ -47,7 +47,7 @@ public sealed partial class ManagedLibraryTests
                 emitted = Compiler.LinkObjects(new[] { a, b }, emit: EmitMode.ManagedLib);
             }
             else emitted = Compiler.EmitCSharp(new[] { first, second }, emit: EmitMode.ManagedLib);
-            emitted.ShouldContain("public static readonly delegate*<int, int> @lock = &");
+            emitted.ShouldContain("public static delegate*<int, int> @lock\n");
             var library = Compile("StaticIdentity_" + Guid.NewGuid().ToString("N"), emitted, RuntimeReferences());
             var context = new AssemblyLoadContext("dotcc-static-identity-" + Guid.NewGuid().ToString("N"), isCollectible: false);
             var assembly = context.LoadFromStream(new MemoryStream(library));

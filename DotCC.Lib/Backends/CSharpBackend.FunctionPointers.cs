@@ -20,9 +20,18 @@ internal sealed partial class CSharpBackend
         // definition exists, otherwise Libc. Header provenance does not decide
         // linkage: runtime functions may be declared without including a header.
         var container = FunctionPointerNames.OwnerAlias(name);
+        // Capture each address only on demand. The per-property cache deliberately
+        // uses unsynchronized initialization, with no shared class initializer.
         var declaration = $"{(_publicTypes ? "public" : "internal")} static unsafe partial class DotCcFunctionPointers\n"
             + "{\n"
-            + $"    public static readonly {signature} {name} = &{container}.{FunctionName(function)};\n"
+            + $"    public static {signature} {name}\n"
+            + "    {\n"
+            + "        get\n"
+            + "        {\n"
+            + $"            if (field == null) field = &{container}.{FunctionName(function)};\n"
+            + "            return field;\n"
+            + "        }\n"
+            + "    }\n"
             + "}\n";
         if (_functionPointers.TryGetValue(name, out var previous) && previous != declaration)
             throw new IrUnsupportedException("conflicting canonical function pointer signatures for '" + name + "'");

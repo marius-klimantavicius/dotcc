@@ -203,10 +203,17 @@ public sealed partial class ManagedLibraryTests
         return references;
     }
 
+    // Roslyn 4.14 exposes C# 14 features (including field-backed properties)
+    // through Preview. Use the same language for split and single-file consumers.
+    private static SyntaxTree ParseSource(string source, string path = "",
+        System.Threading.CancellationToken cancellationToken = default) =>
+        CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.Preview),
+            path: path, cancellationToken: cancellationToken);
+
     private static byte[] Compile(string name, string source, IReadOnlyList<MetadataReference> references)
     {
         var compilation = CSharpCompilation.Create(name,
-            new[] { CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.Preview)) },
+            new[] { ParseSource(source) },
             references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
                 allowUnsafe: true, optimizationLevel: OptimizationLevel.Release)
                 .WithSpecificDiagnosticOptions(new Dictionary<string, ReportDiagnostic> { ["CS9184"] = ReportDiagnostic.Error }));

@@ -81,8 +81,8 @@ public sealed partial class ManagedLibraryTests
                     }
                 }
                 """;
-            var trees = files.Select(f => CSharpSyntaxTree.ParseText(f.Value, path: f.Key))
-                .Append(CSharpSyntaxTree.ParseText(consumer));
+            var trees = files.Select(f => ParseSource(f.Value, path: f.Key))
+                .Append(ParseSource(consumer));
             var compilation = CSharpCompilation.Create("SelectedMacros" + Guid.NewGuid().ToString("N"), trees,
                 RuntimeReferences(), new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
             using var image = new MemoryStream();
@@ -97,8 +97,8 @@ public sealed partial class ManagedLibraryTests
             api.GetField("API_MODE")!.IsLiteral.ShouldBeTrue();
             api.GetField("API_CONFLICT").ShouldBeNull();
             var pointers = assembly.GetType(nested ? "Example.Api+ApiFunctionPointers" : "Example.ApiFunctionPointers")!;
-            pointers.GetFields().Any(f => f.Name == "helper" || f.Name.StartsWith("helper__unit_", StringComparison.Ordinal)).ShouldBeFalse();
-            pointers.GetFields().Any(f => f.Name == "callback" || f.Name.StartsWith("callback__unit_", StringComparison.Ordinal)).ShouldBeTrue();
+            pointers.GetProperties().Any(f => f.Name == "helper" || f.Name.StartsWith("helper__unit_", StringComparison.Ordinal)).ShouldBeFalse();
+            pointers.GetProperties().Any(f => f.Name == "callback" || f.Name.StartsWith("callback__unit_", StringComparison.Ordinal)).ShouldBeTrue();
         }
         finally { Directory.Delete(dir, true); }
     }
@@ -159,7 +159,7 @@ public sealed partial class ManagedLibraryTests
                 ? Compiler.LinkObjectFiles(paths, emit: EmitMode.ManagedLib, className: "Api", namespaceName: "Example", split: split)
                 : Compiler.EmitCSharpFiles(paths, emit: EmitMode.ManagedLib, className: "Api", namespaceName: "Example", split: split);
             var compilation = CSharpCompilation.Create("Macros" + Guid.NewGuid().ToString("N"),
-                files.Select(f => CSharpSyntaxTree.ParseText(f.Value, path:f.Key)), RuntimeReferences(),
+                files.Select(f => ParseSource(f.Value, path:f.Key)), RuntimeReferences(),
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe:true));
             using var image=new MemoryStream();
             var result=compilation.Emit(image, cancellationToken:TestContext.Current.CancellationToken);

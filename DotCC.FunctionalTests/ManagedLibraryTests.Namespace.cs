@@ -57,7 +57,7 @@ public sealed partial class ManagedLibraryTests
                 }
                 """;
             var compilation = CSharpCompilation.Create("Namespaced_" + Guid.NewGuid().ToString("N"),
-                files.Select(f => CSharpSyntaxTree.ParseText(f.Value, path: f.Key)).Append(CSharpSyntaxTree.ParseText(consumer, cancellationToken: TestContext.Current.CancellationToken)),
+                files.Select(f => ParseSource(f.Value, path: f.Key)).Append(ParseSource(consumer, cancellationToken: TestContext.Current.CancellationToken)),
                 RuntimeReferences(), new CSharpCompilationOptions(mode == EmitMode.Csproj ? OutputKind.ConsoleApplication : OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
             using var image = new MemoryStream();
             var result = compilation.Emit(image, cancellationToken: TestContext.Current.CancellationToken);

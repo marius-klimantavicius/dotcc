@@ -83,7 +83,7 @@ public sealed partial class ManagedLibraryTests
                 : Compiler.EmitCSharpFiles(paths, emit: EmitMode.ManagedLib, className: "Api", namespaceName: "Example", split: split, outputOptions: options);
             var references = RuntimeReferences();
             var compilation = CSharpCompilation.Create("InlineLibrary" + Guid.NewGuid().ToString("N"),
-                files.Select(f => CSharpSyntaxTree.ParseText(f.Value, path: f.Key)), references,
+                files.Select(f => ParseSource(f.Value, path: f.Key)), references,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
             using var image = new MemoryStream();
             var result = compilation.Emit(image, cancellationToken: TestContext.Current.CancellationToken);

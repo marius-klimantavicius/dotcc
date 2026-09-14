@@ -49,8 +49,8 @@ public sealed class InlineFunctionTests
         source.ShouldContain("int helper(int x)");
         source.ShouldContain("int leaf(int x)");
         source.ShouldNotContain("__dotcc_inline_ref__");
-        source.ShouldNotContain(" helper = &");
-        source.ShouldNotContain(" leaf = &");
+        Regex.IsMatch(source, @" helper(?:__\w+)?\s*\{").ShouldBeFalse();
+        Regex.IsMatch(source, @" leaf(?:__\w+)?\s*\{").ShouldBeFalse();
         source.ShouldContain("return helper(20)");
         source.ShouldContain("return helper(30)");
     }
@@ -90,7 +90,7 @@ public sealed class InlineFunctionTests
         var source = Translate(link, header, First + "\nint (*a)(int) = helper;", Second + "\nint (*b)(int) = &helper;",
             new(DeduplicateInline: true));
         Methods(source, "helper").ShouldBe(2);
-        Regex.Matches(source, @" helper(?:__\w+)? = &").Count.ShouldBe(2);
+        Regex.Matches(source, @" helper(?:__\w+)?\s*\{").Count.ShouldBe(2);
         Should.Throw<CompileException>(() => Translate(link, header, First + "\nint (*a)(int) = helper;", Second + "\nint (*b)(int) = helper;",
             new(ExportInline: new[] { "helper" }))).Message.ShouldContain("ambiguous --export-inline");
     }

@@ -65,8 +65,8 @@ public sealed partial class ManagedLibraryTests
             var custom = "namespace Example { " + (nested ? "public static partial class Api { " : "") + partial + (nested ? " }" : "") + " }";
             var references = RuntimeReferences();
             var compilation = CSharpCompilation.Create("NamedTypes" + Guid.NewGuid().ToString("N"),
-                files.Select(f => CSharpSyntaxTree.ParseText(f.Value, path: f.Key, cancellationToken: TestContext.Current.CancellationToken))
-                    .Append(CSharpSyntaxTree.ParseText(custom, cancellationToken: TestContext.Current.CancellationToken)), references,
+                files.Select(f => ParseSource(f.Value, path: f.Key, cancellationToken: TestContext.Current.CancellationToken))
+                    .Append(ParseSource(custom, cancellationToken: TestContext.Current.CancellationToken)), references,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
             using var image = new MemoryStream();
             var result = compilation.Emit(image, cancellationToken: TestContext.Current.CancellationToken);

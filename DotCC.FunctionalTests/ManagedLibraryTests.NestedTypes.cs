@@ -56,9 +56,9 @@ public sealed partial class ManagedLibraryTests
                 text.Split("static unsafe class "+owner+"FunctionPointers").Length.ShouldBe(2);
                 text.ShouldContain("static unsafe class "+owner+"Globals");
                 if(runtime==RuntimeProfile.C) { text.ShouldNotContain("// ---- Zig"); text.ShouldNotContain("// ---- Slice.cs"); }
-                syntax.AddRange(files.Select(f=>CSharpSyntaxTree.ParseText(f.Value,path:owner+"/"+f.Key)));
+                syntax.AddRange(files.Select(f=>ParseSource(f.Value,path:owner+"/"+f.Key)));
             }
-            syntax.Add(CSharpSyntaxTree.ParseText("""
+            syntax.Add(ParseSource("""
                 namespace Shared;
                 public static unsafe class Consumer {
                     public static int Run() {

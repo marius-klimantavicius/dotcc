@@ -178,7 +178,7 @@ suggestion to provide a C wrapper in the desired translation unit. Exporting a
 single address-used function preserves its existing canonical pointer cache.
 Managed exports do not add native entry points to a shared library.
 
-When either option is enabled, inline functions receive pointer-cache fields only
+When either option is enabled, inline functions receive pointer-cache properties only
 for actual C address uses (including global initializers and uses from other
 objects). Managed callers can invoke the methods directly. Defaults remain
 unchanged when neither option is selected. Unambiguous, proven static inline groups receive their original names
@@ -219,11 +219,16 @@ emits `public static class Sqlite`. The corresponding APIs are
 `Compiler.LinkObjects(..., emit: EmitMode.ManagedLib, className: "Sqlite")`.
 The selected name is used in declarations, static imports, function-owner aliases
 and native export wrapper calls. Globals and canonical pointer containers are named `{class_name}Globals` and
-`{class_name}FunctionPointers`. The pointer fields are consolidated into one class.
+`{class_name}FunctionPointers`. The pointer properties are consolidated into one
+class. Each getter lazily caches its method address using the C# `field` keyword,
+with a null check and assignment and no synchronization.
+If names such as `foo` and `get_foo` would collide with C#'s generated getter
+names, the container uses abstract base classes to keep both static properties
+accessible through the same container under their original names.
 Functions whose declarator names come from function-like macro expansion get
-pointer fields only when their addresses are used by translated C code. Ordinary
-functions retain automatic public pointer fields; macro expansion in a return
-type or function body alone does not suppress a field.
+pointer properties only when their addresses are used by translated C code. Ordinary
+functions retain automatic public pointer properties; macro expansion in a return
+type or function body alone does not suppress a property.
 Aggregate names, assembly names and native export entry-point names stay unchanged. Choose a name that does not conflict with translated symbols or runtime
 helper types; infrastructure and translated-declaration collisions are diagnosed.
 

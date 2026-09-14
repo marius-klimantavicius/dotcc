@@ -29,23 +29,54 @@ public static partial class Compiler
     private static string TypeScope(string? namespaceName, string owner, bool nested) =>
         NamespacePrefix(namespaceName) + (nested ? owner + "." : "");
 
-    // The object contract stores one independently keyed cache field per function.
+    // The object contract stores one independently keyed cache property per function.
     // Coalesce those records only after linking/definition ownership is resolved.
     private static string RenderTypeDeclarations(IReadOnlyDictionary<string, string> declarations, string owner, bool isPublic)
     {
         var types = new StringBuilder();
-        var fields = new StringBuilder();
+        var pointers = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var (key, text) in declarations)
         {
             if (key.StartsWith(MacroConstantPrefix, StringComparison.Ordinal)) continue;
             if (!key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)) { types.Append(text); continue; }
             int start = text.IndexOf('{'), end = text.LastIndexOf('}');
             if (start < 0 || end <= start) throw new CompileException("invalid function-pointer object record; regenerate objects");
-            fields.Append(text[(start + 1)..end].Trim('\r', '\n')).Append('\n');
+            pointers.Add(key[FunctionPointerNames.TypeKeyPrefix.Length..].TrimStart('@'),
+                text[(start + 1)..end].Trim('\r', '\n') + "\n");
         }
-        if (fields.Length != 0)
-            types.Append(isPublic ? "public " : "internal ").Append("static unsafe class ")
-                .Append(HelperClass(owner, "FunctionPointers")).Append("\n{\n").Append(fields).Append("}\n");
+        if (pointers.Count != 0)
+        {
+            var layers = new Dictionary<string, int>(StringComparer.Ordinal);
+            int Layer(string name)
+            {
+                if (layers.TryGetValue(name, out int found)) return found;
+                return layers[name] = name.StartsWith("get_", StringComparison.Ordinal) && pointers.ContainsKey(name[4..])
+                    ? Layer(name[4..]) + 1 : 0;
+            }
+            int last = pointers.Keys.Max(Layer);
+            string? parent = null;
+            for (int layer = 0; layer <= last; layer++)
+            {
+                var name = HelperClass(owner, "FunctionPointers");
+                if (layer != last)
+                {
+                    name = "__DotCc" + name + "Base" + layer;
+                    while (declarations.ContainsKey(name) || pointers.ContainsKey(name)) name += "_";
+                }
+                // C# reserves get_Foo for Foo's accessor. Keep both Foo and
+                // get_Foo accessible under their original names by inheriting
+                // conflicting static properties from separate abstract layers.
+                // The usual, collision-free container remains a static class.
+                types.Append(isPublic ? "public " : "internal ")
+                    .Append(last == 0 ? "static unsafe class " : "abstract unsafe class ").Append(name);
+                if (parent != null) types.Append(" : ").Append(parent);
+                types.Append("\n{\n");
+                foreach (var (pointer, text) in pointers)
+                    if (layers[pointer] == layer) types.Append(text);
+                types.Append("}\n");
+                parent = name;
+            }
+        }
         return types.ToString();
     }
 }

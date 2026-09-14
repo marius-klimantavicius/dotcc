@@ -77,7 +77,7 @@ public sealed partial class ManagedLibraryTests
             source.ShouldContain("global::System.BitConverter.IsLittleEndian");
             source.ShouldNotContain("AsPointer(ref one)");
             var compilation=CSharpCompilation.Create("Overrides"+Guid.NewGuid().ToString("N"),
-                files.Select(f=>CSharpSyntaxTree.ParseText(f.Value,path:f.Key)), RuntimeReferences(),
+                files.Select(f=>ParseSource(f.Value,path:f.Key)), RuntimeReferences(),
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,allowUnsafe:true));
             using var image=new MemoryStream();
             var result=compilation.Emit(image,cancellationToken:TestContext.Current.CancellationToken);

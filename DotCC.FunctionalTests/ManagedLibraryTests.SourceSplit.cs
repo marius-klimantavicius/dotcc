@@ -59,7 +59,7 @@ public sealed partial class ManagedLibraryTests
                 files[filenameOwner + ".cs"].ShouldContain("partial class");
                 files.Keys.ShouldContain(filenameOwner + ".GlobalUsings.g.cs");
                 var functionFiles = files.Where(f => f.Key != filenameOwner + ".cs" && !f.Key.EndsWith(".GlobalUsings.g.cs")).ToArray();
-                functionFiles.Sum(f => CSharpSyntaxTree.ParseText(f.Value).GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().Count()).ShouldBe(5);
+                functionFiles.Sum(f => ParseSource(f.Value).GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().Count()).ShouldBe(5);
                 if (split == SourceSplit.Function)
                 {
                     functionFiles.Length.ShouldBe(5);
@@ -68,7 +68,7 @@ public sealed partial class ManagedLibraryTests
                 foreach (var file in functionFiles)
                 {
                     file.Value.ShouldNotContain("static int calls");
-                    var methods = CSharpSyntaxTree.ParseText(file.Value, cancellationToken: TestContext.Current.CancellationToken).GetRoot(TestContext.Current.CancellationToken).DescendantNodes().OfType<MethodDeclarationSyntax>().ToArray();
+                    var methods = ParseSource(file.Value, cancellationToken: TestContext.Current.CancellationToken).GetRoot(TestContext.Current.CancellationToken).DescendantNodes().OfType<MethodDeclarationSyntax>().ToArray();
                     if (split == SourceSplit.Function) methods.Length.ShouldBe(1);
                     else if (file.Key != functionFiles.Last().Key)
                     {
@@ -87,7 +87,7 @@ public sealed partial class ManagedLibraryTests
                     }
                 }
                 """;
-            var trees = files.Select(f => CSharpSyntaxTree.ParseText(f.Value, path: f.Key)).Append(CSharpSyntaxTree.ParseText(consumer, cancellationToken: TestContext.Current.CancellationToken));
+            var trees = files.Select(f => ParseSource(f.Value, path: f.Key)).Append(ParseSource(consumer, cancellationToken: TestContext.Current.CancellationToken));
             var compilation = CSharpCompilation.Create("Split_" + Guid.NewGuid().ToString("N"), trees, RuntimeReferences(),
                 new CSharpCompilationOptions(mode == EmitMode.Csproj ? OutputKind.ConsoleApplication : OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
             using var stream = new MemoryStream();

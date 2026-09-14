@@ -64,8 +64,8 @@ public sealed partial class ManagedLibraryTests
                 + extension + (nested ? " }" : "") + " }";
             var references = RuntimeReferences();
             var compilation = CSharpCompilation.Create("PromotedLibrary" + Guid.NewGuid().ToString("N"),
-                files.Select(f => CSharpSyntaxTree.ParseText(f.Value, path: f.Key, cancellationToken: TestContext.Current.CancellationToken))
-                    .Append(CSharpSyntaxTree.ParseText(custom, path: "CustomSettings.cs", cancellationToken: TestContext.Current.CancellationToken)), references,
+                files.Select(f => ParseSource(f.Value, path: f.Key, cancellationToken: TestContext.Current.CancellationToken))
+                    .Append(ParseSource(custom, path: "CustomSettings.cs", cancellationToken: TestContext.Current.CancellationToken)), references,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
             using var image = new MemoryStream();
             var result = compilation.Emit(image, cancellationToken: TestContext.Current.CancellationToken);

@@ -41,10 +41,10 @@ public sealed class CanonicalFunctionPointerTests
                     emitted = Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib);
                 }
                 else emitted = Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib);
-                System.Text.RegularExpressions.Regex.IsMatch(emitted, @" unused_address(?:__unit_[A-F0-9]+)? = &").ShouldBeFalse();
-                System.Text.RegularExpressions.Regex.IsMatch(emitted, @" helper_pasted(?:__unit_[A-F0-9]+)? = &").ShouldBeFalse();
-                System.Text.RegularExpressions.Regex.IsMatch(emitted, @" callback(?:__unit_[A-F0-9]+)? = &").ShouldBeTrue();
-                emitted.ShouldContain(" ordinary = &");
+                System.Text.RegularExpressions.Regex.IsMatch(emitted, @" unused_address(?:__unit_[A-F0-9]+)?\s*\{").ShouldBeFalse();
+                System.Text.RegularExpressions.Regex.IsMatch(emitted, @" helper_pasted(?:__unit_[A-F0-9]+)?\s*\{").ShouldBeFalse();
+                System.Text.RegularExpressions.Regex.IsMatch(emitted, @" callback(?:__unit_[A-F0-9]+)?\s*\{").ShouldBeTrue();
+                emitted.ShouldContain(" ordinary\n");
                 System.Text.RegularExpressions.Regex.IsMatch(emitted, @"int unused_address(?:__unit_[A-F0-9]+)?\(int x\)").ShouldBeTrue();
             }
         }
@@ -71,8 +71,8 @@ public sealed class CanonicalFunctionPointerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { path });
-            Regex.IsMatch(emitted, @"public static readonly delegate\*<int, int> add = &\w+\.add;").ShouldBeTrue();
-            Regex.IsMatch(emitted, @"public static readonly delegate\*<int, int> abs = &\w+\.abs;").ShouldBeTrue();
+            Regex.IsMatch(emitted, @"public static delegate\*<int, int> add\s*\{\s*get\s*\{\s*if \(field == null\) field = &\w+\.add;\s*return field;").ShouldBeTrue();
+            Regex.IsMatch(emitted, @"public static delegate\*<int, int> abs\s*\{\s*get\s*\{\s*if \(field == null\) field = &\w+\.abs;\s*return field;").ShouldBeTrue();
             Regex.Matches(emitted, @"&\w+\.add\b").Count.ShouldBe(1);
             Regex.Matches(emitted, @"&\w+\.abs\b").Count.ShouldBe(1);
             emitted.ShouldContain(" = global::Libc;");
