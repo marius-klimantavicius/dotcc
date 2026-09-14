@@ -30,6 +30,8 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Translated C TCP callbacks | Native C and four managed modes pass; real clients, two private ports, exact 128 KiB response and canceled accept | `tests/HostNetwork/run.py` |
 | CPUID exclusions | 16 queries match four managed modes; eight native configurations and seven native instruction probes pass | `tests/HostCpu/run.py` |
 | Terminal storage declarations | 11 native rows match raw/optimized JIT/AOT; ioctl remains isolated/unimplemented | `tests/HostAbi/run-managed.py --ioctl` |
+| Private stat metadata | Native layout/invariants and four managed modes pass; old file/descriptor regressions pass | `tests/HostFileMetadata/run.py` |
+| Private poll readiness | Native and four managed modes pass; real TCP, timeout, FIN/HUP, close and infinite-empty disposal | `tests/HostReadiness/run.py` |
 | Managed service runner | Not implemented or qualified | P4/P5 open |
 | Repository baseline | Build pass; 2218 unit pass; 490 functional pass, 1009 skipped | `scripts/test-repository.sh` |
 | Bit-field repair regressions | Build pass; 2218 unit pass; 491 functional pass, 1011 skipped | `scripts/test-repository.sh` |

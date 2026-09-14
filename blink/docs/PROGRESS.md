@@ -288,3 +288,19 @@ to its instruction start (0x40000a), confirmed by throw.c and the native probe.
 No syscall algorithm or process-exit implementation was patched. Managed
 instruction execution remains open; the frozen source profiles will incorporate
 this extended authored harness on their next generation.
+
+## Significant progress: private metadata and readiness
+
+The private filesystem now exposes stable inode/type/size/mode/timestamp metadata
+through real stat/fstat/lstat and restricted fstatat C callbacks. Native 144-byte
+host layout checks, native filesystem invariants and four managed modes pass;
+existing private file/descriptor regressions also pass. Execute permission for
+image files is explicit opt-in. Unsupported directory-descriptor traversal and
+metadata operations remain explicit, with no generic host stat fallback.
+
+Readiness callbacks use the same descriptor table and actual BCL socket state.
+Native and raw/optimized JIT/AOT pass invalid/negative fd, timeout, pending accept,
+FIN/half-close/HUP, close and disposal cases. Infinite polls, including an empty
+fd set, join the owner's disposal drain. A barrier proves two private port-8080
+listeners coexist before real clients connect. Priority/band events are unsupported;
+reset/OOB and full x86 guest syscall integration remain open.

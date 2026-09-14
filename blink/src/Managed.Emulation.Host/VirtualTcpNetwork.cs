@@ -13,7 +13,7 @@ public readonly record struct AcceptedSocket(int Handle, GuestEndpoint Remote);
 
 /// <summary>Per-instance IPv4/TCP bindings with explicit loopback publication.
 /// Guest addresses never become implicit external host destinations.</summary>
-public sealed class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyncDisposable
+public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyncDisposable
 {
     private sealed class Entry(Socket socket)
     {
@@ -21,6 +21,7 @@ public sealed class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyncDisposa
         internal GuestEndpoint? Local;
         internal GuestEndpoint? Remote;
         internal bool Listening;
+        internal bool ReadShutdown, WriteShutdown;
     }
     private readonly object sync = new();
     private readonly Dictionary<int, Entry> entries = new();
@@ -205,7 +206,13 @@ public sealed class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyncDisposa
         {
             if (!Find(handle, out var entry)) return Fail<int>(GuestError.BadDescriptor);
             if (direction is not (SocketShutdown.Receive or SocketShutdown.Send or SocketShutdown.Both)) return Fail<int>(GuestError.Invalid);
-            try { entry.Socket.Shutdown(direction); return HostResult<int>.Success(0); }
+            try
+            {
+                entry.Socket.Shutdown(direction);
+                if (direction is SocketShutdown.Receive or SocketShutdown.Both) entry.ReadShutdown = true;
+                if (direction is SocketShutdown.Send or SocketShutdown.Both) entry.WriteShutdown = true;
+                return HostResult<int>.Success(0);
+            }
             catch (SocketException error) { return Fail<int>(ConvertError(error)); }
         }
     }

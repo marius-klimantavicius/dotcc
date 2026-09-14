@@ -5,7 +5,7 @@ namespace Managed.Emulation.Host;
 
 /// <summary>One descriptor namespace for private files, TCP and bounded captured
 /// standard streams. No guest instruction execution or C pointer marshalling.</summary>
-public sealed class InstanceIo : IAsyncDisposable
+public sealed partial class InstanceIo : IAsyncDisposable
 {
     private enum Kind { Input, Output, Error, File, Socket }
     private sealed class Description(Kind kind, int handle = -1)
@@ -28,13 +28,14 @@ public sealed class InstanceIo : IAsyncDisposable
 
     public InstanceIo(IReadOnlyDictionary<string, ReadOnlyMemory<byte>> image,
         ReadOnlyMemory<byte> standardInput = default, int descriptorLimit = 128,
-        int outputLimit = 65536, long writableLimit = 1 << 20, long imageLimit = 16 << 20, int inputLimit = 1 << 20)
+        int outputLimit = 65536, long writableLimit = 1 << 20, long imageLimit = 16 << 20, int inputLimit = 1 << 20,
+        IReadOnlySet<string>? executablePaths = null)
     {
         if (descriptorLimit < 3) throw new ArgumentOutOfRangeException(nameof(descriptorLimit));
         if (outputLimit < 0) throw new ArgumentOutOfRangeException(nameof(outputLimit));
         if (inputLimit < 0 || standardInput.Length > inputLimit) throw new ArgumentOutOfRangeException(nameof(inputLimit));
         this.descriptorLimit = descriptorLimit; this.outputLimit = outputLimit;
-        files = new(image, writableLimit, descriptorLimit, imageLimit);
+        files = new(image, writableLimit, descriptorLimit, imageLimit, executablePaths);
         network = new(descriptorLimit);
         input = standardInput.ToArray();
         descriptors.Add(0, new(Kind.Input));
@@ -70,6 +71,14 @@ public sealed class InstanceIo : IAsyncDisposable
         {
             if (!Find(fd, out var description)) return Fail<long>(GuestError.BadDescriptor);
             return description.Kind == Kind.File ? files.Seek(description.Handle, offset, origin) : Fail<long>(GuestError.IllegalSeek);
+        }
+    }
+    public HostResult<VirtualFileStat> FStat(int fd)
+    {
+        lock (sync)
+        {
+            if (!Find(fd, out var description)) return Fail<VirtualFileStat>(GuestError.BadDescriptor);
+            return description.Kind == Kind.File ? files.FStat(description.Handle) : Fail<VirtualFileStat>(GuestError.Unsupported);
         }
     }
     public HostResult<int> Socket()

@@ -18,15 +18,21 @@ public readonly record struct HostResult<T>(T Value, GuestError Error)
 
 [Flags]
 public enum FileAccessMode { Read = 1, Write = 2 }
-public readonly record struct VirtualFileStat(long Length, bool Immutable, bool Directory);
+public readonly record struct VirtualFileStat(long Length, bool Immutable, bool Directory,
+    ulong Inode = 0, uint Mode = 0, long AccessTicks = 0, long ModifyTicks = 0, long ChangeTicks = 0, ulong Links = 1);
 
 /// <summary>A private Linux-path namespace. It never consults the host filesystem.</summary>
 public sealed class VirtualFileSystem : IDisposable
 {
-    private sealed class Node(byte[] bytes, bool immutable)
+    private sealed class Node(byte[] bytes, bool immutable, ulong inode, uint mode)
     {
         internal byte[] Bytes = bytes;
         internal readonly bool Immutable = immutable;
+        internal readonly ulong Inode = inode;
+        internal readonly uint Mode = mode;
+        internal long AccessTicks = DateTime.UtcNow.Ticks;
+        internal long ModifyTicks = DateTime.UtcNow.Ticks;
+        internal long ChangeTicks = DateTime.UtcNow.Ticks;
     }
     private sealed class Description(Node node, FileAccessMode access, bool append)
     {
@@ -38,14 +44,17 @@ public sealed class VirtualFileSystem : IDisposable
     private readonly object sync = new();
     private readonly Dictionary<string, Node> files = new(StringComparer.Ordinal);
     private readonly HashSet<string> directories = new(StringComparer.Ordinal) { "/" };
+    private readonly Dictionary<string, Node> directoryNodes = new(StringComparer.Ordinal);
     private readonly Dictionary<int, Description> descriptors = new();
     private readonly long writableLimit;
     private readonly int descriptorLimit;
     private long writableBytes;
+    private ulong nextInode = 1;
     private bool disposed;
 
     public VirtualFileSystem(IReadOnlyDictionary<string, ReadOnlyMemory<byte>> image,
-        long writableLimit = 1 << 20, int descriptorLimit = 128, long imageLimit = 16 << 20)
+        long writableLimit = 1 << 20, int descriptorLimit = 128, long imageLimit = 16 << 20,
+        IReadOnlySet<string>? executablePaths = null)
     {
         ArgumentNullException.ThrowIfNull(image);
         if (writableLimit < 0 || writableLimit > int.MaxValue) throw new ArgumentOutOfRangeException(nameof(writableLimit));
@@ -54,17 +63,30 @@ public sealed class VirtualFileSystem : IDisposable
         long imageBytes = 0;
         this.writableLimit = writableLimit;
         this.descriptorLimit = descriptorLimit;
+        directoryNodes.Add("/", new([], true, nextInode++, 0x4000 | 0x1ed));
         foreach (var (path, contents) in image)
         {
             var normalized = Normalize(path, "/");
             if (!normalized.Succeeded || normalized.Value == "/") throw new ArgumentException("Invalid image file path: " + path, nameof(image));
             if (contents.Length > imageLimit - imageBytes) throw new ArgumentException("Image byte limit exceeded.", nameof(image));
             imageBytes += contents.Length;
-            if (!files.TryAdd(normalized.Value, new Node(contents.ToArray(), true))) throw new ArgumentException("Duplicate image path: " + path, nameof(image));
+            if (!files.TryAdd(normalized.Value, new Node(contents.ToArray(), true, nextInode++, 0x8000 | 0x124))) throw new ArgumentException("Duplicate image path: " + path, nameof(image));
             var parent = Parent(normalized.Value);
-            while (directories.Add(parent)) parent = Parent(parent);
+            while (directories.Add(parent))
+            {
+                directoryNodes.Add(parent, new([], true, nextInode++, 0x4000 | 0x1ed));
+                parent = Parent(parent);
+            }
         }
         if (files.Keys.Any(directories.Contains)) throw new ArgumentException("An image file also names a directory.", nameof(image));
+        if (executablePaths != null)
+            foreach (string path in executablePaths)
+            {
+                var normalized = Normalize(path, "/");
+                if (!normalized.Succeeded || !files.TryGetValue(normalized.Value, out var node))
+                    throw new ArgumentException("Executable path must name an image file: " + path, nameof(executablePaths));
+                files[normalized.Value] = new(node.Bytes, true, node.Inode, 0x8000 | 0x16d);
+            }
     }
 
     public long WritableBytes { get { lock (sync) return writableBytes; } }
@@ -89,12 +111,18 @@ public sealed class VirtualFileSystem : IDisposable
             if (node?.Immutable == true && access.HasFlag(FileAccessMode.Write)) return Fail<int>(GuestError.ReadOnly);
             // Validate every failing condition before creation or truncation.
             if (descriptors.Count >= descriptorLimit) return Fail<int>(GuestError.TooManyFiles);
-            node ??= new Node([], false);
-            if (!exists) files.Add(name, node);
+            node ??= new Node([], false, nextInode++, 0x8000 | 0x180);
+            if (!exists)
+            {
+                files.Add(name, node);
+                var parent = directoryNodes[Parent(name)];
+                parent.ModifyTicks = parent.ChangeTicks = DateTime.UtcNow.Ticks;
+            }
             if (truncate)
             {
                 writableBytes -= node.Bytes.Length;
                 node.Bytes = [];
+                node.ModifyTicks = node.ChangeTicks = DateTime.UtcNow.Ticks;
             }
             int descriptor = NextDescriptor();
             descriptors.Add(descriptor, new Description(node, access, append));
@@ -110,6 +138,7 @@ public sealed class VirtualFileSystem : IDisposable
             int count = (int)Math.Min(destination.Length, Math.Max(0, file.Node.Bytes.LongLength - file.Position));
             if (count != 0) file.Node.Bytes.AsSpan((int)file.Position, count).CopyTo(destination);
             file.Position += count;
+            if (destination.Length != 0) file.Node.AccessTicks = DateTime.UtcNow.Ticks;
             return HostResult<int>.Success(count);
         }
     }
@@ -137,6 +166,7 @@ public sealed class VirtualFileSystem : IDisposable
             }
             source[..count].CopyTo(file.Node.Bytes.AsSpan((int)position, count));
             file.Position = position + count;
+            file.Node.ModifyTicks = file.Node.ChangeTicks = DateTime.UtcNow.Ticks;
             return HostResult<int>.Success(count);
         }
     }
@@ -185,12 +215,25 @@ public sealed class VirtualFileSystem : IDisposable
             if (disposed) return Fail<VirtualFileStat>(GuestError.BadDescriptor);
             var resolved = Resolve(path, cwd);
             if (!resolved.Succeeded) return Fail<VirtualFileStat>(resolved.Error);
-            if (directories.Contains(resolved.Value)) return HostResult<VirtualFileStat>.Success(new(0, true, true));
+            if (directoryNodes.TryGetValue(resolved.Value, out var directory))
+                return HostResult<VirtualFileStat>.Success(Metadata(directory, true) with
+                { Links = (ulong)(2 + directories.Count(p => p != "/" && Parent(p) == resolved.Value)) });
             return files.TryGetValue(resolved.Value, out var node)
-                ? HostResult<VirtualFileStat>.Success(new(node.Bytes.LongLength, node.Immutable, false))
+                ? HostResult<VirtualFileStat>.Success(Metadata(node, false))
                 : Fail<VirtualFileStat>(GuestError.NoEntry);
         }
     }
+
+    public HostResult<VirtualFileStat> FStat(int descriptor)
+    {
+        lock (sync) return TryDescription(descriptor, out var file)
+            ? HostResult<VirtualFileStat>.Success(Metadata(file.Node, false))
+            : Fail<VirtualFileStat>(GuestError.BadDescriptor);
+    }
+
+    private static VirtualFileStat Metadata(Node node, bool directory) => new(
+        node.Bytes.LongLength, node.Immutable, directory, node.Inode, node.Mode,
+        node.AccessTicks, node.ModifyTicks, node.ChangeTicks);
 
     public void Dispose()
     {
@@ -200,6 +243,7 @@ public sealed class VirtualFileSystem : IDisposable
             descriptors.Clear();
             files.Clear();
             directories.Clear();
+            directoryNodes.Clear();
             writableBytes = 0;
         }
     }
