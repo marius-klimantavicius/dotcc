@@ -664,3 +664,16 @@ function Blink; no compiler or upstream algorithm repair was needed. Authored
 bridge declarations select the full container through BLINK_FULL_CORE, with
 unchanged default fixture declarations and method bodies. The first raw C# build
 uses an explicit new consumer snapshot; successful linkage is not P1 execution.
+
+## Significant progress: bounded private directory streams
+
+Directory streams now snapshot real private node names/inodes/types and retain
+internal descriptor leases. Failed acquisition preserves the fd; closing or
+replacing a borrowed fd cannot cause a later stream close to close its reused
+number. C tokens and records contain no CLR references, with explicit stream,
+registration, entry and name-byte bounds. The supplied272-byte dirent profile
+is measured separately from native Linux280-byte storage; components beyond255
+bytes reject the entire acquisition before ownership transfer, without truncation.
+Native/common and all4 pass at host-directories/attempt-wkfwdrzj, including an
+upstream-style guest-record copy loop, snapshot/rewind, quotas, two-owner GC and
+existing file/I/O regressions. Full guest Getdents execution is still separate.

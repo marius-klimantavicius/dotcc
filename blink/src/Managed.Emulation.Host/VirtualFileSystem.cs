@@ -23,6 +23,7 @@ public enum FileAccessMode { Read = 1, Write = 2 }
 public readonly record struct VirtualFileStat(long Length, bool Immutable, bool Directory,
     ulong Inode = 0, uint Mode = 0, long AccessTicks = 0, long ModifyTicks = 0, long ChangeTicks = 0, ulong Links = 1);
 public readonly record struct VirtualFileSystemCapacity(ulong TotalBytes, ulong FreeBytes, ulong TotalNodes, ulong FreeNodes);
+public readonly record struct VirtualDirectoryEntry(string Name, ulong Inode, byte Type);
 
 /// <summary>A private Linux-path namespace. It never consults the host filesystem.</summary>
 public sealed class VirtualFileSystem : IDisposable
@@ -382,6 +383,38 @@ public sealed class VirtualFileSystem : IDisposable
         {
             if (!TryDescription(descriptor, out var file)) return Fail<string>(GuestError.BadDescriptor);
             return file.DirectoryPath != null ? HostResult<string>.Success(file.DirectoryPath) : Fail<string>(GuestError.NotDirectory);
+        }
+    }
+
+    public HostResult<VirtualDirectoryEntry[]> DirectorySnapshot(int descriptor, int entryLimit, int nameBytesLimit)
+    {
+        lock (sync)
+        {
+            if (!TryDescription(descriptor, out var file)) return Fail<VirtualDirectoryEntry[]>(GuestError.BadDescriptor);
+            if (file.DirectoryPath == null) return Fail<VirtualDirectoryEntry[]>(GuestError.NotDirectory);
+            if (entryLimit < 2 || nameBytesLimit < 5) return Fail<VirtualDirectoryEntry[]>(GuestError.NoMemory);
+            string path = file.DirectoryPath;
+            var entries = new List<VirtualDirectoryEntry> {
+                new(".", file.Node.Inode, 4), new("..", directoryNodes[Parent(path)].Inode, 4)
+            };
+            int bytes = 5;
+            foreach (var item in files.Concat(directoryNodes))
+            {
+                if (item.Key == "/" || Parent(item.Key) != path) continue;
+                string name = item.Key[(item.Key.LastIndexOf('/') + 1)..];
+                int length;
+                try { length = new UTF8Encoding(false, true).GetByteCount(name); }
+                catch (EncoderFallbackException) { return Fail<VirtualDirectoryEntry[]>(GuestError.Invalid); }
+                // The retained supplied C record has d_name[256]. Reject the
+                // entire acquisition rather than truncate or hide a late error.
+                if (length > 255) return Fail<VirtualDirectoryEntry[]>(GuestError.NameTooLong);
+                if (entries.Count == entryLimit || length + 1 > nameBytesLimit - bytes)
+                    return Fail<VirtualDirectoryEntry[]>(GuestError.NoMemory);
+                bytes += length + 1;
+                entries.Add(new(name, item.Value.Inode, (byte)((item.Value.Mode & 0xf000) == 0x4000 ? 4 : 8)));
+            }
+            entries.Sort(2, entries.Count - 2, Comparer<VirtualDirectoryEntry>.Create((a,b) => StringComparer.Ordinal.Compare(a.Name,b.Name)));
+            return HostResult<VirtualDirectoryEntry[]>.Success(entries.ToArray());
         }
     }
 

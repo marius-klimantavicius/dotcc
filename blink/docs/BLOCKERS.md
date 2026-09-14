@@ -222,3 +222,19 @@ not a compiler defect. Authored bridges now select BlinkCore under BLINK_FULL_CO
 and retain Blink for focused fixtures. Default conditional projection reproduces
 every previous bridge source exactly; no method body or generated C# was edited.
 The full consumer must define that symbol and use the matching container.
+
+## B023 — nested generated C# names collide (open)
+
+The first complete raw C# build reports CS0102 for DescribeFlagz, DisArg and
+sysinfo_linux in BlinkCore. Actual C has separate tag and ordinary identifier
+namespaces; the generated nested representation must preserve them. A reduced
+generic repair is in progress; no upstream or generated C# files are patched.
+Baseline: artifacts/core-execution/attempt-68vow5of/raw-build.log.
+
+## B024 — static-local aliases collide across translation units (open)
+
+That same raw build reports duplicate once__s0, b__s0 and buf__s0 members in
+BlinkCoreGlobals. Their backing storage is separately qualified, but alias
+naming still collides across TUs. Independent native/object-link reductions
+and a generic repair are in progress. Host callback diagnostics have not yet
+been reached; the complete library has not executed guest instructions.
