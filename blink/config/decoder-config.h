@@ -6,5 +6,5 @@
 #define DISABLE_BMI2 1
 #define DISABLE_METAL 1
 #define DISABLE_THREADS 1
-#define DISABLE_FORK 1
+#undef HAVE_FORK
 #endif

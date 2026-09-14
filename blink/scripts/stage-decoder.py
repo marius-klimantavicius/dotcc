@@ -5,7 +5,7 @@ root = pathlib.Path(__file__).resolve().parents[1]
 upstream = root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
 inventory = json.loads((root / 'config/source-inventory.json').read_text())
 hashes = {row['path']: row['sha256'] for row in inventory['files']}
-for name in ['blink/x86.c', 'blink/modrm.h']:
+for name in ['blink/x86.c', 'blink/modrm.h', 'blink/bitscan.c']:
     actual = hashlib.sha256((upstream / name).read_bytes()).hexdigest()
     if actual != hashes[name]:
         raise SystemExit('upstream checksum mismatch: ' + name)
@@ -25,3 +25,5 @@ staged.mkdir(parents=True, exist_ok=True)
     'adaptation': 'Replace modrm.h include with exact upstream DISABLE_METAL Mode expansion; no instruction algorithm edits.',
     'scope': 'decoder-only Linux x86-64 probe; not the full interpreter host port'
 }, indent=2) + '\n')
+
+(staged / 'bitscan.c').write_bytes((upstream / 'blink/bitscan.c').read_bytes())
