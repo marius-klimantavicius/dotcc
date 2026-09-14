@@ -3,14 +3,15 @@
 These are observed campaign results. A passed native baseline is not translated
 execution; P1–P6 remain open.
 
-## B001 — Comma-separated bit-field declarations (fixed, validation running)
+## B001 — Comma-separated bit-field declarations (fixed)
 
 Untouched `blink/x86.h:37` contains valid C `uint8_t omode : 2, genmode : 6;`.
 The first dotcc decoder attempt rejected its comma. A reduced native-checked
 fixture now lives at `DotCC.FunctionalTests/Fixtures/bitfield-declaration-list`.
 The generic parser and IR now preserve named/anonymous bit-field lists and their
 widths. All five focused bit-field functional cases pass. The full affected
-repository build/unit/functional check is being rerun before committing this fix.
+Release build passed, with 2218 unit tests and 491 functional tests passed;
+1011 functional rows were skipped.
 
 ## B002 — Native header coupling in decoder inclusion (probe adaptation)
 

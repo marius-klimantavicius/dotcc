@@ -481,6 +481,8 @@ symbols:
 
   - __attribute__       # 196 GNU diagnostic attribute introducer
   - GnuFormatAttr       # 197 format annotation (no ABI effect)
+  - BitFieldList        # 198 comma-separated named/anonymous bit-fields
+  - BitFieldItem        # 199 one bit-field declarator
 
 productions:
   # Start production. Single-non-terminal — trimmed at parse time so the root
@@ -1146,14 +1148,9 @@ productions:
       - { lhs: Member, rhs: ['struct', ID, ';'], action: anonymousStructTagMember }
       - { lhs: Member, rhs: ['union', ID, ';'], action: anonymousUnionTagMember }
       - { lhs: Member, rhs: [Type, DeclItemList, ';'], action: structMemberList }
-      # Bit-fields `Type ID : width ;` and anonymous padding `Type : width ;`.
-      # C# has no bit-fields; dotcc lowers a named bit-field to a FULL field of
-      # the declared type (the width is dropped — see structBitField), and an
-      # anonymous bit-field (padding) to nothing. After `Type ID`, lookahead `:`
-      # selects the bit-field over the plain member (`;`); after a bare `Type`,
-      # `:` selects the anonymous form.
-      - { lhs: Member, rhs: [Type, ID, ':', E, ';'], action: structBitField }
-      - { lhs: Member, rhs: [Type, ':', E, ';'],     action: structAnonBitField }
+      # Bit-field declarators share their leading type across commas, including
+      # anonymous padding. Widths remain in the IR for packing and accessors.
+      - { lhs: Member, rhs: [Type, BitFieldList, ';'], action: structBitFieldList }
       # Array members. Sized `T name[N];` (C89) and the flexible array member
       # `T name[];` (C99 — an incomplete array as the last member, sized at
       # malloc time). Both lower to a C# fixed-size buffer `public fixed T
@@ -1378,6 +1375,16 @@ productions:
     rules:
       - { lhs: ArrDims, rhs: [ArrDims, '[', E, ']'], action: arrDimsCons }
       - { lhs: ArrDims, rhs: ['[', E, ']'],          action: arrDimsOne }
+
+  - derivation: leftmost
+    rules:
+      - { lhs: BitFieldList, rhs: [BitFieldItem], action: bitFieldListOne }
+      - { lhs: BitFieldList, rhs: [BitFieldList, ',', BitFieldItem], action: bitFieldListCons }
+
+  - derivation: none
+    rules:
+      - { lhs: BitFieldItem, rhs: [ID, ':', E], action: bitFieldNamed }
+      - { lhs: BitFieldItem, rhs: [':', E], action: bitFieldAnonymous }
 
   # DeclItemList: comma-separated list of declarators sharing a leading Type.
   - derivation: leftmost

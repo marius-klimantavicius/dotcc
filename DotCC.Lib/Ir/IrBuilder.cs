@@ -1321,25 +1321,30 @@ internal sealed partial class IrBuilder
                 case C.StructFnPtrReturningFnPtrEmpty sm:
                     fields.Add(new StructField(Tok(sm.Arg5), FnPtrType(FnPtrType(sm.Arg0, null), null)));
                     break;
-                // `T name : W;` — a bit-field. Codegen packs consecutive same-size
-                // bit-fields into one shared backing field (MSVC storage-unit layout)
-                // + a masked/sign-extended accessor property, so sizeof + offsets
-                // match C while reads/writes keep C's value semantics.
-                case C.StructBitField sm:
+                case C.StructBitFieldList sm:
                 {
-                    var w = ConstEval(BuildExpr(sm.Arg3)) ?? throw new IrUnsupportedException("non-constant bit-field width");
-                    fields.Add(new StructField(Tok(sm.Arg1), ResolveType(sm.Arg0), (int)w));
-                    break;
-                }
-                // `T : W;` — an anonymous bit-field (padding). Kept in the field list
-                // with an empty name and its width so the backend's packing reserves
-                // its bits (and a zero width forces the next field onto a fresh
-                // storage unit); it produces no accessible member and is skipped by
-                // positional initializers.
-                case C.StructAnonBitField sm:
-                {
-                    var w = ConstEval(BuildExpr(sm.Arg2)) ?? throw new IrUnsupportedException("non-constant anonymous bit-field width");
-                    fields.Add(new StructField("", ResolveType(sm.Arg0), (int)w));
+                    var type = ResolveType(sm.Arg0);
+                    void AddBitFields(Item item)
+                    {
+                        switch (item.Content)
+                        {
+                            case C.BitFieldListOne one: AddBitFields(one.Arg0); break;
+                            case C.BitFieldListCons cons: AddBitFields(cons.Arg0); AddBitFields(cons.Arg2); break;
+                            case C.BitFieldNamed named:
+                                AddBitField(Tok(named.Arg0), named.Arg2);
+                                break;
+                            case C.BitFieldAnonymous anonymous:
+                                AddBitField("", anonymous.Arg1);
+                                break;
+                            default: throw new IrUnsupportedException(TypeName(item.Content));
+                        }
+                    }
+                    void AddBitField(string name, Item width)
+                    {
+                        var value = ConstEval(BuildExpr(width)) ?? throw new IrUnsupportedException("non-constant bit-field width");
+                        fields.Add(new StructField(name, type, (int)value));
+                    }
+                    AddBitFields(sm.Arg1);
                     break;
                 }
                 default: throw new IrUnsupportedException(TypeName(m.Content));
