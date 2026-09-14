@@ -208,3 +208,46 @@ Native execution records `exited=true` and the exact status, then unwinds with
 restores the syscall instruction IP, so both exit cases stop at `0x40000a` after
 two completed instructions. Both pass twice along with the original cases; no
 managed execution claim follows until the emitted core is linked and run.
+
+`assemble-core.py --profile <frozen-attempt> --jobs 2` builds a resumable object
+set and links its `.cs` fragments directly into the planned nested managed
+library. New profiles contain their own `closure.json`. Each emitted object has an independent conservative C-input identity: exact
+selected source, all profile headers and included C fragments, macro overrides,
+compiler options and dependencies, helper/isolation script hashes, and the
+pinned upstream include inventory. Inputs are copied into verified canonical
+content-addressed directories before compilation. This preserves absolute-path
+static-symbol mangling and `__FILE__` values across profile copies. Reuse retains
+the original producing profile, receipt and object hash. Independent translation
+units and consumer C# files do not invalidate an otherwise identical C object;
+the complete selected profile, managed bridges and Host project remain hashed
+in the enclosing link/consumer receipt.
+Compiler identity includes every DLL, deps.json and runtimeconfig.json in the
+compiler output directory, including the parser dependencies. The identity
+helper itself is snapshotted and hashed.
+`--sources <filenames...>` performs bounded emission only. A smoke run emitted
+`startswith.c` and `prog.c`, then reused both with no new compiler invocation
+(`artifacts/core/objects/28925a559ca04fdae970c6a358405e28a7d945cdae2ed766557d88df0b457b7e/receipt.json`).
+The separate initial two-worker check emitted real `memorymalloc.c` and
+`statfs.c` after their declaration fixes. These are object-emission checks;
+complete C# linkage, host callback selection and actual instruction execution
+remain separately required.
+
+The generic static-local array-list repair lets unchanged `strace.c` emit its
+paired scratch buffers in 22.15 seconds (`artifacts/core/isolate-zhqr_q7j`).
+Each declarator uses the existing rooted global-array backing under its own
+mangled local name. A native fixture checks zeroing, repeated calls, nested
+arrays and struct/pointer initializers; separate direct/object-linked managed
+consumers retain the returned pointers through forced GC. The complete suite
+passes 2,235 unit and 517 functional tests (1,039 skips). Blink itself removes
+its `_Thread_local` spelling under the selected `DISABLE_THREADS` profile;
+this repair does not claim support for block-scope TLS.
+
+The explicit binding staging helper runs after the hash-checked map, diagnostic
+and CPUID source adaptations. Its preamble applies to all upstream translation
+units, including managed-only `pte32.c`, and leaves authored C wrappers separate.
+The frozen manifest selects qualified C/managed bridges and isolates deferred
+host operations as unresolved names. Initial binding-preamble checks emitted
+`address.c`, `pte32.c`, `prog.c` and `machine.c`; this does not establish that all
+remaining declarations or callbacks link. The driver enables private file
+mappings after memory ownership begins, and its owning C# consumer must bind
+private IO, environment and identity before entering the driver.

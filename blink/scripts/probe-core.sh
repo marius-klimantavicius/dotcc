@@ -58,6 +58,10 @@ attempt=$(python3 - "$campaign" <<'PY'
 import hashlib, json, pathlib, shutil, subprocess, sys, tempfile
 p=pathlib.Path(sys.argv[1])
 stage=pathlib.Path(tempfile.mkdtemp(prefix='attempt-',dir=p/'generated/core-profile'))
+sys.path.insert(0,str(p/'scripts'))
+from core_inputs import compiler_identity
+shutil.copyfile(p/'scripts/core_inputs.py',stage/'compiler-identity.py')
+shutil.copyfile(p/'artifacts/core/closure.json',stage/'closure.json')
 shutil.copyfile(p/'config/core-config.h',stage/'config.h')
 shutil.copyfile(p/'config/target-storage.h',stage/'target-storage.h')
 shutil.copyfile(p/'config/core-overrides.json',stage/'overrides.json')
@@ -107,6 +111,19 @@ for basename, directory in (('map','HostMemory'),('debug','HostMemory'),('cpuid'
     boundary=json.loads(receipt.read_text())
     source_overrides['blink/'+basename+'.c']={'staged_path':str(adapted.relative_to(p)),
         'sha256':boundary['stagedSha256'],'original_sha256':boundary['originalSha256']}
+binding_overrides=stage/'binding-overrides.json'
+binding_overrides.write_text(json.dumps(source_overrides,indent=2)+'\n')
+with (stage/'host-binding-stage.log').open('wb') as log:
+    subprocess.run([sys.executable,str(p/'scripts/stage-host-bindings.py'),
+        '--profile',str(stage),'--overrides',str(binding_overrides)],stdout=log,stderr=subprocess.STDOUT,check=True)
+source_overrides=json.loads(binding_overrides.read_text())
+bindings=json.loads((stage/'binding-sources.json').read_text())
+(stage/'authored-source-paths.txt').write_text(''.join(str(stage/name)+'\n' for name in bindings['authored_c']))
+selected_additions=[]
+for row in additions:
+    override=source_overrides.get(row['path'])
+    selected_additions.append(str(p/override['staged_path']) if override else str(additional/pathlib.Path(row['path']).name))
+(stage/'managed-source-paths.txt').write_text(''.join(path+'\n' for path in selected_additions))
 native_paths=(p/'artifacts/core/source-paths.txt').read_text().splitlines()
 selected=[]
 for path in native_paths:
@@ -115,9 +132,8 @@ for path in native_paths:
 (stage/'core-source-paths.txt').write_text(''.join(path+'\n' for path in selected))
 files={str(f.relative_to(stage)):hashlib.sha256(f.read_bytes()).hexdigest() for f in stage.rglob('*') if f.is_file()}
 compiler=p.parent/'DotCC/bin/Release/net10.0'
-manifest={'staged_headers':files,'compiler':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in compiler.glob('DotCC*.dll')}}
+manifest={'staged_headers':files,'compiler':compiler_identity(compiler)}
 manifest['source_overrides']=source_overrides
-manifest['compiler']['dotcc.dll']=hashlib.sha256((compiler/'dotcc.dll').read_bytes()).hexdigest()
 (stage/'inputs.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print(stage)
 PY
@@ -129,7 +145,8 @@ if [[ ${1:-} == --stage-only ]]; then
 fi
 mapfile -t sources < "$attempt/core-source-paths.txt"
 mapfile -t additions < "$attempt/managed-source-paths.txt"
-sources+=("${additions[@]}")
+mapfile -t authored_sources < "$attempt/authored-source-paths.txt"
+sources+=("${additions[@]}" "${authored_sources[@]}")
 # dotcc's current include overlay uses last-wins resolution. Keep authored host
 # declarations last; unimplemented operations remain unresolved imports.
 includes=(-I "$attempt" -I "$upstream" -I "$attempt/authored")
@@ -139,7 +156,6 @@ fi
 set +e
 timeout "${CORE_TRANSLATION_TIMEOUT:-1800}" dotnet "$repo/DotCC/bin/Release/net10.0/dotcc.dll" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
   "${includes[@]}" "${sources[@]}" \
-  "$attempt/authored/managed-driver.c" "$attempt/authored/HostSignals.c" "$attempt/authored/HostMemory.c" \
   --overrides-file "$attempt/overrides.json" \
   --override-report "$attempt/override-report.jsonl" --runtime=c \
   --emit=managedlib --nest-types --class-name Blink --namespace Managed.Emulation \

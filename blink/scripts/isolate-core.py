@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import time
+from core_inputs import compiler_identity, profile_sources, canonical_emission, OBJECT_OPTIONS
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -21,30 +22,16 @@ for name, expected in profile_inputs['staged_headers'].items():
     if hashlib.sha256((profile / name).read_bytes()).hexdigest() != expected:
         raise SystemExit('staged profile checksum mismatch: ' + name)
 out = Path(tempfile.mkdtemp(prefix='isolate-', dir=root / 'artifacts/core'))
-closure = json.loads((root / 'artifacts/core/closure.json').read_text())
-for entry in closure['sources']:
-    override = profile_inputs.get('source_overrides', {}).get(entry['path'])
-    if override:
-        if entry['sha256'] != override['original_sha256']:
-            raise SystemExit('profile source override has a different upstream source: ' + entry['path'])
-        entry.update(staged_path=override['staged_path'], sha256=override['sha256'])
-if (profile / 'managed-additions.json').exists():
-    for entry in json.loads((profile / 'managed-additions.json').read_text())['sources']:
-        closure['sources'].append(dict(path=entry['path'], sha256=entry['sha256'],
-                                      staged_path=str(profile / 'additional' / Path(entry['path']).name)))
-command = ['dotnet', str(root.parent / 'DotCC/bin/Release/net10.0/dotcc.dll'),
-           '-std=c17', '-D_GNU_SOURCE', '-DNDEBUG', '-DNOLINEAR',
-           '-I', str(profile), '-I', str(root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580')]
-if (profile / 'host').is_dir():
-    if (profile / 'authored').is_dir():
-        command += ['-I', str(profile / 'authored')]
-    command += ['-I', str(profile / 'host')]
-command += ['--overrides-file', str(profile / 'overrides.json'), '--emit=obj']
+closure_path = profile / 'closure.json'
+if not closure_path.exists():
+    closure_path = root / 'artifacts/core/closure.json'  # historical diagnostic snapshots
+closure = {'sources': profile_sources(profile, root, profile_inputs)}
 compiler = root.parent / 'DotCC/bin/Release/net10.0'
-compiler_files = list(compiler.glob('DotCC*.dll')) + [compiler / 'dotcc.dll']
 receipt = {'profile': str(profile), 'profile_inputs_sha256': hashlib.sha256((profile / 'inputs.json').read_bytes()).hexdigest(),
-           'compiler_sha256': {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in compiler_files},
-           'timeout_seconds': args.timeout, 'rows': []}
+           'compiler_sha256': compiler_identity(compiler),
+           'compiler_identity_script_sha256': hashlib.sha256((root / 'scripts/core_inputs.py').read_bytes()).hexdigest(),
+           'timeout_seconds': args.timeout, 'isolation_script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+           'closure_sha256': hashlib.sha256(closure_path.read_bytes()).hexdigest(), 'rows': []}
 active = not args.start
 for entry in closure['sources']:
     source = root / entry['staged_path']
@@ -54,6 +41,12 @@ for entry in closure['sources']:
         continue
     if hashlib.sha256(source.read_bytes()).hexdigest() != entry['sha256']:
         raise SystemExit('staged source checksum mismatch: ' + str(source))
+    original_source = source
+    emission_profile, source, c_identity, emission_key = canonical_emission(profile, root, profile_inputs, entry)
+    command = ['dotnet', str(compiler / 'dotcc.dll'), *OBJECT_OPTIONS,
+               '-I', str(emission_profile), '-I', str(root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'),
+               '-I', str(emission_profile / 'authored'), '-I', str(emission_profile / 'host'),
+               '--overrides-file', str(emission_profile / 'overrides.json')]
     log = out / (source.stem + '.log')
     invocation = command + [str(source), '-o', str(out / (source.stem + '.cs')),
                             '--override-report', str(out / (source.stem + '.overrides.jsonl'))]
@@ -101,14 +94,18 @@ for entry in closure['sources']:
                     kind = 'per-TU timeout; not an architectural blocker'
     row = {'source': entry['path'], 'source_sha256': entry['sha256'], 'exit_code': code,
            'classification': kind, 'seconds': time.monotonic() - started, 'log': str(log),
-           'command': invocation}
+           'command': invocation, 'emission_key': emission_key, 'emission_identity': c_identity,
+           'canonical_source': str(source), 'original_source': str(original_source)}
     if inactive_overrides:
         row['inactive_overrides'] = inactive_overrides
-    if receipt['compiler_sha256'] != {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
-                                      for path in compiler_files}:
+    if receipt['compiler_sha256'] != compiler_identity(compiler):
         code = 125
         row['exit_code'] = code
         row['classification'] = 'compiler changed during invocation; retry required'
+    if code == 0:
+        artifact = out / (source.stem + '.cs')
+        row['object_path'] = str(artifact)
+        row['object_sha256'] = hashlib.sha256(artifact.read_bytes()).hexdigest()
     receipt['rows'].append(row)
     (out / 'result.json').write_text(json.dumps(receipt, indent=2) + '\n')
     print(json.dumps({key: row[key] for key in ('source', 'exit_code', 'classification', 'seconds', 'log')}), flush=True)

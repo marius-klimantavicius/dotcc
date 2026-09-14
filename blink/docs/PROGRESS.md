@@ -407,3 +407,23 @@ on errors. Reported resolution is the software output quantum, not a claim of
 physical clock accuracy. Selected-core native import evidence and lexical binding
 hints are reproducible. Sleep/timer behavior remains open: unchanged upstream
 wait code requires a real interruption/remaining-time contract.
+
+## Significant progress: combined frozen core binding and object pipeline
+
+The explicit binding manifest snapshots authored C/C# host adapters and the Host
+project. Every verified upstream translation unit receives the same boundary
+preamble, including utility sources that do not include builtin.h. Existing
+map/debug/CPUID adaptations retain their exact source-hash chain. Additional
+upstream sources and authored wrappers participate in one manifest.
+
+Canonical per-translation-unit C snapshots preserve the absolute paths used by
+static symbol names and __FILE__. Cache identity includes selected source, all
+headers/included fragments/overrides, pinned upstream inventory, compiler DLLs
+and runtime descriptors, options and helper scripts. A copied profile with only
+a C# bridge change reused two objects with their original producing receipts;
+changed C/header/parser inputs invalidate reuse. This avoids re-emission for
+independent consumer changes without mixing unverified C inputs.
+
+Actual address, pte32, prog and machine sources pass the combined preamble. The
+frozen attempt-7cn5o6ww full set (90 sources) is now emitting with two workers.
+Linkage, initializer/import audit and actual managed execution remain open.

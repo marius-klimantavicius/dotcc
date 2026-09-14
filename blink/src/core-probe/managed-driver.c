@@ -1,5 +1,6 @@
 /* An owning, process-discarded test worker. No core call may follow disposal. */
 #include "HostMemory.h"
+#include "HostFileMapping.h"
 #define main CoreProbe
 #include "probe.c"
 #undef main
@@ -9,6 +10,7 @@ int main(void) {
   if (driver_has_run) return 21;
   driver_has_run = 1;
   if (BlinkHostMemoryBegin(64 * 1024 * 1024)) return 20;
+  if (BlinkHostMemoryEnablePrivateFiles()) { BlinkHostMemoryDisposeWorker(); return 22; }
   int result = CoreProbe();
   printf("core retained-mappings=%zu charged-bytes=%zu\n",
          BlinkHostMemoryMappings(), BlinkHostMemoryBytes());
