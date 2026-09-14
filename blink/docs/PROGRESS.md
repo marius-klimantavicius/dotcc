@@ -574,3 +574,12 @@ Linux append behavior. fsync/fdatasync validate ephemeral in-memory files whose
 writes are already committed; no persistent storage is promised. Native and all
 four managed modes pass at host-file-updates/attempt-z_73a10u, together with
 HostFiles/InstanceIo regressions, actual C function pointers and two-worker GC.
+
+## Significant progress: genuine TLS storage and object-global repairs
+
+Two-worker signal tests exposed shared explicit TLS arrays; the reduced linked
+case then exposed line-wise deletion of repeated getter braces and attributes.
+Both are fixed generically, preserving actual array declarations and complete
+generated members. Native/direct/object-link GC regressions pass, and the full
+repository suite passes a warning-free build,2238 units and520 functional cases
+with1041 explicit skips. Compiler outputs are frozen for the next core profile.

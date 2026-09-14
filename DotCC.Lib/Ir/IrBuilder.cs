@@ -2594,6 +2594,7 @@ internal sealed partial class IrBuilder
 
     private void BuildGlobalFnPtrArray(Item declarator, Item? initItem, bool scalarInitializer = false, bool isExtern = false)
     {
+        _sawThreadLocalSpec = false;
         var (returnType, arrayName, parameters) = declarator.Content switch
         {
             C.FnPtrArrayDeclarator d => (d.Arg0, d.Arg3, (Item?)d.Arg6),
@@ -2634,8 +2635,9 @@ internal sealed partial class IrBuilder
             _ => throw new IrUnsupportedException(TypeName(arrayName.Content)),
         };
         var element = FnPtrType(returnType, parameters).WithQuals(quals);
-        if (isExtern) BuildExternArr(element, name, dimensions);
-        else BuildGlobalArr(element, name, dimensions, initItem, null);
+        var threadLocal = _sawThreadLocalSpec;
+        if (isExtern) BuildExternArr(element, name, dimensions, threadLocal);
+        else BuildGlobalArr(element, name, dimensions, initItem, null, threadLocal: threadLocal);
     }
 
     private DeclStmt BuildFnPtrLocal(Item retItem, Item nameItem, Item? paramsItem, Item? initItem, int pointerLevels = 0)

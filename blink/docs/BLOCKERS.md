@@ -176,3 +176,22 @@ owner member shadowed System.IO.Path references in embedded Libc, producing
 CS0119. Renaming the authored test helper SelectExecutable makes that fixture
 qualify; generic namespace qualification still needs a reduced repair and full
 validation. No corresponding pinned-core definition has yet been observed.
+
+## B019 — explicit TLS arrays lose storage flag (fixed)
+
+The private signal registry concurrency test showed that explicit `_Thread_local`
+scalar/record arrays were shared, while scalar TLS and typedef-array TLS worked.
+IR construction now carries the storage flag through ordinary, extern and
+function-pointer array declarations into the existing pinned per-thread backend.
+Unsupported initialized TLS arrays fail explicitly instead of becoming shared.
+Native, direct and object-linked worker/GC reductions pass. No registry storage
+reshaping conceals the defect.
+
+## B020 — object-linked global members deduplicated by line (fixed)
+
+The TLS reduction then exposed repeated getter braces and ThreadStatic attributes
+being discarded during object linking. Global sections now merge complete
+backend-generated members, preserving attributes and bodies while retaining
+identical-definition deduplication. Actual signal registry object-link all4 passes.
+Combined full suite: warning-free build,2238 unit and520 functional tests pass,
+1041 explicit skips; artifacts/repository-tls-global-member.log.

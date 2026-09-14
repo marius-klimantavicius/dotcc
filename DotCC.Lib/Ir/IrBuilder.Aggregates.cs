@@ -553,9 +553,14 @@ internal sealed partial class IrBuilder
     /// the field takes that mangled name and an alias symbol is registered so
     /// in-function uses resolve to it; otherwise it's a file-scope name.</summary>
     private void BuildGlobalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, bool inferOuter = false)
-        => BuildGlobalArr(ResolveType(typeItem), nameItem, dimsItem, initItem, csName, DeclarationAlignment(typeItem), inferOuter);
+    {
+        _sawThreadLocalSpec = false;
+        var element = ResolveType(typeItem);
+        var threadLocal = _sawThreadLocalSpec;
+        BuildGlobalArr(element, nameItem, dimsItem, initItem, csName, DeclarationAlignment(typeItem), inferOuter, threadLocal);
+    }
 
-    private void BuildGlobalArr(CType elem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, int alignment = 0, bool inferOuter = false)
+    private void BuildGlobalArr(CType elem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, int alignment = 0, bool inferOuter = false, bool threadLocal = false)
     {
         var name = Tok(nameItem);
         var dims = dimsItem is { } di ? TryConstDims(di) ?? throw new IrUnsupportedException("file-scope array requires a constant bound") : null;
@@ -582,23 +587,23 @@ internal sealed partial class IrBuilder
             throw new IrUnsupportedException($"file-scope array '{name}' needs a constant size or an initializer");
         }
 
-        AddGlobalArray(name, arrType, init, csName, alignment);
+        AddGlobalArray(name, arrType, init, csName, alignment, threadLocal);
     }
 
     /// <summary>Register a global-array symbol and its <see cref="GlobalVar"/>. A
     /// non-null <paramref name="csName"/> marks a static local (mangled field name +
     /// alias symbol); otherwise it's a file-scope name.</summary>
-    private void AddGlobalArray(string name, CType arrType, CExpr init, string? csName, int alignment = 0)
+    private void AddGlobalArray(string name, CType arrType, CExpr init, string? csName, int alignment = 0, bool threadLocal = false)
     {
         if (csName is not null)
         {
-            var sym = new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true, TargetName = csName };
+            var sym = new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true, IsThreadLocal = threadLocal, TargetName = csName };
             Globals.Add(new GlobalVar(sym, init));
             _symbols.DeclareAlias(sym);
         }
         else
         {
-            var sym = _symbols.Declare(new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true });
+            var sym = _symbols.Declare(new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true, IsThreadLocal = threadLocal });
             Globals.Add(new GlobalVar(sym, init));
         }
     }
@@ -608,7 +613,9 @@ internal sealed partial class IrBuilder
     /// plus the NUL, zero-padded to an explicit size (or truncated, C's rule).</summary>
     private void BuildGlobalCharArr(Item typeItem, Item nameItem, Item strSeqItem, Item? dimsItem, string? csName, bool wide = false)
     {
+        _sawThreadLocalSpec = false;
         var elem = ResolveType(typeItem);
+        var threadLocal = _sawThreadLocalSpec;
         var bytes = WideArrValues(elem, strSeqItem, wide);
         bytes.Add(0);   // NUL
         var dims = dimsItem is { } di ? TryConstDims(di) : null;
@@ -621,7 +628,7 @@ internal sealed partial class IrBuilder
             elems.Add(new LitInt(v.ToString(inv), v) { Type = CType.Int });
         }
         AddGlobalArray(Tok(nameItem), new CType.Array(elem, total),
-            new PinnedArray(elem, elems, null) { Type = new CType.Pointer(elem) }, csName, DeclarationAlignment(typeItem));
+            new PinnedArray(elem, elems, null) { Type = new CType.Pointer(elem) }, csName, DeclarationAlignment(typeItem), threadLocal);
     }
 
     /// <summary>An <c>extern T a[N];</c> / <c>extern T a[];</c> declaration — storage
@@ -629,13 +636,17 @@ internal sealed partial class IrBuilder
     /// register the name's type so same-TU references resolve (a sized extent keeps
     /// the array type for <c>sizeof</c>; an incomplete one decays to a pointer).</summary>
     private void BuildExternArr(Item typeItem, Item nameItem, Item? dimsItem)
-        => BuildExternArr(ResolveType(typeItem), nameItem, dimsItem);
+    {
+        _sawThreadLocalSpec = false;
+        var element = ResolveType(typeItem);
+        BuildExternArr(element, nameItem, dimsItem, _sawThreadLocalSpec);
+    }
 
-    private void BuildExternArr(CType elem, Item nameItem, Item? dimsItem)
+    private void BuildExternArr(CType elem, Item nameItem, Item? dimsItem, bool threadLocal = false)
     {
         var dims = dimsItem is { } di ? TryConstDims(di) : null;
         var type = dims is { Count: >= 1 } ? MakeArrayType(elem, dims) : new CType.Pointer(elem);
-        _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Extern, IsGlobal = true });
+        _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Extern, IsGlobal = true, IsThreadLocal = threadLocal });
     }
 
     /// <summary>A block-scope <c>static T a[…]</c> — a pinned global field under a

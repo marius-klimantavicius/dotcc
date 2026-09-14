@@ -133,7 +133,7 @@ public static partial class Compiler
         var typeOrigins = new Dictionary<string, string>(StringComparer.Ordinal);
         var aliasLines = new List<string>();
         var aliasSeen = new HashSet<string>(StringComparer.Ordinal);
-        var globalLines = new List<string>();
+        var globalMembers = new List<string>();
         var globalSeen = new HashSet<string>(StringComparer.Ordinal);
         var functions = new StringBuilder();
         var functionSources = new List<CSharpFunctionSource>();
@@ -198,6 +198,7 @@ public static partial class Compiler
             var buf = new StringBuilder();
             string? functionName = null;
             var functionBody = new StringBuilder();
+            var objectGlobals = new StringBuilder();
             void FlushFunction()
             {
                 if (functionName != null) functionSources.Add(new(functionName, functionBody.ToString()));
@@ -294,7 +295,7 @@ public static partial class Compiler
                 }
                 else if (section == "globals")
                 {
-                    if (line.Length > 0 && globalSeen.Add(line)) { globalLines.Add(line); }
+                    objectGlobals.Append(line).Append('\n');
                 }
                 else if (section == "functions")
                 {
@@ -305,6 +306,7 @@ public static partial class Compiler
             }
             FlushType();
             FlushFunction();
+            MergeGeneratedGlobalMembers(objectGlobals.ToString(), globalSeen, globalMembers);
         }
 
         if (!libraryMode && mainArity < 0)
@@ -317,7 +319,7 @@ public static partial class Compiler
         foreach (var name in usedFunctionAddresses)
             if (inlineMetadata.TryGetValue(name, out var entry)) inlineMetadata[name] = entry with { AddressUsed = true };
         var inline = ProcessInlineFunctions(functionSources, inlineMetadata, typeByName,
-            string.Join("\n", globalLines), outputOptions, globalNames);
+            string.Join("\n", globalMembers), outputOptions, globalNames);
         typeByName = new Dictionary<string, string>(inline.Types, StringComparer.Ordinal);
         typeOrder.RemoveAll(name => !typeByName.ContainsKey(name));
         if (!missingBoundaries) { functions.Clear(); functions.Append(inline.Functions); functionSources = inline.Parts.ToList(); }
@@ -354,6 +356,32 @@ public static partial class Compiler
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
                 mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig));
+    }
+
+    // Global sections use the backend's fixed four-space member indentation.
+    // Deduplicate whole members, never lines: repeated attributes and getter
+    // braces belong to distinct declarations and must remain attached to each.
+    private static void MergeGeneratedGlobalMembers(string text, HashSet<string> seen, List<string> members)
+    {
+        var member = new StringBuilder();
+        var hasDeclaration = false;
+        void Flush()
+        {
+            var value = member.ToString().TrimEnd();
+            if (value.Length != 0 && seen.Add(value)) members.Add(value);
+            member.Clear();
+            hasDeclaration = false;
+        }
+        foreach (var line in text.Split('\n'))
+        {
+            var declaration = line.StartsWith("    public ", StringComparison.Ordinal)
+                || line.StartsWith("    private ", StringComparison.Ordinal);
+            var attribute = line.StartsWith("    [", StringComparison.Ordinal);
+            if (hasDeclaration && (declaration || attribute)) Flush();
+            if (member.Length != 0 || !string.IsNullOrWhiteSpace(line)) member.Append(line).Append('\n');
+            hasDeclaration |= declaration;
+        }
+        Flush();
     }
 
     private static string GeneratedOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null, bool nested = false, bool literalPool = false)
