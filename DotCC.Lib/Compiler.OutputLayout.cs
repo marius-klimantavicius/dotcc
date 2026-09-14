@@ -31,14 +31,21 @@ public static partial class Compiler
 
     // The object contract stores one independently keyed cache property per function.
     // Coalesce those records only after linking/definition ownership is resolved.
-    private static string RenderTypeDeclarations(IReadOnlyDictionary<string, string> declarations, string owner, bool isPublic, LiteralPool.Output literals)
+    private static string RenderTypeDeclarations(IReadOnlyDictionary<string, string> declarations, string owner, bool isPublic, LiteralPool.Output literals,
+        NestedTagLayout? tagLayout = null)
     {
         var types = new StringBuilder();
         var pointers = new Dictionary<string, string>(StringComparer.Ordinal);
+        var tags = new StringBuilder();
         foreach (var (key, text) in declarations)
         {
             if (key.StartsWith(MacroConstantPrefix, StringComparison.Ordinal)
                 || key.StartsWith(LiteralPool.TypeKeyPrefix, StringComparison.Ordinal)) continue;
+            if (tagLayout?.TypeNames.ContainsKey(key.TrimStart('@')) == true)
+            {
+                tags.Append(literals.Rewrite(text));
+                continue;
+            }
             if (!key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)) { types.Append(literals.Rewrite(text)); continue; }
             int start = text.IndexOf('{'), end = text.LastIndexOf('}');
             if (start < 0 || end <= start) throw new CompileException("invalid function-pointer object record; regenerate objects");
@@ -78,6 +85,9 @@ public static partial class Compiler
                 parent = name;
             }
         }
+        if (tags.Length != 0)
+            types.Append(isPublic ? "public " : "internal ").Append("static unsafe class ")
+                .Append(tagLayout!.Container).Append("\n{\n").Append(tags).Append("}\n");
         types.Append(literals.Source);
         return types.ToString();
     }

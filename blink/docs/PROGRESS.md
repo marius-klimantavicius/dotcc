@@ -708,3 +708,14 @@ argv.c, biosrom.c, endswith.c, loader.c and tainted.c to the83-source interprete
 oracle closure. Absolute paths require the owner's SetOverlays initialization;
 the initial omission and SIGSEGV are retained at attempt-bly5yapz. No managed
 profile changed, guest instructions ran, or malformed-ELF gate passed here.
+
+## Significant progress: generic naming and object-storage repairs
+
+B018/B023/B024 are repaired with native-checked reduced regressions. The full
+repository run passes2239 unit and535 functional tests with1047 explicit skips;
+build succeeds with17 analyzer warnings in unchanged existing test files.
+Log: artifacts/repository-tag-static-path.log. Twelve affected upstream objects
+re-emit with distinct local-static storage; a transparent mixed-producer replay
+clears all seven original declaration errors and exposes355 later diagnostics
+at core-execution/attempt-0imxwoxa. That replay cannot count as fresh canonical
+emission or P1 execution. B025–B029 now record the concrete next repair families.

@@ -169,13 +169,15 @@ and 17-object links pass. All 92 objects emit, but full linkage reports a distin
 linger_linux conflict (address.c/describesignal.c), subsequently resolved by B021. This was campaign
 staging identity, not an upstream instruction or compiler algorithm change.
 
-## B018 — generic Libc System.IO.Path shadowing (open)
+## B018 — generic Libc System.IO.Path shadowing (fixed)
 
 The first HostProcessPolicy fixture defined a C helper named Path. Its generated
 owner member shadowed System.IO.Path references in embedded Libc, producing
 CS0119. Renaming the authored test helper SelectExecutable makes that fixture
-qualify; generic namespace qualification still needs a reduced repair and full
-validation. No corresponding pinned-core definition has yet been observed.
+qualify. The five generic runtime call sites now use global::System.IO.Path;
+the native-checked Path-named fixture passes direct/object and flat/nested
+consumers. See RUNTIME-PATH-IDENTIFIER.md and the full regression result below.
+No corresponding pinned-core definition has yet been observed.
 
 ## B019 — explicit TLS arrays lose storage flag (fixed)
 
@@ -223,19 +225,58 @@ and retain Blink for focused fixtures. Default conditional projection reproduces
 every previous bridge source exactly; no method body or generated C# was edited.
 The full consumer must define that symbol and use the matching container.
 
-## B023 — nested generated C# names collide (open)
+## B023 — nested generated C# names collide (fixed)
 
 The first complete raw C# build reports CS0102 for DescribeFlagz, DisArg and
 sysinfo_linux in BlinkCore. Actual C has separate tag and ordinary identifier
-namespaces; the generated nested representation must preserve them. A reduced
-generic repair is in progress; no upstream or generated C# files are patched.
+namespaces. The generic output layout now moves only colliding tags into a
+collision-safe nested scope and preserves their type aliases, including enums
+and escaped names. Native/direct/object/split/GC regressions pass, and the actual
+derived full link clears these collisions; see TAG-NAMES.md.
 Baseline: artifacts/core-execution/attempt-68vow5of/raw-build.log.
 
-## B024 — static-local aliases collide across translation units (open)
+## B024 — static-local aliases collide across translation units (fixed)
 
 That same raw build reports duplicate once__s0, b__s0 and buf__s0 members in
 BlinkCoreGlobals. Per-object local-static numbering restarts; static-function
 qualification does not also qualify these local-static symbols. Identical
-declarations can silently deduplicate storage. Independent native/object-link reductions
-and a generic repair are in progress. Host callback diagnostics have not yet
-been reached; the complete library has not executed guest instructions.
+declarations can silently deduplicate storage. The IR now tracks hoisted symbols
+and applies the existing source-identity suffix before object emission. Native,
+direct/object and GC regressions pass. Twelve affected actual objects re-emit
+with21 distinct qualified locals, and their derived full link clears all CS0102
+errors; see STATIC-LOCAL-OBJECTS.md. Full guest execution remains open.
+
+## Next actual full-build failures
+
+The explicit mixed-producer diagnostic replay at
+artifacts/core-execution/attempt-0imxwoxa clears all seven original CS0102 errors
+and reaches355 later diagnostics. It is not a fresh uniform-compiler emission or
+managed runtime result. The summary and exact generated/source matches are
+preserved beside that receipt.
+
+- **B025 — unsigned coercion of C boolean results (open):** calls, stores and
+  returns omit conversions from emitted CBool to uint/ulong. Native reduction
+  returns5; the current C# build fails.
+- **B026 — array-to-pointer member typing (open):** expressions such as
+  `m->opcache->field`, where opcache is a one-element record array, infer int
+  because member-type lookup peels pointers but not decayed arrays. The actual
+  record declarations are correct; this also affects decoded instruction fields.
+  Native reduction prints `40 3 2` and reproduces four conversion failures.
+- **B027 — fractionless floating literals (open):** valid C `1.f`, `2.` and
+  `3.e1f` are emitted with invalid C# spelling. Native reduction returns42.0.
+  The apparent SSE `.f` member errors came from these literals, not union fields.
+- **B028 — unreachable profile branches retain undefined names (open):**
+  constant-false disabled-JIT paths still render Jitter and other unselected
+  helpers. Generic removal must preserve C short-circuit effects and label entry;
+  neither generated-source rewriting nor helper placeholders qualify a fix.
+- **B029 — remaining selected source/header/host bindings (open):** genuine
+  upstream and libc helpers, constants and29 isolated host operations remain
+  unresolved. A source/binding ownership inventory is in progress. Native loader
+  extraction independently adds five upstream files; service execution is still
+  unqualified.
+
+The three type/literal reductions and compiler identities are recorded at
+artifacts/core/reduced/typing/receipt.json. B018/B023/B024 have passing focused
+repairs and the centralized repository run passes:2239 unit and535 functional
+tests,1047 explicit skips (artifacts/repository-tag-static-path.log). The build
+has zero errors and17 analyzer warnings in existing unchanged test files.

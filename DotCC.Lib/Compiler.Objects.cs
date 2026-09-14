@@ -342,12 +342,14 @@ public static partial class Compiler
             if (survivors.Count > 0) { importsClass = RenderImportsClass(survivors, imports, libraryMode); }
         }
         if (className != null) CheckLibraryClassCollision(libraryClass, typeByName.Keys, definedNames);
-        aliasText = ResolveGeneratedAliases(aliasText, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName) + GeneratedOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName, nested, outputOptions?.LiteralPool == true);
+        var tagLayout = PlanNestedTags(typeByName.Keys, functionSources.Select(f => f.Name), libraryClass, namespaceName, nested);
+        aliasText = ResolveGeneratedAliases(aliasText, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName, tagLayout.TypeNames)
+            + tagLayout.Aliases + GeneratedOwnerAliases(typeByName.Keys, definedNames, libraryMode, libraryClass, namespaceName, nested, outputOptions?.LiteralPool == true);
         bool includeZig = IncludeZigRuntime(outputOptions, usesZig);
         var owner = libraryMode ? libraryClass : "DotCcProgram";
         var literals = LiteralPool.CreateOutput(typeByName, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
         var pointerResolvers = ResolveExternalPointerOwners(typeByName, definedNames, typeByName.Keys);
-        var types = RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals);
+        var types = RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout);
         globalText = literals.Rewrite(globalText);
         var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = literals.Rewrite(part.Text) }).ToArray();
         return BuildSourceFiles(literals.Rewrite(functions.ToString()), parts, aliasText,
@@ -414,5 +416,10 @@ public static partial class Compiler
         var suffix = "__unit_" + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(identity)));
         foreach (var function in unit.Functions.Where(function => function.Sym.Storage == Ir.Storage.Static))
             function.Sym.TargetName += suffix;
+        // Hoisted block statics restart their sequence in every separately
+        // compiled object. Keep their aliases/storage distinct even when the
+        // emitted initializer lines happen to be identical and could dedupe.
+        foreach (var local in unit.StaticLocals)
+            local.TargetName += suffix;
     }
 }

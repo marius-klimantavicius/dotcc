@@ -622,7 +622,7 @@ public static unsafe partial class Libc
     public static byte* tmpnam(byte* s)
     {
         const int LTmpnam = 260;  // keep in sync with L_tmpnam in include/stdio.h
-        var name = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        var name = global::System.IO.Path.Combine(global::System.IO.Path.GetTempPath(), global::System.IO.Path.GetRandomFileName());
         var bytes = Encoding.UTF8.GetBytes(name);
         if (bytes.Length + 1 > LTmpnam) { return null; }
         // tmpnam(NULL) is non-reentrant by spec (shared buffer, overwritten by a
@@ -766,7 +766,7 @@ public static unsafe partial class Libc
         Stream stream;
         try
         {
-            var path = Path.GetTempFileName();
+            var path = global::System.IO.Path.GetTempFileName();
             stream = new FileStream(path, FileMode.Create, FileAccess.ReadWrite,
                 FileShare.None, bufferSize: 4096, FileOptions.DeleteOnClose);
         }

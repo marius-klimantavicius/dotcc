@@ -39,7 +39,7 @@ public static class NativeImports
         {
             foreach (var variant in variants)
             {
-                var candidate = Path.Combine(dir, variant);
+                var candidate = global::System.IO.Path.Combine(dir, variant);
                 if (File.Exists(candidate) && NativeLibrary.TryLoad(candidate, out var h)) { return h; }
             }
         }

@@ -69,7 +69,7 @@ public static unsafe partial class Libc
             names = new string[entries.Length + 2];
             names[0] = ".";
             names[1] = "..";
-            for (var i = 0; i < entries.Length; i++) { names[i + 2] = Path.GetFileName(entries[i]); }
+            for (var i = 0; i < entries.Length; i++) { names[i + 2] = global::System.IO.Path.GetFileName(entries[i]); }
         }
         catch (UnauthorizedAccessException) { errno = EACCES; return null; }
         catch (IOException) { errno = EIO; return null; }
@@ -328,7 +328,7 @@ public static unsafe partial class Libc
     {
         var p = Str(path);
         string full;
-        try { full = Path.GetFullPath(p); }
+        try { full = global::System.IO.Path.GetFullPath(p); }
         catch (Exception) { errno = EINVAL; return null; }
         if (!File.Exists(full) && !Directory.Exists(full)) { errno = ENOENT; return null; }
         var need = Encoding.UTF8.GetByteCount(full) + 1;

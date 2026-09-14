@@ -238,13 +238,16 @@ public static partial class Compiler
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
                 cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
-        var aliases = ResolveGeneratedAliases(cg.Aliases, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName) + GeneratedOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
+        var tagLayout = PlanNestedTags(cg.TypeDeclarations!.Keys,
+            irBuilder.Functions.Select(function => function.Sym.TargetName), libraryClass, namespaceName, nested);
+        var aliases = ResolveGeneratedAliases(cg.Aliases, nested ? NamespacePrefix(namespaceName) + libraryClass : namespaceName, tagLayout.TypeNames)
+            + tagLayout.Aliases + GeneratedOwnerAliases(cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
             irBuilder.Functions.Select(function => function.Sym.TargetName), libraryMode, libraryClass, namespaceName, nested, outputOptions?.LiteralPool == true);
         var owner = libraryMode ? libraryClass : "DotCcProgram";
         var literals = LiteralPool.CreateOutput(cg.TypeDeclarations!, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
         var pointerResolvers = ResolveExternalPointerOwners(cg.TypeDeclarations!,
             irBuilder.Functions.Select(function => function.Sym.TargetName), irBuilder.Globals.Select(global => global.Sym.TargetName));
-        var types = RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals);
+        var types = RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout);
         var globals = literals.Rewrite(cg.Globals);
         var parts = cg.FunctionSources?.Select(part => part with { Text = literals.Rewrite(part.Text) }).ToArray();
         return BuildSourceFiles(literals.Rewrite(cg.Functions), parts, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,

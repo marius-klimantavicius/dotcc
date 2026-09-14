@@ -598,8 +598,7 @@ internal sealed partial class IrBuilder
         if (csName is not null)
         {
             var sym = new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true, IsThreadLocal = threadLocal, TargetName = csName };
-            Globals.Add(new GlobalVar(sym, init));
-            _symbols.DeclareAlias(sym);
+            RegisterStaticLocal(sym, init);
         }
         else
         {

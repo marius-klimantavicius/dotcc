@@ -2539,8 +2539,7 @@ internal sealed partial class IrBuilder
             };
             CExpr? slInit = null;
             if (initItem is { } ii) { slInit = BuildDeclaratorInitializer(sym.Type, ii); EnsureNotEmbed(slInit); CheckQualifierDiscard(slInit, sym.Type, SrcPos.From(ii), "initialization"); }
-            Globals.Add(new GlobalVar(sym, slInit));
-            _symbols.DeclareAlias(sym);
+            RegisterStaticLocal(sym, slInit);
         });
         return new DeclStmt(System.Array.Empty<LocalDecl>());
     }
@@ -2572,8 +2571,7 @@ internal sealed partial class IrBuilder
             Storage = Storage.Static, IsGlobal = true,
             TargetName = $"{_symbols.Escape(Tok(nameItem))}__s{_staticLocalSeq++}",
         };
-        Globals.Add(new GlobalVar(sym, init));
-        _symbols.DeclareAlias(sym);
+        RegisterStaticLocal(sym, init);
         return new DeclStmt(System.Array.Empty<LocalDecl>());
     }
 

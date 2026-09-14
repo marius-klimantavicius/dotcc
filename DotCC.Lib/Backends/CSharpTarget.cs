@@ -34,7 +34,7 @@ internal sealed class CSharpTarget : ITarget
                 .Concat(f.Variadic && !f.IsNativeCallConv ? new[] { "global::System.ReadOnlySpan<VaArg>" } : global::System.Array.Empty<string>())
                 .Append(RenderType(f.Return))) + ">",
         CType.Named n => n.Name,
-        CType.Enum e => e.Name,
+        CType.Enum e => EmitHelpers.Id(e.Name),
         CType.ComplexType => "global::System.Numerics.Complex",
         CType.Float128Type => "Float128",
         // A Zig value optional `?T` → C# Nullable<T> (`T?`): null = none, `.?` = .Value,

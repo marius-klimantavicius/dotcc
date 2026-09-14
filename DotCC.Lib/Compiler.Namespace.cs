@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -28,11 +29,14 @@ public static partial class Compiler
         }));
     }
 
-    private static string ResolveGeneratedAliases(string aliases, string? namespaceName) =>
+    private static string ResolveGeneratedAliases(string aliases, string? namespaceName,
+        IReadOnlyDictionary<string, string>? relocatedTypes = null) =>
         string.Join("\n", aliases.Split('\n').Select(line =>
         {
             if (!line.StartsWith(EnumAliasMarker, StringComparison.Ordinal)) return line;
             var name = line[EnumAliasMarker.Length..];
-            return $"using {EnumAliasName(name)} = global::{NamespacePrefix(namespaceName)}{name};";
+            var target = relocatedTypes != null && relocatedTypes.TryGetValue(name.TrimStart('@'), out var relocated)
+                ? relocated : NamespacePrefix(namespaceName) + name;
+            return $"using {EnumAliasName(name)} = global::{target};";
         }));
 }

@@ -39,7 +39,8 @@ bindings = json.loads((profile / 'binding-sources.json').read_text())
 generated = ROOT / 'generated/core-objects' / assembly['key'] / 'ManagedCore'
 receipt = dict(kind='actual-upstream-core-consumer', passed=False, assembly_receipt=str(assembly_path),
                assembly_receipt_sha256=sha(assembly_path), profile=str(profile),
-               profile_inputs_sha256=sha(profile / 'inputs.json'), results={})
+               profile_inputs_sha256=sha(profile / 'inputs.json'),
+               diagnostic_replay=assembly.get('diagnostic_replay', False), results={})
 
 def save():
     (out / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
@@ -195,7 +196,8 @@ try:
         if sha(path) != receipt['prepared_inputs'][str(path.relative_to(a))]:
             raise RuntimeError('raw bridge source changed: ' + path.name)
     receipt['optimized_generated'] = {p.name:sha(p) for p in (a / 'optimized-generated').glob('*.cs')}
-    receipt['passed'] = not args.build_only
+    receipt['runtime_matrix_passed'] = not args.build_only
+    receipt['passed'] = not args.build_only and not receipt['diagnostic_replay']
     receipt['build_only'] = args.build_only
     save()
     print('core consumer result: ' + str(out / 'receipt.json'))

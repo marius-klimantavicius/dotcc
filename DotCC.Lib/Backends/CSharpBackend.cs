@@ -78,6 +78,8 @@ internal sealed partial class CSharpBackend
         typeNames.UnionWith(unit.Enums.Select(e => e.Name));
         cg._typeShadowedGlobals = new HashSet<string>(
             unit.Globals.Select(g => g.Sym.TargetName).Where(typeNames.Contains), StringComparer.Ordinal);
+        cg._typeShadowedFunctions = new HashSet<string>(
+            unit.Functions.Select(f => f.Sym.TargetName.TrimStart('@')).Where(typeNames.Contains), StringComparer.Ordinal);
         var fns = new StringBuilder();
         var functionSources = new List<CSharpFunctionSource>();
         var exports = new List<DotCC.EmitHelpers.Export>();
@@ -358,7 +360,7 @@ internal sealed partial class CSharpBackend
     private string EnumText(EnumTypeDef e)
     {
         var sb = new StringBuilder();
-        sb.Append(_publicTypes ? "public enum " : "enum ").Append(e.Name).Append(" : ").Append(Cs(e.Underlying)).Append("\n{\n");
+        sb.Append(_publicTypes ? "public enum " : "enum ").Append(DotCC.EmitHelpers.Id(e.Name)).Append(" : ").Append(Cs(e.Underlying)).Append("\n{\n");
         foreach (var m in e.Members)
         {
             sb.Append("    ").Append(DotCC.EmitHelpers.Id(m.Name)).Append(" = ")
@@ -1482,6 +1484,7 @@ internal sealed partial class CSharpBackend
     // unqualified name resolves to the type (CS0119). Qualifying the field
     // restores the ordinary-namespace reading.
     private HashSet<string> _typeShadowedGlobals = new(StringComparer.Ordinal);
+    private HashSet<string> _typeShadowedFunctions = new(StringComparer.Ordinal);
 
     /// <summary>The spelling of a variable reference: the bare TargetName, or
     /// <c>DotCcGlobals.</c>-qualified when an emitted type name shadows it.</summary>
@@ -2049,11 +2052,15 @@ internal sealed partial class CSharpBackend
             case EnumConstRef ec:
             {
                 var enumTy = Cs(ec.Sym.Type.Unqualified);
-                if (_typeShadowedGlobals.Contains(enumTy))
+                // Relocatable objects can acquire a same-named function or
+                // global only at link time. Always retain a type-only alias.
+                if (_relocatable)
                 {
-                    if (_relocatable) { _enumAliases.Add(enumTy); enumTy = Compiler.EnumAliasName(enumTy); }
-                    else enumTy = "global::" + enumTy;
+                    _enumAliases.Add(enumTy);
+                    enumTy = Compiler.EnumAliasName(enumTy);
                 }
+                else if (_typeShadowedGlobals.Contains(enumTy.TrimStart('@')) || _typeShadowedFunctions.Contains(enumTy.TrimStart('@')))
+                    enumTy = "global::" + enumTy;
                 return ($"{enumTy}.{DotCC.EmitHelpers.Id(ec.Sym.Name)}", PPostfix);
             }
             // Every function designator reads its canonical cached address.
