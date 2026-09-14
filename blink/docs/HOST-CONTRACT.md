@@ -49,3 +49,8 @@ is insufficient. AES and SSE4.1/4.2 are explicitly clear in the inspected source
 No managed host services, complete syscall inventory, or isolated execution gate
 is marked passed by this document. The service fixture's observed syscall ledger
 is maintained separately in `GUEST.md`.
+
+The demonstrated exclusion mismatch is now corrected by the qualified staged
+adaptation in [HOST-CPU.md](HOST-CPU.md). Its per-bit inventory and observed
+matrices supersede the open mismatch above; broad instruction qualification
+remains required.

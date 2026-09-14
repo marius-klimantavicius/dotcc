@@ -256,3 +256,13 @@ only when their actual preprocessing trace proves that absence; the failed
 required-match trace remains preserved. Mismatching or partly selected overrides
 still fail. The next observed closure gap is measured winsize/ioctl host storage,
 which the guest worker is qualifying before continuing the frozen object scan.
+
+## Significant progress: CPUID matches selected exclusions
+
+Exact-hash staging adds existing exclusion guards to three incorrect x87/MMX
+feature advertisements. Eight native configurations permit only those changes;
+16 actual CPUID queries agree in raw/optimized JIT/AOT. Seven actual native
+instruction probes verify excluded x87/MMX/BMI2/ADX faults and retained SSE2/
+FXSAVE-XMM behavior. The retained-feature inventory distinguishes selected code
+from qualification. This resolves the demonstrated B004 mismatch; broad managed
+instruction/timing/entropy/syscall qualification remains open.
