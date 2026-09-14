@@ -222,3 +222,13 @@ Current ownership: coordinator integrates host callbacks and commits; guest
 worker owns inferred outer-array dimensions and subsequent core closure
 translation; inputs worker audits advertised CPUID against excluded handlers.
 P0 is passed. P1 remains active; P2–P6 remain open.
+
+## Significant progress: private file/vector C callbacks
+
+The common instance descriptor table is now reached by real translated C
+open/close/dup/seek/read/write/readv/writev calls. Bounded 64 KiB owned transfers
+preserve legal short I/O; paths remain inside the private namespace. Native C
+comparisons and raw/optimized JIT/AOT pass, including 128 KiB exact bytes, sparse
+files, shared cursors, optional argument evaluation, captured streams and two
+concurrent owners. Full-core binding, guest buffer validation, metadata and
+complete socket/readiness callbacks remain open.
