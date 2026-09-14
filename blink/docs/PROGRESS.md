@@ -564,3 +564,13 @@ valid-buffer cases; raw/optimized JIT/AOT and native ASan/UBSan pass. Overflow,
 logical bounds and actual C function-pointer checks are included. Receipt:
 host-ancillary/attempt-edgk8yzj. This supplies a retained ancillary.c dependency
 without claiming ancillary socket transport, Unix sockets or descriptor passing.
+
+## Significant progress: bounded file resizing and positioned writes
+
+Private pwrite/ftruncate/truncate now share existing nodes, cursors and quotas;
+growth is zero-filled, shrink releases quota and failed growth is atomic.
+Positioned writes preserve shared cursor state, including the explicitly tested
+Linux append behavior. fsync/fdatasync validate ephemeral in-memory files whose
+writes are already committed; no persistent storage is promised. Native and all
+four managed modes pass at host-file-updates/attempt-z_73a10u, together with
+HostFiles/InstanceIo regressions, actual C function pointers and two-worker GC.

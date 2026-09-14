@@ -204,14 +204,18 @@ public sealed class VirtualFileSystem : IDisposable
         }
     }
 
-    public HostResult<int> Write(int descriptor, ReadOnlySpan<byte> source)
+    public HostResult<int> Write(int descriptor, ReadOnlySpan<byte> source) => WriteCore(descriptor, source, null);
+    public HostResult<int> WriteAt(int descriptor, ReadOnlySpan<byte> source, long offset) => WriteCore(descriptor, source, offset);
+
+    private HostResult<int> WriteCore(int descriptor, ReadOnlySpan<byte> source, long? offset)
     {
         lock (sync)
         {
             if (!TryDescription(descriptor, out var file) || !file.Access.HasFlag(FileAccessMode.Write)) return Fail<int>(GuestError.BadDescriptor);
             if (file.Node.Immutable) return Fail<int>(GuestError.ReadOnly);
+            if (offset < 0) return Fail<int>(GuestError.Invalid);
             if (source.Length == 0) return HostResult<int>.Success(0);
-            long position = file.Append ? file.Node.Bytes.LongLength : file.Position;
+            long position = file.Append ? file.Node.Bytes.LongLength : offset ?? file.Position;
             long maximumLength = file.Node.Bytes.LongLength + writableLimit - writableBytes;
             long available = maximumLength - position;
             if (available <= 0 || position > int.MaxValue) return Fail<int>(GuestError.NoSpace);
@@ -226,10 +230,50 @@ public sealed class VirtualFileSystem : IDisposable
                 writableBytes += length - previous;
             }
             source[..count].CopyTo(file.Node.Bytes.AsSpan((int)position, count));
-            file.Position = position + count;
+            if (!offset.HasValue) file.Position = position + count;
             file.Node.ModifyTicks = file.Node.ChangeTicks = DateTime.UtcNow.Ticks;
             return HostResult<int>.Success(count);
         }
+    }
+
+    public HostResult<int> Truncate(int descriptor, long length)
+    {
+        lock (sync)
+        {
+            if (!TryDescription(descriptor, out var file)) return Fail<int>(GuestError.BadDescriptor);
+            if (file.DirectoryPath != null || !file.Access.HasFlag(FileAccessMode.Write)) return Fail<int>(GuestError.Invalid);
+            return Resize(file.Node, length);
+        }
+    }
+    public HostResult<int> Truncate(string path, long length, string cwd = "/")
+    {
+        lock (sync)
+        {
+            if (disposed) return Fail<int>(GuestError.BadDescriptor);
+            if (length < 0) return Fail<int>(GuestError.Invalid);
+            var resolved = Resolve(path, cwd);
+            if (!resolved.Succeeded) return Fail<int>(resolved.Error);
+            if (directories.Contains(resolved.Value)) return Fail<int>(GuestError.IsDirectory);
+            return files.TryGetValue(resolved.Value, out var node) ? Resize(node, length) : Fail<int>(GuestError.NoEntry);
+        }
+    }
+    private HostResult<int> Resize(Node node, long length)
+    {
+        if (length < 0) return Fail<int>(GuestError.Invalid);
+        if (node.Immutable) return Fail<int>(GuestError.ReadOnly);
+        long previous = node.Bytes.LongLength;
+        if (length > int.MaxValue || length - previous > writableLimit - writableBytes) return Fail<int>(GuestError.NoSpace);
+        try { Array.Resize(ref node.Bytes, (int)length); }
+        catch (OutOfMemoryException) { return Fail<int>(GuestError.NoMemory); }
+        writableBytes += length - previous;
+        node.ModifyTicks = node.ChangeTicks = DateTime.UtcNow.Ticks;
+        return HostResult<int>.Success(0);
+    }
+    // Every successful operation is already committed to this ephemeral memory
+    // filesystem. No persistent host storage or delayed write queue exists.
+    public HostResult<int> Synchronize(int descriptor)
+    {
+        lock (sync) return TryDescription(descriptor, out _) ? HostResult<int>.Success(0) : Fail<int>(GuestError.BadDescriptor);
     }
 
     public HostResult<long> Seek(int descriptor, long offset, SeekOrigin origin)
