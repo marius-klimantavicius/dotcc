@@ -10,7 +10,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Native static musl HTTP guest | Six exact-wire request cases pass on direct Linux and native Blink; 18 guest syscall names observed | `scripts/build-guest.sh`, `scripts/test-native-service.py`, repeat with `--blink build/native/blink` |
 | Native archive/link audit | Relink byte-identical; 89 of 147 archive members, 185 dynamic imports | `scripts/audit-native-dependencies.py` |
 | Actual upstream decoder | Native/staged/raw JIT/raw AOT/optimized JIT/optimized AOT outputs agree for 11 encodings and ABI fields | `scripts/probe-decoder.sh` |
-| Actual interpreter embedding | Native arithmetic, guest memory, illegal instruction, unmapped memory and seven-step budget pass twice | `scripts/probe-core.sh --native-only` |
+| Actual interpreter embedding | Native arithmetic, memory/faults, seven-step budget, exit and exit_group traps pass twice | `scripts/probe-core.sh --native-only` |
 | Actual core ABI/register storage | 236 outputs match native profile in raw/optimized JIT/AOT, separate consumer and whole-library AOT roots | `tests/CoreAbi/run.py` |
 | Namespace / assignment-guard repairs | Warning-free build; 2225 unit pass; 505 functional pass, 1027 skipped | `scripts/test-repository.sh` |
 | Negated jump / nested string repairs | Warning-free build; 2228 unit pass; 507 functional pass, 1031 skipped | `scripts/test-repository.sh` |

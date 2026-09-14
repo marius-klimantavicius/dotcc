@@ -276,3 +276,15 @@ ioctl.c emits. Core snapshots also include the qualified CPUID adaptation.
 The next actual source gap is log.c's vsnprintf dependency: its generic header
 and runtime lacked the required va_list formatter. A reduced generic repair is
 in progress while the independent source scan continues.
+
+## Significant progress: actual native guest exit trap
+
+The embedding harness now enables upstream System.trapexit and executes real
+Linux exit and exit_group instruction sequences. Both return through the
+existing halt jump with exited/status recorded, before host exit or machine
+free. Native runs repeat successfully with statuses 37 and 42 alongside the
+existing arithmetic, budget and fault cases. Upstream restores the syscall IP
+to its instruction start (0x40000a), confirmed by throw.c and the native probe.
+No syscall algorithm or process-exit implementation was patched. Managed
+instruction execution remains open; the frozen source profiles will incorporate
+this extended authored harness on their next generation.

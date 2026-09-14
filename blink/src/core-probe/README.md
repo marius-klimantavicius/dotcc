@@ -200,3 +200,11 @@ actual representative instruction probes. This does not replace instruction
 execution. The terminal-size declaration addition lets actual `ioctl.c` emit
 (`artifacts/core/isolate-3dwb1gji/result.json`); complete managed linkage and the
 repeated instruction harness remain the open P1 gate.
+
+The authored harness enables upstream `System.trapexit` for every case and now
+executes Linux syscall 60 (`exit`, status 37) and 231 (`exit_group`, status 42).
+Native execution records `exited=true` and the exact status, then unwinds with
+`kMachineExitTrap=-10` before `FreeMachine` or a host exit call. `HaltMachine`
+restores the syscall instruction IP, so both exit cases stop at `0x40000a` after
+two completed instructions. Both pass twice along with the original cases; no
+managed execution claim follows until the emitted core is linked and run.
