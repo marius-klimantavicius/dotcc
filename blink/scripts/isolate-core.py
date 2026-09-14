@@ -66,9 +66,44 @@ for entry in closure['sources']:
         except subprocess.TimeoutExpired:
             code = 124
             kind = 'per-TU timeout; not an architectural blocker'
+    inactive_overrides = None
+    report = out / (source.stem + '.overrides.jsonl')
+    if code == 2 and 'requireMatch: no active definition was selected' in log.read_text() and report.is_file():
+        events = [json.loads(line) for line in report.read_text().splitlines() if line]
+        # A small TU such as dll.c never includes builtin.h. Required matches
+        # remain mandatory for the campaign, but cannot occur in that TU. Only
+        # retry when the actual preprocessing trace proves no rule encountered
+        # any definition; a mismatching or partly selected profile still fails.
+        if events and not any(event.get('event') in {'candidate', 'selected', 'expansion'} for event in events):
+            first_log = out / (source.stem + '.required-overrides.log')
+            first_report = out / (source.stem + '.required-overrides.jsonl')
+            log.rename(first_log)
+            report.rename(first_report)
+            inactive_overrides = dict(command=invocation, diagnostic_log=str(first_log),
+                                      report=str(first_report), reason='no override definition active in this TU')
+            retry = []
+            index = 0
+            while index < len(invocation):
+                if invocation[index] in {'--overrides-file', '--override-report'}:
+                    index += 2
+                else:
+                    retry.append(invocation[index])
+                    index += 1
+            invocation = retry
+            with log.open('wb') as stream:
+                try:
+                    result = subprocess.run(invocation, stdout=stream, stderr=subprocess.STDOUT,
+                                            timeout=max(0.01, args.timeout - (time.monotonic() - started)))
+                    code = result.returncode
+                    kind = 'emitted object; no override definitions active' if code == 0 else 'compiler diagnostic'
+                except subprocess.TimeoutExpired:
+                    code = 124
+                    kind = 'per-TU timeout; not an architectural blocker'
     row = {'source': entry['path'], 'source_sha256': entry['sha256'], 'exit_code': code,
            'classification': kind, 'seconds': time.monotonic() - started, 'log': str(log),
            'command': invocation}
+    if inactive_overrides:
+        row['inactive_overrides'] = inactive_overrides
     if receipt['compiler_sha256'] != {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
                                       for path in compiler_files}:
         code = 125

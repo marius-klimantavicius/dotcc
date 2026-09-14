@@ -676,6 +676,7 @@ productions:
       - { lhs: Fn, rhs: [Type, ID, '[', ']', ';'],                          action: globalArrIncomplete }
       - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', '{', InitList, '}', ';'],  action: globalArrInit }
       - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', '{', InitList, '}', ';'], action: globalArrInitImplicit }
+      - { lhs: Fn, rhs: [Type, ID, '[', ']', ArrDims, '=', '{', InitList, '}', ';'], action: globalArrInitOuterImplicit }
       - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', StringSeq, ';'],           action: globalCharArrStrSized }
       - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', StringSeq, ';'],          action: globalCharArrStr }
       # char16_t file-scope array from a u"…" literal (→ pinned char[] / GlobalArrayFrom).
@@ -696,6 +697,7 @@ productions:
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', ';'],                          action: globalStaticArrIncomplete }
       - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', '{', InitList, '}', ';'],  action: globalStaticArrInit }
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', '{', InitList, '}', ';'], action: globalStaticArrInitImplicit }
+      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', ArrDims, '=', '{', InitList, '}', ';'], action: globalStaticArrInitOuterImplicit }
       - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', StringSeq, ';'],           action: globalStaticCharArrStrSized }
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', StringSeq, ';'],          action: globalStaticCharArrStr }
       - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', U16StringSeq, ';'],         action: globalStaticU16CharArrStrSized }
@@ -1086,6 +1088,7 @@ productions:
       - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, ';'],                           action: stmtStaticArr }
       - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', '{', InitList, '}', ';'],  action: stmtStaticArrInit }
       - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', '{', InitList, '}', ';'], action: stmtStaticArrInitImplicit }
+      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', ArrDims, '=', '{', InitList, '}', ';'], action: stmtStaticArrInitOuterImplicit }
       - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', StringSeq, ';'],           action: stmtStaticCharArrStrSized }
       - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', StringSeq, ';'],          action: stmtStaticCharArrStr }
       - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', U16StringSeq, ';'],         action: stmtStaticU16CharArrStrSized }
@@ -1313,6 +1316,7 @@ productions:
       # 1-D (size derived from the initializer).
       - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', '{', InitList, '}'], action: declArrInit }
       - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', '{', InitList, '}'], action: declArrInitImplicit }
+      - { lhs: Decl, rhs: [Type, ID, '[', ']', ArrDims, '=', '{', InitList, '}'], action: declArrInitOuterImplicit }
       # `char s[] = "…"` / `char s[N] = "…"` — char array initialized from a
       # string literal (C89). Decodes the string to bytes and stackalloc's a
       # MUTABLE copy (a bare string literal has read-only C semantics; a char[]

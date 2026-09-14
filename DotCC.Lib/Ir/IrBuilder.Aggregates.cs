@@ -519,6 +519,29 @@ internal sealed partial class IrBuilder
     }
 
     // ---- file-scope / static-local arrays --------------------------------
+
+    /// <summary>Complete only the omitted outer bound. Explicit row groups each
+    /// initialize one subarray; a flat scalar list fills consecutive rows. A
+    /// string initializes a character row as a whole, including any zero fill.</summary>
+    private List<int> InferOuterArrayDimensions(CType elem, IReadOnlyList<int>? inner, IReadOnlyList<Init> items)
+    {
+        if (inner is not { Count: > 0 } || inner.Any(count => count <= 0))
+            throw new IrUnsupportedException("inferred outer array extent requires positive constant inner dimensions");
+        if (items.Count == 0 || items.Any(item => item is InitAt))
+            throw new IrUnsupportedException("inferred multidimensional array requires a nonempty undesignated initializer");
+        if (elem.Unqualified is CType.Named aggregate && _structFields.ContainsKey(aggregate.Name))
+            throw new IrUnsupportedException("inferred multidimensional arrays of struct/union elements are not supported");
+        var rowSize = inner.Aggregate(1, (left, right) => checked(left * right));
+        var characterRows = inner.Count == 1
+            && elem.Unqualified is CType.Prim { Name: "char" or "signed char" or "unsigned char" or "char8_t" or "char16_t" or "wchar_t" or "char32_t" }
+            && ContainsString(new InitGroup(items));
+        var outer = items.Any(item => item is InitGroup) || characterRows
+            ? items.Count : 1 + (items.Count - 1) / rowSize;
+        // Existing target-directed lowering validates row contents and bounds;
+        // it also rejects irregular mixed brace/scalar shapes explicitly.
+        return new[] { outer }.Concat(inner).ToList();
+    }
+
     // A C file-scope array (and a block-scope `static` array, which shares its
     // static storage duration) persists for the program lifetime, so it can't be a
     // block `stackalloc`. Both lower to a pinned global field (a PinnedArray init);
@@ -529,10 +552,10 @@ internal sealed partial class IrBuilder
     /// store). When <paramref name="csName"/> is non-null this is a static local —
     /// the field takes that mangled name and an alias symbol is registered so
     /// in-function uses resolve to it; otherwise it's a file-scope name.</summary>
-    private void BuildGlobalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, string? csName)
-        => BuildGlobalArr(ResolveType(typeItem), nameItem, dimsItem, initItem, csName, DeclarationAlignment(typeItem));
+    private void BuildGlobalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, bool inferOuter = false)
+        => BuildGlobalArr(ResolveType(typeItem), nameItem, dimsItem, initItem, csName, DeclarationAlignment(typeItem), inferOuter);
 
-    private void BuildGlobalArr(CType elem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, int alignment = 0)
+    private void BuildGlobalArr(CType elem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, int alignment = 0, bool inferOuter = false)
     {
         var name = Tok(nameItem);
         var dims = dimsItem is { } di ? TryConstDims(di) ?? throw new IrUnsupportedException("file-scope array requires a constant bound") : null;
@@ -541,7 +564,9 @@ internal sealed partial class IrBuilder
         CExpr init;
         if (initItem is { } ii)
         {
-            var elems = BuildArrayElems(elem, dims, ParseInitList(ii));
+            var items = ParseInitList(ii);
+            if (inferOuter) dims = InferOuterArrayDimensions(elem, dims, items);
+            var elems = BuildArrayElems(elem, dims, items);
             arrType = dims is { Count: >= 1 } ? MakeArrayType(elem, dims) : new CType.Array(elem, elems.Count);
             init = new PinnedArray(elem, elems, null) { Type = new CType.Pointer(elem) };
         }
@@ -615,10 +640,10 @@ internal sealed partial class IrBuilder
 
     /// <summary>A block-scope <c>static T a[…]</c> — a pinned global field under a
     /// program-unique mangled name, with the statement itself emitting nothing.</summary>
-    private CStmt BuildStaticLocalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem)
+    private CStmt BuildStaticLocalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, bool inferOuter = false)
     {
         var csName = $"{_symbols.Escape(Tok(nameItem))}__s{_staticLocalSeq++}";
-        BuildGlobalArr(typeItem, nameItem, dimsItem, initItem, csName);
+        BuildGlobalArr(typeItem, nameItem, dimsItem, initItem, csName, inferOuter);
         return new DeclStmt(System.Array.Empty<LocalDecl>());
     }
 

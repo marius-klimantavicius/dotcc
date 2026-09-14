@@ -346,6 +346,7 @@ internal sealed partial class IrBuilder
             case C.GlobalArr or C.GlobalStaticArr
                 or C.GlobalArrInit or C.GlobalStaticArrInit
                 or C.GlobalArrInitImplicit or C.GlobalStaticArrInitImplicit
+                or C.GlobalArrInitOuterImplicit or C.GlobalStaticArrInitOuterImplicit
                 or C.GlobalFnPtrArray or C.GlobalStaticFnPtrArray
                 or C.GlobalFnPtrArrayInit or C.GlobalStaticFnPtrArrayInit
                 or C.GlobalCharArrStr or C.GlobalCharArrStrSized
@@ -371,6 +372,8 @@ internal sealed partial class IrBuilder
             case C.GlobalStaticArrInit g: BuildGlobalArr(g.Arg1, g.Arg2, g.Arg3, g.Arg6, null); break;
             case C.GlobalArrInitImplicit g: BuildGlobalArr(g.Arg0, g.Arg1, null, g.Arg6, null); break;
             case C.GlobalStaticArrInitImplicit g: BuildGlobalArr(g.Arg1, g.Arg2, null, g.Arg7, null); break;
+            case C.GlobalArrInitOuterImplicit g: BuildGlobalArr(g.Arg0, g.Arg1, g.Arg4, g.Arg7, null, inferOuter: true); break;
+            case C.GlobalStaticArrInitOuterImplicit g: BuildGlobalArr(g.Arg1, g.Arg2, g.Arg5, g.Arg8, null, inferOuter: true); break;
             case C.GlobalFnPtrScalarInit g: BuildGlobalFnPtrArray(g.Arg0, g.Arg2, scalarInitializer: true); break;
             case C.GlobalStaticFnPtrScalarInit g: BuildGlobalFnPtrArray(g.Arg1, g.Arg3, scalarInitializer: true); break;
             case C.GlobalFnPtrArray g: BuildGlobalFnPtrArray(g.Arg0, null); break;
@@ -2030,6 +2033,7 @@ internal sealed partial class IrBuilder
             case C.StmtStaticArr s: return BuildStaticLocalArr(s.Arg1, s.Arg2, s.Arg3, null) with { Pos = pos };
             case C.StmtStaticArrInit s: return BuildStaticLocalArr(s.Arg1, s.Arg2, s.Arg3, s.Arg6) with { Pos = pos };
             case C.StmtStaticArrInitImplicit s: return BuildStaticLocalArr(s.Arg1, s.Arg2, null, s.Arg7) with { Pos = pos };
+            case C.StmtStaticArrInitOuterImplicit s: return BuildStaticLocalArr(s.Arg1, s.Arg2, s.Arg5, s.Arg8, inferOuter: true) with { Pos = pos };
             // Block-scope `static char a[] = "…"` / sized — pinned global char array.
             case C.StmtStaticCharArrStr s: return BuildStaticLocalCharArr(s.Arg1, s.Arg2, s.Arg6, null) with { Pos = pos };
             case C.StmtStaticCharArrStrSized s: return BuildStaticLocalCharArr(s.Arg1, s.Arg2, s.Arg5, s.Arg3) with { Pos = pos };
@@ -2468,6 +2472,7 @@ internal sealed partial class IrBuilder
         C.DeclArrEmptyInit d => BuildArrDecl(d.Arg0, d.Arg1, d.Arg2, null, implicitSize: false),
         C.DeclArrInit d => BuildArrDecl(d.Arg0, d.Arg1, d.Arg2, d.Arg5, implicitSize: false),
         C.DeclArrInitImplicit d => BuildArrDecl(d.Arg0, d.Arg1, null, d.Arg6, implicitSize: true),
+        C.DeclArrInitOuterImplicit d => BuildArrDecl(d.Arg0, d.Arg1, d.Arg4, d.Arg7, implicitSize: true, inferOuter: true),
         // Pointer-to-array `T (*p)[N]` [= init] — a row pointer (multi-dim machinery).
         C.DeclPtrToArr d => BuildPtrToArr(d.Arg0, d.Arg3, d.Arg5, null),
         C.DeclPtrToArrInit d => BuildPtrToArr(d.Arg0, d.Arg3, d.Arg5, d.Arg7),
@@ -2863,7 +2868,7 @@ internal sealed partial class IrBuilder
     /// constant dimension types the symbol as <see cref="CType.Array"/> (so
     /// <c>sizeof(arr)</c> and the array-length idiom resolve); a runtime extent
     /// (VLA-ish) decays to a pointer. Multi-dimensional arrays are deferred.</summary>
-    private ArrayDecl BuildArrDecl(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, bool implicitSize)
+    private ArrayDecl BuildArrDecl(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, bool implicitSize, bool inferOuter = false)
     {
         var elem = ResolveType(typeItem);
         RequireCompleteObject(elem, "array element");
@@ -2879,7 +2884,9 @@ internal sealed partial class IrBuilder
             // struct elements, and per-dimension zero-fill into a dense list; a
             // multi-dim array flattens to one stackalloc of product(dims). The
             // symbol keeps the NESTED array type so a[i][j] strides correctly.
-            inits = BuildArrayElems(elem, dims, ParseInitList(ii));
+            var items = ParseInitList(ii);
+            if (inferOuter) dims = InferOuterArrayDimensions(elem, dims, items);
+            inits = BuildArrayElems(elem, dims, items);
             arrType = dims is { Count: >= 1 } ? MakeArrayType(elem, dims) : new CType.Array(elem, inits.Count);
         }
         else if (dims is { Count: >= 1 })

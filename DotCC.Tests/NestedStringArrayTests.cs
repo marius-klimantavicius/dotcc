@@ -10,6 +10,9 @@ public sealed class NestedStringArrayTests
     [Theory]
     [InlineData("static char rows[1][2] = {\"abc\"};", "too long")]
     [InlineData("static char rows[1][2] = {\"a\", \"b\"};", "too many string initializers")]
+    [InlineData("static char rows[][2] = {\"abc\"};", "too long")]
+    [InlineData("static int rows[][2] = {{1, 2, 3}};", "too many initializers")]
+    [InlineData("static int rows[][0] = {{1}};", "positive constant inner dimensions")]
     public void Nested_character_array_initializers_reject_overflow(string declaration, string diagnostic)
     {
         var path = Path.Combine(Path.GetTempPath(), "dotcc-string-array-" + Guid.NewGuid().ToString("N") + ".c");

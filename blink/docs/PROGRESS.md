@@ -241,3 +241,18 @@ requests, exact 128 KiB responses, EOF and sockaddr boundaries. Two simultaneous
 translated C servers use guest port 8080 with different published endpoints.
 External destinations are denied; disposal releases a worker blocked in C accept.
 Full x86 guest syscall binding, readiness and service startup remain pending.
+
+## Significant progress: inferred outer array extents
+
+The generic grammar/lowering now retains inner dimensions for omitted-outer
+array initializers at global, static-global, local and static-local scope. It
+infers rows from grouped initializers or scalar counts and preserves string row
+semantics. Native reductions and 128 focused array tests pass; the full suite
+passes 2231 unit and 508 functional tests, with 1033 explicit skips. Actual
+disspec.c now emits, and the core object scan has advanced through instruction.c.
+
+Small translation units that never encounter an override definition are retried
+only when their actual preprocessing trace proves that absence; the failed
+required-match trace remains preserved. Mismatching or partly selected overrides
+still fail. The next observed closure gap is measured winsize/ioctl host storage,
+which the guest worker is qualifying before continuing the frozen object scan.
