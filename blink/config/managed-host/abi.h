@@ -37,14 +37,19 @@ typedef struct {
   size_t ss_size;
 } blink_host_signal_stack;
 
-/* Storage parity only. A future managed unwind implementation must own its
- * token through an integer handle and capture/restore a virtual signal mask.
- * Native machine-register contents have no managed control-flow meaning. */
+/* Native-sized ordinary opaque storage. Generic managed setjmp uses only the
+ * first identity word; native register bytes have no CLR control-flow meaning. */
 typedef struct {
-  uint64_t native_register_storage[8];
+  uint64_t words[25];
+} blink_host_jump_storage;
+
+/* Explicit virtual mask state follows the complete ordinary prefix. Do not
+ * hide it in native padding or native libc's private signal-mask bookkeeping. */
+typedef struct {
+  blink_host_jump_storage ordinary;
   int32_t mask_saved;
   blink_host_sigset mask;
-} blink_host_jump_storage;
+} blink_host_signal_jump_storage;
 
 struct blink_host_iovec { void *iov_base; size_t iov_len; };
 struct blink_host_pollfd { int32_t fd; int16_t events; int16_t revents; };
@@ -66,6 +71,13 @@ struct blink_host_msghdr {
 struct blink_host_cmsghdr { size_t cmsg_len; int32_t cmsg_level; int32_t cmsg_type; };
 struct blink_host_linger { int32_t l_onoff; int32_t l_linger; };
 struct blink_host_ucred { int32_t pid; uint32_t uid; uint32_t gid; };
+struct blink_host_flock {
+  int16_t l_type;
+  int16_t l_whence;
+  int64_t l_start;
+  int64_t l_len;
+  int32_t l_pid;
+};
 struct blink_host_termios {
   uint32_t c_iflag;
   uint32_t c_oflag;

@@ -6,6 +6,12 @@
       "match": { "exact": "__attribute__((__const__))" },
       "replacement": "",
       "requireMatch": true
+    },
+    {
+      "name": "flattencalls",
+      "match": { "exact": "__attribute__((__flatten__))" },
+      "replacement": "",
+      "requireMatch": true
     }
   ]
 }

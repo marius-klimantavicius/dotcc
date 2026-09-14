@@ -92,3 +92,41 @@ managed interpreter execution, qualified synchronous unwind and signal-mask
 semantics, page-lock cleanup on every halt path, managed host ownership, and
 cancellation of instructions that can block or do substantial internal work.
 An instruction-count budget alone does not bound `REP` or blocking syscalls.
+
+## Bounded source isolation
+
+`probe-core.sh --stage-only` prepares a new immutable profile without starting
+whole-closure translation. It also snapshots the authored adapter and qualified
+`HostSignals.c`/header. Full managed translation includes that signal-jump seam;
+its virtual delivery mask remains distinct from guest Linux signal state and
+does not implement asynchronous host signal delivery.
+
+Use the printed profile path with:
+
+```sh
+python3 blink/scripts/isolate-core.py --profile blink/generated/core-profile/attempt-NAME --start memory.c --only --timeout 120
+```
+
+Each object attempt records exact source/profile/compiler identities, command,
+duration, diagnostics, and an independent output path. A timeout means that the
+bounded invocation did not finish. Typical header-heavy successful objects take
+17–20 seconds on the observed host, so the original 20-second isolation bound
+can expire from throughput alone. Whole-closure timeouts are not proof that the
+compiler cannot process the core.
+
+The first sequential isolation scan emitted 19 unchanged upstream units before
+`debug.c` exposed file-scope array-typedef storage. Generic compiler repairs now
+let that unit emit, including real rooted per-thread array storage where needed.
+`syscall.c` exposed function-form parameter adjustment, which is now repaired
+with a native-checked compiler fixture. Its subsequent concrete missing host
+records drove the fcntl/timer/resource profile additions and independent ABI
+probes documented in `docs/MANAGED-HOST.md`.
+
+A directed `memory.c` invocation emitted successfully in 17.7 seconds
+(`artifacts/core/isolate-ls30l3ur/result.json`). Its `flattencalls` macro uses the
+`__flatten__` inlining hint; `core-overrides.json` now removes that hint with the
+same exact required-match rule as `pureconst`. No ABI-bearing attribute is removed.
+At this checkpoint, `machine.c` and `syscall.c` both reach the generic setjmp
+recognizer's unsupported `if (!(rc = sigsetjmp(...)))` shape. Object emission
+alone does not qualify linking, generated C# compilation, or guest execution;
+the actual managed core gate remains open.

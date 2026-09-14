@@ -2,7 +2,8 @@
 
 `config/managed-host/` is an explicit campaign header overlay for compiling
 unchanged Blink code toward an owning managed interpreter. It currently provides
-**declarations and native-checked storage**, not a working host implementation.
+**declarations and native-checked storage**, plus an explicitly qualified virtual
+host-delivery-mask nonlocal-jump adapter. The overall host implementation remains incomplete.
 `blink/linux.h` continues to own guest Linux wire records and constants. The
 overlay does not define `__linux__`, `__GNUC__`, or another fabricated platform
 identity to enable unavailable native code.
@@ -44,7 +45,7 @@ and do not declare unproven `HAVE_*` host capabilities. Sockets remain selected.
 | Header | Storage supplied | Native LP64 size/alignment examples |
 | --- | --- | --- |
 | `signal.h` | Signal set, used signal-information fields, action union/mask/flags/restorer, signal stack, retained thread identity | `sigset_t` 128/8, `siginfo_t` 128/8, `sigaction` 152/8, `stack_t` 24/8, thread identity 8/8 |
-| `setjmp.h` | Jump storage and saved signal mask, with separate ordinary/signal jump declarations | Both jump buffer forms 200/8 |
+| `setjmp.h` | Opaque ordinary jump prefix and separately owned saved virtual mask | Ordinary 200/8; signal-aware record 336/8 |
 | `sys/uio.h` | Scatter/gather pointer and length | `iovec` 16/8 |
 | `poll.h` | Descriptor, requested events, returned events, descriptor count | `pollfd` 8/4, count 8/8 |
 | `termios.h` | Flags, control characters, line discipline, input/output speeds | `termios` 60/4; 32 control characters |
@@ -65,15 +66,16 @@ eventual implementation.
 
 ## Operations intentionally remain unresolved
 
-Signal, signal-mask, jump, poll, vector I/O, terminal, socket, and ancillary-walk
-declarations map to `blink_host_*` symbols. No implementation or success stub is
-provided. The operation inventory lists each redirected name and source header.
-In particular:
+Signal, signal-mask, poll, vector I/O, terminal, socket, and ancillary-walk
+declarations map to unresolved `blink_host_*` symbols. The signal-aware jump
+adapter in `src/HostSignals/` separately implements virtual mask capture and
+restore around generic numeric-slot nonlocal unwind. In particular:
 
-- `sigsetjmp` is not an alias for ordinary `setjmp`. The 200-byte storage match
-  proves neither synchronous unwind nor mask restoration. Any eventual managed
-  token must use an integer handle; native saved-register bytes have no CLR
-  control-flow meaning.
+- `sigsetjmp` calls `PrepareVirtualSignalJump` once before ordinary setjmp.
+  Its 336-byte record owns a 200-byte jump prefix, a saved-mask flag and a
+  separate 128-byte virtual mask. Only the prefix's first identity word has
+  managed control-flow meaning. Native staged tests use real native jump
+  storage plus the same separately owned mask; they do not reuse glibc padding.
 - `sigaction`, `sigprocmask`, and `kill` cannot accidentally bind to shared libc
   signal stubs or process-wide termination. Virtual delivery, mask changes,
   termination results, and cleanup remain separate implementation work.
@@ -96,9 +98,9 @@ python3 blink/tests/HostAbi/inventory.py
 python3 blink/tests/HostAbi/run-managed.py
 ```
 
-The first command passed **87 native size/alignment/offset checks**, **252
+The first command passed **99 native size/alignment/offset checks**, **308
 constant checks**, and a compiled declaration-object audit requiring exactly
-seven unresolved campaign host symbols. It compares native system headers
+nine unresolved external symbols (including generic setjmp). It compares native system headers
 against the independent prefixed records in `abi.h`. A separate declaration
 probe uses dotcc's foundational headers plus the overlay and verifies key record
 sizes and unresolved call names. It does not execute the unimplemented calls.
@@ -117,7 +119,7 @@ they must be added based on the staged core's next concrete diagnostics.
 ## Executed emitted-storage qualification
 
 `run-managed.py` snapshots the authored `abi.h` and the same `probe.c` used by
-the native layout comparison. `BLINK_HOST_STORAGE_ONLY` selects 174 observations
+the native layout comparison. `BLINK_HOST_STORAGE_ONLY` selects 198 observations
 against the authored records, then the script compiles and executes that exact
 snapshot natively and through dotcc. Each type reports its emitted size, declared
 alignment, actual position following a byte inside a containing struct, and
@@ -127,14 +129,14 @@ subtractions; these checks do not rely solely on compiler-reported offsets.
 
 | Linux x64 execution | Result |
 | --- | --- |
-| Matching native authored profile | 174 observations; also matches 87 native system-header comparisons |
-| Raw emitted C#, JIT | All 174 outputs match native |
-| Raw emitted C#, NativeAOT | All 174 outputs match native |
-| Semantically postprocessed C#, JIT | All 174 outputs match native |
-| Semantically postprocessed C#, NativeAOT | All 174 outputs match native |
+| Matching native authored profile | 198 observations; also matches 99 native system/staged-record comparisons |
+| Raw emitted C#, JIT | All 198 outputs match native |
+| Raw emitted C#, NativeAOT | All 198 outputs match native |
+| Semantically postprocessed C#, JIT | All 198 outputs match native |
+| Semantically postprocessed C#, NativeAOT | All 198 outputs match native |
 
 The observed run is recorded at
-`artifacts/host-abi/managed/attempt-e9omt2u3/receipt.json`; subsequent runs use
+`artifacts/host-abi/managed/attempt-54lu91nd/receipt.json`; subsequent runs use
 unique attempt directories and update `artifacts/host-abi/managed-latest.json`
 only on success. Receipts include exact compiler/input/generated hashes, build
 commands, case counts, and output hashes. Raw source is copied before semantic
@@ -143,5 +145,42 @@ For this probe the semantic postprocessor produced identical C#; both separately
 built execution variants were still run and compared.
 
 This closes the emitted layout comparison for these authored host records on
-Linux x64. It does not qualify the complete `Machine`/`System` layout, any host
-callback implementation, nonlocal unwind, guest execution, or Windows behavior.
+Linux x64. It does not qualify the complete `Machine`/`System` layout, the remaining host
+callbacks, guest execution, or Windows behavior. Signal-aware unwind has its own
+semantic oracle described in `NONLOCAL-JUMPS.md`.
+
+## Subsequent source-required headers
+
+Actual unchanged `syscall.c` next required `struct flock`, `struct itimerval`,
+and `struct rlimit`. The campaign now supplies measured `fcntl.h`, `sys/time.h`,
+and `sys/resource.h` records and constants. Their file-control, timer, clock,
+resource-limit, usage, and priority calls redirect to `blink_host_*` declarations;
+these additions provide no operation implementation. This also prevents the
+campaign from accidentally binding file-control or resource-usage calls to the
+shared headers' existing success placeholders.
+
+The flock record is 32 bytes/alignment 8, with five native-checked member
+offsets. `timeval` is 16/8, `timezone` 8/4, and `itimerval` 32/8. The foundational
+`timeval` tag remains shared with dotcc's `unistd.h`; its include guards also
+allow native `time.h` coexistence. The resource header explicitly includes
+`time.h` for the `clock_t` declaration needed by upstream `xlat.h`.
+`rlim_t` is unsigned LP64, `rlimit` is 16/8, and `rusage` is 144/8.
+`RLIM_INFINITY` retains its unsigned `rlim_t` type and is measured separately
+from the numeric manifest. Native checks add 32 file-control, three timer, and
+21 resource/priority constants, bringing the numeric manifest to 308 entries.
+
+The incremental emitted evidence has its own immutable inputs and receipts:
+
+| Added surface | Linux raw/optimized JIT/NativeAOT results | Receipt under `artifacts/host-abi/managed/` |
+| --- | --- | --- |
+| Flock added to initial host records | 188 outputs match native in all four variants | `attempt-w5oi7xot/receipt.json` |
+| Timer header | 14 outputs match native in all four variants | `attempt-c6tm4zbw/receipt.json` |
+| Resource header, unsigned infinity, clock type | 28 outputs match native in all four variants | `attempt-hk8_uxy8/receipt.json` |
+
+The timer receipt precedes the additional native `timeval` coexistence guard;
+that final header is included in the resource receipt, and the native timer
+comparison was repeated successfully. Reproduce the additional emitted probes
+with `python3 blink/tests/HostAbi/run-managed.py --timers` and `--resources`.
+`run.py` also compares their actual campaign headers against native system
+headers. These are layout and constant checks; resource-limit enforcement,
+clocks, timers, and file operations still need separately qualified host behavior.

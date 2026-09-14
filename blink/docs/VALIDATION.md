@@ -14,7 +14,8 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Managed interpreter embedding | Translation in progress; no managed instruction execution claimed | `scripts/probe-core.sh` |
 | Private memory filesystem | Four independent assertion groups pass Linux JIT/AOT; guest callback integration pending | `scripts/test-host-files.sh` |
 | Private TCP namespace | Four assertion groups pass Linux JIT/AOT, including real backpressure/cancellation and same guest port in two instances | `scripts/test-host-sockets.sh` |
-| Host storage ABI | 174 measurements match native in raw/optimized JIT/AOT, including real field addresses/strides | `tests/HostAbi/run-managed.py` |
+| Host storage ABI | 198 measurements match native in raw/optimized JIT/AOT; timer14 and resource28 additional rows pass | `tests/HostAbi/run-managed.py` |
+| Signal-aware virtual mask jumps | Native POSIX/virtual adapter agree with raw/optimized JIT/AOT; host OS mask unchanged | `tests/HostSignals/run.py` |
 | Unmanaged ordinary jumps | Native output matches raw/optimized JIT/AOT with forced compacting GC | `tests/JumpStorage/run.py` |
 | Jump / function parameter / array typedef repairs | Build pass; 2222 unit pass; 500 functional pass, 1025 skipped | `scripts/test-repository.sh` |
 | Managed service runner | Not implemented or qualified | P4/P5 open |

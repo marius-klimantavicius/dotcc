@@ -9,8 +9,17 @@
 #include <termios.h>
 #include <pthread.h>
 #include <sys/socket.h>
+#include <fcntl.h>
 #endif
 #include "abi.h"
+#ifndef BLINK_HOST_STORAGE_ONLY
+/* Reviewed staged-native signal record; never reuse libc's private padding. */
+struct NativeSignalJump {
+  jmp_buf ordinary;
+  int32_t mask_saved;
+  blink_host_sigset mask;
+};
+#endif
 
 static int failures;
 #define CHECK(label, native, profile) do { \
@@ -43,6 +52,12 @@ static int failures;
 #define OFFSET(n, f, p, pf) CHECK(#n "." #f, offsetof(n, f), offsetof(p, pf))
 #endif
 int main(void) {
+  SIZE(struct flock, struct blink_host_flock);
+  OFFSET(struct flock, l_type, struct blink_host_flock, l_type);
+  OFFSET(struct flock, l_whence, struct blink_host_flock, l_whence);
+  OFFSET(struct flock, l_start, struct blink_host_flock, l_start);
+  OFFSET(struct flock, l_len, struct blink_host_flock, l_len);
+  OFFSET(struct flock, l_pid, struct blink_host_flock, l_pid);
   SIZE(sigset_t, blink_host_sigset);
   SIZE(pthread_t, blink_host_thread_id);
   SIZE(siginfo_t, blink_host_siginfo);
@@ -62,6 +77,10 @@ int main(void) {
   OFFSET(stack_t, ss_size, blink_host_signal_stack, ss_size);
   SIZE(sigjmp_buf, blink_host_jump_storage);
   SIZE(jmp_buf, blink_host_jump_storage);
+  SIZE(struct NativeSignalJump, blink_host_signal_jump_storage);
+  OFFSET(struct NativeSignalJump, ordinary, blink_host_signal_jump_storage, ordinary);
+  OFFSET(struct NativeSignalJump, mask_saved, blink_host_signal_jump_storage, mask_saved);
+  OFFSET(struct NativeSignalJump, mask, blink_host_signal_jump_storage, mask);
   SIZE(struct iovec, struct blink_host_iovec);
   OFFSET(struct iovec, iov_base, struct blink_host_iovec, iov_base);
   OFFSET(struct iovec, iov_len, struct blink_host_iovec, iov_len);

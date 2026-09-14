@@ -64,6 +64,10 @@ host=p/'config/managed-host'
 if host.is_dir():
     # The core owns feature selection; the host profile supplies declarations.
     shutil.copytree(host,stage/'host',ignore=shutil.ignore_patterns('config.h'))
+authored=stage/'authored'
+authored.mkdir()
+for original in [p/'src/core-probe/probe.c', p/'src/HostSignals/HostSignals.c', p/'src/HostSignals/HostSignals.h']:
+    shutil.copyfile(original,authored/original.name)
 files={str(f.relative_to(stage)):hashlib.sha256(f.read_bytes()).hexdigest() for f in stage.rglob('*') if f.is_file()}
 compiler=p.parent/'DotCC/bin/Release/net10.0'
 manifest={'staged_headers':files,'compiler':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in compiler.glob('DotCC*.dll')}}
@@ -72,17 +76,22 @@ manifest['compiler']['dotcc.dll']=hashlib.sha256((compiler/'dotcc.dll').read_byt
 print(stage)
 PY
 )
+printf '%s\n' "$attempt" > "$out/latest-profile.txt"
+if [[ ${1:-} == --stage-only ]]; then
+  printf '%s\n' "$attempt"
+  exit 0
+fi
 mapfile -t sources < "$out/source-paths.txt"
 # dotcc's current include overlay uses last-wins resolution. Keep authored host
-# declarations last; their operations deliberately remain unresolved imports.
+# declarations last; unimplemented operations remain unresolved imports.
 includes=(-I "$attempt" -I "$upstream")
 if [[ -d "$attempt/host" ]]; then
   includes+=(-I "$attempt/host")
 fi
 set +e
-timeout 180 dotnet "$repo/DotCC/bin/Release/net10.0/dotcc.dll" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
+timeout "${CORE_TRANSLATION_TIMEOUT:-180}" dotnet "$repo/DotCC/bin/Release/net10.0/dotcc.dll" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
   "${includes[@]}" "${sources[@]}" \
-  "$campaign/src/core-probe/probe.c" --overrides-file "$attempt/overrides.json" \
+  "$attempt/authored/probe.c" "$attempt/authored/HostSignals.c" --overrides-file "$attempt/overrides.json" \
   --override-report "$attempt/override-report.jsonl" --runtime=c \
   -o "$campaign/generated/CoreProbe" > "$out/translate.log" 2>&1
 status=$?

@@ -17,7 +17,9 @@ types = ['sigset_t', 'siginfo_t', 'sigjmp_buf', 'jmp_buf', 'stack_t', 'sig_atomi
          'pthread_t', 'pthread_attr_t', 'pthread_mutex_t', 'pthread_once_t', 'nfds_t',
          'socklen_t', 'ssize_t', 'off_t', 'pid_t', 'struct iovec', 'struct termios',
          'struct msghdr', 'struct cmsghdr', 'struct sockaddr', 'struct sockaddr_storage',
-         'struct pollfd', 'struct sigaction', 'struct linger', 'struct ucred']
+         'struct pollfd', 'struct sigaction', 'struct linger', 'struct ucred',
+         'struct flock', 'struct timeval', 'struct timezone', 'struct itimerval',
+         'rlim_t', 'struct rlimit', 'struct rusage']
 while pending:
     name = pending.pop()
     if name in seen:
@@ -43,16 +45,16 @@ for name, sources in sorted(includes.items()):
 functions = {}
 for path in sorted(profile.rglob('*.h')):
     for name, target in re.findall(r'^#define\s+(\w+)\s+(blink_host_\w+)\s*$', path.read_text(), re.M):
-        if name not in {'iovec', 'termios', 'pollfd', 'sockaddr', 'sockaddr_storage', 'msghdr', 'cmsghdr', 'linger', 'ucred'}:
+        if name not in {'iovec', 'termios', 'pollfd', 'sockaddr', 'sockaddr_storage', 'msghdr', 'cmsghdr', 'linger', 'ucred', 'flock'}:
             functions[name] = dict(target=target, header=str(path.relative_to(profile)),
-                                   implementation='unimplemented-must-remain-unresolved')
+                                   implementation=('qualified-virtual-mask-unwind-adapter' if name == 'siglongjmp'
+                                                   else 'unimplemented-must-remain-unresolved'))
 report = dict(kind='core-closure-recursive-lexical-header-and-type-inventory-not-managed-runtime-coverage',
               coreClosureSha256=hashlib.sha256(closure_path.read_bytes()).hexdigest(),
               upstreamRevision=source_manifest['upstream']['revision'],
               headers=headers, typeUsers={k:sorted(v) for k,v in sorted(users.items())},
               redirectedFunctions=functions,
               unsupported=['pthread ABI and guest threads', 'signal delivery and handler lifecycle',
-                           'synchronous nonlocal unwind and mask restoration',
                            'socket and ancillary operation implementations', 'remaining host syscall implementations'])
 (profile / 'inventory.json').write_text(json.dumps(report, indent=2)+'\n')
 print(f'Inventoried {len(headers)} header names, {len(users)} type names, {len(functions)} unresolved host operations.')

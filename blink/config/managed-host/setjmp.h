@@ -2,17 +2,17 @@
 #define BLINK_MANAGED_SETJMP_H
 #include "abi.h"
 typedef blink_host_jump_storage jmp_buf[1];
-typedef blink_host_jump_storage sigjmp_buf[1];
-/* Not aliases to dotcc setjmp. Both synchronous unwind and signal-mask state
- * must be implemented and tested before these declarations can be linked. */
-#define setjmp blink_host_setjmp
-#define _setjmp blink_host_plain_setjmp
-#define longjmp blink_host_longjmp
-#define sigsetjmp blink_host_sigsetjmp
+typedef blink_host_signal_jump_storage sigjmp_buf[1];
+int setjmp(uint64_t *);
+void longjmp(uint64_t *, int);
+uint64_t *PrepareVirtualSignalJump(sigjmp_buf, int);
+void blink_host_siglongjmp(sigjmp_buf, int);
+/* The ordinary opaque prefix is larger than generic dotcc's numeric slot. */
+#define setjmp(env) setjmp((uint64_t *)(env))
+#define _setjmp(env) setjmp((uint64_t *)(env))
+#define longjmp(env, value) longjmp((uint64_t *)(env), (value))
+/* Explicit virtual-mask capture occurs once before the generic intrinsic arms
+ * its numeric slot. Signal-aware longjmp restores that mask before unwinding. */
+#define sigsetjmp(env, save) setjmp(PrepareVirtualSignalJump((env), (save)))
 #define siglongjmp blink_host_siglongjmp
-int setjmp(jmp_buf);
-int _setjmp(jmp_buf);
-void longjmp(jmp_buf, int);
-int sigsetjmp(sigjmp_buf, int);
-void siglongjmp(sigjmp_buf, int);
 #endif

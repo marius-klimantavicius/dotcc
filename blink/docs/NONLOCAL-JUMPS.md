@@ -59,31 +59,52 @@ subsequent runs preserve separate attempt directories. No generated C# was
 edited to add the hook. Before-fix diagnostics remain separately preserved under
 `artifacts/jump-storage/`.
 
-## Signal-aware jumps remain a separate contract
+## Qualified virtual host-delivery-mask jumps
 
-The authored Blink jump record remains the already measured 200-byte storage:
-eight 64-bit words, a saved-mask flag, alignment padding, and a 128-byte signal
-mask. Ordinary `jmp_buf` becoming an eight-byte identity does not justify
-replacing that record or aliasing `sigsetjmp` to `setjmp`.
+`src/HostSignals/` implements an explicit signal-aware unwind adapter. The
+campaign's ordinary jump prefix reserves 200 opaque bytes; managed execution
+uses only its first numeric identity word. The signal record adds a 32-bit
+saved-mask flag, alignment padding, and a separately owned 128-byte mask, for
+336 bytes with 8-byte alignment. Its native staged oracle uses a real native
+`jmp_buf` prefix plus explicit flag and mask members; no native padding is
+repurposed. The untouched POSIX oracle retains its original native sigjmp_buf.
 
-A proposed managed signal-jump adapter can use one reserved 64-bit word as its
-ordinary unwind identity slot, but must implement and qualify these additional
-steps explicitly:
+`sigsetjmp(env, save)` expands to ordinary setjmp around
+`PrepareVirtualSignalJump(env, save)`. The helper evaluates its arguments once,
+saves the worker's current virtual host-delivery mask only when requested,
+clears the saved flag otherwise, and returns the ordinary identity slot.
+`blink_host_siglongjmp` restores the separate saved mask before initiating the
+ordinary numeric nonlocal unwind. Each worker has thread-local virtual state;
+`BlinkHostDeliveryMaskReset` provides explicit lifecycle reset for one active
+emulation context per worker. A later same-thread interleaving policy must save
+and restore that state explicitly.
 
-1. Evaluate the jump-buffer pointer and save-mask argument once.
-2. If mask saving is requested, copy the instance's current virtual signal mask
-   into the record and mark it saved; otherwise clear the flag.
-3. Arm the ordinary numeric slot and establish the synchronous handler.
-4. Before a signal-aware long jump, restore the saved virtual mask only when
-   the record says it was captured, then perform the ordinary nonlocal unwind.
+This mask models host-side virtual delivery and is distinct from Blink's guest
+Linux blocked-signal state. The adapter neither installs real host signal
+handlers nor changes the process/thread OS signal mask. It does not yet provide
+signal delivery, `sigaction`, `sigprocmask`, `pthread_sigmask`, cancellation,
+fault translation, or complete instance cleanup integration.
 
-The virtual mask belongs to the emulation context's host-side delivery contract;
-it must remain distinct from Blink's guest Linux signal-blocking state. Upstream
-uses host `pthread_sigmask` around operations such as exec and separately tracks
-the guest mask. Conflating those states would change guest behavior. No host OS
-signal mask or process-wide handler may be changed by this managed implementation. A
-separate native oracle can compare the required save-mask/no-save behavior in
-its own process. Tests must cover nested masks, multiple jumps, buffer rearming,
-cleanup, cancellation/fault interaction, and unchanged mask behavior when the
-save flag is zero. Signal delivery and the mask operation implementations remain
-separate host work; this design is not their implementation or qualification.
+```sh
+python3 blink/tests/HostSignals/run.py
+python3 blink/tests/HostAbi/run-managed.py
+```
+
+The semantic runner compares a separate real POSIX sigsetjmp/siglongjmp oracle,
+a native build of the authored virtual adapter with real ordinary jump storage,
+and raw/optimized emitted C# under JIT and NativeAOT. All agree for save=0,
+save=1, zero-to-one normalization, nested buffers, rearming a record without
+saving, repeated jumps to the same active site, and a side-effecting buffer
+selector evaluated once. Native contract checks query the real host mask;
+managed test-only hooks observe the executing thread's `/proc/thread-self/status`
+mask before each deep jump and at completion. Those masks remain unchanged.
+Managed hooks also force compacting garbage collection before jumps, and all
+consumer builds treat CS8500 as an error. Hooks are supplied by an authored test
+consumer without hand-editing generated C#.
+
+The four-mode semantic receipt is
+`artifacts/host-signals/attempt-5ovnu550/receipt.json`; the updated standalone
+99-case native/198-output emitted storage matrix is
+`artifacts/host-abi/managed/attempt-54lu91nd/receipt.json`. The signal record's
+larger size deliberately changes containing Machine layouts; untouched native
+Machine offsets cannot stand in for a matching staged-profile comparison.

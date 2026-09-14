@@ -93,3 +93,26 @@ operations pass bounded tests. Four assertion groups pass Linux JIT/NativeAOT;
 both host suites now record source, assembly, executable and output hashes.
 This remains a typed host module without guest callbacks or a unified guest
 descriptor table, so P4 and P5 remain open.
+
+## Significant progress: signal-aware unwind and measured host declarations
+
+A separate synchronous signal-jump adapter now captures/restores a virtual
+host-delivery mask when requested. It owns explicit 336-byte storage, keeps
+Blink's guest Linux mask separate and changes no host OS signal state. A real
+native POSIX oracle, native virtual adapter and raw/optimized JIT/NativeAOT agree
+for saved/unsaved masks, nesting, rearming, repeated jumps, zero-to-one returns
+and evaluated-once buffers, including compacting GC. Host storage now passes
+99 native comparisons and 198 emitted outputs in all four modes.
+
+Actual syscall translation exposed missing flock, timer and resource declarations.
+Their authored headers have measured native layouts/constants and unresolved
+host-prefixed operations. Timer14/resource28 output rows also agree in all four
+emitted modes; native inventory checks308 constants and9 isolated symbols.
+These declarations implement no file locks, interval timers or resource services.
+
+Individual actual upstream memory.c now emits after erasing only an exact-match
+GNU flatten optimization hint. machine.c and syscall.c reach a valid negated
+assignment setjmp condition that needs generic recognition. Full-core translation
+remains open. The new actual Machine/System ABI probe reached C# compilation and
+exposed the upstream System type colliding with the BCL namespace; planned nested
+library output is being checked before selecting a structural repair.

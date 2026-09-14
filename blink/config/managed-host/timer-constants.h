@@ -1,0 +1,6 @@
+#ifndef BLINK_HOST_TIMER_CONSTANTS_H
+#define BLINK_HOST_TIMER_CONSTANTS_H
+#define ITIMER_REAL (0)
+#define ITIMER_VIRTUAL (1)
+#define ITIMER_PROF (2)
+#endif

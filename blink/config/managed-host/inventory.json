@@ -93,7 +93,7 @@
         "blink/syscall.h",
         "blink/xlat.c"
       ],
-      "status": "shared-header-exists-needs-semantics-review"
+      "status": "campaign-declaration-only"
     },
     {
       "header": "grp.h",
@@ -545,7 +545,7 @@
         "blink/syscall.c",
         "blink/xlat.h"
       ],
-      "status": "shared-header-exists-needs-semantics-review"
+      "status": "campaign-declaration-only"
     },
     {
       "header": "sys/select.h",
@@ -632,7 +632,7 @@
         "blink/xlat.c",
         "blink/xlat.h"
       ],
-      "status": "shared-header-exists-needs-semantics-review"
+      "status": "campaign-declaration-only"
     },
     {
       "header": "sys/times.h",
@@ -844,6 +844,9 @@
     "struct cmsghdr": [
       "blink/ancillary.c"
     ],
+    "struct flock": [
+      "blink/syscall.c"
+    ],
     "struct iovec": [
       "blink/demangle.c",
       "blink/fds.h",
@@ -852,6 +855,11 @@
       "blink/preadv.h",
       "blink/syscall.c",
       "blink/vfs.h"
+    ],
+    "struct itimerval": [
+      "blink/syscall.c",
+      "blink/xlat.c",
+      "blink/xlat.h"
     ],
     "struct linger": [
       "blink/syscall.c"
@@ -866,6 +874,16 @@
       "blink/fds.h",
       "blink/syscall.c",
       "blink/vfs.h"
+    ],
+    "struct rlimit": [
+      "blink/syscall.c",
+      "blink/xlat.c",
+      "blink/xlat.h"
+    ],
+    "struct rusage": [
+      "blink/syscall.c",
+      "blink/xlat.c",
+      "blink/xlat.h"
     ],
     "struct sigaction": [
       "blink/debug.c",
@@ -893,40 +911,38 @@
       "blink/xlat.c",
       "blink/xlat.h"
     ],
+    "struct timeval": [
+      "blink/fds.c",
+      "blink/syscall.c",
+      "blink/sysinfo.c"
+    ],
+    "struct timezone": [
+      "blink/syscall.c"
+    ],
     "struct ucred": [
       "blink/ancillary.c"
     ]
   },
   "redirectedFunctions": {
+    "fcntl": {
+      "target": "blink_host_fcntl",
+      "header": "fcntl.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "open": {
+      "target": "blink_host_open",
+      "header": "fcntl.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
     "poll": {
       "target": "blink_host_poll",
       "header": "poll.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
-    "setjmp": {
-      "target": "blink_host_setjmp",
-      "header": "setjmp.h",
-      "implementation": "unimplemented-must-remain-unresolved"
-    },
-    "_setjmp": {
-      "target": "blink_host_plain_setjmp",
-      "header": "setjmp.h",
-      "implementation": "unimplemented-must-remain-unresolved"
-    },
-    "longjmp": {
-      "target": "blink_host_longjmp",
-      "header": "setjmp.h",
-      "implementation": "unimplemented-must-remain-unresolved"
-    },
-    "sigsetjmp": {
-      "target": "blink_host_sigsetjmp",
-      "header": "setjmp.h",
-      "implementation": "unimplemented-must-remain-unresolved"
-    },
     "siglongjmp": {
       "target": "blink_host_siglongjmp",
       "header": "setjmp.h",
-      "implementation": "unimplemented-must-remain-unresolved"
+      "implementation": "qualified-virtual-mask-unwind-adapter"
     },
     "sigaction": {
       "target": "blink_host_sigaction",
@@ -986,6 +1002,31 @@
     "raise": {
       "target": "blink_host_raise",
       "header": "signal.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "getrlimit": {
+      "target": "blink_host_getrlimit",
+      "header": "sys/resource.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "setrlimit": {
+      "target": "blink_host_setrlimit",
+      "header": "sys/resource.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "getrusage": {
+      "target": "blink_host_getrusage",
+      "header": "sys/resource.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "getpriority": {
+      "target": "blink_host_getpriority",
+      "header": "sys/resource.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "setpriority": {
+      "target": "blink_host_setpriority",
+      "header": "sys/resource.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
     "socket": {
@@ -1078,6 +1119,26 @@
       "header": "sys/socket.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
+    "gettimeofday": {
+      "target": "blink_host_gettimeofday",
+      "header": "sys/time.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "settimeofday": {
+      "target": "blink_host_settimeofday",
+      "header": "sys/time.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "getitimer": {
+      "target": "blink_host_getitimer",
+      "header": "sys/time.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "setitimer": {
+      "target": "blink_host_setitimer",
+      "header": "sys/time.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
     "readv": {
       "target": "blink_host_readv",
       "header": "sys/uio.h",
@@ -1167,7 +1228,6 @@
   "unsupported": [
     "pthread ABI and guest threads",
     "signal delivery and handler lifecycle",
-    "synchronous nonlocal unwind and mask restoration",
     "socket and ancillary operation implementations",
     "remaining host syscall implementations"
   ]

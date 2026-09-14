@@ -43,7 +43,7 @@ for family, values in constants.items():
                                 (PROFILE / (family + '-constants.h')).read_text(), re.M)}
     if header_values != values:
         raise SystemExit(f'{family} constant header differs from its pinned manifest')
-    header = 'sys/socket.h' if family == 'socket' else family + '.h'
+    header = {'socket':'sys/socket.h', 'timer':'sys/time.h', 'resource':'sys/resource.h'}.get(family, family + '.h')
     source = '#define _GNU_SOURCE 1\n#include <stdio.h>\n#include <' + header + '>\nint main(void){\n'
     for name in values:
         source += 'printf("' + name + ' %llu\\n", (unsigned long long)(' + name + '));\n'
@@ -62,19 +62,42 @@ run(compiler + ['-nostdinc', '-I', str(PROFILE), '-I', str(ROOT.parent / 'DotCC.
 symbols = run(['nm', '-u', '-P', str(obj)])
 (OUT / 'declaration-symbols.txt').write_text(symbols)
 unresolved = sorted(line.split()[0] for line in symbols.splitlines())
-expected = sorted(['blink_host_sigsetjmp', 'blink_host_siglongjmp', 'blink_host_sigprocmask',
-                   'blink_host_poll', 'blink_host_readv', 'blink_host_tcgetattr', 'blink_host_socket'])
+expected = sorted(['PrepareVirtualSignalJump', 'setjmp', 'blink_host_siglongjmp', 'blink_host_sigprocmask',
+                   'blink_host_poll', 'blink_host_readv', 'blink_host_tcgetattr', 'blink_host_socket', 'blink_host_fcntl'])
 if unresolved != expected:
     raise SystemExit('host declarations did not stay isolated: ' + repr(unresolved))
 passed = all(row['native'] == row['profile'] for row in layouts + constant_results)
+timer_source = ROOT / 'tests/HostAbi/timer-probe.c'
+timer_native = BUILD / 'timer-native'
+timer_profile = BUILD / 'timer-profile'
+run(compiler + [str(timer_source), '-o', str(timer_native)])
+run(compiler + ['-I', str(PROFILE), str(timer_source), '-o', str(timer_profile)])
+timer_expected = run([str(timer_native)])
+timer_actual = run([str(timer_profile)])
+(OUT / 'timer-native.txt').write_text(timer_expected)
+(OUT / 'timer-profile.txt').write_text(timer_actual)
+passed = passed and timer_expected == timer_actual
+resource_source = ROOT / 'tests/HostAbi/resource-probe.c'
+resource_native = BUILD / 'resource-native'
+resource_profile = BUILD / 'resource-profile'
+run(compiler + [str(resource_source), '-o', str(resource_native)])
+run(compiler + ['-I', str(PROFILE), str(resource_source), '-o', str(resource_profile)])
+resource_expected = run([str(resource_native)])
+resource_actual = run([str(resource_profile)])
+(OUT / 'resource-native.txt').write_text(resource_expected)
+(OUT / 'resource-profile.txt').write_text(resource_actual)
+passed = passed and resource_expected == resource_actual
 receipt = dict(kind='native-host-abi-and-declaration-check-not-managed-execution',
                machine=platform.machine(), host=platform.platform(),
                compiler=run(['cc', '--version']).splitlines()[0],
                constantsSha256=sha(PROFILE / 'constants.json'),
                headers={str(p.relative_to(PROFILE)):sha(p) for p in sorted(PROFILE.rglob('*.h'))},
                layouts=layouts, constants=constant_results,
-               unresolvedDeclarationSymbols=unresolved, passed=passed)
+               unresolvedDeclarationSymbols=unresolved, timerHeaderOutputs=len(timer_expected.splitlines()),
+               resourceHeaderOutputs=len(resource_expected.splitlines()), passed=passed)
 (OUT / 'receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
 print(f'{len(layouts)} native layout checks, {len(constant_results)} constant checks, and {len(unresolved)} isolated unresolved host declarations: {"PASS" if passed else "FAIL"}')
+print(f'{len(timer_expected.splitlines())} native timer header layout outputs: {"PASS" if timer_expected == timer_actual else "FAIL"}')
+print(f'{len(resource_expected.splitlines())} native resource header outputs: {"PASS" if resource_expected == resource_actual else "FAIL"}')
 if not passed:
     raise SystemExit(1)

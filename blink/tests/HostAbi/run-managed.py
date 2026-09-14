@@ -8,6 +8,7 @@ from pathlib import Path
 import platform
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 
@@ -24,6 +25,14 @@ ENV = dict(os.environ, LC_ALL='C')
 receipt = dict(kind='executed-emitted-host-storage-not-host-runtime-or-guest-execution',
                host=platform.platform(), machine=platform.machine(),
                attempt=str(ATTEMPT.relative_to(ROOT)), results={}, passed=False)
+TIMERS = '--timers' in sys.argv
+RESOURCES = '--resources' in sys.argv
+HEADER_MODE = TIMERS or RESOURCES
+FAMILY = 'resource' if RESOURCES else 'timer'
+if TIMERS:
+    receipt['kind'] = 'executed-emitted-timer-header-storage-not-host-runtime'
+if RESOURCES:
+    receipt['kind'] = 'executed-emitted-resource-header-storage-not-host-runtime'
 
 
 def sha(path):
@@ -62,15 +71,24 @@ def compare(command, name):
 try:
     source = ATTEMPT / 'source'
     source.mkdir()
-    for original in [ROOT / 'tests/HostAbi/probe.c', ROOT / 'config/managed-host/abi.h']:
-        shutil.copy2(original, source / original.name)
-    receipt['inputs'] = {p.name:sha(p) for p in source.iterdir()}
+    if HEADER_MODE:
+        (source / 'sys').mkdir()
+        shutil.copy2(ROOT / ('tests/HostAbi/' + FAMILY + '-probe.c'), source / 'probe.c')
+        shutil.copy2(ROOT / 'config/managed-host/sys/time.h', source / 'sys/time.h')
+        shutil.copy2(ROOT / 'config/managed-host/timer-constants.h', source / 'timer-constants.h')
+        if RESOURCES:
+            shutil.copy2(ROOT / 'config/managed-host/sys/resource.h', source / 'sys/resource.h')
+            shutil.copy2(ROOT / 'config/managed-host/resource-constants.h', source / 'resource-constants.h')
+    else:
+        for original in [ROOT / 'tests/HostAbi/probe.c', ROOT / 'config/managed-host/abi.h']:
+            shutil.copy2(original, source / original.name)
+    receipt['inputs'] = {str(p.relative_to(source)):sha(p) for p in source.rglob('*') if p.is_file()}
     compiler_files = [CLI, CLI.with_name('DotCC.Lib.dll')]
     receipt['compiler'] = {p.name:sha(p) for p in compiler_files}
     receipt['postprocessorSha256'] = sha(POSTPROCESS)
     save()
     native = ATTEMPT / 'native-profile'
-    run(['cc', '-std=c17', '-DBLINK_HOST_STORAGE_ONLY', '-iquote', str(source),
+    run(['cc', '-std=c17', '-DBLINK_HOST_STORAGE_ONLY', '-I' if HEADER_MODE else '-iquote', str(source),
          str(source / 'probe.c'), '-o', str(native)], 'native-build')
     expected = run([str(native)], 'native-profile', timeout=30)
     # Original two-column native-system/profile evidence remains separately
@@ -81,7 +99,11 @@ try:
     system_rows = run([str(native_system)], 'native-system', timeout=30).decode().splitlines()
     profile_values = dict(line.rsplit(' ', 1) for line in expected.decode().splitlines())
     for line in system_rows:
-        name, system, profile = line.rsplit(' ', 2)
+        if HEADER_MODE:
+            name, system = line.rsplit(' ', 1)
+            profile = profile_values[name]
+        else:
+            name, system, profile = line.rsplit(' ', 2)
         if system != profile or profile_values[name] != profile:
             raise RuntimeError(f'native system/profile comparison differs: {name}')
     receipt['caseCount'] = len(profile_values)
@@ -115,7 +137,7 @@ try:
     compare([str(optimized_publish / 'HostAbiStorage')], 'optimized-aot')
     receipt['passed'] = True
     save()
-    (ROOT / 'artifacts/host-abi/managed-latest.json').write_text(json.dumps(
+    (ROOT / ('artifacts/host-abi/' + FAMILY + '-managed-latest.json' if HEADER_MODE else 'artifacts/host-abi/managed-latest.json')).write_text(json.dumps(
         {'receipt':str((OUT / 'receipt.json').relative_to(ROOT))}, indent=2)+'\n')
     print(f'{receipt["caseCount"]} authored ABI outputs match native under raw/optimized JIT/NativeAOT. Receipt: {OUT / "receipt.json"}')
 except Exception as error:
