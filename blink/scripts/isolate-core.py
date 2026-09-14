@@ -22,6 +22,12 @@ for name, expected in profile_inputs['staged_headers'].items():
         raise SystemExit('staged profile checksum mismatch: ' + name)
 out = Path(tempfile.mkdtemp(prefix='isolate-', dir=root / 'artifacts/core'))
 closure = json.loads((root / 'artifacts/core/closure.json').read_text())
+for entry in closure['sources']:
+    override = profile_inputs.get('source_overrides', {}).get(entry['path'])
+    if override:
+        if entry['sha256'] != override['original_sha256']:
+            raise SystemExit('profile source override has a different upstream source: ' + entry['path'])
+        entry.update(staged_path=override['staged_path'], sha256=override['sha256'])
 if (profile / 'managed-additions.json').exists():
     for entry in json.loads((profile / 'managed-additions.json').read_text())['sources']:
         closure['sources'].append(dict(path=entry['path'], sha256=entry['sha256'],
@@ -30,6 +36,8 @@ command = ['dotnet', str(root.parent / 'DotCC/bin/Release/net10.0/dotcc.dll'),
            '-std=c17', '-D_GNU_SOURCE', '-DNDEBUG', '-DNOLINEAR',
            '-I', str(profile), '-I', str(root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580')]
 if (profile / 'host').is_dir():
+    if (profile / 'authored').is_dir():
+        command += ['-I', str(profile / 'authored')]
     command += ['-I', str(profile / 'host')]
 command += ['--overrides-file', str(profile / 'overrides.json'), '--emit=obj']
 compiler = root.parent / 'DotCC/bin/Release/net10.0'

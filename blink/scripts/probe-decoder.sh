@@ -46,6 +46,7 @@ hashfile = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 receipt = {'scope':'decoder-only; no guest instructions executed', 'host':'linux-x64',
            'compiler_sha256':hashfile(repo/'DotCC/bin/Release/net10.0/DotCC.Lib.dll'),
            'config_sha256':hashfile(root/'config/decoder-config.h'),
+           'target_storage_sha256':hashfile(root/'config/target-storage.h'),
            'harness_sha256':hashfile(root/'tests/Decoder/probe.c'),
            'adaptation':json.loads((root/'generated/decoder-profile/adaptation.json').read_text()),
            'results':{name:hashfile(root/'artifacts/decoder'/name) for name in ['native.txt','staged-native.txt','managed.txt','raw-aot.txt','optimized-jit.txt','optimized-aot.txt']},

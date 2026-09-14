@@ -8,6 +8,9 @@
 int BlinkHostMemoryBegin(size_t);
 size_t BlinkHostMemoryBytes(void);
 size_t BlinkHostMemoryMappings(void);
+/* Nonempty range wholly within one live mapping on the current owner. Pure
+ * ownership test: no dereference, errno change, or native memory probing. */
+int BlinkHostMemoryContains(const void *, size_t);
 int BlinkHostMemoryEnd(void);
 /* Only after the entire upstream worker state and its slab-cache references
  * are discarded. This is deliberately distinct from FreeSystem(). */

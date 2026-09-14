@@ -55,10 +55,11 @@ PY
 if [[ ${1:-} == --native-only ]]; then exit 0; fi
 # Match native core exclusions while keeping host capabilities explicit.
 attempt=$(python3 - "$campaign" <<'PY'
-import hashlib, json, pathlib, shutil, sys, tempfile
+import hashlib, json, pathlib, shutil, subprocess, sys, tempfile
 p=pathlib.Path(sys.argv[1])
 stage=pathlib.Path(tempfile.mkdtemp(prefix='attempt-',dir=p/'generated/core-profile'))
 shutil.copyfile(p/'config/core-config.h',stage/'config.h')
+shutil.copyfile(p/'config/target-storage.h',stage/'target-storage.h')
 shutil.copyfile(p/'config/core-overrides.json',stage/'overrides.json')
 host=p/'config/managed-host'
 if host.is_dir():
@@ -66,7 +67,9 @@ if host.is_dir():
     shutil.copytree(host,stage/'host',ignore=shutil.ignore_patterns('config.h'))
 authored=stage/'authored'
 authored.mkdir()
-for original in [p/'src/core-probe/probe.c', p/'src/HostSignals/HostSignals.c', p/'src/HostSignals/HostSignals.h']:
+for original in [p/'src/core-probe/probe.c', p/'src/core-probe/managed-driver.c',
+                 p/'src/HostSignals/HostSignals.c', p/'src/HostSignals/HostSignals.h',
+                 p/'src/HostMemory/HostMemory.c', p/'src/HostMemory/HostMemory.h']:
     shutil.copyfile(original,authored/original.name)
 additions_path=p/'config/core-managed-additions.json'
 shutil.copyfile(additions_path,stage/'managed-additions.json')
@@ -87,9 +90,33 @@ for row in additions:
         raise SystemExit('staged managed-only source checksum mismatch: '+row['path'])
     paths.append(str(target))
 (stage/'managed-source-paths.txt').write_text(''.join(path+'\n' for path in paths))
+config=(stage/'config.h').read_text()
+if '#define NOLINEAR 1' not in config or '#define HAVE_MAP_ANONYMOUS 1' not in config or not (stage/'host/sys/mman.h').is_file():
+    raise SystemExit('HostMemory requires NOLINEAR, HAVE_MAP_ANONYMOUS, and the campaign mman header together')
+source_overrides={}
+for basename in ('map','debug'):
+    tool=p/('src/HostMemory/stage-'+basename+'.py')
+    snapshot=stage/tool.name
+    shutil.copyfile(tool,snapshot)
+    adapted=stage/'upstream'/(basename+'.c')
+    receipt=stage/(basename+'-boundary.json')
+    subprocess.run([sys.executable,str(tool),'--output',str(adapted),
+                    '--receipt',str(receipt)],check=True)
+    if tool.read_bytes() != snapshot.read_bytes():
+        raise SystemExit(basename+' staging tool changed during profile construction')
+    boundary=json.loads(receipt.read_text())
+    source_overrides['blink/'+basename+'.c']={'staged_path':str(adapted.relative_to(p)),
+        'sha256':boundary['stagedSha256'],'original_sha256':boundary['originalSha256']}
+native_paths=(p/'artifacts/core/source-paths.txt').read_text().splitlines()
+selected=[]
+for path in native_paths:
+    override=source_overrides.get('blink/'+pathlib.Path(path).name)
+    selected.append(str(p/override['staged_path']) if override else path)
+(stage/'core-source-paths.txt').write_text(''.join(path+'\n' for path in selected))
 files={str(f.relative_to(stage)):hashlib.sha256(f.read_bytes()).hexdigest() for f in stage.rglob('*') if f.is_file()}
 compiler=p.parent/'DotCC/bin/Release/net10.0'
 manifest={'staged_headers':files,'compiler':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in compiler.glob('DotCC*.dll')}}
+manifest['source_overrides']=source_overrides
 manifest['compiler']['dotcc.dll']=hashlib.sha256((compiler/'dotcc.dll').read_bytes()).hexdigest()
 (stage/'inputs.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print(stage)
@@ -100,19 +127,20 @@ if [[ ${1:-} == --stage-only ]]; then
   printf '%s\n' "$attempt"
   exit 0
 fi
-mapfile -t sources < "$out/source-paths.txt"
+mapfile -t sources < "$attempt/core-source-paths.txt"
 mapfile -t additions < "$attempt/managed-source-paths.txt"
 sources+=("${additions[@]}")
 # dotcc's current include overlay uses last-wins resolution. Keep authored host
 # declarations last; unimplemented operations remain unresolved imports.
-includes=(-I "$attempt" -I "$upstream")
+includes=(-I "$attempt" -I "$upstream" -I "$attempt/authored")
 if [[ -d "$attempt/host" ]]; then
   includes+=(-I "$attempt/host")
 fi
 set +e
 timeout "${CORE_TRANSLATION_TIMEOUT:-1800}" dotnet "$repo/DotCC/bin/Release/net10.0/dotcc.dll" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
   "${includes[@]}" "${sources[@]}" \
-  "$attempt/authored/probe.c" "$attempt/authored/HostSignals.c" --overrides-file "$attempt/overrides.json" \
+  "$attempt/authored/managed-driver.c" "$attempt/authored/HostSignals.c" "$attempt/authored/HostMemory.c" \
+  --overrides-file "$attempt/overrides.json" \
   --override-report "$attempt/override-report.jsonl" --runtime=c \
   --emit=managedlib --nest-types --class-name Blink --namespace Managed.Emulation \
   -o "$campaign/generated/CoreProbe" > "$out/translate.log" 2>&1

@@ -170,3 +170,19 @@ both this manifest and `source-inventory.json`, then copied and hashed into the
 unique profile snapshot. It is not retroactively labelled part of the native
 83-unit archive closure. The isolation script can target these additional units
 as well as the native-selected ones.
+
+The current managed snapshot also integrates the qualified `HostMemory`
+boundary. It verifies and records `stage-map.py`'s exact two host-capability
+replacements in `map.c`, preserving its original and staged hashes separately.
+`HAVE_MAP_ANONYMOUS` is selected only together with `NOLINEAR`, the campaign mmap
+header, and the owning adapter sources. The native archive oracle remains
+unchanged. `managed-driver.c` owns a 64 MiB memory budget, runs the original
+repeated-case probe, and disposes its remaining mappings only when the entire
+worker is being discarded. Its entry point rejects a second invocation; no
+upstream call or slab-cache reuse is allowed after disposal.
+
+The nested string-array repair reuses the compiler's existing target-typed
+array-field initializer for standalone character arrays. The native-checked
+fixture includes partial rows, exact-size literals, UTF-16/UTF-32, local/static
+storage, and ordinary pointer arrays. The unchanged `disarg.c` then emitted in
+19.5 seconds (`artifacts/core/isolate-443uvfbh/result.json`).

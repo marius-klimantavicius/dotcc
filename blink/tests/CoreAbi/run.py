@@ -36,6 +36,7 @@ try:
     receipt['sourceManifestSha256']=sha(manifest)
     shutil.copytree(ROOT/'config/managed-host',ATTEMPT/'host')
     shutil.copyfile(ROOT/'config/core-config.h',ATTEMPT/'config.h')
+    shutil.copyfile(ROOT/'config/target-storage.h',ATTEMPT/'target-storage.h')
     shutil.copyfile(ROOT/'config/core-overrides.json',ATTEMPT/'overrides.json')
     shutil.copyfile(ROOT/'tests/CoreAbi/probe.c',ATTEMPT/'probe.c')
     receipt['inputs']={str(p.relative_to(ATTEMPT)):sha(p) for p in ATTEMPT.rglob('*') if p.is_file()}

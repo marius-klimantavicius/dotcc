@@ -38,8 +38,9 @@ try:
     (ATTEMPT/'host/config.h').unlink()
     (ATTEMPT/'native-profile/sys').mkdir(parents=True)
     shutil.copyfile(ROOT/'config/managed-host/sys/mman.h',ATTEMPT/'native-profile/sys/mman.h')
-    config=(ROOT/'config/core-config.h').read_text()+'\n#define HAVE_MAP_ANONYMOUS 1\n'
+    config=(ROOT/'config/core-config.h').read_text()
     (ATTEMPT/'config.h').write_text(config)
+    shutil.copyfile(ROOT/'config/target-storage.h',ATTEMPT/'target-storage.h')
     shutil.copyfile(ROOT/'config/core-overrides.json',ATTEMPT/'overrides.json')
     for path in [ROOT/'tests/HostMemory/probe.c', ROOT/'tests/HostMemory/constants.c',
                  ROOT/'src/HostMemory/HostMemory.c', ROOT/'src/HostMemory/HostMemory.h',

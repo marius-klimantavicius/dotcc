@@ -42,6 +42,18 @@ int BlinkHostMemoryBegin(size_t limit) {
 }
 size_t BlinkHostMemoryBytes(void) { return owner.bytes; }
 size_t BlinkHostMemoryMappings(void) { return owner.mappings; }
+int BlinkHostMemoryContains(const void *pointer, size_t length) {
+  uintptr_t start = (uintptr_t)pointer;
+  struct OwnedMapping *record = owner.head;
+  if (!owner.limit || !start || !length || length > UINTPTR_MAX - start) return 0;
+  while (record) {
+    uintptr_t base = (uintptr_t)record->address;
+    if (start >= base && length <= record->length &&
+        start - base <= record->length - length) return 1;
+    record = record->next;
+  }
+  return 0;
+}
 int BlinkHostMemoryEnd(void) {
   if (!owner.limit) return Fail(ENODEV);
   if (owner.head) return Fail(EBUSY);

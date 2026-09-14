@@ -191,3 +191,20 @@ reductions and focused tests pass, followed by a warning-free Release build,
 skipped. The actual disarg.c translation now emits. Omitted outer dimensions
 with retained inner array dimensions are the next measured parser blocker in
 disspec.c; a native reduction is prepared, with implementation still pending.
+
+## Significant progress: diagnostic ownership and explicit byte order
+
+Hash-checked debug.c staging replaces its native signal-handler pointer probe
+with reads limited to mappings owned by the current worker. It preserves the
+existing diagnostic sentinel and upstream load/store implementations. Native
+untouched/staged and raw/optimized JIT/AOT tests pass for all modes, invalid and
+foreign pointers, boundary crossings, forced GC and unchanged host signal masks.
+General malloc storage remains conservatively unavailable to this diagnostic.
+
+The native oracle exposed missing endian declarations: undefined macros compared
+as zero and selected byte swapping. An explicit little-endian storage profile
+now rejects big-endian targets without impersonating a native CPU or OS.
+Independent byte-pattern read/store checks pass. Decoder, bounded memory/native
+core, and all 236 actual core ABI observations were freshly requalified in all
+four managed modes with this profile. Full-core staging snapshots both precise
+host boundaries and its one-shot worker allocation owner.

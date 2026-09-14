@@ -1,9 +1,12 @@
 #ifndef BLINK_CAMPAIGN_CORE_CONFIG_H
 #define BLINK_CAMPAIGN_CORE_CONFIG_H
+#include "target-storage.h"
 /* Core probe exclusions match the native oracle. Host capabilities require
  * separate contracts; do not copy native HAVE_* probes into managed code. */
 #define BLINK_MANAGED_HOST_DECLARATIONS_ONLY 1
 #define NOLINEAR 1
+/* Valid only with the staged map.c capability boundary and HostMemory owner. */
+#define HAVE_MAP_ANONYMOUS 1
 #define DISABLE_JIT 1
 #define DISABLE_X87 1
 #define DISABLE_THREADS 1
