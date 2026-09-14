@@ -81,3 +81,15 @@ Host storage ABI qualification also now passes all 174 emitted measurements in r
 Ordinary C jump buffers now store a numeric identity instead of a CLR reference in unmanaged memory. Lowered handlers capture a freshly armed identity and evaluate buffer expressions once. Allocated, nested, rearmed, zero-value and compacting-GC cases pass; the independent jump consumer agrees with native output under raw/optimized JIT/NativeAOT, with managed-pointer warnings treated as errors. Signal-aware mask saving remains separate work.
 
 Function-form parameters now adjust to function pointers. Global array typedefs retain full storage, including multidimensional arrays; thread-local arrays have per-thread pinned managed roots. Reduced direct/object-linked tests cover two simultaneous threads and compacting GC. Full Release regression after all three compiler repairs passes 2222 unit tests and 500 functional tests, with 1025 functional rows explicitly skipped and zero failures.
+
+## Significant progress: isolated TCP host
+
+The managed TCP module now uses real sockets with per-instance virtual bindings
+and explicit physical loopback publication. Independent instances reuse guest
+port 8080, exchange exact fragmented/128 KiB traffic through separate clients,
+and retain separate endpoint metadata and descriptor limits. Actual socket
+backpressure, cancellation, close during receive and disposal of pending accept
+operations pass bounded tests. Four assertion groups pass Linux JIT/NativeAOT;
+both host suites now record source, assembly, executable and output hashes.
+This remains a typed host module without guest callbacks or a unified guest
+descriptor table, so P4 and P5 remain open.
