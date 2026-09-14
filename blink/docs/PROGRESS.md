@@ -583,3 +583,13 @@ Both are fixed generically, preserving actual array declarations and complete
 generated members. Native/direct/object-link GC regressions pass, and the full
 repository suite passes a warning-free build,2238 units and520 functional cases
 with1041 explicit skips. Compiler outputs are frozen for the next core profile.
+
+## Significant progress: private signal registration and queries
+
+A bounded per-worker disposition table now stores real default/ignore/simple/
+siginfo records, action masks and reviewed metadata flags. Begin/End lifecycle,
+old-action/query semantics and errors are explicit; native OS dispositions and
+masks remain unchanged. Native/staged and raw/optimized JIT/AOT pass through both
+direct emission and separate object linking, including actual callback pointers,
+independent workers and GC (host-signal-actions/attempt-1qbw0fxz). Asynchronous
+signal delivery and unqualified action flags remain outside this module.
