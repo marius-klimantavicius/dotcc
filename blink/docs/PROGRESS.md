@@ -437,3 +437,13 @@ new-file quota errors preserve namespace/descriptors, and existing opens consume
 no extra charge. Focused JIT/NativeAOT and InstanceIo regressions pass. Logical
 namespace bounds do not claim exact CLR allocation or total worker memory bounds.
 The active core build keeps its earlier immutable Host snapshot.
+
+## Significant progress: nonterminal descriptor policy and termios storage
+
+The private descriptor model's terminal operations now return ENOTTY for real
+instance descriptors and EBADF for invalid/closed descriptors; payload pointers
+are never dereferenced. The service's TIOCGWINSZ stdout probe is covered. Normal
+C argument evaluation remains intact through the variadic ioctl adapter. Pure
+termios speed helpers match native full-record bytes across 131104 setter cases.
+Native/staged-native and raw/optimized JIT/AOT matrices pass. These bindings are
+ready for the next combined profile; the current core build stays frozen.
