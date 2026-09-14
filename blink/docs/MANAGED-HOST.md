@@ -8,9 +8,9 @@ overlay does not define `__linux__`, `__GNUC__`, or another fabricated platform
 identity to enable unavailable native code.
 
 The first reference model is 64-bit pointers with LP64 C integers and the
-observed Linux x64/glibc host record shapes. Those fixed storage shapes can be
-emitted on another managed host, but this work has not measured emitted C#
-layouts or executed on Windows. No record may be passed directly to a Windows
+observed Linux x64/glibc host record shapes. Emitted C# storage is now measured
+under raw/optimized JIT and NativeAOT on Linux x64. Windows execution remains
+unrun. No record may be passed directly to a Windows
 native ABI. A later deliberate storage change needs a new matching staged-native
 oracle; the untouched native oracle remains a separate comparison.
 
@@ -93,6 +93,7 @@ placeholders. The current core probe has not passed that gate.
 ```sh
 python3 blink/tests/HostAbi/run.py
 python3 blink/tests/HostAbi/inventory.py
+python3 blink/tests/HostAbi/run-managed.py
 ```
 
 The first command passed **87 native size/alignment/offset checks**, **252
@@ -112,3 +113,35 @@ managed blockers. Header existence also does not establish runtime semantics.
 The remaining public POSIX candidates include memory mapping, ioctl, directory
 statistics, scheduling, group identities, and platform resource interfaces;
 they must be added based on the staged core's next concrete diagnostics.
+
+## Executed emitted-storage qualification
+
+`run-managed.py` snapshots the authored `abi.h` and the same `probe.c` used by
+the native layout comparison. `BLINK_HOST_STORAGE_ONLY` selects 174 observations
+against the authored records, then the script compiles and executes that exact
+snapshot natively and through dotcc. Each type reports its emitted size, declared
+alignment, actual position following a byte inside a containing struct, and
+array-element stride. Each field reports both `offsetof` and actual pointer
+subtraction from an instance address. The generated C# retains real field-address
+subtractions; these checks do not rely solely on compiler-reported offsets.
+
+| Linux x64 execution | Result |
+| --- | --- |
+| Matching native authored profile | 174 observations; also matches 87 native system-header comparisons |
+| Raw emitted C#, JIT | All 174 outputs match native |
+| Raw emitted C#, NativeAOT | All 174 outputs match native |
+| Semantically postprocessed C#, JIT | All 174 outputs match native |
+| Semantically postprocessed C#, NativeAOT | All 174 outputs match native |
+
+The observed run is recorded at
+`artifacts/host-abi/managed/attempt-e9omt2u3/receipt.json`; subsequent runs use
+unique attempt directories and update `artifacts/host-abi/managed-latest.json`
+only on success. Receipts include exact compiler/input/generated hashes, build
+commands, case counts, and output hashes. Raw source is copied before semantic
+postprocessing, and neither generated variant is hand-edited.
+For this probe the semantic postprocessor produced identical C#; both separately
+built execution variants were still run and compared.
+
+This closes the emitted layout comparison for these authored host records on
+Linux x64. It does not qualify the complete `Machine`/`System` layout, any host
+callback implementation, nonlocal unwind, guest execution, or Windows behavior.

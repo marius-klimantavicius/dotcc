@@ -21,9 +21,22 @@ static int failures;
 #ifdef BLINK_HOST_STORAGE_ONLY
 /* Identical labels/cases, evaluating only the authored profile records. The
  * runner compares this output with the separately compiled native oracle. */
-#define SIZE(n, p) printf("%s.size %zu\n", #n, sizeof(p)); \
-                   printf("%s.alignment %zu\n", #n, _Alignof(p))
-#define OFFSET(n, f, p, pf) printf("%s.%s %zu\n", #n, #f, offsetof(p, pf))
+#define SIZE(n, p) do { \
+  p elements[2]; \
+  struct { unsigned char prefix; p value; } placed; \
+  printf("%s.size %zu\n", #n, sizeof(p)); \
+  printf("%s.alignment %zu\n", #n, _Alignof(p)); \
+  printf("%s.placement %zu\n", #n, \
+         (size_t)((unsigned char *)&placed.value - (unsigned char *)&placed)); \
+  printf("%s.stride %zu\n", #n, \
+         (size_t)((unsigned char *)&elements[1] - (unsigned char *)&elements[0])); \
+} while (0)
+#define OFFSET(n, f, p, pf) do { \
+  p value; \
+  printf("%s.%s %zu\n", #n, #f, offsetof(p, pf)); \
+  printf("%s.%s.address %zu\n", #n, #f, \
+         (size_t)((unsigned char *)&value.pf - (unsigned char *)&value)); \
+} while (0)
 #else
 #define SIZE(n, p) CHECK(#n ".size", sizeof(n), sizeof(p)); \
                    CHECK(#n ".alignment", _Alignof(n), _Alignof(p))
