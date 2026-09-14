@@ -29,8 +29,9 @@ TIMERS = '--timers' in sys.argv
 RESOURCES = '--resources' in sys.argv
 TIMES = '--times' in sys.argv
 IOCTL = '--ioctl' in sys.argv
-HEADER_MODE = TIMERS or RESOURCES or TIMES or IOCTL
-FAMILY = 'ioctl' if IOCTL else 'resource' if RESOURCES else 'times' if TIMES else 'timer'
+STATVFS = '--statvfs' in sys.argv
+HEADER_MODE = TIMERS or RESOURCES or TIMES or IOCTL or STATVFS
+FAMILY = 'statvfs' if STATVFS else 'ioctl' if IOCTL else 'resource' if RESOURCES else 'times' if TIMES else 'timer'
 if TIMERS:
     receipt['kind'] = 'executed-emitted-timer-header-storage-not-host-runtime'
 if RESOURCES:
@@ -41,6 +42,10 @@ if TIMES:
 
 if IOCTL:
     receipt['kind'] = 'executed-emitted-ioctl-header-storage-not-host-runtime'
+
+
+if STATVFS:
+    receipt['kind'] = 'executed-emitted-statvfs-header-storage-not-host-runtime'
 
 
 def sha(path):
@@ -92,6 +97,8 @@ try:
         if IOCTL:
             shutil.copy2(ROOT / 'config/managed-host/sys/ioctl.h', source / 'sys/ioctl.h')
             shutil.copy2(ROOT / 'config/managed-host/ioctl-constants.h', source / 'ioctl-constants.h')
+        if STATVFS:
+            shutil.copy2(ROOT / 'config/managed-host/sys/statvfs.h', source / 'sys/statvfs.h')
     else:
         for original in [ROOT / 'tests/HostAbi/probe.c', ROOT / 'config/managed-host/abi.h',
                          ROOT / 'config/managed-host/retained-thread-types.h']:

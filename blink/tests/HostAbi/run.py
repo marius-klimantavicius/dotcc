@@ -115,6 +115,24 @@ ioctl_symbols = run(['nm', '-u', '-P', str(ioctl_obj)])
 (OUT / 'ioctl-declaration-symbols.txt').write_text(ioctl_symbols)
 if [line.split()[0] for line in ioctl_symbols.splitlines()] != ['blink_host_ioctl']:
     raise SystemExit('ioctl declaration did not stay isolated: ' + ioctl_symbols)
+statvfs_source = ROOT / 'tests/HostAbi/statvfs-probe.c'
+statvfs_native = BUILD / 'statvfs-native'
+statvfs_profile = BUILD / 'statvfs-profile'
+run(compiler + [str(statvfs_source), '-o', str(statvfs_native)])
+run(compiler + ['-I', str(PROFILE), str(statvfs_source), '-o', str(statvfs_profile)])
+statvfs_expected = run([str(statvfs_native)])
+statvfs_actual = run([str(statvfs_profile)])
+(OUT / 'statvfs-native.txt').write_text(statvfs_expected)
+(OUT / 'statvfs-profile.txt').write_text(statvfs_actual)
+passed = passed and statvfs_expected == statvfs_actual
+statvfs_declaration = OUT / 'statvfs-declaration.c'
+statvfs_declaration.write_text('#include <sys/statvfs.h>\nint probe(int fd, struct statvfs *v) { return statvfs("/", v) + fstatvfs(fd, v); }\n')
+statvfs_obj = BUILD / 'statvfs-declaration.o'
+run(compiler + ['-I', str(PROFILE), '-c', str(statvfs_declaration), '-o', str(statvfs_obj)])
+statvfs_symbols = run(['nm', '-u', '-P', str(statvfs_obj)])
+(OUT / 'statvfs-declaration-symbols.txt').write_text(statvfs_symbols)
+if sorted(line.split()[0] for line in statvfs_symbols.splitlines()) != ['blink_host_fstatvfs', 'blink_host_statvfs']:
+    raise SystemExit('statvfs declarations did not stay isolated: ' + statvfs_symbols)
 receipt = dict(kind='native-host-abi-and-declaration-check-not-managed-execution',
                machine=platform.machine(), host=platform.platform(),
                compiler=run(['cc', '--version']).splitlines()[0],
@@ -125,12 +143,14 @@ receipt = dict(kind='native-host-abi-and-declaration-check-not-managed-execution
                resourceHeaderOutputs=len(resource_expected.splitlines()),
                processTimesHeaderOutputs=len(times_expected.splitlines()),
                ioctlHeaderOutputs=len(ioctl_expected.splitlines()),
-               ioctlUnresolvedSymbols=['blink_host_ioctl'], passed=passed)
+               ioctlUnresolvedSymbols=['blink_host_ioctl'], statvfsHeaderOutputs=len(statvfs_expected.splitlines()),
+               statvfsUnresolvedSymbols=['blink_host_fstatvfs', 'blink_host_statvfs'], passed=passed)
 (OUT / 'receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
 print(f'{len(layouts)} native layout checks, {len(constant_results)} constant checks, and {len(unresolved)} isolated unresolved host declarations: {"PASS" if passed else "FAIL"}')
 print(f'{len(timer_expected.splitlines())} native timer header layout outputs: {"PASS" if timer_expected == timer_actual else "FAIL"}')
 print(f'{len(resource_expected.splitlines())} native resource header outputs: {"PASS" if resource_expected == resource_actual else "FAIL"}')
 print(f'{len(times_expected.splitlines())} native process-times header outputs: {"PASS" if times_expected == times_actual else "FAIL"}')
 print(f'{len(ioctl_expected.splitlines())} native ioctl header outputs: {"PASS" if ioctl_expected == ioctl_actual else "FAIL"}')
+print(f'{len(statvfs_expected.splitlines())} native statvfs header outputs: {"PASS" if statvfs_expected == statvfs_actual else "FAIL"}')
 if not passed:
     raise SystemExit(1)

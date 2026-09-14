@@ -210,3 +210,16 @@ four raw/optimized JIT/NativeAOT variants at
 `python3 blink/tests/HostAbi/run-managed.py --ioctl`. The native declaration
 probe confirms the only ioctl import is `blink_host_ioctl`. Terminal operation
 behavior remains unresolved; these declarations provide no implementation.
+
+The campaign `fcntl.h` also exposes measured `PATH_MAX` and `PIPE_BUF` values
+of 4096 through `limits-constants.h`. Actual `overlays.c` needs the former for
+array storage; `log.c` needs the latter for formatting bounds. These declarations
+do not implement path operations or atomic writes.
+
+The next actual `statfs.c` dependency supplies an isolated `statvfs` record
+(112 bytes/alignment 8), eleven native 64-bit fields and twelve observed `ST_*`
+flags. Thirty-six native system/header observations match raw/optimized
+JIT/NativeAOT at `artifacts/host-abi/managed/attempt-2ko0z866/receipt.json`;
+reproduce with `python3 blink/tests/HostAbi/run-managed.py --statvfs`.
+`blink_host_statvfs` and `blink_host_fstatvfs` remain unresolved declarations;
+filesystem capacity reporting is not implemented by this storage profile.

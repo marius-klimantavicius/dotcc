@@ -1,6 +1,6 @@
 {
   "kind": "core-closure-recursive-lexical-header-and-type-inventory-not-managed-runtime-coverage",
-  "coreClosureSha256": "b8c3c29a903d086f3980e2abfeae6acb415b281d7a6facb66d1a710f39ed6ef5",
+  "coreClosureSha256": "defc7059a0daee2109446a752749aad80127c47083ba2566a630bcc80b1c1d34",
   "upstreamRevision": "f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580",
   "headers": [
     {
@@ -590,7 +590,7 @@
         "blink/vfs.h",
         "blink/xlat.h"
       ],
-      "status": "shared-header-exists-needs-semantics-review"
+      "status": "campaign-declaration-only"
     },
     {
       "header": "sys/statvfs.h",
@@ -599,7 +599,7 @@
         "blink/syscall.c",
         "blink/xlat.h"
       ],
-      "status": "missing-or-native-conditional-requires-profile-review"
+      "status": "campaign-declaration-only"
     },
     {
       "header": "sys/syscall.h",
@@ -904,6 +904,9 @@
       "blink/xlat.c",
       "blink/xlat.h"
     ],
+    "struct statvfs": [
+      "blink/statfs.c"
+    ],
     "struct termios": [
       "blink/fds.h",
       "blink/ioctl.c",
@@ -941,6 +944,11 @@
     },
     "open": {
       "target": "blink_host_open",
+      "header": "fcntl.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "openat": {
+      "target": "blink_host_openat",
       "header": "fcntl.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
@@ -1167,6 +1175,61 @@
     "CMSG_NXTHDR": {
       "target": "blink_host_cmsg_nxthdr",
       "header": "sys/socket.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "stat": {
+      "target": "blink_host_stat_record",
+      "header": "sys/stat.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "fstat": {
+      "target": "blink_host_fstat",
+      "header": "sys/stat.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "lstat": {
+      "target": "blink_host_lstat",
+      "header": "sys/stat.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "fstatat": {
+      "target": "blink_host_fstatat",
+      "header": "sys/stat.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "mkdir": {
+      "target": "blink_host_mkdir",
+      "header": "sys/stat.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "mkfifo": {
+      "target": "blink_host_mkfifo",
+      "header": "sys/stat.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "chmod": {
+      "target": "blink_host_chmod",
+      "header": "sys/stat.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "fchmod": {
+      "target": "blink_host_fchmod",
+      "header": "sys/stat.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "fchmodat": {
+      "target": "blink_host_fchmodat",
+      "header": "sys/stat.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "statvfs": {
+      "target": "blink_host_statvfs_record",
+      "header": "sys/statvfs.h",
+      "implementation": "unimplemented-must-remain-unresolved"
+    },
+    "fstatvfs": {
+      "target": "blink_host_fstatvfs",
+      "header": "sys/statvfs.h",
       "implementation": "unimplemented-must-remain-unresolved"
     },
     "gettimeofday": {

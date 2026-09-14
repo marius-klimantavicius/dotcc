@@ -19,7 +19,7 @@ types = ['sigset_t', 'siginfo_t', 'sigjmp_buf', 'jmp_buf', 'stack_t', 'sig_atomi
          'struct msghdr', 'struct cmsghdr', 'struct sockaddr', 'struct sockaddr_storage',
          'struct pollfd', 'struct sigaction', 'struct linger', 'struct ucred',
          'struct flock', 'struct timeval', 'struct timezone', 'struct itimerval',
-         'rlim_t', 'struct rlimit', 'struct rusage', 'struct tms', 'struct winsize']
+         'rlim_t', 'struct rlimit', 'struct rusage', 'struct tms', 'struct winsize', 'struct statvfs']
 while pending:
     name = pending.pop()
     if name in seen:

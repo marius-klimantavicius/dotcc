@@ -390,3 +390,10 @@ worker mask. Native comparisons and all four managed modes pass for public bits,
 reserved/unmaskable signals, old-mask queries and atomic errors. The real host
 thread mask remains unchanged across forced GC. Guest signal delivery and
 handler/kill/suspend operations remain separate open contracts.
+
+## Significant progress: filesystem capacity ABI declarations
+
+The measured statvfs record and flags now let actual statfs.c translate without
+pretending to implement capacity reporting. Native and emitted layout/constant
+checks pass in all four managed modes (36 rows). Calls retain isolated names
+until a private filesystem capacity policy exists.
