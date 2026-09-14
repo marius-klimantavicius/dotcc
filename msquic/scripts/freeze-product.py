@@ -201,7 +201,7 @@ check(host.get('translation_profile_sha256') == product.get('translation_profile
       'Translation profile differs between the validated sources and product')
 inline_exports = [line.strip() for line in (ROOT / 'config/inline-exports.txt').read_text().splitlines()
                   if line.strip() and not line.lstrip().startswith('#')]
-check(product.get('output_options') == dict(nest_types=True, runtime='c', deduplicate_inline=True,
+check(product.get('output_options') == dict(nest_types=True, runtime='c', literal_pool=True, deduplicate_inline=True,
                                           export_inline=inline_exports),
       'Product was not generated with the selected nested C layout and inline options')
 check(product.get('generated_directories') == dict(raw='generated/raw/TranslatedMsQuic',

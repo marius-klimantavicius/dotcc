@@ -2,6 +2,7 @@
 """Preserve compiler-manifest-owned raw files; never edit emitted C# or delete user files."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -88,10 +89,10 @@ elif sys.argv[1:] == ["record"]:
         raise SystemExit("Translation inputs changed during emission/postprocessing; rerun translation")
     record = {"format": "picotls-translation-v1", "raw": hashes(RAW),
               "optimized": hashes(PRODUCT), **inputs}
+    compiler = Path(os.environ.get("DOTCC_COMPILER", ROOT.parent / "DotCC/bin/Release/net10.0/dotcc.dll")).resolve()
     record["tool_sha256"] = {
-        str(path.relative_to(ROOT.parent)): hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in [ROOT.parent / "DotCC/bin/Release/net10.0/dotcc.dll",
-                     ROOT.parent / "DotCC/bin/Release/net10.0/DotCC.Lib.dll",
+        os.path.relpath(path, ROOT.parent): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in [compiler, compiler.parent / "DotCC.Lib.dll",
                      ROOT.parent / "DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll"]}
     (ROOT / "artifacts/translation/success.json").write_text(json.dumps(record, indent=2) + "\n")
     print("Translation and in-place semantic postprocessing completed; behavior remains to be tested.")

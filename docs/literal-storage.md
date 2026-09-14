@@ -10,7 +10,8 @@ dotcc a.cs b.cs --literal-pool -o linked
 
 For object compilation, select the flag at link time. The same object files can
 produce either storage mode. The library API option is
-`new CSharpOutputOptions(LiteralPool: true)`. SQLite's emission script enables it.
+`new CSharpOutputOptions(LiteralPool: true)`. The SQLite, PicoTLS, and MsQuic product
+generation scripts enable it.
 
 With the flag, generated narrow string pointers address a single pinned GC byte array owned by
 a translation-specific holder (for example, `SqliteLiterals`). Its static

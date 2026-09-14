@@ -8,7 +8,7 @@ msquic/scripts/translate.sh
 
 The final project is
 `msquic/generated/TranslatedMsQuic/TranslatedMsQuic.csproj`. Translation links
-with `--nest-types --runtime=c`; ABI types and runtime helpers live inside
+with `--literal-pool --nest-types --runtime=c`; ABI types and runtime helpers live inside
 `Managed.Transport.MsQuic`. Low-level consumers can import these types with
 `using static Managed.Transport.MsQuic;`. The owning API keeps its existing
 `Managed.Transport.Api` surface and references this final project by default.

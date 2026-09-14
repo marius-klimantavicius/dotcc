@@ -112,11 +112,11 @@ try:
     if not inline_exports or len(set(inline_exports)) != len(inline_exports):
         raise RuntimeError('Inline export selectors must be nonempty and unique')
     inline_flags = ['--deduplicate-inline', *[part for pattern in inline_exports for part in ['--export-inline', pattern]]]
-    receipt['output_options'] = dict(nest_types=True, runtime='c', deduplicate_inline=True, export_inline=inline_exports)
+    receipt['output_options'] = dict(nest_types=True, runtime='c', literal_pool=True, deduplicate_inline=True, export_inline=inline_exports)
     receipt['generated_directories'] = dict(raw='generated/raw/TranslatedMsQuic', optimized='generated/TranslatedMsQuic')
     raw = ROOT / 'generated/raw/TranslatedMsQuic'
     optimized = ROOT / 'generated/TranslatedMsQuic'
-    run(['dotnet', compiler, '--emit=managedlib', '--nest-types', '--runtime=c', '--class-name', 'MsQuic',
+    run(['dotnet', compiler, '--emit=managedlib', '--literal-pool', '--nest-types', '--runtime=c', '--class-name', 'MsQuic',
          '--namespace', 'Managed.Transport', '--split=size', *inline_flags, *objects, '-o', raw], 'raw-link')
     optimized.mkdir(parents=True, exist_ok=True)
     # Cleanup is limited to previously generated manifest-owned files.

@@ -11,7 +11,7 @@ if "$build_tools"; then
     dotnet build "$DOTCC_ROOT/DotCC/DotCC.csproj" -c Release --nologo
     dotnet build "$DOTCC_ROOT/DotCC.PostProcess/DotCC.PostProcess.csproj" -c Release --nologo
 fi
-compiler="$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll"
+compiler="${DOTCC_COMPILER:-$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll}"
 postprocessor="$DOTCC_ROOT/DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll"
 for tool in "$compiler" "$postprocessor"; do
     [[ -f "$tool" ]] || { echo "Missing tool $tool; rerun without --no-build-tools" >&2; exit 1; }
@@ -25,7 +25,7 @@ rm -f "$logs/success.json"
 python3 "$PICOTLS_ROOT/scripts/snapshot-translation.py" inputs
 timeout --kill-after=10s "${PICOTLS_TRANSLATE_TIMEOUT:-600}s" \
     dotnet "$compiler" -std=c17 "${PICOTLS_DEFINES[@]}" -I "$source_dir/include" -I "$source_dir" \
-    "${sources[@]}" --emit=managedlib --nest-types --runtime=c --class-name PicoTls --namespace Managed.Security \
+    "${sources[@]}" --emit=managedlib --literal-pool --nest-types --runtime=c --class-name PicoTls --namespace Managed.Security \
     --split=size --split-size=102400 -o "$(dirname -- "$PICOTLS_PROJECT")" \
     2>&1 | tee "$logs/emit.log"
 require_picotls_project "$PICOTLS_PROJECT"
