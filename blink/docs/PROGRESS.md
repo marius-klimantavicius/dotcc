@@ -447,3 +447,13 @@ C argument evaluation remains intact through the variadic ioctl adapter. Pure
 termios speed helpers match native full-record bytes across 131104 setter cases.
 Native/staged-native and raw/optimized JIT/AOT matrices pass. These bindings are
 ready for the next combined profile; the current core build stays frozen.
+
+## Significant progress: additional private process metadata
+
+Read-only credential triples, supplementary groups, process/session IDs,
+hostnames and selected sysconf queries now use the bound immutable identity.
+Native and all four managed modes pass, including exact separate worker names
+and IDs, compacting GC, invalid queries and unchanged failed outputs. Measured
+selector values are explicit; reported page size matches the mapping adapter,
+while ticks are a declared guest ABI value. Process mutations and CPU-accounting
+operations remain isolated and unimplemented.
