@@ -507,3 +507,12 @@ Native and raw/optimized JIT/AOT values and thread isolation pass. This fixes
 preprocessor selection as well as unresolved names: upstream error translation
 can now include cases for errors the private callbacks already return. Fresh
 core preprocessing is required; old missing-branch objects are not reused.
+
+## Significant progress: private executable/access checks
+
+access/faccessat now use the existing resolver, current directory, directory
+descriptors and real private metadata. Virtual UID0 execute checks require an
+execute bit on regular files; immutable image write checks return EROFS, while
+directory access reflects the writable private layer. Native common tests,
+actual UID0 behavior in an isolated user namespace and all four managed modes
+pass. No generic host access or second path resolver is used.
