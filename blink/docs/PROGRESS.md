@@ -544,3 +544,14 @@ uses a separate explicit-profile ABI oracle, binds private owners and verifies
 memory accounting. Preparation is validated; complete managed core execution is
 still unqualified and P1 remains open. Current failed linkage receipt:
 objects/92682452e55497bb04f491b8938eaa6a6304c8c1a3073fc2558a6f34486f1576.
+
+## Significant progress: real relative sleep and owned interruption
+
+The new HostSleep boundary waits against a monotonic deadline and supports
+explicit EINTR wakeups with normalized remaining time, without native signals
+or retained C pointers. Native real delay/SIGALRM oracle and raw/optimized JIT/AOT
+pass at host-sleep/attempt-avrdf_c1. Tests include long.MaxValue-second waits,
+active disposal, invalid inputs, actual C function pointers, one-wait bounds,
+two simultaneous independent owners and compacting GC. Guest signal delivery
+and the stop protocol remain separate: upstream CheckInterrupt must see guest
+state before a wake, and disposing a still-retrying guest owner is not a stop.
