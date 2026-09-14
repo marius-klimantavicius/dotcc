@@ -1,7 +1,11 @@
 using global::System;
 using Managed.Emulation.Host;
 namespace Managed.Emulation;
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     [ThreadStatic] private static HostSleep? sleepOwner;
     public static void BindHostSleep(HostSleep value)

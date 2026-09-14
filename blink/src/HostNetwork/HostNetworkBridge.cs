@@ -3,7 +3,11 @@ using global::System.Net.Sockets;
 
 namespace Managed.Emulation;
 
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     private static unsafe bool ReadEndpoint(blink_host_sockaddr* address, uint length, out Managed.Emulation.Host.GuestEndpoint endpoint)
     {

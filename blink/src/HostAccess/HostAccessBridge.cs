@@ -4,7 +4,11 @@ using Managed.Emulation.Host;
 
 namespace Managed.Emulation;
 
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     public static unsafe int blink_host_access(byte* path, int mode)
         => blink_host_faccessat(-100, path, mode, 0);

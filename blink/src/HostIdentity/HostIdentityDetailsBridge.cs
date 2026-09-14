@@ -3,7 +3,11 @@ using Managed.Emulation.Host;
 
 namespace Managed.Emulation;
 
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     private static int IdentityDetailError(int error) { Libc.errno = error; return -1; }
     public static long blink_host_sysconf(int selector)

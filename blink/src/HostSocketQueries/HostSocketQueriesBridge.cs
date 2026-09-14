@@ -1,7 +1,11 @@
 using global::System;
 using global::System.Buffers.Binary;
 namespace Managed.Emulation;
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     public static unsafe int blink_host_getsockopt(int fd,int level,int option,void* value,uint* length)
     {

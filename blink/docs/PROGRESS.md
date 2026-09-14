@@ -655,3 +655,12 @@ The retained sched_yield call now invokes BCL Thread.Yield on the bound worker,
 without promising a context switch or enabling guest thread/priority features.
 Native and all4 pass at host-yield/attempt-rybwxwrz, including function pointers,
 independent worker errno and GC. Existing upstream feature selection is unchanged.
+
+## Significant progress: complete95-object link with the correct container
+
+Every frozen object emitted and the exact complete set now links as BlinkCore.
+The requested Blink containing class had collided with the preserved upstream
+function Blink; no compiler or upstream algorithm repair was needed. Authored
+bridge declarations select the full container through BLINK_FULL_CORE, with
+unchanged default fixture declarations and method bodies. The first raw C# build
+uses an explicit new consumer snapshot; successful linkage is not P1 execution.

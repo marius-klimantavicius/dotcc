@@ -2,7 +2,11 @@ using Managed.Emulation.Host;
 
 namespace Managed.Emulation;
 
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     private static int ProcessPolicyError(int error) { Libc.errno = error; return -1; }
     private static int ProcessCreationDenied() => ProcessPolicyError(identity == null ? 19 : 38);

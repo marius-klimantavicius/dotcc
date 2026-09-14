@@ -3,7 +3,11 @@ using Managed.Emulation.Host;
 
 namespace Managed.Emulation;
 
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     [ThreadStatic] private static HostIdentity? identity;
     public static void BindHostIdentity(HostIdentity value)

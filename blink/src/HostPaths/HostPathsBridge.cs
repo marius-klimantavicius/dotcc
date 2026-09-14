@@ -4,7 +4,11 @@ using Managed.Emulation.Host;
 
 namespace Managed.Emulation;
 
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     // Allocation requests are bounded independently of the generic C heap.
     private const int PathAllocationLimit = 4097;

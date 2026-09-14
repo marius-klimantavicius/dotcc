@@ -211,3 +211,14 @@ and managed-driver.c also link with zero conflicting aggregate signatures:
 objects/a5dbe30aa6538f86024de177c5c44ce54c32838083428c18a3cffd1461ecff15/three-object-link.json.
 The new 95-source frozen full profile is building; full managed execution remains
 an open gate, not implied by this reduced linkage.
+
+## B022 — full containing class conflicts with upstream Blink function (fixed)
+
+All95 objects emitted, but explicit --class-name Blink failed valid class-name
+checking because machine.c defines the actual Blink function. Linking the exact
+same objects as BlinkCore succeeds with no aggregate conflicts. The upstream
+function remains unchanged; this is a campaign container selection correction,
+not a compiler defect. Authored bridges now select BlinkCore under BLINK_FULL_CORE
+and retain Blink for focused fixtures. Default conditional projection reproduces
+every previous bridge source exactly; no method body or generated C# was edited.
+The full consumer must define that symbol and use the matching container.

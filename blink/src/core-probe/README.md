@@ -135,10 +135,10 @@ alone does not qualify linking, generated C# compilation, or guest execution;
 the actual managed core gate remains open.
 
 Full emission now uses the planned managed library shape: `--emit=managedlib
---nest-types --class-name Blink --namespace Managed.Emulation --runtime=c`.
+--nest-types --class-name BlinkCore --namespace Managed.Emulation --runtime=c`.
 The default whole-closure bound is 1800 seconds and remains configurable through
 `CORE_TRANSLATION_TIMEOUT`. The generated public upstream type remains
-`Managed.Emulation.Blink.System`; compiler/runtime framework references use
+`Managed.Emulation.BlinkCore.System`; compiler/runtime framework references use
 `global::System` so that nested C name cannot capture them. Direct and object-linked
 regressions exercise the same boundary with C/all runtimes and split output.
 Default global-namespace output containing a C type named `System` is still

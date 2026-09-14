@@ -1,7 +1,11 @@
 using global::System;
 using global::System.Threading;
 namespace Managed.Emulation;
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     public static int blink_host_sched_yield()
     {

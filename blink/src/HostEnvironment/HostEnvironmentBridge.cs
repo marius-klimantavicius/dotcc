@@ -6,7 +6,11 @@ namespace Managed.Emulation;
 /// <summary>Authored POSIX host callbacks compiled beside unchanged generated
 /// sources. The owner binds one explicit environment on its dedicated C worker
 /// thread. C storage contains no reference to this managed object.</summary>
+#if BLINK_FULL_CORE
+public static partial class BlinkCore
+#else
 public static partial class Blink
+#endif
 {
     [ThreadStatic] private static HostEnvironment? environment;
     public static void BindHostEnvironment(HostEnvironment value)

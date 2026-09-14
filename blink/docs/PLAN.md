@@ -196,10 +196,13 @@ offline reruns after checksum-verified fetches. Record any upstream test toolcha
 download separately; native `make check` must not silently fetch floating tools.
 
 Proposed output: `generated/TranslatedBlink/TranslatedBlink.csproj`, class
-`Blink`, namespace `Managed.Emulation`, using `--emit=managedlib --nest-types
+`BlinkCore`, namespace `Managed.Emulation`, using `--emit=managedlib --nest-types
 --runtime=c --split=size --split-size=102400`. Verify actual CLI options when
 implementation starts. Run the existing semantic postprocessor after normal
 emission, retain an immutable raw snapshot, and never hand-edit generated output.
+The full container is `BlinkCore` because actual upstream code defines a function
+called `Blink`, which cannot be a same-named C# class member. Focused fixtures
+may still use `Blink`; authored bridges select the full container explicitly.
 The owning facade is provisionally `BlinkInstance`; its naming is not upstream ABI.
 
 ## Failure-driven workflow
