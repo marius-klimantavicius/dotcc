@@ -232,3 +232,12 @@ comparisons and raw/optimized JIT/AOT pass, including 128 KiB exact bytes, spars
 files, shared cursors, optional argument evaluation, captured streams and two
 concurrent owners. Full-core binding, guest buffer validation, metadata and
 complete socket/readiness callbacks remain open.
+
+## Significant progress: real TCP through translated C
+
+Authored socket callbacks now reach the same private descriptor table and real
+BCL TCP implementation. Native C and raw/optimized JIT/AOT agree on fragmented
+requests, exact 128 KiB responses, EOF and sockaddr boundaries. Two simultaneous
+translated C servers use guest port 8080 with different published endpoints.
+External destinations are denied; disposal releases a worker blocked in C accept.
+Full x86 guest syscall binding, readiness and service startup remain pending.

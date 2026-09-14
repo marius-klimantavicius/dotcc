@@ -154,6 +154,22 @@ public sealed class InstanceIo : IAsyncDisposable
             return Task.FromResult(result);
         }
     }
+    public Task<HostResult<int>> ReceiveAsync(int fd, Memory<byte> destination, CancellationToken cancellation = default)
+    {
+        lock (sync)
+        {
+            var found = SocketHandle(fd);
+            return found.Succeeded ? network.ReceiveAsync(found.Value, destination, cancellation) : Task.FromResult(Fail<int>(found.Error));
+        }
+    }
+    public Task<HostResult<int>> SendAsync(int fd, ReadOnlyMemory<byte> source, CancellationToken cancellation = default)
+    {
+        lock (sync)
+        {
+            var found = SocketHandle(fd);
+            return found.Succeeded ? network.SendAsync(found.Value, source, cancellation) : Task.FromResult(Fail<int>(found.Error));
+        }
+    }
     public HostResult<GuestEndpoint> Bind(int fd, GuestEndpoint endpoint) => SocketCall(fd, handle => network.Bind(handle, endpoint));
     public HostResult<int> Listen(int fd, int backlog) => SocketCall(fd, handle => network.Listen(handle, backlog));
     public HostResult<IPEndPoint> Publish(int fd) => SocketCall(fd, network.Publish);
