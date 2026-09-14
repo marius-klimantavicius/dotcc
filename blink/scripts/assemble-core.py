@@ -11,6 +11,8 @@ import time
 from core_inputs import compiler_identity, profile_sources, emission_identity
 
 ROOT = Path(__file__).resolve().parents[1]
+LINK_OPTIONS = ['--emit=managedlib', '--nest-types', '--class-name', 'BlinkCore',
+                '--namespace', 'Managed.Emulation', '--runtime=c']
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--profile', type=Path, required=True)
 parser.add_argument('--jobs', type=int, choices=range(1, 5), default=2)
@@ -44,7 +46,8 @@ isolator = ROOT / 'scripts/isolate-core.py'
 identity = dict(profile_inputs_sha256=sha(inputs_path), compiler_sha256=compiler,
                 isolation_script_sha256=sha(isolator), closure_sha256=sha(profile / 'closure.json'),
                 compiler_identity_script_sha256=sha(ROOT / 'scripts/core_inputs.py'),
-                source_inventory_sha256=sha(ROOT / 'config/source-inventory.json'))
+                source_inventory_sha256=sha(ROOT / 'config/source-inventory.json'),
+                link_options=LINK_OPTIONS)
 key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
 cache = ROOT / 'artifacts/core/objects' / key
 cache.mkdir(parents=True, exist_ok=True)
@@ -91,7 +94,8 @@ def emit(entry):
         summary = json.loads(result.stdout.splitlines()[-1])
         receipt_path = Path(summary['log']).parent / 'result.json'
         receipt = json.loads(receipt_path.read_text())
-        if any(receipt.get(k) != v for k, v in identity.items() if k != 'source_inventory_sha256'):
+        if any(receipt.get(k) != v for k, v in identity.items()
+               if k not in ('source_inventory_sha256', 'link_options')):
             raise RuntimeError('emission identity changed: ' + name)
         emitted = receipt['rows'][0]
         if emitted.get('emission_identity') != expected_emission[entry['path']] or emitted['source_sha256'] != entry['sha256'] or sha(Path(emitted['object_path'])) != emitted['object_sha256']:
@@ -123,8 +127,7 @@ output = ROOT / 'generated/core-objects' / key / 'ManagedCore'
 output.parent.mkdir(parents=True, exist_ok=True)
 command = ['dotnet', str(compiler_dir / 'dotcc.dll'),
            *[report['objects'][entry['path']]['object_path'] for entry in entries],
-           '--emit=managedlib', '--nest-types', '--class-name', 'Blink',
-           '--namespace', 'Managed.Emulation', '--runtime=c', '-o', str(output)]
+           *LINK_OPTIONS, '-o', str(output)]
 with (cache / 'link.log').open('wb') as stream:
     result = subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, timeout=180)
 report['link'] = dict(command=command, exit_code=result.returncode, output=str(output))

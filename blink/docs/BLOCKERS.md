@@ -234,7 +234,8 @@ Baseline: artifacts/core-execution/attempt-68vow5of/raw-build.log.
 ## B024 — static-local aliases collide across translation units (open)
 
 That same raw build reports duplicate once__s0, b__s0 and buf__s0 members in
-BlinkCoreGlobals. Their backing storage is separately qualified, but alias
-naming still collides across TUs. Independent native/object-link reductions
+BlinkCoreGlobals. Per-object local-static numbering restarts; static-function
+qualification does not also qualify these local-static symbols. Identical
+declarations can silently deduplicate storage. Independent native/object-link reductions
 and a generic repair are in progress. Host callback diagnostics have not yet
 been reached; the complete library has not executed guest instructions.

@@ -158,7 +158,7 @@ timeout "${CORE_TRANSLATION_TIMEOUT:-1800}" dotnet "$repo/DotCC/bin/Release/net1
   "${includes[@]}" "${sources[@]}" \
   --overrides-file "$attempt/overrides.json" \
   --override-report "$attempt/override-report.jsonl" --runtime=c \
-  --emit=managedlib --nest-types --class-name Blink --namespace Managed.Emulation \
+  --emit=managedlib --nest-types --class-name BlinkCore --namespace Managed.Emulation \
   -o "$campaign/generated/CoreProbe" > "$out/translate.log" 2>&1
 status=$?
 set -e

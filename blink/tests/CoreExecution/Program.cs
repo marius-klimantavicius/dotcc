@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Managed.Emulation;
 using Managed.Emulation.Host;
+using Blink = Managed.Emulation.BlinkCore;
 
 // One process is one discarded core worker. No translated call follows main.
 using var variables = new HostVariables();

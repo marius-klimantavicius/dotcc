@@ -677,3 +677,16 @@ bytes reject the entire acquisition before ownership transfer, without truncatio
 Native/common and all4 pass at host-directories/attempt-wkfwdrzj, including an
 upstream-style guest-record copy loop, snapshot/rewind, quotas, two-owner GC and
 existing file/I/O regressions. Full guest Getdents execution is still separate.
+
+## Significant progress: reproducible full consumer build
+
+The consumer-only snapshot tool records each reviewed C# replacement and proves
+that all C emission identities remain unchanged. Baseline snapshot
+generated/core-profile/attempt-7cuxtttf retained its original Host project and
+reused all95 objects; assembly ccc91fea6174948a084d8070b81d0844b68bfd5f7ba9d43366b58211e140f456
+linked successfully with BlinkCore and explicit link options in its identity.
+The first raw C# build, core-execution/attempt-68vow5of, then exposed seven
+declaration errors: nested C tag/function collisions (B023) and repeated
+per-object static-local identities (B024). The latter can also silently merge
+identical storage declarations. Reduced generic repairs are being qualified
+separately; this build is failure evidence, not interpreted guest execution.

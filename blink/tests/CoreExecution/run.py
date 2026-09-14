@@ -94,6 +94,7 @@ def project(path, name, output, compile_paths=(), references=(), root_assembly=N
     for key, value in [('TargetFramework','net10.0'), ('OutputType',output),
                        ('AssemblyName',name), ('AllowUnsafeBlocks','true'),
                        ('Nullable','disable'), ('EnableDefaultCompileItems','false'),
+                       ('DefineConstants','BLINK_FULL_CORE'),
                        ('WarningsAsErrors','CS8500')]:
         ET.SubElement(props,key).text=value
     items = ET.SubElement(xml, 'ItemGroup')
