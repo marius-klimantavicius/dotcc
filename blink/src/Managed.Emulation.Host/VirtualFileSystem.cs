@@ -293,6 +293,21 @@ public sealed class VirtualFileSystem : IDisposable
             : Fail<VirtualFileStat>(GuestError.BadDescriptor);
     }
 
+    /// <summary>Resolve an existing private path using the same component walk
+    /// as open/stat, with optional final-directory validation.</summary>
+    public HostResult<string> CanonicalPath(string path, string cwd = "/", bool requireDirectory = false)
+    {
+        lock (sync)
+        {
+            if (disposed) return Fail<string>(GuestError.BadDescriptor);
+            var resolved = Resolve(path, cwd);
+            if (!resolved.Succeeded) return resolved;
+            if (directories.Contains(resolved.Value)) return resolved;
+            if (!files.ContainsKey(resolved.Value)) return Fail<string>(GuestError.NoEntry);
+            return requireDirectory ? Fail<string>(GuestError.NotDirectory) : resolved;
+        }
+    }
+
     public HostResult<string> DirectoryPath(int descriptor)
     {
         lock (sync)

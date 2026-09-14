@@ -457,3 +457,13 @@ and IDs, compacting GC, invalid queries and unchanged failed outputs. Measured
 selector values are explicit; reported page size matches the mapping adapter,
 while ticks are a declared guest ABI value. Process mutations and CPU-accounting
 operations remain isolated and unimplemented.
+
+## Significant progress: private cwd and canonical paths
+
+Each InstanceIo now owns its current directory. Relative opens/stat and AT_FDCWD
+use it consistently; explicit cwd overrides and real directory descriptions keep
+their intended bases. getcwd/chdir/fchdir/realpath callbacks share the existing
+VFS component walk and never consult host paths or working directory. Native
+common invariants, raw/optimized JIT/AOT, and existing file/I/O regressions pass.
+Checks include two different worker cwd values, root escape rejection, unchanged
+errors, and bounded malloc/free-compatible result strings surviving GC/disposal.

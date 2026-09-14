@@ -50,7 +50,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
         get { lock (sync) return (output.ToArray(), error.ToArray()); }
     }
     public HostResult<int> OpenFile(string path, FileAccessMode access, bool create = false,
-        bool exclusive = false, bool truncate = false, bool append = false, string cwd = "/",
+        bool exclusive = false, bool truncate = false, bool append = false, string? cwd = null,
         bool closeOnExecFlag = false, bool allowDirectory = false, bool requireDirectory = false, bool noFollow = false)
     {
         lock (sync)
@@ -58,7 +58,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (disposed) return Fail<int>(GuestError.BadDescriptor);
             int fd = Allocate();
             if (fd < 0) return Fail<int>(GuestError.TooManyFiles);
-            var result = files.Open(path, access, create, exclusive, truncate, append, cwd, allowDirectory, requireDirectory);
+            var result = files.Open(path, access, create, exclusive, truncate, append, cwd ?? currentDirectory, allowDirectory, requireDirectory);
             if (!result.Succeeded) return result;
             int mode = access == FileAccessMode.Read ? 0 : access == FileAccessMode.Write ? 1 : 2;
             descriptors.Add(fd, new(Kind.File, result.Value, mode | (append ? 1024 : 0) | (requireDirectory ? 65536 : 0) | (noFollow ? 131072 : 0)));
@@ -77,9 +77,9 @@ public sealed partial class InstanceIo : IAsyncDisposable
                 closeOnExecFlag, true, requireDirectory, noFollow) : Fail<int>(directory.Error);
         }
     }
-    public HostResult<VirtualFileStat> Stat(string path, string cwd = "/")
+    public HostResult<VirtualFileStat> Stat(string path, string? cwd = null)
     {
-        lock (sync) return disposed ? Fail<VirtualFileStat>(GuestError.BadDescriptor) : files.Stat(path, cwd);
+        lock (sync) return disposed ? Fail<VirtualFileStat>(GuestError.BadDescriptor) : files.Stat(path, cwd ?? currentDirectory);
     }
     public HostResult<VirtualFileStat> StatAt(int directoryFd, string path)
     {
@@ -373,7 +373,8 @@ public sealed partial class InstanceIo : IAsyncDisposable
     {
         if (disposed) return Fail<string>(GuestError.BadDescriptor);
         if (string.IsNullOrEmpty(path)) return Fail<string>(GuestError.NoEntry);
-        if (path.StartsWith('/') || fd == -100) return HostResult<string>.Success("/");
+        if (path.StartsWith('/')) return HostResult<string>.Success("/");
+        if (fd == -100) return HostResult<string>.Success(currentDirectory);
         if (!Find(fd, out var description)) return Fail<string>(GuestError.BadDescriptor);
         return description.Kind == Kind.File ? files.DirectoryPath(description.Handle) : Fail<string>(GuestError.NotDirectory);
     }
