@@ -555,3 +555,12 @@ active disposal, invalid inputs, actual C function pointers, one-wait bounds,
 two simultaneous independent owners and compacting GC. Guest signal delivery
 and the stop protocol remain separate: upstream CheckInterrupt must see guest
 state before a wake, and disposing a still-retrying guest owner is not a stop.
+
+## Significant progress: bounded ancillary record walking
+
+The missing CMSG_NXTHDR helper now performs pure bounded traversal of explicit
+host control records. Native libc and authored algorithms agree across137655
+valid-buffer cases; raw/optimized JIT/AOT and native ASan/UBSan pass. Overflow,
+logical bounds and actual C function-pointer checks are included. Receipt:
+host-ancillary/attempt-edgk8yzj. This supplies a retained ancillary.c dependency
+without claiming ancillary socket transport, Unix sockets or descriptor passing.
