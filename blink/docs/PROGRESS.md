@@ -602,3 +602,15 @@ Native and raw/optimized JIT/AOT pass at host-descriptors/attempt-u1mzbw4k, with
 full-table replacement, failed-target atomicity, C function pointers, two-worker
 GC, last-socket port release and captured-stream redirection. Existing file/I/O
 regressions also pass. No operating-system descriptor duplication is used.
+
+## Significant progress: private exit callbacks and real cleanup order
+
+atexit now registers real callbacks in a bounded per-worker table; explicit Run
+invokes them in LIFO order, including newly registered callbacks, and detects
+nested runs, slot/invocation exhaustion and context replacement. Escaping native
+longjmp or CLR exceptions preserve an incomplete state requiring owner discard.
+Native/staged and direct/object-linked raw/optimized JIT/AOT pass, including the
+ABCA native callback trace, two workers and GC (host-exit-callbacks/attempt-_nkm9dcr).
+Actual upstream cleanup callbacks must run after guest execution stops and before
+IO, signal/memory owners or cached environment pointers are discarded. Immediate
+exit/abort remains a separate policy. This does not qualify full core execution.
