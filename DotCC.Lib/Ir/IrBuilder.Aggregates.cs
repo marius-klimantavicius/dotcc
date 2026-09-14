@@ -350,6 +350,13 @@ internal sealed partial class IrBuilder
         }
         if (dims is { Count: > 0 })
         {
+            // A string initializes one character-array subobject, not a scalar
+            // pointer in the flattened backing store. Reuse the same target-
+            // directed rule as inline array fields, including row zero-fill.
+            // Arrays of character pointers still contain ordinary pointer values.
+            if (elem.Unqualified is CType.Prim { Name: "char" or "signed char" or "unsigned char" or "char8_t" or "char16_t" or "wchar_t" or "char32_t" }
+                && TryInlineStringInitializer((CType.Array)MakeArrayType(elem, dims), new InitGroup(items), out var strings))
+                return strings;
             return FlattenScalarArray(elem, items, dims);
         }
         // implicit `[]` scalar array — the values as written.

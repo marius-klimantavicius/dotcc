@@ -2298,6 +2298,7 @@ internal sealed partial class IrBuilder
     /// </list></summary>
     private CStmt? SetjmpGuardOf(CExpr cond, CStmt then, CStmt? els, SrcPos pos)
     {
+        if (SetjmpNegatedGuardOf(cond, then, els, pos) is { } negated) return negated;
         if (SetjmpAssignmentGuardOf(cond, then, els, pos) is { } capture) return capture;
         // Bare `if (setjmp(env)) …` — truthy only on the longjmp re-entry, so the
         // then-branch is the recovery (catch) and the absent/else side is the

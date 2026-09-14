@@ -19,7 +19,8 @@ out = ROOT / 'artifacts/jump-storage' / attempt.name
 out.mkdir(parents=True, exist_ok=True)
 cli = REPO / 'DotCC/bin/Release/net10.0/dotcc.dll'
 postprocess = REPO / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
-fixture_name = 'setjmp-assignment-guard' if '--assignment-guards' in sys.argv else 'setjmp-heap-state'
+fixture_name = ('setjmp-negated-guard' if '--negated-guards' in sys.argv else
+                'setjmp-assignment-guard' if '--assignment-guards' in sys.argv else 'setjmp-heap-state')
 fixture = REPO / 'DotCC.FunctionalTests/Fixtures' / fixture_name / 'main.c'
 source = attempt / 'main.c'
 shutil.copy2(fixture, source)

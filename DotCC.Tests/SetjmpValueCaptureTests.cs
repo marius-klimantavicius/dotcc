@@ -155,6 +155,20 @@ public sealed class SetjmpValueCaptureTests
     }
 
     [Fact]
+    public void Bare_negated_guard_captures_restart_value()
+    {
+        var emitted = Emit("""
+            #include <setjmp.h>
+            static jmp_buf env;
+            int main(void) { if (!setjmp(env)) longjmp(env, 0); else return 0; return 1; }
+            """);
+        emitted.ShouldContain("int __sjval0 = 0;");
+        emitted.ShouldContain("__sjval0 = (int)__jmp.Value;");
+        emitted.ShouldContain("goto __setjmp_0;");
+        emitted.ShouldContain("Libc.ArmJumpBuffer(env)");
+    }
+
+    [Fact]
     public void Assignment_capture_evaluates_buffer_before_resetting_target()
     {
         var emitted = Emit("""

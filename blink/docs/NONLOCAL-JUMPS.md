@@ -83,6 +83,24 @@ All four variants passed in `artifacts/jump-storage/attempt-rdxy9ji1/receipt.jso
 19 focused units and all eight setjmp functional fixtures passed (16 configured
 external-oracle rows skipped).
 
+## Bare negated guards
+
+Unchanged Blink debug.c also uses `if (!setjmp(g_busted))`. The compiler now
+recognizes this direct negation with a synthetic numeric result and the same
+restart handler. Its scope includes the enclosing block tail, and repeated
+jumps from recovery execute the recovery branch again. Existing equality and
+positive guard lowering is unchanged.
+
+The native-checked `setjmp-negated-guard` fixture covers zero normalization,
+nested different buffers, repeated jumps from recovery, late jumps from the
+block tail, an absent else branch, and a buffer selector evaluated once.
+`python3 blink/tests/JumpStorage/run.py --negated-guards` passed under forced-GC
+raw/optimized JIT and NativeAOT with CS8500 forbidden; receipt
+`artifacts/jump-storage/attempt-b0kr_o_b/receipt.json`. Twenty focused units and
+all nine setjmp functional fixtures passed; eighteen configured external-oracle
+rows were skipped. This compiler support does not implement debug.c's remaining
+host signal-handler calls.
+
 ## Qualified virtual host-delivery-mask jumps
 
 `src/HostSignals/` implements an explicit signal-aware unwind adapter. The

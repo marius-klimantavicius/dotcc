@@ -1,0 +1,4 @@
+rows=ax,b,0 names=ax,bx,cx,dx size=16
+deep=one,two,end zero=0 exact=abc,def
+mixed=hi,bye field=hi,bye local=cd,Ef,0 retained=new
+wide=3a9,62 full=1f600,7a pointers=pointer,array zeros=0

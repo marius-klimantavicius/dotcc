@@ -180,3 +180,14 @@ hash-pinned upstream pte32.c, which the native archive extraction omitted.
 Additional retained mutex-attribute storage is measured at 4-byte size/alignment.
 The host ABI baseline now passes 101 native comparisons and 202 emitted outputs
 in all four Linux modes; the times header adds six matching outputs.
+
+## Significant progress: conditional jumps and nested string initializers
+
+Bare negated setjmp guards now preserve the protected block and recovery path,
+including later jumps. Known-dimension nested character arrays use target-typed
+string row initialization without changing pointer-array behavior. Native
+reductions and focused tests pass, followed by a warning-free Release build,
+2228 unit tests and 507 functional tests; 1031 functional rows are explicitly
+skipped. The actual disarg.c translation now emits. Omitted outer dimensions
+with retained inner array dimensions are the next measured parser blocker in
+disspec.c; a native reduction is prepared, with implementation still pending.
