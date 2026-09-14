@@ -477,3 +477,13 @@ including injected negative epoch times and unchanged errors. This supplies
 log.c's calendar dependency without consulting the host timezone. An initial
 copied-runner path mistake is preserved as failed harness evidence; the passing
 receipt selects and executes the intended calendar fixture.
+
+## Significant progress: immutable private environment variables
+
+Selected commandv/fspath/demangle getenv calls now have an immutable instance
+variable owner with bounded entries/name bytes/total UTF-8 data and stable
+owned native value pointers. Missing, empty and equals-name lookups preserve
+errno; no host process environment is read. Native and all four managed modes
+pass, including GC, repeated pointers, independent workers and explicit teardown.
+All upstream cached pointers must be discarded before disposing that owner.
+No selected setenv/unsetenv calls exist, so mutation remains isolated.
