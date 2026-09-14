@@ -54,6 +54,12 @@ typedef long off_t;
 #define _IOLBF 1
 #define _IONBF 2
 
+/* Fixed va_list input must be declared, so its borrowed cursor is not packed
+   as a variadic argument. */
+#include <stdarg.h>
+#include <stddef.h>
+int vsnprintf(char* dst, size_t n, const char* fmt, va_list args);
+
 /* Formatted output (to stdout / a buffer). */
 int printf(char* fmt, ...);
 int sprintf(char* dst, char* fmt, ...);

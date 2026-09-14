@@ -15,6 +15,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Namespace / assignment-guard repairs | Warning-free build; 2225 unit pass; 505 functional pass, 1027 skipped | `scripts/test-repository.sh` |
 | Negated jump / nested string repairs | Warning-free build; 2228 unit pass; 507 functional pass, 1031 skipped | `scripts/test-repository.sh` |
 | Inferred outer-array dimensions | Warning-free build; 2231 unit pass; 508 functional pass, 1033 skipped | `scripts/test-repository.sh` |
+| Borrowed va_list formatting | Native/four-mode formatter matches; build clean, 2234 unit/509 functional pass, 1035 skipped | `scripts/test-repository.sh` and `artifacts/vsnprintf/attempt-cxeunj4b/receipt.json` |
 | Managed interpreter embedding | Translation in progress; no managed instruction execution claimed | `scripts/probe-core.sh` |
 | Private memory filesystem | Four independent assertion groups pass Linux JIT/AOT; guest callback integration pending | `scripts/test-host-files.sh` |
 | Private TCP namespace | Four assertion groups pass Linux JIT/AOT, including real backpressure/cancellation and same guest port in two instances | `scripts/test-host-sockets.sh` |

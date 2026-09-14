@@ -304,3 +304,18 @@ FIN/half-close/HUP, close and disposal cases. Infinite polls, including an empty
 fd set, join the owner's disposal drain. A barrier proves two private port-8080
 listeners coexist before real clients connect. Priority/band events are unsupported;
 reset/OOB and full x86 guest syscall integration remain open.
+
+## Significant progress: real va_list formatting
+
+The shared stdio declaration/runtime now implements vsnprintf over a borrowed
+va_list cursor, preserving byte counts, truncation, zero-capacity destinations,
+va_copy/current-cursor use, dynamic width/precision and %n. Native and all four
+managed modes agree, and actual log.c emits. Wide strings/characters and
+long-double cursor conversions reject explicitly instead of claiming support.
+The related snprintf zero-size path no longer writes a terminator.
+
+Full regression passes with a warning-free build, 2234 unit tests and 509
+functional tests; 1035 functional rows are explicitly skipped. The next shared
+fixes are `_Noreturn static` declaration ordering and unresolved authored callback
+function-pointer ownership. The latter currently prevents the termination-guard
+probe's C# build; the failed generated snapshot remains preserved.

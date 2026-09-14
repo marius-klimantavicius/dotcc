@@ -28,10 +28,12 @@ namespace DotCC.Libc;
 /// carries the type information.
 /// </para>
 /// </remarks>
-public unsafe ref struct PrintfBuilder
+public unsafe ref partial struct PrintfBuilder
 {
     private readonly TextWriter _w;
     private byte* _fmt;
+    private Spec _pendingSpec;
+    private bool _hasPendingSpec;
     private int _count;   // UTF-8 bytes written so far — printf's return value (C99 §7.21.6.3)
 
     public PrintfBuilder(TextWriter writer, byte* fmt)
@@ -58,6 +60,8 @@ public unsafe ref struct PrintfBuilder
     private struct Spec
     {
         public byte Conv;
+        public byte Length;
+        public bool DoubleLength;
         public int Width;
         public int Precision;
         public bool Left;
@@ -455,6 +459,14 @@ public unsafe ref struct PrintfBuilder
 
     private Spec ConsumeUntilSpec()
     {
+        if (_hasPendingSpec) { _hasPendingSpec = false; return _pendingSpec; }
+        Libc.VaList unused = default;
+        return ConsumeUntilSpec(unused, false, out _);
+    }
+
+    private Spec ConsumeUntilSpec(scoped Libc.VaList arguments, bool cursor, out int consumed)
+    {
+        consumed = 0;
         while (*_fmt != 0)
         {
             if (*_fmt == (byte)'%')
@@ -467,9 +479,10 @@ public unsafe ref struct PrintfBuilder
                     _fmt++;
                     continue;
                 }
-                return ParseSpec();
+                return ParseSpec(arguments, cursor, out consumed);
             }
-            WriteUtf8Codepoint(ref _fmt);
+            if (cursor) { _w.Write((char)*_fmt++); _count++; }
+            else WriteUtf8Codepoint(ref _fmt);
         }
         return new Spec { Conv = 0, Width = -1, Precision = -1 };
     }
@@ -479,8 +492,9 @@ public unsafe ref struct PrintfBuilder
     /// stream starting just past the leading <c>%</c>. Advances
     /// <c>_fmt</c> through the entire spec, including the conversion char.
     /// </summary>
-    private Spec ParseSpec()
+    private Spec ParseSpec(scoped Libc.VaList arguments, bool cursor, out int consumed)
     {
+        consumed = 0;
         var s = new Spec { Width = -1, Precision = -1 };
         while (*_fmt != 0)
         {
@@ -500,6 +514,13 @@ public unsafe ref struct PrintfBuilder
             s.Width = s.Width * 10 + (*_fmt - (byte)'0');
             _fmt++;
         }
+        if (cursor && *_fmt == (byte)'*')
+        {
+            _fmt++;
+            s.Width = (int)arguments.Next();
+            consumed++;
+            if (s.Width < 0) { s.Left = true; s.Width = checked(-s.Width); }
+        }
         if (*_fmt == (byte)'.')
         {
             _fmt++;
@@ -510,12 +531,19 @@ public unsafe ref struct PrintfBuilder
                 _fmt++;
             }
         }
-        // Length modifiers — recognized but ignored (the Arg overload has
-        // already supplied the type information).
-        while (*_fmt == (byte)'l' || *_fmt == (byte)'L'
-            || *_fmt == (byte)'h' || *_fmt == (byte)'z')
+        if (cursor && *_fmt == (byte)'*')
         {
             _fmt++;
+            s.Precision = (int)arguments.Next();
+            consumed++;
+            if (s.Precision < 0) s.Precision = -1;
+        }
+        if (*_fmt == (byte)'l' || *_fmt == (byte)'L' || *_fmt == (byte)'h'
+            || *_fmt == (byte)'z' || *_fmt == (byte)'j' || *_fmt == (byte)'t')
+        {
+            s.Length = *_fmt++;
+            if ((s.Length == (byte)'l' || s.Length == (byte)'h') && *_fmt == s.Length)
+            { s.DoubleLength = true; _fmt++; }
         }
         s.Conv = *_fmt;
         if (s.Conv != 0) { _fmt++; }

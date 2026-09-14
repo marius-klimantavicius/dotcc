@@ -1,0 +1,8 @@
+numbers=-17|4000000000|-9000000000|0x00002a|00007|-1|1 n=46
+dynamic=[abc    ][1.25][12]% n=20
+truncated=abcd n=9 guard=0
+zero=33 n=3
+one=0 n=3
+counts=2,3,5 n=5 text=abCDE
+cursor=next:42 n=17
+bytes=195,169,58,255 n=4

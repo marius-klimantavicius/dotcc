@@ -24,10 +24,12 @@ public unsafe ref struct SprintfBuilder
     private PrintfBuilder _inner;
     private readonly StringWriter _buf;
     private readonly byte* _dst;
+    private readonly bool _terminate;
     private readonly int _capacity;  // <0 = unbounded sprintf; ≥0 = snprintf bound (exclusive of NUL)
 
-    internal SprintfBuilder(byte* dst, byte* fmt, int capacity)
+    internal SprintfBuilder(byte* dst, byte* fmt, int capacity, bool terminate = true)
     {
+        _terminate = terminate;
         _dst = dst;
         _capacity = capacity;
         _buf = new StringWriter();
@@ -50,6 +52,12 @@ public unsafe ref struct SprintfBuilder
     public SprintfBuilder Arg(void* v)    { _inner = _inner.Arg(v); return this; }
     public SprintfBuilder Arg(char* v)    { _inner = _inner.Arg(v); return this; }
 
+    internal SprintfBuilder Arguments(scoped Libc.VaList arguments)
+    {
+        _inner = _inner.Arguments(arguments);
+        return this;
+    }
+
     public int Done()
     {
         _inner.Done();
@@ -64,7 +72,7 @@ public unsafe ref struct SprintfBuilder
         var bytes = latin1.GetBytes(_buf.ToString());
         int writeCount = _capacity < 0 ? bytes.Length : Math.Min(bytes.Length, _capacity);
         for (int i = 0; i < writeCount; i++) { _dst[i] = bytes[i]; }
-        _dst[writeCount] = 0;
+        if (_terminate) _dst[writeCount] = 0;
         // Real sprintf returns total chars that *would* have been written
         // (excl. terminating NUL) — same when fully copied, larger than
         // writeCount when snprintf truncates.
