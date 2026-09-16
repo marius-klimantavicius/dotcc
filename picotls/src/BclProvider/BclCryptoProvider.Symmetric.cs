@@ -676,10 +676,7 @@ public static unsafe partial class BclCryptoProvider
                     if (state.Offset == 16)
                     {
                         state.Aes.EncryptEcb(state.Counter, state.Stream, PaddingMode.None);
-                        for (var j = 15; j >= 0 && ++state.Counter[j] == 0; j--)
-                        {
-                            // TODO: WHAT?
-                        }
+                        for (var j = 15; j >= 0 && ++state.Counter[j] == 0; j--) { } // There is mutation: ++state.Counter[j]
 
                         state.Offset = 0;
                     }
