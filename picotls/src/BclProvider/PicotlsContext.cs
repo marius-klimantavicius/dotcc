@@ -141,7 +141,7 @@ public sealed unsafe class PicotlsContext : IDisposable
         }
         catch
         {
-            Dispose();
+            Dispose(false);
             throw;
         }
     }
@@ -181,7 +181,7 @@ public sealed unsafe class PicotlsContext : IDisposable
         lock (_gate)
         {
             if (--_connections == 0 && _disposed)
-                Free();
+                Free(true);
         }
     }
 
@@ -202,32 +202,35 @@ public sealed unsafe class PicotlsContext : IDisposable
 
     public void Dispose()
     {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    private void Dispose(bool isDisposing)
+    {
+        if (!isDisposing)
+        {
+            Free(false);
+            return;
+        }
+
         lock (_gate)
         {
-            if (_disposed) return;
+            if (_disposed)
+                return;
 
             _disposed = true;
             if (_connections == 0)
-                Free();
+                Free(true);
         }
-
-        GC.SuppressFinalize(this);
     }
 
     ~PicotlsContext()
     {
-        try
-        {
-            // TODO: not safe to call Dispose here as _gate could have been collected already
-            Dispose();
-        }
-        catch
-        {
-            /* empty */
-        }
+        Dispose(false);
     }
 
-    private void Free()
+    private void Free(bool isDisposing)
     {
         Libc.free(_native);
         _native = null;
@@ -245,6 +248,7 @@ public sealed unsafe class PicotlsContext : IDisposable
         {
             if (_hello->Handle != 0)
                 GCHandle.FromIntPtr(_hello->Handle).Free();
+
             Libc.free(_hello);
             _hello = null;
         }
@@ -255,6 +259,9 @@ public sealed unsafe class PicotlsContext : IDisposable
         Libc.free(_protocols);
         _protocols = null;
         _protocolCount = 0;
+
+        if (!isDisposing)
+            return;
 
         try
         {

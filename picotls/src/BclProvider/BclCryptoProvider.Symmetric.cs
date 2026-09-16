@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using static Managed.Security.PicoTls;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -317,7 +318,7 @@ public static unsafe partial class BclCryptoProvider
         ProviderFaultInjection.StateDisposed();
     }
 
-    private static void ReleaseState(ref nint token)
+    private static void ReleaseState(ref nint token, bool isDisposing = true)
     {
         var value = token;
         token = 0;
@@ -326,7 +327,8 @@ public static unsafe partial class BclCryptoProvider
         var handle = GCHandle.FromIntPtr(value);
         try
         {
-            DisposeState((IDisposable)handle.Target!);
+            if (isDisposing)
+                DisposeState((IDisposable)handle.Target!);
         }
         finally
         {
@@ -502,9 +504,15 @@ public static unsafe partial class BclCryptoProvider
 
     private sealed class CipherState : IDisposable
     {
+        [InlineArray(16)]
+        internal struct BlockBuffer
+        {
+            private byte _element0;
+        }
+
         internal readonly Aes Aes;
         internal readonly bool CounterMode, Encryption;
-        internal readonly byte[] Counter = new byte[16], Stream = new byte[16];
+        internal BlockBuffer Counter, Stream;
         internal int Offset = 16;
         internal bool Initialized;
 
@@ -696,9 +704,22 @@ public static unsafe partial class BclCryptoProvider
 
     private sealed class AeadState : IDisposable
     {
+        [InlineArray(12)]
+        internal struct IvBuffer
+        {
+            private byte _element0;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public readonly void CopyTo(Span<byte> target)
+            {
+                var self = (ReadOnlySpan<byte>)this;
+                self.CopyTo(target);
+            }
+        }
+
         internal readonly AesGcm Cipher;
         internal readonly bool Encryption;
-        internal readonly byte[] Iv = new byte[12];
+        internal IvBuffer Iv;
 
         internal AeadState(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv, bool encryption)
         {

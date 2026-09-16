@@ -406,7 +406,7 @@ public static unsafe partial class BclCryptoProvider
             {
                 if (state != null)
                     DisposeState(state);
-                Dispose();
+                Dispose(false);
                 throw;
             }
         }
@@ -440,12 +440,24 @@ public static unsafe partial class BclCryptoProvider
             lock (_lifetimeGate)
             {
                 if (--_leases == 0 && _disposeRequested)
-                    Free();
+                    Free(true);
             }
         }
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool isDisposing)
+        {
+            if (!isDisposing)
+            {
+                Free(false);
+                return;
+            }
+
             lock (_lifetimeGate)
             {
                 if (_disposeRequested)
@@ -453,33 +465,23 @@ public static unsafe partial class BclCryptoProvider
 
                 _disposeRequested = true;
                 if (_leases == 0)
-                    Free();
+                    Free(true);
             }
-
-            GC.SuppressFinalize(this);
         }
 
         ~SigningIdentity()
         {
-            try
-            {
-                // TODO: not safe to call Dispose here as _lifetimeGate could have been collected already
-                Dispose();
-            }
-            catch
-            {
-                /* empty */
-            }
+            Dispose(false);
         }
 
-        private void Free()
+        private void Free(bool isDisposing)
         {
             var previous = _context;
             _context = null;
             try
             {
                 if (previous != null)
-                    ReleaseState(ref previous->Handle);
+                    ReleaseState(ref previous->Handle, isDisposing);
             }
             finally
             {
@@ -605,7 +607,7 @@ public static unsafe partial class BclCryptoProvider
             catch
             {
                 if (policy != null) DisposeState(policy);
-                Dispose();
+                Dispose(false);
                 throw;
             }
         }
@@ -648,44 +650,47 @@ public static unsafe partial class BclCryptoProvider
         {
             lock (_lifetimeGate)
             {
-                if (--_leases == 0 && _disposeRequested) Free();
+                if (--_leases == 0 && _disposeRequested) Free(true);
             }
         }
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool isDisposing)
+        {
+            if (!isDisposing)
+            {
+                Free(false);
+                return;
+            }
+
             lock (_lifetimeGate)
             {
                 if (_disposeRequested) return;
 
                 _disposeRequested = true;
-                if (_leases == 0) Free();
+                if (_leases == 0)
+                    Free(true);
             }
-
-            GC.SuppressFinalize(this);
         }
 
         ~CertificateVerifier()
         {
-            try
-            {
-                // TODO: not safe to call Dispose here as _lifetimeGate could have been collected already
-                Dispose();
-            }
-            catch
-            {
-                /* empty */
-            }
+            Dispose(false);
         }
 
-        private void Free()
+        private void Free(bool isDisposing)
         {
             var previous = _context;
             _context = null;
             try
             {
                 if (previous != null)
-                    ReleaseState(ref previous->Handle);
+                    ReleaseState(ref previous->Handle, isDisposing);
             }
             finally
             {

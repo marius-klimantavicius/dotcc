@@ -2,6 +2,7 @@ using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading;
@@ -28,9 +29,43 @@ public static unsafe partial class BclCryptoProvider
 
     private sealed class TicketKey : IDisposable
     {
+        [InlineArray(16)]
+        internal struct IdBuffer
+        {
+            private byte _element0;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public readonly void CopyTo(Span<byte> target)
+            {
+                var self = (ReadOnlySpan<byte>)this;
+                self.CopyTo(target);
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public readonly bool SequenceEqual(ReadOnlySpan<byte> other)
+            {
+                var self = (ReadOnlySpan<byte>)this;
+                return self.SequenceEqual(other);
+            }
+        }
+
+        [InlineArray(4)]
+        internal struct NoncePrefixBuffer
+        {
+            private byte _element0;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public readonly void CopyTo(Span<byte> target)
+            {
+                var self = (ReadOnlySpan<byte>)this;
+                self.CopyTo(target);
+            }
+        }
+
         private bool _disposed;
 
-        internal readonly byte[] Id = new byte[16], NoncePrefix = new byte[4];
+        internal IdBuffer Id;
+        internal NoncePrefixBuffer NoncePrefix;
         internal readonly byte[]? Master, Salt;
         internal readonly AesGcm Cipher;
         internal ulong Counter;
@@ -173,7 +208,7 @@ public static unsafe partial class BclCryptoProvider
                 try
                 {
                     // An id collision must not select a different key on decrypt.
-                    if (Keys.Any(key => key.Id.AsSpan().SequenceEqual(replacement.Id)))
+                    if (Keys.Any(key => key.Id.SequenceEqual(replacement.Id)))
                         throw new CryptographicException("Ticket key identifier collision; retry rotation.");
 
                     Keys.Insert(0, replacement);
@@ -293,7 +328,7 @@ public static unsafe partial class BclCryptoProvider
                 if (state != null)
                     DisposeState(state);
 
-                Free();
+                Dispose(false);
                 throw;
             }
         }
@@ -385,12 +420,24 @@ public static unsafe partial class BclCryptoProvider
             lock (_lifetimeGate)
             {
                 if (--_leases == 0 && _disposeRequested)
-                    Free();
+                    Free(true);
             }
         }
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool isDisposing)
+        {
+            if (!isDisposing)
+            {
+                Free(false);
+                return;
+            }
+
             lock (_lifetimeGate)
             {
                 if (_disposeRequested)
@@ -398,26 +445,16 @@ public static unsafe partial class BclCryptoProvider
 
                 _disposeRequested = true;
                 if (_leases == 0)
-                    Free();
+                    Free(true);
             }
-
-            GC.SuppressFinalize(this);
         }
 
         ~TicketProtector()
         {
-            try
-            {
-                // TODO: not safe to call Dispose here as _lifetimeGate could have been collected already
-                Dispose();
-            }
-            catch
-            {
-                /* empty */
-            }
+            Dispose(false);
         }
 
-        private void Free()
+        private void Free(bool isDisposing)
         {
             var previous = _context;
             _context = null;
@@ -425,7 +462,7 @@ public static unsafe partial class BclCryptoProvider
             try
             {
                 if (previous != null)
-                    ReleaseState(ref previous->Handle);
+                    ReleaseState(ref previous->Handle, isDisposing);
             }
             finally
             {

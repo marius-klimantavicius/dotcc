@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Managed.Security;
 using static Managed.Security.PicoTls;
 using static Managed.Transport.MsQuic;
-using Ptls = Managed.Security.PicoTls;
 
 namespace Managed.Transport.Hosting;
 
@@ -18,8 +18,14 @@ public sealed unsafe partial class MsQuicHost
 
     private sealed partial class TlsConnection : IDisposable
     {
+        [InlineArray(4)]
+        private struct FrameHeaderBuffer
+        {
+            private byte _element0;
+        }
+
         private readonly TlsCallbackContext* _callback;
-        private readonly byte[] _frameHeader = new byte[4];
+        private FrameHeaderBuffer _frameHeader;
         private int _headerBytes;
         private uint _bodyRemaining;
 
