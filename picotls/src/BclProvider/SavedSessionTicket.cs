@@ -1,11 +1,52 @@
-using static Managed.Security.PicoTls;
+using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Threading;
+using static Managed.Security.PicoTls;
 
 namespace Managed.Security;
 
-public sealed unsafe partial class PicotlsConnection
+/// <summary>A client resumption credential containing PSK material. Keep it
+/// confidential. Dispose clears the owned bytes; Export returns a caller-owned copy.</summary>
+public sealed unsafe class SavedSessionTicket : IDisposable
 {
-    private nint _savedTicketHandle;
+    private readonly Lock _gate = new Lock();
+    private byte[]? _bytes;
+
+    public DateTimeOffset ExpiresAt { get; }
+
+    public bool IsExpired => DateTimeOffset.UtcNow >= ExpiresAt;
+
+    // This profile never offers early data, regardless of the ticket extension.
+    public bool EarlyDataEnabled => false;
+
+    internal SavedSessionTicket(byte[] bytes, uint lifetime)
+    {
+        _bytes = bytes;
+        ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(lifetime);
+    }
+
+    public byte[] Export()
+    {
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_bytes == null, this);
+            return (byte[])_bytes!.Clone();
+        }
+    }
+
+    public void Dispose()
+    {
+        lock (_gate)
+        {
+            if (_bytes != null)
+            {
+                CryptographicOperations.ZeroMemory(_bytes);
+                _bytes = null;
+            }
+        }
+    }
 
     private sealed class SavedTicketState : IDisposable
     {
@@ -20,47 +61,6 @@ public sealed unsafe partial class PicotlsConnection
 
     internal static readonly delegate*<st_ptls_save_ticket_t*, st_ptls_t*, st_ptls_iovec_t, st_ptls_save_ticket_properties_t*, int> SaveTicketPointer = &SaveTicket;
 
-    private void InitializeSavedTickets()
-    {
-        _savedTicketHandle = GCHandle.ToIntPtr(GCHandle.Alloc(new SavedTicketState()));
-        *ptls_get_data_ptr(_native) = (void*)_savedTicketHandle;
-    }
-
-    private void ReleaseSavedTickets()
-    {
-        if (_savedTicketHandle == 0)
-            return;
-
-        var handle = GCHandle.FromIntPtr(_savedTicketHandle);
-        _savedTicketHandle = 0;
-
-        try
-        {
-            ((SavedTicketState)handle.Target!).Dispose();
-        }
-        finally
-        {
-            handle.Free();
-        }
-    }
-
-    /// <summary>Transfers ownership of newly received tickets to the caller.
-    /// Feed post-handshake bytes to Process to receive NewSessionTicket messages.</summary>
-    public IReadOnlyList<SavedSessionTicket> TakeSessionTickets()
-    {
-        lock (_gate)
-        {
-            RequireLive();
-            if (_savedTicketHandle == 0)
-                return Array.Empty<SavedSessionTicket>();
-
-            var state = (SavedTicketState)GCHandle.FromIntPtr(_savedTicketHandle).Target!;
-            var result = state.Pending.ToArray();
-            state.Pending.Clear();
-            return result;
-        }
-    }
-
     private static int SaveTicket(st_ptls_save_ticket_t* self, st_ptls_t* tls, st_ptls_iovec_t input, st_ptls_save_ticket_properties_t* properties)
     {
         SavedSessionTicket? saved = null;
@@ -69,8 +69,10 @@ public sealed unsafe partial class PicotlsConnection
             CallbackScope.RequireActive();
             if (CallbackScope.HasFailure)
                 return PTLS_ERROR_LIBRARY;
+
             if (properties == null || tls == null || input.len > 65536 || input.@base == null)
                 return PTLS_ALERT_ILLEGAL_PARAMETER;
+
             if (properties->lifetime is 0 or > 604800)
                 return 0; // Discard out-of-profile lifetimes.
 

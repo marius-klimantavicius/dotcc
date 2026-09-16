@@ -1,6 +1,8 @@
+using System;
 using static Managed.Security.PicoTls;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace Managed.Security;
 
@@ -12,16 +14,31 @@ public static unsafe partial class BclCryptoProvider
     // One callback/gather is bounded to 16 MiB (TLS records are much smaller).
     public const int MaximumSymmetricInput = 16 * 1024 * 1024;
     public const int MaximumSymmetricVectors = 1024;
-    private const int ErrorNoMemory = 0x201, ErrorLibrary = 0x203;
-    private static int liveManagedContexts;
-    public static int LiveManagedContexts => Volatile.Read(ref liveManagedContexts);
+
+    private static int _liveManagedContexts;
+    public static int LiveManagedContexts => Volatile.Read(ref _liveManagedContexts);
 
     [StructLayout(LayoutKind.Sequential)]
-    private struct HashContext { public st_ptls_hash_context_t Header; public nint Handle; }
+    private struct HashContext
+    {
+        public st_ptls_hash_context_t Header;
+        public nint Handle;
+    }
+
     [StructLayout(LayoutKind.Sequential)]
-    private struct CipherContext { public st_ptls_cipher_context_t Header; public nint Handle; }
+    private struct CipherContext
+    {
+        public st_ptls_cipher_context_t Header;
+        public nint Handle;
+    }
+
     [StructLayout(LayoutKind.Sequential)]
-    private struct AeadContext { public st_ptls_aead_context_t Header; public nint Handle; }
+    private struct AeadContext
+    {
+        public st_ptls_aead_context_t Header;
+        public nint Handle;
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     private struct SymmetricTables
     {
@@ -34,17 +51,90 @@ public static unsafe partial class BclCryptoProvider
         public st_ptls_cipher_suite_t* Second;
         public st_ptls_cipher_suite_t* End;
     }
-    private static readonly object symmetricGate = new();
-    private static SymmetricTables* symmetric;
-    public static st_ptls_hash_algorithm_t* HashSha256 { get { InitializeSymmetric(); return &symmetric->Sha256; } }
-    public static st_ptls_hash_algorithm_t* HashSha384 { get { InitializeSymmetric(); return &symmetric->Sha384; } }
-    public static st_ptls_cipher_algorithm_t* Aes128Ecb { get { InitializeSymmetric(); return &symmetric->Ecb128; } }
-    public static st_ptls_cipher_algorithm_t* Aes256Ecb { get { InitializeSymmetric(); return &symmetric->Ecb256; } }
-    public static st_ptls_cipher_algorithm_t* Aes128Ctr { get { InitializeSymmetric(); return &symmetric->Ctr128; } }
-    public static st_ptls_cipher_algorithm_t* Aes256Ctr { get { InitializeSymmetric(); return &symmetric->Ctr256; } }
-    public static st_ptls_aead_algorithm_t* Aes128Gcm { get { InitializeSymmetric(); return &symmetric->Gcm128; } }
-    public static st_ptls_aead_algorithm_t* Aes256Gcm { get { InitializeSymmetric(); return &symmetric->Gcm256; } }
-    public static st_ptls_cipher_suite_t** SymmetricCipherSuites { get { InitializeSymmetric(); return &symmetric->First; } }
+
+    private static readonly Lock _symmetricGate = new Lock();
+    private static SymmetricTables* _symmetric;
+
+    public static st_ptls_hash_algorithm_t* HashSha256
+    {
+        get
+        {
+            InitializeSymmetric();
+            return &_symmetric->Sha256;
+        }
+    }
+
+    public static st_ptls_hash_algorithm_t* HashSha384
+    {
+        get
+        {
+            InitializeSymmetric();
+            return &_symmetric->Sha384;
+        }
+    }
+
+    public static st_ptls_cipher_algorithm_t* Aes128Ecb
+    {
+        get
+        {
+            InitializeSymmetric();
+            return &_symmetric->Ecb128;
+        }
+    }
+
+    public static st_ptls_cipher_algorithm_t* Aes256Ecb
+    {
+        get
+        {
+            InitializeSymmetric();
+            return &_symmetric->Ecb256;
+        }
+    }
+
+    public static st_ptls_cipher_algorithm_t* Aes128Ctr
+    {
+        get
+        {
+            InitializeSymmetric();
+            return &_symmetric->Ctr128;
+        }
+    }
+
+    public static st_ptls_cipher_algorithm_t* Aes256Ctr
+    {
+        get
+        {
+            InitializeSymmetric();
+            return &_symmetric->Ctr256;
+        }
+    }
+
+    public static st_ptls_aead_algorithm_t* Aes128Gcm
+    {
+        get
+        {
+            InitializeSymmetric();
+            return &_symmetric->Gcm128;
+        }
+    }
+
+    public static st_ptls_aead_algorithm_t* Aes256Gcm
+    {
+        get
+        {
+            InitializeSymmetric();
+            return &_symmetric->Gcm256;
+        }
+    }
+
+    public static st_ptls_cipher_suite_t** SymmetricCipherSuites
+    {
+        get
+        {
+            InitializeSymmetric();
+            return &_symmetric->First;
+        }
+    }
 
     private static readonly delegate*<st_ptls_hash_context_t*> Sha256CreatePointer = &Sha256Create;
     private static readonly delegate*<st_ptls_hash_context_t*> Sha384CreatePointer = &Sha384Create;
@@ -68,33 +158,44 @@ public static unsafe partial class BclCryptoProvider
 
     public static void InitializeSymmetric()
     {
-        lock (symmetricGate)
+        lock (_symmetricGate)
         {
-            if (symmetric != null) return;
-            if (!AesGcm.IsSupported) throw new PlatformNotSupportedException("AES-GCM is required by the picotls BCL profile.");
+            if (_symmetric != null)
+                return;
+
+            if (!AesGcm.IsSupported)
+                throw new PlatformNotSupportedException("AES-GCM is required by the picotls BCL profile.");
+
             // Probe required BCL capability before publishing any table.
             using var sha256 = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
             using var sha384 = IncrementalHash.CreateHash(HashAlgorithmName.SHA384);
             using var clone256 = sha256.Clone();
             using var clone384 = sha384.Clone();
             Span<byte> block = stackalloc byte[16], encrypted = stackalloc byte[16], nonce = stackalloc byte[12];
-            foreach (int keySize in new[] { 16, 32 })
+
+            foreach (var keySize in new[] { 16, 32 })
             {
-                byte[] probeKey = new byte[keySize];
-                block.Clear(); nonce.Clear();
+                var probeKey = new byte[keySize];
+                block.Clear();
+                nonce.Clear();
                 try
                 {
-                    using var aes = System.Security.Cryptography.Aes.Create();
-                    aes.Key = probeKey; aes.EncryptEcb(block, encrypted, PaddingMode.None);
+                    using var aes = Aes.Create();
+                    aes.Key = probeKey;
+                    aes.EncryptEcb(block, encrypted, PaddingMode.None);
+
                     using var gcm = new AesGcm(probeKey, 16);
                     gcm.Encrypt(nonce, ReadOnlySpan<byte>.Empty, Span<byte>.Empty, encrypted);
                 }
                 finally
                 {
-                    CryptographicOperations.ZeroMemory(probeKey); CryptographicOperations.ZeroMemory(block);
-                    CryptographicOperations.ZeroMemory(encrypted); CryptographicOperations.ZeroMemory(nonce);
+                    CryptographicOperations.ZeroMemory(probeKey);
+                    CryptographicOperations.ZeroMemory(block);
+                    CryptographicOperations.ZeroMemory(encrypted);
+                    CryptographicOperations.ZeroMemory(nonce);
                 }
             }
+
             var table = (SymmetricTables*)AllocateZeroed(sizeof(SymmetricTables));
             try
             {
@@ -102,11 +203,13 @@ public static unsafe partial class BclCryptoProvider
                 table->FailedClone.final = FailedHashFinalPointer;
                 table->FailedClone.clone_ = FailedHashClonePointer;
                 table->Sha256.name = Libc.L("sha256\0"u8);
-                table->Sha256.block_size = 64; table->Sha256.digest_size = 32;
+                table->Sha256.block_size = 64;
+                table->Sha256.digest_size = 32;
                 table->Sha256.create = Sha256CreatePointer;
                 SHA256.HashData([], new Span<byte>(table->Sha256.empty_digest, 32));
                 table->Sha384.name = Libc.L("sha384\0"u8);
-                table->Sha384.block_size = 128; table->Sha384.digest_size = 48;
+                table->Sha384.block_size = 128;
+                table->Sha384.digest_size = 48;
                 table->Sha384.create = Sha384CreatePointer;
                 SHA384.HashData([], new Span<byte>(table->Sha384.empty_digest, 48));
                 InitializeCipher(&table->Ecb128, 16, false, Libc.L("AES128-ECB\0"u8));
@@ -115,88 +218,148 @@ public static unsafe partial class BclCryptoProvider
                 InitializeCipher(&table->Ctr256, 32, true, Libc.L("AES256-CTR\0"u8));
                 InitializeAead(&table->Gcm128, &table->Ctr128, &table->Ecb128, Libc.L("AES128-GCM\0"u8));
                 InitializeAead(&table->Gcm256, &table->Ctr256, &table->Ecb256, Libc.L("AES256-GCM\0"u8));
-                table->Suite128.id = 0x1301; table->Suite128.aead = &table->Gcm128;
-                table->Suite128.hash = &table->Sha256; table->Suite128.name = Libc.L("TLS_AES_128_GCM_SHA256\0"u8);
-                table->Suite256.id = 0x1302; table->Suite256.aead = &table->Gcm256;
-                table->Suite256.hash = &table->Sha384; table->Suite256.name = Libc.L("TLS_AES_256_GCM_SHA384\0"u8);
-                table->First = &table->Suite128; table->Second = &table->Suite256;
-                symmetric = table; // complete immutable table, published under the same reader gate
+                table->Suite128.id = 0x1301;
+                table->Suite128.aead = &table->Gcm128;
+                table->Suite128.hash = &table->Sha256;
+                table->Suite128.name = Libc.L("TLS_AES_128_GCM_SHA256\0"u8);
+                table->Suite256.id = 0x1302;
+                table->Suite256.aead = &table->Gcm256;
+                table->Suite256.hash = &table->Sha384;
+                table->Suite256.name = Libc.L("TLS_AES_256_GCM_SHA384\0"u8);
+                table->First = &table->Suite128;
+                table->Second = &table->Suite256;
+                _symmetric = table; // complete immutable table, published under the same reader gate
             }
-            catch { Libc.free(table); throw; }
+            catch
+            {
+                Libc.free(table);
+                throw;
+            }
         }
     }
+
     private static void InitializeCipher(st_ptls_cipher_algorithm_t* algorithm, ulong size, bool ctr, byte* name)
     {
-        algorithm->name = name; algorithm->key_size = size; algorithm->block_size = ctr ? 1UL : 16UL;
-        algorithm->iv_size = ctr ? 16UL : 0UL; algorithm->context_size = (ulong)sizeof(CipherContext);
+        algorithm->name = name;
+        algorithm->key_size = size;
+        algorithm->block_size = ctr ? 1UL : 16UL;
+        algorithm->iv_size = ctr ? 16UL : 0UL;
+        algorithm->context_size = (ulong)sizeof(CipherContext);
         algorithm->setup_crypto = CipherSetupPointer;
     }
+
     private static void InitializeAead(st_ptls_aead_algorithm_t* algorithm, st_ptls_cipher_algorithm_t* ctr, st_ptls_cipher_algorithm_t* ecb, byte* name)
     {
-        algorithm->name = name; algorithm->confidentiality_limit = 0x2000000;
-        algorithm->integrity_limit = 0x40000000000000; algorithm->ctr_cipher = ctr; algorithm->ecb_cipher = ecb;
-        algorithm->key_size = ctr->key_size; algorithm->iv_size = 12; algorithm->tag_size = 16;
+        algorithm->name = name;
+        algorithm->confidentiality_limit = 0x2000000;
+        algorithm->integrity_limit = 0x40000000000000;
+        algorithm->ctr_cipher = ctr;
+        algorithm->ecb_cipher = ecb;
+        algorithm->key_size = ctr->key_size;
+        algorithm->iv_size = 12;
+        algorithm->tag_size = 16;
         // tls12, non_temporal, align_bits remain zero. This profile is TLS 1.3 only.
-        algorithm->context_size = (ulong)sizeof(AeadContext); algorithm->setup_crypto = AeadSetupPointer;
+        algorithm->context_size = (ulong)sizeof(AeadContext);
+        algorithm->setup_crypto = AeadSetupPointer;
     }
+
     private static void* AllocateZeroed(int size)
     {
         ProviderFaultInjection.BeforeAllocation();
-        void* result = Libc.malloc(size);
-        if (result == null) throw new OutOfMemoryException();
-        new Span<byte>(result, size).Clear(); return result;
+        var result = Libc.malloc(size);
+        if (result == null)
+            throw new OutOfMemoryException();
+
+        new Span<byte>(result, size).Clear();
+        return result;
     }
+
     private static int CheckedLength(ulong length, int maximum = MaximumSymmetricInput)
     {
-        int value = checked((int)length);
-        if (value > maximum) throw new ArgumentOutOfRangeException(nameof(length), "Provider input bound exceeded.");
+        var value = checked((int)length);
+        if (value > maximum)
+            throw new ArgumentOutOfRangeException(nameof(length), "Provider input bound exceeded.");
+
         return value;
     }
+
     private static ReadOnlySpan<byte> ReadBytes(void* pointer, ulong length, int maximum = MaximumSymmetricInput)
     {
-        int count = CheckedLength(length, maximum);
-        if (pointer == null && count != 0) throw new ArgumentNullException(nameof(pointer));
+        var count = CheckedLength(length, maximum);
+        if (pointer == null && count != 0)
+            throw new ArgumentNullException(nameof(pointer));
+
         return new ReadOnlySpan<byte>(pointer, count);
     }
+
     private static Span<byte> WriteBytes(void* pointer, ulong length, int maximum = MaximumSymmetricInput + 16)
     {
-        int count = CheckedLength(length, maximum);
-        if (pointer == null && count != 0) throw new ArgumentNullException(nameof(pointer));
+        var count = CheckedLength(length, maximum);
+        if (pointer == null && count != 0)
+            throw new ArgumentNullException(nameof(pointer));
+
         return new Span<byte>(pointer, count);
     }
-    private static T State<T>(nint handle) where T : class =>
-        handle != 0 ? (T)(GCHandle.FromIntPtr(handle).Target ?? throw new ObjectDisposedException(nameof(T))) : throw new ObjectDisposedException(nameof(T));
+
+    private static T State<T>(nint handle) where T : class => handle != 0 ? (T)(GCHandle.FromIntPtr(handle).Target ?? throw new ObjectDisposedException(nameof(T))) : throw new ObjectDisposedException(nameof(T));
+
     private static nint OwnState(IDisposable state)
     {
         ProviderFaultInjection.BeforeAllocation();
-        nint handle = GCHandle.ToIntPtr(GCHandle.Alloc(state));
-        Interlocked.Increment(ref liveManagedContexts); return handle;
+        var handle = GCHandle.ToIntPtr(GCHandle.Alloc(state));
+        Interlocked.Increment(ref _liveManagedContexts);
+        return handle;
     }
+
     private static void DisposeState(IDisposable state)
-    { state.Dispose(); ProviderFaultInjection.StateDisposed(); }
+    {
+        state.Dispose();
+        ProviderFaultInjection.StateDisposed();
+    }
+
     private static void ReleaseState(ref nint token)
     {
-        nint value = token; token = 0;
+        var value = token;
+        token = 0;
         if (value == 0) return;
+
         var handle = GCHandle.FromIntPtr(value);
-        try { DisposeState((IDisposable)handle.Target!); }
-        finally { handle.Free(); Interlocked.Decrement(ref liveManagedContexts); }
+        try
+        {
+            DisposeState((IDisposable)handle.Target!);
+        }
+        finally
+        {
+            handle.Free();
+            Interlocked.Decrement(ref _liveManagedContexts);
+        }
     }
+
     private static bool BeginCallback()
     {
         CallbackScope.RequireActive();
         return !CallbackScope.HasFailure;
     }
+
     private static int SetupError(Exception exception)
-    { CallbackScope.Capture(exception); return exception is OutOfMemoryException ? ErrorNoMemory : ErrorLibrary; }
+    {
+        CallbackScope.Capture(exception);
+        return exception is OutOfMemoryException ? PTLS_ERROR_NO_MEMORY : PTLS_ERROR_LIBRARY;
+    }
 
     private static st_ptls_hash_context_t* Sha256Create() => CreateHash(HashAlgorithmName.SHA256);
     private static st_ptls_hash_context_t* Sha384Create() => CreateHash(HashAlgorithmName.SHA384);
+
     private static st_ptls_hash_context_t* CreateHash(HashAlgorithmName algorithm)
     {
         try { return BeginCallback() ? OwnHash(IncrementalHash.CreateHash(algorithm)) : null; }
-        catch (Exception ex) { CallbackScope.Capture(ex); return null; }
+        catch (Exception ex)
+        {
+            CallbackScope.Capture(ex);
+            return null;
+        }
     }
+
     private static st_ptls_hash_context_t* OwnHash(IncrementalHash hash)
     {
         HashContext* context = null;
@@ -204,36 +367,64 @@ public static unsafe partial class BclCryptoProvider
         {
             context = (HashContext*)AllocateZeroed(sizeof(HashContext));
             context->Handle = OwnState(hash);
-            context->Header.update = HashUpdatePointer; context->Header.final = HashFinalPointer;
-            context->Header.clone_ = HashClonePointer; return &context->Header;
+            context->Header.update = HashUpdatePointer;
+            context->Header.final = HashFinalPointer;
+            context->Header.clone_ = HashClonePointer;
+            return &context->Header;
         }
         catch
         {
             try
             {
-                if (context != null && context->Handle != 0) ReleaseState(ref context->Handle);
-                else DisposeState(hash);
+                if (context != null && context->Handle != 0)
+                    ReleaseState(ref context->Handle);
+                else
+                    DisposeState(hash);
             }
-            finally { if (context != null) Libc.free(context); }
+            finally
+            {
+                if (context != null)
+                    Libc.free(context);
+            }
+
             throw;
         }
     }
+
     private static void HashUpdate(st_ptls_hash_context_t* context, void* input, ulong length)
     {
-        try { if (BeginCallback()) State<IncrementalHash>(((HashContext*)context)->Handle).AppendData(ReadBytes(input, length)); }
-        catch (Exception ex) { CallbackScope.Capture(ex); }
+        try
+        {
+            if (BeginCallback())
+                State<IncrementalHash>(((HashContext*)context)->Handle).AppendData(ReadBytes(input, length));
+        }
+        catch (Exception ex)
+        {
+            CallbackScope.Capture(ex);
+        }
     }
+
     private static st_ptls_hash_context_t* HashClone(st_ptls_hash_context_t* context)
     {
-        try { if (BeginCallback()) return OwnHash(State<IncrementalHash>(((HashContext*)context)->Handle).Clone()); }
-        catch (Exception ex) { ProviderFaultInjection.HashCloneFailed(); CallbackScope.Capture(ex); }
+        try
+        {
+            if (BeginCallback())
+                return OwnHash(State<IncrementalHash>(((HashContext*)context)->Handle).Clone());
+        }
+        catch (Exception ex)
+        {
+            ProviderFaultInjection.HashCloneFailed();
+            CallbackScope.Capture(ex);
+        }
+
         // The pinned core's send_session_ticket restores an unchecked clone
         // result as its owned transcript, and key_schedule_free dereferences it.
         // A failed clone therefore needs a non-null, safely disposable poison
         // context. It owns no key/state/handle, never produces a digest, and
         // cannot be used successfully even if a raw caller opens a fresh scope.
-        return &symmetric->FailedClone;
+        return &_symmetric->FailedClone;
     }
+
     private static void RequireHashFailure()
     {
         try
@@ -242,44 +433,69 @@ public static unsafe partial class BclCryptoProvider
             if (!CallbackScope.HasFailure)
                 CallbackScope.Capture(new InvalidOperationException("A failed hash clone cannot be used for cryptographic operations."));
         }
-        catch (Exception error) { CallbackScope.Capture(error); }
+        catch (Exception error)
+        {
+            CallbackScope.Capture(error);
+        }
     }
+
     private static void FailedHashUpdate(st_ptls_hash_context_t* context, void* input, ulong length) => RequireHashFailure();
+
     private static void FailedHashFinal(st_ptls_hash_context_t* context, void* output, en_ptls_hash_final_mode_t mode)
     {
         RequireHashFailure();
         // Output capacity is not part of this callback ABI. Do not guess the
         // digest size or touch output. FREE never releases process-lifetime data.
     }
+
     private static st_ptls_hash_context_t* FailedHashClone(st_ptls_hash_context_t* context)
-    { RequireHashFailure(); return context; }
+    {
+        RequireHashFailure();
+        return context;
+    }
+
     private static void HashFinal(st_ptls_hash_context_t* context, void* output, en_ptls_hash_final_mode_t mode)
     {
         var owner = (HashContext*)context;
         Span<byte> digest = stackalloc byte[64];
         try
         {
-            bool run = BeginCallback();
-            if ((int)mode is < 0 or > 2) throw new ArgumentOutOfRangeException(nameof(mode));
+            var run = BeginCallback();
+            if ((int)mode is < 0 or > 2)
+                throw new ArgumentOutOfRangeException(nameof(mode));
+
             if (run)
             {
                 var hash = State<IncrementalHash>(owner->Handle);
                 if (output != null || (int)mode == 1)
                 {
-                    int length = (int)mode == 1 ? hash.GetHashAndReset(digest) : hash.GetCurrentHash(digest);
-                    if (output != null) digest[..length].CopyTo(WriteBytes(output, (ulong)length));
+                    var length = (int)mode == 1 ? hash.GetHashAndReset(digest) : hash.GetCurrentHash(digest);
+                    if (output != null)
+                        digest[..length].CopyTo(WriteBytes(output, (ulong)length));
                 }
             }
         }
-        catch (Exception ex) { CallbackScope.Capture(ex); }
+        catch (Exception ex)
+        {
+            CallbackScope.Capture(ex);
+        }
         finally
         {
             CryptographicOperations.ZeroMemory(digest);
             if ((int)mode == 0 && owner != null)
             {
-                try { ReleaseState(ref owner->Handle); }
-                catch (Exception ex) { CallbackScope.Capture(ex); }
-                finally { Libc.free(owner); }
+                try
+                {
+                    ReleaseState(ref owner->Handle);
+                }
+                catch (Exception ex)
+                {
+                    CallbackScope.Capture(ex);
+                }
+                finally
+                {
+                    Libc.free(owner);
+                }
             }
         }
     }
@@ -291,99 +507,191 @@ public static unsafe partial class BclCryptoProvider
         internal readonly byte[] Counter = new byte[16], Stream = new byte[16];
         internal int Offset = 16;
         internal bool Initialized;
+
         internal CipherState(ReadOnlySpan<byte> key, bool ctr, bool encryption)
         {
-            Aes = System.Security.Cryptography.Aes.Create(); CounterMode = ctr; Encryption = encryption;
+            Aes = Aes.Create();
+            CounterMode = ctr;
+            Encryption = encryption;
             byte[]? copy = null;
-            try { copy = key.ToArray(); Aes.Key = copy; }
-            catch { Aes.Dispose(); throw; }
-            finally { if (copy != null) CryptographicOperations.ZeroMemory(copy); }
+            try
+            {
+                copy = key.ToArray();
+                Aes.Key = copy;
+            }
+            catch
+            {
+                Aes.Dispose();
+                throw;
+            }
+            finally
+            {
+                if (copy != null) CryptographicOperations.ZeroMemory(copy);
+            }
+
             Initialized = !ctr;
         }
+
         public void Dispose()
         {
-            try { Aes.Dispose(); }
-            finally { CryptographicOperations.ZeroMemory(Counter); CryptographicOperations.ZeroMemory(Stream); Initialized = false; }
+            try
+            {
+                Aes.Dispose();
+            }
+            finally
+            {
+                CryptographicOperations.ZeroMemory(Counter);
+                CryptographicOperations.ZeroMemory(Stream);
+                Initialized = false;
+            }
         }
     }
+
     private static int CipherSetup(st_ptls_cipher_context_t* context, int encryption, void* key)
     {
         CipherState? state = null;
         var owner = (CipherContext*)context;
-        if (owner != null) owner->Handle = 0; // core explicitly leaves the tail uninitialized
+        if (owner != null)
+            owner->Handle = 0; // core explicitly leaves the tail uninitialized
+
         try
         {
-            if (!BeginCallback()) return ErrorLibrary;
-            if (context == null || context->algo == null) throw new ArgumentNullException(nameof(context));
+            if (!BeginCallback())
+                return PTLS_ERROR_LIBRARY;
+
+            if (context == null || context->algo == null)
+                throw new ArgumentNullException(nameof(context));
             if (encryption is not (0 or 1) || context->algo->key_size is not (16 or 32) || context->algo->iv_size is not (0 or 16))
                 throw new ArgumentException("Unsupported AES cipher parameters.");
+
             state = new CipherState(ReadBytes(key, context->algo->key_size), context->algo->iv_size != 0, encryption != 0);
-            owner->Handle = OwnState(state); state = null;
-            context->do_dispose = CipherDisposePointer; context->do_init = CipherInitPointer;
-            context->do_transform = CipherTransformPointer; return 0;
+            owner->Handle = OwnState(state);
+            state = null;
+            context->do_dispose = CipherDisposePointer;
+            context->do_init = CipherInitPointer;
+            context->do_transform = CipherTransformPointer;
+            return 0;
         }
         catch (Exception ex)
         {
-            int error = SetupError(ex);
-            try { if (state != null) DisposeState(state); }
-            catch (Exception cleanup) { CallbackScope.Capture(cleanup); }
-            try { if (owner != null) ReleaseState(ref owner->Handle); }
-            catch (Exception cleanup) { CallbackScope.Capture(cleanup); }
+            var error = SetupError(ex);
+            try
+            {
+                if (state != null)
+                    DisposeState(state);
+            }
+            catch (Exception cleanup)
+            {
+                CallbackScope.Capture(cleanup);
+            }
+
+            try
+            {
+                if (owner != null)
+                    ReleaseState(ref owner->Handle);
+            }
+            catch (Exception cleanup)
+            {
+                CallbackScope.Capture(cleanup);
+            }
+
             return error;
         }
     }
+
     private static void CipherDispose(st_ptls_cipher_context_t* context)
     {
-        try { if (context != null) ReleaseState(ref ((CipherContext*)context)->Handle); }
-        catch (Exception ex) { CallbackScope.Capture(ex); }
+        try
+        {
+            if (context != null)
+                ReleaseState(ref ((CipherContext*)context)->Handle);
+        }
+        catch (Exception ex)
+        {
+            CallbackScope.Capture(ex);
+        }
     }
+
     private static void CipherInit(st_ptls_cipher_context_t* context, void* iv)
     {
         try
         {
-            if (!BeginCallback()) return;
+            if (!BeginCallback())
+                return;
+
             var state = State<CipherState>(((CipherContext*)context)->Handle);
-            if (state.CounterMode) ReadBytes(iv, 16).CopyTo(state.Counter);
-            CryptographicOperations.ZeroMemory(state.Stream); state.Offset = 16; state.Initialized = true;
+            if (state.CounterMode)
+                ReadBytes(iv, 16).CopyTo(state.Counter);
+
+            CryptographicOperations.ZeroMemory(state.Stream);
+            state.Offset = 16;
+            state.Initialized = true;
         }
-        catch (Exception ex) { CallbackScope.Capture(ex); }
+        catch (Exception ex)
+        {
+            CallbackScope.Capture(ex);
+        }
     }
+
     private static void CipherTransform(st_ptls_cipher_context_t* context, void* output, void* input, ulong length)
     {
         byte[]? scratch = null;
         Span<byte> destination = default;
         try
         {
-            if (!BeginCallback()) return;
-            var source = ReadBytes(input, length); destination = WriteBytes(output, length);
+            if (!BeginCallback())
+                return;
+
+            var source = ReadBytes(input, length);
+            destination = WriteBytes(output, length);
             var state = State<CipherState>(((CipherContext*)context)->Handle);
-            if (!state.Initialized) throw new InvalidOperationException("AES CTR must be initialized with an IV.");
+            if (!state.Initialized)
+                throw new InvalidOperationException("AES CTR must be initialized with an IV.");
+
             // Stage output to support every input/output overlap without allowing
             // partial provider failure to leave ciphertext presented as complete.
             scratch = new byte[source.Length];
             if (!state.CounterMode)
             {
-                if ((source.Length & 15) != 0) throw new ArgumentException("AES ECB requires complete blocks.");
-                if (state.Encryption) state.Aes.EncryptEcb(source, scratch, PaddingMode.None);
-                else state.Aes.DecryptEcb(source, scratch, PaddingMode.None);
+                if ((source.Length & 15) != 0)
+                    throw new ArgumentException("AES ECB requires complete blocks.");
+
+                if (state.Encryption)
+                    state.Aes.EncryptEcb(source, scratch, PaddingMode.None);
+                else
+                    state.Aes.DecryptEcb(source, scratch, PaddingMode.None);
             }
             else
             {
-                for (int i = 0; i < source.Length; i++)
+                for (var i = 0; i < source.Length; i++)
                 {
                     if (state.Offset == 16)
                     {
                         state.Aes.EncryptEcb(state.Counter, state.Stream, PaddingMode.None);
-                        for (int j = 15; j >= 0 && ++state.Counter[j] == 0; j--) { }
+                        for (var j = 15; j >= 0 && ++state.Counter[j] == 0; j--)
+                        {
+                            // TODO: WHAT?
+                        }
+
                         state.Offset = 0;
                     }
+
                     scratch[i] = (byte)(source[i] ^ state.Stream[state.Offset++]);
                 }
             }
+
             scratch.CopyTo(destination);
         }
-        catch (Exception ex) { CryptographicOperations.ZeroMemory(destination); CallbackScope.Capture(ex); }
-        finally { if (scratch != null) CryptographicOperations.ZeroMemory(scratch); }
+        catch (Exception ex)
+        {
+            CryptographicOperations.ZeroMemory(destination);
+            CallbackScope.Capture(ex);
+        }
+        finally
+        {
+            if (scratch != null)
+                CryptographicOperations.ZeroMemory(scratch);
+        }
     }
 
     private sealed class AeadState : IDisposable
@@ -391,123 +699,232 @@ public static unsafe partial class BclCryptoProvider
         internal readonly AesGcm Cipher;
         internal readonly bool Encryption;
         internal readonly byte[] Iv = new byte[12];
+
         internal AeadState(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv, bool encryption)
-        { Cipher = new AesGcm(key, 16); iv.CopyTo(Iv); Encryption = encryption; }
+        {
+            Cipher = new AesGcm(key, 16);
+            iv.CopyTo(Iv);
+            Encryption = encryption;
+        }
+
         public void Dispose()
-        { try { Cipher.Dispose(); } finally { CryptographicOperations.ZeroMemory(Iv); } }
+        {
+            try
+            {
+                Cipher.Dispose();
+            }
+            finally
+            {
+                CryptographicOperations.ZeroMemory(Iv);
+            }
+        }
+
         internal void Nonce(ulong sequence, Span<byte> nonce)
         {
             Iv.CopyTo(nonce);
-            for (int i = 0; i < 8; i++) { nonce[11 - i] ^= (byte)sequence; sequence >>= 8; }
+            for (var i = 0; i < 8; i++)
+            {
+                nonce[11 - i] ^= (byte)sequence;
+                sequence >>= 8;
+            }
         }
     }
+
     private static int AeadSetup(st_ptls_aead_context_t* context, int encryption, void* key, void* iv)
     {
         AeadState? state = null;
         var owner = (AeadContext*)context;
-        if (owner != null) owner->Handle = 0;
+        if (owner != null)
+            owner->Handle = 0;
+
         try
         {
-            if (!BeginCallback()) return ErrorLibrary;
-            if (context == null || context->algo == null) throw new ArgumentNullException(nameof(context));
+            if (!BeginCallback())
+                return PTLS_ERROR_LIBRARY;
+
+            if (context == null || context->algo == null)
+                throw new ArgumentNullException(nameof(context));
             if (encryption is not (0 or 1) || context->algo->key_size is not (16 or 32) || context->algo->iv_size != 12 || context->algo->tag_size != 16)
                 throw new ArgumentException("Unsupported AES GCM parameters.");
+
             state = new AeadState(ReadBytes(key, context->algo->key_size), ReadBytes(iv, 12), encryption != 0);
-            owner->Handle = OwnState(state); state = null;
-            context->dispose_crypto = AeadDisposePointer; context->do_get_iv = AeadGetIvPointer; context->do_set_iv = AeadSetIvPointer;
-            context->do_encrypt_init = null; context->do_encrypt_update = null; context->do_encrypt_final = null;
-            context->do_encrypt = AeadEncryptPointer; context->do_encrypt_v = AeadEncryptVectorPointer; context->do_decrypt = AeadDecryptPointer;
+            owner->Handle = OwnState(state);
+            state = null;
+            context->dispose_crypto = AeadDisposePointer;
+            context->do_get_iv = AeadGetIvPointer;
+            context->do_set_iv = AeadSetIvPointer;
+            context->do_encrypt_init = null;
+            context->do_encrypt_update = null;
+            context->do_encrypt_final = null;
+            context->do_encrypt = AeadEncryptPointer;
+            context->do_encrypt_v = AeadEncryptVectorPointer;
+            context->do_decrypt = AeadDecryptPointer;
             return 0;
         }
         catch (Exception ex)
         {
-            int error = SetupError(ex);
-            try { if (state != null) DisposeState(state); }
-            catch (Exception cleanup) { CallbackScope.Capture(cleanup); }
-            try { if (owner != null) ReleaseState(ref owner->Handle); }
-            catch (Exception cleanup) { CallbackScope.Capture(cleanup); }
+            var error = SetupError(ex);
+            try
+            {
+                if (state != null)
+                    DisposeState(state);
+            }
+            catch (Exception cleanup)
+            {
+                CallbackScope.Capture(cleanup);
+            }
+
+            try
+            {
+                if (owner != null)
+                    ReleaseState(ref owner->Handle);
+            }
+            catch (Exception cleanup)
+            {
+                CallbackScope.Capture(cleanup);
+            }
+
             return error;
         }
     }
+
     private static void AeadDispose(st_ptls_aead_context_t* context)
     {
-        try { if (context != null) ReleaseState(ref ((AeadContext*)context)->Handle); }
-        catch (Exception ex) { CallbackScope.Capture(ex); }
+        try
+        {
+            if (context != null)
+                ReleaseState(ref ((AeadContext*)context)->Handle);
+        }
+        catch (Exception ex)
+        {
+            CallbackScope.Capture(ex);
+        }
     }
+
     private static void AeadGetIv(st_ptls_aead_context_t* context, void* iv)
     {
-        try { if (BeginCallback()) State<AeadState>(((AeadContext*)context)->Handle).Iv.CopyTo(WriteBytes(iv, 12)); }
-        catch (Exception ex) { CallbackScope.Capture(ex); }
+        try
+        {
+            if (BeginCallback())
+                State<AeadState>(((AeadContext*)context)->Handle).Iv.CopyTo(WriteBytes(iv, 12));
+        }
+        catch (Exception ex)
+        {
+            CallbackScope.Capture(ex);
+        }
     }
+
     private static void AeadSetIv(st_ptls_aead_context_t* context, void* iv)
     {
-        try { if (BeginCallback()) ReadBytes(iv, 12).CopyTo(State<AeadState>(((AeadContext*)context)->Handle).Iv); }
-        catch (Exception ex) { CallbackScope.Capture(ex); }
+        try
+        {
+            if (BeginCallback())
+                ReadBytes(iv, 12).CopyTo(State<AeadState>(((AeadContext*)context)->Handle).Iv);
+        }
+        catch (Exception ex)
+        {
+            CallbackScope.Capture(ex);
+        }
     }
+
     private static void EncryptBlock(st_ptls_aead_context_t* context, Span<byte> output, ReadOnlySpan<byte> input, ulong sequence, ReadOnlySpan<byte> aad)
     {
         var state = State<AeadState>(((AeadContext*)context)->Handle);
-        if (!state.Encryption) throw new InvalidOperationException("AEAD context was created for decryption.");
+        if (!state.Encryption)
+            throw new InvalidOperationException("AEAD context was created for decryption.");
+
         Span<byte> nonce = stackalloc byte[12];
-        byte[] scratch = new byte[checked(input.Length + 16)];
+        var scratch = new byte[checked(input.Length + 16)];
         try
         {
             state.Nonce(sequence, nonce);
             state.Cipher.Encrypt(nonce, input, scratch.AsSpan(0, input.Length), scratch.AsSpan(input.Length, 16), aad);
             scratch.CopyTo(output);
         }
-        finally { CryptographicOperations.ZeroMemory(nonce); CryptographicOperations.ZeroMemory(scratch); }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(nonce);
+            CryptographicOperations.ZeroMemory(scratch);
+        }
     }
+
     private static void AeadEncrypt(st_ptls_aead_context_t* context, void* output, void* input, ulong length, ulong sequence, void* aad, ulong aadLength, st_ptls_aead_supplementary_encryption_t* supplementary)
     {
         Span<byte> destination = default;
         try
         {
-            if (!BeginCallback()) return;
-            var source = ReadBytes(input, length); destination = WriteBytes(output, checked(length + 16));
+            if (!BeginCallback())
+                return;
+
+            var source = ReadBytes(input, length);
+            destination = WriteBytes(output, checked(length + 16));
             EncryptBlock(context, destination, source, sequence, ReadBytes(aad, aadLength));
             if (supplementary != null)
             {
                 if (supplementary->ctx == null || supplementary->ctx->do_init == null || supplementary->ctx->do_transform == null)
                     throw new ArgumentException("Incomplete supplementary cipher.");
+
                 // The input may point inside destination: read only after AEAD.
                 supplementary->ctx->do_init(supplementary->ctx, supplementary->input);
+
                 new Span<byte>(supplementary->output, 16).Clear();
                 supplementary->ctx->do_transform(supplementary->ctx, supplementary->output, supplementary->output, 16);
-                if (CallbackScope.HasFailure) destination.Clear();
+
+                if (CallbackScope.HasFailure)
+                    destination.Clear();
             }
         }
         catch (Exception ex)
         {
             CryptographicOperations.ZeroMemory(destination);
-            if (supplementary != null) new Span<byte>(supplementary->output, 16).Clear();
+            if (supplementary != null)
+                new Span<byte>(supplementary->output, 16).Clear();
+
             CallbackScope.Capture(ex);
         }
     }
+
     private static void AeadEncryptVector(st_ptls_aead_context_t* context, void* output, st_ptls_iovec_t* input, ulong count, ulong sequence, void* aad, ulong aadLength)
     {
         byte[]? gathered = null;
         Span<byte> destination = default;
         try
         {
-            if (!BeginCallback()) return;
-            int vectors = CheckedLength(count, MaximumSymmetricVectors);
-            if (input == null && vectors != 0) throw new ArgumentNullException(nameof(input));
-            int total = 0;
-            for (int i = 0; i < vectors; i++) total = CheckedLength(checked((ulong)total + (ulong)ReadBytes(input[i].@base, input[i].len).Length));
+            if (!BeginCallback())
+                return;
+
+            var vectors = CheckedLength(count, MaximumSymmetricVectors);
+            if (input == null && vectors != 0)
+                throw new ArgumentNullException(nameof(input));
+
+            var total = 0;
+            for (var i = 0; i < vectors; i++)
+                total = CheckedLength(checked((ulong)total + (ulong)ReadBytes(input[i].@base, input[i].len).Length));
+
             gathered = new byte[total];
-            int offset = 0;
-            for (int i = 0; i < vectors; i++)
+            var offset = 0;
+            for (var i = 0; i < vectors; i++)
             {
                 var source = ReadBytes(input[i].@base, input[i].len);
-                source.CopyTo(gathered.AsSpan(offset)); offset += source.Length;
+                source.CopyTo(gathered.AsSpan(offset));
+                offset += source.Length;
             }
+
             destination = WriteBytes(output, checked((ulong)total + 16));
             EncryptBlock(context, destination, gathered, sequence, ReadBytes(aad, aadLength));
         }
-        catch (Exception ex) { CryptographicOperations.ZeroMemory(destination); CallbackScope.Capture(ex); }
-        finally { if (gathered != null) CryptographicOperations.ZeroMemory(gathered); }
+        catch (Exception ex)
+        {
+            CryptographicOperations.ZeroMemory(destination);
+            CallbackScope.Capture(ex);
+        }
+        finally
+        {
+            if (gathered != null)
+                CryptographicOperations.ZeroMemory(gathered);
+        }
     }
+
     private static ulong AeadDecrypt(st_ptls_aead_context_t* context, void* output, void* input, ulong length, ulong sequence, void* aad, ulong aadLength)
     {
         byte[]? scratch = null;
@@ -515,19 +932,43 @@ public static unsafe partial class BclCryptoProvider
         Span<byte> nonce = stackalloc byte[12];
         try
         {
-            if (!BeginCallback()) return ulong.MaxValue;
-            if (length < 16) return ulong.MaxValue;
+            if (!BeginCallback())
+                return ulong.MaxValue;
+            if (length < 16)
+                return ulong.MaxValue;
+
             var source = ReadBytes(input, length, MaximumSymmetricInput + 16);
-            int plaintextLength = source.Length - 16;
+            var plaintextLength = source.Length - 16;
             destination = WriteBytes(output, (ulong)plaintextLength);
             var state = State<AeadState>(((AeadContext*)context)->Handle);
-            if (state.Encryption) throw new InvalidOperationException("AEAD context was created for encryption.");
-            state.Nonce(sequence, nonce); scratch = new byte[plaintextLength];
-            try { state.Cipher.Decrypt(nonce, source[..plaintextLength], source[plaintextLength..], scratch, ReadBytes(aad, aadLength)); }
-            catch (AuthenticationTagMismatchException) { CryptographicOperations.ZeroMemory(destination); return ulong.MaxValue; }
-            scratch.CopyTo(destination); return (ulong)plaintextLength;
+            if (state.Encryption)
+                throw new InvalidOperationException("AEAD context was created for encryption.");
+
+            state.Nonce(sequence, nonce);
+            scratch = new byte[plaintextLength];
+            try
+            {
+                state.Cipher.Decrypt(nonce, source[..plaintextLength], source[plaintextLength..], scratch, ReadBytes(aad, aadLength));
+            }
+            catch (AuthenticationTagMismatchException)
+            {
+                CryptographicOperations.ZeroMemory(destination);
+                return ulong.MaxValue;
+            }
+
+            scratch.CopyTo(destination);
+            return (ulong)plaintextLength;
         }
-        catch (Exception ex) { CryptographicOperations.ZeroMemory(destination); CallbackScope.Capture(ex); return ulong.MaxValue; }
-        finally { CryptographicOperations.ZeroMemory(nonce); if (scratch != null) CryptographicOperations.ZeroMemory(scratch); }
+        catch (Exception ex)
+        {
+            CryptographicOperations.ZeroMemory(destination);
+            CallbackScope.Capture(ex);
+            return ulong.MaxValue;
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(nonce);
+            if (scratch != null) CryptographicOperations.ZeroMemory(scratch);
+        }
     }
 }

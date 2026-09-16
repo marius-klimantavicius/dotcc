@@ -45,7 +45,7 @@ internal static class Program
             using var signer = certificate == null ? null : new BclCryptoProvider.SigningIdentity(certificate);
             using var verifier = new BclCryptoProvider.CertificateVerifier([root], Enum.Parse<X509RevocationMode>(Get("revocation", "Offline")));
             using var configuration = new PicotlsContext(server, verifier, signer, [Get("alpn", "dotcc-picotls")], suite, requireClient);
-            using var connection = configuration.CreateConnection(server ? null : target);
+            using var connection = new PicotlsConnection(configuration, server ? null : target, default);
             using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(seconds));
             using var socket = new TcpClient(AddressFamily.InterNetwork);
             TcpClient connected = socket;

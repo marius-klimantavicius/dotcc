@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("ProviderVectors")]
@@ -8,41 +9,60 @@ namespace Managed.Security;
 // public injection API, process-global state, or allocator replacement exists.
 internal static class ProviderFaultInjection
 {
-    [ThreadStatic] private static FailureScope? current;
-    internal static FailureScope FailAllocation(int ordinal) => new(ordinal);
+    [ThreadStatic] private static FailureScope? _current;
+    internal static FailureScope FailAllocation(int ordinal) => new FailureScope(ordinal);
+
     internal static void BeforeAllocation()
     {
-        if (current is { } scope && ++scope.AllocationsAttempted == scope.Ordinal)
+        if (_current is { } scope && ++scope.AllocationsAttempted == scope.Ordinal)
         {
             var error = new OutOfMemoryException("Injected provider allocation failure.");
             scope.InjectedFailure = error;
             throw error;
         }
     }
+
     internal static void StateDisposed()
-    { if (current is { } scope) scope.DisposedStates++; }
+    {
+        if (_current is { } scope)
+            scope.DisposedStates++;
+    }
+
     internal static void HashCloneFailed()
-    { if (current is { } scope) scope.FailedHashClones++; }
+    {
+        if (_current is { } scope)
+            scope.FailedHashClones++;
+    }
 
     internal sealed class FailureScope : IDisposable
     {
+        private readonly FailureScope? _parent;
+        private readonly int _thread = Environment.CurrentManagedThreadId;
+        private bool _disposed;
+
         internal readonly int Ordinal;
         internal int AllocationsAttempted, DisposedStates, FailedHashClones;
         internal OutOfMemoryException? InjectedFailure;
-        private readonly FailureScope? parent;
-        private readonly int thread = Environment.CurrentManagedThreadId;
-        private bool disposed;
+
         internal FailureScope(int ordinal)
         {
-            if (ordinal <= 0) throw new ArgumentOutOfRangeException(nameof(ordinal));
-            Ordinal = ordinal; parent = current; current = this;
+            if (ordinal <= 0)
+                throw new ArgumentOutOfRangeException(nameof(ordinal));
+
+            Ordinal = ordinal;
+            _parent = _current;
+            _current = this;
         }
+
         public void Dispose()
         {
-            if (disposed) return;
-            if (thread != Environment.CurrentManagedThreadId || current != this)
+            if (_disposed) return;
+
+            if (_thread != Environment.CurrentManagedThreadId || _current != this)
                 throw new InvalidOperationException("Provider fault scopes require stack-order disposal on their creating thread.");
-            current = parent; disposed = true;
+
+            _current = _parent;
+            _disposed = true;
         }
     }
 }
