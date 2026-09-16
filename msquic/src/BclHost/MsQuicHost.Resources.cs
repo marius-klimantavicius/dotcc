@@ -7,47 +7,57 @@ namespace Managed.Transport.Hosting;
 
 public sealed unsafe partial class MsQuicHost
 {
-    private static readonly ConcurrentDictionary<nint, MsQuicHost> contexts = new();
-    private static long nextToken;
-    private readonly ConcurrentDictionary<nint, IDisposable> resources = new();
-    private readonly object resourceGate = new();
-    private nint contextToken;
-    private int resourcesClosed;
+    private static readonly ConcurrentDictionary<nint, MsQuicHost> _contexts = new ConcurrentDictionary<IntPtr, MsQuicHost>();
+    private static long _nextToken;
+    private readonly ConcurrentDictionary<nint, IDisposable> _resources = new ConcurrentDictionary<IntPtr, IDisposable>();
+    private readonly Lock _resourceGate = new Lock();
+    private nint _contextToken;
+    private int _resourcesClosed;
 
-    internal void* ContextPointer => (void*)contextToken;
-    internal int OutstandingResources => resources.Count;
+    internal void* ContextPointer => (void*)_contextToken;
+    internal int OutstandingResources => _resources.Count;
 
     // Shared by the production constructor and compile-linked isolated service tests.
     private void InitializeResources()
     {
-        if (contextToken != 0) FatalInvariant("Host context initialized twice.");
-        contextToken = NewToken();
-        if (!contexts.TryAdd(contextToken, this)) FatalInvariant("Duplicate host context token.");
+        if (_contextToken != 0)
+            FatalInvariant("Host context initialized twice.");
+
+        _contextToken = NewToken();
+        if (!_contexts.TryAdd(_contextToken, this))
+            FatalInvariant("Duplicate host context token.");
     }
 
     private static nint NewToken()
     {
-        long value = Interlocked.Increment(ref nextToken);
-        if (IntPtr.Size != 8 || value <= 0) FatalInvariant("Host token identity space exhausted or unsupported pointer width.");
+        var value = Interlocked.Increment(ref _nextToken);
+        if (IntPtr.Size != 8 || value <= 0)
+            FatalInvariant("Host token identity space exhausted or unsupported pointer width.");
+
         return (nint)value;
     }
 
     private static MsQuicHost FromContext(void* context)
     {
         MsQuicHost? host = null;
-        if (context == null || !contexts.TryGetValue((nint)context, out host))
+        if (context == null || !_contexts.TryGetValue((nint)context, out host))
             FatalInvariant("Unknown or retired host context.");
+
         return host!;
     }
 
     private void* AddResource<T>(T owner) where T : class, IDisposable
     {
         ArgumentNullException.ThrowIfNull(owner);
-        lock (resourceGate)
+        lock (_resourceGate)
         {
-            if (resourcesClosed != 0) throw new ObjectDisposedException(nameof(MsQuicHost));
-            nint token = NewToken();
-            if (!resources.TryAdd(token, owner)) FatalInvariant("Duplicate resource token.");
+            if (_resourcesClosed != 0)
+                throw new ObjectDisposedException(nameof(MsQuicHost));
+
+            var token = NewToken();
+            if (!_resources.TryAdd(token, owner))
+                FatalInvariant("Duplicate resource token.");
+
             return (void*)token;
         }
     }
@@ -55,17 +65,19 @@ public sealed unsafe partial class MsQuicHost
     private T Resource<T>(void* token) where T : class, IDisposable
     {
         IDisposable? owner = null;
-        if (token == null || !resources.TryGetValue((nint)token, out owner) || owner is not T)
+        if (token == null || !_resources.TryGetValue((nint)token, out owner) || owner is not T)
             FatalInvariant("Unknown, retired, foreign-host, or incorrectly typed resource token: " + typeof(T).Name);
+
         return (T)owner!;
     }
 
     private void ReleaseResource<T>(void* token) where T : class, IDisposable
     {
         // Do not remove a different resource type when diagnosing a bad callback.
-        T owner = Resource<T>(token);
-        if (!resources.TryRemove(new System.Collections.Generic.KeyValuePair<nint, IDisposable>((nint)token, owner)))
+        var owner = Resource<T>(token);
+        if (!_resources.TryRemove(new System.Collections.Generic.KeyValuePair<nint, IDisposable>((nint)token, owner)))
             FatalInvariant("Resource released concurrently more than once: " + typeof(T).Name);
+
         owner.Dispose();
     }
 
@@ -74,14 +86,19 @@ public sealed unsafe partial class MsQuicHost
     // reclaimed managed state; the owner can finish draining and retry disposal.
     private void ReleaseContext()
     {
-        lock (resourceGate)
+        lock (_resourceGate)
         {
-            if (!resources.IsEmpty) throw new InvalidOperationException("Host resources must drain before releasing the context.");
-            resourcesClosed = 1;
-            if (contextToken == 0) return;
-            if (!contexts.TryRemove(contextToken, out var owner) || !ReferenceEquals(owner, this))
+            if (!_resources.IsEmpty)
+                throw new InvalidOperationException("Host resources must drain before releasing the context.");
+
+            _resourcesClosed = 1;
+            if (_contextToken == 0)
+                return;
+
+            if (!_contexts.TryRemove(_contextToken, out var owner) || !ReferenceEquals(owner, this))
                 FatalInvariant("Host context released inconsistently.");
-            contextToken = 0;
+
+            _contextToken = 0;
         }
     }
 
