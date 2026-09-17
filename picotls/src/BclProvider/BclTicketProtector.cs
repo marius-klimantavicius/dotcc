@@ -420,7 +420,7 @@ public static unsafe partial class BclCryptoProvider
             lock (_lifetimeGate)
             {
                 if (--_leases == 0 && _disposeRequested)
-                    Free(true);
+                    Free();
             }
         }
 
@@ -434,7 +434,7 @@ public static unsafe partial class BclCryptoProvider
         {
             if (!isDisposing)
             {
-                Free(false);
+                Free();
                 return;
             }
 
@@ -445,7 +445,7 @@ public static unsafe partial class BclCryptoProvider
 
                 _disposeRequested = true;
                 if (_leases == 0)
-                    Free(true);
+                    Free();
             }
         }
 
@@ -454,7 +454,7 @@ public static unsafe partial class BclCryptoProvider
             Dispose(false);
         }
 
-        private void Free(bool isDisposing)
+        private void Free()
         {
             var previous = _context;
             _context = null;
@@ -462,7 +462,7 @@ public static unsafe partial class BclCryptoProvider
             try
             {
                 if (previous != null)
-                    ReleaseState(ref previous->Handle, isDisposing);
+                    ReleaseState(ref previous->Handle);
             }
             finally
             {

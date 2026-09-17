@@ -318,17 +318,17 @@ public static unsafe partial class BclCryptoProvider
         ProviderFaultInjection.StateDisposed();
     }
 
-    private static void ReleaseState(ref nint token, bool isDisposing = true)
+    private static void ReleaseState(ref nint token)
     {
         var value = token;
         token = 0;
-        if (value == 0) return;
+        if (value == 0)
+            return;
 
         var handle = GCHandle.FromIntPtr(value);
         try
         {
-            if (isDisposing)
-                DisposeState((IDisposable)handle.Target!);
+            DisposeState((IDisposable)handle.Target!);
         }
         finally
         {
@@ -354,7 +354,10 @@ public static unsafe partial class BclCryptoProvider
 
     private static st_ptls_hash_context_t* CreateHash(HashAlgorithmName algorithm)
     {
-        try { return BeginCallback() ? OwnHash(IncrementalHash.CreateHash(algorithm)) : null; }
+        try 
+        {
+            return BeginCallback() ? OwnHash(IncrementalHash.CreateHash(algorithm)) : null;
+        }
         catch (Exception ex)
         {
             CallbackScope.Capture(ex);
