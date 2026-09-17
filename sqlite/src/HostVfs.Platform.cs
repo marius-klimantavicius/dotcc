@@ -825,51 +825,51 @@ internal static unsafe partial class HostPlatform
         internal uint VolumeSerial, SizeHigh, SizeLow, Links, IndexHigh, IndexLow;
     }
 
-    [LibraryImport("libc", SetLastError = true)]
-    private static partial int open([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags, uint mode);
+    [DllImport("libc", SetLastError = true)]
+    private static extern int open([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags, uint mode);
 
-    [LibraryImport("libc", EntryPoint = "open", SetLastError = true)]
-    private static partial int openDarwinArm64([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags, nint p1, nint p2, nint p3, nint p4, nint p5, nint p6, uint mode);
+    [DllImport("libc", EntryPoint = "open", SetLastError = true)]
+    private static extern int openDarwinArm64([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags, nint p1, nint p2, nint p3, nint p4, nint p5, nint p6, uint mode);
 
-    [LibraryImport("libc", SetLastError = true)]
-    private static partial int fcntl(SafeFileHandle handle, int command, void* argument);
+    [DllImport("libc", SetLastError = true)]
+    private static extern int fcntl(SafeFileHandle handle, int command, void* argument);
 
-    [LibraryImport("libc", EntryPoint = "fcntl", SetLastError = true)]
-    private static partial int fcntlDarwinArm64(SafeFileHandle handle, int command, nint p1, nint p2, nint p3, nint p4, nint p5, nint p6, void* argument);
+    [DllImport("libc", EntryPoint = "fcntl", SetLastError = true)]
+    private static extern int fcntlDarwinArm64(SafeFileHandle handle, int command, nint p1, nint p2, nint p3, nint p4, nint p5, nint p6, void* argument);
 
-    [LibraryImport("libc", SetLastError = true)]
-    private static partial int fsync(SafeFileHandle handle);
+    [DllImport("libc", SetLastError = true)]
+    private static extern int fsync(SafeFileHandle handle);
 
-    [LibraryImport("libc", SetLastError = true)]
-    private static partial int unlink([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
+    [DllImport("libc", SetLastError = true)]
+    private static extern int unlink([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
 
-    [LibraryImport("libc", SetLastError = true)]
-    private static partial int access([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int mode);
+    [DllImport("libc", SetLastError = true)]
+    private static extern int access([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int mode);
 
-    [LibraryImport("libc", EntryPoint = "fstat", SetLastError = true)]
-    private static partial int fstatLinux(SafeFileHandle handle, LinuxStat* stat);
+    [DllImport("libc", EntryPoint = "fstat", SetLastError = true)]
+    private static extern int fstatLinux(SafeFileHandle handle, LinuxStat* stat);
 
-    [LibraryImport("libc", EntryPoint = "fstat$INODE64", SetLastError = true)]
-    private static partial int fstatDarwin(SafeFileHandle handle, DarwinStat* stat);
+    [DllImport("libc", EntryPoint = "fstat$INODE64", SetLastError = true)]
+    private static extern int fstatDarwin(SafeFileHandle handle, DarwinStat* stat);
 
-    [LibraryImport("libc", EntryPoint = "fstat", SetLastError = true)]
-    private static partial int fstatDarwinArm64(SafeFileHandle handle, DarwinStat* stat);
+    [DllImport("libc", EntryPoint = "fstat", SetLastError = true)]
+    private static extern int fstatDarwinArm64(SafeFileHandle handle, DarwinStat* stat);
 
-    [LibraryImport("kernel32", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
-    private static partial SafeFileHandle CreateFileW(string path, uint access, uint share, nint security, uint disposition, uint flags, nint template);
+    [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+    private static extern SafeFileHandle CreateFileW(string path, uint access, uint share, nint security, uint disposition, uint flags, nint template);
 
-    [LibraryImport("kernel32", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
-    private static partial uint GetFileAttributesW(string path);
+    [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+    private static extern uint GetFileAttributesW(string path);
 
-    [LibraryImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool GetFileInformationByHandle(SafeFileHandle handle, out WindowsFileInformation information);
+    [DllImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetFileInformationByHandle(SafeFileHandle handle, out WindowsFileInformation information);
 
-    [LibraryImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool GetFileInformationByHandleEx(SafeFileHandle handle, int informationClass, out WindowsFileId information, uint size);
+    [DllImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetFileInformationByHandleEx(SafeFileHandle handle, int informationClass, out WindowsFileId information, uint size);
 
-    [LibraryImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool LockFileEx(SafeFileHandle handle, uint flags, uint reserved, uint lengthLow, uint lengthHigh, ref Overlapped overlap);
+    [DllImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool LockFileEx(SafeFileHandle handle, uint flags, uint reserved, uint lengthLow, uint lengthHigh, ref Overlapped overlap);
 
-    [LibraryImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool UnlockFileEx(SafeFileHandle handle, uint reserved, uint lengthLow, uint lengthHigh, ref Overlapped overlap);
+    [DllImport("kernel32", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool UnlockFileEx(SafeFileHandle handle, uint reserved, uint lengthLow, uint lengthHigh, ref Overlapped overlap);
 }
