@@ -155,6 +155,8 @@ internal sealed partial class CSharpBackend
         var globals = new StringBuilder();
         foreach (var g in unit.Globals)
         {
+            globals.Append("    [global::System.Runtime.CompilerServices.FixedAddressValueType]\n");
+
             if (g.Sym.IsThreadLocal && g.Init is PinnedArray threadArray)
             {
                 cg.EmitThreadLocalArray(globals, g, threadArray);
