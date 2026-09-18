@@ -476,7 +476,7 @@ internal sealed partial class IrBuilder
     private bool AlreadySeenTopLevel(Item fn) => !_seenTopLevelDefs.Add(fn.ToString());
 
     /// <summary>File-scope variable declaration. Each declarator becomes a
-    /// <c>DotCcGlobals</c> field (codegen emits <c>public static unsafe T name</c>);
+    /// generated globals-struct field;
     /// Repeated tentative declarations share storage; an <c>extern</c> declaration
     /// emits storage only when it has an initializer.</summary>
     private void BuildGlobalDecls(Item typeItem, Item listItem, Storage storage, bool isStatic = false)
@@ -2501,12 +2501,12 @@ internal sealed partial class IrBuilder
     /// <summary>Per-translation-unit counter giving each function-scope
     /// <c>static</c> local a program-unique backing-field name. The CS0136
     /// per-function rename can't serve here — two functions' same-named statics
-    /// become two fields of the SAME <c>DotCcGlobals</c> class.</summary>
+    /// become two fields of the SAME generated globals struct.</summary>
     private int _staticLocalSeq;
 
     /// <summary>A function-scope <c>static</c> local (<c>static int counter = 0;</c>).
     /// Its storage is program-lifetime, so it lowers to a once-initialized static
-    /// field of <c>DotCcGlobals</c> (a <see cref="GlobalVar"/> with a mangled,
+    /// field of the generated globals struct (a <see cref="GlobalVar"/> with a mangled,
     /// program-unique name); references resolve to that field via an alias symbol
     /// in the function's scope. The statement itself emits nothing.</summary>
     private CStmt BuildStmtStaticDecl(C.StmtStaticDecl n)
@@ -2545,7 +2545,7 @@ internal sealed partial class IrBuilder
     }
 
     /// <summary>File-scope <c>static T x = { … };</c> — a once-initialised
-    /// <c>DotCcGlobals</c> field with a positional aggregate initializer.</summary>
+    /// globals-struct field with a positional aggregate initializer.</summary>
     private void BuildGlobalStructInit(Item typeItem, Item nameItem, Item initListItem)
     {
         var type = ResolveType(typeItem);

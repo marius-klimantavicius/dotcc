@@ -2,6 +2,12 @@
 set -euo pipefail
 SQLITE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DOTCC_ROOT="$(cd "$SQLITE_ROOT/.." && pwd)"
+PYTHON_CMD=python3
+if ! "$PYTHON_CMD" -c 'import sys; raise SystemExit(sys.version_info.major != 3)' >/dev/null 2>&1; then PYTHON_CMD=python; fi
+if ! "$PYTHON_CMD" -c 'import sys; raise SystemExit(sys.version_info.major != 3)' >/dev/null 2>&1; then
+  echo "Python 3 is required" >&2
+  exit 1
+fi
 SQLITE_AMALGAMATION="$SQLITE_ROOT/ref/sqlite-amalgamation-3530400"
 SQLITE_DEFINES=()
 while IFS= read -r definition; do

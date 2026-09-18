@@ -10,11 +10,11 @@ public static partial class Compiler
         options?.DeduplicateInline == true || options?.ExportInline is { Count: > 0 };
 
     private sealed record InlineOutput(string Functions, IReadOnlyList<CSharpFunctionSource> Parts,
-        IReadOnlyDictionary<string, string> Types, string Globals);
+        IReadOnlyDictionary<string, string> Types, IReadOnlyList<Backends.CSharpGlobalSource> Globals);
 
     private static InlineOutput ProcessInlineFunctions(IReadOnlyList<CSharpFunctionSource> sources,
         IReadOnlyDictionary<string, InlineFunctionMetadata> metadata, IReadOnlyDictionary<string, string> types,
-        string globals, CSharpOutputOptions? options, IEnumerable<string> globalNames)
+        IReadOnlyList<Backends.CSharpGlobalSource> globals, CSharpOutputOptions? options, IEnumerable<string> globalNames)
     {
         var names = new Dictionary<string, string>(StringComparer.Ordinal);
         var removed = new HashSet<string>(StringComparer.Ordinal);
@@ -108,6 +108,10 @@ public static partial class Compiler
             declarations.Add(key, InlineFunctionReferences.Rewrite(text, names));
         }
         return new(string.Join("\n\n", parts.Select(p => p.Text)), parts, declarations,
-            InlineFunctionReferences.Rewrite(globals, names));
+            globals.Select(global => new Backends.CSharpGlobalSource(global.Name,
+                InlineFunctionReferences.Rewrite(global.Field, names),
+                InlineFunctionReferences.Rewrite(global.Initializer, names),
+                InlineFunctionReferences.Rewrite(global.ThreadField, names),
+                InlineFunctionReferences.Rewrite(global.StaticMembers, names))).ToArray());
     }
 }

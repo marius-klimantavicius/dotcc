@@ -35,9 +35,9 @@ header.extend(['} MSQUIC_HOST_TABLE;', '',
     'QUIC_STATUS MsQuicHostInstall(const MSQUIC_HOST_TABLE* Table);',
     'QUIC_STATUS MsQuicHostUninstall(void);', ''])
 out = ROOT / 'src/Host'
-(out / 'msquic_host.h').write_text('\n'.join(header))
-(out / 'forwarders.c').write_text('\n'.join(wrappers))
-(out / 'required_slots.inc').write_text('/* Generated required-slot validation. */\n' + '\n'.join(validation) + '\n')
+(out / 'msquic_host.h').write_text('\n'.join(header), newline='\n')
+(out / 'forwarders.c').write_text('\n'.join(wrappers), newline='\n')
+(out / 'required_slots.inc').write_text('/* Generated required-slot validation. */\n' + '\n'.join(validation) + '\n', newline='\n')
 tests = ['/* Generated test-only fail-fast callbacks; no provider service is simulated. */',
          '#include "msquic_host.h"', '#include <stdio.h>', '']
 for operation in operations:
@@ -54,5 +54,5 @@ for operation in operations:
     tests.extend(['    Broken = *Table;', f"    Broken.{operation['name']} = NULL;",
         '    if (MsQuicHostInstall(&Broken) != QUIC_STATUS_INVALID_PARAMETER) abort();', '    Count++;'])
 tests.extend(['    return Count;', '}', ''])
-(ROOT / 'tests/HostContract/callbacks.inc').write_text('\n'.join(tests))
+(ROOT / 'tests/HostContract/callbacks.inc').write_text('\n'.join(tests), newline='\n')
 print(f'Generated {len(operations)} typed host slots')

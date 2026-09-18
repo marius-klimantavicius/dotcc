@@ -18,7 +18,7 @@ internal sealed record CSharpBackendResult(
     string Functions,
     string Structs,
     string Aliases,
-    string Globals,
+    IReadOnlyList<CSharpGlobalSource> Globals,
     int MainArity,
     IReadOnlyList<DotCC.EmitHelpers.Export> Exports,
     bool MainReturnsVoid = false,
@@ -30,6 +30,10 @@ internal sealed record CSharpBackendResult(
     IReadOnlyDictionary<string, ObjectAggregateMetadata>? AggregateMetadata = null,
     IReadOnlyDictionary<string, InlineFunctionMetadata>? InlineMetadata = null,
     IReadOnlySet<string>? UsedFunctionAddresses = null);
+
+internal sealed record CSharpGlobalSource(string Name, string Field, string Initializer, string ThreadField, string StaticMembers);
+
+internal sealed record CSharpGlobalOutput(string Fields, string Initializers, string ThreadFields, string StaticMembers);
 
 /// <summary>
 /// Lowers the typed IR to low-level unsafe C# text. Deliberately DUMB: every
@@ -80,6 +84,9 @@ internal sealed partial class CSharpBackend
             unit.Globals.Select(g => g.Sym.TargetName).Where(typeNames.Contains), StringComparer.Ordinal);
         cg._typeShadowedFunctions = new HashSet<string>(
             unit.Functions.Select(f => f.Sym.TargetName.TrimStart('@')).Where(typeNames.Contains), StringComparer.Ordinal);
+        cg._ownerStaticGlobals = new HashSet<Symbol>(unit.Globals
+            .Where(g => g.Sym.IsThreadLocal && g.Init is PinnedArray || cg.IsSpecialAlignedGlobal(g))
+            .Select(g => g.Sym));
         var fns = new StringBuilder();
         var functionSources = new List<CSharpFunctionSource>();
         var exports = new List<DotCC.EmitHelpers.Export>();
@@ -150,37 +157,57 @@ internal sealed partial class CSharpBackend
             functionSources.Add(new("__zigErrorName", fns.ToString(helperStart, fns.Length - helperStart)));
         }
 
-        // File-scope variables → public static fields of DotCcGlobals (the shell
-        // surfaces them by bare name via `using static DotCcGlobals;`).
-        var globals = new StringBuilder();
+        // Ordinary globals become fields of one fixed-address globals struct.
+        // Thread-local and explicitly over-aligned objects retain dedicated static
+        // owner members because their storage requirements differ.
+        var globals = new List<CSharpGlobalSource>();
         foreach (var g in unit.Globals)
         {
-            globals.Append("    [global::System.Runtime.CompilerServices.FixedAddressValueType]\n");
+            var field = new StringBuilder();
+            var initializer = new StringBuilder();
+            var threadField = new StringBuilder();
+            var staticMembers = new StringBuilder();
 
             if (g.Sym.IsThreadLocal && g.Init is PinnedArray threadArray)
             {
-                cg.EmitThreadLocalArray(globals, g, threadArray);
+                threadField.Append($"    public {cg.Cs(g.Sym.Type)} {g.Sym.TargetName};\n");
+                cg.EmitThreadLocalArray(staticMembers, g, threadArray);
+                globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
                 continue;
             }
-            if (cg.EmitAlignedGlobal(globals, g)) continue;
+            if (cg.EmitAlignedGlobal(staticMembers, g))
+            {
+                globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
+                continue;
+            }
             // C11 `_Thread_local` / Zig `threadlocal` — thread storage duration:
             // every thread gets its own zero-initialized slot. (The builder rejects
             // a non-zero initializer — a [ThreadStatic] initializer runs on the
             // first thread only, which would break C's per-thread-initial-value.)
-            if (g.Sym.IsThreadLocal) { globals.Append("    [ThreadStatic]\n"); }
+            if (g.Sym.IsThreadLocal)
+            {
+                var type = NintStorage(g.Sym) ? "nint" : cg.Cs(g.Sym.Type);
+                threadField.Append($"    public {type} {g.Sym.TargetName};\n");
+                globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
+                continue;
+            }
             // A pointer/fn-ptr global whose address is taken is stored as `nint` so
             // Unsafe.AsPointer / Volatile.* accept it (CS0306) — the init pointer
             // value is cast to nint, reads cast back. (Backend decision from the
             // abstract AddressTaken fact.)
             if (NintStorage(g.Sym))
             {
-                var ninit = g.Init is { } i0 ? $" = (nint)({cg.Coerced(i0, g.Sym.Type)})" : "";
-                globals.Append($"    public static unsafe nint {g.Sym.TargetName}{ninit};\n");
+                field.Append($"    public nint {g.Sym.TargetName};\n");
+                if (g.Init is { } i0)
+                    initializer.Append($"        Globals.{g.Sym.TargetName} = (nint)({cg.Coerced(i0, g.Sym.Type)});\n");
+                globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
                 continue;
             }
-            var init = g.Init is PinnedArray arrayInit ? " = " + cg.PinnedArrayText(arrayInit, g.Sym.Alignment)
-                : g.Init is { } i ? " = " + cg.Coerced(i, g.Sym.Type) : "";
-            globals.Append($"    public static unsafe {cg.Cs(g.Sym.Type)} {g.Sym.TargetName}{init};\n");
+            field.Append($"    public {cg.Cs(g.Sym.Type)} {g.Sym.TargetName};\n");
+            var init = g.Init is PinnedArray arrayInit ? cg.PinnedArrayText(arrayInit, g.Sym.Alignment)
+                : g.Init is { } i ? cg.Coerced(i, g.Sym.Type) : null;
+            if (init != null) initializer.Append($"        Globals.{g.Sym.TargetName} = {init};\n");
+            globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
         }
 
         // struct/union/enum type declarations → the top-level type-decls section.
@@ -209,7 +236,7 @@ internal sealed partial class CSharpBackend
             ? unit.Tests.Select(t => (t.Name, t.Sym.TargetName)).ToList()
             : null;
 
-        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals.ToString(), mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources, unit.Types.ToDictionary(t => t.Name, ObjectAggregateMetadata.From),
+        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals, mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources, unit.Types.ToDictionary(t => t.Name, ObjectAggregateMetadata.From),
             inlineMetadata ? unit.Functions.Where(f => f.Sym.IsInline).ToDictionary(f => f.Sym.TargetName,
                 f => InlineFunctionMetadata.From(f, unit, cg._usedFunctionAddresses.Contains(f.Sym.TargetName))) : null, cg._usedFunctionAddresses);
     }
@@ -1420,8 +1447,8 @@ internal sealed partial class CSharpBackend
     private static string VolatileRead(string lv) => $"global::System.Threading.Volatile.Read(ref {lv})";
 
     /// <summary>True when an lvalue's storage roots at a file-scope global / static
-    /// local — a C# static field, hence a moveable variable whose address must go
-    /// through <c>Unsafe.AsPointer</c> rather than a bare <c>&amp;</c> (CS0212). A
+    /// local. Its storage is a field of the fixed-address globals singleton, but C#
+    /// still requires <c>Unsafe.AsPointer</c> rather than a bare <c>&amp;</c> (CS0212). A
     /// member through a pointer (<c>p-&gt;f</c>) or a pointer deref roots at the
     /// pointee, not at the field, so those stay a plain <c>&amp;</c>.</summary>
     private static bool RootsAtGlobal(CExpr e) => e switch
@@ -1451,8 +1478,8 @@ internal sealed partial class CSharpBackend
     /// integer slot, or its address is taken (the abstract
     /// <see cref="Symbol.AddressTaken"/> fact), a pointer T can't be the type arg of
     /// Unsafe.AsPointer / Volatile.* (CS0306) nor have a bare <c>&amp;</c> of a moveable
-    /// static field (CS0212), so the slot is an <c>nint</c>. The <see cref="Symbol.IsGlobal"/>
-    /// guard scopes this to file-scope/function-static fields: locals are emitted as real
+    /// globals-struct field (CS0212), so the slot is an <c>nint</c>. The <see cref="Symbol.IsGlobal"/>
+    /// guard scopes this to file-scope/function-static storage: locals are emitted as real
     /// pointers (no moveable-field/Unsafe constraints apply), so an address-taken local —
     /// which now also carries the neutral fact — must NOT be reinterpreted as <c>nint</c>.</summary>
     private static bool NintStorage(Symbol s) => (s.AddressTaken || s.Type.IsVolatile) && s.IsGlobal && s.Type.IsPointerLowered;
@@ -1487,12 +1514,15 @@ internal sealed partial class CSharpBackend
     // restores the ordinary-namespace reading.
     private HashSet<string> _typeShadowedGlobals = new(StringComparer.Ordinal);
     private HashSet<string> _typeShadowedFunctions = new(StringComparer.Ordinal);
+    private HashSet<Symbol> _ownerStaticGlobals = new();
 
-    /// <summary>The spelling of a variable reference: the bare TargetName, or
-    /// <c>DotCcGlobals.</c>-qualified when an emitted type name shadows it.</summary>
+    /// <summary>The spelling of a variable reference. Ordinary globals live in the
+    /// fixed-address singleton; storage-special globals remain static owner members.</summary>
     private string GlobalName(Symbol s) =>
         !s.IsGlobal && s.Kind is SymKind.Var or SymKind.Param && !_alignedArraySymbols.Contains(s) && RequiresAlignedObject(s)
             ? "(*" + AlignedName(s) + ")"
+            : s.IsGlobal && !_ownerStaticGlobals.Contains(s)
+            ? (s.IsThreadLocal ? "ThreadGlobals." : "Globals.") + s.TargetName
             : s.IsGlobal && _typeShadowedGlobals.Contains(s.TargetName)
             ? "DotCcGlobals." + s.TargetName
             : s.TargetName;
@@ -2046,11 +2076,9 @@ internal sealed partial class CSharpBackend
             case NameRef nr: return (DotCC.EmitHelpers.Id(nr.RawName), PPrimary);
             // An enumerator of a real enum: EnumName.Member (member access). If a
             // global variable shadows the enum TYPE name (C keeps `enum E` in the
-            // tag namespace and a variable `E` in the ordinary namespace; `using
-            // static DotCcGlobals` then binds the bare name to the variable —
-            // chibi's `enum sexp_opcode_names` vs its `const char** sexp_opcode_names`
-            // table), force the top-level type with `global::` so the enumerator
-            // resolves against the enum, not the field.
+            // tag namespace and a variable `E` in the ordinary namespace), force
+            // the top-level type with `global::` so the enumerator resolves against
+            // the enum, not the field.
             case EnumConstRef ec:
             {
                 var enumTy = Cs(ec.Sym.Type.Unqualified);
@@ -2072,9 +2100,9 @@ internal sealed partial class CSharpBackend
             // pointer type. Assignment targets / `&` / ref-args use BareLValue (raw
             // field), so they never hit this read-cast.
             case VarRef v when NintStorage(v.Sym):
-                return v.Type.IsAtomic ? ($"({Cs(v.Type)})Atomic.Load(ref {v.Sym.TargetName})", PUnary)
-                     : v.Type.IsVolatile ? ($"({Cs(v.Type)}){VolatileRead(v.Sym.TargetName)}", PUnary)
-                     : ($"({Cs(v.Type)}){v.Sym.TargetName}", PUnary);
+                return v.Type.IsAtomic ? ($"({Cs(v.Type)})Atomic.Load(ref {GlobalName(v.Sym)})", PUnary)
+                     : v.Type.IsVolatile ? ($"({Cs(v.Type)}){VolatileRead(GlobalName(v.Sym))}", PUnary)
+                     : ($"({Cs(v.Type)}){GlobalName(v.Sym)}", PUnary);
             case VarRef v: return v.Sym.Kind == SymKind.Func
                 ? (FunctionPointer(v.Sym), PPrimary)
                 : QualifiedRead(v, GlobalName(v.Sym), PPrimary);
@@ -2446,10 +2474,10 @@ internal sealed partial class CSharpBackend
             // global pointer must not become Unsafe.AsPointer<T*>'s argument.
             // Keep the IR pointer-to-array type for element-stride semantics.
             case UnOp.AddrOf when u.Operand.Type.Unqualified is CType.Array: return Render(u.Operand);
-            // &global — a file-scope global / static local lowers to a C# static
-            // field, which is a MOVEABLE variable (`&field` is CS0212). Take its
-            // address via Unsafe.AsPointer: dotcc's globals are unmanaged value
-            // types in non-moving static storage, so the pointer is stable. (Lua
+            // &global — a file-scope global / static local lowers to a field of the
+            // fixed-address globals singleton (`&field` is still CS0212). Take its
+            // address via Unsafe.AsPointer: the containing unmanaged value is in
+            // non-moving static storage, so the pointer is stable. (Lua
             // leans on this: &absentkey, &dummynode_.)
             case UnOp.AddrOf when RootsAtGlobal(u.Operand):
                 return ($"({Cs(u.Type)}){GlobalStorageAddress(u.Operand)}", PUnary);

@@ -55,7 +55,7 @@ public sealed class ConstexprTests
             emitted.ShouldContain("stackalloc int[4]");
             // The global constexpr emits as a plain field (NOT C# `const`), so
             // taking its address stays legal.
-            emitted.ShouldContain("int N = 4;");
+            emitted.ShouldContain("Globals.N = 4;");
         }
         finally { File.Delete(src); }
     }

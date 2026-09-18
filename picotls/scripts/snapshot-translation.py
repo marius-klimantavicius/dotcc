@@ -64,9 +64,9 @@ if sys.argv[1:] == ["copy"]:
     # write succeed. translate.sh truncates the log each invocation. Relying on
     # this explicit status avoids filesystem timestamp resolution assumptions.
     transcript = (ROOT / "artifacts/translation/emit.log").read_text()
-    pattern = r"^dotcc: wrote (\d+) C# source file\(s\) \+ " + re.escape(str(PRODUCT / PROJECT)) + r"$"
+    pattern = r"^dotcc: wrote (\d+) C# source file\(s\) \+ (.+)$"
     status = re.search(pattern, transcript, re.M)
-    if not status:
+    if not status or Path(status[2]).resolve() != (PRODUCT / PROJECT).resolve():
         raise SystemExit("Translation produced no successful project-write status; refusing to snapshot stale output")
     current = files(PRODUCT)
     if len(current) != int(status[1]):

@@ -22,8 +22,8 @@ public sealed class StaticDesignatedInitializerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { path });
-            emitted.ShouldContain("public static unsafe point point__s0");
-            emitted.ShouldContain("public static unsafe point point__s1");
+            emitted.ShouldContain("public point point__s0;");
+            emitted.ShouldContain("public point point__s1;");
         }
         finally { File.Delete(path); }
     }

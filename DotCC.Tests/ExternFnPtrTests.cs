@@ -29,9 +29,9 @@ public sealed class ExternFnPtrTests
             if (qualifier == "volatile ")
             {
                 emitted.ShouldContain("nint callback");
-                emitted.ShouldContain("Volatile.Read(ref callback)");
+                emitted.ShouldContain("Volatile.Read(ref Globals.callback)");
             }
-            else emitted.ShouldContain("delegate*<int, int> callback");
+            else emitted.ShouldContain("public delegate*<int, int> callback;");
         }
         finally { File.Delete(path); }
     }

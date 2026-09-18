@@ -11,7 +11,7 @@ namespace DotCC.Tests;
 /// Unit tests for `static` struct/union AGGREGATE initializers (`static T x =
 /// {...};`, file-scope and block-scope) and the recursive nested-brace handling
 /// shared with the non-static `DeclStructInit`. A `static T x = {...}` lowers to
-/// a once-initialised DotCcGlobals field; a nested brace for a struct/union field
+/// a once-initialised field in the globals struct; a nested brace for a struct/union field
 /// recurses into `field = new &lt;FieldType&gt; { ... }` (the union's first member).
 /// Lua's lcode.c `static const expdesc ef = {VKINT, {0}, NO_JUMP, NO_JUMP}`.
 /// End-to-end in the `static-struct-init/` fixture (gcc-oracle-validated).
@@ -39,8 +39,9 @@ public sealed class StaticStructInitTests
             var emitted = Compiler.EmitCSharp(new[] { src });
             // Lowered to a once-init static field, mangled by function, and the
             // body use rewrites to the mangled name.
-            emitted.ShouldContain("public static unsafe P p__s0 = new P { x = 10, y = 20 };");
-            emitted.ShouldContain("p__s0.x");
+            emitted.ShouldContain("public P p__s0;");
+            emitted.ShouldContain("Globals.p__s0 = new P { x = 10, y = 20 };");
+            emitted.ShouldContain("Globals.p__s0.x");
         }
         finally { File.Delete(src); }
     }
@@ -56,7 +57,7 @@ public sealed class StaticStructInitTests
         try
         {
             Compiler.EmitCSharp(new[] { src })
-                .ShouldContain("public static unsafe P origin = new P { x = 3, y = 4 };");
+                .ShouldContain("Globals.origin = new P { x = 3, y = 4 };");
         }
         finally { File.Delete(src); }
     }

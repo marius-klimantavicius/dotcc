@@ -34,7 +34,7 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("int* scratch = Libc.GlobalArrayZeroed<int>(8)");
+            emitted.ShouldContain("Globals.scratch = Libc.GlobalArrayZeroed<int>(8)");
         }
         finally { File.Delete(src); }
     }
@@ -49,7 +49,7 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("int* t = Libc.GlobalArrayFrom<int>(new int[]{ 10, 20, 30, 40 })");
+            emitted.ShouldContain("Globals.t = Libc.GlobalArrayFrom<int>(new int[]{ 10, 20, 30, 40 })");
         }
         finally { File.Delete(src); }
     }
@@ -83,7 +83,7 @@ public sealed class FileScopeArrayTests
             // 'h'=104, 'i'=105, NUL=0. A const byte array is read-only, so it lowers
             // to the zero-copy RVA path (Libc.L over PE .rodata) rather than the
             // writable GlobalArrayFrom POH copy.
-            emitted.ShouldContain("byte* tag = Libc.L(new byte[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Globals.tag = Libc.L(new byte[]{ 104, 105, 0 })");
         }
         finally { File.Delete(src); }
     }
@@ -100,7 +100,7 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("byte* buf = Libc.GlobalArrayFrom<byte>(new byte[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Globals.buf = Libc.GlobalArrayFrom<byte>(new byte[]{ 104, 105, 0 })");
         }
         finally { File.Delete(src); }
     }
@@ -118,7 +118,7 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("int* tab = Libc.L<int>(new int[]{ 10, 20, 30 })");
+            emitted.ShouldContain("Globals.tab = Libc.L<int>(new int[]{ 10, 20, 30 })");
         }
         finally { File.Delete(src); }
     }
@@ -133,7 +133,7 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("int* tab = Libc.GlobalArrayFrom<int>(new int[]{ 10, 20, 30 })");
+            emitted.ShouldContain("Globals.tab = Libc.GlobalArrayFrom<int>(new int[]{ 10, 20, 30 })");
         }
         finally { File.Delete(src); }
     }

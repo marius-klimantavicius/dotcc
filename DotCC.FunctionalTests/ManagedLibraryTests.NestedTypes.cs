@@ -54,7 +54,7 @@ public sealed partial class ManagedLibraryTests
                 var text=string.Join("\n",files.Values);
                 text.ShouldNotContain("global using");
                 text.Split("static unsafe class "+owner+"FunctionPointers").Length.ShouldBe(2);
-                text.ShouldContain("static unsafe class "+owner+"Globals");
+                text.ShouldContain("unsafe struct "+owner+"Globals");
                 if(runtime==RuntimeProfile.C) { text.ShouldNotContain("// ---- Zig"); text.ShouldNotContain("// ---- Slice.cs"); }
                 syntax.AddRange(files.Select(f=>ParseSource(f.Value,path:owner+"/"+f.Key)));
             }

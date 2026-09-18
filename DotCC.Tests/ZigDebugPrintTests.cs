@@ -43,7 +43,7 @@ public sealed class ZigDebugPrintTests
                 std.debug.print("n={d}\n", .{n});
             }
             """);
-        cs.ShouldContain("fprintf(stderr, ");     // stderr stream, not stdout
+        cs.ShouldContain("fprintf(Globals.stderr, ");     // stderr stream, not stdout
         cs.ShouldContain("%d");                     // {d} → %d
         cs.ShouldContain(".Arg(");                  // the argument rides the fluent builder
         cs.ShouldContain(".Done()");
@@ -86,7 +86,7 @@ public sealed class ZigDebugPrintTests
                 std.debug.print("hello\n", .{});
             }
             """);
-        cs.ShouldContain("fprintf(stderr, Libc.L(\"hello\\n\\0\"u8)).Done()");
+        cs.ShouldContain("fprintf(Globals.stderr, Libc.L(\"hello\\n\\0\"u8)).Done()");
     }
 
     [Fact]

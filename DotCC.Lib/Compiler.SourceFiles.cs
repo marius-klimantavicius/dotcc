@@ -86,7 +86,7 @@ public static partial class Compiler
                 "System.Runtime.InteropServices", "System.Runtime.CompilerServices", "System.Threading",
                 "System.Collections.Generic", "System.Collections.Concurrent", "System.Text", "System.Net", "System.Net.Sockets" }
                 .Select(ns => "using " + ns + ";")) + "\n"
-            + $"using static global::{scope}Libc;\nusing static global::{scope}{HelperClass(owner, "Globals")};\nusing DotCcGlobals = global::{scope}{HelperClass(owner, "Globals")};\nusing static {owner};\nusing DotCcFunctions = global::{NamespacePrefix(namespaceName)}{owner};\n"
+            + $"using static global::{scope}Libc;\nusing static global::{scope}{HelperClass(owner, "Globals")}Special;\nusing DotCcGlobals = global::{scope}{HelperClass(owner, "Globals")}Special;\nusing static {owner};\nusing DotCcFunctions = global::{NamespacePrefix(namespaceName)}{owner};\n"
             + (nested ? string.Join("\n", aliases.Split('\n').Where(line => !line.StartsWith("using __DotCcFunctionOwner_", StringComparison.Ordinal))) + "\n" : "")
             + (importsClass.Length == 0 ? "" : $"using static global::{scope}{(importsAreStatic ? "DotCcStaticImports" : "DotCcImports")};\n")
             + (emit == EmitMode.ManagedLib ? "public " : "internal ") + $"static unsafe partial class {owner}\n{{\n";

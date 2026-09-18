@@ -39,15 +39,15 @@ public sealed class TentativeGlobalTests
     public void Repeated_tentative_declarations_emit_one_storage_field()
     {
         var output = Emit("int value; extern int value; int value = 17; int value; int main(void) { return value; }");
-        (output.Split("unsafe int value").Length - 1).ShouldBe(1);
-        output.ShouldContain("int value = 17");
+        (output.Split("public int value;").Length - 1).ShouldBe(1);
+        output.ShouldContain("Globals.value = 17");
     }
 
     [Fact]
     public void Extern_initializer_is_a_definition()
     {
         var output = Emit("extern int value = 7; int value; int main(void) { return value; }");
-        (output.Split("unsafe int value").Length - 1).ShouldBe(1);
-        output.ShouldContain("int value = 7");
+        (output.Split("public int value;").Length - 1).ShouldBe(1);
+        output.ShouldContain("Globals.value = 7");
     }
 }

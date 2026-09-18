@@ -29,6 +29,13 @@ public static partial class Compiler
     private static string TypeScope(string? namespaceName, string owner, bool nested) =>
         NamespacePrefix(namespaceName) + (nested ? owner + "." : "");
 
+    private static Backends.CSharpGlobalOutput RenderGlobals(
+        IReadOnlyList<Backends.CSharpGlobalSource> globals, LiteralPool.Output literals) => new(
+        string.Concat(globals.Select(global => literals.Rewrite(global.Field))),
+        string.Concat(globals.Select(global => literals.Rewrite(global.Initializer))),
+        string.Concat(globals.Select(global => literals.Rewrite(global.ThreadField))),
+        string.Concat(globals.Select(global => literals.Rewrite(global.StaticMembers))));
+
     // The object contract stores one independently keyed cache property per function.
     // Coalesce those records only after linking/definition ownership is resolved.
     private static string RenderTypeDeclarations(IReadOnlyDictionary<string, string> declarations, string owner, bool isPublic, LiteralPool.Output literals,

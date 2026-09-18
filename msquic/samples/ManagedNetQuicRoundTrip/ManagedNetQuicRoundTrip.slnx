@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../../../picotls/generated/TranslatedPicotls/TranslatedPicotls.csproj" />
+  <Project Path="../../../picotls/src/BclProvider/BclProvider.csproj" />
+  <Project Path="../../src/Managed.Net.Quic/Managed.Net.Quic.csproj" />
+  <Project Path="ManagedNetQuicRoundTrip.csproj" />
+</Solution>

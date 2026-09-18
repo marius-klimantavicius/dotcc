@@ -33,7 +33,9 @@ reference libraries and runs its selected upstream tests. `translate.sh` builds
 the compiler and semantic postprocessor, source-links the unchanged three core
 units followed by the authored host adapter, emits the managed library, preserves
 a raw snapshot and postprocesses the product in place. `--no-build-tools` reuses
-already-built tools. Upstream source and generated C# are never patched manually.
+already-built tools. `--no-fetch` uses the two pinned source directories already
+under `ref/` instead of downloading their archives. Upstream source and generated
+C# are never patched manually.
 
 `build-only.sh` builds the existing provider/owning product project. `--core`
 builds just the optimized translated project; `--raw` builds just its raw

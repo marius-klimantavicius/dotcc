@@ -7,12 +7,20 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-subprocess.run([sys.executable, str(ROOT / 'scripts/fetch.py')], check=True)
 pin = json.loads((ROOT / 'config/source.json').read_text())
+if '--no-fetch' in sys.argv[1:]:
+    if sys.argv[1:] != ['--no-fetch']:
+        raise SystemExit('Usage: stage-product.py [--no-fetch]')
+else:
+    if sys.argv[1:]:
+        raise SystemExit('Usage: stage-product.py [--no-fetch]')
+    subprocess.run([sys.executable, str(ROOT / 'scripts/fetch.py')], check=True)
 inventory = json.loads((ROOT / 'config/source-inventory.json').read_text())
 host = ROOT / 'config/managed-host'
 overlay = json.loads((host / 'overlay.json').read_text())
 reference = ROOT / 'ref' / pin['directory']
+if not reference.is_dir():
+    raise SystemExit('Missing pinned source directory: ' + str(reference))
 stage = ROOT / 'build/product-source'
 stage.mkdir(parents=True, exist_ok=True)
 replacements = {item['source']: item for item in overlay['overlays']}
@@ -40,7 +48,7 @@ for directory in ('src/inc', 'src/core', 'src/platform'):
     for source in sorted((reference / directory).rglob('*')):
         if not source.is_file():
             continue
-        relative = str(source.relative_to(reference))
+        relative = source.relative_to(reference).as_posix()
         if relative in replacements:
             replacement = replacements[relative]
             if digest(source.read_bytes()) != replacement['original_sha256']:
@@ -52,8 +60,8 @@ for directory in ('src/inc', 'src/core', 'src/platform'):
 for prefix, directory in [('system', host / 'system'), ('host', ROOT / 'src/Host')]:
     for source in sorted(directory.rglob('*')):
         if source.is_file():
-            write(str(Path(prefix) / source.relative_to(directory)), source.read_bytes(),
-                  str(source.relative_to(ROOT)), 'authored host contract')
+            write((Path(prefix) / source.relative_to(directory)).as_posix(), source.read_bytes(),
+                  source.relative_to(ROOT).as_posix(), 'authored host contract')
 for unit in inventory['units']:
     relative = unit['path']
     if relative in manifest['excluded_units']:
@@ -61,7 +69,7 @@ for unit in inventory['units']:
     if digest((reference / relative).read_bytes()) != unit['sha256']:
         raise RuntimeError('Source inventory pin mismatch: ' + relative)
     manifest['units'].append(relative)
-manifest['units'].extend(str(Path('host') / p.relative_to(ROOT / 'src/Host'))
+manifest['units'].extend((Path('host') / p.relative_to(ROOT / 'src/Host')).as_posix()
                          for p in sorted((ROOT / 'src/Host').glob('*.c')))
 for key, filename in [('portable_fragment', 'portable.c'), ('route_fragment', 'route.c')]:
     fragment = overlay[key]
@@ -72,7 +80,7 @@ for key, filename in [('portable_fragment', 'portable.c'), ('route_fragment', 'r
 # Remove obsolete files only from this generated staging directory. Never edit ref.
 selected = {entry['path'] for entry in manifest['files']}
 for path in stage.rglob('*'):
-    if path.is_file() and str(path.relative_to(stage)) not in selected:
+    if path.is_file() and path.relative_to(stage).as_posix() not in selected:
         path.unlink()
 (stage / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
 print(json.dumps({'stage': str(stage), 'units': len(manifest['units']),

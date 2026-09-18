@@ -129,7 +129,7 @@ public static partial class Compiler
         string emittedFnList,
         string structDecls,
         string usingAliases,
-        string globals,
+        Backends.CSharpGlobalOutput globals,
         EmitMode emit,
         IReadOnlyList<EmitHelpers.Export> exports,
         bool debugHeap = false,
@@ -174,6 +174,47 @@ public static partial class Compiler
         // `main(...)` call, file-scope `&fn` initializers, and inter-function calls).
         var indentedFns = IndentBlock(
             emittedFnList.Replace("static unsafe ", "internal static unsafe "), "    ");
+        var globalsType = "DotCcProgramGlobals";
+        var globalOwnerMembers = globals.Fields.Length == 0 ? "" : $$"""
+                [FixedAddressValueType]
+                internal static {{globalsType}} Globals;
+            {{(globals.Initializers.Length == 0 ? "" : $$"""
+
+                static DotCcProgram()
+                {
+            {{globals.Initializers}}    }
+            """)}}
+            """;
+        var globalsDeclaration = globals.Fields.Length == 0 ? "" : $$"""
+            internal unsafe struct {{globalsType}}
+            {
+            {{globals.Fields}}}
+            """;
+        var threadGlobalsType = globalsType + "ThreadLocal";
+        var threadGlobalOwnerMembers = globals.ThreadFields.Length == 0 ? "" : $$"""
+                [ThreadStatic]
+                private static {{threadGlobalsType}}[] __threadGlobals;
+
+                internal static ref {{threadGlobalsType}} ThreadGlobals
+                {
+                    get
+                    {
+                        var storage = __threadGlobals;
+                        if (storage is null)
+                        {
+                            storage = global::System.GC.AllocateUninitializedArray<{{threadGlobalsType}}>(1, pinned: true);
+                            storage[0] = default;
+                            __threadGlobals = storage;
+                        }
+                        return ref storage[0];
+                    }
+                }
+            """;
+        var threadGlobalsDeclaration = globals.ThreadFields.Length == 0 ? "" : $$"""
+            internal unsafe struct {{threadGlobalsType}}
+            {
+            {{globals.ThreadFields}}}
+            """;
         // A `void`-returning main (Zig's `pub fn main() void`; also a non-standard
         // `void main()` in C) can't be `return`ed from the int-typed entry, so it is
         // called for effect and followed by `return 0;`. An int-returning main is
@@ -270,16 +311,10 @@ public static partial class Compiler
             // same dispatch for free without preprocessor machinery.
             using static Libc;
             // ---- File-scope variables + user functions ----------------
-            // C globals are static fields of `DotCcGlobals`; user functions are
-            // static methods of `DotCcProgram` (both declared at file end).
-            // `using static` on both makes every global + function visible by bare
-            // name everywhere — functions call each other and read globals
-            // unqualified, the entry below calls `main(...)`, AND a file-scope
-            // initializer can take a function's address (`&fn`, the `luaL_Reg`-table
-            // idiom) by bare name across the class boundary (using-static surfaces
-            // the method group).
-            using static DotCcProgramGlobals;
-            using DotCcGlobals = global::{{NamespacePrefix(namespaceName)}}DotCcProgramGlobals;
+            // C globals live in the fixed-address `DotCcProgram.Globals` struct;
+            // user functions are static methods of `DotCcProgram`.
+            using static DotCcProgramGlobalsSpecial;
+            using DotCcGlobals = global::{{NamespacePrefix(namespaceName)}}DotCcProgramGlobalsSpecial;
             using static DotCcProgram;{{importsUsing}}
             using DotCcFunctions = global::{{NamespacePrefix(namespaceName)}}DotCcProgram;
 
@@ -317,6 +352,8 @@ public static partial class Compiler
 
             static unsafe {{(partial ? "partial " : "")}}class DotCcProgram
             {
+            {{globalOwnerMembers}}
+            {{threadGlobalOwnerMembers}}
             {{indentedFns}}
             }
 
@@ -326,12 +363,14 @@ public static partial class Compiler
 
             {{structDecls}}
 
-            // C file-scope variables, collected as static fields. Empty
-            // class when no globals are declared — harmless but kept for
-            // shell-shape stability.
-            static unsafe class DotCcProgramGlobals
+            // The one custom value type eligible for FixedAddressValueType.
+            {{globalsDeclaration}}
+            {{threadGlobalsDeclaration}}
+
+            // Storage requiring per-thread or explicit alignment semantics.
+            static unsafe class DotCcProgramGlobalsSpecial
             {
-            {{globals}}}
+            {{globals.StaticMembers}}}
 
             // C-truthy → C# bool. The visitor wraps every conditional context
             // (`if`/`while`/`for`-cond) with `Cond.B(...)` so int- and
@@ -384,13 +423,13 @@ public static partial class Compiler
         string emittedFnList,
         string structDecls,
         string usingAliases,
-        string globals,
+        Backends.CSharpGlobalOutput globals,
         IReadOnlyList<EmitHelpers.Export> exports,
         string importsClass = "",
         bool importsAreStatic = false, bool managedLibrary = false, string libraryClass = "DotCcLib", bool partial = false, string? namespaceName = null, bool nested = false, bool includeZig = true)
     {
         var scope = TypeScope(namespaceName, libraryClass, nested);
-        var globalsClass = HelperClass(libraryClass, "Globals");
+        var globalsType = HelperClass(libraryClass, "Globals");
         // Import mode in a -shared lib: surface the table by bare name and splice it. A
         // GOT table binds in a static constructor (no entry point here); static [DllImport]
         // stubs bind at the lib's own publish. Empty when no import was requested.
@@ -408,6 +447,46 @@ public static partial class Compiler
         var publicFns = emittedFnList.Replace("static unsafe ", "public static unsafe ");
         // Indent the user-function block so it lives correctly inside the class body.
         var indentedFns = IndentBlock(publicFns, "    ");
+        var globalOwnerMembers = globals.Fields.Length == 0 ? "" : $$"""
+                [FixedAddressValueType]
+                {{(managedLibrary ? "public" : "internal")}} static {{globalsType}} Globals;
+            {{(globals.Initializers.Length == 0 ? "" : $$"""
+
+                static unsafe {{libraryClass}}()
+                {
+            {{globals.Initializers}}    }
+            """)}}
+            """;
+        var globalsDeclaration = globals.Fields.Length == 0 ? "" : $$"""
+            {{(managedLibrary ? "public" : "internal")}} unsafe struct {{globalsType}}
+            {
+            {{globals.Fields}}}
+            """;
+        var threadGlobalsType = globalsType + "ThreadLocal";
+        var threadGlobalOwnerMembers = globals.ThreadFields.Length == 0 ? "" : $$"""
+                [ThreadStatic]
+                private static {{threadGlobalsType}}[] __threadGlobals;
+
+                internal static ref {{threadGlobalsType}} ThreadGlobals
+                {
+                    get
+                    {
+                        var storage = __threadGlobals;
+                        if (storage is null)
+                        {
+                            storage = global::System.GC.AllocateUninitializedArray<{{threadGlobalsType}}>(1, pinned: true);
+                            storage[0] = default;
+                            __threadGlobals = storage;
+                        }
+                        return ref storage[0];
+                    }
+                }
+            """;
+        var threadGlobalsDeclaration = globals.ThreadFields.Length == 0 ? "" : $$"""
+            internal unsafe struct {{threadGlobalsType}}
+            {
+            {{globals.ThreadFields}}}
+            """;
 
         // Build the [UnmanagedCallersOnly] wrappers. Skip varargs functions —
         // C# `params` collections aren't a valid signature for the attribute and
@@ -451,14 +530,16 @@ public static partial class Compiler
             using static global::{{scope}}Libc;
             using static {{libraryClass}};
             using DotCcFunctions = global::{{NamespacePrefix(namespaceName)}}{{libraryClass}};
-            using static global::{{scope}}{{globalsClass}};
-            using DotCcGlobals = global::{{scope}}{{globalsClass}};{{importsUsing}}
+            using static global::{{scope}}{{globalsType}}Special;
+            using DotCcGlobals = global::{{scope}}{{globalsType}}Special;{{importsUsing}}
 
             // ---- typedef'd `using` aliases (same as exe mode).
             {{usingAliases}}
             // Translated methods use direct calls and managed function pointers.
             {{(managedLibrary ? "public" : "internal")}} static {{(partial || nested ? "partial " : "")}}class {{libraryClass}}
             {
+            {{globalOwnerMembers}}
+            {{threadGlobalOwnerMembers}}
             {{indentedFns}}
             {{(nested ? "" : "}")}}
 
@@ -468,12 +549,14 @@ public static partial class Compiler
             // ---- Type declarations (top-level — same as exe mode). ----
             {{structDecls}}
 
-            // C file-scope variables, collected as static fields (same as
-            // exe mode). {{libraryClass}} reaches them via `using static DotCcGlobals;`
-            // — adding that import here too so library-mode emits work.
-            {{(managedLibrary ? "public " : "")}}static unsafe class {{globalsClass}}
+            // The one custom value type eligible for FixedAddressValueType.
+            {{globalsDeclaration}}
+            {{threadGlobalsDeclaration}}
+
+            // Storage requiring per-thread or explicit alignment semantics.
+            {{(managedLibrary ? "public " : "")}}static unsafe class {{globalsType}}Special
             {
-            {{globals}}}
+            {{globals.StaticMembers}}}
 
             // C-truthy → C# bool. Same set of overloads as exe mode.
             static class Cond

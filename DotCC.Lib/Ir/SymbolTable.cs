@@ -80,7 +80,7 @@ public sealed class Symbol
     /// escaped, and uniquified when the target forbids shadowing).</summary>
     public string TargetName { get; set; } = "";
     /// <summary>True for a file-scope (global) symbol — codegen emits it as a
-    /// <c>DotCcGlobals</c> field rather than a block local.</summary>
+    /// generated globals-struct field rather than a block local.</summary>
     public bool IsGlobal { get; init; }
 
     /// <summary>True when this symbol was declared in one of dotcc's synthetic system

@@ -389,7 +389,8 @@ public sealed partial class CompilerTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("public static unsafe int g = 7;");
+            emitted.ShouldContain("public int g;");
+            emitted.ShouldContain("Globals.g = 7;");
         }
         finally { File.Delete(src); }
     }

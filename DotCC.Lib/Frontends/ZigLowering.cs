@@ -1026,7 +1026,7 @@ internal sealed partial class ZigLowering
 
     /// <summary>Pass 1.5: lower every runtime top-level <c>const</c>/<c>var</c> to a
     /// <see cref="GlobalVar"/> (the same IR node the C frontend's file-scope variables produce, so
-    /// the C# backend renders each as a <c>public static</c> field of <c>DotCcGlobals</c>, surfaced
+    /// the C# backend renders each as a field of the fixed-address globals struct, surfaced
     /// by bare name via <c>using static</c>). A <c>const</c> bound to a comptime <c>@import</c>/
     /// allocator alias (recorded in pass 0) emits no decl and is skipped. A top-level <c>var</c> is
     /// always a runtime global (only <c>const</c> can be a comptime binding). The const-ness of a
@@ -1203,7 +1203,7 @@ internal sealed partial class ZigLowering
 
     /// <summary>Pass 1.5: lower a container-level <c>var</c> (a namespaced mutable global, Milestone R
     /// part 6) to a <see cref="GlobalVar"/> under a mangled <c>Container_name</c> symbol — the same
-    /// shape a top-level global takes, so the backend renders it as a <c>DotCcGlobals</c> field. The
+    /// shape a top-level global takes, so the backend renders it as a globals-struct field. The
     /// initializer is lowered at module scope (with <see cref="_currentConstContainer"/> set so it may
     /// reference a sibling const by bare name). The symbol is recorded in <see cref="_containerVars"/>
     /// so a <c>Type.name</c> read/write resolves to its <see cref="VarRef"/>. V1: scalar only — an

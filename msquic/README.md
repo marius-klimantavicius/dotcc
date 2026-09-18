@@ -24,6 +24,21 @@ whole-assembly consumers. `--no-build-tools` reuses already-built compiler and
 postprocessor binaries. Earlier closure evidence is archived before regeneration;
 the new closure does not claim a fresh SQLite or full transport campaign unless
 those gates have actually been rerun.
+
+For a development-only translation without the qualification and closure gates,
+run:
+
+```sh
+msquic/scripts/translate.sh --fast [--no-build-tools] [--jobs 8]
+```
+
+This stages the selected source, translates its independent C translation units
+in parallel, links the raw project, and postprocesses the final project. It writes
+the same generated directories but does not archive evidence, run native/JIT/AOT
+ABI or consumer tests, fetch source, or freeze a product closure. The exact pinned
+source tree must already exist under `msquic/ref/`. The full script uses separate
+objects because a monolithic compile retains parser state for every translation
+unit; unlike the qualification path, those object compilations run concurrently.
 See [nested-layout validation](docs/nested-layout.md) for the refreshed ABI,
 consumer and service checks.
 

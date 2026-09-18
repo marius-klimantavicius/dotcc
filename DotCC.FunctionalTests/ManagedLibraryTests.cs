@@ -135,7 +135,7 @@ public sealed partial class ManagedLibraryTests
                         Bundle bundle = default;
                         bundle.hooks[0] = hook;
                         bundle.status = Status.Ready;
-                        if (DotCcLibGlobals.api_version != 7 || DotCcLib.bundle_invoke(&bundle, 2) != 49) return -2;
+                        if (DotCcLib.Globals.api_version != 7 || DotCcLib.bundle_invoke(&bundle, 2) != 49) return -2;
                         DotCcLib.install(hook);
                         try
                         {

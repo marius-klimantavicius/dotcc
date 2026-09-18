@@ -71,11 +71,14 @@ internal sealed partial class CSharpBackend
         return true;
     }
 
+    private bool IsSpecialAlignedGlobal(GlobalVar global) =>
+        RequiresAlignedObject(global.Sym) && global.Init is not PinnedArray;
+
     private bool EmitAlignedGlobal(StringBuilder sb, GlobalVar global)
     {
         var symbol = global.Sym;
         var alignment = ObjectAlignment(symbol);
-        if (!RequiresAlignedObject(symbol) || global.Init is PinnedArray) return false;
+        if (!IsSpecialAlignedGlobal(global)) return false;
         if (symbol.IsThreadLocal)
             throw new IrUnsupportedException("over-aligned thread-local storage requires a per-thread aligned allocation");
         var type = NintStorage(symbol) ? "nint" : Cs(symbol.Type);

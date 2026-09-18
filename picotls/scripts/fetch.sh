@@ -1,7 +1,23 @@
 #!/usr/bin/env bash
-set -euo pipefail
-campaign=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-exec python3 - "$campaign" <<'PY'
+source "$(dirname -- "$0")/common.sh"
+if [[ "${1:-}" == "--no-fetch" ]]; then
+    if (( $# != 1 )); then echo "Usage: $0 [--no-fetch]" >&2; exit 1; fi
+    exec "$PYTHON_CMD" - "$PICOTLS_ROOT" <<'PY'
+import json
+from pathlib import Path
+import sys
+
+campaign = Path(sys.argv[1])
+inputs = json.loads((campaign / 'config/inputs.json').read_text())
+source = campaign / 'ref' / inputs['picotls']['directory']
+picotest = source / 'deps/picotest'
+if not source.is_dir() or not picotest.is_dir():
+    raise SystemExit(f'Missing pinned local source directories: {source} and {picotest}')
+print(source)
+PY
+fi
+if (( $# )); then echo "Usage: $0 [--no-fetch]" >&2; exit 1; fi
+exec "$PYTHON_CMD" - "$PICOTLS_ROOT" <<'PY'
 import hashlib
 import json
 from pathlib import Path

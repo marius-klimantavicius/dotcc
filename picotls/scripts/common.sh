@@ -2,6 +2,12 @@
 set -euo pipefail
 PICOTLS_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 DOTCC_ROOT="$(cd -- "$PICOTLS_ROOT/.." && pwd)"
+PYTHON_CMD=python3
+if ! "$PYTHON_CMD" -c 'import sys; raise SystemExit(sys.version_info.major != 3)' >/dev/null 2>&1; then PYTHON_CMD=python; fi
+if ! "$PYTHON_CMD" -c 'import sys; raise SystemExit(sys.version_info.major != 3)' >/dev/null 2>&1; then
+    echo "Python 3 is required" >&2
+    exit 1
+fi
 PICOTLS_PROJECT="$PICOTLS_ROOT/generated/TranslatedPicotls/TranslatedPicotls.csproj"
 PICOTLS_RAW_PROJECT="$PICOTLS_ROOT/generated/TranslatedPicotlsRaw/TranslatedPicotls.csproj"
 PICOTLS_DEFINES=()

@@ -191,7 +191,7 @@ public sealed unsafe partial class MsQuicHost
         // it). Native inline event storage hid the lifetime; our PAL owns a token.
         // CxPlatUninitialize runs after the cleanup thread and worker pool join.
         // Repair only this exact drained owner, never sweep unrelated resources.
-        ref var library = ref MsQuicGlobals.MsQuicLib;
+        ref var library = ref MsQuic.Globals.MsQuicLib;
         if (library.RegistrationCloseCleanupRundown.RundownComplete.Handle != 0)
         {
             if (library.RegistrationCloseCleanupShutdown == 0 || library.RegistrationCloseCleanupWorker != 0 || library.RegistrationCloseCleanupRundown.RefCount != 0)

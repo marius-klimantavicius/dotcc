@@ -694,9 +694,9 @@ public sealed partial class CompilerTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             // exactly one field for x (from the definition, not the extern decl)
-            var fieldCount = emitted.Split("unsafe int x").Length - 1;
+            var fieldCount = emitted.Split("public int x;").Length - 1;
             fieldCount.ShouldBe(1);
-            emitted.ShouldContain("int x = 5");
+            emitted.ShouldContain("Globals.x = 5");
         }
         finally { File.Delete(src); }
     }

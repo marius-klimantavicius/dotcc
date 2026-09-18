@@ -282,7 +282,7 @@ public sealed class LiteralPoolTests
                         byte* first = Api.first();
                         byte* binary = Api.binary();
                         GC.Collect(2, GCCollectionMode.Forced, true, true);
-                        if (first != Api.first() || first != Api.duplicate() || first != POOLGLOBALS.global_text) throw new Exception("identity");
+                if (first != Api.first() || first != Api.duplicate() || first != Api.Globals.global_text) throw new Exception("identity");
                         if (Marshal.PtrToStringUTF8((nint)first) != "one" || Marshal.PtrToStringUTF8((nint)Api.second()) != "second") throw new Exception("text");
                         if (Marshal.PtrToStringUTF8((nint)Api.unicode()) != "é😀" || Api.unicode_size() != 7) throw new Exception("unicode");
                         if (!new ReadOnlySpan<byte>(binary, 4).SequenceEqual(new byte[] { 255, 90, 128, 0 })) throw new Exception("binary");
@@ -293,8 +293,7 @@ public sealed class LiteralPoolTests
                         return Marshal.PtrToStringUTF8((nint)Api.long_text());
                     }
                 }
-                """.Replace("POOLGLOBALS", nested ? "PoolTests.LiteralLibrary.LiteralLibraryGlobals" : "PoolTests.LiteralLibraryGlobals")
-                    .Replace("POOLLIBC", nested ? "PoolTests.LiteralLibrary.Libc" : "PoolTests.Libc");
+                """.Replace("POOLLIBC", nested ? "PoolTests.LiteralLibrary.Libc" : "PoolTests.Libc");
             var references = ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!).Split(Path.PathSeparator).Select(path => MetadataReference.CreateFromFile(path));
             var trees = files.Select(f => ParseSource(f.Value, path: f.Key, cancellationToken: TestContext.Current.CancellationToken)).Append(ParseSource(consumer, cancellationToken: TestContext.Current.CancellationToken));
             var compilation = CSharpCompilation.Create("Literals_" + Guid.NewGuid().ToString("N"), trees, references,

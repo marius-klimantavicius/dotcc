@@ -27,7 +27,7 @@ public static unsafe partial class HostVfs
         private MemoryMappedViewAccessor? _view;
         private byte* _address;
         private long _length;
-        private long _limit = Math.Max(0, SqliteGlobals.sqlite3Config.szMmap);
+        private long _limit = Math.Max(0, Sqlite.Globals.sqlite3Config.szMmap);
         private int _references;
 
         private void Unmap()
@@ -66,7 +66,7 @@ public static unsafe partial class HostVfs
                 // prevents a limit change that could invalidate its address.
                 if (requested >= 0 && _references == 0)
                 {
-                    requested = Math.Min(requested, Math.Max(0, SqliteGlobals.sqlite3Config.mxMmap));
+                    requested = Math.Min(requested, Math.Max(0, Sqlite.Globals.sqlite3Config.mxMmap));
                     if (requested != _limit)
                     {
                         Unmap();

@@ -57,7 +57,7 @@ public sealed class SetjmpValueCaptureTests
             }
             """);
         emitted.ShouldContain("int r = 0;");
-        emitted.ShouldContain("Libc.ArmJumpBuffer(env)");
+        emitted.ShouldContain("Libc.ArmJumpBuffer(Globals.env)");
         emitted.ShouldContain("__setjmp_0:");
         emitted.ShouldContain("catch (Libc.JumpBufferException __jmp) when (__jmp.Identity == __jmpIdentity");
         emitted.ShouldContain("r = (int)__jmp.Value;");
@@ -151,7 +151,7 @@ public sealed class SetjmpValueCaptureTests
         emitted.ShouldContain("rc = 0;");
         emitted.ShouldContain("rc = (int)__jmp.Value;");
         emitted.ShouldContain("goto __setjmp_");
-        emitted.ShouldContain("Libc.ArmJumpBuffer(env)");
+        emitted.ShouldContain("Libc.ArmJumpBuffer(Globals.env)");
     }
 
     [Fact]
@@ -165,7 +165,7 @@ public sealed class SetjmpValueCaptureTests
         emitted.ShouldContain("int __sjval0 = 0;");
         emitted.ShouldContain("__sjval0 = (int)__jmp.Value;");
         emitted.ShouldContain("goto __setjmp_0;");
-        emitted.ShouldContain("Libc.ArmJumpBuffer(env)");
+        emitted.ShouldContain("Libc.ArmJumpBuffer(Globals.env)");
     }
 
     [Fact]

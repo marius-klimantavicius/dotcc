@@ -14,7 +14,7 @@ if (( $# )); then
 fi
 split_args=("--split=$split")
 if [[ "$split" == size ]]; then split_args+=("--split-size=$split_size"); fi
-python3 "$SQLITE_ROOT/scripts/prepare-host-source.py" >&2
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/prepare-host-source.py" >&2
 SQLITE_HOST_DEFINES=()
 while IFS= read -r definition; do
   [[ -z "$definition" || "$definition" == \#* ]] || SQLITE_HOST_DEFINES+=("-D$definition")

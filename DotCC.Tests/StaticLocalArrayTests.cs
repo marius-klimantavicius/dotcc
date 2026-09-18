@@ -122,7 +122,7 @@ public sealed class StaticLocalArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("byte** names = (byte**)Libc.GlobalArrayFrom<nint>(new nint[]{");
+            emitted.ShouldContain("Globals.names = (byte**)Libc.GlobalArrayFrom<nint>(new nint[]{");
             emitted.ShouldNotContain("GlobalArrayFrom<byte*>");
             emitted.ShouldNotContain("new byte*[]");
         }

@@ -31,7 +31,9 @@ public static partial class Compiler
     private const string FragType   = "//!!dotcc-obj type:";
     private const string NamespaceNeutral = "//!!dotcc-obj namespace-neutral:1";
     private const string FragFunction = "//!!dotcc-obj function:";
-    private const string FragSect   = "//!!dotcc-obj section:"; // aliases|globals|functions
+    private const string FragGlobal = "//!!dotcc-obj global:";
+    private const string FragSect   = "//!!dotcc-obj section:";
+    private const string GlobalLayout = "//!!dotcc-obj globals-layout:1";
     // Import mode in separate compilation: `-l` is known only at LINK time, so each
     // fragment serializes its import CANDIDATES (proto-only, called, non-system,
     // non-variadic — `import:<name> <cs-fn-ptr-type>`) and the names it DEFINES
@@ -59,7 +61,7 @@ public static partial class Compiler
                       emit: EmitMode.Object, dialect: dialect, warnings: warnings, preprocessing: preprocessing);
 
     private static string SerializeFragment(
-        string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, string globals, int mainArity,
+        string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, IReadOnlyList<Backends.CSharpGlobalSource> globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
         bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null)
     {
@@ -76,6 +78,7 @@ public static partial class Compiler
             foreach (var name in globalNames) sb.Append("//!!dotcc-obj global-def:").Append(name).Append('\n');
         sb.Append(NamespaceNeutral).Append('\n');
         sb.Append("//!!dotcc-obj literal-pool:2\n");
+        sb.Append(GlobalLayout).Append('\n');
         sb.Append(FragMain).Append(mainArity).Append('\n');
         if (mainReturnsVoid) { sb.Append(FragMainVoid).Append("1").Append('\n'); }
         if (mainReturnsErrUnion) { sb.Append(FragMainErr).Append(mainErrPayloadIsVoid ? "v" : "i").Append('\n'); }
@@ -95,7 +98,14 @@ public static partial class Compiler
             sb.Append(FragType).Append(name).Append('\n').Append(text);
         }
         sb.Append(FragSect).Append("aliases\n").Append(aliases);
-        sb.Append(FragSect).Append("globals\n").Append(globals);
+        foreach (var global in globals)
+        {
+            sb.Append(FragGlobal).Append(global.Name).Append('\n');
+            sb.Append(FragSect).Append("global-field\n").Append(global.Field);
+            sb.Append(FragSect).Append("global-initializer\n").Append(global.Initializer);
+            sb.Append(FragSect).Append("global-thread-field\n").Append(global.ThreadField);
+            sb.Append(FragSect).Append("global-static\n").Append(global.StaticMembers);
+        }
         sb.Append(FragSect).Append("functions\n");
         if (functionSources == null) sb.Append(functions);
         else foreach (var part in functionSources)
@@ -133,8 +143,8 @@ public static partial class Compiler
         var typeOrigins = new Dictionary<string, string>(StringComparer.Ordinal);
         var aliasLines = new List<string>();
         var aliasSeen = new HashSet<string>(StringComparer.Ordinal);
-        var globalMembers = new List<string>();
-        var globalSeen = new HashSet<string>(StringComparer.Ordinal);
+        var globals = new List<Backends.CSharpGlobalSource>();
+        var globalByName = new Dictionary<string, Backends.CSharpGlobalSource>(StringComparer.Ordinal);
         var functions = new StringBuilder();
         var functionSources = new List<CSharpFunctionSource>();
         var inlineMetadata = new Dictionary<string, InlineFunctionMetadata>(StringComparer.Ordinal);
@@ -165,6 +175,8 @@ public static partial class Compiler
                 throw new CompileException("Object is not namespace-neutral; regenerate objects before using --namespace");
             if (!text.Split('\n').Contains("//!!dotcc-obj literal-pool:2", StringComparer.Ordinal))
                 throw new CompileException("Object lacks relocatable literal storage; regenerate objects before linking");
+            if (!text.Split('\n').Contains(GlobalLayout, StringComparer.Ordinal))
+                throw new CompileException("Object lacks fixed-address globals metadata; regenerate objects before linking");
             var profileLine = text.Split('\n').FirstOrDefault(l => l.StartsWith("//!!dotcc-obj override-profile:", StringComparison.Ordinal));
             CPreprocessingOptions.WriteEvent(overrideReport, "object-profile", ("path", path),
                 ("profile", profileLine?["//!!dotcc-obj override-profile:".Length..] ?? "unknown (older object)"));
@@ -194,11 +206,15 @@ public static partial class Compiler
                     globalNames.Add(line["//!!dotcc-obj global-def:".Length..]);
             }
             // Walk the fragment line by line, routing into the current bucket.
-            string section = "";            // "type:<name>" | "aliases" | "globals" | "functions"
+            string section = "";
             var buf = new StringBuilder();
             string? functionName = null;
             var functionBody = new StringBuilder();
-            var objectGlobals = new StringBuilder();
+            string? globalName = null;
+            var globalField = new StringBuilder();
+            var globalInitializer = new StringBuilder();
+            var globalThreadField = new StringBuilder();
+            var globalStatic = new StringBuilder();
             void FlushFunction()
             {
                 if (functionName != null) functionSources.Add(new(functionName, functionBody.ToString()));
@@ -239,6 +255,38 @@ public static partial class Compiler
                 }
                 buf.Clear();
             }
+            void FlushGlobal()
+            {
+                if (globalName == null) return;
+                var incoming = new Backends.CSharpGlobalSource(globalName, globalField.ToString(),
+                    globalInitializer.ToString(), globalThreadField.ToString(), globalStatic.ToString());
+                if (globalByName.TryGetValue(globalName, out var previous))
+                {
+                    if (previous != incoming && previous.Field == incoming.Field
+                        && previous.ThreadField == incoming.ThreadField
+                        && previous.StaticMembers == incoming.StaticMembers
+                        && (previous.Initializer.Length == 0 || incoming.Initializer.Length == 0))
+                    {
+                        if (previous.Initializer.Length == 0)
+                        {
+                            globalByName[globalName] = incoming;
+                            globals[globals.IndexOf(previous)] = incoming;
+                        }
+                    }
+                    else if (previous != incoming)
+                        throw new CompileException("conflicting global definition '" + globalName + "' in linked objects");
+                }
+                else
+                {
+                    globalByName.Add(globalName, incoming);
+                    globals.Add(incoming);
+                }
+                globalName = null;
+                globalField.Clear();
+                globalInitializer.Clear();
+                globalThreadField.Clear();
+                globalStatic.Clear();
+            }
             foreach (var line in text.Split('\n'))
             {
                 if (line.StartsWith(FragAggregate, StringComparison.Ordinal)) continue;
@@ -277,8 +325,16 @@ public static partial class Compiler
                 }
                 else if (line.StartsWith(FragType, StringComparison.Ordinal))
                 {
+                    FlushGlobal();
                     FlushType();
                     section = "type:" + line[FragType.Length..];
+                }
+                else if (line.StartsWith(FragGlobal, StringComparison.Ordinal))
+                {
+                    FlushType();
+                    FlushGlobal();
+                    globalName = line[FragGlobal.Length..];
+                    section = "";
                 }
                 else if (line.StartsWith(FragSect, StringComparison.Ordinal))
                 {
@@ -293,10 +349,10 @@ public static partial class Compiler
                 {
                     if (line.Length > 0 && aliasSeen.Add(line)) { aliasLines.Add(line); }
                 }
-                else if (section == "globals")
-                {
-                    objectGlobals.Append(line).Append('\n');
-                }
+                else if (section == "global-field") globalField.Append(line).Append('\n');
+                else if (section == "global-initializer") globalInitializer.Append(line).Append('\n');
+                else if (section == "global-thread-field") globalThreadField.Append(line).Append('\n');
+                else if (section == "global-static") globalStatic.Append(line).Append('\n');
                 else if (section == "functions")
                 {
                     functions.Append(line).Append('\n');
@@ -305,8 +361,8 @@ public static partial class Compiler
                 }
             }
             FlushType();
+            FlushGlobal();
             FlushFunction();
-            MergeGeneratedGlobalMembers(objectGlobals.ToString(), globalSeen, globalMembers);
         }
 
         if (!libraryMode && mainArity < 0)
@@ -319,7 +375,7 @@ public static partial class Compiler
         foreach (var name in usedFunctionAddresses)
             if (inlineMetadata.TryGetValue(name, out var entry)) inlineMetadata[name] = entry with { AddressUsed = true };
         var inline = ProcessInlineFunctions(functionSources, inlineMetadata, typeByName,
-            string.Join("\n", globalMembers), outputOptions, globalNames);
+            globals, outputOptions, globalNames);
         typeByName = new Dictionary<string, string>(inline.Types, StringComparer.Ordinal);
         typeOrder.RemoveAll(name => !typeByName.ContainsKey(name));
         if (!missingBoundaries) { functions.Clear(); functions.Append(inline.Functions); functionSources = inline.Parts.ToList(); }
@@ -327,7 +383,6 @@ public static partial class Compiler
         var structDecls = new StringBuilder();
         foreach (var name in typeOrder.Where(name => !name.StartsWith(MacroConstantPrefix, StringComparison.Ordinal))) { structDecls.Append(typeByName[name]); }
         var aliasText = aliasLines.Count > 0 ? string.Join("\n", aliasLines) + "\n" : "";
-        var globalText = inline.Globals + "\n";
         // Import mode at link: bind the candidates no fragment defines (a name defined
         // in any object — function or global — is resolved internally, not imported).
         // Without `-l`, survivors stay unresolved → the same CS0103 as a normal link.
@@ -350,7 +405,7 @@ public static partial class Compiler
         var literals = LiteralPool.CreateOutput(typeByName, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
         var pointerResolvers = ResolveExternalPointerOwners(typeByName, definedNames, typeByName.Keys);
         var types = RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout);
-        globalText = literals.Rewrite(globalText);
+        var globalText = RenderGlobals(inline.Globals, literals);
         var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = literals.Rewrite(part.Text) }).ToArray();
         return BuildSourceFiles(literals.Rewrite(functions.ToString()), parts, aliasText,
             emit, libraryClass, importsClass, false, split, splitSize, namespaceName, nested,
@@ -358,32 +413,6 @@ public static partial class Compiler
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
                 mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig));
-    }
-
-    // Global sections use the backend's fixed four-space member indentation.
-    // Deduplicate whole members, never lines: repeated attributes and getter
-    // braces belong to distinct declarations and must remain attached to each.
-    private static void MergeGeneratedGlobalMembers(string text, HashSet<string> seen, List<string> members)
-    {
-        var member = new StringBuilder();
-        var hasDeclaration = false;
-        void Flush()
-        {
-            var value = member.ToString().TrimEnd();
-            if (value.Length != 0 && seen.Add(value)) members.Add(value);
-            member.Clear();
-            hasDeclaration = false;
-        }
-        foreach (var line in text.Split('\n'))
-        {
-            var declaration = line.StartsWith("    public ", StringComparison.Ordinal)
-                || line.StartsWith("    private ", StringComparison.Ordinal);
-            var attribute = line.StartsWith("    [", StringComparison.Ordinal);
-            if (hasDeclaration && (declaration || attribute)) Flush();
-            if (member.Length != 0 || !string.IsNullOrWhiteSpace(line)) member.Append(line).Append('\n');
-            hasDeclaration |= declaration;
-        }
-        Flush();
     }
 
     private static string GeneratedOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null, bool nested = false, bool literalPool = false)

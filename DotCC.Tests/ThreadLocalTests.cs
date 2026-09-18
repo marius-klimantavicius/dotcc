@@ -9,8 +9,8 @@ namespace DotCC.Tests;
 
 /// <summary>
 /// Unit tests for C11 `_Thread_local` (C23 `thread_local`) and Zig
-/// `threadlocal var` — thread storage duration, lowered to `[ThreadStatic]` on
-/// the emitted DotCcGlobals field (the marker rides `Symbol.IsThreadLocal`, set
+/// `threadlocal var` — thread storage duration, lowered to a field of a pinned
+/// per-thread globals struct (the marker rides `Symbol.IsThreadLocal`, set
 /// by the spec resolution / the Zig container-var lowering). V1 constraints,
 /// all loud: file-scope only (block scope rejected, even `static _Thread_local`
 /// which C allows), zero/default initializer only (a .NET [ThreadStatic]
@@ -40,7 +40,7 @@ public sealed class ThreadLocalTests
         try
         {
             Compiler.EmitCSharp(new[] { src })
-                .ShouldContain("[ThreadStatic]\n    public static unsafe int* current;");
+                .ShouldContain("public int* current;");
         }
         finally { File.Delete(src); }
     }
@@ -56,8 +56,10 @@ public sealed class ThreadLocalTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("[ThreadStatic]\n    public static unsafe int tls_count;");
-            emitted.ShouldContain("[ThreadStatic]\n    public static unsafe long tls_static;");
+            emitted.ShouldContain("[ThreadStatic]\n    private static DotCcProgramGlobalsThreadLocal[] __threadGlobals;");
+            emitted.ShouldContain("public int tls_count;");
+            emitted.ShouldContain("public long tls_static;");
+            emitted.ShouldContain("GC.AllocateUninitializedArray<DotCcProgramGlobalsThreadLocal>(1, pinned: true)");
         }
         finally { File.Delete(src); }
     }
@@ -109,7 +111,7 @@ public sealed class ThreadLocalTests
             foreach (var std in new[] { "c11", "c17", "c23" })
             {
                 Compiler.EmitCSharp(new[] { src }, dialect: CDialect.Parse(std))
-                    .ShouldContain("[ThreadStatic]\n    public static unsafe int tls_v;");
+                    .ShouldContain("public int tls_v;");
             }
         }
         finally { File.Delete(src); }
@@ -137,7 +139,7 @@ public sealed class ThreadLocalTests
         try
         {
             Compiler.EmitCSharp(new[] { src })
-                .ShouldContain("[ThreadStatic]\n    public static unsafe int tl = 0;");
+                .ShouldContain("public int tl;");
         }
         finally { File.Delete(src); }
     }

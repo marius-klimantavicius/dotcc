@@ -2938,8 +2938,8 @@ public sealed class ZigFrontendTests
             "const PI: f64 = 3.14;\n" +
             "const MAX = 100;\n" +
             "pub fn main() u8 { return 0; }\n");
-        cs.ShouldContain("public static unsafe double PI = 3.14");
-        cs.ShouldContain("public static unsafe int MAX = 100");
+        cs.ShouldContain("Globals.PI = 3.14");
+        cs.ShouldContain("Globals.MAX = 100");
     }
 
     [Fact]
@@ -2951,7 +2951,7 @@ public sealed class ZigFrontendTests
             "var counter: u8 = 0;\n" +
             "fn bump() void { counter += 1; }\n" +
             "pub fn main() u8 { bump(); return counter; }\n");
-        cs.ShouldContain("public static unsafe byte counter = 0");
+        cs.ShouldContain("Globals.counter = 0");
         cs.ShouldContain("counter +=");
     }
 
@@ -2965,7 +2965,7 @@ public sealed class ZigFrontendTests
             "const A: u8 = 20;\n" +
             "const B: u8 = A + 22;\n" +
             "pub fn main() u8 { return B; }\n");
-        cs.ShouldContain("public static unsafe byte A = 20");
+        cs.ShouldContain("Globals.A = 20");
         cs.ShouldContain("byte B = ");
         cs.ShouldContain("A + 22");
     }
@@ -4633,7 +4633,7 @@ public sealed class ZigFrontendTests
         // `a.alloc` routes through the existing indirect vtable dispatch.
         var cs = EmitZig(CustomAllocator);
         cs.ShouldContain("new Allocator {");
-        cs.ShouldContain("Vtable = bump_vtable");   // &vtable stored by value (no stray '&')
+        cs.ShouldContain("Vtable = Globals.bump_vtable");   // &vtable stored by value (no stray '&')
         cs.ShouldContain(".Alloc<byte>(");          // indirect dispatch through the user vtable
     }
 

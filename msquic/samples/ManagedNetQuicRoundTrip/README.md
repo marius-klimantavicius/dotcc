@@ -30,3 +30,4 @@ project reference and `using Managed.Net.Quic;` select the translated API.
 the client trusts only that CA and checks the server name. No certificate files,
 trust-store installation, or second process are needed. The exchange has a
 30-second timeout.
+[ManagedNetQuicRoundTrip.slnx](ManagedNetQuicRoundTrip.slnx)

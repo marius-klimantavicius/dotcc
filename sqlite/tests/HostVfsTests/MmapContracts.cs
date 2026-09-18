@@ -66,7 +66,7 @@ internal static unsafe partial class Program
             limit = long.MaxValue;
             Require(methods->xFileControl(first, 18, &limit) == 0 && limit == 0, "oversized request returns old cap");
             limit = -1;
-            Require(methods->xFileControl(first, 18, &limit) == 0 && limit == SqliteGlobals.sqlite3Config.mxMmap, "mmap cap clamps to configured maximum");
+            Require(methods->xFileControl(first, 18, &limit) == 0 && limit == Sqlite.Globals.sqlite3Config.mxMmap, "mmap cap clamps to configured maximum");
         }
         finally { CloseRaw(first); CloseRaw(second); }
         Require(HostVfs.MappedViewCount == 0 && HostVfs.MappedReferenceCount == 0, "raw mappings reclaimed");
