@@ -68,6 +68,12 @@ auxiliary carry and CMPXCHG8B nonmatch upper-register clearing. Managed expansio
 stopped before execution. See B033; previous 449-case evidence does not qualify
 new inputs or pending source repairs.
 
+Scoped picotls passes at `picotls-regression/attempt-fx7grn1c`: pinned native
+upstream oracle, fresh translation, copied-source/92-field ABI checks in all four
+forms and 220 normal/authentication peer cases. One exact forced-protocol call
+and mixed custom-injection targets are excluded explicitly. This is a partial
+current regression, not the old full-campaign/dependency-audit pass.
+
 ## Historical qualification ledger
 
 | Surface | Observed result | Reproduce |

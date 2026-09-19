@@ -1521,3 +1521,27 @@ remain untouched. Picotls's scoped regression owns the build slot meanwhile;
 its native preparation and raw copied/ABI/55-peer JIT/AOT checks pass, with
 optimized forms pending. No shared compiler change is needed for these inherited
 Blink algorithm defects, so current dependent-campaign evidence remains relevant.
+
+## Current scoped picotls regression passed
+
+Picotls normal-subset attempt-fx7grn1c passes (SHA256
+8d2a80a7a1bfb6c57f09427b94f4043b83430b6e1e2e9ef4e90babe4109a360e):
+pinned native upstream oracle, fresh current-compiler translation, copied-source
+and 92-field actual ABI checks in all four forms, and 55 normal/authentication
+peer cases per form (220 total). Ordinary wrong-credential/name/ALPN outcomes
+remain part of runtime error handling. An exact AST-verified derivation removes
+only the forced unoffered-ALPN server call; the original peer script is unchanged.
+Mixed ProviderVectors/TlsTests/UpstreamVectors targets are excluded explicitly
+because they include custom injections/crafted records/additional truncations.
+No old full-campaign PASS or dependency audit is consumed as current evidence.
+
+Exact ordered suite/peer inventories and final tool/authored identities pass
+independent review. Copied/ABI executions record binary before/after identities;
+the unchanged peer runner lacks that per-execution detail, so its archived final
+binary hashes are not promoted into stronger proof. Resume only permits the
+preparation-only state; failed matrix logs are preserved. The shared compiler
+and picotls authored files remain unchanged.
+
+The integer source correction/native qualification is next; no build remains
+active from picotls. MsQuic's existing wrapper is being audited read-only for
+scope and closure-cache compatibility before any new execution.
