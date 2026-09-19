@@ -1,8 +1,18 @@
 # Normal guest file syscall integration
 
-Native qualification passes at `artifacts/guest-io/attempt-q_w37qqy/receipt.json`
+Native and raw/optimized JIT/NativeAOT qualification pass at
+`artifacts/guest-io/attempt-tnq5itfa/receipt.json` (SHA256
+`15795abe9f6ead804b60eac9c3f996807f3d4f244c10da8515b583146f3c825c`).
+All four forms match the ten-line native transcript and pass the private
+descriptor/file checks and bounded retained-pool checks. The run retains 108
+objects from canonical assembly `14c483263fd7e92b9522e1e414ceea7ce68a770ca561c8a1b2e33928d7e6b86b`,
+replacing only its frontend. Final input and execution binary identity checks
+pass. Generated-code warnings remain in the build logs; no warnings were
+suppressed and no shared compiler or host implementation changed.
+
+The earlier native-only receipt is `artifacts/guest-io/attempt-q_w37qqy/receipt.json`
 (SHA256 `e7c24b3d04e5a64e73e8f560cfdbf46ad8ad4243a9a6f142c221433ea17aefef`).
-The four managed forms are pending. The initial compile-only const-array issue
+The initial compile-only const-array issue
 is preserved in attempt-2zh_09gz; the fix makes the local array mutable to match
 the upstream C API, without changing compiler flags. The harness exercises the
 actual pinned `ExecuteInstruction` and Linux syscall dispatcher with the two
@@ -49,7 +59,7 @@ bytes and mapping count must stay equal after both cycles. Final disposal is
 invoked after upstream state is discarded. No translated call observes the
 disposed owner, so post-disposal zero counters are not claimed.
 
-After coordinator review and serialized runtime release:
+Reproduce under the campaign's serialized build schedule:
 
 ```sh
 python3 blink/tests/GuestIo/run.py --native-only \

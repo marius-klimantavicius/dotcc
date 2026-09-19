@@ -316,9 +316,12 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
 
 - [ ] Implement the required virtual filesystem, descriptors, clocks/randomness,
       guest status/signal handling, TCP sockets, and readiness contracts.
-- [ ] Test ordinary filesystem access, descriptor duplication/close, short I/O,
+- [x] Test ordinary filesystem access, descriptor duplication/close, short I/O,
       and cleanup. Fault-injection cases, including invalid guest buffers and
       forced resource/host failures, are limited to existing pinned upstream tests.
+      GuestIo passes real guest SYSCALL marshalling and both descriptor-table
+      lifecycles in native and all four forms, including 128 KiB transfers and
+      valid cross-page vectors. TCP waiting/stop contracts remain separate.
 - [ ] Bind stop/deadline behavior to execution and outstanding I/O; prove no
       guest operation exits the controller or reaches an unintended host service.
 - [ ] Audit required service startup syscalls; qualify additions individually.

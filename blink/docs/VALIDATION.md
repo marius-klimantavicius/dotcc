@@ -25,6 +25,16 @@ receipts are retained evidence, not post-NEG reexecution. The clean sample row
 qualifies its stated pre-NEG revision. Further P6 regressions/performance remain
 unrun. No service worker or Windows execution is qualified.
 
+## Current P4 qualification
+
+GuestIo `guest-io/attempt-tnq5itfa` passes native/all-four actual SYSCALL file,
+duplication, short transfers, valid cross-page vectors, ready-file poll and two
+cleanup cycles; receipt SHA256
+`15795abe9f6ead804b60eac9c3f996807f3d4f244c10da8515b583146f3c825c`.
+It uses canonical 14c483 with 108 retained objects and its unchanged Host
+snapshot. I/O cancellation and actual service startup remain unqualified.
+See [P4's exact contract ledger](P4-HOST-SERVICES.md).
+
 ## Earlier post-libsmb2 refresh history
 
 The current Release compiler build is recorded at

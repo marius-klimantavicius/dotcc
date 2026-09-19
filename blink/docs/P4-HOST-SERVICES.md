@@ -10,7 +10,7 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 
 | Work | Owner | State |
 | --- | --- | --- |
-| Actual guest file/descriptor/vector/readiness path | Inputs worker, `tests/GuestIo/` | Native passes `guest-io/attempt-q_w37qqy`; all-four execution active |
+| Actual guest file/descriptor/vector/readiness path | Inputs worker, `tests/GuestIo/` | Native/all-four pass `guest-io/attempt-tnq5itfa`; exact bytes/state and cleanup |
 | Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | Source preparation; optional token, default behavior retained; boundary qualification pending |
 | Clock/entropy/status/signal and startup inventory | Coordinator | Source/receipt audit below; remaining normal qualification selected after the first two bounded tasks |
 | Actual translated service startup | Unqualified | Earlier automated service-worker task rejection remains binding; no renamed/recovered worker or surrogate startup pass |
@@ -31,13 +31,13 @@ The following map is source review, not a managed service execution trace.
 | --- | --- | --- |
 | `arch_prctl` | `syscall.c:SysArchPrctl` sets guest FS base for `ARCH_SET_FS` | Actual fixed TLS fixture passes; general musl service startup unrun |
 | `set_tid_address` | `syscall.c:SysSetTidAddress` stores guest `ctid`, returns virtual `tid` | Selected code present; current integrated normal witness pending |
-| `open` | `SysOpen`/`open.c:SysOpenat` → `OverlaysOpen` → authored `HostFileControl.c` → `HostIoBridge` → `InstanceIo` private filesystem | Current standalone HostIo and loader access pass; guest dispatch qualification underway |
-| `read`, `writev` | Actual guest buffer/iovec marshalling → `kFdCbHost` callbacks → `HostIoBridge` → private descriptor table | Guest marshalling, cursor and cleanup qualification underway |
-| `close` | `close.c:SysClose` plus upstream fd table → private `InstanceIo.Close` | Same GuestIo qualification; direct callback evidence alone does not qualify both tables |
+| `open` | `SysOpen`/`open.c:SysOpenat` → `OverlaysOpen` → authored `HostFileControl.c` → `HostIoBridge` → `InstanceIo` private filesystem | Current standalone HostIo and loader access pass; guest dispatch passes GuestIo |
+| `read`, `writev` | Actual guest buffer/iovec marshalling → `kFdCbHost` callbacks → `HostIoBridge` → private descriptor table | Guest marshalling, cursor and cleanup pass GuestIo |
+| `close` | `close.c:SysClose` plus upstream fd table → private `InstanceIo.Close` | GuestIo checks upstream empty fd table and only three remaining private standard descriptors |
 | `ioctl` | Guest request translation → authored `HostTerminal.c`/`HostTerminalBridge` | Captured stdout's ordinary `TIOCGWINSZ` query returns `ENOTTY` in native trace; translated guest path unqualified |
 | `socket`, `bind`, `listen`, `accept`, `getsockname`, `setsockopt`, `shutdown` | Guest syscall marshalling → `HostNetworkBridge` → `InstanceIo`/private `VirtualTcpNetwork` | Blocking IPv4/TCP implemented; historical standalone C bridge tests are not actual guest startup |
 | `sendto`, `recvfrom` | Guest marshalled message → `HostMessagesBridge` → private stream send/receive | Guest NOSIGNAL is handled upstream before the flags-zero bridge; current guest integration unqualified |
-| `poll` | Guest pollfd marshalling → per-fd callback `poll(...,0)` → `HostReadinessBridge`; repeated waits use upstream `nanosleep` | Ready-file path planned in GuestIo; interruption of guest poll/sleep remains separate from direct host poll cancellation |
+| `poll` | Guest pollfd marshalling → per-fd callback `poll(...,0)` → `HostReadinessBridge`; repeated waits use upstream `nanosleep` | Ready-file path passes GuestIo; interruption of guest poll/sleep remains separate from direct host poll cancellation |
 | `exit_group` | Upstream `trapexit` state and `HaltMachine(kMachineExitTrap)`; host exit fallthrough binds a contained termination exception | Current normal core passes status 42; an owning service lifetime is not inferred |
 
 Reference is pinned Blink revision
@@ -92,3 +92,14 @@ not be marked complete from standalone host tests, native service results,
 controller fixtures or the normal-core sample. The earlier service-worker task
 was rejected by automated review for a possible cybersecurity risk, without a
 more specific reason. That rejected action is not retried or repackaged here.
+
+## Actual guest-I/O subgate passed
+
+`artifacts/guest-io/attempt-tnq5itfa/receipt.json`, SHA256
+`15795abe9f6ead804b60eac9c3f996807f3d4f244c10da8515b583146f3c825c`,
+passes native and raw/optimized JIT/NativeAOT with exact ten-row state output.
+It retains 108 canonical objects from assembly 14c483 and the exact pre-token
+Host snapshot, replacing only the authored frontend. Current source/producer,
+closed logs and executed binary identities were independently rehashed.
+This closes P4's ordinary filesystem/dup/short-I/O/cleanup checklist item.
+It does not qualify TCP waiting, cancellation or actual service startup.

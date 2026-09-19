@@ -53,7 +53,7 @@ labels are not treated as present defects without checking current code.
 
 | Owner | P4 task | State |
 | --- | --- | --- |
-| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo normal dispatcher fixture in source preparation; builds held |
+| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo native/all-four passed; GuestEnvironment normal-state fixture in source preparation |
 | Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation bridge/normal lifecycle fixture in source preparation; builds held |
 | Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Audit active |
 
@@ -1794,3 +1794,20 @@ is preserved in attempt-2zh_09gz; no warning suppression or compiler change.
 The managed matrix is now active using the exact canonical 14c483 profile
 and 108 retained objects. No mutable cancellation bridge edits are mixed into
 that snapshot. The independent cancellation change remains source-only.
+
+## P4 guest filesystem/descriptor subgate passed
+
+GuestIo full attempt-tnq5itfa passes native plus all four managed forms with
+exact ten-row output; SHA256
+`15795abe9f6ead804b60eac9c3f996807f3d4f244c10da8515b583146f3c825c`.
+Every 128 KiB file byte is checked, including vector overwrites and reopen;
+readiness is 5, duplicate cursors are shared, upstream fds return to zero and
+only the three private standard descriptors remain. Two cycles preserve the
+bounded retained memory pool. Coordinator rehashed closed logs, all executed
+binaries, current templates and 108 retained canonical objects. The original
+compile-only failure remains recorded. P4's ordinary filesystem/dup/short-I/O/
+cleanup checklist is now checked; no service or cancellation inference follows.
+
+Next serial validation is the independent I/O token propagation. Inputs prepares
+normal actual guest clock/entropy/thread-ID/private signal-state qualification;
+no signal delivery, timer, worker or service loop is introduced.
