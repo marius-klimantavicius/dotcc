@@ -29,7 +29,7 @@ The remaining normal qualification set is fixed before execution:
 | Owner | Remaining cases | Required evidence |
 | --- | --- | --- |
 | CPU worker | 32 additional rows: 8 integer/flags/rotates/double-shift; 8 packed SSE2 saturation/compare/interleave/shuffle/shift/aligned and unaligned moves; 8 addressing/extension/cross-page store/REP direction; 5 CMOV conditions/widths; CLFLUSH, RDTSC invariants and balanced valid stack | 500 selected normal rows in native and each managed form; first 514 descriptors preserved, 46 custom faults excluded. Exact defined state or explicitly recorded nondeterministic invariants; no clock-value equality claim. |
-| Inputs worker | Actual guest page tables: 2 pages growing to 4 contiguous plus 1 separate; 96-byte cross-page copy/canaries; RW/NX to R/NX to RW/NX; unmap/remap zero/refill; release all mappings; repeat lifecycle twice | Native and raw/optimized JIT/AOT exact semantic transcript, vss cleanup and separate managed owner accounting after final disposal. Protection metadata and permitted access only; no injected forbidden access. |
+| Inputs worker — passed | Actual guest page tables: 2 pages growing to 4 contiguous plus 1 separate; 96-byte cross-page copy/canaries; RW/NX to R/NX to RW/NX; unmap/remap zero/refill; release all mappings; repeat lifecycle twice | Passed at `guest-memory/attempt-gbyg6j74`: exact native/all-four transcript, vss cleanup and stable bounded retained pool across both cycles, then final disposal. No translated calls after disposal; protection metadata and permitted access only. |
 | Coordinator | Integrate and review the above against existing 468-row CPU, valid ELF/TLS and selected upstream evidence | Freeze sources/provenance, run suites serially, preserve failures and commit results. Resolve observed semantic defects before marking the selected P3 gate complete. |
 
 These are bounded selected-profile checks, not exhaustive ISA certification.
@@ -1676,3 +1676,24 @@ The build slot is now released exclusively for the reviewed P3 CPU and actual
 guest-memory qualification work. Both workers are authoring their bounded cases;
 native and all-four-managed runs follow source review. Additional P6 regression
 and throughput scripts remain prepared/committed but execution is deferred.
+
+## P3 actual guest-memory lifecycle passed
+
+GuestMemory attempt-gbyg6j74 passes native and all four managed forms (SHA256
+3e6289d234e4ad96bf9e26162671142648c759c5deef05ead92a57fec251cb02).
+The probe executes retained upstream page-table/mapping algorithms and replaces
+only the authored frontend: 108 canonical objects, including HostMemory, remain
+unchanged. Independent review verifies all command logs, execution binaries and
+retained objects against the receipt.
+
+Both cycles match ten deterministic native rows: initially vss2/rss6, grown
+vss5/rss10, protection metadata and allowed data preservation, remapped vss5/
+rss10 with zero/refill and neighbors preserved, then vss0/rss5 (page tables remain
+until FreeMachine frees the orphaned System). Managed retained host-pool count
+and bytes stay identical across both cycles and within the live owner budget.
+Final disposal is invoked once; no post-disposal translated call or unobserved
+post-disposal zero claim is made. No forbidden access/fault is injected.
+
+P3's memory checklist item is now passed. The final finite CPU32 expansion
+(native500 then managed2,000) is the remaining active P3 gate. P6 extras remain
+held; the already-qualified clean delivery is preserved.

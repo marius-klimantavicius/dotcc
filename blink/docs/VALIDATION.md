@@ -13,9 +13,11 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Valid ELF / TLS | `elf-loading/attempt-qclmm2fz`, `tls-loading/attempt-m6fpvl1m` | Native and all four managed forms pass bounded valid loading and explicit TLS startup. |
 | Clean public sample | `clean-delivery/attempt-ru82jd14` | Commit 497ce69; fresh compiler and all 109 objects (zero reuse), final solution and actual JIT/rooted-AOT sample pass; final checkout clean. |
 
-The current P3 queue adds 32 bounded normal CPU rows and actual upstream guest
-mapping/page-table lifecycle checks. These are pending and are not implied by
-the existing host-boundary or loader passes. Further P6 regressions/performance
+Actual guest mapping/page-table lifecycle checks now pass at
+`guest-memory/attempt-gbyg6j74`: native/all-four exact state, two normal cycles,
+growth/cross-page copying/protection metadata/remap/cleanup, and stable retained
+host-pool accounting. The final 32 bounded normal CPU rows remain pending.
+Further P6 regressions/performance
 are deferred until P3. No service worker or Windows execution is qualified.
 
 ## Earlier post-libsmb2 refresh history

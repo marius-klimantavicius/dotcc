@@ -301,9 +301,11 @@ no native emulator dependency, and passing affected compiler regressions;
       executable permissions, stack/argv/env/auxv, and required TLS setup.
       Valid pinned-image loading and a fixed explicit TLS startup fixture pass
       all four forms; this does not claim a general libc/dynamic TLS ABI.
-- [ ] Exercise memory growth, map/unmap/protect, valid cross-page reads/writes,
-      and cleanup. Guest code pages are data
-      interpreted by Blink; no host executable allocation is needed.
+- [x] Exercise memory growth, map/unmap/protect, valid cross-page reads/writes,
+      and cleanup. Actual guest page-table algorithms pass native and all four
+      managed forms through two normal lifecycles; protection metadata and
+      permitted accesses are checked, with no injected forbidden access. Guest
+      code pages remain data interpreted by Blink.
 
 **Gate:** the selected guest CPU/ELF/memory profile passes exact state/output or
 explicit architectural-invariant comparisons in all four generated/runtime forms.
