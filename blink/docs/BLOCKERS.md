@@ -381,3 +381,25 @@ e470675d116c505f377eff74671f709bac6c0b28a366646e5f6e1c94ffdf23d7.
 This closes B033 for the reviewed INC/CMPXCHG8B cases; broader CPU coverage
 remains open. Immutable upstream files, compiler code and generated C# are not
 modified.
+
+## B034 — inherited NEG auxiliary carry
+
+The finite P3 expansion's native500 attempt-hmylb6uo found one defined-state
+mismatch: NEG8 of 0x80 reports AF=1 in both original and integer-staged native
+Blink, while hardware reports AF=0. All other 499 cases pass, including the new
+RDTSC invariants, CLFLUSH, balanced stack, REP and packed SSE2 rows. Receipt
+SHA256 ed8badd8f2400f05e13f3fbee247a8d11c3b49b5b711c3e3e10c0e0c7fe5ad70.
+Managed expansion did not start after this native failure.
+
+Pinned Neg8/16/32/64 all use `af = cf = !!x`. For subtraction 0 - x, CF tests
+nonzero x, while the borrow at bit4 depends on a nonzero low nibble. The reviewed
+correction separates `af = !!(x & 15)` from `cf = !!x`, after each helper's width
+truncation. UpstreamInteger staging will preserve exact original function pins
+and a checked-in diff. Three additional minimum-value width rows and one
+nonzero-low-nibble NEG8 row are required regressions (504 selected normal rows;
+first546 descriptors preserved, 46 fault exclusions unchanged). No comparison
+mask or compiler/generated implementation is changed to accept the failure.
+
+Corrected native and managed qualification are pending. Only the canonical ALU
+producer requires new bytes; regeneration/integration is part of this P3 defect
+repair, not a restart of P0/P1 or permission for unrelated P6 work.

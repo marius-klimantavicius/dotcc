@@ -24,11 +24,13 @@ part of the current normal-only qualification.
 
 ## P3 completion work in progress
 
-The remaining normal qualification set is fixed before execution:
+The normal qualification set was fixed before execution. Its native500 run
+exposed B034 (NEG auxiliary carry); four targeted repair regressions bring the
+required selected count to 504. Existing 546 descriptors remain pinned:
 
 | Owner | Remaining cases | Required evidence |
 | --- | --- | --- |
-| CPU worker | 32 additional rows: 8 integer/flags/rotates/double-shift; 8 packed SSE2 saturation/compare/interleave/shuffle/shift/aligned and unaligned moves; 8 addressing/extension/cross-page store/REP direction; 5 CMOV conditions/widths; CLFLUSH, RDTSC invariants and balanced valid stack | 500 selected normal rows in native and each managed form; first 514 descriptors preserved, 46 custom faults excluded. Exact defined state or explicitly recorded nondeterministic invariants; no clock-value equality claim. |
+| CPU worker | 32 additional rows: 8 integer/flags/rotates/double-shift; 8 packed SSE2 saturation/compare/interleave/shuffle/shift/aligned and unaligned moves; 8 addressing/extension/cross-page store/REP direction; 5 CMOV conditions/widths; CLFLUSH, RDTSC invariants and balanced valid stack | 504 selected normal rows after four NEG repair regressions; first 546 descriptors preserved, 46 custom faults excluded. Exact defined state or explicitly recorded nondeterministic invariants; no clock-value equality claim. |
 | Inputs worker — passed | Actual guest page tables: 2 pages growing to 4 contiguous plus 1 separate; 96-byte cross-page copy/canaries; RW/NX to R/NX to RW/NX; unmap/remap zero/refill; release all mappings; repeat lifecycle twice | Passed at `guest-memory/attempt-gbyg6j74`: exact native/all-four transcript, vss cleanup and stable bounded retained pool across both cycles, then final disposal. No translated calls after disposal; protection metadata and permitted access only. |
 | Coordinator | Integrate and review the above against existing 468-row CPU, valid ELF/TLS and selected upstream evidence | Freeze sources/provenance, run suites serially, preserve failures and commit results. Resolve observed semantic defects before marking the selected P3 gate complete. |
 
@@ -1697,3 +1699,16 @@ post-disposal zero claim is made. No forbidden access/fault is injected.
 P3's memory checklist item is now passed. The final finite CPU32 expansion
 (native500 then managed2,000) is the remaining active P3 gate. P6 extras remain
 held; the already-qualified clean delivery is preserved.
+
+## P3 native expansion exposed NEG AF defect
+
+Native500 attempt-hmylb6uo completes with 499 matches and one NEG8 minimum-value
+AF mismatch (receipt SHA256
+ed8badd8f2400f05e13f3fbee247a8d11c3b49b5b711c3e3e10c0e0c7fe5ad70).
+Managed500 did not run. B034 records the inherited formula error shared by all
+four width helpers. The CPU worker owns the exact staged correction and four
+focused width/nonzero-nibble regressions (504 selected); inputs independently
+reviews it read-only. The coordinator will regenerate the single changed ALU
+producer and qualify integration after corrected native passes, then run the
+managed expansion. All other P3 cases/evidence remain intact, and no unrelated
+P6 suites or custom fault cases are added.
