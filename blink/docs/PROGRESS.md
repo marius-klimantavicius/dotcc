@@ -992,3 +992,35 @@ qualified HostMemory and adds the authored loader adapter, preserving the exact
 canonical header paths and per-object producer evidence. No guest instructions
 are executed by this loader-only check. Malformed inputs and service startup
 remain separate open gates.
+
+## Implementation infrastructure limit: service worker task
+
+An automated safety check stopped the service embedding/worker implementation
+task, reporting possible cybersecurity risk without a more specific reason.
+The task was not retried. Partial src/Embedding/Embedding.c and
+src/Managed.Emulation.Worker files are preserved outside committed deliverables;
+none was compiled or executed. Actual translated service startup, the owning
+worker and HTTP lifecycle gates remain unqualified. Independent CPU coverage
+and generic controller/protocol validation continue; the worker switched to a
+read-only review of that controller. The earlier malformed-ELF limit also remains.
+
+## Significant progress: owning controller and bounded protocol
+
+The independent managed controller now owns an explicit worker process,
+configuration snapshot, source-generated bounded JSON protocol, readiness/result
+tasks, cancellation, stop grace, deadline, output limits and asynchronous disposal.
+Configuration is deep-copied and capped during serialization before spawning.
+Redirected pipes are independently cancelled after forced stop or250ms after
+root exit, so inherited handles cannot hang controller completion. Captured
+stderr prefixes survive cancellation and output-limit termination.
+
+Read-only review found and drove fixes for inherited-pipe drain hangs, mutable
+configuration, oversized startup serialization and lost diagnostics. Actual
+subprocess fixtures pass JIT and NativeAOT at
+instance-lifecycle/attempt-p4b8juxr with zero warnings: graceful/forced stop,
+deadline, crash, oversized incoming/outgoing frames, two owners, input mutation,
+inherited pipe handles and exact retained diagnostic prefixes. These are
+controller/protocol tests only. The blocked translated worker was not compiled
+or executed, and P5 remains open. Detached descendant cleanup is explicitly
+outside the current controller guarantee; the actual worker profile must not
+create descendants.
