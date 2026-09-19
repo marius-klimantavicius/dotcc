@@ -1,13 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../src/Managed.Emulation.Execution/Managed.Emulation.Execution.csproj" />
-    <TrimmerRootAssembly Include="TranslatedBlink" />
+    <ProjectReference Include="../../generated/TranslatedBlink/TranslatedBlink.csproj" />
   </ItemGroup>
 </Project>

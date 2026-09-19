@@ -1,0 +1,13 @@
+[
+  {"id":"cpu-complete", "fixture":"cpu", "action":"complete"},
+  {"id":"poll-complete", "fixture":"poll", "action":"complete"},
+  {"id":"sleep-complete", "fixture":"sleep", "action":"complete"},
+  {"id":"pipe-complete", "fixture":"pipe", "action":"complete"},
+  {"id":"cpu-request", "fixture":"cpu", "action":"request"},
+  {"id":"poll-request", "fixture":"poll", "action":"request"},
+  {"id":"sleep-request", "fixture":"sleep", "action":"request"},
+  {"id":"pipe-request", "fixture":"pipe", "action":"request"},
+  {"id":"poll-deadline", "fixture":"poll", "action":"deadline"},
+  {"id":"sleep-deadline", "fixture":"sleep", "action":"deadline"},
+  {"id":"cpu-budget", "fixture":"cpu", "action":"budget"}
+]

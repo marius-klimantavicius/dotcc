@@ -335,7 +335,7 @@ embedding boundary under JIT and NativeAOT; unresolved dependencies are recorded
 - [x] Deliver `blink/scripts/translate.sh` to run translation and semantic
       post-processing, producing the final sources and project in
       `blink/generated/TranslatedBlink/` with a separate immutable raw snapshot.
-- [ ] Align the delivered library with the C# consumer architecture: export the
+- [x] Align the delivered library with the C# consumer architecture: export the
       needed upstream functions/types/state and exclude campaign test frontends
       and C execution drivers. Requalify the sample through the authored C# API.
 - [x] Reference authored bridge/source files and `Managed.Emulation.Host`
@@ -347,7 +347,7 @@ The refined delivery now builds 108 product producers without the authored C
 probe, uses the shared literal pool, and links the consolidated original `src/`
 adapters and Host project. Raw, postprocessed and final direct-source builds
 passed with unchanged authored source hashes. The separate C# execution API and
-sample compile; runtime sample qualification remains pending. Existing core
+sample pass actual service health and normal stop in JIT and Linux NativeAOT. Existing core
 translation and P3 evidence retain their recorded source scope. The full service
 API required by P5 remains open.
 
