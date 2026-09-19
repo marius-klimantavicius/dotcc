@@ -16,20 +16,10 @@ repeated disposal, concurrent independent connections, and pending writes racing
 with disposal. SMB2.02 must require multiple negotiated transfers. Other dialects
 may accept a large write in one call; reads deliberately extend beyond EOF.
 
-A local TCP peer forwards real Samba authentication and open operations, then
-forwards the next read request and resets both sockets while dropping responses.
-The failed read must retire the connection before returning: accessing its
-negotiated dialect and subsequent file operations must throw
-`ObjectDisposedException`. The caller buffer must remain stable after completion
-and a forced collection. The peer observes and drains its forwarding tasks; a
-healthy connection deletes the remote file.
-
-If a failed read leaves the connection live, the standalone test prints a clear
-regression diagnostic and exits immediately. It deliberately avoids invoking
-cleanup through the old implementation's dangling callback state. This exit is
-only a failure path, never a passing substitute for cleanup.
-
 Cancellation coverage is pre-cancelled operations. The pending-write race proves
 work was pending and every task drained; it does not claim interception at a
-particular socket instruction. The reset peer provides the separate deterministic
-transport-failure boundary.
+particular socket instruction.
+
+The former custom TCP-reset case is excluded under the updated
+[upstream test scope](../../docs/test-scope.md). Its historical results do not
+extend the scope of the current default campaign.

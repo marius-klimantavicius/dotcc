@@ -50,5 +50,7 @@ dotnet publish libsmb2/samples/ManagedConsumer -c Release -r linux-x64 -p:Publis
 
 The oracle creates a disposable Samba container and random credentials, binds a
 random loopback port, captures logs, and removes the container and password file
-on exit. Generated product checks are still being brought up; command availability
-does not imply passing validation. See [current evidence](validation.md).
+on exit. The implemented Linux suites have passed; full plan acceptance remains
+open. `test.sh` runs the current suites; `verify.sh` also regenerates from an
+outside directory and runs repository test suites. See [current evidence](validation.md)
+and the [upstream-only fault-injection scope](test-scope.md).

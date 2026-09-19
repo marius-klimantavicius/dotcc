@@ -86,7 +86,7 @@ Generated crypto/ABI checks, consumer builds, Samba execution, rooted NativeAOT,
 postprocessor idempotence and clean-regeneration checks remain in progress. A
 passing generation receipt alone does not establish the protocol acceptance gates.
 
-## Managed consumer and implemented Linux qualification
+## Managed consumer and implemented Linux qualification (historical scope)
 
 `./libsmb2/scripts/test.sh` passed against the final default translation invoked
 from `/tmp`, including the final shared compiler correction (`5d63fec`). Its
@@ -119,9 +119,35 @@ Repository regressions after shared repairs: **2,325 unit tests, 583 functional
 tests and 101 postprocessor tests pass**; the functional suite records 1,077
 explicit optional external-oracle skips. The postprocessor CLI smoke also passes.
 These builds use the NuGet LALR.CC dependency path. Fresh SQLite and picotls
-campaigns passed; scoped MsQuic regression execution is still in progress.
+campaigns passed. Scoped MsQuic regression also passed: 60 ABI records across
+native/JIT/NativeAOT, complete raw/processed rooted JIT/AOT builds, and 167 existing
+packet checks per variant/runtime. Exact scope and hashes are recorded in
+`artifacts/compiler-baseline/cross-campaign.json`; this does not claim every
+historical cross-campaign peer/performance test was rerun.
 
 A subsequent isolated probe confirmed an upstream compound-request cancellation
 leak: abandoning a `Stat` request retains its shared callback allocation. This is
-not covered by the successful read/close cleanup cases above and is being repaired
-with a separately recorded C correction. Full failure-path acceptance remains open.
+not covered by the successful read/close cleanup cases above. Further investigation
+is paused under the updated user scope; no correction has been applied to the
+pinned source or generated product. Full failure-path acceptance remains open.
+
+## Updated user scope
+
+The coordinator and both subagents were restarted for read-only scope review.
+[The explicit upstream test mapping](test-scope.md) governs fault injection.
+The custom TCP-reset scenario and synthetic failed-close/pending-read cases were
+removed from the default suite; ordinary API, cancellation, ownership, known-answer
+and invalid-input checks remain. Earlier results for removed cases above are
+historical and do not broaden current scope. No upstream correction was integrated.
+
+The updated full `test.sh` suite **passes**. Sample and lifecycle matrices each
+pass 11/11 in all four raw/processed × JIT/NativeAOT combinations. The two normal
+finalizer cases pass against both raw and processed JIT binaries (4 checks);
+the receipt lists the two excluded synthetic cases explicitly. Host, crypto/ABI,
+rooted-build, native baseline and idempotence checks also pass.
+
+Shell/Python syntax and help handling for the test and verification entry points
+pass. `build.sh`, `test.sh --help` and `verify.sh --help` also work from `/tmp`.
+The `verify.sh` orchestration itself was not rerun as a single command; its full
+regeneration, current qualification and repository suites have separate recorded
+executions. The qualification receipt still explicitly sets `plan_complete:false`.

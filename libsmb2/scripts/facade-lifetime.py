@@ -23,6 +23,7 @@ out = ROOT / 'artifacts/facade-lifetime' / args.label
 out.mkdir(parents=True, exist_ok=True)
 build = ROOT / 'build/facade-lifetime' / args.label
 receipt = dict(passed=False, mode='jit-reflection-checked-heap', cases=[],
+               excluded_by_scope=['failed-first-close', 'pending-read-abort'],
                assemblies={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in paths})
 try:
     command = ['dotnet', 'build', str(ROOT / 'tests/FacadeLifetime/FacadeLifetime.csproj'),
@@ -34,7 +35,7 @@ try:
     receipt['build_exit_code'] = result.returncode
     result.check_returncode()
     env = dict(os.environ, DOTCC_DEBUG_HEAP='1', DOTCC_DEBUG_HEAP_SCAN='1')
-    for name in ['finalizer-cleanup', 'actual-finalizer', 'failed-first-close', 'pending-read-abort']:
+    for name in ['finalizer-cleanup', 'actual-finalizer']:
         result = subprocess.run(['dotnet', str(build / 'FacadeLifetime.dll'), name],
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                                 env=env, timeout=20)

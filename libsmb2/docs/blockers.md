@@ -23,3 +23,8 @@ Remaining acceptance work includes the full adversarial protocol corpus,
 multiple outstanding requests on one context, broader allocation-failure and
 credit-pressure cases, performance characterization, and additional platforms.
 Passing the implemented Linux suites does not close those plan gates.
+
+Fault-injection work now follows the explicit upstream-only
+[test scope](test-scope.md). Additional compound-metadata cleanup investigation
+is paused and preserved under ignored build artifacts. No C correction was
+integrated; the downloaded snapshot and translated product remain unchanged.

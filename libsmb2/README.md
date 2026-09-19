@@ -3,7 +3,9 @@
 The [plan](docs/PLAN.md) is being implemented. The pinned native client already
 passes authenticated file operations against an isolated Samba server. The full
 managed translation pipeline now produces buildable raw and post-processed C#;
-managed protocol execution is being qualified.
+the managed sample and lifecycle suites pass against Samba under JIT and NativeAOT.
+Full plan acceptance remains open. Fault injection follows the explicit
+[upstream test scope](docs/test-scope.md).
 
 ```sh
 ./libsmb2/scripts/fetch.sh
@@ -26,5 +28,5 @@ product. `build.sh` builds an already generated product without translating.
 
 See [configuration](docs/configuration.md), [provenance](docs/source.md), and
 [validation](docs/validation.md) for current capabilities and evidence. The
-`ManagedConsumer.slnx` sample and real managed file operations are being qualified;
+`ManagedConsumer.slnx` builds and the sample performs real managed file operations;
 see [usage](docs/usage.md) and [API contracts](docs/api.md).

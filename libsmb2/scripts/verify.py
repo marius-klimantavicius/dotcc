@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Fresh outside-directory generation, implemented qualification, compiler suites."""
+import argparse
 import json
 import tempfile
 from common import ROOT, REPO, run
 
+argparse.ArgumentParser(description=__doc__).parse_args()
 logs = ROOT / 'artifacts/verification'
 logs.mkdir(parents=True, exist_ok=True)
 receipt = dict(passed=False, scope='regeneration, implemented qualification and repository test suites', plan_complete=False)

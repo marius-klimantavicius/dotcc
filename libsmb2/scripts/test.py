@@ -3,12 +3,14 @@
 
 This receipt covers the listed suites, not every pending gate in docs/PLAN.md.
 """
+import argparse
 import json
 from pathlib import Path
 import shutil
 import tempfile
 from common import ROOT, run, sha
 
+argparse.ArgumentParser(description=__doc__).parse_args()
 logs = ROOT / 'artifacts/qualification'
 logs.mkdir(parents=True, exist_ok=True)
 receipt = dict(passed=False, scope='implemented Linux x64 suites', plan_complete=False)

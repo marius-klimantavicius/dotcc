@@ -40,8 +40,10 @@ before reporting cancellation.
 Dispose closes owned file handles, disconnects, and destroys the context under
 the connection lock. DisposeAsync schedules the same cleanup on the thread pool.
 Concurrent disposal waits for an active operation to drain. Transport failure or
-a deadline destroys the context and drains queued callbacks before releasing
-buffers; subsequent operations reject the disposed connection. Completed ordinary
+a deadline destroys the context before releasing buffers. The tested read/close
+paths drain their callbacks; compound metadata cancellation has an upstream
+cleanup limitation that remains unqualified. After terminal destruction, subsequent
+operations reject the disposed connection. Completed ordinary
 protocol errors retain the connection. The finalizer destroys an abandoned context
 without graceful network operations and releases its idle file allocations. Explicit
 disposal is required for timely cleanup and for observing close/disconnect errors.

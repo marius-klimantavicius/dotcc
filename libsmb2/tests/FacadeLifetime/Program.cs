@@ -35,32 +35,6 @@ unsafe class Program
                 }
                 if (weak.IsAlive) throw new Exception("Abandoned connection was kept alive");
                 break;
-            case "failed-first-close":
-                using (var connection = MakeConnection())
-                {
-                    AddFile(connection); AddFile(connection);
-                    bool failed = false;
-                    try { connection.Dispose(); } catch (SmbException) { failed = true; }
-                    if (!failed) throw new Exception("Disconnected close unexpectedly succeeded");
-                }
-                break;
-            case "pending-read-abort":
-                var readOwner = MakeConnection();
-                var file = AddFile(readOwner);
-                byte[] buffer = Enumerable.Repeat((byte)0x5a, 32).ToArray();
-                try
-                {
-                    bool failed = false;
-                    try { file.Read(buffer); } catch (SmbException) { failed = true; }
-                    if (!failed) throw new Exception("Disconnected read unexpectedly succeeded");
-                    bool disposed = false;
-                    try { _ = readOwner.Dialect; } catch (ObjectDisposedException) { disposed = true; }
-                    if (!disposed) throw new Exception("Failed pending read left context active");
-                    GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
-                    if (buffer.Any(value => value != 0x5a)) throw new Exception("Failed read changed its buffer");
-                }
-                finally { DestroyWithoutClose(readOwner); GC.SuppressFinalize(readOwner); }
-                break;
             default: throw new ArgumentException("Unknown lifetime case: " + name);
         }
         int after = CountAllocations();
@@ -71,12 +45,6 @@ unsafe class Program
     private static SmbConnection MakeConnection()
     {
         var owner = (SmbConnection)Activator.CreateInstance(ConnectionType, nonPublic: true)!;
-        // Old regression binaries do not have a managed deadline field.
-        ConnectionType.GetField("_timeoutSeconds", PrivateInstance)?.SetValue(owner, 1);
-        var context = (smb2_context*)Pointer.Unbox(ConnectionType.GetField("_context", PrivateInstance)!.GetValue(owner)!);
-        context->max_read_size = 4096;
-        context->credits = 1;
-        context->dialect = (ushort)smb2_negotiate_version.SMB2_VERSION_0202;
         return owner;
     }
 

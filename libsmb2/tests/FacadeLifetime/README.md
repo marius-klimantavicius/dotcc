@@ -3,10 +3,10 @@ connection with disconnected synthetic file handles, and the embedded runtime's
 checked native heap to count live allocations. They require no SMB server and add
 no public test hooks. Each case runs in a separate process.
 
-The cases check deterministic finalizer cleanup, actual GC finalization, disposal
-when the first of several closes fails, and a pending read whose event pump fails.
-The final case also checks terminal connection disposal and buffer stability.
-Real network failure and concurrency coverage lives in `ManagedLifecycle`.
+The default cases check deterministic finalizer cleanup and actual GC
+finalization. Synthetic failed-close and pending-read cases are excluded under
+the updated [upstream test scope](../../docs/test-scope.md). Normal I/O and
+concurrency coverage lives in `ManagedLifecycle`.
 
 Run after building the facade/sample:
 

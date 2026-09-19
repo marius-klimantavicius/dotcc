@@ -18,6 +18,15 @@ and NativeAOT. Their historical results do not establish libsmb2 correctness.
 The user authorized this campaign with a coordinator and sub-agents, committing
 after each significant milestone. Keep tested milestone commits local; do not push.
 
+**Updated test scope:** ignore fault-injection work unless the pinned upstream
+library contains an explicit corresponding test. Record the upstream file and
+the exact behavior before including such a test. Related coverage alone is not
+equivalence: upstream's injected `readv` error does not automatically authorize
+a different custom TCP-reset scenario. Custom transport reset and synthetic
+failed-operation probes are excluded from the default campaign. Normal API,
+ownership, cancellation, invalid-input and known-answer tests remain functional
+validation. The unfinished additional cleanup investigation is paused.
+
 ## Objective and fixed delivery requirements
 
 Translate upstream libsmb2 into a reusable unsafe C# SMB2/SMB3 client library.
@@ -275,11 +284,11 @@ explicit scope, and an evidence-based blocker ledger.
 
 ### P1 — Prove compiler, ABI, and host feasibility
 
-- [ ] Reduce real failures and compare public/internal layouts and callback probes
+- [x] Reduce real failures and compare public/internal layouts and callback probes
       against native, including actual storage and high-bit status values.
-- [ ] Demonstrate BCL TCP/DNS/readiness, short I/O, error mapping, entropy, and
+- [x] Demonstrate BCL TCP/DNS/readiness, short I/O, error mapping, entropy, and
       retained-buffer lifetimes under JIT and NativeAOT.
-- [ ] Verify portable crypto selection and initial authentication/signing/sealing
+- [x] Verify portable crypto selection and initial authentication/signing/sealing
       vectors; document any necessary minimal host adaptation.
 
 Gate: usable host services and callback ABI, known crypto/source closure, and no
@@ -287,12 +296,12 @@ unexamined native dependency needed to reach execution.
 
 ### P2 — Translate, link, and postprocess the complete library
 
-- [ ] Fix evidenced compiler/libc gaps using the regression-first workflow.
-- [ ] Build every configured unit into a reusable raw library; audit imports,
+- [x] Fix evidenced compiler/libc gaps using the regression-first workflow.
+- [x] Build every configured unit into a reusable raw library; audit imports,
       static initialization, public constants, and symbol/callback identity.
 - [x] Implement the full `libsmb2/scripts/translate.sh` contract and final
       `libsmb2/generated/TranslatedLibsmb2/` output, plus separate raw output.
-- [ ] Build raw/processed variants under JIT and whole-assembly-rooted NativeAOT;
+- [x] Build raw/processed variants under JIT and whole-assembly-rooted NativeAOT;
       verify native layouts and postprocessor idempotence/equivalence.
 
 Gate: one default command reproducibly produces the complete, buildable final
@@ -302,7 +311,7 @@ post-processed project. This gate does not establish SMB interoperability.
 
 - [ ] Connect the translated event/request machinery to the BCL host and run
       negotiation, authentication, tree connection, echo, and disconnect.
-- [ ] Test each required dialect and actual signing/encryption algorithm against
+- [x] Test each required dialect and actual signing/encryption algorithm against
       native controls and Samba, with matching negotiated settings.
 - [ ] Exercise wrong credentials, missing shares, required-signing/encryption
       rejection, corrupt signatures/tags, malformed negotiation/authentication,
@@ -321,6 +330,8 @@ Gate: authenticated real TCP sessions with enforced protection in raw/processed
 - [ ] Exercise access denial, nonexistent paths, sharing conflicts, peer closure,
       bounded timeout/cancellation, callback reentrancy, GC stress, allocation
       failures, repeated disposal, and cleanup with operations still pending.
+      Apply the updated upstream-only rule to injected failures; cases without
+      an explicit upstream counterpart are outside the current scope.
 - [ ] Run bounded malformed/truncated/oversized PDU and partial-stream corpora;
       compare deterministic decoding with native and verify bounded resources.
 

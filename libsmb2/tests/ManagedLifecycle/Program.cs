@@ -1,6 +1,4 @@
 using Managed.Smb;
-using System.Net;
-using System.Net.Sockets;
 
 internal static class Program
 {
@@ -106,7 +104,6 @@ internal static class Program
                 await Task.WhenAll(Independent(settings, directory + "/parallel-a.bin", 11),
                                    Independent(settings, directory + "/parallel-b.bin", 73));
                 var race = await DisposePending(settings, client, directory + "/pending.bin");
-                await FaultedRead(settings, client, directory + "/fault.bin");
                 Require(!(await client.ListAsync(directory)).Any(entry => entry.Name is not "." and not ".."),
                     "Lifecycle cleanup left remote files behind");
                 client.RemoveDirectory(directory);
@@ -116,7 +113,7 @@ internal static class Program
                 Expect<ObjectDisposedException>(() => client.List(), "disposed connection list");
                 await ExpectAsync<ObjectDisposedException>(() => client.ListAsync(), "disposed connection async list");
                 Console.WriteLine($"passed:lifecycle,dialect={dialect:x4},protection={(settings.Encrypt ? "encrypt" : "sign")}," +
-                    $"bytes={payload.Length},writes={writes},reads={reads},parallel=2,pending={race},fault=reset-drained");
+                    $"bytes={payload.Length},writes={writes},reads={reads},parallel=2,pending={race}");
                 preserveFailure = false;
             }
             catch (Exception primary)
@@ -194,100 +191,6 @@ internal static class Program
         {
             file?.Dispose(); connection.Dispose();
             if (created) cleanupConnection.Delete(path);
-        }
-    }
-
-    private static async Task FaultedRead(Settings settings, SmbConnection cleanupConnection, string path)
-    {
-        using (var source = cleanupConnection.Open(path, create: true))
-            await WriteAll(source, Payload(65539, 61));
-        await using var peer = new ResetPeer(settings.Server);
-        var connection = await SmbConnection.ConnectAsync(peer.Address, settings.Share, settings.User,
-            settings.Password, settings.Domain, settings.Dialect, settings.Encrypt, timeoutSeconds: 2);
-        var file = connection.Open(path);
-        var buffer = Enumerable.Repeat((byte)0xa5, 65539).ToArray();
-        peer.Arm();
-        try
-        {
-            await ExpectAsync<SmbException>(() => file.ReadAsync(buffer).WaitAsync(TimeSpan.FromSeconds(10)),
-                "reset peer read");
-            await peer.FaultTriggered.WaitAsync(TimeSpan.FromSeconds(5));
-            try { _ = connection.Dialect; }
-            catch (ObjectDisposedException)
-            {
-                // The connection retired the pending PDU before returning to
-                // managed code. The caller can now release or reuse its buffer.
-                var after = buffer.ToArray();
-                GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
-                await Task.Delay(30);
-                Require(buffer.SequenceEqual(after), "Failed read changed its buffer after completion");
-                Expect<ObjectDisposedException>(() => file.Read(Array.Empty<byte>()), "faulted file empty read");
-                Expect<ObjectDisposedException>(() => file.Read(new byte[1]), "faulted file read");
-                Expect<ObjectDisposedException>(() => file.Write(Array.Empty<byte>()), "faulted file empty write");
-                file.Dispose(); connection.Dispose(); await connection.DisposeAsync();
-                return;
-            }
-            // This is a standalone regression executable. Do not call unsafe
-            // cleanup after observing the old API's dangling callback state.
-            Console.Error.WriteLine("fault-regression: failed read left the connection active before caller buffer release");
-            Environment.Exit(1);
-        }
-        finally { cleanupConnection.Delete(path); }
-    }
-
-    private sealed class ResetPeer : IAsyncDisposable
-    {
-        private readonly TcpListener _listener = new(IPAddress.Loopback, 0);
-        private readonly CancellationTokenSource _stop = new();
-        private readonly Task _run;
-        private readonly TaskCompletionSource _fault = new(TaskCreationOptions.RunContinuationsAsynchronously);
-        private TcpClient? _client, _server;
-        private int _armed;
-        public string Address { get; }
-        public Task FaultTriggered => _fault.Task;
-        public ResetPeer(string target)
-        {
-            var endpoint = new Uri("tcp://" + target);
-            _listener.Start();
-            Address = "127.0.0.1:" + ((IPEndPoint)_listener.LocalEndpoint).Port;
-            _run = Forward(endpoint.Host, endpoint.IsDefaultPort || endpoint.Port < 0 ? 445 : endpoint.Port);
-        }
-        public void Arm() => Interlocked.Exchange(ref _armed, 1);
-        private async Task Forward(string host, int port)
-        {
-            try
-            {
-                _client = await _listener.AcceptTcpClientAsync(_stop.Token);
-                _server = new TcpClient();
-                await _server.ConnectAsync(host, port, _stop.Token);
-                await Task.WhenAll(Copy(_client.GetStream(), _server.GetStream(), true),
-                    Copy(_server.GetStream(), _client.GetStream(), false));
-            }
-            catch (Exception error) when (error is IOException or SocketException or OperationCanceledException or ObjectDisposedException) { }
-        }
-        private async Task Copy(NetworkStream input, NetworkStream output, bool request)
-        {
-            var buffer = new byte[65536];
-            while (!_stop.IsCancellationRequested)
-            {
-                int count = await input.ReadAsync(buffer, _stop.Token);
-                if (count == 0) return;
-                bool armed = Volatile.Read(ref _armed) != 0;
-                if (request || !armed) await output.WriteAsync(buffer.AsMemory(0, count), _stop.Token);
-                if (request && armed)
-                {
-                    _client!.Client.LingerState = new LingerOption(true, 0);
-                    _server!.Client.LingerState = new LingerOption(true, 0);
-                    _client.Dispose(); _server.Dispose();
-                    _fault.TrySetResult();
-                    return;
-                }
-            }
-        }
-        public async ValueTask DisposeAsync()
-        {
-            await _stop.CancelAsync(); _listener.Stop(); _client?.Dispose(); _server?.Dispose();
-            await _run.WaitAsync(TimeSpan.FromSeconds(5)); _stop.Dispose();
         }
     }
 
