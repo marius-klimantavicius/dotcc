@@ -50,8 +50,8 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 The previous stop boundary is lifted by explicit user instruction. The shared
 compiler/headers/runtime changed substantially during libsmb2; earlier Blink
 receipts remain historical and do not qualify fresh output from those changes.
-The current Release toolchain is being rebuilt and frozen before fresh complete
-core translation. Incompatible historical objects must not be reused.
+The current Release toolchain rebuilt successfully and is frozen for fresh
+complete-core translation. Incompatible historical objects must not be reused.
 
 Immediate work is the required P2 translation/post-processing delivery and an
 actual normal-core consumer sample. The default authored probe now omits its
@@ -1317,6 +1317,34 @@ does not claim completion of the remaining campaign milestones.
 
 The user resumed Blink after libsmb2 stopped, on main sqlite at b671720. The
 coordinator and two workers are active with disjoint delivery/sample ownership.
-Current compiler build evidence is being recorded under
-resume-current-compiler/attempt-9_82zbv2. Prior shared regression and Blink runtime
+The Release build passes at
+resume-current-compiler/attempt-9_82zbv2. Offline source verification and the
+normal-only native core probe also pass. Prior shared regression and Blink runtime
 receipts are preserved; no old object/runtime pass is relabeled as current.
+
+## Current translation delivery and normal usage sample
+
+The final delivery invocation passes at translation/attempt-rv0jhxuv, receipt
+SHA256 8ce646a6bfc761d0b8a833450cd04ae5d7806861f761c93a965cd524d06d6037.
+The first invocation attempt-g84jz4hn emitted all 109 objects afresh with zero
+reuse; later invocations reused only matching current-compiler objects with
+producer provenance. Native 25 pinned upstream cases, raw build, semantic
+postprocessing and final build pass. The stable project is
+`generated/TranslatedBlink/TranslatedBlink.csproj`; all 101 raw/final source and
+project files match recorded manifests. Earlier successful runner versions are
+archived alongside their receipts. Publication rollback and signal cleanup were
+reviewed; no custom injected-failure tests were added.
+
+`ManagedConsumer.slnx` consumes that actual final project. Its owning normal-core
+sample passes Release build, JIT and whole-library-rooted Linux NativeAOT with
+identical native/profile transcripts and ownership footer (2 retained mappings,
+270450 charged bytes). Qualification attempt-0quh0jc1 has SHA256
+508cfdaafeb285fa5183e0e5f4da89ea61a354796b76b6cf797cee2f05dddbff.
+An initial NativeAOT publish failed NETSDK1047; the identical command passed on
+retry without source changes. Both attempts are preserved; the cause is unknown.
+The sample owns host binding/disposal and one translated driver call, not the
+still-unqualified service worker, readiness, capture or HTTP API. P5 remains open.
+
+Full current core/ABI/valid-ELF checks are underway. The clean-delivery runner is
+reviewed but awaits a committed delivery revision before execution. No Windows
+execution or current dependent-campaign revalidation is claimed.

@@ -1,15 +1,16 @@
 # Blink through dotcc
 
 The selected Blink interpreter executes Linux x86-64 instructions as translated
-C# on Linux x64. All 109 selected sources build, and bounded instruction, fault,
-exit and ABI checks pass under raw/optimized JIT and NativeAOT. The reviewed
-CPU and scalar floating-point corpus passes 495 cases in each form. Valid loading of
-the pinned service ELF is also qualified.
+C# on Linux x64. The current compiler translates all 109 selected sources through
+`blink/scripts/translate.sh`, which publishes the post-processed project at
+`blink/generated/TranslatedBlink/TranslatedBlink.csproj` and preserves a separate
+immutable raw snapshot. The actual normal-core usage sample passes JIT and
+NativeAOT against native arithmetic, memory, budget and guest-exit observations.
 
-Work has resumed on branch `sqlite` after the libsmb2 campaign. The shared
-compiler/runtime changed, so the earlier results above are historical until the
-new delivery is regenerated and revalidated. Current work adds the end-to-end
-translation script, stable generated project and actual normal-core usage sample.
+Earlier CPU, host-service and dependent-campaign results are historical where
+they predate the shared compiler changes made during libsmb2. Custom fault
+injection and invalid/malformed ELF cases are excluded; only existing pinned
+upstream fault cases may enter new qualification.
 
 The service product is incomplete. Actual managed HTTP service startup, the
 translated worker, complete CPU/ELF/memory coverage and Windows execution remain
@@ -17,6 +18,21 @@ open. The independent controller has subprocess lifecycle tests; it does not
 yet provide a qualified translated-service worker. See [progress](docs/PROGRESS.md),
 [validation](docs/VALIDATION.md), [blockers](docs/BLOCKERS.md) and the
 [implementation plan](docs/PLAN.md) for exact evidence and remaining gates.
+
+## Generate and use the final project
+
+```bash
+dotnet build dotcc.sln -c Release -p:UseLocalLalrCc=false
+bash blink/scripts/translate.sh
+dotnet build blink/ManagedConsumer.slnx -c Release
+dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build
+```
+
+See [translation delivery](scripts/TRANSLATION.md), the
+[usage sample](ManagedConsumer/README.md) and
+[clean delivery verification](scripts/CLEAN-DELIVERY.md). Finish generation before
+building consumers. The sample owns a single normal interpreter run; the planned
+owning HTTP service API remains unqualified.
 
 ## Reproduce the core gate
 
@@ -52,7 +68,7 @@ For an isolated repetition from an empty detached checkout, see
 reproduced commit and uses only the pinned source archive plus installed host
 tools and normal package restore; it does not copy existing generated outputs.
 
-Additional qualified harnesses:
+Additional harnesses (consult the ledger for current versus historical evidence):
 
 - [CPU conformance](tests/CpuConformance/README.md): hardware, original native,
   reviewed staged native, and four managed forms; original failures are retained.
@@ -93,7 +109,7 @@ completion; earlier blocked attempts remain historical evidence, not passes.
 
 ## Shared compiler regressions
 
-Fresh Linux checks cover the owning SQLite consumer and all seven SQLite C
+Historical Linux checks cover the owning SQLite consumer and all seven SQLite C
 corpora in raw/optimized JIT/NativeAOT, the complete existing picotls campaign,
 MsQuic ABI/product/public-consumer cases, Lua/chibi JIT suites, 146 WAT cases and
 all 205 Zig oracle cases. Exact scope and receipts are in

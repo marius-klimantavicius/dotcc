@@ -3,6 +3,32 @@
 All observed executions below are Linux x64. Windows execution has not run.
 Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
+## Current delivery on the post-libsmb2 compiler
+
+The current Release compiler build is recorded at
+`resume-current-compiler/attempt-9_82zbv2`. The delivery invocation
+`translation/attempt-rv0jhxuv` passes all 109 selected sources, pinned native 25,
+raw build, semantic postprocessing and final build. The first invocation emitted
+109 objects afresh with zero reuse; later reuse has exact compiler/profile and
+producer provenance. The final bundle and immutable raw manifests are verified.
+
+`ManagedConsumer.slnx` and the normal owning sample pass JIT and rooted Linux
+NativeAOT, matching native/profile observations. Receipt
+`attempt-0quh0jc1/qualification.json` preserves the first NETSDK1047 publish
+failure and the successful identical-command retry. No source change was needed;
+the cause is unproven. Full core execution at `core-execution/attempt-8vbjtywv`
+passes raw/optimized JIT/NativeAOT, and `publication-audit/attempt-b0wppzl8` passes
+for those exact binaries. Direct IL audit limits remain unchanged.
+
+The following table and older sections preserve historical evidence. Rows are
+not current-compiler passes unless explicitly refreshed above or in the current
+progress entry. Historical custom fault-injection and invalid-ELF cases are
+excluded from new runs; only existing pinned upstream cases are permitted.
+Service startup/worker, broader CPU/memory coverage, current dependent-campaign
+regressions and Windows execution remain open. The normal sample is partial P5.
+
+## Historical qualification ledger
+
 | Surface | Observed result | Reproduce |
 | --- | --- | --- |
 | Immutable source inputs | Archive/file/license hashes and offline verification pass | `scripts/fetch.sh --offline` |
@@ -78,7 +104,8 @@ callbacks or make native process services safe for managed execution.
 P0–P2 have passed. P3–P6 remain open: Windows execution, complete CPU/ELF/memory
 coverage, actual service startup and worker lifecycle, and broader performance
 remain required by PLAN.md. The dependent-campaign
-regression item has fresh passing Linux evidence below. Whole-library-rooted
+regression item has historical passing Linux evidence below and requires refresh
+on the final shared compiler under the current test scope. Whole-library-rooted
 AOT has passed for the complete selected core on Linux x64. The service-worker
 task was stopped by automated review and remains unqualified. Malformed-ELF
 handling and qualification are excluded by explicit user direction; historical

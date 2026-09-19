@@ -278,12 +278,13 @@ embedding boundary under JIT and NativeAOT; unresolved dependencies are recorded
 - [x] Emit all required decoder, CPU, memory, loader, and syscall-marshalling code.
 - [x] Build raw/optimized libraries and whole-library-rooted AOT consumers.
 - [x] Audit imports and initializers; placeholders cannot enter runtime gates.
-- [ ] Deliver `blink/scripts/translate.sh` to run translation and semantic
+- [x] Deliver `blink/scripts/translate.sh` to run translation and semantic
       post-processing, producing the final sources and project in
       `blink/generated/TranslatedBlink/` with a separate immutable raw snapshot.
 
-The original core build/execution gate passed. The newly required delivery
-script and stable output directory remain pending under P2.
+The current delivery script passes with all 109 sources and a verified stable
+output directory. The separate usage sample passes Linux JIT and NativeAOT.
+The full service API required by P5 remains open.
 
 **Gate:** complete selected source closure builds with matching actual layouts,
 no native emulator dependency, and passing affected compiler regressions;
@@ -351,9 +352,11 @@ the showcase solution builds and its sample demonstrates the documented usage.
 - [ ] From a clean checkout, run `blink/scripts/translate.sh`, build
       `blink/ManagedConsumer.slnx` and execute its usage sample using the final
       post-processed sources; document the exact commands and observed results.
-- [x] Regenerate SQLite with the final compiler and rerun its JIT/AOT corpus;
+- [ ] Regenerate SQLite with the final compiler and rerun its JIT/AOT corpus;
       rerun picotls/MsQuic after relevant shared fixes, plus Lua/chibi and affected
       Zig/WAT checks. Record observed failures rather than relabeling old evidence.
+      Earlier Linux results are historical; the shared compiler changed during
+      libsmb2, and revalidation must obey the current test-scope exclusions.
 - [x] Publish source/configuration/host-contract/usage/validation documentation,
       including unqualified guest features, hosts, and security boundaries.
 
