@@ -294,9 +294,11 @@ no native emulator dependency, and passing affected compiler regressions;
 
 - [x] Run selected upstream instruction cases and generated edge cases against
       native Blink and real x86-64 Linux execution where guest behavior is defined.
-- [ ] Cover flags, shifts, signed division, SIMD lanes, floating-point edge cases,
+- [x] Cover flags, shifts, signed division, SIMD lanes, floating-point edge cases,
       instruction/page boundaries and advertised CPUID bits; fault-triggering
-      cases are limited to existing pinned upstream tests.
+      cases are limited to existing pinned upstream tests. The finite selected
+      profile passes 504 normal cases per form (2,016 comparisons); this is
+      bounded family coverage, not exhaustive ISA certification.
 - [x] Cover valid ELF headers/segments, BSS zeroing,
       executable permissions, stack/argv/env/auxv, and required TLS setup.
       Valid pinned-image loading and a fixed explicit TLS startup fixture pass

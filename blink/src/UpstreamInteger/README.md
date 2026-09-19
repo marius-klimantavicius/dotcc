@@ -46,7 +46,7 @@ match; integer staging rejects older or mismatched canonical profiles. This does
 not qualify guest JIT paths, concurrent CMPXCHG atomicity, or broader instruction
 families. No fault-injection or invalid-image cases are introduced.
 
-## NEG auxiliary-carry extension awaiting qualification
+## NEG auxiliary-carry extension qualified
 
 The500-case native run at `artifacts/cpu-conformance/attempt-hmylb6uo/receipt.json`
 (SHA256 `ed8badd8f2400f05e13f3fbee247a8d11c3b49b5b711c3e3e10c0e0c7fe5ad70`)
@@ -62,8 +62,7 @@ and exact function hashes are verified; no comparison masks are relaxed.
 
 The first546 descriptors remain unchanged. IDs546–548 add NEG16/32/64 minimum
 values to witness AF0 at every repaired width, and ID549 adds NEG8 input1 to
-witness AF1. The504-row native matrix passed as recorded below; the2,016-comparison
-managed matrix remains pending.
+witness AF1. The 504-row native matrix and all 2,016 managed comparisons pass.
 Earlier INC/CMPXCHG8B receipts document their own exact smaller patch identity
 and remain valid historical evidence, not validation of this extension.
 
@@ -74,4 +73,7 @@ All504 selected rows match the reviewed native reference/hardware contracts;
 46 custom fault rows remain excluded and368 original-native differences remain
 separately recorded. Hardware/original/staged RDTSC invariants pass. The corrected
 alu.c body hash is `095e490901c5cdba26cd02d4c8381be008ce78da3802f7737618db77f7854301`.
-Managed2,016-comparison qualification awaits the corrected canonical producer.
+Managed qualification passes all 2,016 comparisons at
+`artifacts/cpu-conformance-managed/attempt-disfjyq2/receipt.json`, SHA256
+`e3b4a964d69e0bced3d2896ea093f66c535008709fbd196318bc0fe7b99aa72e`,
+reusing the exact corrected canonical ALU producer and integer boundary.

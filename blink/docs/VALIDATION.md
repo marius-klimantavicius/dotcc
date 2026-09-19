@@ -9,17 +9,21 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | --- | --- | --- |
 | Final delivery | `translation/attempt-xxngak_0` | 109 sources, 108 verified reused objects and one fresh NEG-corrected ALU producer; raw/postprocessed builds and final manifests pass. |
 | Canonical core / publication | `core-execution/attempt-273a6hks`, `publication-audit/attempt-og66g378` | All four managed forms and exact AOT publication inventory pass. |
-| CPU | `cpu-conformance-managed/attempt-sgren8zu` | 468 normal cases per form, 1,872 total; 46 custom fault cases excluded. |
+| CPU | `cpu-conformance-managed/attempt-disfjyq2` | 504 normal cases per form, 2,016 total; exact defined-state/invariant agreement, 46 custom fault cases excluded. |
 | Valid ELF / TLS | `elf-loading/attempt-qclmm2fz`, `tls-loading/attempt-m6fpvl1m` | Native and all four managed forms pass bounded valid loading and explicit TLS startup. |
 | Clean public sample | `clean-delivery/attempt-ru82jd14` | Commit 497ce69; fresh compiler and all 109 objects (zero reuse), final solution and actual JIT/rooted-AOT sample pass; final checkout clean. |
 
 Actual guest mapping/page-table lifecycle checks now pass at
 `guest-memory/attempt-gbyg6j74`: native/all-four exact state, two normal cycles,
 growth/cross-page copying/protection metadata/remap/cleanup, and stable retained
-host-pool accounting. The final CPU expansion plus four targeted NEG repair regressions (504 rows
-per form) remains in managed qualification; corrected native504 passes.
-Further P6 regressions/performance
-are deferred until P3. No service worker or Windows execution is qualified.
+host-pool accounting. The final CPU expansion and four targeted NEG repair
+regressions pass all four forms, closing the finite selected-profile P3 gate.
+CPU receipt SHA256: `e3b4a964d69e0bced3d2896ea093f66c535008709fbd196318bc0fe7b99aa72e`.
+Only four ALU NEG bodies changed after the memory/loader runs; the other 108
+producer records and Host/header/compiler inputs are identical. Those component
+receipts are retained evidence, not post-NEG reexecution. The clean sample row
+qualifies its stated pre-NEG revision. Further P6 regressions/performance remain
+unrun. No service worker or Windows execution is qualified.
 
 ## Earlier post-libsmb2 refresh history
 
@@ -182,9 +186,9 @@ emitted-layout result. Core translation attempts retain diagnostic/history and
 source/compiler/profile hashes; host profile storage checks do not implement
 callbacks or make native process services safe for managed execution.
 
-P0–P2 have passed. P3–P6 remain open: Windows execution, complete CPU/ELF/memory
-coverage, actual service startup and worker lifecycle, and broader performance
-remain required by PLAN.md. The dependent-campaign
+At this historical point P0–P2 had passed and P3–P6 remained open. The latest
+ledger above supersedes the old CPU/ELF/memory status; actual service startup,
+worker lifecycle, Windows and remaining P6 qualification remain open. The dependent-campaign
 regression item has historical passing Linux evidence below and requires refresh
 on the final shared compiler under the current test scope. Whole-library-rooted
 AOT has passed for the complete selected core on Linux x64. The service-worker
@@ -198,7 +202,8 @@ P1/P2 now pass using core-execution/attempt-ny3j_02m: all109 objects link,
 raw/optimized JIT/NativeAOT match the native bounded instruction/fault/exit
 witness and configured ABI probe; AOT roots the complete library. Independent
 raw/optimized direct IL audits report zero traversed native imports with their
-limitations preserved in DEPENDENCIES.md. P3–P6 and Windows execution remain open.
+limitations preserved in DEPENDENCIES.md. This historical receipt predates the
+selected P3 completion recorded at the top of this ledger.
 
 The final shared compiler also freshly regenerated SQLite's owning consumer:
 raw/optimized JIT/NativeAOT pass at sqlite-regression/attempt-1nqhp4wq, including

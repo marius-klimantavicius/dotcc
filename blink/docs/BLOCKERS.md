@@ -406,3 +406,11 @@ retaining 368 original-native differing rows and 46 fault exclusions. Managed
 qualification remains pending. Only the canonical ALU producer requires new
 bytes; regeneration/integration is part of this P3 defect repair, not a restart
 of P0/P1 or permission for unrelated P6 work.
+
+B034 closed for the reviewed correction: canonical NEG integration passes
+core-execution/attempt-273a6hks and the final 504-case/all-four managed matrix
+passes at cpu-conformance-managed/attempt-disfjyq2 (SHA256
+`e3b4a964d69e0bced3d2896ea093f66c535008709fbd196318bc0fe7b99aa72e`).
+All 2,016 comparisons match, including the minimum-value rows at every repaired
+width and the nonzero-low-nibble regression; 46 custom faults remain excluded.
+The original native failure and subsequent staged corrections remain recorded.

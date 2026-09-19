@@ -1,23 +1,46 @@
-# Normal CPU conformance corpus
+# Qualified normal CPU conformance corpus
 
-The default runners select **504 normal cases** from 550 inputs: the original
-495 descriptors remain unchanged, and 55 normal cases are appended at IDs495–549.
-The remaining 46 custom fault cases (39 SIGFPE, seven SIGSEGV) retain
-their original bytes and stable indices but are excluded from execution under
-the current user scope. They are not counted as passes. Native and managed
-receipts contain the identical selected IDs/names, all excluded IDs/names with
-reasons, full corpus digest and reviewed source hashes. Direct native or
-translated case entry also refuses a row with a nonzero fault expectation.
-The selector also verifies the exact canonical digest of the first495 exported
-descriptors, the first512 descriptors from the preserved failing attempt, and the ordered appended names. The468-case matrix is qualified below; the newest36 rows await qualification.
-The earlier449-case matrix remains historical evidence.
+The finite selected-profile CPU matrix passes **504 native cases and 2,016
+managed comparisons**: 504 each in raw JIT, raw NativeAOT, postprocessed JIT and
+postprocessed NativeAOT. This completes the bounded CPU case set selected for
+P3; it does not certify an exhaustive ISA or general x86-64 application support.
+Guest memory, ELF/TLS and host/service gates have separate evidence.
 
-The selected cases retain normal integer/flags operations, signed division,
-valid instruction/data page crossings, SSE/SSE2 operations, masked FP status,
-NaN/infinity/conversion/rounding cases and all 11 CPUID rows. A zero fault
-expectation is decisive: `faultState` identifies a state-comparison contract,
-not necessarily a trapping case. Explicitly unmasked but exact operations that
-complete normally remain selected.
+Managed receipt: `artifacts/cpu-conformance-managed/attempt-disfjyq2/receipt.json`,
+SHA256 `e3b4a964d69e0bced3d2896ea093f66c535008709fbd196318bc0fe7b99aa72e`.
+Fresh native receipt: `artifacts/cpu-conformance/attempt-27pjwx09/receipt.json`,
+SHA256 `0e9557adcbebe0bca31ea6109ce9fa3889279abb4c18f88876d4ae8440ccdffa`.
+All modes agree with the reviewed native interpreter under the exact comparison
+contracts below. Hardware/original/staged native and all four managed RDTSC
+invariant checks pass; timestamp values remain recorded without equality claims.
+
+The run uses core-execution/attempt-273a6hks and canonical object assembly
+`14c483263fd7e92b9522e1e414ceea7ce68a770ca561c8a1b2e33928d7e6b86b`.
+It retains 108 exact canonical objects and replaces only the authored CPU
+frontend. The corrected ALU producer object hash is
+`0c12ac042d30048bca4559dcc387e7d9f114cee2f5a9d3114d22fa0662e081fe`;
+the matching integer-boundary receipt hash is
+`30e2bdeb2579c9b720458aad25ced148c8cdb594d1f1164f8421acef1aa3a8dd`.
+The final receipt verifies compiler, postprocessor, implementation and frozen
+inputs, raw source immutability, object identities and output binary hashes.
+No compiler or generated C# was edited for these CPU corrections.
+
+## Selection and exclusions
+
+The runners select 504 normal cases from 550 descriptors. All original 495
+remain unchanged; 55 normal rows are appended at IDs 495–549. The 46 historical
+custom fault rows (39 SIGFPE, seven SIGSEGV) retain their bytes and stable IDs but
+are excluded from execution and never counted as passes. Direct case entry
+also rejects a nonzero fault expectation. Native and managed receipts record
+the identical selected/excluded IDs, reasons and reviewed source hashes.
+
+`selection.py` pins the first 495, 512, 514 and 546 descriptor digests, preserving
+both qualified inputs and inputs from the recorded failures. The normal rows
+cover integer/flags operations, signed division, valid instruction/data page
+crossings, SSE/SSE2 lanes, masked FP state, NaN/infinity/conversion/rounding cases
+and eleven CPUID queries. `faultState` is a state-comparison contract, not by
+itself an expectation of a fault; exact operations that complete normally remain
+selected even when exceptions are unmasked.
 
 ## Normal-return independent hardware witness
 
@@ -40,56 +63,32 @@ The appended CMPXCHG8B and FXSR cases also use caller-saved RDI; the trampoline
 does not keep its private state there. The code capacity is32 bytes; original
 instruction strings and lengths are unchanged.
 
-## Reproduction
+## Reproduction and provenance
 
-With the pinned native archive and current matching core already qualified:
+With the pinned native archive and matching qualified core available:
 
 ```sh
 python3 blink/tests/CpuConformance/run.py --staged-fp --staged-integer
 python3 blink/tests/CpuConformance/run-managed.py --staged-fp --staged-integer \
-  --core-receipt <current-qualified-core-execution-receipt.json>
+  --core-receipt blink/artifacts/core-execution/attempt-273a6hks/receipt.json
 ```
 
-The native runner snapshots hardware/C/assembly/input sources and the pinned
-archive, reviewed scalar/integer corrections and CPUID policy. It exports all original
-case descriptions but executes only the recorded normal selection. The managed
-runner recomputes that selection and rejects a different native selection or
-comparison list. Both runners hash their live implementation inputs at start and
-check those files again before success; the final comparison sequence must equal
-the selected rows in every requested mode. It derives a CPU frontend over the exact qualified core objects;
-unchanged object hashes, canonical include paths and compiler identities must
-match. Reviewed scalar objects are reused only with matching source identities. Integer
-staging requires a newly qualified canonical profile containing exact corrected
-alu/machine producers and the identical integer boundary receipt; it fails
-closed on an older or mismatched profile.
-No generated C# is patched.
+The native runner snapshots the independent hardware witness, C/assembly inputs,
+native archive and headers, reviewed scalar/integer corrections and CPUID policy.
+It retains the unchanged-original captures and their 368 differing rows
+separately from the passing reviewed-native comparisons. These original
+mismatches are neither hidden nor relabeled as passes.
 
-Each selected row runs in a fresh process in raw JIT, raw NativeAOT,
-postprocessed JIT and postprocessed NativeAOT, for **2,016 expected comparisons**.
-The managed consumer binds private owners, forces compacting GC, executes the
-actual translated interpreter and discards the process after owner teardown.
-Its instruction outputs are compared with real hardware; virtual CPUID outputs
-instead match the exact staged native policy, while physical CPUID remains an
-environment witness. Defined flag masks and full memory/state comparisons are
-retained. No service worker or malformed-image tests are part of this harness.
-
-The normal-return implementation passed native 449 and all **1,796 managed
-comparisons** against core-execution/attempt-8vbjtywv. Native receipt:
-`artifacts/cpu-conformance/attempt-7j03qmvz/receipt.json`, SHA256
-`b33297b3c0ba375772763b274f8236dd042bdc8fa6e292ebe0206776dbb85c73`.
-Managed receipt: `artifacts/cpu-conformance-managed/attempt-3r1msqyr/receipt.json`,
-SHA256 `4692e7760c37899215cec4025fcd116fd0eeeb22ddd3c47a320067d6a0e75ff0`.
-The derived link retains 108 exact qualified objects and replaces only the CPU
-frontend; reviewed scalar corrections already match those retained producers.
-All four modes agree with the staged native interpreter. The unchanged-original
-native comparison retains 359 differing normal rows separately; this does not
-reclassify them as passes or conceal the reviewed scalar corrections.
-The dedicated launch temporary directory was `artifacts/cpu-normal-launch/tmp`.
-No shared compiler was rebuilt. Each receipt verifies the exact ordered selection
-and live implementation hashes at completion. [Historical evidence](HISTORICAL.md) preserves prior
-matrices and defect receipts, including now-excluded cases. The historical
-495-case pass is not a fresh pass for this changed witness. Remaining instruction
-coverage is described in [COVERAGE.md](COVERAGE.md).
+The managed runner derives its CPU frontend over the exact qualified canonical
+objects. Corrected integer objects must already exist in that profile, with
+matching source bytes and the identical boundary receipt; older or mismatched
+profiles fail closed. Each row runs in a fresh process with owning Host bindings,
+compacting GC before execution, and normal owner teardown afterward. It compares
+hardware instruction outputs, defined flags and memory; virtual CPUID compares
+the exact native profile policy while physical CPUID remains an environment
+witness. Only RDTSC AX/DX timestamp equality is omitted, with independent width
+and preservation checks instead. Both runners verify exact ordered coverage and
+unchanged live implementation inputs before success.
 
 ## Qualified appended normal coverage
 
@@ -99,8 +98,8 @@ coverage is described in [COVERAGE.md](COVERAGE.md).
 | 499–504 | SHL8 count0/1, SHR16 count1, SAR32 count31, SHL16 masked count32 and SHL32 masked count33. Count0 preserves all flags; active shifts exclude AF, and SAR31 excludes OF. |
 | 505–508 | Valid DIV8/DIV32 and signed IDIV16/IDIV32. Byte/word results preserve upper-register portions; dword results zero-extend. Division flags are undefined and masked out. |
 | 509–510 | Normal CMPXCHG8B match/nonmatch at an aligned address. RDI saves the address before EBX becomes a fixed replacement value; ZF and complete memory/register results are compared. Single-thread cases do not establish atomicity. |
-| 512–513 | INC8 wrapping and INC16 signed overflow, preserving incoming CF and checking all defined arithmetic flags plus upper-register preservation. |
 | 511 | FXSAVE/FXRSTOR roundtrip: clear XMM0/1 and temporarily load the saved MXCSR_MASK with LDMXCSR, then restore the saved XMM and nondefault MXCSR. The512-byte aligned save region is zeroed by ordinary REP STOSQ before memory comparison, excluding unspecified/vendor-specific saved x87/reserved bytes. |
+| 512–513 | INC8 wrapping and INC16 signed overflow, preserving incoming CF and checking all defined arithmetic flags plus upper-register preservation. |
 
 The REP sequence starts with DF clear, uses caller-saved RDI, and writes only
 the valid512-byte save region. Its complete memory comparison retains the
@@ -111,42 +110,7 @@ too); no floating-point arithmetic occurs before FXRSTOR. The31-byte sequence
 has nine instructions: Blink's ordinary STOS implementation completes its64
 iterations within one `ExecuteInstruction` call.
 
-The first expanded native run completed466 cases but failed IDs495/496 (INC AF)
-and510 (CMPXCHG8B upper32 bits). Its receipt is
-`artifacts/cpu-conformance/attempt-cjel3vz8/receipt.json`, SHA256
-`75f0c3a7bccc23e6b014116d8430a0a3a849637f82ed0fb5228fcf7048150812`.
-The managed parent stopped before emission or comparisons:
-`artifacts/cpu-conformance-managed/attempt-f1feworz/receipt.json`, SHA256
-`e7a1c57b96b812b510c0631dcb9fdb13d46ffb4b22acc136af84047dd69cdc00`.
-[Reviewed integer staging](../../src/UpstreamInteger/README.md) corrects these
-upstream expressions without changing hardware comparisons. The native runner
-retains original-native captures and differences; staged and canonical managed
-source identities remain distinct. Corrected native execution passed all468 selected rows, with46 exclusions:
-`artifacts/cpu-conformance/attempt-lc9j96ag/receipt.json`, SHA256
-`0a58ffb7f3a083709795ac1b86a93bff1fb44420f35690614b9227aefdbc2e41`.
-The receipt preserves364 original-native differences separately. INC8/16 add
-independent hardware evidence for the other two repaired AF helpers; unchanged
-FXSR and the remaining appended normal cases pass. New canonical managed execution passed all **1,872 comparisons** against
-core-execution/attempt-yzck8kpr, with exact native agreement in all four modes.
-Managed receipt: `artifacts/cpu-conformance-managed/attempt-sgren8zu/receipt.json`,
-SHA256 `e470675d116c505f377eff74671f709bac6c0b28a366646e5f6e1c94ffdf23d7`.
-Fresh native receipt: `artifacts/cpu-conformance/attempt-x6p4oc67/receipt.json`,
-SHA256 `48d2da3321e3b2cf24b619a0d644e5e3383406c93efb4eba79722ad14e097d09`.
-The derived CPU link replaces only authored/managed-driver.c and retains108
-qualified producer objects, including the exact corrected alu.c and machine.c.
-Their identical integer-boundary receipt hash is
-`d7d7816ae9ae74f9fda094cd178c831cc009cbb3563f6c5fcc241ef69fbc0729`.
-The managed receipt records both corrected producer source/object hashes, all
-binary hashes, immutable raw output and unchanged compiler/implementation
-identities. The fresh native receipt again preserves364 original differences;
-46 custom fault rows remain excluded. This qualifies only the bounded normal
-inputs and compared architectural state, not full instruction-family coverage.
-
-## Additional32 normal cases awaiting qualification
-
-The first514 descriptors are pinned to the qualified native corpus. These
-additional rows preserve its46 exclusions and require a new500-row native and
-2,000-comparison managed matrix. No new execution pass is implied here.
+## Qualified baseline gap cases
 
 | IDs | Bounded contract |
 | --- | --- |
@@ -158,6 +122,7 @@ additional rows preserve its46 exclusions and require a new500-row native and
 | 543 | CLFLUSH on valid mapped data preserves compared register/memory/flags/XMM state. It does not model or qualify physical cache effects. |
 | 544 | RDTSC retains raw AX/DX samples but checks zeroextended32-bit halves and unchanged CX/BX, data memory, XMM, MXCSR, IP completion and defined flags independently in each hardware/native/managed capture. Timestamp values have no cross-process equality, nonzero, frequency, or timing claim. |
 | 545 | Save RSP in caller-saved RDI, switch to valid data+512, PUSH AX/POP CX, restore exact RSP, clear EDI with flag-preserving MOV. This leaves the capture ABI and R12–R15 untouched; full data memory observes the stack write, and CX observes the popped value. |
+| 546–549 | NEG16/32/64 minimum values check AF0 and all other defined arithmetic flags; NEG8 input1 checks AF1. Upper-register width effects remain compared. |
 
 The capture compares AX/CX/DX, XMM0/1, MXCSR, completion IP, selected flags
 and full data memory. BX is address-dependent and normally excluded from
@@ -176,27 +141,26 @@ bits. Base integer/addressing rows exercise the selected long-mode interpreter.
 Feature mapping describes only bounded execution evidence; it does not claim
 full ISA or general x86-64 application compatibility.
 
-## Preserved NEG failure and reviewed extension
+## Preserved failures and earlier qualification
 
-The first500-row native matrix completed with one mismatch: ID518 NEG8 minimum
-sets AF in upstream Blink while independent hardware clears AF. Receipt:
-`artifacts/cpu-conformance/attempt-hmylb6uo/receipt.json`, SHA256
-`ed8badd8f2400f05e13f3fbee247a8d11c3b49b5b711c3e3e10c0e0c7fe5ad70`.
-All other31 new cases passed; RDTSC invariants passed independently in hardware,
-original and staged native captures. Managed execution was not started.
+The [reviewed integer staging](../../src/UpstreamInteger/README.md) fixes upstream
+INC auxiliary carry, CMPXCHG8B nonmatch zeroextension and NEG auxiliary carry.
+The immutable upstream reference and hardware comparison masks remain unchanged.
 
-The reviewed integer boundary now separates NEG's nibble-dependent AF from CF
-in all four width helpers. Original546 descriptors and their defined masks are
-pinned without changes. IDs546–548 add normal NEG16/32/64 minimum values (AF0),
-and ID549 adds NEG8 input1 (AF1). Corrected504 native qualification passed as recorded below;2,016 managed
-comparisons remain pending. [The exact staged repair](../../src/UpstreamInteger/README.md)
-retains the original failure and hashes; no generated C# or compiler was edited.
+| Evidence | Receipt and SHA256 |
+| --- | --- |
+| Initial 466-row native failure: INC AF at IDs 495/496 and CMPXCHG8B upper bits at ID 510 | `artifacts/cpu-conformance/attempt-cjel3vz8/receipt.json` — `75f0c3a7bccc23e6b014116d8430a0a3a849637f82ed0fb5228fcf7048150812` |
+| Its managed parent stopped before emission/comparisons | `artifacts/cpu-conformance-managed/attempt-f1feworz/receipt.json` — `e7a1c57b96b812b510c0631dcb9fdb13d46ffb4b22acc136af84047dd69cdc00` |
+| Corrected 468-row matrix, 1,872 managed comparisons | `artifacts/cpu-conformance-managed/attempt-sgren8zu/receipt.json` — `e470675d116c505f377eff74671f709bac6c0b28a366646e5f6e1c94ffdf23d7` |
+| 500-row native failure: NEG8 AF at ID 518; other 31 added rows and RDTSC invariants passed | `artifacts/cpu-conformance/attempt-hmylb6uo/receipt.json` — `ed8badd8f2400f05e13f3fbee247a8d11c3b49b5b711c3e3e10c0e0c7fe5ad70` |
+| Corrected standalone native 504-row pass | `artifacts/cpu-conformance/attempt-ovjovt6b/receipt.json` — `798f5c3eb0a01dbcfe5135331ab746931895ee1bc1e56e511538af5ff0fdec33` |
 
-Corrected native504 qualification passed in
-`artifacts/cpu-conformance/attempt-ovjovt6b/receipt.json`, SHA256
-`798f5c3eb0a01dbcfe5135331ab746931895ee1bc1e56e511538af5ff0fdec33`.
-All504 selected rows match the reviewed native reference/hardware contracts;
-46 custom fault rows remain excluded and368 original-native differences remain
-separately recorded. Hardware/original/staged RDTSC invariants pass. The corrected
-alu.c body hash is `095e490901c5cdba26cd02d4c8381be008ce78da3802f7737618db77f7854301`.
-Managed2,016-comparison qualification awaits the corrected canonical producer.
+No managed run began for the failing 500-row native selection. The NEG extension
+preserves all 546 descriptors from that failure and adds four normal cases for
+all repaired widths and both AF states. Its corrected ALU source-body hash is
+`095e490901c5cdba26cd02d4c8381be008ce78da3802f7737618db77f7854301`.
+Earlier 449-row and historical fault-containing matrices remain receipt-specific
+evidence; [HISTORICAL.md](HISTORICAL.md) and [FP-FINDINGS.md](FP-FINDINGS.md)
+retain those findings. They are not fresh passes for the current witness.
+[Coverage limits](COVERAGE.md) distinguish this completed finite set from broader
+ISA qualification that is outside the selected P3 gate.

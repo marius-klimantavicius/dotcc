@@ -1,127 +1,70 @@
-# Current normal-only scope and historical coverage inventory
+# Selected CPU qualification and broader coverage limits
 
-Current selection contains468 normal rows and excludes46 custom fault rows.
-Native468 and all1,872 managed comparisons pass against the corrected canonical
-core: attempt-x6p4oc67 / attempt-sgren8zu, with exact hashes in README. The earlier
-449-row matrix remains historical evidence.
-The table below records historical coverage and gaps; fault/rejection/invalid
-encoding/injected-source entries are outside current required work and are not
-proposals to resume excluded tests. Original receipts remain unchanged.
-Normal instruction families, valid address/stack effects, masked floating state
-and valid TLS setup remain separate bounded coverage opportunities.
+The finite P3 CPU case set is complete: **504 native cases and 2,016 managed
+comparisons**, 504 in each raw/optimized JIT/NativeAOT mode, pass against the
+corrected canonical core. The exact contracts and provenance are in [README.md](README.md).
+Managed receipt: `artifacts/cpu-conformance-managed/attempt-disfjyq2/receipt.json`,
+SHA256 `e3b4a964d69e0bced3d2896ea093f66c535008709fbd196318bc0fe7b99aa72e`.
+Fresh native receipt: `artifacts/cpu-conformance/attempt-27pjwx09/receipt.json`,
+SHA256 `0e9557adcbebe0bca31ea6109ce9fa3889279abb4c18f88876d4ae8440ccdffa`.
 
-## Historical inventory
+All 550 descriptors retain stable IDs; 504 normal rows execute and 46 historical
+custom fault rows remain excluded. The original 495, 512, 514 and 546 descriptor
+subsets are hash-pinned. The fresh reference retains 368 unchanged-original
+native differences separately from the reviewed staged-native pass. Source
+corrections are explicit, pinned and checked against canonical producers;
+comparison masks were not changed to accept implementation differences.
 
-# Remaining CPU coverage
+This completes the agreed finite CPU portion of the selected profile. It does
+not certify every operand, encoding, instruction family or x86-64 application.
+The broader limits below are not additional pending work for this finite gate.
+Guest memory, valid ELF/TLS, host services and lifecycle have separate receipts.
 
-The 495-case corpus is bounded evidence, not P3 completion. Five FP failures
-in the original 31-case corpus are preserved and corrected by a reviewed staged
-source derivation (see `FP-FINDINGS.md`). Its four passing modes qualify
-only those exact inputs and defined-state comparisons. The retained feature
-inventory remains `blink/docs/HOST-CPU.md`; no feature is considered covered just
-because its CPUID bit is advertised or its handler is linked.
+## Qualified normal cases and limits
 
-| Area | Current evidence | Important gaps |
+| Area | Current bounded evidence | Broader limits |
 | --- | --- | --- |
-| Integer ALU/flags | ADD/SUB64 boundaries, ADC8, SBB32 zero-extension, IMUL64 overflow | Broader ADC/SBB widths, INC/DEC carry preservation, logical/multiply families and broader operands |
-| Shifts | SHL masked64, SHR1, SAR63 | Count0/width/width+1 across widths, rotates/through-carry, double shifts, remaining defined flag boundaries |
-| Division | Signed64 -17/5 and INT64_MIN/-1 fault | Divide-by-zero, unsigned division, other widths, maximum/minimum valid quotients/remainders |
-| Decoder/addressing | One MOVABS crossing an instruction page | Prefix combinations, operand/address sizes, 15-byte length limit, ModRM/SIB/RIP-relative, FS/GS addresses, invalid encodings |
-| Memory/fault restart | Unaligned8-byte cross-page read/write; crossing read fault | Crossing stores/fault atomicity, write protection, NX, canonical-address faults, alignment-sensitive operations, stack/REP restart |
-| SSE/SSE2 | PADDD, PXOR, signed-zero ADDSD and exact ADDPS; reviewed scalar correction | Other packed widths, saturation/comparison/shuffle/masks, scalar/packed moves and broader floating operations |
-| Floating point | Signed zero/exact lanes pass; reviewed scalar COMIS/UCOMIS and CVT/CVTT SS/SD-to-32/64 now pass limits, ties/all RC, NaNs/infinities, DAZ/FTZ, sticky/masked/unmasked state and signal-code cases | Broader arithmetic/packed FP, NaN result payload rules, underflow/overflow arithmetic, memory encodings and approximations |
-| FXSR | Earlier separate native-only FX save/restore witness | Actual translated FXSAVE/FXRSTOR/MXCSR state round trips and masks |
-| SSE3/SSSE3/PCLMULQDQ/POPCNT | Optional advertisements cleared; retained handler audit only | Actual translated hardware differential cases for each family |
-| CMPXCHG8B/16B | CMPXCHG16B advertisement cleared; baseline CMPXCHG8B remains advertised; retained handler audit only | Success/failure state, alignment and atomicity contracts |
-| CMOV/LAHF/SAHF/FSGSBASE | One CMOV condition now passes; other paths remain unqualified | Other conditions/widths, flag/register and address effects, save/restore |
-| ERMS | REP paths retained | Direction, overlap, zero length, page-boundary fault restart; no speed claim |
-| TSC/RDTSCP/RDPID/RDRAND/RDSEED | Separate capability/host contracts | Instruction register/flag semantics and bounded/injected-source properties; real clock/random values must not be compared for equality across runs |
-| CLFLUSH | Retained interpreter fence | Instruction/fault behavior; physical cache effects are not modeled |
-| PAE/NX/long mode | Current long-mode mappings only | Broader page-table and execution-permission cases |
-| SYSCALL | Separate core exit/exit_group checks | Instruction-level RCX/R11/IP semantics and broader service contracts remain separate |
+| Integer/flags | ADD/SUB, ADC/SBB, INC/DEC carry preservation, NEG at all widths, AND/XOR, IMUL and defined flag boundaries | Other operand combinations, widths and multiply/logical families are not exhaustive. |
+| Shifts/rotates | Count-zero/masked counts, SHL/SHR/SAR widths, ROL8/ROR64 count1, SHLD32 count1 | Through-carry rotations, other double shifts and all boundary combinations remain outside this finite set. |
+| Division | Valid unsigned8/32 and signed16/32/64 results, upper-register preservation/zeroextension | Division flags are undefined and excluded; no custom arithmetic faults execute. |
+| Addressing | Instruction-page crossing, SIB scaling/displacement, negative disp32, RIP-relative literal load, MOVZX/MOVSX and valid cross-page loads/stores | Not every prefix, address size, instruction length or addressing combination. |
+| Stack/REP | Exact balanced data-stack PUSH/POP with restored SP; forward/backward valid16-byte MOVSB with full bytes, count and normalized final SI/DI | Not general all-register, overlap or restart qualification. Normalizing SUB overwrites REP arithmetic flags; DF0 is checked. |
+| SSE/SSE2 | Packed arithmetic, signed/unsigned saturation, equality/interleave/shuffle, word shifts, aligned/unaligned moves and both captured XMM lanes | Other packed widths, operations, memory encodings and broader arithmetic remain outside the selected recipes. |
+| Scalar FP | Reviewed COMIS/UCOMIS and conversion cases with defined limits, ties, rounding modes, NaN/infinity and normal masked-state behavior | Not every result payload, arithmetic underflow/overflow, approximation or FP environment. Custom fault rows remain excluded. |
+| FXSR | Actual translated FXSAVE/FXRSTOR roundtrip restoring XMM0/1 and nondefault MXCSR | Saved x87/reserved/vendor bytes are cleared before comparison, not asserted equal; no exhaustive save-image compatibility. |
+| CMPXCHG8B | Normal match/nonmatch register, memory and ZF results, including nonmatch zeroextension | Single-thread cases do not establish atomicity. CMPXCHG16B is not advertised. |
+| CMOV | Existing CMOVZ plus taken/not-taken CMOVNE32 and CMOVL64, taken CMOVB16 | Other conditions and widths are not exhaustive. |
+| RDTSC | Independent AX/DX zeroextension and preserved-state invariants in hardware, original/staged native and all managed modes; raw timestamps retained | No timestamp equality, nonzero, monotonicity, frequency or timing claim. |
+| CLFLUSH | Valid mapped address with unchanged compared architectural state | Physical cache effects are not modeled or qualified. |
 
-Current fault comparisons intentionally exclude unspecified register/flag
-outcomes. Full raw captures are retained for diagnosis; broadening an assertion
-requires identifying defined architecture behavior, not accepting whatever the
-interpreter happens to produce. Additional FP cases likewise need real hardware
-or pinned independent references and explicit exception/rounding assumptions.
+## Measured feature policy
 
-Excluded x87/MMX/BMI2/ADX instruction rejection has earlier native witnesses;
-those exact rejection cases still need the actual translated-core witness.
-Features whose CPUID advertisements are clear (including AES/SSE4/AVX/XSAVE)
-are not promoted into this profile by these tests. No compiler was changed. The original diagnostic preserves unchanged upstream
-algorithms; the later scalar qualification uses an explicit reviewed and hashed
-source correction, with its original-native differences retained.
+Eleven full-core CPUID instruction queries measure the actual profile.
+`feature_inventory` checks 41 feature locations in every managed mode, validates
+excluded advertisements remain clear and compares all four CPUID output
+registers with the exact staged native policy. Hardware feature differences
+remain separate environment evidence. `features.py` maps bounded executed row
+names to retained SSE/SSE2, CMOV, RDTSC, CLFLUSH, CMPXCHG8B and FXSR bits.
+A bit or a linked handler alone is not execution evidence.
 
-## Actual advertised feature inventory and narrowed policy
+Optional SSE3, SSSE3, PCLMULQDQ, POPCNT, CMPXCHG16B, FSGSBASE, ERMS, RDRAND,
+RDSEED, RDPID, LAHF/SAHF, RDTSCP and invariant-TSC advertisements remain clear;
+thermal/power leaf6 is zero. The x87/MMX/BMI2/ADX/SSE4/AES/AVX/XSAVE exclusions
+also remain enforced. These cleared bits do not imply undefined-instruction
+rejection tests. Normal REP execution does not re-enable ERMS advertisement.
 
-The current complete-core CPUID instruction rows, not an inferred historical
-profile, decide the reported advertisements. `feature_inventory` in the expanded
-receipt records 41 locations for each managed mode, checks excluded bits remain
-clear, and compares all four registers with the staged native profile. Physical
-hardware feature differences are retained separately and are expected.
+PAE/long-mode/NX are exercised by the separately qualified valid guest-memory,
+ELF and TLS paths; the exit/exit_group SYSCALL paths also have separate core
+receipts. Their scope must be read from those receipts rather than inferred
+from this CPU matrix. No general system-mode or service compatibility is claimed.
 
-The narrowed profile clears SSE3, SSSE3, PCLMULQDQ, POPCNT, CMPXCHG16B,
-FSGSBASE, ERMS, RDRAND, RDSEED, RDPID, LAHF/SAHF, RDTSCP and invariant TSC,
-and zeros thermal/power leaf 6. The checked service compiler target is baseline
-x86-64; host clock/entropy contracts are independent evidence. Clearing these
-advertisements does not establish undefined-instruction rejection: retained
-handlers may still execute. Baseline SSE/SSE2, RDTSC, FXSR, CMPXCHG8B and system
-instruction coverage remains incomplete. One CMOV case does not certify its
-whole family. The scalar correction is required independently of optional bits.
+## Historical evidence
 
-Older `HostCpu` evidence is retained: 16 focused direct-OpCpuid queries in all four modes,
-eight native feature-toggle combinations and seven native instruction witnesses.
-In particular the native FXSR/PXOR and excluded-family rejection results still
-matter, but they do not count as complete-managed-core execution of those cases.
-The corpus now contains eleven full-core CPUID instruction queries, adding
-leaf 6, leaf 7/subleaf 1 and unknown basic/extended leaves to the original seven
-(including 80000007). Cache and OS/architecture leaves remain focused-only
-evidence. Each fresh matrix validates the exact retained canonical CPUID source
-against its native reference policy before executing the corpus.
-
-The narrowed canonical matrix now passes 495 cases in each of four modes
-(1,980 comparisons), receipt `artifacts/cpu-conformance-managed/attempt-jwuzr1go/receipt.json`.
-The four added cases qualify only CPUID policy outputs. They do not close any
-of the baseline instruction-family gaps in the table above.
-
-## Appended normal candidates
-
-Nineteen additional normal cases at stable IDs495–513 now cover source recipes
-for INC/DEC carry preservation, additional shift/division widths,
-CMPXCHG8B match/nonmatch and an FXSR roundtrip. The initial466-row native run found three upstream integer mismatches;
-reviewed correction plus the two new INC8/16 rows now pass all468 native rows
-in attempt-lc9j96ag. The expanded managed matrix also passes all1,872 comparisons in
-attempt-sgren8zu, retaining108 exact canonical objects and deriving only the
-authored CPU frontend. The selector preserves the
-first495 and first512 descriptor digests, adds no fault case, and still excludes46 historical
-fault inputs. The expected expanded matrix contains468 selected rows per mode.
-See [the case contracts](README.md#qualified-appended-normal-coverage).
-
-## Next bounded selected-profile matrix
-
-Source selection now adds32 normal rows at IDs514–545, for500 selected and46
-excluded rows. All first514 descriptors remain pinned; the last qualified matrix
-is468 native /1,872 managed above. The additional cases await execution. See
-[the exact contracts](README.md#additional32-normal-cases-awaiting-qualification)
-for defined arithmetic/rotate flags, packed SSE2 lanes/moves/shuffle, valid
-addressing/stack/REP and baseline CMOV/RDTSC/CLFLUSH. RDTSC uses independent
-width/preservation invariants with raw timestamps retained, not cross-process
-timestamp equality. REP compares normalized final pointers and bytes while
-explicitly limiting claims about flags overwritten by normalization.
-
-The500-row native attempt completed with one upstream NEG8 AF mismatch; the
-other31 added rows and all independent RDTSC invariants passed. Its exact failed
-receipt and staged-source correction are linked from README. The source now
-preserves546 descriptors and adds four normal NEG rows for a504-row selection
-(46 exclusions). The corrected native matrix passed as recorded below; it does not extend the
-last qualified468-row managed result yet.
-
-Corrected native504 qualification passed in
-`artifacts/cpu-conformance/attempt-ovjovt6b/receipt.json`, SHA256
-`798f5c3eb0a01dbcfe5135331ab746931895ee1bc1e56e511538af5ff0fdec33`.
-All504 selected rows match the reviewed native reference/hardware contracts;
-46 custom fault rows remain excluded and368 original-native differences remain
-separately recorded. Hardware/original/staged RDTSC invariants pass. The corrected
-alu.c body hash is `095e490901c5cdba26cd02d4c8381be008ce78da3802f7737618db77f7854301`.
-Managed2,016-comparison qualification awaits the corrected canonical producer.
+[HISTORICAL.md](HISTORICAL.md), [FP-FINDINGS.md](FP-FINDINGS.md) and the
+[README failure table](README.md#preserved-failures-and-earlier-qualification)
+preserve earlier passes and failures, including now-excluded custom faults.
+The initial466-row run exposed INC AF and CMPXCHG8B register-width defects; the
+500-row run exposed NEG AF. All original inputs and receipts remain preserved.
+Their reviewed corrections and the current finite normal matrix are distinct
+from unchanged-upstream conformance. Historical rejected/fault/invalid-input
+rows are not proposals or requirements to resume those tests.

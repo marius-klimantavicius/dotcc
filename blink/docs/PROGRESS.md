@@ -11,32 +11,33 @@ Valid ELF loading, ordinary functional/lifecycle tests and runtime error handlin
 remain in scope. Earlier custom-test blockers below are historical and no longer
 block completion; excluded checks are not reported as passed.
 
-P0–P2 have passed on Linux x64. `blink/scripts/translate.sh` produces the final
-postprocessed `blink/generated/TranslatedBlink/` project and immutable raw
-comparison. Corrected canonical core execution passes all four managed forms;
-468 normal CPU cases per form, valid ELF and explicit TLS startup are qualified.
+P0–P3 have passed for the selected Linux x64 profile. `blink/scripts/translate.sh`
+produces the final postprocessed `blink/generated/TranslatedBlink/` project and
+immutable raw comparison. Corrected canonical core execution passes all four
+managed forms. The final CPU set passes 504 normal cases per form (2,016 total),
+with 46 custom fault cases excluded. Actual guest-memory lifecycle algorithms,
+valid ELF loading and explicit TLS startup also pass native and all four forms.
+
 The owning normal-core sample and fresh clean public delivery at revision
-497ce69 pass with the integer repair (109 fresh objects, zero reuse).
-P3–P6 remain open. User priority is now completion of P3; additional P6 regressions/performance
-are deferred. The service API/worker,
-remaining CPU/guest-memory cases and actual Windows execution are not qualified. Historical fault results below are not
-part of the current normal-only qualification.
+497ce69 pass with the earlier INC/CMPXCHG8B repair (109 fresh objects, zero reuse).
+The subsequent NEG repair has fresh delivery, core and CPU qualification; the
+clean receipt is not relabeled as a run of that later revision.
+P4–P6 remain open: actual service API/worker integration, remaining host/service
+contracts, Windows execution and remaining publication/performance/regression
+qualification. Historical custom fault results are excluded, not passed.
 
-## P3 completion work in progress
+## P3 completion evidence
 
-The normal qualification set was fixed before execution. Its native500 run
-exposed B034 (NEG auxiliary carry); four targeted repair regressions bring the
-required selected count to 504. Existing 546 descriptors remain pinned:
-
-| Owner | Remaining cases | Required evidence |
+| Owner | Completed work | Evidence |
 | --- | --- | --- |
-| CPU worker | 32 additional rows: 8 integer/flags/rotates/double-shift; 8 packed SSE2 saturation/compare/interleave/shuffle/shift/aligned and unaligned moves; 8 addressing/extension/cross-page store/REP direction; 5 CMOV conditions/widths; CLFLUSH, RDTSC invariants and balanced valid stack | 504 selected normal rows after four NEG repair regressions; first 546 descriptors preserved, 46 custom faults excluded. Exact defined state or explicitly recorded nondeterministic invariants; no clock-value equality claim. |
-| Inputs worker — passed | Actual guest page tables: 2 pages growing to 4 contiguous plus 1 separate; 96-byte cross-page copy/canaries; RW/NX to R/NX to RW/NX; unmap/remap zero/refill; release all mappings; repeat lifecycle twice | Passed at `guest-memory/attempt-gbyg6j74`: exact native/all-four transcript, vss cleanup and stable bounded retained pool across both cycles, then final disposal. No translated calls after disposal; protection metadata and permitted access only. |
-| Coordinator | Integrate and review the above against existing 468-row CPU, valid ELF/TLS and selected upstream evidence | Freeze sources/provenance, run suites serially, preserve failures and commit results. Resolve observed semantic defects before marking the selected P3 gate complete. |
+| CPU worker | Finite flags/widths/shifts/division, scalar FP, packed SSE2, addressing/cross-page access, REP, CMOV, CLFLUSH, RDTSC invariants and balanced stack set; four targeted NEG repair regressions | `cpu-conformance-managed/attempt-disfjyq2`: 504 cases in each raw/optimized JIT/NativeAOT form, 2,016 matches, 46 exclusions. First 546 descriptors preserved. No clock-value equality claim. |
+| Inputs worker | Actual guest page tables: growth, cross-page copy, protection metadata/permitted access, unmap/remap, cleanup and two lifecycle cycles | `guest-memory/attempt-gbyg6j74`: native/all-four exact transcript, vss cleanup and stable bounded retained pool, then final disposal. |
+| Coordinator and reviewers | Canonical NEG integration, source/producer identity review and retained valid ELF/TLS evidence | `core-execution/attempt-273a6hks`, `elf-loading/attempt-qclmm2fz`, `tls-loading/attempt-m6fpvl1m`; only four ALU NEG bodies changed since the memory/loader runs, with the other 108 producer records and Host/header/compiler inputs identical. |
 
-These are bounded selected-profile checks, not exhaustive ISA certification.
-The clean delivery has finished successfully; new P6 performance and regression
-runs are deferred until this P3 work is resolved.
+This closes the finite selected-profile P3 gate. It is not exhaustive ISA
+certification, a general libc/dynamic TLS ABI, forbidden-access enforcement
+qualification, or post-NEG reexecution of unchanged memory/loader tests.
+All workers have finished their P3 assignments and released the build slot.
 
 ## Ownership
 
@@ -46,9 +47,8 @@ main checkout. Historical recovery/detached worktrees remain evidence only.
 
 - Coordinator: current shared-toolchain build/identity freeze, normal-only probe
   scope alignment, integration, runtime revalidation, durable status and commits.
-- Inputs worker: actual upstream GuestMemory mapping/page-table lifecycle tests.
-- Consumer/CPU worker: the finite remaining normal CPU coverage set; clean
-  reproduction is complete. P6 regression/performance execution is held.
+- Inputs worker: completed actual GuestMemory qualification and final source/producer review; idle.
+- Consumer/CPU worker: completed the finite CPU set and clean reproduction; idle.
   The service-worker task remains unqualified.
 
 Shared compiler edits and heavy test suites remain serialized. Workers own
@@ -61,34 +61,24 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 | P0 | Passed | Immutable sources verified offline; native Blink and 25 assembly cases pass; six HTTP cases pass on Linux and Blink; exact native archive/import/global audit and initial translation failures recorded. |
 | P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
 | P2 | Passed | All 109 sources emit/link; corrected core passes raw/optimized JIT/AOT; translate.sh publishes the final TranslatedBlink project and immutable raw comparison. Direct IL/import/initializer inventories retain explicit indirect/framework limits for P4/P6. |
-| P3 | Partial | 468 normal CPU cases per form, valid ELF and fixed TLS startup pass; broader CPU and guest-memory algorithms remain open. |
+| P3 | Passed — selected profile | 504 normal CPU cases per form (2,016 matches), valid ELF/fixed TLS and actual guest-memory lifecycle pass. Bounded coverage and retained producer evidence are documented above. |
 | P4 | Pending | Real host contracts and service startup. |
 | P5 | Partial | ManagedConsumer.slnx normal-core usage sample passes; translated service worker/API and two-instance HTTP lifecycle remain unqualified. |
-| P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance held for P3. Windows and full performance/dependency gates remain open. |
+| P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
 
 ## Observed environment
 
 .NET SDK 10.0.111 is available. Baseline build disables automatic sibling LALR.CC substitution using `-p:UseLocalLalrCc=false`. Test TMPDIR is isolated to `blink/artifacts/tmp`.
 
-## Active delivery and revalidation
+## Remaining delivery gates
 
-The previous stop boundary is lifted by explicit user instruction. The shared
-compiler/headers/runtime changed substantially during libsmb2; earlier Blink
-receipts remain historical and do not qualify fresh output from those changes.
-The current Release toolchain rebuilt successfully and is frozen for fresh
-complete-core translation. Incompatible historical objects must not be reused.
-
-Immediate work is the required P2 translation/post-processing delivery and an
-actual normal-core consumer sample. The default authored probe now omits its
-former custom undefined-instruction/unmapped-memory cases under the updated
-test scope, retaining arithmetic, bounded branches and normal guest exits.
-Required runtime error handling remains implemented.
-
-The actual translated service worker was previously stopped by automated review;
-that task is not being retried or replaced by false service claims. P3–P6 still
-require their remaining allowed coverage/delivery/platform gates, including real
-Windows execution. Custom fault-injection/invalid-ELF work remains excluded
-unless already in pinned upstream suites with explicit revision/path provenance.
+The current shared Release compiler is frozen and qualified by the receipts
+above. P2 delivery and the normal-core sample are implemented. P4's actual
+service integration and P5's owning translated worker/two-instance HTTP lifecycle
+remain unqualified. The translated-service worker task was stopped by automated
+review for a possible cybersecurity risk; it is not being retried or replaced
+by a fixture-based service claim. Prepared P6 regression/performance work remains
+unrun, and actual Windows execution still requires that platform.
 
 ## Observed validation (initial campaign baseline)
 
@@ -1744,3 +1734,26 @@ The final CPU worker now runs 504 normal cases per managed form (2,016 total)
 against this qualified canonical profile. B034 stays open until those actual
 comparisons pass. Existing guest-memory/loader objects and evidence remain
 unchanged; broader P6 work is still held.
+
+## P3 selected-profile milestone passed
+
+Final CPU attempt-disfjyq2 passes all 2,016 comparisons (504 in each of four
+forms); receipt SHA256
+`e3b4a964d69e0bced3d2896ea093f66c535008709fbd196318bc0fe7b99aa72e`.
+Fresh native child attempt-27pjwx09 passes 504 and preserves 368 original-native
+differences; SHA256
+`0e9557adcbebe0bca31ea6109ce9fa3889279abb4c18f88876d4ae8440ccdffa`.
+All RDTSC invariant lists are empty. All 2,016 ownership footers report two
+mappings and 270,450 charged bytes. Coordinator verification rehashed all
+implementation, compiler, raw source, output binary, 108 retained producer and
+command-log identities and checked the exact receipt links and comparison counts.
+B034 is closed for its reviewed four-width NEG correction and finite regressions.
+
+Independent integration review compared canonical assemblies 03789a and 14c483:
+only alu.c changed; all other 108 producer records and Host/header/compiler
+inputs match. The source and normalized emitted-object differences contain
+exactly the four NEG AF/CF body corrections, with no ABI/layout/global changes.
+This retains the prior successful GuestMemory/ELF/TLS evidence without claiming
+those tests were reexecuted after NEG. Together these satisfy the selected P3
+CPU/ELF/memory gate. Broader ISA, general TLS, service integration and Windows
+claims remain outside this pass. All workers are idle; no new suite started.

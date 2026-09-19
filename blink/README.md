@@ -6,8 +6,10 @@ C# on Linux x64. The current compiler translates all 109 selected sources throug
 `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and preserves a separate
 immutable raw snapshot. The actual normal-core usage sample passes JIT and
 NativeAOT against native arithmetic, memory, budget and guest-exit observations.
-The normal CPU corpus passes 468 cases in each of raw/optimized JIT/NativeAOT,
-with 46 historical custom fault cases explicitly excluded.
+The normal CPU corpus passes 504 cases in each of raw/optimized JIT/NativeAOT,
+for 2,016 comparisons, with 46 historical custom fault cases explicitly excluded.
+Actual guest-memory lifecycle and valid ELF/fixed TLS tests also pass all four
+forms, completing the finite selected-profile P3 gate.
 
 Earlier CPU, host-service and dependent-campaign results are historical where
 they predate the shared compiler changes made during libsmb2. Custom fault
@@ -15,8 +17,9 @@ injection and invalid/malformed ELF cases are excluded; only existing pinned
 upstream fault cases may enter new qualification.
 
 The service product is incomplete. Actual managed HTTP service startup, the
-translated worker, complete CPU/ELF/memory coverage and Windows execution remain
-open. The independent controller has subprocess lifecycle tests; it does not
+translated worker and Windows execution remain open. The P3 pass is bounded
+selected-profile coverage, not exhaustive ISA or general dynamic TLS support.
+The independent controller has subprocess lifecycle tests; it does not
 yet provide a qualified translated-service worker. See [progress](docs/PROGRESS.md),
 [validation](docs/VALIDATION.md), [blockers](docs/BLOCKERS.md) and the
 [implementation plan](docs/PLAN.md) for exact evidence and remaining gates.
