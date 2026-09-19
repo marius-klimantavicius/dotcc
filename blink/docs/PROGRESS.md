@@ -1489,3 +1489,35 @@ current frozen compiler. The corpus wrapper needs an explicit normal-suite
 selection before reuse: allocation and VFS suites contain custom injected
 failures. Their exclusion is recorded as scope, not a pass. The remaining shared
 campaign gates are still pending current execution.
+
+## Current SQLite regression passed; new integer findings
+
+SQLite's owning consumer passes freshly regenerated raw/optimized JIT/NativeAOT
+at sqlite-regression/attempt-71n3t9tf (SHA256
+a01d0de82fc7e47d12e331df27e6a0648f25b6d09b92cdb7fbf278c789204dd5).
+The revised corpus wrapper passes five native suites and all 20 managed forms at
+sqlite-corpora/attempt-f3xzr2_h (SHA256
+07f2f661c3a087d396e3ab4334670a6bc3c15899a64e7c2145de64f670d1e9c4).
+Selected core/api/vtable/upstream/FTS5 transcripts and source/tool identities are
+exact; allocation and VFS mixed suites are explicitly excluded because they
+contain custom injected failures. Ordinary SQL/API errors remain covered.
+SQLite authored files and the shared compiler were unchanged.
+
+Seventeen appended normal CPU cases exposed three inherited native mismatches
+before managed execution. Preserved native attempt-cjel3vz8 has SHA256
+75f0c3a7bccc23e6b014116d8430a0a3a849637f82ed0fb5228fcf7048150812.
+INC32/64 lose AF on nibble wrap (the pinned helpers compare with unused y=0),
+and CMPXCHG8B nonmatch preserves upper register bits instead of zeroextending
+EAX/EDX. Defined hardware comparisons remain unchanged. The 31-byte FXSR
+roundtrip case passes natively, including changed/restored MXCSR and cleared
+saved-image bytes. Managed expanded execution did not start after the native
+failure; previous 449-case receipts remain bounded historical evidence for those
+exact cases, not a pass for the expansion.
+
+The worker is preparing separately pinned integer source adaptations and native/
+managed proof flags, adding INC8/16 coverage for all repaired widths. Coordinator
+profile integration is pending validation; immutable upstream and generated C#
+remain untouched. Picotls's scoped regression owns the build slot meanwhile;
+its native preparation and raw copied/ABI/55-peer JIT/AOT checks pass, with
+optimized forms pending. No shared compiler change is needed for these inherited
+Blink algorithm defects, so current dependent-campaign evidence remains relevant.

@@ -57,6 +57,17 @@ The loaded PT_TLS header, private RW/NX runtime block, ARCH_SET_FS, initial/zero
 TLS values, update/sum, exact 25 instructions and normal exit are checked. This
 fixed positive-offset layout does not qualify a general libc/dynamic TLS ABI.
 
+SQLite's owning consumer passes all four current-compiler forms at
+`sqlite-regression/attempt-71n3t9tf`. Five non-injection C corpora pass native and
+all 20 managed results at `sqlite-corpora/attempt-f3xzr2_h`; allocation/VFS mixed
+injection suites are excluded explicitly, not counted as passes.
+
+The appended CPU expansion currently fails three defined hardware comparisons
+in original/scalar-staged native Blink (`cpu-conformance/attempt-cjel3vz8`): INC
+auxiliary carry and CMPXCHG8B nonmatch upper-register clearing. Managed expansion
+stopped before execution. See B033; previous 449-case evidence does not qualify
+new inputs or pending source repairs.
+
 ## Historical qualification ledger
 
 | Surface | Observed result | Reproduce |

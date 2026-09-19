@@ -360,3 +360,18 @@ comparison and SIMD signal-code paths. The qualified derived CPU link retains
 105 original objects and replaces four; a new canonical full-core profile is
 next. General FP arithmetic, packed conversions, complete CPUID qualification
 and broader P3 gates remain open.
+
+## B033 — inherited INC auxiliary carry and CMPXCHG8B register width
+
+Expanded normal corpus attempt-cjel3vz8 reproduces three defined-state mismatches
+against hardware in both original and scalar-staged native Blink: INC64/INC32
+lose AF when the low nibble wraps, and a CMPXCHG8B nonmatch retains upper 32 bits
+of AX/DX. The pinned INC8/16/32/64 helpers compare the result nibble with unused
+operand y instead of original x. OpCmpxchg8b writes only four bytes of each
+register array, while the architectural EAX/EDX writes zeroextend in long mode.
+
+Hardware comparisons/masks remain unchanged. Separate hash-checked source
+adaptations are being prepared, with additional normal INC8/16 coverage; no
+corrected native or managed pass is claimed yet. Immutable upstream files,
+compiler code and generated C# are not modified. Current full-core delivery
+will require regeneration and revalidation after the reviewed source repair.
