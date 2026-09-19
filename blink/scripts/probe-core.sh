@@ -111,6 +111,38 @@ for basename, directory in (('map','HostMemory'),('debug','HostMemory'),('cpuid'
     boundary=json.loads(receipt.read_text())
     source_overrides['blink/'+basename+'.c']={'staged_path':str(adapted.relative_to(p)),
         'sha256':boundary['stagedSha256'],'original_sha256':boundary['originalSha256']}
+# Apply the reviewed scalar correction before host binding preambles. Preserve
+# every staging input in this new profile, including its review diff and pins.
+# Existing profiles, cached objects and the immutable reference are untouched.
+if not any(line.split()[:2] == ['#define', 'DISABLE_JIT'] for line in config.splitlines()):
+    raise SystemExit('reviewed scalar FP correction requires DISABLE_JIT')
+scalar=p/'src/UpstreamScalarFp'
+scalar_snapshot=stage/'source-adaptations/UpstreamScalarFp'
+scalar_inputs={f.name:hashlib.sha256(f.read_bytes()).hexdigest()
+               for f in scalar.iterdir() if f.is_file()}
+shutil.copytree(scalar,scalar_snapshot,ignore=shutil.ignore_patterns('__pycache__'))
+for name,digest in scalar_inputs.items():
+    if hashlib.sha256((scalar_snapshot/name).read_bytes()).hexdigest()!=digest:
+        raise SystemExit('scalar FP staging snapshot changed: '+name)
+scalar_output=stage/'upstream/scalar-fp'
+scalar_receipt=stage/'scalar-fp-boundary.json'
+subprocess.run([sys.executable,str(scalar/'stage.py'),'--output',str(scalar_output),
+                '--receipt',str(scalar_receipt)],check=True)
+if scalar_inputs!={f.name:hashlib.sha256(f.read_bytes()).hexdigest()
+                   for f in scalar.iterdir() if f.is_file()}:
+    raise SystemExit('scalar FP staging inputs changed during profile construction')
+boundary=json.loads(scalar_receipt.read_text())
+if boundary['patch_sha256']!=scalar_inputs['scalar-fp.patch']:
+    raise SystemExit('scalar FP generated diff differs from the reviewed patch')
+for filename,row in boundary['sources'].items():
+    name='blink/'+filename
+    adapted=scalar_output/filename
+    if name in source_overrides or pins[name]!=row['source_sha256']:
+        raise SystemExit('scalar FP source pin or adaptation collision: '+name)
+    if hashlib.sha256(adapted.read_bytes()).hexdigest()!=row['staged_sha256']:
+        raise SystemExit('scalar FP staged source changed: '+name)
+    source_overrides[name]={'staged_path':str(adapted.relative_to(p)),
+        'sha256':row['staged_sha256'],'original_sha256':row['source_sha256']}
 binding_overrides=stage/'binding-overrides.json'
 binding_overrides.write_text(json.dumps(source_overrides,indent=2)+'\n')
 with (stage/'host-binding-stage.log').open('wb') as log:

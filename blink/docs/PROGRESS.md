@@ -32,8 +32,8 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 ## Next actions
 
-Integrate the qualified staged scalar FP correction and current HostMemory into
-a fresh complete-core profile, then rerun its ABI/execution/import gates. Expand
+The new complete-core profile includes the qualified scalar FP correction and
+current HostMemory; its ABI/execution/import/publication gates pass. Narrow
 the remaining CPU/CPUID coverage and finish independent MsQuic qualification.
 SQLite/picotls matrices, Lua/chibi JIT conformance and WAT/Zig execution oracles
 now have fresh passing Linux x64 results. Service-worker implementation and malformed-input work are
@@ -1138,3 +1138,22 @@ entry points, ownership constraints and current unqualified product gates.
 B030 was also freshly revalidated: a minimal native directory-call program
 passes, while typed opendir/readdir assignments still fail managed compilation.
 It remains a separate generic issue, outside the qualified private Blink bridge.
+
+## Significant progress: fresh complete profile with scalar and memory corrections
+
+Profile attempt-ngy_l10p emits and links all 109 sources afresh, with zero cached
+objects reused. It explicitly includes the reviewed scalar correction and
+qualified software-protection HostMemory/FileMapping sources; the original
+profiles remain immutable. The staging recipe snapshots the reviewed module,
+checks its exact diff/source hashes and JIT exclusion, and applies the existing
+host-binding prefix afterward.
+
+CoreExecution attempt-yufxocze passes native behavior/configured ABI and all four
+raw/optimized JIT/NativeAOT forms. The independent CoreAbi attempt-mlv4tdgf
+passes 236 measured rows in all four forms. Raw/optimized direct IL inventories
+cover 5597/5587 methods with zero traversed native imports or errors; their
+155 indirect and 594 virtual call sites remain explicit limits. Publication
+audit attempt-tvcys8m0 passes against exact execution-time AOT hashes. The full
+identity chain is core/canonical-scalar-integration.json. This is a new complete
+profile checkpoint, not a change to the still-open service/platform gates.
+Optional CPUID advertisements are unchanged here and are the next profile task.

@@ -17,7 +17,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Inferred outer-array dimensions | Warning-free build; 2231 unit pass; 508 functional pass, 1033 skipped | `scripts/test-repository.sh` |
 | Borrowed va_list formatting | Native/four-mode formatter matches; build clean, 2234 unit/509 functional pass, 1035 skipped | `scripts/test-repository.sh` and `artifacts/vsnprintf/attempt-cxeunj4b/receipt.json` |
 | Declaration order / external pointer ownership | Build clean; 2235 unit/514 functional pass, 1037 skipped | `scripts/test-repository.sh` |
-| Managed interpreter embedding | Native/configured ABI and instruction/fault/exit rows match raw/optimized JIT/AOT; all 109 sources linked and AOT rooted | `tests/CoreExecution/run.py`; receipt attempt-ymbkz80n |
+| Managed interpreter embedding | Native/configured ABI and instruction/fault/exit rows match raw/optimized JIT/AOT; all 109 sources linked and AOT rooted | `tests/CoreExecution/run.py`; receipt attempt-yufxocze |
 | Private memory filesystem | Four independent assertion groups pass Linux JIT/AOT; guest callback integration pending | `scripts/test-host-files.sh` |
 | Private TCP namespace | Four assertion groups pass Linux JIT/AOT, including real backpressure/cancellation and same guest port in two instances | `scripts/test-host-sockets.sh` |
 | Unified instance I/O | Four groups pass Linux JIT/AOT: common fd limits, dup lifetimes, bounded streams and disposal | `scripts/test-instance-io.sh` |
@@ -96,3 +96,9 @@ JIT/NativeAOT campaign, including 224 independent peer executions and zero
 dependency-audit violations: picotls-regression/attempt-ymi5de8u. Reproduce with
 `scripts/test-picotls-regression.py --cache <verified-picotls-archive-cache>`.
 The shared compiler and tracked picotls inputs remained unchanged.
+
+The fresh complete profile with reviewed scalar FP and current HostMemory is
+`generated/core-profile/attempt-ngy_l10p`: all 109 sources emitted without object
+reuse. Its latest execution, independent storage and publication receipts are
+respectively `core-execution/attempt-yufxocze`, `core-abi/attempt-mlv4tdgf` and
+`publication-audit/attempt-tvcys8m0`. Direct IL limitations remain unchanged.
