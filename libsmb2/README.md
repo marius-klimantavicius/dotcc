@@ -1,8 +1,9 @@
 # libsmb2 translation campaign
 
 The [plan](docs/PLAN.md) is being implemented. The pinned native client already
-passes authenticated file operations against an isolated Samba server; managed
-translation is still closing compiler and host-service gaps.
+passes authenticated file operations against an isolated Samba server. The full
+managed translation pipeline now produces buildable raw and post-processed C#;
+managed protocol execution is being qualified.
 
 ```sh
 ./libsmb2/scripts/fetch.sh
@@ -24,5 +25,6 @@ remain it exits nonzero and preserves diagnostics instead of publishing a partia
 product. `build.sh` builds an already generated product without translating.
 
 See [configuration](docs/configuration.md), [provenance](docs/source.md), and
-[validation](docs/validation.md) for current capabilities and evidence. The planned
-`ManagedConsumer.slnx` and real managed file-operation sample remain delivery gates.
+[validation](docs/validation.md) for current capabilities and evidence. The
+`ManagedConsumer.slnx` sample and real managed file operations are being qualified;
+see [usage](docs/usage.md) and [API contracts](docs/api.md).

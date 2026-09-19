@@ -4,6 +4,7 @@
 No generated product is promoted until every required generation stage succeeds.
 """
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 import shutil
@@ -13,7 +14,10 @@ from common import ROOT, REPO, SOURCE_SPEC, fetch, run, sha
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--no-build-tools', action='store_true', help='Reuse existing built compiler/postprocessor')
+parser.add_argument('--jobs', type=int, default=4, help='Independent translation-unit workers (default: 4)')
 args = parser.parse_args()
+if args.jobs < 1 or args.jobs > 16:
+    parser.error('--jobs must be between 1 and 16')
 logs = ROOT / 'artifacts/translation'
 logs.mkdir(parents=True, exist_ok=True)
 build = ROOT / 'build'
@@ -69,13 +73,16 @@ try:
     flags = ['-std=c17', *['-D' + value for value in defines]]
     for include in includes:
         flags += ['-I', include]
-    objects = []
     (stage / 'objects').mkdir()
-    for index, unit in enumerate(units):
+    def emit(index_unit):
+        index, unit = index_unit
         output = stage / 'objects' / (f'{index:02d}-' + Path(unit).stem + '.cs')
         run(['dotnet', compiler, *flags, '--emit=obj', source / unit, '-o', output],
             logs / (Path(unit).stem + '-translate.log'), receipt)
-        objects.append(output)
+        print(f'translated {unit}', flush=True)
+        return output
+    with ThreadPoolExecutor(max_workers=args.jobs) as workers:
+        objects = list(workers.map(emit, enumerate(units)))
     receipt['stages'].append('all-objects')
     run(['dotnet', compiler, *objects, '--emit=managedlib', '--literal-pool', '--nest-types',
          '--runtime=c', '--class-name', 'LibSmb2', '--namespace', 'Managed.Smb',
@@ -93,12 +100,16 @@ try:
         for name in ('bin', 'obj'):
             shutil.rmtree(directory / name, ignore_errors=True)
     receipt['output_sha256'] = {str(p.relative_to(product)): sha(p) for p in product.rglob('*') if p.is_file()}
+    receipt['raw_output_sha256'] = {str(p.relative_to(raw)): sha(p) for p in raw.rglob('*') if p.is_file()}
     generated = ROOT / 'generated'
     generated.mkdir(exist_ok=True)
     promote(raw, generated / 'TranslatedLibsmb2.Raw')
     promote(product, generated / 'TranslatedLibsmb2')
     receipt['passed'] = True
     print(generated / 'TranslatedLibsmb2' / project_name)
+except BaseException as error:
+    receipt['failure'] = str(error)
+    raise
 finally:
     receipt['staging_directory'] = str(stage.relative_to(ROOT))
     (logs / 'result.json').write_text(json.dumps(receipt, indent=2) + '\n')

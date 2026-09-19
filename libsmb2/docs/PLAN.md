@@ -3,8 +3,9 @@
 Status: **Implementation authorized and in progress.** P0's source/profile,
 native-client/Samba oracle, and baseline compiler tests are established. The
 coordinator and sub-agents closed the complete frontend: all 53 units now
-preprocess, lex, and parse cleanly after regression-backed repairs. Object/IR
-emission and real host services are in progress. The initial
+preprocess, lex, and parse cleanly after regression-backed repairs. All 53 units now emit and link, and the default pipeline builds raw and
+post-processed products. Real host fixtures pass native/JIT/NativeAOT; generated
+crypto/ABI and SMB interoperability checks are in progress. The initial
 [lexer/parser probe](parse-probe.md) remains preserved; current results
 and remaining gates are tracked in [validation.md](validation.md).
 Campaign working directory: `<repo>/libsmb2/`.
@@ -283,7 +284,7 @@ unexamined native dependency needed to reach execution.
 - [ ] Fix evidenced compiler/libc gaps using the regression-first workflow.
 - [ ] Build every configured unit into a reusable raw library; audit imports,
       static initialization, public constants, and symbol/callback identity.
-- [ ] Implement the full `libsmb2/scripts/translate.sh` contract and final
+- [x] Implement the full `libsmb2/scripts/translate.sh` contract and final
       `libsmb2/generated/TranslatedLibsmb2/` output, plus separate raw output.
 - [ ] Build raw/processed variants under JIT and whole-assembly-rooted NativeAOT;
       verify native layouts and postprocessor idempotence/equivalence.

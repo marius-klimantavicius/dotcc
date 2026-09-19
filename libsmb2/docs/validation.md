@@ -1,7 +1,8 @@
 # Campaign validation
 
 Implementation is in progress. P0 establishes inputs and reference behavior;
-no managed SMB product or P1–P6 completion is claimed yet.
+the complete translated and post-processed project now builds, while SMB
+interoperability and P1–P6 completion remain separate gates.
 
 ## P0 reference baseline
 
@@ -22,8 +23,7 @@ no managed SMB product or P1–P6 completion is claimed yet.
 The first full translation pipeline attempt uses a frozen pre-repair compiler
 and stops at the known `aes128ccm.c` attribute/include blockers. It emits no final
 product. Evidence: `artifacts/translation/result.json` and the per-unit logs.
-The pipeline's later build/postprocessing/promotion stages remain unqualified
-until the compiler and required host services support the complete source closure.
+This historical attempt was superseded by the successful full pipeline below.
 
 The new frontend/header regressions were demonstrated failing against the baseline
 before their repairs. The coordinator records current regression and full-source
@@ -57,12 +57,32 @@ reduced and repaired; frontend success does not establish a buildable product.
   shown failing on the absent runtime symbols before implementation. Native C and
   managed JIT results match; direct tests check IPv4/IPv6 address/port layout,
   ownership, errors, buffer guards, datagram preservation and scatter order.
-- `python3 libsmb2/scripts/test-host-services.py`: **three native/JIT/NativeAOT
-  fixtures pass in all three forms**: Linux endian/layout, IPv4/IPv6 nonblocking
-  TCP with poll, and resolver/entropy/vector I/O. See
+- `python3 libsmb2/scripts/test-host-services.py`: **seven native/JIT/NativeAOT
+  fixtures pass in all three forms (21 executions)**: Linux endian/layout,
+  IPv4/IPv6 nonblocking TCP with poll, linger, resolver/entropy/vector I/O,
+  host identity/PRNG, protocol lookup/errno, and byte-preserving asprintf. See
   `artifacts/host-services/results.json` for exact compiler hashes and commands.
 
 These service checks do not validate the SMB engine. The complete 53-unit source
 closure is being regenerated through the actual product pipeline to expose the
 next link/C# compilation failures. P1 crypto/complete ABI gates and all managed
 SMB interoperability gates remain open.
+
+## Complete product generation
+
+- Default `./libsmb2/scripts/translate.sh`: **PASS**. All 53 unchanged upstream
+  units emit and link into 12 C# source files. The raw and processed projects
+  build with zero errors. Two unused-field warnings describe externally filled
+  vector I/O layout fields.
+- Semantic postprocessing rewrites 3,569 `Cond.B` calls, simplifies 216 boolean
+  comparisons, and removes 97 standalone empty blocks across 11 source files.
+- Final product: `generated/TranslatedLibsmb2/TranslatedLibsmb2.csproj`; separate
+  raw comparison: `generated/TranslatedLibsmb2.Raw/TranslatedLibsmb2.csproj`.
+  The successful receipt records source/config/tool/output hashes.
+- Shared repairs were committed separately: linger (`8a9e923`), protocol lookup
+  and errno (`3edabb2`), byte-preserving formatted allocation (`e0fc5c1`), explicit
+  GNU lvalue rejection (`ae7321b`), and BCL host identity/PRNG (`c553125`).
+
+Generated crypto/ABI checks, consumer builds, Samba execution, rooted NativeAOT,
+postprocessor idempotence and clean-regeneration checks remain in progress. A
+passing generation receipt alone does not establish the protocol acceptance gates.
