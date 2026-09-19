@@ -81,3 +81,27 @@ platform coverage and indirect/framework boundary limitations remain separate.
 Current test scope excludes custom fault injection and malformed-ELF tests;
 only existing pinned upstream tests and ordinary functional execution belong
 in reproduction commands.
+
+## Authored source links and execution ownership
+
+The active `generated/TranslatedBlink` project contains generated C# sources and
+links original bridge files from `src` with parent-relative Compile items and
+IDE Link metadata. Its Host ProjectReference points to the original
+`src/Managed.Emulation.Host` project. No copied Host or Bridges directory is an
+active product input. Edit authored sources in `src` and rebuild the solution;
+regeneration preserves those edits. Immutable raw/profile copies remain archival
+inputs for qualification. Delivery records the original source closure and
+checks its hashes before and after generation and the final direct-source build.
+
+Semantic postprocessing runs against private frozen copies for compilation
+context. Only transformed generated sources are retained; private authored
+copies are restored for validation and discarded from the active delivery.
+The published project is built again at its final path against original `src`
+files. Failed final builds roll the generated product back without writing to
+those authored files.
+
+The product excludes `CoreProbe`, its test `main`, and C execution orchestration.
+A separate authored C# consumer uses the exported upstream functions/types and
+jump-buffer transport. The test runner may add a probe frontend in a derived
+test-only link with its own receipt. Canonical and delivery links enable
+`--literal-pool`; this is a compiler link option, not a postprocessor feature.

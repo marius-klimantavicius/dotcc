@@ -84,7 +84,7 @@ def run(command, label, timeout=600):
         save()
     if code: raise RuntimeError(label+' failed; see '+str(log))
     return log.read_text()
-def project(path):
+def project(path, authored_sources=None):
     tree = ET.Element('Project', Sdk='Microsoft.NET.Sdk'); props = ET.SubElement(tree,'PropertyGroup')
     for key,value in [('TargetFramework','net10.0'),('LangVersion','14'),('OutputType','Library'),
                       ('AssemblyName','TranslatedBlink'),('RootNamespace','Managed.Emulation'),
@@ -94,12 +94,24 @@ def project(path):
         ET.SubElement(props,key).text=value
     items = ET.SubElement(tree,'ItemGroup')
     ET.SubElement(items,'Compile',Include='Sources/**/*.cs')
-    ET.SubElement(items,'Compile',Include='Bridges/*.cs')
-    ET.SubElement(items,'ProjectReference',Include='Host/Managed.Emulation.Host.csproj')
+    if authored_sources is None:
+        ET.SubElement(items,'Compile',Include='Bridges/*.cs')
+        ET.SubElement(items,'ProjectReference',Include='Host/Managed.Emulation.Host.csproj')
+    else:
+        # These paths are relative to the final generated/TranslatedBlink
+        # directory, not this deeper private postprocessing directory.
+        for source in authored_sources:
+            item=ET.SubElement(items,'Compile',Include='../../'+source)
+            ET.SubElement(item,'Link').text='Bindings/'+Path(source).name
+        ET.SubElement(items,'ProjectReference',Include='../../src/Managed.Emulation.Host/Managed.Emulation.Host.csproj')
     ET.indent(tree); ET.ElementTree(tree).write(path,encoding='unicode')
 def verify_profile(profile, inputs):
     for name,digest in inputs['staged_headers'].items():
         if sha(profile/name)!=digest: raise RuntimeError('Frozen profile changed: '+name)
+def verify_authored():
+    for name,digest in receipt.get('authored_sources',{}).items():
+        if sha(ROOT/name)!=digest:
+            raise RuntimeError('Authored product source changed: '+name)
 def verify_tools():
     if compiler_identity(cli.parent)!=receipt['compiler']: raise RuntimeError('Compiler changed during translation')
     if tool_identity(post.parent)!=receipt['postprocessor']: raise RuntimeError('Postprocessor changed during translation')
@@ -169,9 +181,27 @@ try:
         raise RuntimeError('Campaign CoreProbe entrypoint leaked into product sources')
     for source in sources: shutil.copyfile(source,raw/'Sources'/source.name)
     bindings=json.loads((profile/'binding-sources.json').read_text()); names=set()
+    host_bindings=json.loads((profile/'host-bindings.json').read_text())
+    bridge_sources=host_bindings['managedSources']
+    source_by_name={Path(name).name:name for name in bridge_sources}
+    if len(source_by_name)!=len(bridge_sources): raise RuntimeError('Authored bridge basename collision')
+    receipt['authored_sources']={name:sha(ROOT/name) for name in bridge_sources}
+    original_host=ROOT/'src/Managed.Emulation.Host'
+    for path in original_host.rglob('*'):
+        if path.is_file() and not any(part in {'bin','obj'} for part in path.relative_to(original_host).parts):
+            name=str(path.relative_to(ROOT)); digest=sha(path)
+            if digest!=sha(profile/'host-project'/path.relative_to(original_host)):
+                raise RuntimeError('Authored Host differs from frozen profile: '+name)
+            receipt['authored_sources'][name]=digest
+    receipt['product_source_links']=list(bridge_sources)
+    receipt['product_host_project']='src/Managed.Emulation.Host/Managed.Emulation.Host.csproj'
+    receipt['postprocess_scope']='Private frozen project for semantic context; retain only transformed generated sources. Original authored sources are never postprocessed.'
+
     for name in bindings['authored_managed']:
         source=profile/name
         if source.name in names: raise RuntimeError('Bridge basename collision: '+source.name)
+        if source.name not in source_by_name or sha(source)!=receipt['authored_sources'][source_by_name[source.name]]:
+            raise RuntimeError('Authored bridge differs from frozen profile: '+source.name)
         names.add(source.name); shutil.copyfile(source,raw/'Bridges'/source.name)
     shutil.copytree(profile/'host-project',raw/'Host',ignore=shutil.ignore_patterns('bin','obj'))
     project(raw/'TranslatedBlink.csproj')
@@ -184,7 +214,16 @@ try:
     run(['dotnet','restore',candidate/'TranslatedBlink.csproj'],'restore')
     run(['dotnet','build',candidate/'TranslatedBlink.csproj','-c','Release','--no-restore'],'raw-project-build')
     run(['dotnet',post,candidate/'TranslatedBlink.csproj','--in-place'],'postprocess',900)
+    # Only generated transformations are deliverables. Restore exact authored
+    # context even if a future processor rewrites one of these private copies.
+    receipt['postprocess_private_authored']={'before':manifest(raw/'Bridges'),
+                                            'after':manifest(candidate/'Bridges')}
+    shutil.rmtree(candidate/'Bridges')
+    shutil.copytree(raw/'Bridges',candidate/'Bridges')
+    for path in (candidate/'Bridges').rglob('*'):
+        if path.is_file(): path.chmod(0o644)
     run(['dotnet','build',candidate/'TranslatedBlink.csproj','-c','Release','--no-restore'],'postprocessed-project-build')
+    verify_authored()
     if manifest(raw)!=receipt['raw_files']: raise RuntimeError('Raw snapshot changed')
     verify_profile(profile,inputs); verify_tools()
     for name,row in receipt['objects'].items():
@@ -192,6 +231,9 @@ try:
     # Publish source/project inputs only; build caches contain temporary absolute paths.
     for directory in sorted(candidate.rglob('*'),key=lambda p:len(p.parts),reverse=True):
         if directory.is_dir() and directory.name in {'bin','obj'}: shutil.rmtree(directory)
+    # The active delivery and IDE use src originals, never archival copies.
+    shutil.rmtree(candidate/'Bridges'); shutil.rmtree(candidate/'Host')
+    project(candidate/'TranslatedBlink.csproj',bridge_sources)
     receipt['final_files']=manifest(candidate)
     receipt['previous_output']=None
     backup=attempt/'previous-output'
@@ -205,6 +247,13 @@ try:
         candidate.rename(stable)
         if manifest(stable)!=receipt['final_files']: raise RuntimeError('Published output differs')
         receipt['project']=str(stable/'TranslatedBlink.csproj')
+        verify_authored()
+        # Validate the real parent-relative source links at their final path.
+        # Roll back the generated directory on failure; src is never overwritten.
+        run(['dotnet','build',stable/'TranslatedBlink.csproj','-c','Release'],'direct-source-project-build')
+        verify_authored(); verify_profile(profile,inputs); verify_tools()
+        if manifest(stable)!=receipt['final_files']: raise RuntimeError('Final source/project changed during direct build')
+        receipt['authored_sources_unchanged']=True
         receipt['passed']=True; save()
         pending=latest.with_suffix('.tmp')
         pending.write_text(json.dumps({'receipt':str(out/'receipt.json'),'sha256':sha(out/'receipt.json')},indent=2)+'\n')

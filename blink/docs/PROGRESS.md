@@ -1996,3 +1996,18 @@ product and canonical links now request --literal-pool explicitly; the flag is
 part of the hashed link identity. This fixes a delivery omission rather than
 changing postprocessing semantics. Source/manifest syntax checks pass; fresh
 generation and actual runtime qualification are next, with no new pass claimed.
+
+## Direct-source delivery correction prepared
+
+At the user's request, the active TranslatedBlink project links authored bridge
+files and the original Host project under `src`; the solution also references
+that original project. Private immutable raw/profile copies remain archival
+qualification inputs only. The postprocessor receives a private frozen project
+for semantic context; only generated transformations are retained. The final
+project is rebuilt at its real path against original authored sources, whose
+hashes must remain unchanged. Failures restore the prior generated directory.
+
+The preceding generation attempt-0b2hbt7s was explicitly interrupted with SIGTERM
+during assembly to apply this correction before publication. Its failed/interrupted
+receipt and completed immutable object producers are preserved for reuse; no
+pass or published product is claimed for it. Revised generation is next.

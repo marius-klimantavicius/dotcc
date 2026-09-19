@@ -1,5 +1,6 @@
 <Solution>
-  <Project Path="generated/TranslatedBlink/Host/Managed.Emulation.Host.csproj" />
+  <Project Path="src/Managed.Emulation.Host/Managed.Emulation.Host.csproj" />
   <Project Path="generated/TranslatedBlink/TranslatedBlink.csproj" />
+  <Project Path="src/Managed.Emulation.Execution/Managed.Emulation.Execution.csproj" />
   <Project Path="ManagedConsumer/ManagedConsumer.csproj" />
 </Solution>
