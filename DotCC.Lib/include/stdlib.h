@@ -51,6 +51,8 @@ lldiv_t lldiv(long num, long den);
 /* Pseudo-random numbers. */
 int rand(void);
 void srand(unsigned int seed);
+long random(void);
+void srandom(unsigned int seed);
 
 /* Secure byte generation (BSD/glibc); distinct from rand/srand. */
 void arc4random_buf(void *buffer, size_t length);

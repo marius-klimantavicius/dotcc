@@ -1,0 +1,1 @@
+POSIX gethostname/getlogin_r/random are not an MSVC C library surface.

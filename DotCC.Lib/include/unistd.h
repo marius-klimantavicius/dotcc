@@ -52,6 +52,9 @@ int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *errorfds, struct
 
 int usleep(unsigned int usec);
 int isatty(int fd);
+int gethostname(char *name, unsigned long length);
+/* BCL compatibility: Environment.UserName, not terminal utmp identity. */
+int getlogin_r(char *name, unsigned long length);
 int close(int fd);
 long read(int fd, void *buf, unsigned long count);
 long write(int fd, void *buf, unsigned long count);

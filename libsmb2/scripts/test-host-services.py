@@ -16,7 +16,8 @@ try:
             logs / 'compiler-build.log', receipt)
     compiler = REPO / 'DotCC/bin/Release/net10.0/dotcc.dll'
     receipt['compiler'] = {p.name: sha(p) for p in compiler.parent.glob('*.dll')}
-    for name in ['linux-endian-headers', 'socket-nonblocking', 'network-services']:
+    for name in ['linux-endian-headers', 'socket-nonblocking', 'socket-linger',
+                 'network-services', 'host-identity', 'protocol-errno', 'asprintf']:
         fixture = REPO / 'DotCC.FunctionalTests/Fixtures' / name
         expected = (fixture / 'expected-stdout.txt').read_text().strip()
         out = ROOT / 'build/host-services' / name
