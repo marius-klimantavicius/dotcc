@@ -1,6 +1,6 @@
 # Current normal-only scope and historical coverage inventory
 
-Current selection retains 449 normal rows and explicitly excludes 46 custom
+Last qualified selection retained 449 normal rows and explicitly excludes 46 custom
 fault rows. The normal-return witness now passes native449 and all1,796 actual managed
 comparisons in attempt-7j03qmvz / attempt-3r1msqyr; see README for exact hashes.
 The table below records historical coverage and gaps; fault/rejection/invalid
@@ -83,3 +83,15 @@ The narrowed canonical matrix now passes 495 cases in each of four modes
 (1,980 comparisons), receipt `artifacts/cpu-conformance-managed/attempt-jwuzr1go/receipt.json`.
 The four added cases qualify only CPUID policy outputs. They do not close any
 of the baseline instruction-family gaps in the table above.
+
+## Appended normal candidates
+
+Nineteen additional normal cases at stable IDs495–513 now cover source recipes
+for INC/DEC carry preservation, additional shift/division widths,
+CMPXCHG8B match/nonmatch and an FXSR roundtrip. The initial466-row native run found three upstream integer mismatches;
+reviewed correction plus the two new INC8/16 rows now pass all468 native rows
+in attempt-lc9j96ag. The expanded managed matrix remains pending and does not
+yet change the qualified managed evidence above. The selector preserves the
+first495 and first512 descriptor digests, adds no fault case, and still excludes46 historical
+fault inputs. The expected expanded matrix contains468 selected rows per mode.
+See [the case contracts](README.md#appended-normal-coverage-awaiting-execution).

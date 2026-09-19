@@ -1545,3 +1545,21 @@ and picotls authored files remain unchanged.
 The integer source correction/native qualification is next; no build remains
 active from picotls. MsQuic's existing wrapper is being audited read-only for
 scope and closure-cache compatibility before any new execution.
+
+## Reviewed integer correction: native qualification passed
+
+UpstreamInteger stages four INC auxiliary-carry corrections and CMPXCHG8B
+nonmatch zeroextension from pinned original sources with an exact checked-in
+patch. Expanded normal CPU coverage now selects 468 of 514 cases; the original
+495 and 512 descriptor prefixes remain pinned and 46 custom fault cases stay
+excluded. Native attempt-lc9j96ag passes all 468 comparisons (SHA256
+0a58ffb7f3a083709795ac1b86a93bff1fb44420f35690614b9227aefdbc2e41),
+retaining 364 original-native differing rows as evidence. All four INC widths,
+CMPXCHG8B success/nonmatch and the FXSR restoration case are covered.
+
+Canonical profile integration is authored, but current published managed
+products predate these corrections. Next: regenerate delivery, qualify core and
+publication, then run the expanded 1,872 managed comparisons and refresh the
+valid ELF/TLS and clean consumer delivery. B033 remains open until managed
+qualification; shared compiler binaries and dependent-campaign results remain
+unchanged.

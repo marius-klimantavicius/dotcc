@@ -1,12 +1,16 @@
 # Normal CPU conformance corpus
 
-The default runners select **449 normal cases** from the unchanged 495-input
-corpus. The remaining 46 custom fault cases (39 SIGFPE, seven SIGSEGV) retain
+The default runners select **468 normal cases** from 514 inputs: the original
+495 descriptors remain unchanged, and 19 normal cases are appended at IDs495–513.
+The remaining 46 custom fault cases (39 SIGFPE, seven SIGSEGV) retain
 their original bytes and stable indices but are excluded from execution under
 the current user scope. They are not counted as passes. Native and managed
 receipts contain the identical selected IDs/names, all excluded IDs/names with
 reasons, full corpus digest and reviewed source hashes. Direct native or
 translated case entry also refuses a row with a nonzero fault expectation.
+The selector also verifies the exact canonical digest of the first495 exported
+descriptors, the first512 descriptors from the preserved failing attempt, and the ordered appended names. The earlier449-case matrix below
+remains the execution evidence until the expanded corpus is qualified.
 
 The selected cases retain normal integer/flags operations, signed division,
 valid instruction/data page crossings, SSE/SSE2 operations, masked FP status,
@@ -31,30 +35,36 @@ DF before returning. C compile-time offset assertions check the capture record.
 The fixed reviewed corpus never modifies R12–R15 or RSP; those belong to the
 witness. Source hashes in `selection.py` deliberately require renewed review
 before any new corpus instructions can execute with this contract.
+The appended CMPXCHG8B and FXSR cases also use caller-saved RDI; the trampoline
+does not keep its private state there. The code capacity is32 bytes; original
+instruction strings and lengths are unchanged.
 
 ## Reproduction
 
 With the pinned native archive and current matching core already qualified:
 
 ```sh
-python3 blink/tests/CpuConformance/run.py --staged-fp
-python3 blink/tests/CpuConformance/run-managed.py --staged-fp \
+python3 blink/tests/CpuConformance/run.py --staged-fp --staged-integer
+python3 blink/tests/CpuConformance/run-managed.py --staged-fp --staged-integer \
   --core-receipt <current-qualified-core-execution-receipt.json>
 ```
 
 The native runner snapshots hardware/C/assembly/input sources and the pinned
-archive, reviewed scalar correction and CPUID policy. It exports all original
+archive, reviewed scalar/integer corrections and CPUID policy. It exports all original
 case descriptions but executes only the recorded normal selection. The managed
 runner recomputes that selection and rejects a different native selection or
 comparison list. Both runners hash their live implementation inputs at start and
 check those files again before success; the final comparison sequence must equal
 the selected rows in every requested mode. It derives a CPU frontend over the exact qualified core objects;
 unchanged object hashes, canonical include paths and compiler identities must
-match. Reviewed FP replacements are reused only with matching source identities.
+match. Reviewed scalar objects are reused only with matching source identities. Integer
+staging requires a newly qualified canonical profile containing exact corrected
+alu/machine producers and the identical integer boundary receipt; it fails
+closed on an older or mismatched profile.
 No generated C# is patched.
 
 Each selected row runs in a fresh process in raw JIT, raw NativeAOT,
-postprocessed JIT and postprocessed NativeAOT, for **1,796 comparisons**.
+postprocessed JIT and postprocessed NativeAOT, for **1,872 expected comparisons**.
 The managed consumer binds private owners, forces compacting GC, executes the
 actual translated interpreter and discards the process after owner teardown.
 Its instruction outputs are compared with real hardware; virtual CPUID outputs
@@ -79,3 +89,41 @@ and live implementation hashes at completion. [Historical evidence](HISTORICAL.m
 matrices and defect receipts, including now-excluded cases. The historical
 495-case pass is not a fresh pass for this changed witness. Remaining instruction
 coverage is described in [COVERAGE.md](COVERAGE.md).
+
+## Appended normal coverage awaiting execution
+
+| Stable IDs | Added behavior and comparison contract |
+| --- | --- |
+| 495–498 | INC64/32 and DEC8/16, with CF initially set or clear; defined arithmetic flags and upper-register behavior. |
+| 499–504 | SHL8 count0/1, SHR16 count1, SAR32 count31, SHL16 masked count32 and SHL32 masked count33. Count0 preserves all flags; active shifts exclude AF, and SAR31 excludes OF. |
+| 505–508 | Valid DIV8/DIV32 and signed IDIV16/IDIV32. Byte/word results preserve upper-register portions; dword results zero-extend. Division flags are undefined and masked out. |
+| 509–510 | Normal CMPXCHG8B match/nonmatch at an aligned address. RDI saves the address before EBX becomes a fixed replacement value; ZF and complete memory/register results are compared. Single-thread cases do not establish atomicity. |
+| 512–513 | INC8 wrapping and INC16 signed overflow, preserving incoming CF and checking all defined arithmetic flags plus upper-register preservation. |
+| 511 | FXSAVE/FXRSTOR roundtrip: clear XMM0/1 and temporarily load the saved MXCSR_MASK with LDMXCSR, then restore the saved XMM and nondefault MXCSR. The512-byte aligned save region is zeroed by ordinary REP STOSQ before memory comparison, excluding unspecified/vendor-specific saved x87/reserved bytes. |
+
+The REP sequence starts with DF clear, uses caller-saved RDI, and writes only
+the valid512-byte save region. Its complete memory comparison retains the
+surrounding data bytes. No appended instruction modifies RSP or R12–R15, and
+none expects a guest fault, invalid access or unsupported-instruction rejection.
+The temporary MXCSR value uses the saved mask of writable bits (zero is valid
+too); no floating-point arithmetic occurs before FXRSTOR. The31-byte sequence
+has nine instructions: Blink's ordinary STOS implementation completes its64
+iterations within one `ExecuteInstruction` call.
+
+The first expanded native run completed466 cases but failed IDs495/496 (INC AF)
+and510 (CMPXCHG8B upper32 bits). Its receipt is
+`artifacts/cpu-conformance/attempt-cjel3vz8/receipt.json`, SHA256
+`75f0c3a7bccc23e6b014116d8430a0a3a849637f82ed0fb5228fcf7048150812`.
+The managed parent stopped before emission or comparisons:
+`artifacts/cpu-conformance-managed/attempt-f1feworz/receipt.json`, SHA256
+`e7a1c57b96b812b510c0631dcb9fdb13d46ffb4b22acc136af84047dd69cdc00`.
+[Reviewed integer staging](../../src/UpstreamInteger/README.md) corrects these
+upstream expressions without changing hardware comparisons. The native runner
+retains original-native captures and differences; staged and canonical managed
+source identities remain distinct. Corrected native execution passed all468 selected rows, with46 exclusions:
+`artifacts/cpu-conformance/attempt-lc9j96ag/receipt.json`, SHA256
+`0a58ffb7f3a083709795ac1b86a93bff1fb44420f35690614b9227aefdbc2e41`.
+The receipt preserves364 original-native differences separately. INC8/16 add
+independent hardware evidence for the other two repaired AF helpers; unchanged
+FXSR and the remaining appended normal cases pass. New canonical managed
+execution of the468-row selection remains pending.

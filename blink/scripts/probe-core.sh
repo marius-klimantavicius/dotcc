@@ -143,6 +143,35 @@ for filename,row in boundary['sources'].items():
         raise SystemExit('scalar FP staged source changed: '+name)
     source_overrides[name]={'staged_path':str(adapted.relative_to(p)),
         'sha256':row['staged_sha256'],'original_sha256':row['source_sha256']}
+# Integer corrections are independently pinned and reviewed against hardware.
+# Keep their source derivation separate from scalar FP and host bindings.
+integer=p/'src/UpstreamInteger'
+integer_snapshot=stage/'source-adaptations/UpstreamInteger'
+integer_inputs={f.name:hashlib.sha256(f.read_bytes()).hexdigest()
+                for f in integer.iterdir() if f.is_file()}
+shutil.copytree(integer,integer_snapshot,ignore=shutil.ignore_patterns('__pycache__'))
+for name,digest in integer_inputs.items():
+    if hashlib.sha256((integer_snapshot/name).read_bytes()).hexdigest()!=digest:
+        raise SystemExit('integer staging snapshot changed: '+name)
+integer_output=stage/'upstream/integer'
+integer_receipt=stage/'integer-boundary.json'
+subprocess.run([sys.executable,str(integer/'stage.py'),'--output',str(integer_output),
+                '--receipt',str(integer_receipt)],check=True)
+if integer_inputs!={f.name:hashlib.sha256(f.read_bytes()).hexdigest()
+                    for f in integer.iterdir() if f.is_file()}:
+    raise SystemExit('integer staging inputs changed during profile construction')
+boundary=json.loads(integer_receipt.read_text())
+if boundary['patch_sha256']!=integer_inputs['integer.patch']:
+    raise SystemExit('integer generated diff differs from the reviewed patch')
+for filename,row in boundary['sources'].items():
+    name='blink/'+filename
+    adapted=integer_output/filename
+    if name in source_overrides or pins[name]!=row['source_sha256']:
+        raise SystemExit('integer source pin or adaptation collision: '+name)
+    if hashlib.sha256(adapted.read_bytes()).hexdigest()!=row['staged_sha256']:
+        raise SystemExit('integer staged source changed: '+name)
+    source_overrides[name]={'staged_path':str(adapted.relative_to(p)),
+        'sha256':row['staged_sha256'],'original_sha256':row['source_sha256']}
 binding_overrides=stage/'binding-overrides.json'
 binding_overrides.write_text(json.dumps(source_overrides,indent=2)+'\n')
 with (stage/'host-binding-stage.log').open('wb') as log:

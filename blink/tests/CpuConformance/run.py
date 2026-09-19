@@ -5,7 +5,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];REPO=ROOT.parent
 from features import inventory
 from selection import select_normal
-parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--observe-differences',action='store_true');parser.add_argument('--staged-fp',action='store_true');args=parser.parse_args()
+parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--observe-differences',action='store_true');parser.add_argument('--staged-fp',action='store_true');parser.add_argument('--staged-integer',action='store_true');args=parser.parse_args()
+staged_any=args.staged_fp or args.staged_integer
 base=ROOT/'generated/cpu-conformance';base.mkdir(parents=True,exist_ok=True)
 a=Path(tempfile.mkdtemp(prefix='attempt-',dir=base))
 out=ROOT/'artifacts/cpu-conformance'/a.name;out.mkdir(parents=True)
@@ -41,7 +42,12 @@ try:
     if args.staged_fp:
         run(['python3',ROOT/'src/UpstreamScalarFp/stage.py','--output',a/'scalar-fp','--receipt',out/'scalar-fp-stage.json'],'stage-scalar-fp')
         r['scalar_fp_stage']=json.loads((out/'scalar-fp-stage.json').read_text())
-        r['scope']='hardware versus original pinned native and reviewed staged scalar FP interpreter'
+    if args.staged_integer:
+        run(['python3',ROOT/'src/UpstreamInteger/stage.py','--output',a/'integer','--receipt',out/'integer-stage.json'],'stage-integer')
+        r['integer_stage']=json.loads((out/'integer-stage.json').read_text())
+    if staged_any:
+        r['scope']='hardware versus original pinned native and explicitly selected reviewed staged interpreter'
+        r['adaptations']={'scalar_fp':args.staged_fp,'integer':args.staged_integer}
         r['original_comparisons']=[]
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['sourceManifestSha256']=sha(manifest);r['runnerSha256']=sha(Path(__file__))
@@ -51,8 +57,9 @@ try:
     run(['cc','-std=c17','-O2','-Wall','-Wextra','-Werror',a/'hardware.c',a/'hardware-capture.S','-o',a/'hardware'],'hardware-build')
     run(['cc','-std=c17','-O2','-Wall','-Wextra','-Werror',a/'describe.c','-o',a/'describe'],'describe-build')
     run(['cc','-std=c17','-D_GNU_SOURCE','-D_DEFAULT_SOURCE','-DNOLINEAR','-I',a,a/'interpreter.c',a/'cpuid.c',a/'blink.a','-lz','-lrt','-lm','-pthread','-Wl,-Map='+str(out/'interpreter-link.map'),'-o',a/'interpreter'],'interpreter-build')
-    if args.staged_fp:
-        run(['cc','-std=c17','-D_GNU_SOURCE','-D_DEFAULT_SOURCE','-DNOLINEAR','-I',a,a/'interpreter.c',a/'cpuid.c',a/'scalar-fp/cvt.c',a/'scalar-fp/ssefloat.c',a/'scalar-fp/throw.c',a/'blink.a','-lz','-lrt','-lm','-pthread','-Wl,-Map='+str(out/'staged-link.map'),'-o',a/'staged'],'staged-build')
+    if staged_any:
+        staged_sources=([a/'scalar-fp'/name for name in ['cvt.c','ssefloat.c','throw.c']] if args.staged_fp else [])+([a/'integer'/name for name in ['alu.c','machine.c']] if args.staged_integer else [])
+        run(['cc','-std=c17','-D_GNU_SOURCE','-D_DEFAULT_SOURCE','-DNOLINEAR','-I',a,a/'interpreter.c',a/'cpuid.c',*staged_sources,a/'blink.a','-lz','-lrt','-lm','-pthread','-Wl,-Map='+str(out/'staged-link.map'),'-o',a/'staged'],'staged-build')
     run(['objdump','-d',a/'hardware'],'hardware-disassembly')
     inputs=json.loads(run([a/'describe'],'corpus'))
     cases,r['selection']=select_normal(inputs,a);save()
@@ -60,7 +67,7 @@ try:
     for case in cases:
         i=case['index'];ref=json.loads(run([a/'hardware',str(i)],f'hardware-{i:02}'))
         original=json.loads(run([a/'interpreter',str(i)],f'interpreter-{i:02}',allow_mismatch=True))
-        actual=json.loads(run([a/'staged',str(i)],f'staged-{i:02}',allow_mismatch=True)) if args.staged_fp else original
+        actual=json.loads(run([a/'staged',str(i)],f'staged-{i:02}',allow_mismatch=True)) if staged_any else original
         # Every selected instruction must complete normally; compare its full
         # observed register/memory state and only architecturally defined flags.
         fields=['name','signal','ip','memory','xmm','mxcsr']+([]if case['profileReference']else['ax','cx','dx'])
@@ -71,7 +78,7 @@ try:
         mask=int(case['flagMask'],16)
         if (int(ref['flags'],16)^int(actual['flags'],16))&mask:differences.append('definedFlags')
         if case['faultState'] and actual['halt']!=case['expectedHalt']:differences.append('expectedHalt')
-        if args.staged_fp:
+        if staged_any:
             old_differences=[key for key in fields if ref[key]!=original[key]]
             if (int(ref['flags'],16)^int(original['flags'],16))&mask:old_differences.append('definedFlags')
             r['original_comparisons'].append({'case':case['name'],'matched':not old_differences,'differences':old_differences})
@@ -86,7 +93,7 @@ try:
     r['completed']=True
     r['known_failing_rows']=[row for row in r['comparisons']if not row['matched']]
     r['passed']=not r['known_failing_rows']
-    r['binaries']={name:sha(a/name)for name in ['hardware','describe','interpreter']+(['staged']if args.staged_fp else[])}
+    r['binaries']={name:sha(a/name)for name in ['hardware','describe','interpreter']+(['staged']if staged_any else[])}
     if r['inputs']!={name:sha(a/name)for name in r['inputs']}:raise RuntimeError('snapshot changed')
     save();print(str(len(r['comparisons']))+' native cases completed; conformance='+str(r['passed'])+'; receipt '+str(out/'receipt.json'))
     if not r['passed'] and not args.observe_differences:raise SystemExit(1)

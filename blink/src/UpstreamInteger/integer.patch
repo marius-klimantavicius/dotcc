@@ -1,0 +1,69 @@
+--- a/blink/alu.c
++++ b/blink/alu.c
+@@ -290,12 +290,15 @@
+   return BumpFlags(m, z, af, of, sf);
+ }
+ 
++#ifndef DISABLE_JIT
++#error Reviewed integer staging requires DISABLE_JIT
++#endif
+ i64 Inc32(struct Machine *m, u64 x64, u64 y) {
+   u32 x, z, of, sf, af;
+   x = x64;
+   z = x + 1;
+   sf = z >> 31;
+-  af = (z & 15) < (y & 15);
++  af = (z & 15) < (x & 15);
+   of = ((z ^ x) & (z ^ 1)) >> 31;
+   return BumpFlags(m, z, af, of, sf);
+ }
+@@ -305,7 +308,7 @@
+   u32 of, sf, af;
+   z = x + 1;
+   sf = z >> 63;
+-  af = (z & 15) < (y & 15);
++  af = (z & 15) < (x & 15);
+   of = ((z ^ x) & (z ^ 1)) >> 63;
+   return BumpFlags(m, z, af, of, sf);
+ }
+@@ -326,7 +329,7 @@
+   x = x64;
+   z = x + 1;
+   sf = z >> 7;
+-  af = (z & 15) < (y & 15);
++  af = (z & 15) < (x & 15);
+   of = ((z ^ x) & (z ^ 1)) >> 7;
+   return BumpFlags(m, z, af, of, sf);
+ }
+@@ -686,7 +689,7 @@
+   x = x64;
+   z = x + 1;
+   sf = z >> 15;
+-  af = (z & 15) < (y & 15);
++  af = (z & 15) < (x & 15);
+   of = ((z ^ x) & (z ^ 1)) >> 15;
+   return BumpFlags(m, z, af, of, sf);
+ }
+--- a/blink/machine.c
++++ b/blink/machine.c
+@@ -237,6 +237,9 @@
+   WriteRegister(rde, RegRexbSrm(m, rde), x);
+ }
+ 
++#ifndef DISABLE_JIT
++#error Reviewed integer staging requires DISABLE_JIT
++#endif
+ static void OpCmpxchg8b(P) {
+   uint8_t *p;
+   uint32_t d, a;
+@@ -250,8 +253,8 @@
+     memcpy(p + 4, m->cx, 4);
+   } else {
+     m->flags = SetFlag(m->flags, FLAGS_ZF, false);
+-    Write32(m->ax, a);
+-    Write32(m->dx, d);
++    Write64(m->ax, a);
++    Write64(m->dx, d);
+   }
+   if (Lock(rde)) UnlockBus(p);
+ }

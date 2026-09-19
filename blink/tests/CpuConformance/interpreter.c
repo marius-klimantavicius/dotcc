@@ -25,7 +25,7 @@ int CpuInterpreterCase(int index) {
   struct Machine *m=NewMachine(s,0);if(!m){FreeSystem(s);return 3;}
   g_machine=m;
   s->cr0=CR0_PE|CR0_MP|CR0_ET|CR0_PG;s->cr3=AllocatePageTable(s);
-  unsigned char data[2*CPU_PAGE],code[16];CpuData(data,sizeof(data));
+  unsigned char data[2*CPU_PAGE],code[CPU_CODE_BYTES];CpuData(data,sizeof(data));
   memcpy(code,c->code,c->length);
   if(ReserveVirtual(s,0x400000,2*CPU_PAGE,PAGE_U|PAGE_RW,-1,0,0,0)==-1 ||
      ReserveVirtual(s,0x600000,c->data_pages*CPU_PAGE,PAGE_U|PAGE_RW|PAGE_XD,-1,0,0,0)==-1 ||

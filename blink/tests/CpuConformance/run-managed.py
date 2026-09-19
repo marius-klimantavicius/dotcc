@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Derive CPU frontend and optional reviewed FP objects; qualify actual core all4."""
+"""Derive CPU frontend and optional reviewed source corrections; qualify actual core all4."""
 import argparse,difflib,hashlib,json,os,shutil,subprocess,sys,tempfile,time
 from pathlib import Path
 import xml.etree.ElementTree as ET
@@ -12,6 +12,7 @@ parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--core-receipt',type=Path,required=True)
 parser.add_argument('--observe-differences',action='store_true')
 parser.add_argument('--staged-fp',action='store_true')
+parser.add_argument('--staged-integer',action='store_true')
 args=parser.parse_args();core_path=args.core_receipt.resolve();core=json.loads(core_path.read_text())
 if not core.get('passed') or core.get('diagnostic_replay'):raise SystemExit('requires qualified actual-core execution receipt')
 assembly_path=Path(core['assembly_receipt']);assembly=json.loads(assembly_path.read_text())
@@ -49,7 +50,7 @@ implementation_names = ['run.py','run-managed.py','selection.py','hardware.c','h
 r['implementation']={name:sha(ROOT/'tests/CpuConformance'/name) for name in implementation_names}
 try:
     # Fresh native/hardware reference, retaining its complete input identity.
-    native_output=run(['python3',ROOT/'tests/CpuConformance/run.py',*(['--observe-differences']if args.observe_differences else[]),*(['--staged-fp']if args.staged_fp else[])],'native-corpus')
+    native_output=run(['python3',ROOT/'tests/CpuConformance/run.py',*(['--observe-differences']if args.observe_differences else[]),*(['--staged-fp']if args.staged_fp else[]),*(['--staged-integer']if args.staged_integer else[])],'native-corpus')
     native_receipt=Path(native_output.strip().rsplit('receipt ',1)[1]);native=json.loads(native_receipt.read_text())
     if not native.get('completed') or (not native['passed'] and not args.observe_differences):raise RuntimeError('native corpus incomplete or nonconformant')
     r['native_receipt']=str(native_receipt);r['native_receipt_sha256']=sha(native_receipt)
@@ -73,7 +74,7 @@ try:
     (a/'bridges').mkdir()
     bindings=json.loads((profile/'binding-sources.json').read_text())
     for name in bindings['authored_managed']:shutil.copyfile(profile/name,a/'bridges'/Path(name).name)
-    fp_replacements=[]
+    source_replacements=[]
     # The reference policy must equal the CPUID producer retained in this exact profile.
     cpuid_source=Path(assembly['objects']['blink/cpuid.c']['command'][assembly['objects']['blink/cpuid.c']['command'].index('-o')-1])
     cpuid_stage=json.loads((native_artifacts/'cpuid-stage.json').read_text())
@@ -81,32 +82,39 @@ try:
     if sha(cpuid_source)!=assembly['objects']['blink/cpuid.c']['emission_identity']['source_sha256'] or not cpuid_bytes.startswith(prefix) or hashlib.sha256(cpuid_bytes[len(prefix):]).hexdigest()!=cpuid_stage['stagedSha256']:
         raise RuntimeError('native CPUID policy differs from qualified canonical producer')
     r['cpuid_policy']=cpuid_stage
-    if args.staged_fp:
-        run(['python3',ROOT/'src/UpstreamScalarFp/stage.py','--output',a/'scalar-fp','--receipt',out/'scalar-fp-stage.json'],'stage-scalar-fp')
-        staged_fp=json.loads((out/'scalar-fp-stage.json').read_text())
-        if staged_fp!=native['scalar_fp_stage']:raise RuntimeError('native and managed staged FP inputs differ')
-        r['scalar_fp_stage']=staged_fp
-        (a/'prepared-fp').mkdir();r['prepared_fp_sources']={}
-        prefix=b'#include "host-bindings.h"\n'
-        for filename in staged_fp['sources']:
+    for enabled, family, directory, receipt_key in [
+        (args.staged_fp, 'fp', 'UpstreamScalarFp', 'scalar_fp_stage'),
+        (args.staged_integer, 'integer', 'UpstreamInteger', 'integer_stage'),
+    ]:
+        if not enabled:continue
+        stage_name='scalar-fp' if family=='fp' else 'integer'
+        run(['python3',ROOT/'src'/directory/'stage.py','--output',a/stage_name,'--receipt',out/(stage_name+'-stage.json')],'stage-'+stage_name)
+        staged=json.loads((out/(stage_name+'-stage.json')).read_text())
+        if staged!=native[receipt_key]:raise RuntimeError('native and managed staged '+family+' inputs differ')
+        r[receipt_key]=staged
+        prepared_dir=a/('prepared-'+family);prepared_dir.mkdir()
+        prepared_key='prepared_'+family+'_sources';r[prepared_key]={}
+        for filename in staged['sources']:
             old=assembly['objects']['blink/'+filename]
             old_source=Path(old['command'][old['command'].index('-o')-1])
             immutable=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink'/filename
             if sha(old_source)!=old['emission_identity']['source_sha256']:
-                raise RuntimeError('FP producer source changed: '+filename)
-            corrected=prefix+(a/'scalar-fp'/filename).read_bytes()
+                raise RuntimeError(family+' producer source changed: '+filename)
+            corrected=prefix+(a/stage_name/filename).read_bytes()
             if old_source.read_bytes()==corrected:
-                boundary=profile/'scalar-fp-boundary.json'
-                if not boundary.exists() or json.loads(boundary.read_text())!=staged_fp:
-                    raise RuntimeError('canonical scalar correction provenance differs')
-                r.setdefault('reused_reviewed_fp',{})[filename]={'source_sha256':sha(old_source),'object_sha256':old['object_sha256'],'boundary_sha256':sha(boundary)}
+                boundary=profile/(stage_name+'-boundary.json')
+                if not boundary.exists() or json.loads(boundary.read_text())!=staged:
+                    raise RuntimeError('canonical '+family+' correction provenance differs')
+                r.setdefault('reused_reviewed_'+family,{})[filename]={'source_sha256':sha(old_source),'object_sha256':old['object_sha256'],'boundary_sha256':sha(boundary)}
                 continue
+            if family=='integer':
+                raise RuntimeError('integer correction requires an exactly matching qualified canonical producer: '+filename)
             if old_source.read_bytes()!=prefix+immutable.read_bytes():
-                raise RuntimeError('original FP source preamble differs: '+filename)
-            prepared=a/'prepared-fp'/filename
-            prepared.write_bytes(corrected);fp_replacements.append(filename)
-            r['prepared_fp_sources'][filename]={'original_source':str(old_source),'original_sha256':sha(old_source),'prefix_sha256':hashlib.sha256(prefix).hexdigest(),'prepared_sha256':sha(prepared)}
-        r['replacement']='authored CPU driver; reviewed scalar objects reused when identical to qualified canonical producers, otherwise explicitly replaced'
+                raise RuntimeError('original '+family+' source preamble differs: '+filename)
+            prepared=prepared_dir/filename
+            prepared.write_bytes(corrected);source_replacements.append((family,filename,prepared))
+            r[prepared_key][filename]={'original_source':str(old_source),'original_sha256':sha(old_source),'prefix_sha256':hashlib.sha256(prefix).hexdigest(),'prepared_sha256':sha(prepared)}
+        r['replacement']='authored CPU driver; explicitly selected reviewed scalar/integer objects reused when identical to qualified canonical producers, otherwise explicitly replaced'
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['runner_sha256']=sha(Path(__file__));r['replaced_object']=prior
     upstream=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
@@ -118,18 +126,17 @@ try:
         if sha(canonical/name)!=digest:raise RuntimeError('canonical dependency changed during emission: '+name)
     replacements={'authored/managed-driver.c':cpu_object}
     r['replaced_objects']={'authored/managed-driver.c':prior}
-    if args.staged_fp:
-        for filename in fp_replacements:
-            name='blink/'+filename;old=assembly['objects'][name];old_command=old['command']
-            source_canonical=Path(old_command[old_command.index('-I')+1])
-            if source_canonical!=canonical:raise RuntimeError('FP source header identity differs')
-            for dependency,digest in old['emission_identity']['dependencies'].items():
-                if sha(source_canonical/dependency)!=digest:raise RuntimeError('FP canonical dependency changed')
-            obj=a/'objects'/('staged-'+filename[:-2]+'.cs')
-            cmd=old_command.copy();cmd[cmd.index('-o')-1]=str(a/'prepared-fp'/filename);cmd[cmd.index('-o')+1]=str(obj)
-            cmd[cmd.index('--override-report')+1]=str(out/(filename+'.overrides.jsonl'))
-            run(cmd,'emission-'+filename,180)
-            replacements[name]=obj;r['replaced_objects'][name]=old
+    for family,filename,prepared in source_replacements:
+        name='blink/'+filename;old=assembly['objects'][name];old_command=old['command']
+        source_canonical=Path(old_command[old_command.index('-I')+1])
+        if source_canonical!=canonical:raise RuntimeError(family+' source header identity differs')
+        for dependency,digest in old['emission_identity']['dependencies'].items():
+            if sha(source_canonical/dependency)!=digest:raise RuntimeError(family+' canonical dependency changed')
+        obj=a/'objects'/('staged-'+filename[:-2]+'.cs')
+        cmd=old_command.copy();cmd[cmd.index('-o')-1]=str(prepared);cmd[cmd.index('-o')+1]=str(obj)
+        cmd[cmd.index('--override-report')+1]=str(out/(filename+'.overrides.jsonl'))
+        run(cmd,'emission-'+filename,180)
+        replacements[name]=obj;r['replaced_objects'][name]=old
     if compiler_identity(cli.parent)!=compiler:raise RuntimeError('compiler changed during staged emission')
     r['replacement_objects']={name:sha(obj)for name,obj in replacements.items()}
     retained=[];r['retained_objects']={}
@@ -167,7 +174,7 @@ try:
             for case in cases:
                 i=case['index'];rows=run([*executable,str(i)],f'{label}-{mode}-{i:02}',30).splitlines()
                 if len(rows)!=2:raise RuntimeError('unexpected CPU worker output')
-                actual=json.loads(rows[0]);owner=json.loads(rows[1]);reference=json.loads((native_artifacts/f'hardware-{i:02}.stdout').read_text());baseline=json.loads((native_artifacts/f'{"staged"if args.staged_fp else"interpreter"}-{i:02}.stdout').read_text())
+                actual=json.loads(rows[0]);owner=json.loads(rows[1]);reference=json.loads((native_artifacts/f'hardware-{i:02}.stdout').read_text());baseline=json.loads((native_artifacts/f'{"staged"if args.staged_fp or args.staged_integer else"interpreter"}-{i:02}.stdout').read_text())
                 if not(0<owner['ownerMappings'] and 0<owner['ownerBytes']<=64*1024*1024):raise RuntimeError('invalid memory accounting')
                 fields=['name','signal','ip','memory','ax','cx','dx','xmm','mxcsr']
                 if case['profileReference']:

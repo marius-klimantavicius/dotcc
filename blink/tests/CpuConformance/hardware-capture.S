@@ -1,5 +1,6 @@
-/* Linux x86-64 SysV witness. The reviewed corpus touches only AX/BX/CX/DX,
- * arithmetic flags and XMM0/1; R12..R15 and RSP belong to this trampoline.
+/* Linux x86-64 SysV witness. The reviewed corpus touches AX/BX/CX/DX,
+ * caller-saved DI, arithmetic flags, MXCSR and XMM0/1. FXSR restores the
+ * saved x87/XMM state, and REP STOSQ uses DF=0. R12..R15 and RSP belong here.
  * Completion LEA/RET changes none of the observed state. */
 .text
 .globl CpuHardwareRun

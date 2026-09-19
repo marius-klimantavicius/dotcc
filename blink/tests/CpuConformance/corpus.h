@@ -3,9 +3,10 @@
 #include <stdint.h>
 #include <stddef.h>
 #define CPU_PAGE 4096
+#define CPU_CODE_BYTES 32
 struct CpuCase {
   const char *name;
-  unsigned char code[16];
+  unsigned char code[CPU_CODE_BYTES];
   unsigned length, steps, code_offset, data_offset, data_pages;
   uint64_t ax, cx, dx, flags, flag_mask;
   int fault;
@@ -54,6 +55,34 @@ static const struct CpuCase cpu_cases[] = {
  {"cpuid-unknown", {0x0f,0xa2},2,1,0,64,2,0x12345678,0,0,0x8d7,0x8d5,0,0,0,1,0,0,0,0,0,0},
  {"cpuid-extended-unknown", {0x0f,0xa2},2,1,0,64,2,0x80000008,0,0,0x8d7,0x8d5,0,0,0,1,0,0,0,0,0,0},
 #include "fp-cases.h"
+ /* Appended normal cases start at stable ID495; earlier IDs/bytes are unchanged. */
+ {"inc-qword-preserve-carry", {0x48,0xff,0xc0},3,1,0,64,2,0x7fffffffffffffffULL,0,0,3,0x8d5,0,0,0,0,0,0,0,0,0,0},
+ {"inc-dword-preserve-clear-carry", {0xff,0xc0},2,1,0,64,2,0x12345678ffffffffULL,0,0,2,0x8d5,0,0,0,0,0,0,0,0,0,0},
+ {"dec-byte-preserve-clear-carry", {0xfe,0xc8},2,1,0,64,2,0x1234567812345600ULL,0,0,2,0x8d5,0,0,0,0,0,0,0,0,0,0},
+ {"dec-word-preserve-carry", {0x66,0xff,0xc8},3,1,0,64,2,0x1234567800008000ULL,0,0,3,0x8d5,0,0,0,0,0,0,0,0,0,0},
+ {"shl-byte-count-zero", {0xd2,0xe0},2,1,0,64,2,0x1234567812345680ULL,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,0,0,0},
+ {"shl-byte-count-one", {0xd2,0xe0},2,1,0,64,2,0x1234567812345680ULL,1,0,2,0x8c5,0,0,0,0,0,0,0,0,0,0},
+ {"shr-word-count-one", {0x66,0xd3,0xe8},3,1,0,64,2,0x1234567812348001ULL,1,0,2,0x8c5,0,0,0,0,0,0,0,0,0,0},
+ {"sar-dword-count31", {0xd3,0xf8},2,1,0,64,2,0x1234567880000000ULL,31,0,2,0xc5,0,0,0,0,0,0,0,0,0,0},
+ {"shl-word-masked-count-zero", {0x66,0xd3,0xe0},3,1,0,64,2,0x1234567812348001ULL,32,0,0x8d7,0x8d5,0,0,0,0,0,0,0,0,0,0},
+ {"shl-dword-masked-count-one", {0xd3,0xe0},2,1,0,64,2,0x1234567880000001ULL,33,0,2,0x8c5,0,0,0,0,0,0,0,0,0,0},
+ {"div-byte-valid", {0xf6,0xf1},2,1,0,64,2,0x12345678123404d2ULL,5,0x12345678ffffffffULL,2,0,0,0,0,0,0,0,0,0,0,0},
+ {"div-dword-valid", {0xf7,0xf1},2,1,0,64,2,0x1122334400000000ULL,3,0xaabbccdd00000001ULL,2,0,0,0,0,0,0,0,0,0,0,0},
+ {"idiv-word-valid", {0x66,0xf7,0xf9},3,1,0,64,2,0x11223344aabbffefULL,5,0x88776655ccddffffULL,2,0,0,0,0,0,0,0,0,0,0,0},
+ {"idiv-dword-valid", {0xf7,0xf9},2,1,0,64,2,0x11223344ffffffefULL,5,0x88776655ffffffffULL,2,0,0,0,0,0,0,0,0,0,0,0},
+ /* RDI receives the data address before EBX becomes the fixed replacement.
+  * CpuData bytes64..71 are 4b7095badf04294e; only ZF is compared here. */
+ {"cmpxchg8b-match", {0x48,0x89,0xdf,0xbb,0x10,0x32,0x54,0x76,0x0f,0xc7,0x0f},11,3,0,64,2,0x11223344ba95704bULL,0xfedcba98ULL,0x556677884e2904dfULL,0x897,0x40,0,0,0,0,0,0,0,0,0,0},
+ {"cmpxchg8b-nonmatch", {0x48,0x89,0xdf,0xbb,0x10,0x32,0x54,0x76,0x0f,0xc7,0x0f},11,3,0,64,2,0x11223344ba95704aULL,0xfedcba98ULL,0x556677884e2904dfULL,0x8d7,0x40,0,0,0,0,0,0,0,0,0,0},
+ /* FXSAVE; PXOR XMM0/1; LDMXCSR [RBX+28]; FXRSTOR; MOV RDI,RBX;
+  * XOR EAX,EAX; MOV ECX,64; REP STOSQ. The saved MXCSR_MASK (zero is valid)
+  * temporarily changes MXCSR using only writable bits; no FP arithmetic runs
+  * before restoration. Clear all512 saved bytes before comparing memory:
+  * reserved/x87/vendor-specific image bytes are not architectural equality. */
+ {"fxsave-fxrstor-xmm-mxcsr", {0x0f,0xae,0x03,0x66,0x0f,0xef,0xc0,0x66,0x0f,0xef,0xc9,0x0f,0xae,0x53,0x1c,0x0f,0xae,0x0b,0x48,0x89,0xdf,0x31,0xc0,0xb9,0x40,0,0,0,0xf3,0x48,0xab},31,9,0,64,2,0,0,0,2,0x8c5,0,0,0x5f80,0,0,0,0,0,0,0},
+ /* IDs512/513 cover the same repaired auxiliary-carry formula at8/16 bits. */
+ {"inc-byte-wrap-preserve-carry", {0xfe,0xc0},2,1,0,64,2,0x12345678123456ffULL,0,0,3,0x8d5,0,0,0,0,0,0,0,0,0,0},
+ {"inc-word-overflow-preserve-clear-carry", {0x66,0xff,0xc0},3,1,0,64,2,0x1234567800007fffULL,0,0,2,0x8d5,0,0,0,0,0,0,0,0,0,0},
 };
 #define CPU_CASES (sizeof(cpu_cases)/sizeof(cpu_cases[0]))
 static const unsigned char cpu_xmm[32] = {
