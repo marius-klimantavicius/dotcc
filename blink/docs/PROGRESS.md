@@ -9,8 +9,8 @@ P0–P2 have passed their stated gates on Linux x64. The complete selected inter
 ## Ownership
 
 - Coordinator: source/host inventory, dotcc baseline and translation probes, integration, validation, and milestone/significant-progress commits.
-- Inputs worker: actual complete-core CPU/CPUID/floating-point coverage and preserved hardware/native/managed diagnostic differences.
-- Guest worker: completed valid ELF loading, controller review and fresh picotls/MsQuic regressions; now measures bounded actual interpreter throughput. The blocked service-worker task has stopped.
+- Inputs worker: completed the current CPU/CPUID/scalar checkpoint; now reproduces the documented core gates in an empty detached checkout.
+- Guest worker: completed valid ELF loading, controller review, fresh picotls/MsQuic regressions and bounded actual interpreter throughput. The blocked service-worker task has stopped.
 
 Workers share one worktree with disjoint authored-file ownership. Shared compiler edits and repository suites are serialized by the coordinator. Generated/ref/build/artifacts content is disposable and ignored; reproducible scripts and durable summaries are committed.
 
@@ -33,8 +33,10 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 ## Next actions
 
 The new complete-core profile includes the qualified scalar FP correction and
-current HostMemory; its ABI/execution/import/publication gates pass. The narrowed optional CPUID policy passes 495 cases in each managed form. All seven SQLite C corpora now pass fresh native and all four managed forms. Finish
-bounded interpreter throughput measurements.
+current HostMemory; its ABI/execution/import/publication gates pass. The narrowed
+optional CPUID policy passes 495 cases in each managed form. All seven SQLite C
+corpora now pass fresh native and all four managed forms. Bounded interpreter
+throughput measurements pass; finish the clean-checkout core reproduction.
 SQLite/picotls matrices, Lua/chibi JIT conformance and WAT/Zig execution oracles
 now have fresh passing Linux x64 results. Service-worker implementation and malformed-input work are
 blocked by automated review and were not retried; Windows execution remains
@@ -1221,3 +1223,34 @@ regression checklist item on Linux x64. It does not complete P6: actual Windows,
 service/fault, clean delivery and broader performance gates remain open. P3's
 selected instruction-comparison item is also checked based on the qualified
 495-case corpus; broader architectural coverage and the full P3 gate remain open.
+
+## Significant progress: bounded real interpreter throughput
+
+CoreThroughput retains 108 canonical objects and replaces only the authored
+frontend with an eleven-byte guest integer loop. Native and all four managed
+forms pass 75 timed samples (75 million interpreted instructions), with exact
+register/flags/memory/canary/code/XMM/MXCSR checks after every batch. Setup, state
+reset, checks and output are outside the dispatch timing interval. There is a
+fixed 40,000-instruction warmup followed by three fresh processes of five
+one-million-instruction samples per mode; no tuning from observed scores.
+
+On this Ryzen7950X host, CPU31, .NET10.0.11, median million instructions/second
+are native84.203, rawJIT5.500, rawAOT42.580, optimizedJIT14.676 and optimizedAOT
+47.759. These describe one fixed hot loop, not service throughput or general
+performance equivalence. Campaign builds were quiet; uncontrolled external
+load, scheduling, frequency and tiering effects remain explicit. Per-process
+wall time includes lifecycle costs and is not a startup-latency measurement.
+
+Receipt core-throughput/attempt-h4zo2vxu has SHA256
+ae0e7eaf1596221ebf89286d11983a55aa67546b0fe14f4a336cb583cf469763.
+All 711 frozen artifacts and runtime identities match before/after. Independent
+review identified and repaired incomplete-mode/provenance acceptance; nine
+negative gate cases pass at core-throughput-controls/attempt-10wi772e. Earlier
+preparations remain unqualified and preserved. Documentation now covers current
+source/configuration/host/usage/validation and explicit unsupported boundaries;
+P6's documentation item is checked, while its broad performance item stays open.
+
+Clean-checkout reproduction is active from committed717ba66 in a new detached
+worktree. Only the verified source archive was copied; no compiler, object or
+native build output is reused. Installed host tools and NuGet cache remain
+allowed and recorded. This independent task began after timing finished.

@@ -51,6 +51,8 @@ Additional qualified harnesses:
 - [Core ABI](tests/CoreAbi/README.md): 236 actual layout/register measurements.
 - [Controller lifecycle](tests/InstanceLifecycle/README.md): independent managed
   subprocess fixtures for stop, deadline, protocol bounds and pipe cleanup.
+- [Interpreter throughput](tests/CoreThroughput/README.md): fixed hot-loop
+  measurement with exact semantic gates and explicit performance limits.
 - [Boundary inventory](tools/BoundaryAudit/README.md): direct IL graph and
   publication evidence with indirect-call/framework limitations stated.
 

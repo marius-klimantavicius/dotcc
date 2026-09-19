@@ -311,7 +311,7 @@ translated-emulator service instances without cross-instance interference.
 - [x] Regenerate SQLite with the final compiler and rerun its JIT/AOT corpus;
       rerun picotls/MsQuic after relevant shared fixes, plus Lua/chibi and affected
       Zig/WAT checks. Record observed failures rather than relabeling old evidence.
-- [ ] Publish source/configuration/host-contract/usage/validation documentation,
+- [x] Publish source/configuration/host-contract/usage/validation documentation,
       including unqualified guest features, hosts, and security boundaries.
 
 **Gate:** all mandatory profile cases pass with reproducible receipts. Linux-only

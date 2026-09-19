@@ -18,7 +18,7 @@ because its CPUID bit is advertised or its handler is linked.
 | Floating point | Signed zero/exact lanes pass; reviewed scalar COMIS/UCOMIS and CVT/CVTT SS/SD-to-32/64 now pass limits, ties/all RC, NaNs/infinities, DAZ/FTZ, sticky/masked/unmasked state and signal-code cases | Broader arithmetic/packed FP, NaN result payload rules, underflow/overflow arithmetic, memory encodings and approximations |
 | FXSR | Earlier separate native-only FX save/restore witness | Actual translated FXSAVE/FXRSTOR/MXCSR state round trips and masks |
 | SSE3/SSSE3/PCLMULQDQ/POPCNT | Optional advertisements cleared; retained handler audit only | Actual translated hardware differential cases for each family |
-| CMPXCHG8B/16B | Optional advertisements cleared; retained handler audit only | Success/failure state, alignment and atomicity contracts |
+| CMPXCHG8B/16B | CMPXCHG16B advertisement cleared; baseline CMPXCHG8B remains advertised; retained handler audit only | Success/failure state, alignment and atomicity contracts |
 | CMOV/LAHF/SAHF/FSGSBASE | One CMOV condition now passes; other paths remain unqualified | Other conditions/widths, flag/register and address effects, save/restore |
 | ERMS | REP paths retained | Direction, overlap, zero length, page-boundary fault restart; no speed claim |
 | TSC/RDTSCP/RDPID/RDRAND/RDSEED | Separate capability/host contracts | Instruction register/flag semantics and bounded/injected-source properties; real clock/random values must not be compared for equality across runs |
