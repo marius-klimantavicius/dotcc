@@ -4,9 +4,11 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-User scope update: malformed-ELF-related work is excluded from required
-implementation, qualification and completion gates. Valid ELF loading remains
-in scope. Earlier malformed-ELF blockers below are historical and no longer
+User test-scope update: custom fault-injection and invalid/malformed-ELF tests
+are excluded from work and completion gates. Such cases may run only when
+already present in pinned upstream tests, with revision/path provenance.
+Valid ELF loading, ordinary functional/lifecycle tests and runtime error handling
+remain in scope. Earlier custom-test blockers below are historical and no longer
 block completion; excluded checks are not reported as passed.
 
 P0–P1 and P2's original core gate have passed on Linux x64. The complete selected interpreter executes bounded instructions, faults and guest exits in raw/optimized JIT/NativeAOT. P2 now has additional pending delivery requirements: `blink/scripts/translate.sh` and final post-processed sources in `blink/generated/TranslatedBlink/`. P3–P6 remain open; P5 also requires the showcase `blink/ManagedConsumer.slnx` and its usage sample. No managed service runner or Windows execution is claimed.
@@ -33,7 +35,7 @@ documentation were committed directly on `sqlite`.
 | P3 | Pending | CPU/memory/ELF behavior corpus. |
 | P4 | Pending | Real host contracts and service startup. |
 | P5 | Pending | Worker/controller lifecycle, two-instance HTTP qualification, and ManagedConsumer.slnx usage showcase. |
-| P6 | Pending | Faults, Linux/Windows runtime matrix, reproduction and regression qualification. |
+| P6 | Pending | Applicable upstream tests, Linux/Windows runtime matrix, reproduction and regression qualification. |
 
 ## Observed environment
 
@@ -49,8 +51,9 @@ regressions and fixed-loop throughput have passing evidence below.
 P3–P6 remain open for broader CPU/guest-memory/valid-ELF coverage, actual service
 startup and translated-worker integration, Windows execution, broader performance
 and unresolved runtime-dependency limits. Service-worker implementation remains
-blocked by automated review and was not retried. Malformed-ELF handling and
-qualification are excluded by user direction, not a remaining completion blocker.
+blocked by automated review and was not retried. Custom fault-injection and
+invalid-ELF tests are excluded by user direction; existing pinned upstream cases
+are allowed under the updated plan. Excluded tests are not completion blockers.
 Resume additional work only after a new user instruction.
 
 The later request to add delivery paths updates the plan only. The translation

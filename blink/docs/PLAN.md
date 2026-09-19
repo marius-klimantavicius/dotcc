@@ -5,9 +5,15 @@ The plan was prepared on branch `sqlite`; it does not require a branch change.
 
 ## Objective and inherited conventions
 
-User scope update: malformed-ELF handling and qualification are excluded from
-this campaign's required work and completion gates. Valid ELF loading remains
-required. Historical malformed-ELF findings are retained, not counted as passes.
+User test-scope update: exclude custom fault-injection and invalid/malformed-ELF
+tests from campaign work and completion gates. Such cases may run only when
+already present in the pinned upstream test suites; record their upstream
+revision and test path. Do not create or extend custom malformed-input corpora,
+forced allocation/resource/host failures, or injected network delays/disconnects.
+Valid ELF loading, ordinary functional/lifecycle tests and required runtime
+error handling remain in scope. Preserve historical results; excluded or unrun
+checks are not passes and do not block completion. This scope applies to every
+milestone below.
 
 Translate Blink's actual x86-64 interpreter and reusable Linux userspace
 emulation code into a reusable unsafe C# library. Build a small managed service
@@ -159,7 +165,8 @@ Do not globally replace libc behavior needed by other translated libraries.
 Virtual network bindings must permit two guests to use the same guest port.
 Map explicitly published endpoints to distinct host loopback ports. Keep guest
 addresses virtual when returning socket metadata. Test partial I/O, backpressure,
-disconnects, occupied endpoints, cancellation, and closure while awaiting I/O.
+normal connection closure, cancellation, and closure while awaiting I/O.
+Fault-injection cases are limited to existing pinned upstream tests.
 Real external access is opt-in through the instance host policy.
 
 Emulation and unsafe C# translation are not a security boundary by themselves.
@@ -259,7 +266,7 @@ source/host/profile manifest. Do not mark a source inspection as a passed probe.
 
 - [x] Translate a decoder/instruction subset with a real guest memory harness.
 - [x] Compare actual emitted ABI/register storage to matching native probes.
-- [x] Demonstrate budgeted stepping, faults, and nonlocal unwind without host exit.
+- [x] Demonstrate budgeted stepping and nonlocal unwind without host exit.
 - [x] Map every remaining platform dependency and planned adaptation explicitly.
 
 **Gate:** actual guest instructions execute and halt safely through the proposed
@@ -287,11 +294,12 @@ no native emulator dependency, and passing affected compiler regressions;
 - [x] Run selected upstream instruction cases and generated edge cases against
       native Blink and real x86-64 Linux execution where guest behavior is defined.
 - [ ] Cover flags, shifts, signed division, SIMD lanes, floating-point edge cases,
-      instruction/page boundaries, invalid instructions, and advertised CPUID bits.
+      instruction/page boundaries and advertised CPUID bits; fault-triggering
+      cases are limited to existing pinned upstream tests.
 - [ ] Cover valid ELF headers/segments, BSS zeroing,
       executable permissions, stack/argv/env/auxv, and required TLS setup.
-- [ ] Exercise memory growth, map/unmap/protect, cross-page reads/writes, invalid
-      guest pointers, allocation failure, and cleanup. Guest code pages are data
+- [ ] Exercise memory growth, map/unmap/protect, valid cross-page reads/writes,
+      and cleanup. Guest code pages are data
       interpreted by Blink; no host executable allocation is needed.
 
 **Gate:** the selected guest CPU/ELF/memory profile passes exact state/output or
@@ -301,8 +309,9 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
 
 - [ ] Implement the required virtual filesystem, descriptors, clocks/randomness,
       guest status/signal handling, TCP sockets, and readiness contracts.
-- [ ] Test invalid guest buffers, path escapes, absent files, denied access,
-      duplicate descriptors, short I/O, allocation exhaustion, and host failures.
+- [ ] Test ordinary filesystem access, descriptor duplication/close, short I/O,
+      and cleanup. Fault-injection cases, including invalid guest buffers and
+      forced resource/host failures, are limited to existing pinned upstream tests.
 - [ ] Bind stop/deadline behavior to execution and outstanding I/O; prove no
       guest operation exits the controller or reaches an unintended host service.
 - [ ] Audit required service startup syscalls; qualify additions individually.
@@ -327,10 +336,11 @@ operations fail explicitly without false success or a native fallback.
 translated-emulator service instances without cross-instance interference;
 the showcase solution builds and its sample demonstrates the documented usage.
 
-### P6 — Qualify faults, platforms, and delivery
+### P6 — Qualify upstream tests, platforms, and delivery
 
-- [ ] Exercise bounded seeded malformed instruction/syscall inputs and
-      injected delays/disconnects/resource failures; preserve minimized failures.
+- [ ] Run applicable pinned upstream tests and preserve case-level results.
+      Include fault-injection or invalid-ELF cases only where they already exist
+      upstream; record provenance and exclusions without adding custom cases.
 - [ ] Execute raw/optimized × JIT/NativeAOT on Linux x64 and Windows x64.
       A Windows cross-build does not count as a Windows execution result.
 - [ ] Measure startup/readiness, request latency, CPU throughput, memory,
