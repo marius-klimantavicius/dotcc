@@ -37,7 +37,31 @@ qualification. Historical custom fault results are excluded, not passed.
 This closes the finite selected-profile P3 gate. It is not exhaustive ISA
 certification, a general libc/dynamic TLS ABI, forbidden-access enforcement
 qualification, or post-NEG reexecution of unchanged memory/loader tests.
-All workers have finished their P3 assignments and released the build slot.
+All P3 assignments finished and released the build slot. The next section
+records the separately authorized P4 work.
+
+## Active phase: P4
+
+The user explicitly authorized P4 after the selected P3 milestone. This phase
+stops at P4 completion or a concrete blocker after independently permitted P4
+work is exhausted; P5/P6 do not start automatically. P0–P3 are not reopened.
+
+The concrete map and source/receipt distinctions are in
+[P4-HOST-SERVICES.md](P4-HOST-SERVICES.md). Initial work traces the current binding manifest, actual translated syscall
+paths, host implementations and exact execution receipts. Historical pending
+labels are not treated as present defects without checking current code.
+
+| Owner | P4 task | State |
+| --- | --- | --- |
+| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo normal dispatcher fixture in source preparation; builds held |
+| Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation bridge/normal lifecycle fixture in source preparation; builds held |
+| Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Audit active |
+
+The existing translated-service worker rejection remains binding. No recovery,
+renaming or replacement of that rejected task is authorized by this audit.
+Actual service startup remains an unqualified P4 exit condition, separately
+from ordinary host-contract tests. Custom fault-injection and malformed ELF
+remain excluded under the user scope above.
 
 ## Ownership
 
@@ -47,8 +71,8 @@ main checkout. Historical recovery/detached worktrees remain evidence only.
 
 - Coordinator: current shared-toolchain build/identity freeze, normal-only probe
   scope alignment, integration, runtime revalidation, durable status and commits.
-- Inputs worker: completed actual GuestMemory qualification and final source/producer review; idle.
-- Consumer/CPU worker: completed the finite CPU set and clean reproduction; idle.
+- Inputs worker: P4 file/descriptor/TCP/readiness audit.
+- Consumer worker: P4 environment/status/signal/cancellation audit.
   The service-worker task remains unqualified.
 
 Shared compiler edits and heavy test suites remain serialized. Workers own
@@ -62,7 +86,7 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 | P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
 | P2 | Passed | All 109 sources emit/link; corrected core passes raw/optimized JIT/AOT; translate.sh publishes the final TranslatedBlink project and immutable raw comparison. Direct IL/import/initializer inventories retain explicit indirect/framework limits for P4/P6. |
 | P3 | Passed — selected profile | 504 normal CPU cases per form (2,016 matches), valid ELF/fixed TLS and actual guest-memory lifecycle pass. Bounded coverage and retained producer evidence are documented above. |
-| P4 | Pending | Real host contracts and service startup. |
+| P4 | Active | Current syscall/binding audit, then bounded missing-contract implementation and normal qualification. Actual service startup remains unqualified. |
 | P5 | Partial | ManagedConsumer.slnx normal-core usage sample passes; translated service worker/API and two-instance HTTP lifecycle remain unqualified. |
 | P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
 
