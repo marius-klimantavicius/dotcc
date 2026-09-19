@@ -40,7 +40,7 @@ qualification, or post-NEG reexecution of unchanged memory/loader tests.
 All P3 assignments finished and released the build slot. The next section
 records the separately authorized P4 work.
 
-## Current phase: P4 stopped at a concrete blocker
+## Current phase: P4 resumed for execution and service integration
 
 The user explicitly authorized P4 after the selected P3 milestone. This phase
 stops at P4 completion or a concrete blocker after independently permitted P4
@@ -55,13 +55,14 @@ labels are not treated as present defects without checking current code.
 | --- | --- | --- |
 | Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo, GuestEnvironment and GuestStreams native/all-four passed; assignment complete |
 | Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation all-four passed; GuestTcp native/all-four passed; assignment complete |
-| Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Selected contracts qualified; P4 stopped at owning stop/service-startup blocker |
+| Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Resumed: execution-stop staging, owning driver and actual pinned service startup |
 
-The existing translated-service worker rejection remains binding. No recovery,
-renaming or replacement of that rejected task is authorized by this audit.
-Actual service startup remains an unqualified P4 exit condition, separately
-from ordinary host-contract tests. Custom fault-injection and malformed ELF
-remain excluded under the user scope above.
+The user explicitly requested another P4 attempt on 2026-09-20. The earlier
+generic automated rejection remains historical evidence, not a permanent scope
+rule invented by the campaign. Ordinary local execution/service implementation
+is authorized; any actual current tool rejection must be recorded exactly and
+must not be concealed, renamed or routed around. Actual service startup remains
+unqualified until executed. Custom fault-injection and malformed ELF stay excluded.
 
 ## Ownership
 
@@ -86,7 +87,7 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 | P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
 | P2 | Passed | All 109 sources emit/link; corrected core passes raw/optimized JIT/AOT; translate.sh publishes the final TranslatedBlink project and immutable raw comparison. Direct IL/import/initializer inventories retain explicit indirect/framework limits for P4/P6. |
 | P3 | Passed — selected profile | 504 normal CPU cases per form (2,016 matches), valid ELF/fixed TLS and actual guest-memory lifecycle pass. Bounded coverage and retained producer evidence are documented above. |
-| P4 | Blocked after contract qualification | Three checklist items qualified for the selected profile; owning execution/poll/sleep stop and actual service startup remain unqualified. No later phase started. |
+| P4 | Active again | Three checklist items qualified; cooperative execution/poll/sleep stop and actual pinned service startup are the remaining work. No later phase started. |
 | P5 | Partial | ManagedConsumer.slnx normal-core usage sample passes; translated service worker/API and two-instance HTTP lifecycle remain unqualified. |
 | P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
 
@@ -1944,3 +1945,20 @@ bounded P4 phase; no fixture is substituted for the rejected service runner.
 P4 remains incomplete at this concrete blocker. Worker assignments are finished
 and no P5/P6 work is started. All significant progress was committed directly on
 `sqlite`; user patches, libsmb2 work and historical artifacts remain preserved.
+
+## P4 resumed by explicit user direction — 2026-09-20
+
+The user requested "Try to continue P4". Existing native/all-four contract
+receipts remain qualified. Inputs owns a persistent host stop/deadline owner,
+cancellable sleep and exact staged syscall safe points; the guest worker owns
+the minimal same-thread execution driver and actual pinned ServiceFixture
+startup. The coordinator owns canonical profile integration, source review,
+serialized builds/tests and milestone commits. No P5 controller/protocol or
+two-instance/restart expansion is included.
+
+Source review found that Poll with zero descriptors never calls CheckInterrupt.
+The proposed adaptation adds an explicit outer-loop stop check as well as the
+normal CheckInterrupt boundary. Both return EINTR normally so syscall lock and
+scratch cleanup can complete; the owning loop checks the persistent host reason
+before and after each interpreted instruction. No guest signal is fabricated.
+Implementation/qualification is pending; this design is not a gate pass.

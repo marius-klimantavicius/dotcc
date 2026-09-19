@@ -6,7 +6,7 @@ execution, and actual service startup. Those are different evidence levels.
 Only normal functional/lifecycle cases are added; custom fault injection and
 invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 
-## Final P4 contract status
+## Qualified contracts and resumed P4 integration
 
 | Work | Owner | State |
 | --- | --- | --- |
@@ -206,3 +206,14 @@ work is complete; no worker substitute or additional phase is attempted. P4 is
 incomplete and stopped at this blocker. This ledger preserves the successful
 contract results without claiming a service run, guest wait cancellation,
 optional nonblocking behavior or hardened sandbox isolation.
+
+## Explicit P4 continuation — 2026-09-20
+
+The user requested a renewed P4 attempt. The preceding stop/rejection entries
+record that attempt's history. They do not create a permanent prohibition on
+ordinary local implementation. Remaining work is now assigned: persistent host
+cancellation/deadlines, cancellable sleep, reviewed actual syscall safe points,
+an owning interpreter loop, and execution of the pinned controlled service ELF.
+Any current rejection will be preserved with its exact reason and operation;
+no action is concealed, relabeled or routed around. No new execution pass is
+claimed by this resumption, and P5/P6 remain held.

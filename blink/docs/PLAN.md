@@ -338,10 +338,11 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
 **Gate:** contract tests and the actual guest service startup pass; unsupported
 operations fail explicitly without false success or a native fallback.
 
-P4 is stopped at a concrete blocker after independent contract work: actual
-service startup and owning execution/poll/sleep stop remain unqualified. The
-previous automated service-worker rejection remains binding. No P5/P6 work
-starts automatically; see [the exact P4 ledger](P4-HOST-SERVICES.md).
+P4 resumed on 2026-09-20 by explicit user direction. Actual service startup and
+owning execution/poll/sleep stop remain unqualified while implementation resumes.
+Any actual current tool restriction must be respected and recorded; historical
+generic rejection alone is not a permanent scope rule. No P5/P6 work starts
+automatically; see [the exact P4 ledger](P4-HOST-SERVICES.md).
 
 ### P5 — Deliver the first fake-instance service runner
 
