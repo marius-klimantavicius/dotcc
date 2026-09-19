@@ -51,10 +51,10 @@ try:
     shutil.copyfile(ROOT/'config/core-overrides.json',ATTEMPT/'overrides.json')
     for path in [ROOT/'tests/HostMemory/probe.c', ROOT/'tests/HostMemory/constants.c',
                  ROOT/'tests/HostMemory/Consumer.cs',
-                 ROOT/'src/HostMemory/HostMemory.c', ROOT/'src/HostMemory/HostMemory.h',
+                 ROOT/'src/Host/HostMemory.c', ROOT/'src/Host/include/HostMemory.h',
                  UPSTREAM/'blink/flag.c', UPSTREAM/'blink/pte32.c']:
         shutil.copyfile(path,ATTEMPT/path.name)
-    run(['python3',ROOT/'src/HostMemory/stage-map.py','--output',ATTEMPT/'map.c',
+    run(['python3',ROOT/'src/Host/scripts/stage-map.py','--output',ATTEMPT/'map.c',
          '--receipt',OUT/'map-adaptation.json'],'stage-map')
     receipt['inputs']={str(p.relative_to(ATTEMPT)):sha(p) for p in ATTEMPT.rglob('*') if p.is_file()}
     receipt['compiler']={p.name:sha(p) for p in [CLI,CLI.with_name('DotCC.Lib.dll'),POST]}; save()

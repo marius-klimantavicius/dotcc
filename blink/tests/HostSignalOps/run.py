@@ -20,9 +20,9 @@ cli = REPO / 'DotCC/bin/Release/net10.0/dotcc.dll'
 postprocess = REPO / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
 source_dir = attempt / 'source'
 source_dir.mkdir()
-for original in [ROOT / 'tests/HostSignalOps/probe.c', ROOT / 'src/HostSignals/HostSignals.c',
-                 ROOT / 'src/HostSignals/HostSignals.h', ROOT / 'config/managed-host/abi.h', ROOT / 'config/managed-host/signal-constants.h',
-                 ROOT / 'src/HostSignals/HostSignalOps.c', ROOT / 'src/HostSignals/HostSignalOps.h']:
+for original in [ROOT / 'tests/HostSignalOps/probe.c', ROOT / 'src/Host/HostSignals.c',
+                 ROOT / 'src/Host/include/HostSignals.h', ROOT / 'config/managed-host/abi.h', ROOT / 'config/managed-host/signal-constants.h',
+                 ROOT / 'src/Host/HostSignalOps.c', ROOT / 'src/Host/include/HostSignalOps.h']:
     shutil.copy2(original, source_dir / original.name)
 profile = attempt / 'profile'
 shutil.copytree(ROOT / 'config/managed-host', profile)

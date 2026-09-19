@@ -24,10 +24,10 @@ try:
     shutil.copyfile(ROOT/'config/core-config.h',a/'config.h')
     shutil.copyfile(ROOT/'config/target-storage.h',a/'target-storage.h')
     shutil.copyfile(ROOT/'config/core-overrides.json',a/'overrides.json')
-    shutil.copyfile(ROOT/'src/HostIo/host-io.h',a/'profile/host-io.h')
-    shutil.copyfile(ROOT/'src/HostIo/HostIoBridge.cs',a/'HostIoBridge.cs')
-    shutil.copyfile(ROOT/'src/HostMemory/HostMemory.c',a/'HostMemory.c')
-    shutil.copyfile(ROOT/'src/HostMemory/HostMemory.h',a/'HostMemory.h')
+    shutil.copyfile(ROOT/'src/Host/include/host-io.h',a/'profile/host-io.h')
+    shutil.copyfile(ROOT/'src/Host/HostIoBridge.cs',a/'HostIoBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostMemory.c',a/'HostMemory.c')
+    shutil.copyfile(ROOT/'src/Host/include/HostMemory.h',a/'HostMemory.h')
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host-project',ignore=shutil.ignore_patterns('bin','obj'))
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['hostSources']={p.name:sha(p)for p in (a/'host-project').glob('*.cs')}

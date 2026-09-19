@@ -44,7 +44,8 @@ try:
     for name in ('probe.c', 'Program.cs'):
         shutil.copyfile(ROOT / 'tests/HostFdSets' / name, a / name)
     for name in ('HostFdSets.c', 'HostFdSets.h'):
-        shutil.copyfile(ROOT / 'src/HostFdSets' / name, a / name)
+        source = ROOT / 'src/Host' / ('include' if name.endswith('.h') else '') / name
+        shutil.copyfile(source, a / name)
     receipt['inputs'] = {p.name: sha(p) for p in a.iterdir() if p.is_file()}
     receipt['compiler'] = compiler_identity(compiler_dir)
     receipt['postprocessor_sha256'] = sha(post)

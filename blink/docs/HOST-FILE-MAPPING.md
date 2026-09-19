@@ -14,7 +14,7 @@ that the full managed loader or guest startup now executes.
 
 ## Binding and lifetime
 
-Include `src/HostMemory/HostFileMapping.c` and `HostFileMapping.h` in the managed
+Include `src/Host/HostFileMapping.c` and `HostFileMapping.h` in the managed
 C source/header snapshot, with the updated `HostMemory.c/h` and `HostIoBridge.cs`.
 The C translation unit defines `pread` and a read-length wrapper, forwarding to
 the fixed callbacks `blink_io_pread` and `blink_io_read_at_length`. It also exports

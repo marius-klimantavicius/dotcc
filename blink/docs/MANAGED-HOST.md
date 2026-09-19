@@ -68,7 +68,7 @@ eventual implementation.
 
 Signal, signal-mask, poll, vector I/O, terminal, socket, and ancillary-walk
 declarations map to unresolved `blink_host_*` symbols. The signal-aware jump
-adapter in `src/HostSignals/` separately implements virtual mask capture and
+adapter in `src/Host/HostSignals.c` separately implements virtual mask capture and
 restore around generic numeric-slot nonlocal unwind. In particular:
 
 - `sigsetjmp` calls `PrepareVirtualSignalJump` once before ordinary setjmp.

@@ -1,6 +1,6 @@
 # Read-only host clock boundary
 
-`src/HostEnvironment/HostClockBridge.cs` supplies the actual C-facing
+`src/Host/HostClockBridge.cs` supplies the actual C-facing
 `gettimeofday` and `clock_getres` callbacks through the instance-bound
 `HostEnvironment`. It shares the existing environment binding used by
 `clock_gettime`; it does not introduce a process clock or timer handler.
@@ -43,7 +43,7 @@ runner; this fixture qualifies only the two read-only clock additions.
 
 ## Selected-core dependency audit
 
-Run `python3 blink/src/HostEnvironment/audit-host-calls.py`. The report at
+Run `python3 blink/src/Host/scripts/audit-host-calls.py`. The report at
 `artifacts/host-clocks/host-call-audit.json` joins the recorded native
 archive's undefined object symbols to the actual selected core source
 closure, then supplies lexical macro and authored-definition hints from

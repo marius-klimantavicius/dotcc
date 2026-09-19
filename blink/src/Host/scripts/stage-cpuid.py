@@ -5,7 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 UPSTREAM = ROOT / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink/cpuid.c'
 PIN = '0675b9d86847b17398936d052f863762b3ef367ad6d964f7bb64fade3d74abca'
 parser = argparse.ArgumentParser(description=__doc__)

@@ -18,12 +18,12 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','layout.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostDirectories'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostDirectories/HostDirectoriesBridge.cs',a/'HostDirectoriesBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostDirectoriesBridge.cs',a/'HostDirectoriesBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
     shutil.copyfile(REPO/'DotCC.Lib/include/dirent.h',a/'profile/dirent.h')
-    shutil.copyfile(ROOT/'src/HostIo/host-io.h',a/'profile/host-io.h')
-    shutil.copyfile(ROOT/'src/HostDirectories/host-directories.h',a/'profile/host-directories.h')
-    shutil.copyfile(ROOT/'src/HostIo/HostIoBridge.cs',a/'HostIoBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/include/host-io.h',a/'profile/host-io.h')
+    shutil.copyfile(ROOT/'src/Host/include/host-directories.h',a/'profile/host-directories.h')
+    shutil.copyfile(ROOT/'src/Host/HostIoBridge.cs',a/'HostIoBridge.cs')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host',ignore=shutil.ignore_patterns('bin','obj'))
     r['hostSources']={p.name:sha(p)for p in (a/'host').glob('*.cs')}

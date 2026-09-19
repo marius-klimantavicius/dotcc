@@ -103,7 +103,7 @@ host signal-handler calls.
 
 ## Qualified virtual host-delivery-mask jumps
 
-`src/HostSignals/` implements an explicit signal-aware unwind adapter. The
+`src/Host/HostSignals.c` implements an explicit signal-aware unwind adapter. The
 campaign's ordinary jump prefix reserves 200 opaque bytes; managed execution
 uses only its first numeric identity word. The signal record adds a 32-bit
 saved-mask flag, alignment padding, and a separately owned 128-byte mask, for

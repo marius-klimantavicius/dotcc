@@ -20,7 +20,9 @@ def run(cmd,name,timeout=180):
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostExitCallbacks'/name,a/name)
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    for name in ['HostExitCallbacks.c','HostExitCallbacks.h']:shutil.copyfile(ROOT/'src/HostExitCallbacks'/name,a/name)
+    for name in ['HostExitCallbacks.c','HostExitCallbacks.h']:
+        source=ROOT/'src/Host'/('include' if name.endswith('.h') else '')/name
+        shutil.copyfile(source,a/name)
     shutil.copyfile(ROOT/'config/managed-host/host-errors.h',a/'host-errors.h')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['compiler']={p.name:sha(p)for p in [cli,cli.with_name('DotCC.Lib.dll'),post]};save()

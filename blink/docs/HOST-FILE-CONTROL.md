@@ -1,6 +1,6 @@
 # Private openat and descriptor control
 
-`src/HostIo/HostFileControl.c` provides the ordinary C definitions of the
+`src/Host/HostFileControl.c` provides the ordinary C definitions of the
 campaign `fcntl.h` names: `blink_host_open`, `blink_host_openat`, and
 `blink_host_fcntl`. They call the fixed C# callbacks in `HostIoBridge.cs`, which
 use only the bound `InstanceIo`. Include this C translation unit in the managed
@@ -40,7 +40,7 @@ Nonblocking, synchronous, direct-I/O, and unknown flags return `ENOTSUP` before
 creation or truncation. Creation now consumes the actual optional C mode when
 `O_CREAT` is present and applies the private instance umask. Ordinary mode bits
 and chmod/chown behavior are qualified by the
-[permission boundary](../src/HostPermissions/README.md). Legacy managed callers
+[permission boundary](../src/Host/docs/HostPermissions.md). Legacy managed callers
 retain requested mode `0600` defaults; all C arguments are evaluated normally.
 
 ## Descriptor flags and shared status

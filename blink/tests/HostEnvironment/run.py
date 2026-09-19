@@ -18,7 +18,7 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostEnvironment'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostEnvironment/HostEnvironmentBridge.cs',a/'HostEnvironmentBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostEnvironmentBridge.cs',a/'HostEnvironmentBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['hostSources']={p.name:sha(p)for p in (ROOT/'src/Managed.Emulation.Host').glob('*.cs')}

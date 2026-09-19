@@ -15,9 +15,9 @@ passes it to existing asynchronous read/write, vector, accept/connect,
 send/receive, message and readiness operations. Unbind clears both owner and
 token. The binding does not create or dispose the caller's token source.
 
-The four changed bridges are `src/HostIo/HostIoBridge.cs`,
-`src/HostNetwork/HostNetworkBridge.cs`, `src/HostMessages/HostMessagesBridge.cs`
-and `src/HostReadiness/HostReadinessBridge.cs`. They continue borrowing C pointers
+The four changed bridges are `src/Host/HostIoBridge.cs`,
+`src/Host/HostNetworkBridge.cs`, `src/Host/HostMessagesBridge.cs`
+and `src/Host/HostReadinessBridge.cs`. They continue borrowing C pointers
 only during the synchronous call and use bounded owned byte arrays for async
 work. Existing successful partial transfers remain successes; cancellation does
 not replace a positive byte count or discard bytes already committed.

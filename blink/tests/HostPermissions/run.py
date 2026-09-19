@@ -23,7 +23,7 @@ try:
  for name in bridges:
   shutil.copyfile(ROOT/'src'/name/(name+'Bridge.cs'),a/(name+'Bridge.cs'))
  for module,name in [('HostIo','host-io.h'),('HostIdentity','host-identity.h'),('HostAccess','host-access.h'),('HostPaths','host-paths.h'),('HostNamespace','host-namespace.h'),('HostPermissions','host-permissions.h')]:shutil.copyfile(ROOT/'src'/module/name,a/'profile'/name)
- shutil.copyfile(ROOT/'src/HostIo/HostFileControl.c',a/'HostFileControl.c')
+ shutil.copyfile(ROOT/'src/Host/HostFileControl.c',a/'HostFileControl.c')
  r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
  identity=lambda:{str(p.relative_to(REPO)):sha(p)for p in [cli,cli.with_name('DotCC.Lib.dll'),post]}
  r['compiler']=identity();r['head']=subprocess.check_output(['git','-C',str(REPO),'rev-parse','HEAD'],text=True).strip();save()

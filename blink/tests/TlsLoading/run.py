@@ -190,7 +190,7 @@ try:
     if program.count('FIXTURE_SHA256') != 1:
         raise RuntimeError('Fixture hash insertion marker differs')
     (a/'Program.cs').write_text(program.replace('FIXTURE_SHA256', r['fixture_sha256']))
-    shutil.copyfile(ROOT/'src/HostMemory/HostMemory.c', a/'HostMemory.c')
+    shutil.copyfile(ROOT/'src/Host/HostMemory.c', a/'HostMemory.c')
     r['authored_inputs'] = {p.name: sha(p) for p in a.iterdir() if p.is_file()}
     native = ROOT/'build/native/source'
     archive = native/'o/blink/blink.a'

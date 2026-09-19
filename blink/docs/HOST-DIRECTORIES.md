@@ -107,7 +107,7 @@ directory owner returns `EBADF`. Caches or tokens from a previous owner must be
 discarded before binding a new one. Each worker uses a separate bound owner;
 the module does not change the lifetime rules for other upstream global state.
 
-Integration uses `src/HostDirectories/HostDirectoriesBridge.cs`, preamble header
+Integration uses `src/Host/HostDirectoriesBridge.cs`, preamble header
 `host-directories.h`, and Host project sources `HostDirectories.cs`,
 `InstanceIo.Directories.cs`, and the additive VFS snapshot method. No authored
 C implementation source, native library, shared header, or compiler change is

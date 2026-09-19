@@ -9,7 +9,7 @@ nor invokes operating-system terminal operations. `HostTerminalBridge.cs`
 uses the existing worker-local `BindHostIo` binding; unbound calls return
 `ENODEV`.
 
-`src/HostTerminal/HostTerminal.c` defines the campaign's redirected `ioctl`,
+`src/Host/HostTerminal.c` defines the campaign's redirected `ioctl`,
 `tcgetattr`, `tcsetattr`, `tcdrain`, `tcflow`, `tcflush`, `tcsendbreak`,
 `tcgetpgrp`, `tcsetpgrp`, and `tcgetsid` functions. Ordinary C argument
 evaluation is retained. The variadic `ioctl` wrapper consumes no optional
@@ -30,7 +30,7 @@ verify the stronger no-payload-access rule with address 1 and null pointers.
 
 Actual upstream `XlatTermiosToHost` calls `cfsetispeed` and `cfsetospeed`,
 and `XlatTermiosToLinux` calls `cfgetospeed`. These operations are useful
-independently of terminal devices. `src/HostTerminal/HostTermios.c` implements
+independently of terminal devices. `src/Host/HostTermios.c` implements
 them for the existing native-measured 60-byte Linux LP64 termios record.
 
 The native libc record convention is more specific than reading/writing

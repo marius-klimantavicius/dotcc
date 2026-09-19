@@ -19,10 +19,10 @@ def run(cmd,name,timeout=180):
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostSocketQueries'/name,a/name)
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    shutil.copyfile(ROOT/'src/HostIo/host-io.h',a/'profile/host-io.h')
-    shutil.copyfile(ROOT/'src/HostIo/HostIoBridge.cs',a/'HostIoBridge.cs')
-    shutil.copyfile(ROOT/'src/HostSocketQueries/HostSocketQueriesBridge.cs',a/'HostSocketQueriesBridge.cs')
-    shutil.copyfile(ROOT/'src/HostNetwork/HostNetworkBridge.cs',a/'HostNetworkBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/include/host-io.h',a/'profile/host-io.h')
+    shutil.copyfile(ROOT/'src/Host/HostIoBridge.cs',a/'HostIoBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostSocketQueriesBridge.cs',a/'HostSocketQueriesBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostNetworkBridge.cs',a/'HostNetworkBridge.cs')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host',ignore=shutil.ignore_patterns('bin','obj'))
     r['hostSources']={p.name:sha(p)for p in (a/'host').glob('*.cs')}

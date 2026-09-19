@@ -18,11 +18,11 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostSignalPolicy'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostIdentity/HostIdentityBridge.cs',a/'HostIdentityBridge.cs')
-    shutil.copyfile(ROOT/'src/HostSignalPolicy/HostSignalPolicyBridge.cs',a/'HostSignalPolicyBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostIdentityBridge.cs',a/'HostIdentityBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostSignalPolicyBridge.cs',a/'HostSignalPolicyBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    shutil.copyfile(ROOT/'src/HostSignalPolicy/host-signal-policy.h',a/'profile/host-signal-policy.h')
-    shutil.copyfile(ROOT/'src/HostIdentity/host-identity.h',a/'profile/host-identity.h')
+    shutil.copyfile(ROOT/'src/Host/include/host-signal-policy.h',a/'profile/host-signal-policy.h')
+    shutil.copyfile(ROOT/'src/Host/include/host-identity.h',a/'profile/host-identity.h')
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host-project',ignore=shutil.ignore_patterns('bin','obj'))
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['hostSources']={p.name:sha(p)for p in (a/'host-project').glob('*.cs')}

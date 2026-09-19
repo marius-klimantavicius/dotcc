@@ -1,6 +1,6 @@
 # Private exit callbacks
 
-`src/HostExitCallbacks/HostExitCallbacks.c` implements real `atexit`
+`src/Host/HostExitCallbacks.c` implements real `atexit`
 registration and explicitly invoked cleanup for one worker context. Its header
 includes `<stdlib.h>` and redirects the public name to `blink_host_atexit`.
 Both direct calls and registered C callback pointers use the translated C

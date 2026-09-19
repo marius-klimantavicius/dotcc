@@ -4,6 +4,12 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
+User adapter-layout update: the former `src/HostXXX` adapter directories are
+consolidated into `src/Host/`, with headers in `include/`, helpers in `scripts/`
+and retained documentation in `docs/`. The managed host implementation remains
+the separate `src/Managed.Emulation.Host/` project. Live source references are
+updated; historical profile snapshots/receipts retain their original paths.
+
 User source-layout update: authored Host/Bridges and execution/API code remain
 in `blink/src/`. The final generated project must use parent-relative source
 includes and project references to those originals, and the showcase solution

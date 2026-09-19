@@ -2,7 +2,7 @@
 """Native object import evidence with lexical binding hints, not runtime proof."""
 import hashlib,json,re
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2]
+ROOT=Path(__file__).resolve().parents[3]
 native_path=ROOT/'config/native-closure.json'
 closure_path=ROOT/'artifacts/core/closure.json'
 bindings_path=ROOT/'config/host-bindings.json'
@@ -22,7 +22,7 @@ def target(name):
     return name
 definitions={}
 sources=[ROOT/path for path in bindings['managedSources']+bindings['cSources']]
-sources += [ROOT/'src/HostMemory/HostMemory.c',ROOT/'src/HostSignals/HostSignals.c']
+sources += [ROOT/'src/Host/HostMemory.c',ROOT/'src/Host/HostSignals.c']
 for path in sources:
     text=path.read_text()
     if path.suffix=='.cs':
@@ -30,7 +30,7 @@ for path in sources:
     else:
         names=re.findall(r'^\s*(?:static\s+)?(?:[A-Za-z_][\w]*\s+)+[*\s]*(\w+)\s*\([^;]*?\)\s*\{',text,re.M)
     for name in names:definitions.setdefault(target(name),[]).append(str(path.relative_to(ROOT)))
-candidate_path=ROOT/'src/HostEnvironment/HostClockBridge.cs'
+candidate_path=ROOT/'src/Host/HostClockBridge.cs'
 candidates={name:str(candidate_path.relative_to(ROOT)) for name in ['blink_host_gettimeofday','blink_host_clock_getres']}
 rows=[]
 for name,objects in sorted(native['unresolvedObjectSymbols'].items()):

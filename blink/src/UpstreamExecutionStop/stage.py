@@ -79,7 +79,7 @@ def main():
     script_hash = sha(Path(__file__).read_bytes())
     patch_path = HERE/'execution-stop.patch'
     reviewed = patch_path.read_bytes()
-    header = ROOT/'src/HostExecutionStop/host-execution-stop.h'
+    header = ROOT/'src/Host/include/host-execution-stop.h'
     header_hash = sha(header.read_bytes())
     original_path = ROOT/'ref'/('blink-' + REVISION)/'blink/syscall.c'
     original = original_path.read_bytes()
@@ -96,7 +96,7 @@ def main():
         'kind': 'reviewed-private-execution-stop-adaptation', 'upstream': REVISION,
         'stage_sha256': script_hash, 'patch_sha256': sha(reviewed),
         'scope': 'CheckInterrupt normal EINTR return and Poll outer-loop owner-stop safe point; nonlinear interpreter only',
-        'required_headers': {'src/HostExecutionStop/host-execution-stop.h': header_hash},
+        'required_headers': {'src/Host/include/host-execution-stop.h': header_hash},
         'sources': {'syscall.c': {'source_sha256': SOURCE_PIN, 'staged_sha256': sha(staged), 'blocks': blocks}},
     }
     args.output.mkdir(parents=True, exist_ok=True)

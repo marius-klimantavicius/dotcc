@@ -1,6 +1,6 @@
 # Non-linear host memory boundary
 
-`src/HostMemory/` supplies bounded private anonymous host allocations for the
+`src/Host/HostMemory.c` supplies bounded private anonymous host allocations for the
 interpreter's explicit guest address translation, plus explicitly enabled
 [private file snapshots](HOST-FILE-MAPPING.md). It does not implement guest
 page tables, guest mmap algorithms, host page protection, or JIT memory.

@@ -45,7 +45,7 @@ I/O owner returns EBADF. Ending/discarding the C memory owner makes AS/DATA
 unavailable; the read-only getter returns zero when no memory owner is active.
 The getter does not retain a pointer into TLS storage.
 
-Add `src/HostResources/HostResourcesBridge.cs` to the managed binding sources;
+Add `src/Host/HostResourcesBridge.cs` to the managed binding sources;
 include `host-resources.h` where explicit module declarations are wanted. The
 core already includes HostMemory.c, which now exports its additive getter.
 Frozen objects produced before that getter must be regenerated to use this

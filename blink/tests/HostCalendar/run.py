@@ -18,10 +18,10 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostCalendar'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostEnvironment/HostEnvironmentBridge.cs',a/'HostEnvironmentBridge.cs')
-    shutil.copyfile(ROOT/'src/HostEnvironment/HostCalendarBridge.cs',a/'HostCalendarBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostEnvironmentBridge.cs',a/'HostEnvironmentBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostCalendarBridge.cs',a/'HostCalendarBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    shutil.copyfile(ROOT/'src/HostEnvironment/host-calendar.h',a/'profile/host-calendar.h')
+    shutil.copyfile(ROOT/'src/Host/include/host-calendar.h',a/'profile/host-calendar.h')
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host-project',ignore=shutil.ignore_patterns('bin','obj'))
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['hostSources']={p.name:sha(p)for p in (ROOT/'src/Managed.Emulation.Host').glob('*.cs')}

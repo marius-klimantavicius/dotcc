@@ -37,7 +37,7 @@ try:
     shutil.copyfile(native/'config.h',a/'config.h')
     (a/'blink').mkdir()
     for p in list((native/'blink').glob('*.h'))+list((native/'blink').glob('*.inc')):shutil.copyfile(p,a/'blink'/p.name)
-    stage=ROOT/'src/HostCpu/stage-cpuid.py'
+    stage=ROOT/'src/Host/scripts/stage-cpuid.py'
     run(['python3',stage,'--output',a/'cpuid.c','--receipt',out/'cpuid-stage.json'],'stage-cpuid')
     r['cpuid_stage_script_sha256']=sha(stage)
     if args.staged_fp:

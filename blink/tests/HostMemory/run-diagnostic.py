@@ -41,12 +41,12 @@ try:
     shutil.copyfile(ROOT/'config/core-config.h',ATTEMPT/'config.h')
     shutil.copyfile(ROOT/'config/target-storage.h',ATTEMPT/'target-storage.h')
     shutil.copyfile(ROOT/'config/core-overrides.json',ATTEMPT/'overrides.json')
-    for path in [ROOT/'src/HostMemory/HostMemory.c', ROOT/'src/HostMemory/HostMemory.h',
+    for path in [ROOT/'src/Host/HostMemory.c', ROOT/'src/Host/include/HostMemory.h',
                  UPSTREAM/'blink/pte32.c']:
         shutil.copyfile(path,ATTEMPT/path.name)
     shutil.copyfile(ROOT/'tests/HostMemory/diagnostic-probe.c',ATTEMPT/'probe.c')
     shutil.copyfile(ROOT/'tests/HostMemory/DiagnosticConsumer.cs',ATTEMPT/'Consumer.cs')
-    run(['python3',ROOT/'src/HostMemory/stage-debug.py','--output',ATTEMPT/'debug.c',
+    run(['python3',ROOT/'src/Host/scripts/stage-debug.py','--output',ATTEMPT/'debug.c',
          '--receipt',OUT/'debug-adaptation.json'],'stage-debug')
     # The native oracles link the entire unchanged/staged debug.c and real bus.c.
     # The focused managed probe extracts exact function text, not implementations

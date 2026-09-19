@@ -1,6 +1,6 @@
 # Private file and stream C calls
 
-The opt-in `HostIo/host-io.h` boundary maps open, close, dup, seek, read/write and
+The opt-in `src/Host/include/host-io.h` boundary maps open, close, dup, seek, read/write and
 readv/writev into the authored `HostIoBridge.cs`, compiled beside unchanged
 generated C#. It uses the existing per-instance `InstanceIo` descriptor table.
 The binding lives in managed thread-local storage, outside C records. Calls

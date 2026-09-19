@@ -73,8 +73,8 @@ authored=stage/'authored'
 authored.mkdir()
 # The normal core-probe frontend belongs to derived test links only. Product
 # orchestration is a separate C# consumer over translated upstream exports.
-for original in [p/'src/HostSignals/HostSignals.c', p/'src/HostSignals/HostSignals.h',
-                 p/'src/HostMemory/HostMemory.c', p/'src/HostMemory/HostMemory.h']:
+for original in [p/'src/Host/HostSignals.c', p/'src/Host/include/HostSignals.h',
+                 p/'src/Host/HostMemory.c', p/'src/Host/include/HostMemory.h']:
     shutil.copyfile(original,authored/original.name)
 additions_path=p/'config/core-managed-additions.json'
 shutil.copyfile(additions_path,stage/'managed-additions.json')
@@ -99,8 +99,8 @@ config=(stage/'config.h').read_text()
 if '#define NOLINEAR 1' not in config or '#define HAVE_MAP_ANONYMOUS 1' not in config or not (stage/'host/sys/mman.h').is_file():
     raise SystemExit('HostMemory requires NOLINEAR, HAVE_MAP_ANONYMOUS, and the campaign mman header together')
 source_overrides={}
-for basename, directory in (('map','HostMemory'),('debug','HostMemory'),('cpuid','HostCpu')):
-    tool=p/('src/'+directory+'/stage-'+basename+'.py')
+for basename in ('map', 'debug', 'cpuid'):
+    tool=p/('src/Host/scripts/stage-'+basename+'.py')
     snapshot=stage/tool.name
     shutil.copyfile(tool,snapshot)
     adapted=stage/'upstream'/(basename+'.c')

@@ -2,7 +2,7 @@
 
 The configured interpreter disabled x87 and MMX execution but still advertised
 MMX in both feature leaves and FPU in the extended feature leaf. The staged
-`src/HostCpu/stage-cpuid.py` adds the corresponding existing exclusion guards to
+`src/Host/scripts/stage-cpuid.py` adds the corresponding existing exclusion guards to
 those three assignments. It checks the complete immutable `cpuid.c` SHA-256
 (`0675b9d86847b17398936d052f863762b3ef367ad6d964f7bb64fade3d74abca`) and
 each exact replacement boundary, and records the original/staged hashes and

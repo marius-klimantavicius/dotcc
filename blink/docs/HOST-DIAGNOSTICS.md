@@ -13,7 +13,7 @@ execution, guest memory translation, or the guest page-table algorithms.
 
 ## Staged boundary
 
-`src/HostMemory/stage-debug.py` verifies the entire immutable debug.c hash
+`src/Host/scripts/stage-debug.py` verifies the entire immutable debug.c hash
 `09ffcc0e51c93b3f9382cc5e5c384b4cabe3144694a6e70cb1ba037e12665c3b` before replacing
 only `ReadWordSafely` and adding the HostMemory header. Its receipt records the
 original function hash, exact replacement text and staged file hash. The

@@ -18,11 +18,13 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostFileMapping'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostFileMetadata/HostFileMetadataBridge.cs',a/'HostFileMetadataBridge.cs')
-    for name in ['HostMemory.c','HostMemory.h','HostFileMapping.c','HostFileMapping.h']:shutil.copyfile(ROOT/'src/HostMemory'/name,a/name)
+    shutil.copyfile(ROOT/'src/Host/HostFileMetadataBridge.cs',a/'HostFileMetadataBridge.cs')
+    for name in ['HostMemory.c','HostMemory.h','HostFileMapping.c','HostFileMapping.h']:
+        source=ROOT/'src/Host'/('include' if name.endswith('.h') else '')/name
+        shutil.copyfile(source,a/name)
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    shutil.copyfile(ROOT/'src/HostIo/host-io.h',a/'profile/host-io.h')
-    shutil.copyfile(ROOT/'src/HostIo/HostIoBridge.cs',a/'HostIoBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/include/host-io.h',a/'profile/host-io.h')
+    shutil.copyfile(ROOT/'src/Host/HostIoBridge.cs',a/'HostIoBridge.cs')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host',ignore=shutil.ignore_patterns('bin','obj'))
     r['hostSources']={p.name:sha(p)for p in (a/'host').glob('*.cs')}

@@ -20,14 +20,14 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostNamespace'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostNamespace/HostNamespaceBridge.cs',a/'HostNamespaceBridge.cs')
-    shutil.copyfile(ROOT/'src/HostFileMetadata/HostFileMetadataBridge.cs',a/'HostFileMetadataBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostNamespaceBridge.cs',a/'HostNamespaceBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostFileMetadataBridge.cs',a/'HostFileMetadataBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    shutil.copyfile(ROOT/'src/HostNamespace/host-namespace.h',a/'profile/host-namespace.h')
-    shutil.copyfile(ROOT/'src/HostPaths/host-paths.h',a/'profile/host-paths.h')
-    shutil.copyfile(ROOT/'src/HostPaths/HostPathsBridge.cs',a/'HostPathsBridge.cs')
-    shutil.copyfile(ROOT/'src/HostIo/host-io.h',a/'profile/host-io.h')
-    shutil.copyfile(ROOT/'src/HostIo/HostIoBridge.cs',a/'HostIoBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/include/host-namespace.h',a/'profile/host-namespace.h')
+    shutil.copyfile(ROOT/'src/Host/include/host-paths.h',a/'profile/host-paths.h')
+    shutil.copyfile(ROOT/'src/Host/HostPathsBridge.cs',a/'HostPathsBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/include/host-io.h',a/'profile/host-io.h')
+    shutil.copyfile(ROOT/'src/Host/HostIoBridge.cs',a/'HostIoBridge.cs')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host',ignore=shutil.ignore_patterns('bin','obj'))
     r['hostSources']={p.name:sha(p)for p in (a/'host').glob('*.cs')}

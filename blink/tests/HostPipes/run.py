@@ -20,14 +20,14 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs','ModelChecks.cs']:shutil.copyfile(ROOT/'tests/HostPipes'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostPipes/HostPipesBridge.cs',a/'HostPipesBridge.cs')
-    shutil.copyfile(ROOT/'src/HostFileMetadata/HostFileMetadataBridge.cs',a/'HostFileMetadataBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostPipesBridge.cs',a/'HostPipesBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostFileMetadataBridge.cs',a/'HostFileMetadataBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    shutil.copyfile(ROOT/'src/HostPipes/host-pipes.h',a/'profile/host-pipes.h')
-    shutil.copyfile(ROOT/'src/HostReadiness/HostReadinessBridge.cs',a/'HostReadinessBridge.cs')
-    shutil.copyfile(ROOT/'src/HostIo/HostFileControl.c',a/'HostFileControl.c')
-    shutil.copyfile(ROOT/'src/HostIo/host-io.h',a/'profile/host-io.h')
-    shutil.copyfile(ROOT/'src/HostIo/HostIoBridge.cs',a/'HostIoBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/include/host-pipes.h',a/'profile/host-pipes.h')
+    shutil.copyfile(ROOT/'src/Host/HostReadinessBridge.cs',a/'HostReadinessBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostFileControl.c',a/'HostFileControl.c')
+    shutil.copyfile(ROOT/'src/Host/include/host-io.h',a/'profile/host-io.h')
+    shutil.copyfile(ROOT/'src/Host/HostIoBridge.cs',a/'HostIoBridge.cs')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host',ignore=shutil.ignore_patterns('bin','obj'))
     r['hostSources']={p.name:sha(p)for p in (a/'host').glob('*.cs')}

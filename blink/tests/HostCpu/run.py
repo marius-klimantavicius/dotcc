@@ -41,7 +41,7 @@ try:
     shutil.copyfile(ROOT/'config/core-overrides.json',ATTEMPT/'overrides.json')
     shutil.copyfile(ROOT/'tests/HostCpu/probe.c',ATTEMPT/'probe.c')
     shutil.copyfile(ROOT/'tests/HostCpu/native-instructions.c',ATTEMPT/'native-instructions.c')
-    run(['python3',ROOT/'src/HostCpu/stage-cpuid.py','--output',ATTEMPT/'cpuid.c',
+    run(['python3',ROOT/'src/Host/scripts/stage-cpuid.py','--output',ATTEMPT/'cpuid.c',
          '--receipt',OUT/'cpuid-adaptation.json'],'stage-cpuid')
     receipt['inputs']={str(p.relative_to(ATTEMPT)):sha(p) for p in ATTEMPT.rglob('*') if p.is_file()}
     receipt['compiler']={p.name:sha(p) for p in [CLI,CLI.with_name('DotCC.Lib.dll'),POST]}; save()

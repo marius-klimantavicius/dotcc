@@ -195,7 +195,7 @@ nested name table; the reduced fixture checks brace-grouped, fully flat,
 character, pointer, static and local arrays against native C. The complete
 repository suite passes 2,231 unit and 508 functional tests (1,033 skips).
 
-New profile snapshots also apply `HostCpu/stage-cpuid.py`, preserving the
+New profile snapshots also apply `src/Host/scripts/stage-cpuid.py`, preserving the
 original source hash and separately recording the staged result. Its only
 changes guard three advertised MMX/x87 bits with the existing feature switches;
 qualification lives in `tests/HostCpu`, including native flag combinations and

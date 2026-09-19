@@ -18,7 +18,7 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostAncillary'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostAncillary/HostAncillary.c',a/'HostAncillary.c')
+    shutil.copyfile(ROOT/'src/Host/HostAncillary.c',a/'HostAncillary.c')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['compiler']={p.name:sha(p)for p in [cli,cli.with_name('DotCC.Lib.dll'),post]};save()

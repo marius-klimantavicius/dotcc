@@ -55,7 +55,7 @@ probe=(ROOT/'tests/ElfLoading/probe.c').read_text()
 if probe.count('/* EXPECTED_SEGMENTS */')!=1:raise RuntimeError('expected segment insertion differs')
 (a/'probe.c').write_text(probe.replace('/* EXPECTED_SEGMENTS */',initializer))
 shutil.copyfile(ROOT/'tests/ElfLoading/Program.cs',a/'Program.cs')
-shutil.copyfile(ROOT/'src/HostMemory/HostMemory.c',a/'HostMemory.c')
+shutil.copyfile(ROOT/'src/Host/HostMemory.c',a/'HostMemory.c')
 receipt=dict(kind='derived actual-core valid pinned ELF loading; no guest instructions',passed=False,
     runner_sha256=sha(Path(__file__)),assembly_receipt=str(assembly_path),assembly_sha256=sha(assembly_path),
     profile=str(profile),compiler=identity,segments=segments,results={},

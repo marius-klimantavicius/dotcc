@@ -38,7 +38,7 @@ Linux faccessat extensions or variable virtual user identities.
 
 ## C integration
 
-`src/HostAccess/host-access.h` explicitly redirects `access` and `faccessat`
+`src/Host/include/host-access.h` explicitly redirects `access` and `faccessat`
 to `HostAccessBridge.cs`. The bridge shares the existing worker-local
 `BindHostIo` binding, scans inputs within the established 4096-byte bound,
 and decodes strict UTF-8. Null input is `EFAULT`, invalid UTF-8 is `EINVAL`,

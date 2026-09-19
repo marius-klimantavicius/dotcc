@@ -18,10 +18,10 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostTerminal'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostIo/HostIoBridge.cs',a/'HostIoBridge.cs')
-    shutil.copyfile(ROOT/'src/HostTerminal/HostTerminalBridge.cs',a/'HostTerminalBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostIoBridge.cs',a/'HostIoBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostTerminalBridge.cs',a/'HostTerminalBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    for name in ['HostTerminal.c','HostTermios.c']:shutil.copyfile(ROOT/'src/HostTerminal'/name,a/name)
+    for name in ['HostTerminal.c','HostTermios.c']:shutil.copyfile(ROOT/'src/Host'/name,a/name)
     shutil.copyfile(ROOT/'tests/HostTerminal/native-descriptor.c',a/'native-descriptor.c')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host',ignore=shutil.ignore_patterns('bin','obj'))

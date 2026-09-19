@@ -20,12 +20,12 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs','native.py','layout.c']:shutil.copyfile(ROOT/'tests/HostMessages'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostNetwork/HostNetworkBridge.cs',a/'HostNetworkBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostNetworkBridge.cs',a/'HostNetworkBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    shutil.copyfile(ROOT/'src/HostIo/host-io.h',a/'profile/host-io.h')
-    shutil.copyfile(ROOT/'src/HostIo/HostIoBridge.cs',a/'HostIoBridge.cs')
-    shutil.copyfile(ROOT/'src/HostMessages/HostMessagesBridge.cs',a/'HostMessagesBridge.cs')
-    shutil.copyfile(ROOT/'src/HostMessages/host-messages.h',a/'profile/host-messages.h')
+    shutil.copyfile(ROOT/'src/Host/include/host-io.h',a/'profile/host-io.h')
+    shutil.copyfile(ROOT/'src/Host/HostIoBridge.cs',a/'HostIoBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostMessagesBridge.cs',a/'HostMessagesBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/include/host-messages.h',a/'profile/host-messages.h')
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host',ignore=shutil.ignore_patterns('bin','obj'))
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['hostSources']={p.name:sha(p)for p in (a/'host').glob('*.cs')}

@@ -18,7 +18,7 @@ pointer to one zero byte; missing variables have a null pointer.
 
 ## Binding and lifetime
 
-`src/HostVariables/host-variables.h` redirects only `getenv` to
+`src/Host/include/host-variables.h` redirects only `getenv` to
 `HostVariablesBridge.cs`. The owner must call `BindHostVariables` on the
 dedicated C worker before use. Binding an already bound worker is an error;
 `UnbindHostVariables` clears the binding without freeing the owner.

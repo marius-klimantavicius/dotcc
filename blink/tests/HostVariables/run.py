@@ -18,9 +18,9 @@ def run(cmd,name,timeout=180):
     return(out/(name+'.log')).read_bytes()
 try:
     for name in ['probe.c','Program.cs']:shutil.copyfile(ROOT/'tests/HostVariables'/name,a/name)
-    shutil.copyfile(ROOT/'src/HostVariables/HostVariablesBridge.cs',a/'HostVariablesBridge.cs')
+    shutil.copyfile(ROOT/'src/Host/HostVariablesBridge.cs',a/'HostVariablesBridge.cs')
     shutil.copytree(ROOT/'config/managed-host',a/'profile')
-    shutil.copyfile(ROOT/'src/HostVariables/host-variables.h',a/'profile/host-variables.h')
+    shutil.copyfile(ROOT/'src/Host/include/host-variables.h',a/'profile/host-variables.h')
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     shutil.copytree(ROOT/'src/Managed.Emulation.Host',a/'host',ignore=shutil.ignore_patterns('bin','obj'))
     r['hostSources']={p.name:sha(p)for p in (a/'host').glob('*.cs')}

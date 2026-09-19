@@ -1,6 +1,6 @@
 # Private signal disposition registration
 
-`src/HostSignalActions/HostSignalActions.c` stores signal dispositions in
+`src/Host/HostSignalActions.c` stores signal dispositions in
 a bounded per-worker table. It implements registration, old-action output,
 and queries. It installs no operating-system handlers and provides no
 asynchronous dispatcher. `kill`, `raise`, and `sigsuspend` remain outside

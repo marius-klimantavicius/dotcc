@@ -26,7 +26,7 @@ without claiming symlink traversal support.
 
 ## C boundary and string ownership
 
-`src/HostPaths/host-paths.h` explicitly redirects `getcwd`, `chdir`,
+`src/Host/include/host-paths.h` explicitly redirects `getcwd`, `chdir`,
 `fchdir`, and `realpath` to `HostPathsBridge.cs`. The bridge requires the
 existing worker-local `BindHostIo` binding. Unbound callbacks report
 `ENODEV`; a disposed owner reports `EBADF`. No operation consults or

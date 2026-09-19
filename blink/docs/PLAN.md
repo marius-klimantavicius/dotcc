@@ -208,6 +208,11 @@ blink/
   config/       immutable source manifest, feature profile, host headers/overrides
   scripts/      fetch, native-oracle, probe, translate, build, test, dependency-audit
   src/          minimal host/ABI adapters, BCL host, C# execution API, worker/controller
+    Host/       consolidated authored C# bridges and C ABI adapters
+      include/  adapter headers
+      scripts/  reviewed staging and inventory helpers
+      docs/     adapter-specific documentation
+    Managed.Emulation.Host/       managed host implementation project
   tests/        ABI, CPU, ELF, memory, host services, lifecycle, service fixtures
   ref/          unchanged upstream/test/toolchain inputs (ignored)
   generated/    staged C and raw/optimized C# with manifests (ignored)
@@ -230,7 +235,7 @@ project through a parent-relative `ProjectReference`. For example, from the
 final generated project:
 
 ```xml
-<Compile Include="../../src/HostIo/HostIoBridge.cs" Link="Bridges/HostIoBridge.cs" />
+<Compile Include="../../src/Host/HostIoBridge.cs" Link="Bridges/HostIoBridge.cs" />
 <ProjectReference Include="../../src/Managed.Emulation.Host/Managed.Emulation.Host.csproj" />
 ```
 
@@ -243,6 +248,12 @@ sources are post-processed; linked authored sources must remain untouched.
 Private input snapshots for reproducibility may remain in test/profile/artifact
 storage, but they must not become active source inputs of the delivered solution.
 Record the actual referenced source identities in validation receipts.
+
+Keep all host bridge/C adapter sources together in `blink/src/Host/` and all
+their headers in `blink/src/Host/include/`; do not recreate per-service HostXXX
+directories. The separate managed host implementation project remains
+`blink/src/Managed.Emulation.Host/`. All live manifests, staging helpers and
+test recipes must reference this layout; historical frozen inputs stay intact.
 
 The delivered translation must exclude `CoreProbe`, the authored test `main`,
 fixed test workloads and campaign C execution drivers. Link these only into

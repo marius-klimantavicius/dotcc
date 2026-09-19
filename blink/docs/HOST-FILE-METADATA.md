@@ -62,7 +62,7 @@ Image files report mode `0444`; paths explicitly passed in the constructor's
 Image directories retain mode `0755`. Mutable files/directories now report
 their actual requested creation modes after private umask, and supported chmod
 changes are reflected in metadata and execute access; see the
-[permission boundary](../src/HostPermissions/README.md). Legacy managed creation
+[permission boundary](../src/Host/docs/HostPermissions.md). Legacy managed creation
 defaults to requested mode `0600`. The fixed private UID/GID remains zero, and
 image metadata stays immutable. Merely placing bytes in an image does not grant
 execution.
