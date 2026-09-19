@@ -570,6 +570,7 @@ productions:
       # semantics). The visitor auto-numbers items that have no explicit
       # value: each unnumbered item is `previous + 1`, starting at 0.
       - { lhs: Fn, rhs: ['enum', ID, '{', EnumList, '}', ';'], action: enumDef }
+      - { lhs: Fn, rhs: ['enum', '{', EnumList, '}', ';'], action: enumDefAnonymous }
       # C23 enum with an explicit fixed underlying type: `enum Name : Type { … } ;`.
       # The Type is an integer type-specifier; it lowers to a real C# enum whose
       # base is the mapped integral type (`unsigned char` → `byte`, `int` → `int`,
@@ -760,6 +761,7 @@ productions:
   - derivation: none
     rules:
       - { lhs: Param, rhs: [Type, ID], action: param }
+      - { lhs: Param, rhs: [Param, GnuFormatAttr], action: paramGnuAttributes }
       # Unnamed (abstract) parameter — `int f(int, char*)`, and the params of a
       # function-pointer type `int (*fp)(int, int)`. C allows a name-less
       # parameter in declarations / function-pointer types; the visitor
@@ -1126,6 +1128,7 @@ productions:
       - { lhs: Stmt, rhs: ['struct', ID, '{', MemberList, '}', ';'],            action: stmtStructDef }
       - { lhs: Stmt, rhs: ['union', ID, '{', MemberList, '}', ';'],             action: stmtUnionDef }
       - { lhs: Stmt, rhs: ['enum', ID, '{', EnumList, '}', ';'],                action: stmtEnumDef }
+      - { lhs: Stmt, rhs: ['enum', '{', EnumList, '}', ';'], action: stmtEnumDefAnonymous }
       - { lhs: Stmt, rhs: ['enum', ID, ':', Type, '{', EnumList, '}', ';'],     action: stmtEnumDefTyped }
       # Expression statement uses the full `Expr` tier so `a, b;` (comma
       # operator, result discarded) parses; the visitor splits it into
@@ -1398,6 +1401,7 @@ productions:
     rules:
       - { lhs: ArrDims, rhs: [ArrDims, '[', E, ']'], action: arrDimsCons }
       - { lhs: ArrDims, rhs: ['[', E, ']'],          action: arrDimsOne }
+      - { lhs: ArrDims, rhs: [ArrDims, GnuFormatAttr], action: arrDimsGnuAttributes }
 
   - derivation: leftmost
     rules:
@@ -1434,6 +1438,8 @@ productions:
     rules:
       - { lhs: DeclItem, rhs: [ID], action: declItem }
       - { lhs: DeclItem, rhs: [ID, '=', E], action: declItemInit }
+      - { lhs: DeclItem, rhs: [ID, GnuFormatAttr], action: declItemGnuAttributes }
+      - { lhs: DeclItem, rhs: [ID, GnuFormatAttr, '=', E], action: declItemGnuAttributesInit }
       # A tail (non-first) init-declarator: a plain DeclItem, or one or more `*`
       # prefixes adding pointer levels onto the shared base type. The emitter
       # computes the tail's type as stripStars(Type) + Stars*'*'.
@@ -1691,6 +1697,7 @@ productions:
 
   - derivation: none
     rules:
+      - { lhs: Primary, rhs: ['(', Block, ')'], action: statementExpression }
       - { lhs: Primary, rhs: [ID],          action: var }
       - { lhs: Primary, rhs: [NUM],         action: num }
       - { lhs: Primary, rhs: [FLOAT],       action: flt }

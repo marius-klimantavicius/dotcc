@@ -2315,6 +2315,8 @@ internal sealed partial class CSharpBackend
                     });
                     return ($"({Sub(DecayEnum(sw.Subject), PPostfix)} switch {{ {string.Join(", ", sw.Arms.Select(ArmText))} }})", PPrimary);
                 }
+            case StatementExpression statement:
+                return (RenderStatementExpression(statement), PPrimary);
             case CommaSeq cs:
                 return (string.Join(", ", cs.Items.Select(it => Sub(it, PAssign))), PComma);
             case CommaOp co:
@@ -2875,6 +2877,7 @@ internal sealed partial class CSharpBackend
         // (CopyForwards / Set) MUST be recognized (a `_ = <void>` discard is a C# error);
         // an invocation-expression is a legal C# statement whatever its return type.
         // ZigListCall likewise — deinit/clearRetainingCapacity are void statements.
+        StatementExpression { Type.Unqualified: CType.VoidType } => true,
         Assign or Call or IndirectCall or AllocCall or FreeCall or CreateCall or DestroyCall or ReallocCall or ResizeCall or RemapCall or ZigMemCall or ZigListCall => true,
         Unary u => u.Op is UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec,
         Paren p => IsStmtExpr(p.Inner),

@@ -33,6 +33,12 @@ internal sealed partial class IrBuilder
         Index i => ContainsRuntimeIntrinsic(i.Base) || ContainsRuntimeIntrinsic(i.Idx),
         CommaOp c => c.Items.Any(ContainsRuntimeIntrinsic),
         CommaSeq c => c.Items.Any(ContainsRuntimeIntrinsic),
+        StatementExpression s => ContainsRuntimeIntrinsic(s.Value) || s.Body.Stmts.Any(statement => statement switch
+        {
+            DeclStmt d => d.Decls.Any(declaration => ContainsRuntimeIntrinsic(declaration.Init)),
+            ExprStmt e => ContainsRuntimeIntrinsic(e.Expr),
+            _ => false, // The builder rejects other statement-expression body shapes.
+        }),
         StructInit s => s.Members.Any(m => ContainsRuntimeIntrinsic(m.Value)),
         InlineArrayInit a => a.Elems.Any(ContainsRuntimeIntrinsic),
         StackArray a => a.Elems.Any(ContainsRuntimeIntrinsic),

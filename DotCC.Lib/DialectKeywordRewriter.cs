@@ -108,6 +108,8 @@ internal sealed class DialectKeywordRewriter : RewritingTokenStream
             // C23 `typeof` / `typeof_unqual` — yield a type. Both promote onto the
             // `typeof` terminal (dotcc drops qualifiers, so typeof_unqual behaves
             // identically). Pre-C23 they stay ordinary identifiers.
+            ["__typeof"] = (1990, map["typeof"], "typeof"),
+            ["__typeof__"] = (1990, map["typeof"], "typeof"),
             ["typeof"]        = (2023, map["typeof"], "typeof"),
             ["typeof_unqual"] = (2023, map["typeof"], "typeof"),
 

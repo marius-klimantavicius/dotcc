@@ -189,7 +189,7 @@ internal static class VaListLifetimeValidator
 
     // Walk C expressions explicitly. This pass deliberately does not inspect emitted
     // text, CLR reflection, or unrelated Zig-only nodes.
-    private static void Walk(CExpr e, Action<CExpr> action)
+    internal static void Walk(CExpr e, Action<CExpr> action)
     {
         action(e);
         void One(CExpr? child) { if (child is not null) Walk(child, action); }
@@ -207,6 +207,10 @@ internal static class VaListLifetimeValidator
             case DotCC.Ir.Index i: One(i.Base); One(i.Idx); break;
             case Member m: One(m.Base); break;
             case CommaOp c: Many(c.Items); break;
+            case StatementExpression statement:
+                Visit(statement.Body, action, new List<LocalDecl>(), new List<Return>());
+                One(statement.Value);
+                break;
             case CommaSeq c: Many(c.Items); break;
             case StructInit s: foreach (var member in s.Members) One(member.Value); break;
             case InlineArrayInit a: Many(a.Elems); break;

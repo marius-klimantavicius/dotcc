@@ -281,6 +281,7 @@ internal sealed partial class IrBuilder
                 switch (Tok(a.Arg0).Trim('_'))
                 {
                     case "noreturn": _pendingAttrNoreturn = true; break;
+                    case "unused": break; // diagnostic-only annotation
                     case "always_inline": break; // optimization hint; no observable C behavior
                     case "noinline": case "no_instrument_function": break;
                     default: throw new IrUnsupportedException("unsupported GNU attribute: " + Tok(a.Arg0));
@@ -431,6 +432,7 @@ internal sealed partial class IrBuilder
                 break;
             // enum definitions — register a real C# enum (tagged/typedef'd) or, for
             // an anonymous un-typedef'd enum, plain int constants.
+            case C.EnumDefAnonymous e: RegisterEnum(null, null, e.Arg2); break;
             case C.EnumDef e: RegisterEnum(Tok(e.Arg1), null, e.Arg3); break;
             case C.EnumDefTyped e: RegisterEnum(Tok(e.Arg1), e.Arg3, e.Arg5); break;
             case C.TypedefEnum e: _typedefs[UserTypedefName(Tok(e.Arg6))] = RegisterEnum(Tok(e.Arg2), null, e.Arg4, Tok(e.Arg6)); break;
@@ -1035,6 +1037,7 @@ internal sealed partial class IrBuilder
                 // alias like chibi's `sexp_abi_identifier_t`) decays to a
                 // pointer exactly like the explicit `T name[]` forms below
                 // (C99 §6.7.5.3p7 applies through a typedef too).
+                case C.ParamGnuAttributes p: ValidateGnuObjectAttribute(p.Arg1); Walk(p.Arg0); break;
                 case C.Param p: acc.Add(new(DecayParam(ResolveType(p.Arg0)), Tok(p.Arg1))); break;
                 case C.ParamUnnamed p: acc.Add(new(DecayParam(ResolveType(p.Arg0)), "_p" + unnamed++)); break;
                 case C.ParamArrayUnsized p: acc.Add(new(new CType.Pointer(ResolveType(p.Arg0)), Tok(p.Arg1))); break;
@@ -2129,6 +2132,7 @@ internal sealed partial class IrBuilder
             case C.StmtLabel s: return new Labeled(Tok(s.Arg0), BuildStmt(s.Arg2)) { Pos = pos };
             // A block-scope enum definition has no storage — register its
             // constants and emit nothing (an empty block).
+            case C.StmtEnumDefAnonymous s: RegisterEnum(null, null, s.Arg2); return EmptyStmt(pos);
             case C.StmtEnumDef s: RegisterEnum(Tok(s.Arg1), null, s.Arg3); return new Block(System.Array.Empty<CStmt>()) { Pos = pos };
             case C.StmtEnumDefTyped s: RegisterEnum(Tok(s.Arg1), s.Arg3, s.Arg5); return new Block(System.Array.Empty<CStmt>()) { Pos = pos };
             default: throw new IrUnsupportedException(TypeName(it.Content));
@@ -2797,6 +2801,8 @@ internal sealed partial class IrBuilder
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, tailType); break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, tailType); break;
                 case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, tailType); break;
+                case C.DeclItemGnuAttributes di: ValidateGnuObjectAttribute(di.Arg1); add(Tok(di.Arg0), null, tailType); break;
+                case C.DeclItemGnuAttributesInit di: ValidateGnuObjectAttribute(di.Arg1); add(Tok(di.Arg0), di.Arg3, tailType); break;
                 case C.DeclItemTailBraceInit di: add(Tok(di.Arg0), di.Arg3, tailType); break;
                 case C.DeclItemTailDesignatedInit di: add(Tok(di.Arg0), di.Arg3, tailType); break;
                 case C.DeclItemTailEmptyInit di: add(Tok(di.Arg0), it, tailType); break;
@@ -2839,6 +2845,8 @@ internal sealed partial class IrBuilder
                     break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, baseType); break;
                 case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, baseType); break;
+                case C.DeclItemGnuAttributes di: ValidateGnuObjectAttribute(di.Arg1); add(Tok(di.Arg0), null, baseType); break;
+                case C.DeclItemGnuAttributesInit di: ValidateGnuObjectAttribute(di.Arg1); add(Tok(di.Arg0), di.Arg3, baseType); break;
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, element); break;
                 case C.DeclItemTailPtr or C.DeclItemTailConstPtr: WalkTail(it, element); break;
                 case C.DeclItemTailArr or C.DeclItemTailArrInit: WalkTail(it, element); break;
@@ -2949,6 +2957,7 @@ internal sealed partial class IrBuilder
             {
                 case C.ArrDimsCons c: Walk(c.Arg0); dims.Add(BuildExpr(c.Arg2)); break;
                 case C.ArrDimsOne o: dims.Add(BuildExpr(o.Arg1)); break;
+                case C.ArrDimsGnuAttributes a: ValidateGnuObjectAttribute(a.Arg1); Walk(a.Arg0); break;
                 default: throw new IrUnsupportedException(TypeName(n.Content));
             }
         }
@@ -3064,6 +3073,7 @@ internal sealed partial class IrBuilder
             C.U32chr c => BuildU32Chr(c),
             C.U8chr c => BuildU8Chr(c),
             C.Var v => BuildVar(v),
+            C.StatementExpression s => BuildStatementExpression(s.Arg1),
             C.Paren p => BuildExpr(p.Arg1) is var inner ? new Paren(inner) { Type = inner.Type, IsLValue = inner.IsLValue } : throw new InvalidOperationException(),
             C.Add b => Bin(BinOp.Add, b.Arg0, b.Arg2),
             C.Sub b => Bin(BinOp.Sub, b.Arg0, b.Arg2),

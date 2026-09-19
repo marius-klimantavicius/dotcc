@@ -197,6 +197,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
                 case Paren e: Atom("paren"); Expression(e.Inner); break;
                 case CommaOp e: Atom("comma"); Expressions(e.Items); break;
                 case CommaSeq e: Atom("comma-seq"); Expressions(e.Items); break;
+                case StatementExpression e: Atom("statement-expression"); Statement(e.Body); Expression(e.Value); break;
                 case SizeOfExpr e: Atom("sizeof"); Type(e.Of); break;
                 case OffsetOf e: Atom("offsetof"); Type(e.StructType); Atom(e.Path.Count); foreach (var p in e.Path) Atom(p); if (e.MemberType != null) Type(e.MemberType); break;
                 case StructInit e:

@@ -167,6 +167,9 @@ public sealed record CommaSeq(IReadOnlyList<CExpr> Items) : CExpr;
 /// only form that keeps the side effects lazy inside a short-circuit).</summary>
 public sealed record CommaOp(IReadOnlyList<CExpr> Items) : CExpr;
 
+/// <summary>GNU scoped statement expression. The final expression supplies its value.</summary>
+public sealed record StatementExpression(Block Body, CExpr? Value) : CExpr;
+
 /// <summary><c>sizeof</c> — of a type (<c>sizeof(int)</c>) or, when synthesized
 /// from <c>sizeof expr</c>, of the operand's type. Codegen prints C#'s
 /// <c>sizeof(T)</c> for a scalar/struct, or <c>count * sizeof(elem)</c> for an
