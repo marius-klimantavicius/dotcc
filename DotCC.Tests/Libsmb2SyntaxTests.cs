@@ -9,6 +9,17 @@ namespace DotCC.Tests;
 
 public sealed class Libsmb2SyntaxTests
 {
+    [Theory]
+    [InlineData("({ value; }) = 3;")]
+    [InlineData("++({ value; });")]
+    [InlineData("int *pointer = &({ value; });")]
+    [InlineData("({ item; }).value = 3;")]
+    public void Value_only_statement_expression_lowering_rejects_lvalue_uses(string statement)
+    {
+        Should.Throw<CompileException>(() => Emit("int main(void) { int value = 1; struct item { int value; } item = {1}; " + statement + " return value; }"))
+            .Message.ShouldContain("statement expression used as an lvalue");
+    }
+
     private static string Emit(string source)
     {
         var directory = Path.Combine(Path.GetTempPath(), "dotcc-libsmb2-syntax-" + Guid.NewGuid().ToString("N"));

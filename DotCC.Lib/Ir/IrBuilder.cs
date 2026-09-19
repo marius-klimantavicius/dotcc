@@ -3362,6 +3362,7 @@ internal sealed partial class IrBuilder
     private CExpr Asn(BinOp? op, Item l, Item r)
     {
         var le = BuildExpr(l);
+        RejectStatementExpressionStorage(le);
         ReportConstWrite(le, SrcPos.From(l), "assignment of");
         var re = BuildExpr(r);
         // Plain `p = q` losing a pointee const is a qualifier discard (compound
@@ -3436,6 +3437,8 @@ internal sealed partial class IrBuilder
     private CExpr Un(UnOp op, Item operand)
     {
         var oe = BuildExpr(operand);
+        if (op is UnOp.AddrOf or UnOp.PreInc or UnOp.PostInc or UnOp.PreDec or UnOp.PostDec)
+            RejectStatementExpressionStorage(oe);
         if (Unparen(oe) is RuntimeIntrinsic && op is UnOp.AddrOf or UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec)
             throw new IrUnsupportedException("runtime intrinsic result is not an lvalue");
         // Dereferencing a function pointer designates that function. Taking its

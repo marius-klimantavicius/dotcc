@@ -6,6 +6,20 @@ namespace DotCC.Ir;
 
 internal sealed partial class IrBuilder
 {
+    private static void RejectStatementExpressionStorage(CExpr expression)
+    {
+        bool UsesValueTemporary(CExpr node) => node switch
+        {
+            StatementExpression => true,
+            Paren p => UsesValueTemporary(p.Inner),
+            Member { Arrow: false } member => UsesValueTemporary(member.Base),
+            CommaOp comma => UsesValueTemporary(comma.Items[^1]),
+            _ => false,
+        };
+        if (UsesValueTemporary(expression))
+            throw new IrUnsupportedException("statement expression used as an lvalue");
+    }
+
     private void ValidateGnuObjectAttribute(Item item)
     {
         if (item.Content is not C.GnuFunctionAttrs attributes)
