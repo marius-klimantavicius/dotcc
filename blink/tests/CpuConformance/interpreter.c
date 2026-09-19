@@ -47,7 +47,7 @@ int CpuInterpreterCase(int index) {
   if(CopyFromUser(m,data,0x600000,c->data_pages*CPU_PAGE)){FreeMachine(m);return 3;}
   CpuPrint(c,&r,data,c->data_pages*CPU_PAGE);
   FreeMachine(m);
-  int expected=c->fault==8?kMachineDivideError:c->fault==11?kMachineSegmentationFault:0;
+  int expected=c->fault_state?c->expected_halt:c->fault==8?kMachineDivideError:c->fault==11?kMachineSegmentationFault:0;
   return r.signal==c->fault && halt==expected && completed==(c->fault?0:c->steps)?0:4;
 }
 #ifndef CPU_CONFORMANCE_NO_MAIN

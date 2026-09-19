@@ -1,0 +1,305 @@
+--- a/blink/cvt.c
++++ b/blink/cvt.c
+@@ -51,40 +51,89 @@
+   }
+ }
+ 
++#ifndef DISABLE_JIT
++#error Reviewed scalar FP staging requires DISABLE_JIT
++#endif
++/* Reviewed interpreter-only scalar IEEE-to-signed-integer conversion.
++ * Arithmetic is unsigned and every shift is bounded. Host FP state is unused. */
++static u64 ScalarFpToInteger(struct Machine *m, u64 bits, unsigned fraction,
++                             unsigned exponent_bits, unsigned bias,
++                             bool wide, bool truncate) {
++  u64 fraction_mask = ((u64)1 << fraction) - 1;
++  unsigned exponent_mask = (1u << exponent_bits) - 1;
++  unsigned exponent = (bits >> fraction) & exponent_mask;
++  bool negative = (bits >> (fraction + exponent_bits)) & 1;
++  u64 significand = bits & fraction_mask;
++  u64 magnitude = 0;
++  u64 limit = (u64)1 << (wide ? 63 : 31);
++  unsigned status = 0;
++  bool invalid = exponent == exponent_mask;
++  bool inexact = false;
++  if (!exponent && (m->mxcsr & kMxcsrDaz)) significand = 0;
++  if (!invalid && (exponent || significand)) {
++    int power = (int)(exponent ? exponent : 1) - (int)bias;
++    if (exponent) significand |= (u64)1 << fraction;
++    if (power > 63) {
++      invalid = true;
++    } else if (power >= (int)fraction) {
++      magnitude = significand << (unsigned)(power - (int)fraction);
++    } else {
++      unsigned shift = (unsigned)((int)fraction - power);
++      u64 remainder;
++      int halfway = -1;
++      if (shift >= 64) {
++        remainder = significand;
++      } else {
++        u64 half = (u64)1 << (shift - 1);
++        magnitude = significand >> shift;
++        remainder = significand & (((u64)1 << shift) - 1);
++        halfway = remainder > half ? 1 : remainder == half ? 0 : -1;
++      }
++      inexact = remainder != 0;
++      unsigned rounding = truncate ? 3 : (m->mxcsr >> 13) & 3;
++      if (inexact && ((rounding == 0 &&
++                      (halfway > 0 || (halfway == 0 && (magnitude & 1)))) ||
++                     (rounding == 1 && negative) ||
++                     (rounding == 2 && !negative))) {
++        ++magnitude;
++      }
++    }
++    if (!invalid && (negative ? magnitude > limit : magnitude >= limit)) {
++      invalid = true;
++    }
++  }
++  /* Invalid takes precedence over precision; old sticky bits are retained.
++   * These four scalar conversion instructions do not raise denormal faults. */
++  if (invalid) status = kMxcsrIe;
++  else if (inexact) status = kMxcsrPe;
++  m->mxcsr |= status;
++  if (status & ~(m->mxcsr >> 7)) HaltMachine(m, kMachineSimdException);
++  u64 result = invalid ? limit : negative ? (u64)0 - magnitude : magnitude;
++  return wide ? result : result & 0xffffffffu;
++}
++
+ static void OpGdqpWssCvttss2si(P) {
+-  i64 n;
+-  union FloatPun f;
+-  f.i = Read32(GetModrmRegisterXmmPointerRead4(A));
+-  n = f.f;
+-  if (!Rexw(rde)) n &= 0xffffffff;
+-  Put64(RegRexrReg(m, rde), n);
++  u64 bits = Read32(GetModrmRegisterXmmPointerRead4(A));
++  u64 result = ScalarFpToInteger(m, bits, 23, 8, 127, Rexw(rde), true);
++  Put64(RegRexrReg(m, rde), result);
+ }
+ 
+ static void OpGdqpWsdCvttsd2si(P) {
+-  i64 n;
+-  union DoublePun d;
+-  d.i = Read64(GetModrmRegisterXmmPointerRead8(A));
+-  n = d.f;
+-  if (!Rexw(rde)) n &= 0xffffffff;
+-  Put64(RegRexrReg(m, rde), n);
++  u64 bits = Read64(GetModrmRegisterXmmPointerRead8(A));
++  u64 result = ScalarFpToInteger(m, bits, 52, 11, 1023, Rexw(rde), true);
++  Put64(RegRexrReg(m, rde), result);
+ }
+ 
+ static void OpGdqpWssCvtss2si(P) {
+-  i64 n;
+-  union FloatPun f;
+-  f.i = Read32(GetModrmRegisterXmmPointerRead4(A));
+-  n = rintf(f.f);
+-  if (!Rexw(rde)) n &= 0xffffffff;
+-  Put64(RegRexrReg(m, rde), n);
++  u64 bits = Read32(GetModrmRegisterXmmPointerRead4(A));
++  u64 result = ScalarFpToInteger(m, bits, 23, 8, 127, Rexw(rde), false);
++  Put64(RegRexrReg(m, rde), result);
+ }
+ 
+ static void OpGdqpWsdCvtsd2si(P) {
+-  i64 n;
+-  union DoublePun d;
+-  d.i = Read64(GetModrmRegisterXmmPointerRead8(A));
+-  n = SseRoundDouble(m, d.f);
+-  if (!Rexw(rde)) n &= 0xffffffff;
+-  Put64(RegRexrReg(m, rde), n);
++  u64 bits = Read64(GetModrmRegisterXmmPointerRead8(A));
++  u64 result = ScalarFpToInteger(m, bits, 52, 11, 1023, Rexw(rde), false);
++  Put64(RegRexrReg(m, rde), result);
+ }
+ 
+ static void OpVssEdqpCvtsi2ss(P) {
+--- a/blink/ssefloat.c
++++ b/blink/ssefloat.c
+@@ -356,89 +356,65 @@
+   IGNORE_RACES_END();
+ }
+ 
+-static void ComissKernel(const u8 rxr[8], const u8 reg[8], struct Machine *m) {
+-  bool zf, cf;
+-  union DoublePun xd, yd;
+-  m->mxcsr &= ~kMxcsrIe;
+-  xd.i = Read64(rxr);
+-  yd.i = Read64(reg);
+-  if (!isunordered(xd.f, yd.f)) {
+-    zf = xd.f == yd.f;
+-    cf = xd.f < yd.f;
+-    m->flags = SetFlag(m->flags, FLAGS_ZF, zf);
+-    m->flags = SetFlag(m->flags, FLAGS_CF, cf);
+-    m->flags = SetFlag(m->flags, FLAGS_PF, false);
+-    m->flags = SetFlag(m->flags, FLAGS_SF, false);
+-    m->flags = SetFlag(m->flags, FLAGS_OF, false);
+-  } else {
+-    m->flags = SetFlag(m->flags, FLAGS_ZF, true);
+-    m->flags = SetFlag(m->flags, FLAGS_CF, true);
+-    m->flags = SetFlag(m->flags, FLAGS_PF, true);
+-    m->flags = SetFlag(m->flags, FLAGS_SF, false);
+-    m->flags = SetFlag(m->flags, FLAGS_OF, false);
+-    m->mxcsr |= kMxcsrIe;
+-    if (!(m->mxcsr & kMxcsrIm)) {
+-      HaltMachine(m, kMachineSimdException);
+-    }
+-  }
+-}
+-
+-void OpComissVsWs(P) {
+-  bool isucomiss;
+-  u8 zf, cf, pf, ie;
+-  isucomiss = ~Opcode(rde) & 1;
+-  IGNORE_RACES_START();
+-  if (!Osz(rde)) {
+-    union FloatPun xf, yf;
+-    xf.i = Read32(XmmRexrReg(m, rde));
+-    yf.i = Read32(GetModrmRegisterXmmPointerRead4(A));
+-    if (!isunordered(xf.f, yf.f)) {
+-      zf = xf.f == yf.f;
+-      cf = xf.f < yf.f;
+-      pf = false;
+-      ie = false;
+-    } else {
+-      zf = cf = pf = ie = true;
+-    }
+-  } else {
+-    union DoublePun xd, yd;
+-    xd.i = Read64(XmmRexrReg(m, rde));
+-    yd.i = Read64(GetModrmRegisterXmmPointerRead8(A));
+-    if (!isunordered(xd.f, yd.f)) {
+-      zf = xd.f == yd.f;
+-      cf = xd.f < yd.f;
+-      pf = false;
+-      ie = false;
+-    } else {
+-      zf = cf = pf = ie = true;
+-    }
+-    if (IsMakingPath(m) && !isucomiss) {
+-      Jitter(A,
+-             "z4P"    // res0 = GetXmmOrMemPointer(RexbRm)
+-             "r0s1="  // sav1 = res0
+-             "z4Q"    // res0 = GetXmmPointer(RexrReg)
+-             "s0a2="  // arg2 = sav0 (machine)
+-             "s1a1="  // arg1 = sav1
+-             "t"      // arg0 = res0
+-             "c",     // call function
+-             ComissKernel);
+-    }
+-  }
+-  m->flags = SetFlag(m->flags, FLAGS_ZF, zf);
+-  m->flags = SetFlag(m->flags, FLAGS_PF, pf);
+-  m->flags = SetFlag(m->flags, FLAGS_CF, cf);
++#ifndef DISABLE_JIT
++#error Reviewed scalar FP staging requires DISABLE_JIT
++#endif
++/* Scalar COMIS/UCOMIS uses raw bits so NaNs and denormals cannot change host
++ * floating state or lose signaling classification before guest exception tests. */
++static void ScalarFpCompare(struct Machine *m, u64 left, u64 right,
++                            unsigned fraction, unsigned exponent_bits,
++                            bool unordered_instruction) {
++  u64 fraction_mask = ((u64)1 << fraction) - 1;
++  u64 exponent_mask = ((u64)1 << exponent_bits) - 1;
++  u64 sign_mask = (u64)1 << (fraction + exponent_bits);
++  u64 quiet_mask = (u64)1 << (fraction - 1);
++  u64 lm = left & (sign_mask - 1);
++  u64 rm = right & (sign_mask - 1);
++  unsigned le = (left >> fraction) & exponent_mask;
++  unsigned re = (right >> fraction) & exponent_mask;
++  bool ln = le == exponent_mask && (left & fraction_mask);
++  bool rn = re == exponent_mask && (right & fraction_mask);
++  bool ld = !le && lm;
++  bool rd = !re && rm;
++  unsigned status = 0;
++  bool unordered = ln || rn;
++  if (unordered && (!unordered_instruction ||
++                    (ln && !(left & quiet_mask)) ||
++                    (rn && !(right & quiet_mask)))) status |= kMxcsrIe;
++  if (m->mxcsr & kMxcsrDaz) {
++    if (ld) lm = 0;
++    if (rd) rm = 0;
++  } else if ((ld || rd) && !unordered) {
++    status |= kMxcsrDe;
++  }
++  m->mxcsr |= status;
++  if (status & ~(m->mxcsr >> 7)) HaltMachine(m, kMachineSimdException);
++  bool equal = !unordered && (lm == rm) &&
++               (!lm || !((left ^ right) & sign_mask));
++  bool less = false;
++  if (!unordered && !equal) {
++    if ((left ^ right) & sign_mask) less = (left & sign_mask) != 0;
++    else less = left & sign_mask ? lm > rm : lm < rm;
++  }
++  m->flags = SetFlag(m->flags, FLAGS_ZF, unordered || equal);
++  m->flags = SetFlag(m->flags, FLAGS_PF, unordered);
++  m->flags = SetFlag(m->flags, FLAGS_CF, unordered || less);
+   m->flags = SetFlag(m->flags, FLAGS_SF, false);
+   m->flags = SetFlag(m->flags, FLAGS_OF, false);
+-  if (!isucomiss) {
+-    m->mxcsr &= ~kMxcsrIe;
+-    if (ie) {
+-      m->mxcsr |= kMxcsrIe;
+-      if (!(m->mxcsr & kMxcsrIm)) {
+-        HaltMachine(m, kMachineSimdException);
+-      }
+-    }
+-  }
+-  IGNORE_RACES_END();
++  m->flags = SetFlag(m->flags, FLAGS_AF, false);
++}
++
++void OpComissVsWs(P) {
++  bool unordered_instruction = ~Opcode(rde) & 1;
++  if (!Osz(rde)) {
++    u64 left = Read32(XmmRexrReg(m, rde));
++    u64 right = Read32(GetModrmRegisterXmmPointerRead4(A));
++    ScalarFpCompare(m, left, right, 23, 8, unordered_instruction);
++  } else {
++    u64 left = Read64(XmmRexrReg(m, rde));
++    u64 right = Read64(GetModrmRegisterXmmPointerRead8(A));
++    ScalarFpCompare(m, left, right, 52, 11, unordered_instruction);
++  }
+ }
+ 
+ static void OpPsd(P, float fs(float x, float y), double fd(double x, double y),
+--- a/blink/throw.c
++++ b/blink/throw.c
+@@ -68,12 +68,36 @@
+       m->faultaddr = m->ip;
+       DeliverSignalToUser(m, SIGFPE_LINUX, FPE_INTDIV_LINUX);
+       break;
++#ifndef DISABLE_JIT
++#error Reviewed scalar FP staging requires DISABLE_JIT
++#endif
+     case kMachineFpuException:
+-    case kMachineSimdException:
+       RestoreIp(m);
+       m->faultaddr = m->ip;
+       DeliverSignalToUser(m, SIGFPE_LINUX, FPE_FLTINV_LINUX);
+       break;
++    case kMachineSimdException: {
++      /* Linux guest ABI: classify the unmasked status in priority order.
++       * Includes older sticky status, which can affect a new fault's si_code.
++       * This selects delivery metadata only; the instruction owns trap timing. */
++      unsigned active = (m->mxcsr & 0x3f) & ~(m->mxcsr >> 7);
++      const unsigned conditions[5] = {0x01, 0x04, 0x08, 0x12, 0x20};
++      const int codes[5] = {FPE_FLTINV_LINUX, FPE_FLTDIV_LINUX,
++                            FPE_FLTOVF_LINUX, FPE_FLTUND_LINUX,
++                            FPE_FLTRES_LINUX};
++      int signal_code = 0;
++      for (unsigned i = 0; i < 5; ++i) {
++        if (active & conditions[i]) {
++          signal_code = codes[i];
++          break;
++        }
++      }
++      RestoreIp(m);
++      m->faultaddr = m->ip;
++      DeliverSignalToUser(m, SIGFPE_LINUX, signal_code);
++      break;
++    }
++
+     case kMachineHalt:
+     case kMachineDecodeError:
+     case kMachineUndefinedInstruction:

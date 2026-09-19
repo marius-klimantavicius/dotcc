@@ -1,7 +1,8 @@
 # Remaining CPU coverage
 
-The expanded 31-case corpus is a seed, not P3 completion; five FP rows are
-measured failures (see `FP-FINDINGS.md`). Its passing modes qualify
+The 491-case corpus is bounded evidence, not P3 completion. Five FP failures
+in the original 31-case corpus are preserved and corrected by a reviewed staged
+source derivation (see `FP-FINDINGS.md`). Its four passing modes qualify
 only those exact inputs and defined-state comparisons. The retained feature
 inventory remains `blink/docs/HOST-CPU.md`; no feature is considered covered just
 because its CPUID bit is advertised or its handler is linked.
@@ -14,7 +15,7 @@ because its CPUID bit is advertised or its handler is linked.
 | Decoder/addressing | One MOVABS crossing an instruction page | Prefix combinations, operand/address sizes, 15-byte length limit, ModRM/SIB/RIP-relative, FS/GS addresses, invalid encodings |
 | Memory/fault restart | Unaligned8-byte cross-page read/write; crossing read fault | Crossing stores/fault atomicity, write protection, NX, canonical-address faults, alignment-sensitive operations, stack/REP restart |
 | SSE/SSE2 | PADDD, PXOR, signed-zero ADDSD and exact ADDPS; measured FP failures | Other packed widths, saturation/comparison/shuffle/masks, scalar/packed moves and broader floating operations |
-| Floating point | Signed zero/exact lanes pass; quiet-NaN AF, conversion precision and scalar-single rounding failures measured | Fix measured defects; signaling NaNs/payload rules, infinities, subnormals, FTZ/DAZ, remaining rounding modes, sticky preservation/unmasked exceptions, conversion limits and approximations |
+| Floating point | Signed zero/exact lanes pass; reviewed scalar COMIS/UCOMIS and CVT/CVTT SS/SD-to-32/64 now pass limits, ties/all RC, NaNs/infinities, DAZ/FTZ, sticky/masked/unmasked state and signal-code cases | Broader arithmetic/packed FP, NaN result payload rules, underflow/overflow arithmetic, memory encodings and approximations |
 | FXSR | Earlier separate native-only FX save/restore witness | Actual translated FXSAVE/FXRSTOR/MXCSR state round trips and masks |
 | SSE3/SSSE3/PCLMULQDQ/POPCNT | Advertised/retained handler audit only | Actual translated hardware differential cases for each family |
 | CMPXCHG8B/16B | Advertised/retained handler audit only | Success/failure state, alignment and atomicity contracts |
@@ -34,8 +35,9 @@ or pinned independent references and explicit exception/rounding assumptions.
 Excluded x87/MMX/BMI2/ADX instruction rejection has earlier native witnesses;
 those exact rejection cases still need the actual translated-core witness.
 Features whose CPUID advertisements are clear (including AES/SSE4/AVX/XSAVE)
-are not promoted into this profile by these tests. No compiler or instruction
-algorithm was changed to obtain the current corpus results.
+are not promoted into this profile by these tests. No compiler was changed. The original diagnostic preserves unchanged upstream
+algorithms; the later scalar qualification uses an explicit reviewed and hashed
+source correction, with its original-native differences retained.
 
 ## Actual advertised feature inventory and proposed narrowing
 

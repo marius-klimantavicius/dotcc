@@ -37,7 +37,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Private process identity | Native C invariants and four managed modes pass; private IDs, errno and concurrent owners | `tests/HostIdentity/run.py` |
 | Private openat / fcntl | Native/four-mode control and metadata pass, native exec oracle and existing fd regressions pass | `tests/HostFileControl/run.py` |
 | Unexpected host termination | Native direct/indirect kind/status and four managed modes pass; controllers survive | `tests/HostTermination/run.py` |
-| Managed CPU corpus | Initial 12 cases match hardware/native in all four forms; expanded diagnostics in progress | `tests/CpuConformance/run-managed.py`; receipt attempt-yvylj8k6 |
+| Managed CPU corpus | Reviewed staged scalar correction: 491 cases pass each raw/optimized JIT/AOT, 1964 comparisons; untouched upstream failures retained | `tests/CpuConformance/run-managed.py --staged-fp`; receipt attempt-kenqm2yg |
 | Valid service ELF loading | Exact file/BSS/permissions/stack state and cleanup match native in all four forms | `tests/ElfLoading/run.py`; receipt attempt-e1zyczdz |
 | Managed controller protocol | Actual subprocess fixtures pass JIT/AOT, including bounded stop and inherited-pipe drains | `tests/InstanceLifecycle/run.py`; receipt attempt-p4b8juxr |
 | Managed service worker | Automatically blocked during implementation; partial files uncompiled and unqualified | P4/P5 open |
@@ -85,3 +85,9 @@ raw/optimized JIT/NativeAOT pass at sqlite-regression/attempt-1nqhp4wq, includin
 WAL, SQL/JSONB/FTS5, callbacks, GC and cleanup. Reproduce with
 `scripts/test-sqlite-regression.py` after the pinned SQLite reference is present.
 Other dependent-campaign and platform rows remain open.
+
+Fresh picotls regeneration also passes its complete Linux x64 raw/optimized
+JIT/NativeAOT campaign, including224 independent peer executions and zero
+dependency-audit violations: picotls-regression/attempt-ymi5de8u. Reproduce with
+`scripts/test-picotls-regression.py --cache <verified-picotls-archive-cache>`.
+The shared compiler and tracked picotls inputs remained unchanged.

@@ -1,0 +1,23 @@
+{
+  "cvt.c": {
+    "source_sha256": "0d036a0c30c19a6063859ebcd22fbc7623209d528e017003abe018d257e75d86",
+    "start": "static void OpGdqpWssCvttss2si(P) {",
+    "end": "static void OpVssEdqpCvtsi2ss(P) {",
+    "block_sha256": "689edf848594b9de561a7ab0fd1c5168b01bea35a512fe42449531f12766f9d8",
+    "replacement": "scalar-conversion.c.inc"
+  },
+  "ssefloat.c": {
+    "source_sha256": "cec86d3109804688d07e519d92d96b056899d1d36f0c0ccf644b933299dcaa09",
+    "start": "static void ComissKernel(",
+    "end": "static void OpPsd(",
+    "block_sha256": "26885bc55c4f1682754018dfedcc2adc4cab494520105c3bb1fd1971db7f83ad",
+    "replacement": "scalar-compare.c.inc"
+  },
+  "throw.c": {
+    "source_sha256": "5df4b02be0d089b25c6318841cb072c5af9ca1b3e5aa9e11982bdc73ca7e2eed",
+    "start": "    case kMachineFpuException:\n",
+    "end": "    case kMachineHalt:\n",
+    "block_sha256": "5213f69d33cb3ef03b5283bfb08790fab7a8901435dc026be6b4c2408586d2e5",
+    "replacement": "simd-signal.c.inc"
+  }
+}

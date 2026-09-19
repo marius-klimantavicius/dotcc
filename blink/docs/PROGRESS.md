@@ -10,7 +10,7 @@ P0–P2 have passed their stated gates on Linux x64. The complete selected inter
 
 - Coordinator: source/host inventory, dotcc baseline and translation probes, integration, validation, and milestone/significant-progress commits.
 - Inputs worker: actual complete-core CPU/CPUID/floating-point coverage and preserved hardware/native/managed diagnostic differences.
-- Guest worker: completed valid ELF loading and read-only controller review. Service embedding/worker implementation was automatically blocked and has stopped.
+- Guest worker: completed valid ELF loading, controller review and fresh picotls regression; now qualifies fresh MsQuic generation and its public consumer. The blocked service-worker task has stopped.
 
 Workers share one worktree with disjoint authored-file ownership. Shared compiler edits and repository suites are serialized by the coordinator. Generated/ref/build/artifacts content is disposable and ignored; reproducible scripts and durable summaries are committed.
 
@@ -32,13 +32,14 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 ## Next actions
 
-Complete the expanded CPU/CPUID diagnostic matrix and preserve measured upstream
-floating-point defects. The initial CPU corpus, valid service ELF loader and
-controller subprocess lifecycle already pass their stated gates. Service-worker
-implementation and malformed-input work are blocked by automated review and
-were not retried; Windows execution remains unavailable. Keep P3–P6 open.
-The coordinator integrates reviewed commits back to the original checkout and
-preserves user patches and all unqualified partial files.
+Integrate the qualified staged scalar FP correction and current HostMemory into
+a fresh complete-core profile, then rerun its ABI/execution/import gates. Expand
+the remaining CPU/CPUID coverage and finish independent MsQuic, Lua/chibi and
+affected WAT/Zig regressions. SQLite and picotls fresh Linux x64 regression
+matrices pass. Service-worker implementation and malformed-input work are
+blocked by automated review and were not retried; Windows execution remains
+unavailable. Keep P3–P6 open. The coordinator integrates reviewed commits back
+to the original checkout, preserving user patches and unqualified partial files.
 
 ## Observed validation (initial campaign baseline)
 
@@ -1081,3 +1082,21 @@ inputs, generated files, binaries and nested receipts are retained;11 tool
 inputs and110 tracked picotls files remained unchanged. This closes the picotls
 regression row for Linux x64 only. MsQuic and other campaigns, Windows execution
 and the remaining Blink runtime gates are still open.
+
+## Significant progress: qualified staged scalar FP correction
+
+A reviewed, hash-checked adaptation of cvt.c, ssefloat.c and the SIMD arm of
+throw.c now passes491 hardware/native cases and all1964 raw/optimized
+JIT/NativeAOT comparisons at cpu-conformance-managed/attempt-kenqm2yg. Scalar
+CVT/CVTT rounding and masked/unmasked exceptions, COMIS/UCOMIS flags and sticky
+status, and Linux SIMD signal-code priority now match the measured architectural
+behavior. Fault comparisons retain destination registers, MXCSR, defined flags,
+RIP and signal state. The original31 inputs are preserved with460 added cases.
+
+The immutable reference and compiler are unchanged. The original native Blink
+results retain397 failures; no normalization converts them to passes. Staging
+checks exact original/replacement/diff hashes and all three files reject builds
+without DISABLE_JIT. The derived qualified link retains105 original objects and
+replaces the frontend plus three upstream TUs. This closes B032 only for the
+reviewed scalar scope; the next full canonical profile will explicitly include
+these changes and the separately qualified HostMemory revision. P3 remains open.

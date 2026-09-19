@@ -330,7 +330,7 @@ deferred namespace/process/network features return explicit documented errors.
 This closes the selected binding/build blocker, not service compatibility or
 complete CPU/ELF qualification. B030 is a separate generic runtime boundary.
 
-## B032 — upstream scalar SSE comparison/conversion defects (open)
+## B032 — upstream scalar SSE comparison/conversion defects (fixed in staged scalar scope)
 
 The expanded actual-core corpus completes124 comparisons at
 cpu-conformance-managed/attempt-s62j5n5q. All124 managed rows agree with native
@@ -346,3 +346,14 @@ requirements and a separate upstream SIMD signal-code delivery gap. A bounded,
 hash-checked staged-source correction is being prepared after these failing
 receipts, with raw IEEE integer rounding and explicit architectural fault-state
 checks. The immutable upstream reference remains unchanged. P3 is open.
+
+The reviewed three-source correction passes491 inputs against actual hardware
+and staged native Blink, and all1964 comparisons in raw/optimized JIT/NativeAOT
+at cpu-conformance-managed/attempt-kenqm2yg. Guard tests verify exact source and
+replacement hashes and reject compilation without DISABLE_JIT. The untouched
+upstream still produces397 native mismatches in this expanded corpus; those
+failures remain preserved. This closes B032 for the reviewed scalar conversion,
+comparison and SIMD signal-code paths. The qualified derived CPU link retains
+105 original objects and replaces four; a new canonical full-core profile is
+next. General FP arithmetic, packed conversions, complete CPUID qualification
+and broader P3 gates remain open.

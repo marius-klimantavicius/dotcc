@@ -8,7 +8,8 @@ int main(void) {
     const struct CpuCase *c=cpu_cases+i;
     unsigned char xmm_input[32];CpuXmm(c,xmm_input);
     if(i)putchar(',');
-    printf("{\"mxcsr\":%u,\"profileReference\":%d,\"xmmInput\":\"",CpuMxcsr(c),c->profile_reference);CpuHex(xmm_input,32);printf("\",");
+    printf("{\"faultState\":%d,\"expectedHalt\":%d,",c->fault_state,c->expected_halt);
+    printf("\"mxcsr\":%u,\"profileReference\":%d,\"xmmInput\":\"",CpuMxcsr(c),c->profile_reference);CpuHex(xmm_input,32);printf("\",");
     printf("\"index\":%u,\"name\":\"%s\",\"code\":\"",i,c->name);CpuHex(c->code,c->length);
     printf("\",\"steps\":%u,\"codeOffset\":%u,\"dataOffset\":%u,\"dataPages\":%u,"
       "\"ax\":\"%016" PRIx64 "\",\"cx\":\"%016" PRIx64 "\",\"dx\":\"%016" PRIx64

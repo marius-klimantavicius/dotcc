@@ -58,3 +58,30 @@ packed ADDPS. Together with the 12 earlier cases, these give 19 passing instruct
 inputs per mode. Seven CPUID instruction leaves match the staged native profile
 in all four output registers per mode. These successes do not erase the five
 measured FP failures or imply complete feature-family coverage.
+
+## Reviewed staged correction qualified
+
+The original failures above remain the immutable-source baseline. The later
+reviewed correction in [`UpstreamScalarFp`](../../src/UpstreamScalarFp/README.md)
+stages `cvt.c`, `ssefloat.c` and the SIMD delivery arm of `throw.c`, preserving
+original sources and licenses. The scalar handlers now use raw IEEE bits,
+guest rounding/masks and bounded integer operations; completed comparisons
+clear AF and unmasked exceptions preserve destinations and defined flags.
+
+The expanded corpus retains every original input field and adds 460 scalar
+cases. Native strict run `artifacts/cpu-conformance/attempt-7c2xjo6w/receipt.json`
+passes all 491 staged rows and preserves 397 mismatching original-native rows.
+Intermediate receipts preserve a measured quiet-NaN/denormal priority error in
+the first staged comparison helper, then its correction. Unmasked precision
+and denormal tests separately exposed upstream `throw.c` reporting invalid
+operation for every SIMD exception; that third-source correction was reviewed
+after the failure and checked against Linux hardware signal codes and sticky
+status priority. None of these disagreements was normalized away.
+
+Actual full-core derivation
+`artifacts/cpu-conformance-managed/attempt-kenqm2yg/receipt.json` passes all
+1,964 strict comparisons: raw/optimized JIT/NativeAOT each execute 491 cases
+and agree with hardware and staged native Blink. The derivation retains 105
+original objects and replaces the frontend and three reviewed TUs, using the
+same frozen canonical headers and compiler. Original packed/arithmetic FP
+algorithms, x87 and JIT paths remain outside this bounded correction.

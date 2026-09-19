@@ -5,7 +5,9 @@ independent hardware witness and a standalone interpreter consumer linked to the
 pinned native archive, then runs each corpus case in a separate subprocess.
 It does not build or qualify the managed core.
 
-The corpus currently contains31cases:24instruction cases and7CPUID queries.
+The corpus contains 491 cases: the original 24 instruction cases and seven
+CPUID queries, plus 460 scalar FP correction witnesses. The original 31 input
+rows remain unchanged.
 Both consumers execute the same literal instruction bytes and start with the
 same RAX/RCX/RDX, arithmetic flags, XMM0/XMM1 and memory contents. `describe.c`
 exports every input byte, code/data placement, step bound, fault expectation and
@@ -20,7 +22,7 @@ are compared, not just the location an instruction should modify.
 | SHL count64 | Masked-zero shift preserves value and arithmetic flags |
 | SHR count1 | Defined CF/PF/ZF/SF/OF; AF excluded |
 | SAR count63 | Defined CF/PF/ZF/SF; AF and OF excluded |
-| Signed IDIV | Negative dividend -17 divided by5; quotient/remainder from hardware; flags excluded |
+| Signed IDIV | Negative dividend -17 divided by 5; quotient/remainder from hardware; flags excluded |
 | IDIV overflow | INT64_MIN divided by -1; real divide fault and faulting IP |
 | SSE2 PADDD | Four differing 32-bit XMM lanes, wrapping values, flags preserved |
 | Decode boundary | Ten-byte MOVABS begins three bytes before a page boundary |
@@ -116,14 +118,15 @@ outputs, compiler/object identities and diagnostic logs.
 
 ## Expanded diagnostic matrix and CPUID inventory
 
-The original12-case complete-core matrix remains a passing baseline at
+The original 12-case complete-core matrix remains a passing baseline at
 `artifacts/cpu-conformance-managed/attempt-yvylj8k6/receipt.json`. The expansion
 adds ADC8, SBB32, IMUL64, CMOV, PXOR, signed-zero ADDSD, exact ADDPS lanes,
 quiet-NaN UCOMISD, CVT/CVTT conversions, explicit rounding controls and seven
 CPUID instruction leaves. MXCSR input is explicitly loaded in hardware and set
 in the guest, then captured without masking defined exception/status bits.
 
-The expanded corpus deliberately exposes existing upstream floating defects.
+The original 31-case expansion deliberately exposes upstream floating defects.
+The later scalar corpus retains those failures in its original-native rows.
 Default runs fail conformance. To finish collecting all rows without treating
 those failures as passes, use `--observe-differences` on either runner. Such a
 run can return successfully as an observation job while its receipt records
@@ -138,10 +141,10 @@ the physical CPU. For these rows, the native reference uses the existing
 hash-checked HostCpu feature-guard adaptation; the managed result must match
 that native profile in all four output registers. Hardware CPUID is retained
 as an environment witness, not substituted as the expected virtual identity.
-The upper32bits of native outputs must be zero; managed equality enforces the
+The upper 32 bits of native outputs must be zero; managed equality enforces the
 same. Shared feature/profile files are never modified by these runners.
 
-`features.py` decodes41observed feature locations, validates the selected
+`features.py` decodes 41 observed feature locations, validates the selected
 exclusions and records actual advertisements with bounded evidence labels.
 Unqualified optional extensions are explicitly listed as candidates for a
 future reviewed advertisement reduction, not silently treated as supported.
@@ -150,10 +153,43 @@ cannot fix the baseline SSE/SSE2 defects; these need separately reviewed
 upstream corrections or explicit compatibility restrictions.
 
 Historical evidence is retained separately: `tests/HostCpu/run.py` previously
-qualified16direct OpCpuid queries in all four focused modes, eight native
+qualified 16 direct OpCpuid queries in all four focused modes, eight native
 feature-toggle configurations, and seven native instruction/exclusion probes
 (including FXSAVE/PXOR/FXRSTOR). That is useful existing evidence, but it does
-not imply those16queries or seven instruction sequences all executed through
+not imply those 16 queries or seven instruction sequences all executed through
 the current complete managed core. This expansion establishes only the seven
 listed CPUID instruction leaves and the specific instruction cases recorded
 in its own full-core receipt.
+
+## Reviewed staged scalar correction
+
+Use `--staged-fp` on either runner to select the explicit reviewed correction in
+[`UpstreamScalarFp`](../../src/UpstreamScalarFp/README.md). The native runner
+keeps original native outputs and comparisons alongside staged native and
+hardware witnesses. `--observe-differences` is unnecessary for a conformant
+staged run; it never turns original failures into expected results.
+
+`make-fp-cases.py` serializes explicit inputs into `fp-cases.h`; it contains no
+expected instruction result calculation. Added inputs cover scalar CVT/CVTT
+SS/SD-to-32/64, all rounding controls, exact/half-adjacent/limit values, signed
+NaNs/infinities, masked and unmasked faults, sticky priority, denormals/DAZ/FTZ,
+and COMIS/UCOMIS ordering and memory-fault precedence. Explicit MXCSR presence
+allows zero; per-case halt classes distinguish SIMD from divide faults. New
+fault comparisons retain defined GPR/XMM/MXCSR/arithmetic-flag state and SIMD
+signal codes. Existing integer fault undefined state stays excluded.
+
+The actual managed derivation replaces four objects: the CPU frontend, `cvt.c`,
+`ssefloat.c` and `throw.c`. The other 105 objects retain their producer identity.
+The original preparation prefix `#include "host-bindings.h"` is verified against
+each original source and repeated in separately hashed prepared C files, in
+addition to the exact canonical header paths. The first attempt that omitted
+this prefix failed aggregate identity validation at link time; its receipt
+`artifacts/cpu-conformance-managed/attempt-f_sicaop` is retained. It involved
+no generated-source edits.
+
+The strict staged managed matrix passed all **1,964 comparisons**, 491 in each
+of raw JIT, raw NativeAOT, optimized JIT and optimized NativeAOT, at
+`artifacts/cpu-conformance-managed/attempt-kenqm2yg/receipt.json`. It reports
+`completed: true`, `passed: true`, and `native_agreement: true`. The original
+31-case failing diagnostic remains preserved; the staged result qualifies only
+this reviewed source derivation and its recorded inputs.
