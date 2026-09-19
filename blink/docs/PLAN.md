@@ -21,6 +21,12 @@ runner around it: start an instance from an executable and files, communicate
 with its service, capture output, stop it, and release its resources. This is the
 first implementation of the user's "fake EC2" idea.
 
+The product exposes the translated upstream functions, types and state needed
+by an authored C# execution API. That API consumes the translated library and
+owns initialization, ELF loading, instruction execution, stop/deadline handling
+and cleanup. Keep upstream changes minimal; do not add a C execution framework
+or translate a campaign test harness into the delivered product.
+
 Follow the established [SQLite](../../sqlite/docs/PLAN.md),
 [picotls](../../picotls/docs/PLAN.md), and
 [MsQuic](../../msquic/docs/PLAN.md) campaign conventions:
@@ -124,8 +130,14 @@ the same ABI. Keep guest ELF/ABI records distinct from both host models.
 
 ### Bound execution, faults, and process-global state
 
-Add a small campaign-owned C embedding entry around the actual loader and
-instruction path, exposing initialize/load/run-budget/request-stop/destroy.
+Export the required upstream loader, machine, execution and cleanup surface
+through the generated managed library. Implement initialize/load/run-budget/
+request-stop/destroy orchestration in authored C# consuming those exports.
+Keep instruction decoding, CPU algorithms and guest ABI semantics translated
+from upstream C; the C# layer controls their lifecycle and execution loop.
+Supply required frontend callbacks from C# where the translated ABI permits.
+Any unavoidable ABI or nonlocal-unwind shim must be minimal, documented and
+limited to that boundary; it must not take ownership of execution in C.
 Audit instruction completion, attention flags, fault unwinding, pending signals,
 page locks, and cleanup before replacing the CLI loop. One x86 instruction can
 perform substantial work (`REP`, blocking syscalls); instruction counting alone
@@ -195,7 +207,7 @@ blink/
   docs/         PLAN, source, configuration, host-contract, blockers, validation, usage
   config/       immutable source manifest, feature profile, host headers/overrides
   scripts/      fetch, native-oracle, probe, translate, build, test, dependency-audit
-  src/          embedding C adapter, BCL host, owning API, worker/controller
+  src/          minimal host/ABI adapters, BCL host, C# execution API, worker/controller
   tests/        ABI, CPU, ELF, memory, host services, lifecycle, service fixtures
   ref/          unchanged upstream/test/toolchain inputs (ignored)
   generated/    staged C and raw/optimized C# with manifests (ignored)
@@ -210,11 +222,20 @@ C# sources and `TranslatedBlink.csproj` in that output directory. Preserve the
 immutable raw translation separately so post-processing cannot overwrite it.
 Record source/configuration/compiler and output identities for reproducible runs.
 
+The delivered translation must exclude `CoreProbe`, the authored test `main`,
+fixed test workloads and campaign C execution drivers. Link these only into
+separate test consumers. Expose the needed upstream surface through generator
+configuration or generic export support, preserving upstream names where
+possible; never hand-edit generated C#. The authored C# API references the
+generated project and is separate from its translated sources.
+
 `blink/ManagedConsumer.slnx` is the showcase solution for the final translation.
 Include the generated project, required host/API/worker projects, and a separate
 runnable usage sample under `blink/ManagedConsumer/`. The sample consumes the
 final generated project through project references and the owning API, showing
 service startup, readiness, a real HTTP request, captured output and cleanup.
+All sample execution goes through the authored C# API, not a translated test
+entry point or a campaign-owned C run loop.
 Document translation, solution build and sample run commands from a clean checkout.
 
 Shared compiler/runtime fixes stay in their existing projects. Scripts resolve
@@ -281,14 +302,20 @@ embedding boundary under JIT and NativeAOT; unresolved dependencies are recorded
 - [x] Deliver `blink/scripts/translate.sh` to run translation and semantic
       post-processing, producing the final sources and project in
       `blink/generated/TranslatedBlink/` with a separate immutable raw snapshot.
+- [ ] Align the delivered library with the C# consumer architecture: export the
+      needed upstream functions/types/state and exclude campaign test frontends
+      and C execution drivers. Requalify the sample through the authored C# API.
 
-The current delivery script passes with all 109 sources and a verified stable
-output directory. The separate usage sample passes Linux JIT and NativeAOT.
+The existing delivery script and sample passed with a verified stable output
+directory. Their historical closure includes an authored C probe; the newly
+required product/test separation and C# execution API remain pending. Existing
+core translation and P3 evidence are retained with their recorded source scope.
 The full service API required by P5 remains open.
 
 **Gate:** complete selected source closure builds with matching actual layouts,
 no native emulator dependency, and passing affected compiler regressions;
-`blink/scripts/translate.sh` reproduces the final post-processed output directory.
+`blink/scripts/translate.sh` reproduces the final post-processed output directory
+with the required exported upstream surface and no campaign test frontend.
 
 ### P3 — Qualify CPU, guest memory, and ELF loading
 
@@ -328,6 +355,8 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
       valid cross-page vectors. TCP waiting/stop contracts remain separate.
 - [ ] Bind stop/deadline behavior to execution and outstanding I/O; prove no
       guest operation exits the controller or reaches an unintended host service.
+      Implement the owning execution loop and lifecycle in the C# API consumer
+      over exported upstream functions, with only necessary boundary adaptations.
       Callback token propagation and 22 normal lifecycle scenarios pass all four
       forms; actual guest execution/poll/sleep stop remains unqualified.
 - [x] Audit required service startup syscalls; qualify additions individually.
@@ -350,6 +379,8 @@ automatically; see [the exact P4 ledger](P4-HOST-SERVICES.md).
       `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and the owning API.
 - [ ] Provide an owning API for image/argv/env/limits, start/readiness, logs,
       endpoint publication, status/exit reason, stop, and asynchronous disposal.
+      This is authored C# consuming the translated upstream exports, not an
+      authored C execution wrapper translated into the product.
 - [ ] Implement one managed worker per instance and a bounded control protocol.
       Distinguish guest exit, guest fault, budget exhaustion, and worker failure.
 - [ ] Run two simultaneous instances using the same guest port, distinct files,

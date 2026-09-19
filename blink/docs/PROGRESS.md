@@ -4,6 +4,14 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
+User architecture update: the delivered library must expose the needed upstream
+functions/types/state and exclude `CoreProbe`, test `main` and authored C
+execution drivers. Initialization/loading/execution/stop/cleanup belong in a
+separate authored C# API consumer. Product/test separation is a pending P2
+delivery refinement being implemented with the current P4 integration; previous
+core and P3 receipts remain valid for their recorded inputs. Existing sample
+results do not yet establish this revised architecture.
+
 User test-scope update: custom fault-injection and invalid/malformed-ELF tests
 are excluded from work and completion gates. Such cases may run only when
 already present in pinned upstream tests, with revision/path provenance.
@@ -55,7 +63,7 @@ labels are not treated as present defects without checking current code.
 | --- | --- | --- |
 | Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo, GuestEnvironment and GuestStreams native/all-four passed; assignment complete |
 | Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation all-four passed; GuestTcp native/all-four passed; assignment complete |
-| Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Resumed: execution-stop staging, owning driver and actual pinned service startup |
+| Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Resumed: exported upstream API, C# execution ownership, execution-stop boundaries and actual pinned service startup |
 
 The user explicitly requested another P4 attempt on 2026-09-20. The earlier
 generic automated rejection remains historical evidence, not a permanent scope
