@@ -33,13 +33,14 @@ int CpuInterpreterCase(int index) {
   m->ip=0x400000+c->code_offset;
   Write64(m->ax,c->ax);Write64(m->cx,c->cx);Write64(m->dx,c->dx);
   Write64(m->bx,0x600000+c->data_offset);ImportFlags(m,c->flags);
-  memcpy(m->xmm,cpu_xmm,sizeof(cpu_xmm));m->mxcsr=0x1f80;
+  unsigned char xmm_input[32];CpuXmm(c,xmm_input);
+  memcpy(m->xmm,xmm_input,sizeof(xmm_input));m->mxcsr=CpuMxcsr(c);
   observed_signal=observed_code=0;
   volatile unsigned completed=0;
   int halt=sigsetjmp(m->onhalt,1);
   if(!halt){m->canhalt=true;while(completed<c->steps){ExecuteInstruction(m);++completed;}}
   m->canhalt=false;
-  struct CpuResult r={0};r.ax=Read64(m->ax);r.cx=Read64(m->cx);r.dx=Read64(m->dx);
+  struct CpuResult r={0};r.ax=Read64(m->ax);r.bx=Read64(m->bx);r.mxcsr=m->mxcsr;r.cx=Read64(m->cx);r.dx=Read64(m->dx);
   r.flags=ExportFlags(m->flags);r.ip=m->ip-(0x400000+c->code_offset);
   r.signal=r.raw_signal=observed_signal;r.raw_code=observed_code;r.halt=halt;r.completed=completed;
   memcpy(r.xmm,m->xmm,sizeof(r.xmm));

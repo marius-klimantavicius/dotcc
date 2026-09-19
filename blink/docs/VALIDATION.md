@@ -17,7 +17,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Inferred outer-array dimensions | Warning-free build; 2231 unit pass; 508 functional pass, 1033 skipped | `scripts/test-repository.sh` |
 | Borrowed va_list formatting | Native/four-mode formatter matches; build clean, 2234 unit/509 functional pass, 1035 skipped | `scripts/test-repository.sh` and `artifacts/vsnprintf/attempt-cxeunj4b/receipt.json` |
 | Declaration order / external pointer ownership | Build clean; 2235 unit/514 functional pass, 1037 skipped | `scripts/test-repository.sh` |
-| Managed interpreter embedding | Translation in progress; no managed instruction execution claimed | `scripts/probe-core.sh` |
+| Managed interpreter embedding | Native/configured ABI and instruction/fault/exit rows match raw/optimized JIT/AOT; all 109 sources linked and AOT rooted | `tests/CoreExecution/run.py`; receipt attempt-ymbkz80n |
 | Private memory filesystem | Four independent assertion groups pass Linux JIT/AOT; guest callback integration pending | `scripts/test-host-files.sh` |
 | Private TCP namespace | Four assertion groups pass Linux JIT/AOT, including real backpressure/cancellation and same guest port in two instances | `scripts/test-host-sockets.sh` |
 | Unified instance I/O | Four groups pass Linux JIT/AOT: common fd limits, dup lifetimes, bounded streams and disposal | `scripts/test-instance-io.sh` |
@@ -37,7 +37,10 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Private process identity | Native C invariants and four managed modes pass; private IDs, errno and concurrent owners | `tests/HostIdentity/run.py` |
 | Private openat / fcntl | Native/four-mode control and metadata pass, native exec oracle and existing fd regressions pass | `tests/HostFileControl/run.py` |
 | Unexpected host termination | Native direct/indirect kind/status and four managed modes pass; controllers survive | `tests/HostTermination/run.py` |
-| Managed service runner | Not implemented or qualified | P4/P5 open |
+| Managed CPU corpus | Initial 12 cases match hardware/native in all four forms; expanded diagnostics in progress | `tests/CpuConformance/run-managed.py`; receipt attempt-yvylj8k6 |
+| Valid service ELF loading | Exact file/BSS/permissions/stack state and cleanup match native in all four forms | `tests/ElfLoading/run.py`; receipt attempt-e1zyczdz |
+| Managed controller protocol | Actual subprocess fixtures pass JIT/AOT, including bounded stop and inherited-pipe drains | `tests/InstanceLifecycle/run.py`; receipt attempt-p4b8juxr |
+| Managed service worker | Automatically blocked during implementation; partial files uncompiled and unqualified | P4/P5 open |
 | Repository baseline | Build pass; 2218 unit pass; 490 functional pass, 1009 skipped | `scripts/test-repository.sh` |
 | Bit-field repair regressions | Build pass; 2218 unit pass; 491 functional pass, 1011 skipped | `scripts/test-repository.sh` |
 | Array parameter / tagged return repairs | Build pass; 2218 unit pass; 494 functional pass, 1017 skipped | `scripts/test-repository.sh` |
@@ -63,10 +66,11 @@ emitted-layout result. Core translation attempts retain diagnostic/history and
 source/compiler/profile hashes; host profile storage checks do not implement
 callbacks or make native process services safe for managed execution.
 
-No P2–P6 completion is claimed. Raw/optimized × JIT/NativeAOT Windows execution,
-whole-library-rooted AOT, complete CPU/ELF/memory corpus, per-instance host I/O,
-worker lifecycle, performance and final dependent campaign regeneration remain
-required by PLAN.md.
+P0–P2 have passed. P3–P6 remain open: Windows execution, complete CPU/ELF/memory
+coverage, actual service startup and worker lifecycle, performance and final
+dependent campaign regeneration remain required by PLAN.md. Whole-library-rooted
+AOT has passed for the complete selected core on Linux x64. The service-worker
+and malformed-ELF tasks were stopped by automated review and were not retried.
 
 ## Actual complete-core Linux x64 gate
 

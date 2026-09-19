@@ -30,3 +30,10 @@ exit/start/native-loader calls fail the gate. Reports include unused runtime
 native declarations, indirect/virtual sites and exact assembly identities;
 this direct-graph policy does not establish runtime isolation. Raw and optimized
 reports are independently preserved and hashed in the consumer receipt.
+
+Execution now records and checks JIT consumer/dependency and NativeAOT binary
+hashes before/after each run. `scripts/audit-published-core.py <receipt>` requires
+these execution-time identities and inventories the corresponding Linux ELF
+headers, dynamic dependencies/imports and load segments. It rejects writable
+executable load segments or named native-emulator dependencies, while explicitly
+not claiming to detect static code, later dynamic loading or executable mappings.

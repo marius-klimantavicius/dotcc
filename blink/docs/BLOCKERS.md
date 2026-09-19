@@ -329,3 +329,20 @@ binding names remain. Required operations have qualified private implementations
 deferred namespace/process/network features return explicit documented errors.
 This closes the selected binding/build blocker, not service compatibility or
 complete CPU/ELF qualification. B030 is a separate generic runtime boundary.
+
+## B032 — upstream scalar SSE comparison/conversion defects (open)
+
+The expanded actual-core corpus completes124 comparisons at
+cpu-conformance-managed/attempt-s62j5n5q. All124 managed rows agree with native
+Blink;104 match hardware or the native CPUID profile, and20 reproduce the same
+five FP failures in every runtime form. UCOMISD retains incoming AF, CVTSS2SI
+ignores guest round-up, and scalar conversion paths omit MXCSR precision status.
+Exact bytes, inputs, source hashes and hardware/native differences are recorded
+in tests/CpuConformance/FP-FINDINGS.md. This is an inherited upstream failure,
+not evidence for modifying the compiler or generated output.
+
+Review identified related comparison sticky-status/SNaN/exception commit-order
+requirements and a separate upstream SIMD signal-code delivery gap. A bounded,
+hash-checked staged-source correction is being prepared after these failing
+receipts, with raw IEEE integer rounding and explicit architectural fault-state
+checks. The immutable upstream reference remains unchanged. P3 is open.

@@ -2,9 +2,10 @@
 
 Run `python3 blink/tests/CpuConformance/run.py` on Linux x86-64. It builds an
 independent hardware witness and a standalone interpreter consumer linked to the
-pinned native archive, then runs each of twelve cases in a separate subprocess.
+pinned native archive, then runs each corpus case in a separate subprocess.
 It does not build or qualify the managed core.
 
+The corpus currently contains31cases:24instruction cases and7CPUID queries.
 Both consumers execute the same literal instruction bytes and start with the
 same RAX/RCX/RDX, arithmetic flags, XMM0/XMM1 and memory contents. `describe.c`
 exports every input byte, code/data placement, step bound, fault expectation and
@@ -100,7 +101,7 @@ The derived object set and replaced object are recorded explicitly; it is not
 presented as an unchanged canonical whole-profile cache entry.
 
 Raw JIT, raw NativeAOT, postprocessed JIT and postprocessed NativeAOT each execute
-all12 cases in separate processes, using copied frozen host sources/bindings.
+all corpus cases in separate processes, using copied frozen host sources/bindings.
 Each process binds real private owners, forces compacting GC, executes the actual
 translated core, runs exit callbacks before tearing down owners, and exits.
 No translated call follows mapping disposal: upstream slab globals still point
@@ -112,3 +113,47 @@ contents are compared; retained mapping counts and charged bytes are recorded
 and bounded. The semantic postprocessor touches a copy, and raw generated source
 hashes are checked at completion. A failed comparison retains its exact inputs,
 outputs, compiler/object identities and diagnostic logs.
+
+## Expanded diagnostic matrix and CPUID inventory
+
+The original12-case complete-core matrix remains a passing baseline at
+`artifacts/cpu-conformance-managed/attempt-yvylj8k6/receipt.json`. The expansion
+adds ADC8, SBB32, IMUL64, CMOV, PXOR, signed-zero ADDSD, exact ADDPS lanes,
+quiet-NaN UCOMISD, CVT/CVTT conversions, explicit rounding controls and seven
+CPUID instruction leaves. MXCSR input is explicitly loaded in hardware and set
+in the guest, then captured without masking defined exception/status bits.
+
+The expanded corpus deliberately exposes existing upstream floating defects.
+Default runs fail conformance. To finish collecting all rows without treating
+those failures as passes, use `--observe-differences` on either runner. Such a
+run can return successfully as an observation job while its receipt records
+`completed: true` and `passed: false`; this flag must not serve as a CI
+conformance waiver. Every discrepancy remains in the receipt. Managed results
+are also compared independently against native Blink (`nativeDifferences`), so
+an inherited upstream mismatch is distinguished from a translation regression.
+See `FP-FINDINGS.md` for the reduced failing inputs and exact invariant failures.
+
+CPUID register values describe the selected virtual CPU and should not equal
+the physical CPU. For these rows, the native reference uses the existing
+hash-checked HostCpu feature-guard adaptation; the managed result must match
+that native profile in all four output registers. Hardware CPUID is retained
+as an environment witness, not substituted as the expected virtual identity.
+The upper32bits of native outputs must be zero; managed equality enforces the
+same. Shared feature/profile files are never modified by these runners.
+
+`features.py` decodes41observed feature locations, validates the selected
+exclusions and records actual advertisements with bounded evidence labels.
+Unqualified optional extensions are explicitly listed as candidates for a
+future reviewed advertisement reduction, not silently treated as supported.
+No proposed reduction is applied by this test. Clearing optional bits also
+cannot fix the baseline SSE/SSE2 defects; these need separately reviewed
+upstream corrections or explicit compatibility restrictions.
+
+Historical evidence is retained separately: `tests/HostCpu/run.py` previously
+qualified16direct OpCpuid queries in all four focused modes, eight native
+feature-toggle configurations, and seven native instruction/exclusion probes
+(including FXSAVE/PXOR/FXRSTOR). That is useful existing evidence, but it does
+not imply those16queries or seven instruction sequences all executed through
+the current complete managed core. This expansion establishes only the seven
+listed CPUID instruction leaves and the specific instruction cases recorded
+in its own full-core receipt.

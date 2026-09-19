@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <inttypes.h>
 struct CpuResult {
-  uint64_t ax,cx,dx,flags;
+  uint64_t ax,bx,cx,dx,flags;
+  unsigned mxcsr;
   int64_t ip;
   int signal,raw_signal,raw_code,halt,completed;
   unsigned char xmm[32];
@@ -19,7 +20,7 @@ static inline void CpuPrint(const struct CpuCase *c,const struct CpuResult *r,
          ",\"signal\":%d,\"rawSignal\":%d,\"rawCode\":%d,\"halt\":%d,\"completed\":%d,\"xmm\":\"",
          c->name,r->ax,r->cx,r->dx,r->flags,c->flag_mask,r->ip,
          r->signal,r->raw_signal,r->raw_code,r->halt,r->completed);
-  CpuHex(r->xmm,sizeof(r->xmm));printf("\",\"memory\":\"");
+  CpuHex(r->xmm,sizeof(r->xmm));printf("\",\"bx\":\"%016" PRIx64 "\",\"mxcsr\":%u,\"memory\":\"",r->bx,r->mxcsr);
   CpuHex(data,size);printf("\"}\n");
 }
 #endif

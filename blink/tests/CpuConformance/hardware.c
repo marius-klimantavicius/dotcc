@@ -17,6 +17,8 @@ static unsigned char *entry;
 static void Capture(int signal,siginfo_t *info,void *context) {
   ucontext_t *uc=context;
   result.ax=uc->uc_mcontext.gregs[REG_RAX];
+  result.bx=uc->uc_mcontext.gregs[REG_RBX];
+  result.mxcsr=uc->uc_mcontext.fpregs->mxcsr;
   result.cx=uc->uc_mcontext.gregs[REG_RCX];
   result.dx=uc->uc_mcontext.gregs[REG_RDX];
   result.flags=uc->uc_mcontext.gregs[REG_EFL];
@@ -30,7 +32,7 @@ static void Capture(int signal,siginfo_t *info,void *context) {
 }
 int main(int argc,char **argv) {
   if(argc!=2)return 2;
-  int index=atoi(argv[1]);if(index<0||index>=CPU_CASES)return 2;
+  int index=atoi(argv[1]);if(index<0||(unsigned)index>=CPU_CASES)return 2;
   const struct CpuCase *c=cpu_cases+index;
   unsigned char *code=mmap(0,2*CPU_PAGE,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
   unsigned char *data=mmap(0,2*CPU_PAGE,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
@@ -42,15 +44,18 @@ int main(int argc,char **argv) {
   struct sigaction action={0};action.sa_sigaction=Capture;action.sa_flags=SA_SIGINFO;
   sigemptyset(&action.sa_mask);
   if(sigaction(SIGTRAP,&action,0)||sigaction(SIGFPE,&action,0)||sigaction(SIGSEGV,&action,0)||sigaction(SIGILL,&action,0))return 3;
+  unsigned char xmm_input[32];CpuXmm(c,xmm_input);
+  unsigned mxcsr_input=CpuMxcsr(c);
   if(!sigsetjmp(recovery,1)) {
     /* Fixed inputs and code bytes are shared with the interpreter corpus.
      * No instruction under test is reimplemented in this reference. */
-    __asm__ volatile("movdqu %[low], %%xmm0\n\t"
+    __asm__ volatile("ldmxcsr %[mxcsr]\n\t"
+                     "movdqu %[low], %%xmm0\n\t"
                      "movdqu %[high], %%xmm1\n\t"
                      "pushq %[flags]\n\tpopfq\n\tjmp *%[entry]"
       : : "a"(c->ax),"b"(data+c->data_offset),"c"(c->cx),"d"(c->dx),
           [flags]"r"(c->flags),[entry]"r"(entry),
-          [low]"m"(cpu_xmm[0]),[high]"m"(cpu_xmm[16])
+          [mxcsr]"m"(mxcsr_input),[low]"m"(xmm_input[0]),[high]"m"(xmm_input[16])
       : "xmm0","xmm1","cc","memory");
     __builtin_unreachable();
   }

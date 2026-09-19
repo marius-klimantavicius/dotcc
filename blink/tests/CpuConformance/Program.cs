@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Managed.Emulation.Host;
 using Blink = Managed.Emulation.BlinkCore;
-if(args.Length!=1 || !int.TryParse(args[0],out int index) || index<0 || index>=12)return 2;
+if(args.Length!=1 || !int.TryParse(args[0],out int index) || index<0)return 2;
 // A separate process owns each case. Native witnesses run only in the Python
 // orchestrator, never in this actual translated-core consumer.
 using var variables=new HostVariables();

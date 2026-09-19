@@ -188,9 +188,16 @@ try:
         save()
 
     def check(command, label):
+        binary = Path(command[-1] if label.endswith('-jit') else command[0])
+        digest = sha(binary)
+        managed_inputs = {str(p):sha(p) for p in binary.parent.glob('*.dll')} if label.endswith('-jit') else {}
         actual = run(command, label, 30).splitlines()
         if not actual or actual[0] != expected_abi:
             raise RuntimeError(label + ' profile ABI mismatch')
+        if sha(binary) != digest or any(sha(Path(p)) != value for p,value in managed_inputs.items()):
+            raise RuntimeError(label + ' execution binary changed')
+        receipt['results'][label]['binary_sha256'] = digest
+        receipt['results'][label]['managed_dependencies'] = managed_inputs
         footer = re.fullmatch(r'core retained-mappings=(\d+) charged-bytes=(\d+)', actual[-1])
         if not footer or int(footer[2]) > 64 * 1024 * 1024:
             raise RuntimeError(label + ' missing/invalid owned-memory accounting')

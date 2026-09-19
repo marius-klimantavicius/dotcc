@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Native hardware versus pinned native interpreter; no managed core claim."""
-import hashlib,json,os,platform,shutil,subprocess,tempfile,time
+import argparse,hashlib,json,os,platform,shutil,subprocess,tempfile,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];REPO=ROOT.parent
+from features import inventory
+parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--observe-differences',action='store_true');args=parser.parse_args()
 base=ROOT/'generated/cpu-conformance';base.mkdir(parents=True,exist_ok=True)
 a=Path(tempfile.mkdtemp(prefix='attempt-',dir=base))
 out=ROOT/'artifacts/cpu-conformance'/a.name;out.mkdir(parents=True)
@@ -22,12 +24,15 @@ try:
     manifest=ROOT/'config/source-inventory.json'
     for row in json.loads(manifest.read_text())['files']:
         if sha(upstream/row['path'])!=row['sha256']:raise RuntimeError('pinned source changed: '+row['path'])
-    for name in ['hardware.c','interpreter.c','describe.c','corpus.h','output.h']:shutil.copyfile(ROOT/'tests/CpuConformance'/name,a/name)
+    for name in ['hardware.c','interpreter.c','describe.c','corpus.h','output.h','features.py']:shutil.copyfile(ROOT/'tests/CpuConformance'/name,a/name)
     # Preserve the archive and the exact header/config input to its consumer.
     shutil.copyfile(native/'o/blink/blink.a',a/'blink.a')
     shutil.copyfile(native/'config.h',a/'config.h')
     (a/'blink').mkdir()
     for p in (native/'blink').glob('*.h'):shutil.copyfile(p,a/'blink'/p.name)
+    stage=ROOT/'src/HostCpu/stage-cpuid.py'
+    run(['python3',stage,'--output',a/'cpuid.c','--receipt',out/'cpuid-stage.json'],'stage-cpuid')
+    r['cpuid_stage_script_sha256']=sha(stage)
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['sourceManifestSha256']=sha(manifest);r['runnerSha256']=sha(Path(__file__))
     r['head']=subprocess.check_output(['git','-C',str(REPO),'rev-parse','HEAD'],text=True).strip()
@@ -35,22 +40,30 @@ try:
     if Path('/proc/cpuinfo').exists():shutil.copyfile('/proc/cpuinfo',out/'hardware-cpuinfo.txt')
     run(['cc','-std=c17','-O2','-Wall','-Wextra','-Werror',a/'hardware.c','-o',a/'hardware'],'hardware-build')
     run(['cc','-std=c17','-O2','-Wall','-Wextra','-Werror',a/'describe.c','-o',a/'describe'],'describe-build')
-    run(['cc','-std=c17','-D_GNU_SOURCE','-D_DEFAULT_SOURCE','-DNOLINEAR','-I',a,a/'interpreter.c',a/'blink.a','-lz','-lrt','-lm','-pthread','-Wl,-Map='+str(out/'interpreter-link.map'),'-o',a/'interpreter'],'interpreter-build')
+    run(['cc','-std=c17','-D_GNU_SOURCE','-D_DEFAULT_SOURCE','-DNOLINEAR','-I',a,a/'interpreter.c',a/'cpuid.c',a/'blink.a','-lz','-lrt','-lm','-pthread','-Wl,-Map='+str(out/'interpreter-link.map'),'-o',a/'interpreter'],'interpreter-build')
     run(['objdump','-d',a/'hardware'],'hardware-disassembly')
     inputs=json.loads(run([a/'describe'],'corpus'))
+    cpuid_rows={};hardware_cpuid={}
     for case in inputs['cases']:
         i=case['index'];ref=json.loads(run([a/'hardware',str(i)],f'hardware-{i:02}'))
         actual=json.loads(run([a/'interpreter',str(i)],f'interpreter-{i:02}'))
         # Faulting instructions compare fault/IP/memory only. Full raw capture
         # remains evidence, but unspecified flags/register effects are excluded.
-        fields=['name','signal','ip','memory']+([] if case['fault'] else ['ax','cx','dx','xmm'])
+        fields=['name','signal','ip','memory']+([] if case['fault'] else ['xmm','mxcsr']+([]if case['profileReference']else['ax','cx','dx']))
+        if case['profileReference']:
+            cpuid_rows[case['name']]=actual;hardware_cpuid[case['name']]=ref
+            if any(int(actual[key],16)>>32 for key in ['ax','bx','cx','dx']):raise RuntimeError('CPUID upper register bits not zero')
         differences=[key for key in fields if ref[key]!=actual[key]]
         mask=int(case['flagMask'],16)
         if (int(ref['flags'],16)^int(actual['flags'],16))&mask:differences.append('definedFlags')
-        record={'case':case['name'],'fields':fields,'definedFlagsMask':case['flagMask'],'matched':not differences,'differences':differences}
+        record={'case':case['name'],'reference':'native-profile-CPUID'if case['profileReference']else'hardware','fields':fields,'definedFlagsMask':case['flagMask'],'matched':not differences,'differences':differences}
         r['comparisons'].append(record);save()
-    if any(not item['matched']for item in r['comparisons']):raise RuntimeError('hardware/interpreter differences preserved in receipt')
+    r['feature_inventory']=inventory(cpuid_rows,hardware_cpuid)
+    r['completed']=True
+    r['known_failing_rows']=[row for row in r['comparisons']if not row['matched']]
+    r['passed']=not r['known_failing_rows']
     r['binaries']={name:sha(a/name)for name in ['hardware','describe','interpreter']}
     if r['inputs']!={name:sha(a/name)for name in r['inputs']}:raise RuntimeError('snapshot changed')
-    r['passed']=True;save();print('12 native hardware/interpreter cases pass; managed conformance not yet qualified; receipt '+str(out/'receipt.json'))
+    save();print(str(len(r['comparisons']))+' native cases completed; conformance='+str(r['passed'])+'; receipt '+str(out/'receipt.json'))
+    if not r['passed'] and not args.observe_differences:raise SystemExit(1)
 finally:save()

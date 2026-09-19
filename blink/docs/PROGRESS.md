@@ -9,8 +9,8 @@ P0–P2 have passed their stated gates on Linux x64. The complete selected inter
 ## Ownership
 
 - Coordinator: source/host inventory, dotcc baseline and translation probes, integration, validation, and milestone/significant-progress commits.
-- Inputs worker: bounded host memory, ordinary/signal-aware nonlocal jumps and host storage ABI qualification (after completing source/native baseline).
-- Guest worker: actual interpreter closure translation, measured host header contracts and reduced compiler blockers (after completing native guest fixture).
+- Inputs worker: actual complete-core CPU/CPUID/floating-point coverage and preserved hardware/native/managed diagnostic differences.
+- Guest worker: completed valid ELF loading and read-only controller review. Service embedding/worker implementation was automatically blocked and has stopped.
 
 Workers share one worktree with disjoint authored-file ownership. Shared compiler edits and repository suites are serialized by the coordinator. Generated/ref/build/artifacts content is disposable and ignored; reproducible scripts and durable summaries are committed.
 
@@ -20,7 +20,7 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 | --- | --- | --- |
 | P0 | Passed | Immutable sources verified offline; native Blink and 25 assembly cases pass; six HTTP cases pass on Linux and Blink; exact native archive/import/global audit and initial translation failures recorded. |
 | P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
-| P2 | Passed | All109 selected sources emit/link; raw/optimized libraries and whole-library-rooted AOT execute; direct IL/import/initializer inventories complete with zero traversed native imports. Indirect/framework limits remain explicit for P4/P6. |
+| P2 | Passed | All 109 selected sources emit/link; raw/optimized libraries and whole-library-rooted AOT execute; direct IL/import/initializer inventories complete with zero traversed native imports. Indirect/framework limits remain explicit for P4/P6. |
 | P3 | Pending | CPU/memory/ELF behavior corpus. |
 | P4 | Pending | Real host contracts and service startup. |
 | P5 | Pending | Worker/controller lifecycle and two-instance HTTP qualification. |
@@ -32,12 +32,13 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 ## Next actions
 
-Qualify the independent CPU corpus and unchanged pinned valid ELF through derived
-links of the actual translated core. Extend the owning execution adapter to
-service startup and bounded worker lifecycle. Keep malformed-input and Windows
-execution gates open. Current workers own CpuConformance and ElfLoading;
-the coordinator owns audit integration, milestone commits and reviewed changes
-back to the original checkout. See the final progress entries for current evidence.
+Complete the expanded CPU/CPUID diagnostic matrix and preserve measured upstream
+floating-point defects. The initial CPU corpus, valid service ELF loader and
+controller subprocess lifecycle already pass their stated gates. Service-worker
+implementation and malformed-input work are blocked by automated review and
+were not retried; Windows execution remains unavailable. Keep P3–P6 open.
+The coordinator integrates reviewed commits back to the original checkout and
+preserves user patches and all unqualified partial files.
 
 ## Observed validation (initial campaign baseline)
 
@@ -1024,3 +1025,33 @@ controller/protocol tests only. The blocked translated worker was not compiled
 or executed, and P5 remains open. Detached descendant cleanup is explicitly
 outside the current controller guarantee; the actual worker profile must not
 create descendants.
+
+## Significant progress: execution-time binary identity and publication inventory
+
+The complete-core matrix was rerun at core-execution/attempt-38g8255n with
+JIT consumer/dependency and NativeAOT binary hashes checked before/after every
+execution. All four forms and both direct IL audits pass. The corresponding
+Linux ELF publication inventory passes at publication-audit/attempt-ojn9i06e:
+raw and optimized each declare libm.so.6, libc.so.6 and ld-linux-x86-64.so.2,
+with254 undefined dynamic symbols and separate RX code/RW data segments.
+No dynamic dependency is a native emulator, and no LOAD segment is both writable
+and executable. This is a static publication inventory only: statically linked
+code, later dynamic loading, framework internals and later executable mappings
+remain outside its proof. P6 is still open.
+
+## Significant progress: complete-core CPUID and floating-point diagnostics
+
+The expanded corpus at cpu-conformance-managed/attempt-s62j5n5q completes
+31 inputs in all four forms:124 comparisons,104 matching and20 failing. Every
+managed row agrees with native Blink; the five repeated failures are actual
+upstream FP defects, preserved in FP-FINDINGS.md and blocker B032. Observation
+mode retains passed=false and is not a conformance waiver. The19 passing
+instruction cases and seven CPUID leaves per form remain individually recorded.
+
+The actual CPUID inventory decodes41 feature locations per form, preserving
+hardware observations separately from the virtual CPU identity. Unqualified
+optional advertisements are explicit reduction candidates; no feature-policy
+change has yet been applied. Historical focused HostCpu evidence is retained
+without presenting it as complete-core instruction qualification. The next CPU
+task is a reviewed staged-upstream correction and stronger architectural
+fault-state comparisons; immutable ref and generic compiler remain unchanged.
