@@ -1100,3 +1100,22 @@ without DISABLE_JIT. The derived qualified link retains105 original objects and
 replaces the frontend plus three upstream TUs. This closes B032 only for the
 reviewed scalar scope; the next full canonical profile will explicitly include
 these changes and the separately qualified HostMemory revision. P3 remains open.
+
+## Significant progress: Lua/chibi and WAT execution regressions
+
+The unchanged compiler freshly translates the existing CI-selected Lua and
+chibi sources in private scratch copies. Lua's complete `_U=true` upstream
+user-test runner reports `final OK !!!`; chibi passes1225 tests in18 subgroups
+and its full transcript matches the committed native baseline after only the
+existing timing/ANSI normalization. Receipt:
+language-regressions/attempt-vqeg8yjo. Native chibi bootstrap regenerates the four
+required FFI stubs. Compiler, authored sources, generated outputs and executed
+managed binaries are hashed. These are the existing Linux x64 JIT conformance
+recipes, not AOT/platform or unselected internal C-API coverage.
+
+The opt-in WAT execution oracle also passes146 cases using installed wat2wasm
+and Node: wat-zig-regression/attempt-4uflu_5h. The compiled compiler DLL matches
+the campaign CLI's library hash. All205 selected Zig oracle rows are explicitly
+skipped because zig is unavailable, so they remain unqualified. Tool identities,
+command, TRX case records and skips are retained. No generic compiler changes
+were needed, and P6 remains open.

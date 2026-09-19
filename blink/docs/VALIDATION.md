@@ -41,6 +41,11 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Valid service ELF loading | Exact file/BSS/permissions/stack state and cleanup match native in all four forms | `tests/ElfLoading/run.py`; receipt attempt-e1zyczdz |
 | Managed controller protocol | Actual subprocess fixtures pass JIT/AOT, including bounded stop and inherited-pipe drains | `tests/InstanceLifecycle/run.py`; receipt attempt-p4b8juxr |
 | Managed service worker | Automatically blocked during implementation; partial files uncompiled and unqualified | P4/P5 open |
+| Fresh SQLite consumer | Raw/optimized JIT/AOT SQL, WAL, JSONB/FTS5, callbacks and GC pass | `scripts/test-sqlite-regression.py`; attempt-1nqhp4wq |
+| Fresh picotls campaign | Full raw/optimized JIT/AOT suites and 224 peer executions pass | `scripts/test-picotls-regression.py`; attempt-ymi5de8u |
+| Fresh Lua/chibi conformance | Lua user-test final success; chibi 1225/1225 and 18/18 with native-baseline transcript match; JIT only | `scripts/test-language-regressions.py`; attempt-vqeg8yjo |
+| WAT execution regression | 146 oracle cases pass using wat2wasm and Node | `DOTCC_RUN_WAT=1 dotnet test DotCC.FunctionalTests -c Release --no-build --filter FullyQualifiedName~WatOracleTests`; attempt-4uflu_5h |
+| Zig execution oracle | 205 selected rows skipped; external zig unavailable | Same receipt retains exact opt-in command and case-level skips |
 | Repository baseline | Build pass; 2218 unit pass; 490 functional pass, 1009 skipped | `scripts/test-repository.sh` |
 | Bit-field repair regressions | Build pass; 2218 unit pass; 491 functional pass, 1011 skipped | `scripts/test-repository.sh` |
 | Array parameter / tagged return repairs | Build pass; 2218 unit pass; 494 functional pass, 1017 skipped | `scripts/test-repository.sh` |
