@@ -45,6 +45,11 @@ public sealed partial class InstanceIo
                             var ready = network.Readiness(description.Handle, request.Events);
                             events[i] = ready.Succeeded ? ready.Value : (short)(ready.Error == GuestError.BadDescriptor ? 32 : 8);
                         }
+                        else if (description.Kind == Kind.Pipe)
+                        {
+                            var ready = pipes.Readiness(description.Handle, request.Events);
+                            events[i] = ready.Succeeded ? ready.Value : (short)32;
+                        }
                         else events[i] = (short)(request.Events & (1 | 4 | 64 | 256));
                         if (events[i] != 0) ++count;
                     }

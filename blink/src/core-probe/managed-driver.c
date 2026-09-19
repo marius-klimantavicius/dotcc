@@ -4,6 +4,8 @@
 #include "HostFileMapping.h"
 #include "HostSignalActions.h"
 #include "HostExitCallbacks.h"
+#include "GuestResources.h"
+#define BLINK_CORE_INITIALIZE_SYSTEM BlinkHostInitializeBoundResourceLimits
 #define main CoreProbe
 #include "probe.c"
 #undef main

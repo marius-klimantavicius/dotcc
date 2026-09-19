@@ -3,7 +3,9 @@
   "scope": "Explicit full-core host bindings; unresolved isolated operations still require policy or implementation before runtime",
   "capabilities": {
     "HAVE_GETRANDOM": "1",
-    "HAVE_REALPATH": "1"
+    "HAVE_REALPATH": "1",
+    "HAVE_MKFIFO": "1",
+    "HAVE_MKFIFOAT": "1"
   },
   "headers": [
     "src/HostIo/host-io.h",
@@ -27,7 +29,11 @@
     "src/HostSignalPolicy/host-signal-policy.h",
     "src/HostNamespace/host-namespace.h",
     "src/HostPermissions/host-permissions.h",
-    "src/HostLocks/host-locks.h"
+    "src/HostLocks/host-locks.h",
+    "src/GuestResources/GuestResources.h",
+    "src/GuestResources/GuestResources.c",
+    "src/HostNamespacePolicy/host-namespace-policy.h",
+    "src/HostPipes/host-pipes.h"
   ],
   "includeHeaders": [
     "host-profile-constants.h",
@@ -53,7 +59,10 @@
     "host-signal-policy.h",
     "host-namespace.h",
     "host-permissions.h",
-    "host-locks.h"
+    "host-locks.h",
+    "GuestResources.h",
+    "host-namespace-policy.h",
+    "host-pipes.h"
   ],
   "cSources": [
     "src/HostIo/HostFileControl.c",
@@ -64,7 +73,8 @@
     "src/HostAncillary/HostAncillary.c",
     "src/HostSignalActions/HostSignalActions.c",
     "src/HostExitCallbacks/HostExitCallbacks.c",
-    "src/HostFdSets/HostFdSets.c"
+    "src/HostFdSets/HostFdSets.c",
+    "src/GuestResources/GuestResourcesCore.c"
   ],
   "managedSources": [
     "src/HostIo/HostIoBridge.cs",
@@ -95,7 +105,10 @@
     "src/HostSignalPolicy/HostSignalPolicyBridge.cs",
     "src/HostNamespace/HostNamespaceBridge.cs",
     "src/HostPermissions/HostPermissionsBridge.cs",
-    "src/HostLocks/HostLocksBridge.cs"
+    "src/HostLocks/HostLocksBridge.cs",
+    "src/GuestResources/GuestResourcesBridge.cs",
+    "src/HostNamespacePolicy/HostNamespacePolicyBridge.cs",
+    "src/HostPipes/HostPipesBridge.cs"
   ],
   "isolate": [
     "setenv",

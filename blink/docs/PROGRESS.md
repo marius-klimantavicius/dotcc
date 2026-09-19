@@ -851,3 +851,50 @@ full-core diagnostics. The frozen profile predates the newly qualified signal,
 namespace, permission, lock and accounting bridges; the next profile includes
 them. Anonymous pipes and link/symlink/FIFO/socketpair contracts remain open.
 No managed guest instruction execution has yet passed.
+
+## Significant progress: seed actual guest resource records
+
+GuestResources seeds fresh upstream System AS/DATA/NOFILE records from the live
+HostMemory budget and InstanceIo descriptor capacity before NewMachine. It refuses
+nonfresh systems and cannot reset a guest-lowered maximum. Native actual NewSystem
+and limit consumers plus raw/optimized JIT/NativeAOT pointer/owner tests pass at
+guest-resources/attempt-7s2drlx5; independently compared System size3016, resource
+record offset2704 and16-byte records agree.
+The authored core driver now invokes this adapter before machine creation. Its
+full-core wrapper includes the same binding preamble as upstream objects. Actual
+guest get/setrlimit execution remains a later gate. DATA has no independent
+upstream allocation enforcement, and generic malloc is outside HostMemory
+accounting; the README records those limits and the unchanged upstream setter's
+missing cur<=newmax validation.
+
+## Significant progress: explicit ordinary-node and IPv4 profile boundaries
+
+The selected filesystem continues to represent regular files/directories only.
+Hard/symbolic link and named-FIFO creation validates private paths, owners and
+existing entries, then fails explicitly without mutation; readlink performs an
+actual lookup and distinguishes absent/bad paths from existing non-links. The
+IPv4-only network refuses socketpair, with no descriptor allocation. These
+unsupported-feature contracts are documented, not claimed as implementations of
+general links, named pipes or UNIX-domain IPC. Capability macros select the
+qualified mkfifo/mkfifoat boundary functions rather than missing fallback names;
+they do not promise successful FIFO creation.
+Native common and all four managed forms pass at
+host-namespace-policy/attempt-n660fhgd, including exact metadata/quota/output
+preservation, root escapes, invalid UTF8, owner disposal and two-owner GC.
+An independent worker review found no blocking issue. The native negative
+socketpair probe changed its output array on failure; the stronger private
+output-preservation contract is deliberately checked separately.
+
+## Significant progress: bounded private anonymous pipes
+
+Anonymous pipe endpoints now occupy the real instance descriptor table, with
+64KiB rings,1MiB aggregate storage and128 active-transfer bounds by default.
+Writes through4096 bytes are atomic; EOF, EPIPE, nonblocking/short transfers,
+dup/final-close state, FIFO metadata and readiness are real backend behavior.
+In-flight operations retain their original ends across descriptor reuse, and
+disposal cancels/drains blocked I/O and long readiness deadlines. Pipe pair
+allocation and failure outputs are atomic. No OS pipe or native handle is used.
+Native/common, raw/optimized JIT/NativeAOT and copied HostFiles/InstanceIo
+regressions pass at host-pipes/attempt-73tfaaeh. The upstream pipe()+fcntl
+fallback is supported without advertising HAVE_PIPE2. The final bridge and
+Host snapshot are included in the next109-source full profile.

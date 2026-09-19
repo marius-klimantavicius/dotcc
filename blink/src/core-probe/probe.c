@@ -29,6 +29,9 @@ static int RunCase(const char *name, unsigned char *code, size_t length,
                    unsigned long expected_ip, int expected_exit) {
   struct System *s = NewSystem(XED_MACHINE_MODE_LONG);
   if (!s) return 10;
+#ifdef BLINK_CORE_INITIALIZE_SYSTEM
+  if (BLINK_CORE_INITIALIZE_SYSTEM(s)) { FreeSystem(s); return 26; }
+#endif
   struct Machine *m = NewMachine(s, 0);
   if (!m) { FreeSystem(s); return 11; }
   g_machine = m;
