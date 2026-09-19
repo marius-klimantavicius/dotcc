@@ -349,9 +349,11 @@ the showcase solution builds and its sample demonstrates the documented usage.
       interpreter settings; set no unsupported performance-equivalence promise.
 - [ ] Reproduce generation from a clean checkout; audit published imports,
       executable mappings, stale files, trim roots, and all runtime dependencies.
-- [ ] From a clean checkout, run `blink/scripts/translate.sh`, build
+- [x] From a clean checkout, run `blink/scripts/translate.sh`, build
       `blink/ManagedConsumer.slnx` and execute its usage sample using the final
       post-processed sources; document the exact commands and observed results.
+      Passed for the normal-core sample at f38de7f; this does not close P5 service
+      API/worker requirements or the broader dependency/platform audit.
 - [ ] Regenerate SQLite with the final compiler and rerun its JIT/AOT corpus;
       rerun picotls/MsQuic after relevant shared fixes, plus Lua/chibi and affected
       Zig/WAT checks. Record observed failures rather than relabeling old evidence.

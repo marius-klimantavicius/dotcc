@@ -1371,3 +1371,42 @@ The CPU worker is replacing custom trap completion instrumentation and selecting
 449 normal cases, recording 46 historical custom fault cases as excluded. The
 coordinator is narrowing HostMemory to ordinary lifecycle cases. Neither revised
 harness has been executed yet; they wait for clean-delivery's heavy build slot.
+
+## Active normal-scope qualification queue
+
+The clean runner owns the heavy build slot at clean-delivery/attempt-0gfaz9m3,
+with detached checkout `/home/marius/p/dotcc-blink-delivery-2nz9u2sm`. It targets
+f38de7f; fresh compiler and native baseline pass and source emission is active.
+`inputs` owns the frozen CpuConformance normal-only witness/selection changes;
+its combined native/four-mode execution is queued next. The coordinator owns
+HostMemory normal lifecycle and HostIo ordinary callback changes; their serial
+refresh follows CPU. No new result for these modified harnesses is claimed yet.
+The sample/clean worker may prepare additive tests/TlsLoading while monitoring
+clean execution. Its bounded valid static TLS fixture must qualify startup copy/
+zeroing, actual ARCH_SET_FS and FS-relative access, independently of any service
+worker. It must wait for the same build slot before executing. Shared compiler
+and canonical Blink profile/host sources stay frozen; user patches are preserved.
+
+## Clean public delivery workflow passed
+
+Clean delivery at committed f38de7f passes at clean-delivery/attempt-0gfaz9m3,
+SHA256 4aaeca06fb629779914d24969e60de2fedcff1d456193f3494f2185107f1143b.
+The detached checkout `/home/marius/p/dotcc-blink-delivery-2nz9u2sm` starts with
+no compiler/generated/native outputs and copies only the pinned Blink archive.
+Its fresh compiler build, all 109 freshly emitted sources (zero reuse), native
+25, raw build, semantic postprocessing, final project build, solution build and
+actual JIT/NativeAOT sample all pass. Both sample transcripts match the normal
+native reference/configured ABI, with footer 2 mappings and 270450 charged bytes.
+The standard AOT publish succeeds on its first clean attempt. Child delivery
+attempt-8bxczpb2 has SHA256
+f516f3a6e2c9d6fdd7e913c379a79ec4264462ba0c2084d2b5db0b1bc7ed0a08.
+The final checkout is clean; original and fresh compiler identities remain
+unchanged. Independent coordinator verification checks receipt links, raw/final
+manifests and recorded execution binary equality. Installed tools and NuGet cache
+are shared, so this remains a clean-source/output reproduction, not hermetic.
+
+The added P6 public-workflow item is complete for the normal-core sample. P5's
+service API/worker and broad platform/dependency/performance gates remain open.
+The CPU normal matrix now owns the validation slot; standalone normal memory and
+I/O follow. Additive valid TLS fixture source preparation continues without
+builds. Neither historical excluded cases nor Windows passes are inferred.

@@ -53,3 +53,11 @@ pinned archive acquisition. The gate qualifies the normal core showcase; it
 does not execute an HTTP service, translated worker, Windows runtime, custom
 fault-injection or invalid-ELF tests, or the separate complete dependency audit.
 No prior campaign result substitutes for execution in this checkout.
+
+Observed clean pass: committed `f38de7f`, receipt
+`artifacts/clean-delivery/attempt-0gfaz9m3/receipt.json` (SHA256
+`4aaeca06fb629779914d24969e60de2fedcff1d456193f3494f2185107f1143b`).
+All 109 objects were fresh, with zero reuse. Both normal samples matched their
+native/profile reference; Linux NativeAOT published successfully on its first
+attempt. The source/output checkout and all recorded compiler identities passed
+the final unchanged checks. This records that exact revision, not later changes.

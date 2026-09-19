@@ -30,6 +30,14 @@ excluded from new runs; only existing pinned upstream cases are permitted.
 Service startup/worker, broader CPU/memory coverage, current dependent-campaign
 regressions and Windows execution remain open. The normal sample is partial P5.
 
+Clean public workflow from committed `f38de7f` passes at
+`clean-delivery/attempt-0gfaz9m3`: fresh compiler, 109 fresh objects with zero
+reuse, pinned native 25, immutable raw/final manifests, final project/solution,
+and actual normal sample under JIT and rooted NativeAOT. Exact commands and
+binary/tool/source identities are preserved; checkout and compiler identities
+remain unchanged. Only the pinned archive was copied. Installed tools/NuGet
+cache remain shared; Windows and service-worker execution are not claimed.
+
 ## Historical qualification ledger
 
 | Surface | Observed result | Reproduce |
