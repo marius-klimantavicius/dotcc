@@ -9,10 +9,10 @@ public sealed unsafe partial class MsQuicHost
     internal bool DatagramInterfacesMatch(nint socket,uint expected)
     {
         var record=Resource<DatagramSocket>((void*)socket);
-        lock(record.gate)
+        lock(record.Gate)
         {
             Span<byte> value=stackalloc byte[4];
-            foreach(var physical in record.physical)
+            foreach(var physical in record.Physical)
             {
                 var transport=physical.Socket;
                 if(transport.AddressFamily==System.Net.Sockets.AddressFamily.InterNetworkV6)

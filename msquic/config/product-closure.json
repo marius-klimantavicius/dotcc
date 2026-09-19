@@ -2,10 +2,10 @@
   "schema_version": 1,
   "status": "Nested MsQuic ABI/build closure passed; dependent runtime and shared regression qualification is separate",
   "revision": "80a065112426bce68c1da42d026478d3e40fd45e",
-  "compiler_commit": "f87fd389bdb4d9b6ad5e55a91b736017b85b54fa",
+  "compiler_commit": "fde3e7e97b9804d0246cdd687f81fef180ad7232",
   "compiler_informational_versions": {
-    "dotcc.dll": "1.0.0+f87fd389bdb4d9b6ad5e55a91b736017b85b54fa",
-    "DotCC.Lib.dll": "1.0.0+f87fd389bdb4d9b6ad5e55a91b736017b85b54fa"
+    "dotcc.dll": "1.0.0+fde3e7e97b9804d0246cdd687f81fef180ad7232",
+    "DotCC.Lib.dll": "1.0.0+fde3e7e97b9804d0246cdd687f81fef180ad7232"
   },
   "stage_manifest_sha256": "55e4b102442dc621b67674540b5c9b3ff73b98ef482e679167b2c120fa380006",
   "units": [
@@ -1210,22 +1210,22 @@
   ],
   "api_profile_sha256": "10ea863ab58f5318cfc024963bd7b0174230306db3c98a465a9cae93a9db5be3",
   "evidence_sha256": {
-    "artifacts/host-contract/results.json": "371e92c8570a272631185fad62a3379c6a3d3bedb890d8394bc9e17b8ff524e7",
-    "artifacts/abi/results.json": "94db0b3b4c284ca17f6ff82e38fcf82ab96658e7050401e2ce83274b0db100b2",
-    "artifacts/product-build/results.json": "60c4ac693a8ee8b27aa8aa99c2ef720c4d6f7647c30ee7cd8ba71f5fcfd072ff",
+    "artifacts/host-contract/results.json": "44e7d8896c1ff0566dc0961c1bba85662df547963b11b85c01f14d55e7b7b9e5",
+    "artifacts/abi/results.json": "4cb92ff8f5b82025417c56a11d89cf081347e0720bce1981c0288f19a22a2af1",
+    "artifacts/product-build/results.json": "e23058a7c41510f1fa13cae3e16f861872a1c3c4ccfbde6eb5e7e249fb3525be",
     "artifacts/host-contract/dotcc-overrides.json": "1736ee8ce07c65b507e0baaa15f281c4268a3526b60ea5594a73e67800ba0da2"
   },
   "compiler_hashes": {
-    "DotCC.Lib.dll": "15ef39ed3fa3b8458c1da7f53a81606255c237702ec4aaaaff1dd6b54053d4a5",
-    "DotCC.Lib.pdb": "0f73af0d36d178512f95933c5e75b4055c079cd488976a6a097abd53f89b107f",
+    "DotCC.Lib.dll": "a81ccb25b203df526b78227fc7c3ba8c180b43209865e905bc3bdd47833c595f",
+    "DotCC.Lib.pdb": "c63390b5cec5dd0098f6f77a19e0b7e4e43d48b2a605dd63c6eac60c7a701e12",
     "LALR.CC.dll": "04a73c3f6b3bcbf049de660830d7b2257cc63f7afe820ad30d22ac80e2b4bc8b",
     "System.CommandLine.dll": "0b7790b44a438c6c2f4714ec9d408e02c5ed98145d7c89ecd9a9d11acf0932cb",
     "cs/System.CommandLine.resources.dll": "15981e39eb96e3f1ccea6745b53ce358c85b6b30659af54cdfdfa2adf0536c20",
     "de/System.CommandLine.resources.dll": "5cdcd1ce61a638cebe1fbd2ef4c3fc83d046670a4f6b43aeadd82d032b1af03a",
     "dotcc": "697c93db673d26e6ff5be786db486ec0f30632587abf55f0bc92a7fb3916933e",
     "dotcc.deps.json": "535861a6fbc41a112eb2b3796f05eadd0788c86bced063ef9c1b7d73db82a1d5",
-    "dotcc.dll": "369c4d50b8f8216249a5c17e233b4d3c2d69d3c30d467e99d5c005cbf86d4b83",
-    "dotcc.pdb": "bc0c3d1e1541187b54e8b44bf66a65f72c1908fbee73e6c3effbd3c168dfde27",
+    "dotcc.dll": "fdb4ae84cf6d57fedb06c73cbeb9d9cf4e7e2dc79f4333bc9897a36f3729a946",
+    "dotcc.pdb": "a6fdf9fe20f6ac22b53b7a37a7989874f566978d711744704a711739f937dcc0",
     "dotcc.runtimeconfig.json": "5acdb16a460772054343c970894d62b803d3afa33dc719a66317f94d58119b1b",
     "es/System.CommandLine.resources.dll": "1931512c78045dc88f68bc71f9fe7dcf1e3a679ace15b42ddbfc6235978ebc72",
     "fr/System.CommandLine.resources.dll": "d161253276bd0079e6edd24c689b7e8c36c115c787af0bd528cd86422f94b32d",
@@ -1451,30 +1451,30 @@
   },
   "generated": {
     "raw": {
-      "MsQuic.00000.cs": "366c6f14fdc56b6b4cc2b258b69a40687ff068ac3e0f6b0aa8fa328c0a6b5d34",
-      "MsQuic.00001.cs": "e35bdecf25ad8647505423f3270a4c284476ed6cb4396cd566d39bb721a81983",
-      "MsQuic.00002.cs": "684edb428d933283f5bca340836844a15d3608858d0808fa8edbc43ccdf0fee6",
-      "MsQuic.00003.cs": "5ca9ddcb168ffbaaa5b12e4f67ecb1209c1e7fcce48029a965fe9317d13730d5",
-      "MsQuic.00004.cs": "f2eda9cb779d993a066b02db0f82d0c8d3cd26f7fa1affb13a9f4e7f153be56c",
-      "MsQuic.00005.cs": "2c1716f9d52c515635ac2981fa74941db80e505514afac1b6a50727a82b3ad82",
-      "MsQuic.00006.cs": "9cd0a41b859cb63c1ed872feafa13a58755afb4d160428de380c2c2c6770008e",
-      "MsQuic.00007.cs": "e031330672ac08486015ae8a0476c2cfd98a009d19fa025e41e4651586bc99cc",
-      "MsQuic.00008.cs": "698825a18bbfae03c3c5d30c9985c46435806071c4b5516f2f87ec8214e37da3",
-      "MsQuic.cs": "b0003a5c6bd91a3999540d0505bbdf992fd0c9a687778a2dbda937ff669b3cd7",
+      "MsQuic.00000.cs": "d74c17fdf4de0327cad1caa772e5e02a4172bdea12ba94ff1c032ea0fb737bee",
+      "MsQuic.00001.cs": "9881b018637ebbead728cb86fbf55a1aa8bfded82794d44e14dbfb01752bae5e",
+      "MsQuic.00002.cs": "28aa34d1b8230c07053fe9b02913c0f78aaf0fd1450b32fe4502df158f17835e",
+      "MsQuic.00003.cs": "99c69eb12433832d6a43e821fd0cf7bcd0a9b35ee5a91c292519608c8ec6bdea",
+      "MsQuic.00004.cs": "53e2dcea81c8852e1db19c319413cbc4048d5788e55234534488fb87f17f37d3",
+      "MsQuic.00005.cs": "22bd671e2c6d263dea7308649b1f2b886f3389613a9c05483590451769619290",
+      "MsQuic.00006.cs": "82cccc12e3baa1a437187725a20f31360ac3e2996e16321754e2d163093ac676",
+      "MsQuic.00007.cs": "626105b6ad9b3494812ed3301c22925b5aae38968c0e00d4d1f1df1b262e8ca6",
+      "MsQuic.00008.cs": "9728258454116ba84076b0310ce58917117a8b060f9918ce0286411b382ee905",
+      "MsQuic.cs": "7ae7893c24960df97972a65d81ea51e4bbf11f59c14071ca22183934b2417868",
       "Dotcc.SourceFiles.txt": "cd0f31c5f62b78db78cf4fa961a06f656c29ca4f517eb96ce890aad121dae04e",
       "TranslatedMsQuic.csproj": "a54187881927f36b03a514cbd9c248ca3a578852746cf232a6a676007b363e86"
     },
     "optimized": {
-      "MsQuic.00000.cs": "a35e5369cddc26f994da0f77158e70d7bcbeefc4a3954616876a236be0a461a7",
-      "MsQuic.00001.cs": "564eb3992a2c8df00c936fdc230673c14a8b4e9e1f98fa669081fb8a0c31fe44",
-      "MsQuic.00002.cs": "967e8c64f8c66f42561ddd41d2f2474c224261affb7b389ae131450766b2c58a",
-      "MsQuic.00003.cs": "0788edda7c0035d05656e0aa705cdb2528fd74264def44c544197da5feb42a14",
-      "MsQuic.00004.cs": "63029fc1d1539f1e8a6605af89ae4c4f108b7e20750a34554479f32e5bfc5b79",
-      "MsQuic.00005.cs": "3aeaba773678eaa98c51173452829879e671df261c8a182bc096e2a40fb7bca9",
-      "MsQuic.00006.cs": "0ce373e50feb327d8f7e00734f4675388d43cdf573ef27f32ce21336a6a7347f",
-      "MsQuic.00007.cs": "24d7f10181fad7d01bdfe4dbee42cfd9d4b22d14b9bda69b0557bcbe2e4d661f",
-      "MsQuic.00008.cs": "675efba6e50bc98a1cc6cc8a2a9c2eab2f65f6dc551a99c2a76a7a33a66a538e",
-      "MsQuic.cs": "b0003a5c6bd91a3999540d0505bbdf992fd0c9a687778a2dbda937ff669b3cd7",
+      "MsQuic.00000.cs": "af9723c3f40e5368fae2797b4dd07620b9cec381fa009ec6023ebbfd96be5c49",
+      "MsQuic.00001.cs": "22bfe03f5ecc295f3a8b133172519f4781ff8b572576ef178af9b6bf7ddd4180",
+      "MsQuic.00002.cs": "214e3c2d022de9da5f9b47006cc70f0a9105fce7bdd5b2f3094ea61f4de8ab0a",
+      "MsQuic.00003.cs": "b88e4971971f8dfb0606ae59bdd7922eb791c00ef8fc4c8f10aaba4cefa08b49",
+      "MsQuic.00004.cs": "5b1da479b17f9220431f05e408ccb2a3276975133dbef23ebb0514693aef82f5",
+      "MsQuic.00005.cs": "d72de22ff154900a232fedbbc0e3416c12bae9faa5627efd8e3aa108f6869d5f",
+      "MsQuic.00006.cs": "f7d977e45ac0d5af7407c6f48d847730dcecac6184dc38c90b937e9b5de47f63",
+      "MsQuic.00007.cs": "2c5ad02bc406717e631f901d75934b0fc32d4b2edbbf4c94d8818a0d18c0e16e",
+      "MsQuic.00008.cs": "ee631f266b70c0371ddcf8fe5c129feef3f29956c6c246e8207200fa0d9cec2d",
+      "MsQuic.cs": "7ae7893c24960df97972a65d81ea51e4bbf11f59c14071ca22183934b2417868",
       "Dotcc.SourceFiles.txt": "cd0f31c5f62b78db78cf4fa961a06f656c29ca4f517eb96ce890aad121dae04e",
       "TranslatedMsQuic.csproj": "a54187881927f36b03a514cbd9c248ca3a578852746cf232a6a676007b363e86"
     }
@@ -1516,7 +1516,7 @@
     "normal_optimized_sqlite_product_passed": false
   },
   "previous_checkpoint": {
-    "closure": "artifacts/closure-b5be393e8674a857/msquic/config/product-closure.json",
-    "sha256": "b5be393e8674a857dc3f2ff3820500dda67ced5420452a54010965f240765d36"
+    "closure": "artifacts/closure-920dac352edf84e6/msquic/config/product-closure.json",
+    "sha256": "920dac352edf84e694bafcdcee045ccfe8282b9018335b076644684a48e8c312"
   }
 }

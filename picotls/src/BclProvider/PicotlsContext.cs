@@ -11,7 +11,7 @@ namespace Managed.Security;
 
 /// <summary>Immutable, shareable TLS 1.3 configuration. Disposal prevents new
 /// connections; existing connections retain configuration and credential leases.</summary>
-public sealed unsafe class PicotlsContext : IDisposable
+public sealed unsafe partial class PicotlsContext : IDisposable
 {
     public const int MaximumOperationBytes = 8 * 1024 * 1024;
     private readonly Lock _gate = new Lock();

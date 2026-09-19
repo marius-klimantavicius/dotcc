@@ -530,3 +530,8 @@ public sealed unsafe partial class PicotlsConnection : IDisposable
         }
     }
 }
+
+public sealed partial class PicotlsContext
+{
+    public PicotlsConnection CreateConnection(string? name = null, ReadOnlySpan<byte> sessionTicket = default) => new PicotlsConnection(this, name, sessionTicket);
+}

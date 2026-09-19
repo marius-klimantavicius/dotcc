@@ -6,23 +6,10 @@ namespace Managed.Security;
 public sealed unsafe partial class PicotlsConnection
 {
     private nint _savedTicketHandle;
-
-    private sealed class SavedTicketState : IDisposable
-    {
-        public readonly List<SavedSessionTicket> Pending = [];
-
-        public void Dispose()
-        {
-            foreach (var ticket in Pending) ticket.Dispose();
-            Pending.Clear();
-        }
-    }
-
-    internal static readonly delegate*<st_ptls_save_ticket_t*, st_ptls_t*, st_ptls_iovec_t, st_ptls_save_ticket_properties_t*, int> SaveTicketPointer = &SaveTicket;
-
+    
     private void InitializeSavedTickets()
     {
-        _savedTicketHandle = GCHandle.ToIntPtr(GCHandle.Alloc(new SavedTicketState()));
+        _savedTicketHandle = GCHandle.ToIntPtr(GCHandle.Alloc(new SavedSessionTicket.SavedTicketState()));
         *ptls_get_data_ptr(_native) = (void*)_savedTicketHandle;
     }
 
@@ -36,7 +23,7 @@ public sealed unsafe partial class PicotlsConnection
 
         try
         {
-            ((SavedTicketState)handle.Target!).Dispose();
+            ((SavedSessionTicket.SavedTicketState)handle.Target!).Dispose();
         }
         finally
         {
@@ -54,51 +41,10 @@ public sealed unsafe partial class PicotlsConnection
             if (_savedTicketHandle == 0)
                 return Array.Empty<SavedSessionTicket>();
 
-            var state = (SavedTicketState)GCHandle.FromIntPtr(_savedTicketHandle).Target!;
+            var state = (SavedSessionTicket.SavedTicketState)GCHandle.FromIntPtr(_savedTicketHandle).Target!;
             var result = state.Pending.ToArray();
             state.Pending.Clear();
             return result;
-        }
-    }
-
-    private static int SaveTicket(st_ptls_save_ticket_t* self, st_ptls_t* tls, st_ptls_iovec_t input, st_ptls_save_ticket_properties_t* properties)
-    {
-        SavedSessionTicket? saved = null;
-        try
-        {
-            CallbackScope.RequireActive();
-            if (CallbackScope.HasFailure)
-                return PTLS_ERROR_LIBRARY;
-            if (properties == null || tls == null || input.len > 65536 || input.@base == null)
-                return PTLS_ALERT_ILLEGAL_PARAMETER;
-            if (properties->lifetime is 0 or > 604800)
-                return 0; // Discard out-of-profile lifetimes.
-
-            var opaque = (nint)(*ptls_get_data_ptr(tls));
-            if (opaque == 0)
-                throw new InvalidOperationException("A client ticket callback requires connection-owned state.");
-
-            var state = (SavedTicketState)GCHandle.FromIntPtr(opaque).Target!;
-            saved = new SavedSessionTicket(new ReadOnlySpan<byte>(input.@base, (int)input.len).ToArray(), properties->lifetime);
-            state.Pending.Add(saved);
-            saved = null;
-
-            if (state.Pending.Count > 4)
-            {
-                state.Pending[0].Dispose();
-                state.Pending.RemoveAt(0);
-            }
-
-            return 0;
-        }
-        catch (Exception error)
-        {
-            CallbackScope.Capture(error);
-            return error is OutOfMemoryException ? PTLS_ERROR_NO_MEMORY : PTLS_ERROR_LIBRARY;
-        }
-        finally
-        {
-            saved?.Dispose();
         }
     }
 }

@@ -130,7 +130,7 @@ static class HandshakeAllocationVectors
         PicotlsConnection? published = null;
         try
         {
-            published = context.CreateConnection(name);
+            published = new PicotlsConnection(context, name, default);
             Program.Check(fault.InjectedFailure == null, "connection construction must not publish after callback failure");
             return published;
         }

@@ -48,7 +48,7 @@ public sealed unsafe class SavedSessionTicket : IDisposable
         }
     }
 
-    private sealed class SavedTicketState : IDisposable
+    internal sealed class SavedTicketState : IDisposable
     {
         public readonly List<SavedSessionTicket> Pending = [];
 

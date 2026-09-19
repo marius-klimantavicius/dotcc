@@ -79,7 +79,7 @@ internal static unsafe class Program
                 finalReceiveErrors = host.DatagramReceiveErrors; finalTruncations = host.DatagramTruncations;
                 // Test-only JIT inspection of a failed drain. Product code has
                 // no reflective diagnostics or dependency on this private field.
-                Console.Error.WriteLine($"host_diagnostics phase={phase} resources={host.OutstandingResources} platform_allocations={host.OutstandingPlatformAllocations} receive_leases={host.OutstandingDatagramReceives} send_errors={host.DatagramSendErrors} receive_errors={host.DatagramReceiveErrors} truncations={host.DatagramTruncations} load_refs={MsQuicGlobals.MsQuicLib.LoadRefCount} open_refs={MsQuicGlobals.MsQuicLib.OpenRefCount} cleanup_rundown_event={(nint)MsQuicGlobals.MsQuicLib.RegistrationCloseCleanupRundown.RundownComplete.Handle}");
+                Console.Error.WriteLine($"host_diagnostics phase={phase} resources={host.OutstandingResources} platform_allocations={host.OutstandingPlatformAllocations} receive_leases={host.OutstandingDatagramReceives} send_errors={host.DatagramSendErrors} receive_errors={host.DatagramReceiveErrors} truncations={host.DatagramTruncations} load_refs={MsQuic.Globals.MsQuicLib.LoadRefCount} open_refs={MsQuic.Globals.MsQuicLib.OpenRefCount} cleanup_rundown_event={(nint)MsQuic.Globals.MsQuicLib.RegistrationCloseCleanupRundown.RundownComplete.Handle}");
             }
             if (includeConnection && api != null && peer.Connection != null)
             {
@@ -375,7 +375,7 @@ internal static unsafe class Program
                     if (opened != null) MsQuic.MsQuicClose(opened);
                 }
                 Require(host.OutstandingResources == 1 && host.OutstandingPlatformAllocations == 0, "Repeated library close must retain only the unrelated event");
-                Require(MsQuicGlobals.MsQuicLib.RegistrationCloseCleanupRundown.RundownComplete.Handle == 0, "Global cleanup rundown event did not retire");
+                Require(MsQuic.Globals.MsQuicLib.RegistrationCloseCleanupRundown.RundownComplete.Handle == 0, "Global cleanup rundown event did not retire");
                 bool rejected = false;
                 try { host.Dispose(); } catch (InvalidOperationException) { rejected = true; }
                 Require(rejected, "Host close must still reject unrelated live ownership");
