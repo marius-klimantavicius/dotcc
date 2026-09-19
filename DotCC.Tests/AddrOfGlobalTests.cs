@@ -10,7 +10,7 @@ namespace DotCC.Tests;
 /// <summary>
 /// Unit tests for taking the address of a fixed-address global struct field. A
 /// bare <c>&amp;Globals.field</c> is still CS0212, so dotcc hands the stable address
-/// back via <c>Unsafe.AsPointer(ref Globals.field)</c>. A genuine LOCAL
+/// back via <c>Unsafe.AsPointer(ref global::DotCcProgram.Globals.field)</c>. A genuine LOCAL
 /// is a fixed variable, so its <c>&amp;</c> stays the plain form. End-to-end in
 /// the <c>addr-of-global/</c> fixture.
 /// </summary>
@@ -33,7 +33,7 @@ public sealed class AddrOfGlobalTests
             int* take(void) { return &g; }
             int main(void) { return *take(); }
             """);
-        emitted.ShouldContain("(int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref Globals.g)");
+        emitted.ShouldContain("(int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::DotCcProgram.Globals.g)");
         emitted.ShouldNotContain("(&g)");
         emitted.Split("[FixedAddressValueType]").Length.ShouldBe(2);
         emitted.ShouldContain("[FixedAddressValueType]\n    internal static DotCcProgramGlobals Globals;");
@@ -49,7 +49,7 @@ public sealed class AddrOfGlobalTests
             S* take(void) { return &s; }
             int main(void) { return take()->a; }
             """);
-        emitted.ShouldContain("(S*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref Globals.s)");
+        emitted.ShouldContain("(S*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::DotCcProgram.Globals.s)");
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public sealed class AddrOfGlobalTests
             int next(void) { static int seed = 1; int* p = &seed; (*p)++; return seed; }
             int main(void) { return next(); }
             """);
-        emitted.ShouldContain("Unsafe.AsPointer(ref Globals.seed__s0)");
+        emitted.ShouldContain("Unsafe.AsPointer(ref global::DotCcProgram.Globals.seed__s0)");
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public sealed class AddrOfGlobalTests
         try
         {
             File.WriteAllText(obj, Compiler.EmitObject(src)
-                .Replace("//!!dotcc-obj globals-layout:1\n", ""));
+                .Replace("//!!dotcc-obj globals-layout:2\n", "//!!dotcc-obj globals-layout:1\n"));
             Should.Throw<CompileException>(() => Compiler.LinkObjects(new[] { obj }))
                 .Message.ShouldContain("regenerate objects");
         }

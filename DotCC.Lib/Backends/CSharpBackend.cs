@@ -33,7 +33,8 @@ internal sealed record CSharpBackendResult(
 
 internal sealed record CSharpGlobalSource(string Name, string Field, string Initializer, string ThreadField, string StaticMembers);
 
-internal sealed record CSharpGlobalOutput(string Fields, string Initializers, string ThreadFields, string StaticMembers);
+internal sealed record CSharpGlobalOutput(string Fields, string Initializers, string ThreadFields, string StaticMembers,
+    string GlobalName, string ThreadName, string ThreadBackingName);
 
 /// <summary>
 /// Lowers the typed IR to low-level unsafe C# text. Deliberately DUMB: every
@@ -84,9 +85,6 @@ internal sealed partial class CSharpBackend
             unit.Globals.Select(g => g.Sym.TargetName).Where(typeNames.Contains), StringComparer.Ordinal);
         cg._typeShadowedFunctions = new HashSet<string>(
             unit.Functions.Select(f => f.Sym.TargetName.TrimStart('@')).Where(typeNames.Contains), StringComparer.Ordinal);
-        cg._ownerStaticGlobals = new HashSet<Symbol>(unit.Globals
-            .Where(g => g.Sym.IsThreadLocal && g.Init is PinnedArray || cg.IsSpecialAlignedGlobal(g))
-            .Select(g => g.Sym));
         var fns = new StringBuilder();
         var functionSources = new List<CSharpFunctionSource>();
         var exports = new List<DotCC.EmitHelpers.Export>();
@@ -199,14 +197,14 @@ internal sealed partial class CSharpBackend
             {
                 field.Append($"    public nint {g.Sym.TargetName};\n");
                 if (g.Init is { } i0)
-                    initializer.Append($"        Globals.{g.Sym.TargetName} = (nint)({cg.Coerced(i0, g.Sym.Type)});\n");
+                    initializer.Append($"        {GlobalStorageReferences.Emit(g.Sym.TargetName)} = (nint)({cg.Coerced(i0, g.Sym.Type)});\n");
                 globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
                 continue;
             }
             field.Append($"    public {cg.Cs(g.Sym.Type)} {g.Sym.TargetName};\n");
             var init = g.Init is PinnedArray arrayInit ? cg.PinnedArrayText(arrayInit, g.Sym.Alignment)
                 : g.Init is { } i ? cg.Coerced(i, g.Sym.Type) : null;
-            if (init != null) initializer.Append($"        Globals.{g.Sym.TargetName} = {init};\n");
+            if (init != null) initializer.Append($"        {GlobalStorageReferences.Emit(g.Sym.TargetName)} = {init};\n");
             globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
         }
 
@@ -1514,17 +1512,16 @@ internal sealed partial class CSharpBackend
     // restores the ordinary-namespace reading.
     private HashSet<string> _typeShadowedGlobals = new(StringComparer.Ordinal);
     private HashSet<string> _typeShadowedFunctions = new(StringComparer.Ordinal);
-    private HashSet<Symbol> _ownerStaticGlobals = new();
 
-    /// <summary>The spelling of a variable reference. Ordinary globals live in the
-    /// fixed-address singleton; storage-special globals remain static owner members.</summary>
+    /// <summary>Global references carry bound-symbol relocations until the final
+    /// definitions and output owner are known. Locals keep their target spelling.</summary>
     private string GlobalName(Symbol s) =>
         !s.IsGlobal && s.Kind is SymKind.Var or SymKind.Param && !_alignedArraySymbols.Contains(s) && RequiresAlignedObject(s)
             ? "(*" + AlignedName(s) + ")"
-            : s.IsGlobal && !_ownerStaticGlobals.Contains(s)
-            ? (s.IsThreadLocal ? "ThreadGlobals." : "Globals.") + s.TargetName
-            : s.IsGlobal && _typeShadowedGlobals.Contains(s.TargetName)
-            ? "DotCcGlobals." + s.TargetName
+            : s.IsGlobal && s.FromSystemHeader
+            ? GlobalStorageReferences.Runtime(s.TargetName)
+            : s.IsGlobal
+            ? GlobalStorageReferences.Emit(s.TargetName)
             : s.TargetName;
 
     /// <summary>Render <paramref name="value"/> for storage into a

@@ -4633,7 +4633,7 @@ public sealed class ZigFrontendTests
         // `a.alloc` routes through the existing indirect vtable dispatch.
         var cs = EmitZig(CustomAllocator);
         cs.ShouldContain("new Allocator {");
-        cs.ShouldContain("Vtable = Globals.bump_vtable");   // &vtable stored by value (no stray '&')
+        cs.ShouldContain("Vtable = global::DotCcProgram.Globals.bump_vtable");   // &vtable stored by value (no stray '&')
         cs.ShouldContain(".Alloc<byte>(");          // indirect dispatch through the user vtable
     }
 

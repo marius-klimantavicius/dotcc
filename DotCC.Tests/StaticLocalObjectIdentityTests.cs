@@ -19,7 +19,7 @@ public class StaticLocalObjectIdentityTests
             File.WriteAllText(left,"int exported_left=3; int left(void){static int once=0;return ++once;}");
             File.WriteAllText(right,"int exported_right=4; int right(void){static int once=0;return ++once;}");
             var first=Compiler.EmitObject(left);var second=Compiler.EmitObject(right);
-            var pattern=@"Globals\.(once__s0__unit_[A-F0-9]+) = 0;";
+            var pattern=@"/\*__dotcc_global_ref__\*/(once__s0__unit_[A-F0-9]+) = 0;";
             var firstName=Regex.Match(first,pattern).Groups[1].Value;
             var secondName=Regex.Match(second,pattern).Groups[1].Value;
             firstName.ShouldNotBeEmpty();secondName.ShouldNotBeEmpty();firstName.ShouldNotBe(secondName);

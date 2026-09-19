@@ -30,11 +30,12 @@ public static partial class Compiler
         NamespacePrefix(namespaceName) + (nested ? owner + "." : "");
 
     private static Backends.CSharpGlobalOutput RenderGlobals(
-        IReadOnlyList<Backends.CSharpGlobalSource> globals, LiteralPool.Output literals) => new(
-        string.Concat(globals.Select(global => literals.Rewrite(global.Field))),
-        string.Concat(globals.Select(global => literals.Rewrite(global.Initializer))),
-        string.Concat(globals.Select(global => literals.Rewrite(global.ThreadField))),
-        string.Concat(globals.Select(global => literals.Rewrite(global.StaticMembers))));
+        IReadOnlyList<Backends.CSharpGlobalSource> globals, LiteralPool.Output literals, GlobalStorageReferences storage) => new(
+        string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.Field)))),
+        string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.Initializer)))),
+        string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.ThreadField)))),
+        string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.StaticMembers)))),
+        storage.GlobalName, storage.ThreadName, storage.ThreadBackingName);
 
     // The object contract stores one independently keyed cache property per function.
     // Coalesce those records only after linking/definition ownership is resolved.

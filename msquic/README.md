@@ -34,8 +34,9 @@ msquic/scripts/translate.sh --fast [--no-build-tools] [--jobs 8]
 
 This stages the selected source, translates its independent C translation units
 in parallel, links the raw project, and postprocesses the final project. It writes
-the same generated directories but does not archive evidence, run native/JIT/AOT
-ABI or consumer tests, fetch source, or freeze a product closure. The exact pinned
+the same generated directories and archives any locally qualified checkpoint before
+replacing its files. It does not run native/JIT/AOT ABI or consumer tests, fetch
+source, or freeze a product closure. The exact pinned
 source tree must already exist under `msquic/ref/`. The full script uses separate
 objects because a monolithic compile retains parser state for every translation
 unit; unlike the qualification path, those object compilations run concurrently.

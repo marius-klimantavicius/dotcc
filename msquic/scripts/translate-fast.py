@@ -2,6 +2,7 @@
 """Translate and postprocess the selected MsQuic core without qualification."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -43,6 +44,13 @@ def main():
         if not tool.is_file():
             raise RuntimeError(f'Missing {tool}; omit --no-build-tools or build it first')
 
+    # A fresh checkout has no local qualification evidence to preserve. Once a
+    # product has been qualified, archive it before changing its staged/generated
+    # files; an existing archive also permits subsequent fast regenerations.
+    closure = ROOT / 'config/product-closure.json'
+    archive = ROOT / 'artifacts' / ('closure-' + hashlib.sha256(closure.read_bytes()).hexdigest()[:16])
+    if (ROOT / 'artifacts/product-build/results.json').is_file() or (archive / 'archive.json').is_file():
+        run([sys.executable, ROOT / 'scripts/freeze-product.py', '--archive-current'])
     run([sys.executable, ROOT / 'scripts/generate-host-contract.py'])
     run([sys.executable, ROOT / 'scripts/stage-product.py', '--no-fetch'])
     manifest = json.loads((STAGE / 'manifest.json').read_text())

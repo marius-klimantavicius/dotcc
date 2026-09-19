@@ -33,7 +33,7 @@ public static partial class Compiler
     private const string FragFunction = "//!!dotcc-obj function:";
     private const string FragGlobal = "//!!dotcc-obj global:";
     private const string FragSect   = "//!!dotcc-obj section:";
-    private const string GlobalLayout = "//!!dotcc-obj globals-layout:1";
+    private const string GlobalLayout = "//!!dotcc-obj globals-layout:2";
     // Import mode in separate compilation: `-l` is known only at LINK time, so each
     // fragment serializes its import CANDIDATES (proto-only, called, non-system,
     // non-variadic — `import:<name> <cs-fn-ptr-type>`) and the names it DEFINES
@@ -404,10 +404,13 @@ public static partial class Compiler
         var owner = libraryMode ? libraryClass : "DotCcProgram";
         var literals = LiteralPool.CreateOutput(typeByName, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
         var pointerResolvers = ResolveExternalPointerOwners(typeByName, definedNames, typeByName.Keys);
-        var types = RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout);
-        var globalText = RenderGlobals(inline.Globals, literals);
-        var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = literals.Rewrite(part.Text) }).ToArray();
-        return BuildSourceFiles(literals.Rewrite(functions.ToString()), parts, aliasText,
+        var storage = new GlobalStorageReferences(inline.Globals,
+            functionSources.Select(f => f.Name).Concat(typeByName.Keys),
+            owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName));
+        var types = storage.Rewrite(RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout));
+        var globalText = RenderGlobals(inline.Globals, literals, storage);
+        var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = storage.Rewrite(literals.Rewrite(part.Text)) }).ToArray();
+        return BuildSourceFiles(storage.Rewrite(literals.Rewrite(functions.ToString())), parts, aliasText,
             emit, libraryClass, importsClass, false, split, splitSize, namespaceName, nested,
             (functionText, fileAliases, partial) => BuildShell(mainArity, pointerResolvers.Methods + RenderMacroFields(typeByName, owner, definedNames) + functionText, types, fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,

@@ -13,22 +13,30 @@ internal static class InlineFunctionReferences
     internal static string Emit(Symbol symbol, bool annotate) =>
         (annotate && symbol.IsInline && symbol.Storage == Storage.Static ? Marker : "") + symbol.TargetName;
 
-    internal static string Rewrite(string source, IReadOnlyDictionary<string, string> names)
+    internal static string Rewrite(string source, IReadOnlyDictionary<string, string> names) =>
+        BoundSymbolReferences.Rewrite(source, names, Marker);
+}
+
+/// <summary>Resolve explicit bound-symbol annotations, preserving strings and comments.</summary>
+internal static class BoundSymbolReferences
+{
+    internal static string Rewrite(string source, IReadOnlyDictionary<string, string> names, string marker,
+        string fallbackPrefix = "")
     {
-        if (!source.Contains(Marker, StringComparison.Ordinal)) return source;
+        if (!source.Contains(marker, StringComparison.Ordinal)) return source;
         var result = new StringBuilder(source.Length);
         int i = 0;
         while (i < source.Length)
         {
             int start = i;
-            if (source.AsSpan(i).StartsWith(Marker, StringComparison.Ordinal))
+            if (source.AsSpan(i).StartsWith(marker, StringComparison.Ordinal))
             {
-                i += Marker.Length;
+                i += marker.Length;
                 start = i;
                 while (i < source.Length && (char.IsAsciiLetterOrDigit(source[i]) || source[i] is '_' or '@')) i++;
-                if (start == i) throw new CompileException("invalid inline function relocation; regenerate objects");
+                if (start == i) throw new CompileException("invalid bound symbol relocation; regenerate objects");
                 var name = source[start..i];
-                result.Append(names.TryGetValue(name, out var target) ? target : name);
+                result.Append(names.TryGetValue(name, out var target) ? target : fallbackPrefix + name);
                 continue;
             }
             if (source[i] is '\'' or '"')

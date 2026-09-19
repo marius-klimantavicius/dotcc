@@ -25,11 +25,11 @@ internal sealed partial class CSharpBackend
             .Append("\n    {\n        get\n        {\n            var storage = ").Append(backing)
             .Append(";\n            if (storage is null)\n            {\n                storage = global::System.GC.AllocateArray<byte>(checked((")
             .Append(count).Append(") * sizeof(").Append(element).Append(") + ").Append(alignment - 1)
-            .Append("), pinned: true);\n                ").Append(backing).Append(" = storage;\n                DotCcFunctions.ThreadGlobals.")
-            .Append(symbol.TargetName).Append(" = (").Append(type)
+            .Append("), pinned: true);\n                ").Append(backing).Append(" = storage;\n                ")
+            .Append(GlobalStorageReferences.ThreadSlot(symbol.TargetName)).Append(" = (").Append(type)
             .Append(")(((nuint)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::System.Runtime.InteropServices.MemoryMarshal.GetArrayDataReference(storage)) + ")
             .Append(alignment - 1).Append(") & ~(nuint)").Append(alignment - 1)
-            .Append(");\n            }\n            return DotCcFunctions.ThreadGlobals.").Append(symbol.TargetName)
+            .Append(");\n            }\n            return ").Append(GlobalStorageReferences.ThreadSlot(symbol.TargetName))
             .Append(";\n        }\n    }\n");
     }
 }

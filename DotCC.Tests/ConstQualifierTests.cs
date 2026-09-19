@@ -58,8 +58,8 @@ public sealed class ConstQualifierTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Volatile.Read(ref Globals.value)");
-            emitted.ShouldContain("Volatile.Write(ref Globals.value");
+            emitted.ShouldContain("Volatile.Read(ref global::DotCcProgram.Globals.value)");
+            emitted.ShouldContain("Volatile.Write(ref global::DotCcProgram.Globals.value");
         }
         finally { File.Delete(src); }
     }

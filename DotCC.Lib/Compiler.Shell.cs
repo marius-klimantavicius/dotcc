@@ -177,7 +177,7 @@ public static partial class Compiler
         var globalsType = "DotCcProgramGlobals";
         var globalOwnerMembers = globals.Fields.Length == 0 ? "" : $$"""
                 [FixedAddressValueType]
-                internal static {{globalsType}} Globals;
+                internal static {{globalsType}} {{globals.GlobalName}};
             {{(globals.Initializers.Length == 0 ? "" : $$"""
 
                 static DotCcProgram()
@@ -193,18 +193,18 @@ public static partial class Compiler
         var threadGlobalsType = globalsType + "ThreadLocal";
         var threadGlobalOwnerMembers = globals.ThreadFields.Length == 0 ? "" : $$"""
                 [ThreadStatic]
-                private static {{threadGlobalsType}}[] __threadGlobals;
+                private static {{threadGlobalsType}}[] {{globals.ThreadBackingName}};
 
-                internal static ref {{threadGlobalsType}} ThreadGlobals
+                internal static ref {{threadGlobalsType}} {{globals.ThreadName}}
                 {
                     get
                     {
-                        var storage = __threadGlobals;
+                        var storage = {{globals.ThreadBackingName}};
                         if (storage is null)
                         {
                             storage = global::System.GC.AllocateUninitializedArray<{{threadGlobalsType}}>(1, pinned: true);
                             storage[0] = default;
-                            __threadGlobals = storage;
+                            {{globals.ThreadBackingName}} = storage;
                         }
                         return ref storage[0];
                     }
@@ -449,7 +449,7 @@ public static partial class Compiler
         var indentedFns = IndentBlock(publicFns, "    ");
         var globalOwnerMembers = globals.Fields.Length == 0 ? "" : $$"""
                 [FixedAddressValueType]
-                {{(managedLibrary ? "public" : "internal")}} static {{globalsType}} Globals;
+                {{(managedLibrary ? "public" : "internal")}} static {{globalsType}} {{globals.GlobalName}};
             {{(globals.Initializers.Length == 0 ? "" : $$"""
 
                 static unsafe {{libraryClass}}()
@@ -465,18 +465,18 @@ public static partial class Compiler
         var threadGlobalsType = globalsType + "ThreadLocal";
         var threadGlobalOwnerMembers = globals.ThreadFields.Length == 0 ? "" : $$"""
                 [ThreadStatic]
-                private static {{threadGlobalsType}}[] __threadGlobals;
+                private static {{threadGlobalsType}}[] {{globals.ThreadBackingName}};
 
-                internal static ref {{threadGlobalsType}} ThreadGlobals
+                internal static ref {{threadGlobalsType}} {{globals.ThreadName}}
                 {
                     get
                     {
-                        var storage = __threadGlobals;
+                        var storage = {{globals.ThreadBackingName}};
                         if (storage is null)
                         {
                             storage = global::System.GC.AllocateUninitializedArray<{{threadGlobalsType}}>(1, pinned: true);
                             storage[0] = default;
-                            __threadGlobals = storage;
+                            {{globals.ThreadBackingName}} = storage;
                         }
                         return ref storage[0];
                     }

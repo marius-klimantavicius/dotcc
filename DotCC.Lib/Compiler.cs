@@ -247,10 +247,13 @@ public static partial class Compiler
         var literals = LiteralPool.CreateOutput(cg.TypeDeclarations!, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
         var pointerResolvers = ResolveExternalPointerOwners(cg.TypeDeclarations!,
             irBuilder.Functions.Select(function => function.Sym.TargetName), irBuilder.Globals.Select(global => global.Sym.TargetName));
-        var types = RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout);
-        var globals = RenderGlobals(cg.Globals, literals);
-        var parts = cg.FunctionSources?.Select(part => part with { Text = literals.Rewrite(part.Text) }).ToArray();
-        return BuildSourceFiles(literals.Rewrite(cg.Functions), parts, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
+        var storage = new GlobalStorageReferences(cg.Globals,
+            cg.FunctionSources!.Select(f => f.Name).Concat(cg.TypeDeclarations!.Keys),
+            owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName));
+        var types = storage.Rewrite(RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout));
+        var globals = RenderGlobals(cg.Globals, literals, storage);
+        var parts = cg.FunctionSources?.Select(part => part with { Text = storage.Rewrite(literals.Rewrite(part.Text)) }).ToArray();
+        return BuildSourceFiles(storage.Rewrite(literals.Rewrite(cg.Functions)), parts, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
             (functions, fileAliases, partial) => BuildShell(cg.MainArity, pointerResolvers.Methods + RenderMacroFields(cg.TypeDeclarations, owner, cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, types, fileAliases, globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName, nested, includeZig));
     }
 
