@@ -1068,3 +1068,16 @@ function identity, forced GC and cleanup. The four transcripts agree exactly;
 execution binaries, compiler, postprocessor and authored inputs are hashed.
 This is the owning-consumer regression, not a claim that every dependent
 campaign/corpus or Windows execution has passed. P6 remains open.
+
+## Significant progress: freshly regenerated picotls campaign
+
+The existing complete picotls Linux x64 campaign now passes with the unchanged
+compiler after checksum-verified native preparation and fresh translation of
+all nine selected source files. Raw/optimized JIT/NativeAOT pass at
+picotls-regression/attempt-ymi5de8u, including ABI/provider/upstream/TLS suites
+and224 independent native-picotls/SslStream peer executions. The dependency
+audit reports zero violations and zero missing entries. Exact tools, authored
+inputs, generated files, binaries and nested receipts are retained;11 tool
+inputs and110 tracked picotls files remained unchanged. This closes the picotls
+regression row for Linux x64 only. MsQuic and other campaigns, Windows execution
+and the remaining Blink runtime gates are still open.
