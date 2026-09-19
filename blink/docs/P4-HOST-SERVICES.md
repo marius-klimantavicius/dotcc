@@ -11,7 +11,7 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 | Work | Owner | State |
 | --- | --- | --- |
 | Actual guest file/descriptor/vector/readiness path | Inputs worker, `tests/GuestIo/` | Native/all-four pass `guest-io/attempt-tnq5itfa`; exact bytes/state and cleanup |
-| Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | All-four pass `host-io-cancellation/attempt-blvv0ho4`; canonical final-project integration next |
+| Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | All-four callback pass; final project/core integration passes `translation/attempt-16eer8t5` and `core-execution/attempt-g8r4tp0k` |
 | Clock/entropy/status/signal and startup inventory | Coordinator | Source/receipt audit below; remaining normal qualification selected after the first two bounded tasks |
 | Actual translated service startup | Unqualified | Earlier automated service-worker task rejection remains binding; no renamed/recovered worker or surrogate startup pass |
 
@@ -116,7 +116,20 @@ stderr, source/snapshot/log/binary/tool identities pass. See the
 observations, pre-canceled send/connect limits, partial writes and owner drain.
 
 This implements token propagation in four authored bridges. No C/interpreter or
-shared compiler change was needed. Publishing those changed bridges into the
-final generated project requires a fresh Host snapshot and affected normal-core
-execution; that integration is next. Guest poll maps callback ECANCELED to
+shared compiler change was needed. The final generated project now includes those changed bridges through a fresh
+Host snapshot; affected normal-core execution passes all four forms. Guest poll maps callback ECANCELED to
 POLLERR, so this still does not establish actual guest stop/deadline behavior.
+
+## Updated canonical Host integration passed
+
+Final delivery `translation/attempt-16eer8t5` (SHA256
+`259b8c3f3e5c8e9b6687b231defbed68d50ac4aa8926dd6b9844e07cc6f808c7`)
+verifies and reuses all 109 unchanged C objects, publishes the four changed
+authored bridges, and verifies immutable raw/final manifests and builds. New
+canonical assembly 734288 has receipt SHA256
+`779514d915d56d58a531e390a1d0a143d67bbde14d496e473429d321b689bdf4`.
+Affected core execution `core-execution/attempt-g8r4tp0k` passes all four forms
+and its ABI/direct boundary checks; SHA256
+`45e49ad508405e15142389d94244f61e9098b69e86a1f405eb98ff859582e8eb`.
+This updates P4's Host integration without rerunning unrelated P3/P6 suites.
+The environment and TCP fixtures will use this exact new canonical snapshot.

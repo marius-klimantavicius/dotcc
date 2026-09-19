@@ -1834,3 +1834,21 @@ sleep and execution-loop stop still need their own integration. P4's full
 stop/service-startup conditions remain unchecked. Inputs prepares actual guest
 environment/state tests; the consumer worker reviews a bounded TCP syscall
 fixture with no ELF, HTTP, service or worker loop.
+
+## P4 cancellation bindings published into the canonical product
+
+Delivery attempt-16eer8t5 passes with 109 verified reused C objects and the four
+updated Host bridges; SHA256
+`259b8c3f3e5c8e9b6687b231defbed68d50ac4aa8926dd6b9844e07cc6f808c7`.
+The stable TranslatedBlink project and immutable raw/final manifests were
+independently rehashed. All 109 object hashes equal the preceding 14c483 set.
+New assembly 734288 (profile attempt-kviofky_) has receipt SHA256
+`779514d915d56d58a531e390a1d0a143d67bbde14d496e473429d321b689bdf4`.
+
+Affected normal-core attempt-g8r4tp0k passes raw/optimized JIT/NativeAOT, ABI and
+direct boundary checks; SHA256
+`45e49ad508405e15142389d94244f61e9098b69e86a1f405eb98ff859582e8eb`.
+No C source/compiler change, new P3 corpus or P6 publication/performance suite
+was introduced. Earlier exact publication/clean-run receipts keep their original
+binary/revision identities. GuestEnvironment native qualification is released
+against this new snapshot; GuestTcp remains in source preparation.

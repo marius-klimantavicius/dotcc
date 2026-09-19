@@ -7,8 +7,9 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
 | Gate | Latest receipt under `artifacts/` | Result |
 | --- | --- | --- |
-| Final delivery | `translation/attempt-xxngak_0` | 109 sources, 108 verified reused objects and one fresh NEG-corrected ALU producer; raw/postprocessed builds and final manifests pass. |
-| Canonical core / publication | `core-execution/attempt-273a6hks`, `publication-audit/attempt-og66g378` | All four managed forms and exact AOT publication inventory pass. |
+| Final delivery | `translation/attempt-16eer8t5` | 109 verified reused C objects with the updated cancellation bridges; raw/postprocessed builds and final manifests pass. |
+| Canonical core | `core-execution/attempt-g8r4tp0k` | Updated Host snapshot passes normal core execution, ABI and direct boundary inventories in all four managed forms. |
+| Earlier publication inventory | `publication-audit/attempt-og66g378` | Exact pre-token-change AOT binaries; this historical inventory is not relabeled as the latest binaries. |
 | CPU | `cpu-conformance-managed/attempt-disfjyq2` | 504 normal cases per form, 2,016 total; exact defined-state/invariant agreement, 46 custom fault cases excluded. |
 | Valid ELF / TLS | `elf-loading/attempt-qclmm2fz`, `tls-loading/attempt-m6fpvl1m` | Native and all four managed forms pass bounded valid loading and explicit TLS startup. |
 | Clean public sample | `clean-delivery/attempt-ru82jd14` | Commit 497ce69; fresh compiler and all 109 objects (zero reuse), final solution and actual JIT/rooted-AOT sample pass; final checkout clean. |
