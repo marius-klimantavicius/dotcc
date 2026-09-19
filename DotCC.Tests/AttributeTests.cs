@@ -15,7 +15,7 @@ namespace DotCC.Tests;
 /// C23-promoted `noreturn` specifier) → `[DoesNotReturn]` on the emitted method,
 /// `[[deprecated[("msg")]]]` → `[global::System.Obsolete(…)]`, `[[nodiscard]]` → a
 /// discard warning, and `[[maybe_unused]]` on a block-scope declaration →
-/// `#pragma warning disable/restore CS0168, CS0219` bracketing the local so C#
+/// scoped CS0168 suppression, retaining the file-wide CS0219 suppression, so C#
 /// doesn't warn if it stays unused. `[[fallthrough]];` parses as an
 /// attribute-wrapped empty statement. The C23 purity hints `[[unsequenced]]` /
 /// `[[reproducible]]` and every vendor-namespaced attr are recognized-but-inert
@@ -102,8 +102,7 @@ public sealed class AttributeTests
     {
         // A block-scope [[maybe_unused]] local → the DeclStmt carries MaybeUnused,
         // and the backend wraps exactly that declaration with a disable/restore pair
-        // (CS0168 declared-never-used + CS0219 assigned-never-used) — the faithful
-        // lowering of C's "don't warn if this is unused".
+        // for CS0168, preserving the file-wide CS0219 suppression.
         var src = WriteTemp("""
             int main(void) {
                 [[maybe_unused]] int scratch = 7;
@@ -114,7 +113,8 @@ public sealed class AttributeTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src }, dialect: CDialect.Parse("c23"));
             emitted.ShouldContain("#pragma warning disable CS0168, CS0219");
-            emitted.ShouldContain("#pragma warning restore CS0168, CS0219");
+            emitted.ShouldContain("#pragma warning restore CS0168\n");
+            emitted.ShouldNotContain("#pragma warning restore CS0168, CS0219");
             // The suppression brackets the local, not the whole method.
             var disable = emitted.IndexOf("#pragma warning disable CS0168", System.StringComparison.Ordinal);
             var scratch = emitted.IndexOf("scratch", System.StringComparison.Ordinal);
@@ -129,8 +129,8 @@ public sealed class AttributeTests
     public void Ordinary_unused_local_gets_no_suppression()
     {
         // Regression: only a [[maybe_unused]]-marked local is bracketed. A plain
-        // unused local keeps its ordinary emit (the C# unused-variable warning is
-        // left intact — the whole point of the attribute is to opt OUT of it).
+        // unused local keeps its ordinary emit; CS0219 is suppressed by the
+        // generated file's policy, independently of the attribute.
         var src = WriteTemp("""
             int main(void) {
                 int scratch = 7;

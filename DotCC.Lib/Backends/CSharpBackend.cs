@@ -842,7 +842,8 @@ internal sealed partial class CSharpBackend
                 // wrapped (they aren't the unused local).
                 if (d.MaybeUnused) { sb.Append(pad).Append("#pragma warning disable CS0168, CS0219 // C23 maybe_unused\n"); }
                 sb.Append(tmp);
-                if (d.MaybeUnused) { sb.Append(pad).Append("#pragma warning restore CS0168, CS0219\n"); }
+                // CS0219 stays disabled by the generated file's warning policy.
+                if (d.MaybeUnused) { sb.Append(pad).Append("#pragma warning restore CS0168\n"); }
                 break;
             }
             case ArrayDecl a:

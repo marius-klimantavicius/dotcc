@@ -14,7 +14,7 @@ namespace DotCC;
 /// <see cref="Compiler"/> — entry points live in the main file.</summary>
 public static partial class Compiler
 {
-    private const string GeneratedWarningPragma = "#pragma warning disable CS0162, CS8909, CS1717, CS0164, CS0642, CS0675\n";
+    private const string GeneratedWarningPragma = "#pragma warning disable CS0162, CS8909, CS1717, CS0164, CS0642, CS0675, CS0219, CS0649\n";
     private const string GeneratedTypesWarningPragma = GeneratedWarningPragma + "#pragma warning disable CS8981\n";
 
     /// <summary>
