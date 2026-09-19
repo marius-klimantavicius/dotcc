@@ -1410,3 +1410,28 @@ service API/worker and broad platform/dependency/performance gates remain open.
 The CPU normal matrix now owns the validation slot; standalone normal memory and
 I/O follow. Additive valid TLS fixture source preparation continues without
 builds. Neither historical excluded cases nor Windows passes are inferred.
+
+## Normal-only CPU matrix passed
+
+The revised independent hardware witness returns normally after capturing
+registers/flags/XMM/MXCSR, replacing the authored INT3 completion sentinel. The
+unchanged corpus retains stable IDs; 449 normal cases are selected and all 46
+custom fault cases are explicitly excluded, not passed. Native and managed
+runners verify identical selections, exact coverage and implementation hashes.
+
+Native attempt-7j03qmvz passes all 449 selected comparisons against hardware or
+explicit virtual CPUID policy, SHA256
+b33297b3c0ba375772763b274f8236dd042bdc8fa6e292ebe0206776dbb85c73.
+Managed attempt-3r1msqyr passes all 1796 comparisons (449 in each raw/optimized
+JIT/NativeAOT form), with native agreement and SHA256
+4692e7760c37899215cec4025fcd116fd0eeeb22ddd3c47a320067d6a0e75ff0.
+The reviewed staged scalar floating-point correction remains required; 359
+original-native mismatches are retained separately, not relabeled as original
+upstream passes. Eleven CPUID rows verify the selected virtual policy. Independent
+coordinator checks confirm complete unique mode/case pairs and current source
+identities. This bounded corpus does not close the remaining instruction-family,
+TLS, guest-memory or Windows gates listed in the coverage inventory.
+
+Normal HostMemory then HostIo now own the serial validation slot. The additive
+valid TLS fixture is authored/reviewed but awaits execution; its source presence
+is not a pass. The shared compiler and canonical profile remain unchanged.

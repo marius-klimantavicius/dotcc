@@ -38,6 +38,13 @@ binary/tool/source identities are preserved; checkout and compiler identities
 remain unchanged. Only the pinned archive was copied. Installed tools/NuGet
 cache remain shared; Windows and service-worker execution are not claimed.
 
+The refreshed normal-only CPU witness passes 449 selected cases in each managed
+form (1,796 total) at `cpu-conformance-managed/attempt-3r1msqyr`; its native
+reference is `cpu-conformance/attempt-7j03qmvz`. Hardware capture returns normally,
+without the old INT3 sentinel. All 46 custom fault cases are excluded explicitly.
+The reviewed scalar correction is still required; original-native differences
+remain preserved. This bounded matrix is not full P3 coverage.
+
 ## Historical qualification ledger
 
 | Surface | Observed result | Reproduce |

@@ -7,6 +7,7 @@ ROOT=Path(__file__).resolve().parents[2];REPO=ROOT.parent
 sys.path.insert(0,str(ROOT/'scripts'))
 from core_inputs import compiler_identity
 from features import inventory
+from selection import select_normal
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--core-receipt',type=Path,required=True)
 parser.add_argument('--observe-differences',action='store_true')
@@ -42,6 +43,10 @@ def project(path,name,output,sources,references=(),root=False):
     for reference in references:ET.SubElement(items,'ProjectReference',Include=str(reference))
     if root:ET.SubElement(items,'TrimmerRootAssembly',Include='ManagedCpuCore')
     ET.ElementTree(xml).write(path,encoding='unicode')
+implementation_names = ['run.py','run-managed.py','selection.py','hardware.c','hardware-capture.S',
+                        'interpreter.c','managed-driver.c','describe.c','corpus.h','fp-cases.h',
+                        'make-fp-cases.py','output.h','Program.cs','features.py']
+r['implementation']={name:sha(ROOT/'tests/CpuConformance'/name) for name in implementation_names}
 try:
     # Fresh native/hardware reference, retaining its complete input identity.
     native_output=run(['python3',ROOT/'tests/CpuConformance/run.py',*(['--observe-differences']if args.observe_differences else[]),*(['--staged-fp']if args.staged_fp else[])],'native-corpus')
@@ -49,9 +54,13 @@ try:
     if not native.get('completed') or (not native['passed'] and not args.observe_differences):raise RuntimeError('native corpus incomplete or nonconformant')
     r['native_receipt']=str(native_receipt);r['native_receipt_sha256']=sha(native_receipt)
     native_artifacts=native_receipt.parent
-    cases=json.loads((native_artifacts/'corpus.stdout').read_text())['cases']
+    corpus=json.loads((native_artifacts/'corpus.stdout').read_text())
+    cases,selection=select_normal(corpus,ROOT/'tests/CpuConformance')
+    if native.get('selection')!=selection:raise RuntimeError('Native normal selection differs')
+    if [row['case'] for row in native['comparisons']]!=[row['name'] for row in cases]:raise RuntimeError('Native comparison coverage differs')
+    r['selection']=selection
     (a/'source').mkdir();(a/'objects').mkdir()
-    for name in ['managed-driver.c','interpreter.c','corpus.h','output.h','Program.cs','features.py','fp-cases.h','make-fp-cases.py']:shutil.copyfile(ROOT/'tests/CpuConformance'/name,a/'source'/name)
+    for name in ['managed-driver.c','selection.py','interpreter.c','corpus.h','output.h','Program.cs','features.py','fp-cases.h','make-fp-cases.py']:shutil.copyfile(ROOT/'tests/CpuConformance'/name,a/'source'/name)
     prior=assembly['objects']['authored/managed-driver.c']
     # Use precisely the canonical include snapshot used for the replaced object;
     # validate every original dependency, then copy it to a new immutable input.
@@ -160,8 +169,7 @@ try:
                 if len(rows)!=2:raise RuntimeError('unexpected CPU worker output')
                 actual=json.loads(rows[0]);owner=json.loads(rows[1]);reference=json.loads((native_artifacts/f'hardware-{i:02}.stdout').read_text());baseline=json.loads((native_artifacts/f'{"staged"if args.staged_fp else"interpreter"}-{i:02}.stdout').read_text())
                 if not(0<owner['ownerMappings'] and 0<owner['ownerBytes']<=64*1024*1024):raise RuntimeError('invalid memory accounting')
-                fields=['name','signal','ip','memory']+([]if case['fault'] and not case['faultState']else['ax','cx','dx','xmm','mxcsr'])
-                if case['faultState'] and case['fault']==8:fields.append('rawCode')
+                fields=['name','signal','ip','memory','ax','cx','dx','xmm','mxcsr']
                 if case['profileReference']:
                     fields.append('bx');cpuid_rows[case['name']]=actual;hardware_cpuid[case['name']]=reference;reference=baseline
                 differences=[key for key in fields if actual[key]!=reference[key]]
@@ -177,6 +185,11 @@ try:
     if r['raw_generated']!={p.name:sha(p)for p in raw.glob('*.cs')}:raise RuntimeError('raw generated source changed')
     for name,digest in r['inputs'].items():
         if sha(a/name)!=digest:raise RuntimeError('frozen input changed: '+name)
+    for name,digest in r['implementation'].items():
+        if sha(ROOT/'tests/CpuConformance'/name)!=digest:raise RuntimeError('CPU implementation changed: '+name)
+    expected_coverage=[(mode,case['name']) for mode in ['raw-jit','raw-aot','optimized-jit','optimized-aot'] for case in cases]
+    if [(row['mode'],row['case']) for row in r['comparisons']]!=expected_coverage:raise RuntimeError('Managed selected coverage differs')
+    r['expected_comparisons']=len(expected_coverage)
     r['optimized_generated']={p.name:sha(p)for p in(a/'optimized-generated').glob('*.cs')}
     r['completed']=True;r['known_failing_rows']=[row for row in r['comparisons']if not row['matched']]
     r['passed']=not r['known_failing_rows'];r['native_agreement']=all(not row['nativeDifferences']for row in r['comparisons'])

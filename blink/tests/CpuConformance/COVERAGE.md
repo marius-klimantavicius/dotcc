@@ -1,3 +1,16 @@
+# Current normal-only scope and historical coverage inventory
+
+Current selection retains 449 normal rows and explicitly excludes 46 custom
+fault rows. The normal-return witness now passes native449 and all1,796 actual managed
+comparisons in attempt-7j03qmvz / attempt-3r1msqyr; see README for exact hashes.
+The table below records historical coverage and gaps; fault/rejection/invalid
+encoding/injected-source entries are outside current required work and are not
+proposals to resume excluded tests. Original receipts remain unchanged.
+Normal instruction families, valid address/stack effects, masked floating state
+and valid TLS setup remain separate bounded coverage opportunities.
+
+## Historical inventory
+
 # Remaining CPU coverage
 
 The 495-case corpus is bounded evidence, not P3 completion. Five FP failures

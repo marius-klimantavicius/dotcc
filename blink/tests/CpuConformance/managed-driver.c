@@ -11,6 +11,7 @@
 static int cpu_driver_has_run;
 int CpuConformanceRun(int index) {
   if(index<0 || index>=CPU_CASES)return 2;
+  if(cpu_cases[index].fault)return 2;
   if(cpu_driver_has_run)return 21;
   cpu_driver_has_run=1;
   if(BlinkHostMemoryBegin(64*1024*1024))return 20;

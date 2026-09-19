@@ -6,6 +6,8 @@ C# on Linux x64. The current compiler translates all 109 selected sources throug
 `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and preserves a separate
 immutable raw snapshot. The actual normal-core usage sample passes JIT and
 NativeAOT against native arithmetic, memory, budget and guest-exit observations.
+The normal CPU corpus passes 449 cases in each of raw/optimized JIT/NativeAOT,
+with 46 historical custom fault cases explicitly excluded.
 
 Earlier CPU, host-service and dependent-campaign results are historical where
 they predate the shared compiler changes made during libsmb2. Custom fault

@@ -17,6 +17,7 @@ void TerminateSignal(struct Machine *m,int signal,int code) {
 int CpuInterpreterCase(int index) {
   if(index<0||index>=CPU_CASES)return 2;
   const struct CpuCase *c=cpu_cases+index;
+  if(c->fault)return 2; /* Historical custom fault rows are excluded. */
   struct System *s=NewSystem(XED_MACHINE_MODE_LONG);if(!s)return 3;
 #ifdef CPU_CONFORMANCE_INITIALIZE_SYSTEM
   if(CPU_CONFORMANCE_INITIALIZE_SYSTEM(s)){FreeSystem(s);return 5;}
@@ -47,8 +48,7 @@ int CpuInterpreterCase(int index) {
   if(CopyFromUser(m,data,0x600000,c->data_pages*CPU_PAGE)){FreeMachine(m);return 3;}
   CpuPrint(c,&r,data,c->data_pages*CPU_PAGE);
   FreeMachine(m);
-  int expected=c->fault_state?c->expected_halt:c->fault==8?kMachineDivideError:c->fault==11?kMachineSegmentationFault:0;
-  return r.signal==c->fault && halt==expected && completed==(c->fault?0:c->steps)?0:4;
+  return r.signal==0 && halt==0 && completed==c->steps?0:4;
 }
 #ifndef CPU_CONFORMANCE_NO_MAIN
 int main(int argc,char **argv) {

@@ -1,65 +1,54 @@
 #define _GNU_SOURCE
-#include <signal.h>
-#include <setjmp.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
-#include <ucontext.h>
-#include <unistd.h>
 #include "corpus.h"
 #include "output.h"
 #if !defined(__x86_64__) || !defined(__linux__)
-#error This independent reference requires Linux x86-64 ucontext.
+#error This independent reference requires Linux x86-64 SysV.
 #endif
-static sigjmp_buf recovery;
-static struct CpuResult result;
-static unsigned char *entry;
-static void Capture(int signal,siginfo_t *info,void *context) {
-  ucontext_t *uc=context;
-  result.ax=uc->uc_mcontext.gregs[REG_RAX];
-  result.bx=uc->uc_mcontext.gregs[REG_RBX];
-  result.mxcsr=uc->uc_mcontext.fpregs->mxcsr;
-  result.cx=uc->uc_mcontext.gregs[REG_RCX];
-  result.dx=uc->uc_mcontext.gregs[REG_RDX];
-  result.flags=uc->uc_mcontext.gregs[REG_EFL];
-  result.ip=uc->uc_mcontext.gregs[REG_RIP]-(uintptr_t)entry;
-  result.raw_signal=signal;result.raw_code=info->si_code;
-  result.signal=signal==SIGTRAP?0:signal;
-  if(signal==SIGTRAP)--result.ip; /* INT3 consumed only by hardware witness. */
-  const unsigned char *x=(const unsigned char *)&uc->uc_mcontext.fpregs->_xmm[0];
-  for(int i=0;i<32;++i)result.xmm[i]=x[i];
-  siglongjmp(recovery,1);
-}
+struct HardwareState {
+  uint64_t ax,bx,cx,dx,flags;
+  unsigned mxcsr;
+  unsigned char xmm[32];
+  uint64_t ip;
+};
+_Static_assert(offsetof(struct HardwareState,ax)==0,"AX capture offset");
+_Static_assert(offsetof(struct HardwareState,bx)==8,"BX capture offset");
+_Static_assert(offsetof(struct HardwareState,cx)==16,"CX capture offset");
+_Static_assert(offsetof(struct HardwareState,dx)==24,"DX capture offset");
+_Static_assert(offsetof(struct HardwareState,flags)==32,"flags capture offset");
+_Static_assert(offsetof(struct HardwareState,mxcsr)==40,"MXCSR capture offset");
+_Static_assert(offsetof(struct HardwareState,xmm)==44,"XMM capture offset");
+_Static_assert(offsetof(struct HardwareState,ip)==80,"IP capture offset");
+extern void CpuHardwareRun(const struct HardwareState *,struct HardwareState *,void *);
 int main(int argc,char **argv) {
   if(argc!=2)return 2;
   int index=atoi(argv[1]);if(index<0||(unsigned)index>=CPU_CASES)return 2;
   const struct CpuCase *c=cpu_cases+index;
+  if(c->fault)return 2; /* Historical custom fault rows are never executed. */
   unsigned char *code=mmap(0,2*CPU_PAGE,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
   unsigned char *data=mmap(0,2*CPU_PAGE,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
   if(code==MAP_FAILED||data==MAP_FAILED)return 3;
   CpuData(data,2*CPU_PAGE);
-  if(c->data_pages==1 && mprotect(data+CPU_PAGE,CPU_PAGE,PROT_NONE))return 3;
-  entry=code+c->code_offset;memcpy(entry,c->code,c->length);entry[c->length]=0xcc;
+  unsigned char *entry=code+c->code_offset;
+  memcpy(entry,c->code,c->length);
+  /* LEA R15,[RIP-7] observes the address immediately after the corpus bytes;
+   * RET returns to our assembly capture. Neither instruction changes flags. */
+  const unsigned char completion[]={0x4c,0x8d,0x3d,0xf9,0xff,0xff,0xff,0xc3};
+  memcpy(entry+c->length,completion,sizeof(completion));
   if(mprotect(code,2*CPU_PAGE,PROT_READ|PROT_EXEC))return 3;
-  struct sigaction action={0};action.sa_sigaction=Capture;action.sa_flags=SA_SIGINFO;
-  sigemptyset(&action.sa_mask);
-  if(sigaction(SIGTRAP,&action,0)||sigaction(SIGFPE,&action,0)||sigaction(SIGSEGV,&action,0)||sigaction(SIGILL,&action,0))return 3;
-  unsigned char xmm_input[32];CpuXmm(c,xmm_input);
-  unsigned mxcsr_input=CpuMxcsr(c);
-  if(!sigsetjmp(recovery,1)) {
-    /* Fixed inputs and code bytes are shared with the interpreter corpus.
-     * No instruction under test is reimplemented in this reference. */
-    __asm__ volatile("ldmxcsr %[mxcsr]\n\t"
-                     "movdqu %[low], %%xmm0\n\t"
-                     "movdqu %[high], %%xmm1\n\t"
-                     "pushq %[flags]\n\tpopfq\n\tjmp *%[entry]"
-      : : "a"(c->ax),"b"(data+c->data_offset),"c"(c->cx),"d"(c->dx),
-          [flags]"r"(c->flags),[entry]"r"(entry),
-          [mxcsr]"m"(mxcsr_input),[low]"m"(xmm_input[0]),[high]"m"(xmm_input[16])
-      : "xmm0","xmm1","cc","memory");
-    __builtin_unreachable();
-  }
-  result.completed=-1; /* Hardware capture does not measure retired steps. */
+  struct HardwareState input={0},observed={0};
+  input.ax=c->ax;input.bx=(uintptr_t)(data+c->data_offset);input.cx=c->cx;
+  input.dx=c->dx;input.flags=c->flags;input.mxcsr=CpuMxcsr(c);CpuXmm(c,input.xmm);
+  CpuHardwareRun(&input,&observed,entry);
+  struct CpuResult result={0};
+  result.ax=observed.ax;result.bx=observed.bx;result.cx=observed.cx;result.dx=observed.dx;
+  result.flags=observed.flags;result.mxcsr=observed.mxcsr;
+  result.ip=observed.ip-(uintptr_t)entry;memcpy(result.xmm,observed.xmm,32);
+  result.completed=-1; /* Native completion does not count retired instructions. */
   CpuPrint(c,&result,data,c->data_pages*CPU_PAGE);
-  return result.signal==c->fault && result.ip==(c->fault?0:c->length)?0:4;
+  int okay=result.ip==c->length;
+  munmap(code,2*CPU_PAGE);munmap(data,2*CPU_PAGE);
+  return okay?0:4;
 }
