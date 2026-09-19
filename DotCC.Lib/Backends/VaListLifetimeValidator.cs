@@ -214,6 +214,7 @@ internal static class VaListLifetimeValidator
             case CommaSeq c: Many(c.Items); break;
             case StructInit s: foreach (var member in s.Members) One(member.Value); break;
             case InlineArrayInit a: Many(a.Elems); break;
+            case FlexibleAggregateInit f: One(f.Header); Many(f.Elems); break;
             case StackArray a: Many(a.Elems); break;
             case PinnedArray a: One(a.Count); Many(a.Elems); break;
             case VaArgGet a: One(a.Ap); break;

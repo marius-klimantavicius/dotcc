@@ -537,7 +537,7 @@ internal sealed partial class IrBuilder
             if (storage != Storage.Extern || initItem is not null)
             {
                 CExpr? gInit = null;
-                if (initItem is { } ii) { gInit = BuildDeclaratorInitializer(sym.Type, ii); EnsureNotEmbed(gInit); CheckQualifierDiscard(gInit, sym.Type, SrcPos.From(ii), "initialization"); }
+                if (initItem is { } ii) { gInit = BuildStaticAggregateInitializer(sym.Type, () => BuildDeclaratorInitializer(sym.Type, ii)); EnsureNotEmbed(gInit); CheckQualifierDiscard(gInit, sym.Type, SrcPos.From(ii), "initialization"); }
                 // A .NET [ThreadStatic] initializer runs on the FIRST thread only,
                 // so C's "every thread starts at the initial value" holds only for
                 // the zero/default value .NET gives every thread's slot anyway.
@@ -1340,7 +1340,7 @@ internal sealed partial class IrBuilder
                 // storage. The backend exposes its over-allocated tail by pointer.
                 case C.StructFlexArrMember sm:
                     Gate(1999, "flexible array member", m);
-                    fields.Add(new StructField(Tok(sm.Arg1), new CType.Array(ResolveType(sm.Arg0), 0)));
+                    fields.Add(new StructField(Tok(sm.Arg1), new CType.Array(ResolveType(sm.Arg0), 0), IsFlexibleArray: true));
                     break;
                 // `Ret (*name)(params);` — a function-pointer member. Same
                 // FnPtrType lowering as the typedef/param fn-ptr forms (codegen
@@ -1469,7 +1469,7 @@ internal sealed partial class IrBuilder
         if (flexible) memberType = new CType.Array(memberType, 0);
         if (dimensions is { } dims)
             memberType = MakeArrayType(memberType, TryConstDims(dims) ?? throw new IrUnsupportedException("non-constant nested aggregate array bound"));
-        parentFields.Add(new StructField(member, pointer ? new CType.Pointer(memberType) : memberType));
+        parentFields.Add(new StructField(member, pointer ? new CType.Pointer(memberType) : memberType, IsFlexibleArray: flexible));
     }
 
     /// <summary>The CType of <paramref name="field"/> read off the struct/union
@@ -2541,7 +2541,7 @@ internal sealed partial class IrBuilder
                 TargetName = $"{_symbols.Escape(name)}__s{_staticLocalSeq++}",
             };
             CExpr? slInit = null;
-            if (initItem is { } ii) { slInit = BuildDeclaratorInitializer(sym.Type, ii); EnsureNotEmbed(slInit); CheckQualifierDiscard(slInit, sym.Type, SrcPos.From(ii), "initialization"); }
+            if (initItem is { } ii) { slInit = BuildStaticAggregateInitializer(sym.Type, () => BuildDeclaratorInitializer(sym.Type, ii)); EnsureNotEmbed(slInit); CheckQualifierDiscard(slInit, sym.Type, SrcPos.From(ii), "initialization"); }
             RegisterStaticLocal(sym, slInit);
         });
         return new DeclStmt(System.Array.Empty<LocalDecl>());
@@ -2558,7 +2558,18 @@ internal sealed partial class IrBuilder
             Name = Tok(nameItem), Alignment = DeclarationAlignment(typeItem), Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
         }, position);
         if (declaration is null) return;
-        DefineRegisteredGlobal(declaration, BuildAggregateInit(type, initListItem), hasInitializer: true, position);
+        CExpr initializer;
+        if (type.Unqualified is CType.Array array)
+        {
+            var dimensions = new List<int>();
+            for (CType current = array; current.Unqualified is CType.Array dimension; current = dimension.Element)
+                dimensions.Add(dimension.Count ?? throw new IrUnsupportedException("initialized array typedef requires complete constant bounds"));
+            var element = array.FlatElement;
+            initializer = new PinnedArray(element, BuildArrayElems(element, dimensions, ParseInitList(initListItem)), null)
+                { Type = new CType.Pointer(element) };
+        }
+        else initializer = BuildStaticAggregateInitializer(type, () => BuildAggregateInit(type, initListItem));
+        DefineRegisteredGlobal(declaration, initializer, hasInitializer: true, position);
     }
 
     /// <summary>Block-scope <c>static T x = { … };</c> — like a global aggregate
@@ -2567,7 +2578,7 @@ internal sealed partial class IrBuilder
     private CStmt BuildStmtStaticStructInit(Item typeItem, Item nameItem, Item initializer, bool designated)
     {
         var type = ResolveType(typeItem);
-        var init = designated ? BuildStructDesignated(type, initializer) : BuildAggregateInit(type, initializer);
+        var init = BuildStaticAggregateInitializer(type, () => designated ? BuildStructDesignated(type, initializer) : BuildAggregateInit(type, initializer));
         var sym = new Symbol
         {
             Name = Tok(nameItem), Kind = SymKind.Var, Type = type,

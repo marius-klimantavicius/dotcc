@@ -14,6 +14,6 @@ internal sealed partial class IrBuilder
             Storage = Storage.Static, IsGlobal = true,
         }, position);
         if (declaration is null) return;
-        DefineRegisteredGlobal(declaration, BuildStructDesignated(type, memberList), hasInitializer: true, position);
+        DefineRegisteredGlobal(declaration, BuildStaticAggregateInitializer(type, () => BuildStructDesignated(type, memberList)), hasInitializer: true, position);
     }
 }

@@ -56,7 +56,11 @@ public abstract record CType
     public bool IsPointerLowered => Unqualified is Pointer or Func;
 
     /// <summary>Return a copy of this type with the given qualifiers OR-ed in.</summary>
-    public CType WithQuals(TypeQual add) => add == TypeQual.None ? this : this with { Quals = Quals | add };
+    public CType WithQuals(TypeQual add) => add == TypeQual.None ? this
+        // A qualifier applied through an array typedef qualifies its element
+        // type too (recursively for multidimensional arrays).
+        : this is Array array ? array with { Quals = Quals | add, Element = array.Element.WithQuals(add) }
+        : this with { Quals = Quals | add };
 
     /// <summary>Drop all qualifiers (the unqualified shape, for comparisons/casts).</summary>
     public CType Unqualified => Quals == TypeQual.None ? this : this with { Quals = TypeQual.None };

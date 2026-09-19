@@ -41,6 +41,7 @@ internal sealed partial class IrBuilder
         }),
         StructInit s => s.Members.Any(m => ContainsRuntimeIntrinsic(m.Value)),
         InlineArrayInit a => a.Elems.Any(ContainsRuntimeIntrinsic),
+        FlexibleAggregateInit f => ContainsRuntimeIntrinsic(f.Header) || f.Elems.Any(ContainsRuntimeIntrinsic),
         StackArray a => a.Elems.Any(ContainsRuntimeIntrinsic),
         PinnedArray a => ContainsRuntimeIntrinsic(a.Count) || (a.Elems?.Any(ContainsRuntimeIntrinsic) ?? false),
         VaArgGet a => ContainsRuntimeIntrinsic(a.Ap),

@@ -202,6 +202,9 @@ public sealed record StructInit(IReadOnlyList<FieldInit> Members) : CExpr;
 /// the store), and the value expression.</summary>
 public readonly record struct FieldInit(string Name, CType FieldType, CExpr Value);
 
+/// <summary>A static object whose GNU initializer supplies storage after its flexible header.</summary>
+public sealed record FlexibleAggregateInit(StructInit Header, string Field, CType Element, IReadOnlyList<CExpr> Elems) : CExpr;
+
 /// <summary>Initializer values for array storage embedded in an aggregate.
 /// The destination owns the storage; this expression does not allocate a
 /// separate array or decay its initializer into a pointer.</summary>
@@ -634,7 +637,7 @@ public sealed record StructTypeDef(string Name, IReadOnlyList<StructField> Field
 /// (MSVC storage-unit layout) + masked/sign-extended accessor properties — so
 /// <c>sizeof</c> and member offsets match C's layout while reads/writes keep C's
 /// exact value semantics (modular truncation, signed sign-extension).</summary>
-public readonly record struct StructField(string Name, CType Type, int? BitWidth = null, int Alignment = 0, bool IsAnonymousAggregate = false)
+public readonly record struct StructField(string Name, CType Type, int? BitWidth = null, int Alignment = 0, bool IsAnonymousAggregate = false, bool IsFlexibleArray = false)
 {
     /// <summary>True for any bit-field — named, anonymous, or zero-width.</summary>
     public bool IsBitField => BitWidth is not null;

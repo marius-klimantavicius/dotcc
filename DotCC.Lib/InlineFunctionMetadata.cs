@@ -147,6 +147,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
             CondExpr c => IsConstantInitializer(c.Cond) && IsConstantInitializer(c.Then) && IsConstantInitializer(c.Else),
             StructInit s => s.Members.All(m => IsConstantInitializer(m.Value)),
             InlineArrayInit a => a.Elems.All(IsConstantInitializer),
+            FlexibleAggregateInit f => IsConstantInitializer(f.Header) && f.Elems.All(IsConstantInitializer),
             _ => false,
         };
         private void Expressions(IReadOnlyList<CExpr>? expressions)
@@ -205,6 +206,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
                     foreach (var m in e.Members) { Atom(m.Name); Type(m.FieldType); Expression(m.Value); } break;
                 case StackArray e: Atom("stack-array"); Type(e.Element); Expressions(e.Elems); break;
                 case InlineArrayInit e: Atom("inline-array"); Type(e.Element); Expressions(e.Elems); break;
+                case FlexibleAggregateInit e: Atom("flexible-initializer"); Atom(e.Field); Type(e.Element); Expression(e.Header); Expressions(e.Elems); break;
                 case StackNew e: Atom("stack-new"); Type(e.StructType); break;
                 default: Supported = false; break;
             }

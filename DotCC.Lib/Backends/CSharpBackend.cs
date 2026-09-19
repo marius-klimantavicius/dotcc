@@ -173,6 +173,11 @@ internal sealed partial class CSharpBackend
                 globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
                 continue;
             }
+            if (cg.EmitFlexibleGlobal(staticMembers, g))
+            {
+                globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
+                continue;
+            }
             if (cg.EmitAlignedGlobal(staticMembers, g))
             {
                 globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));

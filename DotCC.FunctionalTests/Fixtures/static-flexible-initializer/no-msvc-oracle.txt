@@ -1,0 +1,1 @@
+GNU extension: static initialization of a flexible array member.

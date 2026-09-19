@@ -113,7 +113,8 @@ internal sealed partial class IrBuilder
         for (var i = 0; i < items.Count && i < fields.Count; i++)
         {
             var field = fields[i];
-            var value = BuildFieldInitializer(field.Type, items[i]);
+            var value = TryBuildStaticFlexibleMember(type, field, items[i], out var flexible)
+                ? flexible : BuildFieldInitializer(field.Type, items[i]);
             members.Add(new FieldInit(field.Name, field.Type, value));
         }
         return new StructInit(members) { Type = type };
@@ -248,7 +249,8 @@ internal sealed partial class IrBuilder
         var definition = fields[fieldIndex];
         SelectUnionMember(field);
         Store(members.FindIndex(member => member.Name == field),
-            new FieldInit(field, definition.Type, BuildDeclaratorInitializer(definition.Type, valueItem)));
+            new FieldInit(field, definition.Type, TryBuildStaticFlexibleMember(type, definition, valueItem, out var flexible)
+                ? flexible : BuildDeclaratorInitializer(definition.Type, valueItem)));
 
         void SelectUnionMember(string name)
         {
