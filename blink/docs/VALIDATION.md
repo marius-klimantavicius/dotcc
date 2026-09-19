@@ -26,8 +26,11 @@ executes no guest instructions and the image has no PT_TLS.
 The reviewed integer correction is now present in stable delivery
 `translation/attempt-w78n0i5u` and profile `attempt-7byl9v1e`. Its fresh full-core
 matrix passes at `core-execution/attempt-yzck8kpr`, with publication inventory
-`publication-audit/attempt-e0l80fe1`. The expanded CPU matrix below also uses this correction. Consumer clean-workflow
-and valid ELF/TLS receipts still predate it until an explicit refresh is recorded.
+`publication-audit/attempt-e0l80fe1`. The expanded CPU matrix below also uses this correction. Valid ELF
+`elf-loading/attempt-qclmm2fz` and explicit TLS `tls-loading/attempt-m6fpvl1m`
+now pass native and all four managed forms against the same assembly, retaining
+their bounded fixture limits. The clean consumer workflow still predates this
+correction until its refresh is recorded.
 
 The following table and older sections preserve historical evidence. Rows are
 not current-compiler passes unless explicitly refreshed above or in the current

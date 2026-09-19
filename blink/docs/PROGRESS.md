@@ -1597,3 +1597,17 @@ The worker now refreshes valid ELF and explicit TLS against the same corrected
 assembly; clean public consumer delivery follows. MsQuic and language wrappers
 are reviewed and committed but remain runtime-pending, with unchanged shared
 compiler binaries and no libsmb2/user-patch changes.
+
+## Corrected-profile valid ELF and TLS refresh passed
+
+Valid ELF attempt-qclmm2fz passes native and all four managed forms (SHA256
+3c4bacbbdc886e045263a6be34f8db7cf4cabd3a436fb6b487d8824f24a93f6b),
+using corrected assembly 03789a247c2d723303c55875538c4b46e1bb0d8aa298e5061c001ea3f8bf7511.
+Explicit valid TLS attempt-m6fpvl1m also passes Linux/native assertions and the
+native-adapter/all-four-managed exact state matrix (SHA256
+c6f37c66870e00ae8c30178be850eff8755a2202b8fb942eb441a4780ef4cfdf).
+PT_TLS 8/16/8, preserved program header, private RW/NX storage, FS=0x401010,
+initial value/update/sum, 25 instructions and exit0 remain exact. Fixed fixture
+limits remain: no general libc TCB, dynamic TLS or guest-thread qualification.
+No malformed image or injected fault case ran. Next is a fresh clean checkout
+public delivery/sample run, followed by the scoped dependent regressions.
