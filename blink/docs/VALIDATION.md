@@ -3,7 +3,22 @@
 All observed executions below are Linux x64. Windows execution has not run.
 Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
-## Current delivery on the post-libsmb2 compiler
+## Latest corrected-profile qualification
+
+| Gate | Latest receipt under `artifacts/` | Result |
+| --- | --- | --- |
+| Final delivery | `translation/attempt-w78n0i5u` | 109 sources, 107 verified reused objects and two corrected fresh producers; raw/postprocessed builds and final manifests pass. |
+| Canonical core / publication | `core-execution/attempt-yzck8kpr`, `publication-audit/attempt-e0l80fe1` | All four managed forms and exact AOT publication inventory pass. |
+| CPU | `cpu-conformance-managed/attempt-sgren8zu` | 468 normal cases per form, 1,872 total; 46 custom fault cases excluded. |
+| Valid ELF / TLS | `elf-loading/attempt-qclmm2fz`, `tls-loading/attempt-m6fpvl1m` | Native and all four managed forms pass bounded valid loading and explicit TLS startup. |
+| Clean public sample | `clean-delivery/attempt-ru82jd14` | Commit 497ce69; fresh compiler and all 109 objects (zero reuse), final solution and actual JIT/rooted-AOT sample pass; final checkout clean. |
+
+The current P3 queue adds 32 bounded normal CPU rows and actual upstream guest
+mapping/page-table lifecycle checks. These are pending and are not implied by
+the existing host-boundary or loader passes. Further P6 regressions/performance
+are deferred until P3. No service worker or Windows execution is qualified.
+
+## Earlier post-libsmb2 refresh history
 
 The current Release compiler build is recorded at
 `resume-current-compiler/attempt-9_82zbv2`. The delivery invocation

@@ -15,10 +15,10 @@ P0–P2 have passed on Linux x64. `blink/scripts/translate.sh` produces the fina
 postprocessed `blink/generated/TranslatedBlink/` project and immutable raw
 comparison. Corrected canonical core execution passes all four managed forms;
 468 normal CPU cases per form, valid ELF and explicit TLS startup are qualified.
-The owning normal-core sample and an earlier clean public delivery passed; a
-fresh clean delivery at revision 497ce69 is now running with the integer repair.
-P3–P6 remain open. User priority is now completion of P3 after the in-flight clean
-run; additional P6 regressions/performance are deferred. The service API/worker,
+The owning normal-core sample and fresh clean public delivery at revision
+497ce69 pass with the integer repair (109 fresh objects, zero reuse).
+P3–P6 remain open. User priority is now completion of P3; additional P6 regressions/performance
+are deferred. The service API/worker,
 remaining CPU/guest-memory cases and actual Windows execution are not qualified. Historical fault results below are not
 part of the current normal-only qualification.
 
@@ -33,8 +33,8 @@ The remaining normal qualification set is fixed before execution:
 | Coordinator | Integrate and review the above against existing 468-row CPU, valid ELF/TLS and selected upstream evidence | Freeze sources/provenance, run suites serially, preserve failures and commit results. Resolve observed semantic defects before marking the selected P3 gate complete. |
 
 These are bounded selected-profile checks, not exhaustive ISA certification.
-The already-running clean delivery finishes first; new P6 performance and
-regression runs are deferred until this P3 work is resolved.
+The clean delivery has finished successfully; new P6 performance and regression
+runs are deferred until this P3 work is resolved.
 
 ## Ownership
 
@@ -45,8 +45,8 @@ main checkout. Historical recovery/detached worktrees remain evidence only.
 - Coordinator: current shared-toolchain build/identity freeze, normal-only probe
   scope alignment, integration, runtime revalidation, durable status and commits.
 - Inputs worker: actual upstream GuestMemory mapping/page-table lifecycle tests.
-- Consumer/CPU worker: finish the in-flight clean reproduction, then the finite
-  remaining normal CPU coverage set. P6 regression/performance execution is held.
+- Consumer/CPU worker: the finite remaining normal CPU coverage set; clean
+  reproduction is complete. P6 regression/performance execution is held.
   The service-worker task remains unqualified.
 
 Shared compiler edits and heavy test suites remain serialized. Workers own
@@ -62,7 +62,7 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 | P3 | Partial | 468 normal CPU cases per form, valid ELF and fixed TLS startup pass; broader CPU and guest-memory algorithms remain open. |
 | P4 | Pending | Real host contracts and service startup. |
 | P5 | Partial | ManagedConsumer.slnx normal-core usage sample passes; translated service worker/API and two-instance HTTP lifecycle remain unqualified. |
-| P6 | Partial | Native 25 and earlier clean public delivery pass; corrected clean delivery running, scoped regressions progressing. Windows and full performance/dependency gates remain open. |
+| P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance held for P3. Windows and full performance/dependency gates remain open. |
 
 ## Observed environment
 
@@ -1658,3 +1658,21 @@ existing descriptor prefixes/exclusions and uses invariants for nondeterministic
 timestamps. The coordinator reviews the finite list against the selected profile
 before source freeze; this is not a request for exhaustive ISA coverage. No new
 custom fault or malformed-image case is permitted. Runtime work stays serial.
+
+## Corrected clean public delivery passed; P3 owns the active queue
+
+Clean attempt-ru82jd14 passes at commit 497ce69 (SHA256
+813f4071e96f83eb60aedd7e3d5bf8ab8133d59bae9db31a8c82a6e7b6fa5a95).
+Detached checkout /home/marius/p/dotcc-blink-delivery-m263q57j is preserved. A
+fresh compiler, pinned native 25, 109 fresh source objects with zero reuse,
+immutable raw/final manifests, solution build, and actual JIT/rooted-AOT sample
+all pass. Child delivery attempt-1bf9hpx3 has SHA256
+85d73d467c174d95f0920ec36503203ce4428402c381252ce6e86b587f91fe66.
+The checkout is clean; original compiler identities and execution binary pairs
+remain unchanged. This qualifies the corrected normal sample, not the blocked
+service-worker or Windows target.
+
+The build slot is now released exclusively for the reviewed P3 CPU and actual
+guest-memory qualification work. Both workers are authoring their bounded cases;
+native and all-four-managed runs follow source review. Additional P6 regression
+and throughput scripts remain prepared/committed but execution is deferred.
