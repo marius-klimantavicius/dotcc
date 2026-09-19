@@ -69,15 +69,18 @@ public static partial class Blink
         record.st_size = value.Length;
         record.st_blksize = 4096;
         record.st_blocks = (value.Length + 511) / 512;
-        SetFileTime(&record.st_atim, value.AccessTicks);
-        SetFileTime(&record.st_mtim, value.ModifyTicks);
-        SetFileTime(&record.st_ctim, value.ChangeTicks);
+        SetFileTime(&record.st_atim, value.AccessTicks, value.AccessSubtick);
+        SetFileTime(&record.st_mtim, value.ModifyTicks, value.ModifySubtick);
+        SetFileTime(&record.st_ctim, value.ChangeTicks, value.ChangeSubtick);
         *destination = record;
     }
-    private static unsafe void SetFileTime(blink_host_stat_time* value, long ticks)
+    private static unsafe void SetFileTime(blink_host_stat_time* value, long ticks, int subtick)
     {
         long unixTicks = ticks - DateTime.UnixEpoch.Ticks;
-        value->tv_sec = unixTicks / TimeSpan.TicksPerSecond;
-        value->tv_nsec = unixTicks % TimeSpan.TicksPerSecond * 100;
+        long seconds = unixTicks / TimeSpan.TicksPerSecond;
+        long remainder = unixTicks % TimeSpan.TicksPerSecond;
+        if (remainder < 0) { --seconds; remainder += TimeSpan.TicksPerSecond; }
+        value->tv_sec = seconds;
+        value->tv_nsec = remainder * 100 + subtick;
     }
 }

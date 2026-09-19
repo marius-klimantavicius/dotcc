@@ -1,0 +1,1 @@
+Owned string copies and nearest rounding: PASS

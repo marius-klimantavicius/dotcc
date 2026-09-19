@@ -743,3 +743,53 @@ message/peer qualification passes at host-messages/attempt-o2m20b_6, including
 actual short transfers, two-owner GC, cancellation and InstanceIo regressions.
 Both boundaries are included in the next fresh binding profile. They do not yet
 prove execution through the complete translated guest syscall paths.
+
+## Significant progress: recovered generic repairs pass full regression
+
+The recovered B025–B028 typing/literal/constant-branch changes and real generic
+string/default-rounding primitives pass2257 unit and556 functional tests, with
+1057 explicit platform skips and zero failures. Release build succeeds with17
+existing analyzer warnings. Log: artifacts/recovery-isolated-repository.log.
+
+A separate session began changing shared compiler files during recovery. To keep
+qualification coherent while preserving those edits, subsequent campaign work
+is isolated at /home/marius/p/dotcc-blink-campaign on blink-campaign-recovery,
+based on11ea352. The recovered generic source is revalidated there. Reviewed
+commits must be integrated without overwriting the other session's work.
+All three original user patch files remain untouched in the original checkout.
+
+The next fresh closure includes12 additional pinned upstream sources (including
+the five actual ELF-loader dependencies), bringing managed additions to13.
+Seven missing Linux LP64 tokens now have strict native and profile value/type
+checks in tests/ProfileConstants/probe.c. These constants do not advertise the
+corresponding unsupported operations. HAVE_REALPATH selects the already qualified
+private HostPaths implementation rather than an unbound upstream fallback.
+Full fresh object emission and actual managed guest execution remain next.
+
+## Significant progress: exact private file timestamps
+
+HostFileTimes implements futimens/utimensat over the actual private nodes with
+exact nanoseconds, normalized negative epochs, NOW/OMIT/null modes, dirfd-relative
+lookup, atomic pair validation, and read-only image protection. Explicit times
+are bounded to years1–9999; NOW uses the clock provider's100ns quantum. The native
+oracle confirms both-OMIT path bypass and descriptor-validation asymmetry.
+Native and all four generated/runtime forms pass at
+host-file-times/attempt-ddqcd8yp, along with copied HostFiles/InstanceIo tests.
+The existing HostFileMetadata native/all4 matrix also passes at
+host-file-metadata/attempt-a5vfkobj after timestamp-output normalization.
+The binding is included in the next frozen full-core profile; no guest runtime
+claim follows from this isolated host contract qualification.
+
+## Significant progress: private resource and priority policy
+
+HostResources reports the live InstanceIo descriptor ceiling and the actual
+HostMemory owner budget, with immutable limits and explicit errors for unsupported
+selectors/changes. AS/DATA report the private mapping budget, not process-wide
+malloc or operating-system accounting. Priority is the immutable private
+identity's zero priority; foreign targets and mutations fail explicitly.
+Native ABI/error checks, the real C memory-owner getter lifecycle, and all four
+generated/runtime forms pass at host-resources/attempt-de3l8ktb, including two
+owners, actual descriptor/mapping exhaustion and compacting GC.
+The unchanged upstream System.rlim initializes to infinity and bypasses host
+callbacks for AS/DATA/NOFILE; connecting the owning limits at guest initialization
+remains required before claiming guest resource-limit enforcement.

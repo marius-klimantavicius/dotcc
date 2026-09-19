@@ -116,7 +116,18 @@ internal sealed class CSharpTarget : ITarget
         }
         : "";
 
-    public string RenderFloatLit(LitFloat lit) => lit.Text;
+    public string RenderFloatLit(LitFloat lit)
+    {
+        var text = lit.Text;
+        var dot = text.IndexOf('.');
+        // C accepts an empty fractional part (`1.`, `1.f`, `1.e2`). C#
+        // requires a digit there. Insert it without reparsing or rounding the
+        // significand; leave nonliteral spellings such as double.NaN intact.
+        if (dot > 0 && char.IsAsciiDigit(text[dot - 1])
+            && (dot + 1 == text.Length || text[dot + 1] is 'f' or 'F' or 'e' or 'E'))
+            return text.Insert(dot + 1, "0");
+        return text;
+    }
 
     /// <summary>Map a C primitive (keyed on its canonical C name) to the C# type it
     /// lowers to. <c>char</c>→<c>byte</c> so <c>char*</c> arithmetic walks bytes;

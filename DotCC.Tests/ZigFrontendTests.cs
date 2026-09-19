@@ -5731,7 +5731,9 @@ public sealed class ZigFrontendTests
             "    inline for (@typeInfo(P).@\"struct\".field_names) |f| { if (@hasField(P, f)) { n += 1; } }\n" +
             "    return n;\n" +
             "}\n");
-        UserCode(cs).ShouldContain("Cond.B(true)");
+        // Both compile-time membership tests are true, so their selected
+        // increments remain after constant branches are removed.
+        UserCode(cs).Split("n += (byte)(1);").Length.ShouldBe(3);
         UserCode(cs).ShouldNotContain("Cond.B(false)");
     }
 

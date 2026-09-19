@@ -5,6 +5,66 @@
       "path": "blink/pte32.c",
       "sha256": "33dfce2d096c6d098e3f8d0326eb012d9d6e825284066033edd22f8c5e4650a9",
       "reason": "The honest managed bus.h profile selects CAN_64BIT=0 and needs LoadPte32_, StorePte32_, and CasPte32_; native archive extraction does not select these definitions."
+    },
+    {
+      "path": "blink/argv.c",
+      "sha256": "8bca1c72bd6ef32457f03eb351def7fc9423d308ff032296c4d7f11a4c34d708",
+      "reason": "Actual native ELF loader seam adds this source; preserves upstream guest stack/argv/env/auxv construction."
+    },
+    {
+      "path": "blink/biosrom.c",
+      "sha256": "652bcab94fd2c1c65b6af44db082128e9a14918f407aac3773e5a251398ac50f",
+      "reason": "Actual native loader archive extraction pulls this retained loader dependency; real-mode/BIOS execution remains excluded and unqualified."
+    },
+    {
+      "path": "blink/bitscan.c",
+      "sha256": "3654d1b4be3a1b68855f06c29f8a291dbd5a5a6561b0ec14d8c979dc54d9992e",
+      "reason": "Managed feature selection uses unchanged bsr/bsf fallbacks absent from native interpreter archive extraction."
+    },
+    {
+      "path": "blink/cpucount.c",
+      "sha256": "a69c40d2781dfea096979b832c854aa59340d0f5ff8047333b49ad53419827cc",
+      "reason": "Managed syscall marshalling references GetCpuCount; the selected portable upstream fallback reports one CPU."
+    },
+    {
+      "path": "blink/endswith.c",
+      "sha256": "28f48e89d079661e22bdfaa01d082caaf19d5073d0fcc16e2093f7a71686f2a8",
+      "reason": "Actual native ELF loader seam adds this unchanged filename helper."
+    },
+    {
+      "path": "blink/loader.c",
+      "sha256": "8175b61a1de47f9decf91e71f682e73f5260b66ca1eba6686c2d4d302bcd751c",
+      "reason": "Actual full core references CanEmulateExecutable and requires LoadProgram for the pinned service; managed loading and mapping modes remain open."
+    },
+    {
+      "path": "blink/memccpy.c",
+      "sha256": "4c4a71f136df29403f783331064fbae45829e7452dcb6464d885e766767fccd9",
+      "reason": "Managed feature selection uses the unchanged memccpy_ fallback absent from native interpreter archive extraction."
+    },
+    {
+      "path": "blink/mkfifoat.c",
+      "sha256": "bb872766bc684655d2b5cb9b908f1d4710030ffe44a2c5d6c5bb2537fc149c3b",
+      "reason": "Actual selected overlay code references mkfifoat_; preserve the unchanged fallback while named-pipe host operations remain unresolved."
+    },
+    {
+      "path": "blink/pipe.c",
+      "sha256": "5a90d5b67616659930352ea6a35dd97fd5db4f960e64d28e13460b20bcbfe9ac",
+      "reason": "Actual selected syscall dispatcher references SysPipe2; this source preserves its guest buffer/flag/descriptor handling while private host pipes remain unresolved."
+    },
+    {
+      "path": "blink/popcount.c",
+      "sha256": "92dbcf00fad6630e8c253d681e8ff4460f29c4826517fcd5b528913139e72a01",
+      "reason": "Managed feature selection uses the unchanged popcount fallback absent from native interpreter archive extraction."
+    },
+    {
+      "path": "blink/preadv.c",
+      "sha256": "10ee5239f67228813c3cf8058e1240336695f5c59504bb95bba331200452db87",
+      "reason": "Managed syscall marshalling references unchanged preadv_/pwritev_ fallbacks; actual private positional I/O remains required."
+    },
+    {
+      "path": "blink/tainted.c",
+      "sha256": "2f708e3aee10e7bfc6c90e3dea5e958bf483e18e469c0a8d17eff55b524b8305",
+      "reason": "Actual native ELF loader seam adds this unchanged process-taint helper for auxiliary-vector construction."
     }
   ]
 }

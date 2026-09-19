@@ -2,7 +2,8 @@
   "version": 1,
   "scope": "Explicit full-core host bindings; unresolved isolated operations still require policy or implementation before runtime",
   "capabilities": {
-    "HAVE_GETRANDOM": "1"
+    "HAVE_GETRANDOM": "1",
+    "HAVE_REALPATH": "1"
   },
   "headers": [
     "src/HostIo/host-io.h",
@@ -20,9 +21,12 @@
     "src/HostSignalActions/HostSignalActions.h",
     "src/HostDescriptors/host-descriptors.h",
     "src/HostExitCallbacks/HostExitCallbacks.h",
-    "src/HostFdSets/HostFdSets.h"
+    "src/HostFdSets/HostFdSets.h",
+    "src/HostFileTimes/host-file-times.h",
+    "src/HostResources/host-resources.h"
   ],
   "includeHeaders": [
+    "host-profile-constants.h",
     "host-errors.h",
     "host-io.h",
     "host-clock.h",
@@ -39,7 +43,9 @@
     "HostSignalActions.h",
     "host-descriptors.h",
     "HostExitCallbacks.h",
-    "HostFdSets.h"
+    "HostFdSets.h",
+    "host-file-times.h",
+    "host-resources.h"
   ],
   "cSources": [
     "src/HostIo/HostFileControl.c",
@@ -75,7 +81,9 @@
     "src/HostSocketQueries/HostSocketQueriesBridge.cs",
     "src/HostYield/HostYieldBridge.cs",
     "src/HostDirectories/HostDirectoriesBridge.cs",
-    "src/HostMessages/HostMessagesBridge.cs"
+    "src/HostMessages/HostMessagesBridge.cs",
+    "src/HostFileTimes/HostFileTimesBridge.cs",
+    "src/HostResources/HostResourcesBridge.cs"
   ],
   "isolate": [
     "setenv",

@@ -54,6 +54,8 @@ double cbrt(double x);  float cbrtf(float x);
 double ceil(double x);  float ceilf(float x);
 double floor(double x); float floorf(float x);
 double round(double x); float roundf(float x);
+/* Default nearest/ties-even only: dotcc has no mutable fenv or FP flags. */
+double rint(double x); float rintf(float x);
 double trunc(double x); float truncf(float x);
 
 /* Absolute value, remainder, min/max (C99 for fmin/fmax). The `l` variant is
@@ -68,5 +70,6 @@ double fmax(double x, double y); float fmaxf(float x, float y);
 int isnan(double x);
 int isinf(double x);
 int isfinite(double x);
+int isunordered(double x, double y);
 
 #endif

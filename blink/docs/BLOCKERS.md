@@ -254,18 +254,18 @@ and reaches355 later diagnostics. It is not a fresh uniform-compiler emission or
 managed runtime result. The summary and exact generated/source matches are
 preserved beside that receipt.
 
-- **B025 — unsigned coercion of C boolean results (open):** calls, stores and
+- **B025 — unsigned coercion of C boolean results (reduced repair qualified; full-core recheck pending):** calls, stores and
   returns omit conversions from emitted CBool to uint/ulong. Native reduction
   returns5; the current C# build fails.
-- **B026 — array-to-pointer member typing (open):** expressions such as
+- **B026 — array-to-pointer member typing (reduced repair qualified; full-core recheck pending):** expressions such as
   `m->opcache->field`, where opcache is a one-element record array, infer int
   because member-type lookup peels pointers but not decayed arrays. The actual
   record declarations are correct; this also affects decoded instruction fields.
   Native reduction prints `40 3 2` and reproduces four conversion failures.
-- **B027 — fractionless floating literals (open):** valid C `1.f`, `2.` and
+- **B027 — fractionless floating literals (reduced repair qualified; full-core recheck pending):** valid C `1.f`, `2.` and
   `3.e1f` are emitted with invalid C# spelling. Native reduction returns42.0.
   The apparent SSE `.f` member errors came from these literals, not union fields.
-- **B028 — unreachable profile branches retain undefined names (open):**
+- **B028 — unreachable profile branches retain undefined names (reduced repair qualified; full-core recheck pending):**
   constant-false disabled-JIT paths still render Jitter and other unselected
   helpers. Generic removal must preserve C short-circuit effects and label entry;
   neither generated-source rewriting nor helper placeholders qualify a fix.
@@ -297,3 +297,13 @@ supplies pinned per-thread aggregate storage. Fresh recovery qualification at
 host-fd-sets/attempt-0ko66tt9 passes native and all four managed runtime forms,
 including two worker records and cached pointers across GC. No authored storage
 reshape or restoration of the patch's superseded globals hunk was used.
+
+## Recovery regression gate (2026-09-19)
+
+B025–B028 and the missing generic string/default-rounding primitives pass the
+fresh isolated repository gate: 2257 unit and556 functional tests,1057 explicit
+platform skips, zero failures. The Release build has zero errors and17 existing
+analyzer warnings. Log: artifacts/recovery-isolated-repository.log.
+The compiler is based on11ea352 and preserves fde3e7e global/TLS storage.
+These results establish regression-tested generic repairs, not complete guest
+execution. B029 remains open pending fresh object emission and host qualification.

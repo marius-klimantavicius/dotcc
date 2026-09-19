@@ -1472,11 +1472,10 @@ internal sealed partial class IrBuilder
     /// <summary>The CType of <paramref name="field"/> read off the struct/union
     /// that <paramref name="baseExpr"/>'s type names (pointer levels peeled), or
     /// <see cref="CType.Int"/> when unknown (e.g. an as-yet-unregistered struct).</summary>
-    private CType MemberType(CExpr baseExpr, string field)
+    private CType MemberType(CExpr baseExpr, string field, bool arrow)
     {
-        var t = baseExpr.Type;
-        while (t is CType.Pointer p) { t = p.Pointee; }
-        if (t is CType.Named n && _structFields.TryGetValue(n.Name, out var fields))
+        if (StructCanonical(MemberOwnerType(baseExpr.Type, arrow)) is { } name
+            && _structFields.TryGetValue(name, out var fields))
         {
             foreach (var f in fields) { if (f.Name == field) { return f.Type; } }
         }
@@ -3194,21 +3193,27 @@ internal sealed partial class IrBuilder
     /// Recurses so a field promoted through several nesting levels still resolves.</summary>
     private CExpr BuildMemberAccess(CExpr base_, string field, bool arrow)
     {
-        if (StructCanonical(base_.Type) is { } canonical
+        if (StructCanonical(MemberOwnerType(base_.Type, arrow)) is { } canonical
             && _promoted.TryGetValue(canonical, out var pm)
             && pm.TryGetValue(field, out var p))
         {
             var hidden = new Member(base_, p.Hidden, arrow) { Type = new CType.Named(p.Nested), IsLValue = arrow || base_.IsLValue };
             return BuildMemberAccess(hidden, field, arrow: false);
         }
-        return new Member(base_, field, arrow) { Type = MemberType(base_, field), IsLValue = arrow || base_.IsLValue };
+        return new Member(base_, field, arrow) { Type = MemberType(base_, field, arrow), IsLValue = arrow || base_.IsLValue };
     }
+
+    // In `record.array_member->field`, the array decays to a pointer before
+    // member lookup. Preserve the array lvalue in the expression for storage
+    // emission, but resolve its pointee's real field type instead of int.
+    private static CType MemberOwnerType(CType type, bool arrow) =>
+        arrow && type.Unqualified is CType.Array array ? new CType.Pointer(array.Element) : type;
 
     /// <summary>The canonical struct/union name an expression's type names (pointer
     /// levels peeled), or null if it isn't an aggregate.</summary>
     private static string? StructCanonical(CType t)
     {
-        while (t is CType.Pointer p) { t = p.Pointee; }
+        while (t.Unqualified is CType.Pointer p) { t = p.Pointee; }
         return (t.Unqualified as CType.Named)?.Name;
     }
 

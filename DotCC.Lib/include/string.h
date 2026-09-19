@@ -21,6 +21,9 @@ int strcoll(const char* a, const char* b);
 int strcasecmp(const char* a, const char* b);
 int strncasecmp(const char* a, const char* b, size_t n);
 char* strcpy(char* dst, const char* src);
+char* stpcpy(char* dst, const char* src);
+char* strdup(const char* src);
+char* strndup(const char* src, size_t maximum);
 char* strncpy(char* dst, const char* src, size_t n);
 
 /* Concatenation. */

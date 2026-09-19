@@ -943,6 +943,7 @@ internal sealed partial class CSharpBackend
                 break;
             case Continue: sb.Append(pad).Append(_continueAsGoto is { } continueDestination ? $"goto {continueDestination};\n" : "continue;\n"); break;
             case If f:
+                if (TryEmitConstantIf(sb, f, ind)) break;
                 // The condition is evaluated once, so a value comma in it can hoist.
                 var ifc = Hoist(sb, pad, () => Expr(DecayEnum(f.Cond)));
                 sb.Append(pad).Append($"if (Cond.B({ifc}))\n");
@@ -1550,6 +1551,16 @@ internal sealed partial class CSharpBackend
         text = "";
         var tgt = target.Unqualified;
         var src = value.Type.Unqualified;
+
+        // C _Bool stores already contain 0 or 1. C# cannot implicitly chain
+        // CBool's int conversion into unsigned/narrow integer conversions (or
+        // another user-defined conversion, such as Int128). Normalize through
+        // int explicitly at numeric sinks, then apply the target conversion.
+        if (src == CType.Bool && tgt is CType.Prim && tgt != CType.Bool && Cs(tgt) != "int")
+        {
+            text = $"({Cs(tgt)})(int)({Expr(value)})";
+            return true;
+        }
 
         // C's null pointer constant — integer zero, optionally cast to void* — becomes C# `null`
         // where a POINTER is expected (C# won't convert int 0 to a pointer).

@@ -53,7 +53,7 @@ public sealed class StatementLoweringTests
             static void act(int *p) { *p += 1; }
             int main(void) {
                 int n = 0;
-                ((1) ? ((1) ? act(&n) : ((void)(0))) : ((void)(0)));
+                ((n == 0) ? ((n + 1) ? act(&n) : ((void)(0))) : ((void)(0)));
                 return n;
             }
             """);

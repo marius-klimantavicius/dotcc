@@ -11,6 +11,9 @@ typedef int (*BlinkHostMemoryReadLength)(int, off_t *);
 /* Explicit per-owner callbacks; anonymous mappings need no file binding.
  * Callbacks borrow host buffers synchronously and must preserve fd position. */
 int BlinkHostMemorySetFileReader(BlinkHostMemoryReadAt, BlinkHostMemoryReadLength);
+/* Configured mapping-owner budget; zero means no active owner. This is not
+ * total process address space or an accounting of generic malloc allocations. */
+size_t BlinkHostMemoryLimit(void);
 size_t BlinkHostMemoryBytes(void);
 size_t BlinkHostMemoryMappings(void);
 /* Nonempty range wholly within one live mapping on the current owner. Pure

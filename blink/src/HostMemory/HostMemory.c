@@ -42,6 +42,7 @@ int BlinkHostMemoryBegin(size_t limit) {
   owner.limit = limit;
   return 0;
 }
+size_t BlinkHostMemoryLimit(void) { return owner.limit; }
 size_t BlinkHostMemoryBytes(void) { return owner.bytes; }
 size_t BlinkHostMemoryMappings(void) { return owner.mappings; }
 int BlinkHostMemorySetFileReader(BlinkHostMemoryReadAt read_at,

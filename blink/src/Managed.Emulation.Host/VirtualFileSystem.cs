@@ -21,12 +21,13 @@ public readonly record struct HostResult<T>(T Value, GuestError Error)
 [Flags]
 public enum FileAccessMode { Read = 1, Write = 2 }
 public readonly record struct VirtualFileStat(long Length, bool Immutable, bool Directory,
-    ulong Inode = 0, uint Mode = 0, long AccessTicks = 0, long ModifyTicks = 0, long ChangeTicks = 0, ulong Links = 1);
+    ulong Inode = 0, uint Mode = 0, long AccessTicks = 0, long ModifyTicks = 0, long ChangeTicks = 0, ulong Links = 1,
+    int AccessSubtick = 0, int ModifySubtick = 0, int ChangeSubtick = 0);
 public readonly record struct VirtualFileSystemCapacity(ulong TotalBytes, ulong FreeBytes, ulong TotalNodes, ulong FreeNodes);
 public readonly record struct VirtualDirectoryEntry(string Name, ulong Inode, byte Type);
 
 /// <summary>A private Linux-path namespace. It never consults the host filesystem.</summary>
-public sealed class VirtualFileSystem : IDisposable
+public sealed partial class VirtualFileSystem : IDisposable
 {
     private sealed class Node(byte[] bytes, bool immutable, ulong inode, uint mode)
     {
@@ -34,9 +35,9 @@ public sealed class VirtualFileSystem : IDisposable
         internal readonly bool Immutable = immutable;
         internal readonly ulong Inode = inode;
         internal readonly uint Mode = mode;
-        internal long AccessTicks = DateTime.UtcNow.Ticks;
-        internal long ModifyTicks = DateTime.UtcNow.Ticks;
-        internal long ChangeTicks = DateTime.UtcNow.Ticks;
+        internal VirtualFileTime AccessTime = VirtualFileTime.UtcNow;
+        internal VirtualFileTime ModifyTime = VirtualFileTime.UtcNow;
+        internal VirtualFileTime ChangeTime = VirtualFileTime.UtcNow;
     }
     private sealed class Description(Node node, FileAccessMode access, bool append, string? directoryPath = null)
     {
@@ -180,13 +181,13 @@ public sealed class VirtualFileSystem : IDisposable
                 files.Add(name, node);
                 pathBytes += Encoding.UTF8.GetByteCount(name);
                 var parent = directoryNodes[Parent(name)];
-                parent.ModifyTicks = parent.ChangeTicks = DateTime.UtcNow.Ticks;
+                parent.ModifyTime = parent.ChangeTime = VirtualFileTime.UtcNow;
             }
             if (truncate)
             {
                 writableBytes -= node.Bytes.Length;
                 node.Bytes = [];
-                node.ModifyTicks = node.ChangeTicks = DateTime.UtcNow.Ticks;
+                node.ModifyTime = node.ChangeTime = VirtualFileTime.UtcNow;
             }
             int descriptor = NextDescriptor();
             descriptors.Add(descriptor, new Description(node, access, append));
@@ -203,7 +204,7 @@ public sealed class VirtualFileSystem : IDisposable
             int count = (int)Math.Min(destination.Length, Math.Max(0, file.Node.Bytes.LongLength - file.Position));
             if (count != 0) file.Node.Bytes.AsSpan((int)file.Position, count).CopyTo(destination);
             file.Position += count;
-            if (destination.Length != 0) file.Node.AccessTicks = DateTime.UtcNow.Ticks;
+            if (destination.Length != 0) file.Node.AccessTime = VirtualFileTime.UtcNow;
             return HostResult<int>.Success(count);
         }
     }
@@ -216,7 +217,7 @@ public sealed class VirtualFileSystem : IDisposable
             if (offset < 0) return Fail<int>(GuestError.Invalid);
             int count = (int)Math.Min(destination.Length, Math.Max(0, file.Node.Bytes.LongLength - offset));
             if (count != 0) file.Node.Bytes.AsSpan((int)offset, count).CopyTo(destination);
-            if (destination.Length != 0) file.Node.AccessTicks = DateTime.UtcNow.Ticks;
+            if (destination.Length != 0) file.Node.AccessTime = VirtualFileTime.UtcNow;
             return HostResult<int>.Success(count);
         }
     }
@@ -256,7 +257,7 @@ public sealed class VirtualFileSystem : IDisposable
             }
             source[..count].CopyTo(file.Node.Bytes.AsSpan((int)position, count));
             if (!offset.HasValue) file.Position = position + count;
-            file.Node.ModifyTicks = file.Node.ChangeTicks = DateTime.UtcNow.Ticks;
+            file.Node.ModifyTime = file.Node.ChangeTime = VirtualFileTime.UtcNow;
             return HostResult<int>.Success(count);
         }
     }
@@ -291,7 +292,7 @@ public sealed class VirtualFileSystem : IDisposable
         try { Array.Resize(ref node.Bytes, (int)length); }
         catch (OutOfMemoryException) { return Fail<int>(GuestError.NoMemory); }
         writableBytes += length - previous;
-        node.ModifyTicks = node.ChangeTicks = DateTime.UtcNow.Ticks;
+        node.ModifyTime = node.ChangeTime = VirtualFileTime.UtcNow;
         return HostResult<int>.Success(0);
     }
     // Every successful operation is already committed to this ephemeral memory
@@ -431,7 +432,8 @@ public sealed class VirtualFileSystem : IDisposable
 
     private static VirtualFileStat Metadata(Node node, bool directory) => new(
         node.Bytes.LongLength, node.Immutable, directory, node.Inode, node.Mode,
-        node.AccessTicks, node.ModifyTicks, node.ChangeTicks);
+        node.AccessTime.Ticks, node.ModifyTime.Ticks, node.ChangeTime.Ticks,
+        AccessSubtick: node.AccessTime.Subtick, ModifySubtick: node.ModifyTime.Subtick, ChangeSubtick: node.ChangeTime.Subtick);
 
     public void Dispose()
     {
