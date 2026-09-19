@@ -26,11 +26,12 @@ This is an explicit initial target, not a claim of portability to other ABIs.
 support. All managed validation rows start pending. Native oracle checks establish
 the selected dialect/protection baseline, not managed coverage or full API parity.
 
-The initial import audit finds allocation/string/format/time services already in
-dotcc libc, but additional work is required for DNS, secure entropy, scatter/gather
-I/O, socket readiness, nonblocking operation and IPv6. The existing `fcntl`/`poll`
-placeholder behavior cannot satisfy the client contract. Generic shared runtime
-implementations are preferred; each needs execution tests before qualification.
+The initial import audit found allocation/string/format/time services in dotcc
+libc and gaps in DNS, secure entropy, scatter/gather I/O, socket readiness,
+nonblocking operation and IPv6. These gaps now have shared BCL runtime services
+with native/JIT/NativeAOT checks; `fcntl`/`poll` use real descriptor/readiness
+semantics. Integration with the complete translated SMB client remains a separate
+gate. See shared `docs/C-SUPPORT.md` for each service's exact supported surface.
 
 No protocol algorithm or generated C# is rewritten. Server APIs present in shared
 units may be emitted, but SMB server hosting, Kerberos, full DCE/RPC, leases used

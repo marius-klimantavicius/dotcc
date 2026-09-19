@@ -110,6 +110,8 @@ internal static class FixtureRunner
         AddReferenceByType(refs, typeof(System.Diagnostics.Process));
         AddReferenceByType(refs, typeof(System.Net.Sockets.Socket));
         AddReferenceByType(refs, typeof(System.Net.IPAddress));
+        AddReferenceByType(refs, typeof(System.Net.Dns));
+        AddReferenceByType(refs, typeof(System.Net.NetworkInformation.NetworkInterface));
         // SocketException derives from System.ComponentModel.Win32Exception
         // (Microsoft.Win32.Primitives) — needed so `catch (SocketException)` binds.
         AddReferenceByType(refs, typeof(System.ComponentModel.Win32Exception));

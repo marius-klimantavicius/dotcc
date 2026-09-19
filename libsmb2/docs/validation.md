@@ -44,3 +44,25 @@ Subsequent compiler fixes require a new complete translation and runtime campaig
 The object-emission census is the next independent gate. Its newly exposed
 flexible-array initializer issue and missing runtime networking services are being
 reduced and repaired; frontend success does not establish a buildable product.
+
+## Host services and object lowering
+
+- `8f1d8ab` repairs typedef-array global storage and sized static flexible-array
+  initializers with native-matched focused and emitted-runtime regressions.
+- `ccbfbda` implements actual nonblocking socket I/O, IPv6, descriptor flags and
+  poll readiness/timeouts, including Linux `sockaddr_storage` layout. Focused
+  socket, ABI, resolver and aggregate unit checks passed 38/38 at this checkpoint.
+- DNS, owned resolver results, secure entropy, and single-call vector I/O now have
+  shared BCL runtime implementations. Their translated C regression was first
+  shown failing on the absent runtime symbols before implementation. Native C and
+  managed JIT results match; direct tests check IPv4/IPv6 address/port layout,
+  ownership, errors, buffer guards, datagram preservation and scatter order.
+- `python3 libsmb2/scripts/test-host-services.py`: **three native/JIT/NativeAOT
+  fixtures pass in all three forms**: Linux endian/layout, IPv4/IPv6 nonblocking
+  TCP with poll, and resolver/entropy/vector I/O. See
+  `artifacts/host-services/results.json` for exact compiler hashes and commands.
+
+These service checks do not validate the SMB engine. The complete 53-unit source
+closure is being regenerated through the actual product pipeline to expose the
+next link/C# compilation failures. P1 crypto/complete ABI gates and all managed
+SMB interoperability gates remain open.

@@ -1,0 +1,1 @@
+POSIX addrinfo/iovec layouts, getrandom/getentropy and readv/writev are not an MSVC surface.
