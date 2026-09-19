@@ -281,12 +281,15 @@ repairs and the centralized repository run passes:2239 unit and535 functional
 tests,1047 explicit skips (artifacts/repository-tag-static-path.log). The build
 has zero errors and17 analyzer warnings in existing unchanged test files.
 
-## B030 — generic directory return-pointer declarations (pending revalidation)
+## B030 — generic directory return-pointer declarations (reproduced; separate from Blink)
 
 The saved Path-name regression observed generic opendir/readdir runtime void*
 returns against typed C declarations. Explicit native-valid casts isolated that
-regression. This separate generic boundary has not been repaired or freshly
-qualified by recovery; the private directory bridge uses its own typed methods.
+regression. Fresh revalidation at generic-directory-revalidation/attempt-di13tdti passes
+native compilation/execution, then reproduces CS0266 for implicit void* to
+DIR* and dirent* assignments in managed output. No generated-source casts were
+inserted. This separate generic boundary remains unresolved; the qualified
+private Blink directory bridge uses its own typed methods.
 
 ## B031 — TLS aggregate addresses move during compacting GC (fixed)
 
@@ -347,11 +350,11 @@ hash-checked staged-source correction is being prepared after these failing
 receipts, with raw IEEE integer rounding and explicit architectural fault-state
 checks. The immutable upstream reference remains unchanged. P3 is open.
 
-The reviewed three-source correction passes491 inputs against actual hardware
-and staged native Blink, and all1964 comparisons in raw/optimized JIT/NativeAOT
+The reviewed three-source correction passes 491 inputs against actual hardware
+and staged native Blink, and all 1964 comparisons in raw/optimized JIT/NativeAOT
 at cpu-conformance-managed/attempt-kenqm2yg. Guard tests verify exact source and
 replacement hashes and reject compilation without DISABLE_JIT. The untouched
-upstream still produces397 native mismatches in this expanded corpus; those
+upstream still produces 397 native mismatches in this expanded corpus; those
 failures remain preserved. This closes B032 for the reviewed scalar conversion,
 comparison and SIMD signal-code paths. The qualified derived CPU link retains
 105 original objects and replaces four; a new canonical full-core profile is

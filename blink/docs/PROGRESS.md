@@ -34,9 +34,9 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 Integrate the qualified staged scalar FP correction and current HostMemory into
 a fresh complete-core profile, then rerun its ABI/execution/import gates. Expand
-the remaining CPU/CPUID coverage and finish independent MsQuic, Lua/chibi and
-affected WAT/Zig regressions. SQLite and picotls fresh Linux x64 regression
-matrices pass. Service-worker implementation and malformed-input work are
+the remaining CPU/CPUID coverage and finish independent MsQuic qualification.
+SQLite/picotls matrices, Lua/chibi JIT conformance and WAT/Zig execution oracles
+now have fresh passing Linux x64 results. Service-worker implementation and malformed-input work are
 blocked by automated review and were not retried; Windows execution remains
 unavailable. Keep P3–P6 open. The coordinator integrates reviewed commits back
 to the original checkout, preserving user patches and unqualified partial files.
@@ -1076,27 +1076,27 @@ The existing complete picotls Linux x64 campaign now passes with the unchanged
 compiler after checksum-verified native preparation and fresh translation of
 all nine selected source files. Raw/optimized JIT/NativeAOT pass at
 picotls-regression/attempt-ymi5de8u, including ABI/provider/upstream/TLS suites
-and224 independent native-picotls/SslStream peer executions. The dependency
+and 224 independent native-picotls/SslStream peer executions. The dependency
 audit reports zero violations and zero missing entries. Exact tools, authored
-inputs, generated files, binaries and nested receipts are retained;11 tool
-inputs and110 tracked picotls files remained unchanged. This closes the picotls
+inputs, generated files, binaries and nested receipts are retained; 11 tool
+inputs and 110 tracked picotls files remained unchanged. This closes the picotls
 regression row for Linux x64 only. MsQuic and other campaigns, Windows execution
 and the remaining Blink runtime gates are still open.
 
 ## Significant progress: qualified staged scalar FP correction
 
 A reviewed, hash-checked adaptation of cvt.c, ssefloat.c and the SIMD arm of
-throw.c now passes491 hardware/native cases and all1964 raw/optimized
+throw.c now passes 491 hardware/native cases and all 1964 raw/optimized
 JIT/NativeAOT comparisons at cpu-conformance-managed/attempt-kenqm2yg. Scalar
 CVT/CVTT rounding and masked/unmasked exceptions, COMIS/UCOMIS flags and sticky
 status, and Linux SIMD signal-code priority now match the measured architectural
 behavior. Fault comparisons retain destination registers, MXCSR, defined flags,
-RIP and signal state. The original31 inputs are preserved with460 added cases.
+RIP and signal state. The original 31 inputs are preserved with 460 added cases.
 
 The immutable reference and compiler are unchanged. The original native Blink
-results retain397 failures; no normalization converts them to passes. Staging
+results retain 397 failures; no normalization converts them to passes. Staging
 checks exact original/replacement/diff hashes and all three files reject builds
-without DISABLE_JIT. The derived qualified link retains105 original objects and
+without DISABLE_JIT. The derived qualified link retains 105 original objects and
 replaces the frontend plus three upstream TUs. This closes B032 only for the
 reviewed scalar scope; the next full canonical profile will explicitly include
 these changes and the separately qualified HostMemory revision. P3 remains open.
@@ -1105,7 +1105,7 @@ these changes and the separately qualified HostMemory revision. P3 remains open.
 
 The unchanged compiler freshly translates the existing CI-selected Lua and
 chibi sources in private scratch copies. Lua's complete `_U=true` upstream
-user-test runner reports `final OK !!!`; chibi passes1225 tests in18 subgroups
+user-test runner reports `final OK !!!`; chibi passes 1225 tests in 18 subgroups
 and its full transcript matches the committed native baseline after only the
 existing timing/ANSI normalization. Receipt:
 language-regressions/attempt-vqeg8yjo. Native chibi bootstrap regenerates the four
@@ -1113,9 +1113,28 @@ required FFI stubs. Compiler, authored sources, generated outputs and executed
 managed binaries are hashed. These are the existing Linux x64 JIT conformance
 recipes, not AOT/platform or unselected internal C-API coverage.
 
-The opt-in WAT execution oracle also passes146 cases using installed wat2wasm
+The opt-in WAT execution oracle also passes 146 cases using installed wat2wasm
 and Node: wat-zig-regression/attempt-4uflu_5h. The compiled compiler DLL matches
-the campaign CLI's library hash. All205 selected Zig oracle rows are explicitly
+the campaign CLI's library hash. All 205 selected Zig oracle rows are explicitly
 skipped because zig is unavailable, so they remain unqualified. Tool identities,
 command, TRX case records and skips are retained. No generic compiler changes
 were needed, and P6 remains open.
+
+## Significant progress: complete Zig oracle and campaign runbook
+
+The initial missing-tool skips are resolved using the repository CI's existing
+Zig0.16.0 Linux x64 archive pin. The downloaded SHA256 is
+70e49664a74374b48b51e6f3fdfbf437f6395d42509050588bd49abe52ba3d00;
+the tool remains under ignored campaign ref/build paths. A first actual run
+passed203 tests and retained two standard-library-configuration skips. With
+the bundled library path explicitly configured, a fresh run passes all205
+Zig differential cases, zero skips, at zig-regression/attempt-lmenyhyn. The
+runner verifies the test compiler matches the campaign CLI, records binary and
+archive identities, and rejects skipped cases as incomplete. Earlier setup and
+skip receipts remain preserved. No generic compiler or library changes occurred.
+
+The campaign README now gives the actual core reproduction path, focused test
+entry points, ownership constraints and current unqualified product gates.
+B030 was also freshly revalidated: a minimal native directory-call program
+passes, while typed opendir/readdir assignments still fail managed compilation.
+It remains a separate generic issue, outside the qualified private Blink bridge.

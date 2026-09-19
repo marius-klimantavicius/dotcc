@@ -45,7 +45,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Fresh picotls campaign | Full raw/optimized JIT/AOT suites and 224 peer executions pass | `scripts/test-picotls-regression.py`; attempt-ymi5de8u |
 | Fresh Lua/chibi conformance | Lua user-test final success; chibi 1225/1225 and 18/18 with native-baseline transcript match; JIT only | `scripts/test-language-regressions.py`; attempt-vqeg8yjo |
 | WAT execution regression | 146 oracle cases pass using wat2wasm and Node | `DOTCC_RUN_WAT=1 dotnet test DotCC.FunctionalTests -c Release --no-build --filter FullyQualifiedName~WatOracleTests`; attempt-4uflu_5h |
-| Zig execution oracle | 205 selected rows skipped; external zig unavailable | Same receipt retains exact opt-in command and case-level skips |
+| Zig execution oracle | All 205 cases pass, zero skips, using CI-pinned Zig 0.16.0 and its real standard library | `scripts/test-zig-regression.py --offline`; attempt-lmenyhyn |
 | Repository baseline | Build pass; 2218 unit pass; 490 functional pass, 1009 skipped | `scripts/test-repository.sh` |
 | Bit-field repair regressions | Build pass; 2218 unit pass; 491 functional pass, 1011 skipped | `scripts/test-repository.sh` |
 | Array parameter / tagged return repairs | Build pass; 2218 unit pass; 494 functional pass, 1017 skipped | `scripts/test-repository.sh` |
@@ -92,7 +92,7 @@ WAL, SQL/JSONB/FTS5, callbacks, GC and cleanup. Reproduce with
 Other dependent-campaign and platform rows remain open.
 
 Fresh picotls regeneration also passes its complete Linux x64 raw/optimized
-JIT/NativeAOT campaign, including224 independent peer executions and zero
+JIT/NativeAOT campaign, including 224 independent peer executions and zero
 dependency-audit violations: picotls-regression/attempt-ymi5de8u. Reproduce with
 `scripts/test-picotls-regression.py --cache <verified-picotls-archive-cache>`.
 The shared compiler and tracked picotls inputs remained unchanged.
