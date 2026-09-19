@@ -183,6 +183,8 @@ own minimized evidence and explicitly tracked correction.
 
 ```text
 blink/
+  ManagedConsumer.slnx   final translation and runnable usage sample solution
+  ManagedConsumer/      separate sample application using the owning managed API
   docs/         PLAN, source, configuration, host-contract, blockers, validation, usage
   config/       immutable source manifest, feature profile, host headers/overrides
   scripts/      fetch, native-oracle, probe, translate, build, test, dependency-audit
@@ -194,12 +196,26 @@ blink/
   artifacts/    diagnostics, traces, comparisons, performance/validation receipts (ignored)
 ```
 
+Required delivery paths are `blink/scripts/translate.sh` and
+`blink/generated/TranslatedBlink/`. The script performs translation and the
+existing semantic post-processing end to end, placing the final post-processed
+C# sources and `TranslatedBlink.csproj` in that output directory. Preserve the
+immutable raw translation separately so post-processing cannot overwrite it.
+Record source/configuration/compiler and output identities for reproducible runs.
+
+`blink/ManagedConsumer.slnx` is the showcase solution for the final translation.
+Include the generated project, required host/API/worker projects, and a separate
+runnable usage sample under `blink/ManagedConsumer/`. The sample consumes the
+final generated project through project references and the owning API, showing
+service startup, readiness, a real HTTP request, captured output and cleanup.
+Document translation, solution build and sample run commands from a clean checkout.
+
 Shared compiler/runtime fixes stay in their existing projects. Scripts resolve
 paths from their own location, isolate temporary/build directories, and support
 offline reruns after checksum-verified fetches. Record any upstream test toolchain
 download separately; native `make check` must not silently fetch floating tools.
 
-Proposed output: `generated/TranslatedBlink/TranslatedBlink.csproj`, class
+Required output: `blink/generated/TranslatedBlink/TranslatedBlink.csproj`, class
 `BlinkCore`, namespace `Managed.Emulation`, using `--emit=managedlib --nest-types
 --runtime=c --split=size --split-size=102400`. Verify actual CLI options when
 implementation starts. Run the existing semantic postprocessor after normal
@@ -255,9 +271,16 @@ embedding boundary under JIT and NativeAOT; unresolved dependencies are recorded
 - [x] Emit all required decoder, CPU, memory, loader, and syscall-marshalling code.
 - [x] Build raw/optimized libraries and whole-library-rooted AOT consumers.
 - [x] Audit imports and initializers; placeholders cannot enter runtime gates.
+- [ ] Deliver `blink/scripts/translate.sh` to run translation and semantic
+      post-processing, producing the final sources and project in
+      `blink/generated/TranslatedBlink/` with a separate immutable raw snapshot.
+
+The original core build/execution gate passed. The newly required delivery
+script and stable output directory remain pending under P2.
 
 **Gate:** complete selected source closure builds with matching actual layouts,
-no native emulator dependency, and passing affected compiler regressions.
+no native emulator dependency, and passing affected compiler regressions;
+`blink/scripts/translate.sh` reproduces the final post-processed output directory.
 
 ### P3 — Qualify CPU, guest memory, and ELF loading
 
@@ -289,6 +312,8 @@ operations fail explicitly without false success or a native fallback.
 
 ### P5 — Deliver the first fake-instance service runner
 
+- [ ] Deliver `blink/ManagedConsumer.slnx` and its runnable usage sample, consuming
+      `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and the owning API.
 - [ ] Provide an owning API for image/argv/env/limits, start/readiness, logs,
       endpoint publication, status/exit reason, stop, and asynchronous disposal.
 - [ ] Implement one managed worker per instance and a bounded control protocol.
@@ -299,7 +324,8 @@ operations fail explicitly without false success or a native fallback.
       headers/body as specified by the fixture, including large/fragmented traffic.
 
 **Gate:** a separate application starts, talks to, stops, and restarts actual
-translated-emulator service instances without cross-instance interference.
+translated-emulator service instances without cross-instance interference;
+the showcase solution builds and its sample demonstrates the documented usage.
 
 ### P6 — Qualify faults, platforms, and delivery
 
@@ -312,6 +338,9 @@ translated-emulator service instances without cross-instance interference.
       interpreter settings; set no unsupported performance-equivalence promise.
 - [ ] Reproduce generation from a clean checkout; audit published imports,
       executable mappings, stale files, trim roots, and all runtime dependencies.
+- [ ] From a clean checkout, run `blink/scripts/translate.sh`, build
+      `blink/ManagedConsumer.slnx` and execute its usage sample using the final
+      post-processed sources; document the exact commands and observed results.
 - [x] Regenerate SQLite with the final compiler and rerun its JIT/AOT corpus;
       rerun picotls/MsQuic after relevant shared fixes, plus Lua/chibi and affected
       Zig/WAT checks. Record observed failures rather than relabeling old evidence.

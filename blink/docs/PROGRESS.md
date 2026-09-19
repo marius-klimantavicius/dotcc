@@ -9,7 +9,7 @@ implementation, qualification and completion gates. Valid ELF loading remains
 in scope. Earlier malformed-ELF blockers below are historical and no longer
 block completion; excluded checks are not reported as passed.
 
-P0–P2 have passed their stated gates on Linux x64. The complete selected interpreter executes bounded instructions, faults and guest exits in raw/optimized JIT/NativeAOT. P3–P6 remain open; no managed service runner or Windows execution is claimed.
+P0–P1 and P2's original core gate have passed on Linux x64. The complete selected interpreter executes bounded instructions, faults and guest exits in raw/optimized JIT/NativeAOT. P2 now has additional pending delivery requirements: `blink/scripts/translate.sh` and final post-processed sources in `blink/generated/TranslatedBlink/`. P3–P6 remain open; P5 also requires the showcase `blink/ManagedConsumer.slnx` and its usage sample. No managed service runner or Windows execution is claimed.
 
 ## Ownership
 
@@ -29,10 +29,10 @@ documentation were committed directly on `sqlite`.
 | --- | --- | --- |
 | P0 | Passed | Immutable sources verified offline; native Blink and 25 assembly cases pass; six HTTP cases pass on Linux and Blink; exact native archive/import/global audit and initial translation failures recorded. |
 | P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
-| P2 | Passed | All 109 selected sources emit/link; raw/optimized libraries and whole-library-rooted AOT execute; direct IL/import/initializer inventories complete with zero traversed native imports. Indirect/framework limits remain explicit for P4/P6. |
+| P2 | Core passed; delivery pending | All 109 selected sources emit/link; raw/optimized libraries and whole-library-rooted AOT execute; direct IL/import/initializer inventories complete with zero traversed native imports. Newly required translate.sh and final TranslatedBlink output remain pending. Indirect/framework limits remain explicit for P4/P6. |
 | P3 | Pending | CPU/memory/ELF behavior corpus. |
 | P4 | Pending | Real host contracts and service startup. |
-| P5 | Pending | Worker/controller lifecycle and two-instance HTTP qualification. |
+| P5 | Pending | Worker/controller lifecycle, two-instance HTTP qualification, and ManagedConsumer.slnx usage showcase. |
 | P6 | Pending | Faults, Linux/Windows runtime matrix, reproduction and regression qualification. |
 
 ## Observed environment
@@ -52,6 +52,10 @@ and unresolved runtime-dependency limits. Service-worker implementation remains
 blocked by automated review and was not retried. Malformed-ELF handling and
 qualification are excluded by user direction, not a remaining completion blocker.
 Resume additional work only after a new user instruction.
+
+The later request to add delivery paths updates the plan only. The translation
+script/final output belong to P2, the showcase solution/sample to P5, and their
+clean-checkout delivery verification to P6. Agents remain stopped.
 
 ## Observed validation (initial campaign baseline)
 
