@@ -144,16 +144,16 @@ public static unsafe partial class Libc
         FileMode fmode;
         if ((flags & oCreat) != 0 && (flags & oExcl) != 0) { fmode = FileMode.CreateNew; }
         else if ((flags & oCreat) != 0 && (flags & oTrunc) != 0) { fmode = FileMode.Create; }
-        else if ((flags & oAppend) != 0) { fmode = (flags & oCreat) != 0 ? FileMode.Append : FileMode.Append; }
         else if ((flags & oTrunc) != 0) { fmode = FileMode.Truncate; }
         else if ((flags & oCreat) != 0) { fmode = FileMode.OpenOrCreate; }
         else { fmode = FileMode.Open; }
-        // FileMode.Append demands write-only access in .NET.
-        if (fmode == FileMode.Append) { access = FileAccess.Write; }
         try
         {
             var stream = new FileStream(p, fmode, access, FileShare.ReadWrite | FileShare.Delete);
             var fd = RegisterFileSlot(stream);
+            var slot = SlotByFd(fd)!;
+            slot.StatusFlags = (flags & (3 | oAppend | 0x800));
+            slot.DescriptorFlags = (flags & 0x80000) != 0 ? 1 : 0;
             if ((flags & oCreat) != 0 && mode != 0) { TrySetUnixMode(p, mode); }
             return fd;
         }

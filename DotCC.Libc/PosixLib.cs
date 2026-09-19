@@ -2,6 +2,8 @@
 
 using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -20,11 +22,9 @@ namespace DotCC.Libc;
 /// truthfully (File/Directory metadata; open slot).</item>
 /// <item><c>gettimeofday</c> is faithful (UTC wall clock, µs truncated from
 /// 100 ns ticks).</item>
-/// <item><c>fcntl</c> reports no fd flags and accepts (ignores) flag stores —
-/// dotcc has no fd-level nonblocking I/O, so an O_NONBLOCK readiness probe
-/// degrades to a blocking read (identical behavior for file-backed fds, the
-/// only kind DotCC.Libc creates).</item>
-/// <item><c>poll</c> claims every polled fd ready — true for file-backed fds.</item>
+/// <item><c>fcntl</c> tracks descriptor/status flags and controls socket blocking.</item>
+/// <item><c>poll</c> observes sockets and regular files; unsupported console input
+/// readiness fails with ENOTSUP instead of inventing availability.</item>
 /// </list>
 /// Struct-typed parameters (<c>struct stat*</c>, <c>struct pollfd*</c>,
 /// <c>struct timeval*</c>) arrive as <c>void*</c>: the C structs are declared
@@ -200,34 +200,134 @@ public static unsafe partial class Libc
 
     // ---- <fcntl.h> ---------------------------------------------------------
 
-    /// <summary><c>fcntl(fd, F_GETFL)</c> — no flags are ever set (0).</summary>
-    public static int fcntl(int fd, int cmd) => 0;
+    /// <summary>Read descriptor/status flags for an open dotcc descriptor.</summary>
+    public static int fcntl(int fd, int cmd)
+    {
+        var slot = SlotByFd(fd);
+        if (slot is null) { errno = EBADF; return -1; }
+        return cmd switch
+        {
+            1 => slot.DescriptorFlags,
+            3 => slot.StatusFlags,
+            _ => FcntlError(EINVAL),
+        };
+    }
 
-    /// <summary><c>fcntl(fd, F_SETFL, flags)</c> — accepted and ignored (see
-    /// the class remarks for why this is honest enough). fcntl is variadic in
-    /// C, so the flag argument arrives at whatever width the caller's
-    /// expression promoted to — hence the overload set.</summary>
-    public static int fcntl(int fd, int cmd, int arg) => 0;
+    /// <summary>Set flags; access mode is unchanged by F_SETFL, as on Linux.</summary>
+    public static int fcntl(int fd, int cmd, int arg)
+    {
+        var slot = SlotByFd(fd);
+        if (slot is null) return FcntlError(EBADF);
+        if (cmd is 1 or 3) return fcntl(fd, cmd);
+        if (cmd == 2) { slot.DescriptorFlags = arg & 1; return 0; }
+        if (cmd != 4) return FcntlError(EINVAL);
+        // O_APPEND and O_NONBLOCK are the supported mutable status flags.
+        // Other Linux status flags require behavior the managed runtime lacks.
+        if ((arg & (0x2000 | 0x4000 | 0x40000)) != 0) return FcntlError(ENOTSUP);
+        if (slot.Kind is FileSlot.K.In or FileSlot.K.Out or FileSlot.K.Err && (arg & 0x800) != 0)
+            return FcntlError(ENOTSUP);
+        try
+        {
+            if (slot.Socket is { } sock) sock.Blocking = (arg & 0x800) == 0;
+            slot.StatusFlags = (slot.StatusFlags & 3) | (arg & 0xc00);
+            return 0;
+        }
+        catch (SocketException ex) { return FcntlError(SocketErrno(ex.SocketErrorCode)); }
+        catch (ObjectDisposedException) { return FcntlError(EBADF); }
+    }
 
-    /// <inheritdoc cref="fcntl(int, int, int)"/>
-    public static int fcntl(int fd, int cmd, long arg) => 0;
-
-    /// <inheritdoc cref="fcntl(int, int, int)"/>
-    public static int fcntl(int fd, int cmd, ulong arg) => 0;
+    private static int FcntlError(int error) { errno = error; return -1; }
+    public static int fcntl(int fd, int cmd, long arg) => fcntl(fd, cmd, unchecked((int)arg));
+    public static int fcntl(int fd, int cmd, ulong arg) => fcntl(fd, cmd, unchecked((int)arg));
 
     // ---- <poll.h> ----------------------------------------------------------
 
-    /// <summary><c>poll(fds, nfds, timeout)</c> — every polled fd is reported
-    /// ready (file-backed fds always are): each <c>revents</c> echoes
-    /// <c>events</c>, return = nfds. struct pollfd layout: fd(4) events(2)
-    /// revents(2).</summary>
+    /// <summary>Poll Linux-layout pollfd entries (fd:4/events:2/revents:2).
+    /// Regular files are immediately ready; sockets use BCL readiness. The
+    /// timeout uses a monotonic clock and zero/negative descriptors are handled
+    /// independently of the socket list. Console input readiness is unsupported.</summary>
     public static int poll(void* fds, ulong nfds, int timeout)
     {
-        var p = (byte*)fds;
-        for (ulong i = 0; i < nfds; i++, p += 8)
+        if (nfds > int.MaxValue) return FcntlError(EINVAL);
+        if (nfds != 0 && fds == null) return FcntlError(EFAULT);
+        var started = global::System.Diagnostics.Stopwatch.StartNew();
+        while (true)
         {
-            *(short*)(p + 6) = *(short*)(p + 4); // revents = events
+            var reads = new List<Socket>();
+            var writes = new List<Socket>();
+            var errors = new List<Socket>();
+            int ready = 0;
+            for (int i = 0; i < (int)nfds; i++)
+            {
+                byte* p = (byte*)fds + i * 8;
+                int fd = *(int*)p;
+                short events = *(short*)(p + 4);
+                *(short*)(p + 6) = 0;
+                if (fd < 0) continue;
+                var slot = SlotByFd(fd);
+                if (slot is null) { *(short*)(p + 6) = 0x20; ready++; continue; }
+                if (slot.Socket is { } socket)
+                {
+                    // Read readiness also detects orderly EOF; errors are
+                    // monitored regardless of the events requested by the caller.
+                    if ((events & 1) != 0 || socket.SocketType == SocketType.Stream) reads.Add(socket);
+                    if ((events & 4) != 0 || slot.Connecting) writes.Add(socket);
+                    errors.Add(socket);
+                    continue;
+                }
+                if (slot.Kind == FileSlot.K.In) return FcntlError(ENOTSUP);
+                if (slot.Kind == FileSlot.K.File && slot.Stream is not { CanSeek: true })
+                    return FcntlError(ENOTSUP);
+                *(short*)(p + 6) = (short)(events & 5);
+                if (*(short*)(p + 6) != 0) ready++;
+            }
+            long remaining = timeout < 0 ? long.MaxValue : Math.Max(0, (long)timeout - started.ElapsedMilliseconds);
+            int waitMilliseconds = ready > 0 ? 0 : (int)Math.Min(remaining, 50);
+            if (reads.Count + writes.Count + errors.Count == 0)
+            {
+                if (ready > 0) return ready;
+                if (remaining == 0) return 0;
+                global::System.Threading.Thread.Sleep(waitMilliseconds);
+                continue;
+            }
+            try
+            {
+                Socket.Select(reads, writes, errors, waitMilliseconds * 1000);
+                for (int i = 0; i < (int)nfds; i++)
+                {
+                    byte* p = (byte*)fds + i * 8;
+                    int fd = *(int*)p;
+                    if (fd < 0) continue;
+                    var slot = SlotByFd(fd);
+                    if (slot?.Socket is not { } socket) continue;
+                    short events = *(short*)(p + 4), result = 0;
+                    bool readable = reads.Contains(socket), writable = writes.Contains(socket), exceptional = errors.Contains(socket);
+                    if (slot.Connecting && (readable || writable || exceptional))
+                    {
+                        slot.PendingSocketError = SocketErrno((SocketError)(int)socket.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Error)!);
+                        slot.Connecting = false;
+                    }
+                    if (slot.PendingSocketError != 0) result |= 8 | 16; // POLLERR | POLLHUP
+                    else if (exceptional) result |= (short)(events & 2); // urgent data
+                    if (readable && (events & 1) != 0) result |= 1;
+                    if (writable && (events & 4) != 0) result |= 4;
+                    // Read shutdown is readable EOF. Linux POLLRDHUP is opt-in;
+                    // POLLHUP describes a fully disconnected stream.
+                    if (readable && socket.SocketType == SocketType.Stream && !slot.Listening && socket.Available == 0)
+                    {
+                        if (socket.Connected) result |= (short)(events & 0x2000);
+                        else result |= 16;
+                    }
+                    *(short*)(p + 6) = result;
+                    if (result != 0) ready++;
+                }
+            }
+            catch (SocketException ex) { return FcntlError(SocketErrno(ex.SocketErrorCode)); }
+            catch (ObjectDisposedException) { continue; } // rescan: concurrent close becomes POLLNVAL
+            if (ready > 0) return ready;
+            if (timeout >= 0 && started.ElapsedMilliseconds >= timeout) return 0;
+            // EOF may wake select even when POLLIN wasn't requested.
+            if (reads.Count + writes.Count + errors.Count != 0) global::System.Threading.Thread.Sleep(1);
         }
-        return (int)nfds;
     }
 }

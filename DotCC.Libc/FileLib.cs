@@ -59,6 +59,11 @@ public static unsafe partial class Libc
         public K Kind;
         public Stream? Stream;          // null for the console + socket kinds
         public Socket? Socket;          // socket kind only (BSD sockets, SocketLib)
+        public int StatusFlags;         // Linux O_ACCMODE/O_APPEND/O_NONBLOCK
+        public int DescriptorFlags;     // FD_CLOEXEC (dotcc has no managed exec)
+        public bool Listening;
+        public bool Connecting;
+        public int PendingSocketError;  // poll preserves SO_ERROR until read
         public StreamFileWriter? Writer; // lazy, file kind only
         public StreamFileReader? Reader; // lazy, file kind only
         public bool Eof;
@@ -73,8 +78,8 @@ public static unsafe partial class Libc
     private static readonly List<FileSlot?> _files = new()
     {
         new FileSlot { Kind = FileSlot.K.In },
-        new FileSlot { Kind = FileSlot.K.Out },
-        new FileSlot { Kind = FileSlot.K.Err },
+        new FileSlot { Kind = FileSlot.K.Out, StatusFlags = 1 },
+        new FileSlot { Kind = FileSlot.K.Err, StatusFlags = 1 },
     };
     private static readonly Lock _filesLock = new();
 
@@ -159,6 +164,7 @@ public static unsafe partial class Libc
             // fwrite return EOF / a short count and set the error indicator rather
             // than faulting. Mirror that instead of letting Stream.WriteByte throw.
             if (!st.CanWrite) { errno = EBADF; s.Err = true; return false; }
+            if ((s.StatusFlags & 0x400) != 0 && st.CanSeek) st.Seek(0, SeekOrigin.End);
             st.WriteByte(b);
             return true;
         }
@@ -468,7 +474,8 @@ public static unsafe partial class Libc
 
     private static int RegisterFileSlot(Stream stream)
     {
-        var slot = new FileSlot { Kind = FileSlot.K.File, Stream = stream };
+        var slot = new FileSlot { Kind = FileSlot.K.File, Stream = stream,
+            StatusFlags = stream.CanRead ? (stream.CanWrite ? 2 : 0) : 1 };
         lock (_filesLock)
         {
             for (int i = 3; i < _files.Count; i++)

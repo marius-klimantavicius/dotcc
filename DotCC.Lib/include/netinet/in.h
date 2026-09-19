@@ -26,8 +26,8 @@ struct sockaddr_in {
 };
 
 /* Linux storage layout: the union gives in6_addr its four-byte alignment.
-   These address types and inet conversion work independently of socket I/O;
-   AF_INET6 socket marshalling is not yet supported by the runtime. */
+   IPv6 socket marshalling preserves address and scope ID; nonzero flowinfo
+   is rejected because BCL endpoints do not expose it. */
 struct in6_addr {
     union {
         uint8_t  __u6_addr8[16];

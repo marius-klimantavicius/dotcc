@@ -1,14 +1,9 @@
 #ifndef _SYS_SOCKET_H
 #define _SYS_SOCKET_H
 
-/* dotcc's <sys/socket.h> — the BSD sockets surface, lowered onto .NET's
-   System.Net.Sockets (DotCC.Libc.SocketLib). Faithful blocking IPv4 TCP+UDP on
-   every host (Linux/Windows alike — no Winsock split). The constants are the
-   Linux/glibc numeric values (dotcc is LP64/Linux-shaped), so the same C program
-   means the same thing here as it does to gcc-on-Linux. Unix-domain sockets
-   (AF_UNIX, pathname form) work too — see <sys/un.h>. Deferred: non-blocking
-   (O_NONBLOCK degrades to blocking), select/poll over mixed fd sets, IPv6,
-   getaddrinfo — see C-SUPPORT.md. */
+/* Linux-shaped socket ABI over System.Net.Sockets. IPv4/IPv6 TCP and UDP,
+   pathname Unix sockets, nonblocking operations and poll are supported.
+   Nonzero IPv6 flowinfo has no BCL endpoint equivalent and returns ENOTSUP. */
 
 #include <sys/types.h>   /* ssize_t, size_t */
 
@@ -31,6 +26,8 @@ typedef unsigned short sa_family_t;
 #define SOCK_STREAM 1
 #define SOCK_DGRAM  2
 #define SOCK_RAW    3
+#define SOCK_NONBLOCK 0x800
+#define SOCK_CLOEXEC 0x80000
 
 /* setsockopt / getsockopt levels and option names */
 #define SOL_SOCKET   1
@@ -62,6 +59,14 @@ typedef unsigned short sa_family_t;
 struct sockaddr {
     sa_family_t sa_family;
     char        sa_data[14];
+};
+
+/* Linux LP64 generic address storage: 128 bytes, alignment 8. The final
+   unsigned long supplies alignment without reducing the available payload. */
+struct sockaddr_storage {
+    sa_family_t ss_family;
+    char __ss_padding[118];
+    unsigned long __ss_align;
 };
 
 int     socket(int domain, int type, int protocol);

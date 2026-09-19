@@ -56,6 +56,21 @@ public sealed class LinuxHeaderTests
         });
     }
 
+    [Fact]
+    public void Sockaddr_storage_has_linux_size_and_alignment()
+    {
+        const string source = """
+            #include <sys/socket.h>
+            #include <stddef.h>
+            _Static_assert(sizeof(struct sockaddr_storage) == 128, "storage size");
+            _Static_assert(_Alignof(struct sockaddr_storage) == 8, "storage alignment");
+            _Static_assert(offsetof(struct sockaddr_storage, ss_family) == 0, "family offset");
+            struct sockaddr_storage storage;
+            int family(void) { return storage.ss_family; }
+            """;
+        WithSource(source, path => Compiler.EmitCSharp([path], emit: EmitMode.ManagedLib).ShouldContain("ss_family"));
+    }
+
     private static void WithSource(string source, Action<string> action)
     {
         var root = Path.Combine(Path.GetTempPath(), "dotcc-linux-header-" + Guid.NewGuid().ToString("N"));

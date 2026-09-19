@@ -1,0 +1,1 @@
+Linux socket flag values, IPv6 address layout, and POSIX poll/fcntl are not an MSVC surface.

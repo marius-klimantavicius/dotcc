@@ -28,12 +28,9 @@ namespace DotCC.Libc;
 /// thing here as it does to gcc-on-Linux.
 /// </para>
 /// <para>
-/// <b>Scope (slice 1):</b> blocking IPv4 (<c>AF_INET</c>) TCP + UDP. <c>sockaddr_in</c>
-/// is marshalled to/from <see cref="IPEndPoint"/> by byte offset (family native,
-/// port + address in network order — the same byte-exact technique as <c>rusage</c>).
-/// Deferred: non-blocking / <c>O_NONBLOCK</c> (degrades to blocking, like
-/// <c>fcntl</c>), <c>select</c>/<c>poll</c> over mixed fd sets, IPv6 socket I/O,
-/// and <c>getaddrinfo</c> (numeric addresses only — <c>inet_pton</c>/<c>inet_addr</c>).
+/// IPv4/IPv6 and Unix sockets, including nonblocking operations, use the BCL
+/// socket stack. Address buffers retain Linux ABI layout; poll/fcntl live in
+/// PosixLib. DNS declarations and resolution are a separate surface.
 /// </para>
 /// </remarks>
 public static unsafe partial class Libc
@@ -55,9 +52,10 @@ public static unsafe partial class Libc
 
     /// <summary>Register a connected/bound <see cref="Socket"/> as a new dotcc fd
     /// (a <c>FileSlot</c> index, the same space as <c>open</c>/<c>fileno</c>).</summary>
-    private static int RegisterSocketSlot(Socket sock)
+    private static int RegisterSocketSlot(Socket sock, int descriptorFlags = 0)
     {
-        var slot = new FileSlot { Kind = FileSlot.K.Socket, Socket = sock };
+        var slot = new FileSlot { Kind = FileSlot.K.Socket, Socket = sock,
+            StatusFlags = 2 | (sock.Blocking ? 0 : SOCK_NONBLOCK), DescriptorFlags = descriptorFlags };
         lock (_filesLock)
         {
             for (int i = 3; i < _files.Count; i++)
@@ -133,13 +131,8 @@ public static unsafe partial class Libc
 
     // ---- <sys/socket.h> calls ----------------------------------------------
 
-    /// <summary><c>socket(domain, type, protocol)</c> — create a socket fd.
-    /// <c>AF_INET</c> (IPv4) and <c>AF_UNIX</c> (Unix-domain, pathname form) are
-    /// supported; STREAM/DGRAM types; the SOCK_NONBLOCK/SOCK_CLOEXEC type flags
-    /// are stripped (non-blocking is deferred — degrades to blocking, like
-    /// <c>fcntl(O_NONBLOCK)</c>). Returns the fd, or -1. <c>AF_INET6</c> is
-    /// rejected here with <c>EAFNOSUPPORT</c> (its <c>sockaddr_in6</c> marshalling
-    /// isn't modeled yet) — a loud create-time failure, not a dead-end fd.</summary>
+    /// <summary>Create an IPv4, IPv6 or Unix socket, honoring SOCK_NONBLOCK.
+    /// SOCK_CLOEXEC is tracked on the virtual descriptor; the BCL owns the host handle.</summary>
     public static int socket(int domain, int type, int protocol)
     {
         AddressFamily af;
@@ -147,9 +140,7 @@ public static unsafe partial class Libc
         {
             case AF_INET: af = AddressFamily.InterNetwork; break;
             case AF_UNIX: af = AddressFamily.Unix; break;
-            // AF_INET6 needs a sockaddr_in6 reader/writer (scope id, 16-byte addr)
-            // that doesn't exist yet — fail loudly at create rather than hand back
-            // an fd whose every address call would fail.
+            case AF_INET6: af = AddressFamily.InterNetworkV6; break;
             default: errno = EAFNOSUPPORT; return -1;
         }
 
@@ -172,7 +163,12 @@ public static unsafe partial class Libc
                 IPPROTO_UDP => ProtocolType.Udp,
                 _ => ProtocolType.Unspecified,
             };
-        try { return RegisterSocketSlot(new Socket(af, st, pt)); }
+        try
+        {
+            var sock = new Socket(af, st, pt);
+            sock.Blocking = (type & SOCK_NONBLOCK) == 0;
+            return RegisterSocketSlot(sock, (type & SOCK_CLOEXEC) != 0 ? 1 : 0);
+        }
         catch (SocketException ex) { errno = SocketErrno(ex.SocketErrorCode); return -1; }
     }
 
@@ -189,7 +185,7 @@ public static unsafe partial class Libc
     public static int listen(int fd, int backlog)
     {
         if (SockByFd(fd, out var err) is not { } sock) { errno = err; return -1; }
-        try { sock.Listen(backlog < 0 ? 0 : backlog); return 0; }
+        try { sock.Listen(backlog < 0 ? 0 : backlog); SlotByFd(fd)!.Listening = true; return 0; }
         catch (SocketException ex) { errno = SocketErrno(ex.SocketErrorCode); return -1; }
     }
 
@@ -202,6 +198,7 @@ public static unsafe partial class Libc
         try
         {
             var conn = sock.Accept();
+            conn.Blocking = true; // Linux accept does not inherit O_NONBLOCK.
             if (addr != null && addrlen != null && conn.RemoteEndPoint is { } peer)
             {
                 WriteSockaddr(peer, addr, addrlen);   // AF_INET or AF_UNIX; truncates per POSIX
@@ -211,13 +208,20 @@ public static unsafe partial class Libc
         catch (SocketException ex) { errno = SocketErrno(ex.SocketErrorCode); return -1; }
     }
 
-    /// <summary><c>connect(fd, addr, addrlen)</c> — connect to a peer (blocking).</summary>
+    /// <summary><c>connect(fd, addr, addrlen)</c> — connect to a peer; pending
+    /// nonblocking connections report EINPROGRESS.</summary>
     public static int connect(int fd, void* addr, uint addrlen)
     {
         if (SockByFd(fd, out var err) is not { } sock) { errno = err; return -1; }
         if (!TryReadSockaddr(addr, addrlen, out var ep, out var aerr)) { errno = aerr; return -1; }
-        try { sock.Connect(ep); return 0; }
-        catch (SocketException ex) { errno = SocketErrno(ex.SocketErrorCode); return -1; }
+        try { sock.Connect(ep); SlotByFd(fd)!.Connecting = false; return 0; }
+        catch (SocketException ex)
+        {
+            bool pending = !sock.Blocking && ex.SocketErrorCode is SocketError.WouldBlock or SocketError.InProgress;
+            SlotByFd(fd)!.Connecting = pending;
+            errno = pending ? EINPROGRESS : SocketErrno(ex.SocketErrorCode);
+            return -1;
+        }
     }
 
     /// <summary><c>send(fd, buf, len, flags)</c> — send on a connected socket.</summary>
@@ -259,15 +263,12 @@ public static unsafe partial class Libc
         if (src == null) { return SocketRecvInto(s, buf, len, flags); }
         if (s.Socket is not { } sock) { errno = ENOTSOCK; return -1; }
         int n = (int)Math.Min(len, int.MaxValue);
-        EndPoint remote = new IPEndPoint(IPAddress.Any, 0);
+        EndPoint remote = sock.AddressFamily == AddressFamily.InterNetworkV6
+            ? new IPEndPoint(IPAddress.IPv6Any, 0) : new IPEndPoint(IPAddress.Any, 0);
         try
         {
             int got = sock.ReceiveFrom(new Span<byte>(buf, n), ToSocketFlags(flags), ref remote);
-            if (srclen != null && *srclen >= 16 && remote is IPEndPoint rep)
-            {
-                WriteSockaddrIn(src, rep);
-                *srclen = 16;
-            }
+            if (srclen != null) WriteSockaddr(remote, src, srclen);
             return got;
         }
         catch (SocketException ex) { errno = SocketErrno(ex.SocketErrorCode); return -1; }
@@ -327,8 +328,7 @@ public static unsafe partial class Libc
     }
 
     /// <summary><c>getsockopt(fd, level, optname, optval, optlen)</c> — reads back
-    /// the int-valued options plus SO_ERROR (0 in blocking mode — there's no
-    /// pending async error) and SO_TYPE.</summary>
+    /// the int-valued options plus the pending SO_ERROR (cleared on read) and SO_TYPE.</summary>
     public static int getsockopt(int fd, int level, int optname, void* optval, uint* optlen)
     {
         if (SockByFd(fd, out var err) is not { } sock) { errno = err; return -1; }
@@ -340,7 +340,7 @@ public static unsafe partial class Libc
             {
                 result = optname switch
                 {
-                    SO_ERROR => 0,
+                    SO_ERROR => ReadSocketError(SlotByFd(fd)!),
                     SO_TYPE => sock.SocketType == SocketType.Dgram ? SOCK_DGRAM : SOCK_STREAM,
                     SO_REUSEADDR => (int)sock.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress)!,
                     // Symmetric with setsockopt's documented SO_REUSEPORT→ReuseAddress
@@ -391,9 +391,10 @@ public static unsafe partial class Libc
         {
             case IPEndPoint ip:
             {
-                byte* tmp = stackalloc byte[16];
-                WriteSockaddrIn(tmp, ip);
-                CopyTruncated(tmp, 16, addr, addrlen);
+                byte* tmp = stackalloc byte[28];
+                int size = ip.AddressFamily == AddressFamily.InterNetworkV6 ? 28 : 16;
+                if (size == 28) WriteSockaddrIn6(tmp, ip); else WriteSockaddrIn(tmp, ip);
+                CopyTruncated(tmp, size, addr, addrlen);
                 return 0;
             }
             case UnixDomainSocketEndPoint ud:
@@ -570,6 +571,17 @@ public static unsafe partial class Libc
                 if (!TryReadSockaddrIn(addr, addrlen, out var ip, out err)) { return false; }
                 ep = ip;
                 return true;
+            case AF_INET6:
+            {
+                if (addrlen < 28) { err = EINVAL; return false; }
+                byte* p = (byte*)addr;
+                // BCL IPEndPoint supports scope IDs; nonzero flowinfo has no
+                // equivalent and is rejected rather than silently discarded.
+                if (Unsafe.ReadUnaligned<uint>(p + 4) != 0) { err = EOPNOTSUPP; return false; }
+                var v6 = new IPAddress(new ReadOnlySpan<byte>(p + 8, 16), Unsafe.ReadUnaligned<uint>(p + 24));
+                ep = new IPEndPoint(v6, (p[2] << 8) | p[3]);
+                return true;
+            }
             case AF_UNIX:
             {
                 // sockaddr_un: sun_family (2 bytes) then a NUL-terminated sun_path.
@@ -615,6 +627,24 @@ public static unsafe partial class Libc
         for (int i = 8; i < 16; i++) { p[i] = 0; }      // sin_zero
     }
 
+    private static void WriteSockaddrIn6(void* addr, IPEndPoint ep)
+    {
+        byte* p = (byte*)addr;
+        new Span<byte>(p, 28).Clear();
+        Unsafe.WriteUnaligned(p, (ushort)AF_INET6);
+        p[2] = (byte)(ep.Port >> 8); p[3] = (byte)ep.Port;
+        ep.Address.TryWriteBytes(new Span<byte>(p + 8, 16), out _);
+        Unsafe.WriteUnaligned(p + 24, (uint)ep.Address.ScopeId);
+    }
+
+    private static int ReadSocketError(FileSlot slot)
+    {
+        int pending = slot.PendingSocketError;
+        slot.PendingSocketError = 0;
+        if (pending != 0) return pending;
+        return SocketErrno((SocketError)(int)slot.Socket!.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Error)!);
+    }
+
     /// <summary><c>struct timeval*</c> (LP64: 8-byte tv_sec + 8-byte tv_usec) to
     /// milliseconds for a socket timeout. 0 (= no timeout / infinite) passes
     /// through, matching .NET's 0-means-infinite convention.</summary>
@@ -656,6 +686,7 @@ public static unsafe partial class Libc
         SocketError.HostUnreachable => EHOSTUNREACH,
         SocketError.WouldBlock => EAGAIN,
         SocketError.InProgress => EINPROGRESS,
+        SocketError.AlreadyInProgress => 114, // EALREADY
         SocketError.MessageSize => EMSGSIZE,
         SocketError.OperationNotSupported => EOPNOTSUPP,
         SocketError.ProtocolNotSupported => EPROTONOSUPPORT,

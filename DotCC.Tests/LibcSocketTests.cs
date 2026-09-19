@@ -189,14 +189,10 @@ public sealed class LibcSocketTests
     }
 
     [Fact]
-    public unsafe void socket_rejects_af_inet6_at_create()
+    public unsafe void socket_rejects_unsupported_address_family_at_create()
     {
-        // AF_INET6's sockaddr_in6 marshalling isn't modeled yet, so socket() must
-        // fail loudly with EAFNOSUPPORT — not hand back a dead-end fd that every
-        // subsequent bind/connect would fail on. (AF_UNIX IS supported — below.)
-        const int AF_INET6 = 10;
         errno = 0;
-        socket(AF_INET6, SOCK_STREAM, 0).ShouldBe(-1);
+        socket(999, SOCK_STREAM, 0).ShouldBe(-1);
         errno.ShouldBe(EAFNOSUPPORT);
     }
 

@@ -1,0 +1,4 @@
+storage=128,8
+family=2 flags=1 again=1 accepted=1 length=16 eof=1
+family=10 flags=1 again=1 accepted=1 length=28 eof=1
+invalid=1,0,1
