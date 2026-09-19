@@ -43,6 +43,7 @@ try:
             logs / (variant + '-crypto.log'), receipt, timeout=1800)
     run(['python3', ROOT / 'scripts/audit-product.py'], logs / 'product-audit.log', receipt, timeout=1800)
     run(['python3', ROOT / 'scripts/inventory-upstream.py'], logs / 'upstream-inventory.log', receipt)
+    run([ROOT / 'scripts/upstream-tests.sh'], logs / 'upstream-tests.log', receipt, timeout=14400)
     # Idempotence is tested on a private copy with the original semantic tool.
     with tempfile.TemporaryDirectory(prefix='idempotence-', dir=ROOT / 'build') as temporary:
         copied = Path(temporary) / 'TranslatedLibsmb2'

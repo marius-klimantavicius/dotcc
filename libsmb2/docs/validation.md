@@ -151,3 +151,25 @@ pass. `build.sh`, `test.sh --help` and `verify.sh --help` also work from `/tmp`.
 The `verify.sh` orchestration itself was not rerun as a single command; its full
 regeneration, current qualification and repository suites have separate recorded
 executions. The qualification receipt still explicitly sets `plan_complete:false`.
+
+## Translated upstream test programs
+
+The new [upstream campaign](upstream-tests.md) builds ten original C test/utility
+programs for native, raw/processed JIT, and raw/processed NativeAOT (50 binaries).
+The live Samba matrix passes six original shell equivalents plus the original AES
+vector program in each variant: **35 case passes**, with 295 process invocations.
+It preserves the full upstream server-side-copy sequence through 20 MiB.
+
+The pinned standalone NTLM vector fails its native baseline because it omits a
+server identity required by the current private decoder. Its original assertions
+remain unchanged: one native baseline failure and four managed blocked cases are
+reported separately. Twelve remaining shell cases per variant have explicit
+prerequisite skips; this campaign's `complete` field remains false.
+
+The shared POSIX header fixes required by the original programs pass the full
+2,327-test compiler unit suite, and all 53 library units regenerate successfully.
+The complete `upstream-tests.sh` entrypoint also passes from `/tmp`, including
+fresh native/translated builds, all five execution variants, and server cleanup.
+The default `test.sh` now includes `upstream-tests.sh`; the combined expanded
+qualification command has not been rerun in this milestone. Its earlier authored
+suite results above and the new upstream receipt are separate execution evidence.

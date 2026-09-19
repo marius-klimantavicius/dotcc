@@ -51,6 +51,10 @@ try:
     for name, digest in manifest['librarySourceSha256'].items():
         if sha(source / name) != digest:
             raise RuntimeError('Library source changed: ' + name)
+    for name, baseline in manifest.get('baselineBlockedPrograms', {}).items():
+        for stream in ('stdout', 'stderr'):
+            if sha(baseline['logs'][stream]) != baseline['native' + stream.capitalize() + 'Sha256']:
+                raise RuntimeError('Native baseline evidence changed: ' + name)
     if args.jit_only:
         manifest['variants'] = [v for v in manifest['variants'] if not v['name'].endswith('-aot')]
     expected = {'native', 'raw-jit', 'processed-jit'}

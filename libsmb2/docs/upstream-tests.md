@@ -14,7 +14,23 @@ on `utils/smb2-cp.c`, which must be translated separately.
 
 ## Invocation and manifest
 
-Run from any directory using absolute paths:
+The campaign entrypoint builds the original programs, creates disposable Samba
+directories, runs native plus raw/processed JIT and NativeAOT, and removes the
+server and temporary credentials:
+
+```sh
+./libsmb2/scripts/upstream-tests.sh
+```
+
+Use `--jit-only` for a development run, or `--no-build` to execute the existing
+program manifest. Reuse checks the source/configuration, library translation,
+build script, executable and wrapper hashes. Regenerate the main library first
+if its successful translation receipt or object fragments are absent.
+The top-level receipt is `artifacts/upstream-tests/result.json`; detailed case
+results are under `artifacts/upstream-tests/cases/result.json`.
+The default `scripts/test.sh` qualification also executes this campaign.
+
+The lower-level C# runner also runs from any directory using absolute paths:
 
 ```sh
 dotnet run --project /path/to/dotcc/libsmb2/tests/UpstreamRunner -c Release -- --manifest /path/to/manifest.json
@@ -78,7 +94,7 @@ native case as `baseline-failed`, and records corresponding managed cases as
 | --- | --- |
 | `test_0200_mkdir.sh` | Create and remove `testdir`; require successful exits. |
 | `test_0210_cp_basic.sh` | Upload/download `HappyPenguins!` plus newline; compare bytes; require nonexistent source copy to fail. |
-| `test_0300_cat_basic.sh` | Upload original `prog_cat.c`; run cat and additionally compare its binary stdout with the fixture. |
+| `test_0300_cat_basic.sh` | Upload original `prog_cat.c`; run cat and additionally verify its stdout begins with the complete fixture. Record trailing diagnostics separately. |
 | `test_0310_cancel_pdu.sh` | Upload the same fixture; run original OPEN-PDU cancellation test; additionally check cancellation was reached, no forbidden callback ran, and the complete fixture was read. |
 | `test_0500_setsd_basic.sh` | Upload original `prog_setsd.c`; execute original security-descriptor test. |
 | `test_0600_ssc_basic.sh` | Preserve all upstream copy modes, lengths from zero through 20 MiB, chunk limits, invalid control code, server rejection, self-overlap acceptance/rejection, parser diagnostics, and subsequent copy. |
@@ -99,6 +115,9 @@ must also produce exactly identical binary stdout and stderr. Cat checks are
 explicit additions: the upstream mains return success for some failure paths,
 so exit status alone does not demonstrate a successful read. The runner records
 these adaptations rather than claiming byte-for-byte shell execution.
+The native cat program also prints a socket-close diagnostic after the file
+payload on this Samba fixture; that suffix is recorded rather than interpreted
+as additional file bytes or a translation difference.
 
 The runner inventories all 18 shell cases for every variant. Missing executables
 receive explicit skips. Remaining skips include allocator interposition needed by
@@ -122,3 +141,24 @@ entirely skipped run, and 2 for invalid configuration/runner failure.
 
 Runner implementation alone is not execution evidence. Consult its generated
 receipt for the exact variants and original programs that were actually run.
+
+## Validated Linux x64 baseline
+
+The first complete execution matrix passed **35 cases**: six original shell
+equivalents plus the standalone AES program, each run natively and with
+raw/processed JIT and NativeAOT. Each variant executed 59 original-program
+invocations. The server-side-copy sequence includes every upstream length through
+20 MiB and its original server rejection and self-overlap checks.
+
+Ten original test/utility programs build in all five variants (50 binaries).
+The standalone NTLM vector's native baseline failure and four blocked managed
+executions are recorded separately. The remaining 12 shell cases are skipped
+per variant (60 skip receipts), with explicit dependencies; `complete` is false.
+Building `prog_open_timeout` does not establish its special-server execution.
+
+Shared POSIX metadata typedef/include-order and standard-descriptor header gaps
+found by these programs were fixed in dotcc. All 53 library units regenerated,
+and the full compiler unit suite passed 2,327 tests. No upstream library or test
+source bytes were edited.
+The full `upstream-tests.sh` build/server/runner/cleanup entrypoint also passes
+when invoked from `/tmp`; qualification is not limited to separately run stages.
