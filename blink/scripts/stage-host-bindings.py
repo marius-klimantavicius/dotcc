@@ -72,7 +72,7 @@ for entry in entries:
                      previous_adaptation=before,staged_sha256=sha(target)))
 a.overrides.write_text(json.dumps(overrides,indent=2)+'\n')
 (profile/'binding-sources.json').write_text(json.dumps(dict(
-    authored_c=['authored/managed-driver.c','authored/HostSignals.c','authored/HostMemory.c']
+    authored_c=['authored/HostSignals.c','authored/HostMemory.c']
         + ['authored/'+Path(name).name for name in manifest['cSources']],
     authored_managed=['managed/'+Path(name).name for name in manifest['managedSources']],
     host_project='host-project/Managed.Emulation.Host.csproj'),indent=2)+'\n')

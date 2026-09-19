@@ -71,8 +71,9 @@ if host.is_dir():
     shutil.copytree(host,stage/'host',ignore=shutil.ignore_patterns('config.h'))
 authored=stage/'authored'
 authored.mkdir()
-for original in [p/'src/core-probe/probe.c', p/'src/core-probe/managed-driver.c',
-                 p/'src/HostSignals/HostSignals.c', p/'src/HostSignals/HostSignals.h',
+# The normal core-probe frontend belongs to derived test links only. Product
+# orchestration is a separate C# consumer over translated upstream exports.
+for original in [p/'src/HostSignals/HostSignals.c', p/'src/HostSignals/HostSignals.h',
                  p/'src/HostMemory/HostMemory.c', p/'src/HostMemory/HostMemory.h']:
     shutil.copyfile(original,authored/original.name)
 additions_path=p/'config/core-managed-additions.json'
@@ -170,6 +171,38 @@ for filename,row in boundary['sources'].items():
         raise SystemExit('integer source pin or adaptation collision: '+name)
     if hashlib.sha256(adapted.read_bytes()).hexdigest()!=row['staged_sha256']:
         raise SystemExit('integer staged source changed: '+name)
+    source_overrides[name]={'staged_path':str(adapted.relative_to(p)),
+        'sha256':row['staged_sha256'],'original_sha256':row['source_sha256']}
+# Cooperative owner cancellation uses two reviewed syscall safe points. Keep
+# this private-host boundary separate from upstream CPU corrections.
+stop=p/'src/UpstreamExecutionStop'
+stop_snapshot=stage/'source-adaptations/UpstreamExecutionStop'
+stop_inputs={f.name:hashlib.sha256(f.read_bytes()).hexdigest()
+             for f in stop.iterdir() if f.is_file()}
+shutil.copytree(stop,stop_snapshot,ignore=shutil.ignore_patterns('__pycache__'))
+for name,digest in stop_inputs.items():
+    if hashlib.sha256((stop_snapshot/name).read_bytes()).hexdigest()!=digest:
+        raise SystemExit('execution-stop staging snapshot changed: '+name)
+stop_output=stage/'upstream/execution-stop'
+stop_receipt=stage/'execution-stop-boundary.json'
+subprocess.run([sys.executable,str(stop/'stage.py'),'--output',str(stop_output),
+                '--receipt',str(stop_receipt)],check=True)
+if stop_inputs!={f.name:hashlib.sha256(f.read_bytes()).hexdigest()
+                 for f in stop.iterdir() if f.is_file()}:
+    raise SystemExit('execution-stop staging inputs changed during profile construction')
+boundary=json.loads(stop_receipt.read_text())
+if boundary['patch_sha256']!=stop_inputs['execution-stop.patch'] or boundary['stage_sha256']!=stop_inputs['stage.py']:
+    raise SystemExit('execution-stop derivation differs from reviewed inputs')
+for name,digest in boundary['required_headers'].items():
+    if hashlib.sha256((p/name).read_bytes()).hexdigest()!=digest:
+        raise SystemExit('execution-stop boundary header changed: '+name)
+for filename,row in boundary['sources'].items():
+    name='blink/'+filename
+    adapted=stop_output/filename
+    if name in source_overrides or pins[name]!=row['source_sha256']:
+        raise SystemExit('execution-stop source pin or adaptation collision: '+name)
+    if hashlib.sha256(adapted.read_bytes()).hexdigest()!=row['staged_sha256']:
+        raise SystemExit('execution-stop staged source changed: '+name)
     source_overrides[name]={'staged_path':str(adapted.relative_to(p)),
         'sha256':row['staged_sha256'],'original_sha256':row['source_sha256']}
 binding_overrides=stage/'binding-overrides.json'

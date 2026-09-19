@@ -5,6 +5,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import signal
@@ -153,13 +154,19 @@ try:
         objects.append(obj)
         receipt['objects'][name]={key:row[key] for key in ['object_path','object_sha256','receipt','emission_key','producing_profile','producing_profile_inputs_sha256']}
     receipt['assembly']={'path':str(assembly_path),'sha256':sha(assembly_path),'count':len(objects),'reused':assembly['reused_objects']}
+    if any(name in expected for name in ['authored/GuestExecution.c','authored/managed-driver.c']):
+        raise RuntimeError('Product must exclude authored C execution and test frontends')
+    receipt['product_surface'] = {'execution_owner':'separate authored C# consumer',
+                                  'test_frontend_excluded':True,'c_execution_driver_excluded':True}
     linked=attempt/'linked'
-    run(['dotnet',cli,*objects,'--emit=managedlib','--nest-types','--class-name','BlinkCore',
+    run(['dotnet',cli,*objects,'--emit=managedlib','--literal-pool','--nest-types','--class-name','BlinkCore',
          '--namespace','Managed.Emulation','--runtime=c','--split=size','--split-size=102400','-o',linked],'delivery-link',300)
     receipt['linked_output']=manifest(linked)
     raw.mkdir(); (raw/'Sources').mkdir(); (raw/'Bridges').mkdir()
     sources=sorted(linked.glob('*.cs'))
     if not sources: raise RuntimeError('Link produced no C# source')
+    if any(re.search(r'\bCoreProbe\s*\(', source.read_text()) for source in sources):
+        raise RuntimeError('Campaign CoreProbe entrypoint leaked into product sources')
     for source in sources: shutil.copyfile(source,raw/'Sources'/source.name)
     bindings=json.loads((profile/'binding-sources.json').read_text()); names=set()
     for name in bindings['authored_managed']:

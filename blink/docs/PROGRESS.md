@@ -1970,3 +1970,21 @@ normal CheckInterrupt boundary. Both return EINTR normally so syscall lock and
 scratch cleanup can complete; the owning loop checks the persistent host reason
 before and after each interpreted instruction. No guest signal is fabricated.
 Implementation/qualification is pending; this design is not a gate pass.
+
+## P4 C# ownership and literal-pool source integration prepared
+
+The product link now excludes the C core-probe frontend entirely. The native
+oracle remains a test input, and CoreExecution derives a separate test-only
+frontend link from the pure product objects. Actual ownership/loading/execution
+will be a separate C# consumer over existing public upstream functions/types and
+the public numeric jump-buffer exception transport. No production C execution
+wrapper is selected. A narrow C# TerminateSignal callback supplies the frontend
+ABI and forwards only the event to its bound consumer.
+
+Reviewed HostExecutionStop and cancellable HostSleep preserve existing binding
+APIs, latch one stop reason and use persistent cancellation. The pinned staged
+CheckInterrupt/Poll adaptation returns normally through syscall cleanup. The
+product and canonical links now request --literal-pool explicitly; the flag is
+part of the hashed link identity. This fixes a delivery omission rather than
+changing postprocessing semantics. Source/manifest syntax checks pass; fresh
+generation and actual runtime qualification are next, with no new pass claimed.

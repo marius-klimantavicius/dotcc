@@ -15,6 +15,8 @@ import time
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts"))
+from core_inputs import compiler_identity
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--assembly-receipt', type=Path, required=True)
 parser.add_argument('--prepare-only', action='store_true')
@@ -111,6 +113,10 @@ try:
     shutil.copytree(profile / 'host-project', a / 'host')
     (a / 'bridges').mkdir()
     for relative in bindings['authored_managed']:
+        if Path(relative).name == 'HostGuestSignalsBridge.cs':
+            # The derived C probe supplies its own TerminateSignal callback.
+            receipt['omitted_product_callback'] = dict(path=relative,sha256=sha(profile/relative))
+            continue
         shutil.copyfile(profile / relative, a / 'bridges' / Path(relative).name)
     for name in ('Program.cs', 'abi.c'):
         shutil.copyfile(ROOT / 'tests/CoreExecution' / name, a / name)
@@ -118,6 +124,51 @@ try:
                     ignore=shutil.ignore_patterns('bin', 'obj'))
     receipt['consumer_inputs'] = {str(p.relative_to(a)):sha(p) for p in a.rglob('*') if p.is_file()}
     receipt['runner_sha256'] = sha(Path(__file__))
+    # Product delivery has no C execution frontend. Reintroduce the normal probe
+    # from authored C in this derived test link, never by editing generated C#.
+    for name, digest in assembly['generated'].items():
+        if sha(generated / name) != digest:
+            raise RuntimeError('linked product source changed: ' + name)
+    if 'authored/managed-driver.c' not in assembly['objects']:
+        cli = ROOT.parent / 'DotCC/bin/Release/net10.0/dotcc.dll'
+        if compiler_identity(cli.parent) != inputs['compiler']:
+            raise RuntimeError('Compiler differs from the frozen product')
+        objects = {}
+        for name, row in assembly['objects'].items():
+            if sha(Path(row['object_path'])) != row['object_sha256'] or sha(Path(row['canonical_source'])) != row['source_sha256']:
+                raise RuntimeError('Canonical producer changed: ' + name)
+            objects[name] = Path(row['object_path'])
+        receipt['retained_objects'] = {name:dict(path=str(path), sha256=sha(path),
+            producer=assembly['objects'][name]['receipt'],
+            producer_sha256=sha(Path(assembly['objects'][name]['receipt']))) for name,path in objects.items()}
+        frontend = a / 'test-frontend'
+        frontend.mkdir()
+        for name in ['probe.c', 'managed-driver.c']:
+            shutil.copyfile(ROOT/'src/core-probe'/name, frontend/name)
+        receipt['test_frontend_inputs'] = {name:sha(frontend/name) for name in ['probe.c','managed-driver.c']}
+        row = assembly['objects']['blink/syscall.c']
+        command = list(row['command'])
+        headers = Path(command[command.index('-I') + 1])
+        for name,digest in row['emission_identity']['dependencies'].items():
+            if sha(headers/name) != digest:
+                raise RuntimeError('Canonical frontend dependency changed: ' + name)
+        command[command.index(row['canonical_source'])] = str(frontend/'managed-driver.c')
+        test_object = a/'CoreProbe.cs'
+        command[command.index('-o')+1] = str(test_object)
+        if '--override-report' in command:
+            command[command.index('--override-report')+1] = str(out/'core-probe.overrides.jsonl')
+        command[3:3] = ['-I',str(frontend)]
+        run(command, 'test-frontend-emit', 300)
+        receipt['test_frontend_object_sha256'] = sha(test_object)
+        receipt['test_frontend_template'] = 'blink/syscall.c'
+        receipt['test_frontend_added'] = True
+        generated = a/'test-generated'
+        run(['dotnet',cli,*objects.values(),test_object,'--emit=managedlib','--literal-pool','--nest-types',
+             '--class-name','BlinkCore','--namespace','Managed.Emulation','--runtime=c','-o',generated],
+             'test-frontend-link',300)
+        if compiler_identity(cli.parent) != inputs['compiler']:
+            raise RuntimeError('Compiler changed during test frontend derivation')
+        receipt['derived_test_link'] = True
     for label in ('raw', 'optimized'):
         directory = a / label
         directory.mkdir()
@@ -138,9 +189,6 @@ try:
         sys.exit(0)
     if not assembly['linked']:
         raise RuntimeError('object assembly is not linked; prepared projects retained')
-    for name, digest in assembly['generated'].items():
-        if sha(generated / name) != digest:
-            raise RuntimeError('linked generated source changed: ' + name)
     raw_hashes = {p.name:sha(p) for p in generated.glob('*.cs')}
     receipt['raw_generated'] = raw_hashes
     (a / 'optimized-generated').mkdir()
@@ -228,6 +276,14 @@ try:
         if sha(path) != receipt['prepared_inputs'][str(path.relative_to(a))]:
             raise RuntimeError('raw bridge source changed: ' + path.name)
     receipt['optimized_generated'] = {p.name:sha(p) for p in (a / 'optimized-generated').glob('*.cs')}
+    for name,row in receipt.get('retained_objects',{}).items():
+        if sha(Path(row['path'])) != row['sha256'] or sha(Path(row['producer'])) != row['producer_sha256']:
+            raise RuntimeError('Retained product producer changed: ' + name)
+    for name,digest in receipt.get('test_frontend_inputs',{}).items():
+        if sha(a/'test-frontend'/name) != digest or sha(ROOT/'src/core-probe'/name) != digest:
+            raise RuntimeError('Authored test frontend changed: ' + name)
+    if receipt.get('derived_test_link') and sha(a/'CoreProbe.cs') != receipt['test_frontend_object_sha256']:
+        raise RuntimeError('Test frontend object changed')
     receipt['runtime_matrix_passed'] = not args.build_only
     receipt['passed'] = not args.build_only and not receipt['diagnostic_replay']
     receipt['build_only'] = args.build_only

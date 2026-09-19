@@ -1,0 +1,39 @@
+--- a/blink/syscall.c
++++ b/blink/syscall.c
+@@ -262,11 +262,24 @@
+   return true;
+ }
+ 
++#include "host-execution-stop.h"
++#if !defined(DISABLE_JIT) || !defined(NOLINEAR)
++#error Private execution-stop staging requires the nonlinear interpreter profile
++#endif
++
+ bool CheckInterrupt(struct Machine *m, bool restartable) {
+   bool res, restart;
+   int sig, delivered;
+   // an actual i/o call just received EINTR from the kernel
+ HandleSomeMoreInterrupts:
++  /* Private owner stop is not guest signal delivery. Return normally so
++     OpSyscall releases page locks, temporaries and syscall nesting state. */
++  if (blink_host_execution_stop_reason()) {
++    Put64(m->ax, -EINTR_LINUX);
++    m->interrupted = true;
++    errno = EINTR;
++    return true;
++  }
+   // determine if there's any signals pending for our guest
+   Put64(m->ax, -EINTR_LINUX);
+   if ((sig = ConsumeSignal(m, &delivered, &restart))) {
+@@ -4677,6 +4690,11 @@
+       rc = 0;
+       CopyFromUserRead(m, gfds, fdsaddr, gfdssize);
+       for (;;) {
++        /* Empty polls never enter the per-descriptor interrupt checkpoint. */
++        if (blink_host_execution_stop_reason() && CheckInterrupt(m, false)) {
++          rc = eintr();
++          break;
++        }
+         for (i = 0; i < nfds; ++i) {
+         TryAgain:
+           if (CheckInterrupt(m, false)) {

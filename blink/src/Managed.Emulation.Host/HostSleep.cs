@@ -13,11 +13,19 @@ public sealed class HostSleep : IDisposable
     public bool IsWaiting { get { lock (sync) return waiting; } }
     public void Interrupt() { lock (sync) { interrupted = true; Monitor.PulseAll(sync); } }
     public void Dispose() { lock (sync) { disposed = true; Monitor.PulseAll(sync); } }
-    public HostSleepResult Sleep(long seconds, long nanoseconds)
+    public HostSleepResult Sleep(long seconds, long nanoseconds) => Sleep(seconds, nanoseconds, default);
+    public HostSleepResult Sleep(long seconds, long nanoseconds, CancellationToken cancellation)
     {
         if (seconds < 0 || nanoseconds < 0 || nanoseconds >= 1_000_000_000)
             return new(22, default);
         Int128 requested = (Int128)seconds * 1_000_000_000 + nanoseconds;
+        // Register/dispose outside sync: disposal can wait for an in-flight
+        // callback, which itself needs sync. Token cancellation is persistent.
+        using var registration = cancellation.UnsafeRegister(static value =>
+        {
+            var owner = (HostSleep)value!;
+            lock (owner.sync) Monitor.PulseAll(owner.sync);
+        }, this);
         lock (sync)
         {
             if (disposed) return new(9, default);
@@ -30,7 +38,7 @@ public sealed class HostSleep : IDisposable
                 {
                     Int128 elapsed = (Int128)(Stopwatch.GetTimestamp() - started) * 1_000_000_000 / Stopwatch.Frequency;
                     Int128 left = Int128.Max(0, requested - elapsed);
-                    if (disposed || interrupted)
+                    if (disposed || interrupted || cancellation.IsCancellationRequested)
                     {
                         interrupted = false;
                         return new(4, new((long)(left / 1_000_000_000), (long)(left % 1_000_000_000)));

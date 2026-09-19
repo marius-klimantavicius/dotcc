@@ -11,7 +11,7 @@ import time
 from core_inputs import compiler_identity, profile_sources, emission_identity
 
 ROOT = Path(__file__).resolve().parents[1]
-LINK_OPTIONS = ['--emit=managedlib', '--nest-types', '--class-name', 'BlinkCore',
+LINK_OPTIONS = ['--emit=managedlib', '--literal-pool', '--nest-types', '--class-name', 'BlinkCore',
                 '--namespace', 'Managed.Emulation', '--runtime=c']
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--profile', type=Path, required=True)
