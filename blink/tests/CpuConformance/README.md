@@ -1,7 +1,7 @@
 # Normal CPU conformance corpus
 
-The default runners select **468 normal cases** from 514 inputs: the original
-495 descriptors remain unchanged, and 19 normal cases are appended at IDs495–513.
+The default runners select **500 normal cases** from 546 inputs: the original
+495 descriptors remain unchanged, and 51 normal cases are appended at IDs495–545.
 The remaining 46 custom fault cases (39 SIGFPE, seven SIGSEGV) retain
 their original bytes and stable indices but are excluded from execution under
 the current user scope. They are not counted as passes. Native and managed
@@ -9,8 +9,8 @@ receipts contain the identical selected IDs/names, all excluded IDs/names with
 reasons, full corpus digest and reviewed source hashes. Direct native or
 translated case entry also refuses a row with a nonzero fault expectation.
 The selector also verifies the exact canonical digest of the first495 exported
-descriptors, the first512 descriptors from the preserved failing attempt, and the ordered appended names. The expanded468-case matrix is now qualified below; the earlier449-case
-matrix remains historical evidence.
+descriptors, the first512 descriptors from the preserved failing attempt, and the ordered appended names. The468-case matrix is qualified below; the newest32 rows await execution.
+The earlier449-case matrix remains historical evidence.
 
 The selected cases retain normal integer/flags operations, signed division,
 valid instruction/data page crossings, SSE/SSE2 operations, masked FP status,
@@ -32,8 +32,9 @@ The System V assembly function preserves RBX/RBP/R12–R15, keeps the call stack
 aligned and captures AX/BX/CX/DX, RFLAGS, both XMM lanes and MXCSR before any
 flag-changing cleanup. It restores the calling C environment's MXCSR and clears
 DF before returning. C compile-time offset assertions check the capture record.
-The fixed reviewed corpus never modifies R12–R15 or RSP; those belong to the
-witness. Source hashes in `selection.py` deliberately require renewed review
+The fixed reviewed corpus never modifies R12–R15. Only the exact balanced
+stack recipe at ID545 temporarily switches RSP and restores it before returning
+to the witness; all other rows leave RSP untouched. Source hashes in `selection.py` deliberately require renewed review
 before any new corpus instructions can execute with this contract.
 The appended CMPXCHG8B and FXSR cases also use caller-saved RDI; the trampoline
 does not keep its private state there. The code capacity is32 bytes; original
@@ -64,7 +65,7 @@ closed on an older or mismatched profile.
 No generated C# is patched.
 
 Each selected row runs in a fresh process in raw JIT, raw NativeAOT,
-postprocessed JIT and postprocessed NativeAOT, for **1,872 expected comparisons**.
+postprocessed JIT and postprocessed NativeAOT, for **2,000 expected comparisons**.
 The managed consumer binds private owners, forces compacting GC, executes the
 actual translated interpreter and discards the process after owner teardown.
 Its instruction outputs are compared with real hardware; virtual CPUID outputs
@@ -103,7 +104,7 @@ coverage is described in [COVERAGE.md](COVERAGE.md).
 
 The REP sequence starts with DF clear, uses caller-saved RDI, and writes only
 the valid512-byte save region. Its complete memory comparison retains the
-surrounding data bytes. No appended instruction modifies RSP or R12–R15, and
+surrounding data bytes. None of IDs495–513 modifies RSP or R12–R15, and
 none expects a guest fault, invalid access or unsupported-instruction rejection.
 The temporary MXCSR value uses the saved mask of writable bits (zero is valid
 too); no floating-point arithmetic occurs before FXRSTOR. The31-byte sequence
@@ -140,3 +141,37 @@ binary hashes, immutable raw output and unchanged compiler/implementation
 identities. The fresh native receipt again preserves364 original differences;
 46 custom fault rows remain excluded. This qualifies only the bounded normal
 inputs and compared architectural state, not full instruction-family coverage.
+
+## Additional32 normal cases awaiting qualification
+
+The first514 descriptors are pinned to the qualified native corpus. These
+additional rows preserve its46 exclusions and require a new500-row native and
+2,000-comparison managed matrix. No new execution pass is implied here.
+
+| IDs | Bounded contract |
+| --- | --- |
+| 514–521 | ADC16/SBB64 overflow, AND32 zeroextension, XOR16 upper preservation, NEG8 minimum, ROL8/ROR64 count1 and SHLD32 count1. Logical/SHLD AF is excluded; all defined compared flags remain checked. |
+| 522–529 | SSE2 signed/unsigned saturation, equality lanes, low-byte interleave, reverse dword shuffle, word shift, valid unaligned MOVDQU and aligned MOVDQA load/store. Both XMM lanes and complete data memory are compared. |
+| 530–535 | SIB scaling/displacement, negative disp32, RIP-relative literal load plus forward jump, MOVZX8-to32, MOVSX16-to64 and valid cross-page64-bit store. |
+| 536–537 | REP MOVSB copies16 bytes forward/backward between disjoint valid regions. Final RSI/RDI are normalized against BX into captured AX/DX; expected offsets16/48 and-1/31, CX0, full memory and DF0 are checked. MOV/SUB normalization overwrites arithmetic flags: those flags qualify the final SUB, not REP flag preservation. |
+| 538–542 | Taken/not-taken CMOVNE32 and signed CMOVL64; taken CMOVB16, with register width effects and unchanged arithmetic flags. |
+| 543 | CLFLUSH on valid mapped data preserves compared register/memory/flags/XMM state. It does not model or qualify physical cache effects. |
+| 544 | RDTSC retains raw AX/DX samples but checks zeroextended32-bit halves and unchanged CX/BX, data memory, XMM, MXCSR, IP completion and defined flags independently in each hardware/native/managed capture. Timestamp values have no cross-process equality, nonzero, frequency, or timing claim. |
+| 545 | Save RSP in caller-saved RDI, switch to valid data+512, PUSH AX/POP CX, restore exact RSP, clear EDI with flag-preserving MOV. This leaves the capture ABI and R12–R15 untouched; full data memory observes the stack write, and CX observes the popped value. |
+
+The capture compares AX/CX/DX, XMM0/1, MXCSR, completion IP, selected flags
+and full data memory. BX is address-dependent and normally excluded from
+cross-process equality (CPUID compares it; RDTSC checks preservation in each
+process). REP normalizes SI/DI explicitly; the harness does not claim general
+all-register comparison or stack restoration beyond the exact balanced recipe.
+The independent hardware return additionally depends on the exact restored
+stack pointer; native/managed interpreter entry also compares final SP with its
+saved initial value before owner cleanup. No injected fault, invalid address, unsupported instruction or
+signal sentinel is introduced.
+
+`features.py` links these executed row names to measured CPUID features:
+SSE/SSE2 leaf1.DX25/26; CMOV leaf1.DX15 and extended.DX15; RDTSC leaf1.DX4;
+CLFLUSH leaf1.DX19; prior CMPXCHG8B and FXSR rows cover their retained advertised
+bits. Base integer/addressing rows exercise the selected long-mode interpreter.
+Feature mapping describes only bounded execution evidence; it does not claim
+full ISA or general x86-64 application compatibility.

@@ -8,6 +8,7 @@ sys.path.insert(0,str(ROOT/'scripts'))
 from core_inputs import compiler_identity
 from features import inventory
 from selection import select_normal
+from contracts import compared_fields, invariants, RDTSC
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--core-receipt',type=Path,required=True)
 parser.add_argument('--observe-differences',action='store_true')
@@ -44,7 +45,7 @@ def project(path,name,output,sources,references=(),root=False):
     for reference in references:ET.SubElement(items,'ProjectReference',Include=str(reference))
     if root:ET.SubElement(items,'TrimmerRootAssembly',Include='ManagedCpuCore')
     ET.ElementTree(xml).write(path,encoding='unicode')
-implementation_names = ['run.py','run-managed.py','selection.py','hardware.c','hardware-capture.S',
+implementation_names = ['run.py','run-managed.py','selection.py','contracts.py','hardware.c','hardware-capture.S',
                         'interpreter.c','managed-driver.c','describe.c','corpus.h','fp-cases.h',
                         'make-fp-cases.py','output.h','Program.cs','features.py']
 r['implementation']={name:sha(ROOT/'tests/CpuConformance'/name) for name in implementation_names}
@@ -61,7 +62,7 @@ try:
     if [row['case'] for row in native['comparisons']]!=[row['name'] for row in cases]:raise RuntimeError('Native comparison coverage differs')
     r['selection']=selection
     (a/'source').mkdir();(a/'objects').mkdir()
-    for name in ['managed-driver.c','selection.py','interpreter.c','corpus.h','output.h','Program.cs','features.py','fp-cases.h','make-fp-cases.py']:shutil.copyfile(ROOT/'tests/CpuConformance'/name,a/'source'/name)
+    for name in ['managed-driver.c','selection.py','contracts.py','interpreter.c','corpus.h','output.h','Program.cs','features.py','fp-cases.h','make-fp-cases.py']:shutil.copyfile(ROOT/'tests/CpuConformance'/name,a/'source'/name)
     prior=assembly['objects']['authored/managed-driver.c']
     # Use precisely the canonical include snapshot used for the replaced object;
     # validate every original dependency, then copy it to a new immutable input.
@@ -179,7 +180,11 @@ try:
                 fields=['name','signal','ip','memory','ax','cx','dx','xmm','mxcsr']
                 if case['profileReference']:
                     fields.append('bx');cpuid_rows[case['name']]=actual;hardware_cpuid[case['name']]=reference;reference=baseline
-                differences=[key for key in fields if actual[key]!=reference[key]]
+                fields=compared_fields(case,fields)
+                actual_invariants=invariants(case,actual,corpus)
+                if case['name']==RDTSC:
+                    r.setdefault('rdtsc_invariants',{})[label+'-'+mode]=actual_invariants
+                differences=[key for key in fields if actual[key]!=reference[key]]+actual_invariants
                 mask=int(case['flagMask'],16)
                 if (int(actual['flags'],16)^int(reference['flags'],16))&mask:differences.append('definedFlags')
                 native_differences=[key for key in fields if actual[key]!=baseline[key]]

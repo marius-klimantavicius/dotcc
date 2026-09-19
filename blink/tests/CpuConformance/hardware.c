@@ -49,6 +49,8 @@ int main(int argc,char **argv) {
   result.completed=-1; /* Native completion does not count retired instructions. */
   CpuPrint(c,&result,data,c->data_pages*CPU_PAGE);
   int okay=result.ip==c->length;
+  /* RDTSC's data-pointer register must remain unchanged in this process. */
+  int invariant_failure=!strcmp(c->name,"rdtsc-defined-state") && observed.bx!=input.bx;
   munmap(code,2*CPU_PAGE);munmap(data,2*CPU_PAGE);
-  return okay?0:4;
+  return invariant_failure?5:okay?0:4;
 }

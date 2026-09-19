@@ -97,3 +97,15 @@ authored CPU frontend. The selector preserves the
 first495 and first512 descriptor digests, adds no fault case, and still excludes46 historical
 fault inputs. The expected expanded matrix contains468 selected rows per mode.
 See [the case contracts](README.md#qualified-appended-normal-coverage).
+
+## Next bounded selected-profile matrix
+
+Source selection now adds32 normal rows at IDs514–545, for500 selected and46
+excluded rows. All first514 descriptors remain pinned; the last qualified matrix
+is468 native /1,872 managed above. The additional cases await execution. See
+[the exact contracts](README.md#additional32-normal-cases-awaiting-qualification)
+for defined arithmetic/rotate flags, packed SSE2 lanes/moves/shuffle, valid
+addressing/stack/REP and baseline CMOV/RDTSC/CLFLUSH. RDTSC uses independent
+width/preservation invariants with raw timestamps retained, not cross-process
+timestamp equality. REP compares normalized final pointers and bytes while
+explicitly limiting claims about flags overwritten by normalization.

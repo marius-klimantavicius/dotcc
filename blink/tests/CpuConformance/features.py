@@ -18,6 +18,26 @@ FEATURES = [
 ]
 EXCLUDED={'fpu','extended-fpu','mmx','extended-mmx','blink-jit','bmi2','adx','sse4.1','sse4.2','aes','avx','avx2','xsave'}
 POLICY_EXCLUDED={'sse3','ssse3','pclmulqdq','popcnt','cmpxchg16b','fsgsbase','erms','rdrand','rdseed','rdpid','lahf-sahf','rdtscp','invariant-tsc'}
+# These IDs/names are part of the reviewed normal selection. inventory() is
+# called only after that mode executes every selected row; the list describes
+# bounded evidence, never an assertion of exhaustive instruction coverage.
+EXECUTION_CASES = {
+ 'tsc': ['rdtsc-defined-state'],
+ 'clflush': ['clflush-valid-mapped'],
+ 'cmpxchg8b': ['cmpxchg8b-match', 'cmpxchg8b-nonmatch'],
+ 'fxsr': ['fxsave-fxrstor-xmm-mxcsr'],
+ 'cmov': ['cmov-zero', 'cmovne-dword-taken', 'cmovne-dword-not-taken',
+          'cmovl-qword-taken', 'cmovl-qword-not-taken', 'cmovb-word-taken'],
+ 'sse': ['addps-exact-lanes', 'cvtss-round-up'],
+ 'sse2': ['sse2-paddd', 'sse2-pxor', 'sse2-paddsb-saturating',
+          'sse2-psubusw-saturating', 'sse2-pcmpeqd', 'sse2-punpcklbw',
+          'sse2-pshufd-reverse', 'sse2-psllw-seven',
+          'sse2-movdqu-unaligned-roundtrip', 'sse2-movdqa-aligned-roundtrip'],
+}
+for extended, base in [('extended-cmpxchg8b', 'cmpxchg8b'),
+                       ('extended-fxsr', 'fxsr'), ('extended-cmov', 'cmov')]:
+    EXECUTION_CASES[extended] = EXECUTION_CASES[base]
+
 def inventory(rows, hardware):
     for case in ['cpuid-thermal-power','cpuid-structured-unknown','cpuid-unknown','cpuid-extended-unknown']:
         if any(int(rows[case][reg],16) for reg in ['ax','bx','cx','dx']):
@@ -26,12 +46,12 @@ def inventory(rows, hardware):
     for name,case,register,bit in FEATURES:
         advertised=bool(int(rows[case][register],16)&(1<<bit))
         if name in (EXCLUDED | POLICY_EXCLUDED) and advertised:raise RuntimeError('excluded feature advertised: '+name)
-        evidence=('representative cases only; scalar correction qualification is receipt-specific' if name in {'sse','sse2'} else
-                  'one CMOV case; not full condition/width coverage' if name in {'cmov','extended-cmov'} else
+        evidence=('bounded named normal cases; see per-row comparisons and limitations' if name in EXECUTION_CASES else
                   'selected long-mode mapping corpus only' if name in {'pae','long-mode'} else
                   'emulation identity, not instruction correctness' if name=='hypervisor' else
                   'no instruction-family qualification in this corpus')
         out.append(dict(feature=name,case=case,register=register,bit=bit,advertised=advertised,
                         hardwareAdvertised=bool(int(hardware[case][register],16)&(1<<bit)),evidence=evidence,
+                        executionCases=EXECUTION_CASES.get(name,[]),
                         candidateForAdvertisementReduction=advertised and name in POLICY_EXCLUDED))
     return out

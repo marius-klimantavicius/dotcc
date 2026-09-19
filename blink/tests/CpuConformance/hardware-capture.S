@@ -1,6 +1,8 @@
 /* Linux x86-64 SysV witness. The reviewed corpus touches AX/BX/CX/DX,
- * caller-saved DI, arithmetic flags, MXCSR and XMM0/1. FXSR restores the
- * saved x87/XMM state, and REP STOSQ uses DF=0. R12..R15 and RSP belong here.
+ * caller-saved SI/DI, arithmetic flags, MXCSR and XMM0/1. FXSR restores the
+ * saved x87/XMM state. REP MOVSB normalizes SI/DI into AX/DX afterward.
+ * R12..R15 belong here. The sole balanced stack case saves RSP in DI,
+ * switches to valid data+512, PUSH/POPs, restores exact RSP and clears DI.
  * Completion LEA/RET changes none of the observed state. */
 .text
 .globl CpuHardwareRun

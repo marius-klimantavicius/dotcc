@@ -36,6 +36,7 @@ int CpuInterpreterCase(int index) {
   Write64(m->bx,0x600000+c->data_offset);ImportFlags(m,c->flags);
   unsigned char xmm_input[32];CpuXmm(c,xmm_input);
   memcpy(m->xmm,xmm_input,sizeof(xmm_input));m->mxcsr=CpuMxcsr(c);
+  uint64_t initial_sp=Read64(m->sp);
   observed_signal=observed_code=0;
   volatile unsigned completed=0;
   int halt=sigsetjmp(m->onhalt,1);
@@ -47,7 +48,10 @@ int CpuInterpreterCase(int index) {
   memcpy(r.xmm,m->xmm,sizeof(r.xmm));
   if(CopyFromUser(m,data,0x600000,c->data_pages*CPU_PAGE)){FreeMachine(m);return 3;}
   CpuPrint(c,&r,data,c->data_pages*CPU_PAGE);
+  int invariant_failure=!strcmp(c->name,"rdtsc-defined-state") && r.bx!=0x600000+c->data_offset;
+  if(!strcmp(c->name,"stack-balanced-data-push-pop") && Read64(m->sp)!=initial_sp)invariant_failure=1;
   FreeMachine(m);
+  if(invariant_failure)return 5;
   return r.signal==0 && halt==0 && completed==c->steps?0:4;
 }
 #ifndef CPU_CONFORMANCE_NO_MAIN

@@ -5,6 +5,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];REPO=ROOT.parent
 from features import inventory
 from selection import select_normal
+from contracts import compared_fields, invariants, RDTSC
 parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--observe-differences',action='store_true');parser.add_argument('--staged-fp',action='store_true');parser.add_argument('--staged-integer',action='store_true');args=parser.parse_args()
 staged_any=args.staged_fp or args.staged_integer
 base=ROOT/'generated/cpu-conformance';base.mkdir(parents=True,exist_ok=True)
@@ -20,7 +21,7 @@ def run(cmd,name,timeout=60,allow_mismatch=False):
     r['results'][name]={'command':list(map(str,cmd)),'exit':code,'seconds':time.monotonic()-start,'stdoutSha256':sha(out/(name+'.stdout')),'stderrSha256':sha(out/(name+'.stderr'))};save()
     if code and not (allow_mismatch and code==4):raise RuntimeError(name+' failed; see '+str(out))
     return(out/(name+'.stdout')).read_bytes()
-implementation_names = ['run.py','run-managed.py','selection.py','hardware.c','hardware-capture.S',
+implementation_names = ['run.py','run-managed.py','selection.py','contracts.py','hardware.c','hardware-capture.S',
                         'interpreter.c','managed-driver.c','describe.c','corpus.h','fp-cases.h',
                         'make-fp-cases.py','output.h','Program.cs','features.py']
 r['implementation']={name:sha(ROOT/'tests/CpuConformance'/name) for name in implementation_names}
@@ -30,7 +31,7 @@ try:
     manifest=ROOT/'config/source-inventory.json'
     for row in json.loads(manifest.read_text())['files']:
         if sha(upstream/row['path'])!=row['sha256']:raise RuntimeError('pinned source changed: '+row['path'])
-    for name in ['hardware.c','hardware-capture.S','selection.py','interpreter.c','describe.c','corpus.h','output.h','features.py','fp-cases.h','make-fp-cases.py']:shutil.copyfile(ROOT/'tests/CpuConformance'/name,a/name)
+    for name in ['hardware.c','hardware-capture.S','selection.py','contracts.py','interpreter.c','describe.c','corpus.h','output.h','features.py','fp-cases.h','make-fp-cases.py']:shutil.copyfile(ROOT/'tests/CpuConformance'/name,a/name)
     # Preserve the archive and the exact header/config input to its consumer.
     shutil.copyfile(native/'o/blink/blink.a',a/'blink.a')
     shutil.copyfile(native/'config.h',a/'config.h')
@@ -74,12 +75,19 @@ try:
         if case['profileReference']:
             cpuid_rows[case['name']]=actual;hardware_cpuid[case['name']]=ref
             if any(int(actual[key],16)>>32 for key in ['ax','bx','cx','dx']):raise RuntimeError('CPUID upper register bits not zero')
-        differences=[key for key in fields if ref[key]!=actual[key]]
+        fields=compared_fields(case,fields)
+        hardware_invariants=invariants(case,ref,inputs)
+        if hardware_invariants:raise RuntimeError('hardware invariant mismatch: '+str(hardware_invariants))
+        actual_invariants=invariants(case,actual,inputs)
+        original_invariants=invariants(case,original,inputs)
+        if case['name']==RDTSC:
+            r['rdtsc_invariants']={'hardware':hardware_invariants,'original':original_invariants,'selected':actual_invariants,'policy':'raw AX/DX retained; width/preserved-state invariants, no timestamp equality'}
+        differences=[key for key in fields if ref[key]!=actual[key]]+actual_invariants
         mask=int(case['flagMask'],16)
         if (int(ref['flags'],16)^int(actual['flags'],16))&mask:differences.append('definedFlags')
         if case['faultState'] and actual['halt']!=case['expectedHalt']:differences.append('expectedHalt')
         if staged_any:
-            old_differences=[key for key in fields if ref[key]!=original[key]]
+            old_differences=[key for key in fields if ref[key]!=original[key]]+original_invariants
             if (int(ref['flags'],16)^int(original['flags'],16))&mask:old_differences.append('definedFlags')
             r['original_comparisons'].append({'case':case['name'],'matched':not old_differences,'differences':old_differences})
         record={'case':case['name'],'reference':'native-profile-CPUID'if case['profileReference']else'hardware','fields':fields,'definedFlagsMask':case['flagMask'],'matched':not differences,'differences':differences}
