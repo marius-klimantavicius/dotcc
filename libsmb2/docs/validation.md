@@ -29,3 +29,18 @@ The new frontend/header regressions were demonstrated failing against the baseli
 before their repairs. The coordinator records current regression and full-source
 retry results separately; the initial probe report is intentionally historical.
 Subsequent compiler fixes require a new complete translation and runtime campaign.
+
+## Frontend closure
+
+- `81b3769`: relative include resolution using physical source identity and Linux
+  network/endian headers. Forty-four focused unit tests plus native/translated
+  endian and ABI functional coverage pass.
+- `9cac4d1`: standalone anonymous enums, GNU unused attributes, and scoped GNU
+  statement expressions through typed IR and C# emission. Thirty-four focused
+  unit tests and four functional checks, including source/object linking, pass.
+- Fresh complete probe: **53/53 clean preprocessing/lexing, 53/53 clean parsing,
+  53/53 native syntax controls**, with no unresolved-include diagnostics.
+
+The object-emission census is the next independent gate. Its newly exposed
+flexible-array initializer issue and missing runtime networking services are being
+reduced and repaired; frontend success does not establish a buildable product.

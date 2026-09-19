@@ -1,4 +1,15 @@
-# Initial libsmb2 lexer/parser probe
+# libsmb2 lexer/parser probe
+
+Current result: **53/53 units preprocess, lex, and parse cleanly**, with 53/53
+native syntax controls passing. Fresh full-source validation followed include/
+header commit `81b3769` and grammar/statement-expression commit `9cac4d1` on
+2026-09-19. The compiler now resolves the previously missing includes and accepts
+all three reduced grammar cases. This closes the frontend probe only; IR,
+emission, managed compilation, and networking require separate validation.
+
+The original findings below are preserved as the pre-implementation baseline.
+
+## Initial baseline
 
 Result: **dotcc cannot yet parse the complete configured library unchanged.**
 The Linux x64 probe ran on 2026-09-19 with .NET SDK 10.0.111, against freshly built

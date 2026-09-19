@@ -2,8 +2,10 @@
 
 Status: **Implementation authorized and in progress.** P0's source/profile,
 native-client/Samba oracle, and baseline compiler tests are established. The
-coordinator and sub-agents are repairing evidenced frontend gaps with regressions.
-The initial [lexer/parser probe](parse-probe.md) remains preserved; current results
+coordinator and sub-agents closed the complete frontend: all 53 units now
+preprocess, lex, and parse cleanly after regression-backed repairs. Object/IR
+emission and real host services are in progress. The initial
+[lexer/parser probe](parse-probe.md) remains preserved; current results
 and remaining gates are tracked in [validation.md](validation.md).
 Campaign working directory: `<repo>/libsmb2/`.
 
