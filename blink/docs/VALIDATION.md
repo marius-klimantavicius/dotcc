@@ -38,6 +38,12 @@ direct BCL pipe-read reference per form at
 `host-io-cancellation/attempt-blvv0ho4` (SHA256
 `24085e30571d06b3fb41bdc3020cb960bcf708a5926c8323c0000b18a5065f6a`).
 This does not qualify guest execution/poll/sleep stop or actual service startup.
+GuestEnvironment `guest-environment/attempt-emy2577e` passes native/all-four
+actual clock/randomness/thread-ID/signal-state syscalls and two cleanup cycles
+against canonical 734288; SHA256
+`45d7a0080dfac1664a95c9bb269f80a3318192483396213ecb4c25ee619f7706`.
+Raw timestamps/random bytes/IDs are preserved; only their stated invariants and
+normal state contracts are compared. No asynchronous signal delivery is claimed.
 See [P4's exact contract ledger](P4-HOST-SERVICES.md).
 
 ## Earlier post-libsmb2 refresh history

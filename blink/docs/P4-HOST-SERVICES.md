@@ -70,7 +70,7 @@ clock/randomness contracts. Native syscall coverage is bounded by these requests
 suites include custom invalid/provider-failure cases, so they are not fresh
 normal-only P4 passes. Current valid ELF/TLS includes loader randomness; current
 core execution qualifies bounded instruction accounting and trapped guest exit
-37/exit_group 42. Neither establishes arbitrary environment syscalls.
+37/exit_group 42. GuestEnvironment now separately qualifies the finite actual syscall set below.
 
 Private signal masks/dispositions/policy and sleep interruption are implemented
 in `HostSignals`, `HostSignalActions`, `HostSignalPolicy`, and `HostSleep`.
@@ -137,3 +137,22 @@ and its ABI/direct boundary checks; SHA256
 `45e49ad508405e15142389d94244f61e9098b69e86a1f405eb98ff859582e8eb`.
 This updates P4's Host integration without rerunning unrelated P3/P6 suites.
 The environment and TCP fixtures will use this exact new canonical snapshot.
+
+## Actual guest environment and signal state passed
+
+`guest-environment/attempt-emy2577e/receipt.json`, SHA256
+`45d7a0080dfac1664a95c9bb269f80a3318192483396213ecb4c25ee619f7706`,
+passes native and raw/optimized JIT/NativeAOT against canonical 734288. Actual
+SYSCALL dispatch covers clock_gettime/getres, getrandom, set_tid_address,
+rt_sigaction and rt_sigprocmask across two normal lifecycles. Each execution
+retains ten raw observations and ten invariant rows; timestamps, random bytes
+and native/virtual identities are not compared numerically across processes.
+
+Native clock resolution is 1 ns; the managed provider reports and observes a
+100 ns output quantum on this host. Random return length and valid cross-page
+canaries pass without entropy-quality assertions. Guest signal IGN/query/DFL
+restoration also checks the actual host disposition registry; private mask and
+ctid storage pass without delivery, threads, futex or clear-on-exit claims.
+Guest/host cleanup and stable bounded retained pool pass. All 108 retained
+producer identities and execution inputs were reviewed; no source fix was needed.
+See [the exact fixture contracts](../tests/GuestEnvironment/README.md).

@@ -1,8 +1,23 @@
 # Normal guest environment syscall integration
 
-Native qualification passed at `artifacts/guest-environment/attempt-aeqsjnzi/receipt.json`,
-SHA256 `e746ff4a1a90cb15c02d8b423d3552ea20ca661ddcc6a74555e8c8782a66f925`.
-No source fixes were needed. The four managed forms are in qualification.
+Native and raw/optimized JIT/NativeAOT pass at
+`artifacts/guest-environment/attempt-emy2577e/receipt.json` (SHA256
+`45d7a0080dfac1664a95c9bb269f80a3318192483396213ecb4c25ee619f7706`).
+All five executions retain ten raw observation rows and agree on ten invariant
+rows across two lifecycles. Final source/Host/tool/producer and binary identity
+checks pass; an additional read-only check verified 381 retained log, binary,
+producer and authored-source hashes. No implementation changes were required.
+The preceding native-only receipt is `attempt-aeqsjnzi` (SHA256
+`e746ff4a1a90cb15c02d8b423d3552ea20ca661ddcc6a74555e8c8782a66f925`).
+
+The full run uses canonical assembly
+`73428887715220efa9380f0dc8632efa11c202dbe67fe72630abda978cd4db75`,
+retaining 108 producers and replacing only its frontend. Observed native clock
+resolution was 1 ns; all managed forms reported the specified 100 ns quantum
+with provider frequency 1,000,000,000 Hz. Native tid and timestamps remain their
+actual process observations; managed tid was 73. Queried native action flags
+were `0x04000004`, while the private registry returned `0x4`, as specified below.
+
 The harness executes the actual `0f 05` instruction through pinned
 `ExecuteInstruction`, using mapped guest arguments and the Linux register ABI.
 It replaces only the authored frontend in an explicitly supplied canonical
@@ -71,7 +86,7 @@ identities, tool identities, closed logs and executed binaries before/after.
 Raw generated sources are preserved separately from normal semantic
 postprocessing. The complete derived library is rooted for NativeAOT.
 
-After serialized runtime release:
+Reproduce under the campaign's serialized build schedule:
 
 ```sh
 python3 blink/tests/GuestEnvironment/run.py --native-only \

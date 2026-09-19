@@ -53,8 +53,8 @@ labels are not treated as present defects without checking current code.
 
 | Owner | P4 task | State |
 | --- | --- | --- |
-| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo native/all-four passed; GuestEnvironment normal-state fixture in source preparation |
-| Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation all-four passed; bounded guest TCP design in review |
+| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo and GuestEnvironment native/all-four passed; standard-stream/ioctl gap design in review |
+| Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation all-four passed; GuestTcp native reference passed, managed qualification next |
 | Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Audit active |
 
 The existing translated-service worker rejection remains binding. No recovery,
@@ -1867,3 +1867,21 @@ host disposition is queried so an ignored upstream registration error cannot
 produce a false pass. No entropy-quality or cross-process timestamp equality
 claim is made. No source fix was required. The managed matrix now uses the
 new 734288 canonical Host snapshot; bounded GuestTcp remains source-only.
+
+## P4 guest environment and signal-state subgate passed
+
+GuestEnvironment attempt-emy2577e passes native and all four managed forms against
+canonical 734288, retaining 108 objects and replacing only the authored frontend.
+Receipt SHA256: `45d7a0080dfac1664a95c9bb269f80a3318192483396213ecb4c25ee619f7706`.
+Each execution retains ten raw observations and compares ten invariant rows
+across two lifecycles. Clocks satisfy normalization, wall brackets, monotonic
+nondecrease and provider resolution; random bytes are retained without equality
+or quality claims. Actual guest thread-ID/ctid storage, signal disposition
+registration/query/restoration, private mask state and cleanup pass without
+signal delivery. Sources, 108 retained producers, logs and execution binaries
+were independently rehashed. No implementation repair was required.
+
+GuestTcp has passed its native reference and is next for managed qualification.
+Standard streams and the observed terminal-query path are the last bounded
+contract gap under design review. Owning execution stop/deadlines and actual
+service startup remain separate unqualified P4 conditions.
