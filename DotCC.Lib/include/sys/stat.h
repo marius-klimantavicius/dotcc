@@ -7,10 +7,7 @@
    common fields (st_size, st_mode file-type bits, st_mtime). Fields beyond
    those are zero. */
 
-#ifndef _OFF_T_DEFINED
-#define _OFF_T_DEFINED
-typedef long off_t;
-#endif
+#include <sys/types.h>
 
 struct stat {
     unsigned long st_dev;

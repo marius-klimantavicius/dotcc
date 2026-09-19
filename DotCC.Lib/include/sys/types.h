@@ -13,11 +13,17 @@ typedef long off_t;
 /* size_t / time_t are owned by <stddef.h> / <time.h> (same spellings);
    include those rather than redefining here. */
 #include <stddef.h>
+#include <time.h>
 
 typedef long  ssize_t;
 typedef int   pid_t;
 typedef unsigned int mode_t;
 typedef unsigned int uid_t;
 typedef unsigned int gid_t;
+typedef unsigned long dev_t;
+typedef unsigned long ino_t;
+typedef unsigned long nlink_t;
+typedef long blksize_t;
+typedef long blkcnt_t;
 
 #endif /* _SYS_TYPES_H */
