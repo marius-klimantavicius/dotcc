@@ -17,8 +17,9 @@ comparison. Corrected canonical core execution passes all four managed forms;
 468 normal CPU cases per form, valid ELF and explicit TLS startup are qualified.
 The owning normal-core sample and an earlier clean public delivery passed; a
 fresh clean delivery at revision 497ce69 is now running with the integer repair.
-P3–P6 remain open. The service API/worker, broader CPU/memory coverage and actual
-Windows execution are not qualified. Historical fault results below are not
+P3–P6 remain open. User priority is now completion of P3 after the in-flight clean
+run; additional P6 regressions/performance are deferred. The service API/worker,
+remaining CPU/guest-memory cases and actual Windows execution are not qualified. Historical fault results below are not
 part of the current normal-only qualification.
 
 ## Ownership
@@ -29,10 +30,10 @@ main checkout. Historical recovery/detached worktrees remain evidence only.
 
 - Coordinator: current shared-toolchain build/identity freeze, normal-only probe
   scope alignment, integration, runtime revalidation, durable status and commits.
-- Inputs worker: scoped dependent-regression wrappers and normal throughput
-  source/provenance review, with runtime work released serially.
-- Consumer/CPU worker: expanded CPU and loader qualification, then clean public
-  delivery/sample reproduction; the service-worker task remains unqualified.
+- Inputs worker: actual upstream GuestMemory mapping/page-table lifecycle tests.
+- Consumer/CPU worker: finish the in-flight clean reproduction, then the finite
+  remaining normal CPU coverage set. P6 regression/performance execution is held.
+  The service-worker task remains unqualified.
 
 Shared compiler edits and heavy test suites remain serialized. Workers own
 disjoint authored files and do not commit duplicate recovery-branch history.
@@ -1619,3 +1620,27 @@ initial value/update/sum, 25 instructions and exit0 remain exact. Fixed fixture
 limits remain: no general libc TCB, dynamic TLS or guest-thread qualification.
 No malformed image or injected fault case ran. Next is a fresh clean checkout
 public delivery/sample run, followed by the scoped dependent regressions.
+
+## User priority: finish P3 before additional P6 work
+
+The in-flight clean delivery at 497ce69 will finish; no additional throughput or
+dependent-regression run starts ahead of unresolved P3. Prepared P6 wrappers
+and past passing receipts are preserved. P3 already has 468 normal cases per
+managed form, corrected integer semantics, valid pinned ELF and explicit TLS
+startup, but those results do not substitute for the remaining checks.
+
+Inputs owns a new actual upstream GuestMemory lifecycle harness: allocate guest
+page tables; reserve initially zero mappings and grow the live mapping set; copy
+valid buffers across page boundaries; change RW to read-only/NX and back with
+metadata checks and only permitted accesses; unmap/remap and verify zero/refill;
+then verify cleanup and repeated valid ownership. This must retain and execute
+upstream algorithms in native and all four managed forms. Standalone HostMemory
+callback tests are supporting evidence, not a substitute.
+
+The CPU worker owns a bounded gap review and explicit case list for remaining
+defined flags/shifts, packed SSE2 lane/move/shuffle behavior, valid addressing/
+stack/REP effects and baseline advertised instruction contracts. It preserves
+existing descriptor prefixes/exclusions and uses invariants for nondeterministic
+timestamps. The coordinator reviews the finite list against the selected profile
+before source freeze; this is not a request for exhaustive ISA coverage. No new
+custom fault or malformed-image case is permitted. Runtime work stays serial.
