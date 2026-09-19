@@ -220,8 +220,8 @@ try:
                                             'after':manifest(candidate/'Bridges')}
     shutil.rmtree(candidate/'Bridges')
     shutil.copytree(raw/'Bridges',candidate/'Bridges')
-    for path in (candidate/'Bridges').rglob('*'):
-        if path.is_file(): path.chmod(0o644)
+    for path in [candidate/'Bridges', *(candidate/'Bridges').rglob('*')]:
+        path.chmod(0o755 if path.is_dir() else 0o644)
     run(['dotnet','build',candidate/'TranslatedBlink.csproj','-c','Release','--no-restore'],'postprocessed-project-build')
     verify_authored()
     if manifest(raw)!=receipt['raw_files']: raise RuntimeError('Raw snapshot changed')

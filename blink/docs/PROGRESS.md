@@ -2017,3 +2017,7 @@ The preceding generation attempt-0b2hbt7s was explicitly interrupted with SIGTER
 during assembly to apply this correction before publication. Its failed/interrupted
 receipt and completed immutable object producers are preserved for reuse; no
 pass or published product is claimed for it. Revised generation is next.
+
+### P4 direct-source publication retry
+
+The consolidated-layout delivery `translation/attempt-re4ic3ef` reused all 108 verified C objects and passed raw build, semantic postprocessing and the postprocessed build. Publication stopped before replacing the stable output: restoring the private bridge snapshot also inherited its read-only directory mode, preventing removal of that temporary context. The pipeline now makes the private restored directory writable; the immutable raw snapshot and original authored sources remain unchanged. This attempt is a preserved failure, not a delivered-product pass.
