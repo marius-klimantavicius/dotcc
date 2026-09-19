@@ -76,11 +76,19 @@ and unmasked destination preservation must remain separate assertions.
 ```
 python3 blink/tests/CpuConformance/run.py --staged-fp
 python3 blink/tests/CpuConformance/run-managed.py --staged-fp \
-  --core-receipt blink/artifacts/core-execution/attempt-ny3j_02m/receipt.json
+  --core-receipt blink/artifacts/core-execution/attempt-n9ligxbc/receipt.json
 ```
 
-The managed derivation replaces the CPU frontend and the three reviewed TUs,
-retaining 105 of the original 109 objects with their exact producer identity.
+The current canonical profile already includes the three reviewed TUs and the
+narrowed CPUID policy. Its managed derivation replaces only the CPU frontend,
+retaining 108 canonical objects with their exact producer identity. The runner
+verifies all three reviewed source bodies and the CPUID policy against the
+fresh native reference before reuse.
+
+The earlier scalar derivation replaced the frontend and three reviewed TUs,
+retaining 105 original objects. That historical matrix used the earlier CPU
+policy; its old CoreExecution baseline is now rejected by the current runner
+because policy identity differs. Reproduction uses the current receipt above.
 It uses the original canonical header paths, unchanged compiler, frozen host
 bindings, and a separate raw/optimized JIT/NativeAOT consumer. The actual managed matrix passed all 1,964 comparisons (491 per mode) at
 `artifacts/cpu-conformance-managed/attempt-kenqm2yg/receipt.json`, with
@@ -93,3 +101,10 @@ The identity/guard test `tests/CpuConformance/test-staging.py` checks the review
 diff, rejects changed source and block hashes in private copies, and actually
 compiles each staged TU against a native profile lacking DISABLE_JIT to confirm
 rejection. It never writes to immutable upstream files.
+
+The later narrowed-policy canonical derivation passes all 1,980 comparisons
+(495 cases per mode), receipt
+`artifacts/cpu-conformance-managed/attempt-jwuzr1go/receipt.json`. It reuses all
+three reviewed scalar objects from the canonical profile. The four additional
+cases query CPUID policy; scalar source bytes and the original 31 inputs are
+unchanged. Earlier scalar-only receipts above remain historical, not rewritten.

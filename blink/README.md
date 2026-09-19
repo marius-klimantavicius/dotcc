@@ -3,7 +3,7 @@
 The selected Blink interpreter executes Linux x86-64 instructions as translated
 C# on Linux x64. All 109 selected sources build, and bounded instruction, fault,
 exit and ABI checks pass under raw/optimized JIT and NativeAOT. The reviewed
-scalar floating-point corpus passes 491 cases in each form. Valid loading of
+CPU and scalar floating-point corpus passes 495 cases in each form. Valid loading of
 the pinned service ELF is also qualified.
 
 The service product is incomplete. Actual managed HTTP service startup, the

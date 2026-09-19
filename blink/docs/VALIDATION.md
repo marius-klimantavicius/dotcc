@@ -17,7 +17,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Inferred outer-array dimensions | Warning-free build; 2231 unit pass; 508 functional pass, 1033 skipped | `scripts/test-repository.sh` |
 | Borrowed va_list formatting | Native/four-mode formatter matches; build clean, 2234 unit/509 functional pass, 1035 skipped | `scripts/test-repository.sh` and `artifacts/vsnprintf/attempt-cxeunj4b/receipt.json` |
 | Declaration order / external pointer ownership | Build clean; 2235 unit/514 functional pass, 1037 skipped | `scripts/test-repository.sh` |
-| Managed interpreter embedding | Native/configured ABI and instruction/fault/exit rows match raw/optimized JIT/AOT; all 109 sources linked and AOT rooted | `tests/CoreExecution/run.py`; receipt attempt-yufxocze |
+| Managed interpreter embedding | Native/configured ABI and instruction/fault/exit rows match raw/optimized JIT/AOT; all 109 sources linked and AOT rooted | `tests/CoreExecution/run.py`; receipt attempt-n9ligxbc |
 | Private memory filesystem | Four independent assertion groups pass Linux JIT/AOT; guest callback integration pending | `scripts/test-host-files.sh` |
 | Private TCP namespace | Four assertion groups pass Linux JIT/AOT, including real backpressure/cancellation and same guest port in two instances | `scripts/test-host-sockets.sh` |
 | Unified instance I/O | Four groups pass Linux JIT/AOT: common fd limits, dup lifetimes, bounded streams and disposal | `scripts/test-instance-io.sh` |
@@ -37,7 +37,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Private process identity | Native C invariants and four managed modes pass; private IDs, errno and concurrent owners | `tests/HostIdentity/run.py` |
 | Private openat / fcntl | Native/four-mode control and metadata pass, native exec oracle and existing fd regressions pass | `tests/HostFileControl/run.py` |
 | Unexpected host termination | Native direct/indirect kind/status and four managed modes pass; controllers survive | `tests/HostTermination/run.py` |
-| Managed CPU corpus | Reviewed staged scalar correction: 491 cases pass each raw/optimized JIT/AOT, 1964 comparisons; untouched upstream failures retained | `tests/CpuConformance/run-managed.py --staged-fp`; receipt attempt-kenqm2yg |
+| Managed CPU corpus | Reviewed scalar correction and narrowed CPUID profile: 495 cases pass each raw/optimized JIT/AOT, 1980 comparisons; untouched upstream failures retained | `tests/CpuConformance/run-managed.py --staged-fp`; receipt attempt-jwuzr1go |
 | Valid service ELF loading | Exact file/BSS/permissions/stack state and cleanup match native in all four forms | `tests/ElfLoading/run.py`; receipt attempt-e1zyczdz |
 | Managed controller protocol | Actual subprocess fixtures pass JIT/AOT, including bounded stop and inherited-pipe drains | `tests/InstanceLifecycle/run.py`; receipt attempt-p4b8juxr |
 | Managed service worker | Automatically blocked during implementation; partial files uncompiled and unqualified | P4/P5 open |
@@ -103,3 +103,11 @@ The fresh complete profile with reviewed scalar FP and current HostMemory is
 reuse. Its latest execution, independent storage and publication receipts are
 respectively `core-execution/attempt-yufxocze`, `core-abi/attempt-mlv4tdgf` and
 `publication-audit/attempt-tvcys8m0`. Direct IL limitations remain unchanged.
+
+The current canonical profile is `generated/core-profile/attempt-7i4_ajz4`,
+which retains 108 verified objects from that complete emission and rebuilds
+cpuid.c with the narrowed advertisement policy. Core execution and exact AOT
+publication pass at `core-execution/attempt-n9ligxbc` and
+`publication-audit/attempt-803iuwqv`; CPU qualification passes 495 cases per form
+at `cpu-conformance-managed/attempt-jwuzr1go`. This does not qualify unadvertised
+handlers or exhaust the remaining baseline instruction families.

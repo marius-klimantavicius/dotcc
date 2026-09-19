@@ -1,5 +1,12 @@
 # Observed native dependencies and embedding work
 
+The native CLI evidence below is historical input to the managed boundary.
+P1/P2 have since passed for the complete selected managed core. Current
+execution/import/publication receipts are listed in [VALIDATION.md](VALIDATION.md);
+they retain the indirect-call, framework and process-global ownership limits
+described here. Native Blink remains a test oracle, never the managed product's
+instruction executor.
+
 `scripts/audit-native-dependencies.py` audits the configured native interpreter
 from `scripts/native-oracle.sh`. It relinks existing native objects with a GNU ld
 map and requires the resulting executable to be byte-identical to the tested
@@ -143,7 +150,7 @@ JIT and demangler subprocess code are excluded. Native Blink is an oracle only.
 all type/module initializers in the library and Host assembly without executing
 target code. Its self-check-zpqg3xl7 covers root/module/Host imports, state-machine
 expansion, malformed IL, budgets and missing dependencies. The raw/optimized
-actual-library inventories contain5594/5584 method definitions and zero
+initial actual-library inventories contain5594/5584 method definitions and zero
 traversed native imports. The generic embedded runtime separately declares17
 native methods, including POSIX/Windows identity/filesystem/accounting helpers;
 none is reached by the inspected direct graph. Unused generic Environment.Exit
@@ -165,3 +172,11 @@ inventory does not resolve their dynamic targets, virtual overrides, ordinary
 delegates, arbitrary schedulers or reflection, and does not recursively audit
 BCL assemblies. These remain runtime/ownership qualification obligations for
 P4/P6. Completed direct inventory is not a hardened isolation claim.
+
+The current canonical profile (core-execution/attempt-n9ligxbc) incorporates
+the reviewed scalar correction, qualified HostMemory and narrowed CPUID policy.
+Its direct IL inventories cover 5597/5587 methods with zero traversed native
+imports or audit errors. Seventeen generic native declarations, 155 indirect
+call sites and 594 virtual call sites remain separately reported; this does not
+resolve framework dispatch or establish runtime isolation. The exact AOT ELF
+publication inventory passes at publication-audit/attempt-803iuwqv.

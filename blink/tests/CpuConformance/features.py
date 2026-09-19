@@ -17,18 +17,21 @@ FEATURES = [
  ('long-mode','cpuid-extended-features','dx',29),('invariant-tsc','cpuid-invariant-tsc','dx',8),
 ]
 EXCLUDED={'fpu','extended-fpu','mmx','extended-mmx','blink-jit','bmi2','adx','sse4.1','sse4.2','aes','avx','avx2','xsave'}
-REDUCTION_CANDIDATES={'sse3','ssse3','pclmulqdq','popcnt','cmpxchg16b','fsgsbase','erms','rdrand','rdseed','rdpid','lahf-sahf','rdtscp'}
+POLICY_EXCLUDED={'sse3','ssse3','pclmulqdq','popcnt','cmpxchg16b','fsgsbase','erms','rdrand','rdseed','rdpid','lahf-sahf','rdtscp','invariant-tsc'}
 def inventory(rows, hardware):
+    for case in ['cpuid-thermal-power','cpuid-structured-unknown','cpuid-unknown','cpuid-extended-unknown']:
+        if any(int(rows[case][reg],16) for reg in ['ax','bx','cx','dx']):
+            raise RuntimeError('zero-output policy violated: '+case)
     out=[]
     for name,case,register,bit in FEATURES:
         advertised=bool(int(rows[case][register],16)&(1<<bit))
-        if name in EXCLUDED and advertised:raise RuntimeError('excluded feature advertised: '+name)
-        evidence=('representative instruction cases include measured floating defects' if name in {'sse','sse2'} else
+        if name in (EXCLUDED | POLICY_EXCLUDED) and advertised:raise RuntimeError('excluded feature advertised: '+name)
+        evidence=('representative cases only; scalar correction qualification is receipt-specific' if name in {'sse','sse2'} else
                   'one CMOV case; not full condition/width coverage' if name in {'cmov','extended-cmov'} else
                   'selected long-mode mapping corpus only' if name in {'pae','long-mode'} else
                   'emulation identity, not instruction correctness' if name=='hypervisor' else
                   'no instruction-family qualification in this corpus')
         out.append(dict(feature=name,case=case,register=register,bit=bit,advertised=advertised,
                         hardwareAdvertised=bool(int(hardware[case][register],16)&(1<<bit)),evidence=evidence,
-                        candidateForAdvertisementReduction=advertised and name in REDUCTION_CANDIDATES))
+                        candidateForAdvertisementReduction=advertised and name in POLICY_EXCLUDED))
     return out

@@ -74,6 +74,15 @@ try:
             if key==(0x80000001,0):
                 if disabled['DISABLE_MMX']: wanted[3] &= ~(1<<23)
                 if disabled['DISABLE_X87']: wanted[3] &= ~1
+            if key==(1,0): wanted[2] &= ~sum(1<<bit for bit in [0,1,9,13,23,30])
+            if key==(7,0):
+                wanted[1] &= ~sum(1<<bit for bit in [0,9,18])
+                wanted[2] &= ~(1<<22)
+            if key==(0x80000001,0):
+                wanted[2] &= ~1
+                wanted[3] &= ~(1<<27)
+            if key==(0x80000007,0): wanted[3] &= ~(1<<8)
+            if key==(6,0): wanted=[0,0,0,0]
             if after[key]!=wanted: raise RuntimeError('unexpected CPUID delta '+str(key))
             if after[key]!=original: deltas.append({'leaf':key,'before':original,'after':after[key]})
         expected_fpu=0 if disabled['DISABLE_X87'] else 1

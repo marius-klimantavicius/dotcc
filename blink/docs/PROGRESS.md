@@ -33,8 +33,8 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 ## Next actions
 
 The new complete-core profile includes the qualified scalar FP correction and
-current HostMemory; its ABI/execution/import/publication gates pass. Narrow
-the remaining CPU/CPUID coverage and finish the seven SQLite C corpora plus
+current HostMemory; its ABI/execution/import/publication gates pass. The narrowed optional CPUID policy passes 495 cases in each managed form. Finish
+the seven SQLite C corpora plus
 bounded interpreter throughput measurements.
 SQLite/picotls matrices, Lua/chibi JIT conformance and WAT/Zig execution oracles
 now have fresh passing Linux x64 results. Service-worker implementation and malformed-input work are
@@ -1178,3 +1178,25 @@ Compiler/postprocessor and all 399 authored MsQuic/picotls inputs stayed unchang
 Verified generated inputs and dependency receipts were copied into the main
 checkout; replaced evidence is preserved under blink/artifacts/attempt-4e8gbkdi
 there. This does not claim a separate execution in that checkout.
+
+## Significant progress: canonical CPUID advertisement policy
+
+The private profile now omits 13 unqualified optional feature bits and clears
+thermal/power leaf6. This changes advertisement only; unadvertised instruction
+handlers are not promised to reject. Focused qualification passes 16 queries
+under eight native configurations and all four managed forms. The guest service
+build preflight confirms baseline x86-64 flags without these optional features.
+
+Profile attempt-7i4_ajz4 retains 108 identity-verified objects from the qualified
+scalar/memory profile and freshly emits cpuid.c. CoreExecution attempt-n9ligxbc
+passes native/configured ABI and raw/optimized JIT/NativeAOT; exact AOT publication
+audit attempt-803iuwqv passes. The direct IL audits cover 5597/5587 methods with
+zero traversed native imports; unresolved indirect/framework limits remain.
+
+The CPU corpus passes 495 cases in each form, 1980 comparisons total, at
+cpu-conformance-managed/attempt-jwuzr1go. It retains 108 canonical core objects
+and replaces only the authored frontend. Native attempt-22ltifm3 agrees; the
+original 397 upstream scalar mismatches remain preserved. An old-profile policy
+mismatch is correctly rejected before emission. Identity chain:
+core/canonical-policy-integration.json. Baseline RDTSC/FXSR/CX8/SSE2/system
+instruction coverage and P3–P6 remain incomplete.

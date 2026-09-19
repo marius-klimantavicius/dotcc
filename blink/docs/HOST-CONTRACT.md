@@ -1,10 +1,35 @@
 # Host and translation boundary inventory
 
-Status: reviewed P0 design and lexical inventory, not a completed host adapter or
-proved reachable closure. `scripts/inventory.py` records each upstream C/header
-hash, includes, explicit extern declarations and TLS declarations in
-`config/source-inventory.json`. Native archive symbol extraction and staged
-managed linking must refine this inventory before P2 can pass.
+The complete selected 109-source core now binds, builds and executes in all four
+Linux x64 forms. [The binding manifest](../config/host-bindings.json) records the
+selected C-to-host operations; [validation](VALIDATION.md) records their native
+and managed contract gates. The direct IL/import inventory is complete within
+the limits in [DEPENDENCIES.md](DEPENDENCIES.md). Actual service startup and the
+owning translated worker remain unqualified, so P4/P5 are still open.
+
+The implemented host surface includes:
+
+| Surface | Current contract and limits |
+| --- | --- |
+| Guest backing memory | Bounded private mappings, page protection metadata and file mappings; ordinary host data, with guest PTE enforcement. See [memory](HOST-MEMORY.md) and [file mapping](HOST-FILE-MAPPING.md). |
+| Files and descriptors | Private namespace, file contents/metadata, shared-offset duplication, directories, readiness and bounded pipes. Advanced namespace/process operations return explicit errors. See [I/O](HOST-IO-BRIDGE.md), [descriptors](HOST-DESCRIPTORS.md) and [paths](HOST-PATHS.md). |
+| TCP | BCL sockets behind private endpoint metadata and explicit publication, with leases, cancellation and close/drain tests. See [network bridge](HOST-NETWORK-BRIDGE.md) and [readiness](HOST-READINESS.md). |
+| Environment and identity | Explicit private argv/environment-related storage, virtual process identity, clocks and entropy providers. See [environment](HOST-ENVIRONMENT.md), [identity](HOST-IDENTITY.md) and [clocks](HOST-CLOCKS.md). |
+| Limits and termination | Private resource limits and synchronous guest status/fault handling; guest exits are trapped. Positive asynchronous signal/timer operations remain restricted. See [process policy](HOST-PROCESS-POLICY.md), [termination](HOST-TERMINATION.md) and [signal operations](HOST-SIGNAL-OPS.md). |
+
+Qualification uses one translated owner per discarded worker process. Passing
+individual host contracts does not establish actual guest-service startup,
+complete indirect-call containment, or a hardened sandbox. Generic diagnostic
+Console output still needs capture by the eventual worker, separately from
+guest descriptor output. Current CPU advertisements and remaining execution
+coverage are maintained in [HOST-CPU.md](HOST-CPU.md).
+
+## Original P0 source-family inventory
+
+The following design inventory is retained as the source-review baseline.
+`scripts/inventory.py` records upstream C/header hashes, includes, explicit
+extern declarations and TLS declarations in `config/source-inventory.json`.
+The later frozen managed closure and runtime receipts refine this initial list.
 
 | Upstream area | Selected role | Required embedding action |
 | --- | --- | --- |
@@ -46,9 +71,9 @@ restricted managed CPUID profile. A reviewed staged capability-mask adaptation
 and per-bit instruction tests are required; suppressing only x87 configuration
 is insufficient. AES and SSE4.1/4.2 are explicitly clear in the inspected source.
 
-No managed host services, complete syscall inventory, or isolated execution gate
-is marked passed by this document. The service fixture's observed syscall ledger
-is maintained separately in `GUEST.md`.
+This original source inspection alone did not qualify managed host services or
+isolation. The service fixture's native observed syscall ledger is maintained
+separately in `GUEST.md`; an actual managed startup trace remains missing.
 
 The demonstrated exclusion mismatch is now corrected by the qualified staged
 adaptation in [HOST-CPU.md](HOST-CPU.md). Its per-bit inventory and observed

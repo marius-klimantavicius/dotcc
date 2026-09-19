@@ -64,6 +64,14 @@ try:
     (a/'bridges').mkdir()
     bindings=json.loads((profile/'binding-sources.json').read_text())
     for name in bindings['authored_managed']:shutil.copyfile(profile/name,a/'bridges'/Path(name).name)
+    fp_replacements=[]
+    # The reference policy must equal the CPUID producer retained in this exact profile.
+    cpuid_source=Path(assembly['objects']['blink/cpuid.c']['command'][assembly['objects']['blink/cpuid.c']['command'].index('-o')-1])
+    cpuid_stage=json.loads((native_artifacts/'cpuid-stage.json').read_text())
+    cpuid_bytes=cpuid_source.read_bytes();prefix=b'#include "host-bindings.h"\n'
+    if sha(cpuid_source)!=assembly['objects']['blink/cpuid.c']['emission_identity']['source_sha256'] or not cpuid_bytes.startswith(prefix) or hashlib.sha256(cpuid_bytes[len(prefix):]).hexdigest()!=cpuid_stage['stagedSha256']:
+        raise RuntimeError('native CPUID policy differs from qualified canonical producer')
+    r['cpuid_policy']=cpuid_stage
     if args.staged_fp:
         run(['python3',ROOT/'src/UpstreamScalarFp/stage.py','--output',a/'scalar-fp','--receipt',out/'scalar-fp-stage.json'],'stage-scalar-fp')
         staged_fp=json.loads((out/'scalar-fp-stage.json').read_text())
@@ -75,12 +83,21 @@ try:
             old=assembly['objects']['blink/'+filename]
             old_source=Path(old['command'][old['command'].index('-o')-1])
             immutable=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink'/filename
-            if sha(old_source)!=old['emission_identity']['source_sha256'] or old_source.read_bytes()!=prefix+immutable.read_bytes():
+            if sha(old_source)!=old['emission_identity']['source_sha256']:
+                raise RuntimeError('FP producer source changed: '+filename)
+            corrected=prefix+(a/'scalar-fp'/filename).read_bytes()
+            if old_source.read_bytes()==corrected:
+                boundary=profile/'scalar-fp-boundary.json'
+                if not boundary.exists() or json.loads(boundary.read_text())!=staged_fp:
+                    raise RuntimeError('canonical scalar correction provenance differs')
+                r.setdefault('reused_reviewed_fp',{})[filename]={'source_sha256':sha(old_source),'object_sha256':old['object_sha256'],'boundary_sha256':sha(boundary)}
+                continue
+            if old_source.read_bytes()!=prefix+immutable.read_bytes():
                 raise RuntimeError('original FP source preamble differs: '+filename)
             prepared=a/'prepared-fp'/filename
-            prepared.write_bytes(prefix+(a/'scalar-fp'/filename).read_bytes())
+            prepared.write_bytes(corrected);fp_replacements.append(filename)
             r['prepared_fp_sources'][filename]={'original_source':str(old_source),'original_sha256':sha(old_source),'prefix_sha256':hashlib.sha256(prefix).hexdigest(),'prepared_sha256':sha(prepared)}
-        r['replacement']='authored CPU driver and reviewed cvt.c/ssefloat.c/throw.c; all other objects unchanged'
+        r['replacement']='authored CPU driver; reviewed scalar objects reused when identical to qualified canonical producers, otherwise explicitly replaced'
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['runner_sha256']=sha(Path(__file__));r['replaced_object']=prior
     upstream=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
@@ -93,7 +110,7 @@ try:
     replacements={'authored/managed-driver.c':cpu_object}
     r['replaced_objects']={'authored/managed-driver.c':prior}
     if args.staged_fp:
-        for filename in staged_fp['sources']:
+        for filename in fp_replacements:
             name='blink/'+filename;old=assembly['objects'][name];old_command=old['command']
             source_canonical=Path(old_command[old_command.index('-I')+1])
             if source_canonical!=canonical:raise RuntimeError('FP source header identity differs')

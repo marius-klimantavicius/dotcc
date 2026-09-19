@@ -49,6 +49,10 @@ static const struct CpuCase cpu_cases[] = {
  {"cpuid-extended-features", {0x0f,0xa2},2,1,0,64,2,0x80000001,0,0,0x8d7,0x8d5,0,0,0,1,0,0,0,0,0,0},
  {"cpuid-invariant-tsc", {0x0f,0xa2},2,1,0,64,2,0x80000007,0,0,0x8d7,0x8d5,0,0,0,1,0,0,0,0,0,0},
  {"cpuid-hypervisor", {0x0f,0xa2},2,1,0,64,2,0x40000000,0,0,0x8d7,0x8d5,0,0,0,1,0,0,0,0,0,0},
+ {"cpuid-thermal-power", {0x0f,0xa2},2,1,0,64,2,0x6,0,0,0x8d7,0x8d5,0,0,0,1,0,0,0,0,0,0},
+ {"cpuid-structured-unknown", {0x0f,0xa2},2,1,0,64,2,0x7,1,0,0x8d7,0x8d5,0,0,0,1,0,0,0,0,0,0},
+ {"cpuid-unknown", {0x0f,0xa2},2,1,0,64,2,0x12345678,0,0,0x8d7,0x8d5,0,0,0,1,0,0,0,0,0,0},
+ {"cpuid-extended-unknown", {0x0f,0xa2},2,1,0,64,2,0x80000008,0,0,0x8d7,0x8d5,0,0,0,1,0,0,0,0,0,0},
 #include "fp-cases.h"
 };
 #define CPU_CASES (sizeof(cpu_cases)/sizeof(cpu_cases[0]))

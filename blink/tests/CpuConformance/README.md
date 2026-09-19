@@ -1,12 +1,12 @@
 # CPU conformance seed corpus
 
-Run `python3 blink/tests/CpuConformance/run.py` on Linux x86-64. It builds an
+Run `python3 blink/tests/CpuConformance/run.py --staged-fp` on Linux x86-64. It builds an
 independent hardware witness and a standalone interpreter consumer linked to the
 pinned native archive, then runs each corpus case in a separate subprocess.
 It does not build or qualify the managed core.
 
-The corpus contains 491 cases: the original 24 instruction cases and seven
-CPUID queries, plus 460 scalar FP correction witnesses. The original 31 input
+The corpus contains 495 cases: the original 24 instruction cases and seven
+CPUID queries, plus 460 scalar FP correction witnesses and four policy CPUID queries. The original 31 input
 rows remain unchanged.
 Both consumers execute the same literal instruction bytes and start with the
 same RAX/RCX/RDX, arithmetic flags, XMM0/XMM1 and memory contents. `describe.c`
@@ -83,8 +83,8 @@ native interpreter outputs; P3 remains open (see `COVERAGE.md`).
 
 ## Actual translated-core consumer
 
-Run `python3 blink/tests/CpuConformance/run-managed.py --core-receipt
-<qualified CoreExecution receipt.json>`. The baseline must be a passing,
+Run `python3 blink/tests/CpuConformance/run-managed.py --staged-fp --core-receipt
+blink/artifacts/core-execution/attempt-n9ligxbc/receipt.json`. The baseline must be a passing,
 non-diagnostic actual core matrix produced by the same frozen compiler.
 
 The runner retains all108 upstream/host objects from that109-object baseline
@@ -146,19 +146,20 @@ same. Shared feature/profile files are never modified by these runners.
 
 `features.py` decodes 41 observed feature locations, validates the selected
 exclusions and records actual advertisements with bounded evidence labels.
-Unqualified optional extensions are explicitly listed as candidates for a
-future reviewed advertisement reduction, not silently treated as supported.
-No proposed reduction is applied by this test. Clearing optional bits also
-cannot fix the baseline SSE/SSE2 defects; these need separately reviewed
-upstream corrections or explicit compatibility restrictions.
+The narrowed policy checks twelve optional feature bits and invariant TSC are
+clear, plus zero outputs for thermal/power and unknown-leaf queries. This
+advertisement policy does not imply retained handlers reject those instructions.
+The runner consumes the explicit HostCpu staging policy; it does not infer
+policy from observed failures. Clearing optional bits cannot repair baseline
+SSE/SSE2 defects; the scalar correction is qualified independently.
 
 Historical evidence is retained separately: `tests/HostCpu/run.py` previously
 qualified 16 direct OpCpuid queries in all four focused modes, eight native
 feature-toggle configurations, and seven native instruction/exclusion probes
 (including FXSAVE/PXOR/FXRSTOR). That is useful existing evidence, but it does
 not imply those 16 queries or seven instruction sequences all executed through
-the current complete managed core. This expansion establishes only the seven
-listed CPUID instruction leaves and the specific instruction cases recorded
+the current complete managed core. The current expansion establishes eleven
+CPUID instruction queries and the specific instruction cases recorded
 in its own full-core receipt.
 
 ## Reviewed staged scalar correction
@@ -178,7 +179,7 @@ allows zero; per-case halt classes distinguish SIMD from divide faults. New
 fault comparisons retain defined GPR/XMM/MXCSR/arithmetic-flag state and SIMD
 signal codes. Existing integer fault undefined state stays excluded.
 
-The actual managed derivation replaces four objects: the CPU frontend, `cvt.c`,
+The historical scalar managed derivation replaced four objects: the CPU frontend, `cvt.c`,
 `ssefloat.c` and `throw.c`. The other 105 objects retain their producer identity.
 The original preparation prefix `#include "host-bindings.h"` is verified against
 each original source and repeated in separately hashed prepared C files, in
@@ -193,3 +194,32 @@ of raw JIT, raw NativeAOT, optimized JIT and optimized NativeAOT, at
 `completed: true`, `passed: true`, and `native_agreement: true`. The original
 31-case failing diagnostic remains preserved; the staged result qualifies only
 this reviewed source derivation and its recorded inputs.
+
+For a canonical profile already containing the reviewed scalar correction, use
+`--staged-fp` with its exact passing CoreExecution receipt. The runner verifies
+the retained CPUID producer source against the fresh native policy and the three
+scalar producer sources against the reviewed staged bytes and boundary receipt.
+It then reuses those canonical objects and replaces only the authored frontend.
+Older original-scalar baselines still require three explicitly recorded scalar
+object replacements. A policy mismatch fails before managed emission rather
+than silently qualifying a different profile.
+
+## Narrowed canonical policy result
+
+The 495-case matrix against canonical CoreExecution
+`artifacts/core-execution/attempt-n9ligxbc/receipt.json` passed all **1,980**
+comparisons at `artifacts/cpu-conformance-managed/attempt-jwuzr1go/receipt.json`,
+with `completed`, `passed` and `native_agreement` all true. Its fresh native
+reference is `artifacts/cpu-conformance/attempt-22ltifm3/receipt.json`.
+It retains 108 exact canonical objects and replaces only the CPU frontend;
+CPUID and all three reviewed scalar objects are reused without regeneration.
+Eleven CPUID instruction queries observe the narrowed optional advertisements,
+zero leaf 6 and unknown leaves. The whole-profile runtime, direct IL and
+publication receipts are joined in
+`artifacts/core/canonical-policy-integration.json`.
+
+An explicit negative run against the preceding canonical policy fails before
+managed emission (`artifacts/cpu-conformance-managed/policy-mismatch-rejection.json`).
+This prevents a current native policy from silently qualifying an older virtual
+CPU. Both historical profiles and their successful original receipts remain
+valid evidence for their recorded inputs.
