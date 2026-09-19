@@ -4,7 +4,7 @@
 #include <sys/types.h>
 
 /* One active allocation owner per worker. The limit includes rounded payload
- * and ownership record storage. No persistent CLR references live in C memory. */
+ * ownership records and one protection byte per page. No persistent CLR references live in C memory. */
 int BlinkHostMemoryBegin(size_t);
 typedef ssize_t (*BlinkHostMemoryReadAt)(int, void *, size_t, off_t);
 typedef int (*BlinkHostMemoryReadLength)(int, off_t *);
@@ -19,6 +19,12 @@ size_t BlinkHostMemoryMappings(void);
 /* Nonempty range wholly within one live mapping on the current owner. Pure
  * ownership test: no dereference, errno change, or native memory probing. */
 int BlinkHostMemoryContains(const void *, size_t);
+/* Software-only page mode, or -1 if not currently owned. No errno changes.
+ * Modes NONE/READ/WRITE/RW never change raw backing's RW accessibility.
+ * Guest page tables, not this metadata, enforce guest permissions. */
+int BlinkHostMemoryProtection(const void *);
+/* mprotect supports aligned ranges within one owned mapping, rounded upward
+ * to pages. No zero lengths, cross-mapping ranges, hardware protection or EXEC. */
 int BlinkHostMemoryEnd(void);
 /* Only after the entire upstream worker state and its slab-cache references
  * are discarded. This is deliberately distinct from FreeSystem(). */

@@ -4,7 +4,7 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-P0 is complete to its native baseline gate; recorded toolchain packaging limits remain qualification work. P1–P6 have not passed. No translated Blink execution or service runner is claimed.
+P0–P2 have passed their stated gates on Linux x64. The complete selected interpreter executes bounded instructions, faults and guest exits in raw/optimized JIT/NativeAOT. P3–P6 remain open; no managed service runner or Windows execution is claimed.
 
 ## Ownership
 
@@ -19,8 +19,8 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 | Milestone | State | Evidence / remaining work |
 | --- | --- | --- |
 | P0 | Passed | Immutable sources verified offline; native Blink and 25 assembly cases pass; six HTTP cases pass on Linux and Blink; exact native archive/import/global audit and initial translation failures recorded. |
-| P1 | Pending | Needs actual upstream instruction execution through managed embedding, ABI, faults, JIT/AOT. |
-| P2 | Pending | Complete selected closure and rooted raw/optimized libraries. |
+| P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
+| P2 | Passed | All109 selected sources emit/link; raw/optimized libraries and whole-library-rooted AOT execute; direct IL/import/initializer inventories complete with zero traversed native imports. Indirect/framework limits remain explicit for P4/P6. |
 | P3 | Pending | CPU/memory/ELF behavior corpus. |
 | P4 | Pending | Real host contracts and service startup. |
 | P5 | Pending | Worker/controller lifecycle and two-instance HTTP qualification. |
@@ -32,7 +32,12 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 ## Next actions
 
-Freeze the combined host-binding profile, emit/cache the complete selected core object set, then link and build the actual bounded interpreter consumer. All 83 native-selected sources have historical isolated emission receipts; the combined profile must still pass. Qualified I/O, memory, identity, signal masks, clocks and termination bindings are being integrated. Audit every unresolved host operation before execution. Actual managed instruction/exit/fault execution is the next P1 gate.
+Qualify the independent CPU corpus and unchanged pinned valid ELF through derived
+links of the actual translated core. Extend the owning execution adapter to
+service startup and bounded worker lifecycle. Keep malformed-input and Windows
+execution gates open. Current workers own CpuConformance and ElfLoading;
+the coordinator owns audit integration, milestone commits and reviewed changes
+back to the original checkout. See the final progress entries for current evidence.
 
 ## Observed validation (initial campaign baseline)
 
@@ -898,3 +903,72 @@ Native/common, raw/optimized JIT/NativeAOT and copied HostFiles/InstanceIo
 regressions pass at host-pipes/attempt-73tfaaeh. The upstream pipe()+fcntl
 fallback is supported without advertising HAVE_PIPE2. The final bridge and
 Host snapshot are included in the next109-source full profile.
+
+## Significant progress: independent CPU reference corpus
+
+Twelve fixed-byte instruction cases match actual x86-64 execution against the
+pinned native Blink interpreter at cpu-conformance/attempt-usdzucbq. The corpus
+covers arithmetic flags, masked/edge shift counts, signed division and overflow
+fault, retained SSE2 lanes, decode/data page boundaries and absent-page faults.
+Both witnesses start from the same explicit inputs and preserve complete mapped
+data plus raw register/flag/fault evidence; comparisons use only defined flags
+and architectural fault state. The hardware witness executes the actual bytes
+in disposable native test processes. This is native reference preparation;
+managed conformance and P3 completion remain open.
+
+## Validation infrastructure limit: malformed ELF corpus
+
+An automated safety check stopped the worker preparing malformed-ELF reference
+inputs. That work was not retried or counted as qualification; its incomplete
+draft files/failed receipts remain preserved outside committed deliverables.
+The worker switched to read-only integration review of ordinary valid pinned
+ELF loading. Malformed-input coverage remains open; other implementation and
+qualification work continues.
+
+## Significant progress: owned-page software protection
+
+The host memory contract now tracks NONE/READ/WRITE/RW per 4096-byte page and
+charges/frees the metadata with its owned mapping. Range validation precedes
+all protection changes; unowned/cross-mapping ranges fail without mutation.
+Backing allocations remain ordinary RW data; the translated guest page tables
+provide guest access checks. Executable host mappings remain unsupported.
+This supports the actual loader's read-only segment backing and temporary
+write/restore sequence without claiming OS hardware mprotect enforcement.
+Native and raw/optimized JIT/NativeAOT pass at host-memory/attempt-voyktkm1,
+host-file-mapping/attempt-mmr6w46m and host-diagnostic/attempt-lazd_317;
+ASan passes at host-file-mapping/asan-o2y4be1f. These include quota, invalid
+ranges, private file snapshots, GC/two-owner checks and affected I/O regressions.
+The previous full-core profile remains frozen with its older HostMemory copy;
+valid managed ELF loading is being qualified in a separately recorded derived link.
+
+## P1/P2 milestone: actual complete translated execution
+
+The uniform format2 profile attempt-gjk_ktle emits and links all109 source
+objects at core/objects/e7c33225f0f91a793410b9483f597d230368f6a4ded5f8628e0e599f1fffe43d.
+Core consumer attempt-ny3j_02m passes raw/optimized JIT and NativeAOT, with
+whole-library trim roots. Actual arithmetic/memory state, bounded looping,
+undefined-instruction and unmapped-address faults, exit37 and exit_group42
+match the native interpreter exactly over two complete create/run/destroy cycles.
+The ABI matches the independent configured native storage probe (Machine22576,
+System3016); the untouched native signal jump buffer intentionally gives a
+different total Machine size. The final process-owned memory accounting is
+2 retained mappings/270384 bytes before final owner disposal; this does not
+claim reusable independent owners within one process.
+
+Raw and optimized metadata-only audits finish with5594/5584 method definitions,
+4524 roots, zero traversed native imports and no unresolved tokens/errors.
+The supplied generic runtime still declares17 native methods; declarations
+are recorded separately from selected direct calls.155 indirect call sites,
+virtual/delegate dispatch and framework implementation boundaries are explicit
+limitations, not an isolation proof. No native emulator is referenced. The
+recovery compiler regressions already passed2257 unit/570 functional tests
+with1057 explicit platform skips after format2 integration.
+P1 and P2 pass their stated execution/build gates; CPU/ELF coverage, service
+startup, worker lifecycle, hostile-input qualification and Windows remain open.
+
+The integrated CoreExecution audit gate was rerun at
+core-execution/attempt-ymbkz80n: native/configured ABI, both direct boundary
+inventories and all four executions pass. The runner snapshots and hashes its
+auditor sources/binary, refuses incomplete/direct-native inventories and direct
+process-exit/start/native-loader calls, and preserves the inventory limitations.
+This fresh receipt qualifies the audit's placement before managed execution.

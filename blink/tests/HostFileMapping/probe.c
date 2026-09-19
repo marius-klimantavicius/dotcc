@@ -56,7 +56,7 @@ static int PrivateChecks(void) {
   CHECK(!BlinkHostMemoryMappings() && !BlinkHostMemoryBytes());
   CHECK(mmap(0,4096,3,MAP_PRIVATE,fd,1)==MAP_FAILED && errno==EINVAL);
   CHECK(mmap(0,4096,3,MAP_PRIVATE,fd,-4096)==MAP_FAILED && errno==EINVAL);
-  CHECK(mmap(0,4096,PROT_READ,MAP_PRIVATE,fd,0)==MAP_FAILED && errno==ENOTSUP);
+  CHECK(mmap(0,4096,PROT_EXEC,MAP_PRIVATE,fd,0)==MAP_FAILED && errno==ENOTSUP);
   CHECK(mmap(0,4096,3,MAP_SHARED,fd,0)==MAP_FAILED && errno==ENOTSUP);
   CHECK(mmap((void*)4096,4096,3,MAP_PRIVATE|MAP_FIXED,fd,0)==MAP_FAILED && errno==ENOTSUP);
   CHECK(mmap(0,8192,3,MAP_PRIVATE,fd,131072)==MAP_FAILED && errno==ENOTSUP);
@@ -75,11 +75,11 @@ static int PrivateChecks(void) {
   CHECK(!BlinkHostMemoryBytes() && !BlinkHostMemoryMappings());
   CHECK(!BlinkHostMemorySetFileReader(ShortRead,TestLength));
   unsigned char *p=mmap(0,FILE_LENGTH,3,MAP_PRIVATE,fd,0);CHECK(p!=MAP_FAILED);
-  CHECK(BlinkHostMemoryBytes()==135168+24 && BlinkHostMemoryMappings()==1);
+  CHECK(BlinkHostMemoryBytes()==135168+24+33 && BlinkHostMemoryMappings()==1);
   CHECK(BlinkHostMemoryContains(p,135168) && !BlinkHostMemoryContains(p+135167,2));
   for(int i=0;i<FILE_LENGTH;++i)CHECK(p[i]==(unsigned char)(i%251));
   CHECK(!munmap(p,FILE_LENGTH) && !BlinkHostMemoryEnd());
-  CHECK(!BlinkHostMemoryBegin(4096+24) && !EnableFiles());
+  CHECK(!BlinkHostMemoryBegin(4096+24+1) && !EnableFiles());
   CHECK(mmap(0,FILE_LENGTH,3,MAP_PRIVATE,fd,0)==MAP_FAILED && errno==ENOMEM);
   CHECK(!BlinkHostMemoryBytes() && !BlinkHostMemoryMappings() && !close(fd));
   CHECK(!BlinkHostMemoryEnd() && !BlinkHostMemoryBegin(1024*1024));
@@ -99,6 +99,13 @@ int FileMappingProbe(void) {
   for(int i=0;i<8;++i)CHECK((unsigned char)bytes[i]==(unsigned char)((i+100)%251));
   CHECK(pread(fd,bytes,8,-1)==-1 && errno==EINVAL);
   CHECK(pread(fd,bytes,8,FILE_LENGTH+10)==0 && lseek(fd,0,SEEK_CUR)==17);
+  unsigned char *readonly=mmap(0,4096,PROT_READ,MAP_PRIVATE,fd,0);
+  CHECK(readonly!=MAP_FAILED && readonly[100]==100);
+  CHECK(!mprotect(readonly,4096,PROT_READ|PROT_WRITE));
+  readonly[100]=254;
+  CHECK(!mprotect(readonly,4096,PROT_READ) && readonly[100]==254);
+  CHECK(pread(fd,bytes,1,100)==1 && (unsigned char)bytes[0]==100);
+  CHECK(!munmap(readonly,4096));
   unsigned char *full=mmap(0,FILE_LENGTH,PROT_READ|PROT_WRITE,MAP_PRIVATE,fd,0);
   CHECK(full!=MAP_FAILED && !((uintptr_t)full&4095));
   for(int i=0;i<FILE_LENGTH;++i)CHECK(full[i]==(unsigned char)(i%251));

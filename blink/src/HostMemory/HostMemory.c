@@ -33,11 +33,35 @@ static size_t RoundLength(size_t length) {
   return (length + 4095) & ~(size_t)4095;
 }
 
+static size_t MetadataSize(size_t rounded) {
+  return sizeof(struct OwnedMapping) + rounded / 4096;
+}
+static unsigned char *Protections(struct OwnedMapping *record) {
+  return (unsigned char *)(record + 1);
+}
+static int ValidProtection(int prot) {
+  if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC)) return Fail(EINVAL);
+  if (prot & PROT_EXEC) return Fail(ENOTSUP);
+  return 0;
+}
+int BlinkHostMemoryProtection(const void *pointer) {
+  uintptr_t address = (uintptr_t)pointer;
+  struct OwnedMapping *record = owner.head;
+  if (!owner.limit || !address) return -1;
+  while (record) {
+    uintptr_t base = (uintptr_t)record->address;
+    if (address >= base && address - base < record->length)
+      return Protections(record)[(address - base) / 4096];
+    record = record->next;
+  }
+  return -1;
+}
+
 int BlinkHostMemoryBegin(size_t limit) {
   if (owner.limit) return Fail(EBUSY);
   /* The shared C library currently has int-sized malloc/memset lengths. This
    * campaign limit makes every conversion lossless, including metadata. */
-  if (limit < 4096 + sizeof(struct OwnedMapping) || limit > 256 * 1024 * 1024)
+  if (limit < 4096 + MetadataSize(4096) || limit > 256 * 1024 * 1024)
     return Fail(EINVAL);
   owner.limit = limit;
   return 0;
@@ -83,7 +107,8 @@ void *blink_host_mmap(void *address, size_t length, int prot, int flags,
   size_t file_bytes = 0;
   if (!owner.limit) { Fail(ENODEV); return MAP_FAILED; }
   if (!(rounded = RoundLength(length))) { Fail(EINVAL); return MAP_FAILED; }
-  if (address || prot != (PROT_READ | PROT_WRITE)) {
+  if (ValidProtection(prot)) return MAP_FAILED;
+  if (address) {
     Fail(ENOTSUP);
     return MAP_FAILED;
   }
@@ -105,11 +130,11 @@ void *blink_host_mmap(void *address, size_t length, int prot, int flags,
     if (file_bytes > rounded) file_bytes = rounded;
   } else { Fail(ENOTSUP); return MAP_FAILED; }
   if (rounded > owner.limit - owner.bytes ||
-      sizeof(struct OwnedMapping) > owner.limit - owner.bytes - rounded) {
+      MetadataSize(rounded) > owner.limit - owner.bytes - rounded) {
     Fail(ENOMEM);
     return MAP_FAILED;
   }
-  if (!(record = malloc(sizeof(*record)))) { Fail(ENOMEM); return MAP_FAILED; }
+  if (!(record = malloc(MetadataSize(rounded)))) { Fail(ENOMEM); return MAP_FAILED; }
   error = posix_memalign(&allocation, 4096, rounded);
   if (error) { free(record); Fail(error); return MAP_FAILED; }
   memset(allocation, 0, rounded);
@@ -127,11 +152,12 @@ void *blink_host_mmap(void *address, size_t length, int prot, int flags,
     }
     copied += count;
   }
+  memset(Protections(record), prot, rounded / 4096);
   record->address = allocation;
   record->length = rounded;
   record->next = owner.head;
   owner.head = record;
-  owner.bytes += rounded + sizeof(*record);
+  owner.bytes += rounded + MetadataSize(rounded);
   ++owner.mappings;
   return allocation;
 }
@@ -147,7 +173,7 @@ int blink_host_munmap(void *address, size_t length) {
       if (record->length != rounded) return Fail(EINVAL);
       if (previous) previous->next = record->next;
       else owner.head = record->next;
-      owner.bytes -= record->length + sizeof(*record);
+      owner.bytes -= record->length + MetadataSize(record->length);
       --owner.mappings;
       free(record->address);
       free(record);
@@ -160,8 +186,25 @@ int blink_host_munmap(void *address, size_t length) {
 }
 
 int blink_host_mprotect(void *address, size_t length, int prot) {
-  (void)address; (void)length; (void)prot;
-  return Fail(ENOTSUP);
+  uintptr_t start = (uintptr_t)address;
+  size_t rounded;
+  struct OwnedMapping *record = owner.head;
+  if (!owner.limit) return Fail(ENODEV);
+  if (!start || (start & 4095) || !(rounded = RoundLength(length)) ||
+      rounded > UINTPTR_MAX - start) return Fail(EINVAL);
+  if (ValidProtection(prot)) return -1;
+  while (record) {
+    uintptr_t base = (uintptr_t)record->address;
+    if (start >= base && rounded <= record->length &&
+        start - base <= record->length - rounded) {
+      /* Pure software bookkeeping for owned private backing. Raw C memory
+       * remains RW; upstream guest PTEs enforce guest access permissions. */
+      memset(Protections(record) + (start - base) / 4096, prot, rounded / 4096);
+      return 0;
+    }
+    record = record->next;
+  }
+  return Fail(ENOMEM);
 }
 int blink_host_msync(void *address, size_t length, int flags) {
   (void)address; (void)length; (void)flags;

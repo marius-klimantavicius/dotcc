@@ -237,20 +237,20 @@ source/host/profile manifest. Do not mark a source inspection as a passed probe.
 
 ### P1 — Prove the interpreter and embedding seams
 
-- [ ] Translate a decoder/instruction subset with a real guest memory harness.
+- [x] Translate a decoder/instruction subset with a real guest memory harness.
 - [x] Compare actual emitted ABI/register storage to matching native probes.
-- [ ] Demonstrate budgeted stepping, faults, and nonlocal unwind without host exit.
-- [ ] Map every remaining platform dependency and planned adaptation explicitly.
+- [x] Demonstrate budgeted stepping, faults, and nonlocal unwind without host exit.
+- [x] Map every remaining platform dependency and planned adaptation explicitly.
 
 **Gate:** actual guest instructions execute and halt safely through the proposed
 embedding boundary under JIT and NativeAOT; unresolved dependencies are recorded.
 
 ### P2 — Translate the complete selected core
 
-- [ ] Repair actual compiler/header/runtime blockers using reduced regressions.
-- [ ] Emit all required decoder, CPU, memory, loader, and syscall-marshalling code.
-- [ ] Build raw/optimized libraries and whole-library-rooted AOT consumers.
-- [ ] Audit imports and initializers; placeholders cannot enter runtime gates.
+- [x] Repair actual compiler/header/runtime blockers using reduced regressions.
+- [x] Emit all required decoder, CPU, memory, loader, and syscall-marshalling code.
+- [x] Build raw/optimized libraries and whole-library-rooted AOT consumers.
+- [x] Audit imports and initializers; placeholders cannot enter runtime gates.
 
 **Gate:** complete selected source closure builds with matching actual layouts,
 no native emulator dependency, and passing affected compiler regressions.

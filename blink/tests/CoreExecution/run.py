@@ -114,6 +114,8 @@ try:
         shutil.copyfile(profile / relative, a / 'bridges' / Path(relative).name)
     for name in ('Program.cs', 'abi.c'):
         shutil.copyfile(ROOT / 'tests/CoreExecution' / name, a / name)
+    shutil.copytree(ROOT / 'tools/BoundaryAudit', a / 'audit-tool',
+                    ignore=shutil.ignore_patterns('bin', 'obj'))
     receipt['consumer_inputs'] = {str(p.relative_to(a)):sha(p) for p in a.rglob('*') if p.is_file()}
     receipt['runner_sha256'] = sha(Path(__file__))
     for label in ('raw', 'optimized'):
@@ -163,6 +165,28 @@ try:
     post = ROOT.parent / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
     receipt['postprocessor'] = {p.name:sha(p) for p in post.parent.glob('*.dll')}
 
+    run(['dotnet', 'build', a / 'audit-tool/BoundaryAudit.csproj', '-c', 'Release'],
+        'boundary-audit-build')
+    auditor = a / 'audit-tool/bin/Release/net10.0/BoundaryAudit.dll'
+    receipt['boundary_auditor_sha256'] = sha(auditor)
+
+    def audit(directory, label):
+        report = out / (label + '-boundary-audit.json')
+        run(['dotnet', auditor, directory / 'consumer/bin/Release/net10.0/ManagedCore.dll',
+             report], label + '-boundary-audit')
+        inventory = json.loads(report.read_text())
+        if not inventory['complete'] or inventory['traversedNativeImports']:
+            raise RuntimeError(label + ' incomplete inventory or direct native import')
+        forbidden = ('System.Environment::Void Exit(', 'System.Diagnostics.Process::',
+                     'System.Runtime.InteropServices.NativeLibrary::')
+        if any(any(term in target for term in forbidden)
+               for target in inventory['externalManagedCalls']):
+            raise RuntimeError(label + ' direct process/native-loader escape')
+        receipt.setdefault('boundary_audits', {})[label] = dict(
+            report=str(report), sha256=sha(report),
+            scope='direct IL and initializer inventory; indirect/framework dispatch remains unaudited')
+        save()
+
     def check(command, label):
         actual = run(command, label, 30).splitlines()
         if not actual or actual[0] != expected_abi:
@@ -184,6 +208,7 @@ try:
             run(['dotnet','restore',directory / 'library/ManagedCore.csproj'], 'optimized-restore')
             run(['dotnet',post,directory / 'library/ManagedCore.csproj','--in-place'], 'postprocess', 600)
         run(['dotnet','build',consumer,'-c','Release'], label + '-build', 600)
+        audit(directory, label)
         if args.build_only:
             break
         check(['dotnet',directory / 'consumer/bin/Release/net10.0/CoreExecution.dll'], label + '-jit')

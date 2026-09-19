@@ -1,0 +1,81 @@
+# CPU conformance seed corpus
+
+Run `python3 blink/tests/CpuConformance/run.py` on Linux x86-64. It builds an
+independent hardware witness and a standalone interpreter consumer linked to the
+pinned native archive, then runs each of twelve cases in a separate subprocess.
+It does not build or qualify the managed core.
+
+Both consumers execute the same literal instruction bytes and start with the
+same RAX/RCX/RDX, arithmetic flags, XMM0/XMM1 and memory contents. `describe.c`
+exports every input byte, code/data placement, step bound, fault expectation and
+flag mask into the receipt's `corpus.stdout`. All 4KiB/8KiB mapped data contents
+are compared, not just the location an instruction should modify.
+
+| Case | Witness |
+| --- | --- |
+| ADD overflow | Signed boundary `INT64_MAX+1`, six arithmetic flags |
+| ADD carry | Unsigned all-ones plus one, six arithmetic flags |
+| SUB borrow | Zero minus one, six arithmetic flags |
+| SHL count64 | Masked-zero shift preserves value and arithmetic flags |
+| SHR count1 | Defined CF/PF/ZF/SF/OF; AF excluded |
+| SAR count63 | Defined CF/PF/ZF/SF; AF and OF excluded |
+| Signed IDIV | Negative dividend -17 divided by5; quotient/remainder from hardware; flags excluded |
+| IDIV overflow | INT64_MIN divided by -1; real divide fault and faulting IP |
+| SSE2 PADDD | Four differing 32-bit XMM lanes, wrapping values, flags preserved |
+| Decode boundary | Ten-byte MOVABS begins three bytes before a page boundary |
+| Data boundary | Eight-byte load/add/store straddles two guest pages |
+| Data fault | Eight-byte load straddles an accessible page and unavailable second page |
+
+SSE2 remains advertised by the campaign CPUID profile and its XMM execution
+handlers remain selected (`docs/HOST-CPU.md`). No x87/MMX/BMI2/ADX/AVX behavior
+is assumed here. This small corpus is not exhaustive coverage of any family.
+
+## Independent hardware witness
+
+`hardware.c` maps private test-only code/data, copies the corpus bytes, changes
+code pages from writable to executable, initializes registers with a short
+inline assembly trampoline, then jumps to the bytes. No arithmetic, division,
+shift or SIMD result is computed in C. An appended INT3 stops successful cases;
+Linux `ucontext` captures the actual registers, flags and XMM bytes. Division and
+memory cases instead capture actual synchronous SIGFPE/SIGSEGV. Signal handlers
+and executable mappings exist only in these short-lived native test processes,
+not in the product host boundary.
+
+Hardware INT3 advances RIP by one beyond the corpus bytes; the witness subtracts
+only that sentinel byte. Interpreter output uses IP relative to its corpus
+start. Success is compared at the next instruction; faults at the faulting
+instruction. The hardware inaccessible second data page uses a PROT_NONE guard;
+the interpreter's second guest page is absent. Only the common fault category
+and restart IP are compared. Linux si_code and Blink's halt/signal-code outputs
+are preserved independently and are not claimed identical.
+
+Only architecturally defined flags are compared. IDIV flags are excluded;
+fault cases compare fault/IP/memory and retain, but do not compare, general
+register/XMM/flag captures. Other cases compare all initialized general
+registers and both initialized XMM registers. Reserved/privileged flag bits and
+Blink's internal lazy-flag bookkeeping are retained in raw captures but masked
+out. The hardware does not count retired steps (reported -1); the interpreter
+must meet its explicit successful-step/fault bound.
+
+## Interpreter and provenance
+
+`interpreter.c` uses unchanged pinned `NewSystem`, `NewMachine`,
+`ReserveVirtual`, `CopyToUser`, `ExecuteInstruction`, `CopyFromUser`, and
+synchronous `sigsetjmp` halt handling. Its only frontend signal hook records
+upstream outcomes. Guest instructions, decoding, memory translation, fault
+construction and SIMD/ALU algorithms are not replaced.
+
+The runner snapshots the exact native archive, headers and config, corpus and
+harness sources. It verifies the pinned source-inventory hashes and retains
+compiler version, CPU/kernel identity, disassembly, link map, binary hashes,
+full unmasked captures, complete mapped-memory dumps and comparison masks.
+Each child has a bounded timeout; mismatch or abnormal exit fails the run and
+preserves artifacts. It does not turn an unsupported hardware platform into a
+passing reference.
+
+`CpuInterpreterCase(index)` is an authored independent fixture entry point for
+later integration. That integration must select one frontend signal hook,
+arrange real managed host-owner lifecycle and required guest-limit seeding,
+and call the fixture through the actual translated core. Current tests link
+native Blink only. No raw/optimized managed JIT/AOT conformance or P3 completion
+is claimed by this receipt.

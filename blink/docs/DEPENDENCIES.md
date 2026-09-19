@@ -128,3 +128,40 @@ Repeated create/run/destroy must establish which state resets, which immutable
 tables initialize once, and which diagnostics disappear. Multiple workers can
 separate this state by process; the current evidence does not qualify multiple
 simultaneous emulators inside one managed process.
+
+## Actual managed closure and initializer inventory
+
+The frozen109-source format2 profile attempt-gjk_ktle and object link
+`e7c33225f0f91a793410b9483f597d230368f6a4ded5f8628e0e599f1fffe43d` build and
+execute in all four Linux x64 forms (core-execution/attempt-ny3j_02m). Exact
+C/header/bridge/Host inputs and compiler identity are in their receipts.
+`config/host-bindings.json` owns the selected host bindings; its headers select
+private operations or explicit unsupported-feature contracts. CLI/TUI/native
+JIT and demangler subprocess code are excluded. Native Blink is an oracle only.
+
+`tools/BoundaryAudit` inventories every directly declared BlinkCore method and
+all type/module initializers in the library and Host assembly without executing
+target code. Its self-check-zpqg3xl7 covers root/module/Host imports, state-machine
+expansion, malformed IL, budgets and missing dependencies. The raw/optimized
+actual-library inventories contain5594/5584 method definitions and zero
+traversed native imports. The generic embedded runtime separately declares17
+native methods, including POSIX/Windows identity/filesystem/accounting helpers;
+none is reached by the inspected direct graph. Unused generic Environment.Exit
+helpers also remain in the rooted library, while selected exit bindings throw
+instance termination results. Presence and reachability are distinct claims.
+
+The64 direct generic libc entries cover allocation, byte/string/format operations,
+math, byte order, calendar conversion and synchronous nonlocal jumps. Allocation
+uses NativeMemory/GC pinning, not executable mappings. Host socket callbacks use
+BCL Socket APIs. The generic allocator reads DOTCC_DEBUG_HEAP and
+DOTCC_DEBUG_HEAP_SCAN at initialization; these are controller debugging switches,
+not guest environment reads. Diagnostic printf/perror use Console; the owning
+worker must capture/bound these separately from guest descriptor output.
+
+The155 calli sites include instruction/function tables, descriptor operations,
+private host callbacks, jump/exit callbacks and libc qsort comparators. Their
+concrete C/header/bridge owners are preserved in the frozen input ledger. The
+inventory does not resolve their dynamic targets, virtual overrides, ordinary
+delegates, arbitrary schedulers or reflection, and does not recursively audit
+BCL assemblies. These remain runtime/ownership qualification obligations for
+P4/P6. Completed direct inventory is not a hardened isolation claim.

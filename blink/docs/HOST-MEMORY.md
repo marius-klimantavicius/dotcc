@@ -42,21 +42,45 @@ of the System lifecycle still need complete instance host integration.
 
 `BlinkHostMemoryBegin(limit)` creates one active owner on the current host worker
 thread. The configured limit includes rounded page payloads and 24-byte LP64
-ownership records, is at least one page plus metadata, and is at most 256 MiB.
+ownership records plus one protection byte per page, is at least one page plus metadata, and is at most 256 MiB.
 The upper bound keeps the shared runtime's current int-sized memset/malloc
 length conversions lossless. The charged total is payload plus ownership
-records, not process RSS: allocator alignment padding, runtime ownership-table
+records and protection bytes, not process RSS: allocator alignment padding, runtime ownership-table
 entries and native allocator bookkeeping add per-allocation overhead. Each slab uses real posix_memalign/free, which the
 managed runtime implements with NativeMemory allocation and a live ownership
 table. Payload bytes start at zero and addresses are aligned to 4096.
 
 Without file-reader registration, only a null-address, private anonymous,
-read/write request with fd=-1 and offset=0 is supported. An explicitly enabled
+request with fd=-1 and offset=0 is supported; tracked protection modes are
+NONE, READ, WRITE and READ|WRITE. An explicitly enabled
 owner can also copy existing private file pages under the separate file-mapping
-contract. Fixed addresses, shared mappings and other protections return
-MAP_FAILED with ENOTSUP. Zero/overflowing lengths return
-EINVAL; exceeding the owner's budget returns ENOMEM without changing its live
-state. mprotect and msync return ENOTSUP, never pretend to protect or flush.
+contract. Fixed addresses, shared mappings and executable protection return
+MAP_FAILED with ENOTSUP; unknown protection bits return EINVAL.
+Zero/overflowing lengths return EINVAL; exceeding the owner's budget returns
+ENOMEM without changing its live state. msync remains ENOTSUP.
+
+Protection is **software metadata only**. Raw backing is ordinary RW C memory;
+these bytes do not enforce pointer access, install OS page protections or create
+hardware-executable memory. Unchanged upstream guest PTE checks remain the
+permission enforcement mechanism. `BlinkHostMemoryProtection(address)` returns
+the current page's recorded mode, or -1 for an unowned address, without changing
+errno. Ownership-only `BlinkHostMemoryContains` intentionally ignores mode.
+
+`mprotect` accepts a nonnull page-aligned address and a positive length rounded
+up safely to pages, wholly within one mapping belonging to the current worker.
+NONE/READ/WRITE/RW modes are recorded per page after all validation succeeds.
+Zero length, alignment and address/length overflow errors return EINVAL;
+non-owned or cross-mapping ranges return ENOMEM (even if two owned mappings
+happen to be adjacent). EXEC returns ENOTSUP; unknown bits return EINVAL.
+Invalid requests leave every page mode, payload byte and charge unchanged.
+This bounded contract intentionally does not implement native zero-length or
+multi-mapping protection semantics.
+
+This supports the normal non-linear loader's private READ backing and its
+READ-to-RW-to-READ tail-zeroing transitions. It does not itself qualify managed
+LoadProgram execution. Page metadata shares one allocation with the ownership
+record; allocation rollback, exact unmap and worker disposal release and
+subtract that metadata together with the payload.
 
 munmap requires the current owner's exact base pointer and matching rounded
 length. Partial, foreign and repeated frees return EINVAL and retain live
@@ -97,11 +121,11 @@ staged map adapter, thread-disabled upstream Bus and actual native Blink
 archive. Both repetitions of arithmetic, undefined instruction, instruction
 budget and unmapped-address fault cases pass through actual NewSystem,
 AllocatePageTable and AllocateAnonymousPage. Two mappings remain cached at the
-end, with 270384 charged bytes; they are released only as the worker exits.
+end, with 270450 charged bytes including per-page protection metadata; they are released only as the worker exits.
 This is native execution evidence. Managed instruction execution remains a
 separate, unfinished gate.
 
-The final complete receipt is
+The original allocation receipt is
 `artifacts/host-memory/attempt-p2rrmgaz/receipt.json`; successful reruns update
 `artifacts/host-memory/latest.json` without overwriting earlier attempts.
 The anonymous/actual-native-core matrix was refreshed after file-reader support
@@ -112,3 +136,15 @@ The honest managed profile selects bus.h's 32-bit-host helper path because it
 does not advertise a native CPU platform. Its emitted inline functions therefore
 require unchanged upstream pte32.c, which native archive extraction may omit.
 The memory probe adds that real translation unit instead of inventing helpers.
+
+The software-protection extension is qualified by
+`artifacts/host-memory/attempt-voyktkm1/receipt.json`: native/staged InitMap and
+actual native instruction probes, plus raw/optimized JIT/AOT ownership tests.
+The test covers exact minimum budget including the protection byte, per-page
+mode changes, invalid-request atomicity, mode/range/overflow rejection, exact
+unmap accounting, freed addresses, disposal and cross-worker protection denial
+through compacting GC. It snapshots the consumer before generation as well as
+all C inputs. File mapping/common native READ-to-RW-to-READ checks passed at
+`artifacts/host-file-mapping/attempt-mmr6w46m/receipt.json`; diagnostic reads
+passed all four modes at `artifacts/host-diagnostic/attempt-lazd_317/receipt.json`.
+This evidence qualifies the memory boundary only, not managed ELF loading.

@@ -43,6 +43,7 @@ try:
     shutil.copyfile(ROOT/'config/target-storage.h',ATTEMPT/'target-storage.h')
     shutil.copyfile(ROOT/'config/core-overrides.json',ATTEMPT/'overrides.json')
     for path in [ROOT/'tests/HostMemory/probe.c', ROOT/'tests/HostMemory/constants.c',
+                 ROOT/'tests/HostMemory/Consumer.cs',
                  ROOT/'src/HostMemory/HostMemory.c', ROOT/'src/HostMemory/HostMemory.h',
                  UPSTREAM/'blink/flag.c', UPSTREAM/'blink/pte32.c']:
         shutil.copyfile(path,ATTEMPT/path.name)
@@ -91,7 +92,7 @@ try:
     for label,project in [('raw',raw),('optimized',opt)]:
         library=project/'HostMemory.csproj'
         consumer=ATTEMPT/(label+'-consumer'); consumer.mkdir()
-        shutil.copyfile(ROOT/'tests/HostMemory/Consumer.cs',consumer/'Program.cs')
+        shutil.copyfile(ATTEMPT/'Consumer.cs',consumer/'Program.cs')
         xml=ET.Element('Project',Sdk='Microsoft.NET.Sdk')
         props=ET.SubElement(xml,'PropertyGroup')
         for key,value in [('TargetFramework','net10.0'),('OutputType','Exe'),('AllowUnsafeBlocks','true'),('WarningsAsErrors','CS8500'),('AssemblyName','HostMemoryConsumer')]: ET.SubElement(props,key).text=value

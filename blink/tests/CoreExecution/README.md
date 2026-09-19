@@ -23,3 +23,10 @@ that textual upstream matches prove reachability or implementation.
 
 Preparing projects or emitting/linking C# does not establish P1. Actual bounded
 instruction, fault and exit execution must pass the native comparison.
+
+Each consumer build now runs a snapshotted BoundaryAudit tool before execution.
+Incomplete direct inventories, traversed native imports and direct process
+exit/start/native-loader calls fail the gate. Reports include unused runtime
+native declarations, indirect/virtual sites and exact assembly identities;
+this direct-graph policy does not establish runtime isolation. Raw and optimized
+reports are independently preserved and hashed in the consumer receipt.

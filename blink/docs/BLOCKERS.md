@@ -269,7 +269,7 @@ preserved beside that receipt.
   constant-false disabled-JIT paths still render Jitter and other unselected
   helpers. Generic removal must preserve C short-circuit effects and label entry;
   neither generated-source rewriting nor helper placeholders qualify a fix.
-- **B029 — remaining selected source/header/host bindings (open):** genuine
+- **B029 — remaining selected source/header/host bindings (fixed in109-source closure):** genuine
   upstream and libc helpers, constants and29 isolated host operations remain
   unresolved. A source/binding ownership inventory is in progress. Native loader
   extraction independently adds five upstream files; service execution is still
@@ -319,3 +319,13 @@ includes links/symlinks, anonymous pipes, named FIFOs and socketpair. The flock
 tag/call collision is addressed by the qualified HostLocks header boundary.
 This build failed and did not execute guest instructions. The newer a513309
 storage format2 must be used for the next current-compiler emission.
+
+
+## B029 closure revalidation
+
+All109 format2 source objects emit and link, and consumer attempt-ny3j_02m
+builds/runs raw/optimized JIT/NativeAOT with whole-library roots. No unresolved
+binding names remain. Required operations have qualified private implementations;
+deferred namespace/process/network features return explicit documented errors.
+This closes the selected binding/build blocker, not service compatibility or
+complete CPU/ELF qualification. B030 is a separate generic runtime boundary.

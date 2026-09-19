@@ -5,7 +5,7 @@ over a bound instance's private file data. It allocates real aligned owned
 memory and copies bytes through synchronous positional reads. It never calls
 OS mmap, opens a host path, or substitutes guest page-table/loader algorithms.
 
-This supports the exact read/write private mapping shape at upstream
+This supports the private mapping shape at upstream
 `loader.c:449` and `:726`. The existing `Mmap` / `PortableMmap` wrappers forward
 that request without algorithm changes. The loader's `pread` header check at
 `:685` also has an authored positional-read definition. Its separate
@@ -38,11 +38,12 @@ worker reuse.
 ## Supported mappings and boundaries
 
 Accepted requests have a null preferred address, exactly `MAP_PRIVATE`, exactly
-`PROT_READ | PROT_WRITE`, a readable regular private file descriptor, a positive
-length, and a nonnegative offset aligned to 4096. Read-only protection is
-rejected because this allocation model cannot enforce it. Shared, fixed, exec,
-protection-change, sync, and other flag/protection combinations remain explicit
-`ENOTSUP` errors.
+a tracked NONE/READ/WRITE/RW mode, a readable regular private file descriptor, a
+positive length, and a nonnegative offset aligned to 4096. Protection modes and
+validated per-page changes use the [software-only memory contract](HOST-MEMORY.md):
+raw backing stays RW and guest PTEs enforce guest permissions. Shared, fixed,
+executable and sync requests remain explicit ENOTSUP errors; unknown protection
+bits return EINVAL.
 
 The entire rounded page range must lie within existing file pages. A final
 partial file page is copied through EOF and its remaining bytes are zero.
@@ -67,7 +68,8 @@ complete. Negative offsets, unreadable/closed descriptors, non-file sources,
 unbound I/O, and callback errors return explicit errors. Access timestamps are
 updated by real read requests according to the existing metadata policy.
 
-The allocation charge remains rounded payload plus the existing 24-byte record,
+The allocation charge is rounded payload plus the 24-byte record and one byte
+per rounded page,
 under the unchanged maximum 256 MiB owner limit. Budget checks happen before
 allocation. The record joins the live ownership list only after a complete
 copy; read failures free both unregistered allocations and leave mapping counts
@@ -111,3 +113,13 @@ The existing anonymous allocation/actual native core matrix passed again at
 `artifacts/host-memory/attempt-ywdxk6r8/receipt.json`, and the diagnostic
 native/raw/optimized JIT/AOT matrix passed again at
 `artifacts/host-diagnostic/attempt-2dfnxpxb/receipt.json`.
+
+The software-protection extension passed the refreshed native/common and
+raw/optimized JIT/AOT matrix at
+`artifacts/host-file-mapping/attempt-mmr6w46m/receipt.json`. It includes a private
+READ mapping, temporary RW writes, restoration to READ, and verification that
+the source file remains unchanged. Updated budget assertions include one byte
+per page. AddressSanitizer with leak detection passed the same frozen inputs at
+`artifacts/host-file-mapping/asan-o2y4be1f/receipt.json`. The concurrent memory
+and diagnostic refresh receipts are listed in [HOST-MEMORY.md](HOST-MEMORY.md).
+No full managed loader execution is claimed by these boundary tests.

@@ -67,3 +67,11 @@ No P2–P6 completion is claimed. Raw/optimized × JIT/NativeAOT Windows executi
 whole-library-rooted AOT, complete CPU/ELF/memory corpus, per-instance host I/O,
 worker lifecycle, performance and final dependent campaign regeneration remain
 required by PLAN.md.
+
+## Actual complete-core Linux x64 gate
+
+P1/P2 now pass using core-execution/attempt-ny3j_02m: all109 objects link,
+raw/optimized JIT/NativeAOT match the native bounded instruction/fault/exit
+witness and configured ABI probe; AOT roots the complete library. Independent
+raw/optimized direct IL audits report zero traversed native imports with their
+limitations preserved in DEPENDENCIES.md. P3–P6 and Windows execution remain open.
