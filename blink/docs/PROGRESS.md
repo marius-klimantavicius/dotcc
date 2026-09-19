@@ -11,7 +11,15 @@ Valid ELF loading, ordinary functional/lifecycle tests and runtime error handlin
 remain in scope. Earlier custom-test blockers below are historical and no longer
 block completion; excluded checks are not reported as passed.
 
-P0–P1 and P2's original core gate have passed on Linux x64. The complete selected interpreter executes bounded instructions, faults and guest exits in raw/optimized JIT/NativeAOT. P2 now has additional pending delivery requirements: `blink/scripts/translate.sh` and final post-processed sources in `blink/generated/TranslatedBlink/`. P3–P6 remain open; P5 also requires the showcase `blink/ManagedConsumer.slnx` and its usage sample. No managed service runner or Windows execution is claimed.
+P0–P2 have passed on Linux x64. `blink/scripts/translate.sh` produces the final
+postprocessed `blink/generated/TranslatedBlink/` project and immutable raw
+comparison. Corrected canonical core execution passes all four managed forms;
+468 normal CPU cases per form, valid ELF and explicit TLS startup are qualified.
+The owning normal-core sample and an earlier clean public delivery passed; a
+fresh clean delivery at revision 497ce69 is now running with the integer repair.
+P3–P6 remain open. The service API/worker, broader CPU/memory coverage and actual
+Windows execution are not qualified. Historical fault results below are not
+part of the current normal-only qualification.
 
 ## Ownership
 
@@ -21,10 +29,10 @@ main checkout. Historical recovery/detached worktrees remain evidence only.
 
 - Coordinator: current shared-toolchain build/identity freeze, normal-only probe
   scope alignment, integration, runtime revalidation, durable status and commits.
-- Inputs worker: end-to-end translate.sh, immutable raw comparison and stable
-  post-processed TranslatedBlink project with frozen host/bridge inputs.
-- Consumer worker: ManagedConsumer.slnx and actual normal translated-core usage
-  sample, explicitly separating the still-unqualified service-worker delivery.
+- Inputs worker: scoped dependent-regression wrappers and normal throughput
+  source/provenance review, with runtime work released serially.
+- Consumer/CPU worker: expanded CPU and loader qualification, then clean public
+  delivery/sample reproduction; the service-worker task remains unqualified.
 
 Shared compiler edits and heavy test suites remain serialized. Workers own
 disjoint authored files and do not commit duplicate recovery-branch history.
@@ -35,11 +43,11 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 | --- | --- | --- |
 | P0 | Passed | Immutable sources verified offline; native Blink and 25 assembly cases pass; six HTTP cases pass on Linux and Blink; exact native archive/import/global audit and initial translation failures recorded. |
 | P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
-| P2 | Core passed; delivery pending | All 109 selected sources emit/link; raw/optimized libraries and whole-library-rooted AOT execute; direct IL/import/initializer inventories complete with zero traversed native imports. Newly required translate.sh and final TranslatedBlink output remain pending. Indirect/framework limits remain explicit for P4/P6. |
-| P3 | Pending | CPU/memory/ELF behavior corpus. |
+| P2 | Passed | All 109 sources emit/link; corrected core passes raw/optimized JIT/AOT; translate.sh publishes the final TranslatedBlink project and immutable raw comparison. Direct IL/import/initializer inventories retain explicit indirect/framework limits for P4/P6. |
+| P3 | Partial | 468 normal CPU cases per form, valid ELF and fixed TLS startup pass; broader CPU and guest-memory algorithms remain open. |
 | P4 | Pending | Real host contracts and service startup. |
-| P5 | Pending | Worker/controller lifecycle, two-instance HTTP qualification, and ManagedConsumer.slnx usage showcase. |
-| P6 | Pending | Applicable upstream tests, Linux/Windows runtime matrix, reproduction and regression qualification. |
+| P5 | Partial | ManagedConsumer.slnx normal-core usage sample passes; translated service worker/API and two-instance HTTP lifecycle remain unqualified. |
+| P6 | Partial | Native 25 and earlier clean public delivery pass; corrected clean delivery running, scoped regressions progressing. Windows and full performance/dependency gates remain open. |
 
 ## Observed environment
 
