@@ -8,8 +8,9 @@ base=ROOT/'generated/host-io';base.mkdir(parents=True,exist_ok=True)
 a=Path(tempfile.mkdtemp(prefix='attempt-',dir=base))
 out=ROOT/'artifacts/host-io'/a.name;out.mkdir(parents=True)
 cli=REPO/'DotCC/bin/Release/net10.0/dotcc.dll';post=REPO/'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
-r={'scope':'real authored file/stream callbacks, not core execution','passed':False,'results':{}}
+r={'scope':'normal authored file/stream callbacks and ordinary missing/existing file errors, not core execution','excluded_historical_cases':['invalid descriptor read','host call without bound owner'],'passed':False,'results':{}}
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+r['runner_sha256']=sha(Path(__file__))
 def save():(out/'receipt.json').write_text(json.dumps(r,indent=2)+'\n')
 def run(cmd,name,timeout=180):
     with(out/(name+'.log')).open('wb')as log: code=subprocess.run(list(map(str,cmd)),stdout=log,stderr=subprocess.STDOUT,env=dict(os.environ,LC_ALL='C'),cwd=a,timeout=timeout).returncode

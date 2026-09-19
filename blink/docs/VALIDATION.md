@@ -45,6 +45,12 @@ without the old INT3 sentinel. All 46 custom fault cases are excluded explicitly
 The reviewed scalar correction is still required; original-native differences
 remain preserved. This bounded matrix is not full P3 coverage.
 
+Normal host-memory lifecycle passes staged native and all four managed forms at
+`host-memory/attempt-16k81wpo`; normal file/stream callbacks pass native and all
+four forms at `host-io/attempt-f61wdrei`. Both use the current compiler. Historical
+injected/invalid-operation cases are excluded explicitly; these standalone
+boundary checks do not establish all guest memory algorithms or service startup.
+
 ## Historical qualification ledger
 
 | Surface | Observed result | Reproduce |

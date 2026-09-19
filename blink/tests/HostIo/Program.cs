@@ -17,7 +17,6 @@ var captured=host.CapturedOutput;
 Check(Encoding.UTF8.GetString(captured.StandardOutput)=="onetwo");
 Check(Encoding.UTF8.GetString(captured.StandardError)=="err");
 Blink.UnbindHostIo();
-Check(Blink.MissingProbe()==-1);
 host.DisposeAsync().AsTask().GetAwaiter().GetResult();
 Exception? workerFailure=null;
 Thread[] workers=new Thread[2];

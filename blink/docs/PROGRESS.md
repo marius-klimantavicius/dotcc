@@ -1435,3 +1435,29 @@ TLS, guest-memory or Windows gates listed in the coverage inventory.
 Normal HostMemory then HostIo now own the serial validation slot. The additive
 valid TLS fixture is authored/reviewed but awaits execution; its source presence
 is not a pass. The shared compiler and canonical profile remain unchanged.
+
+## Current normal host-memory and file-I/O refresh
+
+Normal HostMemory passes staged native and raw/optimized JIT/NativeAOT at
+host-memory/attempt-16k81wpo, SHA256
+0e5dd6bb725edc507ff58989ad82edeba00a6d3776c9a2a32af68f19c17d5bbb.
+Cases check aligned/zeroed backing, valid cross-page copies, protection metadata,
+additional live allocations, unmap, slabs, disposal/reinitialization and distinct
+host-thread allocations retained through compacting GC. Forced exhaustion,
+invalid arguments, foreign mutation, unsupported modes and out-of-lifetime calls
+are historical exclusions. This qualifies the authored boundary and staged
+InitMap, not every guest page-table algorithm or a hardened sandbox.
+
+Normal HostIo passes native and all four managed forms at
+host-io/attempt-f61wdrei, SHA256
+f48c848dbedea45a5edf045aa6cd37406e197e7bc3eca92260009a07cc806531.
+Cases cover descriptor duplication/shared cursors/close, vector and sparse I/O,
+128 KiB transfer loops, captured streams and private concurrent owners. Ordinary
+missing/existing-file errors remain; invalid-descriptor and unbound-owner calls
+are excluded. Actual guest service startup is not part of this standalone gate.
+Both receipts identify the unchanged current compiler and postprocessor.
+
+Valid TLS now owns the build slot. Native Linux, native Blink CLI and the native
+loader/execution adapter already pass the fixed valid fixture; four managed forms
+are still pending. Shared regression runners are being audited read-only for
+current scope and compiler-rebuild hazards before further execution.

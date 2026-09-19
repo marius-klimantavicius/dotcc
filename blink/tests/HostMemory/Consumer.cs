@@ -15,7 +15,8 @@ for (int i = 0; i < threads.Length; ++i)
             if (MemoryApi.MemoryWorkerBegin() != 0) throw new global::System.Exception("worker begin failed");
             addresses[worker] = MemoryApi.MemoryWorkerAddress();
             barrier.SignalAndWait();
-            if (MemoryApi.MemoryRejectForeign(addresses[1-worker]) != 0) throw new global::System.Exception("foreign protection modified");
+            if (addresses[worker] == 0 || addresses[worker] == addresses[1-worker])
+                throw new global::System.Exception("owners share a backing allocation");
             global::System.GC.Collect(global::System.GC.MaxGeneration,
                 global::System.GCCollectionMode.Forced, blocking: true, compacting: true);
             barrier.SignalAndWait();

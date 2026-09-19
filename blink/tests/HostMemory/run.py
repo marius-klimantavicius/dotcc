@@ -13,8 +13,11 @@ UPSTREAM=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
 CLI=REPO/'DotCC/bin/Release/net10.0/dotcc.dll'
 POST=REPO/'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
 ENV=dict(os.environ,LC_ALL='C')
-receipt={'kind':'bounded-host-memory-and-upstream-initmap-not-guest-page-algorithms','passed':False,'results':{}}
+receipt={'kind':'normal-bounded-host-memory-and-upstream-initmap-not-guest-page-algorithms','passed':False,'results':{},
+         'scope':'Normal allocation/protection/growth/cross-page copy/unmap/disposal and concurrent owners; no custom injected failure or invalid access',
+         'excluded_historical_cases':['forced quota exhaustion','invalid mapping/protection/unmap arguments','foreign-owner mutation','operations outside owner lifetime','unsupported mapping modes']}
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+receipt['runner_sha256']=sha(Path(__file__))
 def save(): (OUT/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
 def run(cmd,name,timeout=180):
     start=time.monotonic()
@@ -24,7 +27,11 @@ def run(cmd,name,timeout=180):
     if r.returncode: raise RuntimeError(name+' failed: '+str(OUT/(name+'.log')))
     return (OUT/(name+'.log')).read_bytes()
 def check(cmd,name):
+    binary=Path(cmd[-1] if name.endswith('-jit') else cmd[0])
+    before={str(p):sha(p) for p in ([binary]+list(binary.parent.glob('*.dll')))}
     value=run(cmd,name,30)
+    if any(sha(Path(p))!=digest for p,digest in before.items()): raise RuntimeError(name+' execution binary changed')
+    receipt['results'][name]['binary_inputs']=before
     receipt['results'][name]['sha256']=hashlib.sha256(value).hexdigest(); save()
     if value!=expected:
         (OUT/(name+'.diff')).write_text(''.join(difflib.unified_diff(expected.decode().splitlines(True),value.decode().splitlines(True),fromfile='native-profile',tofile=name)))

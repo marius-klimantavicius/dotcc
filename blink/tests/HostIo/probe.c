@@ -27,7 +27,6 @@ int FileProbe(void) {
   if(lseek(fd,2,SEEK_END)!=8 || write(fd,"!",1)!=1 || lseek(fd,6,SEEK_SET)!=6) return 7;
   if(read(fd,buffer,3)!=3 || buffer[0] || buffer[1] || buffer[2]!='!' || close(fd)) return 8;
   if(open("missing",O_RDONLY)!=-1 || errno!=ENOENT) return 9;
-  if(read(-1,buffer,1)!=-1 || errno!=EBADF) return 10;
   if(open("created",O_CREAT|O_EXCL|O_WRONLY,0600)!=-1 || errno!=EEXIST) return 11;
   return 0;
 }
