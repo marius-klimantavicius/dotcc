@@ -18,7 +18,10 @@ NativeAOT, matching native/profile observations. Receipt
 failure and the successful identical-command retry. No source change was needed;
 the cause is unproven. Full core execution at `core-execution/attempt-8vbjtywv`
 passes raw/optimized JIT/NativeAOT, and `publication-audit/attempt-b0wppzl8` passes
-for those exact binaries. Direct IL audit limits remain unchanged.
+for those exact binaries. Direct IL audit limits remain unchanged. All 236
+ABI/register rows pass in all four forms at `core-abi/attempt-ezjynh7t`. Valid
+pinned ELF loading passes all four forms at `elf-loading/attempt-r3eglgkk`; it
+executes no guest instructions and the image has no PT_TLS.
 
 The following table and older sections preserve historical evidence. Rows are
 not current-compiler passes unless explicitly refreshed above or in the current

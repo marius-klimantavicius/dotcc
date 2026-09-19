@@ -1348,3 +1348,26 @@ still-unqualified service worker, readiness, capture or HTTP API. P5 remains ope
 Full current core/ABI/valid-ELF checks are underway. The clean-delivery runner is
 reviewed but awaits a committed delivery revision before execution. No Windows
 execution or current dependent-campaign revalidation is claimed.
+
+## Current complete-core, ABI and valid ELF refresh
+
+Delivery source is committed directly on sqlite as f38de7f. Current complete
+core execution passes all four raw/optimized JIT/NativeAOT forms at
+core-execution/attempt-8vbjtywv (SHA256
+a28a474e7f4ad3bddc827a6ea683e4428462f5012e01926fc08f8129230c8c70).
+Exact-binary publication audit passes at publication-audit/attempt-b0wppzl8
+(SHA256 774f8a98273e39d4badea87fc8ac626153478c94a2536e76a414dbf1efbc03e2).
+All 236 actual upstream ABI/register rows pass in all four forms at
+core-abi/attempt-ezjynh7t (SHA256
+6b583ae4f4b7d267cbe2b0954695de9eb56e450120b293cd3d5094f3836f0110).
+Valid pinned ELF loading also passes all four forms at
+elf-loading/attempt-r3eglgkk. This covers file bytes/BSS, permissions and initial
+stack/argv/env/auxv over two loads and cleanup, without guest instructions.
+The pinned ELF has no PT_TLS, so this is not TLS setup qualification.
+
+Clean delivery is running from committed f38de7f in a fresh detached checkout;
+only its pinned source archive is copied. Origin compiler binaries remain frozen.
+The CPU worker is replacing custom trap completion instrumentation and selecting
+449 normal cases, recording 46 historical custom fault cases as excluded. The
+coordinator is narrowing HostMemory to ordinary lifecycle cases. Neither revised
+harness has been executed yet; they wait for clean-delivery's heavy build slot.
