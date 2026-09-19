@@ -33,8 +33,7 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 ## Next actions
 
 The new complete-core profile includes the qualified scalar FP correction and
-current HostMemory; its ABI/execution/import/publication gates pass. The narrowed optional CPUID policy passes 495 cases in each managed form. Finish
-the seven SQLite C corpora plus
+current HostMemory; its ABI/execution/import/publication gates pass. The narrowed optional CPUID policy passes 495 cases in each managed form. All seven SQLite C corpora now pass fresh native and all four managed forms. Finish
 bounded interpreter throughput measurements.
 SQLite/picotls matrices, Lua/chibi JIT conformance and WAT/Zig execution oracles
 now have fresh passing Linux x64 results. Service-worker implementation and malformed-input work are
@@ -1200,3 +1199,25 @@ original 397 upstream scalar mismatches remain preserved. An old-profile policy
 mismatch is correctly rejected before emission. Identity chain:
 core/canonical-policy-integration.json. Baseline RDTSC/FXSR/CX8/SSE2/system
 instruction coverage and P3–P6 remain incomplete.
+
+## Significant progress: all seven fresh SQLite C corpora
+
+Fresh native and raw/optimized JIT/NativeAOT pass all seven existing SQLite C
+corpora: core, API, VFS, virtual tables, allocation, upstream JSONB and FTS5.
+Each corpus is emitted afresh from the pinned amalgamation using the unchanged
+campaign compiler; every native/managed transcript exactly matches its committed
+expected output. All 28 managed runs pass. Receipt:
+sqlite-corpora/attempt-k83q6spa (SHA256
+853b1307a9882b3f251ae57da2471af66bb81281e7d016df9f68f25a9b67130f).
+The compiler/postprocessor and tracked SQLite sources are unchanged before/after;
+executed binaries are hashed before/after. No IL/AOT or CS8500 warnings appeared;
+other existing generated C# warnings are retained. Raw snapshots and command logs
+are preserved. Reproduce with scripts/test-sqlite-corpora.py --cache <verified-
+SQLite-archive-directory>, containing both pinned amalgamation and source archives.
+
+Together with the fresh owning SQLite consumer, picotls, MsQuic, Lua/chibi, WAT
+and complete Zig oracle runs above, this completes P6's dependent-campaign
+regression checklist item on Linux x64. It does not complete P6: actual Windows,
+service/fault, clean delivery and broader performance gates remain open. P3's
+selected instruction-comparison item is also checked based on the qualified
+495-case corpus; broader architectural coverage and the full P3 gate remain open.

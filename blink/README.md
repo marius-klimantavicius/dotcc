@@ -76,3 +76,15 @@ are outside the first profile.
 
 Automated review stopped the service-worker and malformed-ELF tasks. The partial
 worker was never compiled or executed, and both gates remain unqualified.
+
+## Shared compiler regressions
+
+Fresh Linux checks cover the owning SQLite consumer and all seven SQLite C
+corpora in raw/optimized JIT/NativeAOT, the complete existing picotls campaign,
+MsQuic ABI/product/public-consumer cases, Lua/chibi JIT suites, 146 WAT cases and
+all 205 Zig oracle cases. Exact scope and receipts are in
+[validation](docs/VALIDATION.md). The `scripts/test-*-regression.py` runners and
+`scripts/test-sqlite-corpora.py --cache <verified-SQLite-archives>` preserve
+commands and identities; provide the pinned archive cache explicitly when
+reproducing in another checkout. These runs do not qualify Windows or the
+translated service worker.

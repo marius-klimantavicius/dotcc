@@ -257,7 +257,7 @@ no native emulator dependency, and passing affected compiler regressions.
 
 ### P3 — Qualify CPU, guest memory, and ELF loading
 
-- [ ] Run selected upstream instruction cases and generated edge cases against
+- [x] Run selected upstream instruction cases and generated edge cases against
       native Blink and real x86-64 Linux execution where guest behavior is defined.
 - [ ] Cover flags, shifts, signed division, SIMD lanes, floating-point edge cases,
       instruction/page boundaries, invalid instructions, and advertised CPUID bits.
@@ -308,7 +308,7 @@ translated-emulator service instances without cross-instance interference.
       interpreter settings; set no unsupported performance-equivalence promise.
 - [ ] Reproduce generation from a clean checkout; audit published imports,
       executable mappings, stale files, trim roots, and all runtime dependencies.
-- [ ] Regenerate SQLite with the final compiler and rerun its JIT/AOT corpus;
+- [x] Regenerate SQLite with the final compiler and rerun its JIT/AOT corpus;
       rerun picotls/MsQuic after relevant shared fixes, plus Lua/chibi and affected
       Zig/WAT checks. Record observed failures rather than relabeling old evidence.
 - [ ] Publish source/configuration/host-contract/usage/validation documentation,

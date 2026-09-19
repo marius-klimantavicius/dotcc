@@ -42,6 +42,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Managed controller protocol | Actual subprocess fixtures pass JIT/AOT, including bounded stop and inherited-pipe drains | `tests/InstanceLifecycle/run.py`; receipt attempt-p4b8juxr |
 | Managed service worker | Automatically blocked during implementation; partial files uncompiled and unqualified | P4/P5 open |
 | Fresh SQLite consumer | Raw/optimized JIT/AOT SQL, WAL, JSONB/FTS5, callbacks and GC pass | `scripts/test-sqlite-regression.py`; attempt-1nqhp4wq |
+| Fresh SQLite seven C corpora | Native and all four managed forms pass core/API/VFS/vtable/allocation/upstream/FTS5, 28 managed runs with exact transcripts | `scripts/test-sqlite-corpora.py --cache <verified-archives>`; attempt-k83q6spa |
 | Fresh picotls campaign | Full raw/optimized JIT/AOT suites and 224 peer executions pass | `scripts/test-picotls-regression.py`; attempt-ymi5de8u |
 | Fresh MsQuic product/public consumer | Native host/public ABI, rooted builds and 32 public transport/authentication cases pass across four forms | `scripts/test-msquic-regression.py`, then `--finish <attempt>`; attempt-m_bkw5xt |
 | Fresh Lua/chibi conformance | Lua user-test final success; chibi 1225/1225 and 18/18 with native-baseline transcript match; JIT only | `scripts/test-language-regressions.py`; attempt-vqeg8yjo |
@@ -73,8 +74,8 @@ source/compiler/profile hashes; host profile storage checks do not implement
 callbacks or make native process services safe for managed execution.
 
 P0–P2 have passed. P3–P6 remain open: Windows execution, complete CPU/ELF/memory
-coverage, actual service startup and worker lifecycle, performance and final
-dependent campaign regeneration remain required by PLAN.md. Whole-library-rooted
+coverage, actual service startup and worker lifecycle, and broader performance remain required by PLAN.md. The dependent-campaign
+regression item has fresh passing Linux evidence below. Whole-library-rooted
 AOT has passed for the complete selected core on Linux x64. The service-worker
 and malformed-ELF tasks were stopped by automated review and were not retried.
 
