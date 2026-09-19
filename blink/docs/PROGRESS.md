@@ -1905,3 +1905,14 @@ It does not qualify blocking guest poll cancellation. The final independent P4
 contract fixture covers AddStdFd, exact standard-stream capture and the observed
 ordinary terminal query. Actual service startup and owning execution stop remain
 unqualified; no P5/P6 task has begun.
+
+## P4 native inherited-stream reference passed
+
+GuestStreams attempt-wl8t5nv8 passes its native reference with actual AddStdFd
+registration and SYSCALL read/writev/write/ioctl across two lifecycles; SHA256
+`5825dd864319ef666939d6bf2cebfb6bae68a8462c89391b1dc1270f7c2fa6cb`.
+Frozen input is 34 bytes, stdout 46 bytes and stderr 14 bytes. Exact captures
+and a separate bounded diagnostic report pass, including ordinary TIOCGWINSZ
+ENOTTY, unchanged valid buffers, six inherited fd records, two guest metadata
+cleanups and three surviving underlying standard descriptors. This deliberately
+does not close fd0..2. Managed qualification is released against canonical734288.

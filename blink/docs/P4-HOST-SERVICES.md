@@ -14,7 +14,7 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 | Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | All-four callback pass; final project/core integration passes `translation/attempt-16eer8t5` and `core-execution/attempt-g8r4tp0k` |
 | Clock/entropy/thread-ID/private signal-state dispatch | Inputs worker, `tests/GuestEnvironment/` | Native/all-four pass `guest-environment/attempt-emy2577e`; exact finite state invariants |
 | Bounded guest TCP syscall exchange | Consumer worker, `tests/GuestTcp/` | Native/all-four pass `guest-tcp/attempt-8r2oj_2k`; no ELF/HTTP/service loop |
-| Standard streams and terminal query | Inputs worker, `tests/GuestStreams/` | Source preparation; actual AddStdFd/stream/ioctl dispatch, separate captures |
+| Standard streams and terminal query | Inputs worker, `tests/GuestStreams/` | Native reference passed; managed matrix next; actual AddStdFd/stream/ioctl, separate captures |
 | Actual startup inventory and integration | Coordinator | Exact source/receipt map below; service startup remains unqualified |
 | Actual translated service startup | Unqualified | Earlier automated service-worker task rejection remains binding; no renamed/recovered worker or surrogate startup pass |
 

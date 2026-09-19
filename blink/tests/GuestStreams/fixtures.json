@@ -1,0 +1,6 @@
+{
+  "cycles": 2,
+  "input_cycle_hex": "00417f80ff0a420d005a31323334353637",
+  "stdout_prefix_hex": "4f55543a003e",
+  "stderr_cycle_hex": "4552523aff000a"
+}
