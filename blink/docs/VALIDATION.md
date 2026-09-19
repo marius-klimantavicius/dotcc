@@ -7,8 +7,8 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
 | Gate | Latest receipt under `artifacts/` | Result |
 | --- | --- | --- |
-| Final delivery | `translation/attempt-w78n0i5u` | 109 sources, 107 verified reused objects and two corrected fresh producers; raw/postprocessed builds and final manifests pass. |
-| Canonical core / publication | `core-execution/attempt-yzck8kpr`, `publication-audit/attempt-e0l80fe1` | All four managed forms and exact AOT publication inventory pass. |
+| Final delivery | `translation/attempt-xxngak_0` | 109 sources, 108 verified reused objects and one fresh NEG-corrected ALU producer; raw/postprocessed builds and final manifests pass. |
+| Canonical core / publication | `core-execution/attempt-273a6hks`, `publication-audit/attempt-og66g378` | All four managed forms and exact AOT publication inventory pass. |
 | CPU | `cpu-conformance-managed/attempt-sgren8zu` | 468 normal cases per form, 1,872 total; 46 custom fault cases excluded. |
 | Valid ELF / TLS | `elf-loading/attempt-qclmm2fz`, `tls-loading/attempt-m6fpvl1m` | Native and all four managed forms pass bounded valid loading and explicit TLS startup. |
 | Clean public sample | `clean-delivery/attempt-ru82jd14` | Commit 497ce69; fresh compiler and all 109 objects (zero reuse), final solution and actual JIT/rooted-AOT sample pass; final checkout clean. |
@@ -16,7 +16,8 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 Actual guest mapping/page-table lifecycle checks now pass at
 `guest-memory/attempt-gbyg6j74`: native/all-four exact state, two normal cycles,
 growth/cross-page copying/protection metadata/remap/cleanup, and stable retained
-host-pool accounting. The final 32 bounded normal CPU rows remain pending.
+host-pool accounting. The final CPU expansion plus four targeted NEG repair regressions (504 rows
+per form) remains in managed qualification; corrected native504 passes.
 Further P6 regressions/performance
 are deferred until P3. No service worker or Windows execution is qualified.
 

@@ -1726,3 +1726,21 @@ The coordinator now regenerates the single changed canonical ALU producer,
 qualifies its core integration, then releases the final 2,016 managed CPU
 comparisons. Guest-memory and loader results remain preserved; no shared
 compiler change or unrelated P6 execution is needed for this repair.
+
+## P3 NEG canonical integration passed; final CPU matrix active
+
+Delivery attempt-xxngak_0 passes with 108 verified reused objects and one fresh
+ALU producer (SHA256
+38ca60466b15424d33daa14e60d7aab8f69d974ef47d3cbb018da41717790a93).
+Independent comparison confirms alu.c is the only changed canonical object;
+all 101 raw and 101 final file hashes verify. Profile attempt-5yrh5owk carries
+the reviewed NEG staging boundary.
+
+Core integration attempt-273a6hks passes all four managed forms (SHA256
+d9ae7c6c2d068998d7911b5009933827cdbdf87b77494161566df4707ddf2cba),
+and exact publication inventory attempt-og66g378 passes (SHA256
+1775711976bd51d8ba2326af9954e94dd49b5412f623691797ebf1d6f0d8af3d).
+The final CPU worker now runs 504 normal cases per managed form (2,016 total)
+against this qualified canonical profile. B034 stays open until those actual
+comparisons pass. Existing guest-memory/loader objects and evidence remain
+unchanged; broader P6 work is still held.
