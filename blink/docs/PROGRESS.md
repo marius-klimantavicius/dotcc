@@ -112,12 +112,12 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 ## Remaining delivery gates
 
 The current shared Release compiler is frozen and qualified by the receipts
-above. P2 delivery and the normal-core sample are implemented. P4's actual
-service integration and P5's owning translated worker/two-instance HTTP lifecycle
-remain unqualified. The translated-service worker task was stopped by automated
-review for a possible cybersecurity risk; it is not being retried or replaced
-by a fixture-based service claim. Prepared P6 regression/performance work remains
-unrun, and actual Windows execution still requires that platform.
+above. P2 delivery, the separate C# execution sample and P4's actual service and
+stop/deadline gates have passed for the selected Linux x64 profile. P5's
+subprocess worker, restart and two-instance HTTP lifecycle remain unqualified.
+Prepared P6 regression/performance work remains unrun, and actual Windows
+execution still requires that platform. P5/P6 are held at the requested phase
+boundary; earlier automated-review stops are historical evidence.
 
 ## Observed validation (initial campaign baseline)
 
