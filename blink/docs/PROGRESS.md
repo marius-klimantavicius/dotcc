@@ -4,6 +4,20 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
+P5 is now explicitly authorized: build and execute a real .NET NativeAOT HTTP
+guest through translated Blink, distinct from NativeAOT compilation of the
+emulator host. Guest creation first uses the installed SDK for ordinary Linux
+publishing; musl/container tooling is considered only if needed. If producing
+the musl guest is very difficult or impossible, stop and ask for user direction
+through the coordinator; no prolonged build workarounds. No P6 phase starts.
+
+The guest worker owns `tests/DotNetService` and its guest build script. The inputs
+worker audits actual profile requirements and bounded musl/container feasibility.
+The coordinator owns integration and runtime gate evidence. Root independently
+owns compiler warning-output changes; this team does not edit/rebuild shared
+compiler inputs until handoff. Prior P4 results below retain their exact scope.
+
+
 Next-phase requirement: P5 must execute a .NET NativeAOT service ELF through
 translated Blink, using a Docker/Podman musl build if needed. Its real runtime
 dependencies must be implemented and qualified; the C fixture and NativeAOT
@@ -23,8 +37,9 @@ loading, the instruction loop, stop and teardown through upstream exports. The
 real sample passes JIT/NativeAOT health and normal stop. All four service forms
 pass six exact native HTTP cases each (`guest-service/attempt-18nn8vfz`). The
 ordinary stop/deadline matrix passes eight native controls and all 44 managed
-cases. P4 is complete for the finite selected profile; implementation stops at
-the requested phase boundary. P5/P6 remain held.
+cases. P4 is complete for the finite selected profile. Its earlier stop boundary
+was subsequently lifted for the explicitly authorized P5 work above; P6 remains
+held.
 
 User test-scope update: custom fault-injection and invalid/malformed-ELF tests
 are excluded from work and completion gates. Such cases may run only when
@@ -2051,3 +2066,12 @@ Final stop receipt `guest-execution-stop/attempt-kl7r74np/receipt.json` passes (
 The affected test-only core derivation also passes native/all-four execution, ABI and direct-boundary checks (`core-execution/attempt-_qybvbye`, SHA-256 `916f582095a05edbd3d72f2a4ead4e421c5b7aee929fcaeef6a6c0a1ba3a4dd2`). It retains 108 canonical product producers and adds the probe solely in its private test link. No product test frontend was restored.
 
 All P4 checklist and actual service-startup gates are complete for the selected Linux x64 profile. Existing source/indirect-call and isolation limits remain explicit. The coordinator and workers stop at the user-requested boundary; no P5/P6 phase, new cases, Windows claim or later campaign is started. User patches and historical evidence remain preserved on the main `sqlite` checkout.
+
+### P5 authorized — actual NativeAOT guest preparation
+
+At `66d0060` the user explicitly requested the next phase and imposed a bounded
+musl-build condition. Installed SDK10.0.111 and Podman/Docker are present; no
+`musl-gcc` is on PATH. Two disjoint worker tasks are active: genuine C# service
+source/ordinary NativeAOT publish and read-only actual profile/container audit.
+No guest build or translated-execution pass is claimed yet. The existing P4
+C fixture and host NativeAOT receipts are not NativeAOT guest evidence.

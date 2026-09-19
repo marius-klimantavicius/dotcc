@@ -426,8 +426,11 @@ The required guest is a real .NET service published as native machine code and
 executed by translated Blink. This is distinct from publishing the C# emulator
 host with NativeAOT. Docker or Podman may build a musl-targeted guest and provide
 an independent native reference run; the delivered emulator must execute the
-guest instructions itself. Implementation remains held until phase execution
-is requested.
+guest instructions itself. Phase execution was explicitly authorized on
+2026-09-20. Begin with the ordinary native guest build; use musl/container
+tooling only if needed. If musl NativeAOT compilation proves very difficult or
+impossible, stop and report for user direction rather than pursuing prolonged
+workarounds.
 
 - [ ] Add a reproducible .NET NativeAOT HTTP service fixture with source, pinned
       SDK/toolchain and container image identity when used, publish settings,
