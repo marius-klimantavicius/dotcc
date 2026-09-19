@@ -199,6 +199,8 @@ public sealed partial class ManagedLibraryTests
         FixtureRunner.AddReferenceByType(references, typeof(System.Diagnostics.Process));
         FixtureRunner.AddReferenceByType(references, typeof(System.Net.Sockets.Socket));
         FixtureRunner.AddReferenceByType(references, typeof(System.Net.IPAddress));
+        FixtureRunner.AddReferenceByType(references, typeof(System.Net.Dns));
+        FixtureRunner.AddReferenceByType(references, typeof(System.Net.NetworkInformation.NetworkInterface));
         FixtureRunner.AddReferenceByType(references, typeof(System.ComponentModel.Win32Exception));
         return references;
     }
