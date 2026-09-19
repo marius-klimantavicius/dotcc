@@ -10,7 +10,7 @@ P0–P2 have passed their stated gates on Linux x64. The complete selected inter
 
 - Coordinator: source/host inventory, dotcc baseline and translation probes, integration, validation, and milestone/significant-progress commits.
 - Inputs worker: actual complete-core CPU/CPUID/floating-point coverage and preserved hardware/native/managed diagnostic differences.
-- Guest worker: completed valid ELF loading, controller review and fresh picotls regression; now qualifies fresh MsQuic generation and its public consumer. The blocked service-worker task has stopped.
+- Guest worker: completed valid ELF loading, controller review and fresh picotls/MsQuic regressions; now measures bounded actual interpreter throughput. The blocked service-worker task has stopped.
 
 Workers share one worktree with disjoint authored-file ownership. Shared compiler edits and repository suites are serialized by the coordinator. Generated/ref/build/artifacts content is disposable and ignored; reproducible scripts and durable summaries are committed.
 
@@ -34,7 +34,8 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 The new complete-core profile includes the qualified scalar FP correction and
 current HostMemory; its ABI/execution/import/publication gates pass. Narrow
-the remaining CPU/CPUID coverage and finish independent MsQuic qualification.
+the remaining CPU/CPUID coverage and finish the seven SQLite C corpora plus
+bounded interpreter throughput measurements.
 SQLite/picotls matrices, Lua/chibi JIT conformance and WAT/Zig execution oracles
 now have fresh passing Linux x64 results. Service-worker implementation and malformed-input work are
 blocked by automated review and were not retried; Windows execution remains
@@ -1157,3 +1158,23 @@ audit attempt-tvcys8m0 passes against exact execution-time AOT hashes. The full
 identity chain is core/canonical-scalar-integration.json. This is a new complete
 profile checkpoint, not a change to the still-open service/platform gates.
 Optional CPUID advertisements are unchanged here and are the next profile task.
+
+## Significant progress: fresh MsQuic ABI, product and public consumer
+
+MsQuic regenerates its 47 selected source units with the unchanged compiler.
+Fresh host/core/TLS qualification matches 60 native observations under JIT/AOT;
+public ABI matches 29 observations, and raw/optimized whole-library-rooted product
+gates pass. The actual public ProjectReference consumer then passes all 32 cases
+in raw/optimized JIT/NativeAOT: IPv4/IPv6 full and resumed connections, 65,537 bytes
+each direction with FIN, wrong trust/name/ALPN rejection without application
+data, actual source identity and clean owning disposal. Receipt:
+msquic-regression/attempt-m_bkw5xt; public run-gv10e8sc.
+
+The existing freeze recipe refreshes only config/product-closure.json after its
+real ABI/build gates. Its status remains limited to that scope; the public
+consumer receipt is separate, and full transport/recovery campaigns are not
+claimed. The previous closure's 261 bound files were verified and archived.
+Compiler/postprocessor and all 399 authored MsQuic/picotls inputs stayed unchanged.
+Verified generated inputs and dependency receipts were copied into the main
+checkout; replaced evidence is preserved under blink/artifacts/attempt-4e8gbkdi
+there. This does not claim a separate execution in that checkout.

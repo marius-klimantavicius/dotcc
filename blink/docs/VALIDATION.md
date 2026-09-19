@@ -43,6 +43,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Managed service worker | Automatically blocked during implementation; partial files uncompiled and unqualified | P4/P5 open |
 | Fresh SQLite consumer | Raw/optimized JIT/AOT SQL, WAL, JSONB/FTS5, callbacks and GC pass | `scripts/test-sqlite-regression.py`; attempt-1nqhp4wq |
 | Fresh picotls campaign | Full raw/optimized JIT/AOT suites and 224 peer executions pass | `scripts/test-picotls-regression.py`; attempt-ymi5de8u |
+| Fresh MsQuic product/public consumer | Native host/public ABI, rooted builds and 32 public transport/authentication cases pass across four forms | `scripts/test-msquic-regression.py`, then `--finish <attempt>`; attempt-m_bkw5xt |
 | Fresh Lua/chibi conformance | Lua user-test final success; chibi 1225/1225 and 18/18 with native-baseline transcript match; JIT only | `scripts/test-language-regressions.py`; attempt-vqeg8yjo |
 | WAT execution regression | 146 oracle cases pass using wat2wasm and Node | `DOTCC_RUN_WAT=1 dotnet test DotCC.FunctionalTests -c Release --no-build --filter FullyQualifiedName~WatOracleTests`; attempt-4uflu_5h |
 | Zig execution oracle | All 205 cases pass, zero skips, using CI-pinned Zig 0.16.0 and its real standard library | `scripts/test-zig-regression.py --offline`; attempt-lmenyhyn |
