@@ -96,18 +96,22 @@ These are source-review findings, not observed dotcc compilation failures.
 | Limits | Guest memory, descriptors, output volume, execution budget, and wall-clock deadline. Blocked I/O must respond to cancellation or worker termination. |
 | Hosts and builds | Linux x64 and Windows x64; raw/optimized × JIT/NativeAOT. Report each actual execution target independently. |
 
-Defer dynamic linking/general distro userspace, guest `fork`/`exec`/thread creation,
+For the initial P0–P4 profile, defer dynamic linking/general distro userspace,
+guest `fork`/`exec`/thread creation,
 full signal ABI coverage, UDP/IPv6, Unix sockets, advanced Linux facilities,
 the `blinkenlights` TUI, real-mode devices/BIOS, kernel boot, native JIT, live
 snapshots/migration, full cloud APIs, and Wasm. A service that requires a deferred
-feature needs a documented follow-up profile rather than a success stub.
+feature needs a documented profile extension rather than a success stub. P5 must
+extend and qualify the profile for the selected .NET NativeAOT service's actual
+requirements, including runtime threads, synchronization or loader support if
+required; these dependencies cannot be deferred while claiming the P5 gate.
 
 Select and pin a small service fixture in P0; a single-threaded static musl HTTP
 server is the default planning assumption. Record its source, compiler flags,
 executable hash, requests, expected responses, and complete observed syscall
-inventory. The user's eventual service is an additional compatibility workload;
-its language/runtime is not known yet. No .NET, Node, Go, or general glibc service
-compatibility is inferred from a small HTTP fixture.
+inventory. The required P5 workload is now a .NET service compiled to a Linux
+x86-64 NativeAOT ELF, using musl if needed. The C fixture remains a baseline;
+its success does not establish .NET runtime compatibility.
 
 ## Translation and embedding boundaries
 
@@ -416,12 +420,35 @@ Direct inventories and source review retain their stated indirect/framework
 limits, without a hostile-code sandbox claim. The phase stops here as requested;
 P5/P6 remain held. See [the exact P4 ledger](P4-HOST-SERVICES.md).
 
-### P5 — Deliver the first fake-instance service runner
+### P5 — Execute a .NET NativeAOT service and deliver the instance runner
 
+The required guest is a real .NET service published as native machine code and
+executed by translated Blink. This is distinct from publishing the C# emulator
+host with NativeAOT. Docker or Podman may build a musl-targeted guest and provide
+an independent native reference run; the delivered emulator must execute the
+guest instructions itself. Implementation remains held until phase execution
+is requested.
+
+- [ ] Add a reproducible .NET NativeAOT HTTP service fixture with source, pinned
+      SDK/toolchain and container image identity when used, publish settings,
+      executable hash and exact build/run commands. Provide its ELF at a
+      documented path for ManagedConsumer; retain the existing C fixture.
+- [ ] Inspect the actual guest ELF/dependencies and native service behavior;
+      inventory required startup/runtime instructions, syscalls, TLS, threads,
+      synchronization, signals and filesystem inputs. Record required profile
+      extensions explicitly and implement them through translated upstream
+      algorithms and the managed host boundary, without success stubs.
+- [ ] Execute the NativeAOT guest through translated Blink in raw/optimized
+      JIT/NativeAOT host forms on Linux x64. Verify readiness, real HTTP requests,
+      normal shutdown, ordinary cancellation and resource cleanup against the
+      native reference. A guest build or a container/native-only run is not a
+      translated-execution pass. Preserve custom fault/invalid-ELF exclusions.
 - [ ] Deliver `blink/ManagedConsumer.slnx` and its runnable usage sample, consuming
       `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and the owning API.
       Reference original authored projects/files under `src/`, including Host;
       solution edits must persist there and ordinary builds must use those edits.
+      Document selection of the NativeAOT guest ELF and its inputs, and adapt
+      readiness/request/shutdown behavior to that fixture's explicit contract.
 - [ ] Provide an owning API for image/argv/env/limits, start/readiness, logs,
       endpoint publication, status/exit reason, stop, and asynchronous disposal.
       This is authored C# consuming the translated upstream exports, not an
@@ -434,8 +461,9 @@ P5/P6 remain held. See [the exact P4 ledger](P4-HOST-SERVICES.md).
       headers/body as specified by the fixture, including large/fragmented traffic.
 
 **Gate:** a separate application starts, talks to, stops, and restarts actual
-translated-emulator service instances without cross-instance interference;
-the showcase solution builds and its sample demonstrates the documented usage.
+.NET NativeAOT service instances through translated Blink without cross-instance
+interference; the showcase solution builds and its sample demonstrates the
+documented usage. The earlier C service alone cannot satisfy this gate.
 
 ### P6 — Qualify upstream tests, platforms, and delivery
 
@@ -481,8 +509,9 @@ limits tested to the stated scope, correct faults/cleanup, and the required
 platform/runtime matrices recorded. No claim of arbitrary Linux compatibility,
 kernel virtualization, or hostile-code sandboxing follows from this milestone.
 
-Follow-ups: the user's actual service/runtime, dynamic ELF userspace, guest
-threads/futexes, expanded signals/syscalls, IPv6/UDP, deterministic virtual
+Follow-ups beyond the selected P5 .NET NativeAOT workload: general dynamic ELF
+userspace, additional guest threading/runtime compatibility, expanded
+signals/syscalls, IPv6/UDP, deterministic virtual
 networks, checkpoints with external-resource reconstruction, hardened OS worker
 containment, multiple in-process instances, and a Wasm backend sharing the
 controller's lifecycle/host concepts. None is an implicit dependency of P0–P6.

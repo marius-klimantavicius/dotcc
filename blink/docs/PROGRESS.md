@@ -4,6 +4,12 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
+Next-phase requirement: P5 must execute a .NET NativeAOT service ELF through
+translated Blink, using a Docker/Podman musl build if needed. Its real runtime
+dependencies must be implemented and qualified; the C fixture and NativeAOT
+publication of the emulator host alone do not satisfy this requirement. The
+updated P5 checklist is in PLAN.md. P4 remains complete; P5 execution is held.
+
 The current product is a 108-producer translated library with no `CoreProbe`,
 test `main` or C execution driver. Original adapters live in `src/Host`, headers
 in `src/Host/include`, and the BCL implementation in `src/Managed.Emulation.Host`.
