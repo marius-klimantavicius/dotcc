@@ -32,6 +32,16 @@ entry trace or a synthetic execution result. Register reads use upstream's
 register-only ModRM accessor, avoiding generated anonymous-field names and
 hard-coded machine offsets.
 
+An optional `syscallTrace` callback receives scalar SYSCALL observations on the
+owning thread. Diagnostic mode uses upstream's no-fault debugger decoder before
+normal instruction dispatch and preserves host errno across that inspection.
+It observes Linux x64 SYSCALL instructions, not other trap encodings or recursive
+internal syscall calls. ReturnValue is null if dispatch unwinds, including a
+guest exit; no return value is invented. The callback must stay bounded and must
+not access translated state. Callback failures propagate. Default execution
+does no extra decoding; tracing changes diagnostic overhead and is not a
+performance measurement mode.
+
 Normal cancellation must leave syscall depth, syscall flag, temporary allocations
 and active page locks clean before frontend cleanup; failure is reported. Guest
 halts follow upstream reset/collection. A returned result captures stop reason

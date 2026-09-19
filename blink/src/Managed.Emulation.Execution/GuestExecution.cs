@@ -18,6 +18,10 @@ public sealed record GuestExecutionFailureState(ulong InstructionPointer, ulong 
     ulong Argument1, ulong Argument2, ulong Argument3, ulong Argument4,
     ulong Argument5, ulong Argument6, int HostError);
 
+public sealed record GuestSyscallObservation(ulong InstructionPointer, ulong Number,
+    ulong Argument1, ulong Argument2, ulong Argument3, ulong Argument4,
+    ulong Argument5, ulong Argument6, ulong? ReturnValue);
+
 /// <summary>One blocking execution on its calling thread. The caller owns IO and
 /// cancellation and must keep them alive until Run returns. All translated calls,
 /// including teardown, happen on this thread; discard the process afterward.</summary>
@@ -44,7 +48,8 @@ public sealed unsafe class GuestExecution
     }
 
     public GuestExecutionResult Run(string imagePath, IReadOnlyList<string> argv,
-        IReadOnlyList<string> env, ulong instructionBudget, bool allowInterpreter = false)
+        IReadOnlyList<string> env, ulong instructionBudget, bool allowInterpreter = false,
+        Action<GuestSyscallObservation>? syscallTrace = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(imagePath);
         ArgumentNullException.ThrowIfNull(argv);
@@ -139,7 +144,18 @@ public sealed unsafe class GuestExecution
                     // accesses Machine, including signal processing and GC.
                     if ((int)Blink.Atomic.Load(ref machine->attention) == 0)
                     {
-                        Blink.ExecuteInstruction(machine);
+                        GuestSyscallObservation? observation = syscallTrace == null ? null : ObserveSyscall();
+                        bool returned = false;
+                        try
+                        {
+                            Blink.ExecuteInstruction(machine);
+                            returned = true;
+                        }
+                        finally
+                        {
+                            if (observation != null)
+                                syscallTrace!(observation with { ReturnValue = returned ? Register(0) : null });
+                        }
                         ++instructions;
                         Volatile.Write(ref instructionsCompleted, instructions);
                     }
@@ -220,16 +236,32 @@ public sealed unsafe class GuestExecution
     {
         if (machine == null) return null;
         int error = Blink.Libc.errno;
-        ulong Register(int index)
-        {
-            // Upstream rde.h: ModrmMod=3 selects only a register; RexbRm
-            // occupies bits 7..10. No guest memory access or layout offsets.
-            ulong rde = (3UL << 22) | ((ulong)index << 7);
-            byte* value = Blink.GetModrmRegisterWordPointerRead8(machine, rde, 0, 0);
-            return BinaryPrimitives.ReadUInt64LittleEndian(new ReadOnlySpan<byte>(value, 8));
-        }
         return new(machine->ip, Register(0), Register(7), Register(6), Register(2),
             Register(10), Register(8), Register(9), error);
+    }
+    private ulong Register(int index)
+    {
+        // Upstream rde.h: ModrmMod=3 selects only a register; RexbRm
+        // occupies bits 7..10. No guest memory access or layout offsets.
+        ulong rde = (3UL << 22) | ((ulong)index << 7);
+        byte* value = Blink.GetModrmRegisterWordPointerRead8(machine, rde, 0, 0);
+        return BinaryPrimitives.ReadUInt64LittleEndian(new ReadOnlySpan<byte>(value, 8));
+    }
+    private GuestSyscallObservation? ObserveSyscall()
+    {
+        int error = Blink.Libc.errno;
+        try
+        {
+            Blink.XedDecodedInst decoded = default;
+            // Use the upstream debugger's no-fault decoder. Mopcode from
+            // rde.h occupies bits 40..50; 0x105 is the actual SYSCALL opcode.
+            // This does not replace the interpreter's own decoding/dispatch.
+            if (Blink.GetInstruction(machine, (long)machine->ip, &decoded) != 0 ||
+                ((decoded.op.rde >> 40) & 0x7ff) != 0x105) return null;
+            return new(machine->ip, Register(0), Register(7), Register(6), Register(2),
+                Register(10), Register(8), Register(9), null);
+        }
+        finally { Blink.Libc.errno = error; }
     }
     private static void Require(bool condition, string operation)
     {

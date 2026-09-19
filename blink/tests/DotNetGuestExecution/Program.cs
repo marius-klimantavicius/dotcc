@@ -17,6 +17,19 @@ internal static class Program
         string oracleDirectory = Path.GetFullPath(args[1]);
         string output = Path.GetFullPath(args[2]);
         Directory.CreateDirectory(output);
+        using var configuration = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(imageDirectory, "configuration.json")));
+        var configured = configuration.RootElement;
+        string mode = configured.GetProperty("mode").GetString()!;
+        bool allowInterpreter = configured.GetProperty("allow_interpreter").GetBoolean();
+        string imagePath = configured.GetProperty("path").GetString()!;
+        string[] arguments = configured.GetProperty("argv").EnumerateArray().Select(item => item.GetString()!).ToArray();
+        string[] environment = configured.GetProperty("environment").EnumerateArray().Select(item => item.GetString()!).ToArray();
+        string[] expectedEnvironment = mode == "static" ? new[] { "LANG=C" }
+            : new[] { "LANG=C", "LD_LIBRARY_PATH=/lib/x86_64-linux-gnu:/lib64" };
+        if (mode is not ("static" or "dynamic") || allowInterpreter != (mode == "dynamic") ||
+            imagePath != "/bin/dotnet-service" || !arguments.SequenceEqual(new[] { "dotnet-service", "8080" }) ||
+            !environment.SequenceEqual(expectedEnvironment))
+            throw new InvalidOperationException("Unreviewed image configuration");
         var image = new Dictionary<string, ReadOnlyMemory<byte>>();
         using (var manifest = JsonDocument.Parse(File.ReadAllBytes(Path.Combine(imageDirectory, "manifest.json"))))
             foreach (var item in manifest.RootElement.EnumerateArray())
@@ -26,6 +39,8 @@ internal static class Program
                 if (digest != item.GetProperty("sha256").GetString()) throw new InvalidOperationException("Image hash differs");
                 image.Add(item.GetProperty("guest_path").GetString()!, bytes);
             }
+        if (!image.ContainsKey(imagePath) || image.Count != (allowInterpreter ? 4 : 1))
+            throw new InvalidOperationException("Image does not match configured mode");
         var io = new InstanceIo(image, executablePaths: image.Keys.ToHashSet(), outputLimit: 16384);
         var stop = new HostExecutionStop(TimeSpan.FromSeconds(30));
         var owner = new GuestExecution(io, stop);
@@ -33,13 +48,19 @@ internal static class Program
         string? executionError = null, diagnosticError = null;
         bool ready = false, joined = false, passed = false;
         var cases = new List<(string Name, bool Passed, int Bytes, string Sha)>();
+        var syscallTrace = new List<GuestSyscallObservation>();
+        ulong syscallCount = 0;
         var completion = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var thread = new Thread(() =>
         {
             try
             {
-                result = owner.Run("/bin/dotnet-service", new[] { "dotnet-service", "8080" },
-                    new[] { "LANG=C", "LD_LIBRARY_PATH=/lib/x86_64-linux-gnu:/lib64" }, Budget, allowInterpreter: true);
+                result = owner.Run(imagePath, arguments, environment, Budget, allowInterpreter: allowInterpreter,
+                    syscallTrace: observation =>
+                    {
+                        ++syscallCount;
+                        if (syscallTrace.Count < 4096) syscallTrace.Add(observation);
+                    });
             }
             catch (Exception error) { executionError = error.ToString(); }
             finally { completion.SetResult(); }
@@ -122,6 +143,7 @@ internal static class Program
             {
                 writer.WriteStartObject();
                 writer.WriteBoolean("guest_passed", passed);
+                writer.WriteString("image_mode", mode);
                 writer.WriteBoolean("ready", ready);
                 writer.WriteBoolean("joined", joined);
                 writer.WriteString("diagnostic_error", diagnosticError);
@@ -129,6 +151,30 @@ internal static class Program
                 writer.WriteString("notification_error", stop.NotificationFailure?.ToString());
                 writer.WriteNumber("instructions_completed", owner.InstructionsCompleted);
                 writer.WriteString("owner_stop_reason", stop.Reason.ToString());
+                // Only the interpreter thread writes this list. Never inspect
+                // it concurrently if failed containment leaves that thread live.
+                writer.WriteBoolean("syscall_trace_available", joined);
+                writer.WriteNumber("syscall_count", joined ? syscallCount : 0);
+                writer.WriteBoolean("syscall_trace_truncated", joined && syscallCount > 4096);
+                writer.WriteStartArray("syscall_trace");
+                if (joined)
+                    foreach (var observation in syscallTrace)
+                    {
+                        writer.WriteStartObject();
+                        writer.WriteNumber("ip", observation.InstructionPointer);
+                        writer.WriteNumber("number", observation.Number);
+                        writer.WriteNumber("argument1", observation.Argument1);
+                        writer.WriteNumber("argument2", observation.Argument2);
+                        writer.WriteNumber("argument3", observation.Argument3);
+                        writer.WriteNumber("argument4", observation.Argument4);
+                        writer.WriteNumber("argument5", observation.Argument5);
+                        writer.WriteNumber("argument6", observation.Argument6);
+                        writer.WritePropertyName("return_value");
+                        if (observation.ReturnValue is { } returned) writer.WriteNumberValue(returned);
+                        else writer.WriteNullValue();
+                        writer.WriteEndObject();
+                    }
+                writer.WriteEndArray();
                 writer.WritePropertyName("failure_state");
                 if (owner.LastFailureState is not { } failure) writer.WriteNullValue();
                 else

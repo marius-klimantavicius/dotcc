@@ -1,8 +1,8 @@
 # Valid .NET guest startup diagnostic
 
 This consumer uses the same authored `GuestExecution` C# owner as the qualified
-C guest. It opts into loading an ELF interpreter, mounts an explicit private
-four-file image, and records the first actual startup/runtime result. It does
+C guest. An explicit static or dynamic configuration selects the private image
+and whether an ELF interpreter is permitted. It records the actual startup/runtime result. It does
 not call a native emulator. No translated run has been qualified by merely
 preparing these files.
 
@@ -11,11 +11,31 @@ guest execution happens without `--run`:
 
 ```sh
 python3 blink/tests/DotNetGuestExecution/run.py \
+  --image-mode dynamic \
   --translation-receipt blink/artifacts/translation/attempt-4yjaed1_/receipt.json \
   --guest-receipt blink/artifacts/dotnet-guest/attempt-5130ydrk/receipt.json
 ```
 
-The image contains the exact native-qualified .NET service at
+The separately native-qualified static musl guest uses:
+
+```sh
+python3 blink/tests/DotNetGuestExecution/run.py \
+  --image-mode static \
+  --translation-receipt blink/artifacts/translation/attempt-4yjaed1_/receipt.json \
+  --guest-receipt blink/artifacts/dotnet-guest-musl/attempt-8za50rji/receipt.json
+```
+
+Static mode requires the passing receipt's `static_elf_verified` flag and fresh
+`readelf -lW`/`-dW` checks showing no `INTERP` or `DT_NEEDED`. It mounts **only**
+the exact guest ELF, sets only `LANG=C`, and calls the owner with
+`allowInterpreter: false`. No loader/library paths or GC environment tuning are
+added. The musl receipt identifies its separate SDK/runtime/container toolchain;
+it is not the ordinary glibc guest binary or emulator host NativeAOT output.
+Both modes serialize the mode, interpreter permission, executable path, argv
+and environment in `image/configuration.json`; the consumer validates this
+configuration instead of guessing from filenames.
+
+The dynamic image contains the exact native-qualified .NET service at
 `/bin/dotnet-service`, plus separately hashed private copies of
 `/lib64/ld-linux-x86-64.so.2`, `/lib/x86_64-linux-gnu/libc.so.6` and
 `/lib/x86_64-linux-gnu/libm.so.6`. Every transitive `DT_NEEDED` name must belong
@@ -97,3 +117,22 @@ current runner now returns nonzero for `--run` when `guest_passed` is false,
 after persisting the receipt; preparation still returns zero while leaving
 `passed` false. This exit-code-only correction was checked without repeating
 guest execution.
+
+The first static musl diagnostic also failed before readiness:
+`artifacts/dotnet-guest-execution/attempt-_772un12/receipt.json`, SHA-256
+`009f215fd3c969da4022da503f0ad4aae43ea68e0a9b5e4b6a9a19fc3e72a3b9`.
+It completed 139,230 dispatches and exited through the normal exit trap
+(`halt=-10`) with guest status `-1`, IP `0x472a1c`, and no signal or owner stop.
+No managed execution exception was raised. Stdout/stderr were empty and no
+HTTP cases ran. The owning thread joined; 270,450 bytes/two mappings remained
+before final release, which completed. Both receipt pass fields and the runner
+exit status report failure. This result does not identify the startup cause.
+
+The next source revision enables the owner's optional scalar syscall observer.
+It stores at most 4096 records, reports the total observed count and truncation,
+and writes explicit JSON fields for entry IP, syscall number, six arguments and
+the optional return value. A null return means the observed syscall unwound;
+register values are kept unsigned without interpreting a particular return as
+the cause of failure. The observer does not stop execution when the list fills.
+The report reads the trace only after the owning thread has joined; otherwise
+it marks it unavailable. Earlier receipts remain unchanged and have no trace.

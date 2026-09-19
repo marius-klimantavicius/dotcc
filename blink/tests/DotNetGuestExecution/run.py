@@ -40,6 +40,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--translation-receipt", type=Path, required=True)
     parser.add_argument("--guest-receipt", type=Path, required=True)
+    parser.add_argument("--image-mode", choices=("static", "dynamic"), required=True,
+                        help="Explicit reviewed guest image profile; never inferred from filenames")
     parser.add_argument("--run", action="store_true")
     args = parser.parse_args()
     base = ROOT / "artifacts/dotnet-guest-execution"
@@ -120,14 +122,30 @@ def main():
         binary = verify(guest["binary"]["path"], guest["binary"]["sha256"])
         guest_trace = verify(guest_path.parent / "native.strace", guest["trace_sha256"])
         native_trace = guest_trace.read_text()
-        interpreter = guest["elf"]["interpreter"]
-        if interpreter != ["/lib64/ld-linux-x86-64.so.2"]:
-            raise RuntimeError("Review required for a different ELF interpreter")
-        dependencies = {"ld-linux-x86-64.so.2": Path(interpreter[0]),
-                        "libc.so.6": Path("/lib/x86_64-linux-gnu/libc.so.6"),
-                        "libm.so.6": Path("/lib/x86_64-linux-gnu/libm.so.6")}
-        if set(guest["elf"]["needed"]) != set(dependencies):
-            raise RuntimeError("Review required for a different native dependency closure")
+        program_headers = run(["readelf", "-lW", binary], "guest-elf-program-headers")
+        guest_dynamic = run(["readelf", "-dW", binary], "guest-elf-dynamic")
+        interpreter = re.findall(r"Requesting program interpreter: ([^\]]+)", program_headers)
+        needed = re.findall(r"\(NEEDED\).*\[([^\]]+)\]", guest_dynamic)
+        if interpreter != guest["elf"]["interpreter"] or needed != guest["elf"]["needed"]:
+            raise RuntimeError("Actual ELF differs from native receipt")
+        dependencies = {}
+        environment = ["LANG=C"]
+        if args.image_mode == "static":
+            if guest.get("static_elf_verified") is not True or interpreter or needed or re.search(r"^\s*INTERP\s", program_headers, re.M):
+                raise RuntimeError("Static mode requires verified ELF without INTERP or NEEDED")
+        else:
+            if interpreter != ["/lib64/ld-linux-x86-64.so.2"]:
+                raise RuntimeError("Review required for a different ELF interpreter")
+            dependencies = {"ld-linux-x86-64.so.2": Path(interpreter[0]),
+                            "libc.so.6": Path("/lib/x86_64-linux-gnu/libc.so.6"),
+                            "libm.so.6": Path("/lib/x86_64-linux-gnu/libm.so.6")}
+            if set(needed) != set(dependencies):
+                raise RuntimeError("Review required for a different native dependency closure")
+            environment.append("LD_LIBRARY_PATH=/lib/x86_64-linux-gnu:/lib64")
+        image_configuration = dict(mode=args.image_mode, allow_interpreter=args.image_mode == "dynamic",
+                                   path="/bin/dotnet-service", argv=["dotnet-service", "8080"], environment=environment)
+        (image / "configuration.json").write_text(json.dumps(image_configuration, indent=2) + "\n")
+        receipt["image_configuration"] = image_configuration
         mounts = [("/bin/dotnet-service", binary)] + [(str(path), path) for path in dependencies.values()]
         rows = []
         for index, (guest_name, source) in enumerate(mounts):

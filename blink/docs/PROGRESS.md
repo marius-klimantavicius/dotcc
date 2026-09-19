@@ -2146,3 +2146,25 @@ image, preserving default static-only execution. The guest worker owns that
 fixture refinement; the inputs worker records the exact musl trace contracts.
 No translated NativeAOT pass, threaded profile or P5 milestone completion is
 claimed yet. No P6 work is started.
+
+### P5 static guest startup — first required runtime boundary identified
+
+Static diagnostic `dotnet-guest-execution/attempt-_772un12` executes 139,230
+instructions then exits -1 through the normal guest exit trap, without HTTP
+readiness. Memory-owner release and thread join complete. A repeat with bounded
+C# syscall observations reproduces the identical count, status and IP:
+`attempt-w6n64zmg/receipt.json` SHA-256
+`ac264c5e2ee12364fba52a8cb099eed4578744a945d8363d1e457b754783d838`.
+All 21 observations fit the trace bound. QUERY membarrier returns ENOSYS, the
+runtime allocates a fallback page, mlock returns ENOSYS, then cleanup and
+exit_group(-1) follow. This is a failed guest run, not a service pass.
+
+Pinned runtime source `95017c711e6afc1085133d440e42b4bd78155701` confirms this
+initialization chain and the required private-expedited query/registration.
+Next implementation is an explicitly single-guest-thread membarrier boundary:
+query mask 24, owner-scoped registration and an actual BCL memory fence. The
+staged syscall must reject builds enabling guest threads/fork until a coherent
+multi-thread barrier replaces that contract. No mlock success or host pinning
+will be fabricated. Inputs owns the host/bridge and normal qualification;
+guest owns the narrow staged dispatcher/header; coordinator owns profile and
+C# owner integration. P5 remains active and P6 remains held.
