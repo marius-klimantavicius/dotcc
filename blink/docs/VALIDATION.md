@@ -23,6 +23,13 @@ ABI/register rows pass in all four forms at `core-abi/attempt-ezjynh7t`. Valid
 pinned ELF loading passes all four forms at `elf-loading/attempt-r3eglgkk`; it
 executes no guest instructions and the image has no PT_TLS.
 
+The reviewed integer correction is now present in stable delivery
+`translation/attempt-w78n0i5u` and profile `attempt-7byl9v1e`. Its fresh full-core
+matrix passes at `core-execution/attempt-yzck8kpr`, with publication inventory
+`publication-audit/attempt-e0l80fe1`. Consumer clean-workflow, expanded CPU and
+valid ELF/TLS receipts listed below still predate this correction until an
+explicit refresh is recorded.
+
 The following table and older sections preserve historical evidence. Rows are
 not current-compiler passes unless explicitly refreshed above or in the current
 progress entry. Historical custom fault-injection and invalid-ELF cases are
@@ -62,11 +69,14 @@ SQLite's owning consumer passes all four current-compiler forms at
 all 20 managed results at `sqlite-corpora/attempt-f3xzr2_h`; allocation/VFS mixed
 injection suites are excluded explicitly, not counted as passes.
 
-The appended CPU expansion currently fails three defined hardware comparisons
+The first appended CPU expansion exposed three defined hardware mismatches
 in original/scalar-staged native Blink (`cpu-conformance/attempt-cjel3vz8`): INC
-auxiliary carry and CMPXCHG8B nonmatch upper-register clearing. Managed expansion
-stopped before execution. See B033; previous 449-case evidence does not qualify
-new inputs or pending source repairs.
+auxiliary carry and CMPXCHG8B nonmatch upper-register clearing. The reviewed
+integer source correction plus INC8/16 coverage now passes all 468 normal native
+cases (`cpu-conformance/attempt-lc9j96ag`). Delivery `translation/attempt-w78n0i5u`
+incorporates these corrections, with 107 verified reused objects and two fresh
+emissions. Expanded managed CPU qualification is pending; older 449-case and
+pre-correction core/consumer receipts qualify only their recorded inputs.
 
 Scoped picotls passes at `picotls-regression/attempt-fx7grn1c`: pinned native
 upstream oracle, fresh translation, copied-source/92-field ABI checks in all four

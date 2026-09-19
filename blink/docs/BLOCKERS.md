@@ -370,8 +370,10 @@ of AX/DX. The pinned INC8/16/32/64 helpers compare the result nibble with unused
 operand y instead of original x. OpCmpxchg8b writes only four bytes of each
 register array, while the architectural EAX/EDX writes zeroextend in long mode.
 
-Hardware comparisons/masks remain unchanged. Separate hash-checked source
-adaptations are being prepared, with additional normal INC8/16 coverage; no
-corrected native or managed pass is claimed yet. Immutable upstream files,
-compiler code and generated C# are not modified. Current full-core delivery
-will require regeneration and revalidation after the reviewed source repair.
+Hardware comparisons/masks remain unchanged. The reviewed UpstreamInteger
+adaptation and additional INC8/16 coverage pass all 468 normal native cases in
+attempt-lc9j96ag, retaining original-native differences. Canonical delivery
+attempt-w78n0i5u now incorporates both corrected producers (107 verified reused
+objects, two fresh emissions). Managed CPU qualification remains pending; B033
+is not closed by the native pass or successful generated-project build.
+Immutable upstream files, compiler code and generated C# are not modified.

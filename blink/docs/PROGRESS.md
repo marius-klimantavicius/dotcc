@@ -1563,3 +1563,19 @@ publication, then run the expanded 1,872 managed comparisons and refresh the
 valid ELF/TLS and clean consumer delivery. B033 remains open until managed
 qualification; shared compiler binaries and dependent-campaign results remain
 unchanged.
+
+## Corrected canonical delivery and core runtime passed
+
+Delivery attempt-w78n0i5u passes the complete 109-source closure with 107
+identity-verified reused objects and fresh alu/machine emissions (receipt SHA256
+46bddf20dd127cc7a72ca88da13863edcc17b0cde1dcf08b4cfa74347f7d71c9).
+All 101 immutable raw files and 101 final files, plus command log hashes, were
+independently rechecked. Profile attempt-7byl9v1e retains the exact reviewed
+integer boundary, and stable TranslatedBlink now contains the correction.
+
+Core execution attempt-yzck8kpr passes all four actual runtime forms; publication
+inventory attempt-e0l80fe1 passes for those exact AOT binaries. These inventory
+checks retain their direct/import-only limits and do not establish service or
+sandbox qualification. Expanded CPU execution now owns the build slot. Next
+after it passes: valid ELF/TLS refresh and a clean public consumer delivery from
+a committed correction revision. No generic compiler or libsmb2 source changed.
