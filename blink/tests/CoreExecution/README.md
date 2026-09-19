@@ -22,7 +22,12 @@ isolated host symbols are distinguished from other names without pretending
 that textual upstream matches prove reachability or implementation.
 
 Preparing projects or emitting/linking C# does not establish P1. Actual bounded
-instruction, fault and exit execution must pass the native comparison.
+instruction, budget and exit execution must pass the native comparison. The
+current probe exercises ordinary arithmetic/memory, bounded branches, exit and
+exit_group twice in one process. The former custom undefined-instruction and
+unmapped-memory cases are excluded by the updated user test scope and removed
+from this default probe; historical results remain historical. Required runtime
+fault handling stays implemented, but no excluded test is run or counted passed.
 
 Each consumer build now runs a snapshotted BoundaryAudit tool before execution.
 Incomplete direct inventories, traversed native imports and direct process

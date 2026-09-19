@@ -6,9 +6,10 @@ exit and ABI checks pass under raw/optimized JIT and NativeAOT. The reviewed
 CPU and scalar floating-point corpus passes 495 cases in each form. Valid loading of
 the pinned service ELF is also qualified.
 
-The current phase is complete and work is stopped by user direction. Future
-implementation resumes on branch `sqlite`; preserved worktrees retain historical
-evidence.
+Work has resumed on branch `sqlite` after the libsmb2 campaign. The shared
+compiler/runtime changed, so the earlier results above are historical until the
+new delivery is regenerated and revalidated. Current work adds the end-to-end
+translation script, stable generated project and actual normal-core usage sample.
 
 The service product is incomplete. Actual managed HTTP service startup, the
 translated worker, complete CPU/ELF/memory coverage and Windows execution remain

@@ -15,15 +15,19 @@ P0–P1 and P2's original core gate have passed on Linux x64. The complete selec
 
 ## Ownership
 
-The current phase is complete and all agents are stopped by user direction.
-Future implementation commits belong directly on branch `sqlite` in the main
-checkout. The recovery worktree and detached reproduction checkout remain in
-place to preserve original receipt paths and historical partial files; they are
-not alternate active implementation branches.
+Work resumed after the user's instruction that libsmb2 has stopped and Blink
+should continue. All implementation and milestone commits use `sqlite` in the
+main checkout. Historical recovery/detached worktrees remain evidence only.
 
-Shared compiler edits and repository suites were serialized. Reviewed changes
-were integrated throughout the campaign; final consolidation and reproduction
-documentation were committed directly on `sqlite`.
+- Coordinator: current shared-toolchain build/identity freeze, normal-only probe
+  scope alignment, integration, runtime revalidation, durable status and commits.
+- Inputs worker: end-to-end translate.sh, immutable raw comparison and stable
+  post-processed TranslatedBlink project with frozen host/bridge inputs.
+- Consumer worker: ManagedConsumer.slnx and actual normal translated-core usage
+  sample, explicitly separating the still-unqualified service-worker delivery.
+
+Shared compiler edits and heavy test suites remain serialized. Workers own
+disjoint authored files and do not commit duplicate recovery-branch history.
 
 ## Milestones
 
@@ -41,24 +45,25 @@ documentation were committed directly on `sqlite`.
 
 .NET SDK 10.0.111 is available. Baseline build disables automatic sibling LALR.CC substitution using `-p:UseLocalLalrCc=false`. Test TMPDIR is isolated to `blink/artifacts/tmp`.
 
-## Stop boundary and remaining scope
+## Active delivery and revalidation
 
-The user requested a stop after the current phase. Clean-checkout reproduction,
-evidence preservation and consolidation onto `sqlite` are complete; no further
-phase is running. The current core, 495-case CPU corpus, dependent Linux
-regressions and fixed-loop throughput have passing evidence below.
+The previous stop boundary is lifted by explicit user instruction. The shared
+compiler/headers/runtime changed substantially during libsmb2; earlier Blink
+receipts remain historical and do not qualify fresh output from those changes.
+The current Release toolchain is being rebuilt and frozen before fresh complete
+core translation. Incompatible historical objects must not be reused.
 
-P3–P6 remain open for broader CPU/guest-memory/valid-ELF coverage, actual service
-startup and translated-worker integration, Windows execution, broader performance
-and unresolved runtime-dependency limits. Service-worker implementation remains
-blocked by automated review and was not retried. Custom fault-injection and
-invalid-ELF tests are excluded by user direction; existing pinned upstream cases
-are allowed under the updated plan. Excluded tests are not completion blockers.
-Resume additional work only after a new user instruction.
+Immediate work is the required P2 translation/post-processing delivery and an
+actual normal-core consumer sample. The default authored probe now omits its
+former custom undefined-instruction/unmapped-memory cases under the updated
+test scope, retaining arithmetic, bounded branches and normal guest exits.
+Required runtime error handling remains implemented.
 
-The later request to add delivery paths updates the plan only. The translation
-script/final output belong to P2, the showcase solution/sample to P5, and their
-clean-checkout delivery verification to P6. Agents remain stopped.
+The actual translated service worker was previously stopped by automated review;
+that task is not being retried or replaced by false service claims. P3–P6 still
+require their remaining allowed coverage/delivery/platform gates, including real
+Windows execution. Custom fault-injection/invalid-ELF work remains excluded
+unless already in pinned upstream suites with explicit revision/path provenance.
 
 ## Observed validation (initial campaign baseline)
 
@@ -1307,3 +1312,11 @@ No new recovery-branch commit was created for this phase. Its worktree is kept
 for evidence, not ongoing duplicate history. All worker jobs completed; the
 coordinator and agents now stop as requested. P0–P2 are complete; this checkpoint
 does not claim completion of the remaining campaign milestones.
+
+## Resume: stable generated delivery on the current shared compiler
+
+The user resumed Blink after libsmb2 stopped, on main sqlite at b671720. The
+coordinator and two workers are active with disjoint delivery/sample ownership.
+Current compiler build evidence is being recorded under
+resume-current-compiler/attempt-9_82zbv2. Prior shared regression and Blink runtime
+receipts are preserved; no old object/runtime pass is relabeled as current.

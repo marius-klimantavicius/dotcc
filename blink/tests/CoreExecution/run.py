@@ -205,7 +205,7 @@ try:
         receipt['results'][label]['charged_bytes'] = int(footer[2])
         if actual[1:-1] != expected_rows:
             (out / (label + '.diff')).write_text('\n'.join(difflib.unified_diff(expected_rows, actual[1:-1], fromfile='native', tofile=label)) + '\n')
-            raise RuntimeError(label + ' instruction/fault/exit rows differ from native')
+            raise RuntimeError(label + ' normal instruction/budget/exit rows differ from native')
         save()
 
     for label in ('raw', 'optimized'):

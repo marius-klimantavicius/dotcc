@@ -75,13 +75,11 @@ static int RunCase(const char *name, unsigned char *code, size_t length,
 }
 
 int main(void) {
-  /* mov eax,40; add eax,2; mov [rbx],rax; inc qword [rbx]; ud2 */
+  /* mov eax,40; add eax,2; mov [rbx],rax; inc qword [rbx] */
   unsigned char arithmetic[] = {0xb8,40,0,0,0, 0x83,0xc0,2, 0x48,0x89,0x03,
-                               0x48,0xff,0x03, 0x0f,0x0b};
+                               0x48,0xff,0x03};
   /* A real upstream branch loop proves return at the requested step budget. */
   unsigned char spin[] = {0xeb,0xfe};
-  /* mov rax,[0] uses upstream memory translation and fault handling. */
-  unsigned char fault[] = {0x48,0xa1,0,0,0,0,0,0,0,0};
   /* Actual Linux exit and exit_group syscalls use upstream trapexit state. */
   unsigned char exit_thread[] = {0xb8,60,0,0,0, 0xbf,37,0,0,0, 0x0f,0x05};
   unsigned char exit_group[] = {0xb8,231,0,0,0, 0xbf,42,0,0,0, 0x0f,0x05};
@@ -93,9 +91,7 @@ int main(void) {
          offsetof(struct Machine, onhalt));
   for (int repeat = 0; repeat < 2; ++repeat) {
     if (RunCase("arithmetic", arithmetic, sizeof(arithmetic), 4, 0, 42, 43, 0, 0x40000e, -1)) return 1;
-    if (RunCase("undefined", arithmetic, sizeof(arithmetic), 5, kMachineUndefinedInstruction, 42, 43, 4, 0x40000e, -1)) return 2;
     if (RunCase("budget", spin, sizeof(spin), 7, 0, 0, 0, 0, 0x400000, -1)) return 3;
-    if (RunCase("unmapped", fault, sizeof(fault), 1, kMachineSegmentationFault, 0, 0, 11, 0x400000, -1)) return 4;
     if (RunCase("exit", exit_thread, sizeof(exit_thread), 3, kMachineExitTrap, 60, 0, 0, 0x40000a, 37)) return 5;
     if (RunCase("exit-group", exit_group, sizeof(exit_group), 3, kMachineExitTrap, 231, 0, 0, 0x40000a, 42)) return 6;
   }
