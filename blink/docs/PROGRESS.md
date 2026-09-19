@@ -13,11 +13,15 @@ P0–P2 have passed their stated gates on Linux x64. The complete selected inter
 
 ## Ownership
 
-- Coordinator: source/host inventory, dotcc baseline and translation probes, integration, validation, and milestone/significant-progress commits.
-- Inputs worker: completed the current CPU/CPUID/scalar checkpoint; now reproduces the documented core gates in an empty detached checkout.
-- Guest worker: completed valid ELF loading, controller review, fresh picotls/MsQuic regressions and bounded actual interpreter throughput. The blocked service-worker task has stopped.
+The current phase is complete and all agents are stopped by user direction.
+Future implementation commits belong directly on branch `sqlite` in the main
+checkout. The recovery worktree and detached reproduction checkout remain in
+place to preserve original receipt paths and historical partial files; they are
+not alternate active implementation branches.
 
-Workers share one worktree with disjoint authored-file ownership. Shared compiler edits and repository suites are serialized by the coordinator. Generated/ref/build/artifacts content is disposable and ignored; reproducible scripts and durable summaries are committed.
+Shared compiler edits and repository suites were serialized. Reviewed changes
+were integrated throughout the campaign; final consolidation and reproduction
+documentation were committed directly on `sqlite`.
 
 ## Milestones
 
@@ -35,18 +39,19 @@ Workers share one worktree with disjoint authored-file ownership. Shared compile
 
 .NET SDK 10.0.111 is available. Baseline build disables automatic sibling LALR.CC substitution using `-p:UseLocalLalrCc=false`. Test TMPDIR is isolated to `blink/artifacts/tmp`.
 
-## Next actions
+## Stop boundary and remaining scope
 
-The new complete-core profile includes the qualified scalar FP correction and
-current HostMemory; its ABI/execution/import/publication gates pass. The narrowed
-optional CPUID policy passes 495 cases in each managed form. All seven SQLite C
-corpora now pass fresh native and all four managed forms. Bounded interpreter
-throughput measurements pass; finish the clean-checkout core reproduction.
-SQLite/picotls matrices, Lua/chibi JIT conformance and WAT/Zig execution oracles
-now have fresh passing Linux x64 results. Service-worker implementation remains
-blocked by automated review and was not retried; Windows execution remains
-unavailable. Keep P3–P6 open. The coordinator integrates reviewed commits back
-to the original checkout, preserving user patches and unqualified partial files.
+The user requested a stop after the current phase. Clean-checkout reproduction,
+evidence preservation and consolidation onto `sqlite` are complete; no further
+phase is running. The current core, 495-case CPU corpus, dependent Linux
+regressions and fixed-loop throughput have passing evidence below.
+
+P3–P6 remain open for broader CPU/guest-memory/valid-ELF coverage, actual service
+startup and translated-worker integration, Windows execution, broader performance
+and unresolved runtime-dependency limits. Service-worker implementation remains
+blocked by automated review and was not retried. Malformed-ELF handling and
+qualification are excluded by user direction, not a remaining completion blocker.
+Resume additional work only after a new user instruction.
 
 ## Observed validation (initial campaign baseline)
 
@@ -1259,3 +1264,39 @@ Clean-checkout reproduction is active from committed717ba66 in a new detached
 worktree. Only the verified source archive was copied; no compiler, object or
 native build output is reused. Installed host tools and NuGet cache remain
 allowed and recorded. This independent task began after timing finished.
+
+## Current phase complete: clean reproduction and primary-branch consolidation
+
+The detached clean checkout at committed717ba66 passes the documented core
+reproduction from an empty source/output tree. Only the pinned Blink archive
+was copied. Its fresh Release compiler build passes with zero errors and
+17 existing xUnit analyzer warnings; offline source verification and all25
+native instruction cases pass. All109 selected sources emit/link afresh with
+zero object reuse. CoreExecution attempt-xo_zqqig passes raw/optimized JIT and
+NativeAOT, configured native ABI and direct IL audits. Exact-binary publication
+audit attempt-ciqxzgs4 passes. The final checkout is clean and the original
+campaign compiler/postprocessor stayed unchanged.
+
+Top receipt: clean-reproduction/attempt-6pfwe3d4/receipt.json, SHA256
+caabce37b242743a4586006c260d092f90aa10cd921b2fb8340ff37e51e091e6.
+The original detached path is /home/marius/p/dotcc-blink-clean-mukw8i3k.
+Commands, tool/package identities, prepared-state recovery and independent
+verification are retained. The exact preparation payload was recovered only
+after matching its previously recorded launch hash; recovery provenance is
+explicit. Installed SDK/native tools and NuGet cache were shared, so this is
+not a hermetic build. Timeout handling bounds direct children only; no timeout
+occurred. Indirect/framework/runtime dependency limits still keep the bundled
+P6 delivery audit item open.
+
+Pending reviewed authored files and final documentation are now in the main
+`sqlite` checkout. All campaign receipts were copied there; clean-tree artifact
+copies are nested under this attempt's checkout-artifacts directory to avoid
+replacing earlier native receipts. Historical unqualified partials were copied
+byte-for-byte into artifacts/attempt-50_uy7vz/unqualified-partials, with a hash
+manifest, while their original paths remain intact. The three user patch files
+are hash-verified unchanged and unrelated libsmb2 work was untouched.
+
+No new recovery-branch commit was created for this phase. Its worktree is kept
+for evidence, not ongoing duplicate history. All worker jobs completed; the
+coordinator and agents now stop as requested. P0–P2 are complete; this checkpoint
+does not claim completion of the remaining campaign milestones.

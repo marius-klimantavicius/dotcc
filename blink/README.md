@@ -6,6 +6,10 @@ exit and ABI checks pass under raw/optimized JIT and NativeAOT. The reviewed
 CPU and scalar floating-point corpus passes 495 cases in each form. Valid loading of
 the pinned service ELF is also qualified.
 
+The current phase is complete and work is stopped by user direction. Future
+implementation resumes on branch `sqlite`; preserved worktrees retain historical
+evidence.
+
 The service product is incomplete. Actual managed HTTP service startup, the
 translated worker, complete CPU/ELF/memory coverage and Windows execution remain
 open. The independent controller has subprocess lifecycle tests; it does not
@@ -42,6 +46,11 @@ C#. The execution runner builds separate raw/optimized libraries and consumers,
 checks native/configured ABI and behavior, roots the complete library for AOT,
 and audits direct IL imports and initializers before execution.
 
+For an isolated repetition from an empty detached checkout, see
+[clean reproduction](scripts/CLEAN-REPRODUCTION.md). That runner records the
+reproduced commit and uses only the pinned source archive plus installed host
+tools and normal package restore; it does not copy existing generated outputs.
+
 Additional qualified harnesses:
 
 - [CPU conformance](tests/CpuConformance/README.md): hardware, original native,
@@ -76,8 +85,10 @@ ordinary same-user worker are not a hardened sandbox. Dynamic distro userspace,
 guest fork/exec/threads, native JIT, kernel boot and general Linux compatibility
 are outside the first profile.
 
-Automated review stopped the service-worker and malformed-ELF tasks. The partial
-worker was never compiled or executed, and both gates remain unqualified.
+Automated review stopped the service-worker task. The partial worker was never
+compiled or executed, and that gate remains unqualified. By explicit user
+direction, malformed-ELF handling and qualification are excluded from campaign
+completion; earlier blocked attempts remain historical evidence, not passes.
 
 ## Shared compiler regressions
 

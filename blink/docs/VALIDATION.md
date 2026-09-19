@@ -41,6 +41,7 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 | Valid service ELF loading | Exact file/BSS/permissions/stack state and cleanup match native in all four forms | `tests/ElfLoading/run.py`; receipt attempt-e1zyczdz |
 | Managed controller protocol | Actual subprocess fixtures pass JIT/AOT, including bounded stop and inherited-pipe drains | `tests/InstanceLifecycle/run.py`; receipt attempt-p4b8juxr |
 | Managed service worker | Automatically blocked during implementation; partial files uncompiled and unqualified | P4/P5 open |
+| Clean-checkout reproduction | Fresh compiler/native25 and all109 objects with zero reuse; all four core forms, ABI/direct IL and publication pass | `scripts/test-clean-reproduction.py`; attempt-6pfwe3d4; shared SDK/NuGet, not hermetic |
 | Fixed-loop interpreter throughput | All 75 samples / 75 million instructions pass exact semantics; five modes, fixed warmup, isolated campaign timing window | `tests/CoreThroughput/run.py --prepare-only`, then `--measure-existing`; attempt-h4zo2vxu |
 | Fresh SQLite consumer | Raw/optimized JIT/AOT SQL, WAL, JSONB/FTS5, callbacks and GC pass | `scripts/test-sqlite-regression.py`; attempt-1nqhp4wq |
 | Fresh SQLite seven C corpora | Native and all four managed forms pass core/API/VFS/vtable/allocation/upstream/FTS5, 28 managed runs with exact transcripts | `scripts/test-sqlite-corpora.py --cache <verified-archives>`; attempt-k83q6spa |
@@ -79,7 +80,9 @@ coverage, actual service startup and worker lifecycle, and broader performance
 remain required by PLAN.md. The dependent-campaign
 regression item has fresh passing Linux evidence below. Whole-library-rooted
 AOT has passed for the complete selected core on Linux x64. The service-worker
-and malformed-ELF tasks were stopped by automated review and were not retried.
+task was stopped by automated review and remains unqualified. Malformed-ELF
+handling and qualification are excluded by explicit user direction; historical
+attempts remain preserved and are not counted as passes.
 
 ## Actual complete-core Linux x64 gate
 
@@ -114,3 +117,11 @@ publication pass at `core-execution/attempt-n9ligxbc` and
 `publication-audit/attempt-803iuwqv`; CPU qualification passes 495 cases per form
 at `cpu-conformance-managed/attempt-jwuzr1go`. This does not qualify unadvertised
 handlers or exhaust the remaining baseline instruction families.
+
+A separate empty detached checkout at717ba66 reproduces the complete core from
+only the pinned source archive plus installed tools/package restore. All109
+objects emit afresh with zero reuse; `core-execution/attempt-xo_zqqig` passes all
+four forms and `publication-audit/attempt-ciqxzgs4` passes exact executed binaries.
+The identity chain is `clean-reproduction/attempt-6pfwe3d4/receipt.json`. This
+qualifies clean generation on this Linux host, not full runtime dependency
+resolution, hermeticity, Windows or translated-service behavior.
