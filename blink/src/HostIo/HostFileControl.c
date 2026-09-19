@@ -4,7 +4,7 @@
 #include <stdarg.h>
 #include <fcntl.h>
 
-int blink_io_open_at(int, const char *, int);
+int blink_io_open_at_mode(int, const char *, int, unsigned int);
 int blink_io_control(int, int, int);
 
 int fcntl(int descriptor, int command, ...) {
@@ -20,9 +20,19 @@ int fcntl(int descriptor, int command, ...) {
 }
 
 int open(const char *path, int flags, ...) {
-  return blink_io_open_at(AT_FDCWD, path, flags);
+  unsigned int mode = 0600;
+  if (flags & O_CREAT) {
+    va_list arguments; va_start(arguments, flags);
+    mode = va_arg(arguments, unsigned int); va_end(arguments);
+  }
+  return blink_io_open_at_mode(AT_FDCWD, path, flags, mode);
 }
 
 int openat(int directory, const char *path, int flags, ...) {
-  return blink_io_open_at(directory, path, flags);
+  unsigned int mode = 0600;
+  if (flags & O_CREAT) {
+    va_list arguments; va_start(arguments, flags);
+    mode = va_arg(arguments, unsigned int); va_end(arguments);
+  }
+  return blink_io_open_at_mode(directory, path, flags, mode);
 }

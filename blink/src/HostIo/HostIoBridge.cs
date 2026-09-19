@@ -31,6 +31,8 @@ public static partial class Blink
     public static unsafe int blink_io_open(byte* path, int flags)
         => blink_io_open_at(-100, path, flags);
     public static unsafe int blink_io_open_at(int directoryFd, byte* path, int flags)
+        => blink_io_open_at_mode(directoryFd, path, flags, 0x180);
+    public static unsafe int blink_io_open_at_mode(int directoryFd, byte* path, int flags, uint mode)
     {
         try
         {
@@ -48,7 +50,7 @@ public static partial class Blink
             catch (DecoderFallbackException) { return IoError(22); }
             return (int)IoResult(io.OpenFileAt(directoryFd, name, (flags & 3) == 0 ? FileAccessMode.Read : (flags & 3) == 1 ? FileAccessMode.Write : FileAccessMode.Read | FileAccessMode.Write,
                 (flags & 64) != 0, (flags & 128) != 0, (flags & 512) != 0, (flags & 1024) != 0,
-                (flags & 524288) != 0, (flags & 65536) != 0, (flags & 131072) != 0));
+                (flags & 524288) != 0, (flags & 65536) != 0, (flags & 131072) != 0, mode));
         }
         catch (Exception error) { return IoException(error); }
     }

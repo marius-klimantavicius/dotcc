@@ -90,3 +90,10 @@ live. Descriptor duplication reaches the actual table ceiling; a mapping
 request exceeding the remaining budget fails with ENOMEM. Subsequent queries
 retain the configured ceilings. No generated C# is hand-edited; optimization
 runs on a copy, raw source hashes are checked, and CS8500 is forbidden.
+
+The process namespace cannot create children, so RUSAGE_CHILDREN returns an
+actual all-zero usage record. Invalid selectors fail EINVAL. Self CPU usage and
+times are explicitly unsupported and fail EOPNOTSUPP without changing outputs;
+wall time or the controller's process CPU consumption are never substituted.
+These refusals remain until per-guest accounting is implemented. Native probes
+qualify the LP64 rusage/tms storage and no-child accounting invariant.

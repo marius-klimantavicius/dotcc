@@ -793,3 +793,61 @@ owners, actual descriptor/mapping exhaustion and compacting GC.
 The unchanged upstream System.rlim initializes to infinity and bypasses host
 callbacks for AS/DATA/NOFILE; connecting the owning limits at guest initialization
 remains required before claiming guest resource-limit enforcement.
+
+## Significant progress: explicit asynchronous-signal profile policy
+
+The single-worker profile now exposes its disarmed interval-timer invariant,
+allows idempotent zero disarm/query, and checks private process existence through
+kill(pid,0). Attempts to arm timers, deliver asynchronous signals, or suspend
+for signals fail explicitly without touching controller timers/processes/masks.
+The private alarm error convention is documented as an extension, not POSIX
+conformance. Native common checks and raw/optimized JIT/NativeAOT pass at
+host-signal-policy/attempt-jp9pdo9u, including output atomicity, two identities,
+function pointers, and cached TLS addresses across compacting GC.
+
+Recovery commits f4eef67/e8a0c46/1323fc8 were integrated into the original branch
+as7453d02, preserving the other session's committed a513309 changes and all user
+patch files. A fresh combined repository suite is running there. The isolated
+108-object profile remains frozen on its original compiler for reproducible
+diagnosis; a513309 advances global-storage object format to2, so qualification
+against that newer compiler requires a fresh emission, not old-object replay.
+
+## Significant progress: private namespace, permissions and advisory locks
+
+The shared filesystem foundation now supports atomic mkdir/unlink/rmdir/rename
+with dirfd-relative paths, subtree/cwd rebasing, readonly image protection and
+open-descriptor node lifetime. Detached bytes/nodes remain charged until the
+final description closes. Permission bits and creation modes are real metadata;
+per-owner umask affects new files/directories, chmod affects executable checks,
+and chown validates the fixed private UID/GID policy. Unsupported mode bits and
+mutations fail explicitly. Removing/replacing cwd is a documented EBUSY policy.
+
+Private SH/EX/UN advisory locks follow node/open-description identity, duplicate
+lifetime and native nonblocking conversion behavior. Contended blocking waits
+fail explicitly before conversion; no controller file locks are used. Final
+descriptor close immediately releases lock state before detached quota release.
+
+Native plus raw/optimized JIT/NativeAOT qualification passes at
+host-namespace/attempt-qu5h_znj, host-permissions/attempt-pskdga_g and
+host-locks/attempt-5qgfx1tz. Namespace/permissions include existing HostFiles and
+InstanceIo regressions. Both worker snapshots share exact VFS hash
+feee5791dbd9d8c0a7ff8c321cfdb11041494482d35a571b53071f30bab80946.
+
+The main workspace's combined compiler recovery now passes2257 unit and570
+functional tests with1057 explicit skips and zero failures; log
+artifacts/recovery-integrated-repository.log. The isolated108-source profile
+attempt-7uqp6soy emitted and linked every object; its first raw consumer build
+is running. Linkage alone still does not qualify P1 guest execution.
+
+HostResources now also qualifies the actual childless-process accounting
+invariant: RUSAGE_CHILDREN is zero. Self CPU usage and times explicitly fail
+without touching outputs; neither controller CPU usage nor wall time is reported
+as guest CPU usage. Native rusage/tms layouts and all4 owner/error/GC checks pass
+at host-resources/attempt-z6tz96_q.
+
+Fresh108-source consumer attempt-8z_7urui fails with27 diagnostics, all remaining
+host/closure names. The recovered B025–B028 generic repairs clear their actual
+full-core diagnostics. The frozen profile predates the newly qualified signal,
+namespace, permission, lock and accounting bridges; the next profile includes
+them. Anonymous pipes and link/symlink/FIFO/socketpair contracts remain open.
+No managed guest instruction execution has yet passed.

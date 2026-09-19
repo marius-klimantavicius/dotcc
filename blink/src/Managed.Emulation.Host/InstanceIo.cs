@@ -51,14 +51,16 @@ public sealed partial class InstanceIo : IAsyncDisposable
     }
     public HostResult<int> OpenFile(string path, FileAccessMode access, bool create = false,
         bool exclusive = false, bool truncate = false, bool append = false, string? cwd = null,
-        bool closeOnExecFlag = false, bool allowDirectory = false, bool requireDirectory = false, bool noFollow = false)
+        bool closeOnExecFlag = false, bool allowDirectory = false, bool requireDirectory = false, bool noFollow = false,
+        uint creationMode = 0x180)
     {
         lock (sync)
         {
             if (disposed) return Fail<int>(GuestError.BadDescriptor);
+            if (create && (creationMode & ~0x1ffu) != 0) return Fail<int>(GuestError.Unsupported);
             int fd = Allocate();
             if (fd < 0) return Fail<int>(GuestError.TooManyFiles);
-            var result = files.Open(path, access, create, exclusive, truncate, append, cwd ?? currentDirectory, allowDirectory, requireDirectory);
+            var result = files.Open(path, access, create, exclusive, truncate, append, cwd ?? currentDirectory, allowDirectory, requireDirectory, ApplyCreationMask(creationMode));
             if (!result.Succeeded) return result;
             int mode = access == FileAccessMode.Read ? 0 : access == FileAccessMode.Write ? 1 : 2;
             descriptors.Add(fd, new(Kind.File, result.Value, mode | (append ? 1024 : 0) | (requireDirectory ? 65536 : 0) | (noFollow ? 131072 : 0)));
@@ -68,13 +70,13 @@ public sealed partial class InstanceIo : IAsyncDisposable
     }
     public HostResult<int> OpenFileAt(int directoryFd, string path, FileAccessMode access, bool create = false,
         bool exclusive = false, bool truncate = false, bool append = false, bool closeOnExecFlag = false,
-        bool requireDirectory = false, bool noFollow = false)
+        bool requireDirectory = false, bool noFollow = false, uint creationMode = 0x180)
     {
         lock (sync)
         {
             var directory = ResolveDirectory(directoryFd, path);
             return directory.Succeeded ? OpenFile(path, access, create, exclusive, truncate, append, directory.Value,
-                closeOnExecFlag, true, requireDirectory, noFollow) : Fail<int>(directory.Error);
+                closeOnExecFlag, true, requireDirectory, noFollow, creationMode) : Fail<int>(directory.Error);
         }
     }
     public HostResult<VirtualFileStat> Stat(string path, string? cwd = null)

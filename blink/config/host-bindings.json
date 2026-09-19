@@ -23,7 +23,11 @@
     "src/HostExitCallbacks/HostExitCallbacks.h",
     "src/HostFdSets/HostFdSets.h",
     "src/HostFileTimes/host-file-times.h",
-    "src/HostResources/host-resources.h"
+    "src/HostResources/host-resources.h",
+    "src/HostSignalPolicy/host-signal-policy.h",
+    "src/HostNamespace/host-namespace.h",
+    "src/HostPermissions/host-permissions.h",
+    "src/HostLocks/host-locks.h"
   ],
   "includeHeaders": [
     "host-profile-constants.h",
@@ -45,7 +49,11 @@
     "HostExitCallbacks.h",
     "HostFdSets.h",
     "host-file-times.h",
-    "host-resources.h"
+    "host-resources.h",
+    "host-signal-policy.h",
+    "host-namespace.h",
+    "host-permissions.h",
+    "host-locks.h"
   ],
   "cSources": [
     "src/HostIo/HostFileControl.c",
@@ -83,7 +91,11 @@
     "src/HostDirectories/HostDirectoriesBridge.cs",
     "src/HostMessages/HostMessagesBridge.cs",
     "src/HostFileTimes/HostFileTimesBridge.cs",
-    "src/HostResources/HostResourcesBridge.cs"
+    "src/HostResources/HostResourcesBridge.cs",
+    "src/HostSignalPolicy/HostSignalPolicyBridge.cs",
+    "src/HostNamespace/HostNamespaceBridge.cs",
+    "src/HostPermissions/HostPermissionsBridge.cs",
+    "src/HostLocks/HostLocksBridge.cs"
   ],
   "isolate": [
     "setenv",

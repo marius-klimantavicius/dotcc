@@ -37,9 +37,11 @@ Supported C open flags are the access mode, `O_CREAT`, `O_EXCL`, `O_TRUNC`,
 The namespace cannot contain symlinks or controlling terminals, so no-follow and
 no-controlling-terminal behavior are satisfied by the private model.
 Nonblocking, synchronous, direct-I/O, and unknown flags return `ENOTSUP` before
-creation or truncation. Metadata's documented fixed creation mode `0600`
-remains in effect; this task does not implement arbitrary creation permissions,
-umask, or chmod. Optional C mode arguments are still evaluated normally.
+creation or truncation. Creation now consumes the actual optional C mode when
+`O_CREAT` is present and applies the private instance umask. Ordinary mode bits
+and chmod/chown behavior are qualified by the
+[permission boundary](../src/HostPermissions/README.md). Legacy managed callers
+retain requested mode `0600` defaults; all C arguments are evaluated normally.
 
 ## Descriptor flags and shared status
 

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/resource.h>
+#include <sys/times.h>
 #include <unistd.h>
 #define CHECK(x) do { if(!(x))return __LINE__; } while(0)
 int main(void) {
@@ -21,6 +22,13 @@ int main(void) {
  CHECK(setpriority(PRIO_PROCESS,0,priority)==0);
  errno=0;CHECK(getpriority(-1,0)==-1 && errno==EINVAL);
  errno=0;CHECK(setpriority(-1,0,0)==-1 && errno==EINVAL);
+ CHECK(sizeof(struct rusage)==144 && _Alignof(struct rusage)==8);
+ CHECK(sizeof(struct tms)==32 && _Alignof(struct tms)==8);
+ struct rusage usage={0};usage.ru_maxrss=123;
+ CHECK(getrusage(99,&usage)==-1 && errno==EINVAL && usage.ru_maxrss==123);
+ CHECK(!getrusage(RUSAGE_CHILDREN,&usage));
+ unsigned char *bytes=(unsigned char*)&usage;
+ for(unsigned long i=0;i<sizeof(usage);++i)CHECK(bytes[i]==0);
  puts("resource ABI and query/idempotent/error invariants: PASS");
  return 0;
 }

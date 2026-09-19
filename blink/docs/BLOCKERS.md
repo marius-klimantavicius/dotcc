@@ -254,18 +254,18 @@ and reaches355 later diagnostics. It is not a fresh uniform-compiler emission or
 managed runtime result. The summary and exact generated/source matches are
 preserved beside that receipt.
 
-- **B025 — unsigned coercion of C boolean results (reduced repair qualified; full-core recheck pending):** calls, stores and
+- **B025 — unsigned coercion of C boolean results (fixed; fresh full-core C# diagnostics cleared):** calls, stores and
   returns omit conversions from emitted CBool to uint/ulong. Native reduction
   returns5; the current C# build fails.
-- **B026 — array-to-pointer member typing (reduced repair qualified; full-core recheck pending):** expressions such as
+- **B026 — array-to-pointer member typing (fixed; fresh full-core C# diagnostics cleared):** expressions such as
   `m->opcache->field`, where opcache is a one-element record array, infer int
   because member-type lookup peels pointers but not decayed arrays. The actual
   record declarations are correct; this also affects decoded instruction fields.
   Native reduction prints `40 3 2` and reproduces four conversion failures.
-- **B027 — fractionless floating literals (reduced repair qualified; full-core recheck pending):** valid C `1.f`, `2.` and
+- **B027 — fractionless floating literals (fixed; fresh full-core C# diagnostics cleared):** valid C `1.f`, `2.` and
   `3.e1f` are emitted with invalid C# spelling. Native reduction returns42.0.
   The apparent SSE `.f` member errors came from these literals, not union fields.
-- **B028 — unreachable profile branches retain undefined names (reduced repair qualified; full-core recheck pending):**
+- **B028 — unreachable profile branches retain undefined names (fixed; fresh full-core C# diagnostics cleared):**
   constant-false disabled-JIT paths still render Jitter and other unselected
   helpers. Generic removal must preserve C short-circuit effects and label entry;
   neither generated-source rewriting nor helper placeholders qualify a fix.
@@ -307,3 +307,15 @@ analyzer warnings. Log: artifacts/recovery-isolated-repository.log.
 The compiler is based on11ea352 and preserves fde3e7e global/TLS storage.
 These results establish regression-tested generic repairs, not complete guest
 execution. B029 remains open pending fresh object emission and host qualification.
+
+## Fresh108-source consumer result
+
+The uniform compiler/profile assembly b9fff97b80abc9511d4e2abe7e178fc829b2f3918063d0447d0cea6edf0f440b
+emits and links all108 objects. Raw consumer attempt-8z_7urui reports27 diagnostics,
+all in remaining host bindings/closure. No B025–B028 type, literal, or disabled-JIT
+reference diagnostics remain. Most listed host bindings were qualified while
+this profile was frozen and are included in the next profile. Remaining work
+includes links/symlinks, anonymous pipes, named FIFOs and socketpair. The flock
+tag/call collision is addressed by the qualified HostLocks header boundary.
+This build failed and did not execute guest instructions. The newer a513309
+storage format2 must be used for the next current-compiler emission.

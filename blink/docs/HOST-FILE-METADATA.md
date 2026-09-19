@@ -59,10 +59,13 @@ through the [openat/control boundary](HOST-FILE-CONTROL.md).
 
 Image files report mode `0444`; paths explicitly passed in the constructor's
 `executablePaths` set report `0555`. That set must name existing image files.
-Writable files report `0600`, and directories report `0755`. These are the
-private model's fixed modes, not a complete POSIX credential, umask, or chmod
-implementation. The existing open callback's optional mode argument does not
-configure them. Merely placing bytes in an image does not grant execution.
+Image directories retain mode `0755`. Mutable files/directories now report
+their actual requested creation modes after private umask, and supported chmod
+changes are reflected in metadata and execute access; see the
+[permission boundary](../src/HostPermissions/README.md). Legacy managed creation
+defaults to requested mode `0600`. The fixed private UID/GID remains zero, and
+image metadata stays immutable. Merely placing bytes in an image does not grant
+execution.
 
 Regular file size is the current owned byte-array length, including zero-filled
 write gaps. Directory size is zero. `st_blocks` reports owned payload rounded

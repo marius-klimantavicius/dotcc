@@ -4,9 +4,9 @@ namespace Managed.Emulation.Host;
 
 public enum GuestError
 {
-    None = 0, NoEntry = 2, Io = 5, BadDescriptor = 9, Again = 11, NoMemory = 12, Access = 13, Exists = 17,
+    None = 0, NoEntry = 2, Io = 5, BadDescriptor = 9, Again = 11, NoMemory = 12, Access = 13, Busy = 16, Exists = 17,
     NotDirectory = 20, IsDirectory = 21, Invalid = 22, TooManyFiles = 24,
-    NoSpace = 28, IllegalSeek = 29, ReadOnly = 30, BrokenPipe = 32, NameTooLong = 36,
+    NoSpace = 28, IllegalSeek = 29, ReadOnly = 30, BrokenPipe = 32, NameTooLong = 36, NotEmpty = 39,
     NotSocket = 88, Unsupported = 95, AddressInUse = 98, AddressUnavailable = 99,
     ConnectionReset = 104, AlreadyConnected = 106, NotConnected = 107, TimedOut = 110, ConnectionRefused = 111, Canceled = 125
 }
@@ -34,7 +34,8 @@ public sealed partial class VirtualFileSystem : IDisposable
         internal byte[] Bytes = bytes;
         internal readonly bool Immutable = immutable;
         internal readonly ulong Inode = inode;
-        internal readonly uint Mode = mode;
+        internal uint Mode = mode;
+        internal bool Linked = true;
         internal VirtualFileTime AccessTime = VirtualFileTime.UtcNow;
         internal VirtualFileTime ModifyTime = VirtualFileTime.UtcNow;
         internal VirtualFileTime ChangeTime = VirtualFileTime.UtcNow;
@@ -44,14 +45,15 @@ public sealed partial class VirtualFileSystem : IDisposable
         internal readonly Node Node = node;
         internal readonly FileAccessMode Access = access;
         internal bool Append = append;
-        internal readonly string? DirectoryPath = directoryPath;
+        internal string? DirectoryPath = directoryPath;
         internal long Position;
     }
     private readonly object sync = new();
-    private readonly Dictionary<string, Node> files = new(StringComparer.Ordinal);
-    private readonly HashSet<string> directories = new(StringComparer.Ordinal) { "/" };
-    private readonly Dictionary<string, Node> directoryNodes = new(StringComparer.Ordinal);
+    private Dictionary<string, Node> files = new(StringComparer.Ordinal);
+    private HashSet<string> directories = new(StringComparer.Ordinal) { "/" };
+    private Dictionary<string, Node> directoryNodes = new(StringComparer.Ordinal);
     private readonly Dictionary<int, Description> descriptors = new();
+    private HashSet<Node> detachedNodes = new();
     private readonly long writableLimit;
     private readonly long imageBytes;
     private readonly int descriptorLimit;
@@ -111,7 +113,7 @@ public sealed partial class VirtualFileSystem : IDisposable
 
     public long WritableBytes { get { lock (sync) return writableBytes; } }
     public int OpenDescriptors { get { lock (sync) return descriptors.Count; } }
-    public int NodeCount { get { lock (sync) return files.Count + directoryNodes.Count; } }
+    public int NodeCount { get { lock (sync) return files.Count + directoryNodes.Count + detachedNodes.Count; } }
     public long PathBytes { get { lock (sync) return pathBytes; } }
 
     /// <summary>Exact private byte and node quotas. Namespace and allocation
@@ -133,9 +135,9 @@ public sealed partial class VirtualFileSystem : IDisposable
     }
     private VirtualFileSystemCapacity CapacitySnapshot() => new(
         (ulong)imageBytes + (ulong)writableLimit, (ulong)(writableLimit - writableBytes),
-        (ulong)nodeLimit, (ulong)(nodeLimit - files.Count - directoryNodes.Count));
+        (ulong)nodeLimit, (ulong)(nodeLimit - files.Count - directoryNodes.Count - detachedNodes.Count));
 
-    private bool CanAddName(string name) => files.Count + directoryNodes.Count < nodeLimit &&
+    private bool CanAddName(string name) => files.Count + directoryNodes.Count + detachedNodes.Count < nodeLimit &&
         Encoding.UTF8.GetByteCount(name) <= pathBytesLimit - pathBytes;
 
     private void ReserveImageName(string name)
@@ -146,11 +148,12 @@ public sealed partial class VirtualFileSystem : IDisposable
 
     public HostResult<int> Open(string path, FileAccessMode access, bool create = false,
         bool exclusive = false, bool truncate = false, bool append = false, string cwd = "/",
-        bool allowDirectory = false, bool requireDirectory = false)
+        bool allowDirectory = false, bool requireDirectory = false, uint creationMode = 0x180)
     {
         lock (sync)
         {
             if (disposed) return Fail<int>(GuestError.BadDescriptor);
+            if ((creationMode & ~0x1ffU) != 0) return Fail<int>(GuestError.Unsupported);
             if (access == 0 || (access & ~(FileAccessMode.Read | FileAccessMode.Write)) != 0 ||
                 (truncate && !access.HasFlag(FileAccessMode.Write))) return Fail<int>(GuestError.Invalid);
             var resolved = Resolve(path, cwd);
@@ -175,7 +178,7 @@ public sealed partial class VirtualFileSystem : IDisposable
             // Validate every failing condition before creation or truncation.
             if (descriptors.Count >= descriptorLimit) return Fail<int>(GuestError.TooManyFiles);
             if (!exists && !CanAddName(name)) return Fail<int>(GuestError.NoSpace);
-            node ??= new Node([], false, nextInode++, 0x8000 | 0x180);
+            node ??= new Node([], false, nextInode++, 0x8000 | creationMode);
             if (!exists)
             {
                 files.Add(name, node);
@@ -336,8 +339,18 @@ public sealed partial class VirtualFileSystem : IDisposable
 
     public HostResult<int> Close(int descriptor)
     {
-        lock (sync) return descriptors.Remove(descriptor)
-            ? HostResult<int>.Success(0) : Fail<int>(GuestError.BadDescriptor);
+        lock (sync)
+        {
+            if (!descriptors.Remove(descriptor, out var description)) return Fail<int>(GuestError.BadDescriptor);
+            if (!descriptors.Values.Any(file => ReferenceEquals(file, description)))
+                advisoryLocks.Remove(description);
+            if (!description.Node.Linked && !descriptors.Values.Any(file => ReferenceEquals(file.Node, description.Node)))
+            {
+                detachedNodes.Remove(description.Node);
+                writableBytes -= description.Node.Bytes.Length;
+            }
+            return HostResult<int>.Success(0);
+        }
     }
 
     public HostResult<VirtualFileStat> Stat(string path, string cwd = "/")
@@ -359,7 +372,8 @@ public sealed partial class VirtualFileSystem : IDisposable
     public HostResult<VirtualFileStat> FStat(int descriptor)
     {
         lock (sync) return TryDescription(descriptor, out var file)
-            ? file.DirectoryPath != null ? Stat(file.DirectoryPath) : HostResult<VirtualFileStat>.Success(Metadata(file.Node, false))
+            ? file.DirectoryPath != null && file.Node.Linked ? Stat(file.DirectoryPath)
+                : HostResult<VirtualFileStat>.Success(Metadata(file.Node, file.DirectoryPath != null))
             : Fail<VirtualFileStat>(GuestError.BadDescriptor);
     }
 
@@ -383,6 +397,7 @@ public sealed partial class VirtualFileSystem : IDisposable
         lock (sync)
         {
             if (!TryDescription(descriptor, out var file)) return Fail<string>(GuestError.BadDescriptor);
+            if (!file.Node.Linked) return Fail<string>(GuestError.NoEntry);
             return file.DirectoryPath != null ? HostResult<string>.Success(file.DirectoryPath) : Fail<string>(GuestError.NotDirectory);
         }
     }
@@ -393,6 +408,7 @@ public sealed partial class VirtualFileSystem : IDisposable
         {
             if (!TryDescription(descriptor, out var file)) return Fail<VirtualDirectoryEntry[]>(GuestError.BadDescriptor);
             if (file.DirectoryPath == null) return Fail<VirtualDirectoryEntry[]>(GuestError.NotDirectory);
+            if (!file.Node.Linked) return Fail<VirtualDirectoryEntry[]>(GuestError.NoEntry);
             if (entryLimit < 2 || nameBytesLimit < 5) return Fail<VirtualDirectoryEntry[]>(GuestError.NoMemory);
             string path = file.DirectoryPath;
             var entries = new List<VirtualDirectoryEntry> {
@@ -432,7 +448,7 @@ public sealed partial class VirtualFileSystem : IDisposable
 
     private static VirtualFileStat Metadata(Node node, bool directory) => new(
         node.Bytes.LongLength, node.Immutable, directory, node.Inode, node.Mode,
-        node.AccessTime.Ticks, node.ModifyTime.Ticks, node.ChangeTime.Ticks,
+        node.AccessTime.Ticks, node.ModifyTime.Ticks, node.ChangeTime.Ticks, Links: node.Linked ? 1UL : 0UL,
         AccessSubtick: node.AccessTime.Subtick, ModifySubtick: node.ModifyTime.Subtick, ChangeSubtick: node.ChangeTime.Subtick);
 
     public void Dispose()
@@ -441,9 +457,11 @@ public sealed partial class VirtualFileSystem : IDisposable
         {
             disposed = true;
             descriptors.Clear();
+            advisoryLocks.Clear();
             files.Clear();
             directories.Clear();
             directoryNodes.Clear();
+            detachedNodes.Clear();
             writableBytes = 0;
             pathBytes = 0;
         }

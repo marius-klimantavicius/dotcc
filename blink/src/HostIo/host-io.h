@@ -1,11 +1,13 @@
 #ifndef BLINK_CAMPAIGN_HOST_IO_H
 #define BLINK_CAMPAIGN_HOST_IO_H
 #include <sys/types.h>
+#include <stdarg.h>
 #include <sys/uio.h>
 #include <fcntl.h>
 #include <unistd.h>
 int blink_io_open(const char *, int);
 int blink_io_open_at(int, const char *, int);
+int blink_io_open_at_mode(int, const char *, int, unsigned int);
 int blink_io_control(int, int, int);
 int blink_io_close(int);
 int blink_io_dup(int);
@@ -18,10 +20,17 @@ ssize_t blink_io_readv(int, const struct iovec *, int);
 ssize_t blink_io_writev(int, const struct iovec *, int);
 /* This opt-in boundary overrides only explicitly implemented file/stream calls. */
 #undef open
-/* Optional mode is evaluated by the normal C variadic call. Creation retains
- * the documented fixed private mode0600; chmod/umask are not implemented. */
+/* Arguments are evaluated normally; only O_CREAT consumes a mode. The
+ * instance applies its private umask when a new node is actually created. */
 static inline int blink_io_open_mode(const char *path, int flags, ...) {
-  return blink_io_open(path, flags);
+  unsigned int mode = 0600;
+  if (flags & O_CREAT) {
+    va_list arguments;
+    va_start(arguments, flags);
+    mode = va_arg(arguments, unsigned int);
+    va_end(arguments);
+  }
+  return blink_io_open_at_mode(AT_FDCWD, path, flags, mode);
 }
 #define open blink_io_open_mode
 #define close blink_io_close

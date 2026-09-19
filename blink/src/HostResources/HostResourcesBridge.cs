@@ -64,4 +64,22 @@ public static partial class Blink
         if (PriorityTarget(which, who) != 0) return -1;
         return priority == 0 ? 0 : ResourceError(1);
     }
+    public static unsafe int blink_host_getrusage(int who, rusage* usage)
+    {
+        if (ResourceOwner(out _) != 0) return -1;
+        if (who is not (0 or -1)) return ResourceError(22);
+        // This namespace cannot create children, so their accumulated usage is
+        // actually zero. Self CPU/accounting is not measured by this owner.
+        if (who == 0) return ResourceError(95);
+        if (usage == null) return ResourceError(14);
+        *usage = default;
+        return 0;
+    }
+    public static unsafe long blink_host_times(tms* usage)
+    {
+        if (ResourceOwner(out _) != 0) return -1;
+        // Do not substitute elapsed wall time or controller CPU consumption for
+        // guest CPU accounting. Leave the caller's whole output unchanged.
+        return ResourceError(95);
+    }
 }
