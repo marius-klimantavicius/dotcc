@@ -46,22 +46,9 @@ sleep_call:
     jne failed
     jmp success
 #elif defined(CASE_PIPE)
-    lea pipefds(%rip), %rdi
-    mov $22, %eax
-    syscall
-    test %rax, %rax
-    jne failed
-    cmp $1, %r12
-    jne pipe_read
-    mov pipefds+4(%rip), %edi
-    lea payload(%rip), %rsi
-    mov $1, %edx
-    mov $1, %eax
-    syscall
-    cmp $1, %rax
-    jne failed
-pipe_read:
-    mov pipefds(%rip), %edi
+    /* The host supplies a real inherited stdin pipe. The selected Blink
+     * profile excludes guest pipe creation, but supports inherited read. */
+    xor %edi, %edi
     lea received(%rip), %rsi
     mov $1, %edx
     xor %eax, %eax
@@ -69,16 +56,6 @@ pipe_read:
     cmp $1, %rax
     jne failed
     cmpb $0x5a, received(%rip)
-    jne failed
-    mov pipefds(%rip), %edi
-    mov $3, %eax
-    syscall
-    test %rax, %rax
-    jne failed
-    mov pipefds+4(%rip), %edi
-    mov $3, %eax
-    syscall
-    test %rax, %rax
     jne failed
 #else
 #error Select exactly one reviewed fixture
@@ -114,7 +91,5 @@ marker_end:
 .balign 8
 request: .quad 0, 5000000
 remaining: .quad 0, 0
-pipefds: .long 0, 0
-payload: .byte 0x5a
 received: .byte 0
 .section .note.GNU-stack,"",@progbits

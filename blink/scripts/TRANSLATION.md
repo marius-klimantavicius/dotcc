@@ -22,24 +22,23 @@ The stable result is:
 blink/generated/TranslatedBlink/
   TranslatedBlink.csproj
   Sources/                         # compiler-emitted, then postprocessed C#
-  Bridges/                         # selected authored C-to-host bindings
-  Host/Managed.Emulation.Host.csproj
 ```
 
 `TranslatedBlink` is the assembly name. The translated type is
 `Managed.Emulation.BlinkCore`; generated C records are nested as selected by
 `--nest-types`. The compiler's actual managed-library link uses
-`--runtime=c --split=size --split-size=102400`. No generated C# is manually
+`--runtime=c --literal-pool --split=size --split-size=102400`. No generated C# is manually
 modified. A separate authored project file supplies relative build references.
 
 An external application references `TranslatedBlink.csproj`. Host types in
-`Managed.Emulation.Host` arrive through its copied Host project reference;
-do not add a second reference to the source-tree Host project with the same
-assembly name. The resulting source bundle can be copied elsewhere and built
-with .NET 10. The generated API remains unsafe and requires the existing host
-binding/lifetime contracts. The current normal-only `BlinkCore.main()` frontend
-runs once in a fresh process; it is not a service API or a worker restart promise.
-The owning usage sample/solution is documented separately.
+`Managed.Emulation.Host` arrive through its original source project reference.
+Bridge Compile items link original files under `src/Host`, with headers kept in
+`src/Host/include`. Preserve these parent-relative source paths when relocating
+the final project. The generated API remains unsafe and requires the host
+binding/lifetime contracts. The separate authored `Managed.Emulation.Execution`
+project owns initialization, loading, execution and cleanup through upstream
+exports. The runnable sample exercises one controlled service invocation in a
+fresh process; the P5 subprocess/restart API remains separate.
 
 Each invocation performs pinned fetch verification, the existing pinned native
 assembly tests, a new frozen core profile, identity-checked complete closure
@@ -60,9 +59,9 @@ Only a validated postprocessed source bundle replaces the stable directory.
 Old output is archived under the new attempt's `previous-output/`; failure in
 the directory replacement restores it. A single translation lock serializes
 publishers. The two directory renames are not a cross-process atomic transaction;
-finish active consumer builds before regenerating the stable path. Build caches
-are removed from the delivered bundle so temporary absolute build paths cannot
-masquerade as published artifacts.
+finish active consumer builds before regenerating the stable path. Temporary
+build caches are discarded before publication; the final direct-source build
+may create fresh bin/obj output, excluded from the source manifest.
 
 `blink/artifacts/translation/attempt-*/receipt.json` records compiler,
 postprocessor, script, profile, object, raw/final source and build-log identities.

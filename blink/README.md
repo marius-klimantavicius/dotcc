@@ -1,11 +1,13 @@
 # Blink through dotcc
 
 The selected Blink interpreter executes Linux x86-64 instructions as translated
-C# on Linux x64. The current compiler translates all 109 selected sources through
+C# on Linux x64. The current compiler translates all 108 selected product sources through
 `blink/scripts/translate.sh`, which publishes the post-processed project at
 `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and preserves a separate
-immutable raw snapshot. The actual normal-core usage sample passes JIT and
-NativeAOT against native arithmetic, memory, budget and guest-exit observations.
+immutable raw snapshot. Authored Host/bridge sources are linked directly from
+`src`, and a separate authored C# API owns loading, execution and cleanup.
+The usage sample passes actual service health and normal shutdown in JIT and
+Linux NativeAOT. Campaign C probes remain test-only.
 The normal CPU corpus passes 504 cases in each of raw/optimized JIT/NativeAOT,
 for 2,016 comparisons, with 46 historical custom fault cases explicitly excluded.
 Actual guest-memory lifecycle and valid ELF/fixed TLS tests also pass all four
@@ -19,12 +21,13 @@ upstream fault cases may enter new qualification.
 P4's selected host contracts now pass native and all four managed forms through
 actual guest syscall fixtures: files/descriptors, environment/signal state,
 finite TCP exchange, and exact standard-stream capture. Callback I/O cancellation
-is implemented, qualified and included in the final generated project. P4 stops
-at the remaining owning execution/deadline and actual service-startup blocker;
+is implemented, qualified and included in the final generated project. Actual
+service startup and all six pinned HTTP cases pass all four managed forms;
+owning execution/deadline qualification is in progress;
 see [the P4 ledger](docs/P4-HOST-SERVICES.md). No P5/P6 phase has started here.
 
-The service product is incomplete. Actual managed HTTP service startup, the
-translated worker and Windows execution remain open. The P3 pass is bounded
+The service product is incomplete. The P5 subprocess worker/API, concurrent
+instances, restart and Windows execution remain open. The P3 pass is bounded
 selected-profile coverage, not exhaustive ISA or general dynamic TLS support.
 The independent controller has subprocess lifecycle tests; it does not
 yet provide a qualified translated-service worker. See [progress](docs/PROGRESS.md),
@@ -36,6 +39,7 @@ yet provide a qualified translated-service worker. See [progress](docs/PROGRESS.
 ```bash
 dotnet build dotcc.sln -c Release -p:UseLocalLalrCc=false
 bash blink/scripts/translate.sh
+bash blink/scripts/build-guest.sh
 dotnet build blink/ManagedConsumer.slnx -c Release
 dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build
 ```
@@ -43,8 +47,8 @@ dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --n
 See [translation delivery](scripts/TRANSLATION.md), the
 [usage sample](ManagedConsumer/README.md) and
 [clean delivery verification](scripts/CLEAN-DELIVERY.md). Finish generation before
-building consumers. The sample owns a single normal interpreter run; the planned
-owning HTTP service API remains unqualified.
+building consumers. The sample owns one controlled service invocation; the
+planned subprocess service API remains unqualified.
 
 ## Reproduce the core gate
 

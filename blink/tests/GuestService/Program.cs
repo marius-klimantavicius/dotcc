@@ -19,6 +19,8 @@ internal static class Program
     private sealed record Execution(int Result, ulong Instructions, ulong Ip, int Halt,
         int Signal, int SignalCode, int Exited, int ExitStatus, int StopReason,
         ulong RetainedBytesBeforeRelease, ulong RetainedMappingsBeforeRelease, bool MemoryReleased, string? Error);
+    private sealed record Endpoint(int GuestPort, string HostAddress, int HostPort, int Listener);
+    private sealed record WireCase(string Name, bool Passed, string RequestSha256, string ResponseSha256, int ResponseBytes);
 
     public static async Task<int> Main(string[] args)
     {
@@ -57,7 +59,7 @@ internal static class Program
                         throw new InvalidOperationException("Unexpected readiness bytes");
                     if (captured.StandardOutput.AsSpan().SequenceEqual(ready)) break;
                 }
-                if (execution.IsCompleted) throw new InvalidOperationException("Guest completed before readiness: " + JsonSerializer.Serialize(await execution));
+                if (execution.IsCompleted) throw new InvalidOperationException("Guest completed before readiness: " + (await execution));
                 await Task.Delay(10, stop.Token);
             }
             IPEndPoint? endpoint = null;
@@ -73,7 +75,7 @@ internal static class Program
             }
             if (endpoint == null || !IPAddress.IsLoopback(endpoint.Address) || endpoint.Port < 1)
                 throw new InvalidOperationException("No actual loopback listener to publish");
-            report["endpoint"] = new { GuestPort = 8080, HostAddress = endpoint.Address.ToString(), HostPort = endpoint.Port, Listener = listener };
+            report["endpoint"] = new Endpoint(8080, endpoint.Address.ToString(), endpoint.Port, listener);
 
             foreach (string name in Cases)
             {
@@ -104,7 +106,7 @@ internal static class Program
                 File.WriteAllBytes(Path.Combine(output, name + ".request"), request);
                 File.WriteAllBytes(Path.Combine(output, name + ".response"), actual);
                 bool passed = actual.AsSpan().SequenceEqual(expected);
-                completedCases.Add(new { Name = name, Passed = passed, RequestSha256 = Hash(request), ResponseSha256 = Hash(actual), ResponseBytes = actual.Length });
+                completedCases.Add(new WireCase(name, passed, Hash(request), Hash(actual), actual.Length));
                 if (!passed) throw new InvalidOperationException(name + ": exact native wire response mismatch");
             }
             Execution result = await execution.WaitAsync(stop.Token);
@@ -149,7 +151,7 @@ internal static class Program
                     report["passed"] = false;
                     report["stop_notification_error"] = stop.NotificationFailure.ToString();
                 }
-                File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true }) + "\n");
+                WriteReport(Path.Combine(output, "result.json"), report);
             }
             finally
             {
@@ -175,4 +177,65 @@ internal static class Program
         catch (Exception error) { return new(-1, 0, 0, 0, 0, 0, 0, 0, (int)stop.Reason, ulong.MaxValue, ulong.MaxValue, false, error.ToString()); }
     }
     private static string Hash(byte[] bytes) => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+
+    // An explicit, closed report schema works in NativeAOT without reflection
+    // metadata or serializer rooting. Unknown report types fail the fixture.
+    private static void WriteReport(string path, Dictionary<string, object?> report)
+    {
+        using var stream = File.Create(path);
+        using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true });
+        writer.WriteStartObject();
+        foreach (var pair in report)
+        {
+            writer.WritePropertyName(pair.Key);
+            WriteValue(writer, pair.Value);
+        }
+        writer.WriteEndObject();
+    }
+
+    private static void WriteValue(Utf8JsonWriter writer, object? value)
+    {
+        switch (value)
+        {
+            case null: writer.WriteNullValue(); return;
+            case bool boolean: writer.WriteBooleanValue(boolean); return;
+            case string text: writer.WriteStringValue(text); return;
+            case List<object> values:
+                writer.WriteStartArray();
+                foreach (object item in values) WriteValue(writer, item);
+                writer.WriteEndArray(); return;
+            case Endpoint endpoint:
+                writer.WriteStartObject();
+                writer.WriteNumber("GuestPort", endpoint.GuestPort);
+                writer.WriteString("HostAddress", endpoint.HostAddress);
+                writer.WriteNumber("HostPort", endpoint.HostPort);
+                writer.WriteNumber("Listener", endpoint.Listener);
+                writer.WriteEndObject(); return;
+            case WireCase wire:
+                writer.WriteStartObject();
+                writer.WriteString("Name", wire.Name);
+                writer.WriteBoolean("Passed", wire.Passed);
+                writer.WriteString("RequestSha256", wire.RequestSha256);
+                writer.WriteString("ResponseSha256", wire.ResponseSha256);
+                writer.WriteNumber("ResponseBytes", wire.ResponseBytes);
+                writer.WriteEndObject(); return;
+            case Execution execution:
+                writer.WriteStartObject();
+                writer.WriteNumber("Result", execution.Result);
+                writer.WriteNumber("Instructions", execution.Instructions);
+                writer.WriteNumber("Ip", execution.Ip);
+                writer.WriteNumber("Halt", execution.Halt);
+                writer.WriteNumber("Signal", execution.Signal);
+                writer.WriteNumber("SignalCode", execution.SignalCode);
+                writer.WriteNumber("Exited", execution.Exited);
+                writer.WriteNumber("ExitStatus", execution.ExitStatus);
+                writer.WriteNumber("StopReason", execution.StopReason);
+                writer.WriteNumber("RetainedBytesBeforeRelease", execution.RetainedBytesBeforeRelease);
+                writer.WriteNumber("RetainedMappingsBeforeRelease", execution.RetainedMappingsBeforeRelease);
+                writer.WriteBoolean("MemoryReleased", execution.MemoryReleased);
+                writer.WriteString("Error", execution.Error);
+                writer.WriteEndObject(); return;
+            default: throw new InvalidOperationException("Unexpected fixture report value type.");
+        }
+    }
 }

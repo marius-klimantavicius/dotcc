@@ -15,8 +15,9 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 | Clock/entropy/thread-ID/private signal-state dispatch | Inputs worker, `tests/GuestEnvironment/` | Native/all-four pass `guest-environment/attempt-emy2577e`; exact finite state invariants |
 | Bounded guest TCP syscall exchange | Consumer worker, `tests/GuestTcp/` | Native/all-four pass `guest-tcp/attempt-8r2oj_2k`; no ELF/HTTP/service loop |
 | Standard streams and terminal query | Inputs worker, `tests/GuestStreams/` | Native/all-four pass `guest-streams/attempt-21z_o_3s`; exact captures and ordinary ENOTTY |
-| Actual startup inventory and integration | Coordinator | Exact source/receipt map below; service startup remains unqualified |
-| Actual translated service startup | Unqualified | Earlier automated service-worker task rejection remains binding; no renamed/recovered worker or surrogate startup pass |
+| Actual startup inventory and integration | Coordinator | Exact source/receipt map below; actual all-four service and JIT/AOT consumer now pass |
+| Actual translated service startup | Guest worker, `tests/GuestService/` | All four modes pass six exact pinned HTTP cases, normal exit and memory release |
+| Owning execution and wait stop/deadlines | Inputs worker, `tests/GuestExecutionStop/` | Shared C# owner compiles; 11 ordinary cases authored, runtime matrix pending |
 
 Heavy builds are serialized. Shared compiler inputs and P0–P3 qualification stay
 frozen. A changed host snapshot requires explicit integration provenance; tests
@@ -93,10 +94,9 @@ rejects it. That path must not be described as graceful unsupported behavior.
 No optional IPv6, nonblocking or unrelated ISA expansion is added to this phase.
 
 The full P4 gate remains contracts **and actual guest service startup**. P4 will
-not be marked complete from standalone host tests, native service results,
-controller fixtures or the normal-core sample. The earlier service-worker task
-was rejected by automated review for a possible cybersecurity risk, without a
-more specific reason. That rejected action is not retried or repackaged here.
+not be marked complete from standalone host tests, native service results or
+controller fixtures. Historical rejected work is recorded below; the current
+explicitly resumed local implementation has executed actual service requests.
 
 ## Actual guest-I/O subgate passed
 
@@ -191,7 +191,7 @@ the three underlying standard descriptors; guest close(0..2) is not tested.
 Sources, 108 retained producers, logs, binaries and every capture were rehashed.
 [Exact contracts](../tests/GuestStreams/README.md).
 
-## P4 stop condition
+## Historical P4 stop condition at e39ca5a
 
 Three of four P4 checklist items are qualified for the finite selected profile:
 implemented host contracts, ordinary descriptor/filesystem lifecycle tests, and
@@ -217,3 +217,40 @@ an owning interpreter loop, and execution of the pinned controlled service ELF.
 Any current rejection will be preserved with its exact reason and operation;
 no action is concealed, relabeled or routed around. No new execution pass is
 claimed by this resumption, and P5/P6 remain held.
+
+## Actual C# consumer execution — current qualification
+
+Product delivery `translation/attempt-4yjaed1_` passes with 108 verified producers,
+no C test/execution frontend, shared literal pooling and direct original-source
+Host/bridge references. `Managed.Emulation.Execution` owns initialization,
+loading, the instruction loop and teardown through actual exported upstream
+functions. A managed callback implements the required TerminateSignal boundary;
+reviewed syscall safe points return normally for cooperative cancellation.
+
+`guest-service/attempt-pu9_o0z7` passes actual raw-JIT service startup, six exact
+native HTTP request/response cases, normal exit and memory-owner release. The
+real ManagedConsumer sample also passes JIT and rooted Linux NativeAOT health
+and normal stop (`managed-consumer/attempt-3c0qzs2p`). These are actual controlled
+service executions, without a native-emulator fallback. No P5 process protocol,
+restart or concurrent-instance pass is implied.
+
+The first full matrix attempt `guest-service/attempt-bzu3jva5` preserved a
+raw-NativeAOT fixture failure while writing its reflection-based JSON report.
+The product/sample NativeAOT execution had already passed. Both fixtures now use
+explicit AOT-safe report writers. The repaired service matrix
+`guest-service/attempt-18nn8vfz` passes all 24 wire comparisons across raw/optimized
+JIT/NativeAOT (receipt SHA-256
+`a9283cb6bdc87aa83a64fa1f4c19ea2bb02b6640aef60684b8c88e4502b60c4e`).
+Every form executes 1,725,554 completed instructions, exits with status zero and
+halt -10, emits exact READY/STOPPED with empty guest stderr, and releases its
+memory owner after recording 532,682 retained bytes/three mappings. All 635
+frozen inputs, execution binaries and wire files were independently rehashed.
+Direct IL and publication inventories passed with their stated indirect-call
+limitations; the separate C# owner is source reviewed.
+
+The first stop fixture's native witness exposed its incorrect assumption that
+guest pipe creation belongs to this profile (`guest-execution-stop/attempt-geaqvgvp`).
+The selected dispatcher excludes pipe/pipe2. Its corrected fixture uses supported
+guest read on an actual inherited stdin pipe, with a live writer and a real
+pending-operation cancellation barrier. No profile or product change was made.
+P4 remains open until the ordinary owning stop/deadline matrix passes.

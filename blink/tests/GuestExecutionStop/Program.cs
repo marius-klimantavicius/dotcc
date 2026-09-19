@@ -15,6 +15,23 @@ string imageHash = Convert.ToHexStringLower(SHA256.HashData(image));
 const string guestPath = "/stop-fixture";
 var io = new InstanceIo(new Dictionary<string, ReadOnlyMemory<byte>> { [guestPath] = image },
     executablePaths: new HashSet<string> { guestPath });
+int? inheritedPipeWriter = null;
+if (fixture == "pipe")
+{
+    var pair = io.Pipe();
+    Require(pair.Succeeded, "Create inherited stdin pipe");
+    var duplicate = io.DuplicateTo(pair.Value.Read, 0);
+    Require(duplicate.Succeeded && duplicate.Value == 0, "Install inherited stdin pipe");
+    Require(io.Close(pair.Value.Read).Succeeded, "Close redundant pipe read descriptor");
+    inheritedPipeWriter = pair.Value.Write;
+    if (action == "complete")
+    {
+        var written = await io.WriteAsync(pair.Value.Write, new byte[] { 0x5a });
+        Require(written.Succeeded && written.Value == 1, "Supply ordinary stdin byte");
+    }
+    // Keep the real writer open until InstanceIo disposal. A requested stop
+    // must cancel a pending read, not observe EOF from a closed writer.
+}
 using var stop = new HostExecutionStop(action == "deadline" ? TimeSpan.FromSeconds(5) : null);
 var owner = new GuestExecution(io, stop);
 GuestExecutionResult? result = null;
@@ -95,22 +112,59 @@ try
         "Deadline did not expire after an observed pending wait");
     int descriptorsBeforeDispose = io.OpenDescriptors;
     long pipeBytesBeforeDispose = io.PipeBytes;
+    bool pipeWriterOpen = inheritedPipeWriter is { } writerFd && io.GetDescriptorFlags(writerFd).Succeeded;
+    if (fixture == "pipe") Require(pipeWriterOpen, "Inherited pipe writer closed before disposal");
     await io.DisposeAsync();
     Require(io.OpenDescriptors == 0 && io.PendingPipeOperations == 0 && io.PipeBytes == 0,
         "Private I/O did not drain on disposal");
-    File.WriteAllText(reportFile, JsonSerializer.Serialize(new
+    // Explicit writes preserve the reviewed schema without reflection metadata,
+    // including when NativeAOT disables JsonSerializer's reflection fallback.
+    using var reportStream = File.Create(reportFile);
+    using (var report = new Utf8JsonWriter(reportStream, new JsonWriterOptions { Indented = true }))
     {
-        fixture, action, image_sha256 = imageHash, wait_seen = waitSeen,
-        wait_seconds = waitSeconds, requested_seconds = requestedSeconds, elapsed_seconds = elapsed,
-        pending_at_barrier = pendingAtBarrier, instructions_at_barrier = progressAtBarrier,
-        pending_after_run = 0, descriptors_before_dispose = descriptorsBeforeDispose,
-        pipe_bytes_before_dispose = pipeBytesBeforeDispose,
-        pending_after_dispose = io.PendingPipeOperations, descriptors_after_dispose = io.OpenDescriptors,
-        pipe_bytes_after_dispose = io.PipeBytes,
-        stdout_hex = Convert.ToHexStringLower(output.StandardOutput), stderr_hex = "",
-        first_reason_preserved = action == "complete" ? (bool?)null : true,
-        notification_failure = false, result = value
-    }, new JsonSerializerOptions { WriteIndented = true }) + "\n");
+        report.WriteStartObject();
+        report.WriteString("fixture", fixture);
+        report.WriteString("action", action);
+        report.WriteString("image_sha256", imageHash);
+        report.WriteBoolean("wait_seen", waitSeen);
+        if (waitSeconds is { } waited) report.WriteNumber("wait_seconds", waited);
+        else report.WriteNull("wait_seconds");
+        if (requestedSeconds is { } requested) report.WriteNumber("requested_seconds", requested);
+        else report.WriteNull("requested_seconds");
+        report.WriteNumber("elapsed_seconds", elapsed);
+        report.WriteNumber("pending_at_barrier", pendingAtBarrier);
+        report.WriteNumber("instructions_at_barrier", progressAtBarrier);
+        report.WriteNumber("pending_after_run", 0);
+        report.WriteNumber("descriptors_before_dispose", descriptorsBeforeDispose);
+        report.WriteNumber("pipe_bytes_before_dispose", pipeBytesBeforeDispose);
+        report.WriteBoolean("inherited_stdin_pipe", fixture == "pipe");
+        report.WriteNumber("stdin_pipe_preloaded_bytes", fixture == "pipe" && action == "complete" ? 1 : 0);
+        report.WriteBoolean("stdin_pipe_writer_open_after_run", pipeWriterOpen);
+        report.WriteNumber("pending_after_dispose", io.PendingPipeOperations);
+        report.WriteNumber("descriptors_after_dispose", io.OpenDescriptors);
+        report.WriteNumber("pipe_bytes_after_dispose", io.PipeBytes);
+        report.WriteString("stdout_hex", Convert.ToHexStringLower(output.StandardOutput));
+        report.WriteString("stderr_hex", "");
+        if (action == "complete") report.WriteNull("first_reason_preserved");
+        else report.WriteBoolean("first_reason_preserved", true);
+        report.WriteBoolean("notification_failure", false);
+        report.WriteStartObject("result");
+        report.WriteNumber("Instructions", value.Instructions);
+        report.WriteNumber("InstructionPointer", value.InstructionPointer);
+        report.WriteNumber("Halt", value.Halt);
+        report.WriteNumber("Signal", value.Signal);
+        report.WriteNumber("SignalCode", value.SignalCode);
+        report.WriteBoolean("Exited", value.Exited);
+        report.WriteNumber("ExitStatus", value.ExitStatus);
+        report.WriteNumber("StopReason", (int)value.StopReason);
+        report.WriteNumber("RetainedBytesBeforeRelease", value.RetainedBytesBeforeRelease);
+        report.WriteNumber("RetainedMappingsBeforeRelease", value.RetainedMappingsBeforeRelease);
+        report.WriteBoolean("MemoryReleased", value.MemoryReleased);
+        report.WriteEndObject();
+        report.WriteEndObject();
+        report.Flush();
+    }
+    reportStream.WriteByte((byte)'\n');
     return 0;
 }
 finally

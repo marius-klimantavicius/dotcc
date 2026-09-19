@@ -288,6 +288,9 @@ try:
                 command = [binary]
                 dependencies = {}
             digest = sha(binary)
+            receipt.setdefault('executables', {})[label] = dict(path=str(binary), sha256=digest,
+                managed_dependencies=dependencies)
+            save()
             result_dir = out / label
             result_dir.mkdir()
             run([*command, a / 'service', a / 'instance.txt', a / 'native-linux', result_dir], label, 145)

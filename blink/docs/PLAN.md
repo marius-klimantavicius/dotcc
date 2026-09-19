@@ -407,7 +407,8 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
 operations fail explicitly without false success or a native fallback.
 
 P4 resumed on 2026-09-20 by explicit user direction. Actual service startup and
-owning execution/poll/sleep stop remain unqualified while implementation resumes.
+six exact native HTTP cases now pass all four managed forms. Owning
+execution/poll/sleep/inherited-I/O stop remains under qualification.
 Any actual current tool restriction must be respected and recorded; historical
 generic rejection alone is not a permanent scope rule. No P5/P6 work starts
 automatically; see [the exact P4 ledger](P4-HOST-SERVICES.md).

@@ -1,6 +1,7 @@
 # Cooperative stop through the C# execution owner
 
-Source preparation only. No fixture build or runtime qualification has run.
+The corrected inherited-pipe fixture is source-only and awaits qualification.
+The earlier failed native attempt is retained below; no managed case has run.
 The separate `Managed.Emulation.Execution.GuestExecution` consumer owns all
 translated calls, including loading, instruction dispatch and teardown. These
 tests reference that same owner; there is no duplicate C or C# instruction loop.
@@ -21,9 +22,18 @@ The exact 11 managed cases are pinned in `cases.json`:
 | Requested CPU stop | Wait for at least 1,024 observed completed instructions, then request stop. |
 | Requested empty-poll stop | Wait for real `HostSleep.IsWaiting` inside `poll(NULL,0,-1)`, then request stop. |
 | Requested sleep stop | Wait for real sleep inside a valid 30-second nanosleep, then request stop. |
-| Requested pipe-read stop | Wait for `PendingPipeOperations == 1` with an open writer and empty pipe, then request stop. |
+| Requested inherited pipe-read stop | Wait for `PendingPipeOperations == 1` on stdin with an open writer and empty pipe, then request stop. |
 | Poll and sleep deadlines | Five-second monotonic deadline covering Run; a real pending wait must be observed before expiry. |
 | CPU instruction budget | Exactly 128 completed instructions; Budget reason distinct from guest exit. |
+
+The two `pipe-*` IDs mean **inherited stdin reads**, never guest pipe creation.
+For native controls the runner supplies byte `0x5a` through a real subprocess
+stdin pipe. The managed harness creates a private pipe, installs its reader at
+fd0 with `DuplicateTo`, closes the redundant reader descriptor and leaves the
+writer open until I/O disposal. Completion preloads the same byte; cancellation
+leaves the pipe empty. The guest executes supported `read(0,buffer,1)` and checks
+the byte only if the read completes. The report retains supplied-byte count and
+the actual writer-open observation after Run.
 
 Every case runs in a fresh process. The controller reads only the owner's
 thread-safe progress/sleep observations and existing private-I/O counters;
@@ -38,7 +48,9 @@ the complete owner result, captures, retained host-memory accounting captured
 before release, and successful memory release status. No zero retention after
 translated memory disposal is inferred. A first latched reason must survive
 later ordinary stop requests. Any owner `NotificationFailure` fails the case.
-Canceled guest pipe descriptors may remain until the caller disposes InstanceIo:
+Reports use explicit `Utf8JsonWriter` fields, including numeric enum values and
+nullable observations; they require no reflection-based serialization in AOT.
+Inherited pipe descriptors may remain until the caller disposes InstanceIo:
 guest metadata cleanup alone does not close host descriptors. After joining the
 execution thread and disposing I/O, its public descriptor, pipe-byte and pending
 operation counters must all be zero. No translated call follows final disposal.
@@ -67,3 +79,11 @@ its original source references. The exact 11×4 selected matrix, closed logs,
 fixtures, native tools, binaries before/after, source/producer receipts and
 final input identities are recorded in fresh `artifacts/guest-execution-stop`
 attempts. Previous attempts are never resumed or overwritten.
+
+The first attempt, `artifacts/guest-execution-stop/attempt-geaqvgvp/receipt.json`
+(SHA256 `3812ae97af000f8492061eb41e260e2cdcaefcc7974f7edc5f432372b7c59579`),
+is retained as failed evidence: all four Linux controls and three native Blink
+controls passed, but the original pipe fixture assumed guest `pipe` creation.
+The pinned profile disables threads and fork, which excludes the upstream
+pipe/pipe2 dispatcher entries. No managed build ran in that attempt. The
+inherited-descriptor correction changes the fixture, not the profile or Host.

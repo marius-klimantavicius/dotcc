@@ -130,7 +130,7 @@ def interrupted(signum, frame):
 signal.signal(signal.SIGTERM, interrupted)
 
 
-def run(command, label, timeout=300, binaries=()):
+def run(command, label, timeout=300, binaries=(), stdin_pipe=None):
     command = list(map(str, command))
     before = {str(p): sha(p) for p in binaries}
     start, code = time.monotonic(), None
@@ -138,16 +138,24 @@ def run(command, label, timeout=300, binaries=()):
     try:
         with stdout.open('wb') as output, stderr.open('wb') as errors:
             process = subprocess.Popen(command, cwd=ROOT.parent, stdout=output, stderr=errors,
+                stdin=subprocess.PIPE if stdin_pipe is not None else None,
                 env=dict(os.environ, LC_ALL='C', TMPDIR=str(out/'tmp')), start_new_session=True)
-            try: code = process.wait(timeout=timeout)
+            try:
+                if stdin_pipe is not None:
+                    process.stdin.write(stdin_pipe)
+                    process.stdin.flush()
+                code = process.wait(timeout=timeout)
             except BaseException:
                 stop_group(process)
                 raise
+            finally:
+                if process.stdin is not None: process.stdin.close()
     finally:
         receipt['results'][label] = {
             'command': command, 'exit_code': code, 'elapsed_seconds': time.monotonic()-start,
             'stdout': str(stdout), 'stdout_sha256': sha(stdout),
             'stderr': str(stderr), 'stderr_sha256': sha(stderr),
+            'stdin_pipe_hex': stdin_pipe.hex() if stdin_pipe is not None else None,
             'binaries_before': before, 'binaries_after': {p: sha(p) for p in before}}
         save()
     if code != 0:
@@ -206,6 +214,9 @@ def observe(row, mode, command, binaries):
         raise RuntimeError(label + ' did not observe actual execution/wait')
     if row['action'] == 'budget' and result['Instructions'] != 128:
         raise RuntimeError(label + ' budget differs')
+    if row['fixture'] == 'pipe':
+        if not value['inherited_stdin_pipe'] or not value['stdin_pipe_writer_open_after_run'] or value['stdin_pipe_preloaded_bytes'] != (1 if row['action'] == 'complete' else 0):
+            raise RuntimeError(label + ' inherited stdin pipe contract differs')
     save()
 
 
@@ -314,7 +325,8 @@ try:
     for fixture in receipt['fixtures']:
         image = attempt/(fixture+'.elf')
         for label, command, binaries in [('linux',[image],[image]),('native-blink',[native_cli,'-jm',image],[native_cli,image])]:
-            stdout, stderr = run(command,label+'-'+fixture,30,binaries)
+            stdout, stderr = run(command,label+'-'+fixture,30,binaries,
+                                 stdin_pipe=b'\x5a' if fixture == 'pipe' else None)
             if stdout != ('ok:'+fixture+'\n').encode() or stderr:
                 raise RuntimeError(label+'-'+fixture+' native control differs')
     receipt['native_passed'] = True
