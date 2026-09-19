@@ -1,5 +1,6 @@
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
+using System.Buffers.Binary;
 using Managed.Emulation.Host;
 using Blink = Managed.Emulation.BlinkCore;
 
@@ -9,6 +10,13 @@ public sealed record GuestExecutionResult(ulong Instructions, ulong InstructionP
     int Halt, int Signal, int SignalCode, bool Exited, int ExitStatus,
     HostExecutionStopReason StopReason, ulong RetainedBytesBeforeRelease,
     ulong RetainedMappingsBeforeRelease, bool MemoryReleased);
+
+/// <summary>Scalar machine state captured on an execution exception, before
+/// cleanup. Arguments are the current Linux x64 argument registers, not an
+/// assertion that the failing operation was a syscall.</summary>
+public sealed record GuestExecutionFailureState(ulong InstructionPointer, ulong Accumulator,
+    ulong Argument1, ulong Argument2, ulong Argument3, ulong Argument4,
+    ulong Argument5, ulong Argument6, int HostError);
 
 /// <summary>One blocking execution on its calling thread. The caller owns IO and
 /// cancellation and must keep them alive until Run returns. All translated calls,
@@ -26,6 +34,7 @@ public sealed unsafe class GuestExecution
     private sealed class UnhandledGuestSignalException : Exception { }
     public ulong InstructionsCompleted => Volatile.Read(ref instructionsCompleted);
     public bool IsSleeping => Volatile.Read(ref activeSleep)?.IsWaiting ?? false;
+    public GuestExecutionFailureState? LastFailureState { get; private set; }
 
     public GuestExecution(InstanceIo io, HostExecutionStop stop)
     {
@@ -35,7 +44,7 @@ public sealed unsafe class GuestExecution
     }
 
     public GuestExecutionResult Run(string imagePath, IReadOnlyList<string> argv,
-        IReadOnlyList<string> env, ulong instructionBudget)
+        IReadOnlyList<string> env, ulong instructionBudget, bool allowInterpreter = false)
     {
         ArgumentException.ThrowIfNullOrEmpty(imagePath);
         ArgumentNullException.ThrowIfNull(argv);
@@ -109,7 +118,9 @@ public sealed unsafe class GuestExecution
             system->trapexit = true;
             byte* path = Text(imagePath);
             Blink.LoadProgram(machine, path, path, Vector(argv), Vector(env), null);
-            Require((int)system->loaded != 0 && system->elf.interpreter == null, "Load static image");
+            Require((int)system->loaded != 0, "Load image");
+            Require(allowInterpreter || system->elf.interpreter == null,
+                "Static image required by the selected execution profile");
             for (int fd = 0; fd < 3; ++fd) Blink.AddStdFd(&system->fds, fd);
 
             // Same arm/identity-filter boundary emitted for upstream Blink's
@@ -142,6 +153,11 @@ public sealed unsafe class GuestExecution
             }
             catch (Blink.Libc.JumpBufferException jump) when (jump.Identity == identity) { halt = jump.Value; }
             catch (UnhandledGuestSignalException) { halt = machine->trapno; }
+            catch
+            {
+                LastFailureState = CaptureFailureState();
+                throw;
+            }
             finally
             {
                 completionReason = stop.Reason;
@@ -155,7 +171,11 @@ public sealed unsafe class GuestExecution
             ordinaryExit = exited && signal == 0 && completionReason == HostExecutionStopReason.None;
             if (stop.NotificationFailure != null) throw stop.NotificationFailure;
         }
-        catch (Exception error) { failure = error; }
+        catch (Exception error)
+        {
+            LastFailureState ??= CaptureFailureState();
+            failure = error;
+        }
         finally
         {
             // Clear before freeing: a thrown cleanup callback can never cause
@@ -195,6 +215,21 @@ public sealed unsafe class GuestExecution
             throw new InvalidOperationException("Guest signal reached a different execution owner.");
         signal = number; signalCode = code;
         throw new UnhandledGuestSignalException();
+    }
+    private GuestExecutionFailureState? CaptureFailureState()
+    {
+        if (machine == null) return null;
+        int error = Blink.Libc.errno;
+        ulong Register(int index)
+        {
+            // Upstream rde.h: ModrmMod=3 selects only a register; RexbRm
+            // occupies bits 7..10. No guest memory access or layout offsets.
+            ulong rde = (3UL << 22) | ((ulong)index << 7);
+            byte* value = Blink.GetModrmRegisterWordPointerRead8(machine, rde, 0, 0);
+            return BinaryPrimitives.ReadUInt64LittleEndian(new ReadOnlySpan<byte>(value, 8));
+        }
+        return new(machine->ip, Register(0), Register(7), Register(6), Register(2),
+            Register(10), Register(8), Register(9), error);
     }
     private static void Require(bool condition, string operation)
     {

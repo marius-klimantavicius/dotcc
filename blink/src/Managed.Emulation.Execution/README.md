@@ -13,12 +13,24 @@ access translated machine pointers. Other threads may request cancellation and
 observe `InstructionsCompleted` or `IsSleeping`; these expose cached progress
 and the bound host sleep state, not guest memory.
 
+The default profile still requires a static image. The optional
+`allowInterpreter: true` argument permits upstream PT_INTERP loading from the
+same explicit private filesystem for P5 compatibility qualification. The caller
+must supply the actual interpreter/library closure. This does not imply a
+native-host library fallback or a qualified dynamic/runtime-threading profile.
+
 `Run` binds its host contexts, initializes the upstream system, applies resource
 limits, loads the valid static guest executable, installs standard descriptors,
 and executes instructions with the upstream attention/signal ordering. The
 exception boundary uses the same public numeric jump-buffer identity and virtual
 signal mask adapter as translated `sigsetjmp`. Unhandled guest signals unwind
 through a private owner exception. Unrelated runtime or host exceptions propagate.
+After the owning thread has completed, `LastFailureState` provides an immutable
+scalar snapshot captured before exception cleanup: IP, RAX, the six Linux x64
+argument registers and host errno. These are current registers, not a syscall
+entry trace or a synthetic execution result. Register reads use upstream's
+register-only ModRM accessor, avoiding generated anonymous-field names and
+hard-coded machine offsets.
 
 Normal cancellation must leave syscall depth, syscall flag, temporary allocations
 and active page locks clean before frontend cleanup; failure is reported. Guest
@@ -35,5 +47,6 @@ that release returned. No translated function runs afterward.
 
 The current profile retains upstream static caches and supports one execution
 per process. `Run` enforces this, including after failure. The process must then
-be discarded. Restart, multiple instances, a controller protocol, dynamic guest
-interpreters, and cross-thread machine inspection are outside this API's scope.
+be discarded. Restart, multiple instances, a controller protocol and cross-thread
+machine inspection are outside this API's scope. Dynamic guest execution is
+under separate P5 qualification.

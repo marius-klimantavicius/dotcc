@@ -2097,3 +2097,32 @@ compatibility gaps, not compiler failures or translated-execution passes.
 Next is an actual bounded compatibility probe with a private dependency closure
 and a reviewed opt-in C# interpreter-image allowance. No native fallback or
 success stub is used. Details: [P5-NATIVEAOT-GUEST.md](P5-NATIVEAOT-GUEST.md).
+
+### P5 actual dynamic NativeAOT guest — first compatibility result
+
+The real guest executes through the translated dynamic loader, then fails before
+readiness after 18,791 completed instructions. The private image contains only
+the pinned guest and individually hashed ld-linux/libc/libm files. C# ownership,
+instruction budget, deadline and joined cleanup remain in use. The owner now
+supports an explicit interpreter opt-in with static-only default, plus immutable
+exception-boundary scalar register diagnostics; no generated source was edited.
+
+Initial receipt `dotnet-guest-execution/attempt-twmyfw31/receipt.json` SHA-256
+`7ac6b0e12d77ba9ca2ca3f3a8421f6bed0871c99a4eeabb59eaf87c7a1987a5d` and
+follow-up `attempt-046ir0z5/receipt.json` SHA-256
+`eee2ab47b268fa9fd83582660eb32dc28c2c71a2a3e46e6d3124dcfe50b9faa7` preserve
+the contained mmap panic/host exit request 250. The latter captures actual mmap
+arguments `(0, 2170256, 1, 2050, 3, 0)` at IP `0x110000025d2c`, matching glibc's
+initial libc image span. That span includes 11 whole pages beyond the file;
+HostMemory currently rejects those pages instead of making them readable.
+The exception errno follows diagnostic output and does not identify the original
+allocation errno. No HTTP cases or translated NativeAOT pass are claimed.
+Independently checked 123 frozen inputs and 117 prepared files for the latter.
+
+Next bounded task: one ordinary static-musl build using the separately pinned
+official SDK image, to remove this dynamic-library dependency shape. The inputs
+worker owns its isolated runner/profile; no pull/build has happened yet. Stop
+for user direction if that build is very difficult or impossible. The genuine
+threaded-runtime requirements remain regardless of libc. The exact syscall and
+thread-ownership audit is [P5-SYSCALLS.md](P5-SYSCALLS.md). P5 stays active; no
+P6 work has begun and the old raw baseline is not new-compiler qualification.

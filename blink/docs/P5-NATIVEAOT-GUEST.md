@@ -22,9 +22,29 @@ observes finalizer, sockets and signal-handler threads, futex/epoll/pipe2,
 signals/TLS and proc/sysfs/cgroup probes. Optional probes and unfinished waits
 must be distinguished from required successful operations.
 
-These are native guest build/reference results only. A bounded raw-JIT
+These are native guest build/reference results only. The bounded raw-JIT
 compatibility probe using explicit private dependency files and the same C#
-owner is being prepared. No translated NativeAOT guest execution pass is claimed.
+owner now executes the guest but fails before readiness. Receipt
+`dotnet-guest-execution/attempt-twmyfw31/receipt.json`, SHA-256
+`7ac6b0e12d77ba9ca2ca3f3a8421f6bed0871c99a4eeabb59eaf87c7a1987a5d`,
+records 18,791 completed instructions followed by `PanicDueToMmap` and a
+contained host exit request 250. The execution thread joined, no HTTP case ran,
+and guest stdout/stderr were empty. No translated NativeAOT guest pass is claimed.
+
+The raw baseline is the exact P4 delivery, with its producer compiler identity;
+this diagnostic does not qualify the newer compiler. A separate current C#
+owner snapshot records the explicit interpreter opt-in. Follow-up receipt
+`dotnet-guest-execution/attempt-046ir0z5/receipt.json`, SHA-256
+`eee2ab47b268fa9fd83582660eb32dc28c2c71a2a3e46e6d3124dcfe50b9faa7`,
+captures RAX=9 and mmap arguments `(0, 2170256, 1, 2050, 3, 0)` at
+IP `0x110000025d2c`. These match the initial native libc mapping. Its file is
+2,125,328 bytes: the legitimate image span covers 11 whole pages past EOF,
+which the private memory adapter currently rejects rather than expose readable
+zero pages. Captured host errno is EBADF after the panic's diagnostic output;
+it is not proof of the original allocation errno or exact first rejected page.
+Removing the EOF rejection alone would be incorrect. This is now a
+concrete reason to evaluate an ordinary static musl build; runtime threads and
+other contracts would still need implementation.
 
 ## Current profile boundaries
 
@@ -32,7 +52,7 @@ These are source findings pending the actual guest trace:
 
 | Boundary | Current implementation | Consequence |
 | --- | --- | --- |
-| ELF interpreter | Pinned upstream `blink/loader.c` implements PT_INTERP loading through VfsOpen; `Managed.Emulation.Execution.GuestExecution` currently requires a static image | Dynamic glibc is not intrinsically excluded by Blink. It requires explicit private interpreter/library inputs and a reviewed owner extension. |
+| ELF interpreter | Pinned upstream `blink/loader.c` implements PT_INTERP loading through VfsOpen; `GuestExecution` now permits an explicit interpreter opt-in with static-only default | Actual dynamic loader execution reached the guest mmap syscall; the next failure is mapping semantics, not the old owner guard. |
 | Guest threads | `config/core-config.h` selects DISABLE_THREADS; syscall.c excludes clone/futex dispatch and `config/managed-host/pthread.h` rejects an unqualified pthread ABI | A threaded guest needs actual upstream guest-thread algorithms and managed host synchronization/lifetime support. Existing host pipe or synchronization helpers do not qualify guest thread startup. |
 | TLS | P3 qualified a valid fixed static TLS fixture and explicit FS setup | This is not libc thread startup or general dynamic TLS evidence. |
 | Execution ownership | C# owns the loop, stop and cleanup; upstream CPU/syscall algorithms remain translated | Profile extensions must preserve that architecture and cannot substitute a native emulator or success stubs. |
