@@ -5,6 +5,10 @@ capability is claimed. The current product is an NTLMSSP client validated on
 Linux x64 against Samba. The user requires explicit Kerberos credentials and
 existing tickets/current-user sign-in on both Windows and Linux.
 
+Current authorization: implement translated upstream tests. Kerberos and DFS are
+on hold while the user decides; the sections below preserve proposals and
+requirements, not authorization to continue those workstreams.
+
 ## Translate the upstream tests
 
 The pinned `tests/` directory contains 34 files, including 13 C sources and 18

@@ -38,6 +38,11 @@ Linux. Investigate and deliver domain DFS namespace resolution for paths such as
 the current NTLMSSP-only product. See [the implementation extension](enterprise-client.md)
 for evidence, boundaries, milestones, and acceptance criteria.
 
+**Current execution scope:** P7 upstream-test implementation is authorized and
+active. P8 Kerberos and P9 DFS are on hold pending the user's decision. Their
+requirements and candidate designs remain recorded; do not begin further
+research or implementation for either feature until the user resumes that work.
+
 ## Objective and fixed delivery requirements
 
 Translate upstream libsmb2 into a reusable unsafe C# SMB2/SMB3 client library.
