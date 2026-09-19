@@ -1,6 +1,7 @@
 using global::System;
 using global::System.IO;
 using global::System.Text;
+using global::System.Threading;
 using Managed.Emulation.Host;
 
 namespace Managed.Emulation;
@@ -14,15 +15,22 @@ public static partial class Blink
 #endif
 {
     [ThreadStatic] private static InstanceIo? io;
+    [ThreadStatic] private static CancellationToken ioCancellation;
     private const int IoChunk = 65536, IoVectorLimit = 1024, PathLimit = 4096;
     private static readonly UTF8Encoding PathEncoding = new(false, true);
-    public static void BindHostIo(InstanceIo value)
+    public static void BindHostIo(InstanceIo value) => BindHostIo(value, default);
+    public static void BindHostIo(InstanceIo value, CancellationToken cancellation)
     {
         ArgumentNullException.ThrowIfNull(value);
         if (io != null) throw new InvalidOperationException("I/O already bound on this worker.");
         io = value;
+        ioCancellation = cancellation;
     }
-    public static void UnbindHostIo() => io = null;
+    public static void UnbindHostIo()
+    {
+        io = null;
+        ioCancellation = default;
+    }
     private static int IoError(int error) { Libc.errno = error; return -1; }
     private static long IoResult<T>(HostResult<T> result) where T : global::System.Numerics.INumber<T>
         => result.Succeeded ? long.CreateChecked(result.Value) : IoError((int)result.Error);
@@ -99,7 +107,7 @@ public static partial class Blink
             if (io == null) return IoError(19);
             if (destination == null && length != 0) return IoError(14);
             byte[] buffer = new byte[(int)global::System.Math.Min(length, (ulong)IoChunk)];
-            var result = io.ReadAsync(fd, buffer).GetAwaiter().GetResult();
+            var result = io.ReadAsync(fd, buffer, ioCancellation).GetAwaiter().GetResult();
             if (result.Succeeded) buffer.AsSpan(0, result.Value).CopyTo(new Span<byte>(destination, buffer.Length));
             return IoResult(result);
         }
@@ -137,7 +145,7 @@ public static partial class Blink
             if (source == null && length != 0) return IoError(14);
             int count = (int)global::System.Math.Min(length, (ulong)IoChunk);
             byte[] buffer = new ReadOnlySpan<byte>(source, count).ToArray();
-            return IoResult(io.WriteAsync(fd, buffer).GetAwaiter().GetResult());
+            return IoResult(io.WriteAsync(fd, buffer, ioCancellation).GetAwaiter().GetResult());
         }
         catch (Exception error) { return IoException(error); }
     }
@@ -159,7 +167,7 @@ public static partial class Blink
             }
             byte[] buffer = new byte[(int)global::System.Math.Min(total, (ulong)IoChunk)];
             if (writing) CopyVectors(vectors, count, buffer, true);
-            var result = (writing ? io.WriteAsync(fd, buffer) : io.ReadAsync(fd, buffer)).GetAwaiter().GetResult();
+            var result = (writing ? io.WriteAsync(fd, buffer, ioCancellation) : io.ReadAsync(fd, buffer, ioCancellation)).GetAwaiter().GetResult();
             if (!writing && result.Succeeded) CopyVectors(vectors, count, buffer.AsSpan(0, result.Value), false);
             return IoResult(result);
         }

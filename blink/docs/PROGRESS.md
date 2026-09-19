@@ -54,7 +54,7 @@ labels are not treated as present defects without checking current code.
 | Owner | P4 task | State |
 | --- | --- | --- |
 | Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo native/all-four passed; GuestEnvironment normal-state fixture in source preparation |
-| Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation bridge/normal lifecycle fixture in source preparation; builds held |
+| Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation all-four passed; bounded guest TCP design in review |
 | Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Audit active |
 
 The existing translated-service worker rejection remains binding. No recovery,
@@ -1811,3 +1811,26 @@ cleanup checklist is now checked; no service or cancellation inference follows.
 Next serial validation is the independent I/O token propagation. Inputs prepares
 normal actual guest clock/entropy/thread-ID/private signal-state qualification;
 no signal delivery, timer, worker or service loop is introduced.
+
+## P4 I/O callback cancellation implemented and qualified
+
+Four authored bridges now propagate an explicitly bound cancellation token
+through asynchronous byte/vector/message I/O, accept/connect and readiness.
+The original one-argument BindHostIo signature remains as a forwarding overload;
+unbind clears owner and token. Existing positive partial writes remain successes.
+
+All four forms pass 22 translated-C scenarios plus a direct BCL pipe-read
+reference in host-io-cancellation/attempt-blvv0ho4 (SHA256
+`24085e30571d06b3fb41bdc3020cb960bcf708a5926c8323c0000b18a5065f6a`).
+Native ordinary ABI/vector/poll smoke passes separately. Exact source, closed
+logs, execution binaries and tool identities were reverified independently.
+No shared compiler/generated-source repair was made. The final generated
+product now needs its authored Host snapshot republished and affected core
+execution checked; this is integration of the concrete P4 bridge change, not
+reopening P0–P3.
+
+This remains ECANCELED at the callback boundary. Guest Poll maps it to POLLERR;
+sleep and execution-loop stop still need their own integration. P4's full
+stop/service-startup conditions remain unchecked. Inputs prepares actual guest
+environment/state tests; the consumer worker reviews a bounded TCP syscall
+fixture with no ELF, HTTP, service or worker loop.

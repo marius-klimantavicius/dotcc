@@ -32,7 +32,11 @@ duplication, short transfers, valid cross-page vectors, ready-file poll and two
 cleanup cycles; receipt SHA256
 `15795abe9f6ead804b60eac9c3f996807f3d4f244c10da8515b583146f3c825c`.
 It uses canonical 14c483 with 108 retained objects and its unchanged Host
-snapshot. I/O cancellation and actual service startup remain unqualified.
+snapshot. Callback cancellation now passes 22 translated-C scenarios plus a
+direct BCL pipe-read reference per form at
+`host-io-cancellation/attempt-blvv0ho4` (SHA256
+`24085e30571d06b3fb41bdc3020cb960bcf708a5926c8323c0000b18a5065f6a`).
+This does not qualify guest execution/poll/sleep stop or actual service startup.
 See [P4's exact contract ledger](P4-HOST-SERVICES.md).
 
 ## Earlier post-libsmb2 refresh history

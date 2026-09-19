@@ -324,6 +324,8 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
       valid cross-page vectors. TCP waiting/stop contracts remain separate.
 - [ ] Bind stop/deadline behavior to execution and outstanding I/O; prove no
       guest operation exits the controller or reaches an unintended host service.
+      Callback token propagation and 22 normal lifecycle scenarios pass all four
+      forms; actual guest execution/poll/sleep stop remains unqualified.
 - [ ] Audit required service startup syscalls; qualify additions individually.
 
 **Gate:** contract tests and the actual guest service startup pass; unsupported

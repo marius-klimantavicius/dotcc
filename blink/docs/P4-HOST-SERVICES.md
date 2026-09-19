@@ -11,7 +11,7 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 | Work | Owner | State |
 | --- | --- | --- |
 | Actual guest file/descriptor/vector/readiness path | Inputs worker, `tests/GuestIo/` | Native/all-four pass `guest-io/attempt-tnq5itfa`; exact bytes/state and cleanup |
-| Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | Source preparation; optional token, default behavior retained; boundary qualification pending |
+| Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | All-four pass `host-io-cancellation/attempt-blvv0ho4`; canonical final-project integration next |
 | Clock/entropy/status/signal and startup inventory | Coordinator | Source/receipt audit below; remaining normal qualification selected after the first two bounded tasks |
 | Actual translated service startup | Unqualified | Earlier automated service-worker task rejection remains binding; no renamed/recovered worker or surrogate startup pass |
 
@@ -75,9 +75,9 @@ in `HostSignals`, `HostSignalActions`, `HostSignalPolicy`, and `HostSleep`.
 Positive asynchronous delivery remains restricted. The observed service does
 not request it. Historical mixed-scope signal/sleep suites are not rerun as-is.
 
-I/O bridges currently omit optional cancellation tokens accepted by `InstanceIo`.
-The bounded change propagates an owner-supplied token to pending operations and
-qualifies ordinary cancellation/deadline/drain at that boundary. Host cancellation
+I/O bridges now propagate an owner-supplied cancellation token to existing
+`InstanceIo` asynchronous operations. The original one-argument binding API is
+retained. Ordinary cancellation/deadline/drain passes at that boundary. Host cancellation
 returns `ECANCELED` (125), not a fabricated delivered guest signal. Actual guest
 `Poll` and sleep retry also consult `CheckInterrupt` and guest state; bridge-only
 cancellation cannot prove instruction-loop or zero-fd guest-poll cancellation.
@@ -103,3 +103,20 @@ Host snapshot, replacing only the authored frontend. Current source/producer,
 closed logs and executed binary identities were independently rehashed.
 This closes P4's ordinary filesystem/dup/short-I/O/cleanup checklist item.
 It does not qualify TCP waiting, cancellation or actual service startup.
+
+## Callback cancellation subgate passed
+
+`artifacts/host-io-cancellation/attempt-blvv0ho4/receipt.json`, SHA256
+`24085e30571d06b3fb41bdc3020cb960bcf708a5926c8323c0000b18a5065f6a`,
+passes 22 finite translated-C scenarios and one direct BCL pipe-read reference
+in each raw/optimized JIT/NativeAOT form. Native ABI/vector/poll smoke is separate
+from the private cancellation contract. Exact transcripts, empty execution
+stderr, source/snapshot/log/binary/tool identities pass. See the
+[case contracts](../tests/HostIoCancellation/README.md) for pending operation
+observations, pre-canceled send/connect limits, partial writes and owner drain.
+
+This implements token propagation in four authored bridges. No C/interpreter or
+shared compiler change was needed. Publishing those changed bridges into the
+final generated project requires a fresh Host snapshot and affected normal-core
+execution; that integration is next. Guest poll maps callback ECANCELED to
+POLLERR, so this still does not establish actual guest stop/deadline behavior.

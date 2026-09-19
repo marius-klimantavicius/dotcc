@@ -62,7 +62,7 @@ public static partial class Blink
         {
             if (io == null) return IoError(19);
             if (address != null && length == null) return IoError(14);
-            var result = io.AcceptAsync(fd).GetAwaiter().GetResult();
+            var result = io.AcceptAsync(fd, ioCancellation).GetAwaiter().GetResult();
             if (!result.Succeeded) return IoError((int)result.Error);
             if (address != null) WriteEndpoint(address, length, result.Value.Remote);
             return result.Value.Handle;
@@ -75,7 +75,7 @@ public static partial class Blink
         {
             if (io == null) return IoError(19);
             if (!ReadEndpoint(address, length, out var endpoint)) return -1;
-            return (int)IoResult(io.ConnectAsync(fd, endpoint).GetAwaiter().GetResult());
+            return (int)IoResult(io.ConnectAsync(fd, endpoint, ioCancellation).GetAwaiter().GetResult());
         }
         catch (Exception error) { return IoException(error); }
     }
@@ -105,7 +105,7 @@ public static partial class Blink
             int count = (int)global::System.Math.Min(length, (ulong)IoChunk);
             byte[] buffer = new byte[count];
             if (writing) new ReadOnlySpan<byte>(pointer, count).CopyTo(buffer);
-            var result = (writing ? io.SendAsync(fd, buffer) : io.ReceiveAsync(fd, buffer)).GetAwaiter().GetResult();
+            var result = (writing ? io.SendAsync(fd, buffer, ioCancellation) : io.ReceiveAsync(fd, buffer, ioCancellation)).GetAwaiter().GetResult();
             if (!writing && result.Succeeded) buffer.AsSpan(0, result.Value).CopyTo(new Span<byte>(pointer, count));
             return IoResult(result);
         }
