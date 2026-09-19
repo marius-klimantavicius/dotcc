@@ -35,12 +35,14 @@ public unsafe ref partial struct PrintfBuilder
     private Spec _pendingSpec;
     private bool _hasPendingSpec;
     private int _count;   // UTF-8 bytes written so far — printf's return value (C99 §7.21.6.3)
+    private readonly bool _byteOutput;
 
-    public PrintfBuilder(TextWriter writer, byte* fmt)
+    public PrintfBuilder(TextWriter writer, byte* fmt, bool byteOutput = false)
     {
         _w = writer;
         _fmt = fmt;
         _count = 0;
+        _byteOutput = byteOutput;
     }
 
     /// <summary>Write <paramref name="s"/> to the sink and accumulate its UTF-8
@@ -50,7 +52,7 @@ public unsafe ref partial struct PrintfBuilder
     private void Emit(string s)
     {
         _w.Write(s);
-        _count += global::System.Text.Encoding.UTF8.GetByteCount(s);
+        _count += _byteOutput ? s.Length : global::System.Text.Encoding.UTF8.GetByteCount(s);
     }
 
     /// <summary>
@@ -594,6 +596,9 @@ public unsafe ref partial struct PrintfBuilder
     private void WriteUtf8Codepoint(ref byte* p)
     {
         byte b = *p;
+        // Allocating byte-buffer formatting preserves every original C byte,
+        // including non-UTF8 %s data and multibyte format literals.
+        if (_byteOutput) { _w.Write((char)b); _count++; p++; return; }
         if (b < 0x80) { _w.Write((char)b); _count++; p++; return; }
         int len = 1;
         if ((b & 0xE0) == 0xC0) { len = 2; }

@@ -1,0 +1,1 @@
+GNU/POSIX asprintf is not exposed by the MSVC CRT.
