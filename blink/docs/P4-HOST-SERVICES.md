@@ -12,7 +12,9 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 | --- | --- | --- |
 | Actual guest file/descriptor/vector/readiness path | Inputs worker, `tests/GuestIo/` | Native/all-four pass `guest-io/attempt-tnq5itfa`; exact bytes/state and cleanup |
 | Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | All-four callback pass; final project/core integration passes `translation/attempt-16eer8t5` and `core-execution/attempt-g8r4tp0k` |
-| Clock/entropy/status/signal and startup inventory | Coordinator | Source/receipt audit below; remaining normal qualification selected after the first two bounded tasks |
+| Clock/entropy/thread-ID/private signal-state dispatch | Inputs worker, `tests/GuestEnvironment/` | Native passes `guest-environment/attempt-aeqsjnzi`; all-four qualification active |
+| Bounded guest TCP syscall exchange | Consumer worker, `tests/GuestTcp/` | Source preparation; no ELF/HTTP/service loop |
+| Actual startup inventory and integration | Coordinator | Exact source/receipt map below; service startup remains unqualified |
 | Actual translated service startup | Unqualified | Earlier automated service-worker task rejection remains binding; no renamed/recovered worker or surrogate startup pass |
 
 Heavy builds are serialized. Shared compiler inputs and P0–P3 qualification stay
@@ -30,7 +32,7 @@ The following map is source review, not a managed service execution trace.
 | Observed names | Selected implementation route | Current evidence / gap |
 | --- | --- | --- |
 | `arch_prctl` | `syscall.c:SysArchPrctl` sets guest FS base for `ARCH_SET_FS` | Actual fixed TLS fixture passes; general musl service startup unrun |
-| `set_tid_address` | `syscall.c:SysSetTidAddress` stores guest `ctid`, returns virtual `tid` | Selected code present; current integrated normal witness pending |
+| `set_tid_address` | `syscall.c:SysSetTidAddress` stores guest `ctid`, returns virtual `tid` | GuestEnvironment native passes; managed matrix active |
 | `open` | `SysOpen`/`open.c:SysOpenat` → `OverlaysOpen` → authored `HostFileControl.c` → `HostIoBridge` → `InstanceIo` private filesystem | Current standalone HostIo and loader access pass; guest dispatch passes GuestIo |
 | `read`, `writev` | Actual guest buffer/iovec marshalling → `kFdCbHost` callbacks → `HostIoBridge` → private descriptor table | Guest marshalling, cursor and cleanup pass GuestIo |
 | `close` | `close.c:SysClose` plus upstream fd table → private `InstanceIo.Close` | GuestIo checks upstream empty fd table and only three remaining private standard descriptors |
@@ -74,6 +76,8 @@ Private signal masks/dispositions/policy and sleep interruption are implemented
 in `HostSignals`, `HostSignalActions`, `HostSignalPolicy`, and `HostSleep`.
 Positive asynchronous delivery remains restricted. The observed service does
 not request it. Historical mixed-scope signal/sleep suites are not rerun as-is.
+GuestEnvironment adds normal actual guest disposition/mask registration, queries
+and restoration without delivery, with a separate actual host-registry query.
 
 I/O bridges now propagate an owner-supplied cancellation token to existing
 `InstanceIo` asynchronous operations. The original one-argument binding API is

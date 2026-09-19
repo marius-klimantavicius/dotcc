@@ -1852,3 +1852,18 @@ No C source/compiler change, new P3 corpus or P6 publication/performance suite
 was introduced. Earlier exact publication/clean-run receipts keep their original
 binary/revision identities. GuestEnvironment native qualification is released
 against this new snapshot; GuestTcp remains in source preparation.
+
+## P4 native guest environment/state reference passed
+
+GuestEnvironment executes actual clock_gettime/getres, getrandom, set_tid_address,
+rt_sigaction and rt_sigprocmask with valid mapped records across two lifecycles.
+Native attempt-aeqsjnzi passes; SHA256
+`e746ff4a1a90cb15c02d8b423d3552ea20ca661ddcc6a74555e8c8782a66f925`.
+Twenty raw rows retain actual timestamps/random bytes/tid/flags; ten invariant
+rows check normalized clocks/execution wall brackets, monotonic nondecrease,
+32-byte random return/canaries, virtual tid/pointer state, signal IGN/query/DFL
+and exact mask restoration, cleanup and no pending/delivered signal. Actual
+host disposition is queried so an ignored upstream registration error cannot
+produce a false pass. No entropy-quality or cross-process timestamp equality
+claim is made. No source fix was required. The managed matrix now uses the
+new 734288 canonical Host snapshot; bounded GuestTcp remains source-only.
