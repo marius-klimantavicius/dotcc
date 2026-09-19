@@ -5,7 +5,10 @@ native-client/Samba oracle, and baseline compiler tests are established. The
 coordinator and sub-agents closed the complete frontend: all 53 units now
 preprocess, lex, and parse cleanly after regression-backed repairs. All 53 units now emit and link, and the default pipeline builds raw and
 post-processed products. Real host fixtures pass native/JIT/NativeAOT; generated
-crypto/ABI and SMB interoperability checks are in progress. The initial
+crypto/ABI and NTLMSSP SMB interoperability checks pass in the scoped Linux
+campaign. Full acceptance remains open; translated upstream tests and Kerberos
+on Windows/Linux are now required follow-up milestones, and domain DFS path
+resolution is an added product target. The initial
 [lexer/parser probe](parse-probe.md) remains preserved; current results
 and remaining gates are tracked in [validation.md](validation.md).
 Campaign working directory: `<repo>/libsmb2/`.
@@ -26,6 +29,14 @@ a different custom TCP-reset scenario. Custom transport reset and synthetic
 failed-operation probes are excluded from the default campaign. Normal API,
 ownership, cancellation, invalid-input and known-answer tests remain functional
 validation. The unfinished additional cleanup investigation is paused.
+
+**Expanded requirements:** translate applicable upstream C test programs and
+provide a C# test runtime/runner preserving their checks. Add Kerberos with both
+explicit credentials and existing tickets/current-user sign-in on Windows and
+Linux. Investigate and deliver domain DFS namespace resolution for paths such as
+`\\work.example\a\department\file`. These are requirements, not claims about
+the current NTLMSSP-only product. See [the implementation extension](enterprise-client.md)
+for evidence, boundaries, milestones, and acceptance criteria.
 
 ## Objective and fixed delivery requirements
 
@@ -75,7 +86,8 @@ build from a moving branch or let CMake autodetection silently select dependenci
 The upstream [README](https://github.com/sahlberg/libsmb2/blob/master/README)
 describes synchronous, asynchronous, and raw client APIs, built-in NTLMSSP,
 optional Kerberos, SMB signing/encryption, and server support. This campaign's
-first product is a client. Server hosting and Kerberos are separate profiles.
+first product is a client. Server hosting remains deferred; Kerberos is now a
+required additional client profile.
 The planning links describe upstream structure; replace them with immutable
 revision links when pinning inputs.
 
@@ -143,18 +155,19 @@ These are acceptance targets, not claims about a completed port.
 | Area | Required behavior |
 | --- | --- |
 | Dialects | SMB 2.0.2, 2.1, 3.0, 3.0.2, and 3.1.1 negotiation and file access, subject to confirming the pinned source's support; exercise each explicitly. |
-| Authentication | Built-in NTLMSSP with explicit user/domain/password and verified NTLMv2 exchanges. Reject failed credentials and unsupported mechanisms. No implicit guest fallback. |
+| Authentication | Built-in NTLMSSP plus required Kerberos with explicit credentials and existing tickets/current-user sign-in on Windows and Linux. Explicit mechanism selection; no silent NTLM or guest fallback when Kerberos is required. |
+| Namespace resolution | Domain DFS UNC paths resolved to their backing server/share/path, with authentication to each selected target; implementation and qualification pending. |
 | Integrity and confidentiality | Required signing and SMB3 encryption profiles using algorithms actually implemented by the pin. Test SMB 3.1.1 preauthentication/key derivation and enforce requested signing/encryption without silent downgrade. |
 | File API | Connect/disconnect; directory enumeration; stat/fstat/statvfs; create/open/close; offset reads/writes; flush/truncate; mkdir/rmdir; rename/unlink; EOF and ordinary error paths. |
 | Request processing | Actual upstream asynchronous requests, compounds, credits, partial I/O, large transfers, timeouts, and multiple outstanding operations. Keep synchronous entry points usable too. |
 | Managed API | Owning connection, file, and directory handles; Task-based operations; explicit cancellation, errors, and asynchronous cleanup. Retain the low-level translated C-style API. |
 | Transport | Real TCP through BCL sockets, DNS, IPv4/IPv6, configurable test port, bounded buffering and cleanup. |
-| Platforms | Linux x64 first with dotcc's LP64 ABI; Windows x64, Linux arm64, and macOS arm64 require separate execution evidence. |
+| Platforms | Linux x64 first with dotcc's LP64 ABI; Windows x64 is also required for the expanded Kerberos/DFS profile. Linux arm64 and macOS arm64 require separate execution evidence. |
 
 Inventory every exposed API, option, and command as required, translated but
 unqualified, or deferred. Initially defer SMB server hosting, full libdcerpc,
-Kerberos/GSSAPI/SSPI integration, DFS referral following, durable/persistent-handle
-recovery, multichannel, RDMA, and application-level lease/oplock caching. Preserve
+durable/persistent-handle recovery, multichannel, RDMA, and application-level
+lease/oplock caching. Preserve
 required break handling for capabilities actually negotiated; do not request
 unimplemented caching guarantees. Share enumeration and optional raw commands
 need their own qualification before the facade advertises them. A required
@@ -167,9 +180,14 @@ code, including primitives needed by authentication, signing, and sealing. This
 avoids inventing a provider abstraction or assuming every legacy primitive is
 available in the BCL. Use secure BCL randomness for live sessions. Audit platform
 accelerators and select a real portable backend explicitly; no application-owned
-native crypto, SMB, Kerberos, or socket imports belong in the managed product.
-Normal implementation dependencies of the BCL are acceptable. Validate primitives
-with known-answer/native vectors and protocol protection with real peers.
+native SMB, portable SMB-crypto, or socket imports belong in the managed product.
+Normal implementation dependencies of the BCL are acceptable. The new Kerberos
+profile may use a pinned managed Kerberos provider. Existing OS ticket integration
+needs a separately documented dependency decision: any necessary platform
+authentication adapter must remain explicit and must never become a native SMB
+backend. Preserve the native-free explicit-credential path as the preferred design.
+Validate primitives with known-answer/native vectors and protocol protection
+with real peers.
 
 Host adapters supply execution services, not replacement SMB logic. Prefer shared
 dotcc libc implementations when semantics match. Define the required socket,
@@ -365,7 +383,8 @@ Gate: a separate managed application performs authenticated file operations usin
       Verify invocation from outside the repository and failed-stage/stale-output
       handling without destroying unrelated files.
 - [ ] Audit authored/generated code and published dependencies for native SMB or
-      crypto backends, accidental Kerberos, dynamic code, and missing AOT roots.
+      crypto backends, undeclared authentication dependencies, dynamic code, and
+      missing AOT roots.
 - [ ] Run full unit/functional tests after the final shared compiler changes,
       relevant postprocessor tests, and fresh SQLite, picotls, and MsQuic regression
       campaigns affected by those changes. Exercise the NuGet LALR.CC build path;
@@ -383,6 +402,38 @@ test leaves acceptance incomplete; it must not produce an unconditional pass.
 
 Dependencies: P0 → P1 → P2 → P3 → P4 → P5 → P6. API and host design may inform
 earlier phases; their completion still depends on real translated execution.
+
+### P7 — Execute translated upstream tests
+
+- [ ] Translate pinned upstream C tests and required example executables; preserve
+      assertions, callbacks and exit behavior, with a C# runtime/fixture runner.
+- [ ] Compare native and raw/processed JIT/NativeAOT runs. Map every upstream shell
+      case to execution, an explicit adaptation, or an explained skip.
+- [ ] Preserve the upstream-only fault-injection scope; distinguish native-only
+      instrumentation from managed evidence.
+
+### P8 — Kerberos on Windows and Linux
+
+- [ ] Qualify a pinned Kerberos.NET provider first: tokens, mutual authentication,
+      correct SMB session keys, signing/encryption, and trimmed NativeAOT.
+- [ ] Integrate the translated authentication boundary and owning API with
+      explicit credentials and existing tickets/current-user sign-in.
+- [ ] Execute real KDC/SMB interoperability on both Windows and Linux; record
+      supported cache types, dependencies, expiry behavior and mechanism selection.
+
+### P9 — Domain DFS namespaces
+
+- [ ] Select and document the missing referral implementation while retaining
+      translated SMB transport/protocol operations; constants alone are insufficient.
+- [ ] Resolve domain/root/link referrals, preserve path suffixes, cache by TTL,
+      and obtain Kerberos service tickets for actual target hosts.
+- [ ] Verify two namespace paths targeting different servers, direct-share parity,
+      nested links and ordinary target selection on both Windows and Linux.
+
+P7 is the next verification milestone. P8 begins with provider feasibility; P9
+depends on its target-authentication contract. P6 final acceptance must include
+these expanded requirements; previous NTLMSSP receipts remain valid only for
+their original profile.
 
 ## Validation rules and final acceptance
 

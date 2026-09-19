@@ -1,5 +1,9 @@
 # Initial Linux x64 profile
 
+This page describes the implemented NTLMSSP profile. The expanded
+[Kerberos and DFS requirements](enterprise-client.md) are pending implementation
+and require Windows as well as Linux execution evidence.
+
 The source closure is fixed in [sources.json](../config/sources.json), command-line
 definitions in [defines.json](../config/defines.json), and feature header in
 [managed/config.h](../config/managed/config.h). The header freezes the original

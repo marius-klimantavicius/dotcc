@@ -7,6 +7,11 @@ the managed sample and lifecycle suites pass against Samba under JIT and NativeA
 Full plan acceptance remains open. Fault injection follows the explicit
 [upstream test scope](docs/test-scope.md).
 
+The next requirements are [translated upstream tests, Kerberos on Windows/Linux,
+and domain DFS paths](docs/enterprise-client.md). Kerberos must support explicit
+credentials and existing tickets/current-user sign-in. These additions are not
+yet implemented in the current NTLMSSP profile.
+
 ```sh
 ./libsmb2/scripts/fetch.sh
 python3 libsmb2/scripts/probe-parse.py
