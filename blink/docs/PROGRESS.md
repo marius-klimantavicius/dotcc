@@ -22,6 +22,20 @@ run; additional P6 regressions/performance are deferred. The service API/worker,
 remaining CPU/guest-memory cases and actual Windows execution are not qualified. Historical fault results below are not
 part of the current normal-only qualification.
 
+## P3 completion work in progress
+
+The remaining normal qualification set is fixed before execution:
+
+| Owner | Remaining cases | Required evidence |
+| --- | --- | --- |
+| CPU worker | 32 additional rows: 8 integer/flags/rotates/double-shift; 8 packed SSE2 saturation/compare/interleave/shuffle/shift/aligned and unaligned moves; 8 addressing/extension/cross-page store/REP direction; 5 CMOV conditions/widths; CLFLUSH, RDTSC invariants and balanced valid stack | 500 selected normal rows in native and each managed form; first 514 descriptors preserved, 46 custom faults excluded. Exact defined state or explicitly recorded nondeterministic invariants; no clock-value equality claim. |
+| Inputs worker | Actual guest page tables: 2 pages growing to 4 contiguous plus 1 separate; 96-byte cross-page copy/canaries; RW/NX to R/NX to RW/NX; unmap/remap zero/refill; release all mappings; repeat lifecycle twice | Native and raw/optimized JIT/AOT exact semantic transcript, vss cleanup and separate managed owner accounting after final disposal. Protection metadata and permitted access only; no injected forbidden access. |
+| Coordinator | Integrate and review the above against existing 468-row CPU, valid ELF/TLS and selected upstream evidence | Freeze sources/provenance, run suites serially, preserve failures and commit results. Resolve observed semantic defects before marking the selected P3 gate complete. |
+
+These are bounded selected-profile checks, not exhaustive ISA certification.
+The already-running clean delivery finishes first; new P6 performance and
+regression runs are deferred until this P3 work is resolved.
+
 ## Ownership
 
 Work resumed after the user's instruction that libsmb2 has stopped and Blink
