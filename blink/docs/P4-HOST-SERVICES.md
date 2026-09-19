@@ -17,7 +17,7 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 | Standard streams and terminal query | Inputs worker, `tests/GuestStreams/` | Native/all-four pass `guest-streams/attempt-21z_o_3s`; exact captures and ordinary ENOTTY |
 | Actual startup inventory and integration | Coordinator | Exact source/receipt map below; actual all-four service and JIT/AOT consumer now pass |
 | Actual translated service startup | Guest worker, `tests/GuestService/` | All four modes pass six exact pinned HTTP cases, normal exit and memory release |
-| Owning execution and wait stop/deadlines | Inputs worker, `tests/GuestExecutionStop/` | Shared C# owner compiles; 11 ordinary cases authored, runtime matrix pending |
+| Owning execution and wait stop/deadlines | Inputs worker, `tests/GuestExecutionStop/` | Eight native completion controls and 44 managed cases pass; actual waits, first reason, budget and cleanup verified |
 
 Heavy builds are serialized. Shared compiler inputs and P0–P3 qualification stay
 frozen. A changed host snapshot requires explicit integration provenance; tests
@@ -253,4 +253,35 @@ guest pipe creation belongs to this profile (`guest-execution-stop/attempt-geaqv
 The selected dispatcher excludes pipe/pipe2. Its corrected fixture uses supported
 guest read on an actual inherited stdin pipe, with a live writer and a real
 pending-operation cancellation barrier. No profile or product change was made.
-P4 remains open until the ordinary owning stop/deadline matrix passes.
+The corrected ordinary owning stop/deadline matrix now passes as recorded below.
+
+## P4 complete — owning execution and wait stop
+
+`guest-execution-stop/attempt-kl7r74np/receipt.json` passes, SHA-256
+`aacfeae66a3d1eb23cee6194147d2451667e06f3bfd0dc74cee223bd5579443f`.
+Four valid static ELF completion controls pass on both Linux and pinned native
+Blink. Each managed form passes 11 cases: four normal controls, requested stop
+in CPU/zero-descriptor poll/nanosleep/inherited-pipe read, deadlines in actual
+poll and sleep waits, and an exact 128-instruction CPU budget. This totals 44
+managed runs using the same authored C# owner as the actual service/sample.
+
+Cancellation barriers observe real execution progress, host sleeping state or a
+pending pipe read. The pipe writer remains open, so EOF cannot substitute for
+cancellation. Stopped runs return a first-latched owner reason without fabricated
+guest exit/signal, and syscall cleanup state is clear before frontend cleanup.
+All runs release the memory owner, drain pending operations and reach zero host
+descriptors/pipe bytes after disposal. The deadline uses a monotonic clock;
+elapsed values are retained, not compared numerically across environments.
+
+The coordinator independently rehashed 1,038 frozen inputs, all 68 command/log/
+binary records and every observed result. The affected test-only core frontend
+also passes native/all-four execution, ABI and direct-boundary checks at
+`core-execution/attempt-_qybvbye` (SHA-256
+`916f582095a05edbd3d72f2a4ead4e421c5b7aee929fcaeef6a6c0a1ba3a4dd2`).
+It retains the 108 product producers and adds the C probe only to its test link.
+
+All selected P4 checklist items and the actual service-startup gate are complete.
+This is bounded functional/lifecycle qualification, not hostile-code isolation,
+general asynchronous signal delivery, optional socket features or Windows
+qualification. The user-requested stop boundary is reached: no P5 subprocess
+protocol, restart/multiple-instance phase or additional P6 campaign is started.

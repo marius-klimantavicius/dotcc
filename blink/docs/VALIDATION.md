@@ -7,8 +7,11 @@ Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
 | Gate | Latest receipt under `artifacts/` | Result |
 | --- | --- | --- |
-| Final delivery | `translation/attempt-16eer8t5` | 109 verified reused C objects with the updated cancellation bridges; raw/postprocessed builds and final manifests pass. |
-| Canonical core | `core-execution/attempt-g8r4tp0k` | Updated Host snapshot passes normal core execution, ABI and direct boundary inventories in all four managed forms. |
+| Final delivery | `translation/attempt-4yjaed1_` | 108 verified product objects, no C test/execution frontend, literal pool, direct original-src references; raw/postprocessed/final direct-source builds pass. |
+| Derived test-only core | `core-execution/attempt-_qybvbye` | Retains 108 canonical product objects and adds the C probe only to its private test link; normal native/all-four execution, ABI and direct boundary inventories pass. |
+| Actual service | `guest-service/attempt-18nn8vfz` | Six exact native wire cases in each of four modes, normal exit and memory-owner release; 24 comparisons. |
+| Owning stop/deadlines | `guest-execution-stop/attempt-kl7r74np` | Eight native controls and all 44 managed cases pass actual completion/stop/deadline/budget and cleanup contracts. |
+| Actual sample | `managed-consumer/attempt-3c0qzs2p` | Real direct-source solution, JIT and rooted Linux NativeAOT health/normal stop pass. |
 | Earlier publication inventory | `publication-audit/attempt-og66g378` | Exact pre-token-change AOT binaries; this historical inventory is not relabeled as the latest binaries. |
 | CPU | `cpu-conformance-managed/attempt-disfjyq2` | 504 normal cases per form, 2,016 total; exact defined-state/invariant agreement, 46 custom fault cases excluded. |
 | Valid ELF / TLS | `elf-loading/attempt-qclmm2fz`, `tls-loading/attempt-m6fpvl1m` | Native and all four managed forms pass bounded valid loading and explicit TLS startup. |
@@ -24,7 +27,7 @@ Only four ALU NEG bodies changed after the memory/loader runs; the other 108
 producer records and Host/header/compiler inputs are identical. Those component
 receipts are retained evidence, not post-NEG reexecution. The clean sample row
 qualifies its stated pre-NEG revision. Further P6 regressions/performance remain
-unrun. No service worker or Windows execution is qualified.
+unrun. P5 subprocess/multiple-instance integration and Windows execution remain unqualified.
 
 ## Current P4 qualification
 
@@ -54,8 +57,13 @@ GuestStreams `guest-streams/attempt-21z_o_3s` passes native/all-four actual
 standard-fd registration, binary captures and ordinary terminal ENOTTY; SHA256
 `0f62de4b0ffed1af3c25a4a9b09863cd8ba098ad790912fd173d455be3c81104`.
 All 34 input/46 stdout/14 stderr bytes and two-cycle diagnostic state match.
-This finishes the independent selected P4 contract fixtures. P4 remains blocked
-on owning execution stop/deadlines and actual service startup; P5/P6 stay held.
+This finishes the independent selected P4 contract fixtures. Actual service startup
+now separately passes all four forms at `guest-service/attempt-18nn8vfz`, receipt
+SHA256 `a9283cb6bdc87aa83a64fa1f4c19ea2bb02b6640aef60684b8c88e4502b60c4e`.
+Owning execution stop/deadlines now pass at `guest-execution-stop/attempt-kl7r74np`,
+SHA256 `aacfeae66a3d1eb23cee6194147d2451667e06f3bfd0dc74cee223bd5579443f`: eight
+native completion controls plus 44 managed cases with actual wait barriers and
+verified owner/I/O cleanup. P4 is complete for this selected profile; P5/P6 stay held.
 See [P4's exact contract ledger](P4-HOST-SERVICES.md).
 
 ## Earlier post-libsmb2 refresh history

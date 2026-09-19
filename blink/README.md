@@ -22,8 +22,10 @@ P4's selected host contracts now pass native and all four managed forms through
 actual guest syscall fixtures: files/descriptors, environment/signal state,
 finite TCP exchange, and exact standard-stream capture. Callback I/O cancellation
 is implemented, qualified and included in the final generated project. Actual
-service startup and all six pinned HTTP cases pass all four managed forms;
-owning execution/deadline qualification is in progress;
+service startup and all six pinned HTTP cases pass all four managed forms.
+Eight native completion controls and 44 managed cases also qualify owning stop,
+poll/sleep deadlines, inherited-I/O cancellation and instruction budgeting.
+P4 is complete for the selected Linux x64 profile, and work stops at this phase;
 see [the P4 ledger](docs/P4-HOST-SERVICES.md). No P5/P6 phase has started here.
 
 The service product is incomplete. The P5 subprocess worker/API, concurrent

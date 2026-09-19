@@ -4,27 +4,21 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-User adapter-layout update: the former `src/HostXXX` adapter directories are
-consolidated into `src/Host/`, with headers in `include/`, helpers in `scripts/`
-and retained documentation in `docs/`. The managed host implementation remains
-the separate `src/Managed.Emulation.Host/` project. Live source references are
-updated; historical profile snapshots/receipts retain their original paths.
+The current product is a 108-producer translated library with no `CoreProbe`,
+test `main` or C execution driver. Original adapters live in `src/Host`, headers
+in `src/Host/include`, and the BCL implementation in `src/Managed.Emulation.Host`.
+The generated project links original sources/projects directly; immutable
+raw/profile snapshots are archival inputs only. Shared narrow-literal pooling,
+semantic postprocessing and the actual final direct-source build pass with
+unchanged authored hashes (`translation/attempt-4yjaed1_`).
 
-User source-layout update: authored Host/Bridges and execution/API code remain
-in `blink/src/`. The final generated project must use parent-relative source
-includes and project references to those originals, and the showcase solution
-must open the same files. Copies under generated output are being removed from
-the active product. Editing through the solution must persist in `src/` and
-work with an ordinary rebuild; regeneration/post-processing must not modify
-authored sources. This delivery refinement is pending with current P4 work.
-
-User architecture update: the delivered library must expose the needed upstream
-functions/types/state and exclude `CoreProbe`, test `main` and authored C
-execution drivers. Initialization/loading/execution/stop/cleanup belong in a
-separate authored C# API consumer. Product/test separation is a pending P2
-delivery refinement being implemented with the current P4 integration; previous
-core and P3 receipts remain valid for their recorded inputs. Existing sample
-results do not yet establish this revised architecture.
+The separate authored `Managed.Emulation.Execution` C# API owns initialization,
+loading, the instruction loop, stop and teardown through upstream exports. The
+real sample passes JIT/NativeAOT health and normal stop. All four service forms
+pass six exact native HTTP cases each (`guest-service/attempt-18nn8vfz`). The
+ordinary stop/deadline matrix passes eight native controls and all 44 managed
+cases. P4 is complete for the finite selected profile; implementation stops at
+the requested phase boundary. P5/P6 remain held.
 
 User test-scope update: custom fault-injection and invalid/malformed-ELF tests
 are excluded from work and completion gates. Such cases may run only when
@@ -44,9 +38,9 @@ The owning normal-core sample and fresh clean public delivery at revision
 497ce69 pass with the earlier INC/CMPXCHG8B repair (109 fresh objects, zero reuse).
 The subsequent NEG repair has fresh delivery, core and CPU qualification; the
 clean receipt is not relabeled as a run of that later revision.
-P4–P6 remain open: actual service API/worker integration, remaining host/service
-contracts, Windows execution and remaining publication/performance/regression
-qualification. Historical custom fault results are excluded, not passed.
+P4 is complete for the selected Linux x64 profile. P5/P6 remain open for
+subprocess/multiple-instance service integration, Windows execution and remaining
+publication/performance/regression qualification. Historical custom fault results are excluded, not passed.
 
 ## P3 completion evidence
 
@@ -62,7 +56,7 @@ qualification, or post-NEG reexecution of unchanged memory/loader tests.
 All P3 assignments finished and released the build slot. The next section
 records the separately authorized P4 work.
 
-## Current phase: P4 resumed for execution and service integration
+## Current phase: P4 complete; stopped at the requested boundary
 
 The user explicitly authorized P4 after the selected P3 milestone. This phase
 stops at P4 completion or a concrete blocker after independently permitted P4
@@ -75,16 +69,15 @@ labels are not treated as present defects without checking current code.
 
 | Owner | P4 task | State |
 | --- | --- | --- |
-| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo, GuestEnvironment and GuestStreams native/all-four passed; assignment complete |
-| Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation all-four passed; GuestTcp native/all-four passed; assignment complete |
-| Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Resumed: exported upstream API, C# execution ownership, execution-stop boundaries and actual pinned service startup |
+| Inputs worker | Ordinary owning execution, zero-fd poll, sleep and inherited-I/O stop/deadlines | Eight native controls and 44 managed cases passed; assignment complete |
+| Guest worker | Separate C# execution owner and actual pinned service | All 24 HTTP cases passed across four forms; assignment complete |
+| Coordinator | Product integration, exact checklist, review, serial validation and commits | Product, sample, service and stop gates passed; evidence reviewed and phase closed |
 
 The user explicitly requested another P4 attempt on 2026-09-20. The earlier
 generic automated rejection remains historical evidence, not a permanent scope
 rule invented by the campaign. Ordinary local execution/service implementation
 is authorized; any actual current tool rejection must be recorded exactly and
-must not be concealed, renamed or routed around. Actual service startup remains
-unqualified until executed. Custom fault-injection and malformed ELF stay excluded.
+must not be concealed, renamed or routed around. Actual service startup is now qualified in all four forms. Custom fault-injection and malformed ELF stay excluded.
 
 ## Ownership
 
@@ -94,9 +87,8 @@ main checkout. Historical recovery/detached worktrees remain evidence only.
 
 - Coordinator: current shared-toolchain build/identity freeze, normal-only probe
   scope alignment, integration, runtime revalidation, durable status and commits.
-- Inputs worker: P4 file/descriptor/TCP/readiness audit.
-- Consumer worker: P4 environment/status/signal/cancellation audit.
-  The service-worker task remains unqualified.
+- Inputs worker: final P4 stop/deadline matrix completed; idle at phase close.
+- Guest worker: actual service matrix completed; idle pending final phase close.
 
 Shared compiler edits and heavy test suites remain serialized. Workers own
 disjoint authored files and do not commit duplicate recovery-branch history.
@@ -107,10 +99,10 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 | --- | --- | --- |
 | P0 | Passed | Immutable sources verified offline; native Blink and 25 assembly cases pass; six HTTP cases pass on Linux and Blink; exact native archive/import/global audit and initial translation failures recorded. |
 | P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
-| P2 | Passed | All 109 sources emit/link; corrected core passes raw/optimized JIT/AOT; translate.sh publishes the final TranslatedBlink project and immutable raw comparison. Direct IL/import/initializer inventories retain explicit indirect/framework limits for P4/P6. |
+| P2 | Passed, delivery refinements passed | 108 product producers, upstream exports without test/C execution frontends, shared literal pool, direct original-source references and immutable raw comparison. Separate C# sample passes JIT/AOT. |
 | P3 | Passed — selected profile | 504 normal CPU cases per form (2,016 matches), valid ELF/fixed TLS and actual guest-memory lifecycle pass. Bounded coverage and retained producer evidence are documented above. |
-| P4 | Active again | Three checklist items qualified; cooperative execution/poll/sleep stop and actual pinned service startup are the remaining work. No later phase started. |
-| P5 | Partial | ManagedConsumer.slnx normal-core usage sample passes; translated service worker/API and two-instance HTTP lifecycle remain unqualified. |
+| P4 | Passed — selected profile | Native/all-four contracts, 24 actual HTTP comparisons, eight native completion controls and 44 actual owning stop/deadline cases. Phase stopped; no later phase started. |
+| P5 | Partial, held | ManagedConsumer.slnx actual service sample and C# owner pass; subprocess worker/API, restart and two-instance HTTP lifecycle remain unqualified. |
 | P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
 
 ## Observed environment
@@ -1075,7 +1067,7 @@ The unchanged pinned service ELF loads through the actual upstream translated
 loader in all four forms at elf-loading/attempt-e1zyczdz. Each execution creates
 two fresh machines and compares26074 file bytes,394960 zero BSS bytes,318 segment
 permission checks, entry/PHDR, RW/NX stack, argv/env/auxv and cleanup against the
-native witness. The derived link retains108 baseline objects, replaces only
+native witness. The derived link retains 108 baseline objects, replaces only
 qualified HostMemory and adds the authored loader adapter, preserving the exact
 canonical header paths and per-object producer evidence. No guest instructions
 are executed by this loader-only check. Malformed inputs and service startup
@@ -2044,4 +2036,12 @@ Next: complete all four actual service forms, then qualify the 11 ordinary compl
 
 Earlier `guest-service/attempt-bzu3jva5` remains a failed fixture-report attempt (receipt SHA-256 `ae89e8e1d4c715514e3642f30afd3d1faa33008e81edd7b2e31d554cb3a73d4e`): NativeAOT disabled reflection-based JSON. Explicit closed-schema writers fix both qualification harnesses, without product/compiler changes.
 
-Stop validation `guest-execution-stop/attempt-geaqvgvp` stopped before managed builds when the pinned native profile rejected guest pipe creation (receipt SHA-256 `3812ae97af000f8492061eb41e260e2cdcaefcc7974f7edc5f432372b7c59579`). Source review confirmed pipe/pipe2 are excluded by the selected dispatcher. The reviewed replacement uses ordinary guest read on a real inherited stdin pipe; normal controls preload0x5a, cancellation keeps the writer open and observes an actual pending read. All 11 case IDs/44 managed runs remain selected; no profile semantics were changed. This final stop/deadline gate remains pending.
+Stop validation `guest-execution-stop/attempt-geaqvgvp` stopped before managed builds when the pinned native profile rejected guest pipe creation (receipt SHA-256 `3812ae97af000f8492061eb41e260e2cdcaefcc7974f7edc5f432372b7c59579`). Source review confirmed pipe/pipe2 are excluded by the selected dispatcher. The reviewed replacement uses ordinary guest read on a real inherited stdin pipe; normal controls preload 0x5a, cancellation keeps the writer open and observes an actual pending read. All 11 case IDs/44 managed runs remain selected; no profile semantics were changed. This final stop/deadline gate remains pending.
+
+### P4 completion — selected Linux x64 profile
+
+Final stop receipt `guest-execution-stop/attempt-kl7r74np/receipt.json` passes (SHA-256 `aacfeae66a3d1eb23cee6194147d2451667e06f3bfd0dc74cee223bd5579443f`). Eight native completion controls and all 44 managed cases pass: four controls, requested CPU/zero-descriptor-poll/sleep/inherited-read stop, two actual wait deadlines and exact 128 budget in each mode. First reason, absence of fabricated guest exit/signal, normal syscall cleanup, owner release, pending-operation drain and final zero descriptors/pipe bytes are checked. Independently rehashed 1,038 frozen inputs, 68 command/log/binary records and 44 observations.
+
+The affected test-only core derivation also passes native/all-four execution, ABI and direct-boundary checks (`core-execution/attempt-_qybvbye`, SHA-256 `916f582095a05edbd3d72f2a4ead4e421c5b7aee929fcaeef6a6c0a1ba3a4dd2`). It retains 108 canonical product producers and adds the probe solely in its private test link. No product test frontend was restored.
+
+All P4 checklist and actual service-startup gates are complete for the selected Linux x64 profile. Existing source/indirect-call and isolation limits remain explicit. The coordinator and workers stop at the user-requested boundary; no P5/P6 phase, new cases, Windows claim or later campaign is started. User patches and historical evidence remain preserved on the main `sqlite` checkout.

@@ -1,7 +1,8 @@
 # Cooperative stop through the C# execution owner
 
-The corrected inherited-pipe fixture is source-only and awaits qualification.
-The earlier failed native attempt is retained below; no managed case has run.
+The corrected inherited-pipe fixture passed all eight Linux/native-Blink
+completion controls and all 44 managed cases (11 each in raw/optimized JIT and
+NativeAOT). The earlier failed native attempt is retained below.
 The separate `Managed.Emulation.Execution.GuestExecution` consumer owns all
 translated calls, including loading, instruction dispatch and teardown. These
 tests reference that same owner; there is no duplicate C or C# instruction loop.
@@ -11,8 +12,9 @@ explicit CPU, poll, sleep and pipe selections and the shared linker script.
 With only argv[0], each completes its ordinary operation, writes one exact
 `ok:<fixture>\n` marker and exits zero. Linux hardware and the pinned native
 Blink CLI execute these four completion controls. An extra argument selects
-ordinary continuing work or a pending operation; no corrupted inputs or forced
-host failures are used.
+continuing CPU work or a pending poll/sleep operation. The inherited-pipe case
+waits when its host-supplied pipe is empty. No corrupted inputs or forced host
+failures are used.
 
 The exact 11 managed cases are pinned in `cases.json`:
 
@@ -79,6 +81,31 @@ its original source references. The exact 11×4 selected matrix, closed logs,
 fixtures, native tools, binaries before/after, source/producer receipts and
 final input identities are recorded in fresh `artifacts/guest-execution-stop`
 attempts. Previous attempts are never resumed or overwritten.
+
+## Observed qualification
+
+Passed receipt: `artifacts/guest-execution-stop/attempt-kl7r74np/receipt.json`,
+SHA256 `aacfeae66a3d1eb23cee6194147d2451667e06f3bfd0dc74cee223bd5579443f`.
+It consumes product delivery `artifacts/translation/attempt-4yjaed1_/receipt.json`
+and the same authored C# execution owner, with all 108 canonical producers
+identified and no C execution/test frontend.
+
+All four modes passed requested CPU stop, requested zero-descriptor poll with
+indefinite timeout, requested 30-second sleep interruption, requested inherited
+pipe-read cancellation, the two observed-wait deadline cases, and the exact
+128-instruction budget. Zero-descriptor polling with an indefinite timeout is
+distinct from each native/managed finite five-millisecond completion control.
+All eight deadline observations were between 5.0004648 and 5.0061477 seconds;
+these are measured results, not a scheduling guarantee. Every requested pipe
+stop observed one pending operation and a still-open writer, and all private
+descriptor/pipe-byte/pending-operation counters drained to zero on disposal.
+No case reported an injected guest signal or a notification failure.
+
+Final independent verification matched 1,384 hashes, including all 1,038 frozen
+inputs and the logs/executed binaries for 68 commands. It also rechecked all 44
+report schemas, selected case coverage, exact native completion markers,
+first-latched stop reasons, wait observations, budget counts and cleanup state.
+The explicit JSON writer completed under both NativeAOT modes.
 
 The first attempt, `artifacts/guest-execution-stop/attempt-geaqvgvp/receipt.json`
 (SHA256 `3812ae97af000f8492061eb41e260e2cdcaefcc7974f7edc5f432372b7c59579`),

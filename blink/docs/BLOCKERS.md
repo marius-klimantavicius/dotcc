@@ -440,3 +440,15 @@ After exhausting the independent bounded normal P4 contracts, the phase stops
 at this external restriction with its execution integration still unfinished.
 No custom fault/malformed-ELF work, native fallback or fixture-based service
 claim is used to close the gate; no P5/P6 phase starts.
+
+### B035 closed for the selected P4 profile
+
+The preceding restriction/stop records describe the earlier attempt. Explicit
+user resumption and architecture steering led to a separate authored C# owner
+over exported upstream functions; no current tool rejection occurred. Actual
+pinned-service startup and all 24 wire comparisons pass across four forms at
+`guest-service/attempt-18nn8vfz`. Eight native completion controls and 44 managed
+execution/poll/sleep/inherited-read stop/deadline/budget cases pass at
+`guest-execution-stop/attempt-kl7r74np`. Exact hashes, scope and cleanup evidence
+are recorded in [the P4 ledger](P4-HOST-SERVICES.md). This closes B035 for the
+finite selected Linux x64 profile; P5/P6 and Windows qualification remain open.

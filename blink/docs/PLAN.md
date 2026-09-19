@@ -392,12 +392,15 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
       GuestIo passes real guest SYSCALL marshalling and both descriptor-table
       lifecycles in native and all four forms, including 128 KiB transfers and
       valid cross-page vectors. TCP waiting/stop contracts remain separate.
-- [ ] Bind stop/deadline behavior to execution and outstanding I/O; prove no
+- [x] Bind stop/deadline behavior to execution and outstanding I/O; prove no
       guest operation exits the controller or reaches an unintended host service.
       Implement the owning execution loop and lifecycle in the C# API consumer
       over exported upstream functions, with only necessary boundary adaptations.
       Callback token propagation and 22 normal lifecycle scenarios pass all four
-      forms; actual guest execution/poll/sleep stop remains unqualified.
+      forms. The actual C# owner passes 11 normal completion/request/deadline/
+      budget cases in each form, including zero-descriptor poll, nanosleep and
+      a pending read on an inherited pipe; eight native completion witnesses
+      pass. Cleanup, first stop reason and controller return are verified.
 - [x] Audit required service startup syscalls; qualify additions individually.
       All 18 names observed in the pinned native service trace have bounded
       individual guest-dispatch evidence (GuestIo/Environment/Tcp/Streams,
@@ -406,12 +409,12 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
 **Gate:** contract tests and the actual guest service startup pass; unsupported
 operations fail explicitly without false success or a native fallback.
 
-P4 resumed on 2026-09-20 by explicit user direction. Actual service startup and
-six exact native HTTP cases now pass all four managed forms. Owning
-execution/poll/sleep/inherited-I/O stop remains under qualification.
-Any actual current tool restriction must be respected and recorded; historical
-generic rejection alone is not a permanent scope rule. No P5/P6 work starts
-automatically; see [the exact P4 ledger](P4-HOST-SERVICES.md).
+P4 completed on 2026-09-20 for the finite selected Linux x64 profile. Actual
+service startup and six exact native HTTP cases pass all four managed forms;
+the owning execution/poll/sleep/inherited-I/O stop matrix also passes all four.
+Direct inventories and source review retain their stated indirect/framework
+limits, without a hostile-code sandbox claim. The phase stops here as requested;
+P5/P6 remain held. See [the exact P4 ledger](P4-HOST-SERVICES.md).
 
 ### P5 — Deliver the first fake-instance service runner
 
