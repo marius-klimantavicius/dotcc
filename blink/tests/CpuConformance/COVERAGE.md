@@ -1,8 +1,9 @@
 # Current normal-only scope and historical coverage inventory
 
-Last qualified selection retained 449 normal rows and explicitly excludes 46 custom
-fault rows. The normal-return witness now passes native449 and all1,796 actual managed
-comparisons in attempt-7j03qmvz / attempt-3r1msqyr; see README for exact hashes.
+Current selection contains468 normal rows and excludes46 custom fault rows.
+Native468 and all1,872 managed comparisons pass against the corrected canonical
+core: attempt-x6p4oc67 / attempt-sgren8zu, with exact hashes in README. The earlier
+449-row matrix remains historical evidence.
 The table below records historical coverage and gaps; fault/rejection/invalid
 encoding/injected-source entries are outside current required work and are not
 proposals to resume excluded tests. Original receipts remain unchanged.
@@ -90,8 +91,9 @@ Nineteen additional normal cases at stable IDs495–513 now cover source recipes
 for INC/DEC carry preservation, additional shift/division widths,
 CMPXCHG8B match/nonmatch and an FXSR roundtrip. The initial466-row native run found three upstream integer mismatches;
 reviewed correction plus the two new INC8/16 rows now pass all468 native rows
-in attempt-lc9j96ag. The expanded managed matrix remains pending and does not
-yet change the qualified managed evidence above. The selector preserves the
+in attempt-lc9j96ag. The expanded managed matrix also passes all1,872 comparisons in
+attempt-sgren8zu, retaining108 exact canonical objects and deriving only the
+authored CPU frontend. The selector preserves the
 first495 and first512 descriptor digests, adds no fault case, and still excludes46 historical
 fault inputs. The expected expanded matrix contains468 selected rows per mode.
-See [the case contracts](README.md#appended-normal-coverage-awaiting-execution).
+See [the case contracts](README.md#qualified-appended-normal-coverage).

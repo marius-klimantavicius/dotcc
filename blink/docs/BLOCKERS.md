@@ -374,6 +374,10 @@ Hardware comparisons/masks remain unchanged. The reviewed UpstreamInteger
 adaptation and additional INC8/16 coverage pass all 468 normal native cases in
 attempt-lc9j96ag, retaining original-native differences. Canonical delivery
 attempt-w78n0i5u now incorporates both corrected producers (107 verified reused
-objects, two fresh emissions). Managed CPU qualification remains pending; B033
-is not closed by the native pass or successful generated-project build.
-Immutable upstream files, compiler code and generated C# are not modified.
+objects, two fresh emissions). Actual managed CPU attempt-sgren8zu now passes
+all 1,872 comparisons (468 in each raw/optimized JIT/NativeAOT form), reusing the
+exact canonical corrected producers and boundary receipt. Receipt SHA256
+e470675d116c505f377eff74671f709bac6c0b28a366646e5f6e1c94ffdf23d7.
+This closes B033 for the reviewed INC/CMPXCHG8B cases; broader CPU coverage
+remains open. Immutable upstream files, compiler code and generated C# are not
+modified.

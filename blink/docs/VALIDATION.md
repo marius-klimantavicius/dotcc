@@ -26,9 +26,8 @@ executes no guest instructions and the image has no PT_TLS.
 The reviewed integer correction is now present in stable delivery
 `translation/attempt-w78n0i5u` and profile `attempt-7byl9v1e`. Its fresh full-core
 matrix passes at `core-execution/attempt-yzck8kpr`, with publication inventory
-`publication-audit/attempt-e0l80fe1`. Consumer clean-workflow, expanded CPU and
-valid ELF/TLS receipts listed below still predate this correction until an
-explicit refresh is recorded.
+`publication-audit/attempt-e0l80fe1`. The expanded CPU matrix below also uses this correction. Consumer clean-workflow
+and valid ELF/TLS receipts still predate it until an explicit refresh is recorded.
 
 The following table and older sections preserve historical evidence. Rows are
 not current-compiler passes unless explicitly refreshed above or in the current
@@ -75,8 +74,12 @@ auxiliary carry and CMPXCHG8B nonmatch upper-register clearing. The reviewed
 integer source correction plus INC8/16 coverage now passes all 468 normal native
 cases (`cpu-conformance/attempt-lc9j96ag`). Delivery `translation/attempt-w78n0i5u`
 incorporates these corrections, with 107 verified reused objects and two fresh
-emissions. Expanded managed CPU qualification is pending; older 449-case and
-pre-correction core/consumer receipts qualify only their recorded inputs.
+emissions. Expanded managed CPU qualification passes at
+`cpu-conformance-managed/attempt-sgren8zu`: 468 cases in each of four forms,
+1,872 total, with exact corrected canonical integer producer proof. B033 is
+closed for these cases. The 46 historical custom fault cases remain excluded.
+Older 449-case and pre-correction core/consumer receipts qualify only their
+recorded inputs.
 
 Scoped picotls passes at `picotls-regression/attempt-fx7grn1c`: pinned native
 upstream oracle, fresh translation, copied-source/92-field ABI checks in all four

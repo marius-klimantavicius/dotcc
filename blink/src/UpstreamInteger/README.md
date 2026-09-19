@@ -31,7 +31,12 @@ in `artifacts/cpu-conformance/attempt-lc9j96ag/receipt.json`, SHA256
 It retains364 original-native differing rows, including AF at all four repaired
 INC widths and the CMPXCHG8B register-width difference. All corrected defined
 states match hardware; virtual CPUID follows the recorded profile policy.
-Translated validation against the new canonical profile is still pending.
+Translated validation against the corrected canonical profile passes all 1,872
+comparisons (468 per raw/optimized JIT/NativeAOT form) at
+`artifacts/cpu-conformance-managed/attempt-sgren8zu/receipt.json`, SHA256
+`e470675d116c505f377eff74671f709bac6c0b28a366646e5f6e1c94ffdf23d7`.
+The matrix retains both exact corrected canonical producers; only the authored
+CPU frontend is replaced.
 
 CpuConformance requires explicit `--staged-integer` selection. It retains the
 original-native captures/differences separately from corrected-native results

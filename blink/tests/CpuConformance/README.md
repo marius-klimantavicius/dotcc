@@ -9,8 +9,8 @@ receipts contain the identical selected IDs/names, all excluded IDs/names with
 reasons, full corpus digest and reviewed source hashes. Direct native or
 translated case entry also refuses a row with a nonzero fault expectation.
 The selector also verifies the exact canonical digest of the first495 exported
-descriptors, the first512 descriptors from the preserved failing attempt, and the ordered appended names. The earlier449-case matrix below
-remains the execution evidence until the expanded corpus is qualified.
+descriptors, the first512 descriptors from the preserved failing attempt, and the ordered appended names. The expanded468-case matrix is now qualified below; the earlier449-case
+matrix remains historical evidence.
 
 The selected cases retain normal integer/flags operations, signed division,
 valid instruction/data page crossings, SSE/SSE2 operations, masked FP status,
@@ -90,7 +90,7 @@ matrices and defect receipts, including now-excluded cases. The historical
 495-case pass is not a fresh pass for this changed witness. Remaining instruction
 coverage is described in [COVERAGE.md](COVERAGE.md).
 
-## Appended normal coverage awaiting execution
+## Qualified appended normal coverage
 
 | Stable IDs | Added behavior and comparison contract |
 | --- | --- |
@@ -125,5 +125,18 @@ source identities remain distinct. Corrected native execution passed all468 sele
 `0a58ffb7f3a083709795ac1b86a93bff1fb44420f35690614b9227aefdbc2e41`.
 The receipt preserves364 original-native differences separately. INC8/16 add
 independent hardware evidence for the other two repaired AF helpers; unchanged
-FXSR and the remaining appended normal cases pass. New canonical managed
-execution of the468-row selection remains pending.
+FXSR and the remaining appended normal cases pass. New canonical managed execution passed all **1,872 comparisons** against
+core-execution/attempt-yzck8kpr, with exact native agreement in all four modes.
+Managed receipt: `artifacts/cpu-conformance-managed/attempt-sgren8zu/receipt.json`,
+SHA256 `e470675d116c505f377eff74671f709bac6c0b28a366646e5f6e1c94ffdf23d7`.
+Fresh native receipt: `artifacts/cpu-conformance/attempt-x6p4oc67/receipt.json`,
+SHA256 `48d2da3321e3b2cf24b619a0d644e5e3383406c93efb4eba79722ad14e097d09`.
+The derived CPU link replaces only authored/managed-driver.c and retains108
+qualified producer objects, including the exact corrected alu.c and machine.c.
+Their identical integer-boundary receipt hash is
+`d7d7816ae9ae74f9fda094cd178c831cc009cbb3563f6c5fcc241ef69fbc0729`.
+The managed receipt records both corrected producer source/object hashes, all
+binary hashes, immutable raw output and unchanged compiler/implementation
+identities. The fresh native receipt again preserves364 original differences;
+46 custom fault rows remain excluded. This qualifies only the bounded normal
+inputs and compared architectural state, not full instruction-family coverage.

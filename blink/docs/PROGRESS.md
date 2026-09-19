@@ -1579,3 +1579,21 @@ checks retain their direct/import-only limits and do not establish service or
 sandbox qualification. Expanded CPU execution now owns the build slot. Next
 after it passes: valid ELF/TLS refresh and a clean public consumer delivery from
 a committed correction revision. No generic compiler or libsmb2 source changed.
+
+## Expanded normal CPU all four runtime forms passed
+
+CPU attempt-sgren8zu passes 468 cases per runtime form, 1,872 total, with all
+defined hardware comparisons unchanged (receipt SHA256
+e470675d116c505f377eff74671f709bac6c0b28a366646e5f6e1c94ffdf23d7).
+Independent review rechecked exact counts/matched results and implementation/
+staging identities. The derived CPU frontend retains canonical alu/machine
+objects and integer boundary d7d7816ae9ae74f9fda094cd178c831cc009cbb3563f6c5fcc241ef69fbc0729.
+The 46 custom fault inputs remain excluded; original native differences remain
+preserved. B033 is closed for the reviewed INC AF/CMPXCHG8B width correction.
+New valid shifts/division and actual FXSR XMM/MXCSR restoration also pass.
+This does not close broader CPU family, service or Windows requirements.
+
+The worker now refreshes valid ELF and explicit TLS against the same corrected
+assembly; clean public consumer delivery follows. MsQuic and language wrappers
+are reviewed and committed but remain runtime-pending, with unchanged shared
+compiler binaries and no libsmb2/user-patch changes.
