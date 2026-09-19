@@ -1,7 +1,7 @@
 # Blink through dotcc
 
 The selected Blink interpreter executes Linux x86-64 instructions as translated
-C# on Linux x64. The current compiler translates all 108 selected product sources through
+C# on Linux x64. The qualified delivery translates all 108 selected product sources through
 `blink/scripts/translate.sh`, which publishes the post-processed project at
 `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and preserves a separate
 immutable raw snapshot. Authored Host/bridge sources are linked directly from
@@ -25,8 +25,16 @@ is implemented, qualified and included in the final generated project. Actual
 service startup and all six pinned HTTP cases pass all four managed forms.
 Eight native completion controls and 44 managed cases also qualify owning stop,
 poll/sleep deadlines, inherited-I/O cancellation and instruction budgeting.
-P4 is complete for the selected Linux x64 profile, and work stops at this phase;
-see [the P4 ledger](docs/P4-HOST-SERVICES.md). No P5/P6 phase has started here.
+P4 is complete for the selected Linux x64 profile;
+see [the P4 ledger](docs/P4-HOST-SERVICES.md).
+
+P5 is now authorized and active. A genuine .NET NativeAOT HTTP guest builds and
+passes native health/shutdown checks. Its first translated dynamic-loader run
+fails in libc's initial mmap before readiness; this is preserved failure
+evidence, not a guest compatibility pass. A bounded ordinary static-musl build
+is being prepared to simplify that library closure. Runtime threads and other
+observed contracts remain to implement. See [NativeAOT guest status](docs/P5-NATIVEAOT-GUEST.md).
+P6 has not started.
 
 The service product is incomplete. The P5 subprocess worker/API, concurrent
 instances, restart and Windows execution remain open. The P3 pass is bounded
@@ -122,8 +130,9 @@ ordinary same-user worker are not a hardened sandbox. Dynamic distro userspace,
 guest fork/exec/threads, native JIT, kernel boot and general Linux compatibility
 are outside the first profile.
 
-Automated review stopped the service-worker task. The partial worker was never
-compiled or executed, and that gate remains unqualified. By explicit user
+An earlier automated review stopped a service-worker attempt. Its partial worker
+was never qualified; that historical outcome is not a permanent rule against
+the currently authorized P5 work. By explicit user
 direction, malformed-ELF handling and qualification are excluded from campaign
 completion; earlier blocked attempts remain historical evidence, not passes.
 
