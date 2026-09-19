@@ -1055,3 +1055,16 @@ change has yet been applied. Historical focused HostCpu evidence is retained
 without presenting it as complete-core instruction qualification. The next CPU
 task is a reviewed staged-upstream correction and stronger architectural
 fault-state comparisons; immutable ref and generic compiler remain unchanged.
+
+## Significant progress: freshly regenerated SQLite owning consumer
+
+P6 cross-campaign regression now includes a new SQLite3.53.4 translation using
+the unchanged campaign compiler. The original SQLite preparation script checks
+its pinned source/header hashes; no historical generated assembly was reused.
+Raw/optimized JIT/NativeAOT all pass the existing owning managed consumer at
+sqlite-regression/attempt-1nqhp4wq: tables/bound inserts/joins/window queries,
+WAL/reopen, JSONB, FTS5, optional math/percentile/metadata, managed callbacks,
+function identity, forced GC and cleanup. The four transcripts agree exactly;
+execution binaries, compiler, postprocessor and authored inputs are hashed.
+This is the owning-consumer regression, not a claim that every dependent
+campaign/corpus or Windows execution has passed. P6 remains open.

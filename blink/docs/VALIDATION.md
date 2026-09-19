@@ -79,3 +79,9 @@ raw/optimized JIT/NativeAOT match the native bounded instruction/fault/exit
 witness and configured ABI probe; AOT roots the complete library. Independent
 raw/optimized direct IL audits report zero traversed native imports with their
 limitations preserved in DEPENDENCIES.md. P3–P6 and Windows execution remain open.
+
+The final shared compiler also freshly regenerated SQLite's owning consumer:
+raw/optimized JIT/NativeAOT pass at sqlite-regression/attempt-1nqhp4wq, including
+WAL, SQL/JSONB/FTS5, callbacks, GC and cleanup. Reproduce with
+`scripts/test-sqlite-regression.py` after the pinned SQLite reference is present.
+Other dependent-campaign and platform rows remain open.
