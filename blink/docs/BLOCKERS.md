@@ -280,3 +280,20 @@ artifacts/core/reduced/typing/receipt.json. B018/B023/B024 have passing focused
 repairs and the centralized repository run passes:2239 unit and535 functional
 tests,1047 explicit skips (artifacts/repository-tag-static-path.log). The build
 has zero errors and17 analyzer warnings in existing unchanged test files.
+
+## B030 — generic directory return-pointer declarations (pending revalidation)
+
+The saved Path-name regression observed generic opendir/readdir runtime void*
+returns against typed C declarations. Explicit native-valid casts isolated that
+regression. This separate generic boundary has not been repaired or freshly
+qualified by recovery; the private directory bridge uses its own typed methods.
+
+## B031 — TLS aggregate addresses move during compacting GC (fixed)
+
+The pre-interruption fd-set probe matched native bitmaps but failed when a cached
+pointer to a ThreadStatic struct moved during compacting GC. The failed receipt
+host-fd-sets/attempt-acp3rz3c remains available. The newer fde3e7e storage change
+supplies pinned per-thread aggregate storage. Fresh recovery qualification at
+host-fd-sets/attempt-0ko66tt9 passes native and all four managed runtime forms,
+including two worker records and cached pointers across GC. No authored storage
+reshape or restoration of the patch's superseded globals hunk was used.

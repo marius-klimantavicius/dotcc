@@ -19,7 +19,8 @@
     "src/HostFileUpdates/host-file-updates.h",
     "src/HostSignalActions/HostSignalActions.h",
     "src/HostDescriptors/host-descriptors.h",
-    "src/HostExitCallbacks/HostExitCallbacks.h"
+    "src/HostExitCallbacks/HostExitCallbacks.h",
+    "src/HostFdSets/HostFdSets.h"
   ],
   "includeHeaders": [
     "host-errors.h",
@@ -37,7 +38,8 @@
     "host-file-updates.h",
     "HostSignalActions.h",
     "host-descriptors.h",
-    "HostExitCallbacks.h"
+    "HostExitCallbacks.h",
+    "HostFdSets.h"
   ],
   "cSources": [
     "src/HostIo/HostFileControl.c",
@@ -47,7 +49,8 @@
     "src/HostTerminal/HostTermios.c",
     "src/HostAncillary/HostAncillary.c",
     "src/HostSignalActions/HostSignalActions.c",
-    "src/HostExitCallbacks/HostExitCallbacks.c"
+    "src/HostExitCallbacks/HostExitCallbacks.c",
+    "src/HostFdSets/HostFdSets.c"
   ],
   "managedSources": [
     "src/HostIo/HostIoBridge.cs",
@@ -71,7 +74,8 @@
     "src/HostCapacity/HostCapacityBridge.cs",
     "src/HostSocketQueries/HostSocketQueriesBridge.cs",
     "src/HostYield/HostYieldBridge.cs",
-    "src/HostDirectories/HostDirectoriesBridge.cs"
+    "src/HostDirectories/HostDirectoriesBridge.cs",
+    "src/HostMessages/HostMessagesBridge.cs"
   ],
   "isolate": [
     "setenv",

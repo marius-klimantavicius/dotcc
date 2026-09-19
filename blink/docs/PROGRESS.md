@@ -719,3 +719,27 @@ re-emit with distinct local-static storage; a transparent mixed-producer replay
 clears all seven original declaration errors and exposes355 later diagnostics
 at core-execution/attempt-0imxwoxa. That replay cannot count as fresh canonical
 emission or P1 execution. B025–B029 now record the concrete next repair families.
+
+## Recovery resumed 2026-09-19
+
+The interrupted work was saved in the user's partial_blink.patch, and recovery
+starts from3f12b2e. The newer fixed-address global/TLS storage implementation is
+preserved: the patch's old globals hunk and stale MsQuic receipt hashes are not
+restored. User patch files remain untouched. Historical qualification receipts
+do not count as validation of recovered source against this compiler.
+
+Ownership: guest worker recovers B025–B028 and their reduced regressions; inputs
+worker recovers libc string/math primitives and qualification; coordinator owns
+host message/fd-set boundaries, source closure, integration and commits. Builds
+and repository suites remain coordinated. The new object metadata contract
+rejects old core objects, so the next complete core link requires fresh emission.
+P0 remains complete; P1–P6 remain open until their actual runtime gates pass.
+
+Fresh recovered HostFdSets qualification passes native and raw/optimized JIT/AOT
+at host-fd-sets/attempt-0ko66tt9, including two TLS records and cached addresses
+through compacting GC. The newer fixed-address compiler storage resolves the
+earlier B031 failure without reshaping the authored record. Fresh private TCP
+message/peer qualification passes at host-messages/attempt-o2m20b_6, including
+actual short transfers, two-owner GC, cancellation and InstanceIo regressions.
+Both boundaries are included in the next fresh binding profile. They do not yet
+prove execution through the complete translated guest syscall paths.
