@@ -40,7 +40,7 @@ qualification, or post-NEG reexecution of unchanged memory/loader tests.
 All P3 assignments finished and released the build slot. The next section
 records the separately authorized P4 work.
 
-## Active phase: P4
+## Current phase: P4 stopped at a concrete blocker
 
 The user explicitly authorized P4 after the selected P3 milestone. This phase
 stops at P4 completion or a concrete blocker after independently permitted P4
@@ -53,9 +53,9 @@ labels are not treated as present defects without checking current code.
 
 | Owner | P4 task | State |
 | --- | --- | --- |
-| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo and GuestEnvironment native/all-four passed; final standard-stream/ioctl fixture in source preparation |
+| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo, GuestEnvironment and GuestStreams native/all-four passed; assignment complete |
 | Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation all-four passed; GuestTcp native/all-four passed; assignment complete |
-| Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Audit active |
+| Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Selected contracts qualified; P4 stopped at owning stop/service-startup blocker |
 
 The existing translated-service worker rejection remains binding. No recovery,
 renaming or replacement of that rejected task is authorized by this audit.
@@ -86,7 +86,7 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 | P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
 | P2 | Passed | All 109 sources emit/link; corrected core passes raw/optimized JIT/AOT; translate.sh publishes the final TranslatedBlink project and immutable raw comparison. Direct IL/import/initializer inventories retain explicit indirect/framework limits for P4/P6. |
 | P3 | Passed — selected profile | 504 normal CPU cases per form (2,016 matches), valid ELF/fixed TLS and actual guest-memory lifecycle pass. Bounded coverage and retained producer evidence are documented above. |
-| P4 | Active | Current syscall/binding audit, then bounded missing-contract implementation and normal qualification. Actual service startup remains unqualified. |
+| P4 | Blocked after contract qualification | Three checklist items qualified for the selected profile; owning execution/poll/sleep stop and actual service startup remain unqualified. No later phase started. |
 | P5 | Partial | ManagedConsumer.slnx normal-core usage sample passes; translated service worker/API and two-instance HTTP lifecycle remain unqualified. |
 | P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
 
@@ -1916,3 +1916,31 @@ and a separate bounded diagnostic report pass, including ordinary TIOCGWINSZ
 ENOTTY, unchanged valid buffers, six inherited fd records, two guest metadata
 cleanups and three surviving underlying standard descriptors. This deliberately
 does not close fd0..2. Managed qualification is released against canonical734288.
+
+## P4 contract work finished; full gate remains blocked
+
+GuestStreams attempt-21z_o_3s passes native and raw/optimized JIT/NativeAOT;
+receipt SHA256 `0f62de4b0ffed1af3c25a4a9b09863cd8ba098ad790912fd173d455be3c81104`.
+Each form consumes 34 exact input bytes, captures 46 stdout and 14 stderr bytes,
+and produces the same separate diagnostic report for two lifecycles. Actual
+AddStdFd registration, cross-page read/writev, stderr write, ordinary terminal
+ENOTTY with unchanged buffer, guest metadata cleanup and surviving standard
+descriptors pass. The coordinator independently verified 384 identity entries
+and all capture/report bytes. All 108 retained producers use canonical 734288.
+No source repair or generated-source edit was required.
+
+P4's selected host-service contracts, ordinary filesystem/lifecycle tests and
+individual audit of the pinned service's 18 observed syscall names are qualified.
+Callback cancellation passes 22 translated scenarios in all four forms and is
+published into the final generated project; it is not actual guest execution
+stop. Upstream Poll converts callback ECANCELED to POLLERR, and nanosleep retries
+without an observed guest interrupt. The owning execution/deadline integration
+and actual translated guest service startup therefore remain unqualified.
+
+The prior automated service-worker task rejection reported a possible
+cybersecurity risk without a more specific reason. That action was not retried,
+recovered or renamed. Independent normal contracts are now exhausted for this
+bounded P4 phase; no fixture is substituted for the rejected service runner.
+P4 remains incomplete at this concrete blocker. Worker assignments are finished
+and no P5/P6 work is started. All significant progress was committed directly on
+`sqlite`; user patches, libsmb2 work and historical artifacts remain preserved.

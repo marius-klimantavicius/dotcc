@@ -1,7 +1,9 @@
 # Observed blockers
 
-These are observed campaign results. A passed native baseline is not translated
-execution; P1–P6 remain open.
+These are historical and current observed campaign results. P0–P3 now pass for
+the selected profile; older open/pending labels retain their original context.
+Current P4 status is B035 below and [P4-HOST-SERVICES.md](P4-HOST-SERVICES.md).
+A passed native baseline is not translated service execution.
 
 ## B001 — Comma-separated bit-field declarations (fixed)
 
@@ -414,3 +416,27 @@ passes at cpu-conformance-managed/attempt-disfjyq2 (SHA256
 All 2,016 comparisons match, including the minimum-value rows at every repaired
 width and the nonzero-low-nibble regression; 46 custom faults remain excluded.
 The original native failure and subsequent staged corrections remain recorded.
+
+## B035 — P4 owning execution and actual service gate restricted
+
+The selected P4 normal contracts pass native/all-four: GuestIo filesystem and
+descriptors, GuestEnvironment clocks/randomness/tid/private signal state,
+GuestTcp finite exchange/options/readiness, and GuestStreams exact standard
+stream capture/ordinary terminal ENOTTY. The 18 names observed in the pinned
+native service trace have individual bounded guest-dispatch evidence. Callback
+cancellation passes 22 translated-C cases per form and the updated Host snapshot
+is published and validated in the final canonical product. Exact receipts are
+in [the P4 ledger](P4-HOST-SERVICES.md).
+
+The full P4 gate is not passed. Callback cancellation returns ECANCELED, which
+upstream Poll reports as POLLERR; SysNanosleep retries unless guest interrupt
+state requires stopping. An owning execution loop, controller containment and
+actual guest execution/poll/sleep stop/deadline are not qualified. Actual managed
+service startup is also unrun. Earlier automated approval review rejected the
+service-worker task for a possible cybersecurity risk, without a more specific
+reason. The rejected action was not retried, renamed or recovered.
+
+After exhausting the independent bounded normal P4 contracts, the phase stops
+at this external restriction with its execution integration still unfinished.
+No custom fault/malformed-ELF work, native fallback or fixture-based service
+claim is used to close the gate; no P5/P6 phase starts.

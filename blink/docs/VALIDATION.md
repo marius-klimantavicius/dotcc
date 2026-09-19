@@ -50,6 +50,12 @@ contracts; SHA256
 `ad31914a360345f527ae55fcff7dcb669b8e8b86b706971953585e447549a03d`.
 This uses canonical 734288 and independent native/BCL peers, with no service
 ELF, HTTP, execution worker or blocking poll stop claim.
+GuestStreams `guest-streams/attempt-21z_o_3s` passes native/all-four actual
+standard-fd registration, binary captures and ordinary terminal ENOTTY; SHA256
+`0f62de4b0ffed1af3c25a4a9b09863cd8ba098ad790912fd173d455be3c81104`.
+All 34 input/46 stdout/14 stderr bytes and two-cycle diagnostic state match.
+This finishes the independent selected P4 contract fixtures. P4 remains blocked
+on owning execution stop/deadlines and actual service startup; P5/P6 stay held.
 See [P4's exact contract ledger](P4-HOST-SERVICES.md).
 
 ## Earlier post-libsmb2 refresh history

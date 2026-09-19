@@ -1,6 +1,7 @@
 # Inherited guest standard streams and terminal probe
 
-Source-only; native and managed qualification await review and runtime release.
+Native and raw/optimized JIT/NativeAOT qualification passed against canonical
+assembly `73428887715220efa9380f0dc8632efa11c202dbe67fe72630abda978cd4db75`.
 This fixture fills the gap between standalone host stream callbacks and actual
 guest standard-descriptor setup. It retains 108 canonical core objects, replacing
 only the authored frontend, and uses the frozen Host and bridge snapshot from
@@ -62,6 +63,23 @@ logs, exact captures and sidecars, verifies executed binaries before/after, and
 rechecks input/capture/source identities at completion. Raw output is retained
 separately from ordinary semantic postprocessing, with the full derived library
 rooted for NativeAOT.
+
+Observed receipts:
+
+- Native-only: `artifacts/guest-streams/attempt-wl8t5nv8/receipt.json`, SHA256
+  `5825dd864319ef666939d6bf2cebfb6bae68a8462c89391b1dc1270f7c2fa6cb`.
+- Native plus all four managed modes:
+  `artifacts/guest-streams/attempt-21z_o_3s/receipt.json`, SHA256
+  `0f62de4b0ffed1af3c25a4a9b09863cd8ba098ad790912fd173d455be3c81104`.
+
+Every execution matched the exact 46-byte stdout and 14-byte stderr fixtures
+after consuming 34 input bytes. The separate report confirmed two lifecycles,
+six inherited descriptor records, two metadata cleanups, two ordinary ENOTTY
+results, and three surviving standard descriptors. Managed process diagnostics
+were empty. Final independent checks matched the frozen input, captures, logs,
+executed binaries, retained producers, Host snapshot and tool/source identities.
+This is selected stream/terminal contract evidence, not service startup or
+execution-stop qualification.
 
 After coordinator review and serialized release:
 

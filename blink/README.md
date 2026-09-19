@@ -16,6 +16,13 @@ they predate the shared compiler changes made during libsmb2. Custom fault
 injection and invalid/malformed ELF cases are excluded; only existing pinned
 upstream fault cases may enter new qualification.
 
+P4's selected host contracts now pass native and all four managed forms through
+actual guest syscall fixtures: files/descriptors, environment/signal state,
+finite TCP exchange, and exact standard-stream capture. Callback I/O cancellation
+is implemented, qualified and included in the final generated project. P4 stops
+at the remaining owning execution/deadline and actual service-startup blocker;
+see [the P4 ledger](docs/P4-HOST-SERVICES.md). No P5/P6 phase has started here.
+
 The service product is incomplete. Actual managed HTTP service startup, the
 translated worker and Windows execution remain open. The P3 pass is bounded
 selected-profile coverage, not exhaustive ISA or general dynamic TLS support.

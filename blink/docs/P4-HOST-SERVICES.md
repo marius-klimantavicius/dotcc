@@ -6,7 +6,7 @@ execution, and actual service startup. Those are different evidence levels.
 Only normal functional/lifecycle cases are added; custom fault injection and
 invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 
-## Current work
+## Final P4 contract status
 
 | Work | Owner | State |
 | --- | --- | --- |
@@ -14,7 +14,7 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 | Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | All-four callback pass; final project/core integration passes `translation/attempt-16eer8t5` and `core-execution/attempt-g8r4tp0k` |
 | Clock/entropy/thread-ID/private signal-state dispatch | Inputs worker, `tests/GuestEnvironment/` | Native/all-four pass `guest-environment/attempt-emy2577e`; exact finite state invariants |
 | Bounded guest TCP syscall exchange | Consumer worker, `tests/GuestTcp/` | Native/all-four pass `guest-tcp/attempt-8r2oj_2k`; no ELF/HTTP/service loop |
-| Standard streams and terminal query | Inputs worker, `tests/GuestStreams/` | Native reference passed; managed matrix next; actual AddStdFd/stream/ioctl, separate captures |
+| Standard streams and terminal query | Inputs worker, `tests/GuestStreams/` | Native/all-four pass `guest-streams/attempt-21z_o_3s`; exact captures and ordinary ENOTTY |
 | Actual startup inventory and integration | Coordinator | Exact source/receipt map below; service startup remains unqualified |
 | Actual translated service startup | Unqualified | Earlier automated service-worker task rejection remains binding; no renamed/recovered worker or surrogate startup pass |
 
@@ -35,9 +35,9 @@ The following map is source review, not a managed service execution trace.
 | `arch_prctl` | `syscall.c:SysArchPrctl` sets guest FS base for `ARCH_SET_FS` | Actual fixed TLS fixture passes; general musl service startup unrun |
 | `set_tid_address` | `syscall.c:SysSetTidAddress` stores guest `ctid`, returns virtual `tid` | Actual guest ctid/tid state passes GuestEnvironment native/all-four |
 | `open` | `SysOpen`/`open.c:SysOpenat` → `OverlaysOpen` → authored `HostFileControl.c` → `HostIoBridge` → `InstanceIo` private filesystem | Current standalone HostIo and loader access pass; guest dispatch passes GuestIo |
-| `read`, `writev` | Actual guest buffer/iovec marshalling → `kFdCbHost` callbacks → `HostIoBridge` → private descriptor table | Guest marshalling, cursor and cleanup pass GuestIo |
+| `read`, `writev` | Actual guest buffer/iovec marshalling → `kFdCbHost` callbacks → `HostIoBridge` → private descriptor table | Guest marshalling, cursor and cleanup pass GuestIo; inherited standard-stream capture passes GuestStreams |
 | `close` | `close.c:SysClose` plus upstream fd table → private `InstanceIo.Close` | GuestIo checks upstream empty fd table and only three remaining private standard descriptors |
-| `ioctl` | Guest request translation → authored `HostTerminal.c`/`HostTerminalBridge` | Captured stdout's ordinary `TIOCGWINSZ` query returns `ENOTTY` in native trace; translated guest path unqualified |
+| `ioctl` | Guest request translation → authored `HostTerminal.c`/`HostTerminalBridge` | Actual AddStdFd/captured stdout TIOCGWINSZ returns ENOTTY with unchanged valid buffer in GuestStreams native/all-four |
 | `socket`, `bind`, `listen`, `accept`, `getsockname`, `setsockopt`, `shutdown` | Guest syscall marshalling → `HostNetworkBridge` → `InstanceIo`/private `VirtualTcpNetwork` | Actual blocking IPv4/TCP and option query/set pass GuestTcp; actual service startup remains separate |
 | `sendto`, `recvfrom` | Guest marshalled message → `HostMessagesBridge` → private stream send/receive | Guest NOSIGNAL is handled upstream before the flags-zero bridge; exact finite exchange/EOF passes GuestTcp |
 | `poll` | Guest pollfd marshalling → per-fd callback `poll(...,0)` → `HostReadinessBridge`; repeated waits use upstream `nanosleep` | Ready-file path passes GuestIo; TCP nonready/ready poll(0) passes GuestTcp; guest poll/sleep interruption remains separate |
@@ -175,3 +175,34 @@ and exact five-line state outputs were independently checked.
 No implementation repair was needed. The fixture has no service ELF, HTTP or
 execution worker, and poll uses timeout zero. It does not qualify service startup
 or guest stop/deadline integration. [Exact contracts](../tests/GuestTcp/README.md).
+
+## Actual guest standard streams and terminal query passed
+
+`guest-streams/attempt-21z_o_3s/receipt.json`, SHA256
+`0f62de4b0ffed1af3c25a4a9b09863cd8ba098ad790912fd173d455be3c81104`,
+passes native and all four managed forms against canonical 734288. Two upstream
+lifecycles initialize actual standard fd records via AddStdFd and use SYSCALL
+read/writev/write/ioctl. Frozen binary input (34 bytes), stdout (46) and stderr
+(14) compare exactly, separately from a bounded diagnostic sidecar. Native
+fd0/1/2 are redirected real streams; managed captures belong to InstanceIo.
+Managed process stdout/stderr remain empty. Ordinary TIOCGWINSZ returns ENOTTY
+with unchanged valid cross-page winsize/canaries. Guest metadata cleanup preserves
+the three underlying standard descriptors; guest close(0..2) is not tested.
+Sources, 108 retained producers, logs, binaries and every capture were rehashed.
+[Exact contracts](../tests/GuestStreams/README.md).
+
+## P4 stop condition
+
+Three of four P4 checklist items are qualified for the finite selected profile:
+implemented host contracts, ordinary descriptor/filesystem lifecycle tests, and
+the individually mapped 18 syscall names from the pinned native service trace.
+There is still no actual translated managed service-startup trace. The remaining
+checklist item requires owning execution and outstanding-I/O stop/deadlines,
+including controller containment; callback ECANCELED alone does not satisfy it.
+
+The previous automated service-worker rejection remains the external blocker
+for that owning integration and actual service execution. Independent contract
+work is complete; no worker substitute or additional phase is attempted. P4 is
+incomplete and stopped at this blocker. This ledger preserves the successful
+contract results without claiming a service run, guest wait cancellation,
+optional nonblocking behavior or hardened sandbox isolation.

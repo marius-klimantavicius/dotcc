@@ -314,8 +314,12 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
 
 ### P4 — Complete the per-instance host services
 
-- [ ] Implement the required virtual filesystem, descriptors, clocks/randomness,
+- [x] Implement the required virtual filesystem, descriptors, clocks/randomness,
       guest status/signal handling, TCP sockets, and readiness contracts.
+      Selected blocking-profile contracts pass through actual guest SYSCALL
+      fixtures in native and all four forms, including inherited standard streams
+      and ordinary terminal ENOTTY. Async signal delivery and optional socket
+      features are outside this selected profile; owning stop remains below.
 - [x] Test ordinary filesystem access, descriptor duplication/close, short I/O,
       and cleanup. Fault-injection cases, including invalid guest buffers and
       forced resource/host failures, are limited to existing pinned upstream tests.
@@ -326,10 +330,18 @@ explicit architectural-invariant comparisons in all four generated/runtime forms
       guest operation exits the controller or reaches an unintended host service.
       Callback token propagation and 22 normal lifecycle scenarios pass all four
       forms; actual guest execution/poll/sleep stop remains unqualified.
-- [ ] Audit required service startup syscalls; qualify additions individually.
+- [x] Audit required service startup syscalls; qualify additions individually.
+      All 18 names observed in the pinned native service trace have bounded
+      individual guest-dispatch evidence (GuestIo/Environment/Tcp/Streams,
+      retained TLS and core exit). This is not a managed service-startup trace.
 
 **Gate:** contract tests and the actual guest service startup pass; unsupported
 operations fail explicitly without false success or a native fallback.
+
+P4 is stopped at a concrete blocker after independent contract work: actual
+service startup and owning execution/poll/sleep stop remain unqualified. The
+previous automated service-worker rejection remains binding. No P5/P6 work
+starts automatically; see [the exact P4 ledger](P4-HOST-SERVICES.md).
 
 ### P5 — Deliver the first fake-instance service runner
 
