@@ -53,8 +53,8 @@ labels are not treated as present defects without checking current code.
 
 | Owner | P4 task | State |
 | --- | --- | --- |
-| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo and GuestEnvironment native/all-four passed; standard-stream/ioctl gap design in review |
-| Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation all-four passed; GuestTcp native reference passed, managed qualification next |
+| Inputs worker | File/descriptor/TCP/readiness syscall-to-host bindings and ordinary contract gaps | GuestIo and GuestEnvironment native/all-four passed; final standard-stream/ioctl fixture in source preparation |
+| Consumer worker | Clock/randomness/status/signal/cancellation/deadline bindings and startup syscall provenance | I/O cancellation all-four passed; GuestTcp native/all-four passed; assignment complete |
 | Coordinator | Manifest/final consumer integration, exact P4 checklist, implementation review, serial validation and commits | Audit active |
 
 The existing translated-service worker rejection remains binding. No recovery,
@@ -1885,3 +1885,23 @@ GuestTcp has passed its native reference and is next for managed qualification.
 Standard streams and the observed terminal-query path are the last bounded
 contract gap under design review. Owning execution stop/deadlines and actual
 service startup remain separate unqualified P4 conditions.
+
+## P4 finite actual guest TCP contract passed
+
+GuestTcp attempt-8r2oj_2k passes native and all four managed forms with an exact
+five-line state transcript; receipt SHA256
+`ad31914a360345f527ae55fcff7dcb669b8e8b86b706971953585e447549a03d`.
+Actual SYSCALL dispatch covers blocking IPv4 socket/bind/listen/accept, endpoint
+queries, setsockopt/getsockopt, ready/nonready poll(0), recvfrom/sendto, orderly
+shutdown/EOF and close. The independent native/BCL peers send 257 exact request
+bytes and validate 263 exact response bytes. Cross-page payload/address buffers,
+canaries, private guest versus published physical endpoint observations, empty
+guest fd/page state and private host descriptors=3/pending socket operations=0
+pass. All 108 retained canonical 734288 producer identities, source snapshots,
+logs and binaries were independently verified. No implementation fix was needed.
+
+This is one finite exchange, with no guest ELF, HTTP, service or execution worker.
+It does not qualify blocking guest poll cancellation. The final independent P4
+contract fixture covers AddStdFd, exact standard-stream capture and the observed
+ordinary terminal query. Actual service startup and owning execution stop remain
+unqualified; no P5/P6 task has begun.

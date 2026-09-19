@@ -12,8 +12,9 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 | --- | --- | --- |
 | Actual guest file/descriptor/vector/readiness path | Inputs worker, `tests/GuestIo/` | Native/all-four pass `guest-io/attempt-tnq5itfa`; exact bytes/state and cleanup |
 | Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | All-four callback pass; final project/core integration passes `translation/attempt-16eer8t5` and `core-execution/attempt-g8r4tp0k` |
-| Clock/entropy/thread-ID/private signal-state dispatch | Inputs worker, `tests/GuestEnvironment/` | Native passes `guest-environment/attempt-aeqsjnzi`; all-four qualification active |
-| Bounded guest TCP syscall exchange | Consumer worker, `tests/GuestTcp/` | Source preparation; no ELF/HTTP/service loop |
+| Clock/entropy/thread-ID/private signal-state dispatch | Inputs worker, `tests/GuestEnvironment/` | Native/all-four pass `guest-environment/attempt-emy2577e`; exact finite state invariants |
+| Bounded guest TCP syscall exchange | Consumer worker, `tests/GuestTcp/` | Native/all-four pass `guest-tcp/attempt-8r2oj_2k`; no ELF/HTTP/service loop |
+| Standard streams and terminal query | Inputs worker, `tests/GuestStreams/` | Source preparation; actual AddStdFd/stream/ioctl dispatch, separate captures |
 | Actual startup inventory and integration | Coordinator | Exact source/receipt map below; service startup remains unqualified |
 | Actual translated service startup | Unqualified | Earlier automated service-worker task rejection remains binding; no renamed/recovered worker or surrogate startup pass |
 
@@ -32,14 +33,14 @@ The following map is source review, not a managed service execution trace.
 | Observed names | Selected implementation route | Current evidence / gap |
 | --- | --- | --- |
 | `arch_prctl` | `syscall.c:SysArchPrctl` sets guest FS base for `ARCH_SET_FS` | Actual fixed TLS fixture passes; general musl service startup unrun |
-| `set_tid_address` | `syscall.c:SysSetTidAddress` stores guest `ctid`, returns virtual `tid` | GuestEnvironment native passes; managed matrix active |
+| `set_tid_address` | `syscall.c:SysSetTidAddress` stores guest `ctid`, returns virtual `tid` | Actual guest ctid/tid state passes GuestEnvironment native/all-four |
 | `open` | `SysOpen`/`open.c:SysOpenat` → `OverlaysOpen` → authored `HostFileControl.c` → `HostIoBridge` → `InstanceIo` private filesystem | Current standalone HostIo and loader access pass; guest dispatch passes GuestIo |
 | `read`, `writev` | Actual guest buffer/iovec marshalling → `kFdCbHost` callbacks → `HostIoBridge` → private descriptor table | Guest marshalling, cursor and cleanup pass GuestIo |
 | `close` | `close.c:SysClose` plus upstream fd table → private `InstanceIo.Close` | GuestIo checks upstream empty fd table and only three remaining private standard descriptors |
 | `ioctl` | Guest request translation → authored `HostTerminal.c`/`HostTerminalBridge` | Captured stdout's ordinary `TIOCGWINSZ` query returns `ENOTTY` in native trace; translated guest path unqualified |
-| `socket`, `bind`, `listen`, `accept`, `getsockname`, `setsockopt`, `shutdown` | Guest syscall marshalling → `HostNetworkBridge` → `InstanceIo`/private `VirtualTcpNetwork` | Blocking IPv4/TCP implemented; historical standalone C bridge tests are not actual guest startup |
-| `sendto`, `recvfrom` | Guest marshalled message → `HostMessagesBridge` → private stream send/receive | Guest NOSIGNAL is handled upstream before the flags-zero bridge; current guest integration unqualified |
-| `poll` | Guest pollfd marshalling → per-fd callback `poll(...,0)` → `HostReadinessBridge`; repeated waits use upstream `nanosleep` | Ready-file path passes GuestIo; interruption of guest poll/sleep remains separate from direct host poll cancellation |
+| `socket`, `bind`, `listen`, `accept`, `getsockname`, `setsockopt`, `shutdown` | Guest syscall marshalling → `HostNetworkBridge` → `InstanceIo`/private `VirtualTcpNetwork` | Actual blocking IPv4/TCP and option query/set pass GuestTcp; actual service startup remains separate |
+| `sendto`, `recvfrom` | Guest marshalled message → `HostMessagesBridge` → private stream send/receive | Guest NOSIGNAL is handled upstream before the flags-zero bridge; exact finite exchange/EOF passes GuestTcp |
+| `poll` | Guest pollfd marshalling → per-fd callback `poll(...,0)` → `HostReadinessBridge`; repeated waits use upstream `nanosleep` | Ready-file path passes GuestIo; TCP nonready/ready poll(0) passes GuestTcp; guest poll/sleep interruption remains separate |
 | `exit_group` | Upstream `trapexit` state and `HaltMachine(kMachineExitTrap)`; host exit fallthrough binds a contained termination exception | Current normal core passes status 42; an owning service lifetime is not inferred |
 
 Reference is pinned Blink revision
@@ -156,3 +157,21 @@ ctid storage pass without delivery, threads, futex or clear-on-exit claims.
 Guest/host cleanup and stable bounded retained pool pass. All 108 retained
 producer identities and execution inputs were reviewed; no source fix was needed.
 See [the exact fixture contracts](../tests/GuestEnvironment/README.md).
+
+## Actual guest TCP subgate passed
+
+`guest-tcp/attempt-8r2oj_2k/receipt.json`, SHA256
+`ad31914a360345f527ae55fcff7dcb669b8e8b86b706971953585e447549a03d`,
+passes native and all four managed forms against canonical 734288 with 108
+retained producers. One listener and one accepted connection carry an exact
+257-byte request and 263-byte response, checked by independent native libc/BCL
+peers. SO_REUSEADDR and TCP_NODELAY values and lengths are queried, readiness is
+observed before/after peer handoff, and valid cross-page addresses/payloads retain
+canaries. Orderly EOF/shutdown/close, guest mapping/fd cleanup and host pending
+operation drain pass. Raw private/physical endpoint observations are preserved
+without numeric equality between environments. Source/producer/log/binary hashes
+and exact five-line state outputs were independently checked.
+
+No implementation repair was needed. The fixture has no service ELF, HTTP or
+execution worker, and poll uses timeout zero. It does not qualify service startup
+or guest stop/deadline integration. [Exact contracts](../tests/GuestTcp/README.md).

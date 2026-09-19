@@ -44,6 +44,12 @@ against canonical 734288; SHA256
 `45d7a0080dfac1664a95c9bb269f80a3318192483396213ecb4c25ee619f7706`.
 Raw timestamps/random bytes/IDs are preserved; only their stated invariants and
 normal state contracts are compared. No asynchronous signal delivery is claimed.
+GuestTcp `guest-tcp/attempt-8r2oj_2k` passes native/all-four actual socket,
+option, endpoint, readiness, exact 257/263-byte exchange, EOF and cleanup
+contracts; SHA256
+`ad31914a360345f527ae55fcff7dcb669b8e8b86b706971953585e447549a03d`.
+This uses canonical 734288 and independent native/BCL peers, with no service
+ELF, HTTP, execution worker or blocking poll stop claim.
 See [P4's exact contract ledger](P4-HOST-SERVICES.md).
 
 ## Earlier post-libsmb2 refresh history
