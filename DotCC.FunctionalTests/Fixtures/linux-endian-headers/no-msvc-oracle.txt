@@ -1,0 +1,1 @@
+Linux LP64 endian/network headers and ABI are unavailable in MSVC.

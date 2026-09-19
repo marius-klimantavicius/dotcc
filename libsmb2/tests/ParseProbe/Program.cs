@@ -31,7 +31,7 @@ foreach (var unit in request.Units)
                 filename: Path.GetFileName(unit), identity: Path.GetFullPath(unit));
             var pre = new CPreprocessor(lexerTable, includeMap,
                 Compiler.SeedDialectDefines(CDialect.Parse("c17"), request.Defines));
-            pre.SetActiveFilename(Path.GetFileName(unit));
+            pre.SetActiveFilename(Path.GetFileName(unit), unit);
             using var lexer = BytesLexer.FromString(sourceMap.Text, lexerTable);
             using var mapped = new SourceMappingLexer(lexer, sourceMap);
             using var preproc = pre.WrapStream(mapped);

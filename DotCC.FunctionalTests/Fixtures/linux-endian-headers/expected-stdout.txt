@@ -1,0 +1,5 @@
+swap=3412,78563412,efcdab8967452301
+once=78563412,12345679 roundtrip=1,1,1
+narrow=5678 endian=1,1
+addrinfo=48,16,24,32,40
+iovec=16,8

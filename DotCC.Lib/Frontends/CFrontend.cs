@@ -64,7 +64,7 @@ internal sealed class CFrontend : IFrontend
             if (Path.GetDirectoryName(unitPath) is { Length: > 0 } unitDir) { embedDirs.Add(unitDir); }
             if (includeDirs is not null) { embedDirs.AddRange(includeDirs); }
             var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, quiet, gate, embedDirs, embeds, overrides);
-            pre.SetActiveFilename(Path.GetFileName(unitPath));
+            pre.SetActiveFilename(Path.GetFileName(unitPath), unitPath);
             using var lexer = BytesLexer.FromString(source, lexerTable);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
             using var preproc = pre.WrapStream(mappedLexer);

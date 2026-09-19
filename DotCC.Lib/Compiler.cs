@@ -350,7 +350,7 @@ public static partial class Compiler
             var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath));
             var source = sourceMap.Text;
             var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, overrides: overrides);
-            pre.SetActiveFilename(Path.GetFileName(unitPath));
+            pre.SetActiveFilename(Path.GetFileName(unitPath), unitPath);
             using var lexer = BytesLexer.FromString(source, lexerTable);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
             using var preproc = pre.WrapStream(mappedLexer);
@@ -412,7 +412,7 @@ public static partial class Compiler
         var source = sourceMap.Text;
         var overrides = preprocessing is { } options ? new MacroOverrideSession(options, defines) : null;
         var pre = new CPreprocessor(lexerTable, content, seededDefines, quiet: true, overrides: overrides);
-        pre.SetActiveFilename(Path.GetFileName(sourcePath));
+        pre.SetActiveFilename(Path.GetFileName(sourcePath), sourcePath);
         var lexer = BytesLexer.FromString(source, lexerTable);
         var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
         var preproc = pre.WrapStream(mappedLexer);
@@ -441,7 +441,7 @@ public static partial class Compiler
         foreach (var (name, isSystem) in pre.IncludedHeaders)
         {
             if (isSystem && !includeSystemHeaders) { continue; }   // -MMD: drop <...> headers
-            if (paths.TryGetValue(name, out var path)) { prereqs.Add(path); }
+            if (content.SourceIdentity(name) is { } path) { prereqs.Add(path); }
             // else: a synthetic/embedded header with no disk path — nothing to stat.
         }
         return FormatDependencyRule(targets, prereqs);

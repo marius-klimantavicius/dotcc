@@ -124,7 +124,7 @@ public static partial class Compiler
         var paths = new Dictionary<string, string>(StringComparer.Ordinal);
         var dirs = (includeDirs ?? Array.Empty<string>())
             .Concat(inputPaths.Select(p => Path.GetDirectoryName(Path.GetFullPath(p)) ?? "."))
-            .Distinct(StringComparer.OrdinalIgnoreCase);
+            .Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
         foreach (var dir in dirs)
         {
             if (!Directory.Exists(dir)) { continue; }
@@ -164,7 +164,7 @@ public static partial class Compiler
                 }
             }
         }
-        return (new IncludeMap(eager, lazy, paths), paths);
+        return (new IncludeMap(eager, lazy, paths, dirs), paths);
     }
 
     /// <summary>
@@ -180,19 +180,55 @@ public static partial class Compiler
         private readonly Dictionary<string, string> _eager;
         private readonly Dictionary<string, string> _lazyPaths;
         private readonly IReadOnlyDictionary<string, string> _sourcePaths;
+        private readonly Dictionary<string, string> _resolvedPaths = new(StringComparer.Ordinal);
+        private readonly IReadOnlyList<string> _searchDirectories;
 
-        internal IncludeMap(Dictionary<string, string> eager, Dictionary<string, string> lazyPaths, IReadOnlyDictionary<string, string>? sourcePaths = null)
+        internal IncludeMap(Dictionary<string, string> eager, Dictionary<string, string> lazyPaths, IReadOnlyDictionary<string, string>? sourcePaths = null, IReadOnlyList<string>? searchDirectories = null)
         {
             _eager = eager;
             _lazyPaths = lazyPaths;
             _sourcePaths = sourcePaths ?? lazyPaths;
+            _searchDirectories = searchDirectories ?? Array.Empty<string>();
         }
 
         /// <summary>All-eager map (no lazy entries) — test convenience.</summary>
         internal IncludeMap(Dictionary<string, string> eager)
             : this(eager, new Dictionary<string, string>(StringComparer.Ordinal)) { }
 
-        internal string? SourceIdentity(string name) => _sourcePaths.TryGetValue(name, out var path) ? Path.GetFullPath(path) : null;
+        internal string? SourceIdentity(string name) =>
+            _resolvedPaths.TryGetValue(name, out var resolved) ? resolved :
+            _sourcePaths.TryGetValue(name, out var path) ? Path.GetFullPath(path) : null;
+
+        // Quoted includes search the physical including file's directory first.
+        // Canonical disk keys keep local headers with identical names distinct and
+        // make pragma-once and dependency tracking independent of ../ spellings.
+        internal string? Resolve(string name, string? includingPath, bool isSystem)
+        {
+            if (Path.IsPathRooted(name)) return RegisterPath(name);
+            if (!isSystem && includingPath is not null)
+            {
+                var local = RegisterPath(Path.Combine(Path.GetDirectoryName(includingPath)!, name));
+                if (local is not null) return local;
+            }
+            if (ContainsKey(name)) return SourceIdentity(name) is { } known ? RegisterPath(known) : name;
+            // Traversal names (e.g. ../impl/body.c) are not descendants indexed
+            // by the initial directory scan. Resolve them on demand as well.
+            foreach (var directory in _searchDirectories.Reverse())
+            {
+                var found = RegisterPath(Path.Combine(directory, name));
+                if (found is not null) return found;
+            }
+            return null;
+        }
+
+        private string? RegisterPath(string path)
+        {
+            var fullPath = Path.GetFullPath(path);
+            if (!File.Exists(fullPath)) return null;
+            _resolvedPaths[fullPath] = fullPath;
+            _lazyPaths[fullPath] = fullPath;
+            return fullPath;
+        }
 
         public bool ContainsKey(string name) => _eager.ContainsKey(name) || _lazyPaths.ContainsKey(name);
 

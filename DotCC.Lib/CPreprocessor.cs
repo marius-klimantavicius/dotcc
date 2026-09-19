@@ -47,6 +47,8 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     // OnInclude handler saves+restores around its recursive sub-preprocess
     // so nested includes work correctly.
     private string? _currentlyIncluding;
+    private string? _currentSourcePath;
+    private string? _currentIncludeKey;
     // `#line` remapping (C89 §6.10.4). `#line N` makes the line FOLLOWING the
     // directive logical line N, so __LINE__ on a token at physical line `phys`
     // reports `phys + _lineDelta`. `#line N "file"` also overrides __FILE__ via
@@ -224,23 +226,34 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     /// at the start of each translation unit. <c>#include</c>'s recursive
     /// drive overwrites this around the nested processing (then restores).
     /// </summary>
-    public void SetActiveFilename(string name) => _currentlyIncluding = name;
+    public void SetActiveFilename(string name, string? sourcePath = null)
+    {
+        _currentlyIncluding = name;
+        _currentSourcePath = sourcePath is null ? _files.SourceIdentity(name) : System.IO.Path.GetFullPath(sourcePath);
+        _currentIncludeKey = _currentSourcePath ?? name;
+    }
 
     public IEnumerable<Item> OnInclude(IReadOnlyList<Item> args)
     {
         var name = ResolveIncludeName(args, out var isSystem);
         if (name is null) { return Array.Empty<Item>(); }
+        var key = _files.Resolve(name, _currentSourcePath, isSystem);
+        if (key is null)
+        {
+            _diag.WriteLine($"dotcc: #include '{name}' not resolvable (not in -I dirs or system headers)");
+            return Array.Empty<Item>();
+        }
         // Dependency tracking (-MD/-MMD): record every resolvable header once,
         // in first-seen order, BEFORE the pragma-once / include-guard
         // short-circuits below. Those short-circuits only fire for files we've
         // already opened (hence already in `_files`), so recording here still
         // captures a header that's pulled in many times. A name that resolves
         // to no known file is skipped — it isn't a real build input.
-        if (_files.ContainsKey(name) && _includeSeen.Add(name))
+        if (_includeSeen.Add(key))
         {
-            _includes.Add((name, isSystem));
+            _includes.Add((key, isSystem));
         }
-        if (_pragmaOnceFiles.Contains(name))
+        if (_pragmaOnceFiles.Contains(key))
         {
             // Already processed via `#pragma once` — drop the include body.
             return Array.Empty<Item>();
@@ -249,35 +262,39 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         // file detected the standard header-guard wrapping pattern and the
         // guard macro is still defined, the file is guaranteed to expand
         // to nothing useful — skip opening + lexing entirely.
-        if (_fileGuards.TryGetValue(name, out var cachedGuard)
+        if (_fileGuards.TryGetValue(key, out var cachedGuard)
             && cachedGuard is not null
             && _macros.ContainsKey(cachedGuard))
         {
             IncludeOptimizationHits++;
             return Array.Empty<Item>();
         }
-        if (!_files.TryGetValue(name, out var source))
+        if (!_files.TryGetValue(key, out var source))
         {
             _diag.WriteLine($"dotcc: #include '{name}' not resolvable (not in -I dirs or system headers)");
             return Array.Empty<Item>();
         }
         var initialLine = Compiler.IsSyntheticHeaderContent(name, source)
             ? Ir.SrcPos.SyntheticLineBase : 1;
-        var sourceMap = new PhysicalSourceMap(source, initialLine, name, identity: _files.SourceIdentity(name));
+        var sourceMap = new PhysicalSourceMap(source, initialLine, name, identity: _files.SourceIdentity(key));
         // First-time include of this file: scan the source text for a
         // controlling header guard. Cache the result (or null) so the
         // detection cost is paid at most once per filename.
-        if (!_fileGuards.ContainsKey(name))
+        if (!_fileGuards.ContainsKey(key))
         {
-            _fileGuards[name] = DetectControllingMacro(sourceMap.Text);
+            _fileGuards[key] = DetectControllingMacro(sourceMap.Text);
         }
         var saved = _currentlyIncluding;
+        var savedPath = _currentSourcePath;
+        var savedKey = _currentIncludeKey;
         // A #line remap is per-file: the included file starts fresh (physical
         // line 1, its own presumed name), so reset on entry and restore the
         // includer's remap on exit.
         var savedLineDelta = _lineDelta;
         var savedFileOverride = _fileOverride;
         _currentlyIncluding = name;
+        _currentSourcePath = _files.SourceIdentity(key);
+        _currentIncludeKey = key;
         _lineDelta = 0;
         _fileOverride = null;
         try
@@ -315,6 +332,8 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         finally
         {
             _currentlyIncluding = saved;
+            _currentSourcePath = savedPath;
+            _currentIncludeKey = savedKey;
             _lineDelta = savedLineDelta;
             _fileOverride = savedFileOverride;
         }
@@ -497,8 +516,8 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     private bool EvalHasInclude(IReadOnlyList<Item> argTokens)
     {
         if (argTokens.Count == 0) { return false; }
-        var name = ResolveIncludeName(argTokens, out _);
-        return name is not null && _files.ContainsKey(name);
+        var name = ResolveIncludeName(argTokens, out var isSystem);
+        return name is not null && _files.Resolve(name, _currentSourcePath, isSystem) is not null;
     }
 
     /// <summary>
@@ -968,7 +987,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
             // OnInclude.
             if (_currentlyIncluding is not null)
             {
-                _pragmaOnceFiles.Add(_currentlyIncluding);
+                _pragmaOnceFiles.Add(_currentIncludeKey ?? _currentlyIncluding);
             }
         }
         return Array.Empty<Item>();
