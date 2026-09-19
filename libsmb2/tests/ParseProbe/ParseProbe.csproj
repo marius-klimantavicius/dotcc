@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Reuse the existing friend-assembly access for this isolated diagnostic
+         executable; no compiler changes or reference to the unit-test project. -->
+    <AssemblyName>DotCC.Tests</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../DotCC.Lib/DotCC.Lib.csproj" />
+  </ItemGroup>
+</Project>
