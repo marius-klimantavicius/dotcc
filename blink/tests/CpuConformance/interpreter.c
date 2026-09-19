@@ -18,6 +18,9 @@ int CpuInterpreterCase(int index) {
   if(index<0||index>=CPU_CASES)return 2;
   const struct CpuCase *c=cpu_cases+index;
   struct System *s=NewSystem(XED_MACHINE_MODE_LONG);if(!s)return 3;
+#ifdef CPU_CONFORMANCE_INITIALIZE_SYSTEM
+  if(CPU_CONFORMANCE_INITIALIZE_SYSTEM(s)){FreeSystem(s);return 5;}
+#endif
   struct Machine *m=NewMachine(s,0);if(!m){FreeSystem(s);return 3;}
   g_machine=m;
   s->cr0=CR0_PE|CR0_MP|CR0_ET|CR0_PG;s->cr3=AllocatePageTable(s);
@@ -46,7 +49,10 @@ int CpuInterpreterCase(int index) {
   int expected=c->fault==8?kMachineDivideError:c->fault==11?kMachineSegmentationFault:0;
   return r.signal==c->fault && halt==expected && completed==(c->fault?0:c->steps)?0:4;
 }
+#ifndef CPU_CONFORMANCE_NO_MAIN
 int main(int argc,char **argv) {
   if(argc!=2)return 2;
   InitMap();InitBus();return CpuInterpreterCase(atoi(argv[1]));
 }
+
+#endif

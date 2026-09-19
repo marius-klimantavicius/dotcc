@@ -73,9 +73,42 @@ Each child has a bounded timeout; mismatch or abnormal exit fails the run and
 preserves artifacts. It does not turn an unsupported hardware platform into a
 passing reference.
 
-`CpuInterpreterCase(index)` is an authored independent fixture entry point for
-later integration. That integration must select one frontend signal hook,
-arrange real managed host-owner lifecycle and required guest-limit seeding,
-and call the fixture through the actual translated core. Current tests link
-native Blink only. No raw/optimized managed JIT/AOT conformance or P3 completion
-is claimed by this receipt.
+`CpuInterpreterCase(index)` is the shared authored fixture entry. The native
+runner above does not qualify managed execution. The separate translated-core
+runner below reuses this same fixture and compares it with fresh hardware and
+native interpreter outputs; P3 remains open (see `COVERAGE.md`).
+
+## Actual translated-core consumer
+
+Run `python3 blink/tests/CpuConformance/run-managed.py --core-receipt
+<qualified CoreExecution receipt.json>`. The baseline must be a passing,
+non-diagnostic actual core matrix produced by the same frozen compiler.
+
+The runner retains all108 upstream/host objects from that109-object baseline
+and replaces only its authored frontend/driver object. The new driver suppresses
+the native CLI main, owns the single frontend signal hook, and supplies
+`CpuConformanceRun(index)`. It seeds guest resource limits before NewMachine and
+uses the same memory, file-reader, virtual-signal-action and exit-callback owner
+lifecycle as the qualified core driver. No instruction implementation, upstream
+source, existing profile, or generated C# is edited.
+
+The exact canonical include paths are required, not only equal header bytes:
+anonymous aggregate identities in the existing object format incorporate those
+paths. Copies of these headers and their verified hashes are retained as
+artifacts, while emission uses the canonical paths of the reused objects.
+The derived object set and replaced object are recorded explicitly; it is not
+presented as an unchanged canonical whole-profile cache entry.
+
+Raw JIT, raw NativeAOT, postprocessed JIT and postprocessed NativeAOT each execute
+all12 cases in separate processes, using copied frozen host sources/bindings.
+Each process binds real private owners, forces compacting GC, executes the actual
+translated core, runs exit callbacks before tearing down owners, and exits.
+No translated call follows mapping disposal: upstream slab globals still point
+into those mappings. The managed consumer never invokes the native witnesses.
+
+Every managed result compares defined state with actual hardware and the halt,
+completed-step and captured signal results with native Blink. Full mapped-memory
+contents are compared; retained mapping counts and charged bytes are recorded
+and bounded. The semantic postprocessor touches a copy, and raw generated source
+hashes are checked at completion. A failed comparison retains its exact inputs,
+outputs, compiler/object identities and diagnostic logs.

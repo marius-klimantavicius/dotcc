@@ -972,3 +972,23 @@ inventories and all four executions pass. The runner snapshots and hashes its
 auditor sources/binary, refuses incomplete/direct-native inventories and direct
 process-exit/start/native-loader calls, and preserves the inventory limitations.
 This fresh receipt qualifies the audit's placement before managed execution.
+
+## Significant progress: managed CPU and valid ELF qualification
+
+Twelve CPU cases now pass in the actual translated core in all four forms,
+48 comparisons against fresh real hardware and native Blink:
+cpu-conformance-managed/attempt-yvylj8k6. The separately provenanced link retains
+108 original objects and replaces only the authored frontend. Full outputs,
+flags masks, fault state and complete mapped test memory are preserved.
+COVERAGE.md explicitly records missing floating-point, advertised-feature and
+broader integer/SIMD coverage; this is not complete P3 qualification.
+
+The unchanged pinned service ELF loads through the actual upstream translated
+loader in all four forms at elf-loading/attempt-e1zyczdz. Each execution creates
+two fresh machines and compares26074 file bytes,394960 zero BSS bytes,318 segment
+permission checks, entry/PHDR, RW/NX stack, argv/env/auxv and cleanup against the
+native witness. The derived link retains108 baseline objects, replaces only
+qualified HostMemory and adds the authored loader adapter, preserving the exact
+canonical header paths and per-object producer evidence. No guest instructions
+are executed by this loader-only check. Malformed inputs and service startup
+remain separate open gates.
