@@ -44,7 +44,7 @@ public static unsafe partial class Libc
             return 0;
         }
         catch (OutOfMemoryException) { return ENOMEM; }
-        catch (System.Security.SecurityException) { return EACCES; }
+        catch (global::System.Security.SecurityException) { return EACCES; }
         catch (InvalidOperationException) { return EIO; }
     }
 
