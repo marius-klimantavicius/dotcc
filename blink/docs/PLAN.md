@@ -222,6 +222,28 @@ C# sources and `TranslatedBlink.csproj` in that output directory. Preserve the
 immutable raw translation separately so post-processing cannot overwrite it.
 Record source/configuration/compiler and output identities for reproducible runs.
 
+Authored C# stays in `blink/src/`; do not copy Host, Bridges or other authored
+sources into `blink/generated/TranslatedBlink/`. The generated project compiles
+the required original bridge files through parent-relative `Compile Include`
+paths, with `Link` metadata for IDE grouping, and references the original host
+project through a parent-relative `ProjectReference`. For example, from the
+final generated project:
+
+```xml
+<Compile Include="../../src/HostIo/HostIoBridge.cs" Link="Bridges/HostIoBridge.cs" />
+<ProjectReference Include="../../src/Managed.Emulation.Host/Managed.Emulation.Host.csproj" />
+```
+
+Apply this rule to every authored source compiled into TranslatedBlink and to
+all authored project dependencies. `ManagedConsumer.slnx` includes the original
+projects under `src/`, so editing any non-generated file through the solution
+edits its canonical source directly. Rebuilding picks up those edits without
+translation or manual copying; regeneration must preserve them. Only generated
+sources are post-processed; linked authored sources must remain untouched.
+Private input snapshots for reproducibility may remain in test/profile/artifact
+storage, but they must not become active source inputs of the delivered solution.
+Record the actual referenced source identities in validation receipts.
+
 The delivered translation must exclude `CoreProbe`, the authored test `main`,
 fixed test workloads and campaign C execution drivers. Link these only into
 separate test consumers. Expose the needed upstream surface through generator
@@ -305,6 +327,10 @@ embedding boundary under JIT and NativeAOT; unresolved dependencies are recorded
 - [ ] Align the delivered library with the C# consumer architecture: export the
       needed upstream functions/types/state and exclude campaign test frontends
       and C execution drivers. Requalify the sample through the authored C# API.
+- [ ] Reference authored bridge/source files and `Managed.Emulation.Host`
+      directly from `src/` through parent-relative includes/project references;
+      remove copied authored Host/Bridges from final generated output. Ensure
+      regeneration and post-processing never overwrite authored sources.
 
 The existing delivery script and sample passed with a verified stable output
 directory. Their historical closure includes an authored C probe; the newly
@@ -377,6 +403,8 @@ automatically; see [the exact P4 ledger](P4-HOST-SERVICES.md).
 
 - [ ] Deliver `blink/ManagedConsumer.slnx` and its runnable usage sample, consuming
       `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and the owning API.
+      Reference original authored projects/files under `src/`, including Host;
+      solution edits must persist there and ordinary builds must use those edits.
 - [ ] Provide an owning API for image/argv/env/limits, start/readiness, logs,
       endpoint publication, status/exit reason, stop, and asynchronous disposal.
       This is authored C# consuming the translated upstream exports, not an
@@ -409,6 +437,10 @@ the showcase solution builds and its sample demonstrates the documented usage.
       post-processed sources; document the exact commands and observed results.
       Passed for the corrected normal-core sample at 497ce69; this does not close P5 service
       API/worker requirements or the broader dependency/platform audit.
+- [ ] Verify the delivered solution resolves all authored files/projects to
+      `src/`, picks up their edits on ordinary rebuild, and preserves those
+      files through translation/post-processing; exclude copied authored inputs
+      from the active generated project.
 - [ ] Regenerate SQLite with the final compiler and rerun its JIT/AOT corpus;
       rerun picotls/MsQuic after relevant shared fixes, plus Lua/chibi and affected
       Zig/WAT checks. Record observed failures rather than relabeling old evidence.

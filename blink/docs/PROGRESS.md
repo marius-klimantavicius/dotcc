@@ -4,6 +4,14 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
+User source-layout update: authored Host/Bridges and execution/API code remain
+in `blink/src/`. The final generated project must use parent-relative source
+includes and project references to those originals, and the showcase solution
+must open the same files. Copies under generated output are being removed from
+the active product. Editing through the solution must persist in `src/` and
+work with an ordinary rebuild; regeneration/post-processing must not modify
+authored sources. This delivery refinement is pending with current P4 work.
+
 User architecture update: the delivered library must expose the needed upstream
 functions/types/state and exclude `CoreProbe`, test `main` and authored C
 execution drivers. Initialization/loading/execution/stop/cleanup belong in a
