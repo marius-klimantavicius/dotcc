@@ -22,6 +22,9 @@ public sealed class PosixMetadataTypeTests
             #include <sys/types.h>
             #include <sys/stat.h>
             #include <time.h>
+            #include <unistd.h>
+            _Static_assert(STDIN_FILENO == 0 && STDOUT_FILENO == 1 && STDERR_FILENO == 2,
+                           "standard stream descriptors");
             void copy_metadata(struct stat *st, unsigned long inode, unsigned long links) {
                 st->st_ino = (ino_t)inode;
                 st->st_nlink = (nlink_t)links;

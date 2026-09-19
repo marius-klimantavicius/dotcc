@@ -1,6 +1,10 @@
 #ifndef _UNISTD_H
 #define _UNISTD_H
 
+#define STDIN_FILENO 0
+#define STDOUT_FILENO 1
+#define STDERR_FILENO 2
+
 /* dotcc's <unistd.h> — a minimal POSIX surface, present so portable Unix C
    (chibi-scheme's non-_WIN32 path) PARSES and links against honest .NET
    lowerings. Not a full POSIX *conformance* claim (see _POSIX_VERSION below):
