@@ -1,0 +1,11 @@
+[
+  "HAVE_ARC4RANDOM_BUF",
+  "HAVE_CONFIG_H",
+  "HAVE_DEV_URANDOM",
+  "HAVE_GETRANDOM",
+  "HAVE_SYS_RANDOM_H",
+  "_FILE_OFFSET_BITS=64",
+  "_U_=__attribute__((unused))",
+  "smb2_EXPORTS",
+  "__linux__=1"
+]

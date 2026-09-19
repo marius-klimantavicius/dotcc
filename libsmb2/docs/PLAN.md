@@ -1,17 +1,19 @@
 # Translate libsmb2 to C# with dotcc
 
-Status: **Implementation has not started.** An initial
-[lexer/parser probe](parse-probe.md) is complete: 30 of 53 configured units parse
-cleanly; grammar and include-resolution blockers remain. This is not product
-translation or runtime validation.
+Status: **Implementation authorized and in progress.** P0's source/profile,
+native-client/Samba oracle, and baseline compiler tests are established. The
+coordinator and sub-agents are repairing evidenced frontend gaps with regressions.
+The initial [lexer/parser probe](parse-probe.md) remains preserved; current results
+and remaining gates are tracked in [validation.md](validation.md).
 Campaign working directory: `<repo>/libsmb2/`.
 
 This plan follows the [SQLite](../../sqlite/docs/PLAN.md),
 [picotls](../../picotls/docs/PLAN.md), and [MsQuic](../../msquic/docs/PLAN.md)
 campaigns: translate actual upstream C, repair shared compiler/runtime defects,
 provide explicit host services, and validate real managed consumers under JIT
-and NativeAOT. Their historical completion and authorization statements do not
-establish libsmb2 results or authorize execution of this plan.
+and NativeAOT. Their historical results do not establish libsmb2 correctness.
+The user authorized this campaign with a coordinator and sub-agents, committing
+after each significant milestone. Keep tested milestone commits local; do not push.
 
 ## Objective and fixed delivery requirements
 
@@ -251,12 +253,12 @@ and cannot satisfy execution gates. Record baseline repository failures separate
 
 ### P0 — Freeze sources, dependencies, and native controls
 
-- [ ] Pin source and test inputs, licenses, source manifest, defines, and ABI.
-- [ ] Inventory APIs, portable crypto, host imports, and actual dialect/algorithm
+- [x] Pin source and test inputs, licenses, source manifest, defines, and ABI.
+- [x] Inventory APIs, portable crypto, host imports, and actual dialect/algorithm
       support; publish the required/deferred feature matrix.
-- [ ] Build a native client from the same pin and establish authenticated file
+- [x] Build a native client from the same pin and establish authenticated file
       operations against a pinned local Samba server using disposable accounts.
-- [ ] Record the existing compiler/runtime test baseline and attempt translation
+- [x] Record the existing compiler/runtime test baseline and attempt translation
       of the complete configured library, preserving actual first blockers.
 
 Gate: reproducible inputs, working native reference and independent server,
