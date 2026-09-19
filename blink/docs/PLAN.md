@@ -338,16 +338,18 @@ embedding boundary under JIT and NativeAOT; unresolved dependencies are recorded
 - [ ] Align the delivered library with the C# consumer architecture: export the
       needed upstream functions/types/state and exclude campaign test frontends
       and C execution drivers. Requalify the sample through the authored C# API.
-- [ ] Reference authored bridge/source files and `Managed.Emulation.Host`
+- [x] Reference authored bridge/source files and `Managed.Emulation.Host`
       directly from `src/` through parent-relative includes/project references;
       remove copied authored Host/Bridges from final generated output. Ensure
       regeneration and post-processing never overwrite authored sources.
 
-The existing delivery script and sample passed with a verified stable output
-directory. Their historical closure includes an authored C probe; the newly
-required product/test separation and C# execution API remain pending. Existing
-core translation and P3 evidence are retained with their recorded source scope.
-The full service API required by P5 remains open.
+The refined delivery now builds 108 product producers without the authored C
+probe, uses the shared literal pool, and links the consolidated original `src/`
+adapters and Host project. Raw, postprocessed and final direct-source builds
+passed with unchanged authored source hashes. The separate C# execution API and
+sample compile; runtime sample qualification remains pending. Existing core
+translation and P3 evidence retain their recorded source scope. The full service
+API required by P5 remains open.
 
 **Gate:** complete selected source closure builds with matching actual layouts,
 no native emulator dependency, and passing affected compiler regressions;

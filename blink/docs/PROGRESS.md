@@ -2021,3 +2021,9 @@ pass or published product is claimed for it. Revised generation is next.
 ### P4 direct-source publication retry
 
 The consolidated-layout delivery `translation/attempt-re4ic3ef` reused all 108 verified C objects and passed raw build, semantic postprocessing and the postprocessed build. Publication stopped before replacing the stable output: restoring the private bridge snapshot also inherited its read-only directory mode, preventing removal of that temporary context. The pipeline now makes the private restored directory writable; the immutable raw snapshot and original authored sources remain unchanged. This attempt is a preserved failure, not a delivered-product pass.
+
+### P4 product delivery refinement — actual build passed
+
+At `1d602e4`, `translation/attempt-4yjaed1_/receipt.json` passed (SHA-256 `bb4bfb42e64035f75cca237fff60fd6d6ca4c0b20c13f4d963e32c2cef589d54`). All 108 selected product objects were verified and reused. Raw build, semantic postprocessing, restored-authored-context build, and actual published direct-source build passed. The product has 34 original authored Compile/Link items plus the original Host ProjectReference, no active Host/Bridges copies, no CoreProbe/test main/C execution driver, and one 13,569-byte pinned translated narrow-literal pool; runtime literal storage remains separate. All authored and final manifests were independently rechecked.
+
+The real `ManagedConsumer.slnx` solution also builds with zero warnings/errors using the separate authored C# execution owner (`managed-consumer/attempt-3c0qzs2p`). This is compilation evidence only. The next gate is actual pinned service startup through that owner, followed by the ordinary stop/deadline matrix and the sample runtime checks. P4 remains open.
