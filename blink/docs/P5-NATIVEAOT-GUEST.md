@@ -87,6 +87,19 @@ static output from those options. See the
 [official prerequisites](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot)
 and [Unix linker targets](https://github.com/dotnet/runtime/blob/v10.0.0/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.Unix.targets).
 
-No container pull/build has been performed by this audit. If the ordinary musl
-publish is very difficult or impossible, stop and report for user direction.
-Do not pursue a custom runtime/toolchain or prolonged build workarounds.
+The single ordinary attempt now passes: image pull 64.65 seconds, publish
+17.39 seconds, with no retries, additional installations or build workarounds.
+Receipt `dotnet-guest-musl/attempt-8za50rji/receipt.json` SHA-256
+`8876eaf0cda1c0cc9ec81e163a9293745caa436215dec90790ff6f57acce8505`
+records the actual static ET_EXEC (no interpreter or dynamic dependencies),
+exact native HTTP replies and normal shutdown. The 1,618,312-byte guest ELF
+at that attempt's `publish/DotNetService` has SHA-256
+`b8fc2c2ba465ded0349c46ecd332dc361ebd0d8c7265b17938adc7e79eac82b3`.
+The named build container was removed. Source, package and artifact hashes were
+independently checked. See [build commands and evidence](../tests/DotNetService/MUSL.md).
+
+The musl native trace uses clone and WAIT/WAKE_PRIVATE, simplifying two syscall
+variants compared with glibc. It still creates genuine runtime threads, uses
+epoll/pipe2 and reserves a large GC virtual range. Translated execution of this
+static candidate is the next gate; the native pass alone does not satisfy it.
+The user's stop condition did not trigger: compilation was straightforward.

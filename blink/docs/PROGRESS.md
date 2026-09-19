@@ -2126,3 +2126,23 @@ for user direction if that build is very difficult or impossible. The genuine
 threaded-runtime requirements remain regardless of libc. The exact syscall and
 thread-ownership audit is [P5-SYSCALLS.md](P5-SYSCALLS.md). P5 stays active; no
 P6 work has begun and the old raw baseline is not new-compiler qualification.
+
+### P5 static-musl NativeAOT guest — ordinary build passed
+
+The one approved standard attempt passes in
+`dotnet-guest-musl/attempt-8za50rji/receipt.json`, SHA-256
+`8876eaf0cda1c0cc9ec81e163a9293745caa436215dec90790ff6f57acce8505`.
+Pinned official Alpine SDK 10.0.401/runtime 10.0.12 produced a genuine static
+x86-64 ET_EXEC with no interpreter or dynamic dependencies from the unchanged
+C# service source. Pull took 64.65 seconds, publish 17.39 seconds; no retries,
+installs or workarounds were needed. Exact native health/stop HTTP and exit zero
+pass, with the named container removed and recorded identities rechecked.
+Guest ELF SHA-256:
+`b8fc2c2ba465ded0349c46ecd332dc361ebd0d8c7265b17938adc7e79eac82b3`.
+
+The user-directed difficult-build stop condition did not occur. Next is the
+same bounded translated diagnostic using only this static guest in its private
+image, preserving default static-only execution. The guest worker owns that
+fixture refinement; the inputs worker records the exact musl trace contracts.
+No translated NativeAOT pass, threaded profile or P5 milestone completion is
+claimed yet. No P6 work is started.
