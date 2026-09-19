@@ -2075,3 +2075,25 @@ musl-build condition. Installed SDK10.0.111 and Podman/Docker are present; no
 source/ordinary NativeAOT publish and read-only actual profile/container audit.
 No guest build or translated-execution pass is claimed yet. The existing P4
 C fixture and host NativeAOT receipts are not NativeAOT guest evidence.
+
+### P5 real NativeAOT guest — native build and reference passed
+
+The ordinary Linux build succeeds without musl/container work. Genuine C# HTTP
+fixture `tests/DotNetService` uses pinned SDK10.0.111/runtime10.0.11, invariant
+globalization and normal runtime threads/GC. Final receipt
+`dotnet-guest/attempt-5130ydrk/receipt.json` SHA-256
+`0c5841150df27f83e0aa49d4225b84dde1cc041caff1f0de16ea14d1ce1bd2ac` records
+exact native health/stop replies, READY/STOPPED, exit zero and empty stderr.
+The 1,553,192-byte ELF SHA-256 is
+`87985a99c01e395468de19e0fae5f8c907dbcf50ad08cf4fb07613aeda124be4`.
+Source/config, binary and all19 artifact hashes were independently verified.
+
+The actual ELF needs ld-linux/libc/libm and TLS24/288/8. Native strace confirms
+real Finalizer/Sockets/SigHandler threads plus futex/epoll/pipe2/signal and
+filesystem probes. A static musl build would not remove the thread requirement.
+Current profile disables guest threads/futex and seeds a64MiB guest address-space
+limit; the observed GC virtual reservation is much larger. These are explicit
+compatibility gaps, not compiler failures or translated-execution passes.
+Next is an actual bounded compatibility probe with a private dependency closure
+and a reviewed opt-in C# interpreter-image allowance. No native fallback or
+success stub is used. Details: [P5-NATIVEAOT-GUEST.md](P5-NATIVEAOT-GUEST.md).
