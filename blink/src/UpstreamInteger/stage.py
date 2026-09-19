@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage reviewed INC auxiliary-carry and CMPXCHG8B register-width corrections."""
+"""Stage reviewed INC/NEG auxiliary-carry and CMPXCHG8B width corrections."""
 import argparse
 import difflib
 import hashlib
@@ -21,6 +21,10 @@ BLOCK_PINS = {
         'i64 Inc64(': '6fa095c3f530cb3d83f58d40497208a1e8dbfcfe27717d7b860b7e091e0fb31b',
         'i64 Inc8(': 'b02161171469198c16b474a358e15062f432341ef68dac007e092383f7e2485b',
         'i64 Inc16(': '545b606a9e35e75333458ad6c6bcea92a6f77376ce9ed4c5ba7cad157071e4ce',
+        'i64 Neg8(': '417b944192c72d338237baf6d67bbae8f68919a900bc52ecbe0cdc45996fe977',
+        'i64 Neg16(': '825a6b2244d383cea1edf171708d5e85b521c44f55051beacd9c3d1d482635e3',
+        'i64 Neg32(': 'e37d213f44cd21a71742d6f6c102e54525b6742f9857d0812c113b6efd9539d7',
+        'i64 Neg64(': '649df0cbad243bd670f84ab2543cf6fb2eccb2bff02fee1e0bd173fa46bcfa36',
     },
     'machine.c': {
         'static void OpCmpxchg8b(': 'd7ae10f0e906c9b3a6037c00c04b82384f850715541bab82c42e5293d928865c',
@@ -40,7 +44,7 @@ script_hash = sha(Path(__file__).read_bytes())
 reviewed_patch = (HERE/'integer.patch').read_bytes()
 receipt = {'kind': 'reviewed-upstream-integer-correction', 'upstream': REVISION,
            'stage_sha256': script_hash,
-           'scope': 'INC8/16/32/64 AF and CMPXCHG8B nonmatch zeroextension; DISABLE_JIT required',
+           'scope': 'INC/NEG8/16/32/64 AF and CMPXCHG8B nonmatch zeroextension; DISABLE_JIT required',
            'sources': {}}
 staged_files, patch = {}, ''
 for name, expected in SOURCE_PINS.items():
@@ -57,7 +61,9 @@ for name, expected in SOURCE_PINS.items():
         before = source[start:end]
         if sha(before.encode()) != block_hash:
             raise SystemExit('Upstream function hash differs: ' + marker)
-        if name == 'alu.c':
+        if marker.startswith('i64 Neg'):
+            old, new = '  af = cf = !!x;', '  af = !!(x & 15);\n  cf = !!x;'
+        elif name == 'alu.c':
             old, new = 'af = (z & 15) < (y & 15);', 'af = (z & 15) < (x & 15);'
         else:
             old = '    Write32(m->ax, a);\n    Write32(m->dx, d);'

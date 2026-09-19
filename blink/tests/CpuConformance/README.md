@@ -1,7 +1,7 @@
 # Normal CPU conformance corpus
 
-The default runners select **500 normal cases** from 546 inputs: the original
-495 descriptors remain unchanged, and 51 normal cases are appended at IDs495–545.
+The default runners select **504 normal cases** from 550 inputs: the original
+495 descriptors remain unchanged, and 55 normal cases are appended at IDs495–549.
 The remaining 46 custom fault cases (39 SIGFPE, seven SIGSEGV) retain
 their original bytes and stable indices but are excluded from execution under
 the current user scope. They are not counted as passes. Native and managed
@@ -9,7 +9,7 @@ receipts contain the identical selected IDs/names, all excluded IDs/names with
 reasons, full corpus digest and reviewed source hashes. Direct native or
 translated case entry also refuses a row with a nonzero fault expectation.
 The selector also verifies the exact canonical digest of the first495 exported
-descriptors, the first512 descriptors from the preserved failing attempt, and the ordered appended names. The468-case matrix is qualified below; the newest32 rows await execution.
+descriptors, the first512 descriptors from the preserved failing attempt, and the ordered appended names. The468-case matrix is qualified below; the newest36 rows await qualification.
 The earlier449-case matrix remains historical evidence.
 
 The selected cases retain normal integer/flags operations, signed division,
@@ -65,7 +65,7 @@ closed on an older or mismatched profile.
 No generated C# is patched.
 
 Each selected row runs in a fresh process in raw JIT, raw NativeAOT,
-postprocessed JIT and postprocessed NativeAOT, for **2,000 expected comparisons**.
+postprocessed JIT and postprocessed NativeAOT, for **2,016 expected comparisons**.
 The managed consumer binds private owners, forces compacting GC, executes the
 actual translated interpreter and discards the process after owner teardown.
 Its instruction outputs are compared with real hardware; virtual CPUID outputs
@@ -175,3 +175,28 @@ CLFLUSH leaf1.DX19; prior CMPXCHG8B and FXSR rows cover their retained advertise
 bits. Base integer/addressing rows exercise the selected long-mode interpreter.
 Feature mapping describes only bounded execution evidence; it does not claim
 full ISA or general x86-64 application compatibility.
+
+## Preserved NEG failure and reviewed extension
+
+The first500-row native matrix completed with one mismatch: ID518 NEG8 minimum
+sets AF in upstream Blink while independent hardware clears AF. Receipt:
+`artifacts/cpu-conformance/attempt-hmylb6uo/receipt.json`, SHA256
+`ed8badd8f2400f05e13f3fbee247a8d11c3b49b5b711c3e3e10c0e0c7fe5ad70`.
+All other31 new cases passed; RDTSC invariants passed independently in hardware,
+original and staged native captures. Managed execution was not started.
+
+The reviewed integer boundary now separates NEG's nibble-dependent AF from CF
+in all four width helpers. Original546 descriptors and their defined masks are
+pinned without changes. IDs546–548 add normal NEG16/32/64 minimum values (AF0),
+and ID549 adds NEG8 input1 (AF1). Corrected504 native qualification passed as recorded below;2,016 managed
+comparisons remain pending. [The exact staged repair](../../src/UpstreamInteger/README.md)
+retains the original failure and hashes; no generated C# or compiler was edited.
+
+Corrected native504 qualification passed in
+`artifacts/cpu-conformance/attempt-ovjovt6b/receipt.json`, SHA256
+`798f5c3eb0a01dbcfe5135331ab746931895ee1bc1e56e511538af5ff0fdec33`.
+All504 selected rows match the reviewed native reference/hardware contracts;
+46 custom fault rows remain excluded and368 original-native differences remain
+separately recorded. Hardware/original/staged RDTSC invariants pass. The corrected
+alu.c body hash is `095e490901c5cdba26cd02d4c8381be008ce78da3802f7737618db77f7854301`.
+Managed2,016-comparison qualification awaits the corrected canonical producer.

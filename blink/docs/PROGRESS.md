@@ -1712,3 +1712,17 @@ reviews it read-only. The coordinator will regenerate the single changed ALU
 producer and qualify integration after corrected native passes, then run the
 managed expansion. All other P3 cases/evidence remain intact, and no unrelated
 P6 suites or custom fault cases are added.
+
+## P3 NEG correction passed native504
+
+Reviewed stage/patch plus four focused width/AF-set regressions pass all 504
+selected native cases at attempt-ovjovt6b (SHA256
+798f5c3eb0a01dbcfe5135331ab746931895ee1bc1e56e511538af5ff0fdec33).
+The original546 descriptors remain unchanged; 46 custom fault inputs remain
+excluded and 368 original-native differences are preserved. RDTSC invariants
+pass independently in hardware/original/staged native captures.
+
+The coordinator now regenerates the single changed canonical ALU producer,
+qualifies its core integration, then releases the final 2,016 managed CPU
+comparisons. Guest-memory and loader results remain preserved; no shared
+compiler change or unrelated P6 execution is needed for this repair.

@@ -109,3 +109,19 @@ addressing/stack/REP and baseline CMOV/RDTSC/CLFLUSH. RDTSC uses independent
 width/preservation invariants with raw timestamps retained, not cross-process
 timestamp equality. REP compares normalized final pointers and bytes while
 explicitly limiting claims about flags overwritten by normalization.
+
+The500-row native attempt completed with one upstream NEG8 AF mismatch; the
+other31 added rows and all independent RDTSC invariants passed. Its exact failed
+receipt and staged-source correction are linked from README. The source now
+preserves546 descriptors and adds four normal NEG rows for a504-row selection
+(46 exclusions). The corrected native matrix passed as recorded below; it does not extend the
+last qualified468-row managed result yet.
+
+Corrected native504 qualification passed in
+`artifacts/cpu-conformance/attempt-ovjovt6b/receipt.json`, SHA256
+`798f5c3eb0a01dbcfe5135331ab746931895ee1bc1e56e511538af5ff0fdec33`.
+All504 selected rows match the reviewed native reference/hardware contracts;
+46 custom fault rows remain excluded and368 original-native differences remain
+separately recorded. Hardware/original/staged RDTSC invariants pass. The corrected
+alu.c body hash is `095e490901c5cdba26cd02d4c8381be008ce78da3802f7737618db77f7854301`.
+Managed2,016-comparison qualification awaits the corrected canonical producer.

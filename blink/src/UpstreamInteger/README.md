@@ -5,7 +5,7 @@ This staging boundary preserves the immutable Blink reference at revision
 `machine.c`, guarded to the configured `DISABLE_JIT` interpreter profile.
 
 `stage.py --output <directory> --receipt <json>` verifies full source hashes,
-five exact function-block hashes and the complete checked-in `integer.patch`
+nine exact function-block hashes and the complete checked-in `integer.patch`
 before writing either source. Its deterministic receipt records the upstream
 revision, script/patch hashes, original/staged source hashes and reviewed block
 hashes. Config-bearing includes precede the compile guard. Canonical profile
@@ -45,3 +45,33 @@ only when both exact staged source bytes and the canonical boundary receipt
 match; integer staging rejects older or mismatched canonical profiles. This does
 not qualify guest JIT paths, concurrent CMPXCHG atomicity, or broader instruction
 families. No fault-injection or invalid-image cases are introduced.
+
+## NEG auxiliary-carry extension awaiting qualification
+
+The500-case native run at `artifacts/cpu-conformance/attempt-hmylb6uo/receipt.json`
+(SHA256 `ed8badd8f2400f05e13f3fbee247a8d11c3b49b5b711c3e3e10c0e0c7fe5ad70`)
+completed but failed ID518, NEG8 of0x80: hardware AF0, original/staged AF1.
+The other31 added normal cases passed, including RDTSC width/preservation
+invariants. No managed execution was started for that failing selection.
+
+Pinned Neg8/16/32/64 all derive AF and CF together from `!!x`. NEG is subtraction
+from zero: CF is set for any nonzero input, while AF is set only when the low
+nibble is nonzero. The reviewed patch now separates `af = !!(x & 15);` and
+`cf = !!x;` on the existing width-truncated input before negation. Full source
+and exact function hashes are verified; no comparison masks are relaxed.
+
+The first546 descriptors remain unchanged. IDs546–548 add NEG16/32/64 minimum
+values to witness AF0 at every repaired width, and ID549 adds NEG8 input1 to
+witness AF1. The504-row native matrix passed as recorded below; the2,016-comparison
+managed matrix remains pending.
+Earlier INC/CMPXCHG8B receipts document their own exact smaller patch identity
+and remain valid historical evidence, not validation of this extension.
+
+Corrected native504 qualification passed in
+`artifacts/cpu-conformance/attempt-ovjovt6b/receipt.json`, SHA256
+`798f5c3eb0a01dbcfe5135331ab746931895ee1bc1e56e511538af5ff0fdec33`.
+All504 selected rows match the reviewed native reference/hardware contracts;
+46 custom fault rows remain excluded and368 original-native differences remain
+separately recorded. Hardware/original/staged RDTSC invariants pass. The corrected
+alu.c body hash is `095e490901c5cdba26cd02d4c8381be008ce78da3802f7737618db77f7854301`.
+Managed2,016-comparison qualification awaits the corrected canonical producer.

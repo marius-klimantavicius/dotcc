@@ -400,6 +400,9 @@ nonzero-low-nibble NEG8 row are required regressions (504 selected normal rows;
 first546 descriptors preserved, 46 fault exclusions unchanged). No comparison
 mask or compiler/generated implementation is changed to accept the failure.
 
-Corrected native and managed qualification are pending. Only the canonical ALU
-producer requires new bytes; regeneration/integration is part of this P3 defect
-repair, not a restart of P0/P1 or permission for unrelated P6 work.
+Corrected native504 passes at attempt-ovjovt6b (SHA256
+798f5c3eb0a01dbcfe5135331ab746931895ee1bc1e56e511538af5ff0fdec33),
+retaining 368 original-native differing rows and 46 fault exclusions. Managed
+qualification remains pending. Only the canonical ALU producer requires new
+bytes; regeneration/integration is part of this P3 defect repair, not a restart
+of P0/P1 or permission for unrelated P6 work.
