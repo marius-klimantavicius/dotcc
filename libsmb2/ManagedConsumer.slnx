@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="generated/TranslatedLibsmb2/TranslatedLibsmb2.csproj" />
+  <Project Path="src/Managed/ManagedSmb.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>

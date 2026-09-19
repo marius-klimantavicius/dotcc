@@ -20,9 +20,9 @@ interoperability and P1–P6 completion remain separate gates.
   inventory, commands, per-case outputs and binary hashes are recorded in
   `artifacts/native-oracle/results.json` and adjacent logs.
 
-The first full translation pipeline attempt uses a frozen pre-repair compiler
-and stops at the known `aes128ccm.c` attribute/include blockers. It emits no final
-product. Evidence: `artifacts/translation/result.json` and the per-unit logs.
+The first full translation pipeline attempt used a frozen pre-repair compiler
+and stopped at the known `aes128ccm.c` attribute/include blockers. It emitted no final
+product. The current translation receipt now records the later successful attempt.
 This historical attempt was superseded by the successful full pipeline below.
 
 The new frontend/header regressions were demonstrated failing against the baseline
@@ -41,9 +41,9 @@ Subsequent compiler fixes require a new complete translation and runtime campaig
 - Fresh complete probe: **53/53 clean preprocessing/lexing, 53/53 clean parsing,
   53/53 native syntax controls**, with no unresolved-include diagnostics.
 
-The object-emission census is the next independent gate. Its newly exposed
-flexible-array initializer issue and missing runtime networking services are being
-reduced and repaired; frontend success does not establish a buildable product.
+The subsequent object-emission census exposed flexible-array initialization and
+missing networking services. Those repairs are recorded below; frontend success
+alone did not establish a buildable product.
 
 ## Host services and object lowering
 
@@ -63,10 +63,9 @@ reduced and repaired; frontend success does not establish a buildable product.
   host identity/PRNG, protocol lookup/errno, and byte-preserving asprintf. See
   `artifacts/host-services/results.json` for exact compiler hashes and commands.
 
-These service checks do not validate the SMB engine. The complete 53-unit source
-closure is being regenerated through the actual product pipeline to expose the
-next link/C# compilation failures. P1 crypto/complete ABI gates and all managed
-SMB interoperability gates remain open.
+These host-service checks are separate from the SMB engine. The subsequent
+complete 53-unit generation succeeded, followed by crypto/ABI and Samba checks;
+current qualification results are recorded below.
 
 ## Complete product generation
 
@@ -86,3 +85,43 @@ SMB interoperability gates remain open.
 Generated crypto/ABI checks, consumer builds, Samba execution, rooted NativeAOT,
 postprocessor idempotence and clean-regeneration checks remain in progress. A
 passing generation receipt alone does not establish the protocol acceptance gates.
+
+## Managed consumer and implemented Linux qualification
+
+`./libsmb2/scripts/test.sh` passed against the final default translation invoked
+from `/tmp`, including the final shared compiler correction (`5d63fec`). Its
+receipt at `artifacts/qualification/result.json` records generated and authored
+source hashes, checks them for changes, and explicitly sets `plan_complete:false`.
+
+- `ManagedConsumer.slnx` builds and the sample's help command runs.
+- Seven host fixtures pass native/JIT/NativeAOT (21 executions).
+- Forty-five crypto/layout/callback values match native in both raw and processed
+  JIT/NativeAOT consumers, including a rejected CCM tag and high-bit status.
+- Both complete generated assemblies publish and run with explicit whole-assembly
+  NativeAOT roots; the import audit records generic OS runtime helpers separately.
+- Semantic postprocessing is idempotent on a private copy of the final output.
+- The native Samba matrix passes 11/11 with server signing mandatory.
+- The sample passes 11/11 in each raw/processed × JIT/NativeAOT combination (44).
+- The lifecycle harness passes the same 11-case matrix in all four combinations
+  (44): Unicode CRUD, stat/fstat/statvfs, >1 MiB transfers with short-operation
+  loops, cancellation before submission, empty/disposed operations, independent
+  connections, pending-operation disposal, and a real TCP reset during a read.
+- Four isolated checked-allocation/finalizer regressions pass for both raw and
+  processed JIT facade binaries (8). These explicitly use private reflection
+  and do not claim NativeAOT coverage.
+
+The original read-error facade failed the real reset case; its preserved failing
+log and build log are in `artifacts/lifecycle-baseline-red/`. The corrected facade
+uses upstream asynchronous requests and retains operation state through callback
+completion or context destruction.
+
+Repository regressions after shared repairs: **2,325 unit tests, 583 functional
+tests and 101 postprocessor tests pass**; the functional suite records 1,077
+explicit optional external-oracle skips. The postprocessor CLI smoke also passes.
+These builds use the NuGet LALR.CC dependency path. Fresh SQLite and picotls
+campaigns passed; scoped MsQuic regression execution is still in progress.
+
+A subsequent isolated probe confirmed an upstream compound-request cancellation
+leak: abandoning a `Stat` request retains its shared callback allocation. This is
+not covered by the successful read/close cleanup cases above and is being repaired
+with a separately recorded C correction. Full failure-path acceptance remains open.

@@ -226,7 +226,7 @@ in both JIT and NativeAOT; optimization cannot be used to repair invalid emissio
 fresh translation and acceptance tests. They must not hide required translation
 steps outside `translate.sh`. Translation itself must not require a live SMB
 server or native oracle. The user-facing recipe after prerequisites are installed
-must be this simple (commands are planned, not yet available):
+uses these entry points (their current validation scope is documented below):
 
 ```sh
 ./libsmb2/scripts/translate.sh
@@ -329,18 +329,18 @@ resource drain in all four generated/runtime combinations.
 
 ### P5 — Deliver the owning API and sample solution
 
-- [ ] Create **`libsmb2/ManagedConsumer.slnx`**, referencing the final generated
+- [x] Create **`libsmb2/ManagedConsumer.slnx`**, referencing the final generated
       project, required host/facade projects, and managed sample project.
 - [ ] Implement the owning API with documented credentials, cancellation, buffer
       lifetimes, concurrency, errors, and disposal ordering.
-- [ ] Audit the managed API and sample for numeric protocol/ABI literals; use
+- [x] Audit the managed API and sample for numeric protocol/ABI literals; use
       exported translated constants or enum members wherever available, and
       document only the necessary unavailable-constant fallbacks.
-- [ ] Provide a sample that connects to a configured server/share, lists entries,
+- [x] Provide a sample that connects to a configured server/share, lists entries,
       writes and reads back a uniquely named test file, verifies bytes, and cleans
       up its own file. Accept credentials through a documented non-logged input;
       do not embed secrets or modify unrelated share contents.
-- [ ] Build the solution, run the sample under JIT, and publish/run it with trimmed
+- [x] Build the solution, run the sample under JIT, and publish/run it with trimmed
       NativeAOT. Verify ordinary project references without compiler internals or
       manually copied generated source. Document the complete usage recipe.
 

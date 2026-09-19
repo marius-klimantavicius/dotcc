@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <Libsmb2GeneratedProject Condition="'$(Libsmb2GeneratedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedLibsmb2/TranslatedLibsmb2.csproj</Libsmb2GeneratedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(Libsmb2GeneratedProject)" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>false</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ManagedSmb"><HintPath>$(Libsmb2FacadeAssembly)</HintPath></Reference>
+    <Reference Include="TranslatedLibsmb2"><HintPath>$(Libsmb2TranslationAssembly)</HintPath></Reference>
+  </ItemGroup>
+</Project>
