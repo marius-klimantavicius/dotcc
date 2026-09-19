@@ -43,6 +43,12 @@ The following are mandatory deliverables, including when helper scripts are used
   `libsmb2/generated/TranslatedLibsmb2/TranslatedLibsmb2.csproj`. The sample must
   reference this project. Raw comparison output must use a different directory;
   a diagnostic/raw invocation must never replace the final product with raw code.
+- **The managed sample and any authored managed API must use named constants
+  and enum members from the translated/generated source whenever those values
+  are exported.** Do not duplicate available dialect, authentication, flag,
+  status, or file-type values as numeric literals. If the generated surface does
+  not expose a needed value, document the fallback and its source/ABI; ordinary
+  sample payload sizes and test data are not protocol constants.
 
 Use the repository's .NET 10/C# 14 baseline, dotcc headers/libc, source/object
 linking, direct layout constants, nested API types, static callback pointers, and
@@ -327,6 +333,9 @@ resource drain in all four generated/runtime combinations.
       project, required host/facade projects, and managed sample project.
 - [ ] Implement the owning API with documented credentials, cancellation, buffer
       lifetimes, concurrency, errors, and disposal ordering.
+- [ ] Audit the managed API and sample for numeric protocol/ABI literals; use
+      exported translated constants or enum members wherever available, and
+      document only the necessary unavailable-constant fallbacks.
 - [ ] Provide a sample that connects to a configured server/share, lists entries,
       writes and reads back a uniquely named test file, verifies bytes, and cleans
       up its own file. Accept credentials through a documented non-logged input;
