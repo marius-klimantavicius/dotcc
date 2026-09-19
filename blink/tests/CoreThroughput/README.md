@@ -58,11 +58,10 @@ python3 blink/tests/CoreThroughput/run.py \
   --core-receipt <passing-core-execution-receipt> --prepare-only
 ```
 
-Before timing, check the rejection gates using scratch copies of the prepared receipt:
-
-```sh
-python3 blink/tests/CoreThroughput/test-controls.py --prepared <prepared-throughput-receipt>
-```
+The current normal workflow does not run `test-controls.py`. Its historical
+preparation/provenance mutation cases are excluded by the current custom
+fault-injection scope. The normal runner does not invoke that script; it keeps
+its ordinary source, semantic and identity validation in place.
 
 Once competing campaign builds have finished, run the frozen binaries:
 
@@ -87,4 +86,7 @@ scaling, SMT competition and ordinary run variation remain possible. Results
 characterize this exact hot loop only, not general emulator throughput or a
 performance-equivalence guarantee.
 
-See [the measured Linux x64 result](RESULTS.md) for the qualified run and its scope.
+See [the historical Linux x64 result](RESULTS.md) for the prior qualified run
+and its exact profile. It is not fresh timing evidence for the current canonical
+profile/compiler. A new normal preparation and quiet-window measurement remain
+pending; no earlier timing or excluded control result is relabeled.

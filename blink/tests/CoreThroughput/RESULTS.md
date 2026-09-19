@@ -1,8 +1,8 @@
-# Fixed integer-loop throughput result
+# Historical fixed integer-loop throughput result
 
 On 2026-09-19, all five modes passed the exact semantic checks for all 75 measured
-batches: 75,000,000 guest instructions total, plus fixed untimed warmups. Nine
-negative preparation/provenance checks also passed. This measures only the hot
+batches: 75,000,000 guest instructions total, plus fixed untimed warmups. This
+prior profile/compiler result measures only the hot
 four-instruction loop described in [README.md](README.md).
 
 | Mode | Median M instructions/s | Minimum | Maximum | Sample standard deviation |
@@ -45,7 +45,7 @@ development/preparation attempts:
 | --- | --- |
 | Final timing `artifacts/core-throughput/attempt-h4zo2vxu/receipt.json` | `ae0e7eaf1596221ebf89286d11983a55aa67546b0fe14f4a336cb583cf469763` |
 | Immutable preparation `artifacts/core-throughput/attempt-h4zo2vxu/prepared-receipt.json` | `b5f2d1db00f88a327f36aceb61b95fccfe5a765d480c8c01a10efea704e3f807` |
-| Nine negative controls `artifacts/core-throughput-controls/attempt-10wi772e/receipt.json` | `8da6fa741805cb86f4dba6d0ca47b11118775200d21ab6ad1132b36f4c7926f9` |
+| Historical scope-excluded negative controls `artifacts/core-throughput-controls/attempt-10wi772e/receipt.json` | `8da6fa741805cb86f4dba6d0ca47b11118775200d21ab6ad1132b36f4c7926f9` |
 
 The final receipt verifies the complete frozen artifact set before and after
 measurement, exact five-mode executable paths and semantic preflights, the
@@ -53,3 +53,9 @@ canonical core/assembly/profile identity chain, compiler identity, and .NET
 runtime binary/tuning identity. Failed or partial checks cannot retain a passing
 receipt. Preparation was rerun after review fixes; earlier receipts remain
 historical and were not relabeled as final timing evidence.
+
+The nine separately recorded preparation/provenance mutation controls are
+historical, scope-excluded evidence. They are not part of the current normal
+benchmark recipe and will not be rerun. The normal timing observations above
+remain historical evidence for their recorded input identities; they do not
+qualify a newer canonical profile or compiler. Current-profile timing is pending.
