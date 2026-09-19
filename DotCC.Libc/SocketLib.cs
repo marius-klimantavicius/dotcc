@@ -41,7 +41,7 @@ public static unsafe partial class Libc
     private const int SOCK_NONBLOCK = 0x800, SOCK_CLOEXEC = 0x80000;
     private const int SOL_SOCKET = 1;
     private const int SO_REUSEADDR = 2, SO_TYPE = 3, SO_ERROR = 4, SO_BROADCAST = 6;
-    private const int SO_SNDBUF = 7, SO_RCVBUF = 8, SO_KEEPALIVE = 9, SO_REUSEPORT = 15;
+    private const int SO_SNDBUF = 7, SO_RCVBUF = 8, SO_KEEPALIVE = 9, SO_LINGER = 13, SO_REUSEPORT = 15;
     private const int SO_RCVTIMEO = 20, SO_SNDTIMEO = 21;
     private const int IPPROTO_TCP = 6, IPPROTO_UDP = 17;
     private const int TCP_NODELAY = 1;
@@ -292,7 +292,7 @@ public static unsafe partial class Libc
 
     /// <summary><c>setsockopt(fd, level, optname, optval, optlen)</c> — the common
     /// SOL_SOCKET options + TCP_NODELAY. SO_RCVTIMEO/SO_SNDTIMEO take a
-    /// <c>struct timeval</c>; the rest take an <c>int</c>. ENOPROTOOPT-style
+    /// <c>struct timeval</c>; SO_LINGER takes two ints, and other options one int. ENOPROTOOPT-style
     /// unknown options fail with EINVAL.</summary>
     public static int setsockopt(int fd, int level, int optname, void* optval, uint optlen)
     {
@@ -311,6 +311,14 @@ public static unsafe partial class Libc
                     // rebind). Documented substitution, NOT silent: getsockopt(SO_REUSEPORT)
                     // reads back the same ReuseAddress bit, so the round-trip is consistent.
                     case SO_REUSEPORT: sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, ival); break;
+                    case SO_LINGER:
+                        if (optlen < 8) { errno = EINVAL; return -1; }
+                        if (optval == null) { errno = EFAULT; return -1; }
+                        int seconds = Unsafe.ReadUnaligned<int>((byte*)optval + 4);
+                        // BCL LingerTime is unsigned 16-bit on supported hosts.
+                        if ((uint)seconds > ushort.MaxValue) { errno = EINVAL; return -1; }
+                        sock.LingerState = new LingerOption(Unsafe.ReadUnaligned<int>((byte*)optval) != 0, seconds);
+                        break;
                     case SO_KEEPALIVE: sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, ival); break;
                     case SO_BROADCAST: sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, ival); break;
                     case SO_RCVBUF: sock.ReceiveBufferSize = ival; break;
@@ -332,7 +340,22 @@ public static unsafe partial class Libc
     public static int getsockopt(int fd, int level, int optname, void* optval, uint* optlen)
     {
         if (SockByFd(fd, out var err) is not { } sock) { errno = err; return -1; }
-        if (optval == null || optlen == null || *optlen < 4) { errno = EINVAL; return -1; }
+        if (optlen == null) { errno = EINVAL; return -1; }
+        if (level == SOL_SOCKET && optname == SO_LINGER)
+        {
+            if (*optlen != 0 && optval == null) { errno = EFAULT; return -1; }
+            try
+            {
+                var linger = sock.LingerState!;
+                int* values = stackalloc int[2] { linger.Enabled ? 1 : 0, linger.LingerTime };
+                int count = (int)Math.Min(*optlen, 8u);
+                new ReadOnlySpan<byte>(values, count).CopyTo(new Span<byte>(optval, count));
+                *optlen = (uint)count; // getsockopt reports bytes copied, including truncation
+                return 0;
+            }
+            catch (SocketException ex) { errno = SocketErrno(ex.SocketErrorCode); return -1; }
+        }
+        if (optval == null || *optlen < 4) { errno = EINVAL; return -1; }
         try
         {
             int result;

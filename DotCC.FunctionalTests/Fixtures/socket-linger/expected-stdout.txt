@@ -1,0 +1,5 @@
+layout=8,4,4 option=13
+enabled=1,7,8
+short=-1,1
+truncated=1,1234,4
+abortive=1,0

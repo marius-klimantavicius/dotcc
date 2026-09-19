@@ -38,6 +38,7 @@ typedef unsigned short sa_family_t;
 #define SO_SNDBUF    7
 #define SO_RCVBUF    8
 #define SO_KEEPALIVE 9
+#define SO_LINGER    13
 #define SO_REUSEPORT 15
 #define SO_RCVTIMEO  20
 #define SO_SNDTIMEO  21
@@ -59,6 +60,12 @@ typedef unsigned short sa_family_t;
 struct sockaddr {
     sa_family_t sa_family;
     char        sa_data[14];
+};
+
+/* Linux SO_LINGER payload; enabled + zero seconds requests abortive close. */
+struct linger {
+    int l_onoff;
+    int l_linger;
 };
 
 /* Linux LP64 generic address storage: 128 bytes, alignment 8. The final

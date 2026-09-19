@@ -1,0 +1,1 @@
+Linux linger structure and POSIX socket API differ from Winsock.
