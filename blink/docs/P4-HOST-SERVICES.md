@@ -10,7 +10,7 @@ invalid/malformed ELF remain excluded. P5/P6 do not start in this phase.
 
 | Work | Owner | State |
 | --- | --- | --- |
-| Actual guest file/descriptor/vector/readiness path | Inputs worker, `tests/GuestIo/` | Source preparation; native and all-four execution pending |
+| Actual guest file/descriptor/vector/readiness path | Inputs worker, `tests/GuestIo/` | Native passes `guest-io/attempt-q_w37qqy`; all-four execution active |
 | Cancellation through existing asynchronous I/O bridges | Consumer worker, `HostIo`, `HostNetwork`, `HostMessages`, `HostReadiness`, `tests/HostIoCancellation/` | Source preparation; optional token, default behavior retained; boundary qualification pending |
 | Clock/entropy/status/signal and startup inventory | Coordinator | Source/receipt audit below; remaining normal qualification selected after the first two bounded tasks |
 | Actual translated service startup | Unqualified | Earlier automated service-worker task rejection remains binding; no renamed/recovered worker or surrogate startup pass |

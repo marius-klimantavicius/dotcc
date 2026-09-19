@@ -1781,3 +1781,16 @@ This retains the prior successful GuestMemory/ELF/TLS evidence without claiming
 those tests were reexecuted after NEG. Together these satisfy the selected P3
 CPU/ELF/memory gate. Broader ISA, general TLS, service integration and Windows
 claims remain outside this pass. All workers are idle; no new suite started.
+
+## P4 actual guest-I/O native reference passed
+
+GuestIo now executes the real two-byte SYSCALL dispatcher for open/read/write,
+dup/lseek/readv/writev/poll/close, with 128 KiB exact content, cross-page iovec
+and payload marshalling, shared cursors, reopen and two complete lifecycles.
+Native receipt `guest-io/attempt-q_w37qqy` SHA256
+`e7c24b3d04e5a64e73e8f560cfdbf46ad8ad4243a9a6f142c221433ea17aefef`
+passes its ten exact state rows. Initial compile-only fixture const diagnostic
+is preserved in attempt-2zh_09gz; no warning suppression or compiler change.
+The managed matrix is now active using the exact canonical 14c483 profile
+and 108 retained objects. No mutable cancellation bridge edits are mixed into
+that snapshot. The independent cancellation change remains source-only.
