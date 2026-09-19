@@ -4,6 +4,11 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
+User scope update: malformed-ELF-related work is excluded from required
+implementation, qualification and completion gates. Valid ELF loading remains
+in scope. Earlier malformed-ELF blockers below are historical and no longer
+block completion; excluded checks are not reported as passed.
+
 P0–P2 have passed their stated gates on Linux x64. The complete selected interpreter executes bounded instructions, faults and guest exits in raw/optimized JIT/NativeAOT. P3–P6 remain open; no managed service runner or Windows execution is claimed.
 
 ## Ownership
@@ -38,8 +43,8 @@ optional CPUID policy passes 495 cases in each managed form. All seven SQLite C
 corpora now pass fresh native and all four managed forms. Bounded interpreter
 throughput measurements pass; finish the clean-checkout core reproduction.
 SQLite/picotls matrices, Lua/chibi JIT conformance and WAT/Zig execution oracles
-now have fresh passing Linux x64 results. Service-worker implementation and malformed-input work are
-blocked by automated review and were not retried; Windows execution remains
+now have fresh passing Linux x64 results. Service-worker implementation remains
+blocked by automated review and was not retried; Windows execution remains
 unavailable. Keep P3–P6 open. The coordinator integrates reviewed commits back
 to the original checkout, preserving user patches and unqualified partial files.
 

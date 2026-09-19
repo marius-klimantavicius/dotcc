@@ -5,6 +5,10 @@ The plan was prepared on branch `sqlite`; it does not require a branch change.
 
 ## Objective and inherited conventions
 
+User scope update: malformed-ELF handling and qualification are excluded from
+this campaign's required work and completion gates. Valid ELF loading remains
+required. Historical malformed-ELF findings are retained, not counted as passes.
+
 Translate Blink's actual x86-64 interpreter and reusable Linux userspace
 emulation code into a reusable unsafe C# library. Build a small managed service
 runner around it: start an instance from an executable and files, communicate
@@ -261,7 +265,7 @@ no native emulator dependency, and passing affected compiler regressions.
       native Blink and real x86-64 Linux execution where guest behavior is defined.
 - [ ] Cover flags, shifts, signed division, SIMD lanes, floating-point edge cases,
       instruction/page boundaries, invalid instructions, and advertised CPUID bits.
-- [ ] Cover malformed ELF headers/segments, overlap/overflow, BSS zeroing,
+- [ ] Cover valid ELF headers/segments, BSS zeroing,
       executable permissions, stack/argv/env/auxv, and required TLS setup.
 - [ ] Exercise memory growth, map/unmap/protect, cross-page reads/writes, invalid
       guest pointers, allocation failure, and cleanup. Guest code pages are data
@@ -299,7 +303,7 @@ translated-emulator service instances without cross-instance interference.
 
 ### P6 — Qualify faults, platforms, and delivery
 
-- [ ] Exercise bounded seeded malformed ELF/instruction/syscall inputs and
+- [ ] Exercise bounded seeded malformed instruction/syscall inputs and
       injected delays/disconnects/resource failures; preserve minimized failures.
 - [ ] Execute raw/optimized × JIT/NativeAOT on Linux x64 and Windows x64.
       A Windows cross-build does not count as a Windows execution result.
