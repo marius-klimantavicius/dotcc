@@ -3147,7 +3147,15 @@ internal sealed partial class CSharpBackend
         // same-named external (BuildFuncDef). Falls back to the escaped raw name
         // for libc builtins / fn-ptr-variable / unresolved callees.
         var target = c.CalleeSym != null ? FunctionName(c.CalleeSym) : DotCC.EmitHelpers.Id(c.Callee);
-        return $"{target}({string.Join(", ", a)})";
+        var invocation = $"{target}({string.Join(", ", a)})";
+        // Runtime services use void* for C-owned aggregate records whose emitted
+        // struct type is defined by the header (e.g. protoent and dirent).
+        // Preserve the C declaration's result type at the managed call boundary.
+        // An extra cast is also valid for services returning the exact same T*.
+        if (c.CalleeSym is { FromSystemHeader: true }
+            && c.Type.Unqualified is CType.Pointer { Pointee.Unqualified: CType.Named })
+            return $"(({Cs(c.Type)})({invocation}))";
+        return invocation;
     }
 
     /// <summary>The libc names the C# backend lowers to the fluent

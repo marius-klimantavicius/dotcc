@@ -62,12 +62,20 @@ public static unsafe partial class Libc
         internal const int ErrorEOWNERDEAD = 895;
         internal const int ErrorEILSEQ = 906;
         internal const int ErrorUnknown = 956;
-        internal const int RuntimeLength = 970;
+        internal const int ErrorETXTBSY = 970;
+        internal const int ErrorENAMETOOLONG = 985;
+        internal const int ErrorENOTEMPTY = 1004;
+        internal const int ErrorELOOP = 1024;
+        internal const int ErrorENODATA = 1058;
+        internal const int ErrorENOLINK = 1076;
+        internal const int ErrorENETRESET = 1098;
+        internal const int RuntimeLength = 1134;
 
         private static ReadOnlySpan<byte> RuntimeBytes =>
             "\0.\0C\0Success\0Operation not permitted\0No such file or directory\0No such process\0Interrupted system call\0Input/output error\0No such device or address\0Argument list too long\0Exec format error\0Bad file descriptor\0No child processes\0Resource temporarily unavailable\0Cannot allocate memory\0Permission denied\0Bad address\0Device or resource busy\0File exists\0Invalid cross-device link\0No such device\0Not a directory\0Is a directory\0Invalid argument\0"u8 +
             "Too many open files in system\0Too many open files\0Inappropriate ioctl for device\0File too large\0No space left on device\0Illegal seek\0Read-only file system\0Too many links\0Broken pipe\0Numerical argument out of domain\0Numerical result out of range\0Resource deadlock avoided\0Operation not supported\0Connection timed out\0Operation canceled\0Timer expired\0Protocol error\0Value too large for defined data type\0Protocol wrong type for socket\0"u8 +
-            "Protocol not available\0Owner died\0Invalid or incomplete multibyte or wide character\0Unknown error\0"u8;
+            "Protocol not available\0Owner died\0Invalid or incomplete multibyte or wide character\0Unknown error\0"u8 +
+            "Text file busy\0File name too long\0Directory not empty\0Too many levels of symbolic links\0No data available\0Link has been severed\0Network dropped connection on reset\0"u8;
 
         static LiteralPool()
         {

@@ -36,4 +36,11 @@ int getaddrinfo(const char *node, const char *service,
                 const struct addrinfo *hints, struct addrinfo **result);
 void freeaddrinfo(struct addrinfo *result);
 const char *gai_strerror(int error);
+/* Linux LP64 protocol database record. Returned records are borrowed. */
+struct protoent {
+    char *p_name;
+    char **p_aliases;
+    int p_proto;
+};
+struct protoent *getprotobyname(const char *name);
 #endif

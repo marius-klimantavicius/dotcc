@@ -24,6 +24,7 @@
 #define EBADF    9
 #define ECHILD   10
 #define EAGAIN   11
+#define EWOULDBLOCK EAGAIN
 #define ENOMEM   12
 #define EACCES   13
 #define EFAULT   14
@@ -74,5 +75,13 @@
 #define ECONNREFUSED     111
 #define EHOSTUNREACH     113
 #define EINPROGRESS      115
+
+#define ETXTBSY 26
+#define ENAMETOOLONG 36
+#define ENOTEMPTY 39
+#define ELOOP 40
+#define ENODATA 61
+#define ENOLINK 67
+#define ENETRESET 102
 
 #endif

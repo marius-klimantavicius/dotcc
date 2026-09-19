@@ -1,0 +1,1 @@
+Linux errno values and protoent ABI differ from Windows.

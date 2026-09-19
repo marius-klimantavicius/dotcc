@@ -102,6 +102,15 @@ public static unsafe partial class Libc
     public const int EHOSTUNREACH = 113;   // No route to host
     public const int EINPROGRESS = 115;    // Operation now in progress
 
+    public const int ETXTBSY = 26; // Text file busy
+    public const int ENAMETOOLONG = 36; // File name too long
+    public const int ENOTEMPTY = 39; // Directory not empty
+    public const int ELOOP = 40; // Too many levels of symbolic links
+    public const int ENODATA = 61; // No data available
+    public const int ENOLINK = 67; // Link has been severed
+    public const int ENETRESET = 102; // Network dropped connection on reset
+    public const int EWOULDBLOCK = EAGAIN;
+
     /// <summary>
     /// <c>strerror(errnum)</c> — map an error number to a human-readable message
     /// pointer. The returned <c>byte*</c> points into the rooted pinned literal pool
@@ -154,6 +163,13 @@ public static unsafe partial class Libc
         ENOPROTOOPT => (LiteralPool.Pointer + LiteralPool.ErrorENOPROTOOPT),
         EOWNERDEAD => (LiteralPool.Pointer + LiteralPool.ErrorEOWNERDEAD),
         EILSEQ  => (LiteralPool.Pointer + LiteralPool.ErrorEILSEQ),
+        ETXTBSY => (LiteralPool.Pointer + LiteralPool.ErrorETXTBSY),
+        ENAMETOOLONG => (LiteralPool.Pointer + LiteralPool.ErrorENAMETOOLONG),
+        ENOTEMPTY => (LiteralPool.Pointer + LiteralPool.ErrorENOTEMPTY),
+        ELOOP => (LiteralPool.Pointer + LiteralPool.ErrorELOOP),
+        ENODATA => (LiteralPool.Pointer + LiteralPool.ErrorENODATA),
+        ENOLINK => (LiteralPool.Pointer + LiteralPool.ErrorENOLINK),
+        ENETRESET => (LiteralPool.Pointer + LiteralPool.ErrorENETRESET),
         _       => (LiteralPool.Pointer + LiteralPool.ErrorUnknown),
     };
 
