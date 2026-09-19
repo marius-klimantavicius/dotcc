@@ -76,6 +76,8 @@ Additional harnesses (consult the ledger for current versus historical evidence)
   reviewed staged native, and four managed forms; original failures are retained.
 - [Valid ELF loading](tests/ElfLoading/README.md): pinned bytes, BSS, page
   permissions, initial stack and cleanup; no service instructions execute.
+- [Valid TLS startup](tests/TlsLoading/README.md): fixed static template, loaded
+  program header, explicit runtime initialization and FS-relative access.
 - [Core ABI](tests/CoreAbi/README.md): 236 actual layout/register measurements.
 - [Controller lifecycle](tests/InstanceLifecycle/README.md): independent managed
   subprocess fixtures for stop, deadline, protocol bounds and pipe cleanup.

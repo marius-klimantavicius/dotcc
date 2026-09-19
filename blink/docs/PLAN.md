@@ -297,8 +297,10 @@ no native emulator dependency, and passing affected compiler regressions;
 - [ ] Cover flags, shifts, signed division, SIMD lanes, floating-point edge cases,
       instruction/page boundaries and advertised CPUID bits; fault-triggering
       cases are limited to existing pinned upstream tests.
-- [ ] Cover valid ELF headers/segments, BSS zeroing,
+- [x] Cover valid ELF headers/segments, BSS zeroing,
       executable permissions, stack/argv/env/auxv, and required TLS setup.
+      Valid pinned-image loading and a fixed explicit TLS startup fixture pass
+      all four forms; this does not claim a general libc/dynamic TLS ABI.
 - [ ] Exercise memory growth, map/unmap/protect, valid cross-page reads/writes,
       and cleanup. Guest code pages are data
       interpreted by Blink; no host executable allocation is needed.

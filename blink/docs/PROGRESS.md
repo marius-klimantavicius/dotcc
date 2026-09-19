@@ -1461,3 +1461,31 @@ Valid TLS now owns the build slot. Native Linux, native Blink CLI and the native
 loader/execution adapter already pass the fixed valid fixture; four managed forms
 are still pending. Shared regression runners are being audited read-only for
 current scope and compiler-rebuild hazards before further execution.
+
+## Valid static TLS startup passed
+
+The additive fixed valid TLS fixture passes Linux hardware and native Blink CLI
+internal assertions, plus exact native-adapter versus raw/optimized JIT/NativeAOT
+state comparisons at tls-loading/attempt-4arxvilg. Receipt SHA256:
+459a13a7df40990e692f0e23ba115758da144f28231850c513839ea7aea6c7d9.
+The fixture hash is eac738a2b874ebf6bf0dc51b3b4138c3ee5914abbf1f85b4c31ab4f5b4a1519b.
+The adapter observes the loaded PT_TLS header (8 file bytes, 16 memory bytes,
+8-byte alignment), writable/nonexecutable runtime storage, FS base 0x401010,
+initial value 0x1122334455667788, updated tail 9, sum 0x1122334455667791,
+exactly 25 completed instructions and normal trap -10/status 0.
+
+Startup explicitly copies/zeros the private TLS block and calls ARCH_SET_FS;
+the loader is not credited with allocating runtime TLS. This fixed positive-
+offset FS layout is not a general libc TCB, dynamic TLS, guest-thread or service
+startup qualification. The link records 107 retained exact objects and reviewed
+HostMemory/TLS-driver replacements. Original native archive/profile and staged
+managed source derivation remain distinct. All source/profile/compiler and
+execution-binary hashes are stable; coordinator and second-worker reviews pass.
+Together with valid pinned-image loading, this closes P3's bounded ELF/TLS item;
+CPU-family and guest-memory coverage still keep the whole milestone open.
+
+SQLite's ordinary owning consumer is now being regenerated and tested on the
+current frozen compiler. The corpus wrapper needs an explicit normal-suite
+selection before reuse: allocation and VFS suites contain custom injected
+failures. Their exclusion is recorded as scope, not a pass. The remaining shared
+campaign gates are still pending current execution.

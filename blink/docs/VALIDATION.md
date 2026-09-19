@@ -51,6 +51,12 @@ four forms at `host-io/attempt-f61wdrei`. Both use the current compiler. Histori
 injected/invalid-operation cases are excluded explicitly; these standalone
 boundary checks do not establish all guest memory algorithms or service startup.
 
+Valid explicit TLS runtime startup passes Linux/native CLI assertions and the
+native-adapter/four-managed-form state matrix at `tls-loading/attempt-4arxvilg`.
+The loaded PT_TLS header, private RW/NX runtime block, ARCH_SET_FS, initial/zero
+TLS values, update/sum, exact 25 instructions and normal exit are checked. This
+fixed positive-offset layout does not qualify a general libc/dynamic TLS ABI.
+
 ## Historical qualification ledger
 
 | Surface | Observed result | Reproduce |
