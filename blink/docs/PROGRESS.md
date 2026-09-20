@@ -2791,3 +2791,29 @@ with finite drain-to-EAGAIN edge generations, actual readiness, alias lifetime,
 peek/nonblocking behavior and real zero-second linger. Native and raw-JIT
 focused checks have passed; remaining modes are running. No unrelated P6 work
 or guest fallback is used to bypass the unresolved Kestrel startup result.
+
+
+### Required asynchronous socket boundary qualified
+
+Commits3d89c32 andb1396c3 integrate the Host implementation and translated
+bindings. `host-async-sockets/attempt-n7spb0qb/receipt.json` SHA-256
+`5557d1877e7fba91399618d5767c00b91b78fabe290d7c3eb9e9479dc80e405c`
+passes native behavior/private ABI and raw/optimized JIT/NativeAOT. All21 commands
+and six executions pass; both the worker and coordinator independently verify
+211 source/tool/log/binary identities.
+
+The finite contract uses actual socket readiness and epochs advanced only by
+observed EAGAIN, shared open-description identity, fair bounded event collection,
+nonblocking reads/accept/writes, MSG_PEEK, real zero-second linger and drained
+cancellation/disposal. Tests cover new data/connections after drain, initial
+actual writability, opaque64-bit event data, alias/final-close/fd reuse, and
+ordinary listener shutdown. Positive-duration linger and nonblocking connect
+remain explicit unsupported operations. Arbitrary Linux EPOLLET, one-shot/MOD,
+forced backpressure and fault injection are not claimed. Upstream retains guest
+12-byte to private16-byte epoll ABI conversion; the bridge copies actual events.
+
+The Kestrel guest's earlier startup OOM is independent of this later transport
+boundary. Investigation continues on immutable original snapshots: selected
+allocation arguments are being observed, and a read-only audit identified the
+old upstream sysinfo fallback reporting1GiB total and zero free RAM. That is a
+candidate pressure-accounting discrepancy, not yet a proven root cause or fix.
