@@ -99,3 +99,32 @@ receipt is preserved; the successful preparation copied every verified Host
 entry without weakening the closure guard. Build-server reuse is disabled and
 recorded for the actual consumer build. No guest/product implementation or GC
 settings were changed in response to the failed runtime result.
+
+## Post-mremap validation diagnostic
+
+The unchanged runner, guest, native GC environment and bounds were run against
+mremap-validation delivery `artifacts/threaded-delivery/attempt-wwrpenct/receipt.json`.
+That assembly reused 107 exact producer objects and changed only the staged
+syscall object. The actual diagnostic remains a failed guest result:
+`artifacts/dotnet-threaded-guest-execution/attempt-n9cjykot/receipt.json`, SHA256
+`270edb094faf8b72fc9858b0bf0f86bdd2c781d198cca19a4853c7998c878a37`.
+
+The stack-discovery scan now terminates after 2048 mremap calls: 2047 return
+ENOMEM, followed by EFAULT for the absent page at `0x4fffff7ff000`. This is the
+narrow source-validation behavior; successful resizing or relocation is still
+not implemented or claimed.
+
+The next observed missing capability is `epoll_create1` (syscall 291), with
+`EPOLL_CLOEXEC` (`0x80000`), returning ENOSYS. The guest prints a genuine .NET
+`SocketAsyncEngine` initializer exception naming ENOSYS, then raises SIGABRT
+(signal 6). It stops after 4,388,440 instructions, before readiness or HTTP;
+stdout is empty. The main and child traces contain 2159 and 7 observations,
+respectively, with no truncation. The child returns EINTR from its futex wait
+during cooperative group shutdown. Both workers join, both Machines and shared
+memory are released, and the owner reports quiescence without a CLR execution
+or stop-notification exception. The external stop reason remains None.
+
+Independent verification rechecked 723 frozen inputs, 104 prepared files,
+11 binaries and 33 artifacts. The consumer build returned 0 and the actual
+raw-JIT diagnostic returned 1. No extra tuning, retry after the guest failure,
+or epoll implementation was included in this attempt.

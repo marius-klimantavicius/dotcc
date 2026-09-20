@@ -2409,3 +2409,31 @@ with general remapping support remaining explicit. No hardcoded guest address,
 fabricated success, larger budget or native fallback is used. A preparation-only
 Host snapshot-copy mismatch is preserved separately; the actual run's716 frozen
 inputs,104 prepared files,11 binaries and33 artifacts were reverified.
+
+### P5 stack-discovery boundary corrected; actual epoll startup reached
+
+The reviewed mremap source-range check uses real guest PAGE_V reservations under
+mmap_lock and restores no-fault state before absent-source EFAULT. General mapped
+requests retain upstream's unsupported ENOMEM; no mapping mutation or broader
+remap support is claimed. Optional `stage-threaded-core.py --mremap-validation`
+reproduces the exact predecessor chain. Actual assembly reuses107 producers and
+recompiles only syscall.c; all delivery builds pass in `threaded-delivery/attempt-wwrpenct`
+(receipt SHA-256 `77c8f2c18fef1df9289c8e1a0e10add0d34fee88724d5de1d97ea2400251f030`).
+
+The same real .NET guest now finishes2048 stack-discovery probes:2047 ENOMEM then
+EFAULT at actual missing page0x4fffff7ff000. It reaches epoll_create1(EPOLL_CLOEXEC),
+gets ENOSYS, writes the genuine SocketAsyncEngine initializer error and aborts
+with guest SIGABRT6 before readiness. Receipt `dotnet-threaded-guest-execution/attempt-n9cjykot/receipt.json`
+has SHA-256 `270edb094faf8b72fc9858b0bf0f86bdd2c781d198cca19a4853c7998c878a37`.
+Both complete traces are retained (main2159/child7), with4388440 instructions and
+no budget stop, CLR execution exception or notification failure. All workers join,
+Machines and backing release, and the owner is quiescent. The same ELF/environment
+and limits remain in force. Independent verification covers723 frozen inputs,
+104 prepared files,11 binaries and33 artifacts.
+
+Next ownership: inputs implements genuine private empty-epoll descriptor lifetime
+and waits in Host; guest implements the bridge/header and normal qualification;
+coordinator integrates the threaded profile. Native service evidence contains
+create1 plus an unfinished empty wait, with no ctl or delivered events. No event
+registrations/readiness will be fabricated; unsupported registration semantics
+remain explicit. The actual .NET service and P5 are still unpassed; P6 is held.

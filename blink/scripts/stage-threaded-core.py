@@ -64,6 +64,8 @@ def main():
     parser.add_argument('--base-profile', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True, help='fresh directory under campaign generated/')
     parser.add_argument('--receipt', type=Path, required=True, help='fresh external receipt under campaign artifacts/')
+    parser.add_argument('--mremap-validation', action='store_true',
+                        help='derive reviewed source-range validation after the threaded syscall boundary')
     args = parser.parse_args()
     base = args.base_profile.resolve()
     profile = args.output.resolve()
@@ -76,7 +78,7 @@ def main():
         raise SystemExit('Choose a fresh external campaign artifact receipt')
     report = dict(kind='derived-threaded-core-staging', staged=False, compiled=False,
                   runtime_qualified=False, base_profile=str(base), profile=str(profile),
-                  helper_sha256=sha(Path(__file__)))
+                  helper_sha256=sha(Path(__file__)), mremap_validation=args.mremap_validation)
     live = {}
 
     def track(path):
@@ -231,6 +233,39 @@ def main():
             if track(Path(name)) != expected:
                 raise RuntimeError('Thread derivation input changed: ' + name)
 
+        adapted_sources = dict(boundary['sources'])
+        adapted_paths = {name: stage_output / name for name in adapted_sources}
+        mremap_receipt = None
+        if args.mremap_validation:
+            directory = ROOT / 'src/UpstreamMremap'
+            for original in directory.iterdir():
+                if original.is_file():
+                    copy(original, profile / 'source-adaptations/UpstreamMremap' / original.name)
+            output = profile / 'upstream/mremap'
+            mremap_receipt = profile / 'mremap-boundary.json'
+            command = [sys.executable, '-B', str(directory / 'stage.py'), '--predecessor',
+                       str(stage_output / 'syscall.c'), '--predecessor-receipt', str(stage_receipt),
+                       '--output', str(output), '--receipt', str(mremap_receipt)]
+            with (profile / 'mremap-stage.log').open('wb') as log:
+                result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=30)
+            if result.returncode:
+                raise RuntimeError('Mremap validation derivation failed; inspect mremap-stage.log')
+            mapping = read_json(mremap_receipt)
+            if (mapping['stage_sha256'] != track(directory / 'stage.py')
+                    or mapping['patch_sha256'] != track(directory / 'mremap.patch')
+                    or set(mapping['sources']) != {'syscall.c'}):
+                raise RuntimeError('Mremap validation derivation identity differs')
+            row = mapping['sources']['syscall.c']
+            if (row['source_sha256'] != pins['blink/syscall.c']
+                    or row['predecessor_sha256'] != boundary['sources']['syscall.c']['staged_sha256']
+                    or row['staged_sha256'] != sha(output / 'syscall.c')):
+                raise RuntimeError('Mremap validation source chain differs')
+            for name, expected in mapping['frozen_inputs'].items():
+                if track(Path(name)) != expected:
+                    raise RuntimeError('Mremap validation input changed: ' + name)
+            adapted_sources['syscall.c'] = row
+            adapted_paths['syscall.c'] = output / 'syscall.c'
+
         overrides = {}
         rows = []
         old_rows = {row['source']: row for row in base_binding['upstream_preambles']}
@@ -245,12 +280,13 @@ def main():
                     or old_row['original_sha256'] != pins[name] or old_row['staged_sha256'] != entry['sha256']):
                 raise RuntimeError('Exact base preamble/source chain differs: ' + name)
             filename = Path(name).name
-            adapted = boundary['sources'].get(filename)
+            adapted = adapted_sources.get(filename)
             if adapted:
-                content = (stage_output / filename).read_bytes()
+                adapted_path = adapted_paths[filename]
+                content = adapted_path.read_bytes()
                 if adapted['source_sha256'] != pins[name] or digest(content) != adapted['staged_sha256']:
                     raise RuntimeError('Thread replacement source identity differs: ' + name)
-                previous = dict(staged_path=str((stage_output / filename).relative_to(ROOT)),
+                previous = dict(staged_path=str(adapted_path.relative_to(ROOT)),
                                 sha256=digest(content), original_sha256=pins[name])
             else:
                 content = old_bound[len(PREFIX):]
@@ -290,6 +326,7 @@ def main():
             base_profile=str(base), base_inputs_sha256=sha(base_inputs_path), helper_sha256=sha(Path(__file__)),
             scope='C# owns lifecycle; no C frontend added', required_defines=REQUIRED, forbidden_defines=FORBIDDEN,
             changes=changes, threaded_boundary_sha256=sha(stage_receipt),
+            mremap_boundary_sha256=sha(mremap_receipt) if mremap_receipt else None,
             preserved_upstream_pins=pins, source_inputs=source_inputs))
         derived_inputs = dict(compiler=compiler, source_overrides=overrides,
             staged_headers={str(path.relative_to(profile)): sha(path) for path in profile.rglob('*') if path.is_file()})

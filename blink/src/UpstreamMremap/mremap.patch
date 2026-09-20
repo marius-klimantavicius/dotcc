@@ -1,0 +1,28 @@
+--- a/blink/syscall.c
++++ b/blink/syscall.c
+@@ -1224,6 +1224,25 @@
+ 
+ static i64 SysMremap(struct Machine *m, i64 old_address, u64 old_size,
+                      u64 new_size, int flags, i64 new_address) {
++  // Validate ordinary source ranges using guest page-table reservations.
++  // This does not implement resizing or relocation: mapped requests retain
++  // the existing unsupported ENOMEM fallback below.
++  if (!flags && old_size && new_size && old_size <= 0x1000000000000ull &&
++      new_size <= 0x1000000000000ull && !(old_address & 4095) &&
++      old_address >= -0x800000000000ll && old_address < 0x800000000000ll) {
++    u64 old_pages = (old_size + 4095) & ~(u64)4095;
++    u64 new_pages = (new_size + 4095) & ~(u64)4095;
++    if (IsValidAddrSize(old_address, (i64)old_pages) &&
++        IsValidAddrSize(old_address, (i64)new_pages)) {
++      bool mapped;
++      BEGIN_NO_PAGE_FAULTS;
++      LOCK(&m->system->mmap_lock);
++      mapped = IsFullyMapped(m->system, old_address, (i64)old_pages);
++      UNLOCK(&m->system->mmap_lock);
++      END_NO_PAGE_FAULTS;
++      if (!mapped) return efault();
++    }
++  }
+   // would be nice to have
+   // avoid being noisy in the logs
+   // hope program has fallback for failure
