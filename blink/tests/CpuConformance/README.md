@@ -6,8 +6,22 @@ The Kestrel extension now passes **514 normal native cases** in
 Ten appended SS/SD/PS/PD comparison-mask and actual Hashtable conversion cases
 retain every preceding descriptor. Six expose original upstream mismatches;
 all ten match hardware after the reviewed eight-store source correction.
-Raw/optimized JIT/NativeAOT qualification of this extension is pending a fresh
-corrected canonical core. No custom fault cases execute.
+The four-mode managed refresh also passes **2,056 comparisons**, 514 each in
+raw JIT, raw NativeAOT, postprocessed JIT and postprocessed NativeAOT:
+`artifacts/cpu-conformance-managed/attempt-jt41ulk6/receipt.json`, SHA256
+`c62ea727bde462c938a91a67c6c3f4ae0ef69bff6c3bb28be1fe0bb06e10a7b2`.
+All 2,067 commands exit zero; all comparisons agree with the fresh native
+reference. A separate audit checked 5,143 retained input/tree/binary/log hashes.
+
+This run uses `baseline_kind=compiled-public-delivery`, public translation
+`attempt-tf_6yqk6`, receipt SHA256
+`92763476d1719166912ecbf2d5ca31cabb1feb512cfcef278a288319980524a5`.
+It adds the authored CPU frontend while retaining all 108 exact public objects,
+including the reviewed SSE source correction. It does not claim a CoreExecution
+pass: the separate threaded CoreExecution probe stopped on its normal exit case
+because its legacy consumer lacked the real thread owner. The normal CPU
+instruction witness itself passes; no fake owner or generated repair was used.
+No custom fault cases execute.
 
 The prior finite P3 CPU matrix passes **504 native cases and 2,016
 managed comparisons**: 504 each in raw JIT, raw NativeAOT, postprocessed JIT and
@@ -74,15 +88,19 @@ instruction strings and lengths are unchanged.
 
 ## Reproduction and provenance
 
-With the pinned native archive and a fresh matching qualified corrected core
-available, set `BLINK_CORE_RECEIPT` to that core receipt path. The historical
-P3 receipt above does not contain the new comparison-mask correction:
+With the pinned native archive and matching corrected public product available:
 
 ```sh
 python3 blink/tests/CpuConformance/run.py --staged-fp --staged-integer
 python3 blink/tests/CpuConformance/run-managed.py --staged-fp --staged-integer \
-  --core-receipt "$BLINK_CORE_RECEIPT"
+  --delivery-receipt blink/artifacts/translation/attempt-tf_6yqk6/receipt.json \
+  --delivery-sha256 92763476d1719166912ecbf2d5ca31cabb1feb512cfcef278a288319980524a5
 ```
+
+Alternatively, `--core-receipt PATH` retains the historical passing-CoreExecution
+input path. The two baseline choices are mutually exclusive and retain their
+actual scope in the CPU receipt; a compiled product is never recorded as a
+passing execution probe.
 
 The native runner snapshots the independent hardware witness, C/assembly inputs,
 native archive and headers, reviewed scalar/integer corrections and CPUID policy.

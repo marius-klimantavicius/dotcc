@@ -18,7 +18,12 @@ Native receipt `cpu-conformance/attempt-havagw22` passes all514 selected normal
 cases, including ten appended mask/upper-preservation/lane/conversion witnesses.
 Six new rows retain their original-upstream mismatch; four false-mask controls
 already match. First550 descriptor identity is pinned, and46 historical custom
-fault cases remain excluded. The four-mode managed refresh is pending.
+fault cases remain excluded. The four-mode managed refresh passes all 2,056
+comparisons in `cpu-conformance-managed/attempt-jt41ulk6`, retaining all 108
+corrected public objects and adding only the authored CPU frontend. All ten
+new rows match in all four modes, including the actual Hashtable outputs 2/5.
+Its receipt explicitly identifies a compiled-public-delivery baseline, not a
+CoreExecution pass; see [the complete provenance](README.md).
 
 The sections below retain the earlier scalar diagnostic history.
 

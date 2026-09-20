@@ -1,8 +1,10 @@
 # Selected CPU qualification and broader coverage limits
 
 The Kestrel extension adds ten normal SSE comparison-mask cases at IDs550–559.
-All514 normal native cases pass in `cpu-conformance/attempt-havagw22`; the
-four-mode managed refresh is pending. First550 descriptors and all46 excluded
+All 514 normal native cases pass in `cpu-conformance/attempt-havagw22`; all
+2,056 managed comparisons pass in `cpu-conformance-managed/attempt-jt41ulk6`.
+The managed run uses the compiled public delivery baseline and does not assert
+a CoreExecution pass. First 550 descriptors and all 46 excluded
 fault descriptors remain unchanged. This is a targeted extension, not a new
 claim about complete packed floating-point semantics.
 
@@ -14,7 +16,7 @@ SHA256 `e3b4a964d69e0bced3d2896ea093f66c535008709fbd196318bc0fe7b99aa72e`.
 Fresh native receipt: `artifacts/cpu-conformance/attempt-27pjwx09/receipt.json`,
 SHA256 `0e9557adcbebe0bca31ea6109ce9fa3889279abb4c18f88876d4ae8440ccdffa`.
 
-All 550 descriptors retain stable IDs; 504 normal rows execute and 46 historical
+In that prior P3 receipt, all 550 descriptors retain stable IDs; 504 normal rows execute and 46 historical
 custom fault rows remain excluded. The original 495, 512, 514 and 546 descriptor
 subsets are hash-pinned. The fresh reference retains 368 unchanged-original
 native differences separately from the reviewed staged-native pass. Source

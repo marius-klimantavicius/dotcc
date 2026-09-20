@@ -10,25 +10,83 @@ from features import inventory
 from selection import select_normal
 from contracts import compared_fields, invariants, RDTSC
 parser=argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--core-receipt',type=Path,required=True)
+baseline=parser.add_mutually_exclusive_group(required=True)
+baseline.add_argument('--core-receipt',type=Path)
+baseline.add_argument('--delivery-receipt',type=Path)
+parser.add_argument('--delivery-sha256')
 parser.add_argument('--observe-differences',action='store_true')
 parser.add_argument('--staged-fp',action='store_true')
 parser.add_argument('--staged-integer',action='store_true')
-args=parser.parse_args();core_path=args.core_receipt.resolve();core=json.loads(core_path.read_text())
-if not core.get('passed') or core.get('diagnostic_replay'):raise SystemExit('requires qualified actual-core execution receipt')
-assembly_path=Path(core['assembly_receipt']);assembly=json.loads(assembly_path.read_text())
-sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
-if sha(assembly_path)!=core['assembly_receipt_sha256'] or not assembly['linked']:raise SystemExit('assembly receipt changed')
-profile=Path(assembly['profile']);inputs=json.loads((profile/'inputs.json').read_text())
-if sha(profile/'inputs.json')!=assembly['identity']['profile_inputs_sha256']:raise SystemExit('profile identity changed')
-for name,digest in inputs['staged_headers'].items():
-    if sha(profile/name)!=digest:raise SystemExit('profile header changed: '+name)
+args=parser.parse_args()
+if bool(args.delivery_receipt)!=bool(args.delivery_sha256):
+    parser.error('--delivery-receipt and --delivery-sha256 must be supplied together')
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+baseline_files={};baseline_trees={}
+def pin(path,expected=None):
+    path=Path(path).resolve();digest=sha(path)
+    if expected is not None and digest!=expected:raise SystemExit('baseline identity differs: '+str(path))
+    if str(path) in baseline_files and baseline_files[str(path)]!=digest:raise SystemExit('baseline changed: '+str(path))
+    baseline_files[str(path)]=digest
+    return path
+def manifest(path):
+    return {str(p.relative_to(path)):sha(p) for p in sorted(path.rglob('*'))
+            if p.is_file() and not {'bin','obj'}.intersection(p.relative_to(path).parts)}
+def tree(path,expected):
+    path=Path(path).resolve()
+    if manifest(path)!=expected:raise SystemExit('baseline tree differs: '+str(path))
+    baseline_trees[str(path)]=expected
+def check_baseline():
+    for path,digest in baseline_files.items():
+        if sha(path)!=digest:raise RuntimeError('baseline changed during CPU qualification: '+path)
+    for path,expected in baseline_trees.items():
+        if manifest(Path(path))!=expected:raise RuntimeError('baseline tree changed during CPU qualification: '+path)
+if args.core_receipt:
+    core_path=pin(args.core_receipt);core=json.loads(core_path.read_text())
+    if not core.get('passed') or core.get('diagnostic_replay'):raise SystemExit('requires qualified actual-core execution receipt')
+    assembly_path=pin(core['assembly_receipt'],core['assembly_receipt_sha256'])
+    baseline_record={'baseline_kind':'qualified-core-execution','core_receipt':str(core_path),'core_receipt_sha256':sha(core_path)}
+else:
+    delivery_path=pin(args.delivery_receipt,args.delivery_sha256);delivery=json.loads(delivery_path.read_text())
+    if (delivery.get('passed') is not True or delivery.get('authored_sources_unchanged') is not True or
+            delivery.get('selected_profile')!='threaded' or
+            Path(delivery['stable_output']).resolve()!=(ROOT/'generated/TranslatedBlink').resolve()):
+        raise SystemExit('requires passing compiled public threaded delivery')
+    tree(delivery['stable_output'],delivery['final_files']);tree(delivery['raw_snapshot'],delivery['raw_files'])
+    for name,digest in delivery['authored_sources'].items():pin(ROOT/name,digest)
+    for name,digest in delivery['compiler'].items():pin(REPO/'DotCC/bin/Release/net10.0'/name,digest)
+    for name,digest in delivery['postprocessor'].items():pin(REPO/'DotCC.PostProcess/bin/Release/net10.0'/name,digest)
+    for row in delivery['results'].values():
+        if row['exit_code']!=0:raise SystemExit('public delivery has failed producer command')
+        pin(row['log'],row['log_sha256'])
+    assembly_path=pin(delivery['assembly']['path'],delivery['assembly']['sha256'])
+    baseline_record={'baseline_kind':'compiled-public-delivery','delivery_receipt':str(delivery_path),
+        'delivery_receipt_sha256':args.delivery_sha256,
+        'baseline_scope':'Compiled public product only; no CoreExecution execution pass is asserted'}
+assembly=json.loads(assembly_path.read_text())
+if not assembly['linked'] or assembly['failures']:raise SystemExit('requires linked actual object assembly without failures')
+profile=Path(assembly['profile']);profile_inputs=pin(profile/'inputs.json',assembly['identity']['profile_inputs_sha256'])
+inputs=json.loads(profile_inputs.read_text())
+if args.delivery_receipt:
+    if (len(assembly['objects'])!=108 or Path(delivery['profile']).resolve()!=profile.resolve() or
+            delivery['profile_inputs_sha256']!=sha(profile_inputs) or inputs['compiler']!=delivery['compiler']):
+        raise SystemExit('public product and assembly identities differ')
+    for name,row in assembly['objects'].items():
+        public=delivery['objects'][name]
+        if public['object_path']!=row['object_path'] or public['object_sha256']!=row['object_sha256']:
+            raise SystemExit('public object identity differs: '+name)
+for name,digest in inputs['staged_headers'].items():pin(profile/name,digest)
+for row in assembly['objects'].values():
+    pin(row['object_path'],row['object_sha256'])
+    pin(row.get('canonical_source',row['command'][row['command'].index('-o')-1]),row['emission_identity']['source_sha256'])
 cli=REPO/'DotCC/bin/Release/net10.0/dotcc.dll';post=REPO/'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
 compiler=compiler_identity(cli.parent)
 if compiler!=assembly['identity']['compiler_sha256']:raise SystemExit('compiler does not match qualified object producers')
 base=ROOT/'generated/cpu-conformance-managed';base.mkdir(parents=True,exist_ok=True)
 a=Path(tempfile.mkdtemp(prefix='attempt-',dir=base));out=ROOT/'artifacts/cpu-conformance-managed'/a.name;out.mkdir(parents=True)
-r={'kind':'actual-translated-core-cpu-corpus','passed':False,'core_receipt':str(core_path),'core_receipt_sha256':sha(core_path),'assembly_receipt':str(assembly_path),'assembly_receipt_sha256':sha(assembly_path),'profile':str(profile),'compiler':compiler,'replacement':'only authored/managed-driver.c replaced by authored CPU driver; all other objects unchanged','results':{},'comparisons':[]}
+r={'kind':'actual-translated-core-cpu-corpus','passed':False,**baseline_record,
+   'baseline_files':baseline_files,'baseline_trees':baseline_trees,
+   'assembly_receipt':str(assembly_path),'assembly_receipt_sha256':sha(assembly_path),'profile':str(profile),
+   'compiler':compiler,'replacement':'CPU frontend only; retained objects checked against the selected baseline','results':{},'comparisons':[]}
 def save():(out/'receipt.json').write_text(json.dumps(r,indent=2)+'\n')
 def run(cmd,name,timeout=180):
     start=time.monotonic()
@@ -50,6 +108,7 @@ implementation_names = ['run.py','run-managed.py','selection.py','contracts.py',
                         'make-fp-cases.py','output.h','Program.cs','features.py']
 r['implementation']={name:sha(ROOT/'tests/CpuConformance'/name) for name in implementation_names}
 try:
+    check_baseline()
     # Fresh native/hardware reference, retaining its complete input identity.
     native_output=run(['python3',ROOT/'tests/CpuConformance/run.py',*(['--observe-differences']if args.observe_differences else[]),*(['--staged-fp']if args.staged_fp else[]),*(['--staged-integer']if args.staged_integer else[])],'native-corpus')
     native_receipt=Path(native_output.strip().rsplit('receipt ',1)[1]);native=json.loads(native_receipt.read_text())
@@ -220,6 +279,7 @@ try:
     if [(row['mode'],row['case']) for row in r['comparisons']]!=expected_coverage:raise RuntimeError('Managed selected coverage differs')
     r['expected_comparisons']=len(expected_coverage)
     r['optimized_generated']={p.name:sha(p)for p in(a/'optimized-generated').glob('*.cs')}
+    check_baseline();r['baseline_identities_stable']=True
     r['completed']=True;r['known_failing_rows']=[row for row in r['comparisons']if not row['matched']]
     r['passed']=not r['known_failing_rows'];r['native_agreement']=all(not row['nativeDifferences']for row in r['comparisons'])
     r['binaries']={str(p.relative_to(a)):sha(p)for p in [a/'raw-aot/CpuConformance',a/'optimized-aot/CpuConformance',a/'raw/bin/Release/net10.0/ManagedCpuCore.dll',a/'optimized/bin/Release/net10.0/ManagedCpuCore.dll']}

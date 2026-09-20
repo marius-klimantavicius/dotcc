@@ -26,8 +26,14 @@ Native qualification passes all514 normal CPU cases at
 `a400af6ae56ad7e0ba4e6a7b5a157caea94b3ab2d418c7857281ba3cb300c267`.
 Ten new cases preserve the first550 descriptors and46 custom fault exclusions.
 The exact Hashtable ordered-mask/truncate sequence now yields 2 and5 for2.16
-and5.04, matching hardware instead of original Blink's zeros. Managed refresh
-and actual corrected Kestrel execution remain pending.
+and 5.04, matching hardware instead of original Blink's zeros. Managed refresh
+passes all 2,056 comparisons (514 each raw/optimized JIT/NativeAOT) in
+`artifacts/cpu-conformance-managed/attempt-jt41ulk6/receipt.json`, SHA256
+`c62ea727bde462c938a91a67c6c3f4ae0ef69bff6c3bb28be1fe0bb06e10a7b2`.
+That receipt retains all 108 corrected public objects with an added CPU witness;
+its explicit compiled-public-delivery baseline does not assert a CoreExecution
+pass. The profile's archived README remains unchanged; this authored README
+records the later observed result. Actual Kestrel qualification remains pending.
 
 `scalar-fp.patch` preserves exact unified-diff context, including the single-space
 prefix on blank context lines. That patch-format whitespace is intentional.
