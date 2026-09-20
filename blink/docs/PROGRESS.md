@@ -25,11 +25,11 @@ worker joins, child-TID clearing and shared-memory release. Actual threaded .NET
 startup passes clone and GC reservation, then normal musl stack discovery after
 reviewed source-range validation. Its next failure is epoll_create1 ENOSYS before
 readiness in the earlier profile. The real private empty-epoll boundary now
-passes native/all-four checks and fresh delivery. The actual .NET guest reaches
-READY and accepts HTTP, then fails on SO_SNDTIMEO with ENOPROTOOPT; no HTTP
-response passes yet. Four workers join and all guest backing releases. Socket
-timeout semantics are the next observed boundary. P5 remains open; stable
-delivery remains separate.
+passes native/all-four checks and fresh delivery. After qualified socket timeouts, the actual .NET guest passes raw JIT:
+READY, exact native health/stop responses, exit0, empty stderr, four joined
+workers and complete resource release. The remaining three host modes and
+owning worker/sample integration are pending. P5 remains open; stable delivery
+remains separate.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
@@ -2548,3 +2548,34 @@ Inputs now owns a fresh Host/bridge profile and experimental delivery. No C or
 header input changed, so all108 C producers are expected to be reused with exact
 identity checks. The actual .NET guest must then be rerun; focused timeout
 qualification alone does not establish its HTTP or normal shutdown gate.
+
+
+### P5 genuine NativeAOT service passes raw JIT
+
+The qualified timeout implementation is integrated in fresh threaded profile
+`threaded-core/attempt-socket-timeouts`, with all108 C producers reused only
+after individual source/object/emission identity checks. Delivery receipt
+`threaded-delivery/attempt-6zot2nmd/receipt.json` has SHA-256
+`5367a49b019f896f36f023e8503411ab92cac2e89fe1cb151d5c973926f67985`.
+All five commands pass; independent final review verifies1836 identities and
+coordinator rechecks609 frozen delivery inputs. Original authored project links
+remain active; the stable single-thread delivery is preserved.
+
+The unchanged .NET guest now passes actual translated execution in raw JIT.
+Receipt `dotnet-threaded-guest-execution/attempt-v27zcpxg/receipt.json` has SHA-256
+`61ed427f7395988490f374c1acc3fb5f0c653b2b02ce73b3b1f5658684efce3c`;
+result SHA-256 `bdf46aec03b07bc2ffda1f41e8a65b6c4fc00e4770f2ef438f6aea97d717b8a9`.
+Actual READY and published TCP requests produce the exact native86-byte health
+and91-byte stop responses, stdout READY/STOPPED, empty stderr and group exit0.
+Both accepted sockets' send/receive timeout options succeed. All four workers
+join, all Machines/backing release and the owner is quiescent; no execution,
+notification or diagnostic error occurs. StopReasonNone and1213246 completed
+instructions are observed. Complete traces retain2206/7/6/3 calls without
+truncation. All889 frozen/prepared/binary/artifact identities verify.
+
+Next ownership: guest extends the exact same workload to all four host forms
+using immutable raw/final delivery bytes and fresh processes; inputs designs
+the actual bounded worker around the existing controller/protocol and C# owner.
+Coordinator owns product/sample integration. Other host modes, ordinary stop
+qualification of this workload, simultaneous instances/restart and the showcase
+remain pending. Raw JIT success alone does not complete P5. P6 stays held.
