@@ -109,9 +109,10 @@ required; these dependencies cannot be deferred while claiming the P5 gate.
 Select and pin a small service fixture in P0; a single-threaded static musl HTTP
 server is the default planning assumption. Record its source, compiler flags,
 executable hash, requests, expected responses, and complete observed syscall
-inventory. The required P5 workload is now a .NET service compiled to a Linux
-x86-64 NativeAOT ELF, using musl if needed. The C fixture remains a baseline;
-its success does not establish .NET runtime compatibility.
+inventory. The required P5 workload is an ASP.NET Core service using Kestrel,
+compiled to a Linux x86-64 NativeAOT ELF, using musl if needed. The C and
+raw-socket .NET fixtures remain baselines; their success does not establish
+Kestrel compatibility.
 
 ## Translation and embedding boundaries
 
@@ -422,8 +423,9 @@ P5/P6 remain held. See [the exact P4 ledger](P4-HOST-SERVICES.md).
 
 ### P5 — Execute a .NET NativeAOT service and deliver the instance runner
 
-The required guest is a real .NET service published as native machine code and
-executed by translated Blink. This is distinct from publishing the C# emulator
+The required guest is a real ASP.NET Core/Kestrel service published as native
+machine code and executed by translated Blink. HTTP serving must use Kestrel,
+not an authored raw-socket HTTP implementation. This is distinct from publishing the C# emulator
 host with NativeAOT. Docker or Podman may build a musl-targeted guest and provide
 an independent native reference run; the delivered emulator must execute the
 guest instructions itself. Phase execution was explicitly authorized on
@@ -432,22 +434,23 @@ tooling only if needed. If musl NativeAOT compilation proves very difficult or
 impossible, stop and report for user direction rather than pursuing prolonged
 workarounds.
 
-- [x] Add a reproducible .NET NativeAOT HTTP service fixture with source, pinned
+- [ ] Add a reproducible ASP.NET Core/Kestrel NativeAOT HTTP service fixture with source, pinned
       SDK/toolchain and container image identity when used, publish settings,
       executable hash and exact build/run commands. Provide its ELF at a
-      documented path for ManagedConsumer; retain the existing C fixture.
-      Native glibc and static-musl builds and exact HTTP references pass; see
+      documented path for ManagedConsumer; retain existing C/raw-socket fixtures.
+      Raw-socket native glibc and static-musl builds and exact HTTP references pass; see
       `tests/DotNetService/README.md` and `tests/DotNetService/MUSL.md`. Actual
-      translated startup and sample integration remain the separate gates below.
-- [x] Inspect the actual guest ELF/dependencies and native service behavior;
+      Kestrel publication/native reference and its translated execution remain
+      unqualified; preserve distinct fixture and receipt identities.
+- [ ] Inspect the actual Kestrel guest ELF/dependencies and native service behavior;
       inventory required startup/runtime instructions, syscalls, TLS, threads,
       synchronization, signals and filesystem inputs. Record required profile
       extensions explicitly and implement them through translated upstream
       algorithms and the managed host boundary, without success stubs.
-      The finite observed surface, actual four-mode results and explicit
+      The raw-socket baseline's finite observed surface, four-mode results and explicit
       unsupported/tolerated operations are recorded in
       `docs/P5-NATIVEAOT-RUNTIME.md`; broader runtime compatibility is not claimed.
-- [x] Execute the NativeAOT guest through translated Blink in raw/optimized
+- [ ] Execute the Kestrel NativeAOT guest through translated Blink in raw/optimized
       JIT/NativeAOT host forms on Linux x64. Verify readiness, real HTTP requests,
       normal shutdown, ordinary cancellation and resource cleanup against the
       native reference. A guest build or a container/native-only run is not a
@@ -464,23 +467,28 @@ workarounds.
       authored C execution wrapper translated into the product.
 - [x] Implement one managed worker per instance and a bounded control protocol.
       Distinguish guest exit, guest fault, budget exhaustion, and worker failure.
-- [x] Run two simultaneous instances using the same guest port, distinct files,
+- [ ] Run two simultaneous Kestrel instances using the same guest port, distinct files,
       and distinct published endpoints. Verify restart and resource cleanup.
-- [x] Send real HTTP requests from a separate BCL client and verify exact status,
+- [ ] Send real HTTP requests to Kestrel from a separate BCL client and verify status,
       headers/body as specified by the fixture, including large/fragmented traffic.
+      Define deterministic comparison rules for any variable protocol fields;
+      do not substitute raw-socket response bytes for Kestrel evidence.
 
 **Gate:** a separate application starts, talks to, stops, and restarts actual
-.NET NativeAOT service instances through translated Blink without cross-instance
+ASP.NET Core/Kestrel NativeAOT service instances through translated Blink without cross-instance
 interference; the showcase solution builds and its sample demonstrates the
-documented usage. The earlier C service alone cannot satisfy this gate.
+documented usage. Neither the earlier C nor raw-socket .NET service satisfies
+the Kestrel guest gate. Their completed checks remain valid baseline evidence.
 
-Observed worker gate: `worker-instances/attempt-kd2trw_m` passes 16 actual
+Observed raw-socket baseline worker gate: `worker-instances/attempt-kd2trw_m` passes 16 actual
 workers and 40 exact native HTTP comparisons across all four modes. Simultaneous
 instances load distinct private executable paths, publish distinct host ports,
 and complete normal exit, cooperative stop, fresh-process restart and idle
 Deadline cleanup. The auxiliary marker files are retained but not read by the
 guest. The final showcase solution/sample remains unqualified because automated
-review rejected its separate qualification task; see B036. P5 is not complete.
+review rejected its separate qualification task; see B036. A fresh agent is
+verifying that sample under explicit user direction; even a pass remains
+raw-socket baseline evidence until the Kestrel guest is integrated. P5 is not complete.
 
 ### P6 — Qualify upstream tests, platforms, and delivery
 

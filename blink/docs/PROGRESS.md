@@ -4,14 +4,20 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-P5 is now explicitly authorized: build and execute a real .NET NativeAOT HTTP
-guest through translated Blink, distinct from NativeAOT compilation of the
+P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
+NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the
 emulator host. Guest creation first uses the installed SDK for ordinary Linux
 publishing; musl/container tooling is considered only if needed. If producing
 the musl guest is very difficult or impossible, stop and ask for user direction
 through the coordinator; no prolonged build workarounds. No P6 phase starts.
 
-Both ordinary glibc and static musl NativeAOT guest builds and native HTTP
+User guest update: HTTP must be served by Kestrel, replacing the authored
+raw-socket HTTP implementation as the required workload. Existing raw-socket
+results remain baseline evidence. Kestrel build/runtime/integration gates are
+open, and the coordinator is resuming that work. A fresh verification agent is
+checking the current raw-socket sample; it cannot close the updated P5 gate.
+
+Both ordinary glibc and static musl raw-socket NativeAOT guest builds and native HTTP
 references pass. The static musl build succeeded in one standard pinned Podman
 attempt, so the difficult-build stop condition did not trigger. The genuine
 static-musl .NET guest now passes raw/optimized JIT/NativeAOT: actual readiness,
@@ -27,8 +33,9 @@ deadline cleanup. Native traffic reference `worker-native-traffic/attempt-znwlxu
 also passed. The separate final solution/sample qualification task was rejected
 by automated review for "possible cybersecurity risk" (B036); no runner was
 produced, retried or repackaged. The replacement sample is authored but unbuilt
-and unexecuted. P5 stops at this concrete remaining gate; it is not complete.
-All workers are idle and the build slot is released. P6 has not started.
+and unexecuted at that stop. The user subsequently requested a fresh verification
+agent and the Kestrel guest update above. Work has resumed; P5 is not complete.
+P6 has not started.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
