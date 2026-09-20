@@ -452,3 +452,24 @@ execution/poll/sleep/inherited-read stop/deadline/budget cases pass at
 `guest-execution-stop/attempt-kl7r74np`. Exact hashes, scope and cleanup evidence
 are recorded in [the P4 ledger](P4-HOST-SERVICES.md). This closes B035 for the
 finite selected Linux x64 profile; P5/P6 and Windows qualification remain open.
+
+
+## B036 — Current final .NET worker sample qualification restricted
+
+During P5, the separate source-only task to prepare
+`tests/ManagedConsumerDelivery` was rejected by automated review. Its requested
+operation was a runner for the actual final solution/sample: build
+`ManagedConsumer.slnx`, run the sample with its JIT worker, publish the worker and
+sample with NativeAOT, and run the native sample with that worker while recording
+source, binary and cleanup evidence. The exact returned reason was:
+
+> This content was flagged for possible cybersecurity risk. If this seems wrong, try rephrasing your request. To get authorized for security work, join the Trusted Access for Cyber program: https://chatgpt.com/cyber
+
+The rejected task was not retried, renamed, delegated elsewhere or executed by
+the coordinator. No runner files were produced. Previously authored sample
+changes remain available for review, but the new .NET worker sample has not been
+built/executed and its delivery checkbox remains open. This restriction does
+not invalidate earlier genuine .NET service all-four execution or the separate
+already-running WorkerInstances qualification. Those retain their exact scope.
+The coordinator continues only that independent worker validation and records
+its result before stopping; no P6 work begins.

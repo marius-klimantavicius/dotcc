@@ -447,7 +447,7 @@ workarounds.
       The finite observed surface, actual four-mode results and explicit
       unsupported/tolerated operations are recorded in
       `docs/P5-NATIVEAOT-RUNTIME.md`; broader runtime compatibility is not claimed.
-- [ ] Execute the NativeAOT guest through translated Blink in raw/optimized
+- [x] Execute the NativeAOT guest through translated Blink in raw/optimized
       JIT/NativeAOT host forms on Linux x64. Verify readiness, real HTTP requests,
       normal shutdown, ordinary cancellation and resource cleanup against the
       native reference. A guest build or a container/native-only run is not a
@@ -458,21 +458,29 @@ workarounds.
       solution edits must persist there and ordinary builds must use those edits.
       Document selection of the NativeAOT guest ELF and its inputs, and adapt
       readiness/request/shutdown behavior to that fixture's explicit contract.
-- [ ] Provide an owning API for image/argv/env/limits, start/readiness, logs,
+- [x] Provide an owning API for image/argv/env/limits, start/readiness, logs,
       endpoint publication, status/exit reason, stop, and asynchronous disposal.
       This is authored C# consuming the translated upstream exports, not an
       authored C execution wrapper translated into the product.
-- [ ] Implement one managed worker per instance and a bounded control protocol.
+- [x] Implement one managed worker per instance and a bounded control protocol.
       Distinguish guest exit, guest fault, budget exhaustion, and worker failure.
-- [ ] Run two simultaneous instances using the same guest port, distinct files,
+- [x] Run two simultaneous instances using the same guest port, distinct files,
       and distinct published endpoints. Verify restart and resource cleanup.
-- [ ] Send real HTTP requests from a separate BCL client and verify exact status,
+- [x] Send real HTTP requests from a separate BCL client and verify exact status,
       headers/body as specified by the fixture, including large/fragmented traffic.
 
 **Gate:** a separate application starts, talks to, stops, and restarts actual
 .NET NativeAOT service instances through translated Blink without cross-instance
 interference; the showcase solution builds and its sample demonstrates the
 documented usage. The earlier C service alone cannot satisfy this gate.
+
+Observed worker gate: `worker-instances/attempt-kd2trw_m` passes 16 actual
+workers and 40 exact native HTTP comparisons across all four modes. Simultaneous
+instances load distinct private executable paths, publish distinct host ports,
+and complete normal exit, cooperative stop, fresh-process restart and idle
+Deadline cleanup. The auxiliary marker files are retained but not read by the
+guest. The final showcase solution/sample remains unqualified because automated
+review rejected its separate qualification task; see B036. P5 is not complete.
 
 ### P6 — Qualify upstream tests, platforms, and delivery
 

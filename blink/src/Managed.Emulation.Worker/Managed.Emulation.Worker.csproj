@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Managed.Emulation/Managed.Emulation.csproj" />
+    <ProjectReference Include="../Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.csproj" />
+    <TrimmerRootAssembly Include="TranslatedBlink" />
+  </ItemGroup>
+</Project>

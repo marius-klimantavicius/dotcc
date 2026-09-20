@@ -13,24 +13,22 @@ through the coordinator; no prolonged build workarounds. No P6 phase starts.
 
 Both ordinary glibc and static musl NativeAOT guest builds and native HTTP
 references pass. The static musl build succeeded in one standard pinned Podman
-attempt, so the difficult-build stop condition did not trigger. Actual translated
-startup passes the qualified membarrier boundary and reaches clone, which the
-stable single-thread profile rejects with ENOSYS. A separate threaded profile
-now emits and links all108 producers after tested block-static TLS and atomic
-statement compiler repairs. Shared memory/process-state/barrier prerequisites
-pass native/all-four checks; a valid clone/TLS/futex ELF passes Linux and pinned
-threaded native Blink. The threaded ABI layout and normal clone/TLS/futex ELF
-now pass raw/optimized JIT/NativeAOT using the authored C# owner, including actual
-worker joins, child-TID clearing and shared-memory release. Actual threaded .NET
-startup passes clone and GC reservation, then normal musl stack discovery after
-reviewed source-range validation. Its next failure is epoll_create1 ENOSYS before
-readiness in the earlier profile. The real private empty-epoll boundary now
-passes native/all-four checks and fresh delivery. After qualified socket timeouts, the actual .NET guest passes raw JIT:
-READY, exact native health/stop responses, exit0, empty stderr, four joined
-workers and complete resource release. The same workload now also passes raw
-NativeAOT and both optimized host modes. Final-product promotion, ordinary
-controller stop, simultaneous instances/restart and worker/sample integration
-remain pending. P5 remains open.
+attempt, so the difficult-build stop condition did not trigger. The genuine
+static-musl .NET guest now passes raw/optimized JIT/NativeAOT: actual readiness,
+exact native health/stop responses, exit0, four joined guest workers and complete
+resource release (`dotnet-threaded-guest-execution/attempt-febf3tyc`). The public
+translation command now delivers the reviewed threaded profile directly at
+`generated/TranslatedBlink` (`translation/attempt-i4a5mfa8`).
+
+Actual worker/controller qualification now passes all four modes at
+`worker-instances/attempt-kd2trw_m`: 16 workers and 40 exact HTTP comparisons,
+simultaneous private instances, normal/cooperative shutdown, restart and idle
+deadline cleanup. Native traffic reference `worker-native-traffic/attempt-znwlxua8`
+also passed. The separate final solution/sample qualification task was rejected
+by automated review for "possible cybersecurity risk" (B036); no runner was
+produced, retried or repackaged. The replacement sample is authored but unbuilt
+and unexecuted. P5 stops at this concrete remaining gate; it is not complete.
+All workers are idle and the build slot is released. P6 has not started.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
@@ -42,9 +40,9 @@ in `src/Host/include`, and the BCL implementation in `src/Managed.Emulation.Host
 The generated project links original sources/projects directly; immutable
 raw/profile snapshots are archival inputs only. Shared narrow-literal pooling,
 semantic postprocessing and the actual final direct-source build pass with
-unchanged authored hashes (`translation/attempt-4yjaed1_`).
+unchanged authored hashes (`translation/attempt-i4a5mfa8`).
 
-The separate authored `Managed.Emulation.Execution` C# API owns initialization,
+The prior P4 authored `Managed.Emulation.Execution` C# API owns initialization,
 loading, the instruction loop, stop and teardown through upstream exports. The
 real sample passes JIT/NativeAOT health and normal stop. All four service forms
 pass six exact native HTTP cases each (`guest-service/attempt-18nn8vfz`). The
@@ -2643,3 +2641,44 @@ signal delivery or send-expiry coverage is inferred from this workload. The
 final P3 finite504/2016 CPU evidence keeps its separate producer lineage.
 The P5 observed-runtime inventory checklist item is complete. Remaining service
 lifecycle and final worker/sample gates are still pending.
+
+
+### P5 actual worker/API milestone; final sample gate blocked
+
+The public controller now starts the real authored C# worker over the threaded
+translated product. Image admission is bounded at 2 MiB within the existing 3 MiB
+frame; pre-launch serialization/validation remains intact. Each worker owns one
+execution, reports actual readiness/guest output/endpoints/outcome, and reserves
+raw standard streams for control frames. Options, limits and unsupported settings
+are explicit in `src/Managed.Emulation.Worker/README.md`.
+
+Native traffic reference `worker-native-traffic/attempt-znwlxua8/receipt.json`
+has SHA-256 `4dc8d1122825b03fb75dad720665e212eaad97ccb8447ee882b90b8d2c5b2755`.
+It verifies the unchanged guest with a 3,573-byte health request, the same bytes
+in seven immediate writes, a 61-byte missing-path request and normal HTTP stop.
+The 404 response is 101 bytes; larger/fragmented health responses retain the exact
+86-byte native oracle. Write boundaries do not imply TCP packet boundaries.
+
+`worker-instances/attempt-kd2trw_m/receipt.json` has SHA-256
+`f17019198ff8f02aa3d522944e04c94d05de9ad10509e6cdb9fa742f56a79483`.
+All 13 commands exit0 with no cleanup signals. Each raw/optimized JIT/NativeAOT
+form runs four real processes and ten exact native HTTP comparisons: simultaneous
+instances, HTTP exit, controller stop, fresh-process restart and an ordinary idle
+accept deadline. Every actual final report proves joined/quiescent execution,
+released Machines/backing, disposed/drained private IO and no notification error.
+The parent result alone is never accepted as cleanup evidence. Auxiliary private
+marker hashes are recorded but guest reads of them are not claimed; distinct
+private executable paths are actually loaded. Worker control-read drainage is
+reported honestly and remains separate from guest IO cleanup.
+
+Independent worker review checked 1,382 identities; coordinator additionally checked
+1,724 source/log/artifact/binary hash references and normal command cleanup. Only
+two READMEs changed after execution; their exact prior bytes are preserved in
+private source snapshots and `documentation-update.json` records the doc delta.
+All executable inputs and the main receipt remain unchanged.
+
+The prepared `ManagedConsumer` solution/sample now uses this public controller
+and actual worker, with original authored project references. Its own final build,
+JIT and NativeAOT qualification is unrun after current automated rejection B036.
+Earlier C sample receipts are not reused as evidence for this replacement.
+The phase stops here with that explicit pending P5 gate; no P6 work begins.

@@ -148,22 +148,28 @@ lifecycle qualification. No boundary or translated guest pass is claimed until
 the corresponding executions finish.
 
 
-## Pending worker delivery integration
+## Current worker delivery integration
 
-The existing `Managed.Emulation` controller is a process/protocol implementation;
-its earlier protocol fixtures do not establish real guest execution. Its current
-1 MiB total-image admission limit rejects the selected 1,618,312-byte ELF. A
-bounded 2 MiB image profile would admit this guest; its 2,157,752-byte base64 body
-plus the selected configuration fits the existing 3 MiB capped frame. Preserve
-serialization and frame validation before launching a worker.
+The actual static-musl .NET service now passes all four interpreter host forms;
+see [the observed runtime inventory](P5-NATIVEAOT-RUNTIME.md). Public delivery
+`translation/attempt-i4a5mfa8` publishes the threaded profile at
+`generated/TranslatedBlink`. Earlier startup failures above retain their original
+scope and are not the current compatibility result.
 
-After actual guest compatibility passes, the worker must consume the threaded
-C# owner, reserve raw standard streams for protocol frames, pass the four guest
-GC/environment entries separately from host settings, and emit readiness only
-after actual guest output and loopback publication. One execution per fresh
-worker process is required. The current owner has a fixed 64 MiB backing limit
-and a 16-total-worker bound; reject unsupported options until genuinely
-parameterized. Do not dispose borrowed IO/stop/storage until all execution
-workers join and the owner is quiescent. The sample still uses the earlier C
-fixture and single-thread owner; its readiness and exact response checks are
-reusable, but its current success is not a .NET guest pass.
+The `Managed.Emulation` controller retains a bounded 3 MiB control frame. Its
+image admission limit is now 2 MiB to admit the 1,618,312-byte guest ELF; the
+2,157,752-byte base64 payload plus selected configuration fits that frame.
+Validation and encoding still happen before worker launch. The authored
+`Managed.Emulation.Worker` connects this controller to `ThreadedGuestExecution`,
+reserves raw standard streams for protocol, and emits readiness only after actual
+guest output and loopback publication. One guest execution belongs to each fresh
+process. Its fixed profile requires 64 MiB backing and at most 16 cumulative
+guest workers; unsupported settings are rejected. IO and storage are released
+only after execution joins and becomes quiescent.
+
+Actual simultaneous-instance, HTTP, restart, cooperative-stop and idle-deadline
+qualification passes all four modes under `tests/WorkerInstances` at
+`worker-instances/attempt-kd2trw_m` (16 workers and 40 exact HTTP comparisons). The rewritten sample
+uses this worker, but its own final solution/JIT/NativeAOT qualification task was
+rejected by automated review for possible cybersecurity risk (B036). That task
+is not retried or replaced by historical C sample evidence. No P6 work starts.

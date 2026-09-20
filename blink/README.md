@@ -6,8 +6,9 @@ C# on Linux x64. The qualified delivery translates all 108 selected product sour
 `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and preserves a separate
 immutable raw snapshot. Authored Host/bridge sources are linked directly from
 `src`, and a separate authored C# API owns loading, execution and cleanup.
-The usage sample passes actual service health and normal shutdown in JIT and
-Linux NativeAOT. Campaign C probes remain test-only.
+The earlier C service sample passed health and normal shutdown in JIT and Linux
+NativeAOT; the replacement .NET worker sample has its separate pending gate.
+Campaign C probes remain test-only.
 The normal CPU corpus passes 504 cases in each of raw/optimized JIT/NativeAOT,
 for 2,016 comparisons, with 46 historical custom fault cases explicitly excluded.
 Actual guest-memory lifecycle and valid ELF/fixed TLS tests also pass all four
@@ -28,37 +29,36 @@ poll/sleep deadlines, inherited-I/O cancellation and instruction budgeting.
 P4 is complete for the selected Linux x64 profile;
 see [the P4 ledger](docs/P4-HOST-SERVICES.md).
 
-P5 is now authorized and active. A genuine .NET NativeAOT HTTP guest builds and
-passes native health/shutdown checks. Its first translated dynamic-loader run
-fails in libc's initial mmap before readiness; this is preserved failure
-evidence, not a guest compatibility pass. A bounded ordinary static-musl build
-is being prepared to simplify that library closure. Runtime threads and other
-observed contracts remain to implement. See [NativeAOT guest status](docs/P5-NATIVEAOT-GUEST.md).
-P6 has not started.
+P5 is active. The genuine static-musl .NET NativeAOT HTTP guest now passes raw
+and optimized JIT/NativeAOT hosts, including exact native health/shutdown and
+all guest-thread cleanup. Public translation defaults to this threaded profile.
+See [runtime evidence and limits](docs/P5-NATIVEAOT-RUNTIME.md). The real
+subprocess worker passes all four modes: 16 workers, 40 exact HTTP comparisons,
+simultaneous instances, restart, cooperative stop and idle deadlines. Final
+solution/sample qualification remains blocked by automated review (B036).
+P5 is incomplete; P6 and Windows execution remain open.
 
-The service product is incomplete. The P5 subprocess worker/API, concurrent
-instances, restart and Windows execution remain open. The P3 pass is bounded
-selected-profile coverage, not exhaustive ISA or general dynamic TLS support.
-The independent controller has subprocess lifecycle tests; it does not
-yet provide a qualified translated-service worker. See [progress](docs/PROGRESS.md),
+The P3 pass is finite selected-profile coverage. Broader ISA, dynamic ELF/TLS
+and unrelated runtime compatibility are not implied. See [progress](docs/PROGRESS.md),
 [validation](docs/VALIDATION.md), [blockers](docs/BLOCKERS.md) and the
-[implementation plan](docs/PLAN.md) for exact evidence and remaining gates.
+[implementation plan](docs/PLAN.md) for evidence and remaining gates.
 
 ## Generate and use the final project
 
 ```bash
 dotnet build dotcc.sln -c Release -p:UseLocalLalrCc=false
 bash blink/scripts/translate.sh
-bash blink/scripts/build-guest.sh
 dotnet build blink/ManagedConsumer.slnx -c Release
-dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build
+dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build -- \
+  blink/artifacts/dotnet-guest-musl/attempt-8za50rji/publish/DotNetService \
+  blink/src/Managed.Emulation.Worker/bin/Release/net10.0/Managed.Emulation.Worker.dll
 ```
 
 See [translation delivery](scripts/TRANSLATION.md), the
 [usage sample](ManagedConsumer/README.md) and
 [clean delivery verification](scripts/CLEAN-DELIVERY.md). Finish generation before
-building consumers. The sample owns one controlled service invocation; the
-planned subprocess service API remains unqualified.
+building consumers. The sample exercises normal guest exit and a fresh worker with cooperative stop.
+Its current integration qualification is pending.
 
 ## Reproduce the core gate
 
