@@ -2630,3 +2630,16 @@ The same C# execution implementation remains unchanged. The sample/solution now
 point toward the controller, actual worker and this original execution project;
 those consumer changes await their own runtime qualification and are not credited
 from this library build. P5 remains active; P6 remains held.
+
+
+### P5 actual runtime inventory recorded
+
+`P5-NATIVEAOT-RUNTIME.md` records the pinned guest producer/ELF, native controlled
+GC witness and all four translated service traces. It distinguishes successful
+required operations from tolerated refusals, unfinished native observations and
+unsupported facilities. Private epoll and thread ABI layouts remain distinct
+from Linux guest layouts; no command8 membarrier, epoll registrations, arbitrary
+signal delivery or send-expiry coverage is inferred from this workload. The
+final P3 finite504/2016 CPU evidence keeps its separate producer lineage.
+The P5 observed-runtime inventory checklist item is complete. Remaining service
+lifecycle and final worker/sample gates are still pending.

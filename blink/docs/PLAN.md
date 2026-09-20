@@ -439,11 +439,14 @@ workarounds.
       Native glibc and static-musl builds and exact HTTP references pass; see
       `tests/DotNetService/README.md` and `tests/DotNetService/MUSL.md`. Actual
       translated startup and sample integration remain the separate gates below.
-- [ ] Inspect the actual guest ELF/dependencies and native service behavior;
+- [x] Inspect the actual guest ELF/dependencies and native service behavior;
       inventory required startup/runtime instructions, syscalls, TLS, threads,
       synchronization, signals and filesystem inputs. Record required profile
       extensions explicitly and implement them through translated upstream
       algorithms and the managed host boundary, without success stubs.
+      The finite observed surface, actual four-mode results and explicit
+      unsupported/tolerated operations are recorded in
+      `docs/P5-NATIVEAOT-RUNTIME.md`; broader runtime compatibility is not claimed.
 - [ ] Execute the NativeAOT guest through translated Blink in raw/optimized
       JIT/NativeAOT host forms on Linux x64. Verify readiness, real HTTP requests,
       normal shutdown, ordinary cancellation and resource cleanup against the
