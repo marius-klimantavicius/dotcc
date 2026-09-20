@@ -31,12 +31,22 @@ Actual worker/controller qualification now passes all four modes at
 `worker-instances/attempt-kd2trw_m`: 16 workers and 40 exact HTTP comparisons,
 simultaneous private instances, normal/cooperative shutdown, restart and idle
 deadline cleanup. Native traffic reference `worker-native-traffic/attempt-znwlxua8`
-also passed. The separate final solution/sample qualification task was rejected
-by automated review for "possible cybersecurity risk" (B036); no runner was
-produced, retried or repackaged. The replacement sample is authored but unbuilt
-and unexecuted at that stop. The user subsequently requested a fresh verification
-agent and the Kestrel guest update above. Work has resumed; P5 is not complete.
+also passed. A historical final-sample task was rejected by automated review
+(B036). After the user requested fresh verification, the actual solution and
+JIT/NativeAOT samples passed at `managed-consumer-delivery/attempt-8k2fus34`
+(commit f06256d). These are raw-socket baseline results; Kestrel remains pending.
 P6 has not started.
+
+The genuine static-musl Kestrel guest builds and passes its five native HTTP
+cases. Translated startup currently reaches an OOM during Hashtable growth.
+Bounded register observation shows every insertion expanding the table; review
+identified the pinned upstream SSE comparison handler storing integer masks
+through a floating-point union member. The guest worker is checking the exact
+XMM/threshold state, and the verification worker owns a narrow staged source
+repair plus normal instruction regressions. The separate asynchronous socket
+boundary already passes native and all four managed forms. The coordinator
+owns canonical regeneration and the next actual Kestrel run; no guest quota
+increase or native fallback is being substituted for the repair.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
@@ -2817,3 +2827,33 @@ boundary. Investigation continues on immutable original snapshots: selected
 allocation arguments are being observed, and a read-only audit identified the
 old upstream sysinfo fallback reporting1GiB total and zero free RAM. That is a
 candidate pressure-accounting discrepancy, not yet a proven root cause or fix.
+
+
+### Kestrel Hashtable failure localized to upstream SIMD mask storage
+
+The bounded allocation observation at `attempt-registers-ndumh6v1` records
+46 insertions and 46 expansions. The final request is 672,827 buckets,
+16,147,872 bytes. A second immutable-baseline observation at
+`kestrel-guest-execution/attempt-float-registers-smhynls8/receipt.json`
+(SHA-256 `b10f27addb1cfaa4b66f89699f42b222ce028f9aa6c30da8d907215afd3754bc`)
+identifies the first wrong value: the constructor computes `.72 * 3 = 2.16`
+correctly, but CMPORDSS produces `bf800000` instead of `ffffffff`. ANDPS and
+CVTTSS2SI consequently produce a zero growth threshold. Rehash with seven
+buckets likewise computes 5.04 correctly before the mask corrupts its threshold.
+All 51 observed comparison masks are wrong. The diagnostic records 458 bounded
+rows, no observation omissions/errors, the same guest OOM, and complete teardown.
+The coordinator independently rechecked all 151 pinned input hashes.
+
+The immutable pinned upstream `OpCmppsd` assigns the integer comparison result
+through the floating member of its union in all eight scalar/packed stores.
+Generated C# faithfully preserves that erroneous numeric conversion. This is a
+specific upstream instruction defect, not evidence for increasing guest quotas.
+Commit 3e35284 preserves both diagnostic recipes and exact observations.
+
+The verification worker owns a reviewed staging correction to these eight
+stores and ten normal instruction regressions, preserving the first 550 CPU
+case descriptors and 46 exclusions. The coordinator owns canonical regeneration
+and integration; the guest worker next retries actual Kestrel against that
+coherent delivery. The separate sysinfo fallback reporting zero free RAM remains
+a known input mismatch, not the cause established by this observation. P5 is
+still open and P6 remains held.
