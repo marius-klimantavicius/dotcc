@@ -13,6 +13,18 @@ public static partial class Blink
         {
             if(io==null)return IoError(19);
             if(length==null || value==null && *length!=0)return IoError(14);
+            if (level == 1 && option is 20 or 21)
+            {
+                var timeout = io.GetSocketTimeout(fd, option == 20);
+                if (!timeout.Succeeded) return IoError((int)timeout.Error);
+                Span<byte> encoded = stackalloc byte[16];
+                BinaryPrimitives.WriteInt64LittleEndian(encoded, timeout.Value.Seconds);
+                BinaryPrimitives.WriteInt64LittleEndian(encoded[8..], timeout.Value.Microseconds);
+                int copied = (int)global::System.Math.Min(*length, 16u);
+                encoded[..copied].CopyTo(new Span<byte>(value, copied));
+                *length = (uint)copied;
+                return 0;
+            }
             var result=io.GetSocketOption(fd,level,option);
             if(!result.Succeeded)return IoError((int)result.Error);
             Span<byte> bytes=stackalloc byte[4];BinaryPrimitives.WriteInt32LittleEndian(bytes,result.Value);

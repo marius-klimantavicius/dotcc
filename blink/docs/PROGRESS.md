@@ -2520,3 +2520,31 @@ qualification and bridge marshalling. No success-only socket option is accepted.
 Do not use forced send-buffer saturation or injected peer delays/disconnects to
 claim expiry coverage. Preserve ordinary successful I/O, timed empty waits,
 caller cancellation and owner drain as distinct contracts. P6 remains held.
+
+
+### P5 actual socket timeout semantics qualify
+
+Private SO_SNDTIMEO/SO_RCVTIMEO now marshal signed LP64 timeval16 values, retain
+per-socket/dup-shared settings, and inherit them on accept. Zero is unbounded;
+positive values round up to milliseconds with an explicit int.MaxValue-ms
+profile ceiling. Getsockopt reports the effective value. Physical nonblocking
+Send/Receive/Accept attempts use monotonic managed deadlines and real WouldBlock
+results: positive bytes return immediately, no-progress timeout returns EAGAIN,
+and caller/owner cancellation remains125. Existing integer options remain4-byte.
+A configured timed connect is explicitly unsupported; no in-progress connect
+state machine or fake option success is claimed. Poll/epoll semantics are separate.
+
+Native and raw/optimized JIT/NativeAOT pass ordinary empty accept and all four
+receive-route timeouts, exact5s option round-trips, dup sharing, accept inheritance,
+normal transfers with active options and after zero reset, and private caller
+cancellation/owner drain. Send-expiry under forced backpressure is not tested or
+claimed. Receipt `host-socket-timeouts/attempt-w1lhum8k/receipt.json` has SHA-256
+`836b760fe3abfacbc58c6a031e0e65ae2c358e0482fde4d6af28cbdc9325720d`;
+all17 commands pass and361 identity checks verify frozen inputs/output closures.
+Coordinator independently rechecked live sources/tools and execution maps.
+The preceding native-only attempt-7kpmkwuj records native_passed separately.
+
+Inputs now owns a fresh Host/bridge profile and experimental delivery. No C or
+header input changed, so all108 C producers are expected to be reused with exact
+identity checks. The actual .NET guest must then be rerun; focused timeout
+qualification alone does not establish its HTTP or normal shutdown gate.

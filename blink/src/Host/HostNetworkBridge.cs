@@ -1,4 +1,5 @@
 using global::System;
+using global::System.Buffers.Binary;
 using global::System.Net.Sockets;
 
 namespace Managed.Emulation;
@@ -127,6 +128,16 @@ public static partial class Blink
         {
             if (io == null) return IoError(19);
             if (value == null) return IoError(14);
+            if (level == 1 && option is 20 or 21)
+            {
+                // Reviewed LP64 timeval: signed seconds and microseconds, 16 bytes.
+                if (length < 16) return IoError(22);
+                var timeoutBytes = new ReadOnlySpan<byte>(value, 16);
+                var timeout = new Managed.Emulation.Host.SocketTimeout(
+                    BinaryPrimitives.ReadInt64LittleEndian(timeoutBytes),
+                    BinaryPrimitives.ReadInt64LittleEndian(timeoutBytes[8..]));
+                return (int)IoResult(io.SetSocketTimeout(fd, option == 20, timeout));
+            }
             if (length < 4) return IoError(22);
             Managed.Emulation.Host.TcpHostOption selected;
             if (level == 1 && option == 2) selected = Managed.Emulation.Host.TcpHostOption.ReuseAddress;
