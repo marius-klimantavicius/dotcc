@@ -21,9 +21,13 @@ statement compiler repairs. Shared memory/process-state/barrier prerequisites
 pass native/all-four checks; a valid clone/TLS/futex ELF passes Linux and pinned
 threaded native Blink. The threaded ABI layout and normal clone/TLS/futex ELF
 now pass raw/optimized JIT/NativeAOT using the authored C# owner, including actual
-worker joins, child-TID clearing and shared-memory release. Current work retries
-the real .NET guest against that qualified finite thread profile. No NativeAOT
-service readiness or P5 pass is claimed; stable delivery remains separate.
+worker joins, child-TID clearing and shared-memory release. Actual threaded .NET
+startup passes clone and GC reservation, then normal musl stack discovery after
+reviewed source-range validation. Its next failure is epoll_create1 ENOSYS before
+readiness. The real private empty-epoll lifetime/wait boundary now passes native
+and all four managed forms (95364ac); a fresh threaded profile is being built
+for the unchanged actual guest retry. No NativeAOT service readiness or P5 pass
+is claimed; stable delivery remains separate.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
@@ -2464,3 +2468,24 @@ upstream guest pwait2 still uses its existing millisecond conversion. This focus
 boundary result does not qualify registered events or actual guest service
 startup. The unchanged actual .NET guest diagnostic follows successful delivery;
 P5 remains open and P6 is held.
+
+
+### P5 fresh threaded epoll delivery builds
+
+The fresh base `core-profile/attempt-sbwhbkys` and reviewed threaded derivation
+`threaded-core/attempt-empty-epoll` pass. All108 producers emit afresh with zero
+reuse and successful link; assembly receipt `core/objects/36b04436f1e87762aac89c315944e7a8ec3ed19a95c93c4acacbbe05f2dab598/receipt.json`
+has SHA-256 `4781efd31b0ced30666e773bf89bbfafc8c9b6e619b13114638409e10ff2e393`.
+Delivery `threaded-delivery/attempt-jttvocmh/receipt.json` has SHA-256
+`ed8698dda0797a9de502513913efca30ebfaf655395aedf0bdc150413e4a7655`:
+raw build, semantic postprocess, restored-authored build and final direct-source
+build all pass. The experimental project links37 original adapters and the
+original Host project, without active copied Host/Bridges. Stable single-thread
+delivery is preserved. No compiler rebuild was needed.
+
+The launch receipt has SHA-256
+`dfaa1fd69ad14a52886e8a381b800c09fa0784a0d1dd734f8c4017e50269b8ee`;
+`threaded-core/attempt-empty-epoll/final-review.json` independently verifies1723
+identities/maps, including objects, source/compiler and raw/final/log closures.
+Coordinator rechecked all607 frozen delivery inputs. These are build gates; guest
+now owns the unchanged actual .NET raw-JIT diagnostic on this exact delivery.

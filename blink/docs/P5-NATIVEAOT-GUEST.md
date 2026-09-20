@@ -144,3 +144,24 @@ is guarded to the existing one-guest-thread/no-fork profile. This API supplies a
 real process-wide fence; future guest threading still needs shared owner and
 lifecycle qualification. No boundary or translated guest pass is claimed until
 the corresponding executions finish.
+
+
+## Pending worker delivery integration
+
+The existing `Managed.Emulation` controller is a process/protocol implementation;
+its earlier protocol fixtures do not establish real guest execution. Its current
+1 MiB total-image admission limit rejects the selected 1,618,312-byte ELF. A
+bounded 2 MiB image profile would admit this guest; its 2,157,752-byte base64 body
+plus the selected configuration fits the existing 3 MiB capped frame. Preserve
+serialization and frame validation before launching a worker.
+
+After actual guest compatibility passes, the worker must consume the threaded
+C# owner, reserve raw standard streams for protocol frames, pass the four guest
+GC/environment entries separately from host settings, and emit readiness only
+after actual guest output and loopback publication. One execution per fresh
+worker process is required. The current owner has a fixed 64 MiB backing limit
+and a 16-total-worker bound; reject unsupported options until genuinely
+parameterized. Do not dispose borrowed IO/stop/storage until all execution
+workers join and the owner is quiescent. The sample still uses the earlier C
+fixture and single-thread owner; its readiness and exact response checks are
+reusable, but its current success is not a .NET guest pass.
