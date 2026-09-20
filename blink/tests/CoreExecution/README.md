@@ -1,5 +1,13 @@
 # Actual upstream core consumer
 
+This probe requires the single-threaded core profile. Its authored C test
+frontend does not bind the C# guest-thread owner used by the threaded product.
+The runner rejects that incompatible profile before building; use the actual
+threaded owning-consumer fixtures for threaded service execution. Historical
+attempt `artifacts/core-execution/attempt-qzdd97ja` preserves the mismatch:
+arithmetic and budget passed, then exit reached an unbound guest-thread callback.
+It is not a threaded product qualification.
+
 Run `python3 blink/tests/CoreExecution/run.py --assembly-receipt <objects/KEY/receipt.json>`
 after `assemble-core.py` has linked the complete frozen object set. `--prepare-only`
 creates the owning projects before the link finishes; `--build-only` stops after

@@ -1,5 +1,14 @@
 # P5: observed .NET NativeAOT runtime requirements
 
+This is the preserved **raw-socket baseline** inventory. The user subsequently
+selected ASP.NET Core/Kestrel as the required P5 guest. Its native producer and
+configuration are documented in `tests/KestrelService/README.md`; translated
+startup evidence and the SIMD mask correction are in
+`tests/KestrelGuestExecution/README.md`. The original results below are not
+Kestrel passes. Later registered asynchronous socket qualification is recorded
+in `tests/HostAsyncSockets/README.md`; the empty-epoll limits below describe the
+older baseline profile only.
+
 This inventory covers one genuine C# synchronous HTTP service, compiled to a
 static Linux x64 musl NativeAOT ELF, loaded and executed by the translated Blink
 interpreter. It does not substitute a C service or native emulator. The guest

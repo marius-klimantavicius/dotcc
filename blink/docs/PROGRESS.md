@@ -2869,3 +2869,34 @@ The fetch check now preserves narrowly recognized XML/gitignore IDE metadata;
 every archived file remains checked byte-for-byte, and other extra files or
 symlinks still fail. The normal offline archive verification passes with those
 settings untouched.
+
+
+### Corrected public delivery and the next Kestrel startup limit
+
+`translation/attempt-tf_6yqk6/receipt.json` (SHA-256
+`92763476d1719166912ecbf2d5ca31cabb1feb512cfcef278a288319980524a5`)
+passes all 14 production steps with 108 fresh objects, unchanged original
+adapter/Host sources, raw comparison, semantic postprocessing and final build.
+The coordinator checked all command logs, 89 authored source hashes and 18 final
+files. The delivered library has one `IsJitDisabled` definition and zero
+`Libc.L` calls, confirming the requested inline deduplication and literal pool.
+
+The first corrected Kestrel retry at `kestrel-guest-execution/attempt-7lswgkg3`
+(SHA-256 `e7e2075e1b6b6088724093069e592dd7d8a7fbb23bd35c720094b2995c4e4af7`)
+progresses into thread-pool and epoll initialization. It does not reach READY:
+the guest reports failure to create the thread-pool Gate thread, and the trace
+records one failed anonymous PROT_NONE mmap of 274,432 bytes. The old Hashtable
+OOM is absent. Execution reaches the 100M instruction bound; all six Machines,
+workers, backing and IO release. One busy worker's 20,048 syscall observations
+exceed the stored 16,384 rows; that truncation is explicit, not complete evidence.
+The guest worker is distinguishing virtual reservation limits from actual
+backing limits before any profile change; post-cleanup retained bytes are not a
+peak-memory measurement.
+
+A separate legacy CoreExecution check at `attempt-qzdd97ja` passes arithmetic
+and instruction-budget rows, then its exit probe reaches an unbound guest-thread
+callback. That test frontend assumes the single-threaded profile; the runner now
+rejects the incompatible threaded profile before building. No replacement owner
+or success callback is introduced. CPU regression is being adapted to derive
+its own normal frontend directly from the verified public delivery, with explicit
+compiled-product provenance, rather than calling this failed check a core pass.

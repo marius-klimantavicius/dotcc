@@ -32,6 +32,8 @@ for name, digest in inputs['staged_headers'].items():
         raise SystemExit('frozen profile changed: ' + name)
 if sha(profile / 'inputs.json') != assembly['identity']['profile_inputs_sha256']:
     raise SystemExit('assembly/profile identity mismatch')
+if 'guest-threads-boundary.json' in inputs['staged_headers']:
+    raise SystemExit('CoreExecution requires the single-threaded profile: its exit probe has no guest thread owner. Use a threaded owning consumer for this product.')
 base = ROOT / 'generated/core-execution'
 base.mkdir(parents=True, exist_ok=True)
 a = Path(tempfile.mkdtemp(prefix='attempt-', dir=base))
