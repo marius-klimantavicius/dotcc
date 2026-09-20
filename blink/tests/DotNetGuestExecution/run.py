@@ -48,7 +48,7 @@ def main():
     base.mkdir(parents=True, exist_ok=True)
     attempt = Path(tempfile.mkdtemp(prefix="attempt-", dir=base))
     receipt = dict(passed=False, prepared=False, diagnostic_completed=False, guest_passed=False,
-                   scope="Historical raw delivery with separately recorded current C# owner; no fresh compiler qualification",
+                   scope="Verified raw delivery with separately recorded current C# owner; producer compiler identity comes from that delivery",
                    attempt=str(attempt), commands=[], frozen={}, runner_sha256=sha(__file__))
     print(attempt, flush=True)
     env = dict(os.environ, TMPDIR=str(attempt / "tmp"), LC_ALL="C")

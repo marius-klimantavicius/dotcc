@@ -12,7 +12,7 @@ guest execution happens without `--run`:
 ```sh
 python3 blink/tests/DotNetGuestExecution/run.py \
   --image-mode dynamic \
-  --translation-receipt blink/artifacts/translation/attempt-4yjaed1_/receipt.json \
+  --translation-receipt blink/artifacts/translation/attempt-wd_77mip/receipt.json \
   --guest-receipt blink/artifacts/dotnet-guest/attempt-5130ydrk/receipt.json
 ```
 
@@ -21,7 +21,7 @@ The separately native-qualified static musl guest uses:
 ```sh
 python3 blink/tests/DotNetGuestExecution/run.py \
   --image-mode static \
-  --translation-receipt blink/artifacts/translation/attempt-4yjaed1_/receipt.json \
+  --translation-receipt blink/artifacts/translation/attempt-wd_77mip/receipt.json \
   --guest-receipt blink/artifacts/dotnet-guest-musl/attempt-8za50rji/receipt.json
 ```
 
@@ -47,12 +47,14 @@ mount. No procfs, sysfs, cgroup tree or `/dev/urandom` file is mounted. Native
 probing of those paths is recorded; whether a particular probe requires a
 successful result remains a question for the actual diagnostic.
 
-The initial baseline is the older, already qualified delivery `4yjaed1_` raw
-source and its frozen Host/bridge closure. Its producer compiler identity is
-recorded and deliberately not equated with the current compiler. The current
-C# owner is copied and identified separately, including its reviewed dynamic
-image option. No shared compiler build, source re-emission, postprocessing or
-product mutation is performed. This cannot qualify the newer compiler.
+Use a passing delivery that includes all bindings required by the current C#
+owner. The runner records that delivery's producer compiler identity and copies
+its immutable raw source and frozen Host/bridge closure. The current C# owner
+is copied and identified separately. The runner does not rebuild the compiler,
+re-emit C, postprocess or mutate the product. Historical runs below used delivery
+`4yjaed1_`; that frozen closure predates the new membarrier owner binding and is
+no longer compatible with the current owner. Their archived owner copies and
+receipts remain evidence for those historical runs only.
 
 Baseline limits remain 64 MiB of owned backing memory/guest address-space
 policy, 20 million completed dispatches and a 30-second owner deadline. Runtime
@@ -136,3 +138,11 @@ register values are kept unsigned without interpreting a particular return as
 the cause of failure. The observer does not stop execution when the list fills.
 The report reads the trace only after the owning thread has joined; otherwise
 it marks it unavailable. Earlier receipts remain unchanged and have no trace.
+
+The first current-compiler delivery diagnostic uses `translation/attempt-wd_77mip`
+and passes the real membarrier query/registration. It then reaches clone56 with
+flags0x7d0f00, receives ENOSYS from the disabled-thread profile and exits -1
+after151,283 instructions. `attempt-xyn4u0iw/receipt.json` SHA-256
+`3c02bc464ff04ad6fa9ac6d95e2e1fbb270063ba22cbdabc0e90613010e2502f`
+preserves40 untruncated observations, joined cleanup and released memory. No
+HTTP case ran; this remains a failed guest diagnostic. Build was warning-free.

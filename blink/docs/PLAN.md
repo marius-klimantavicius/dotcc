@@ -432,10 +432,13 @@ tooling only if needed. If musl NativeAOT compilation proves very difficult or
 impossible, stop and report for user direction rather than pursuing prolonged
 workarounds.
 
-- [ ] Add a reproducible .NET NativeAOT HTTP service fixture with source, pinned
+- [x] Add a reproducible .NET NativeAOT HTTP service fixture with source, pinned
       SDK/toolchain and container image identity when used, publish settings,
       executable hash and exact build/run commands. Provide its ELF at a
       documented path for ManagedConsumer; retain the existing C fixture.
+      Native glibc and static-musl builds and exact HTTP references pass; see
+      `tests/DotNetService/README.md` and `tests/DotNetService/MUSL.md`. Actual
+      translated startup and sample integration remain the separate gates below.
 - [ ] Inspect the actual guest ELF/dependencies and native service behavior;
       inventory required startup/runtime instructions, syscalls, TLS, threads,
       synchronization, signals and filesystem inputs. Record required profile

@@ -11,18 +11,19 @@ publishing; musl/container tooling is considered only if needed. If producing
 the musl guest is very difficult or impossible, stop and ask for user direction
 through the coordinator; no prolonged build workarounds. No P6 phase starts.
 
-The guest worker owns `tests/DotNetService` and its guest build script. The inputs
-worker audits actual profile requirements and bounded musl/container feasibility.
-The coordinator owns integration and runtime gate evidence. Root independently
-owns compiler warning-output changes; this team does not edit/rebuild shared
-compiler inputs until handoff. Prior P4 results below retain their exact scope.
+Both ordinary glibc and static musl NativeAOT guest builds and native HTTP
+references pass. The static musl build succeeded in one standard pinned Podman
+attempt, so the difficult-build stop condition did not trigger. Actual translated
+startup has identified a required membarrier boundary; its native/all-four
+qualification now passes. The coordinator is regenerating the product with the
+current compiler and that boundary, then will rerun the actual static guest.
+Guest and inputs workers review upcoming thread ownership and valid musl stack/GC
+requirements without mutating frozen inputs. Shared compiler handoff from root
+completed at `58fe8ad`. No translated NativeAOT readiness or P5 pass is claimed.
 
-
-Next-phase requirement: P5 must execute a .NET NativeAOT service ELF through
-translated Blink, using a Docker/Podman musl build if needed. Its real runtime
-dependencies must be implemented and qualified; the C fixture and NativeAOT
-publication of the emulator host alone do not satisfy this requirement. The
-updated P5 checklist is in PLAN.md. P4 remains complete; P5 execution is held.
+The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
+the emulator host alone do not satisfy the real NativeAOT guest requirement.
+Prior P4 results below retain their exact scope.
 
 The current product is a 108-producer translated library with no `CoreProbe`,
 test `main` or C execution driver. Original adapters live in `src/Host`, headers
@@ -77,7 +78,7 @@ qualification, or post-NEG reexecution of unchanged memory/loader tests.
 All P3 assignments finished and released the build slot. The next section
 records the separately authorized P4 work.
 
-## Current phase: P4 complete; stopped at the requested boundary
+## Prior phase: P4 completed at the requested boundary
 
 The user explicitly authorized P4 after the selected P3 milestone. This phase
 stops at P4 completion or a concrete blocker after independently permitted P4
@@ -108,8 +109,8 @@ main checkout. Historical recovery/detached worktrees remain evidence only.
 
 - Coordinator: current shared-toolchain build/identity freeze, normal-only probe
   scope alignment, integration, runtime revalidation, durable status and commits.
-- Inputs worker: final P4 stop/deadline matrix completed; idle at phase close.
-- Guest worker: actual service matrix completed; idle pending final phase close.
+- Inputs worker: P5 host boundary qualification and read-only musl stack/GC review.
+- Guest worker: P5 dispatcher integration and read-only guest thread ownership review.
 
 Shared compiler edits and heavy test suites remain serialized. Workers own
 disjoint authored files and do not commit duplicate recovery-branch history.
@@ -123,7 +124,7 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 | P2 | Passed, delivery refinements passed | 108 product producers, upstream exports without test/C execution frontends, shared literal pool, direct original-source references and immutable raw comparison. Separate C# sample passes JIT/AOT. |
 | P3 | Passed — selected profile | 504 normal CPU cases per form (2,016 matches), valid ELF/fixed TLS and actual guest-memory lifecycle pass. Bounded coverage and retained producer evidence are documented above. |
 | P4 | Passed — selected profile | Native/all-four contracts, 24 actual HTTP comparisons, eight native completion controls and 44 actual owning stop/deadline cases. Phase stopped; no later phase started. |
-| P5 | Partial, held | ManagedConsumer.slnx actual service sample and C# owner pass; subprocess worker/API, restart and two-instance HTTP lifecycle remain unqualified. |
+| P5 | Active | Genuine glibc/static-musl NativeAOT guest and native HTTP pass; actual translated startup and first required memory-barrier boundary are recorded below. NativeAOT readiness, threaded runtime, worker/API, restart and two-instance lifecycle remain open. |
 | P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
 
 ## Observed environment
@@ -137,8 +138,8 @@ above. P2 delivery, the separate C# execution sample and P4's actual service and
 stop/deadline gates have passed for the selected Linux x64 profile. P5's
 subprocess worker, restart and two-instance HTTP lifecycle remain unqualified.
 Prepared P6 regression/performance work remains unrun, and actual Windows
-execution still requires that platform. P5/P6 are held at the requested phase
-boundary; earlier automated-review stops are historical evidence.
+execution still requires that platform. P5 is explicitly active; P6 remains held.
+Earlier automated-review stops are historical evidence.
 
 ## Observed validation (initial campaign baseline)
 
@@ -2188,3 +2189,39 @@ regeneration is next, with current compiler identities and unchanged authored
 source references, followed by the actual static NativeAOT diagnostic. Boundary
 qualification does not claim runtime startup or HTTP readiness. P5 remains
 active; no P6 work has begun.
+
+### P5 current product and next actual runtime requirement
+
+Fresh delivery `translation/attempt-wd_77mip/receipt.json`, SHA-256
+`a9af0c02fa4dc7c4bcc576968fa26f41250a187f877bb943ea429dee039032ac`,
+passes all108 fresh producers with zero reuse, native25, raw/postprocessed and
+final direct-source project builds. All35 original bridge links and original
+Host project remain active; authored hashes are unchanged. Current warning
+suppression and shared literal pooling are present.
+
+The unchanged static .NET guest now passes actual membarrier QUERY24 and
+registration0, then reaches `clone(0x7d0f00, stack, ptid, ctid, tls)`. The selected
+profile returns ENOSYS; the runtime unmaps its stack and exits -1 after151,283
+instructions, without readiness or HTTP. Receipt
+`dotnet-guest-execution/attempt-xyn4u0iw/receipt.json`, SHA-256
+`3c02bc464ff04ad6fa9ac6d95e2e1fbb270063ba22cbdabc0e90613010e2502f`,
+records40 untruncated syscall observations, ordinary exit trap, no managed
+exception, joined execution and final memory release. Diagnostic build has zero
+warnings/errors. This is progress past the former barrier failure, not a guest
+pass.
+
+A separate native-only control of the exact static ELF passes with supported
+GC settings `DOTNET_GCHeapHardLimit=1000000`, `DOTNET_GCRegionRange=2000000`,
+`DOTNET_GCRegionSize=100000` (hexadecimal16/32/1MiB). Receipt
+`dotnet-guest-gc-profile/attempt-lp8kf_q3/receipt.json`, SHA-256
+`f145da71d5032421fdd40bd368d248cad4918065b0b07ee545e32772fab7bb55`,
+preserves exact HTTP/exit0 and real3 helper threads; observed PROT_NONE reserve
+is33,558,528bytes. No whole-process memory or translated execution claim follows.
+
+Next: genuine managed guest-thread ownership and shared memory/lifetime. Generic
+BCL pthread mutex/condition primitives are reusable, but the guest Machine/System
+ABI, C# child loops, stop/join, TLS and futex ownership need explicit qualification.
+Guest worker owns source-only staged thread/ABI design; coordinator owns C#
+execution integration; inputs worker finished the native GC witness. The stable
+single-thread product remains intact until a new profile qualifies. P5 remains
+active, P6 held.
