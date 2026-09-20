@@ -7,13 +7,14 @@ namespace Managed.Emulation.Host;
 /// standard streams. No guest instruction execution or C pointer marshalling.</summary>
 public sealed partial class InstanceIo : IAsyncDisposable
 {
-    private enum Kind { Input, Output, Error, File, Socket, Pipe }
+    private enum Kind { Input, Output, Error, File, Socket, Pipe, Epoll }
     private sealed class Description(Kind kind, int handle = -1, int statusFlags = 0)
     {
         internal readonly Kind Kind = kind;
         internal readonly int Handle = handle;
+        internal readonly EpollState? Epoll = kind == Kind.Epoll ? new() : null;
         internal int References = 1;
-        internal int StatusFlags = kind is Kind.Output or Kind.Error ? 1 : kind == Kind.Socket ? 2 : statusFlags;
+        internal int StatusFlags = kind is Kind.Output or Kind.Error ? 1 : kind is Kind.Socket or Kind.Epoll ? 2 : statusFlags;
     }
     private readonly object sync = new();
     private readonly Dictionary<int, Description> descriptors = new();
@@ -209,6 +210,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
                 Kind.File => files.Close(description.Handle),
                 Kind.Socket => network.Close(description.Handle),
                 Kind.Pipe => pipes.Close(description.Handle),
+                Kind.Epoll => CloseEpoll(description.Epoll!),
                 _ => HostResult<int>.Success(0)
             };
         }
@@ -221,6 +223,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (!Find(fd, out var description)) return Task.FromResult(Fail<int>(GuestError.BadDescriptor));
             if (description.Kind == Kind.Socket) return network.ReceiveAsync(description.Handle, destination, cancellation);
             if (description.Kind == Kind.Pipe) return pipes.ReadAsync(description.Handle, destination, (description.StatusFlags & 2048) != 0, cancellation);
+            if (description.Kind == Kind.Epoll) return Task.FromResult(Fail<int>(GuestError.Invalid));
             HostResult<int> result;
             if (description.Kind == Kind.File) result = files.Read(description.Handle, destination.Span);
             else if (description.Kind == Kind.Input)
@@ -257,6 +260,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (!Find(fd, out var description)) return Task.FromResult(Fail<int>(GuestError.BadDescriptor));
             if (description.Kind == Kind.Socket) return network.SendAsync(description.Handle, source, cancellation);
             if (description.Kind == Kind.Pipe) return pipes.WriteAsync(description.Handle, source, (description.StatusFlags & 2048) != 0, cancellation);
+            if (description.Kind == Kind.Epoll) return Task.FromResult(Fail<int>(GuestError.Invalid));
             HostResult<int> result;
             if (description.Kind == Kind.File) result = files.Write(description.Handle, source.Span);
             else if (description.Kind is Kind.Output or Kind.Error)
@@ -358,7 +362,13 @@ public sealed partial class InstanceIo : IAsyncDisposable
         {
             owner = shutdown == null;
             shutdown ??= new(TaskCreationOptions.RunContinuationsAsynchronously); completion = shutdown;
-            if (owner) { disposed = true; descriptors.Clear(); closeOnExec.Clear(); input = []; inputPosition = 0; accepting = pending.ToArray(); }
+            if (owner)
+            {
+                disposed = true;
+                foreach (var description in descriptors.Values)
+                    if (description.Epoll is { } epoll) CloseEpoll(epoll);
+                descriptors.Clear(); closeOnExec.Clear(); input = []; inputPosition = 0; accepting = pending.ToArray();
+            }
         }
         if (owner)
         {

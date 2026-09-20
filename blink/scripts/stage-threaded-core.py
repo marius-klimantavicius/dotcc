@@ -21,6 +21,8 @@ PREFIX = b'#include "host-bindings.h"\n'
 AUTHORED_PREFIX = b'#include "config.h"\n'
 THREAD_HEADER = 'src/Host/include/host-guest-threads.h'
 THREAD_BRIDGE = 'src/Host/HostGuestThreadsBridge.cs'
+EPOLL_HEADER = 'src/Host/include/host-epoll.h'
+EPOLL_BRIDGE = 'src/Host/HostEpollBridge.cs'
 REQUIRED = ('BLINK_MANAGED_GUEST_THREADS', 'HAVE_THREADS', 'NOLINEAR', 'DISABLE_JIT')
 FORBIDDEN = ('DISABLE_THREADS', 'HAVE_FORK', 'HAVE_PTHREAD_PROCESS_SHARED', 'HAVE_PTHREAD_SETCANCELSTATE')
 
@@ -66,6 +68,8 @@ def main():
     parser.add_argument('--receipt', type=Path, required=True, help='fresh external receipt under campaign artifacts/')
     parser.add_argument('--mremap-validation', action='store_true',
                         help='derive reviewed source-range validation after the threaded syscall boundary')
+    parser.add_argument('--empty-epoll', action='store_true',
+                        help='select private empty epoll descriptor/wait bindings; no registrations')
     args = parser.parse_args()
     base = args.base_profile.resolve()
     profile = args.output.resolve()
@@ -78,7 +82,8 @@ def main():
         raise SystemExit('Choose a fresh external campaign artifact receipt')
     report = dict(kind='derived-threaded-core-staging', staged=False, compiled=False,
                   runtime_qualified=False, base_profile=str(base), profile=str(profile),
-                  helper_sha256=sha(Path(__file__)), mremap_validation=args.mremap_validation)
+                  helper_sha256=sha(Path(__file__)), mremap_validation=args.mremap_validation,
+                  empty_epoll=args.empty_epoll)
     live = {}
 
     def track(path):
@@ -174,18 +179,36 @@ def main():
             raise RuntimeError('Base must explicitly select DISABLE_THREADS once')
         config = re.sub(r'^#define\s+DISABLE_THREADS\s+1\s*$',
                         '#define BLINK_MANAGED_GUEST_THREADS 1\n#define HAVE_THREADS 1', config, flags=re.M)
+        required = [*REQUIRED]
+        forbidden = [*FORBIDDEN]
+        if args.empty_epoll:
+            if re.search(r'^\s*#\s*define\s+HAVE_EPOLL_PWAIT[12]\b', config, re.M):
+                raise RuntimeError('Base unexpectedly selects an epoll capability')
+            if not config.endswith('#endif\n'):
+                raise RuntimeError('Base config include-guard ending differs')
+            config = config[:-len('#endif\n')] + '#define HAVE_EPOLL_PWAIT1 1\n#endif\n'
+            required.append('HAVE_EPOLL_PWAIT1')
+            forbidden.append('HAVE_EPOLL_PWAIT2')
         definitions = set(re.findall(r'^\s*#\s*define\s+(\w+)', config, re.M))
-        if not set(REQUIRED).issubset(definitions) or set(FORBIDDEN).intersection(definitions):
+        if not set(required).issubset(definitions) or set(forbidden).intersection(definitions):
             raise RuntimeError('Derived threaded profile contract differs')
         config_path.write_text(config)
         changes = [dict(path='config.h', base_sha256=digest(old_config), derived_sha256=sha(config_path),
-                        operation='replace DISABLE_THREADS with explicit managed guest thread capability')]
+                        operation='select managed guest threads' + (' and private empty epoll waits' if args.empty_epoll else ''))]
         for name in ('pthread.h', 'signal.h'):
             original = ROOT / 'config/managed-threaded' / name
             old = sha(profile / 'host' / name)
             copy(original, profile / 'host' / name)
             changes.append(dict(path='host/' + name, base_sha256=old, derived_sha256=sha(original),
                                 original=str(original), operation='highest-priority existing host include slot'))
+        if args.empty_epoll:
+            original = ROOT / 'config/managed-threaded/sys/epoll.h'
+            if (profile / 'host/sys/epoll.h').exists():
+                raise RuntimeError('Base unexpectedly contains an epoll overlay')
+            copy(original, profile / 'host/sys/epoll.h')
+            source_inputs[str(original.relative_to(ROOT))] = sha(original)
+            changes.append(dict(path='host/sys/epoll.h', derived_sha256=sha(original),
+                                original=str(original), operation='select private epoll callback ABI'))
         if (profile / 'host/config.h').exists():
             raise RuntimeError('Host directory must not shadow the selected root config.h')
 
@@ -204,6 +227,16 @@ def main():
             if name in manifest[category]:
                 raise RuntimeError('Thread binding unexpectedly already selected: ' + name)
             manifest[category].append(name)
+        if args.empty_epoll:
+            for name, directory in ((EPOLL_HEADER, 'authored'), (EPOLL_BRIDGE, 'managed')):
+                original = ROOT / name
+                copy(original, profile / directory / original.name)
+                source_inputs[name] = sha(original)
+            for category, name in (('headers', EPOLL_HEADER), ('managedSources', EPOLL_BRIDGE),
+                                   ('includeHeaders', Path(EPOLL_HEADER).name)):
+                if name in manifest[category]:
+                    raise RuntimeError('Epoll binding unexpectedly already selected: ' + name)
+                manifest[category].append(name)
         manifest['scope'] = 'Derived managed guest-thread profile; staging is not runtime qualification'
         write_json(profile / 'host-bindings.json', manifest)
         (profile / 'host-bindings.h').write_bytes(header_text(manifest))
@@ -212,6 +245,8 @@ def main():
                 raise RuntimeError('Missing or ambiguous derived binding header: ' + name)
         bindings = read_json(profile / 'binding-sources.json')
         bindings['authored_managed'].append('managed/' + original_bridge.name)
+        if args.empty_epoll:
+            bindings['authored_managed'].append('managed/' + Path(EPOLL_BRIDGE).name)
         write_json(profile / 'binding-sources.json', bindings)
 
         stage_output = profile / 'upstream/guest-threads'
@@ -324,7 +359,8 @@ def main():
             (profile / filename).write_text(''.join(str(path) + '\n' for path in paths))
         write_json(profile / 'threaded-derivation.json', dict(
             base_profile=str(base), base_inputs_sha256=sha(base_inputs_path), helper_sha256=sha(Path(__file__)),
-            scope='C# owns lifecycle; no C frontend added', required_defines=REQUIRED, forbidden_defines=FORBIDDEN,
+            scope='C# owns lifecycle; no C frontend added', required_defines=required, forbidden_defines=forbidden,
+            empty_epoll=args.empty_epoll,
             changes=changes, threaded_boundary_sha256=sha(stage_receipt),
             mremap_boundary_sha256=sha(mremap_receipt) if mremap_receipt else None,
             preserved_upstream_pins=pins, source_inputs=source_inputs))

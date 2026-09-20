@@ -50,6 +50,7 @@ public sealed partial class InstanceIo
                             var ready = pipes.Readiness(description.Handle, request.Events);
                             events[i] = ready.Succeeded ? ready.Value : (short)32;
                         }
+                        else if (description.Kind == Kind.Epoll) events[i] = 0; // Empty interest set: no events to read.
                         else events[i] = (short)(request.Events & (1 | 4 | 64 | 256));
                         if (events[i] != 0) ++count;
                     }

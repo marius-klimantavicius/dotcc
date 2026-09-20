@@ -2437,3 +2437,30 @@ coordinator integrates the threaded profile. Native service evidence contains
 create1 plus an unfinished empty wait, with no ctl or delivered events. No event
 registrations/readiness will be fabricated; unsupported registration semantics
 remain explicit. The actual .NET service and P5 are still unpassed; P6 is held.
+
+
+### P5 empty epoll boundary qualifies before actual guest retry
+
+A real private epoll open-description now owns duplicate-descriptor lifetime and
+empty waits. Native common create/CLOEXEC/dup/close and zero/finite waits pass;
+raw/optimized JIT/NativeAOT also pass normal caller cancellation, final-close
+interruption and owner drain. Virtual signal masks and errno restore on the
+calling worker; event bytes/canaries remain untouched. Linux packed12 and private
+aligned16 callback layouts are measured separately. Registrations return explicit
+EOPNOTSUPP; no event or readiness is fabricated.
+
+Receipt `host-epoll/attempt-ixes6bgg/receipt.json` has SHA-256
+`3688001f5bcff43194a790bb50cc344ef8dc0349978ff388380131e98e2bda5d`.
+All21 commands pass, with current source/tool identities and unchanged execution
+closures independently checked. Earlier attempt-bkcnbn9o passed all runtime rows
+but failed the final runner closure check because AOT publication added a RID
+subdirectory below the JIT output. Its failed receipt is retained; the corrected
+runner executes a verified private JIT copy and keeps the final exact-tree check.
+
+Next, inputs owns fresh ordinary base staging and the optional threaded
+`--mremap-validation --empty-epoll` derivation, all108 producer emissions and
+experimental delivery build. The selected host capability is HAVE_EPOLL_PWAIT1;
+upstream guest pwait2 still uses its existing millisecond conversion. This focused
+boundary result does not qualify registered events or actual guest service
+startup. The unchanged actual .NET guest diagnostic follows successful delivery;
+P5 remains open and P6 is held.
