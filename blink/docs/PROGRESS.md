@@ -14,8 +14,9 @@ through the coordinator; no prolonged build workarounds. No P6 phase starts.
 User guest update: HTTP must be served by Kestrel, replacing the authored
 raw-socket HTTP implementation as the required workload. Existing raw-socket
 results remain baseline evidence. Kestrel build/runtime/integration gates are
-open, and the coordinator is resuming that work. A fresh verification agent is
-checking the current raw-socket sample; it cannot close the updated P5 gate.
+open. The new Kestrel guest worker owns a separate reproducible fixture/native
+witness; the coordinator audits host gaps and integration. Fresh raw-socket
+sample verification passed, but cannot close the updated Kestrel P5 gate.
 
 Both ordinary glibc and static musl raw-socket NativeAOT guest builds and native HTTP
 references pass. The static musl build succeeded in one standard pinned Podman
@@ -2689,3 +2690,31 @@ and actual worker, with original authored project references. Its own final buil
 JIT and NativeAOT qualification is unrun after current automated rejection B036.
 Earlier C sample receipts are not reused as evidence for this replacement.
 The phase stops here with that explicit pending P5 gate; no P6 work begins.
+
+
+### Kestrel scope: baseline sample verified, new guest feasibility in progress
+
+User-directed fresh baseline verification passes at
+`managed-consumer-delivery/attempt-8k2fus34/receipt.json`, SHA-256
+`6c0647e95d8fe1df01b3a907e8343b3bd138fe5d913f0db142c7737590398f0b`.
+The actual solution builds, JIT sample executes, actual worker and sample publish
+with NativeAOT, and native sample executes: six successful commands and four
+actual raw-socket guest workers, with exact output and normal process cleanup.
+The verification agent independently rechecked121 source/log identities. The
+solution build has zero warnings/errors; existing AOT annotation warnings are
+retained in logs. Commit f06256d records the result and historical B036 closure.
+This is baseline evidence only; no Kestrel gate is credited.
+
+`tests/KestrelService` is being prepared separately using the official ASP.NET
+NativeAOT/CreateSlimBuilder path and genuine Kestrel HTTP/1 loopback transport.
+The known successful pinned Alpine NativeAOT toolchain is reused for one bounded
+standard static-musl publish and native HTTP witness. The user-directed difficult
+musl-build stop condition remains in force. No compiler or shared host inputs
+changed during baseline sample verification.
+
+Read-only current boundary audit finds empty-only epoll waits with registration
+explicitly unsupported, and socket O_NONBLOCK rejected (pipes already support
+it). Physical sockets being internally nonblocking does not supply guest-facing
+nonblocking semantics. The new native trace will establish required extensions
+and actual image/memory/thread limits before implementation. Existing 2MiB
+image/64MiB backing/16-worker profile is not assumed adequate for Kestrel.
