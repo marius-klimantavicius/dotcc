@@ -3,12 +3,15 @@
 This first gate runs only optimized JIT, using exact public threaded delivery
 `attempt-i4a5mfa8`, genuine static Kestrel ELF from `attempt-o5jvvf7t`, and the
 passing controlled native profile `attempt-zphi57zq`. Their receipt identities
-are pinned in `run.py`. The first execution produced a complete failed diagnostic:
+identify the preserved first execution. The native guest/profile hashes remain
+pinned in `run.py`; each public delivery receipt now requires its explicit
+reviewed SHA-256 on the command line. The first execution produced a complete failed diagnostic:
 the instruction budget was exhausted in guest GC before readiness.
 
 ```sh
 python3 blink/tests/KestrelGuestExecution/run.py \
   --delivery-receipt blink/artifacts/translation/attempt-i4a5mfa8/receipt.json \
+  --delivery-sha256 387b147a1d95d998f1a73f980fcda227a06d244a8b9eaad8f74456fee8e7c741 \
   --native-receipt blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/receipt.json \
   --profile-receipt blink/artifacts/kestrel-native-profile/attempt-zphi57zq/receipt.json
 ```
@@ -21,6 +24,12 @@ image limit; no worker/controller framing is involved. Existing backing/worker
 limits remain 64 MiB and 16 total guest workers, with a 100-million instruction
 budget, 60-second execution deadline and five-second join bound. Host build and
 execution have separate finite process-group limits and isolated temporary paths.
+
+A corrected public delivery must supply its own receipt path and expected
+SHA-256. The runner still verifies the complete generated/raw/authored source,
+compiler, staged profile and object closure; a new identity does not relax those
+checks. The next corrected-delivery retry retains the original 100-million
+instruction and 60-second limits. Historical diagnostic snapshots remain intact.
 
 Exactly six guest environment variables match the controlled native witness:
 `LANG=C`, the prior three GC settings, `DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false`

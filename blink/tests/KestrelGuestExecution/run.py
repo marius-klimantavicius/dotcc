@@ -17,7 +17,6 @@ import xml.etree.ElementTree as ET
 HERE = Path(__file__).resolve().parent
 BLINK = HERE.parents[1]
 REPO = BLINK.parent
-DELIVERY_SHA = "387b147a1d95d998f1a73f980fcda227a06d244a8b9eaad8f74456fee8e7c741"
 GUEST_SHA = "7bc07c1e8d01dd3d326fdbb436473ff0b2b8dcaf2910aea6fffebdaa7b119865"
 PROFILE_SHA = "e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a"
 ENVIRONMENT = {"LANG": "C", "DOTNET_GCHeapHardLimit": "1000000",
@@ -102,9 +101,13 @@ def cleanup(process):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--delivery-receipt", type=Path, required=True)
+    parser.add_argument("--delivery-sha256", required=True,
+                        help="Explicit expected identity of the reviewed public delivery receipt")
     parser.add_argument("--native-receipt", type=Path, required=True)
     parser.add_argument("--profile-receipt", type=Path, required=True)
     args = parser.parse_args()
+    if len(args.delivery_sha256) != 64 or any(c not in "0123456789abcdef" for c in args.delivery_sha256):
+        parser.error("--delivery-sha256 must contain exactly 64 lowercase hexadecimal characters")
     base = BLINK / "artifacts/kestrel-guest-execution"
     base.mkdir(parents=True, exist_ok=True)
     attempt = Path(tempfile.mkdtemp(prefix="attempt-", dir=base))
@@ -184,7 +187,7 @@ def main():
         pin(sys.executable)
         receipt["optional_inputs"] = {str(REPO / n): sha(REPO / n) if (REPO / n).is_file() else None
             for n in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props", "nuget.config", "global.json")}
-        delivery_path = pin(args.delivery_receipt, DELIVERY_SHA)
+        delivery_path = pin(args.delivery_receipt, args.delivery_sha256)
         native_path = pin(args.native_receipt, GUEST_SHA)
         profile_path = pin(args.profile_receipt, PROFILE_SHA)
         delivery, native, profile = [json.loads(p.read_text()) for p in (delivery_path, native_path, profile_path)]
@@ -238,7 +241,7 @@ def main():
             if row["exit_code"] != 0:
                 raise RuntimeError("Failed public producer command")
             pin(row["log"], row["log_sha256"])
-        receipt["delivery"] = dict(receipt=str(delivery_path), sha256=DELIVERY_SHA, assembly=delivery["assembly"])
+        receipt["delivery"] = dict(receipt=str(delivery_path), sha256=args.delivery_sha256, assembly=delivery["assembly"])
         product = closure(final / "TranslatedBlink.csproj")
         for path, digest in product.items():
             if not path.is_relative_to(final) and delivery["authored_sources"].get(str(path.relative_to(BLINK))) != digest:
