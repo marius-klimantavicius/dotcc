@@ -21,6 +21,8 @@ REPO = ROOT.parent
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--offline', action='store_true', help='Require the pinned Blink archive in ref; NuGet restore remains normal')
+parser.add_argument('--profile', choices=('threaded', 'single-thread'), default='threaded',
+                    help='Selected product profile; threaded supports the qualified NativeAOT guest prerequisites')
 parser.add_argument('--jobs', type=int, choices=range(1, 5), default=4)
 parser.add_argument('--timeout', type=int, default=300, help='Per translation-unit timeout in seconds')
 args = parser.parse_args()
@@ -48,6 +50,7 @@ receipt = {'kind': 'complete-core-translation-delivery', 'passed': False,
            'attempt': str(attempt), 'stable_output': str(stable), 'raw_snapshot': str(raw),
            'results': {}, 'scope': 'Translation, semantic post-processing and project builds only; no guest execution or service claim',
            'runner_sha256': sha(Path(__file__)), 'wrapper_sha256': sha(ROOT/'scripts/translate.sh'),
+           'selected_profile': args.profile,
            'temporary_directory': str(tmp)}
 def save():
     target = out/'receipt.tmp'; target.write_text(json.dumps(receipt, indent=2)+'\n')
@@ -127,7 +130,7 @@ try:
     receipt['scripts'] = {str(p.relative_to(ROOT)):sha(p) for p in
         [Path(__file__), ROOT/'scripts/translate.sh', ROOT/'scripts/fetch.sh', ROOT/'scripts/native-oracle.sh',
          ROOT/'scripts/probe-core.sh', ROOT/'scripts/assemble-core.py', ROOT/'scripts/isolate-core.py',
-         ROOT/'scripts/core_inputs.py', ROOT/'scripts/stage-host-bindings.py']}
+         ROOT/'scripts/core_inputs.py', ROOT/'scripts/stage-host-bindings.py', ROOT/'scripts/stage-threaded-core.py']}
     receipt['git_head'] = run(['git','rev-parse','HEAD'],'git-head',30).strip()
     receipt['git_status'] = run(['git','status','--short'],'git-status',30)
     receipt['configuration']={str(p.relative_to(ROOT)):sha(p) for p in sorted((ROOT/'config').rglob('*')) if p.is_file()}
@@ -144,6 +147,18 @@ try:
     staged = run(['bash',ROOT/'scripts/probe-core.sh','--stage-only'],'stage',180)
     profile = Path(staged.strip().splitlines()[-1]).resolve()
     if not profile.is_relative_to(generated/'core-profile'): raise RuntimeError('Unexpected staged profile path')
+    receipt['base_profile'] = str(profile)
+    if args.profile == 'threaded':
+        threaded = generated/'threaded-core'/attempt.name
+        boundary = out/'threaded-stage.json'
+        run(['python3',ROOT/'scripts/stage-threaded-core.py','--base-profile',profile,
+             '--output',threaded,'--receipt',boundary,'--mremap-validation','--empty-epoll'],
+            'threaded-stage',180)
+        derivation = json.loads(boundary.read_text())
+        if not derivation.get('staged') or derivation.get('profile') != str(threaded):
+            raise RuntimeError('Threaded product derivation did not complete')
+        receipt['threaded_derivation'] = {'receipt':str(boundary),'sha256':sha(boundary)}
+        profile = threaded
     inputs = json.loads((profile/'inputs.json').read_text()); verify_profile(profile,inputs)
     if inputs['compiler']!=receipt['compiler']: raise RuntimeError('Profile compiler differs')
     for name,digest in receipt['configuration'].items():
@@ -218,10 +233,16 @@ try:
     # context even if a future processor rewrites one of these private copies.
     receipt['postprocess_private_authored']={'before':manifest(raw/'Bridges'),
                                             'after':manifest(candidate/'Bridges')}
-    shutil.rmtree(candidate/'Bridges')
-    shutil.copytree(raw/'Bridges',candidate/'Bridges')
-    for path in [candidate/'Bridges', *(candidate/'Bridges').rglob('*')]:
-        path.chmod(0o755 if path.is_dir() else 0o644)
+    for name in ('Bridges','Host'):
+        shutil.rmtree(candidate/name)
+        shutil.copytree(raw/name,candidate/name)
+        for path in [candidate/name, *(candidate/name).rglob('*')]:
+            path.chmod(0o755 if path.is_dir() else 0o644)
+        if manifest(candidate/name)!=manifest(raw/name):
+            raise RuntimeError('Authored postprocess context was not restored: '+name)
+    # Host restoration also removes its private build caches. Restore project
+    # assets before validating generated transformations with original sources.
+    run(['dotnet','restore',candidate/'TranslatedBlink.csproj'],'restored-authored-restore')
     run(['dotnet','build',candidate/'TranslatedBlink.csproj','-c','Release','--no-restore'],'postprocessed-project-build')
     verify_authored()
     if manifest(raw)!=receipt['raw_files']: raise RuntimeError('Raw snapshot changed')

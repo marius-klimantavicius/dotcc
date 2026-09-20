@@ -7,6 +7,6 @@
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../../generated/ThreadedBlink/TranslatedBlink.csproj" />
+    <ProjectReference Include="../../generated/TranslatedBlink/TranslatedBlink.csproj" />
   </ItemGroup>
 </Project>

@@ -2605,3 +2605,28 @@ restart and the sample/traffic gate. Inputs owns the worker and normal integrati
 fixture; coordinator promotes the reviewed threaded profile through the public
 translation pipeline and integrates the showcase. Guest owns an exact native
 and translated runtime inventory from these receipts. No P6 work begins.
+
+
+### P5 threaded profile promoted through the public delivery pipeline
+
+`bash blink/scripts/translate.sh --offline` now defaults to the reviewed threaded
+profile and publishes it at `generated/TranslatedBlink`; the explicit
+`--profile single-thread` option retains the older library profile. The pipeline
+calls the same reviewed threaded derivation with mremap validation and real empty
+epoll support, with exact source/configuration provenance. After postprocessing,
+both private Host and bridge context are restored before rebuilding, and the
+active product references original src files/projects only.
+
+Public delivery receipt `translation/attempt-i4a5mfa8/receipt.json` has SHA-256
+`387b147a1d95d998f1a73f980fcda227a06d244a8b9eaad8f74456fee8e7c741`.
+All14 commands pass, including the pipeline's native prerequisite,108 verified
+reused C objects, link, raw build, semantic postprocess, restored-authored build
+and final direct-source build. Coordinator rechecked336 authored/raw/final/object
+identities. Previous output is preserved in the delivery attempt's backup.
+
+The original ThreadedExecution project now references the final product path;
+its Release build passes with zero warnings/errors and disabled build servers.
+The same C# execution implementation remains unchanged. The sample/solution now
+point toward the controller, actual worker and this original execution project;
+those consumer changes await their own runtime qualification and are not credited
+from this library build. P5 remains active; P6 remains held.
