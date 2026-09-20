@@ -434,14 +434,15 @@ tooling only if needed. If musl NativeAOT compilation proves very difficult or
 impossible, stop and report for user direction rather than pursuing prolonged
 workarounds.
 
-- [ ] Add a reproducible ASP.NET Core/Kestrel NativeAOT HTTP service fixture with source, pinned
+- [x] Add a reproducible ASP.NET Core/Kestrel NativeAOT HTTP service fixture with source, pinned
       SDK/toolchain and container image identity when used, publish settings,
       executable hash and exact build/run commands. Provide its ELF at a
       documented path for ManagedConsumer; retain existing C/raw-socket fixtures.
       Raw-socket native glibc and static-musl builds and exact HTTP references pass; see
       `tests/DotNetService/README.md` and `tests/DotNetService/MUSL.md`. Actual
-      Kestrel publication/native reference and its translated execution remain
-      unqualified; preserve distinct fixture and receipt identities.
+      Kestrel publication/native reference passes at `kestrel-guest-musl/attempt-o5jvvf7t`;
+      see `tests/KestrelService/README.md` for the pinned ELF path and receipt.
+      Its translated execution remains a separate unqualified gate.
 - [ ] Inspect the actual Kestrel guest ELF/dependencies and native service behavior;
       inventory required startup/runtime instructions, syscalls, TLS, threads,
       synchronization, signals and filesystem inputs. Record required profile

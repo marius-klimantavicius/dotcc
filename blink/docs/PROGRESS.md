@@ -2718,3 +2718,24 @@ it). Physical sockets being internally nonblocking does not supply guest-facing
 nonblocking semantics. The new native trace will establish required extensions
 and actual image/memory/thread limits before implementation. Existing 2MiB
 image/64MiB backing/16-worker profile is not assumed adequate for Kestrel.
+
+
+### Genuine Kestrel NativeAOT guest build and native HTTP milestone
+
+The first standard pinned Alpine publish succeeds in23.91 seconds with no
+warnings/errors or workarounds. Native five-case HTTP, actual READY/STOPPED,
+exit0, empty stderr and normal group/container cleanup pass. Receipt
+`kestrel-guest-musl/attempt-o5jvvf7t/receipt.json` has SHA-256
+`7bc07c1e8d01dd3d326fdbb436473ff0b2b8dcaf2910aea6fffebdaa7b119865`.
+ELF `publish/KestrelService` is9,371,272 bytes, SHA-256
+`ef6f1433794a42fe32b0fed4851bf88dd0631cd6a836550c6effca79d9e9a3ac`,
+static x64 ET_EXEC with no interpreter/shared dependencies and TLS24/296/8.
+All14 commands pass; independent source/tool/package/log/ELF review passes.
+The user-directed difficult-musl-build condition did not occur.
+
+Native observed14 TIDs and actual edge-triggered EPOLLIN/EPOLLOUT registrations,
+nonblocking sockets, accept4, TCP_NODELAY and shutdown SO_LINGER. Default hosting
+also observes filesystem watches/diagnostics; their necessity for this fixed
+HTTP fixture is separate from recording them. No native result is relabeled as
+managed execution. Next work is exact translated startup plus real readiness
+and nonblocking contracts, with measured image/profile limits. P6 remains held.
