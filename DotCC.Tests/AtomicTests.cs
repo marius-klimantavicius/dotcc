@@ -172,6 +172,28 @@ public sealed class AtomicTests
     }
 
     [Fact]
+    public void Discarded_boolean_atomic_calls_keep_their_effects_in_valid_statements()
+    {
+        var src = WriteTemp("""
+            #include <stdatomic.h>
+            void update(void) {
+                _Atomic unsigned char value = 1;
+                unsigned char expected = 1;
+                atomic_compare_exchange_strong(&value, &expected, 2);
+                atomic_flag flag = ATOMIC_FLAG_INIT;
+                atomic_flag_test_and_set(&flag);
+            }
+            """);
+        try
+        {
+            var emitted = Compiler.EmitCSharp(new[] { src }, emit: EmitMode.ManagedLib);
+            emitted.ShouldContain("_ = ((CBool)Atomic.CompareExchange(");
+            emitted.ShouldContain("_ = ((CBool)(Atomic.Exchange(");
+        }
+        finally { File.Delete(src); }
+    }
+
+    [Fact]
     public void atomic_flag_and_fences()
     {
         var src = WriteTemp("""

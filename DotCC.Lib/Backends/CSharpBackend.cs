@@ -2875,6 +2875,15 @@ internal sealed partial class CSharpBackend
 
     private static bool IsStmtExpr(CExpr e) => e switch
     {
+        // Boolean intrinsics (compare/exchange and flag tests) may render as
+        // CBool casts around calls. Such casts require a discard in C# even
+        // though the source IR is a call. A discard also preserves ordinary
+        // bool-returning calls without evaluating them twice. The C11 generic
+        // spellings retain the call resolver's int type, so identify those too.
+        Call c when c.Type.Unqualified == CType.Bool || c.Callee is
+            "atomic_compare_exchange_strong" or "atomic_compare_exchange_strong_explicit" or
+            "atomic_compare_exchange_weak" or "atomic_compare_exchange_weak_explicit" or
+            "atomic_flag_test_and_set" or "atomic_flag_test_and_set_explicit" => false,
         // A Zig allocator alloc/free/create/destroy (Milestones F/U) renders as a method call — a
         // valid statement expression. FreeCall/DestroyCall are void, so they MUST be recognized here
         // (a `_ = <void>` discard is a C# error); a discarded AllocCall/CreateCall is a normal

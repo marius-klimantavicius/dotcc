@@ -2293,3 +2293,31 @@ layout and normal clone/futex/TLS ELF qualification. The C# threaded owner and
 separate prototype delivery helper are still unqualified source work. Stable
 single-thread delivery and existing P4 receipts remain unchanged. P5 service
 execution has not passed; P6 remains held.
+
+### P5 complete threaded source link and normal native thread witness
+
+With the TLS repair, all108 threaded producers freshly emit and link with zero
+reuse/failures. Assembly `core/objects/ab4bf1703cddc0d53f908e86297d8aa8efbc2d6dea46728867bcbfa1ce57fbdf/receipt.json`
+has SHA-256 `449a0bd09cfda81d504d84bb6ff02b8137b0b6a12ed8d7f5472394bdbb6c74b5`.
+The first raw C# build (`threaded-delivery/attempt-jz5_6z8e`) then failed on two
+discarded atomic boolean results emitted as bare casts and one unbound private
+`raise` reference. That failed build is preserved; no product publication occurred.
+The compiler statement renderer now discards those values while preserving the
+real atomic operation. Atomic/lowering tests pass229/229 and the new executable
+byte/word compare-exchange/flag fixture passes; two opt-in external oracle cases
+were skipped. Logs remain under `artifacts/compiler-atomic-discard`.
+
+Separately, the valid static assembly thread fixture passes on Linux and a fresh
+pinned Blink built with threads enabled, preserving the old native baseline.
+It verifies distinct TIDs, isolated FS/TLS, shared bytes, actual private futex
+handshakes, non-private clear-TID waiting and ordinary child/group exits. Both
+executions produce the exact50-byte transcript with empty stderr and exit0.
+Receipt `guest-threads/attempt-b_de41tq/receipt.json` has SHA-256
+`32b9cc19b5b9ca72574ee0a9a8c34852d3c155c44935357e7022268096427c82`.
+The release handshake took the ordinary EAGAIN race; no claim that both handshake
+waits blocked is made. These are native witnesses, not managed thread execution.
+
+The private raise binding follows the existing unsupported asynchronous-signal
+policy; it must never invoke a native host signal. Fresh threaded generation
+with the atomic fix, final C# owner compilation, actual ABI layout and four-form
+guest thread qualification remain the next gates before the NativeAOT service.
