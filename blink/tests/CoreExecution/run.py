@@ -163,7 +163,7 @@ try:
         receipt['test_frontend_template'] = 'blink/syscall.c'
         receipt['test_frontend_added'] = True
         generated = a/'test-generated'
-        run(['dotnet',cli,*objects.values(),test_object,'--emit=managedlib','--literal-pool','--nest-types',
+        run(['dotnet',cli,*objects.values(),test_object,'--emit=managedlib','--literal-pool','--deduplicate-inline','--nest-types',
              '--class-name','BlinkCore','--namespace','Managed.Emulation','--runtime=c','-o',generated],
              'test-frontend-link',300)
         if compiler_identity(cli.parent) != inputs['compiler']:

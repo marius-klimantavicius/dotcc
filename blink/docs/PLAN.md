@@ -283,9 +283,16 @@ download separately; native `make check` must not silently fetch floating tools.
 
 Required output: `blink/generated/TranslatedBlink/TranslatedBlink.csproj`, class
 `BlinkCore`, namespace `Managed.Emulation`, using `--emit=managedlib --nest-types
---runtime=c --split=size --split-size=102400`. Verify actual CLI options when
+--runtime=c --literal-pool --deduplicate-inline --split=size --split-size=102400`. Verify actual CLI options when
 implementation starts. Run the existing semantic postprocessor after normal
 emission, retain an immutable raw snapshot, and never hand-edit generated output.
+Enable `--deduplicate-inline` at link time in canonical assembly, delivery and
+core probe/replay links, including the derived CoreExecution test link. Include
+the option in recorded link identities; preserve per-object identity checks.
+Deduplicate only implementations the compiler proves equivalent, retaining
+function-address and state distinctions. This is separate from semantic
+postprocessing. Rebuild and qualify the next deduplicated delivery before
+claiming runtime results; existing receipts describe their original options.
 The full container is `BlinkCore` because actual upstream code defines a function
 called `Blink`, which cannot be a same-named C# class member. Focused fixtures
 may still use `Blink`; authored bridges select the full container explicitly.

@@ -27,7 +27,7 @@ blink/generated/TranslatedBlink/
 `TranslatedBlink` is the assembly name. The translated type is
 `Managed.Emulation.BlinkCore`; generated C records are nested as selected by
 `--nest-types`. The compiler's actual managed-library link uses
-`--runtime=c --literal-pool --split=size --split-size=102400`. No generated C# is manually
+`--runtime=c --literal-pool --deduplicate-inline --split=size --split-size=102400`. No generated C# is manually
 modified. A separate authored project file supplies relative build references.
 
 An external application references `TranslatedBlink.csproj`. Host types in
@@ -103,4 +103,9 @@ The product excludes `CoreProbe`, its test `main`, and C execution orchestration
 A separate authored C# consumer uses the exported upstream functions/types and
 jump-buffer transport. The test runner may add a probe frontend in a derived
 test-only link with its own receipt. Canonical and delivery links enable
-`--literal-pool`; this is a compiler link option, not a postprocessor feature.
+`--literal-pool` and `--deduplicate-inline`; these are compiler link options,
+not postprocessor features. Deduplication merges provably equivalent static
+inline implementations while preserving required address/state distinctions.
+Core probe/replay and derived CoreExecution links also enable deduplication.
+These script options apply to the next generation; existing generated files
+and historical receipts are not rewritten or requalified by this change.

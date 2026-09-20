@@ -50,7 +50,7 @@ if set(objects) != set(selected):
     raise SystemExit('incomplete selected object set')
 compiler_dir = ROOT.parent / 'DotCC/bin/Release/net10.0'
 compiler = compiler_identity(compiler_dir)
-options = ['--emit=managedlib', '--nest-types', '--class-name', 'BlinkCore',
+options = ['--emit=managedlib', '--deduplicate-inline', '--nest-types', '--class-name', 'BlinkCore',
            '--namespace', 'Managed.Emulation', '--runtime=c']
 identity = dict(profile_inputs_sha256=sha(profile / 'inputs.json'), linker_compiler=compiler,
                 object_sha256={name:row['object_sha256'] for name,row in objects.items()},

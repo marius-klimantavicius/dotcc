@@ -186,7 +186,7 @@ try:
     receipt['product_surface'] = {'execution_owner':'separate authored C# consumer',
                                   'test_frontend_excluded':True,'c_execution_driver_excluded':True}
     linked=attempt/'linked'
-    run(['dotnet',cli,*objects,'--emit=managedlib','--literal-pool','--nest-types','--class-name','BlinkCore',
+    run(['dotnet',cli,*objects,'--emit=managedlib','--literal-pool','--deduplicate-inline','--nest-types','--class-name','BlinkCore',
          '--namespace','Managed.Emulation','--runtime=c','--split=size','--split-size=102400','-o',linked],'delivery-link',300)
     receipt['linked_output']=manifest(linked)
     raw.mkdir(); (raw/'Sources').mkdir(); (raw/'Bridges').mkdir()
