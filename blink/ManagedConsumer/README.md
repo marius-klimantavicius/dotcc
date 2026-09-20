@@ -7,12 +7,14 @@ resource release, then starts a fresh worker and demonstrates cooperative stop.
 CPU instructions execute through translated upstream Blink. The .NET guest ELF
 is distinct from the optional NativeAOT build of the emulator worker.
 
-This revision is being integrated; its sample build/execution results are
-pending. Automated review rejected preparation of the separate final sample
-qualification runner for possible cybersecurity risk; see
-[B036](../docs/BLOCKERS.md#b036--current-final-net-worker-sample-qualification-restricted). The exact guest HTTP workload already passes all four interpreter host
-forms in `tests/DotNetThreadedGuestExecution`. Earlier sample receipts describe
-the preceding C service and do not qualify this worker sample.
+The actual solution builds, and this sample passes with both JIT and NativeAOT
+controller/worker pairs in
+`artifacts/managed-consumer-delivery/attempt-8k2fus34/receipt.json`.
+Both executions verify exact HTTP responses, normal exit, a fresh worker restart,
+cooperative stop and resource cleanup. See
+[the reproducible check](../tests/ManagedConsumerDelivery/README.md).
+This is the existing raw-socket .NET service baseline. The required ASP.NET Core
+Kestrel guest remains separate pending work; this result does not complete P5.
 
 ## Generate, build and run
 

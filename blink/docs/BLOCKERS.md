@@ -454,7 +454,7 @@ are recorded in [the P4 ledger](P4-HOST-SERVICES.md). This closes B035 for the
 finite selected Linux x64 profile; P5/P6 and Windows qualification remain open.
 
 
-## B036 — Current final .NET worker sample qualification restricted
+## B036 — Historical final .NET worker sample qualification rejection
 
 During P5, the separate source-only task to prepare
 `tests/ManagedConsumerDelivery` was rejected by automated review. Its requested
@@ -465,11 +465,16 @@ source, binary and cleanup evidence. The exact returned reason was:
 
 > This content was flagged for possible cybersecurity risk. If this seems wrong, try rephrasing your request. To get authorized for security work, join the Trusted Access for Cyber program: https://chatgpt.com/cyber
 
-The rejected task was not retried, renamed, delegated elsewhere or executed by
-the coordinator. No runner files were produced. Previously authored sample
-changes remain available for review, but the new .NET worker sample has not been
-built/executed and its delivery checkbox remains open. This restriction does
-not invalidate earlier genuine .NET service all-four execution or the separate
-already-running WorkerInstances qualification. Those retain their exact scope.
-The coordinator continues only that independent worker validation and records
-its result before stopping; no P6 work begins.
+The coordinator stopped that task at the time; no runner files were produced.
+The user subsequently explicitly requested a fresh agent to perform the ordinary
+local sample verification. That transparent task encountered no new rejection.
+`tests/ManagedConsumerDelivery/run.py` built the actual solution, executed the JIT
+sample, published the actual worker and sample with NativeAOT, and executed the
+native pair. Receipt `managed-consumer-delivery/attempt-8k2fus34/receipt.json`
+records all commands passing without cleanup signals, exact output and stable
+source/execution identities. Its SHA-256 is
+`6c0647e95d8fe1df01b3a907e8343b3bd138fe5d913f0db142c7737590398f0b`.
+The historical rejection is retained here rather than presented as a current
+unexecuted gate. This qualifies only the existing raw-socket .NET service sample:
+the subsequently required ASP.NET Core/Kestrel guest remains pending, P5 stays
+open, and P6 has not started.
