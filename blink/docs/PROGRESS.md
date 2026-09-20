@@ -2241,3 +2241,30 @@ shared boundary, not guest clone/futex or the threaded product. Guest thread
 staging, synchronized shared HostMemory and process-scoped signal/exit state
 are being implemented in disjoint worker-owned files; no threaded profile has
 been enabled or claimed to execute yet.
+
+### P5 threaded host ownership prerequisites qualified
+
+Shared HostMemory now has generation-token contexts, attachment accounting,
+creator-only final disposal and a real pthread registry lock. The original
+single-thread branch remains selected by default. Native legacy/shared and all
+four managed forms pass two-worker/two-cycle private-file, mapping, protection
+metadata, accounting and detach/destroy checks:
+`host-shared-memory/attempt-if0_xhrl/receipt.json`, SHA-256
+`82ace64abe504f9216e77483081de36a7c27ab00116926c4c6f1f73e9fc14bc8`.
+Three earlier fixture header/inclusion failures are preserved; no compiler or
+generated repair was used. Actual native pthread context charge136bytes differs
+from managed100bytes; semantic comparisons retain that explicit ABI distinction.
+
+Threaded-only process signal dispositions and exit-callback registries also
+pass native plus all four managed forms. Two actual workers observe shared
+actions and ordered callback registration; callback reentry produces B,C,A
+exactly once after joins. Receipt `host-process-state/attempt-o9f8h7kl/receipt.json`,
+SHA-256 `24e8ae53f5ae1a9b472c27d13797b5234f6fc6e0d2d63cb2203a6f5c40b5210d`.
+Locks do not cross arbitrary callback invocation. Old TLS behavior remains in
+the disabled-thread branch.
+
+The separate, hash-pinned thread stage and header overlay are source-reviewed
+and layout/type checks are exercised by these fixtures. Whole Machine/System
+threaded layouts, clone/futex execution and C# worker lifecycle remain pending.
+The coordinator's new C# threaded owner is under review and not yet compiled;
+it is not part of the stable delivery. P5 remains active with no service pass.

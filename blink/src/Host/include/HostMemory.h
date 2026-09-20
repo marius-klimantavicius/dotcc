@@ -2,6 +2,30 @@
 #define BLINK_HOST_MEMORY_H
 #include <stddef.h>
 #include <sys/types.h>
+#ifdef BLINK_MANAGED_GUEST_THREADS
+#include <stdint.h>
+/* Explicit opt-in shared owner; creation itself does not attach the caller.
+ * Bind the same private I/O owner on every worker before attaching. Tokens are
+ * generation IDs, never raw pointers or reused IDs. Exactly one active legacy
+ * or shared owner may be bound per thread. Attach/detach do not allocate/free
+ * guest backing. Creator joins all workers before final destroy; destroy refuses
+ * attached owners and releases retained backing only after attachments reach 0.
+ * Legacy End/DisposeWorker cannot destroy an attached shared context.
+ *
+ * One real process-private pthread mutex serializes shared registry, accounting,
+ * protections and synchronous file callbacks. Callbacks must NOT reenter any
+ * memory-owner API. Lock order: upstream mmap lock -> owner gate -> private I/O.
+ * Raw backing access/lifetime still follows upstream guest synchronization.
+ * Shared quota includes SharedOverhead() plus each rounded mapping and record.
+ * The overhead is ABI-dependent and includes a conservative per-owner charge
+ * for the process-wide registry gate and roots; it is not process RSS. */
+uint64_t BlinkHostMemoryCreateShared(size_t);
+int BlinkHostMemoryAttach(uint64_t);
+int BlinkHostMemoryDetach(void);
+int BlinkHostMemoryDestroyShared(uint64_t);
+int BlinkHostMemorySharedSnapshot(uint64_t, size_t *, size_t *, size_t *);
+size_t BlinkHostMemorySharedOverhead(void);
+#endif
 
 /* One active allocation owner per worker. The limit includes rounded payload
  * ownership records and one protection byte per page. No persistent CLR references live in C memory. */

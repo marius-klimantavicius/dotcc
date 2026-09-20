@@ -2,9 +2,22 @@
 #include <errno.h>
 #include <stdint.h>
 
+#ifdef BLINK_MANAGED_GUEST_THREADS
+#include <pthread.h>
+#include <stdlib.h>
+static pthread_mutex_t actions_lock = PTHREAD_MUTEX_INITIALIZER;
+static int actions_active;
+static struct sigaction actions[65];
+static void ActionLock(void) { if(pthread_mutex_lock(&actions_lock))abort(); }
+static void ActionUnlock(void) { if(pthread_mutex_unlock(&actions_lock))abort(); }
+#else
 static _Thread_local int actions_active;
 static _Thread_local struct sigaction actions[65];
-static int ActionError(int error) { errno=error;return -1; }
+static void ActionLock(void) { }
+static void ActionUnlock(void) { }
+#endif
+static int ActionFinish(int result) { ActionUnlock();return result; }
+static int ActionError(int error) { errno=error;return ActionFinish(-1); }
 static int PublicSignal(int signal) {
   return signal>0 && signal<65 && signal!=32 && signal!=33;
 }
@@ -13,14 +26,18 @@ static void ClearActions(void) {
   for(int i=0;i<65;++i) actions[i]=empty;
 }
 int BlinkHostSignalActionsBegin(void) {
+  ActionLock();
   if(actions_active)return ActionError(EBUSY);
-  ClearActions();actions_active=1;return 0;
+  ClearActions();actions_active=1;return ActionFinish(0);
 }
 void BlinkHostSignalActionsEnd(void) {
+  ActionLock();
   ClearActions();actions_active=0;
+  ActionUnlock();
 }
 int sigaction(int signal, const struct sigaction *action, struct sigaction *old) {
   struct sigaction requested={0};
+  ActionLock();
   if(!actions_active)return ActionError(ENODEV);
   if(!PublicSignal(signal))return ActionError(EINVAL);
   if(action) {
@@ -37,7 +54,7 @@ int sigaction(int signal, const struct sigaction *action, struct sigaction *old)
   }
   if(old)*old=actions[signal];
   if(action)actions[signal]=requested;
-  return 0;
+  return ActionFinish(0);
 }
 void (*signal(int signum, void (*handler)(int)))(int) {
   struct sigaction action={0},old;

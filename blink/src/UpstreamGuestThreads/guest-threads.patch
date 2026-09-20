@@ -1,0 +1,189 @@
+--- a/blink/syscall.c
++++ b/blink/syscall.c
+@@ -1,3 +1,9 @@
++#include "config.h"
++#include "host-guest-threads.h"
++#if !defined(BLINK_MANAGED_GUEST_THREADS) || !defined(HAVE_THREADS) || !defined(NOLINEAR) || !defined(DISABLE_JIT) || defined(DISABLE_THREADS) || defined(HAVE_FORK) || defined(HAVE_PTHREAD_PROCESS_SHARED) || defined(HAVE_PTHREAD_SETCANCELSTATE)
++#error Managed guest threads require the explicit no-fork nonlinear interpreter owner profile
++#endif
++
+ /*-*- mode:c;indent-tabs-mode:nil;c-basic-offset:2;tab-width:8;coding:utf-8 -*-│
+ │ vi: set et ft=c ts=2 sts=2 sw=2 fenc=utf-8                               :vi │
+ ╞══════════════════════════════════════════════════════════════════════════════╡
+@@ -347,7 +353,7 @@
+   return rc;
+ }
+ 
+-static void ClearChildTid(struct Machine *m) {
++void ClearChildTid(struct Machine *m) {
+ #if defined(HAVE_FORK) || defined(HAVE_THREADS)
+   _Atomic(int) *ctid;
+   if (m->ctid) {
+@@ -363,49 +369,15 @@
+ }
+ 
+ _Noreturn void SysExitGroup(struct Machine *m, int rc) {
+-  THR_LOGF("pid=%d tid=%d SysExitGroup", m->system->pid, m->tid);
+-  ClearChildTid(m);
+-  if (m->system->isfork) {
+-#ifndef NDEBUG
+-    if (FLAG_statistics) {
+-      PrintStats();
+-    }
+-#endif
+-    THR_LOGF("calling _Exit(%d)", rc);
+-    _Exit(rc);
+-  } else {
+-    THR_LOGF("calling exit(%d)", rc);
+-    KillOtherThreads(m->system);
+-#ifdef HAVE_JIT
+-    DisableJit(&m->system->jit);  // unmapping exec pages is slow
+-#endif
+-    if (m->system->trapexit && !m->system->exited) {
+-      m->system->exited = true;
+-      m->system->exitcode = rc;
+-      HaltMachine(m, kMachineExitTrap);
+-    }
+-    FreeMachine(m);
+-#ifdef HAVE_JIT
+-    ShutdownJit();
+-#endif
+-#ifndef NDEBUG
+-    if (FLAG_statistics) {
+-      PrintStats();
+-    }
+-#endif
+-    exit(rc);
+-  }
+-}
+-
++  blink_host_guest_group_exit(m, rc);
++}
+ _Noreturn void SysExit(struct Machine *m, int rc) {
+ #ifdef HAVE_THREADS
+   THR_LOGF("pid=%d tid=%d SysExit", m->system->pid, m->tid);
+   if (IsOrphan(m)) {
+     SysExitGroup(m, rc);
+   } else {
+-    ClearChildTid(m);
+-    FreeMachine(m);
+-    pthread_exit(EXIT_SUCCESS);
++    blink_host_guest_thread_exit(m, rc);
+   }
+ #else
+   SysExitGroup(m, rc);
+@@ -497,19 +469,6 @@
+   return SysFork(m);
+ }
+ 
+-static void *OnSpawn(void *arg) {
+-  int rc;
+-  struct Machine *m = (struct Machine *)arg;
+-  THR_LOGF("pid=%d tid=%d OnSpawn", m->system->pid, m->tid);
+-  m->thread = pthread_self();
+-  if (!(rc = sigsetjmp(m->onhalt, 1))) {
+-    m->canhalt = true;
+-    unassert(!pthread_sigmask(SIG_SETMASK, &m->spawn_sigmask, 0));
+-  } else if (rc == kMachineFatalSystemSignal) {
+-    HandleFatalSystemSignal(m, &g_siginfo);
+-  }
+-  Blink(m);
+-}
+ 
+ #ifdef HAVE_THREADS
+ static int SysSpawn(struct Machine *m, u64 flags, u64 stack, u64 ptid, u64 ctid,
+@@ -517,11 +476,9 @@
+   int tid;
+   int err;
+   int ignored;
+-  pthread_t thread;
+   unsigned supported;
+   unsigned mandatory;
+   sigset_t ss, oldss;
+-  pthread_attr_t attr;
+   _Atomic(int) *ptid_ptr;
+   _Atomic(int) *ctid_ptr;
+   struct Machine *m2 = 0;
+@@ -580,10 +537,7 @@
+   Put64(m2->ax, 0);
+   Put64(m2->sp, stack);
+   m2->spawn_sigmask = oldss;
+-  unassert(!pthread_attr_init(&attr));
+-  unassert(!pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED));
+-  err = pthread_create(&thread, &attr, OnSpawn, m2);
+-  unassert(!pthread_attr_destroy(&attr));
++  err = blink_host_guest_thread_start(m2);
+   if (err) {
+     FreeMachine(m2);
+     unassert(!pthread_sigmask(SIG_SETMASK, &oldss, 0));
+@@ -5197,10 +5151,6 @@
+ }
+ 
+ #include "host-membarrier.h"
+-#if !defined(DISABLE_THREADS) || !defined(NOLINEAR) || !defined(DISABLE_JIT) || defined(HAVE_THREADS) || defined(HAVE_FORK)
+-#error Private membarrier staging requires one guest thread, no fork, and the nonlinear interpreter
+-#endif
+-
+ static int SysMembarrier(struct Machine *m, int command, unsigned flags,
+                         int cpu_id) {
+   (void)m;
+--- a/blink/memorymalloc.c
++++ b/blink/memorymalloc.c
+@@ -1,3 +1,9 @@
++#include "config.h"
++#include "host-guest-threads.h"
++#if !defined(BLINK_MANAGED_GUEST_THREADS) || !defined(HAVE_THREADS) || !defined(NOLINEAR) || !defined(DISABLE_JIT) || defined(DISABLE_THREADS) || defined(HAVE_FORK) || defined(HAVE_PTHREAD_PROCESS_SHARED) || defined(HAVE_PTHREAD_SETCANCELSTATE)
++#error Managed guest threads require the explicit no-fork nonlinear interpreter owner profile
++#endif
++
+ /*-*- mode:c;indent-tabs-mode:nil;c-basic-offset:2;tab-width:8;coding:utf-8 -*-│
+ │ vi: set et ft=c ts=2 sts=2 sw=2 fenc=utf-8                               :vi │
+ ╞══════════════════════════════════════════════════════════════════════════════╡
+@@ -293,45 +299,8 @@
+ }
+ 
+ void KillOtherThreads(struct System *s) {
+-#ifdef HAVE_THREADS
+-  int r, t;
+-  struct Dll *e;
+-  struct Machine *m;
+-  struct timespec deadline;
+-  if (atomic_exchange(&s->killer, true)) {
+-    FreeMachine(g_machine);
+-    pthread_exit(EXIT_SUCCESS);
+-  }
+-StartOver:
+-  unassert(s == g_machine->system);
+-  unassert(!dll_is_empty(s->machines));
+-  for (t = 0; !IsOrphan(g_machine); ++t) {
+-    LOCK(&s->machines_lock);
+-    for (e = dll_first(s->machines); e; e = dll_next(s->machines, e)) {
+-      if ((m = MACHINE_CONTAINER(e)) != g_machine) {
+-        THR_LOGF("pid=%d tid=%d is killing tid %d", s->pid, g_machine->tid,
+-                 m->tid);
+-        atomic_store_explicit(&m->killed, true, memory_order_release);
+-        atomic_store_explicit(&m->attention, true, memory_order_release);
+-        if (t < 10) {
+-          pthread_kill(m->thread, SIGSYS);
+-        } else {
+-          LOGF("kill9'd thread after 10 tries");
+-          pthread_kill(m->thread, SIGKILL);
+-          dll_remove(&s->machines, e);
+-          UNLOCK(&s->machines_lock);
+-          goto StartOver;
+-        }
+-      }
+-    }
+-    deadline = AddTime(GetTime(), FromMilliseconds(kPollingMs));
+-    r = pthread_cond_timedwait(&s->machines_cond, &s->machines_lock, &deadline);
+-    unassert(r == 0 || r == ETIMEDOUT);
+-    UNLOCK(&s->machines_lock);
+-  }
+-#endif
+-}
+-
++  blink_host_guest_stop_other_threads(s);
++}
+ void RemoveOtherThreads(struct System *s) {
+ #ifdef HAVE_THREADS
+   struct Dll *e, *g;
