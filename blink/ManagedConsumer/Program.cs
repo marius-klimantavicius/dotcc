@@ -1,84 +1,89 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Managed.Emulation.Execution;
-using Managed.Emulation.Host;
+using System.Text.Json;
+using Managed.Emulation;
 
 if (args.Length == 1 && args[0] is "--help" or "-h")
 {
-    Console.WriteLine("Usage: ManagedConsumer [SERVICE_ELF INSTANCE_FILE]");
-    Console.WriteLine("Runs the pinned local service through the translated interpreter and a C# execution owner.");
+    Console.WriteLine("Usage: ManagedConsumer GUEST_ELF WORKER_EXECUTABLE");
+    Console.WriteLine("Runs the .NET NativeAOT service, checks HTTP, then restarts it and requests cooperative stop.");
+    Console.WriteLine("WORKER_EXECUTABLE is the managed worker .dll or its published NativeAOT executable.");
     return 0;
 }
-if (args.Length != 0 && args.Length != 2)
+if (args.Length != 2)
 {
-    Console.Error.WriteLine("Usage: ManagedConsumer [SERVICE_ELF INSTANCE_FILE]");
+    Console.Error.WriteLine("Usage: ManagedConsumer GUEST_ELF WORKER_EXECUTABLE");
     return 2;
 }
-string image = args.Length == 2 ? args[0] : "blink/build/guest/service";
-string data = args.Length == 2 ? args[1] : "blink/tests/ServiceFixture/instance.txt";
-var io = new InstanceIo(new Dictionary<string, ReadOnlyMemory<byte>>
+string workerPath = Path.GetFullPath(args[1]);
+var launch = workerPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)
+    ? new WorkerLaunch("dotnet", [workerPath]) : new WorkerLaunch(workerPath, []);
+var options = new InstanceOptions
 {
-    ["/bin/service"] = File.ReadAllBytes(image),
-    ["/data/fixture"] = File.ReadAllBytes(data),
-}, executablePaths: new HashSet<string> { "/bin/service" });
-var stop = new HostExecutionStop(TimeSpan.FromSeconds(60));
-var execution = new GuestExecution(io, stop);
-var completion = new TaskCompletionSource<GuestExecutionResult>(TaskCreationOptions.RunContinuationsAsynchronously);
-// Every translated call and binding stays on this one thread. The application
-// uses only the thread-safe IO/publication surface and the stop owner elsewhere.
-var worker = new Thread(() =>
+    Executable = "/bin/dotnet-service",
+    Image = [new ImageFile("/bin/dotnet-service", File.ReadAllBytes(args[0]), Executable: true)],
+    Arguments = ["dotnet-service", "8080"],
+    Environment = ["LANG=C", "DOTNET_GCHeapHardLimit=1000000",
+        "DOTNET_GCRegionRange=2000000", "DOTNET_GCRegionSize=100000"],
+    MemoryLimit = 64 * 1024 * 1024,
+    DescriptorLimit = 128,
+    OutputLimit = 16384,
+    InstructionLimit = 20_000_000,
+    WallClockMilliseconds = 30_000,
+    PublishedPorts = [8080]
+};
+using var deadline = new CancellationTokenSource(TimeSpan.FromMinutes(2));
+int first = await RunOnce(false);
+int restarted = await RunOnce(true);
+if (first == restarted) throw new InvalidOperationException("Restart did not create a fresh worker.");
+Console.WriteLine("Restart and cooperative stop: passed");
+return 0;
+
+async Task<int> RunOnce(bool cooperativeStop)
 {
-    try
-    {
-        completion.SetResult(execution.Run("/bin/service", ["service", "8080", "/data/fixture"],
-            ["LANG=C"], 100_000_000));
-    }
-    catch (Exception error) { completion.SetException(error); }
-}) { Name = "Blink interpreter" };
-worker.Start();
-try
-{
-    while (Encoding.UTF8.GetString(io.CapturedOutput.StandardOutput) != "READY 8080\n")
-    {
-        if (completion.Task.IsCompleted) throw new InvalidOperationException("Guest ended before readiness.", completion.Task.Exception);
-        stop.Token.ThrowIfCancellationRequested();
-        await Task.Delay(10, stop.Token);
-    }
-    IPEndPoint? published = null;
-    for (int fd = 3; fd < 128; ++fd)
-    {
-        var local = io.LocalEndpoint(fd);
-        if (!local.Succeeded || local.Value.Port != 8080) continue;
-        var endpoint = io.Publish(fd);
-        if (endpoint.Succeeded) { published = endpoint.Value; break; }
-    }
-    if (published == null || !IPAddress.IsLoopback(published.Address))
-        throw new InvalidOperationException("Ready guest listener could not be published on loopback.");
-    byte[] health = await Request(published, "GET /health HTTP/1.1\r\nHost: fixture\r\n\r\n", stop.Token);
-    RequireResponse(health, "ok\n");
+    await using var instance = await BlinkInstance.StartAsync(launch, options, deadline.Token);
+    PublishedEndpoint[] endpoints = await instance.Ready.WaitAsync(deadline.Token);
+    if (endpoints.Length != 1 || endpoints[0].GuestPort != 8080)
+        throw new InvalidOperationException("Unexpected guest publication.");
+    var endpoint = new IPEndPoint(IPAddress.Loopback, endpoints[0].HostPort);
+    RequireResponse(await Request(endpoint, "GET /health HTTP/1.1\r\nHost: fixture\r\n\r\n", deadline.Token), "ok\n");
     Console.WriteLine("Guest health: ok");
-    byte[] stopped = await Request(published,
-        "POST /stop HTTP/1.1\r\nHost: fixture\r\nContent-Length: 0\r\n\r\n", stop.Token);
-    RequireResponse(stopped, "stopped\n");
-    GuestExecutionResult result = await completion.Task.WaitAsync(TimeSpan.FromSeconds(15));
-    if (!result.Exited || result.ExitStatus != 0 || result.StopReason != HostExecutionStopReason.None ||
-        result.Signal != 0 || !result.MemoryReleased || stop.NotificationFailure != null)
-        throw new InvalidOperationException($"Guest did not exit normally: {result}");
-    if (Encoding.UTF8.GetString(io.CapturedOutput.StandardOutput) != "READY 8080\nSTOPPED\n" ||
-        io.CapturedOutput.StandardError.Length != 0)
-        throw new InvalidOperationException("Guest output differs from the pinned service contract.");
-    Console.WriteLine("Guest stopped: exit 0");
-    return 0;
+    InstanceResult result;
+    if (cooperativeStop)
+        result = await instance.StopAsync(TimeSpan.FromSeconds(10), deadline.Token);
+    else
+    {
+        RequireResponse(await Request(endpoint,
+            "POST /stop HTTP/1.1\r\nHost: fixture\r\nContent-Length: 0\r\n\r\n", deadline.Token), "stopped\n");
+        result = await instance.Completion.WaitAsync(deadline.Token);
+    }
+    RequireCleanup(result, cooperativeStop);
+    if (result.Reason != (cooperativeStop ? "stopped" : "exited") ||
+        (!cooperativeStop && result.ExitStatus != 0) || result.Signal != 0 || result.Halt != 0 ||
+        result.StandardError.Length != 0 || result.Instructions <= 0 || result.Instructions > options.InstructionLimit)
+        throw new InvalidOperationException("Guest did not finish with the expected result: " + result.Reason);
+    string expectedOutput = cooperativeStop ? "READY 8080\n" : "READY 8080\nSTOPPED\n";
+    if (Encoding.UTF8.GetString(result.StandardOutput) != expectedOutput)
+        throw new InvalidOperationException("Guest output differs from the service contract.");
+    if (!cooperativeStop) Console.WriteLine("Guest stopped: exit 0");
+    return instance.WorkerProcessId;
 }
-finally
+
+static void RequireCleanup(InstanceResult result, bool cooperativeStop)
 {
-    stop.RequestStop();
-    // Never dispose guest storage while the execution thread can still use it.
-    if (!worker.Join(TimeSpan.FromSeconds(15)))
-        throw new TimeoutException("Interpreter did not return after stop; owner storage remains alive.");
-    try { await io.DisposeAsync(); }
-    finally { stop.Dispose(); }
+    if (result.WorkerExitCode != 0 || result.WorkerDiagnostics.Length != 0 || result.Detail == null)
+        throw new InvalidOperationException("Worker did not report clean completion.");
+    using var document = JsonDocument.Parse(result.Detail);
+    var detail = document.RootElement;
+    if (detail.GetProperty("stopReason").GetString() != (cooperativeStop ? "Requested" : "None"))
+        throw new InvalidOperationException("Guest stop outcome differs from the requested lifecycle.");
+    foreach (string key in new[] { "joined", "quiescent", "ioDisposed", "memoryReleased" })
+        if (!detail.GetProperty(key).GetBoolean())
+            throw new InvalidOperationException("Worker cleanup incomplete: " + key);
+    if (detail.GetProperty("notificationFailure").GetBoolean() ||
+        detail.GetProperty("error").ValueKind != JsonValueKind.Null)
+        throw new InvalidOperationException("Worker reported a cleanup or execution error.");
 }
 
 static async Task<byte[]> Request(IPEndPoint endpoint, string request, CancellationToken cancellation)
