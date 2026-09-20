@@ -22,6 +22,8 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
         internal GuestEndpoint? Remote;
         internal bool Listening;
         internal bool ReadShutdown, WriteShutdown;
+        internal bool NonBlocking;
+        internal ulong ReadEpoch, WriteEpoch;
         internal int SendTimeoutMilliseconds, ReceiveTimeoutMilliseconds;
     }
     private readonly object sync = new();
@@ -139,6 +141,9 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
                 if (!Find(handle, out source!)) return Fail<int>(GuestError.BadDescriptor);
                 if (source.Remote != null) return Fail<int>(GuestError.AlreadyConnected);
                 if (source.Listening) return Fail<int>(GuestError.Invalid);
+                // Nonblocking connect needs a pending-connect/error contract;
+                // the selected Kestrel transport only accepts incoming streams.
+                if (source.NonBlocking) return Fail<int>(GuestError.Unsupported);
                 // A timed connect needs a retained in-progress connection state;
                 // canceling ConnectAsync cannot truthfully provide that contract.
                 if (source.SendTimeoutMilliseconds != 0) return Fail<int>(GuestError.Unsupported);
@@ -173,12 +178,17 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
             while (accepted == null)
             {
                 token.ThrowIfCancellationRequested();
-                try { accepted = listener.Socket.Accept(); }
-                catch (SocketException error) when (error.SocketErrorCode == SocketError.WouldBlock)
+                lock (sync)
                 {
-                    if (!await PauseSocketWait(receiveTimeout, start, token).ConfigureAwait(false))
-                        return Fail<AcceptedSocket>(GuestError.Again);
+                    try { accepted = listener.Socket.Accept(); }
+                    catch (SocketException error) when (error.SocketErrorCode == SocketError.WouldBlock)
+                    {
+                        ++listener.ReadEpoch;
+                        if (listener.NonBlocking) return Fail<AcceptedSocket>(GuestError.Again);
+                    }
                 }
+                if (accepted == null && !await PauseSocketWait(receiveTimeout, start, token).ConfigureAwait(false))
+                    return Fail<AcceptedSocket>(GuestError.Again);
             }
             bool retained = false;
             try
@@ -204,27 +214,34 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
             finally { if (!retained) accepted.Dispose(); }
         }, cancellation);
 
-    public Task<HostResult<int>> ReceiveAsync(int handle, Memory<byte> destination, CancellationToken cancellation = default)
+    public Task<HostResult<int>> ReceiveAsync(int handle, Memory<byte> destination,
+        CancellationToken cancellation = default, bool peek = false)
         => RunAsync<int>(async token =>
         {
-            Socket socket;
+            Entry entry;
             int timeout;
             lock (sync)
             {
-                if (!Find(handle, out var entry)) return Fail<int>(GuestError.BadDescriptor);
-                socket = entry.Socket; timeout = entry.ReceiveTimeoutMilliseconds;
+                if (!Find(handle, out entry!)) return Fail<int>(GuestError.BadDescriptor);
+                timeout = entry.ReceiveTimeoutMilliseconds;
             }
             long start = Stopwatch.GetTimestamp();
             for (;;)
             {
                 token.ThrowIfCancellationRequested();
-                // Preserve the previously qualified zero-capacity receive wait:
-                // readiness or EOF must be observable before returning zero.
-                if (destination.Length != 0 || socket.Poll(0, SelectMode.SelectRead))
+                lock (sync)
                 {
-                    int count = socket.Receive(destination.Span, SocketFlags.None, out SocketError error);
-                    if (count > 0 || error == SocketError.Success) return HostResult<int>.Success(count);
-                    if (error != SocketError.WouldBlock) throw new SocketException((int)error);
+                    // The operation and observed drain generation are atomic with
+                    // readiness snapshots. References retain this exact entry.
+                    if (destination.Length != 0 || entry.Socket.Poll(0, SelectMode.SelectRead))
+                    {
+                        int count = entry.Socket.Receive(destination.Span,
+                            peek ? SocketFlags.Peek : SocketFlags.None, out SocketError error);
+                        if (count > 0 || error == SocketError.Success) return HostResult<int>.Success(count);
+                        if (error != SocketError.WouldBlock) throw new SocketException((int)error);
+                    }
+                    ++entry.ReadEpoch;
+                    if (entry.NonBlocking) return Fail<int>(GuestError.Again);
                 }
                 if (!await PauseSocketWait(timeout, start, token).ConfigureAwait(false)) return Fail<int>(GuestError.Again);
             }
@@ -233,22 +250,26 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
     public Task<HostResult<int>> SendAsync(int handle, ReadOnlyMemory<byte> source, CancellationToken cancellation = default)
         => RunAsync<int>(async token =>
         {
-            Socket socket;
+            Entry entry;
             int timeout;
             lock (sync)
             {
-                if (!Find(handle, out var entry)) return Fail<int>(GuestError.BadDescriptor);
-                socket = entry.Socket; timeout = entry.SendTimeoutMilliseconds;
+                if (!Find(handle, out entry!)) return Fail<int>(GuestError.BadDescriptor);
+                timeout = entry.SendTimeoutMilliseconds;
             }
             long start = Stopwatch.GetTimestamp();
             for (;;)
             {
                 token.ThrowIfCancellationRequested();
-                int count = socket.Send(source.Span, SocketFlags.None, out SocketError error);
-                // A completed transfer wins over a concurrent timeout/cancel.
-                // Never turn bytes already sent into an error or repeat them.
-                if (count > 0 || error == SocketError.Success) return HostResult<int>.Success(count);
-                if (error != SocketError.WouldBlock) throw new SocketException((int)error);
+                lock (sync)
+                {
+                    int count = entry.Socket.Send(source.Span, SocketFlags.None, out SocketError error);
+                    // A real completed transfer always wins; never repeat bytes.
+                    if (count > 0 || error == SocketError.Success) return HostResult<int>.Success(count);
+                    if (error != SocketError.WouldBlock) throw new SocketException((int)error);
+                    ++entry.WriteEpoch;
+                    if (entry.NonBlocking) return Fail<int>(GuestError.Again);
+                }
                 if (!await PauseSocketWait(timeout, start, token).ConfigureAwait(false)) return Fail<int>(GuestError.Again);
             }
         }, cancellation);
@@ -355,8 +376,8 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
         catch (SocketException error) { return Fail<T>(disposed || cancellation.IsCancellationRequested ? GuestError.Canceled : ConvertError(error)); }
         finally
         {
-            lock (sync) pending.Remove(completion.Task);
             completion.SetResult();
+            lock (sync) pending.Remove(completion.Task);
         }
     }
     private bool Find(int handle, out Entry entry)

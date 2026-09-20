@@ -167,6 +167,13 @@ public sealed partial class InstanceIo : IAsyncDisposable
                 description.StatusFlags = (description.StatusFlags & ~2048) | (flags & 2048);
                 return HostResult<int>.Success(0);
             }
+            if (description.Kind == Kind.Socket)
+            {
+                if ((flags & ~(3 | 2048)) != 0) return Fail<int>(GuestError.Unsupported);
+                var result = network.SetNonBlocking(description.Handle, (flags & 2048) != 0);
+                if (result.Succeeded) description.StatusFlags = (description.StatusFlags & ~2048) | (flags & 2048);
+                return result;
+            }
             // Access and retained lookup flags are not mutable with F_SETFL.
             // Nonblocking, async, direct and synchronous modes need real host contracts.
             if ((flags & ~(3 | 1024 | 65536 | 131072)) != 0) return Fail<int>(GuestError.Unsupported);
@@ -205,6 +212,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (!descriptors.Remove(fd, out var description)) return Fail<int>(GuestError.BadDescriptor);
             closeOnExec.Remove(fd);
             if (--description.References != 0) return HostResult<int>.Success(0);
+            RemoveEpollDescription(description);
             return description.Kind switch
             {
                 Kind.File => files.Close(description.Handle),
@@ -277,12 +285,12 @@ public sealed partial class InstanceIo : IAsyncDisposable
             return Task.FromResult(result);
         }
     }
-    public Task<HostResult<int>> ReceiveAsync(int fd, Memory<byte> destination, CancellationToken cancellation = default)
+    public Task<HostResult<int>> ReceiveAsync(int fd, Memory<byte> destination, CancellationToken cancellation = default, bool peek = false)
     {
         lock (sync)
         {
             var found = SocketHandle(fd);
-            return found.Succeeded ? network.ReceiveAsync(found.Value, destination, cancellation) : Task.FromResult(Fail<int>(found.Error));
+            return found.Succeeded ? network.ReceiveAsync(found.Value, destination, cancellation, peek) : Task.FromResult(Fail<int>(found.Error));
         }
     }
     public Task<HostResult<int>> SendAsync(int fd, ReadOnlyMemory<byte> source, CancellationToken cancellation = default)
@@ -349,8 +357,8 @@ public sealed partial class InstanceIo : IAsyncDisposable
         }
         finally
         {
-            lock (sync) pending.Remove(completion.Task);
             completion.SetResult();
+            lock (sync) pending.Remove(completion.Task);
         }
     }
     public async ValueTask DisposeAsync()

@@ -93,6 +93,12 @@ int AsyncSocketsCommon(void) {
   if (peer < 0 || Wait(epfd, listener_data, EPOLLIN)) return 17;
   accepted = accept(listener, 0, 0);
   if (accepted < 0 || accept(listener, 0, 0) != -1 || errno != EAGAIN || Empty(epfd)) return 18;
-  if (close(accepted) || close(peer) || close(listener) || close(epfd)) return 19;
+  if (close(accepted) || close(peer)) return 19;
+  /* Observed ordinary Kestrel listener shutdown: no connected/queued peers. */
+  linger.l_onoff = 1; linger.l_linger = 0; size = sizeof(observed);
+  if (setsockopt(listener, SOL_SOCKET, SO_LINGER, &linger, sizeof(linger)) ||
+      getsockopt(listener, SOL_SOCKET, SO_LINGER, &observed, &size) ||
+      size != sizeof(observed) || observed.l_onoff != 1 || observed.l_linger != 0 ||
+      close(listener) || close(epfd)) return 20;
   return 0;
 }

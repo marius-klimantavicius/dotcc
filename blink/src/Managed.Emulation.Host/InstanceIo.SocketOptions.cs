@@ -7,3 +7,11 @@ public sealed partial class InstanceIo
     public HostResult<SocketTimeout> GetSocketTimeout(int fd, bool receive)
         => SocketCall(fd, handle => network.GetTimeout(handle, receive));
 }
+
+public sealed partial class InstanceIo
+{
+    public HostResult<int> SetSocketLinger(int fd, SocketLinger value)
+        => SocketCall(fd, handle => network.SetLinger(handle, value));
+    public HostResult<SocketLinger> GetSocketLinger(int fd)
+        => SocketCall(fd, network.GetLinger);
+}
