@@ -99,6 +99,7 @@ public sealed unsafe class GuestExecution
         try
         {
             Bind(() => Blink.BindHostExecutionStop(stop), Blink.UnbindHostExecutionStop);
+            Bind(() => Blink.BindHostMembarrier(new HostSingleThreadMemoryBarrier()), Blink.UnbindHostMembarrier);
             Bind(() => Blink.BindHostGuestSignals(OnSignal), Blink.UnbindHostGuestSignals);
             Bind(() => Blink.BindHostIo(io, stop.Token), Blink.UnbindHostIo);
             Bind(() => Blink.BindHostDirectories(directories), Blink.UnbindHostDirectories);

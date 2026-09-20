@@ -2168,3 +2168,23 @@ multi-thread barrier replaces that contract. No mlock success or host pinning
 will be fabricated. Inputs owns the host/bridge and normal qualification;
 guest owns the narrow staged dispatcher/header; coordinator owns profile and
 C# owner integration. P5 remains active and P6 remains held.
+
+### P5 private membarrier boundary qualified
+
+Normal native Linux and raw/optimized JIT/NativeAOT qualification pass in
+`host-membarrier/attempt-a4b_894o/receipt.json`, SHA-256
+`48a786c8bc411ad91afd27b94054e1da443f010e94971b511038632d729b6205`.
+QUERY advertises only mask 24 after probing the actual BCL
+`Interlocked.MemoryBarrierProcessWide()` fence; registration is owner scoped,
+and two normal fences preserve the expected values and errno. This is a real
+process-wide fence, not a fabricated mlock success. Guest thread lifecycle
+remains unqualified; staging rejects HAVE_THREADS/HAVE_FORK and requires the
+selected single-thread interpreter profile. The exact dispatcher composition
+source receipt is `upstream-guest-runtime/attempt-lauasdlc/receipt.json`,
+SHA-256 `57599f4df64d1b065008baf670f247aff08ba57481e1be86b9f38a8a761ba456`.
+
+The manifest, profile composer and C# owner now include this boundary. Product
+regeneration is next, with current compiler identities and unchanged authored
+source references, followed by the actual static NativeAOT diagnostic. Boundary
+qualification does not claim runtime startup or HTTP readiness. P5 remains
+active; no P6 work has begun.

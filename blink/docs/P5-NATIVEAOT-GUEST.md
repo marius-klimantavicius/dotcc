@@ -103,3 +103,25 @@ variants compared with glibc. It still creates genuine runtime threads, uses
 epoll/pipe2 and reserves a large GC virtual range. Translated execution of this
 static candidate is the next gate; the native pass alone does not satisfy it.
 The user's stop condition did not trigger: compilation was straightforward.
+
+## First static execution and required barrier
+
+The static candidate executes 139,230 instructions before guest exit -1, with
+no readiness or HTTP case. The same result is reproduced with 21 bounded
+syscall observations in `dotnet-guest-execution/attempt-w6n64zmg/receipt.json`
+(SHA-256 `ac264c5e2ee12364fba52a8cb099eed4578744a945d8363d1e457b754783d838`).
+QUERY membarrier returns ENOSYS, fallback mlock returns ENOSYS, and the guest
+cleans up before exit_group(-1). The owner joins and releases its memory.
+
+The actual runtime package pins source commit
+`95017c711e6afc1085133d440e42b4bd78155701`. Its
+[GC initialization](https://github.com/dotnet/dotnet/blob/95017c711e6afc1085133d440e42b4bd78155701/src/runtime/src/coreclr/gc/unix/gcenv.unix.cpp)
+first checks PRIVATE_EXPEDITED bit 8 and registration command 16; success avoids
+the memory-locking fallback. The pending boundary therefore implements those
+commands with actual
+[BCL process-wide memory barriers](https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.memorybarrierprocesswide?view=net-10.0),
+owner-scoped registration, and no host memory-pinning claim. Initial qualification
+is guarded to the existing one-guest-thread/no-fork profile. This API supplies a
+real process-wide fence; future guest threading still needs shared owner and
+lifecycle qualification. No boundary or translated guest pass is claimed until
+the corresponding executions finish.

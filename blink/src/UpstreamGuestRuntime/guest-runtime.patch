@@ -1,0 +1,28 @@
+--- a/blink/syscall.c
++++ b/blink/syscall.c
+@@ -5194,6 +5194,17 @@
+   if (saved) Write32(saved, sgid);
+   if (effective) Write32(effective, egid);
+   return 0;
++}
++
++#include "host-membarrier.h"
++#if !defined(DISABLE_THREADS) || !defined(NOLINEAR) || !defined(DISABLE_JIT) || defined(HAVE_THREADS) || defined(HAVE_FORK)
++#error Private membarrier staging requires one guest thread, no fork, and the nonlinear interpreter
++#endif
++
++static int SysMembarrier(struct Machine *m, int command, unsigned flags,
++                        int cpu_id) {
++  (void)m;
++  return blink_host_membarrier(command, flags, cpu_id);
+ }
+ 
+ static int SysSchedYield(struct Machine *m) {
+@@ -5700,6 +5711,7 @@
+     SYSCALL(5, 0x10F, "ppoll", SysPpoll, STRACE_5);
+     SYSCALL(5, 0x13C, "renameat2", SysRenameat2, STRACE_RENAMEAT2);
+     SYSCALL(3, 0x13E, "getrandom", SysGetrandom, STRACE_GETRANDOM);
++    SYSCALL(3, 0x144, "membarrier", SysMembarrier, STRACE_3);
+     SYSCALL(5, 0x147, "preadv2", SysPreadv2, STRACE_PREADV2);
+     SYSCALL(5, 0x148, "pwritev2", SysPwritev2, STRACE_PWRITEV2);
+     SYSCALL(3, 0x1B4, "close_range", SysCloseRange, STRACE_3);

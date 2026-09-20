@@ -205,6 +205,41 @@ for filename,row in boundary['sources'].items():
         raise SystemExit('execution-stop staged source changed: '+name)
     source_overrides[name]={'staged_path':str(adapted.relative_to(p)),
         'sha256':row['staged_sha256'],'original_sha256':row['source_sha256']}
+# NativeAOT guest runtime boundaries compose with the exact stop adaptation;
+# retain both receipts and never replace the immutable upstream or old profiles.
+runtime=p/'src/UpstreamGuestRuntime'
+runtime_snapshot=stage/'source-adaptations/UpstreamGuestRuntime'
+runtime_inputs={f.name:hashlib.sha256(f.read_bytes()).hexdigest()
+                for f in runtime.iterdir() if f.is_file()}
+shutil.copytree(runtime,runtime_snapshot,ignore=shutil.ignore_patterns('__pycache__'))
+for name,digest in runtime_inputs.items():
+    if hashlib.sha256((runtime_snapshot/name).read_bytes()).hexdigest()!=digest:
+        raise SystemExit('guest-runtime staging snapshot changed: '+name)
+runtime_output=stage/'upstream/guest-runtime'
+runtime_receipt=stage/'guest-runtime-boundary.json'
+subprocess.run([sys.executable,str(runtime/'stage.py'),
+                '--predecessor',str(stop_output/'syscall.c'),
+                '--predecessor-receipt',str(stop_receipt),
+                '--output',str(runtime_output),'--receipt',str(runtime_receipt)],check=True)
+if runtime_inputs!={f.name:hashlib.sha256(f.read_bytes()).hexdigest()
+                    for f in runtime.iterdir() if f.is_file()}:
+    raise SystemExit('guest-runtime inputs changed during profile construction')
+boundary=json.loads(runtime_receipt.read_text())
+if boundary['patch_sha256']!=runtime_inputs['guest-runtime.patch'] or boundary['stage_sha256']!=runtime_inputs['stage.py']:
+    raise SystemExit('guest-runtime derivation differs from reviewed inputs')
+for name,digest in boundary['required_headers'].items():
+    if hashlib.sha256((p/name).read_bytes()).hexdigest()!=digest:
+        raise SystemExit('guest-runtime header changed: '+name)
+for filename,row in boundary['sources'].items():
+    name='blink/'+filename
+    previous=source_overrides.get(name)
+    adapted=runtime_output/filename
+    if previous is None or previous['sha256']!=row['predecessor_sha256'] or pins[name]!=row['source_sha256']:
+        raise SystemExit('guest-runtime predecessor chain differs: '+name)
+    if hashlib.sha256(adapted.read_bytes()).hexdigest()!=row['staged_sha256']:
+        raise SystemExit('guest-runtime staged source changed: '+name)
+    source_overrides[name]={'staged_path':str(adapted.relative_to(p)),
+        'sha256':row['staged_sha256'],'original_sha256':row['source_sha256']}
 binding_overrides=stage/'binding-overrides.json'
 binding_overrides.write_text(json.dumps(source_overrides,indent=2)+'\n')
 with (stage/'host-binding-stage.log').open('wb') as log:

@@ -34,7 +34,8 @@
     "src/GuestResources/GuestResources.c",
     "src/Host/include/host-namespace-policy.h",
     "src/Host/include/host-pipes.h",
-    "src/Host/include/host-execution-stop.h"
+    "src/Host/include/host-execution-stop.h",
+    "src/Host/include/host-membarrier.h"
   ],
   "includeHeaders": [
     "host-profile-constants.h",
@@ -111,7 +112,8 @@
     "src/Host/HostNamespacePolicyBridge.cs",
     "src/Host/HostPipesBridge.cs",
     "src/Host/HostExecutionStopBridge.cs",
-    "src/Host/HostGuestSignalsBridge.cs"
+    "src/Host/HostGuestSignalsBridge.cs",
+    "src/Host/HostMembarrierBridge.cs"
   ],
   "isolate": [
     "setenv",

@@ -22,7 +22,10 @@ native-host library fallback or a qualified dynamic/runtime-threading profile.
 `Run` binds its host contexts, initializes the upstream system, applies resource
 limits, loads the valid static guest executable, installs standard descriptors,
 and executes instructions with the upstream attention/signal ordering. The
-exception boundary uses the same public numeric jump-buffer identity and virtual
+memory-barrier binding owns guest registration on this same execution thread
+and calls the BCL process-wide fence. Its staged dispatcher requires disabled
+guest threading and fork until the broader ownership profile is qualified.
+The exception boundary uses the same public numeric jump-buffer identity and virtual
 signal mask adapter as translated `sigsetjmp`. Unhandled guest signals unwind
 through a private owner exception. Unrelated runtime or host exceptions propagate.
 After the owning thread has completed, `LastFailureState` provides an immutable
