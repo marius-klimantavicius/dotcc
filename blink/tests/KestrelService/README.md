@@ -84,3 +84,28 @@ fchmod, filesystem metadata/enumeration and a diagnostics Unix socket under
 `/tmp`. These are observations of this default configuration and native content
 root, not proof that every call is indispensable for HTTP. The four GC variables
 do not prove that the previous 64 MiB/16-worker managed limits suffice.
+
+
+## Fixed-configuration native profile
+
+The unchanged ELF also passes all five native cases with exactly two additional
+supported settings: `DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false` and
+`DOTNET_EnableDiagnostics=0`. The fixed private image needs no configuration hot
+reload or debugger/diagnostic IPC; genuine Kestrel transport remains unchanged.
+Microsoft documents [reload configuration](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/docker/?view=aspnetcore-10.0)
+and [diagnostic settings](https://learn.microsoft.com/en-us/dotnet/core/runtime-config/debugging-profiling).
+
+```sh
+python3 blink/tests/KestrelService/native-profile.py \
+  --guest-receipt blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/receipt.json
+```
+
+Receipt `kestrel-native-profile/attempt-zphi57zq/receipt.json` has SHA-256
+`e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a`.
+All request bytes/write schedules and semantic response fields match the earlier
+native witness except independently validated actual Date values. Normal exit,
+stdout/stderr, process drainage and source/tool/ELF identities pass. The trace
+observes12 TIDs, actual edge-triggered registrations/nonblocking/MSG_PEEK, and
+listener SO_LINGER. Configuration watches and diagnostics memfd/stream IPC are
+absent; the ordinary Unix datagram capability probe remains. These are measured
+profile observations, not a new executable or a managed pass.

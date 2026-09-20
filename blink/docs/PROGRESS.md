@@ -2739,3 +2739,24 @@ also observes filesystem watches/diagnostics; their necessity for this fixed
 HTTP fixture is separate from recording them. No native result is relabeled as
 managed execution. Next work is exact translated startup plus real readiness
 and nonblocking contracts, with measured image/profile limits. P6 remains held.
+
+
+### Selected Kestrel configuration and first managed diagnostic
+
+The unchanged Kestrel ELF passes the same native five-case traffic with supported
+configuration reload and diagnostic IPC disabled. Exact six-entry environment
+and provenance are in `kestrel-native-profile/attempt-zphi57zq/receipt.json`, SHA
+`e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a`.
+All semantics except actual validated Date match the first native witness;
+12 TIDs and genuine nonblocking edge-triggered socket operations remain.
+The first default-configuration trace remains intact.
+
+Guest worker owns `tests/KestrelGuestExecution`, preparing exact public-delivery
+optimized JIT startup/HTTP with this native profile, a100-million-instruction
+budget and60-second wall bound. Existing64MiB backing/16-worker limits are kept
+for the initial observed outcome. Verification worker owns source-only normal
+socket/epoll test preparation, with current host frozen until this baseline run
+finishes. Coordinator owns bridge/integration and prepared measured image
+admission16MiB/control-frame24MiB; these source changes are not yet qualified.
+Required edge semantics are explicitly the observed drain-to-EAGAIN contract;
+arbitrary general Linux EPOLLET equivalence is not presumed from polling.
