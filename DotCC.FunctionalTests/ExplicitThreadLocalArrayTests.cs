@@ -11,11 +11,13 @@ namespace DotCC.FunctionalTests;
 public sealed partial class ManagedLibraryTests
 {
     [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void Explicit_thread_local_arrays_keep_distinct_pinned_storage_through_gc(bool objectLink)
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public void Explicit_thread_local_arrays_keep_distinct_pinned_storage_through_gc(bool objectLink, bool blockScope)
     {
-        var fixture = FixtureRunner.Discover().Single(row => row.name == "tls-explicit-arrays");
+        var fixture = FixtureRunner.Discover().Single(row => row.name == (blockScope ? "tls-block-static" : "tls-explicit-arrays"));
         var fragment = Path.Combine(Path.GetTempPath(), "dotcc-tls-array-" + Guid.NewGuid().ToString("N") + ".cs");
         try
         {

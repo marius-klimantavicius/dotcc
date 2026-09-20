@@ -565,10 +565,19 @@ internal sealed partial class IrBuilder
     // AttrFn case), consumed by the wrapped function declaration and cleared on unwind.
     private bool _sawNoreturnSpec;
     private bool _sawInlineSpec;
-    // `_Thread_local` (C11) seen by a FILE-SCOPE declaration's spec resolution —
-    // reset + consumed by BuildGlobalDecls (block scope rejects immediately in
-    // RecordDeclSpecs instead, so the flag never carries block-scope state).
+    // TLS specifier on a file-scope or block-static declaration. Automatic
+    // block declarations still reject TLS without an explicit storage class.
     private bool _sawThreadLocalSpec;
+    private bool _allowBlockThreadLocal;
+
+    private CType ResolveStaticLocalType(Item item)
+    {
+        var previous = _allowBlockThreadLocal;
+        _allowBlockThreadLocal = true;
+        _sawThreadLocalSpec = false;
+        try { return ResolveType(item); }
+        finally { _allowBlockThreadLocal = previous; }
+    }
     // `constexpr` (C23) seen by a declaration's spec resolution — reset + consumed
     // by BuildGlobalDecls (file scope) and BuildDeclList (block scope; C23 allows
     // both). The declared symbol binds its ConstEval'd value.
@@ -585,9 +594,8 @@ internal sealed partial class IrBuilder
     /// symbol, `_Thread_local` (gated C11) for the enclosing file-scope variable
     /// declaration. Shared by <see cref="ResolveSpecs"/> and
     /// <see cref="SpecsThenName"/> so both the spec-multiset and the
-    /// typedef-name routes behave identically. A block-scope `_Thread_local`
-    /// (even `static _Thread_local`, which C allows) is a loud V1 rejection —
-    /// dotcc lowers thread-locals as file-scope [ThreadStatic] fields only.</summary>
+    /// typedef-name routes behave identically. Block-static TLS uses hoisted
+    /// per-thread storage while preserving lexical visibility.</summary>
     private void RecordDeclSpecs(List<string> specs, SrcPos pos)
     {
         if (specs.Contains("_Noreturn")) { Gate(2011, "_Noreturn", pos); _sawNoreturnSpec = true; }
@@ -595,11 +603,11 @@ internal sealed partial class IrBuilder
         if (specs.Contains("_Thread_local"))
         {
             Gate(2011, "_Thread_local", pos);
-            if (_symbols.AtFileScope) { _sawThreadLocalSpec = true; }
+            if (_symbols.AtFileScope || _allowBlockThreadLocal) { _sawThreadLocalSpec = true; }
             else
             {
                 Diagnostics.Add(new Diagnostic(Severity.Error,
-                    "'_Thread_local' at block scope is not supported (dotcc lowers thread-locals as file-scope [ThreadStatic] fields only)",
+                    "'_Thread_local' at block scope requires an explicit supported storage class (static)",
                     pos, _file));
             }
         }
@@ -2514,6 +2522,7 @@ internal sealed partial class IrBuilder
     /// in the function's scope. The statement itself emits nothing.</summary>
     private CStmt BuildStmtStaticDecl(C.StmtStaticDecl n)
     {
+        _sawThreadLocalSpec = false;
         WalkDeclList(n.Arg1, n.Arg2, (name, initItem, type) =>
         {
             if (type.Unqualified is CType.Array array)
@@ -2531,19 +2540,19 @@ internal sealed partial class IrBuilder
                 var initializer = initItem is { } values
                     ? new PinnedArray(element, BuildArrayElems(element, dimensions, ParseInitList(values)), null) { Type = new CType.Pointer(element) }
                     : new PinnedArray(element, null, new LitInt(total.ToString(System.Globalization.CultureInfo.InvariantCulture), total) { Type = CType.Int }) { Type = new CType.Pointer(element) };
-                AddGlobalArray(name, type, initializer, $"{_symbols.Escape(name)}__s{_staticLocalSeq++}", DeclarationAlignment(n.Arg1));
+                AddGlobalArray(name, type, initializer, $"{_symbols.Escape(name)}__s{_staticLocalSeq++}", DeclarationAlignment(n.Arg1), _sawThreadLocalSpec);
                 return;
             }
             var sym = new Symbol
             {
                 Name = name, Kind = SymKind.Var, Type = type,
-                Storage = Storage.Static, IsGlobal = true,
+                Storage = Storage.Static, IsGlobal = true, IsThreadLocal = _sawThreadLocalSpec,
                 TargetName = $"{_symbols.Escape(name)}__s{_staticLocalSeq++}",
             };
             CExpr? slInit = null;
             if (initItem is { } ii) { slInit = BuildStaticAggregateInitializer(sym.Type, () => BuildDeclaratorInitializer(sym.Type, ii)); EnsureNotEmbed(slInit); CheckQualifierDiscard(slInit, sym.Type, SrcPos.From(ii), "initialization"); }
             RegisterStaticLocal(sym, slInit);
-        });
+        }, staticLocal: true);
         return new DeclStmt(System.Array.Empty<LocalDecl>());
     }
 
@@ -2577,12 +2586,13 @@ internal sealed partial class IrBuilder
     /// function body's references resolve to the hoisted field.</summary>
     private CStmt BuildStmtStaticStructInit(Item typeItem, Item nameItem, Item initializer, bool designated)
     {
-        var type = ResolveType(typeItem);
+        var type = ResolveStaticLocalType(typeItem);
+        var threadLocal = _sawThreadLocalSpec;
         var init = BuildStaticAggregateInitializer(type, () => designated ? BuildStructDesignated(type, initializer) : BuildAggregateInit(type, initializer));
         var sym = new Symbol
         {
             Name = Tok(nameItem), Kind = SymKind.Var, Type = type,
-            Storage = Storage.Static, IsGlobal = true,
+            Storage = Storage.Static, IsGlobal = true, IsThreadLocal = threadLocal,
             TargetName = $"{_symbols.Escape(Tok(nameItem))}__s{_staticLocalSeq++}",
         };
         RegisterStaticLocal(sym, init);
@@ -2781,9 +2791,16 @@ internal sealed partial class IrBuilder
     /// each subsequent declarator rebuilds its type from the pointer-stripped
     /// element plus its own <c>*</c>s (so <c>int *a, b;</c> ⇒ a:int*, b:int).
     /// Shared by local (<see cref="BuildDecl"/>) and file-scope declarations.</summary>
-    private void WalkDeclList(Item typeItem, Item listItem, Action<string, Item?, CType> add)
+    private void WalkDeclList(Item typeItem, Item listItem, Action<string, Item?, CType> add, bool staticLocal = false)
     {
-        var baseType = ResolveType(typeItem);
+        var baseType = staticLocal ? ResolveStaticLocalType(typeItem) : ResolveType(typeItem);
+        var threadLocal = _sawThreadLocalSpec;
+        var originalAdd = add;
+        add = (name, initializer, type) =>
+        {
+            _sawThreadLocalSpec = threadLocal;
+            originalAdd(name, initializer, type);
+        };
         // Peel only the LITERAL trailing `*`s (the `Type → Type *` rule greedily
         // folded them into baseType, but they bind to the FIRST declarator alone) —
         // subsequent declarators rebuild from the stripped element plus their own

@@ -984,8 +984,8 @@ productions:
       - { lhs: TypeSpec, rhs: ['_Noreturn'], action: tsNoreturn }
       # `_Thread_local` (C11) — thread storage duration → [ThreadStatic] on the
       # global's field. Same TypeSpec treatment as inline/_Noreturn: recorded by
-      # the spec resolution, dropped from the type. File-scope only (a
-      # block-scope `static _Thread_local` is a loud lowering rejection).
+      # the spec resolution, dropped from the type. File-scope and explicitly
+      # static block declarations use per-thread pinned storage.
       - { lhs: TypeSpec, rhs: ['_Thread_local'], action: tsThreadLocal }
       # `constexpr` (C23) — compile-time constant object declaration. Same
       # TypeSpec treatment as _Thread_local: recorded by the spec resolution,

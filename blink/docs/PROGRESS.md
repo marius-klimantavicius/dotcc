@@ -2268,3 +2268,28 @@ and layout/type checks are exercised by these fixtures. Whole Machine/System
 threaded layouts, clone/futex execution and C# worker lifecycle remain pending.
 The coordinator's new C# threaded owner is under review and not yet compiled;
 it is not part of the stable delivery. P5 remains active with no service pass.
+
+### P5 threaded profile emission exposed and repaired block-static TLS
+
+The first separate threaded profile (`generated/threaded-core/attempt-first`)
+retains108 upstream/host producers and no C execution frontend. Its first frozen
+assembly emitted101 objects and rejected7 valid `_Thread_local static` declarations
+in assert/debug/errno/signal/log/page-format/trace sources. Receipt
+`core/objects/184ebabf76ba382b877d9e132d8506d66e32494f86e99671d147feb9e90c54f0/receipt.json`
+remains a failed initial attempt; no generated source was repaired.
+
+The compiler now accepts adjacent TLS/static specifiers in either order and
+lowers block-static scalars and uninitialized arrays into existing per-thread
+pinned storage with lexical/object-link names. Nonzero scalar initialization,
+initialized TLS arrays and unsupported block storage remain explicit errors.
+Focused TLS plus compiler lowering tests pass232/232; four actual two-thread,
+compacting-GC functional cases pass direct/object linking for file/block storage.
+Logs are retained under `artifacts/compiler-block-tls`. An initial unit assertion
+about unrelated undeclared-name diagnostics was corrected to a valid lexical
+shadowing check; its failed log is retained.
+
+Next is fresh threaded production with the new compiler, followed by actual
+layout and normal clone/futex/TLS ELF qualification. The C# threaded owner and
+separate prototype delivery helper are still unqualified source work. Stable
+single-thread delivery and existing P4 receipts remain unchanged. P5 service
+execution has not passed; P6 remains held.

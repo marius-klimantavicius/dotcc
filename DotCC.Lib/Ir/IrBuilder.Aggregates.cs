@@ -557,7 +557,7 @@ internal sealed partial class IrBuilder
     private void BuildGlobalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, bool inferOuter = false)
     {
         _sawThreadLocalSpec = false;
-        var element = ResolveType(typeItem);
+        var element = csName is not null ? ResolveStaticLocalType(typeItem) : ResolveType(typeItem);
         var threadLocal = _sawThreadLocalSpec;
         BuildGlobalArr(element, nameItem, dimsItem, initItem, csName, DeclarationAlignment(typeItem), inferOuter, threadLocal);
     }
@@ -615,7 +615,7 @@ internal sealed partial class IrBuilder
     private void BuildGlobalCharArr(Item typeItem, Item nameItem, Item strSeqItem, Item? dimsItem, string? csName, bool wide = false)
     {
         _sawThreadLocalSpec = false;
-        var elem = ResolveType(typeItem);
+        var elem = csName is not null ? ResolveStaticLocalType(typeItem) : ResolveType(typeItem);
         var threadLocal = _sawThreadLocalSpec;
         var bytes = WideArrValues(elem, strSeqItem, wide);
         bytes.Add(0);   // NUL

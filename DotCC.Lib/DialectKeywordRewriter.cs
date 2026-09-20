@@ -41,6 +41,9 @@ internal sealed class DialectKeywordRewriter : RewritingTokenStream
 {
     private readonly int _idSymbol;
     private readonly int _version;
+    private readonly int _threadLocalSymbol;
+    private readonly int _staticSymbol;
+    private readonly int _externSymbol;
 
     /// <summary>
     /// Promotion table, keyed by identifier spelling. <c>MinVersion</c> is the
@@ -62,6 +65,9 @@ internal sealed class DialectKeywordRewriter : RewritingTokenStream
         }
         _idSymbol = map["ID"];
         _version = dialect.Version;
+        _threadLocalSymbol = map["_Thread_local"];
+        _staticSymbol = map["static"];
+        _externSymbol = map["extern"];
 
         _promotions = new Dictionary<string, (int, int, string)>(StringComparer.Ordinal)
         {
@@ -146,10 +152,25 @@ internal sealed class DialectKeywordRewriter : RewritingTokenStream
             // visitor for these actions ignores content, but keeping the
             // spelling honest avoids surprises in any future content-aware
             // handling).
-            Emit(SourceFileOrigin.Rewrite(token, p.TargetSymbol, p.TargetText));
+            token = SourceFileOrigin.Rewrite(token, p.TargetSymbol, p.TargetText);
+        }
+        // Storage duration and linkage specifiers commute in C. The grammar
+        // represents static/extern as declaration prefixes and TLS in Type;
+        // canonicalize the adjacent reverse spelling without changing origins.
+        if (token.ID == _threadLocalSymbol && TryReadNext(out var next))
+        {
+            if (next.ID == _staticSymbol || next.ID == _externSymbol)
+            {
+                Emit(next);
+                Emit(token);
+            }
+            else
+            {
+                Emit(token);
+                ProcessToken(next);
+            }
             return;
         }
-
         Emit(token);
     }
 }

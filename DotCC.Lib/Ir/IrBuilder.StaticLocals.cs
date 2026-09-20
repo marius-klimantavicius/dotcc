@@ -9,6 +9,8 @@ internal sealed partial class IrBuilder
 
     private void RegisterStaticLocal(Symbol symbol, CExpr? initializer)
     {
+        if (symbol.IsThreadLocal && initializer is not null && initializer is not PinnedArray && ConstEval(initializer) is not 0)
+            throw new IrUnsupportedException("non-zero-initialized _Thread_local is not supported");
         Globals.Add(new GlobalVar(symbol, initializer));
         StaticLocals.Add(symbol);
         _symbols.DeclareAlias(symbol);
