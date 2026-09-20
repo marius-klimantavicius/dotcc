@@ -63,7 +63,11 @@ try:
     r['selection']=selection
     (a/'source').mkdir();(a/'objects').mkdir()
     for name in ['managed-driver.c','selection.py','contracts.py','interpreter.c','corpus.h','output.h','Program.cs','features.py','fp-cases.h','make-fp-cases.py']:shutil.copyfile(ROOT/'tests/CpuConformance'/name,a/'source'/name)
-    prior=assembly['objects']['authored/managed-driver.c']
+    adding_frontend='authored/managed-driver.c' not in assembly['objects']
+    template_name='blink/syscall.c' if adding_frontend else 'authored/managed-driver.c'
+    prior=assembly['objects'][template_name]
+    r['frontend_action']='added' if adding_frontend else 'replaced'
+    r['frontend_template']=template_name
     # Use precisely the canonical include snapshot used for the replaced object;
     # validate every original dependency, then copy it to a new immutable input.
     prior_command=prior['command'];canonical=Path(prior_command[prior_command.index('-I')+1])
@@ -74,7 +78,11 @@ try:
     shutil.copytree(profile/'host-project',a/'host')
     (a/'bridges').mkdir()
     bindings=json.loads((profile/'binding-sources.json').read_text())
-    for name in bindings['authored_managed']:shutil.copyfile(profile/name,a/'bridges'/Path(name).name)
+    for name in bindings['authored_managed']:
+        if Path(name).name=='HostGuestSignalsBridge.cs':
+            r['omitted_product_callback']={'path':name,'sha256':sha(profile/name)}
+            continue
+        shutil.copyfile(profile/name,a/'bridges'/Path(name).name)
     source_replacements=[]
     # The reference policy must equal the CPUID producer retained in this exact profile.
     cpuid_source=Path(assembly['objects']['blink/cpuid.c']['command'][assembly['objects']['blink/cpuid.c']['command'].index('-o')-1])
@@ -115,18 +123,26 @@ try:
             prepared=prepared_dir/filename
             prepared.write_bytes(corrected);source_replacements.append((family,filename,prepared))
             r[prepared_key][filename]={'original_source':str(old_source),'original_sha256':sha(old_source),'prefix_sha256':hashlib.sha256(prefix).hexdigest(),'prepared_sha256':sha(prepared)}
-        r['replacement']='authored CPU driver; explicitly selected reviewed scalar/integer objects reused when identical to qualified canonical producers, otherwise explicitly replaced'
+        r['replacement']=('add' if adding_frontend else 'replace')+' authored CPU driver; explicitly selected reviewed scalar/integer objects reused when identical to qualified canonical producers, otherwise explicitly replaced'
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
-    r['runner_sha256']=sha(Path(__file__));r['replaced_object']=prior
+    r['runner_sha256']=sha(Path(__file__));r['frontend_template_object']=prior
+    if not adding_frontend:r['replaced_object']=prior
     upstream=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
     cpu_object=a/'objects/cpu-driver.cs'
-    command=['dotnet',cli,'-std=c17','-D_GNU_SOURCE','-DNDEBUG','-DNOLINEAR','--emit=obj','-I',canonical,'-I',upstream,'-I',canonical/'authored','-I',canonical/'host','--overrides-file',canonical/'overrides.json',a/'source/managed-driver.c','-o',cpu_object,'--override-report',out/'overrides.jsonl']
+    command=list(prior['command'])
+    old_source=prior.get('canonical_source', command[command.index('-o')-1])
+    command[command.index(str(old_source))]=str(a/'source/managed-driver.c')
+    command[command.index('-o')+1]=str(cpu_object)
+    if '--override-report' in command:
+        command[command.index('--override-report')+1]=str(out/'overrides.jsonl')
+    command[3:3]=['-I',str(a/'source')]
     run(command,'cpu-emission',180)
     if compiler_identity(cli.parent)!=compiler:raise RuntimeError('compiler changed during CPU emission')
     for name,digest in prior['emission_identity']['dependencies'].items():
         if sha(canonical/name)!=digest:raise RuntimeError('canonical dependency changed during emission: '+name)
     replacements={'authored/managed-driver.c':cpu_object}
-    r['replaced_objects']={'authored/managed-driver.c':prior}
+    r['replaced_objects']={} if adding_frontend else {'authored/managed-driver.c':prior}
+    if adding_frontend:r['added_objects']={'authored/managed-driver.c':str(cpu_object)}
     for family,filename,prepared in source_replacements:
         name='blink/'+filename;old=assembly['objects'][name];old_command=old['command']
         source_canonical=Path(old_command[old_command.index('-I')+1])
@@ -147,6 +163,7 @@ try:
         if sha(original)!=row['object_sha256']:raise RuntimeError('retained object changed: '+name)
         target=a/'objects'/('retained-'+str(len(retained))+'.cs');shutil.copyfile(original,target);retained.append(target)
         r['retained_objects'][name]={'sha256':sha(target),'original':str(original),'producer_receipt':row['receipt']}
+    if adding_frontend:retained.append(cpu_object)
     r['cpu_object_sha256']=sha(cpu_object)
     raw=a/'raw-generated'
     run(['dotnet',cli,*retained,*assembly['identity']['link_options'],'-o',raw],'cpu-link',180)

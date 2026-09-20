@@ -1,6 +1,15 @@
 # Qualified normal CPU conformance corpus
 
-The finite selected-profile CPU matrix passes **504 native cases and 2,016
+The Kestrel extension now passes **514 normal native cases** in
+`artifacts/cpu-conformance/attempt-havagw22/receipt.json`, SHA256
+`a400af6ae56ad7e0ba4e6a7b5a157caea94b3ab2d418c7857281ba3cb300c267`.
+Ten appended SS/SD/PS/PD comparison-mask and actual Hashtable conversion cases
+retain every preceding descriptor. Six expose original upstream mismatches;
+all ten match hardware after the reviewed eight-store source correction.
+Raw/optimized JIT/NativeAOT qualification of this extension is pending a fresh
+corrected canonical core. No custom fault cases execute.
+
+The prior finite P3 CPU matrix passes **504 native cases and 2,016
 managed comparisons**: 504 each in raw JIT, raw NativeAOT, postprocessed JIT and
 postprocessed NativeAOT. This completes the bounded CPU case set selected for
 P3; it does not certify an exhaustive ISA or general x86-64 application support.
@@ -27,14 +36,14 @@ No compiler or generated C# was edited for these CPU corrections.
 
 ## Selection and exclusions
 
-The runners select 504 normal cases from 550 descriptors. All original 495
-remain unchanged; 55 normal rows are appended at IDs 495–549. The 46 historical
+The runners select 514 normal cases from 560 descriptors. All first 550
+remain unchanged; ten normal rows are appended at IDs 550–559. The 46 historical
 custom fault rows (39 SIGFPE, seven SIGSEGV) retain their bytes and stable IDs but
 are excluded from execution and never counted as passes. Direct case entry
 also rejects a nonzero fault expectation. Native and managed receipts record
 the identical selected/excluded IDs, reasons and reviewed source hashes.
 
-`selection.py` pins the first 495, 512, 514 and 546 descriptor digests, preserving
+`selection.py` pins the first 495, 512, 514, 546 and 550 descriptor digests, preserving
 both qualified inputs and inputs from the recorded failures. The normal rows
 cover integer/flags operations, signed division, valid instruction/data page
 crossings, SSE/SSE2 lanes, masked FP state, NaN/infinity/conversion/rounding cases
@@ -65,12 +74,14 @@ instruction strings and lengths are unchanged.
 
 ## Reproduction and provenance
 
-With the pinned native archive and matching qualified core available:
+With the pinned native archive and a fresh matching qualified corrected core
+available, set `BLINK_CORE_RECEIPT` to that core receipt path. The historical
+P3 receipt above does not contain the new comparison-mask correction:
 
 ```sh
 python3 blink/tests/CpuConformance/run.py --staged-fp --staged-integer
 python3 blink/tests/CpuConformance/run-managed.py --staged-fp --staged-integer \
-  --core-receipt blink/artifacts/core-execution/attempt-273a6hks/receipt.json
+  --core-receipt "$BLINK_CORE_RECEIPT"
 ```
 
 The native runner snapshots the independent hardware witness, C/assembly inputs,

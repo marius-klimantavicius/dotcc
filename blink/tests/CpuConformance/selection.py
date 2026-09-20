@@ -8,7 +8,7 @@ import json
 # then clears DI; no other row may change RSP and none changes R12..R15.
 # REP MOVSB normalizes SI/DI into AX/DX. New rows require renewed review.
 REVIEWED_INPUTS = {
-    'corpus.h': '970a1245f15aa3cc41996cf3f142baabb748de29319bc22c7738877a4f7bbdca',
+    'corpus.h': 'b3fc0b8a8422a6293559b0de8c55971d343c616cf3dd976e8e26afbe97ec1fa9',
     'fp-cases.h': '0ecfbb3df62bb8b9838315eafa473455019e60e384023b118b5fe96587c79053',
 }
 # Exact first495 exported descriptors from the qualified normal-only baseline
@@ -19,6 +19,7 @@ ORIGINAL_CASES_SHA256 = 'bcdd790f0b537c50715135afdd8401850cdff1ffa58cd4f04e46484
 FIRST512_SHA256 = 'b1476860cd0c7037f08b54f74cafe0b7d1a718b8393f2c7ab6187b2339d1dcd3'
 FIRST514_SHA256 = '7c71d33bb67e493105de9bac0b4fc82d4ff1626a246f8dbfa582569895a70bc6'
 FIRST546_SHA256 = '2d539a5ace85abde2cf5f6e352d9889e68b49c743bb294f81470ef6c9edf2ed0'
+FIRST550_SHA256 = '954b09d324ef358a960cb283ed3f2b8f7b5ed85961f0dc2d34ff4dae39efa1f4'
 APPENDED_NAMES = [
     'inc-qword-preserve-carry', 'inc-dword-preserve-clear-carry',
     'dec-byte-preserve-clear-carry', 'dec-word-preserve-carry',
@@ -63,6 +64,16 @@ APPENDED_NAMES = [
     'neg-dword-minimum',
     'neg-qword-minimum',
     'neg-byte-low-nibble-nonzero',
+    'cmpss-true-mask-upper-preserve',
+    'cmpss-false-mask-upper-preserve',
+    'cmpsd-true-mask-upper-preserve',
+    'cmpsd-false-mask-upper-preserve',
+    'cmpps-mixed-mask-lanes',
+    'cmpps-false-mask-lanes',
+    'cmppd-mixed-mask-lanes',
+    'cmppd-false-mask-lanes',
+    'hashtable-ordered-mask-truncate-2.16',
+    'hashtable-ordered-mask-truncate-5.04',
 ]
 
 def select_normal(corpus, source):
@@ -70,7 +81,7 @@ def select_normal(corpus, source):
         if hashlib.sha256((source / name).read_bytes()).hexdigest() != digest:
             raise RuntimeError('CPU input needs renewed trampoline review: ' + name)
     cases = corpus['cases']
-    if [row['index'] for row in cases] != list(range(550)):
+    if [row['index'] for row in cases] != list(range(560)):
         raise RuntimeError('CPU stable index inventory differs')
     original_digest = hashlib.sha256(json.dumps(cases[:495], sort_keys=True, separators=(',', ':')).encode()).hexdigest()
     if original_digest != ORIGINAL_CASES_SHA256:
@@ -84,6 +95,9 @@ def select_normal(corpus, source):
     first546_digest = hashlib.sha256(json.dumps(cases[:546], sort_keys=True, separators=(',', ':')).encode()).hexdigest()
     if first546_digest != FIRST546_SHA256:
         raise RuntimeError('First546 descriptors changed after preserved native failure')
+    first550_digest = hashlib.sha256(json.dumps(cases[:550], sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    if first550_digest != FIRST550_SHA256:
+        raise RuntimeError('First550 qualified descriptors changed')
     if [row['name'] for row in cases[495:]] != APPENDED_NAMES or any(row['fault'] for row in cases[495:]):
         raise RuntimeError('Appended normal case inventory differs')
     if len({row['name'] for row in cases}) != len(cases):
@@ -92,15 +106,16 @@ def select_normal(corpus, source):
     excluded = [dict(index=row['index'], name=row['name'], expected_signal=row['fault'],
                      reason='custom-fault-case-excluded-by-current-user-scope')
                 for row in cases if row['fault'] != 0]
-    if len(selected) != 504 or len(excluded) != 46:
+    if len(selected) != 514 or len(excluded) != 46:
         raise RuntimeError('Reviewed normal selection count differs')
     evidence = dict(schema=2, policy='normal-only', reviewed_inputs=REVIEWED_INPUTS,
                     original495_sha256=original_digest,
                     first512_sha256=first512_digest,
                     first514_sha256=first514_digest,
                     first546_sha256=first546_digest,
+                    first550_sha256=first550_digest,
                     appended=[dict(index=row['index'], name=row['name']) for row in cases[495:]],
                     corpus_sha256=hashlib.sha256(json.dumps(corpus, sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
-                    total=550, selected=[dict(index=row['index'], name=row['name']) for row in selected],
+                    total=560, selected=[dict(index=row['index'], name=row['name']) for row in selected],
                     excluded=excluded, hardware_completion='ordinary LEA/RET; no signal or trap sentinel')
     return selected, evidence

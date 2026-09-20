@@ -1,6 +1,12 @@
 # Selected CPU qualification and broader coverage limits
 
-The finite P3 CPU case set is complete: **504 native cases and 2,016 managed
+The Kestrel extension adds ten normal SSE comparison-mask cases at IDs550–559.
+All514 normal native cases pass in `cpu-conformance/attempt-havagw22`; the
+four-mode managed refresh is pending. First550 descriptors and all46 excluded
+fault descriptors remain unchanged. This is a targeted extension, not a new
+claim about complete packed floating-point semantics.
+
+The prior finite P3 CPU case set is complete: **504 native cases and 2,016 managed
 comparisons**, 504 in each raw/optimized JIT/NativeAOT mode, pass against the
 corrected canonical core. The exact contracts and provenance are in [README.md](README.md).
 Managed receipt: `artifacts/cpu-conformance-managed/attempt-disfjyq2/receipt.json`,

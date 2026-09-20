@@ -11,7 +11,15 @@
     "start": "static void ComissKernel(",
     "end": "static void OpPsd(",
     "block_sha256": "26885bc55c4f1682754018dfedcc2adc4cab494520105c3bb1fd1971db7f83ad",
-    "replacement": "scalar-compare.c.inc"
+    "replacement": "scalar-compare.c.inc",
+    "additional_blocks": [
+      {
+        "start": "void OpCmppsd(P) {",
+        "end": "void OpAndpsd(P) {",
+        "block_sha256": "1b05db971d5d901a87714b9b2e59da03a0c7d148afd5f851f726e6c71238272d",
+        "replacement": "comparison-masks.c.inc"
+      }
+    ]
   },
   "throw.c": {
     "source_sha256": "5df4b02be0d089b25c6318841cb072c5af9ca1b3e5aa9e11982bdc73ca7e2eed",

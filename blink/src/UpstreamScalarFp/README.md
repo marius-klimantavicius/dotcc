@@ -13,6 +13,26 @@ that explicit restriction. No upstream JIT behavior is qualified.
 
 ## Scope and semantics
 
+The Kestrel-discovered `OpCmppsd` repair adds a second nonoverlapping original
+`ssefloat.c` block. It changes exactly eight result assignments from the floating
+union member to the integer member, preserving true all-one/false-zero masks in
+SS, SD, PS and PD. No predicate, NaN policy or unrelated arithmetic changes.
+All block boundaries and hashes are checked against the original file before
+replacements are applied in descending source order; receipts retain separate
+additional-block replacement provenance. Existing adaptations remain intact.
+
+Native qualification passes all514 normal CPU cases at
+`artifacts/cpu-conformance/attempt-havagw22/receipt.json`, SHA256
+`a400af6ae56ad7e0ba4e6a7b5a157caea94b3ab2d418c7857281ba3cb300c267`.
+Ten new cases preserve the first550 descriptors and46 custom fault exclusions.
+The exact Hashtable ordered-mask/truncate sequence now yields 2 and5 for2.16
+and5.04, matching hardware instead of original Blink's zeros. Managed refresh
+and actual corrected Kestrel execution remain pending.
+
+`scalar-fp.patch` preserves exact unified-diff context, including the single-space
+prefix on blank context lines. That patch-format whitespace is intentional.
+
+
 * `cvt.c`: the four scalar CVT/CVTT single/double-to-signed-GPR handlers use an
   unsigned raw IEEE significand/exponent helper. Guest RC selects rounding;
   CVTT forces truncation. Shifts and signed 32/64-bit destination limits are

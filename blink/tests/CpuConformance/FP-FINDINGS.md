@@ -1,5 +1,27 @@
 # Measured upstream floating-point defects
 
+## Kestrel-discovered SSE comparison masks
+
+Pinned `OpCmppsd` writes integer predicate results (-1/0) into the floating union
+member in all eight SS/SD/PS/PD stores. A true predicate therefore becomes numeric
+-1.0, not an all-one bit mask. The translated product faithfully repeats this
+upstream defect. The staged correction changes only those eight destinations
+from `.f` to `.i`, under a second exact original-block pin in `ssefloat.c`.
+
+The actual Hashtable constructor sequence is `MOVAPS xmm1,xmm0; CMPORDSS
+xmm1,xmm0; ANDPS xmm1,xmm0; CVTTSS2SI eax,xmm1`. With inputs 2.16 (`400a3d71`)
+and 5.04 (`40a147ae`), original native Blink produces integer zero in both cases;
+hardware and the corrected native interpreter produce 2 and 5. Existing scalar
+conversion corrections also preserve the proper MXCSR precision status.
+
+Native receipt `cpu-conformance/attempt-havagw22` passes all514 selected normal
+cases, including ten appended mask/upper-preservation/lane/conversion witnesses.
+Six new rows retain their original-upstream mismatch; four false-mask controls
+already match. First550 descriptor identity is pinned, and46 historical custom
+fault cases remain excluded. The four-mode managed refresh is pending.
+
+The sections below retain the earlier scalar diagnostic history.
+
 The expanded actual-core diagnostic receipt is
 `blink/artifacts/cpu-conformance-managed/attempt-s62j5n5q/receipt.json`.
 It completed 124 comparisons:104 match hardware or the native CPUID profile,

@@ -124,6 +124,17 @@ static const struct CpuCase cpu_cases[] = {
  {"neg-dword-minimum", {0xf7,0xd8},2,1,0,64,2,0x1122334480000000ULL,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,0,0,0},
  {"neg-qword-minimum", {0x48,0xf7,0xd8},3,1,0,64,2,0x8000000000000000ULL,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,0,0,0},
  {"neg-byte-low-nibble-nonzero", {0xf6,0xd8},2,1,0,64,2,0x1122334455667701ULL,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,0,0,0},
+ /* IDs550..559: normal SSE comparison masks discovered by Kestrel. */
+ {"cmpss-true-mask-upper-preserve", {0xf3,0xf,0xc2,0xc1,0x0},5,1,0,64,2,0,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,4,0x3f800000ULL,0x3f800000ULL},
+ {"cmpss-false-mask-upper-preserve", {0xf3,0xf,0xc2,0xc1,0x0},5,1,0,64,2,0,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,4,0x3f800000ULL,0x40000000ULL},
+ {"cmpsd-true-mask-upper-preserve", {0xf2,0xf,0xc2,0xc1,0x0},5,1,0,64,2,0,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,8,0x3ff0000000000000ULL,0x3ff0000000000000ULL},
+ {"cmpsd-false-mask-upper-preserve", {0xf2,0xf,0xc2,0xc1,0x0},5,1,0,64,2,0,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,8,0x3ff0000000000000ULL,0x4000000000000000ULL},
+ {"cmpps-mixed-mask-lanes", {0xf,0xc2,0xc1,0x0},4,1,0,64,2,0,0,0,0x8d7,0x8d5,0,7,0,0,0,0,0,0,0x0ULL,0x0ULL},
+ {"cmpps-false-mask-lanes", {0xf,0xc2,0xc1,0x1},4,1,0,64,2,0,0,0,0x8d7,0x8d5,0,9,0,0,0,0,0,0,0x0ULL,0x0ULL},
+ {"cmppd-mixed-mask-lanes", {0x66,0xf,0xc2,0xc1,0x0},5,1,0,64,2,0,0,0,0x8d7,0x8d5,0,8,0,0,0,0,0,0,0x0ULL,0x0ULL},
+ {"cmppd-false-mask-lanes", {0x66,0xf,0xc2,0xc1,0x2},5,1,0,64,2,0,0,0,0x8d7,0x8d5,0,10,0,0,0,0,0,0,0x0ULL,0x0ULL},
+ {"hashtable-ordered-mask-truncate-2.16", {0xf,0x28,0xc8,0xf3,0xf,0xc2,0xc8,0x7,0xf,0x54,0xc8,0xf3,0xf,0x2c,0xc1},15,4,0,64,2,0,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,4,0x400a3d71ULL,0x0ULL},
+ {"hashtable-ordered-mask-truncate-5.04", {0xf,0x28,0xc8,0xf3,0xf,0xc2,0xc8,0x7,0xf,0x54,0xc8,0xf3,0xf,0x2c,0xc1},15,4,0,64,2,0,0,0,0x8d7,0x8d5,0,0,0,0,0,0,0,4,0x40a147aeULL,0x0ULL},
 };
 #define CPU_CASES (sizeof(cpu_cases)/sizeof(cpu_cases[0]))
 static const unsigned char cpu_xmm[32] = {
@@ -146,6 +157,18 @@ static void CpuXmm(const struct CpuCase *c,unsigned char *x) {
     case 4:CpuBits(x,0x4004000000000000ULL,8);break;
     case 5:CpuBits(x,0xc004000000000000ULL,8);break;
     case 6:CpuBits(x,0x40200000,4);break;
+    case 7:
+      CpuBits(x,0x3f800000,4);CpuBits(x+4,0x40000000,4);CpuBits(x+8,0x40400000,4);CpuBits(x+12,0x40800000,4);
+      CpuBits(x+16,0x3f800000,4);CpuBits(x+20,0x41100000,4);CpuBits(x+24,0x40400000,4);CpuBits(x+28,0xc0800000,4);break;
+    case 8:
+      CpuBits(x,0x3ff0000000000000ULL,8);CpuBits(x+8,0x4000000000000000ULL,8);
+      CpuBits(x+16,0x3ff0000000000000ULL,8);CpuBits(x+24,0x4008000000000000ULL,8);break;
+    case 9:
+      CpuBits(x,0x3f800000,4);CpuBits(x+4,0x40000000,4);CpuBits(x+8,0x40400000,4);CpuBits(x+12,0x40800000,4);
+      CpuBits(x+16,0,4);CpuBits(x+20,0x3f800000,4);CpuBits(x+24,0x40000000,4);CpuBits(x+28,0x40400000,4);break;
+    case 10:
+      CpuBits(x,0x4000000000000000ULL,8);CpuBits(x+8,0x4008000000000000ULL,8);
+      CpuBits(x+16,0x3ff0000000000000ULL,8);CpuBits(x+24,0x4000000000000000ULL,8);break;
   }
 }
 static void CpuData(unsigned char *data, size_t length) {
