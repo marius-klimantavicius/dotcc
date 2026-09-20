@@ -2760,3 +2760,34 @@ finishes. Coordinator owns bridge/integration and prepared measured image
 admission16MiB/control-frame24MiB; these source changes are not yet qualified.
 Required edge semantics are explicitly the observed drain-to-EAGAIN contract;
 arbitrary general Linux EPOLLET equivalence is not presumed from polling.
+
+
+### First translated Kestrel startup: bounded GC progress and unresolved guest OOM
+
+The exact original public-delivery optimized-JIT diagnostic builds and runs,
+but does not reach READY. `kestrel-guest-execution/attempt-md2uqfje/receipt.json`
+SHA `95e9dcd1133dcc11d74c3fb5b1c359c6876dd6757dec041fc92a2a5f188d8e44`
+reaches100M instructions in about8.6 seconds at a guest LOH GC relocation loop.
+No HTTP pass is claimed. Complete syscall traces and normal release of all three
+guest workers/Machines, backing and IO remain recorded.
+
+One explicitly reviewed larger-workload assessment uses the immutable original
+private library/Host/owner/image snapshots. Only the authored test's instruction
+bound changes100M to1B and wall bound60 to120 seconds; exact derivation hashes
+and diff are retained. `attempt-budget-f4rifsku/receipt.json` has SHA
+`c6bcda3589e3c29ef4d50a2f03e308efe0a660b1616456a36f531ac0bd88cc2d`.
+It progresses beyond GC, then the guest raises OutOfMemoryException in
+Hashtable.rehash during UriParser/Uri initialization and Kestrel startup,
+ending via guest SIGABRT at160,772,447 instructions in13.54 seconds. Neither
+budget nor wall deadline ends that run. Retained backing before release is
+17,577,862 bytes across68 maps; no new mmap ENOMEM appears. Native execution of
+the same ELF/GC profile passes, so this does not establish host quota exhaustion.
+All resources release and no host CLR/notification error occurs;321 identities
+were independently checked. The first instruction bound was insufficient, but
+the actual guest OOM still requires allocation/state investigation.
+
+Meanwhile the confirmed asynchronous socket/epoll host contract is implemented
+with finite drain-to-EAGAIN edge generations, actual readiness, alias lifetime,
+peek/nonblocking behavior and real zero-second linger. Native and raw-JIT
+focused checks have passed; remaining modes are running. No unrelated P6 work
+or guest fallback is used to bypass the unresolved Kestrel startup result.
