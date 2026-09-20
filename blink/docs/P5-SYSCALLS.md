@@ -5,6 +5,15 @@ This is a source/trace audit, not translated execution qualification. The genuin
 more than the selected P4 single-threaded runtime. No profile, compiler, runtime,
 container or guest changes were made for this audit.
 
+## Current interpretation
+
+This initial glibc audit is historical evidence, not the current threaded profile
+status. Static-musl startup later reached clone after the qualified membarrier
+boundary. A separate threaded prototype now builds with an authored C# owner;
+actual layout and normal clone/TLS/futex execution remain pending. The real .NET
+service has not passed translated startup. Follow [PROGRESS.md](PROGRESS.md) for
+the latest exact attempts; do not infer current support from this older table.
+
 ## Evidence and pins
 
 The current native witness is `artifacts/dotnet-guest/attempt-5130ydrk/`:

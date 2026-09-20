@@ -2345,3 +2345,24 @@ backing on incomplete teardown and requires process discard. Positive pthread
 signal notification remains explicitly unsupported. These are build results;
 actual ABI and managed clone/TLS/futex qualification run next. The .NET guest has
 not yet passed translated service startup, and P6 remains held.
+
+### P5 threaded ABI layout qualified in all four forms
+
+The actual threaded profile now matches a GCC native oracle using the explicit
+managed storage policy across169 size/alignment/offset/width/stride rows,
+include-order checks and bidirectional C/C# field sentinels with a compacting GC.
+Native and raw/optimized JIT/NativeAOT all pass. Receipt
+`threaded-layout/attempt-8zznigqf/receipt.json` has SHA-256
+`fcc4d2f11ce27d6535ee500cb7db356f6c72c61dc7452cc5c6a2f687b25c1765`.
+The test retains108 exact core objects and adds only three layout TUs. Native-only
+compiler intrinsic declarations are pinned to their runtime source definitions;
+no measured upstream structure or pthread/signal storage definition was changed.
+
+Three earlier runner failures remain recorded: requiring absent root global.json,
+missing GCC declarations for dotcc intrinsic types, and a missing private Host
+reference assembly before postprocessing. The final attempt records24 successful
+commands,768 frozen inputs and147 snapshot files, all reverified with execution
+binary identities. This closes the internal threaded ABI gate, not guest-thread
+execution. The first managed clone/TLS/futex launch built but stopped before
+execution because its strict process-group check found a retained SDK build
+process; a fresh run with build-server reuse explicitly disabled is next.

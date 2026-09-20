@@ -5,6 +5,21 @@ code and executed by translated Blink. Publishing the emulator host with AOT
 does not satisfy this requirement. The existing C service remains a separate
 qualified P4 fixture.
 
+## Active threaded qualification
+
+The pinned static-musl guest now builds and passes native HTTP with the bounded
+GC configuration in `tests/DotNetService/GC-PROFILE.md`. Actual translated startup
+passes membarrier and stops at clone ENOSYS in the stable single-thread profile.
+The separate `generated/ThreadedBlink` prototype now builds from all108 producers
+with real shared host memory/synchronization and an authored C# lifecycle owner.
+Its layout and normal clone/TLS/futex execution gates are in progress before the
+real .NET guest is retried. The stable product remains separate; no translated
+.NET service readiness or P5 completion is claimed. Current receipts and
+ownership are recorded at the end of [PROGRESS.md](PROGRESS.md).
+
+The following build/trace sections preserve the earlier glibc and static-musl
+findings with their exact producer identities.
+
 ## First build and actual evidence
 
 `tests/DotNetService/` and `scripts/build-dotnet-guest.py` now pass ordinary
