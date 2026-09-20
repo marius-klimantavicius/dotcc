@@ -14,12 +14,15 @@ through the coordinator; no prolonged build workarounds. No P6 phase starts.
 Both ordinary glibc and static musl NativeAOT guest builds and native HTTP
 references pass. The static musl build succeeded in one standard pinned Podman
 attempt, so the difficult-build stop condition did not trigger. Actual translated
-startup has identified a required membarrier boundary; its native/all-four
-qualification now passes. The coordinator is regenerating the product with the
-current compiler and that boundary, then will rerun the actual static guest.
-Guest and inputs workers review upcoming thread ownership and valid musl stack/GC
-requirements without mutating frozen inputs. Shared compiler handoff from root
-completed at `58fe8ad`. No translated NativeAOT readiness or P5 pass is claimed.
+startup passes the qualified membarrier boundary and reaches clone, which the
+stable single-thread profile rejects with ENOSYS. A separate threaded profile
+now emits and links all108 producers after tested block-static TLS and atomic
+statement compiler repairs. Shared memory/process-state/barrier prerequisites
+pass native/all-four checks; a valid clone/TLS/futex ELF passes Linux and pinned
+threaded native Blink. Current work is the separate generated threaded library,
+authored C# worker ownership, actual ABI layout, and managed thread execution
+before retrying the .NET guest. No managed thread, NativeAOT readiness or P5 pass
+is claimed. Stable delivery remains separate while this profile is qualified.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
@@ -2321,3 +2324,24 @@ The private raise binding follows the existing unsupported asynchronous-signal
 policy; it must never invoke a native host signal. Fresh threaded generation
 with the atomic fix, final C# owner compilation, actual ABI layout and four-form
 guest thread qualification remain the next gates before the NativeAOT service.
+
+### P5 separate threaded library and C# owner build
+
+The corrected threaded profile builds raw, postprocessed and final direct-source
+projects. The current-machine export is a narrow authored C# accessor for the
+actual generated TLS field; execution and lifetime remain in the separate C#
+owner. Its accessor-only derivative reuses all108 verified C objects and links
+successfully. Delivery `threaded-delivery/attempt-fxbxjsio/receipt.json` has SHA-256
+`0c1422e85054902e4caff93e8e6e9ff07096b90fdbdc65c262fb0136a493f5de`.
+The experimental project is `generated/ThreadedBlink`; stable delivery is retained.
+
+`src/Managed.Emulation.ThreadedExecution` builds with zero warnings/errors against
+that project. Owner receipt `threaded-core/attempt-thread-accessor/owner-build.json`
+has SHA-256 `c74371f7f9d7b3d39b3282d7a81a4b80f6278c123b5d56b35a71ea26c5f21b63`.
+It owns per-Machine C# threads, shared memory attachment, group stop, actual joins,
+child-TID clearing and cleanup. A reviewed execution-outcome latch prevents a
+later teardown deadline from relabeling successful guest exit. It retains live
+backing on incomplete teardown and requires process discard. Positive pthread
+signal notification remains explicitly unsupported. These are build results;
+actual ABI and managed clone/TLS/futex qualification run next. The .NET guest has
+not yet passed translated service startup, and P6 remains held.

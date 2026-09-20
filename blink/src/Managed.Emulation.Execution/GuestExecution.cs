@@ -27,7 +27,6 @@ public sealed record GuestSyscallObservation(ulong InstructionPointer, ulong Num
 /// including teardown, happen on this thread; discard the process afterward.</summary>
 public sealed unsafe class GuestExecution
 {
-    private static int processUsed;
     private readonly InstanceIo io;
     private readonly HostExecutionStop stop;
     private Blink.Machine* machine;
@@ -58,8 +57,7 @@ public sealed unsafe class GuestExecution
         if (argv.Count == 0) throw new ArgumentException("argv must include argv[0].", nameof(argv));
         foreach (string value in argv.Prepend(imagePath).Concat(env))
             if (value == null || value.Contains('\0')) throw new ArgumentException("Guest strings must be nonnull and contain no NUL.");
-        if (Interlocked.Exchange(ref processUsed, 1) != 0)
-            throw new InvalidOperationException("The translated core may execute only once in a process; its static caches are not reusable after disposal.");
+        HostGuestProcess.BeginOnce();
         threadId = Environment.CurrentManagedThreadId;
         var strings = new List<nint>();
         var bindings = new Stack<Action>();
