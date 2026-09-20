@@ -37,7 +37,14 @@ with tarfile.open(archive) as tar:
                 raise SystemExit(f'immutable symlink differs: {path}')
         elif entry.isdir() and not path.is_dir():
             raise SystemExit(f'immutable directory missing: {path}')
-    extras = set(source.rglob('*')) - expected
+    # IDE settings are authored workspace metadata, not upstream C inputs.
+    # Preserve them while still checking every archive entry byte-for-byte;
+    # arbitrary extra source files and symlinks remain errors.
+    def ide_metadata(path):
+        relative = path.relative_to(source)
+        return (relative.parts[0] == '.idea' and not path.is_symlink() and
+                (path.is_dir() or path.suffix == '.xml' or path.name == '.gitignore'))
+    extras = {path for path in set(source.rglob('*')) - expected if not ide_metadata(path)}
     if extras:
         raise SystemExit(f'unexpected files in immutable source: {sorted(map(str, extras))[:5]}')
 for record in manifest['licenses'] + manifest['bootstrapTools'] + manifest['selectedAssemblyTests'] + [manifest['assemblyInclude']]:

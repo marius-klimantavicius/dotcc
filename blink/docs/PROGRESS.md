@@ -2857,3 +2857,15 @@ and integration; the guest worker next retries actual Kestrel against that
 coherent delivery. The separate sysinfo fallback reporting zero free RAM remains
 a known input mismatch, not the cause established by this observation. P5 is
 still open and P6 remains held.
+
+
+The correction passes 514 normal native/hardware comparisons, including all ten
+new regressions (`cpu-conformance/attempt-havagw22`, receipt SHA-256
+`a400af6ae56ad7e0ba4e6a7b5a157caea94b3ab2d418c7857281ba3cb300c267`),
+and is committed as 9d2dc31. Managed regression and Kestrel retry remain pending.
+The first regeneration attempt, `translation/attempt-gs58ug95`, stopped before
+translation because IDE `.idea` files had been added under the reference tree.
+The fetch check now preserves narrowly recognized XML/gitignore IDE metadata;
+every archived file remains checked byte-for-byte, and other extra files or
+symlinks still fail. The normal offline archive verification passes with those
+settings untouched.
