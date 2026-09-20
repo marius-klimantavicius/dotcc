@@ -8,9 +8,9 @@ public static partial class BlinkCore
 public static partial class Blink
 #endif
 {
-    [ThreadStatic] private static HostSingleThreadMemoryBarrier? membarrierOwner;
+    [ThreadStatic] private static IHostMemoryBarrier? membarrierOwner;
 
-    public static void BindHostMembarrier(HostSingleThreadMemoryBarrier owner)
+    public static void BindHostMembarrier(IHostMemoryBarrier owner)
     {
         ArgumentNullException.ThrowIfNull(owner);
         if (!owner.IsOwnerThread) throw new InvalidOperationException("Memory barrier owner belongs to another thread.");

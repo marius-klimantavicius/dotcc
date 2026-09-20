@@ -3,7 +3,7 @@ namespace Managed.Emulation.Host;
 /// <summary>Private membarrier contract for a guest with exactly one execution
 /// thread and no concurrent guest-memory executor. The BCL operation fences
 /// the host process; this does not pin memory or qualify guest thread ownership.</summary>
-public sealed class HostSingleThreadMemoryBarrier
+public sealed class HostSingleThreadMemoryBarrier : IHostMemoryBarrier
 {
     public const int Query = 0;
     public const int PrivateExpedited = 8;

@@ -2225,3 +2225,19 @@ Guest worker owns source-only staged thread/ABI design; coordinator owns C#
 execution integration; inputs worker finished the native GC witness. The stable
 single-thread product remains intact until a new profile qualifies. P5 remains
 active, P6 held.
+
+### P5 shared memory-barrier registration qualified
+
+`HostProcessMemoryBarrier` now shares explicit registration across attached
+execution threads, retains one actual BCL capability probe and fences the host
+process on each supported operation. The existing single-thread implementation
+retains its behavior behind the same typed interface. New normal native and
+all-four translated two-worker qualification passes in
+`host-process-membarrier/attempt-04hsv8u9/receipt.json`, SHA-256
+`14996bc97e7800a89a4f1aa97881f7d7575be551d1009ada83ccf099057bfb94`.
+It verifies registration on the creator, fences from two other attached threads,
+explicit ordered value42→52, join and attachment disposal. This qualifies the
+shared boundary, not guest clone/futex or the threaded product. Guest thread
+staging, synchronized shared HostMemory and process-scoped signal/exit state
+are being implemented in disjoint worker-owned files; no threaded profile has
+been enabled or claimed to execute yet.
