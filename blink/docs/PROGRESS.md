@@ -2388,3 +2388,24 @@ preserved; explicit disabled SDK build-server reuse resolves that runner issue.
 This closes the finite ordinary clone/TLS/futex owner gate, not general threading
 or .NET service compatibility. The pinned .NET raw-JIT diagnostic follows with
 unchanged guest/configuration, and will record the next actual runtime boundary.
+
+### P5 real threaded NativeAOT guest reaches stack discovery
+
+The unchanged static-musl .NET service now executes beyond clone: membarrier
+query/register succeed, clone returns child TID262144, and the configured
+33558528-byte GC reservation succeeds. It does not reach readiness or HTTP.
+Receipt `dotnet-threaded-guest-execution/attempt-2fpjx0g2/receipt.json` has SHA-256
+`419e2d6a7da05a65ef9692e6217f5384c477c5192238c7fb40cbd2a21f8e047b`.
+The main/child execute19998387/1613 instructions, stopping at the unchanged20M
+budget with no execution or notification exception. All workers join, Machines
+release, shared backing releases, and the owner is quiescent.
+
+The main observes440030 syscalls; its first4096 retained rows are explicitly
+truncated. Repeated pagewise mremap(old page,4096,8192,flags0) returns ENOMEM.
+Pinned Blink's SysMremap unconditionally returns ENOMEM, unlike the native musl
+stack-discovery witness that terminates on EFAULT at an unmapped source page.
+Next work is truthful source-range validation under the actual guest mmap lock,
+with general remapping support remaining explicit. No hardcoded guest address,
+fabricated success, larger budget or native fallback is used. A preparation-only
+Host snapshot-copy mismatch is preserved separately; the actual run's716 frozen
+inputs,104 prepared files,11 binaries and33 artifacts were reverified.
