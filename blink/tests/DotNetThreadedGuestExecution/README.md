@@ -10,11 +10,11 @@ The consumer calls the separate authored `ThreadedGuestExecution` owner against
 an explicit passed `build-threaded-delivery.py` receipt. It does not regenerate,
 postprocess, patch, or replace the product. The runner verifies the 108-object
 assembly/profile/compiler chain, raw and optimized delivery manifests, and
-original Host/bridge sources before and after use. It privately copies the raw
-library sources, Host/bridges and current separate owner for this diagnostic;
-the owner identity is recorded independently of the delivery producer identity.
-The optimized delivery is identity-checked but is not executed by this initial
-runner. Only an explicit `--run` builds and executes raw JIT.
+original Host/bridge sources before and after use. The current separate owner
+identity is recorded independently of the delivery producer identity. An explicit
+`--run` builds and executes raw JIT. `--all-modes` instead selects exactly raw and
+optimized JIT and NativeAOT; the flags are mutually exclusive. Without either
+flag, preparation is not execution and cannot pass the guest gate.
 
 ```sh
 python3 -B blink/tests/DotNetThreadedGuestExecution/run.py \
@@ -23,7 +23,7 @@ python3 -B blink/tests/DotNetThreadedGuestExecution/run.py \
   --native-gc-receipt blink/artifacts/dotnet-guest-gc-profile/attempt-lp8kf_q3/receipt.json
 ```
 
-Add `--run` only after review and release of the serial execution slot. A failed
+Add `--run` or `--all-modes` only after review and release of the serial execution slot. A failed
 actual guest returns nonzero, with the outcome preserved in the attempt receipt.
 Each subprocess has an isolated temporary directory and process group, bounded
 wait, and SIGTERM/SIGKILL cleanup on interruption or timeout.
@@ -160,3 +160,72 @@ contain 2201, 7, 6 and 3 rows, with no truncation or unrecorded thread observati
 Independent verification checked 733 frozen inputs, 106 prepared files,
 11 binaries and 33 artifacts (883 identities). The build returned 0; the actual
 raw-JIT diagnostic and runner returned 1 with `guest_passed=false`.
+
+## First successful raw-JIT .NET service run
+
+The unchanged diagnostic passed against timeout-enabled delivery
+`artifacts/threaded-delivery/attempt-6zot2nmd/receipt.json`. Receipt
+`artifacts/dotnet-threaded-guest-execution/attempt-v27zcpxg/receipt.json` has SHA256
+`61ed427f7395988490f374c1acc3fb5f0c653b2b02ce73b3b1f5658684efce3c`.
+Both normal HTTP responses matched the native witness exactly: health 86 bytes
+and stop 91 bytes. The guest printed `READY 8080\nSTOPPED\n`, stderr was empty,
+and its group exited with status 0 and StopReason None. Both accepted sockets'
+five-second send and receive timeout settings returned success.
+
+All four workers joined; all Machines and shared memory were released, with
+`IsQuiescent=true` and no diagnostic, execution or notification error. The run
+completed 1,213,246 instructions, with complete untruncated traces containing
+2206, 7, 6 and 3 observations. Independent review verified 889 frozen/prepared/
+binary/artifact identities. This receipt qualifies raw JIT only; it predates
+the four-mode runner extension. The guest ELF itself was already NativeAOT,
+which is distinct from the emulator host's JIT/AOT execution mode.
+
+## Four-mode runner extension
+
+The four-mode matrix passed as recorded below. The runner uses
+raw sources from the passed delivery's raw snapshot and optimized sources from
+that exact delivery's final manifest, with no second postprocessing. Final
+project references are resolved and checked against the authored-source manifest;
+private projects compile the corresponding verified Host/bridge copies. Each
+source mode has separate library, execution-owner and consumer projects. NativeAOT
+consumers explicitly root TranslatedBlink; the owner is normally referenced.
+Neither the delivery nor original authored source is changed.
+
+Each mode executes in a fresh process from a hash-verified private binary copy,
+with its own result, captures, HTTP responses and bounded per-thread traces.
+JIT execution trees are isolated from subsequent NativeAOT publishing. Executable
+closures, original sources and private prepared inputs are rechecked afterward.
+The first failing mode stops the matrix and remains a failed guest result; only
+an exact four-mode set with all results passing sets `all_modes_passed=true`.
+The unchanged Program retains the same four guest environment entries, 20-million
+instruction budget, 30-second deadline, 64 MiB memory bound and native HTTP oracle.
+A trace remains explicitly marked truncated if it exceeds its existing cap.
+
+## Observed four-mode .NET guest pass
+
+Receipt `artifacts/dotnet-threaded-guest-execution/attempt-febf3tyc/receipt.json`
+has SHA256 `087d1f9af88019af1762135d35d11f4c4f9d0dca4ad86f25a952267df742144d`.
+All 11 commands exited zero, and the exact four-mode acceptance gate passed.
+Every mode matched both native HTTP wire responses (86-byte health, 91-byte stop),
+printed exactly `READY 8080\nSTOPPED\n`, and had empty stderr. Every guest group
+exited 0 with StopReason None; all four workers joined and all Machines/shared
+memory were released. No diagnostic, execution or notification error occurred.
+
+| Host mode | Instructions | Main syscall observations | Child observations |
+| --- | ---: | ---: | --- |
+| Raw JIT | 1,213,688 | 2207 | 7 / 6 / 3 |
+| Raw NativeAOT | 1,213,688 | 2207 | 7 / 6 / 3 |
+| Optimized JIT | 1,214,130 | 2208 | 7 / 6 / 3 |
+| Optimized NativeAOT | 1,213,246 | 2206 | 7 / 6 / 3 |
+
+All per-thread traces are complete, with no truncation or unrecorded thread
+observations. Actual count variation is retained; cross-mode instruction-count
+identity is not an acceptance claim. Independent review checked 1227 recorded
+identities, trees and response/capture comparisons, including 829 frozen inputs,
+203 prepared files, 32 execution binaries and 91 artifacts. Runner SHA256 was
+`520ea953345a793fe4f3b1b6f21fa187f8ed3f705fee8a0aac184f0e97060e07`;
+Program remained `ba3a0a37d3be7ad576d6dbcf42101ea5cb764385b9faa1b1787df039971e1af2`.
+The exact timeout-enabled delivery, pinned musl guest, native GC environment and
+limits match the preceding raw-only pass. This is the selected normal HTTP and
+shutdown workload; broader framework compatibility or send-expiry coverage is
+not inferred.

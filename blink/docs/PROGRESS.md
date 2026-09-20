@@ -27,9 +27,10 @@ reviewed source-range validation. Its next failure is epoll_create1 ENOSYS befor
 readiness in the earlier profile. The real private empty-epoll boundary now
 passes native/all-four checks and fresh delivery. After qualified socket timeouts, the actual .NET guest passes raw JIT:
 READY, exact native health/stop responses, exit0, empty stderr, four joined
-workers and complete resource release. The remaining three host modes and
-owning worker/sample integration are pending. P5 remains open; stable delivery
-remains separate.
+workers and complete resource release. The same workload now also passes raw
+NativeAOT and both optimized host modes. Final-product promotion, ordinary
+controller stop, simultaneous instances/restart and worker/sample integration
+remain pending. P5 remains open.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
@@ -2579,3 +2580,28 @@ the actual bounded worker around the existing controller/protocol and C# owner.
 Coordinator owns product/sample integration. Other host modes, ordinary stop
 qualification of this workload, simultaneous instances/restart and the showcase
 remain pending. Raw JIT success alone does not complete P5. P6 stays held.
+
+
+### P5 actual NativeAOT HTTP guest passes all four host modes
+
+Receipt `dotnet-threaded-guest-execution/attempt-febf3tyc/receipt.json` has SHA-256
+`087d1f9af88019af1762135d35d11f4c4f9d0dca4ad86f25a952267df742144d`.
+Its exact four-mode gate passes raw/optimized JIT/NativeAOT in fresh processes,
+using immutable raw and final delivered C# bytes without a second postprocess.
+All11 commands exit0. Each run produces exact native health86/stop91-byte
+responses, READY/STOPPED stdout, empty stderr, group exit0 and StopReasonNone.
+All four guest workers join and all Machines/backing release; every owner is
+quiescent without diagnostic, execution or notification errors.
+
+Observed instruction totals are1213688/1213688/1214130/1213246 respectively;
+ordinary scheduling variation remains recorded. Complete main traces contain
+2207/2207/2208/2206 calls and children7/6/3 each, with no truncation.
+Independent verification checks1227 identities/maps/content assertions,
+including829 frozen inputs,203 prepared files,32 binaries and91 artifacts.
+
+This closes the four-mode actual HTTP/normal-shutdown subgate. P5 still requires
+ordinary controller stop, actual worker/API delivery, two simultaneous instances,
+restart and the sample/traffic gate. Inputs owns the worker and normal integration
+fixture; coordinator promotes the reviewed threaded profile through the public
+translation pipeline and integrates the showcase. Guest owns an exact native
+and translated runtime inventory from these receipts. No P6 work begins.

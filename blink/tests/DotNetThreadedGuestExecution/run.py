@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the pinned static .NET guest against threaded delivery; --run enables raw JIT only."""
+"""Prepare the pinned .NET guest; --run executes raw JIT, --all-modes executes exact delivery raw/optimized JIT/AOT."""
 import argparse
 import hashlib
 import json
@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 REPO = ROOT.parent
+ALL_MODES = ("raw-jit", "raw-aot", "optimized-jit", "optimized-aot")
 sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
@@ -32,6 +33,8 @@ def project(path, name, kind, sources, references, constants=None):
         ET.SubElement(items, "Compile", Include=str(source))
     for reference in references:
         ET.SubElement(items, "ProjectReference", Include=str(reference))
+    if kind == "Exe":
+        ET.SubElement(items, "TrimmerRootAssembly", Include="TranslatedBlink")
     path.parent.mkdir(parents=True, exist_ok=True)
     ET.ElementTree(tree).write(path, encoding="unicode")
 
@@ -41,13 +44,17 @@ def main():
     parser.add_argument("--translation-receipt", type=Path, required=True)
     parser.add_argument("--guest-receipt", type=Path, required=True)
     parser.add_argument("--native-gc-receipt", type=Path, required=True)
-    parser.add_argument("--run", action="store_true")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--run", action="store_true", help="execute raw JIT only")
+    selection.add_argument("--all-modes", action="store_true", help="execute raw/optimized JIT/NativeAOT")
     args = parser.parse_args()
+    selected_modes = ALL_MODES if args.all_modes else (("raw-jit",) if args.run else ())
     base = ROOT / "artifacts/dotnet-threaded-guest-execution"
     base.mkdir(parents=True, exist_ok=True)
     attempt = Path(tempfile.mkdtemp(prefix="attempt-", dir=base))
     receipt = dict(passed=False, prepared=False, diagnostic_completed=False, guest_passed=False,
-                   scope="Threaded delivery diagnostic with separately frozen C# owner; raw JIT only on explicit --run",
+                   scope="Exact threaded delivery with separate C# owner; explicit raw-only or four-mode guest qualification",
+                   requested_modes=list(selected_modes), modes={}, all_modes_passed=False,
                    attempt=str(attempt), commands=[], frozen={}, runner_sha256=sha(__file__))
     print(attempt, flush=True)
     receipt["environment_overrides"] = dict(TMPDIR=str(attempt / "tmp"), LC_ALL="C", MSBUILDDISABLENODEREUSE="1")
@@ -144,6 +151,34 @@ def main():
         check_tree(final, delivery["final_files"])
         check_tree(ROOT / "src/Managed.Emulation.Host", delivery["host_source_files"])
         for name, digest in delivery["final_files"].items(): verify(final / name, digest)
+        # Resolve the delivered project's direct authored references explicitly;
+        # the fixture maps exactly these files into its private source projects.
+        delivered_project = ET.parse(final / "TranslatedBlink.csproj").getroot()
+        if (delivered_project.findall(".//Import") or
+                delivered_project.findtext(".//EnableDefaultCompileItems") != "false"):
+            raise RuntimeError("Unreviewed final project source selection")
+        selected_bridges = []
+        generated_selection = 0
+        for node in delivered_project.findall(".//Compile"):
+            include = node.get("Include", "")
+            if node.get("Condition") or "$" in include or ";" in include:
+                raise RuntimeError("Unreviewed final Compile item")
+            if include == "Sources/**/*.cs":
+                generated_selection += 1
+            elif "*" not in include:
+                selected_bridges.append((final / include).resolve())
+            else:
+                raise RuntimeError("Unreviewed final Compile glob")
+        expected_bridges = [(ROOT / name).resolve() for name in delivery["product_source_links"]]
+        if (generated_selection != 1 or len(selected_bridges) != len(set(selected_bridges)) or
+                set(selected_bridges) != set(expected_bridges)):
+            raise RuntimeError("Final authored Compile references differ from manifest")
+        references = delivered_project.findall(".//ProjectReference")
+        if (len(references) != 1 or references[0].get("Condition") or
+                (final / references[0].get("Include", "")).resolve() !=
+                (ROOT / "src/Managed.Emulation.Host/Managed.Emulation.Host.csproj").resolve()):
+            raise RuntimeError("Final Host project reference differs")
+        receipt["resolved_product_sources"] = {str(path): sha(path) for path in selected_bridges}
         receipt["final_delivery_files"] = delivery["final_files"]
         receipt["native_gc_receipt"] = str(gc_path)
         receipt.update(delivery_receipt=str(delivery_path), native_guest_receipt=str(guest_path),
@@ -162,6 +197,37 @@ def main():
             if sha(copied) != delivery["authored_sources"][name]:
                 raise RuntimeError("Archived bridge differs from original source: " + name)
         check_tree(attempt / "raw/Host", delivery["host_source_files"])
+        receipt["source_modes"] = {"raw": dict(source=str(raw), manifest=delivery["raw_files"])}
+        if args.all_modes:
+            optimized = attempt / "optimized"
+            # Exact final delivered bytes. Never postprocess again for this matrix.
+            for relative, digest in delivery["final_files"].items():
+                if relative.startswith("Sources/") and Path(relative).suffix == ".cs":
+                    source = verify(final / relative, digest)
+                    target = optimized / relative
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(source, target)
+                    verify(target, digest)
+            names = set()
+            for relative in delivery["product_source_links"]:
+                name = Path(relative).name
+                if name in names:
+                    raise RuntimeError("Duplicate authored bridge basename")
+                names.add(name)
+                source = verify(ROOT / relative, delivery["authored_sources"][relative])
+                target = optimized / "Bridges" / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
+                verify(target, delivery["authored_sources"][relative])
+            for relative, digest in delivery["host_source_files"].items():
+                source = verify(ROOT / "src/Managed.Emulation.Host" / relative, digest)
+                target = optimized / "Host" / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
+                verify(target, digest)
+            check_tree(optimized / "Host", delivery["host_source_files"])
+            receipt["source_modes"]["optimized"] = dict(source=str(final), manifest=delivery["final_files"],
+                bridges=delivery["product_source_links"], authored=delivery["authored_sources"])
         verify(ROOT / "src/Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.csproj")
         sdk_selection = REPO / "global.json"
         receipt["global_json"] = dict(path=str(sdk_selection), present=sdk_selection.is_file())
@@ -207,32 +273,110 @@ def main():
                 shutil.copyfile(source, oracle / source.name)
         if sorted(p.name for p in oracle.iterdir()) != ["health.request", "health.response", "stop.request", "stop.response"]:
             raise RuntimeError("Incomplete native HTTP oracle")
-        library = attempt / "library/TranslatedBlink.csproj"
-        execution = attempt / "execution/Managed.Emulation.ThreadedExecution.csproj"
-        consumer = attempt / "consumer/DotNetThreadedGuestExecution.csproj"
-        project(library, "TranslatedBlink", "Library", [attempt / "raw/Sources/*.cs", attempt / "raw/Bridges/*.cs"],
-                [attempt / "raw/Host/Managed.Emulation.Host.csproj"], "BLINK_FULL_CORE")
-        project(execution, "Managed.Emulation.ThreadedExecution", "Library", [attempt / "ThreadedGuestExecution.cs"], [library])
-        project(consumer, "DotNetThreadedGuestExecution", "Exe", [attempt / "Program.cs"], [execution])
+        consumers = {}
+        for source_mode in (("raw", "optimized") if args.all_modes else ("raw",)):
+            private = attempt / "modes" / source_mode if args.all_modes else attempt
+            private.mkdir(parents=True, exist_ok=True)
+            if args.all_modes:
+                for name in ("Program.cs", "ThreadedGuestExecution.cs"):
+                    shutil.copyfile(attempt / name, private / name)
+                    verify(private / name, sha(attempt / name))
+            library = private / "library/TranslatedBlink.csproj"
+            execution = private / "execution/Managed.Emulation.ThreadedExecution.csproj"
+            consumer = private / "consumer/DotNetThreadedGuestExecution.csproj"
+            project(library, "TranslatedBlink", "Library", [attempt / source_mode / "Sources/**/*.cs",
+                    attempt / source_mode / "Bridges/*.cs"],
+                    [attempt / source_mode / "Host/Managed.Emulation.Host.csproj"], "BLINK_FULL_CORE")
+            project(execution, "Managed.Emulation.ThreadedExecution", "Library", [private / "ThreadedGuestExecution.cs"], [library])
+            project(consumer, "DotNetThreadedGuestExecution", "Exe", [private / "Program.cs"], [execution])
+            consumers[source_mode] = consumer
         receipt["prepared_files"] = {str(p.relative_to(attempt)): sha(p) for p in attempt.rglob("*") if p.is_file()}
         receipt["prepared"] = True
-        if args.run:
+        receipt["binaries"] = {}
+        if selected_modes:
             run([tools["dotnet"], "--info"], "dotnet-info")
-            run([tools["dotnet"], "build", consumer, "-c", "Release", "--disable-build-servers",
-                 "-p:UseSharedCompilation=false"], "raw-build", 600)
-            executable = consumer.parent / "bin/Release/net10.0/DotNetThreadedGuestExecution.dll"
-            receipt["binaries"] = {str(p): sha(p) for p in executable.parent.iterdir() if p.is_file()}
-            result_directory = attempt / "result"
-            run([tools["dotnet"], executable, image, oracle, result_directory], "raw-jit", 60, required=False)
-            result_path = result_directory / "result.json"
-            if result_path.exists():
-                result = json.loads(result_path.read_text())
-                receipt["result"] = result
-                receipt["diagnostic_completed"] = True
-                receipt["guest_passed"] = bool(result["guest_passed"] and receipt["commands"][-1]["exit_code"] == 0)
-            for name, digest in receipt["binaries"].items():
-                if sha(name) != digest:
-                    raise RuntimeError("Diagnostic binary changed")
+            built = set()
+            for mode in selected_modes:
+                source_mode, runtime = mode.split("-")
+                consumer = consumers[source_mode]
+                row = dict(passed=False, result_directory=str(attempt / "results" / mode))
+                receipt["modes"][mode] = row
+                if source_mode not in built:
+                    run([tools["dotnet"], "build", consumer, "-c", "Release", "--disable-build-servers",
+                         "-p:UseSharedCompilation=false"], source_mode + "-build", 600)
+                    built.add(source_mode)
+                if runtime == "jit":
+                    original_directory = consumer.parent / "bin/Release/net10.0"
+                    executable_name = "DotNetThreadedGuestExecution.dll"
+                else:
+                    original_directory = consumer.parent / "publish"
+                    run([tools["dotnet"], "publish", consumer, "-c", "Release", "-r", "linux-x64",
+                         "-p:PublishAot=true", "--disable-build-servers", "-p:UseSharedCompilation=false",
+                         "-o", original_directory], mode + "-publish", 1200)
+                    executable_name = "DotNetThreadedGuestExecution"
+                def executable_tree(directory):
+                    return {str(p.relative_to(directory)): sha(p) for p in directory.rglob("*") if p.is_file()}
+                before = executable_tree(original_directory)
+                copied_directory = attempt / "executions" / mode
+                shutil.copytree(original_directory, copied_directory)
+                if executable_tree(copied_directory) != before or executable_tree(original_directory) != before:
+                    raise RuntimeError("Executable changed during copy: " + mode)
+                row.update(original_directory=str(original_directory), execution_directory=str(copied_directory),
+                           binaries_before=before)
+                receipt["binaries"].update({str(copied_directory / name): digest for name, digest in before.items()})
+                executable = copied_directory / executable_name
+                command = [tools["dotnet"], executable] if runtime == "jit" else [executable]
+                result_directory = attempt / "results" / mode if args.all_modes else attempt / "result"
+                row["result_directory"] = str(result_directory)
+                run([*command, image, oracle, result_directory], mode, 60, required=False)
+                row["exit_code"] = receipt["commands"][-1]["exit_code"]
+                row["binaries_after"] = executable_tree(copied_directory)
+                if row["binaries_after"] != before:
+                    raise RuntimeError("Execution binary closure changed: " + mode)
+                result_path = result_directory / "result.json"
+                if result_path.exists():
+                    result = json.loads(result_path.read_text())
+                    row["result"] = result
+                    row["result_sha256"] = sha(result_path)
+                    if not args.all_modes:
+                        receipt["result"] = result
+                    observed = result.get("execution") or {}
+                    row["passed"] = bool(row["exit_code"] == 0 and
+                        all(result.get(key) is True for key in ("guest_passed", "ready", "joined", "is_quiescent")) and
+                        all(result.get(key) is None for key in ("diagnostic_error", "execution_error", "notification_error")) and
+                        observed.get("exited") is True and observed.get("exit_status") == 0 and
+                        observed.get("stop_reason") == "None" and observed.get("all_workers_joined") is True and
+                        observed.get("memory_released") is True and
+                        0 < observed.get("instructions", 0) <= 20_000_000 and
+                        len(observed.get("threads", [])) > 0 and
+                        all(t.get("machine_released") is True and t.get("signal") == 0 and t.get("halt") == 0
+                            for t in observed.get("threads", [])) and
+                        {c.get("name") for c in result.get("cases", [])} == {"health", "stop"} and
+                        len(result.get("cases", [])) == 2 and all(c.get("passed") is True for c in result["cases"]))
+                    if row["passed"]:
+                        for name in ("health", "stop"):
+                            if (result_directory / (name + ".response")).read_bytes() != (oracle / (name + ".response")).read_bytes():
+                                raise RuntimeError(mode + " HTTP bytes differ from native")
+                        if ((result_directory / "stdout.txt").read_bytes() != b"READY 8080\nSTOPPED\n" or
+                                (result_directory / "stderr.txt").read_bytes()):
+                            raise RuntimeError(mode + " guest captures differ")
+                row["artifacts"] = {str(p.relative_to(result_directory)): sha(p)
+                                    for p in result_directory.rglob("*") if p.is_file()}
+                print(json.dumps({"mode": mode, "guest_passed": row["passed"]}), flush=True)
+                if not row["passed"]:
+                    break
+            receipt["diagnostic_completed"] = (set(receipt["modes"]) == set(selected_modes) and
+                all("result" in row for row in receipt["modes"].values()))
+            receipt["guest_passed"] = (set(receipt["modes"]) == set(selected_modes) and
+                all(row["passed"] for row in receipt["modes"].values()))
+            receipt["all_modes_passed"] = bool(args.all_modes and receipt["guest_passed"] and
+                                               set(receipt["modes"]) == set(ALL_MODES))
+            for mode, row in receipt["modes"].items():
+                if executable_tree(Path(row["execution_directory"])) != row["binaries_before"]:
+                    raise RuntimeError("Final executable closure changed: " + mode)
+                for name, digest in row["artifacts"].items():
+                    if sha(Path(row["result_directory"]) / name) != digest:
+                        raise RuntimeError("Result artifact changed: " + mode)
         check_tree(raw, delivery["raw_files"])
         check_tree(final, delivery["final_files"])
         check_tree(ROOT / "src/Managed.Emulation.Host", delivery["host_source_files"])
@@ -246,7 +390,7 @@ def main():
                 raise RuntimeError("Prepared input changed: " + name)
         receipt["passed"] = receipt["guest_passed"]
     except BaseException as error:
-        receipt["passed"] = receipt["guest_passed"] = False
+        receipt["passed"] = receipt["guest_passed"] = receipt["all_modes_passed"] = False
         receipt["error"] = type(error).__name__ + ": " + str(error)
         raise
     finally:
@@ -255,7 +399,7 @@ def main():
         (attempt / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
         print(json.dumps({"prepared": receipt["prepared"], "guest_passed": receipt["guest_passed"],
                           "receipt": str(attempt / "receipt.json")}), flush=True)
-    return 1 if args.run and not receipt["guest_passed"] else 0
+    return 1 if selected_modes and not receipt["guest_passed"] else 0
 
 
 def interrupted(signum, frame):

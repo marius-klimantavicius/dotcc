@@ -16,9 +16,9 @@ Its layout and normal clone/TLS/futex execution gates pass all four managed
 forms. Actual threaded .NET startup now passes clone, GC reservation and musl
 stack discovery. The qualified real empty-epoll boundary now permits actual
 READY and HTTP accept. Qualified socket timeout semantics now permit exact
-health/stop HTTP responses and normal exit in raw JIT, with all four workers
-joined and backing released. The remaining host modes and worker/sample
-integration are pending. Registrations remain explicitly unsupported; stable
+health/stop HTTP responses and normal exit in raw/optimized JIT/NativeAOT,
+with all four workers joined and backing released. Final product/worker/sample
+integration and ordinary controller stop remain pending. Registrations remain explicitly unsupported; stable
 delivery remains separate. P5 completion is not claimed.
 Current receipts and ownership are recorded at the end of
 [PROGRESS.md](PROGRESS.md).
