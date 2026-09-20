@@ -45,13 +45,19 @@ public static partial class Blink
                 if (blink_host_sigprocmask(2, mask, &previous) != 0) return -1;
                 restore = true;
             }
-            var result = io.WaitEpollAsync(epfd, maxEvents, timeoutMilliseconds, ioCancellation)
+            var result = io.WaitEpollEventsAsync(epfd, maxEvents, timeoutMilliseconds, ioCancellation)
                 .GetAwaiter().GetResult();
             if (!result.Succeeded)
                 return IoError(result.Error == GuestError.Canceled ? 4 : (int)result.Error);
-            // A genuinely empty interest set has no output records to copy.
-            if (result.Value != 0) throw new InvalidOperationException("Empty epoll returned events.");
-            return 0;
+            if (result.Value.Length > maxEvents)
+                throw new InvalidOperationException("Host returned too many epoll events.");
+            for (int index = 0; index < result.Value.Length; ++index)
+            {
+                events[index].events = result.Value[index].Events;
+                events[index].data.u64 = result.Value[index].Data;
+            }
+            // Upstream converts this private 16-byte ABI to guest 12-byte records.
+            return result.Value.Length;
         }
         catch (OperationCanceledException) { return IoError(4); }
         catch (Exception error) { return IoException(error); }

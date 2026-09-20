@@ -35,7 +35,7 @@ public static partial class Blink
             if (message == null) return IoError(14);
             // Refuse before accessing any control or explicit destination bytes.
             // TCP has no supported ancillary channel in this private network.
-            if (flags != 0 || message->msg_controllen != 0) return IoError(95);
+            if ((writing ? flags != 0 : (flags & ~2) != 0) || message->msg_controllen != 0) return IoError(95);
             if (writing && message->msg_name != null) return IoError(106);
             ulong vectorCount = message->msg_iovlen;
             if (vectorCount > IoVectorLimit) return IoError(90); // EMSGSIZE
@@ -57,7 +57,7 @@ public static partial class Blink
             if (writing) CopyVectors(vectors, (int)vectorCount, buffer, true);
             // Preserve native stream readiness even for zero-capacity receives:
             // Linux recvmsg may wait until data or EOF is observable.
-            var result = (writing ? io.SendAsync(fd, buffer, ioCancellation) : io.ReceiveAsync(fd, buffer, ioCancellation)).GetAwaiter().GetResult();
+            var result = (writing ? io.SendAsync(fd, buffer, ioCancellation) : io.ReceiveAsync(fd, buffer, ioCancellation, peek: (flags & 2) != 0)).GetAwaiter().GetResult();
             if (!result.Succeeded) return IoError((int)result.Error);
             int transferred = result.Value;
             if (!writing)

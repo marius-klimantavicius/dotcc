@@ -101,12 +101,12 @@ public static partial class Blink
         try
         {
             if (io == null) return IoError(19);
-            if (flags != 0) return IoError(95);
+            if (writing ? flags != 0 : (flags & ~2) != 0) return IoError(95);
             if (pointer == null && length != 0) return IoError(14);
             int count = (int)global::System.Math.Min(length, (ulong)IoChunk);
             byte[] buffer = new byte[count];
             if (writing) new ReadOnlySpan<byte>(pointer, count).CopyTo(buffer);
-            var result = (writing ? io.SendAsync(fd, buffer, ioCancellation) : io.ReceiveAsync(fd, buffer, ioCancellation)).GetAwaiter().GetResult();
+            var result = (writing ? io.SendAsync(fd, buffer, ioCancellation) : io.ReceiveAsync(fd, buffer, ioCancellation, peek: (flags & 2) != 0)).GetAwaiter().GetResult();
             if (!writing && result.Succeeded) buffer.AsSpan(0, result.Value).CopyTo(new Span<byte>(pointer, count));
             return IoResult(result);
         }
@@ -128,6 +128,15 @@ public static partial class Blink
         {
             if (io == null) return IoError(19);
             if (value == null) return IoError(14);
+            if (level == 1 && option == 13)
+            {
+                if (length < 8) return IoError(22);
+                var lingerBytes = new ReadOnlySpan<byte>(value, 8);
+                var linger = new Managed.Emulation.Host.SocketLinger(
+                    BinaryPrimitives.ReadInt32LittleEndian(lingerBytes) != 0,
+                    BinaryPrimitives.ReadInt32LittleEndian(lingerBytes[4..]));
+                return (int)IoResult(io.SetSocketLinger(fd, linger));
+            }
             if (level == 1 && option is 20 or 21)
             {
                 // Reviewed LP64 timeval: signed seconds and microseconds, 16 bytes.
