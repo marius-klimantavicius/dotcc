@@ -73,8 +73,8 @@ member in reviewed staging. The immutable upstream tree and generated output
 are not hand-edited. Ten normal scalar/packed mask and actual threshold-sequence
 regressions are added; all 514 selected native cases pass, with the original
 550 descriptors and 46 fault-case exclusions preserved. Original failures stay
-in the native receipt. Managed regression and actual corrected Kestrel execution
-remain pending; native success does not close P5.
+in the native receipt. Managed regression now passes all 2,056 comparisons;
+actual corrected Kestrel execution remains partial as described below.
 
 The old sysinfo fallback's zero available-memory result is a separate known
 modeling discrepancy. It is not the cause established by the SIMD observation.
@@ -101,5 +101,7 @@ normal stop remain uncompleted. All nine workers/Machines and resources release.
 The actual missing boundary is the internal pthread wake following upstream
 signal queuing. The native runtime installs signal 35's ActivationHandler, but
 the native five-case trace does not issue the activation observed in managed
-execution. Required managed wake/handler semantics are being reviewed. No real
+execution. Managed wake, sender metadata and C# handler accounting changes are
+prepared but unvalidated. Work is stopped by explicit user request; see
+[RESTART-P5-KESTREL.md](RESTART-P5-KESTREL.md) for preservation and resume steps. No real
 host signal, successful no-op, or timeout increase substitutes for that contract.

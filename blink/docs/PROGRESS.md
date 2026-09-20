@@ -4,6 +4,12 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
+**Stopped by explicit user request to save state before session limits.** No
+build or guest run is active. Resume from [RESTART-P5-KESTREL.md](RESTART-P5-KESTREL.md),
+which records exact receipts, pending file ownership, an immutable backup and
+the known next checks. Pending signal/wake integration is source-only and
+uncommitted; the current live source combination has not been qualified.
+
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the
 emulator host. Guest creation first uses the installed SDK for ordinary Linux
@@ -43,8 +49,9 @@ managed CPU comparisons. A bounded 128 MiB address-space/backing profile now
 reaches actual Kestrel READY and passes health, large and fragmented requests.
 The next required contract is cross-thread activation: the guest's signal 35
 is queued upstream, but the internal wake callback rejects nonzero signals,
-causing a guest abort. Workers are reviewing the target state and managed wake
-contract before implementation. The worker matrix and actual sample are prepared
+causing a guest abort. Reviewed causes also include absent sender PID metadata
+and nested handler dispatch outside owner accounting. Source implementation is
+prepared but unvalidated, and work is stopped at the user's request. The worker matrix and actual sample are prepared
 but remain unqualified for Kestrel. No P6 work starts.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
