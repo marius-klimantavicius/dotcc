@@ -24,10 +24,12 @@ now pass raw/optimized JIT/NativeAOT using the authored C# owner, including actu
 worker joins, child-TID clearing and shared-memory release. Actual threaded .NET
 startup passes clone and GC reservation, then normal musl stack discovery after
 reviewed source-range validation. Its next failure is epoll_create1 ENOSYS before
-readiness. The real private empty-epoll lifetime/wait boundary now passes native
-and all four managed forms (95364ac); a fresh threaded profile is being built
-for the unchanged actual guest retry. No NativeAOT service readiness or P5 pass
-is claimed; stable delivery remains separate.
+readiness in the earlier profile. The real private empty-epoll boundary now
+passes native/all-four checks and fresh delivery. The actual .NET guest reaches
+READY and accepts HTTP, then fails on SO_SNDTIMEO with ENOPROTOOPT; no HTTP
+response passes yet. Four workers join and all guest backing releases. Socket
+timeout semantics are the next observed boundary. P5 remains open; stable
+delivery remains separate.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
@@ -2489,3 +2491,32 @@ The launch receipt has SHA-256
 identities/maps, including objects, source/compiler and raw/final/log closures.
 Coordinator rechecked all607 frozen delivery inputs. These are build gates; guest
 now owns the unchanged actual .NET raw-JIT diagnostic on this exact delivery.
+
+
+### P5 actual .NET readiness and accept reached
+
+The unchanged real static-musl .NET guest reaches `READY 8080` and accepts the
+published HTTP connection on the epoll-enabled threaded profile. Its next
+required operation is `setsockopt(fd8,SOL_SOCKET,SO_SNDTIMEO_OLD,*,16)`, which
+returns ENOPROTOOPT. The guest reports `SocketException: Protocol not available`
+and exits the group with status1. The external client sees a connection reset;
+no response case passes. This is observed guest behavior, not injected network
+failure or a passing service gate.
+
+Receipt `dotnet-threaded-guest-execution/attempt-4nsdxnrz/receipt.json` has SHA-256
+`cf15e01a693614a61d1927783171b7336230c07dc6bdec0df297eee1bf9226b3`;
+result SHA-256 `c1ab0945c167e86e64279477ca46a3130a4e3505392b2674fed4aee3872cf560`.
+The four complete traces contain2201/7/6/3 observations with no truncation.
+The actual child epoll_pwait uses maxevents1024 and timeout-1; it returns EINTR
+during group teardown. All four workers join and Machines/backing release;
+owner is quiescent after1249598 instructions, with no execution/notification
+exception. Execution latched StopReasonNone at guest exit; the outer diagnostic
+requests stop afterward while handling its HTTP error. Independent verification
+covers883 frozen/prepared/binary/artifact identities.
+
+Next ownership: inputs reviews truthful Host send/receive timeout state and
+async-operation enforcement; guest designs normal native/all-four callback
+qualification and bridge marshalling. No success-only socket option is accepted.
+Do not use forced send-buffer saturation or injected peer delays/disconnects to
+claim expiry coverage. Preserve ordinary successful I/O, timed empty waits,
+caller cancellation and owner drain as distinct contracts. P6 remains held.

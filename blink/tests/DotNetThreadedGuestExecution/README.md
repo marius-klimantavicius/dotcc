@@ -128,3 +128,35 @@ Independent verification rechecked 723 frozen inputs, 104 prepared files,
 11 binaries and 33 artifacts. The consumer build returned 0 and the actual
 raw-JIT diagnostic returned 1. No extra tuning, retry after the guest failure,
 or epoll implementation was included in this attempt.
+
+## Empty-epoll delivery diagnostic
+
+The unchanged guest, runner, four environment entries and bounds were run against
+`artifacts/threaded-delivery/attempt-jttvocmh/receipt.json` (108 fresh producers,
+zero reused objects). The guest now reaches `READY 8080\n`, publishes its listener,
+and accepts the normal HTTP connection. This is the first observed readiness;
+the HTTP service check still fails.
+
+Receipt `artifacts/dotnet-threaded-guest-execution/attempt-4nsdxnrz/receipt.json`
+has SHA256 `cf15e01a693614a61d1927783171b7336230c07dc6bdec0df297eee1bf9226b3`.
+Its result SHA256 is
+`c1ab0945c167e86e64279477ca46a3130a4e3505392b2674fed4aee3872cf560`.
+The actual next failure is `setsockopt(8, SOL_SOCKET, SO_SNDTIMEO_OLD, ..., 16)`
+returning -92 (ENOPROTOOPT) on the accepted socket. The .NET fixture catches the
+socket exception, prints `SocketException: Protocol not available\n`, and exits
+its group with status 1. The client observes a connection reset and no HTTP
+response case passes. No timeout implementation or extra tuning was attempted.
+
+`epoll_create1(EPOLL_CLOEXEC)` successfully returned fd 3. A real child issued
+`epoll_pwait(3, ..., 1024, -1, NULL, 8)` and returned EINTR during cooperative
+shutdown. All four workers joined, all Machines and shared memory were released,
+and `IsQuiescent` was true. No execution or notification exception occurred.
+The owner latched execution StopReason None at the genuine group exit; the outer
+harness later requested stop while handling the failed HTTP exchange. These are
+distinct observations, not a deadline or budget exit.
+
+The guest completed 1,249,598 instructions. Its four complete syscall traces
+contain 2201, 7, 6 and 3 rows, with no truncation or unrecorded thread observations.
+Independent verification checked 733 frozen inputs, 106 prepared files,
+11 binaries and 33 artifacts (883 identities). The build returned 0; the actual
+raw-JIT diagnostic and runner returned 1 with `guest_passed=false`.
