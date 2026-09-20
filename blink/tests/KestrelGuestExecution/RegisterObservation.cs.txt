@@ -1,0 +1,115 @@
+using System.Text.Json;
+using Blink = Managed.Emulation.BlinkCore;
+
+namespace Managed.Emulation.Execution;
+
+// Diagnostic-only partial owner, copied into an isolated historical source tree.
+public sealed unsafe partial class ThreadedGuestExecution
+{
+    private const ulong BucketType = 0xf0f778;
+    private sealed record RegisterRow(ulong InstructionCount, ulong[] Values);
+    private sealed class RegisterRows
+    {
+        public ulong Count;
+        public List<RegisterRow> First = new();
+        public Queue<RegisterRow> Last = new();
+    }
+    private readonly object diagnosticGate = new();
+    private readonly Dictionary<(int Tid, ulong Ip, string Label), RegisterRows> diagnosticRows = new();
+    private string? diagnosticFailure;
+
+    private void ObserveDiagnosticRegisters(Worker worker, bool terminal = false)
+    {
+        int saved = Blink.Libc.errno;
+        try
+        {
+            if (diagnosticFailure != null) return;
+            var machine = worker.Machine;
+            ulong ip = machine->ip;
+            string? label = terminal ? "terminal" : ip switch
+            {
+                0x6b1ac0 => "hashtable-insert-entry",
+                0x6b18e0 => "hashtable-expand-entry",
+                0x6b18eb => "expand-prime-call-oldsize-edi",
+                0x6b18f0 => "expand-prime-return-newsize-eax",
+                0x6b1900 => "rehash-entry-newsize-esi",
+                0x6b1922 => "rehash-array-call-length-rsi",
+                0x6b1927 => "rehash-array-return-rax",
+                0x472050 when Register(machine, 7) == BucketType => "bucket-newarray-entry",
+                0x472076 when Register(machine, 3) == BucketType => "bucket-newarray-size-r13",
+                0x472140 when Register(machine, 7) == BucketType => "bucket-slowarray-entry",
+                0x419bf0 when Register(machine, 7) == BucketType => "bucket-gcalloc-entry",
+                0x472177 when Register(machine, 3) == BucketType => "bucket-gcalloc-return-rax",
+                0x472191 when Register(machine, 3) == BucketType => "bucket-slowarray-failed",
+                0x4720bc when Register(machine, 7) == BucketType => "bucket-array-length-rejected",
+                0x6b33c0 when Register(machine, 7) == BucketType => "bucket-failedallocation",
+                _ => null
+            };
+            if (label == null) return;
+            var values = new ulong[16];
+            for (int i = 0; i < values.Length; ++i) values[i] = Register(machine, i);
+            lock (diagnosticGate)
+            {
+                var key = (worker.GuestId, ip, label);
+                if (!diagnosticRows.TryGetValue(key, out var rows))
+                {
+                    if (diagnosticRows.Count >= 272)
+                    {
+                        diagnosticFailure = "Observation group bound exceeded";
+                        return;
+                    }
+                    diagnosticRows.Add(key, rows = new());
+                }
+                ++rows.Count;
+                var row = new RegisterRow(worker.Instructions, values);
+                if (rows.First.Count < 16) rows.First.Add(row);
+                else
+                {
+                    if (rows.Last.Count == 128) rows.Last.Dequeue();
+                    rows.Last.Enqueue(row);
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            // Observation failure is explicit and must not alter guest control flow.
+            lock (diagnosticGate) diagnosticFailure ??= error.GetType().Name;
+        }
+        finally { Blink.Libc.errno = saved; }
+    }
+
+    public void WriteDiagnosticRegisters(Utf8JsonWriter writer)
+    {
+        lock (diagnosticGate)
+        {
+            writer.WriteStartObject("register_observations");
+            writer.WriteString("error", diagnosticFailure);
+            writer.WriteString("register_order", "rax,rcx,rdx,rbx,rsp,rbp,rsi,rdi,r8,r9,r10,r11,r12,r13,r14,r15");
+            writer.WriteString("timing", "Before selected instruction; terminal before Machine cleanup");
+            writer.WriteStartArray("groups");
+            foreach (var pair in diagnosticRows.OrderBy(p => p.Key.Tid).ThenBy(p => p.Key.Ip))
+            {
+                writer.WriteStartObject();
+                writer.WriteNumber("tid", pair.Key.Tid);
+                writer.WriteNumber("ip", pair.Key.Ip);
+                writer.WriteString("label", pair.Key.Label);
+                writer.WriteNumber("count", pair.Value.Count);
+                writer.WriteNumber("omitted", pair.Value.Count - (ulong)(pair.Value.First.Count + pair.Value.Last.Count));
+                writer.WriteStartArray("rows");
+                foreach (var row in pair.Value.First.Concat(pair.Value.Last))
+                {
+                    writer.WriteStartObject();
+                    writer.WriteNumber("thread_instructions", row.InstructionCount);
+                    writer.WriteStartArray("gpr");
+                    foreach (ulong value in row.Values) writer.WriteNumberValue(value);
+                    writer.WriteEndArray();
+                    writer.WriteEndObject();
+                }
+                writer.WriteEndArray();
+                writer.WriteEndObject();
+            }
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+        }
+    }
+}

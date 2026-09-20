@@ -107,3 +107,76 @@ infinite loop. It does not explain the guest OOM: the equivalent native profile
 passed, recorded retained backing was below 64 MiB, and no new mmap ENOMEM was
 observed. No additional budget extension, memory-limit change or semantic repair
 is credited by this assessment.
+
+## Bounded allocation-register observation
+
+`register-assessment.py` derives a diagnostic-only partial copy of the authored
+owner in the historical private tree. It observes 16 GPR scalars at exact ELF
+instruction addresses, including Hashtable expansion, bucket-array allocation
+and terminal cleanup. It preserves errno and records observation failures without
+changing guest control flow. Each group retains its first 16 and last 128 rows,
+plus total/omitted counts. No guest memory is read or patched, and no generated
+source, guest ELF, environment or execution budget changes.
+
+Attempt `attempt-registers-ndumh6v1` receipt SHA-256 is
+`a364e73be5f9f8d84fc9cd189029e4f4b8195fa6c3ea996cdbc3e032ac944b05`;
+result SHA-256 is
+`dbade26e44f707c9efa6d5f4582115d654be85a9b1963a49220a9c2e9b3219bc`.
+It records 17 groups and 496 rows with zero omissions or observation errors.
+Every one of 46 Hashtable insertion entries triggers expansion. The final URI
+table grows through 36,353, 75,431, 156,437, 324,449 and 672,827 buckets while
+entry count is only 11 through 15. The final positive length 672,827 computes an
+allocation of 16,147,872 bytes; the slow allocator returns null, followed by the
+same guest OOM/SIGABRT before readiness. This identifies excessive table growth,
+not an initially negative array length. The instruction count is 159,751,951;
+execution took 20.69 seconds, all guest resources released, and 325 identities
+were independently checked.
+
+Read-only source inspection found a concrete candidate in the pinned upstream
+`blink/ssefloat.c`: `OpCmppsd` assigns comparison results to the floating member
+of its union. For an ordered scalar comparison, this converts integer -1 to
+float -1 (bits `bf800000`) instead of producing the required all-ones comparison
+mask. Generated C# faithfully preserves this upstream behavior. The actual guest
+uses CMPORDSS then ANDPS during Hashtable load-threshold conversion. A separate
+bounded GPR/XMM observation is prepared to identify the first incorrect value;
+no source correction is credited by the allocation observation alone.
+
+The pinned [.NET 10.0.12 Hashtable source](https://raw.githubusercontent.com/dotnet/runtime/v10.0.12/src/libraries/System.Private.CoreLib/src/System/Collections/Hashtable.cs)
+computes the load threshold from bucket length times the adjusted load factor,
+and expands when count reaches that threshold. For default load factor 0.72,
+lengths three and seven should yield thresholds two and five respectively.
+
+## Exact first incorrect comparison-mask value
+
+`float-register-assessment.py` uses the same historical baseline and bounds,
+adding only diagnostic GPR/flags and XMM0/XMM1 register observations at the
+constructor/rehash threshold instructions. It reads Machine register storage,
+not arbitrary guest memory. The generated library and guest remain unchanged.
+
+Attempt `attempt-float-registers-smhynls8` receipt SHA-256 is
+`b10f27addb1cfaa4b66f89699f42b222ce028f9aa6c30da8d907215afd3754bc`;
+result SHA-256 is
+`a26835a15d0370ef9aea10e39c88238f14bacc6b38168eddd9db45e019dff069`.
+All 458 rows in 20 groups were retained without observation error or omission;
+325 immutable identities were independently checked.
+
+The first constructor observes the correct load factor `3f3851ec` (0.72f),
+length three, and product `400a3d71` (approximately 2.16f). CMPORDSS at `0x6b16a1`
+then produces **`bf800000`**, observed at `0x6b16a6`, instead of all-ones
+`ffffffff`. ANDPS produces zero, CVTTSS2SI produces integer zero, and the store
+at `0x6b16bc` receives EDI zero instead of the expected threshold two.
+
+The first rehash likewise computes the correct length-seven product `40a147ae`
+(approximately 5.04f). CMPORDSS at `0x6b19a9` produces `bf800000`; ANDPS reduces
+the product to `00800000` (a tiny positive float), integer conversion produces
+zero, and the threshold store at `0x6b19c4` receives EAX zero instead of five.
+All 51 observed constructor/rehash comparison masks show this defect. This
+connects the pinned upstream union-member assignment to the actual zero load
+threshold and repeated expansion; the preceding conversions and products are
+correct for these observed operands.
+
+The diagnostic still fails guest qualification: no READY or HTTP case, the same
+guest OOM/SIGABRT after 160,695,525 instructions in 24.00 seconds, and all guest
+workers/Machines/backing/IO released. No production fix or broader floating-point
+coverage is claimed by these observations. Earlier receipts and snapshots remain
+unchanged. No further observation runs were performed.

@@ -1,0 +1,127 @@
+using System.Text.Json;
+using System.Buffers.Binary;
+using Blink = Managed.Emulation.BlinkCore;
+
+namespace Managed.Emulation.Execution;
+
+// Diagnostic-only partial owner, copied into an isolated historical source tree.
+public sealed unsafe partial class ThreadedGuestExecution
+{
+    private const ulong BucketType = 0xf0f778;
+    private sealed record RegisterRow(ulong InstructionCount, ulong[] Values, ulong Flags, ulong[] Xmm);
+    private sealed class RegisterRows
+    {
+        public ulong Count;
+        public List<RegisterRow> First = new();
+        public Queue<RegisterRow> Last = new();
+    }
+    private readonly object diagnosticGate = new();
+    private readonly Dictionary<(int Tid, ulong Ip, string Label), RegisterRows> diagnosticRows = new();
+    private string? diagnosticFailure;
+
+    private void ObserveDiagnosticRegisters(Worker worker, bool terminal = false)
+    {
+        int saved = Blink.Libc.errno;
+        try
+        {
+            if (diagnosticFailure != null) return;
+            var machine = worker.Machine;
+            ulong ip = machine->ip;
+            string? label = terminal ? "terminal" : ip switch
+            {
+                0x6b161a => "constructor-loadfactor-product",
+                0x6b1699 => "constructor-length-before-mulss",
+                0x6b169e => "constructor-loadsize-product",
+                0x6b16a1 => "constructor-before-cmpordss",
+                0x6b16a6 => "constructor-after-cmpordss",
+                0x6b16a9 => "constructor-after-andps",
+                0x6b16b2 => "constructor-after-cvttss2si-eax",
+                0x6b16bc => "constructor-store-threshold-edi",
+                0x6b19a1 => "rehash-length-before-mulss",
+                0x6b19a6 => "rehash-loadsize-product",
+                0x6b19a9 => "rehash-before-cmpordss",
+                0x6b19ae => "rehash-after-cmpordss",
+                0x6b19b1 => "rehash-after-andps",
+                0x6b19ba => "rehash-after-cvttss2si-ecx",
+                0x6b19c4 => "rehash-store-threshold-eax",
+                0x6b1aeb => "insert-loaded-count-esi",
+                0x6b1aee => "insert-after-threshold-comparison-flags",
+                _ => null
+            };
+            if (label == null) return;
+            var values = new ulong[16];
+            for (int i = 0; i < values.Length; ++i) values[i] = Register(machine, i);
+            var xmm = new ulong[4];
+            for (int i = 0; i < xmm.Length; ++i)
+                xmm[i] = BinaryPrimitives.ReadUInt64LittleEndian(new ReadOnlySpan<byte>(machine->xmm + i * 8, 8));
+            ulong flags = machine->flags;
+            lock (diagnosticGate)
+            {
+                var key = (worker.GuestId, ip, label);
+                if (!diagnosticRows.TryGetValue(key, out var rows))
+                {
+                    if (diagnosticRows.Count >= 288)
+                    {
+                        diagnosticFailure = "Observation group bound exceeded";
+                        return;
+                    }
+                    diagnosticRows.Add(key, rows = new());
+                }
+                ++rows.Count;
+                var row = new RegisterRow(worker.Instructions, values, flags, xmm);
+                if (rows.First.Count < 16) rows.First.Add(row);
+                else
+                {
+                    if (rows.Last.Count == 128) rows.Last.Dequeue();
+                    rows.Last.Enqueue(row);
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            // Observation failure is explicit and must not alter guest control flow.
+            lock (diagnosticGate) diagnosticFailure ??= error.GetType().Name;
+        }
+        finally { Blink.Libc.errno = saved; }
+    }
+
+    public void WriteDiagnosticRegisters(Utf8JsonWriter writer)
+    {
+        lock (diagnosticGate)
+        {
+            writer.WriteStartObject("register_observations");
+            writer.WriteString("error", diagnosticFailure);
+            writer.WriteString("register_order", "rax,rcx,rdx,rbx,rsp,rbp,rsi,rdi,r8,r9,r10,r11,r12,r13,r14,r15");
+            writer.WriteString("xmm_order", "xmm0-low64,xmm0-high64,xmm1-low64,xmm1-high64");
+            writer.WriteString("timing", "Before selected instruction; terminal before Machine cleanup");
+            writer.WriteStartArray("groups");
+            foreach (var pair in diagnosticRows.OrderBy(p => p.Key.Tid).ThenBy(p => p.Key.Ip))
+            {
+                writer.WriteStartObject();
+                writer.WriteNumber("tid", pair.Key.Tid);
+                writer.WriteNumber("ip", pair.Key.Ip);
+                writer.WriteString("label", pair.Key.Label);
+                writer.WriteNumber("count", pair.Value.Count);
+                writer.WriteNumber("omitted", pair.Value.Count - (ulong)(pair.Value.First.Count + pair.Value.Last.Count));
+                writer.WriteStartArray("rows");
+                foreach (var row in pair.Value.First.Concat(pair.Value.Last))
+                {
+                    writer.WriteStartObject();
+                    writer.WriteNumber("thread_instructions", row.InstructionCount);
+                    writer.WriteNumber("flags", row.Flags);
+                    writer.WriteStartArray("xmm");
+                    foreach (ulong value in row.Xmm) writer.WriteNumberValue(value);
+                    writer.WriteEndArray();
+                    writer.WriteStartArray("gpr");
+                    foreach (ulong value in row.Values) writer.WriteNumberValue(value);
+                    writer.WriteEndArray();
+                    writer.WriteEndObject();
+                }
+                writer.WriteEndArray();
+                writer.WriteEndObject();
+            }
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+        }
+    }
+}
