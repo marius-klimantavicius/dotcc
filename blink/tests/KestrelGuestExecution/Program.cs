@@ -44,7 +44,7 @@ internal static class Program
             throw new InvalidOperationException("Image does not match configured mode");
         var io = new InstanceIo(image, executablePaths: image.Keys.ToHashSet(), outputLimit: 16384);
         var stop = new HostExecutionStop(TimeSpan.FromSeconds(60));
-        var owner = new ThreadedGuestExecution(io, stop);
+        var owner = new ThreadedGuestExecution(io, stop, memoryLimitBytes: 128 * 1024 * 1024);
         ThreadedGuestExecutionResult? result = null;
         string? executionError = null, diagnosticError = null;
         bool ready = false, joined = false, passed = false;

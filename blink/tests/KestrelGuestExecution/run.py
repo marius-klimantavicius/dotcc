@@ -115,7 +115,7 @@ def main():
     receipt = dict(passed=False, prepared=False, diagnostic_completed=False, guest_passed=False,
                    mode="optimized-jit", inputs={}, source_trees={}, optional_inputs={}, commands=[],
                    limits=dict(instructions=100_000_000, wall_seconds=60, join_seconds=5,
-                               memory_bytes=64 * 1024 * 1024, maximum_workers=16,
+                               memory_bytes=128 * 1024 * 1024, maximum_workers=16,
                                trace_rows_per_thread=16384), attempt=str(attempt))
     env = dict(os.environ, LC_ALL="C", TMPDIR=str(attempt / "tmp"),
                MSBUILDDISABLENODEREUSE="1", DOTNET_CLI_USE_MSBUILD_SERVER="0")

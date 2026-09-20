@@ -1,9 +1,18 @@
 # Threaded execution owner — implementation under qualification
 
-This authored C# API consumes a separately derived threaded interpreter library
-at `generated/ThreadedBlink/TranslatedBlink.csproj`. That experimental project is
-not the stable `TranslatedBlink` delivery. No whole guest-thread or NativeAOT
-service result is claimed before its actual build and execution receipts exist.
+This authored C# API consumes the stable translated interpreter library at
+`generated/TranslatedBlink/TranslatedBlink.csproj`. The raw-socket NativeAOT
+service and actual worker lifecycle have qualified execution receipts;
+ASP.NET Core/Kestrel remains under qualification. See the campaign progress
+ledger for the exact frozen inputs and result boundaries.
+
+The constructor's optional `memoryLimitBytes` selects 64 MiB (the unchanged
+default) or 128 MiB. The owner passes that value to shared backing creation;
+existing resource initialization sets guest RLIMIT_AS/DATA to the same limit.
+Thus reserved guest addresses count toward admission even before physical pages
+are touched. The 128 MiB Kestrel profile is prepared after an observed ordinary
+thread-stack reservation exceeded the 64 MiB address-space ceiling; its actual
+execution is still pending. Neither value is a measurement of process RSS.
 
 The staged upstream clone path retains flag validation, Machine allocation,
 register/TLS/stack setup and TID writes. Its narrow callback transfers an existing

@@ -20,11 +20,13 @@ remains process-owned; guest IO drainage is reported separately.
 
 The supported option bounds are explicit:
 
-- Guest memory is exactly 64 MiB, with the owner's fixed maximum of 16 cumulative
-  guest workers. These limits are not process RSS or the .NET GC heap limit.
+- The selected guest memory ceiling is 64 or 128 MiB and is forwarded to the
+  execution owner. Existing resource initialization couples this backing limit
+  to guest RLIMIT_AS/DATA, including reserved virtual addresses. The owner caps
+  16 cumulative guest workers. These are not process RSS or the .NET GC heap limit.
 - Working directory is `/`; there is one requested published guest port and at
   most 128 private descriptors. The declared output limit is enforced by InstanceIo.
-- The image totals at most 2 MiB. Private writable files total at most 1 MiB;
+- The image totals at most 16 MiB. Private writable files total at most 1 MiB;
   pipe buffers total at most 1 MiB, with 64 KiB capacity each and 128 pending pipe
   operations. Standard input starts empty. Image files and executable permissions
   come from the caller; there are no implicit host mounts.
@@ -63,3 +65,16 @@ Build the public translated library first using `blink/scripts/translate.sh
 --offline`, then build this project. It references the original C# owner and
 protocol projects. The owner references `blink/generated/TranslatedBlink`; the
 worker does not copy active bridges or Host sources.
+
+
+Kestrel integration preparation raises the bounded image admission to16MiB and
+control frame to24MiB: the measured genuine Kestrel ELF is9,371,272 bytes, which
+cannot fit the old2MiB profile. Encoding remains bounded and occurs before worker
+launch. These admission changes await the Kestrel worker matrix; the preceding
+raw-socket receipt used its original2MiB/3MiB bounds.
+
+The 128 MiB profile is prepared for Kestrel after its ordinary Gate-thread
+reservation exceeded the earlier 64 MiB virtual-address ceiling. It changes
+both coupled ceilings; it does not assert 128 MiB of physical use. Actual
+Kestrel worker qualification remains pending. The historical raw-socket result
+above used 64 MiB, a 2 MiB image bound and a 3 MiB control-frame bound.

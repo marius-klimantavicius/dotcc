@@ -10,18 +10,20 @@ the instruction budget was exhausted in guest GC before readiness.
 
 ```sh
 python3 blink/tests/KestrelGuestExecution/run.py \
-  --delivery-receipt blink/artifacts/translation/attempt-i4a5mfa8/receipt.json \
-  --delivery-sha256 387b147a1d95d998f1a73f980fcda227a06d244a8b9eaad8f74456fee8e7c741 \
+  --delivery-receipt blink/artifacts/translation/attempt-tf_6yqk6/receipt.json \
+  --delivery-sha256 92763476d1719166912ecbf2d5ca31cabb1feb512cfcef278a288319980524a5 \
   --native-receipt blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/receipt.json \
   --profile-receipt blink/artifacts/kestrel-native-profile/attempt-zphi57zq/receipt.json
 ```
 
 The runner resolves and freezes the unchanged public generated library and its
 original authored Host/adapters plus the original C# `ThreadedGuestExecution`
-owner into a private build. It never translates again or repairs generated C#.
+owner into a private build. The owner retains a 64 MiB default; this harness now
+explicitly requests the reviewed 128 MiB profile. It never translates again or
+repairs generated C#.
 The direct InstanceIo owner accepts the 9.37 MB ELF under its existing 16 MiB
-image limit; no worker/controller framing is involved. Existing backing/worker
-limits remain 64 MiB and 16 total guest workers, with a 100-million instruction
+image limit; no worker/controller framing is involved. Coupled guest AS/DATA and
+host backing ceilings are now 128 MiB, with 16 total guest workers and a 100-million instruction
 budget, 60-second execution deadline and five-second join bound. Host build and
 execution have separate finite process-group limits and isolated temporary paths.
 
@@ -29,7 +31,8 @@ A corrected public delivery must supply its own receipt path and expected
 SHA-256. The runner still verifies the complete generated/raw/authored source,
 compiler, staged profile and object closure; a new identity does not relax those
 checks. The next corrected-delivery retry retains the original 100-million
-instruction and 60-second limits. Historical diagnostic snapshots remain intact.
+instruction and 60-second limits. The 128 MiB ceiling is not a claim about physical
+usage; its reservation evidence is below. Historical diagnostic snapshots remain intact.
 
 Exactly six guest environment variables match the controlled native witness:
 `LANG=C`, the prior three GC settings, `DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false`
@@ -189,3 +192,93 @@ guest OOM/SIGABRT after 160,695,525 instructions in 24.00 seconds, and all guest
 workers/Machines/backing/IO released. No production fix or broader floating-point
 coverage is claimed by these observations. Earlier receipts and snapshots remain
 unchanged. No further observation runs were performed.
+
+## Corrected product: ordinary Gate-thread reservation exceeds 64 MiB AS
+
+The corrected public delivery `attempt-tf_6yqk6` (receipt SHA-256
+`92763476d1719166912ecbf2d5ca31cabb1feb512cfcef278a288319980524a5`)
+contains the repaired SSE comparison masks and qualified async socket Host.
+Its first unchanged 100-million/60-second Kestrel run, `attempt-7lswgkg3`, has
+receipt SHA-256 `e7e2075e1b6b6088724093069e592dd7d8a7fbb23bd35c720094b2995c4e4af7`
+and result SHA-256 `5fe079f63162191852f93819771e74bc82605eb02b8e074151b8a7bf418ce544`.
+The private build passed in 19.02 seconds with zero errors and the ten existing
+nullable warnings. The actual guest failed before READY or any HTTP comparison,
+writing `Process terminated. Failed to create the thread pool Gate thread.`
+after its sole new mmap ENOMEM. It later exhausted 100 million instructions
+while constructing the failure stack trace. All six Machines/workers joined,
+backing and IO released, and the process group drained without signals. The
+1,000 recorded input, binary and artifact identities were independently checked.
+
+`reservation-evidence.py` reads only the preserved receipt/result, exact ELF,
+native trace, immutable generated/owner source and pinned resource/loader/memory
+sources. Every input has a required SHA-256. It emits all mapping events, merged
+active intervals, ELF program headers and the following arithmetic as JSON:
+
+```sh
+python3 blink/tests/KestrelGuestExecution/reservation-evidence.py > /tmp/kestrel-reservations.json
+```
+
+| Recorded reservation component | 4 KiB pages |
+| --- | ---: |
+| Active mmap intervals after successful munmaps | 11,436 |
+| Heap pages not already covered by MAP_FIXED | 4 |
+| ELF PT_LOAD union, including BSS | 2,887 |
+| Loader's fixed 8 MiB main stack | 2,048 |
+| Reconstructed total | 16,375 |
+| Original RLIMIT_AS ceiling | 16,384 |
+
+Only nine pages (36,864 bytes) remain, while the failed PROT_NONE anonymous
+Gate-stack reservation requests 67 pages (274,432 bytes): 58 pages (237,568 bytes)
+beyond the limit. `GuestResources.c` initializes both AS and DATA from the owner
+ceiling. Pinned `SysMmapImpl` checks RSS and then `size / 4096 + vss > GetMaxVss`
+before `ReserveVirtual`; the generated code preserves these checks. PROT_NONE
+reservations count toward virtual size independently of touched backing. The
+native trace explicitly reports unlimited AS, succeeds at the identical stack
+reservation, then clones the `.NET TP Gate` thread.
+
+This is a reconstruction, not a direct vss/rss snapshot. Per-thread traces have
+no global ordering; worker 262146 omits its last 3,664 of 20,048 calls. Its
+recorded calls contain no mapping changes, and the sole other child mapping is
+a disjoint 16 KiB interval. The arithmetic establishes insufficient VSS admission
+for the recorded active set, without claiming which early ENOMEM branch fired
+or excluding simultaneous backing pressure. The 6,826,350 retained bytes were
+measured after upstream Machine cleanup and do not establish peak usage.
+
+The next reviewed profile requests a 128 MiB ceiling through the authored owner,
+coupling AS/DATA and backing as before. It retains 100 million instructions,
+60 seconds, 16 guest workers, the unchanged ELF, all six native environment
+entries and the 16 MiB GC cap. The default owner profile remains 64 MiB. This
+profile's first execution is recorded below; full qualification remains failed.
+
+## 128 MiB profile: READY and three responses, then activation-signal rejection
+
+Attempt `attempt-uq52p1wf` has receipt SHA-256
+`20727ac9628d261882dfd21e9efe3aee271c1b80cb7b820c93bb0876960cb04d`
+and result SHA-256
+`b12eddb8735c5b1a19b805776d09f28b54249bea01a8063d17f8b1dc0e57de4d`.
+The private build passed in 12.28 seconds, with zero errors and the same ten
+nullable warnings. The unchanged guest reached `READY 8080` and passed the
+health, 3,592-byte large and seven-write fragmented request comparisons against
+the native response semantics. Each retained response has 140 bytes, including
+a syntactically valid Date. There was no mmap ENOMEM in this run.
+
+The guest still failed. Worker 262146's complete trace records, at index 13,785,
+`tkill(262150, 35)` returning `-95` (EOPNOTSUPP) from syscall IP `0x4ebb42`.
+The pinned debug ELF identifies this instruction as musl `pthread_kill`.
+The worker then invokes `tkill(262146, 6)` at index 13,788 and terminates with
+SIGABRT. The immutable authored owner's `IHostGuestThreads.Signal` explicitly
+returns 95 for every nonzero cross-thread notification. Native and translated
+startup both install signal 35; native's handler address `0x463b20` resolves to
+`ActivationHandler` in NativeAOT `Runtime/unix/PalUnix.cpp`. The saved native
+witness installs this handler but does not itself issue a tkill35 call.
+
+The harness was awaiting the missing-route response when its 60-second deadline
+expired; it never attempted normal HTTP stop. Actual instructions total
+89,780,692, below the 100-million bound. The final owner stop reason is Deadline,
+while the execution result preserves StopReason None and the earlier worker
+SIGABRT. These distinct outcomes do not establish ordinary guest shutdown.
+Stdout contains only READY; stderr is empty. All nine Machines/workers joined,
+backing released and IO disposed; the outer process group drained without
+signals. Every per-thread trace is complete, and all 1,005 input, binary and
+artifact identities were independently verified. The all-mode worker matrix
+remains held, and no further limit increase or retry is credited.

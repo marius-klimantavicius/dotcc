@@ -38,15 +38,14 @@ JIT/NativeAOT samples passed at `managed-consumer-delivery/attempt-8k2fus34`
 P6 has not started.
 
 The genuine static-musl Kestrel guest builds and passes its five native HTTP
-cases. Translated startup currently reaches an OOM during Hashtable growth.
-Bounded register observation shows every insertion expanding the table; review
-identified the pinned upstream SSE comparison handler storing integer masks
-through a floating-point union member. The guest worker is checking the exact
-XMM/threshold state, and the verification worker owns a narrow staged source
-repair plus normal instruction regressions. The separate asynchronous socket
-boundary already passes native and all four managed forms. The coordinator
-owns canonical regeneration and the next actual Kestrel run; no guest quota
-increase or native fallback is being substituted for the repair.
+cases. Its upstream SIMD comparison-mask defect is corrected and passes 2,056
+managed CPU comparisons. A bounded 128 MiB address-space/backing profile now
+reaches actual Kestrel READY and passes health, large and fragmented requests.
+The next required contract is cross-thread activation: the guest's signal 35
+is queued upstream, but the internal wake callback rejects nonzero signals,
+causing a guest abort. Workers are reviewing the target state and managed wake
+contract before implementation. The worker matrix and actual sample are prepared
+but remain unqualified for Kestrel. No P6 work starts.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
@@ -2900,3 +2899,47 @@ rejects the incompatible threaded profile before building. No replacement owner
 or success callback is introduced. CPU regression is being adapted to derive
 its own normal frontend directly from the verified public delivery, with explicit
 compiled-product provenance, rather than calling this failed check a core pass.
+
+
+### Kestrel readiness reached; cross-thread activation remains open
+
+The corrected CPU matrix passes all 2,056 comparisons (514 in each raw/optimized
+JIT/NativeAOT mode), with native agreement and 46 exclusions unchanged.
+`cpu-conformance-managed/attempt-jt41ulk6/receipt.json` has SHA-256
+`c62ea727bde462c938a91a67c6c3f4ae0ef69bff6c3bb28be1fe0bb06e10a7b2`.
+It adds only the CPU frontend to the 108 verified public objects; it does not
+claim the incompatible legacy CoreExecution test passed. Commit 7451cce records
+the qualification and direct-delivery provenance checks.
+
+The recorded reservation reconstruction accounts for 16,375 pages under the
+16,384-page address-space limit; the Gate thread needs another 67 pages.
+`tests/KestrelGuestExecution/reservation-evidence.py` pins the preserved inputs
+and emits the intervals, arithmetic and limitations. It is not a direct peak
+backing measurement or proof of which of two early ENOMEM checks fired.
+The authored C# owner now accepts a selected 64 or 128 MiB limit (default 64),
+and the worker forwards its validated option. Existing initialization couples
+this backing ceiling with guest RLIMIT_AS/DATA. Kestrel selects 128 MiB; the
+native ELF, six guest variables, 16 MiB GC limit, 100M instructions, 60 seconds
+and 16-worker bound stay unchanged. No C/generated source changes are needed.
+
+`kestrel-guest-execution/attempt-uq52p1wf/receipt.json` has SHA-256
+`20727ac9628d261882dfd21e9efe3aee271c1b80cb7b820c93bb0876960cb04d`.
+It reaches real READY and three matching native-semantic 140-byte HTTP responses:
+health, large and fragmented. There is no mmap ENOMEM. The missing-route request
+does not complete, and the stop request is not attempted. The guest worker
+262146 requests signal 35 for worker 262150; the call returns EOPNOTSUPP, then
+that worker raises SIGABRT. The client later reaches its deadline. These distinct
+outcomes are retained; this is not reported as simply insufficient wall time.
+All nine Machines/workers, backing and IO release, stderr is empty, and the
+worker independently checks 1,005 source/artifact/execution identities.
+
+Upstream SysTkill queues the guest signal before issuing an internal
+pthread_kill(SIGSYS) wake. The C# owner currently rejects all nonzero wake signals.
+The native control installs the runtime ActivationHandler for signal 35, but
+its recorded five requests do not issue that activation signal. The next work
+is truthful private wake and upstream handler execution under the actual guest
+path, not native-host signals, a success stub, or a longer timeout. The guest
+worker owns exact target/runtime analysis; the verification worker owns managed
+wake/token review; the coordinator owns integration and serial validation.
+The prepared four-mode worker matrix and final sample stay held until this
+required service path works.

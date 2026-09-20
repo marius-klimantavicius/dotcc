@@ -23,6 +23,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
 {
     private readonly InstanceIo io;
     private readonly HostExecutionStop stop;
+    private readonly ulong memoryLimitBytes;
     private readonly object gate = new();
     private readonly List<Worker> workers = new();
     private readonly ThreadLocal<Worker?> current = new();
@@ -61,10 +62,13 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     private sealed class ThreadExit : Exception { }
     private sealed class GuestSignal : Exception { }
 
-    public ThreadedGuestExecution(InstanceIo io, HostExecutionStop stop)
+    public ThreadedGuestExecution(InstanceIo io, HostExecutionStop stop,
+        ulong memoryLimitBytes = 64UL * 1024 * 1024)
     {
         ArgumentNullException.ThrowIfNull(io); ArgumentNullException.ThrowIfNull(stop);
-        this.io = io; this.stop = stop;
+        if (memoryLimitBytes != 64UL * 1024 * 1024 && memoryLimitBytes != 128UL * 1024 * 1024)
+            throw new ArgumentOutOfRangeException(nameof(memoryLimitBytes), "The selected profiles support 64 or 128 MiB.");
+        this.io = io; this.stop = stop; this.memoryLimitBytes = memoryLimitBytes;
     }
 
     public ThreadedGuestExecutionResult Run(string imagePath, IReadOnlyList<string> argv,
@@ -104,7 +108,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         }
         try
         {
-            memoryToken = Blink.BlinkHostMemoryCreateShared(64 * 1024 * 1024);
+            memoryToken = Blink.BlinkHostMemoryCreateShared(memoryLimitBytes);
             Require(memoryToken != 0, "Create shared memory");
             Bind(main);
             Require(Blink.BlinkHostSignalActionsBegin() == 0, "Begin shared signal actions"); processState = true;

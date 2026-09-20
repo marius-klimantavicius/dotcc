@@ -79,3 +79,27 @@ remain pending; native success does not close P5.
 The old sysinfo fallback's zero available-memory result is a separate known
 modeling discrepancy. It is not the cause established by the SIMD observation.
 No guest quota increase or native-emulator fallback is substituted for the fix.
+
+
+## First actual Kestrel HTTP and remaining activation contract
+
+The corrected instruction matrix passes all 2,056 managed comparisons at
+`cpu-conformance-managed/attempt-jt41ulk6`. The next ordinary startup failure
+exposes the selected 64 MiB address-space ceiling: recorded reservations leave
+nine pages, while the Gate thread requests 67. The reproducible reconstruction
+and its trace-order/peak-accounting limits are in
+`tests/KestrelGuestExecution/reservation-evidence.py`.
+
+The C# owner now supports a selected 128 MiB coupled AS/DATA/backing ceiling,
+while preserving the 64 MiB default and unchanged native guest GC settings.
+With that profile, `kestrel-guest-execution/attempt-uq52p1wf` reaches READY and
+passes health, large and fragmented HTTP comparisons. This is partial execution
+evidence, not a service qualification: signal 35 to another guest thread returns
+EOPNOTSUPP, followed by a guest worker SIGABRT. The missing-route response and
+normal stop remain uncompleted. All nine workers/Machines and resources release.
+
+The actual missing boundary is the internal pthread wake following upstream
+signal queuing. The native runtime installs signal 35's ActivationHandler, but
+the native five-case trace does not issue the activation observed in managed
+execution. Required managed wake/handler semantics are being reviewed. No real
+host signal, successful no-op, or timeout increase substitutes for that contract.

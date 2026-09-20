@@ -56,7 +56,7 @@ public sealed record InstanceOptions
                 throw new ArgumentException("Invalid or duplicate image file.");
             bytes += file.Contents.Length;
         }
-        if (bytes > 2 * 1024 * 1024 || !Image.Any(file => file.Path == Executable && file.Executable) ||
+        if (bytes > 16 * 1024 * 1024 || !Image.Any(file => file.Path == Executable && file.Executable) ||
             PublishedPorts.Any(port => port == 0) || PublishedPorts.Distinct().Count() != PublishedPorts.Length)
             throw new ArgumentException("Image or publication exceeds the initial profile.");
     }
@@ -81,7 +81,7 @@ public sealed record WorkerEvent
 /// diagnostics. The worker must reserve its raw standard streams for this IPC.</summary>
 public static class InstanceProtocol
 {
-    public const int MaximumFrame = 3 * 1024 * 1024;
+    public const int MaximumFrame = 24 * 1024 * 1024;
     private sealed class FrameBuffer : MemoryStream
     {
         private void Check(int count)

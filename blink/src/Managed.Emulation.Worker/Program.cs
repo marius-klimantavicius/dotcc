@@ -54,7 +54,7 @@ internal static class Program
             // Best effort cooperative window only. The controller's earlier,
             // independent hard deadline is authoritative process containment.
             stop = new HostExecutionStop(TimeSpan.FromMilliseconds(options.WallClockMilliseconds - WorkerProfile.ShutdownReserveMilliseconds));
-            owner = new ThreadedGuestExecution(io, stop);
+            owner = new ThreadedGuestExecution(io, stop, (ulong)options.MemoryLimit);
             execution = new Thread(() =>
             {
                 try
