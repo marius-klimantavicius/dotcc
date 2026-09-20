@@ -10,7 +10,7 @@ container or guest changes were made for this audit.
 This initial glibc audit is historical evidence, not the current threaded profile
 status. Static-musl startup later reached clone after the qualified membarrier
 boundary. A separate threaded prototype now builds with an authored C# owner;
-actual layout and normal clone/TLS/futex execution remain pending. The real .NET
+actual layout and normal clone/TLS/futex execution now pass all four forms. The real .NET
 service has not passed translated startup. Follow [PROGRESS.md](PROGRESS.md) for
 the latest exact attempts; do not infer current support from this older table.
 

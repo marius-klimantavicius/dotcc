@@ -19,10 +19,11 @@ stable single-thread profile rejects with ENOSYS. A separate threaded profile
 now emits and links all108 producers after tested block-static TLS and atomic
 statement compiler repairs. Shared memory/process-state/barrier prerequisites
 pass native/all-four checks; a valid clone/TLS/futex ELF passes Linux and pinned
-threaded native Blink. Current work is the separate generated threaded library,
-authored C# worker ownership, actual ABI layout, and managed thread execution
-before retrying the .NET guest. No managed thread, NativeAOT readiness or P5 pass
-is claimed. Stable delivery remains separate while this profile is qualified.
+threaded native Blink. The threaded ABI layout and normal clone/TLS/futex ELF
+now pass raw/optimized JIT/NativeAOT using the authored C# owner, including actual
+worker joins, child-TID clearing and shared-memory release. Current work retries
+the real .NET guest against that qualified finite thread profile. No NativeAOT
+service readiness or P5 pass is claimed; stable delivery remains separate.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
@@ -2366,3 +2367,24 @@ binary identities. This closes the internal threaded ABI gate, not guest-thread
 execution. The first managed clone/TLS/futex launch built but stopped before
 execution because its strict process-group check found a retained SDK build
 process; a fresh run with build-server reuse explicitly disabled is next.
+
+### P5 normal threaded guest executes in all four managed forms
+
+The exact native-qualified ELF now passes raw/optimized JIT/NativeAOT through the
+separate C# owner. Receipt `guest-threads-managed/attempt-xh97uv94/receipt.json`
+has SHA-256 `1043a108e58bbed55ac8080bc10867b62dd8c7c4910b266aaa8e0eb79c584096`.
+Each fresh process creates distinct main/child TIDs, verifies private FS/TLS and
+shared bytes, completes actual futex handshakes and child-TID clearing, emits the
+exact50-byte native transcript, and exits both threads normally. All Machines
+release, all workers join, shared backing releases, and the owner is quiescent.
+Descriptors drain from3 to0 after disposal; pending operations are0. The retained
+270550 bytes/2 mappings are measured before backing release, not a post-release
+zero claim. JIT observed148 instructions and AOT146 due to ordinary scheduling;
+counts remain recorded without normalization.
+
+All11 commands finish without cleanup signals;947 pinned inputs and1174 final
+source/tree/log/binary checks pass. The initial build-only descendant failure is
+preserved; explicit disabled SDK build-server reuse resolves that runner issue.
+This closes the finite ordinary clone/TLS/futex owner gate, not general threading
+or .NET service compatibility. The pinned .NET raw-JIT diagnostic follows with
+unchanged guest/configuration, and will record the next actual runtime boundary.

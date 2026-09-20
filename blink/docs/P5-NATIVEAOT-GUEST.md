@@ -12,8 +12,8 @@ GC configuration in `tests/DotNetService/GC-PROFILE.md`. Actual translated start
 passes membarrier and stops at clone ENOSYS in the stable single-thread profile.
 The separate `generated/ThreadedBlink` prototype now builds from all108 producers
 with real shared host memory/synchronization and an authored C# lifecycle owner.
-Its layout and normal clone/TLS/futex execution gates are in progress before the
-real .NET guest is retried. The stable product remains separate; no translated
+Its layout and normal clone/TLS/futex execution gates pass all four managed
+forms; the real .NET guest diagnostic is next. The stable product remains separate; no translated
 .NET service readiness or P5 completion is claimed. Current receipts and
 ownership are recorded at the end of [PROGRESS.md](PROGRESS.md).
 
