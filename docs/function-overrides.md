@@ -9,7 +9,7 @@ This is an explicit substitution chosen by the profile author. The compiler
 checks the declared signature; it does not prove that the replacement preserves
 every effect of the original function.
 
-## Little-endian byte load
+## Little-endian byte loads and stores
 
 For a source declaration such as `int32_t read_int32(const uint8_t *p)`, use:
 
@@ -46,10 +46,33 @@ addresses are supported. Its C# implementation calls
 bytes; constructing the span cannot validate an arbitrary pointer's allocation.
 Volatile and atomic accesses are not supported by this intrinsic.
 
+The same profile syntax supports these unsigned targets:
+
+| Target | Required C signature | Managed operation |
+| --- | --- | --- |
+| `load.u16.le` | unsigned 16-bit result, one unsigned-byte pointer | `ReadUInt16LittleEndian` |
+| `load.u32.le` | unsigned 32-bit result, one unsigned-byte pointer | `ReadUInt32LittleEndian` |
+| `load.u64.le` | unsigned 64-bit result, one unsigned-byte pointer | `ReadUInt64LittleEndian` |
+| `store.u16.le` | `void`, unsigned-byte pointer, unsigned 16-bit value | `WriteUInt16LittleEndian` |
+| `store.u32.le` | `void`, unsigned-byte pointer, unsigned 32-bit value | `WriteUInt32LittleEndian` |
+| `store.u64.le` | `void`, unsigned-byte pointer, unsigned 64-bit value | `WriteUInt64LittleEndian` |
+
+For example, a `store.u64.le` rule can select
+`void write_word(uint8_t *p, uint64_t value)`. Signature matching uses actual C
+types after typedef resolution; the intrinsic then checks integer signedness
+and width. Both `unsigned long` and `unsigned long long` are 64-bit types in
+the current C model. A rule must still match the original declaration exactly.
+Loads permit const source bytes. Stores require writable bytes and reject
+const, volatile or atomic destinations. Every operation accesses exactly its
+width (2, 4 or 8 bytes) and supports unaligned addresses. Stores use a
+`Span<byte>` over the destination; the caller must supply writable memory.
+
 The generated function keeps its original signature and identity. Direct calls,
 exported calls and function-pointer calls use the replacement. Arguments retain
 normal C-call evaluation semantics and are evaluated once. The load remains a
-memory read, so an intervening write must remain observable.
+memory read, so an intervening write must remain observable. Stores retain call
+effects as well: neither loads nor stores become pure expressions, and both
+store arguments are evaluated once.
 
 ## Authored managed methods
 
@@ -128,8 +151,8 @@ does not carry successful matches into a later invocation.
 
 The initial targets support C input and C# output. WAT rejects these replacements
 instead of falling back to the original implementation. This feature does not
-include automatic recognition of equivalent C bodies, body-hash guards, additional
-byte widths or byte orders, or arbitrary C# templates.
+include automatic recognition of equivalent C bodies, body-hash guards, byte
+widths or byte orders beyond the listed targets, or arbitrary C# templates.
 
 ## Qualification
 
@@ -150,6 +173,16 @@ postprocessed generated C# under both JIT and NativeAOT. It covered signed
 boundaries, an unaligned byte offset, direct/function-pointer calls, pointer
 identity, postincrement arguments and reads after writes. Windows execution was
 not part of this local qualification.
+
+The unsigned-target tests additionally cover width/signedness and access
+qualifier rejection, all six emitted operations, unaligned reads and writes,
+exact byte order and adjacent guards, zero and all-one values, direct and
+function-pointer calls, separate object linking, split output, independently
+side-effecting store arguments and reads after stores. On 2026-09-23 the focused
+Release run passed all 47 semantic override unit cases and 12 functional cases
+(including four unsigned direct/object and single/split combinations). Logs and
+TRX results are retained in `blink/artifacts/attempt-ligxcg0g/`. These in-process
+checks do not claim NativeAOT or postprocessed unsigned-target qualification.
 
 The first version also excludes `noreturn` functions and functions with special
 compiler lowering: `__builtin_*`, `__atomic_*`, `__sync_*`, `__dotcc_*`,

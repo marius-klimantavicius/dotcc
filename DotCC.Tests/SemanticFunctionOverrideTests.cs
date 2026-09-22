@@ -18,6 +18,61 @@ public sealed class SemanticFunctionOverrideTests
     private static CPreprocessingOptions Options(params FunctionOverride[] rules) =>
         new(Array.Empty<MacroOverride>(), functionOverrides: rules);
 
+    [Theory]
+    [InlineData("load.u16.le", "uint16_t", "ReadUInt16")]
+    [InlineData("load.u32.le", "uint32_t", "ReadUInt32")]
+    [InlineData("load.u64.le", "uint64_t", "ReadUInt64")]
+    [InlineData("load.u64.le", "unsigned long", "ReadUInt64")]
+    [InlineData("load.u64.le", "unsigned long long", "ReadUInt64")]
+    [InlineData("store.u16.le", "uint16_t", "WriteUInt16")]
+    [InlineData("store.u32.le", "uint32_t", "WriteUInt32")]
+    [InlineData("store.u64.le", "uint64_t", "WriteUInt64")]
+    [InlineData("store.u64.le", "unsigned long", "WriteUInt64")]
+    [InlineData("store.u64.le", "unsigned long long", "WriteUInt64")]
+    public void Unsigned_intrinsics_bind_actual_C_widths(string target, string valueType, string method)
+    {
+        WithFiles(directory =>
+        {
+            bool store = target.StartsWith("store.", StringComparison.Ordinal);
+            var signature = new FunctionSignature(store ? "void" : valueType,
+                store ? new[] { "uint8_t *", valueType } : new[] { "const uint8_t *" });
+            var rule = new FunctionOverride("transfer", signature, new("intrinsic", target), RequireMatch: true);
+            var path = Source(directory, "#include <stdint.h>\n" + signature.ReturnType +
+                " transfer(" + string.Join(",", signature.ParameterTypes) + ");");
+            var output = Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib, preprocessing: Options(rule));
+            output.ShouldContain("BinaryPrimitives." + method + "LittleEndian");
+            output.ShouldContain(store ? "System.Span<byte>" : "System.ReadOnlySpan<byte>");
+        });
+    }
+
+    [Theory]
+    [InlineData("load.u16.le", "int16_t", "const uint8_t *")]
+    [InlineData("load.u32.le", "uint16_t", "const uint8_t *")]
+    [InlineData("load.u64.le", "int64_t", "const uint8_t *")]
+    [InlineData("load.u32.le", "uint32_t", "const uint16_t *")]
+    [InlineData("load.u32.le", "uint32_t", "const volatile uint8_t *")]
+    [InlineData("load.u64.le", "uint64_t", "const _Atomic(uint8_t) *")]
+    [InlineData("store.u16.le", "int16_t", "uint8_t *")]
+    [InlineData("store.u32.le", "uint64_t", "uint8_t *")]
+    [InlineData("store.u64.le", "int64_t", "uint8_t *")]
+    [InlineData("store.u16.le", "uint16_t", "const uint8_t *")]
+    [InlineData("store.u32.le", "uint32_t", "volatile uint8_t *")]
+    [InlineData("store.u64.le", "uint64_t", "_Atomic(uint8_t) *")]
+    public void Unsigned_intrinsics_reject_incompatible_access_contracts(string target, string valueType, string pointerType)
+    {
+        WithFiles(directory =>
+        {
+            bool store = target.StartsWith("store.", StringComparison.Ordinal);
+            var signature = new FunctionSignature(store ? "void" : valueType,
+                store ? new[] { pointerType, valueType } : new[] { pointerType });
+            var rule = new FunctionOverride("transfer", signature, new("intrinsic", target), RequireMatch: true);
+            var path = Source(directory, "#include <stdint.h>\n" + signature.ReturnType +
+                " transfer(" + string.Join(",", signature.ParameterTypes) + ");");
+            Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { path },
+                emit: EmitMode.ManagedLib, preprocessing: Options(rule)));
+        });
+    }
+
     private static void WithFiles(Action<string> action)
     {
         var directory = Path.Combine(Path.GetTempPath(), "dotcc-functions-" + Guid.NewGuid().ToString("N"));

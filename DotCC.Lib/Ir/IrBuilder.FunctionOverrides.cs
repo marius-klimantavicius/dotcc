@@ -84,10 +84,24 @@ internal sealed partial class IrBuilder
         };
         if (type.Variadic || !Supported(type.Return) || type.Params.Any(p => !Supported(p)))
             throw CPreprocessingOptions.FunctionError(rule, "unsupported signature: variadic, volatile/atomic, and callback signatures are not supported");
-        if (rule.Target.Kind == "intrinsic" &&
-            (type.Return.Unqualified != CType.Int || type.Params.Count != 1
-                || type.Params[0].Unqualified is not CType.Pointer p || p.Pointee.Unqualified != CType.UChar))
-            throw CPreprocessingOptions.FunctionError(rule, "load.i32.le requires a signed 32-bit result and one unsigned-byte pointer");
+        if (rule.Target.Kind == "intrinsic")
+        {
+            var intrinsic = FunctionOverrideIntrinsic.Find(rule.Target.Value)
+                ?? throw CPreprocessingOptions.FunctionError(rule, "unknown intrinsic: " + rule.Target.Value);
+            bool ValueType(CType t) => t.Unqualified is CType.Prim { Integer: true } p
+                && p.Bytes == intrinsic.Bytes && p.Signed == intrinsic.Signed;
+            bool valid = type.Params.Count == (intrinsic.Store ? 2 : 1)
+                && type.Params[0].Unqualified is CType.Pointer pointer
+                && pointer.Pointee.Unqualified == CType.UChar
+                && (!intrinsic.Store || !pointer.Pointee.IsConst)
+                && (intrinsic.Store
+                    ? type.Return.Unqualified is CType.VoidType && ValueType(type.Params[1])
+                    : ValueType(type.Return));
+            if (!valid)
+                throw CPreprocessingOptions.FunctionError(rule, rule.Target.Value + " requires " +
+                    (intrinsic.Store ? "void(unsigned char *, unsigned " + intrinsic.Bytes * 8 + "-bit integer)"
+                        : (intrinsic.Signed ? "signed " : "unsigned ") + intrinsic.Bytes * 8 + "-bit result and one unsigned-byte pointer"));
+        }
     }
 
     private static void ValidateFunctionAttributes(FunctionOverride rule, Symbol symbol)

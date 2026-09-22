@@ -3091,8 +3091,11 @@ internal sealed partial class CSharpBackend
         if (c.SemanticTarget is { } replacement)
         {
             if (replacement.Kind == "managedMethod") return replacement.Value + "(" + string.Join(", ", c.Args.Select(Expr)) + ")";
-            if (replacement.Kind == "intrinsic" && replacement.Value == "load.i32.le")
-                return "global::System.Buffers.Binary.BinaryPrimitives.ReadInt32LittleEndian(new global::System.ReadOnlySpan<byte>(" + Expr(c.Args[0]) + ", 4))";
+            if (replacement.Kind == "intrinsic" && FunctionOverrideIntrinsic.Find(replacement.Value) is { } operation)
+                return "global::System.Buffers.Binary.BinaryPrimitives." + operation.ManagedMethod +
+                    "(new global::System." + (operation.Store ? "Span" : "ReadOnlySpan") + "<byte>(" +
+                    Expr(c.Args[0]) + ", " + operation.Bytes + ")" +
+                    (operation.Store ? ", " + Expr(c.Args[1]) : "") + ")";
             throw new CompileException("unsupported semantic function target: " + replacement);
         }
         if (LowerGnuIntrinsicCall(c) is { } intrinsic) { return intrinsic; }

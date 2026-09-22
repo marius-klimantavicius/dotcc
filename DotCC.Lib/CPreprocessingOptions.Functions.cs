@@ -43,7 +43,7 @@ public sealed partial class CPreprocessingOptions
             if (rule.Signature.Variadic) throw FunctionError(rule, "variadic replacements are not supported");
             if (rule.Target is null || rule.Target.Kind is not ("intrinsic" or "managedMethod"))
                 throw FunctionError(rule, "target kind must be intrinsic or managedMethod");
-            if (rule.Target.Kind == "intrinsic" && rule.Target.Value != "load.i32.le")
+            if (rule.Target.Kind == "intrinsic" && FunctionOverrideIntrinsic.Find(rule.Target.Value) is null)
                 throw FunctionError(rule, "unknown intrinsic: " + rule.Target.Value);
             if (rule.Target.Kind == "managedMethod" && (rule.Target.Value is null || !Regex.IsMatch(rule.Target.Value,
                 @"\Aglobal::@?[A-Za-z_][A-Za-z_0-9]*(\.@?[A-Za-z_][A-Za-z_0-9]*)+\z", RegexOptions.CultureInvariant)))

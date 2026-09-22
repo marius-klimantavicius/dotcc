@@ -16,6 +16,101 @@ public sealed partial class ManagedLibraryTests
         new FunctionOverrideTarget("intrinsic", "load.i32.le"), RequireMatch: true);
 
     [Theory]
+    [InlineData(false, SourceSplit.None)]
+    [InlineData(false, SourceSplit.Function)]
+    [InlineData(true, SourceSplit.None)]
+    [InlineData(true, SourceSplit.Function)]
+    public void Unsigned_endian_functions_preserve_bytes_effects_and_pointer_calls(bool objectLink, SourceSplit split)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "dotcc-unsigned-endian-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var definitions = "#include <stdint.h>\n";
+            var consumer = "#include <stdint.h>\n";
+            var rules = new System.Collections.Generic.List<FunctionOverride>();
+            foreach (int bits in new[] { 16, 32, 64 })
+            {
+                string type = "uint" + bits + "_t";
+                int bytes = bits / 8;
+                string value = bits switch { 16 => "0xfe81u", 32 => "0xfedcba81u", _ => "0xfedcba9876543281ull" };
+                string expected = bits switch { 16 => "0x81,0xfe", 32 => "0x81,0xba,0xdc,0xfe", _ => "0x81,0x32,0x54,0x76,0x98,0xba,0xdc,0xfe" };
+                definitions += $"{type} read{bits}(const uint8_t *p) {{ return 0; }}\n" +
+                    $"void write{bits}(uint8_t *p, {type} value) {{ }}\n";
+                consumer += $$"""
+                    {{type}} read{{bits}}(const uint8_t *);
+                    void write{{bits}}(uint8_t *, {{type}});
+                    typedef {{type}} (*Reader{{bits}})(const uint8_t *);
+                    typedef void (*Writer{{bits}})(uint8_t *, {{type}});
+                    Reader{{bits}} readers{{bits}}[] = { read{{bits}}, &read{{bits}} };
+                    Writer{{bits}} writers{{bits}}[] = { write{{bits}}, &write{{bits}} };
+                    int check{{bits}}(void) {
+                        uint8_t raw[10] = { 0xa5, {{expected}}, 0x5a };
+                        uint8_t output[10] = { 0 };
+                        uint8_t *p = output + 1;
+                        const uint8_t *q = raw + 1;
+                        {{type}} value = {{value}};
+                        output[0] = 0xa5;
+                        output[{{bytes + 1}}] = 0x5a;
+                        if (read{{bits}}(q++) != value || q != raw + 2) return 1;
+                        if (readers{{bits}}[1](raw + 1) != value) return 2;
+                        writers{{bits}}[1](p++, value++);
+                        if (p != output + 2 || value != ({{type}})({{value}} + 1)) return 3;
+                        for (int i = 0; i < {{bytes + 2}}; ++i)
+                            if (output[i] != raw[i]) return 4;
+                        if (read{{bits}}(output + 1) != ({{type}}){{value}}) return 5;
+                        write{{bits}}(output + 1, ({{type}})~({{type}})0);
+                        if (readers{{bits}}[0](output + 1) != ({{type}})~({{type}})0) return 6;
+                        write{{bits}}(output + 1, 0);
+                        if (read{{bits}}(output + 1) != 0) return 7;
+                        output[1] = 7;
+                        if (read{{bits}}(output + 1) != 7) return 8;
+                        if (readers{{bits}}[0] != readers{{bits}}[1] || writers{{bits}}[0] != writers{{bits}}[1]) return 9;
+                        return 0;
+                    }
+
+                    """;
+                rules.Add(new("read" + bits, new(type, new[] { "const uint8_t *" }),
+                    new("intrinsic", "load.u" + bits + ".le"), RequireMatch: true));
+                rules.Add(new("write" + bits, new("void", new[] { "uint8_t *", type }),
+                    new("intrinsic", "store.u" + bits + ".le"), RequireMatch: true));
+            }
+            var paths = new[] { Path.Combine(directory, "definitions.c"), Path.Combine(directory, "consumer.c") };
+            File.WriteAllText(paths[0], definitions);
+            File.WriteAllText(paths[1], consumer);
+            var options = new CPreprocessingOptions(Array.Empty<MacroOverride>(), functionOverrides: rules);
+            if (objectLink)
+                paths = paths.Select(path =>
+                {
+                    var obj = Path.ChangeExtension(path, ".o");
+                    File.WriteAllText(obj, Compiler.EmitObject(path, preprocessing: options));
+                    return obj;
+                }).ToArray();
+            var files = objectLink
+                ? Compiler.LinkObjectFiles(paths, emit: EmitMode.ManagedLib, className: "Api", split: split)
+                : Compiler.EmitCSharpFiles(paths, emit: EmitMode.ManagedLib, className: "Api", split: split, preprocessing: options);
+            var output = string.Join("\n", files.Values);
+            foreach (int bits in new[] { 16, 32, 64 })
+            {
+                output.ShouldContain("BinaryPrimitives.ReadUInt" + bits + "LittleEndian");
+                output.ShouldContain("BinaryPrimitives.WriteUInt" + bits + "LittleEndian");
+            }
+            var compilation = CSharpCompilation.Create("UnsignedEndian_" + Guid.NewGuid().ToString("N"),
+                files.Select(file => ParseSource(file.Value, path: file.Key)), RuntimeReferences(),
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
+            using var image = new MemoryStream();
+            var result = compilation.Emit(image, cancellationToken: TestContext.Current.CancellationToken);
+            result.Success.ShouldBeTrue(string.Join("\n", result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error)));
+            image.Position = 0;
+            var assembly = new AssemblyLoadContext("unsigned-endian-" + Guid.NewGuid(), isCollectible: false).LoadFromStream(image);
+            var api = assembly.GetType("Api")!;
+            foreach (int bits in new[] { 16, 32, 64 })
+                ((int)api.GetMethod("check" + bits)!.Invoke(null, null)!).ShouldBe(0);
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Theory]
     [InlineData(false)]
     [InlineData(true)]
     public void Registered_authored_structs_preserve_layout_and_managed_function_signatures(bool objectLink)
