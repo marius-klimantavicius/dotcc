@@ -1,9 +1,10 @@
 # Managed guest thread boundaries
 
 This adapter connects Blink's internal thread boundaries to the authored C#
-execution owner selected by the threaded product. The existing lifecycle
-boundaries have runtime evidence; the six additional signal callbacks below
-remain source-only until a new product and guest run qualify them. The adapter
+execution owner selected by the threaded product. Four whole-function ownership
+boundaries now use typed semantic overrides to authored managed methods; this
+conversion is source-ready and pending a new product and runtime qualification.
+Earlier lifecycle receipts do not qualify the converted source state. The adapter
 adds no C execution loop, guest workload, native thread fallback, or success stub.
 
 ## Exact derivation
@@ -15,6 +16,11 @@ all predecessor frozen inputs. It also pins upstream `memorymalloc.c` and
 deterministic unified diff must match `guest-threads.patch`. Base and overlay
 headers, callbacks, scripts, source and predecessor receipt hashes are recorded.
 Outputs must be fresh paths under campaign `generated/` or `artifacts/`.
+`config/managed-boundaries.json` also pins the original implementation files and
+the original `machine.h`/`syscall.h` declarations, with exact C signatures and
+managed targets. Its identity and required producer units are recorded by this
+stage. The compiler profile must select those rules; this source stage alone
+does not remove or replace the original function bodies.
 
 ```
 python3 blink/src/UpstreamGuestThreads/stage.py \
@@ -34,17 +40,26 @@ reuse of its single-thread C# membarrier owner in a threaded profile.
 | Boundary | Required managed behavior |
 | --- | --- |
 | `blink_host_guest_thread_start(child)` | Return zero only after transferring the already-created Machine to a bounded registered worker. A nonzero return guarantees no worker started and leaves upstream responsible for `FreeMachine`. Never throw after starting a worker. |
-| `blink_host_guest_thread_exit(machine,status)` | Record this thread's status and throw a private owner unwind on that same worker before any native free. |
-| `blink_host_guest_group_exit(machine,status)` | Latch the first group exit status, request cooperative stops, then unwind the calling worker. Do not join while its translated syscall or page locks remain held. |
-| `blink_host_guest_stop_other_threads(system)` | Only an owner-coordinated stop/join point may invoke it. Return after other workers are joined; reject unsupported competing callers explicitly. Never native-kill or silently free the caller. |
+| `SysExit` → `blink_host_guest_exit(machine,status)` | Call unchanged generated `IsOrphan` exactly once, then select existing group or thread exit. The thread path records status and unwinds on that worker before native free. |
+| `SysExitGroup` → `blink_host_guest_group_exit(machine,status)` | Latch the first group exit status, request cooperative stops, then unwind the calling worker. Do not join while its translated syscall or page locks remain held. |
+| `KillOtherThreads` → `blink_host_guest_stop_other_threads(system)` | Reject unsupported competing callers explicitly. The current owner coordinates group shutdown through its group-exit path; this target does not native-kill or silently free the caller. |
+| `SignalActor` → `blink_host_guest_signal_actor(machine)` | Run nested guest signal instructions through the C# owner's ordinary instruction budget, trace and stop checks. |
 | `ClearChildTid(machine)` | Newly exported, otherwise unchanged upstream zero-and-futex-wake implementation; invoke during exactly-once worker cleanup while guest memory remains valid. |
 
 `SysSpawn` keeps clone flags, pointer validation, `NewMachine`, register state,
 TLS, child TID writes, saved mask, parent TID writes and failure cleanup. Only
 the pthread launch block and its now-unused locals are replaced. `OnSpawn` is
 removed because the managed owner initializes each child and executes it.
-`SysExit` retains its orphan decision. `SysExitGroup` unwinds immediately;
-upstream native exit/kill/free actions are replaced by managed ownership.
+The original C bodies of `SignalActor`, `KillOtherThreads`, `SysExitGroup` and
+`SysExit` remain byte-for-byte unchanged. Their declarations bind to managed
+methods through `functionOverrides`, with external linkage and exact physical
+upstream header selectors. The two exit rules explicitly require
+`target.doesNotReturn: true`; their authored adapters also carry
+`DoesNotReturn` and throw if an owner unexpectedly returns. `SysExit` preserves
+the selected `HAVE_THREADS` orphan decision by calling generated upstream
+`IsOrphan`, including its existing lock discipline. No replacement struct layout
+or external type registration is used. The C shim declarations for these four
+boundaries are removed; their authored C# targets remain.
 
 The owner must bind each worker's Host contexts, `g_machine`, virtual mask and a
 fresh jump identity before execution. Child cleanup must release syscall/page
@@ -74,7 +89,13 @@ change profile configuration:
 3. Compose this stage after the exact execution-stop/runtime stages and before
    the common host preamble; override `syscall.c`, `memorymalloc.c` and `signal.c`.
    Record the full chain and regenerate every layout-dependent object.
-4. Add `host-guest-threads.h` and qualified managed callbacks, the shared memory
+4. Compose the four rules in `config/managed-boundaries.json` into every relevant
+   translation unit's semantic profile, resolving declaration files to the
+   pinned upstream physical headers. Units without these declarations report
+   absence; `syscall.c` must select `SignalActor`, `SysExitGroup` and `SysExit`,
+   and `memorymalloc.c` must select `KillOtherThreads`. All selected and absent
+   reports remain part of the public producer evidence.
+5. Add `host-guest-threads.h` and qualified managed callbacks, the shared memory
    context, per-worker stop/binding support, and the C# owning group lifecycle.
    Qualify the process-wide memory barrier against that lifecycle before use.
 
@@ -123,8 +144,9 @@ they do not qualify the new signal callbacks or their combined source state.
 ## Thread-directed signal staging
 
 The Kestrel activation signal exposed two additional owner boundaries. The
-threaded derivative now replaces only `SignalActor`'s C interpreter loop with
-`blink_host_guest_signal_actor(Machine*)`. The authored owner must use its normal
+threaded semantic profile replaces `SignalActor`'s C interpreter loop with the
+typed managed target `blink_host_guest_signal_actor(Machine*)`; no C body patch
+is used. The authored owner must use its normal
 instruction accounting, tracing and cooperative stop checks during nested signal
 execution. `DeliverSignalRecursively`, signal selection, frame construction,
 mask changes and `SigRestore` remain upstream algorithms. There is no new C
@@ -169,7 +191,9 @@ before returning. Static assertions pin guest siginfo code/PID/UID offsets
 8/16/20, four-byte field sizes and SI_TKILL=-6 for the authored bridge. No Machine
 layout changes or global fabricated sender identity are introduced.
 
-The deterministic checked patch now includes all three pinned source files.
+The deterministic checked patch includes the narrow launch, signal metadata and
+profile-guard changes in all three pinned source files. Whole-function boundary
+replacements and the former `SysExit` exit-arm patch are absent.
 `UpstreamMremap` replays this exact new predecessor and records the signal source
 pin while retaining only its existing source-range validation change. Profile
 staging admits the three-file replacement set and records each staged hash.

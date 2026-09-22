@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "headers": {
+    "blink/machine.h": "337f3a3a56e560994b269e667be5e84597f5da989bcd94d1ef8519c4a8cc780f",
+    "blink/syscall.h": "c53fcecbad10b91cce9554611b17ff9bcbf28f1fdc74a0a312bef81fd6687a7e"
+  },
+  "implementations": {
+    "blink/syscall.c": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3",
+    "blink/memorymalloc.c": "589becd0e214d5f422e75a9b63b1bf5d5280b3f8ca4e00dc212ede120e945b12"
+  },
+  "required_units": {
+    "blink/syscall.c": [
+      "SignalActor",
+      "SysExitGroup",
+      "SysExit"
+    ],
+    "blink/memorymalloc.c": [
+      "KillOtherThreads"
+    ]
+  },
+  "functionOverrides": [
+    {
+      "name": "SignalActor",
+      "linkage": "external",
+      "declarationFile": "blink/machine.h",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "struct Machine *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Emulation.BlinkCore.blink_host_guest_signal_actor"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "KillOtherThreads",
+      "linkage": "external",
+      "declarationFile": "blink/machine.h",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "struct System *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Emulation.BlinkCore.blink_host_guest_stop_other_threads"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "SysExitGroup",
+      "linkage": "external",
+      "declarationFile": "blink/syscall.h",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "struct Machine *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Emulation.BlinkCore.blink_host_guest_group_exit",
+        "doesNotReturn": true
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "SysExit",
+      "linkage": "external",
+      "declarationFile": "blink/syscall.h",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "struct Machine *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Emulation.BlinkCore.blink_host_guest_exit",
+        "doesNotReturn": true
+      },
+      "requireMatch": false
+    }
+  ]
+}

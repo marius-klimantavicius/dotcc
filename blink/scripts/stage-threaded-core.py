@@ -13,7 +13,7 @@ import shutil
 import subprocess
 import sys
 
-from core_inputs import compiler_identity, emission_identity, profile_sources
+from core_inputs import compiler_identity, emission_identity, profile_sources, stage_managed_boundaries
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
@@ -300,6 +300,9 @@ def main():
                     raise RuntimeError('Mremap validation input changed: ' + name)
             adapted_sources['syscall.c'] = row
             adapted_paths['syscall.c'] = output / 'syscall.c'
+
+        track(ROOT / 'config/managed-boundaries.json')
+        stage_managed_boundaries(ROOT, profile)
 
         overrides = {}
         rows = []

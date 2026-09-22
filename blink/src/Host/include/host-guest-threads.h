@@ -11,23 +11,12 @@ struct siginfo_linux;
  * The callback must not throw after starting a worker. */
 int blink_host_guest_thread_start(struct Machine *child);
 
-/* Record the exit and unwind on the calling worker. These never free Machine
- * or join while the caller still holds translated syscall/page locks. */
-_Noreturn void blink_host_guest_thread_exit(struct Machine *, int status);
-_Noreturn void blink_host_guest_group_exit(struct Machine *, int status);
-
-/* Only an owner-coordinated, lock-free stop/join point may call this export.
- * Unsupported competing callers fail explicitly; never native-kill or free
- * the calling Machine behind its C# owner. */
-void blink_host_guest_stop_other_threads(struct System *);
-
 /* Existing upstream implementation, newly exported for worker cleanup. */
 void ClearChildTid(struct Machine *);
 
-/* Execute the existing recursive guest signal handler until rt_sigreturn.
- * The owning C# dispatcher retains instruction/trace/stop accounting; this
- * callback must not add a C execution loop or change signal-frame semantics. */
-void blink_host_guest_signal_actor(struct Machine *);
+/* SysExit, SysExitGroup, KillOtherThreads and SignalActor bind directly to
+ * authored typed managed methods through the threaded semantic profile.
+ * Their pinned upstream declarations provide the C ABI; no C shim is needed. */
 
 /* At ConsumeSignal entry on the owning worker, acknowledge a transient private
  * wake generation before inspecting pending/masked/ignored signals. This must

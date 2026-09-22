@@ -49,6 +49,18 @@ The fixture failed to retain worker termination details on this path; a diagnost
 capture correction precedes the retry, with production sources and limits frozen.
 CPU refresh and actual worker/sample gates remain pending. No measured speedup is claimed; no P6 starts.
 
+The user's subsequent source-boundary direction is now implemented in source:
+`SignalActor`, `KillOtherThreads`, `SysExitGroup` and `SysExit` retain their original
+C bodies and select typed authored managed methods through a separate pinned
+boundary profile. The two exit targets use an explicit nonreturning compiler
+contract; the SysExit adapter preserves the upstream IsOrphan decision. Narrow
+thread-launch and signal-frame/metadata adaptations remain documented. The
+compiler registry is also being generalized to own the fully qualified managed
+method and argument adaptation. These changes need fresh compiler tests,
+regeneration and runtime qualification; the earlier successful product receipts
+remain evidence only for their exact prior sources. No guest runs are active
+while the root agent verifies the combined compiler changes.
+
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the
 emulator host. Guest creation first uses the installed SDK for ordinary Linux

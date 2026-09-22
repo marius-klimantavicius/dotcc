@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import time
-from core_inputs import compiler_identity, profile_sources, canonical_emission, semantic_selection, OBJECT_OPTIONS
+from core_inputs import compiler_identity, profile_sources, canonical_emission, semantic_selection, managed_boundary_selection, OBJECT_OPTIONS
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -102,6 +102,7 @@ for entry in closure['sources']:
         row['classification'] = 'compiler changed during invocation; retry required'
     if code == 0:
         row['semantic_intrinsics'] = semantic_selection(emission_profile, report, entry['path'])
+        row['managed_boundaries'] = managed_boundary_selection(emission_profile, report, entry['path'])
         artifact = out / (source.stem + '.cs')
         row['object_path'] = str(artifact)
         row['object_sha256'] = hashlib.sha256(artifact.read_bytes()).hexdigest()

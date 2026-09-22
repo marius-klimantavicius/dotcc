@@ -98,8 +98,8 @@ def pin_cpu_semantics(report,source):
     expected={event['name']:event for event in baseline_record['semantic_intrinsics']['coverage']['blink/syscall.c']['selected']}
     report=pin(report);source=pin(source)
     events=[json.loads(line) for line in report.read_text().splitlines() if line.strip()]
-    selected=[event for event in events if event.get('event')=='function-override']
-    unmatched=[event for event in events if event.get('event')=='function-override-unmatched']
+    selected=[event for event in events if event.get('event')=='function-override' and event.get('name') in expected]
+    unmatched=[event for event in events if event.get('event')=='function-override-unmatched' and event.get('name') in expected]
     if unmatched or len(selected)!=6 or {event['name'] for event in selected}!=set(expected):
         raise RuntimeError('CPU producer must select all six typed endian helpers: '+str(source))
     for event in selected:
@@ -107,8 +107,17 @@ def pin_cpu_semantics(report,source):
         if (event['translationUnit']!=str(source) or any(event[key]!=reference[key]
                 for key in ('target','signature','declarationFile','matches'))):
             raise RuntimeError('CPU producer endian selection differs: '+str(source))
+    from core_inputs import managed_boundary_selection
+    boundaries=managed_boundary_selection(profile,report,'authored/cpu-driver.c')
+    if boundaries:
+        reference={event['name']:event for row in assembly['managed_boundaries']['coverage'].values() for event in row['selected']}
+        for event in boundaries['selected']:
+            if event['translationUnit']!=str(source) or any(event[key]!=reference[event['name']][key]
+                    for key in ('target','signature','declarationFile','matches')):
+                raise RuntimeError('CPU producer managed boundary differs: '+str(source))
     return dict(report=str(report),report_sha256=sha(report),source=str(source),source_sha256=sha(source),
-                specification_sha256=baseline_record['semantic_intrinsics']['specification_sha256'],selected=selected)
+                specification_sha256=baseline_record['semantic_intrinsics']['specification_sha256'],selected=selected,
+                managed_boundaries=boundaries)
 def run(cmd,name,timeout=180):
     start=time.monotonic()
     with(out/(name+'.stdout')).open('wb')as stdout,(out/(name+'.stderr')).open('wb')as stderr:

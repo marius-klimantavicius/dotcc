@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
-from core_inputs import compiler_identity, profile_sources, emission_identity, semantic_selection
+from core_inputs import compiler_identity, profile_sources, emission_identity, semantic_selection, managed_boundary_selection
 
 ROOT = Path(__file__).resolve().parents[1]
 LINK_OPTIONS = ['--emit=managedlib', '--literal-pool', '--deduplicate-inline', '--nest-types', '--class-name', 'BlinkCore',
@@ -129,6 +129,20 @@ if (profile / 'semantic-intrinsics.json').exists():
     if not (args.emit_only or args.sources) and not set(spec['required_units']).issubset(coverage):
         raise SystemExit('Required semantic core producers missing')
     report['semantic_intrinsics'] = dict(specification_sha256=sha(profile / 'semantic-intrinsics.json'),
+        selected_units=sum(not row['absent'] for row in coverage.values()),
+        absent_units=sum(row['absent'] for row in coverage.values()), coverage=coverage)
+    save()
+if (profile / 'managed-boundaries.json').exists():
+    coverage = {}
+    for name, row in report['objects'].items():
+        observed = row.get('managed_boundaries')
+        if not observed or managed_boundary_selection(profile, Path(observed['report']), name) != observed:
+            raise SystemExit('Managed boundary evidence changed or missing: ' + name)
+        coverage[name] = observed
+    spec = json.loads((profile / 'managed-boundaries.json').read_text())
+    if not (args.emit_only or args.sources) and not set(spec['required_units']).issubset(coverage):
+        raise SystemExit('Required managed boundary producers missing')
+    report['managed_boundaries'] = dict(specification_sha256=sha(profile / 'managed-boundaries.json'),
         selected_units=sum(not row['absent'] for row in coverage.values()),
         absent_units=sum(row['absent'] for row in coverage.values()), coverage=coverage)
     save()

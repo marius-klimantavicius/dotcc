@@ -40,8 +40,8 @@ def semantic_selection(profile: Path, report: Path, source: str) -> dict:
     spec = json.loads(specification.read_text())
     expected = {rule['name']: 'intrinsic:' + rule['target']['name'] for rule in spec['functionOverrides']}
     events = [json.loads(line) for line in report.read_text().splitlines() if line]
-    selected = [row for row in events if row.get('event') == 'function-override']
-    unmatched = [row['name'] for row in events if row.get('event') == 'function-override-unmatched']
+    selected = [row for row in events if row.get('event') == 'function-override' and row.get('name') in expected]
+    unmatched = [row['name'] for row in events if row.get('event') == 'function-override-unmatched' and row.get('name') in expected]
     names = [row['name'] for row in selected]
     if names and (len(names) != len(expected) or set(names) != set(expected)):
         raise RuntimeError('Partial or duplicate endian selection: ' + source)
@@ -52,7 +52,7 @@ def semantic_selection(profile: Path, report: Path, source: str) -> dict:
     if not names and (len(unmatched) != len(expected) or set(unmatched) != set(expected)):
         raise RuntimeError('Absent-unit typed selection was not reported: ' + source)
     rules = json.loads((profile / 'overrides.json').read_text())['functionOverrides']
-    physical_header = {rule['declarationFile'] for rule in rules}
+    physical_header = {rule['declarationFile'] for rule in rules if rule['name'] in expected}
     if len(physical_header) != 1:
         raise RuntimeError('Ambiguous endian physical declaration selector')
     for row in selected:
@@ -61,6 +61,64 @@ def semantic_selection(profile: Path, report: Path, source: str) -> dict:
     return dict(report=str(report), report_sha256=hashlib.sha256(report.read_bytes()).hexdigest(),
                 specification_sha256=hashlib.sha256(specification.read_bytes()).hexdigest(),
                 selected=selected, absent=not selected)
+
+
+def stage_managed_boundaries(campaign: Path, profile: Path) -> None:
+    """Select reviewed whole-function owner handoffs in the threaded profile."""
+    import json
+    import shutil
+    path = campaign / 'config/managed-boundaries.json'
+    spec = json.loads(path.read_text())
+    if spec['version'] != 1:
+        raise RuntimeError('Unknown managed boundary profile')
+    upstream = campaign / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+    for name, expected in {**spec['headers'], **spec['implementations']}.items():
+        if hashlib.sha256((upstream / name).read_bytes()).hexdigest() != expected:
+            raise RuntimeError('Managed boundary upstream identity differs: ' + name)
+    overrides = json.loads((profile / 'overrides.json').read_text())
+    rules = spec['functionOverrides']
+    existing = {rule['name'] for rule in overrides['functionOverrides']}
+    if existing.intersection(rule['name'] for rule in rules):
+        raise RuntimeError('Managed boundary duplicates existing selection')
+    for rule in rules:
+        if (rule['target']['kind'] != 'managedMethod' or rule['linkage'] != 'external'
+                or rule['declarationFile'] not in spec['headers']):
+            raise RuntimeError('Unreviewed managed boundary selector')
+    overrides['functionOverrides'] += [dict(rule, declarationFile=str((upstream / rule['declarationFile']).resolve()))
+                                       for rule in rules]
+    (profile / 'overrides.json').write_text(json.dumps(overrides, indent=2) + '\n')
+    shutil.copyfile(path, profile / 'managed-boundaries.json')
+
+
+def managed_boundary_selection(profile: Path, report: Path, source: str) -> dict:
+    """Check the independent managed-method group without masking absent rules."""
+    import json
+    specification = profile / 'managed-boundaries.json'
+    if not specification.exists():
+        return {}
+    spec = json.loads(specification.read_text())
+    rules = {rule['name']: rule for rule in spec['functionOverrides']}
+    bound = {rule['name']: rule for rule in json.loads((profile / 'overrides.json').read_text())['functionOverrides']
+             if rule['name'] in rules}
+    if set(bound) != set(rules):
+        raise RuntimeError('Managed boundary bound rules differ')
+    events = [json.loads(line) for line in report.read_text().splitlines() if line]
+    selected = [row for row in events if row.get('event') == 'function-override' and row.get('name') in rules]
+    unmatched = [row['name'] for row in events if row.get('event') == 'function-override-unmatched' and row.get('name') in rules]
+    names = [row['name'] for row in selected]
+    if len(names + unmatched) != len(rules) or set(names + unmatched) != set(rules):
+        raise RuntimeError('Missing or duplicate managed boundary selection: ' + source)
+    if not set(spec['required_units'].get(source, [])).issubset(names):
+        raise RuntimeError('Required managed boundary missing: ' + source)
+    for row in selected:
+        rule = bound[row['name']]
+        if (row['target'] != 'managedMethod:' + rule['target']['method'] or row['matches'] != '1'
+                or row['declarationFile'] != rule['declarationFile']
+                or row.get('doesNotReturn', 'false') != str(rule['target'].get('doesNotReturn', False)).lower()):
+            raise RuntimeError('Managed boundary target/declaration differs: ' + source)
+    return dict(report=str(report), report_sha256=hashlib.sha256(report.read_bytes()).hexdigest(),
+                specification_sha256=hashlib.sha256(specification.read_bytes()).hexdigest(),
+                selected=selected, unmatched=unmatched, absent=not selected)
 
 
 def compiler_identity(directory: Path) -> dict[str, str]:
@@ -130,8 +188,9 @@ def emission_identity(profile: Path, campaign: Path, inputs: dict, entry: dict) 
         if Path(name).suffix == '.c' and any(name == item or name.endswith('/' + item) for item in included):
             dependencies[name] = digest
     dependencies['overrides.json'] = files['overrides.json']
-    if 'semantic-intrinsics.json' in files:
-        dependencies['semantic-intrinsics.json'] = files['semantic-intrinsics.json']
+    for specification in ('semantic-intrinsics.json', 'managed-boundaries.json'):
+        if specification in files:
+            dependencies[specification] = files[specification]
     return dict(version=2, source=entry['path'], source_sha256=entry['sha256'],
                 dependencies=dependencies, compiler_sha256=inputs['compiler'],
                 options=OBJECT_OPTIONS, include_order=['snapshot', 'pinned-upstream', 'authored', 'host'],

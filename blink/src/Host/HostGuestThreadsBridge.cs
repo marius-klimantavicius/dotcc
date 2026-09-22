@@ -20,15 +20,26 @@ public static partial class BlinkCore
     public static void UnbindHostGuestThreads() => guestThreads = null;
     public static unsafe int blink_host_guest_thread_start(Machine* child)
         => guestThreads?.Start((nint)child) ?? 19;
+    [global::System.Diagnostics.CodeAnalysis.DoesNotReturn]
     public static unsafe void blink_host_guest_thread_exit(Machine* machine, int status)
     {
         (guestThreads ?? throw new InvalidOperationException("Guest thread owner is unbound.")).Exit((nint)machine, status, false);
         throw new InvalidOperationException("Guest thread exit returned.");
     }
+    [global::System.Diagnostics.CodeAnalysis.DoesNotReturn]
     public static unsafe void blink_host_guest_group_exit(Machine* machine, int status)
     {
         (guestThreads ?? throw new InvalidOperationException("Guest thread owner is unbound.")).Exit((nint)machine, status, true);
         throw new InvalidOperationException("Guest group exit returned.");
+    }
+    [global::System.Diagnostics.CodeAnalysis.DoesNotReturn]
+    public static unsafe void blink_host_guest_exit(Machine* machine, int status)
+    {
+        // Preserve the upstream HAVE_THREADS SysExit decision and its lock
+        // semantics by calling the generated, unchanged IsOrphan exactly once.
+        if ((int)IsOrphan(machine) != 0) blink_host_guest_group_exit(machine, status);
+        else blink_host_guest_thread_exit(machine, status);
+        throw new InvalidOperationException("Guest exit returned.");
     }
     public static unsafe void blink_host_guest_stop_other_threads(System* system)
         => (guestThreads ?? throw new InvalidOperationException("Guest thread owner is unbound.")).StopOthers((nint)system);

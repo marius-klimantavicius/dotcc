@@ -59,11 +59,6 @@ def adapt(predecessor, memory, signal):
     source = GUARD + replace_once(source, OLD_GUARD, "")
     source = replace_once(source, "static void ClearChildTid(struct Machine *m)",
                           "void ClearChildTid(struct Machine *m)")
-    source = replace_once(source, function(source, "_Noreturn void SysExitGroup("),
-                          "_Noreturn void SysExitGroup(struct Machine *m, int rc) {\n"
-                          "  blink_host_guest_group_exit(m, rc);\n}")
-    source = replace_once(source, "    ClearChildTid(m);\n    FreeMachine(m);\n    pthread_exit(EXIT_SUCCESS);",
-                          "    blink_host_guest_thread_exit(m, rc);")
     source = replace_once(source, function(source, "static void *OnSpawn("), "")
     spawn = function(source, "static int SysSpawn(")
     modified = replace_once(spawn, "  pthread_t thread;\n", "")
@@ -75,9 +70,6 @@ def adapt(predecessor, memory, signal):
         "  unassert(!pthread_attr_destroy(&attr));\n",
         "  err = blink_host_guest_thread_start(m2);\n")
     source = replace_once(source, spawn, modified)
-    source = replace_once(source, function(source, "void SignalActor("),
-        "void SignalActor(struct Machine *m) {\n"
-        "  blink_host_guest_signal_actor(m);\n}")
     tkill = function(source, "static int SysTkill(")
     modified = replace_once(tkill, "          DeliverSignal(m, sig, SI_TKILL_LINUX);",
         "          blink_host_guest_signal_deliver_tkill(m, sig, m->system->pid, getuid());")
@@ -94,10 +86,10 @@ def adapt(predecessor, memory, signal):
     modified = replace_once(modified, "          err = pthread_kill(m2->thread, SIGSYS);",
         "          err = blink_host_guest_signal_wake(m2);")
     source = replace_once(source, tkill, modified)
-    allocation = memory.decode()
-    allocation = GUARD + replace_once(allocation, function(allocation, "void KillOtherThreads("),
-        "void KillOtherThreads(struct System *s) {\n"
-        "  blink_host_guest_stop_other_threads(s);\n}")
+    # Whole-function ownership boundaries retain their original C bytes. The
+    # threaded compiler profile selects typed managedMethod replacements from
+    # their pinned upstream header declarations (managed-boundaries.json).
+    allocation = GUARD + memory.decode()
     signals = GUARD + signal.decode()
     signals = replace_once(signals, "struct SignalFrame {",
         "/* Authored bridge uses these pinned guest ABI offsets, never host siginfo. */\n"
@@ -194,6 +186,14 @@ def main():
     signal = read(ROOT / "ref" / ("blink-" + REVISION) / "blink/signal.c")
     if sha(original) != ORIGINAL_PIN:
         raise SystemExit("Immutable upstream syscall.c hash differs")
+    boundary_path = ROOT / "config/managed-boundaries.json"
+    boundary_bytes = read(boundary_path)
+    boundaries = json.loads(boundary_bytes)
+    if boundaries["version"] != 1:
+        raise SystemExit("Unknown managed boundary specification")
+    for relative, expected in {**boundaries["headers"], **boundaries["implementations"]}.items():
+        if sha(read(ROOT / "ref" / ("blink-" + REVISION) / relative)) != expected:
+            raise SystemExit("Managed boundary source/header pin differs: " + relative)
     predecessor = read(args.predecessor)
     receipt_bytes = read(args.predecessor_receipt)
     prior = json.loads(receipt_bytes)
@@ -234,6 +234,8 @@ def main():
     receipt = dict(kind="reviewed-managed-guest-thread-foundation", qualification="source-only; inactive",
         upstream=REVISION, stage_sha256=stage_hash, patch_sha256=sha(patch),
         required_defines=REQUIRED, forbidden_defines=FORBIDDEN,
+        managed_boundaries=dict(specification=str(boundary_path.resolve()),
+            specification_sha256=sha(boundary_bytes), required_units=boundaries["required_units"]),
         required_headers={header_name: header_hash},
         overlays={name: sha(data) for name, data in overlays.items()}, base_headers=BASE_HEADERS,
         predecessor=dict(path=str(args.predecessor.resolve()), sha256=sha(predecessor),
