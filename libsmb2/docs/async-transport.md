@@ -1,6 +1,6 @@
 # Managed asynchronous socket transport
 
-Status: **plan only**, requested 2026-09-22. No transport or compiler changes are
+Status: **plan only**, requested and revised 2026-09-22. No transport or compiler changes are
 implemented by this document. Replace the product facade's poll/select pump with
 completion-driven C# socket services. Kerberos and DFS remain on hold.
 
@@ -20,7 +20,9 @@ completion-driven C# socket services. Kerberos and DFS remain on hold.
   project, following SQLite's `Sqlite.Bcl.cs`, `HostVfs` and
   [`Directory.Build.targets`](../../sqlite/Directory.Build.targets).
 - Represent a libsmb2 socket with a distinct unmanaged C# struct containing one
-  `nint` field. It must not be interchangeable with a shared Libc file descriptor.
+  `int` field, preserving upstream's four-byte descriptor storage. Conversion to
+  `int` is explicit; conversion from `int` is implicit. The value identifies an
+  entry in a separate socket registry, not a shared Libc file descriptor.
   The pinned upstream spelling is **`t_socket`**, rather than `socket_t`.
 - The struct is authored entirely in C#. No new C typedef or C struct is needed.
   Prefer suppressing upstream's guarded integer typedef with
@@ -42,7 +44,7 @@ These findings refer to pinned libsmb2
 | --- | --- |
 | `include/smb2/libsmb2.h`: `smb2_fd_event_callbacks`, `smb2_service_fd` | Register fd addition/removal and event-interest callbacks; service translated code on actual completions. No replacement SMB state machine is needed. |
 | `lib/compat.h` and public header: guarded `typedef int t_socket` | The type is an integer alias today, and generated fields/callbacks use `int`. Merely renaming the typedef does not produce a strong C# struct. |
-| `lib/socket.c`: `connect_async_ai(..., int *fd_out)`, `(int)fd`, local `int fd` in `smb2_connect_async_next_addr` | Even after a typedef mapping, integer round trips remain. Do not store a native pointer/Socket.Handle in those integers or reinterpret `int*` as a pointer to a pointer-sized struct. |
+| `lib/socket.c`: `connect_async_ai(..., int *fd_out)`, `(int)fd`, local `int fd` in `smb2_connect_async_next_addr` | Explicit conversion to int preserves the helper's cast; implicit conversion from int restores the handle on assignment/callback invocation. Keep `int*` storage as int; no pointer reinterpretation is needed. |
 | `lib/socket.c`: `writev` uses a local iovec array and a pointer to stack-local `tmp_spl` | Pending BCL sends cannot retain the passed pointers after `writev` returns. |
 | `lib/socket.c`: `smb2_change_events` suppresses unchanged masks using context-wide `smb2->events` | A second connecting fd may not receive a fresh event-mask callback. Addition and connect completion must carry enough state to avoid a missed wakeup. |
 | `smb2_close_connecting_fd` closes without a matching `change_fd(DEL)` in that path | Host close must invalidate registrations itself; DEL is not the sole ownership signal. |
@@ -82,23 +84,22 @@ The contract must provide:
 
 1. Recognition of `t_socket` as an externally supplied managed type, with
    `T_SOCKET_DEFINED=1` suppressing upstream's existing integer typedef in both
-   guarded headers. The C# struct may itself be named `t_socket`, or the profile
-   may bind that spelling to `Managed.Smb.SmbSocket`. Register its pointer-sized
-   signed backing storage, unmanaged layout/alignment and consistent scalar
+   guarded headers. Prefer naming the C# struct `t_socket` too. Register its
+   four-byte signed backing storage, unmanaged layout/alignment and consistent scalar
    operations/conversions. No C declaration or typedef is added. Dotcc must know
    the type during parsing/binding/layout; merely adding the C# file at build
    time is not enough with the current compiler.
 2. Typed host-call binding for selected socket returns and descriptor parameters,
    including declarations from bundled headers. Renaming an `int` prototype alone
    cannot accomplish this. Exact signatures and ambiguous matches are checked.
-3. Explicit compiler-generated bridges for the upstream integer scratch paths.
-   Allocate positive registry tokens that fit `int`; store them in the struct's
-   `nint` field. Checked conversion of those tokens preserves the pinned C casts
-   without truncating a pointer. Never reuse a retired token while an old reference
-   can survive; the initial implementation can use monotonic tokens and fail
-   cleanly on exhaustion. Reserve `-1` for the upstream invalid handle, and never
-   publish uninitialized/default handles. Do not provide a public implicit
-   conversion from `SmbSocket` to a Libc descriptor.
+3. Preserve upstream casts and assignments so the authored C# conversion
+   operators handle integer round trips: explicit `t_socket` to `int`, implicit
+   `int` to `t_socket`. No pointer-width narrowing or special per-helper bridge is
+   needed. Allocate positive int registry tokens. Never reuse a retired token
+   while an old reference can survive; the initial implementation can use
+   monotonic tokens and fail cleanly on exhaustion. Reserve `-1` for the upstream
+   invalid handle, and never publish uninitialized/default handles. There must
+   be no implicit conversion from the handle to a Libc descriptor.
 4. Correct types for context fields, `connecting_fds`, pointers, `sizeof`,
    `memmove` lengths, function pointers, constants and generated public APIs.
    A C# alias alone is insufficient. Retain plain integers only at audited C
@@ -107,23 +108,39 @@ The contract must provide:
    cache invalidation and usable diagnostics. Both raw and postprocessed output
    must reference the authored type, without a duplicate generated declaration.
 
-Proposed authored type shape is a sequential unmanaged `readonly struct
-SmbSocket` with one internal readonly `nint Value`, equality/hash support and
-controlled internal construction. The value is a host-registry token, not an OS
-socket handle, pointer, fd or GCHandle. The registry owns the BCL Socket and I/O
-state. Generated integer compatibility conversions stay implementation details.
+The authored type is a sequential unmanaged readonly struct. Its essential
+conversion shape is below (design sketch only; equality/comparison members omitted):
 
-Mapping the current four-byte `t_socket` to a pointer-sized struct changes private
-layout on x64. Recompute all affected layouts in the compiler; do not retain
-four-byte fields while allocating eight-byte arrays. This profile is not binary
-ABI-compatible with the original native `smb2_context`. Compare SMB wire behavior
-with native; separately verify the managed profile's size/alignment/offsets and
-raw/processed identity. Unaffected wire structures retain their existing probes.
+```csharp
+[StructLayout(LayoutKind.Sequential)]
+public readonly struct t_socket
+{
+    internal readonly int Value;
+    private t_socket(int value) => Value = value;
+
+    public static explicit operator int(t_socket value) => value.Value;
+    public static implicit operator t_socket(int value) => new(value);
+}
+```
+
+Add equality/hash support and the comparisons required by the active source,
+including `SMB2_VALID_SOCKET(sock)` and the invalid sentinel. The value is a
+host-registry token, not an OS socket handle, pointer, fd or GCHandle. The registry
+owns the BCL Socket and async state; conversion alone does not allocate or validate
+a socket. Validate registry membership/ownership at host entrypoints. The implicit
+conversion from int cannot establish provenance by itself, so descriptor-domain
+separation also depends on correct call bindings and the active-use audit.
+
+Verify `sizeof(t_socket) == sizeof(int) == 4`, matching alignment, context offsets,
+array stride and callback signatures against the selected native ABI and across
+raw/processed output. The wrapper should preserve existing descriptor layouts;
+it does not require the earlier proposed pointer-width layout change. Matching
+storage layout does not make the managed registry tokens usable as native fds.
 
 ## C# host functions
 
 Add `src/LibSmb2.Bcl.cs` as a partial `Managed.Smb.LibSmb2` bridge, plus authored
-`src/SmbSocket.cs` and `src/HostSockets*.cs` as useful. Include them exactly once
+`src/HostSockets.Types.cs` and other `src/HostSockets*.cs` as useful. Include them exactly once
 in each product and raw generated project. They compile with generated nested
 types and the embedded C runtime, avoiding a project-reference cycle.
 
@@ -278,7 +295,7 @@ Proposed authored files and responsibilities:
 | `config/defines.json` | Proven translation aliases and selected feature defines. |
 | `config/dotcc-overrides.json` | Required macro and future typed host bindings, with exact matches/provenance. |
 | `src/LibSmb2.Bcl.cs` | Partial-class C-facing entrypoints using generated types/constants. |
-| `src/SmbSocket.cs`, `src/HostSockets*.cs` | Strong handle, registry, bounded buffers and BCL async operations. |
+| `src/HostSockets.Types.cs`, other `src/HostSockets*.cs` | Int-backed t_socket and conversion operators, registry, bounded buffers and BCL async operations. |
 | `src/Managed/SmbConnection.cs` and executor helpers | Awaitable requests, callbacks, deadlines and owning API. |
 | `Directory.Build.targets` or emitted explicit Compile items | Include authored host files in raw, final and staged generated projects exactly once. |
 | `scripts/translate.py`, build/test tooling | Full regeneration, configuration/host-source hashes and explicit profile selection. |
@@ -309,10 +326,11 @@ upstream-only fault-injection rule.
       compiler additions for strong types and typed host signatures.
 - [ ] Implement those compiler additions if necessary, with managed-only tests
       using source strings and the real pinned inputs; add no C shim/header/file.
-- [ ] Verify size/alignment/arrays/function pointers, checked token round trips,
+- [ ] Verify four-byte size/alignment/arrays/function pointers, explicit-to-int
+      and implicit-from-int round trips (including `-1`), required comparisons,
       raw/processed/object linking and rejection of accidental Libc descriptor use.
 
-Gate: translated context fields and fd callbacks use the actual nint-backed
+Gate: translated context fields and fd callbacks use the actual int-backed
 struct, and the complete library binds to authored C# without source edits or
 native application networking imports. No flags-only success claim if a compiler
 extension was required.

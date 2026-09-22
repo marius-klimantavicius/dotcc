@@ -81,7 +81,8 @@ The following are mandatory deliverables, including when helper scripts are used
   loop or Task.Run wrapping network waits.** Register `smb2_fd_event_callbacks`
   and service the translated protocol from C# socket completions. Supply socket
   functions in authored C# included in the generated project, with a distinct
-  nint-backed socket struct. Add no C glue or source/output rewrites; prefer
+  int-backed `t_socket` struct with explicit conversion to int and implicit
+  conversion from int. Add no C glue or source/output rewrites; prefer
   defines and translation-profile bindings. See [async-transport.md](async-transport.md)
   for the compiler feasibility gate, ownership model and compatibility boundary.
 
@@ -451,7 +452,7 @@ earlier phases; their completion still depends on real translated execution.
 
 ### P10 — Managed async transport without polling
 
-- [ ] A0: prove defines/host bindings and the authored nint-backed socket type,
+- [ ] A0: prove defines/host bindings and the authored four-byte int-backed socket type,
       including upstream integer scratch paths and generic compiler support needed.
 - [ ] A1: implement the C# socket host with bounded async send/receive, DNS
       preparation, socket options, errors and explicit lifetime ownership.

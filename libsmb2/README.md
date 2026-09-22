@@ -14,7 +14,7 @@ yet implemented in the current NTLMSSP profile.
 
 The [managed async transport plan](docs/async-transport.md) replaces the product's
 poll/select pump with C# socket completions, fd-event callbacks and an authored
-nint-backed socket handle type. This is currently a planning deliverable; Kerberos
+int-backed socket handle type. This is currently a planning deliverable; Kerberos
 and DFS remain on hold.
 
 ```sh
