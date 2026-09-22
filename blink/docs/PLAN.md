@@ -281,6 +281,48 @@ paths from their own location, isolate temporary/build directories, and support
 offline reruns after checksum-verified fetches. Record any upstream test toolchain
 download separately; native `make check` must not silently fetch floating tools.
 
+### Semantic intrinsics and Blink function overrides
+
+The 2026-09-23 continuation includes extending dotcc's semantic function override
+support beyond `load.i32.le` and applying qualified BCL-backed replacements to
+Blink. Use the existing typed `functionOverrides` mechanism, preserving original
+function signatures, identity, direct/exported/function-pointer calls and
+single evaluation of arguments. Keep generic intrinsic support in dotcc and
+Blink-specific selection/provenance in the campaign profile; never rewrite
+generated C# manually. Replacements are explicit reviewed optimizations, not
+permission to replace the interpreter or guest kernel semantics.
+
+| Candidate in pinned Blink | Proposed implementation | Qualification needed |
+| --- | --- | --- |
+| `endian.h`: `Get16`, `Get32`, `Get64` | New unsigned little-endian load intrinsics using `BinaryPrimitives.ReadUInt16/32/64LittleEndian` | Exact width, unaligned ordinary byte access, host-endian independence and reads after writes |
+| `endian.h`: `Put16`, `Put32`, `Put64` | New unsigned little-endian store intrinsics using `BinaryPrimitives.WriteUInt16/32/64LittleEndian` | Exact byte layout, truncation at the C-call boundary, unaligned writes and adjacent bytes unchanged |
+| `bitscan.c`/`bitscan.h`: `bsf`, `bsr`, `popcount` | Assess `BitOperations.TrailingZeroCount`, `LeadingZeroCount`/`Log2`, and `PopCount` through intrinsics or typed managed helpers | Preserve the selected C implementation's zero-input behavior and widths; inspect preprocessing/builtin lowering first to avoid redundant overrides |
+| Byte-swap helpers | Assess `BinaryPrimitives.ReverseEndianness` | Existing GNU builtin lowering already uses this BCL operation; add overrides only for actual uncovered calls |
+
+- [ ] Implement and document the six unsigned endian load/store targets above,
+      with signature validation and focused native differential tests. Preserve
+      the existing signed `load.i32.le` contract; additional signed/big-endian
+      targets may be added where a concrete caller justifies them.
+- [ ] Select the actual pinned Blink endian functions through reproducible
+      profiles. Respect per-translation-unit matching and physical declaration
+      paths; assert intended coverage with override reports. A global
+      `requireMatch` on unrelated producers must not make valid units fail.
+- [ ] Record which secondary bit-operation candidates are useful, already
+      optimized, or deferred. Add any selected replacement only after checking
+      its actual semantics, including zero input, integer width and side effects.
+- [ ] Qualify direct and pointer calls, argument side effects, signed boundaries
+      where applicable, and ordinary unaligned buffers under raw/optimized
+      JIT/NativeAOT. No custom fault injection or invalid-ELF cases are added.
+      Memory intrinsics must not bypass guest address translation, protection,
+      atomic/volatile behavior or syscall contracts.
+- [ ] Reemit affected C objects: object-only relinking cannot apply function
+      overrides. Include compiler/profile/target identities and selection reports
+      in receipts, retain literal pooling and inline deduplication, then rerun
+      affected CPU and Kestrel/worker/sample gates against the final delivery.
+      Describe emitted BCL calls and observed correctness; do not claim measured
+      speedups without measurements. This work is part of the authorized P5
+      continuation and does not start the separate P6 performance campaign.
+
 Required output: `blink/generated/TranslatedBlink/TranslatedBlink.csproj`, class
 `BlinkCore`, namespace `Managed.Emulation`, using `--emit=managedlib --nest-types
 --runtime=c --literal-pool --deduplicate-inline --split=size --split-size=102400`. Verify actual CLI options when
