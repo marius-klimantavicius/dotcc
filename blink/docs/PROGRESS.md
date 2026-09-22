@@ -24,10 +24,14 @@ source staging/zero-fuzz reproduction passes at
 compiled product and actual Kestrel execution. The historical restart checklist
 is retained in [RESTART-P5-KESTREL.md](RESTART-P5-KESTREL.md).
 
-The user also authorized six endian load/store semantic intrinsics and reviewed
-Blink selection. Generic compiler support, pinned profile integration and
-native/all-four differential qualification are underway before final product
-regeneration. No P6 work starts.
+The six unsigned endian load/store intrinsics are committed in `0377af7`;
+47 unit and 12 functional tests pass and actual compiler/postprocessor binaries
+were rebuilt. The pinned-header differential passes 336 native rows and 1,344
+managed comparisons across all four forms (`endian-intrinsics/attempt-u1ulwk20`,
+receipt SHA-256 `859cb515c67c0cceda30e1af49c78dc63d1d27da077d34a66324db1c4cc0eb27`).
+Reviewed profile selection and per-object typed-report checks are integrated;
+full product regeneration, CPU refresh and actual Kestrel/worker/sample gates
+remain next. No measured speedup is claimed; no P6 work starts.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the

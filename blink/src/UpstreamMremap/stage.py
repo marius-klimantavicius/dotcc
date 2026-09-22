@@ -12,9 +12,10 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 REVISION = 'f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
 ORIGINAL_PIN = '4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3'
-PREDECESSOR_PIN = 'b744c1a33c984b04f9809f534e364a1fd0535041c019b63b67a152653e2be05c'
+PREDECESSOR_PIN = '60b42ebabd8c4312f5ce98d29fd71b8aee69a8c3297b94f71fa10bd490dc6012'
 BLOCK_PIN = '1ac9b2d866051b6ae2d2554ab8ebdf0f5992474df744d76ea67cd62188034f97'
 MEMORY_PIN = '589becd0e214d5f422e75a9b63b1bf5d5280b3f8ca4e00dc212ede120e945b12'
+SIGNAL_PIN = 'e4a1a44787a5e99022a5d8224165e0c551275b4706b9f689f4f826e4f0b95c5a'
 sha = lambda data: hashlib.sha256(data).hexdigest()
 VALIDATION = '''  // Validate ordinary source ranges using guest page-table reservations.
   // This does not implement resizing or relocation: mapped requests retain
@@ -97,7 +98,8 @@ def main():
     stage_hash = sha(read(Path(__file__)))
     original = read(ROOT / 'ref' / ('blink-' + REVISION) / 'blink/syscall.c')
     memory = read(ROOT / 'ref' / ('blink-' + REVISION) / 'blink/memorymalloc.c')
-    if sha(original) != ORIGINAL_PIN or sha(memory) != MEMORY_PIN:
+    signal = read(ROOT / 'ref' / ('blink-' + REVISION) / 'blink/signal.c')
+    if sha(original) != ORIGINAL_PIN or sha(memory) != MEMORY_PIN or sha(signal) != SIGNAL_PIN:
         raise SystemExit('Immutable upstream source pin differs')
     predecessor = read(args.predecessor)
     prior_bytes = read(args.predecessor_receipt)
@@ -111,7 +113,7 @@ def main():
     runtime_source, runtime_patch = runtime.adapt(stop_source)
     if runtime_patch != read(ROOT / 'src/UpstreamGuestRuntime/guest-runtime.patch'):
         raise SystemExit('Guest-runtime patch does not reproduce')
-    thread_sources, thread_patch = threads.adapt(runtime_source, memory)
+    thread_sources, thread_patch = threads.adapt(runtime_source, memory, signal)
     checked_thread_patch = read(ROOT / 'src/UpstreamGuestThreads/guest-threads.patch')
     if (thread_sources['syscall.c'] != predecessor or sha(predecessor) != PREDECESSOR_PIN
             or thread_patch != checked_thread_patch
@@ -123,6 +125,9 @@ def main():
                 predecessor_sha256=threads.PREDECESSOR_PIN, staged_sha256=PREDECESSOR_PIN)
             or prior['sources']['memorymalloc.c'] != dict(source_sha256=MEMORY_PIN,
                 staged_sha256=sha(thread_sources['memorymalloc.c']))
+            or prior['sources']['signal.c'] != dict(source_sha256=SIGNAL_PIN,
+                staged_sha256=sha(thread_sources['signal.c']))
+            or set(prior['sources']) != {'syscall.c', 'memorymalloc.c', 'signal.c'}
             or prior['required_defines'] != threads.REQUIRED
             or prior['forbidden_defines'] != threads.FORBIDDEN):
         raise SystemExit('Predecessor receipt/source does not reproduce the reviewed chain')

@@ -299,7 +299,7 @@ permission to replace the interpreter or guest kernel semantics.
 | `bitscan.c`/`bitscan.h`: `bsf`, `bsr`, `popcount` | Assess `BitOperations.TrailingZeroCount`, `LeadingZeroCount`/`Log2`, and `PopCount` through intrinsics or typed managed helpers | Preserve the selected C implementation's zero-input behavior and widths; inspect preprocessing/builtin lowering first to avoid redundant overrides |
 | Byte-swap helpers | Assess `BinaryPrimitives.ReverseEndianness` | Existing GNU builtin lowering already uses this BCL operation; add overrides only for actual uncovered calls |
 
-- [ ] Implement and document the six unsigned endian load/store targets above,
+- [x] Implement and document the six unsigned endian load/store targets above,
       with signature validation and focused native differential tests. Preserve
       the existing signed `load.i32.le` contract; additional signed/big-endian
       targets may be added where a concrete caller justifies them.
@@ -307,10 +307,10 @@ permission to replace the interpreter or guest kernel semantics.
       profiles. Respect per-translation-unit matching and physical declaration
       paths; assert intended coverage with override reports. A global
       `requireMatch` on unrelated producers must not make valid units fail.
-- [ ] Record which secondary bit-operation candidates are useful, already
+- [x] Record which secondary bit-operation candidates are useful, already
       optimized, or deferred. Add any selected replacement only after checking
       its actual semantics, including zero input, integer width and side effects.
-- [ ] Qualify direct and pointer calls, argument side effects, signed boundaries
+- [x] Qualify direct and pointer calls, argument side effects, signed boundaries
       where applicable, and ordinary unaligned buffers under raw/optimized
       JIT/NativeAOT. No custom fault injection or invalid-ELF cases are added.
       Memory intrinsics must not bypass guest address translation, protection,

@@ -333,7 +333,7 @@ def main():
             rows.append(dict(source=name, original_sha256=pins[name], pre_binding_sha256=digest(content),
                              previous_adaptation=previous, staged_sha256=sha(target),
                              base_bound_sha256=entry['sha256']))
-        if set(boundary['sources']) != {'syscall.c', 'memorymalloc.c'}:
+        if set(boundary['sources']) != {'syscall.c', 'memorymalloc.c', 'signal.c'}:
             raise RuntimeError('Unexpected thread stage replacement set')
         write_json(profile / 'binding-overrides.json', overrides)
         for path in sorted((profile / 'authored').glob('*.c')):

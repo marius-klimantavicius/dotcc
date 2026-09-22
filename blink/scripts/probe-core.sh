@@ -59,12 +59,13 @@ import hashlib, json, pathlib, shutil, subprocess, sys, tempfile
 p=pathlib.Path(sys.argv[1])
 stage=pathlib.Path(tempfile.mkdtemp(prefix='attempt-',dir=p/'generated/core-profile'))
 sys.path.insert(0,str(p/'scripts'))
-from core_inputs import compiler_identity
+from core_inputs import compiler_identity, stage_semantic_intrinsics
 shutil.copyfile(p/'scripts/core_inputs.py',stage/'compiler-identity.py')
 shutil.copyfile(p/'artifacts/core/closure.json',stage/'closure.json')
 shutil.copyfile(p/'config/core-config.h',stage/'config.h')
 shutil.copyfile(p/'config/target-storage.h',stage/'target-storage.h')
 shutil.copyfile(p/'config/core-overrides.json',stage/'overrides.json')
+stage_semantic_intrinsics(p, stage)
 host=p/'config/managed-host'
 if host.is_dir():
     # The core owns feature selection; the host profile supplies declarations.

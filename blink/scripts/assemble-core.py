@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
-from core_inputs import compiler_identity, profile_sources, emission_identity
+from core_inputs import compiler_identity, profile_sources, emission_identity, semantic_selection
 
 ROOT = Path(__file__).resolve().parents[1]
 LINK_OPTIONS = ['--emit=managedlib', '--literal-pool', '--deduplicate-inline', '--nest-types', '--class-name', 'BlinkCore',
@@ -118,6 +118,20 @@ with ThreadPoolExecutor(max_workers=args.jobs) as pool:
         print(json.dumps({k:row[k] for k in ('source', 'exit_code')}), flush=True)
 if report['failures']:
     raise SystemExit('object emission incomplete; see ' + str(cache / 'receipt.json'))
+if (profile / 'semantic-intrinsics.json').exists():
+    coverage = {}
+    for name, row in report['objects'].items():
+        observed = row.get('semantic_intrinsics')
+        if not observed or semantic_selection(profile, Path(observed['report']), name) != observed:
+            raise SystemExit('Semantic selection evidence changed or missing: ' + name)
+        coverage[name] = observed
+    spec = json.loads((profile / 'semantic-intrinsics.json').read_text())
+    if not (args.emit_only or args.sources) and not set(spec['required_units']).issubset(coverage):
+        raise SystemExit('Required semantic core producers missing')
+    report['semantic_intrinsics'] = dict(specification_sha256=sha(profile / 'semantic-intrinsics.json'),
+        selected_units=sum(not row['absent'] for row in coverage.values()),
+        absent_units=sum(row['absent'] for row in coverage.values()), coverage=coverage)
+    save()
 if compiler_identity(compiler_dir) != compiler:
     raise SystemExit('compiler changed before link; cached objects retain their old identity')
 if args.emit_only or args.sources:

@@ -181,6 +181,9 @@ try:
         objects.append(obj)
         receipt['objects'][name]={key:row[key] for key in ['object_path','object_sha256','receipt','emission_key','producing_profile','producing_profile_inputs_sha256']}
     receipt['assembly']={'path':str(assembly_path),'sha256':sha(assembly_path),'count':len(objects),'reused':assembly['reused_objects']}
+    receipt['semantic_intrinsics'] = assembly.get('semantic_intrinsics')
+    if (profile/'semantic-intrinsics.json').exists() and not receipt['semantic_intrinsics']:
+        raise RuntimeError('Product is missing reviewed semantic selection evidence')
     if any(name in expected for name in ['authored/GuestExecution.c','authored/managed-driver.c']):
         raise RuntimeError('Product must exclude authored C execution and test frontends')
     receipt['product_surface'] = {'execution_owner':'separate authored C# consumer',

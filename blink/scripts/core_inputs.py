@@ -3,6 +3,66 @@ import hashlib
 from pathlib import Path
 
 
+def stage_semantic_intrinsics(campaign: Path, profile: Path) -> None:
+    """Pin the reviewed physical header before selecting ordinary byte helpers.
+
+    Optional per-TU rules allow producers which never include endian.h. Emission
+    reports and the final assembly require the complete set on the core units.
+    """
+    import json
+    import shutil
+    specification = campaign / 'config/semantic-intrinsics.json'
+    spec = json.loads(specification.read_text())
+    if spec['version'] != 1 or spec['header'] != 'blink/endian.h':
+        raise RuntimeError('Unknown semantic intrinsic profile')
+    header = campaign / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580' / spec['header']
+    if hashlib.sha256(header.read_bytes()).hexdigest() != spec['header_sha256']:
+        raise RuntimeError('Reviewed endian implementation changed')
+    expected = {prefix + str(width): f'{operation}.u{width}.le'
+                for width in (16, 32, 64) for prefix, operation in [('Get', 'load'), ('Put', 'store')]}
+    if {rule['name']: rule['target']['name'] for rule in spec['functionOverrides']} != expected:
+        raise RuntimeError('Reviewed semantic target set differs')
+    overrides = json.loads((profile / 'overrides.json').read_text())
+    if overrides.get('functionOverrides'):
+        raise RuntimeError('Semantic functions already selected')
+    overrides['functionOverrides'] = [dict(rule, declarationFile=str(header.resolve()))
+                                      for rule in spec['functionOverrides']]
+    (profile / 'overrides.json').write_text(json.dumps(overrides, indent=2) + '\n')
+    shutil.copyfile(specification, profile / 'semantic-intrinsics.json')
+
+
+def semantic_selection(profile: Path, report: Path, source: str) -> dict:
+    """Validate actual typed selection, retaining absent-unit evidence explicitly."""
+    import json
+    specification = profile / 'semantic-intrinsics.json'
+    if not specification.exists():
+        return {}  # Historical profiles retain their original contract.
+    spec = json.loads(specification.read_text())
+    expected = {rule['name']: 'intrinsic:' + rule['target']['name'] for rule in spec['functionOverrides']}
+    events = [json.loads(line) for line in report.read_text().splitlines() if line]
+    selected = [row for row in events if row.get('event') == 'function-override']
+    unmatched = [row['name'] for row in events if row.get('event') == 'function-override-unmatched']
+    names = [row['name'] for row in selected]
+    if names and (len(names) != len(expected) or set(names) != set(expected)):
+        raise RuntimeError('Partial or duplicate endian selection: ' + source)
+    if names and unmatched:
+        raise RuntimeError('Mixed selected and unmatched endian rules: ' + source)
+    if source in spec['required_units'] and set(names) != set(expected):
+        raise RuntimeError('Required core endian selection missing: ' + source)
+    if not names and (len(unmatched) != len(expected) or set(unmatched) != set(expected)):
+        raise RuntimeError('Absent-unit typed selection was not reported: ' + source)
+    rules = json.loads((profile / 'overrides.json').read_text())['functionOverrides']
+    physical_header = {rule['declarationFile'] for rule in rules}
+    if len(physical_header) != 1:
+        raise RuntimeError('Ambiguous endian physical declaration selector')
+    for row in selected:
+        if row['target'] != expected[row['name']] or row['declarationFile'] not in physical_header or row['matches'] != '1':
+            raise RuntimeError('Unexpected semantic replacement provenance: ' + source)
+    return dict(report=str(report), report_sha256=hashlib.sha256(report.read_bytes()).hexdigest(),
+                specification_sha256=hashlib.sha256(specification.read_bytes()).hexdigest(),
+                selected=selected, absent=not selected)
+
+
 def compiler_identity(directory: Path) -> dict[str, str]:
     required = ('dotcc.dll', 'dotcc.deps.json', 'dotcc.runtimeconfig.json')
     for name in required:
@@ -70,6 +130,8 @@ def emission_identity(profile: Path, campaign: Path, inputs: dict, entry: dict) 
         if Path(name).suffix == '.c' and any(name == item or name.endswith('/' + item) for item in included):
             dependencies[name] = digest
     dependencies['overrides.json'] = files['overrides.json']
+    if 'semantic-intrinsics.json' in files:
+        dependencies['semantic-intrinsics.json'] = files['semantic-intrinsics.json']
     return dict(version=2, source=entry['path'], source_sha256=entry['sha256'],
                 dependencies=dependencies, compiler_sha256=inputs['compiler'],
                 options=OBJECT_OPTIONS, include_order=['snapshot', 'pinned-upstream', 'authored', 'host'],

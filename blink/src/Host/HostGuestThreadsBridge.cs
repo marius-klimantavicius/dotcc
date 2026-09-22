@@ -1,4 +1,5 @@
 using global::System;
+using global::System.Buffers.Binary;
 using Managed.Emulation.Host;
 
 namespace Managed.Emulation;
@@ -42,6 +43,32 @@ public static partial class BlinkCore
         int saved = Libc.errno;
         try { return guestThreads?.Signal(thread, signal) ?? 19; }
         finally { Libc.errno = saved; }
+    }
+    private static IHostGuestThreads GuestThreadOwner => guestThreads
+        ?? throw new InvalidOperationException("Guest thread owner is unbound.");
+    public static unsafe void blink_host_guest_signal_actor(Machine* machine)
+        => GuestThreadOwner.RunSignalActor((nint)machine);
+    public static unsafe void blink_host_guest_signal_checkpoint(Machine* machine)
+        => GuestThreadOwner.SignalCheckpoint((nint)machine);
+    public static unsafe int blink_host_guest_signal_wake(Machine* machine)
+    {
+        int saved = Libc.errno;
+        try { return GuestThreadOwner.WakeSignal((nint)machine); }
+        finally { Libc.errno = saved; }
+    }
+    public static unsafe void blink_host_guest_signal_enqueue_info(Machine* machine, int signal, int processId, uint userId)
+        => GuestThreadOwner.EnqueueSignalInfo((nint)machine, signal, processId, userId);
+    public static unsafe void blink_host_guest_signal_deliver_tkill(Machine* machine, int signal, int processId, uint userId)
+        => GuestThreadOwner.DeliverThreadSignal((nint)machine, signal, processId, userId);
+    public static unsafe void blink_host_guest_signal_apply_info(Machine* machine, int signal, siginfo_linux* info)
+    {
+        var sender = GuestThreadOwner.TakeSignalInfo((nint)machine, signal, info == null);
+        if (info == null || sender is not { } value) return;
+        // Pinned upstream Linux siginfo layout: code at 8, sender PID/UID at
+        // 16/20. The reviewed signal staging checks these offsets in C.
+        BinaryPrimitives.WriteInt32LittleEndian(new Span<byte>((byte*)info + 8, 4), -6); // SI_TKILL
+        BinaryPrimitives.WriteInt32LittleEndian(new Span<byte>((byte*)info + 16, 4), value.ProcessId);
+        BinaryPrimitives.WriteUInt32LittleEndian(new Span<byte>((byte*)info + 20, 4), value.UserId);
     }
     // raise addresses this private process only. Positive asynchronous signals
     // retain the explicit signal-policy error until delivery is qualified.

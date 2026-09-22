@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import time
-from core_inputs import compiler_identity, profile_sources, canonical_emission, OBJECT_OPTIONS
+from core_inputs import compiler_identity, profile_sources, canonical_emission, semantic_selection, OBJECT_OPTIONS
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -72,17 +72,15 @@ for entry in closure['sources']:
             first_report = out / (source.stem + '.required-overrides.jsonl')
             log.rename(first_log)
             report.rename(first_report)
-            inactive_overrides = dict(command=invocation, diagnostic_log=str(first_log),
+            inactive_overrides = dict(command=list(invocation), diagnostic_log=str(first_log),
                                       report=str(first_report), reason='no override definition active in this TU')
-            retry = []
-            index = 0
-            while index < len(invocation):
-                if invocation[index] in {'--overrides-file', '--override-report'}:
-                    index += 2
-                else:
-                    retry.append(invocation[index])
-                    index += 1
-            invocation = retry
+            # Only the absent macro definitions are optional here. Preserve
+            # typed function rules and their actual per-unit selection report.
+            retry_profile = json.loads((emission_profile / 'overrides.json').read_text())
+            retry_profile['macroOverrides'] = []
+            retry_path = out / (source.stem + '.optional-macros.json')
+            retry_path.write_text(json.dumps(retry_profile, indent=2) + '\n')
+            invocation[invocation.index('--overrides-file') + 1] = str(retry_path)
             with log.open('wb') as stream:
                 try:
                     result = subprocess.run(invocation, stdout=stream, stderr=subprocess.STDOUT,
@@ -103,6 +101,7 @@ for entry in closure['sources']:
         row['exit_code'] = code
         row['classification'] = 'compiler changed during invocation; retry required'
     if code == 0:
+        row['semantic_intrinsics'] = semantic_selection(emission_profile, report, entry['path'])
         artifact = out / (source.stem + '.cs')
         row['object_path'] = str(artifact)
         row['object_sha256'] = hashlib.sha256(artifact.read_bytes()).hexdigest()

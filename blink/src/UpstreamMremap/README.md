@@ -1,6 +1,6 @@
 # Narrow mremap source-range validation
 
-The correction now passes source staging, compilation and the actual normal static-musl .NET stack-discovery path. No generated C# or immutable upstream source is edited. General remapping remains unsupported as described below.
+The existing source-range correction has passed staging, compilation and the actual normal static-musl .NET stack-discovery path. The updated signal predecessor remains source-only until separately qualified. No generated C# or immutable upstream source is edited. General remapping remains unsupported as described below.
 
 Actual static-musl .NET startup reached the pinned `SysMremap` unconditional `ENOMEM` fallback after guest threading and the configured GC reservation. The musl main-thread stack-discovery loop calls flags-zero `mremap(old_page, 4096, 8192, 0)`, descending through pages until an absent source produces `EFAULT`. The previous translated diagnostic exhausted its 20-million-instruction budget without that distinction. Its receipt is `blink/artifacts/dotnet-threaded-guest-execution/attempt-2fpjx0g2/receipt.json` (SHA256 `419e2d6a7da05a65ef9692e6217f5384c477c5192238c7fb40cbd2a21f8e047b`); the result SHA256 is `37d4f889be1d5ec6008fa062875f92ce184fe6e613a4a0d88eaa551e3c00a079`. The retained main-thread trace contains 4,007 mremap rows, all `ENOMEM`, within its first 4,096 observations; its 440,030 total syscall count is not a complete retained trace.
 
@@ -28,14 +28,20 @@ python3 blink/src/UpstreamMremap/stage.py \
 
 All output files must be fresh and confined to campaign `generated/` or `artifacts/`. The original upstream license text and all other bytes remain unchanged. The helper replays `UpstreamExecutionStop`, `UpstreamGuestRuntime`, and `UpstreamGuestThreads` in memory from the pinned original sources, checks their reviewed patches/current script identities and predecessor receipts, and verifies frozen inputs, thread header overlays, and profile constraints. It writes only the derived `syscall.c`, exact checked `mremap.patch`, and provenance receipt. It does not stage a profile, invoke a compiler, or publish a product on its own.
 
+The thread predecessor includes the reviewed signal actor and sender-metadata
+boundaries. Replay pins its original `signal.c` and verifies all three thread
+stage outputs (`syscall.c`, `memorymalloc.c`, `signal.c`). This adapter's own
+change remains solely the existing mremap source-range validation; updating the
+predecessor hash and patch line numbers does not add signal logic here.
+
 | Input | SHA256 |
 | --- | --- |
 | Pinned `blink/syscall.c` | `4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3` |
 | Pinned `blink/memorymalloc.c` used to reproduce predecessor | `589becd0e214d5f422e75a9b63b1bf5d5280b3f8ca4e00dc212ede120e945b12` |
-| Reviewed GuestThreads `syscall.c` predecessor | `b744c1a33c984b04f9809f534e364a1fd0535041c019b63b67a152653e2be05c` |
+| Reviewed GuestThreads `syscall.c` predecessor | `60b42ebabd8c4312f5ce98d29fd71b8aee69a8c3297b94f71fa10bd490dc6012` |
 | Exact original `SysMremap` block | `1ac9b2d866051b6ae2d2554ab8ebdf0f5992474df744d76ea67cd62188034f97` |
-| Reviewed patch | `ca1f55b0bf8b6c0a9ddc4d03ff447868d4dfe2a0d4049ad345606ee940228e03` |
-| Prospective derived source, calculated during patch authoring | `5e0b3ced63c24284ec65771afefeaa5f7bc9eeec3c819f8593ff993dc2722be3` |
+| Reviewed patch | `6b5a563f046ef4bdc4e8f012379f50762563cce7e399076b5c208fac38dad8c3` |
+| Prospective derived source, calculated during patch authoring | `8eecd697e5f1e4b2a04a68d90fa7596b7802aaa5a6a378b56121fc2fe67c21a8` |
 
 The upstream revision is `f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580`. The receipt kind is `reviewed-mremap-source-range-validation`, with `upstream`, `stage_sha256`, `patch_sha256`, `frozen_inputs`, predecessor source/receipt identities, inherited required/forbidden defines and required headers, and `sources.syscall.c = {source_sha256, predecessor_sha256, predecessor_block_sha256, staged_sha256}`. Its qualification field remains source-only; execution evidence belongs in separate actual-run receipts.
 

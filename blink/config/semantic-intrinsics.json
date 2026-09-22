@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "header": "blink/endian.h",
+  "header_sha256": "630c0a03219a13ef0382cb77f30ebe9b9a65c41bdf76621311e3720e91384e8c",
+  "required_units": [
+    "blink/machine.c",
+    "blink/syscall.c",
+    "blink/loader.c",
+    "blink/ssefloat.c"
+  ],
+  "functionOverrides": [
+    {
+      "name": "Get16",
+      "linkage": "internal",
+      "signature": {
+        "returnType": "u16",
+        "parameterTypes": [
+          "const u8 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "intrinsic",
+        "name": "load.u16.le"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "Put16",
+      "linkage": "internal",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "u8 *",
+          "u16"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "intrinsic",
+        "name": "store.u16.le"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "Get32",
+      "linkage": "internal",
+      "signature": {
+        "returnType": "u32",
+        "parameterTypes": [
+          "const u8 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "intrinsic",
+        "name": "load.u32.le"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "Put32",
+      "linkage": "internal",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "u8 *",
+          "u32"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "intrinsic",
+        "name": "store.u32.le"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "Get64",
+      "linkage": "internal",
+      "signature": {
+        "returnType": "u64",
+        "parameterTypes": [
+          "const u8 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "intrinsic",
+        "name": "load.u64.le"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "Put64",
+      "linkage": "internal",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "u8 *",
+          "u64"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "intrinsic",
+        "name": "store.u64.le"
+      },
+      "requireMatch": false
+    }
+  ]
+}

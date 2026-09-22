@@ -1,15 +1,17 @@
-# Managed guest thread foundation (inactive)
+# Managed guest thread boundaries
 
-This source-only adapter prepares Blink's internal thread boundaries for a
-separate authored C# execution owner. It has not been compiled or runtime
-qualified and is not selected by the active single-thread product. It adds no
-C execution loop, guest workload, native thread fallback, or success stub.
+This adapter connects Blink's internal thread boundaries to the authored C#
+execution owner selected by the threaded product. The existing lifecycle
+boundaries have runtime evidence; the six additional signal callbacks below
+remain source-only until a new product and guest run qualify them. The adapter
+adds no C execution loop, guest workload, native thread fallback, or success stub.
 
 ## Exact derivation
 
 `stage.py` consumes the reviewed `UpstreamGuestRuntime` syscall output and its
 receipt, reproduces the stop/runtime chain from immutable upstream, and checks
-all predecessor frozen inputs. It also pins upstream `memorymalloc.c`. The
+all predecessor frozen inputs. It also pins upstream `memorymalloc.c` and
+`signal.c`. The
 deterministic unified diff must match `guest-threads.patch`. Base and overlay
 headers, callbacks, scripts, source and predecessor receipt hashes are recorded.
 Outputs must be fresh paths under campaign `generated/` or `artifacts/`.
@@ -56,10 +58,10 @@ The selected library caller of `KillOtherThreads` is the replaced
 execution/cleanup; that frontend is not part of this product. The retained
 export is not permission to run those native lifecycle paths.
 
-## Proposed profile overlay
+## Selected profile overlay
 
-The coordinator must review and select all of these together; this adapter
-does not change profile configuration:
+The threaded profile selects these together; this adapter alone does not
+change profile configuration:
 
 1. Put `config/managed-threaded` before `config/managed-host` and generic includes
    for every upstream and authored C TU. Snapshot its two headers together.
@@ -70,7 +72,7 @@ does not change profile configuration:
    `config.h` before checking these definitions. The selected threaded config
    must therefore precede the existing disabled-thread config in include lookup.
 3. Compose this stage after the exact execution-stop/runtime stages and before
-   the common host preamble; override both `syscall.c` and `memorymalloc.c`.
+   the common host preamble; override `syscall.c`, `memorymalloc.c` and `signal.c`.
    Record the full chain and regenerate every layout-dependent object.
 4. Add `host-guest-threads.h` and qualified managed callbacks, the shared memory
    context, per-worker stop/binding support, and the C# owning group lifecycle.
@@ -102,9 +104,9 @@ The overlay declares private `pthread_sigmask`, `pthread_kill`, and
   call. The selected service does not invoke the demangler's fork setup; the
   profile makes no successful external demangling/fork claim.
 
-## Qualification still required
+## Qualification scope
 
-No source receipt proves threaded execution. Before activation, validate both
+No source receipt proves threaded execution. Runtime qualification must cover both
 header orders, scalar sizes/alignment and pointer signatures, zero initializers,
 and the offsets/strides of all threaded Machine/System/Bus/Futex/Fds records.
 Compare against a native probe using this managed storage ABI separately from
@@ -115,4 +117,61 @@ Generic condition waits use host realtime; their clock domain must match the
 campaign realtime source. Futex timed waits must observe cooperative stops
 without skipping upstream bookkeeping; untimed page-lock waits need orderly
 cleanup/wakeup. Handle allocation/destruction and bus/global registry retention
-need explicit accounting. No runtime or lifecycle acceptance is claimed here.
+need explicit accounting. Prior runtime receipts cover the existing lifecycle;
+they do not qualify the new signal callbacks or their combined source state.
+
+## Thread-directed signal staging
+
+The Kestrel activation signal exposed two additional owner boundaries. The
+threaded derivative now replaces only `SignalActor`'s C interpreter loop with
+`blink_host_guest_signal_actor(Machine*)`. The authored owner must use its normal
+instruction accounting, tracing and cooperative stop checks during nested signal
+execution. `DeliverSignalRecursively`, signal selection, frame construction,
+mask changes and `SigRestore` remain upstream algorithms. There is no new C
+execution loop, runtime-handler substitute or signal-number special case.
+
+`blink_host_guest_signal_checkpoint(Machine*)` runs at `ConsumeSignal` entry,
+before the metal-mode check and signal lock. On the actual owning worker it
+acknowledges the transient private wake generation before inspecting pending,
+masked or ignored signals. It must not clear guest pending bits or turn a signal
+wake into a permanent execution-stop request. This allows subsequent operation
+tokens to be fresh after the pending notification was observed.
+
+Three metadata callbacks preserve actual thread-directed sender identity:
+
+| Callback | Contract |
+| --- | --- |
+| `blink_host_guest_signal_enqueue_info(machine, signal, pid, uid)` | Under `System.sig_lock`, record the actual `SysTkill` sender before `EnqueueSignal`. Record only when the pending bit is clear; coalesced signals retain the first sender. Keep at most 64 pending entries per live Machine. |
+| `blink_host_guest_signal_deliver_tkill(machine, signal, pid, uid)` | For immediate self delivery, scope sender metadata separately and call unchanged `DeliverSignal` with SI_TKILL. Restore the scope on unwind; do not consume a separately pending signal's metadata. |
+| `blink_host_guest_signal_apply_info(machine, signal, info)` | Apply scoped immediate metadata, otherwise consume queued metadata only after the pending bit was cleared by `ConsumeSignalImpl`. Set only code/PID/UID; absent metadata leaves the upstream frame untouched. A null pointer discards queued metadata before default/ignored delivery. |
+
+`SysTkill` supplies its actual private `System.pid` and bound `getuid()` result.
+Both masked-self enqueue and cross-thread enqueue run under the target signal
+lock. After releasing that lock, cross-thread delivery calls
+`blink_host_guest_signal_wake(targetMachine)` in place of the upstream
+`pthread_kill(target->thread, SIGSYS)` notification. The callback returns a POSIX
+error number directly and preserves errno. It identifies the exact live target
+Machine and latches a private wake even before that worker binds. Using the
+original pthread identity here is ambiguous during clone startup because
+`NewMachine` initializes `Machine.thread` with the creator's identity; the
+child's owning dispatcher replaces it only when that child starts execution.
+Signal-zero pthread existence probes remain a separate unchanged operation.
+This wake is not the guest signal number and never emits a native host signal.
+The managed owner must qualify a real wake/bounded delivery path and remove
+metadata before releasing a Machine. A successful notification alone does not
+prove handler completion or general host pthread signal support.
+
+`signal.c` applies metadata after the upstream fault-address branch so an actual
+TKILL of a normally fault-associated signal retains its sender union fields.
+An unrelated synchronous fault must not consume metadata for a signal whose
+pending bit remains set. Default and ignored pending signals discard metadata
+before returning. Static assertions pin guest siginfo code/PID/UID offsets
+8/16/20, four-byte field sizes and SI_TKILL=-6 for the authored bridge. No Machine
+layout changes or global fabricated sender identity are introduced.
+
+The deterministic checked patch now includes all three pinned source files.
+`UpstreamMremap` replays this exact new predecessor and records the signal source
+pin while retaining only its existing source-range validation change. Profile
+staging admits the three-file replacement set and records each staged hash.
+These signal additions are source preparation; actual execution qualification
+requires a new coherent generated product and separately reviewed owner.

@@ -48,6 +48,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         public required ThreadedGuestExecution Owner;
         public required HostExecutionStop Stop;
         public required HostSleep Sleep;
+        public HostSignalWake Wake = new();
         public Blink.Machine* Machine;
         public Thread? Thread;
         public long HostIdentity;
@@ -58,6 +59,8 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         public long ExitSequence;
         public Exception? Error;
         public Stack<Action> Unbind = new();
+        public Dictionary<int, HostGuestSignalInfo> PendingSignals = new();
+        public (int Signal, HostGuestSignalInfo Sender)? ImmediateSignal;
     }
     private sealed class ThreadExit : Exception { }
     private sealed class GuestSignal : Exception { }
@@ -195,7 +198,15 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                 {
                     foreach (nint pointer in strings) Marshal.FreeCoTaskMem(pointer);
                     Cleanup(() => directories.Dispose()); Cleanup(() => variables.Dispose()); Cleanup(() => barrier.Dispose());
-                    foreach (Worker worker in workers) { Cleanup(worker.Sleep.Dispose); Cleanup(worker.Stop.Dispose); }
+                    foreach (Worker worker in workers)
+                    {
+                        Cleanup(() =>
+                        {
+                            worker.Wake.Dispose();
+                            if (worker.Wake.NotificationFailure is { } error) throw error;
+                        });
+                        Cleanup(worker.Sleep.Dispose); Cleanup(worker.Stop.Dispose);
+                    }
                     current.Dispose();
                     IsQuiescent = true;
                 }
@@ -224,8 +235,8 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         BindOne(() => Blink.BindHostGuestThreads(this), Blink.UnbindHostGuestThreads);
         BindOne(() => Blink.BindHostGuestSignals(OnSignal), Blink.UnbindHostGuestSignals);
         BindOne(() => Blink.BindHostExecutionStop(worker.Stop), Blink.UnbindHostExecutionStop);
-        BindOne(() => Blink.BindHostIo(io, worker.Stop.Token), Blink.UnbindHostIo);
-        BindOne(() => Blink.BindHostSleep(worker.Sleep, worker.Stop.Token), Blink.UnbindHostSleep);
+        BindOne(() => Blink.BindHostIo(io, worker.Stop.Token, worker.Wake), Blink.UnbindHostIo);
+        BindOne(() => Blink.BindHostSleep(worker.Sleep, worker.Stop.Token, worker.Wake), Blink.UnbindHostSleep);
         BindOne(() => Blink.BindHostDirectories(directories!), Blink.UnbindHostDirectories);
         BindOne(() => Blink.BindHostVariables(variables!), Blink.UnbindHostVariables);
         BindOne(() => Blink.BindHostEnvironment(environment), Blink.UnbindHostEnvironment);
@@ -263,19 +274,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             while (worker.Stop.Reason == HostExecutionStopReason.None)
             {
                 if ((int)Blink.Atomic.Load(ref machine->attention) != 0) { Blink.CheckForSignals(machine); continue; }
-                if ((ulong)Interlocked.Increment(ref issued) > instructionBudget) { stop.RequestBudgetStop(); break; }
-                ThreadedSyscallObservation? observation = trace == null ? null : Observe(worker);
-                bool returned = false;
-                try { Blink.ExecuteInstruction(machine); returned = true; }
-                finally
-                {
-                    if (observation != null)
-                    {
-                        var item = observation with { ReturnValue = returned ? Register(machine, 0) : null };
-                        lock (gate) trace!(item);
-                    }
-                }
-                ++worker.Instructions; Interlocked.Increment(ref completed);
+                if (!ExecuteOne(worker)) break;
             }
             if (worker.Stop.Reason != HostExecutionStopReason.None)
                 Require(machine->sysdepth == 0 && (int)machine->insyscall == 0 &&
@@ -289,6 +288,45 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         { worker.Halt = jump.Value; worker.Termination = "Halt"; StopGroup(); }
         catch (Exception error) { worker.Error = error; worker.Termination = "Failure"; StopGroup(); }
         finally { worker.Ip = machine->ip; ClearExecution(worker); }
+    }
+    // Normal execution and recursive upstream signal delivery share this exact
+    // instruction reservation, trace and completion path. Handler work cannot
+    // escape the process-wide budget or the worker's monotonic stop token.
+    private bool ExecuteOne(Worker worker)
+    {
+        if (worker.Stop.Reason != HostExecutionStopReason.None) return false;
+        if ((ulong)Interlocked.Increment(ref issued) > instructionBudget)
+        { stop.RequestBudgetStop(); return false; }
+        ThreadedSyscallObservation? observation = trace == null ? null : Observe(worker);
+        bool returned = false;
+        try { Blink.ExecuteInstruction(worker.Machine); returned = true; }
+        finally
+        {
+            if (observation != null)
+            {
+                var item = observation with { ReturnValue = returned ? Register(worker.Machine, 0) : null };
+                lock (gate) trace!(item);
+            }
+        }
+        ++worker.Instructions; Interlocked.Increment(ref completed);
+        return true;
+    }
+    void IHostGuestThreads.RunSignalActor(nint pointer)
+    {
+        Worker worker = RequireCurrent();
+        Require((nint)worker.Machine == pointer, "Recursive signal execution owner");
+        var machine = worker.Machine;
+        // Preserve upstream SignalActor ordering: execute, then test restored
+        // before consuming attention. On stop, return through its original
+        // DeliverSignalRecursively/syscall cleanup rather than throw across it.
+        while (ExecuteOne(worker))
+        {
+            if ((int)Blink.Atomic.Load(ref machine->attention) != 0)
+            {
+                if ((int)machine->restored != 0) break;
+                Blink.CheckForSignals(machine);
+            }
+        }
     }
     private static void ClearExecution(Worker worker)
     {
@@ -309,9 +347,16 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         var machine = worker.Machine;
         if (machine == null) return;
         ClearWorkerTid(worker);
-        worker.Machine = null;
         Blink.SetHostGuestCurrentMachine(null);
-        Blink.FreeMachine(machine); worker.Released = true;
+        // FreeMachine removes the target under upstream machines_lock. Until
+        // then, a concurrent SysTkill may still legitimately enumerate it and
+        // needs its owning metadata/wake target. Never hold gate across free.
+        Blink.FreeMachine(machine);
+        lock (worker.Owner.gate)
+        {
+            worker.PendingSignals.Clear(); worker.ImmediateSignal = null;
+            worker.Machine = null; worker.Released = true;
+        }
     }
     int IHostGuestThreads.Start(nint pointer)
     {
@@ -332,7 +377,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             }
             catch (Exception error) when (error is OutOfMemoryException or ThreadStateException)
             {
-                if (worker != null) { workers.Remove(worker); worker.Sleep.Dispose(); worker.Stop.Dispose(); }
+                if (worker != null) { workers.Remove(worker); worker.Wake.Dispose(); worker.Sleep.Dispose(); worker.Stop.Dispose(); }
                 return 11;
             }
         }
@@ -377,9 +422,66 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         {
             Worker? worker = workers.FirstOrDefault(w => !w.Finished && w.HostIdentity == thread);
             if (worker == null) return 3;
-            // Nonzero host pthread notifications require separately qualified
-            // interrupt/delivery semantics. Never emit native host signals.
             return signal == 0 ? 0 : 95;
+        }
+    }
+    int IHostGuestThreads.WakeSignal(nint pointer)
+    {
+        _ = RequireCurrent();
+        Worker? worker;
+        lock (gate)
+            worker = workers.FirstOrDefault(w => !w.Finished && !w.Released && (nint)w.Machine == pointer);
+        if (worker == null) return 3;
+        // NewMachine initially stores its creator's pthread identity. Address
+        // the actual owned Machine even before its child has bound or started.
+        // Request only schedules callbacks; it never runs cancellation under
+        // this caller's upstream machines_lock. No native signal is emitted.
+        worker.Wake.Request();
+        return 0;
+    }
+    void IHostGuestThreads.SignalCheckpoint(nint pointer)
+    {
+        Worker worker = RequireCurrent();
+        Require((nint)worker.Machine == pointer, "Signal checkpoint owner");
+        worker.Wake.Checkpoint();
+    }
+    void IHostGuestThreads.EnqueueSignalInfo(nint pointer, int signal, int processId, uint userId)
+    {
+        _ = RequireCurrent();
+        Require(signal is >= 1 and <= 64 && processId > 0, "Queued signal sender");
+        lock (gate)
+        {
+            Worker worker = workers.Single(w => (nint)w.Machine == pointer && !w.Released);
+            // Called under the upstream sig_lock, before its pending bit is
+            // set. Coalesced delivery preserves the first actual sender.
+            if ((worker.Machine->signals & (1UL << (signal - 1))) == 0)
+                worker.PendingSignals[signal] = new(processId, userId);
+        }
+    }
+    void IHostGuestThreads.DeliverThreadSignal(nint pointer, int signal, int processId, uint userId)
+    {
+        Worker worker = RequireCurrent();
+        Require((nint)worker.Machine == pointer && signal is >= 1 and <= 64 && processId > 0,
+            "Immediate signal sender");
+        var previous = worker.ImmediateSignal;
+        worker.ImmediateSignal = (signal, new(processId, userId));
+        try { Blink.DeliverSignal(worker.Machine, signal, -6); } // SI_TKILL_LINUX
+        finally { worker.ImmediateSignal = previous; }
+    }
+    HostGuestSignalInfo? IHostGuestThreads.TakeSignalInfo(nint pointer, int signal, bool discard)
+    {
+        Worker worker = RequireCurrent();
+        Require((nint)worker.Machine == pointer && signal is >= 1 and <= 64, "Signal metadata owner");
+        if (!discard && worker.ImmediateSignal is { } immediate && immediate.Signal == signal)
+            return immediate.Sender;
+        lock (gate)
+        {
+            // ConsumeSignalImpl clears the selected pending bit under sig_lock
+            // before building its frame. An unrelated synchronous fault with
+            // the same number must not steal still-pending sender metadata.
+            if (!discard && (worker.Machine->signals & (1UL << (signal - 1))) != 0) return null;
+            bool found = worker.PendingSignals.Remove(signal, out var sender);
+            return !discard && found ? sender : null;
         }
     }
     private Worker RequireCurrent()
