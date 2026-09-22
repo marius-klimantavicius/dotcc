@@ -3092,10 +3092,7 @@ internal sealed partial class CSharpBackend
         {
             if (replacement.Kind == "managedMethod") return replacement.Value + "(" + string.Join(", ", c.Args.Select(Expr)) + ")";
             if (replacement.Kind == "intrinsic" && FunctionOverrideIntrinsic.Find(replacement.Value) is { } operation)
-                return "global::System.Buffers.Binary.BinaryPrimitives." + operation.ManagedMethod +
-                    "(new global::System." + (operation.Store ? "Span" : "ReadOnlySpan") + "<byte>(" +
-                    Expr(c.Args[0]) + ", " + operation.Bytes + ")" +
-                    (operation.Store ? ", " + Expr(c.Args[1]) : "") + ")";
+                return operation.RenderCall(c.Args.Select(Expr).ToArray());
             throw new CompileException("unsupported semantic function target: " + replacement);
         }
         if (LowerGnuIntrinsicCall(c) is { } intrinsic) { return intrinsic; }
