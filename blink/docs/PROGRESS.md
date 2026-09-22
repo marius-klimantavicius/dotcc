@@ -4,11 +4,30 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-**Stopped by explicit user request to save state before session limits.** No
-build or guest run is active. Resume from [RESTART-P5-KESTREL.md](RESTART-P5-KESTREL.md),
-which records exact receipts, pending file ownership, an immutable backup and
-the known next checks. Pending signal/wake integration is source-only and
-uncommitted; the current live source combination has not been qualified.
+**Resumed by the user on 2026-09-23.** The saved 25-file source checkpoint was
+compared with its base, current HEAD, index and worktree before recovery; no
+intervening changes affected those paths. The separate nine staged historical
+files and unstaged old blocker additions are preserved, with an exact index/
+diff backup in `artifacts/resume-reconciliation-10kx1jn6`. They include obsolete
+Host directory copies and regress historical receipts; they are not active
+product inputs and are not included in campaign commits.
+
+Transient wake qualification now passes native smoke and raw/optimized
+JIT/NativeAOT: 32 translated scenarios plus one direct BCL reference in each
+mode (`host-io-cancellation/attempt-7bwtbsow`, receipt SHA-256
+`d777809043e1b3e7cdf6061092b4b561adf1973754e7827038a9b85dac365564`).
+The recovered helper's competing CTS disposal and blocked-test duplicate-wake
+races were fixed; existing binding overloads are retained. This does not yet
+qualify epoll/sleep wake or actual guest signal delivery. Fresh six-callback
+source staging/zero-fuzz reproduction passes at
+`threaded-signal-staging/attempt-o_47yol3`; owner integration still needs a new
+compiled product and actual Kestrel execution. The historical restart checklist
+is retained in [RESTART-P5-KESTREL.md](RESTART-P5-KESTREL.md).
+
+The user also authorized six endian load/store semantic intrinsics and reviewed
+Blink selection. Generic compiler support, pinned profile integration and
+native/all-four differential qualification are underway before final product
+regeneration. No P6 work starts.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the

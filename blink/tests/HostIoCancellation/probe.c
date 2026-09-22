@@ -55,6 +55,13 @@ int CanceledCall(int operation, int fd, unsigned short port) {
   for (unsigned i = 0; i < sizeof(bytes); ++i) CHECK(bytes[i] == 0xa5);
   return 0;
 }
+int InterruptedCall(int operation, int fd) {
+  unsigned char bytes[LENGTH]; memset(bytes, 0xa5, sizeof(bytes));
+  errno = 0;
+  CHECK(Operation(operation, fd, 0, bytes) == -1 && errno == EINTR);
+  for (unsigned i = 0; i < sizeof(bytes); ++i) CHECK(bytes[i] == 0xa5);
+  return 0;
+}
 long PartialWrite(int operation, int fd) {
   unsigned char bytes[LENGTH]; memset(bytes, 0x5a, sizeof(bytes));
   return Operation(operation, fd, 0, bytes);

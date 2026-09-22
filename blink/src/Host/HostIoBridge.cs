@@ -16,24 +16,32 @@ public static partial class Blink
 {
     [ThreadStatic] private static InstanceIo? io;
     [ThreadStatic] private static CancellationToken ioCancellation;
+    [ThreadStatic] private static HostSignalWake? ioSignalWake;
     private const int IoChunk = 65536, IoVectorLimit = 1024, PathLimit = 4096;
     private static readonly UTF8Encoding PathEncoding = new(false, true);
     public static void BindHostIo(InstanceIo value) => BindHostIo(value, default);
-    public static void BindHostIo(InstanceIo value, CancellationToken cancellation)
+    public static void BindHostIo(InstanceIo value, CancellationToken cancellation) => BindHostIo(value, cancellation, null);
+    public static void BindHostIo(InstanceIo value, CancellationToken cancellation, HostSignalWake? signalWake)
     {
         ArgumentNullException.ThrowIfNull(value);
         if (io != null) throw new InvalidOperationException("I/O already bound on this worker.");
         io = value;
         ioCancellation = cancellation;
+        ioSignalWake = signalWake;
     }
     public static void UnbindHostIo()
     {
         io = null;
         ioCancellation = default;
+        ioSignalWake = null;
     }
     private static int IoError(int error) { Libc.errno = error; return -1; }
-    private static long IoResult<T>(HostResult<T> result) where T : global::System.Numerics.INumber<T>
-        => result.Succeeded ? long.CreateChecked(result.Value) : IoError((int)result.Error);
+    private static HostSignalWake.Lease? BeginIoOperation() => ioSignalWake?.Begin(ioCancellation);
+    private static int IoErrorCode(GuestError error, HostSignalWake.Lease? wake = null)
+        => error == GuestError.Canceled && !ioCancellation.IsCancellationRequested && wake?.WasInterrupted == true
+            ? 4 : (int)error;
+    private static long IoResult<T>(HostResult<T> result, HostSignalWake.Lease? wake = null) where T : global::System.Numerics.INumber<T>
+        => result.Succeeded ? long.CreateChecked(result.Value) : IoError(IoErrorCode(result.Error, wake));
     private static int IoException(Exception exception) => IoError(exception is OutOfMemoryException ? 12 : 5);
 
     public static unsafe int blink_io_open(byte* path, int flags)
@@ -107,9 +115,10 @@ public static partial class Blink
             if (io == null) return IoError(19);
             if (destination == null && length != 0) return IoError(14);
             byte[] buffer = new byte[(int)global::System.Math.Min(length, (ulong)IoChunk)];
-            var result = io.ReadAsync(fd, buffer, ioCancellation).GetAwaiter().GetResult();
+            using var wake = BeginIoOperation();
+            var result = io.ReadAsync(fd, buffer, wake?.Token ?? ioCancellation).GetAwaiter().GetResult();
             if (result.Succeeded) buffer.AsSpan(0, result.Value).CopyTo(new Span<byte>(destination, buffer.Length));
-            return IoResult(result);
+            return IoResult(result, wake);
         }
         catch (Exception error) { return IoException(error); }
     }
@@ -145,7 +154,8 @@ public static partial class Blink
             if (source == null && length != 0) return IoError(14);
             int count = (int)global::System.Math.Min(length, (ulong)IoChunk);
             byte[] buffer = new ReadOnlySpan<byte>(source, count).ToArray();
-            return IoResult(io.WriteAsync(fd, buffer, ioCancellation).GetAwaiter().GetResult());
+            using var wake = BeginIoOperation();
+            return IoResult(io.WriteAsync(fd, buffer, wake?.Token ?? ioCancellation).GetAwaiter().GetResult(), wake);
         }
         catch (Exception error) { return IoException(error); }
     }
@@ -167,9 +177,11 @@ public static partial class Blink
             }
             byte[] buffer = new byte[(int)global::System.Math.Min(total, (ulong)IoChunk)];
             if (writing) CopyVectors(vectors, count, buffer, true);
-            var result = (writing ? io.WriteAsync(fd, buffer, ioCancellation) : io.ReadAsync(fd, buffer, ioCancellation)).GetAwaiter().GetResult();
+            using var wake = BeginIoOperation();
+            var token = wake?.Token ?? ioCancellation;
+            var result = (writing ? io.WriteAsync(fd, buffer, token) : io.ReadAsync(fd, buffer, token)).GetAwaiter().GetResult();
             if (!writing && result.Succeeded) CopyVectors(vectors, count, buffer.AsSpan(0, result.Value), false);
-            return IoResult(result);
+            return IoResult(result, wake);
         }
         catch (Exception error) { return IoException(error); }
     }

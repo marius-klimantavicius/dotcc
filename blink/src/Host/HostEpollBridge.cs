@@ -45,9 +45,11 @@ public static partial class Blink
                 if (blink_host_sigprocmask(2, mask, &previous) != 0) return -1;
                 restore = true;
             }
-            var result = io.WaitEpollEventsAsync(epfd, maxEvents, timeoutMilliseconds, ioCancellation)
+            using var wake = BeginIoOperation();
+            var result = io.WaitEpollEventsAsync(epfd, maxEvents, timeoutMilliseconds, wake?.Token ?? ioCancellation)
                 .GetAwaiter().GetResult();
             if (!result.Succeeded)
+                // Preserve epoll's established EINTR contract for either cancellation source.
                 return IoError(result.Error == GuestError.Canceled ? 4 : (int)result.Error);
             if (result.Value.Length > maxEvents)
                 throw new InvalidOperationException("Host returned too many epoll events.");

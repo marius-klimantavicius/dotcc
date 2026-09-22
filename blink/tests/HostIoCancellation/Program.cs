@@ -20,7 +20,7 @@ static async Task WaitPending(Func<bool> pending, Task operation)
     if (operation.IsFaulted) await operation;
     Check(pending() && !operation.IsCompleted, "call must have an actual pending host operation");
 }
-static Work Start(InstanceIo owner, CancellationToken token, Func<long> call)
+static Work Start(InstanceIo owner, CancellationToken token, Func<long> call, HostSignalWake? wake = null)
 {
     var completion = new TaskCompletionSource<long>(TaskCreationOptions.RunContinuationsAsynchronously);
     var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -28,7 +28,7 @@ static Work Start(InstanceIo owner, CancellationToken token, Func<long> call)
     {
         try
         {
-            Blink.BindHostIo(owner, token);
+            Blink.BindHostIo(owner, token, wake);
             GC.Collect(2, GCCollectionMode.Forced, true, true);
             entered.SetResult();
             completion.SetResult(call());
@@ -81,13 +81,14 @@ static async Task PipeCancel(int operation, bool deadline = false, bool dispose 
     }
     finally { token.Cancel(); await Dispose(owner); }
 }
-static async Task PartialPipe(int operation)
+static async Task PartialPipe(int operation, bool signalWake = false)
 {
     var owner = Owner(); using var token = new CancellationTokenSource();
+    using var wake = signalWake ? new HostSignalWake() : null;
     try
     {
         var pair = owner.Pipe(); Check(pair.Succeeded, "partial pipe create");
-        Work work = Start(owner, token.Token, () => Blink.PartialWrite(operation, pair.Value.Write));
+        Work work = Start(owner, token.Token, () => Blink.PartialWrite(operation, pair.Value.Write), wake);
         await WaitPending(() => owner.PendingPipeOperations == 1, work.Result);
         long start = Stopwatch.GetTimestamp();
         bool committed = false;
@@ -99,7 +100,7 @@ static async Task PartialPipe(int operation)
             if (!committed) await Task.Delay(1);
         }
         Check(committed && !work.Result.IsCompleted, "partial write committed capacity and remains pending");
-        token.Cancel();
+        if (wake != null) wake.Request(); else token.Cancel();
         Check(await Finish(work) == 4096, "successful partial count survives cancellation");
         byte[] bytes = new byte[4096]; var read = await owner.ReadAsync(pair.Value.Read, bytes);
         Check(read.Succeeded && read.Value == 4096 && bytes.All(x => x == 0x5a), "exact successful partial bytes");
@@ -236,6 +237,67 @@ static async Task BclReference()
     finally { await Dispose(owner); }
 }
 
+static async Task TransientWake(int operation, bool beforeRegistration = false)
+{
+    var owner = Owner(); using var permanent = new CancellationTokenSource();
+    using var wake = new HostSignalWake();
+    try
+    {
+        int fd;
+        if (operation is 0 or 1 or 9)
+        {
+            var pair = owner.Pipe(); Check(pair.Succeeded, "signal wake pipe"); fd = pair.Value.Read;
+        }
+        else
+        {
+            int listener = Listener(owner);
+            fd = operation == 8 ? listener : (await Pair(owner, listener)).Accepted;
+        }
+        int descriptors = owner.OpenDescriptors;
+        if (beforeRegistration) { wake.Request(); wake.Request(); }
+        Work work = Start(owner, permanent.Token, () =>
+        {
+            Check(Blink.InterruptedCall(operation, fd) == 0, "transient wake returns EINTR with unchanged outputs");
+            wake.Checkpoint(); // Explicit counterpart of the guest's signal-consumption checkpoint.
+            return Blink.ReadFour(0);
+        }, wake);
+        if (!beforeRegistration)
+        {
+            if (operation == 9)
+            {
+                await work.Entered.WaitAsync(TimeSpan.FromSeconds(5));
+                await Task.Delay(50);
+                Check(!work.Result.IsCompleted, "signal poll is actually incomplete");
+            }
+            else await WaitPending(() => operation < 2 ? owner.PendingPipeOperations == 1 : owner.PendingSocketOperations == 1, work.Result);
+            // A second request here could arrive after the worker's checkpoint
+            // and legitimately interrupt its subsequent read. Repeated pending
+            // requests are covered before registration above.
+            wake.Request();
+        }
+        Check(await Finish(work) == 0, "checkpoint allows subsequent ordinary read");
+        Check(owner.OpenDescriptors == descriptors && owner.PendingPipeOperations == 0 && owner.PendingSocketOperations == 0,
+            "transient notification drains without closing descriptors");
+        wake.Dispose();
+        Check(wake.NotificationFailure == null, "transient notification callbacks completed cleanly");
+    }
+    finally { permanent.Cancel(); await Dispose(owner); }
+}
+static async Task PermanentAndTransient()
+{
+    var owner = Owner(); using var permanent = new CancellationTokenSource();
+    using var wake = new HostSignalWake();
+    try
+    {
+        var pair = owner.Pipe(); Check(pair.Succeeded, "valid priority pipe");
+        permanent.Cancel(); wake.Request();
+        Work work = Start(owner, permanent.Token, () => Blink.CanceledCall(0, pair.Value.Read, 0), wake);
+        Check(await Finish(work) == 0, "permanent cancellation retains ECANCELED despite transient request");
+        wake.Dispose(); Check(wake.NotificationFailure == null, "priority notification drained");
+    }
+    finally { await Dispose(owner); }
+}
+
 Check(Blink.LayoutProbe() == 0, "translated ABI");
 await BclReference();
 for (int operation = 0; operation < 4; ++operation) await PipeCancel(operation);
@@ -246,6 +308,10 @@ await SocketCancel(4, deadline: true); await SocketCancel(6, dispose: true);
 await PollCancel(false); await PollCancel(true);
 foreach (int operation in new[] { 5, 7, 10 }) await PreCanceledSocket(operation);
 await Defaults(); await Isolation();
-Console.WriteLine("callback cancellation: pipes, vectors, sockets, messages, poll, deadlines, partial writes, reset, isolation, drain: PASS");
+foreach (int operation in new[] { 0, 1, 4, 6, 8, 9 }) await TransientWake(operation);
+await TransientWake(0, beforeRegistration: true);
+await PermanentAndTransient();
+await PartialPipe(2, signalWake: true); await PartialPipe(3, signalWake: true);
+Console.WriteLine("callback cancellation: pipes, vectors, sockets, messages, poll, deadlines, partial writes, reset, isolation, drain, transient wake/checkpoint: PASS");
 
 sealed record Work(Thread Thread, Task<long> Result, Task Entered);

@@ -57,8 +57,10 @@ public static partial class Blink
             if (writing) CopyVectors(vectors, (int)vectorCount, buffer, true);
             // Preserve native stream readiness even for zero-capacity receives:
             // Linux recvmsg may wait until data or EOF is observable.
-            var result = (writing ? io.SendAsync(fd, buffer, ioCancellation) : io.ReceiveAsync(fd, buffer, ioCancellation, peek: (flags & 2) != 0)).GetAwaiter().GetResult();
-            if (!result.Succeeded) return IoError((int)result.Error);
+            using var wake = BeginIoOperation();
+            var token = wake?.Token ?? ioCancellation;
+            var result = (writing ? io.SendAsync(fd, buffer, token) : io.ReceiveAsync(fd, buffer, token, peek: (flags & 2) != 0)).GetAwaiter().GetResult();
+            if (!result.Succeeded) return IoError(IoErrorCode(result.Error, wake));
             int transferred = result.Value;
             if (!writing)
             {

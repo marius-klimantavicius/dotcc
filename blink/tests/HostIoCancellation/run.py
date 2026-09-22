@@ -33,7 +33,7 @@ sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 r = {'kind': 'translated-private-io-cancellation', 'passed': False, 'results': {},
      'temporary_directory': str(temporary),
      'finite_cases': {
-         'translated_scenarios': 22,
+         'translated_scenarios': 32,
          'direct_bcl_scenarios': 1,
          'translated': ['pipe-read-cancel', 'pipe-readv-cancel', 'pipe-write-cancel',
              'pipe-writev-cancel', 'pipe-read-deadline', 'pipe-readv-dispose',
@@ -42,13 +42,15 @@ r = {'kind': 'translated-private-io-cancellation', 'passed': False, 'results': {
              'socket-recvmsg-dispose', 'poll-cancel', 'poll-deadline',
              'send-pre-canceled', 'sendmsg-pre-canceled', 'connect-pre-canceled',
              'binding-reset', 'default-connect-send', 'default-connect-sendmsg',
-             'two-owner-isolation'],
+             'two-owner-isolation', 'wake-pipe-read', 'wake-pipe-readv', 'wake-socket-recv',
+             'wake-socket-recvmsg', 'wake-socket-accept', 'wake-poll', 'wake-before-registration',
+             'wake-permanent-cancellation-priority', 'wake-partial-write', 'wake-partial-writev'],
          'direct_bcl': ['pipe-read-cancel'],
      },
      'scope': 'authored callback contract; no guest dispatcher/loop, signal delivery, service or worker',
      'limitations': [
          'Native C validates ordinary pipe/vector/poll behavior and ABI, not CancellationToken semantics.',
-         'Direct BCL counterpart qualifies pending pipe-read cancellation only; other rows assert explicit private callback contracts. ECANCELED125 is not guest EINTR.',
+         'Direct BCL counterpart qualifies pending pipe-read cancellation only; translated rows distinguish permanent ECANCELED125 and transient EINTR4. Guest signal delivery is a separate gate.',
          'Pipe/socket pending counters observe actual operations. Poll has no public pending counter; its incomplete worker is observed on a known nonready source.',
          'Send/sendmsg/connect cancellation is checked before entry with valid resources; no blocked connect/send timing claim.',
          'Guest poll/nanosleep retry and CPU execution stop/deadline integration remain unqualified.',
@@ -139,7 +141,7 @@ try:
     r['head'] = subprocess.check_output(['git', '-C', REPO, 'rev-parse', 'HEAD'], text=True).strip()
     r['runner_sha256'] = sha(Path(__file__))
     owned = [ROOT/'tests/HostIoCancellation'/name for name in ['run.py', 'probe.c', 'Program.cs']]
-    bridges = [ROOT/'src'/name/(name+'Bridge.cs') for name in BRIDGES]
+    bridges = [ROOT/'src/Host'/(name+'Bridge.cs') for name in BRIDGES]
     r['authored_inputs'] = {str(p.relative_to(ROOT)): sha(p) for p in owned+bridges}
     for name in ['probe.c', 'Program.cs']:
         shutil.copyfile(ROOT/'tests/HostIoCancellation'/name, attempt/name)
@@ -147,7 +149,7 @@ try:
         shutil.copyfile(source, attempt/source.name)
     shutil.copytree(ROOT/'config/managed-host', attempt/'profile')
     for directory, name in [('HostIo', 'host-io.h'), ('HostMessages', 'host-messages.h')]:
-        shutil.copyfile(ROOT/'src'/directory/name, attempt/'profile'/name)
+        shutil.copyfile(ROOT/'src/Host/include'/name, attempt/'profile'/name)
     shutil.copytree(ROOT/'src/Managed.Emulation.Host', attempt/'host', ignore=shutil.ignore_patterns('bin', 'obj'))
     r['inputs'] = {str(p.relative_to(attempt)): sha(p) for p in attempt.rglob('*') if p.is_file()}
     r['host_sources'] = {str(p.relative_to(attempt/'host')): sha(p) for p in (attempt/'host').rglob('*') if p.is_file()}
@@ -166,7 +168,7 @@ try:
     if expected_abi != required_abi:
         raise RuntimeError('Native ABI/ordinary pipe smoke differs from fixed Linux LP64 contract')
     r['native_smoke_passed'] = True
-    r['expected_private_stdout'] = (expected_abi + b'callback cancellation: pipes, vectors, sockets, messages, poll, deadlines, partial writes, reset, isolation, drain: PASS\n').decode()
+    r['expected_private_stdout'] = (expected_abi + b'callback cancellation: pipes, vectors, sockets, messages, poll, deadlines, partial writes, reset, isolation, drain, transient wake/checkpoint: PASS\n').decode()
     raw = attempt/'raw-generated'
     optimized = attempt/'optimized-generated'
     run(['dotnet', cli, '-std=c17', '-DBLINK_MANAGED_CANCELLATION', '-I', attempt/'profile',

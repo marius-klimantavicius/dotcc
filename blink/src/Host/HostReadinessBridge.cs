@@ -18,8 +18,9 @@ public static partial class Blink
             if (descriptors == null && count != 0) return IoError(14);
             var requests = new PollRequest[(int)count];
             for (int i = 0; i < requests.Length; ++i) requests[i] = new(descriptors[i].fd, descriptors[i].events);
-            var result = io.PollAsync(requests, timeout, ioCancellation).GetAwaiter().GetResult();
-            if (!result.Succeeded) return IoError((int)result.Error);
+            using var wake = BeginIoOperation();
+            var result = io.PollAsync(requests, timeout, wake?.Token ?? ioCancellation).GetAwaiter().GetResult();
+            if (!result.Succeeded) return IoError(IoErrorCode(result.Error, wake));
             for (int i = 0; i < requests.Length; ++i) descriptors[i].revents = result.Value.Events[i];
             return result.Value.Count;
         }
