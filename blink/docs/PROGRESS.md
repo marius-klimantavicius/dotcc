@@ -20,8 +20,8 @@ The recovered helper's competing CTS disposal and blocked-test duplicate-wake
 races were fixed; existing binding overloads are retained. This does not yet
 qualify epoll/sleep wake or actual guest signal delivery. Fresh six-callback
 source staging/zero-fuzz reproduction passes at
-`threaded-signal-staging/attempt-o_47yol3`; owner integration still needs a new
-compiled product and actual Kestrel execution. The historical restart checklist
+`threaded-signal-staging/attempt-o_47yol3`; owner integration now compiles in the refreshed public product. Actual signal
+delivery still needs the bounded GuestSignals qualification below. The historical restart checklist
 is retained in [RESTART-P5-KESTREL.md](RESTART-P5-KESTREL.md).
 
 The six unsigned endian load/store intrinsics are committed in `0377af7`;
@@ -35,8 +35,19 @@ Public delivery `translation/attempt-5vi_voys` passes (receipt SHA-256
 108 freshly emitted objects, zero reuse; six matches on 55 producers and explicit
 absence on 53. Final output retains the direct original source references,
 literal pooling and inline deduplication. Actual Kestrel retry
-`kestrel-guest-execution/attempt-nfmi2iou` is running; CPU refresh and actual
-worker/sample gates remain pending. No measured speedup is claimed; no P6 starts.
+`kestrel-guest-execution/attempt-nfmi2iou` passes all five native HTTP semantics,
+normal exit and cleanup at 97,443,472 instructions (receipt SHA-256
+`49502a64368a261c6803cb308561891e5da34c6e256f9c1ab9d4787d3a60f64d`).
+Its complete trace contains no tkill or rt_sigreturn, so this success does not
+qualify the recovered signal path. A normal static GuestSignals fixture is being
+prepared to prove sender metadata, masked pending delivery, recursive handler
+accounting and cleanup. The first actual two-instance run
+`kestrel-worker-instances/attempt-3cr6q7v7` fails in raw JIT: A health succeeds;
+B returns EOF before any response. Its receipt SHA-256 is
+`6bfcab73dbe749713fdbae88a8bf76157510fad61f431ccd9f6f86e3b728b6e7`.
+The fixture failed to retain worker termination details on this path; a diagnostic
+capture correction precedes the retry, with production sources and limits frozen.
+CPU refresh and actual worker/sample gates remain pending. No measured speedup is claimed; no P6 starts.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the
@@ -79,9 +90,11 @@ The next required contract is cross-thread activation: the guest's signal 35
 is queued upstream, but the internal wake callback rejects nonzero signals,
 causing a guest abort. Reviewed causes also include absent sender PID metadata
 and nested handler dispatch outside owner accounting. Source implementation is
-integrated after recovery, with transient Host wake qualified and full product
-regeneration running. Actual guest signal delivery is not yet qualified. The worker matrix and actual sample are prepared
-but remain unqualified for Kestrel. No P6 work starts.
+integrated after recovery, with transient Host wake and fresh product compilation
+qualified. The standalone Kestrel five-request run now passes without invoking
+activation; actual guest signal delivery remains separately unqualified. The worker
+matrix first failed with an empty second-instance response, pending termination
+diagnostics; the actual sample remains unqualified for Kestrel. No P6 work starts.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of
 the emulator host alone do not satisfy the real NativeAOT guest requirement.
