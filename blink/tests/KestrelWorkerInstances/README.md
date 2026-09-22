@@ -1,6 +1,24 @@
 # Genuine Kestrel worker lifecycle matrix
 
-Source preparation only; this fixture has not been built or run. The earlier
+The first matrix attempt failed in raw JIT after A's health request passed and
+B's health request returned an empty response. Its unchanged receipt is
+`artifacts/kestrel-worker-instances/attempt-3cr6q7v7/receipt.json`
+(SHA256 `6bfcab73dbe749713fdbae88a8bf76157510fad61f431ccd9f6f86e3b728b6e7`).
+All 1,516 independently checked identities matched, and process cleanup required
+no signals. That attempt did not retain the failing worker's final result, so it
+does not establish whether a budget, guest signal or runtime error caused EOF.
+The remaining three modes were not attempted.
+
+The updated diagnostic capture is source-ready and pending execution. It retains
+every launched worker's actual completion even when HTTP or lifecycle checks
+fail. It records completion state and reason before any cleanup and immediately
+before that worker's disposal. A still-pending worker is marked as potentially
+affected by cleanup's stop request; its later stopped result is not presented as
+a natural outcome. Original scenario failures remain the primary error, with
+cleanup/completion exceptions recorded separately. Successful scenarios require
+all four workers to have completed before this diagnostic cleanup begins.
+
+The earlier
 raw TCP `../WorkerInstances` fixture and its receipts remain unchanged. Run this
 matrix only with a reviewed coherent public threaded delivery after the separate
 Kestrel optimized-JIT startup/HTTP gate succeeds.
@@ -57,7 +75,7 @@ times, idle wait, worker details, stdout/stderr and response hashes are retained
 The memory setting is an admission ceiling, not measured physical usage. It
 addresses the preserved standalone 64 MiB address-space failure documented in
 `../KestrelGuestExecution/README.md`; the native guest's 16 MiB GC cap and six
-environment entries remain unchanged. This matrix has not yet run.
+environment entries remain unchanged. The full matrix remains unqualified.
 
 A pass requires all 16 processes and 40 HTTP comparisons. Child final detail
 must independently report the actual None/Requested/Deadline stop reason,

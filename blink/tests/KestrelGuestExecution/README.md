@@ -1,6 +1,18 @@
-# Actual translated Kestrel startup diagnostic
+# Actual translated Kestrel execution
 
-This first gate runs only optimized JIT, using exact public threaded delivery
+The current optimized-JIT gate **passes** at
+`../../artifacts/kestrel-guest-execution/attempt-nfmi2iou/receipt.json`
+(SHA-256 `49502a64368a261c6803cb308561891e5da34c6e256f9c1ab9d4787d3a60f64d`).
+The refreshed intrinsic/signal product executes the unchanged native Kestrel ELF:
+all five HTTP comparisons, normal exit zero and all resource cleanup pass at
+97,443,472 instructions with ten guest Machines. The original 100M/60s bounds
+remain. The complete trace contains no `tkill` or `rt_sigreturn`; this pass does
+not qualify activation-signal delivery. The separate worker matrix and normal
+GuestSignals fixture cover the remaining lifecycle and signal requirements.
+Historical failed attempts below retain their original evidence.
+
+
+The original first gate ran only optimized JIT, using exact public threaded delivery
 `attempt-i4a5mfa8`, genuine static Kestrel ELF from `attempt-o5jvvf7t`, and the
 passing controlled native profile `attempt-zphi57zq`. Their receipt identities
 identify the preserved first execution. The native guest/profile hashes remain
@@ -10,8 +22,8 @@ the instruction budget was exhausted in guest GC before readiness.
 
 ```sh
 python3 blink/tests/KestrelGuestExecution/run.py \
-  --delivery-receipt blink/artifacts/translation/attempt-tf_6yqk6/receipt.json \
-  --delivery-sha256 92763476d1719166912ecbf2d5ca31cabb1feb512cfcef278a288319980524a5 \
+  --delivery-receipt blink/artifacts/translation/attempt-5vi_voys/receipt.json \
+  --delivery-sha256 20d1eda5d5915c7ee38eb37f0c3e8ef5203a542a0c4d8d5aa20df92118b2c43a \
   --native-receipt blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/receipt.json \
   --profile-receipt blink/artifacts/kestrel-native-profile/attempt-zphi57zq/receipt.json
 ```
@@ -51,7 +63,7 @@ values (up to 16,384 rows per thread, with explicit truncation/count indicators)
 The runner separately records whether a diagnostic result was produced, without
 counting that as a successful guest. Source/tool/SDK/runtime/package/binary
 identities are checked before and after execution. Raw JIT and both NativeAOT
-host modes remain separate future gates.
+host modes remain separate worker-matrix gates.
 
 ## First observed execution
 

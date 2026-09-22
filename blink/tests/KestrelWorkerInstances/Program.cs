@@ -10,6 +10,10 @@ internal static class Program
 {
     private sealed record Observation(string Name, int Pid, int Port, string Executable, InstanceResult Result);
     private sealed record Exchange(string Name, int Bytes, string Sha256, int RequestBytes, int[] WriteEndOffsets);
+    private sealed record FinalObservation(int LaunchIndex, int Pid, string Executable,
+        bool CompletedBeforeCleanup, string? ReasonBeforeCleanup,
+        bool CompletedBeforeDispose, string? ReasonBeforeDispose,
+        InstanceResult? Result, string? CompletionError, string? CleanupError);
     private static void Check(bool value, string message)
     { if (!value) throw new InvalidOperationException(message); }
 
@@ -25,6 +29,8 @@ internal static class Program
         var observations = new List<Observation>();
         var exchanges = new List<Exchange>();
         var owners = new List<BlinkInstance>();
+        var identities = new Dictionary<BlinkInstance, (int Index, int Pid, string Executable)>();
+        var finalObservations = new List<FinalObservation>();
         var started = new Dictionary<int, Stopwatch>();
         var readyMilliseconds = new Dictionary<int, long>();
         long idleWaitMilliseconds = 0;
@@ -53,6 +59,7 @@ internal static class Program
             var timer = Stopwatch.StartNew();
             var instance = await BlinkInstance.StartAsync(launch, options, deadline.Token);
             owners.Add(instance); started.Add(instance.WorkerProcessId, timer);
+            identities.Add(instance, (owners.Count, instance.WorkerProcessId, options.Executable));
             return instance;
         }
         async Task<int> Ready(BlinkInstance instance)
@@ -155,9 +162,42 @@ internal static class Program
         catch (Exception error) { failure = error.ToString(); }
         finally
         {
+            // Snapshot every completion state before cleanup can request stop.
+            // These diagnostics never count as successful lifecycle observations.
+            static (bool Completed, string? Reason) SnapshotCompletion(BlinkInstance owner)
+            {
+                bool completed = owner.Completion.IsCompleted;
+                return (completed, completed && owner.Completion.IsCompletedSuccessfully ? owner.Completion.Result.Reason : null);
+            }
+            var beforeCleanup = owners.ToDictionary(owner => owner, SnapshotCompletion);
             foreach (var owner in owners)
+            {
+                string? cleanupError = null, completionError = null;
+                InstanceResult? final = null;
+                var beforeDispose = SnapshotCompletion(owner);
                 try { await owner.DisposeAsync(); }
-                catch (Exception error) { passed = false; failure ??= error.ToString(); }
+                catch (Exception error)
+                {
+                    cleanupError = error.ToString();
+                    passed = false; failure ??= cleanupError;
+                }
+                try
+                {
+                    if (!owner.Completion.IsCompleted)
+                        throw new InvalidOperationException("Worker completion remains pending after cleanup.");
+                    final = await owner.Completion;
+                }
+                catch (Exception error)
+                {
+                    completionError = error.ToString();
+                    passed = false; failure ??= completionError;
+                }
+                // Process.Id is unavailable after Process disposal.
+                var identity = identities[owner];
+                finalObservations.Add(new(identity.Index, identity.Pid, identity.Executable,
+                    beforeCleanup[owner].Completed, beforeCleanup[owner].Reason,
+                    beforeDispose.Completed, beforeDispose.Reason, final, completionError, cleanupError));
+            }
             using var file = File.Create(Path.Combine(output, "result.json"));
             using var writer = new Utf8JsonWriter(file, new JsonWriterOptions { Indented = true });
             writer.WriteStartObject(); writer.WriteBoolean("passed", passed); writer.WriteString("error", failure);
@@ -187,6 +227,31 @@ internal static class Program
                 writer.WriteNumber("worker_exit_code", item.Result.WorkerExitCode); writer.WriteNumber("instructions", item.Result.Instructions);
                 writer.WriteString("stdout_hex", Convert.ToHexString(item.Result.StandardOutput).ToLowerInvariant()); writer.WriteString("stderr_hex", Convert.ToHexString(item.Result.StandardError).ToLowerInvariant());
                 writer.WriteString("worker_diagnostics", item.Result.WorkerDiagnostics); writer.WriteString("detail", item.Result.Detail); writer.WriteEndObject();
+            }
+            writer.WriteEndArray(); writer.WriteStartArray("final_observations");
+            foreach (var item in finalObservations)
+            {
+                writer.WriteStartObject(); writer.WriteNumber("launch_index", item.LaunchIndex);
+                writer.WriteNumber("pid", item.Pid); writer.WriteString("executable", item.Executable);
+                writer.WriteBoolean("completed_before_cleanup", item.CompletedBeforeCleanup);
+                writer.WriteString("reason_before_cleanup", item.ReasonBeforeCleanup);
+                writer.WriteBoolean("completed_before_dispose", item.CompletedBeforeDispose);
+                writer.WriteString("reason_before_dispose", item.ReasonBeforeDispose);
+                writer.WriteBoolean("cleanup_stop_possible", !item.CompletedBeforeDispose);
+                writer.WriteString("completion_error", item.CompletionError); writer.WriteString("cleanup_error", item.CleanupError);
+                if (item.Result is { } result)
+                {
+                    writer.WriteStartObject("result"); writer.WriteString("reason", result.Reason);
+                    writer.WriteNumber("exit_status", result.ExitStatus); writer.WriteNumber("halt", result.Halt);
+                    writer.WriteNumber("signal", result.Signal); writer.WriteNumber("instructions", result.Instructions);
+                    writer.WriteNumber("worker_exit_code", result.WorkerExitCode);
+                    writer.WriteString("stdout_hex", Convert.ToHexString(result.StandardOutput).ToLowerInvariant());
+                    writer.WriteString("stderr_hex", Convert.ToHexString(result.StandardError).ToLowerInvariant());
+                    writer.WriteString("worker_diagnostics", result.WorkerDiagnostics); writer.WriteString("detail", result.Detail);
+                    writer.WriteEndObject();
+                }
+                else writer.WriteNull("result");
+                writer.WriteEndObject();
             }
             writer.WriteEndArray(); writer.WriteEndObject();
         }

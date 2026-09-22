@@ -277,6 +277,13 @@ def main():
                 result_path = pin(report_dir / 'result.json'); result = json.loads(result_path.read_text())
                 if not result.get('passed') or result['image_sha256'] != sha(copied_elf) or len(result['workers']) != 4 or len(result['exchanges']) != 10:
                     raise RuntimeError(label + ' actual scenario coverage differs')
+                final_observations = result['final_observations']
+                if (len(final_observations) != 4 or
+                        {row['pid'] for row in final_observations} != {row['pid'] for row in result['workers']} or
+                        any(not row['completed_before_cleanup'] or row['result'] is None or
+                            row['completion_error'] is not None or row['cleanup_error'] is not None
+                            for row in final_observations)):
+                    raise RuntimeError('A successful lifecycle must finish before diagnostic cleanup')
                 if {x['name'] for x in result['workers']} != {'a', 'b', 'restart', 'deadline'} or len({x['pid'] for x in result['workers']}) != 4:
                     raise RuntimeError('Worker process identities differ')
                 expected_names = {'a-health', 'b-health', 'a-large', 'a-fragmented', 'a-missing', 'a-stop', 'b-after-a-health', 'restart-health', 'restart-stop', 'deadline-health'}
