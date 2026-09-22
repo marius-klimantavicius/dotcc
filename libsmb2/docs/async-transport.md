@@ -12,10 +12,11 @@ completion-driven C# socket services. Kerberos and DFS remain on hold.
 - Require registration through `smb2_fd_event_callbacks` before connection starts.
   Keep translated request queues, credits, framing, signing, encryption, response
   parsing and protocol callbacks. C# supplies socket execution and scheduling.
-- Add no C implementation, shim, helper header, source rewrite or generated-C#
-  patch. Use `config/defines.json` / `-D` for names where sufficient and a
-  translation override profile where required. Any missing compiler capability
-  must be implemented generically in dotcc, not hidden in a source patch.
+- Add no C function implementation, source rewrite or generated-C# patch. Prefer
+  `config/defines.json` / `-D` and translation overrides. The user permits a
+  fallback typedef plus struct declaration in `libsmb2/build/managed/config.h`
+  if necessary to describe the handle layout. All socket behavior stays in C#.
+  Any remaining compiler capability must be implemented generically in dotcc.
 - Implement the host functions in authored C# included in the generated target
   project, following SQLite's `Sqlite.Bcl.cs`, `HostVfs` and
   [`Directory.Build.targets`](../../sqlite/Directory.Build.targets).
@@ -24,10 +25,11 @@ completion-driven C# socket services. Kerberos and DFS remain on hold.
   `int` is explicit; conversion from `int` is implicit. The value identifies an
   entry in a separate socket registry, not a shared Libc file descriptor.
   The pinned upstream spelling is **`t_socket`**, rather than `socket_t`.
-- The struct is authored entirely in C#. No new C typedef or C struct is needed.
-  Prefer suppressing upstream's guarded integer typedef with
+- Prefer authoring the struct entirely in C#, suppressing upstream's integer typedef with
   `T_SOCKET_DEFINED=1` and teaching the translation profile that the existing
-  spelling `t_socket` denotes the authored managed type.
+  spelling `t_socket` denotes the authored managed type. If the declaration-only
+  config.h fallback is used, emit the storage type once and supply its operators
+  and behavior in an authored C# partial declaration instead.
 - Preserve the required solution, default translation entrypoint, final output
   path, named generated constants, raw/processed comparison and NativeAOT support.
 
@@ -86,7 +88,8 @@ The contract must provide:
    `T_SOCKET_DEFINED=1` suppressing upstream's existing integer typedef in both
    guarded headers. Prefer naming the C# struct `t_socket` too. Register its
    four-byte signed backing storage, unmanaged layout/alignment and consistent scalar
-   operations/conversions. No C declaration or typedef is added. Dotcc must know
+   operations/conversions. The preferred path adds no C declaration or typedef;
+   the permitted config.h fallback can supply the layout instead. Dotcc must know
    the type during parsing/binding/layout; merely adding the C# file at build
    time is not enough with the current compiler.
 2. Typed host-call binding for selected socket returns and descriptor parameters,
@@ -106,7 +109,35 @@ The contract must provide:
    compatibility boundaries and convert explicitly; do not change unrelated ints.
 5. Identical type/binding metadata in every object, link-time mismatch rejection,
    cache invalidation and usable diagnostics. Both raw and postprocessed output
-   must reference the authored type, without a duplicate generated declaration.
+   must reference one type identity. Use either the authored external type or
+   the generated storage type with an authored partial extension, never both
+   complete storage definitions.
+
+### Permitted declaration-only fallback
+
+If externally supplied type registration is impractical, generate
+`build/managed/config.h` with a C struct containing one int field and its
+`t_socket` typedef. Define `T_SOCKET_DEFINED` so both upstream headers skip their
+integer alias. Verify this declaration is seen before every use in every relevant
+translation unit; changing the include directory alone is not proof of ordering.
+Keep the declaration/template in tracked configuration and make `translate.sh`
+recreate the build header from it, with hashes and include precedence recorded.
+No manual file under ignored `build/` may become an unreproducible prerequisite.
+
+This gives dotcc the field layout through its existing C aggregate support. Let
+it emit the partial C# storage struct, and add explicit-to-int / implicit-from-int
+operators in an authored C# partial declaration of that exact generated type,
+including the namespace/nesting chosen by the library output. Do not redeclare
+the backing field in C#. The generated type's modifiers determine which partial
+modifiers are valid; the readonly sketch below describes the preferred authored
+type, not a requirement to rewrite generated storage.
+
+A C struct is not an integer scalar: existing C casts, assignments and comparisons
+may still need generic host-type binding/lowering support before the C# operators
+can be used. Prove those expressions as part of A0 rather than assuming that
+adding the declaration alone solves them. This fallback relaxes only the ban on
+C type declarations; it does not authorize C socket implementations or upstream
+source edits.
 
 The authored type is a sequential unmanaged readonly struct. Its essential
 conversion shape is below (design sketch only; equality/comparison members omitted):
@@ -294,6 +325,7 @@ Proposed authored files and responsibilities:
 | --- | --- |
 | `config/defines.json` | Proven translation aliases and selected feature defines. |
 | `config/dotcc-overrides.json` | Required macro and future typed host bindings, with exact matches/provenance. |
+| `build/managed/config.h` (fallback only) | Reproducibly generated typedef/struct declaration from tracked configuration; no C function bodies. |
 | `src/LibSmb2.Bcl.cs` | Partial-class C-facing entrypoints using generated types/constants. |
 | `src/HostSockets.Types.cs`, other `src/HostSockets*.cs` | Int-backed t_socket and conversion operators, registry, bounded buffers and BCL async operations. |
 | `src/Managed/SmbConnection.cs` and executor helpers | Awaitable requests, callbacks, deadlines and owning API. |
@@ -325,7 +357,9 @@ upstream-only fault-injection rule.
 - [ ] Prove which names work with existing defines; document minimal generic
       compiler additions for strong types and typed host signatures.
 - [ ] Implement those compiler additions if necessary, with managed-only tests
-      using source strings and the real pinned inputs; add no C shim/header/file.
+      using source strings and the real pinned inputs. Evaluate the permitted
+      generated config.h declaration fallback before requiring a broader type
+      registration feature; retain any binding support actually needed.
 - [ ] Verify four-byte size/alignment/arrays/function pointers, explicit-to-int
       and implicit-from-int round trips (including `-1`), required comparisons,
       raw/processed/object linking and rejection of accidental Libc descriptor use.

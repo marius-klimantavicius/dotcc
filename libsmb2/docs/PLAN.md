@@ -82,8 +82,10 @@ The following are mandatory deliverables, including when helper scripts are used
   and service the translated protocol from C# socket completions. Supply socket
   functions in authored C# included in the generated project, with a distinct
   int-backed `t_socket` struct with explicit conversion to int and implicit
-  conversion from int. Add no C glue or source/output rewrites; prefer
-  defines and translation-profile bindings. See [async-transport.md](async-transport.md)
+  conversion from int. Prefer defines and translation-profile bindings; a typedef
+  plus struct declaration in `build/managed/config.h` is an allowed fallback.
+  Socket functions remain C#; add no C implementation or source/output rewrites.
+  See [async-transport.md](async-transport.md)
   for the compiler feasibility gate, ownership model and compatibility boundary.
 
 Use the repository's .NET 10/C# 14 baseline, dotcc headers/libc, source/object
@@ -211,7 +213,9 @@ new async transport redirects socket execution to authored C# through defines an
 typed profile bindings. Define the required socket, DNS, scatter/gather I/O,
 errno, time and allocation contracts from actual imports. Keep upstream
 `socket.c` framing and request servicing translated; the host seam leaves protocol
-framing and queues in C. No new C adapter is allowed for this transport work.
+framing and queues in C. The only allowed new C surface for this transport is the
+fallback handle typedef/struct declaration in generated `build/managed/config.h`;
+all host function implementations remain C#.
 
 The [public header](https://github.com/sahlberg/libsmb2/blob/master/include/smb2/libsmb2.h)
 defines context, completion callback, and iovec ownership contracts. Audit the
