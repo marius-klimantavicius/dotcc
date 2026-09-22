@@ -323,6 +323,36 @@ permission to replace the interpreter or guest kernel semantics.
       speedups without measurements. This work is part of the authorized P5
       continuation and does not start the separate P6 performance campaign.
 
+### Managed boundaries through function overrides
+
+Prefer semantic `functionOverrides` targeting authored `managedMethod` entries
+over source patches that replace entire upstream functions. This applies to
+`UpstreamGuestThreads`, starting with `SignalActor`'s handoff to the owning C#
+instruction loop, and other thread/lifecycle boundaries with compatible
+whole-function contracts. The original upstream declarations and callers remain;
+the profile selects the replacement, and the authored implementation stays in
+`src` with direct project/source references.
+
+- [ ] Inventory `UpstreamGuestThreads` patch hunks and convert suitable complete
+      function substitutions to typed managed overrides. Remove superseded
+      patch hunks, callback plumbing and staging assumptions from the active
+      pipeline while retaining historical inputs/receipts.
+- [ ] Preserve function identity, pointer signatures, per-thread ownership,
+      nested instruction accounting, unwind behavior and cleanup. Resolve
+      generated record types and managed bridge signatures explicitly; extend
+      generic override support only for a demonstrated missing contract.
+- [ ] Keep upstream signal selection, frame construction and return algorithms.
+      For internal statement changes, sender metadata or actual upstream bug
+      repairs that cannot be expressed as a whole-function override without
+      duplicating those algorithms, document the reason for each remaining
+      narrow patch. Do not assume an override can call an original body that
+      it has replaced; any delegation mechanism must be explicit and qualified.
+- [ ] Record selected overrides and remaining patches in the profile/audit
+      documentation, regenerate affected objects, and qualify ordinary
+      signal/thread behavior plus Kestrel lifecycle and final consumer against
+      the resulting product. Prior patch-based passes are baseline evidence,
+      not automatic qualification of the override-based implementation.
+
 Required output: `blink/generated/TranslatedBlink/TranslatedBlink.csproj`, class
 `BlinkCore`, namespace `Managed.Emulation`, using `--emit=managedlib --nest-types
 --runtime=c --literal-pool --deduplicate-inline --split=size --split-size=102400`. Verify actual CLI options when
