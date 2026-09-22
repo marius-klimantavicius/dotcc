@@ -1,5 +1,10 @@
 # Linux x64 host contract
 
+This document describes the implemented Libc/poll transport. Its planned
+replacement uses [C# async sockets and fd-event callbacks](async-transport.md),
+with typed handles separate from Libc descriptors. That replacement is not yet
+implemented; the existing results below remain evidence of the original profile.
+
 The selected upstream `socket.c`, request queues, framing, crypto,
 and authentication remain translated C. Shared dotcc libc supplies host services;
 the managed facade adds ownership, serialization and a readiness pump over the

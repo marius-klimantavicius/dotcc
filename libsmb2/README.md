@@ -12,6 +12,11 @@ and domain DFS paths](docs/enterprise-client.md). Kerberos must support explicit
 credentials and existing tickets/current-user sign-in. These additions are not
 yet implemented in the current NTLMSSP profile.
 
+The [managed async transport plan](docs/async-transport.md) replaces the product's
+poll/select pump with C# socket completions, fd-event callbacks and an authored
+nint-backed socket handle type. This is currently a planning deliverable; Kerberos
+and DFS remain on hold.
+
 ```sh
 ./libsmb2/scripts/fetch.sh
 python3 libsmb2/scripts/probe-parse.py

@@ -38,10 +38,13 @@ Linux. Investigate and deliver domain DFS namespace resolution for paths such as
 the current NTLMSSP-only product. See [the implementation extension](enterprise-client.md)
 for evidence, boundaries, milestones, and acceptance criteria.
 
-**Current execution scope:** P7 upstream-test implementation is authorized and
-active. P8 Kerberos and P9 DFS are on hold pending the user's decision. Their
-requirements and candidate designs remain recorded; do not begin further
-research or implementation for either feature until the user resumes that work.
+**Current execution scope:** P7 upstream tests have a committed partial execution
+matrix; see [upstream-tests.md](upstream-tests.md) for the remaining cases. The
+2026-09-22 request adds the [managed async transport plan](async-transport.md),
+with implementation not yet started by that planning request. P8 Kerberos and P9
+DFS remain on hold pending the user's decision. Their requirements and candidate
+designs remain recorded; do not begin further research or implementation for
+either feature until the user resumes that work.
 
 ## Objective and fixed delivery requirements
 
@@ -74,6 +77,13 @@ The following are mandatory deliverables, including when helper scripts are used
   status, or file-type values as numeric literals. If the generated surface does
   not expose a needed value, document the fallback and its source/ABI; ordinary
   sample payload sizes and test data are not protocol constants.
+- **The managed transport must support async/await without a poll/select wait
+  loop or Task.Run wrapping network waits.** Register `smb2_fd_event_callbacks`
+  and service the translated protocol from C# socket completions. Supply socket
+  functions in authored C# included in the generated project, with a distinct
+  nint-backed socket struct. Add no C glue or source/output rewrites; prefer
+  defines and translation-profile bindings. See [async-transport.md](async-transport.md)
+  for the compiler feasibility gate, ownership model and compatibility boundary.
 
 Use the repository's .NET 10/C# 14 baseline, dotcc headers/libc, source/object
 linking, direct layout constants, nested API types, static callback pointers, and
@@ -164,9 +174,9 @@ These are acceptance targets, not claims about a completed port.
 | Namespace resolution | Domain DFS UNC paths resolved to their backing server/share/path, with authentication to each selected target; implementation and qualification pending. |
 | Integrity and confidentiality | Required signing and SMB3 encryption profiles using algorithms actually implemented by the pin. Test SMB 3.1.1 preauthentication/key derivation and enforce requested signing/encryption without silent downgrade. |
 | File API | Connect/disconnect; directory enumeration; stat/fstat/statvfs; create/open/close; offset reads/writes; flush/truncate; mkdir/rmdir; rename/unlink; EOF and ordinary error paths. |
-| Request processing | Actual upstream asynchronous requests, compounds, credits, partial I/O, large transfers, timeouts, and multiple outstanding operations. Keep synchronous entry points usable too. |
+| Request processing | Actual upstream asynchronous requests, compounds, credits, partial I/O, large transfers and deadlines. New transport uses fd-event callbacks and awaitable completions; multiple outstanding operations remain a separate API gate. Managed synchronous conveniences may wait on the async core; upstream poll-based synchronous APIs require an explicit legacy profile. |
 | Managed API | Owning connection, file, and directory handles; Task-based operations; explicit cancellation, errors, and asynchronous cleanup. Retain the low-level translated C-style API. |
-| Transport | Real TCP through BCL sockets, DNS, IPv4/IPv6, configurable test port, bounded buffering and cleanup. |
+| Transport | Real BCL async TCP/DNS, IPv4/IPv6, fd-event callbacks, configurable test port, bounded buffers and cleanup; authored C# host with typed socket handles distinct from Libc fds. |
 | Platforms | Linux x64 first with dotcc's LP64 ABI; Windows x64 is also required for the expanded Kerberos/DFS profile. Linux arm64 and macOS arm64 require separate execution evidence. |
 
 Inventory every exposed API, option, and command as required, translated but
@@ -195,10 +205,12 @@ Validate primitives with known-answer/native vectors and protocol protection
 with real peers.
 
 Host adapters supply execution services, not replacement SMB logic. Prefer shared
-dotcc libc implementations when semantics match. Define the required socket,
-DNS, poll/readiness, scatter/gather I/O, errno, time, and allocation contracts from
-actual imports. Keep upstream `socket.c` framing and request servicing translated
-where separable; any host seam must leave protocol framing and queues in C.
+dotcc libc implementations for non-socket services when semantics match. The
+new async transport redirects socket execution to authored C# through defines and
+typed profile bindings. Define the required socket, DNS, scatter/gather I/O,
+errno, time and allocation contracts from actual imports. Keep upstream
+`socket.c` framing and request servicing translated; the host seam leaves protocol
+framing and queues in C. No new C adapter is allowed for this transport work.
 
 The [public header](https://github.com/sahlberg/libsmb2/blob/master/include/smb2/libsmb2.h)
 defines context, completion callback, and iovec ownership contracts. Audit the
@@ -209,10 +221,12 @@ alignments, offsets, integer widths, callback signatures, and actual storage.
 Do not use Windows' native C ABI as an LP64 layout oracle.
 
 Serialize servicing and mutation of each context while allowing independent
-contexts to progress concurrently. The event pump must honor changing readiness
-and timeout requirements, handle partial sends/receives, and avoid busy spinning.
-Never implement a synchronous wait on the same execution path needed to finish
-that request.
+contexts to progress concurrently. The completion executor honors fd-event
+callbacks, partial sends/receives and actual one-shot deadlines. It must not poll
+for readiness or block a thread while waiting. Never implement a synchronous wait
+on the execution path needed to finish that request. C-facing socket calls remain
+nonblocking synchronous functions over owned buffers; BCL async I/O supplies their
+data and capacity. See the dedicated transport plan for pointer lifetimes.
 
 Use canonical static managed `delegate*` registrations and rooted opaque state;
 never store movable managed references in C structs or retain stack-lived buffers.
@@ -435,10 +449,22 @@ earlier phases; their completion still depends on real translated execution.
 - [ ] Verify two namespace paths targeting different servers, direct-share parity,
       nested links and ordinary target selection on both Windows and Linux.
 
-P7 is the next verification milestone. P8 begins with provider feasibility; P9
-depends on its target-authentication contract. P6 final acceptance must include
-these expanded requirements; previous NTLMSSP receipts remain valid only for
-their original profile.
+### P10 — Managed async transport without polling
+
+- [ ] A0: prove defines/host bindings and the authored nint-backed socket type,
+      including upstream integer scratch paths and generic compiler support needed.
+- [ ] A1: implement the C# socket host with bounded async send/receive, DNS
+      preparation, socket options, errors and explicit lifetime ownership.
+- [ ] A2: replace the facade's blocking pump with fd callbacks, a serialized
+      completion executor, owned awaitable requests and asynchronous disposal.
+- [ ] A3: qualify raw/processed JIT/NativeAOT, real SMB interoperability, idle/load
+      behavior, handle-domain separation and clean generation/project inclusion.
+
+Detailed gates and files are in [async-transport.md](async-transport.md).
+P10 is currently a planning deliverable, with implementation pending. It is
+independent of the paused P8/P9 decisions. P7 results remain valid for their
+recorded transport profile; P6 acceptance must qualify the new product host
+separately and distinguish any legacy upstream-test transport.
 
 ## Validation rules and final acceptance
 
