@@ -76,12 +76,15 @@ The assembly and consumer validator recheck signatures, terminal contracts,
 physical declarations, actual translation units and original report bytes.
 Narrow clone-launch and signal metadata/frame edits remain described in
 `../src/UpstreamGuestThreads/README.md`; complex upstream algorithms are not
-rewritten merely to remove a source patch. Fresh compilation and execution are
-required for this new product identity.
+rewritten merely to remove a source patch. Fresh delivery `translation/attempt-8roztrys` passes all 108 producer objects,
+including two preflight reuses, with 63 selected and 45 absent boundary units.
+All project builds/postprocessing pass. The normal GuestSignals fixture passes
+raw/optimized JIT/NativeAOT against this exact product, proving sender metadata,
+recursive handler accounting and normal cleanup. Kestrel worker, CPU refresh and
+sample qualification remain separate pending gates.
 
 The compiler registry now describes each target's fully qualified managed
 method, signature check and optional argument adaptation. The backend emits
 that descriptor without assuming BinaryPrimitives. A generic `popcount.u64`
 target independently exercises BitOperations.PopCount; the current Blink
 profile still selects only the six reviewed endian optimization rules.
-

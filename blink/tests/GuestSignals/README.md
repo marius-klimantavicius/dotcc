@@ -1,7 +1,7 @@
 # Normal guest signal delivery
 
-The actual Linux native fixture passes. Managed execution remains unqualified
-until the new public product is available and all four forms run.
+The actual Linux native fixture and all four managed forms pass this finite
+signal-delivery contract using the same valid ELF.
 
 This finite static x86-64 Linux ELF installs a SIGUSR1 handler using
 `rt_sigaction` with `SA_SIGINFO | SA_RESTORER`. The handler verifies signal 10,
@@ -84,3 +84,17 @@ The kernel trace records both actual sender identities, the child's masked
 pending signal, its unblock, two `rt_sigreturn` calls, and normal child/group
 exits with exact stdout and empty stderr. The handler marker syscall addresses
 are `0x400399` and `0x4003c2`. No cleanup signals were needed.
+
+The managed run passed all four forms in
+`blink/artifacts/guest-signals-managed/attempt-wzgc590u/receipt.json`, SHA256
+`ec24a1d0d30133108696e1492fbd5760400550425a4d7712a3fc1efcd2cd9c09`.
+It consumes public delivery `translation/attempt-8roztrys/receipt.json`, SHA256
+`348c75d3f80072a765618ee425a80dbf25fc4f624430aeccb0117fccd208fd7a`.
+Every form observes two actual `rt_sigreturn` calls, exact native stdout,
+empty stderr, normal child/group exits, released Machines and memory, joined
+workers, owner quiescence and disposed IO. Both marker spans count 12,295 owner
+instructions. Independent child instruction totals are 12,374–12,376, proving
+the recursive fixed loop participates in per-thread accounting. Total guest
+instruction counts are 24,811–24,815; scheduling differences are preserved.
+All 11 commands completed without cleanup signals. A subsequent audit rechecked
+1,246 individually pinned source, log and binary identities.

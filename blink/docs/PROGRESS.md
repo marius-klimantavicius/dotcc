@@ -65,7 +65,19 @@ regeneration and runtime qualification remain pending; the earlier successful pr
 remain evidence only for their exact prior sources. The valid GuestSignals native Linux witness also passes
 (`guest-signals/attempt-y8mbkxpd`, SHA-256
 `78c0dc100f4ac103e990d8f6ebfc6d68526815b9f2dab529c4019b5526306467`).
-Its managed forms wait for the refreshed product.
+Fresh public delivery `translation/attempt-8roztrys` now passes (SHA-256
+`348c75d3f80072a765618ee425a80dbf25fc4f624430aeccb0117fccd208fd7a`):
+108 producer objects, including two exact preflight reuses; endian selection
+55/53 and ownership-boundary selection 63/45. Raw/postprocessed/direct-source
+builds and publication pass; the independent semantic audit verifies 226 files.
+GuestSignals passes all four managed forms at `attempt-wzgc590u` (SHA-256
+`ec24a1d0d30133108696e1492fbd5760400550425a4d7712a3fc1efcd2cd9c09`):
+actual sender metadata, pending/unmask, two signal returns, per-thread handler
+accounting, normal exit and complete cleanup. All eleven commands pass and
+1,246 recorded identities independently recheck. This finite fixture does not
+claim pre-bind notification or blocked guest IO interruption. The Kestrel worker
+matrix is now retrying with preserved termination diagnostics; CPU and final
+sample refresh remain pending.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the
