@@ -29,9 +29,14 @@ The six unsigned endian load/store intrinsics are committed in `0377af7`;
 were rebuilt. The pinned-header differential passes 336 native rows and 1,344
 managed comparisons across all four forms (`endian-intrinsics/attempt-u1ulwk20`,
 receipt SHA-256 `859cb515c67c0cceda30e1af49c78dc63d1d27da077d34a66324db1c4cc0eb27`).
-Reviewed profile selection and per-object typed-report checks are integrated;
-full product regeneration, CPU refresh and actual Kestrel/worker/sample gates
-remain next. No measured speedup is claimed; no P6 work starts.
+Reviewed profile selection and per-object typed-report checks are integrated.
+Public delivery `translation/attempt-5vi_voys` passes (receipt SHA-256
+`20d1eda5d5915c7ee38eb37f0c3e8ef5203a542a0c4d8d5aa20df92118b2c43a`):
+108 freshly emitted objects, zero reuse; six matches on 55 producers and explicit
+absence on 53. Final output retains the direct original source references,
+literal pooling and inline deduplication. Actual Kestrel retry
+`kestrel-guest-execution/attempt-nfmi2iou` is running; CPU refresh and actual
+worker/sample gates remain pending. No measured speedup is claimed; no P6 starts.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the
@@ -74,7 +79,8 @@ The next required contract is cross-thread activation: the guest's signal 35
 is queued upstream, but the internal wake callback rejects nonzero signals,
 causing a guest abort. Reviewed causes also include absent sender PID metadata
 and nested handler dispatch outside owner accounting. Source implementation is
-prepared but unvalidated, and work is stopped at the user's request. The worker matrix and actual sample are prepared
+integrated after recovery, with transient Host wake qualified and full product
+regeneration running. Actual guest signal delivery is not yet qualified. The worker matrix and actual sample are prepared
 but remain unqualified for Kestrel. No P6 work starts.
 
 The full P5 checklist is in PLAN.md. The C fixture and NativeAOT publication of

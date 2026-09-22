@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[2];REPO=ROOT.parent
 sys.path.insert(0,str(ROOT/'scripts'))
 from core_inputs import compiler_identity
+from semantic_delivery import pin_semantic_delivery
 from features import inventory
 from selection import select_normal
 from contracts import compared_fields, invariants, RDTSC
@@ -74,6 +75,7 @@ if args.delivery_receipt:
         public=delivery['objects'][name]
         if public['object_path']!=row['object_path'] or public['object_sha256']!=row['object_sha256']:
             raise SystemExit('public object identity differs: '+name)
+    baseline_record['semantic_intrinsics']=pin_semantic_delivery(delivery,assembly,pin)
 for name,digest in inputs['staged_headers'].items():pin(profile/name,digest)
 for row in assembly['objects'].values():
     pin(row['object_path'],row['object_sha256'])
@@ -88,6 +90,25 @@ r={'kind':'actual-translated-core-cpu-corpus','passed':False,**baseline_record,
    'assembly_receipt':str(assembly_path),'assembly_receipt_sha256':sha(assembly_path),'profile':str(profile),
    'compiler':compiler,'replacement':'CPU frontend only; retained objects checked against the selected baseline','results':{},'comparisons':[]}
 def save():(out/'receipt.json').write_text(json.dumps(r,indent=2)+'\n')
+def pin_cpu_semantics(report,source):
+    if not args.delivery_receipt:return None  # Preserve historical qualified-core runs.
+    # The shared public-delivery validator already checked the exact six typed
+    # signatures and physical header. Require that same contract for each new
+    # CPU producer, with its own actual translation unit and report bytes.
+    expected={event['name']:event for event in baseline_record['semantic_intrinsics']['coverage']['blink/syscall.c']['selected']}
+    report=pin(report);source=pin(source)
+    events=[json.loads(line) for line in report.read_text().splitlines() if line.strip()]
+    selected=[event for event in events if event.get('event')=='function-override']
+    unmatched=[event for event in events if event.get('event')=='function-override-unmatched']
+    if unmatched or len(selected)!=6 or {event['name'] for event in selected}!=set(expected):
+        raise RuntimeError('CPU producer must select all six typed endian helpers: '+str(source))
+    for event in selected:
+        reference=expected[event['name']]
+        if (event['translationUnit']!=str(source) or any(event[key]!=reference[key]
+                for key in ('target','signature','declarationFile','matches'))):
+            raise RuntimeError('CPU producer endian selection differs: '+str(source))
+    return dict(report=str(report),report_sha256=sha(report),source=str(source),source_sha256=sha(source),
+                specification_sha256=baseline_record['semantic_intrinsics']['specification_sha256'],selected=selected)
 def run(cmd,name,timeout=180):
     start=time.monotonic()
     with(out/(name+'.stdout')).open('wb')as stdout,(out/(name+'.stderr')).open('wb')as stderr:
@@ -196,6 +217,9 @@ try:
         command[command.index('--override-report')+1]=str(out/'overrides.jsonl')
     command[3:3]=['-I',str(a/'source')]
     run(command,'cpu-emission',180)
+    if args.delivery_receipt:
+        r['cpu_frontend_semantic_intrinsics']=pin_cpu_semantics(out/'overrides.jsonl',a/'source/managed-driver.c')
+        save()
     if compiler_identity(cli.parent)!=compiler:raise RuntimeError('compiler changed during CPU emission')
     for name,digest in prior['emission_identity']['dependencies'].items():
         if sha(canonical/name)!=digest:raise RuntimeError('canonical dependency changed during emission: '+name)
@@ -212,6 +236,9 @@ try:
         cmd=old_command.copy();cmd[cmd.index('-o')-1]=str(prepared);cmd[cmd.index('-o')+1]=str(obj)
         cmd[cmd.index('--override-report')+1]=str(out/(filename+'.overrides.jsonl'))
         run(cmd,'emission-'+filename,180)
+        if args.delivery_receipt:
+            r.setdefault('replacement_semantic_intrinsics',{})[name]=pin_cpu_semantics(out/(filename+'.overrides.jsonl'),prepared)
+            save()
         replacements[name]=obj;r['replaced_objects'][name]=old
     if compiler_identity(cli.parent)!=compiler:raise RuntimeError('compiler changed during staged emission')
     r['replacement_objects']={name:sha(obj)for name,obj in replacements.items()}

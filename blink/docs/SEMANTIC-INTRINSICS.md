@@ -47,6 +47,12 @@ has SHA-256 `859cb515c67c0cceda30e1af49c78dc63d1d27da077d34a66324db1c4cc0eb27`.
 Six exact typed selections and all six emitted BinaryPrimitives operations are
 verified. Generic tests separately pass 47 unit and 12 functional cases.
 
-Complete product regeneration, its selected coverage and actual Kestrel/CPU
-execution remain pending. These finite results establish no measured speedup
-and do not start P6.
+Complete product regeneration passes at `translation/attempt-5vi_voys`, receipt
+SHA-256 `20d1eda5d5915c7ee38eb37f0c3e8ef5203a542a0c4d8d5aa20df92118b2c43a`:
+108 fresh objects, zero reuse, all six selections on 55 producers and explicit
+absence on 53. The final source has one actual BCL implementation of each
+selected load/store, one IsJitDisabled definition and zero Libc.L calls. The
+independent semantic audit rechecks 221 original evidence files.
+
+Actual Kestrel/CPU execution against this delivery remains pending. These finite
+results establish no measured speedup and do not start P6.

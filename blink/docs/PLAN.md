@@ -303,7 +303,7 @@ permission to replace the interpreter or guest kernel semantics.
       with signature validation and focused native differential tests. Preserve
       the existing signed `load.i32.le` contract; additional signed/big-endian
       targets may be added where a concrete caller justifies them.
-- [ ] Select the actual pinned Blink endian functions through reproducible
+- [x] Select the actual pinned Blink endian functions through reproducible
       profiles. Respect per-translation-unit matching and physical declaration
       paths; assert intended coverage with override reports. A global
       `requireMatch` on unrelated producers must not make valid units fail.

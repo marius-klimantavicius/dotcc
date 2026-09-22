@@ -20,6 +20,7 @@ ROOT = HERE.parents[1]
 REPO = ROOT.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
 from core_inputs import compiler_identity
+from semantic_delivery import pin_semantic_delivery
 
 MODES = {'raw-jit', 'raw-aot', 'optimized-jit', 'optimized-aot'}
 EXPECTED = b'actual Kestrel workers: two simultaneous isolated images; ten native HTTP comparisons; cooperative stop; fresh-process restart; idle deadline\n'
@@ -203,6 +204,7 @@ def main():
         profile = Path(delivery['profile']); inputs_path = pin(profile / 'inputs.json', delivery['profile_inputs_sha256'])
         inputs = json.loads(inputs_path.read_text())
         for name, digest in inputs['staged_headers'].items(): pin(profile / name, digest)
+        receipt['semantic_intrinsics'] = pin_semantic_delivery(delivery, assembly, pin)
         if '#define BLINK_MANAGED_GUEST_THREADS 1' not in (profile / 'config.h').read_text(): raise RuntimeError('Threaded product required')
         cli = REPO / 'DotCC/bin/Release/net10.0'
         if compiler_identity(cli) != delivery['compiler']: raise RuntimeError('Compiler differs')

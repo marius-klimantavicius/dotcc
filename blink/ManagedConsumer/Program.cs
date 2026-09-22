@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -7,7 +8,7 @@ using Managed.Emulation;
 if (args.Length == 1 && args[0] is "--help" or "-h")
 {
     Console.WriteLine("Usage: ManagedConsumer GUEST_ELF WORKER_EXECUTABLE");
-    Console.WriteLine("Runs the .NET NativeAOT service, checks HTTP, then restarts it and requests cooperative stop.");
+    Console.WriteLine("Runs the ASP.NET Core Kestrel NativeAOT service, checks HTTP, then restarts it and requests cooperative stop.");
     Console.WriteLine("WORKER_EXECUTABLE is the managed worker .dll or its published NativeAOT executable.");
     return 0;
 }
@@ -21,19 +22,22 @@ var launch = workerPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)
     ? new WorkerLaunch("dotnet", [workerPath]) : new WorkerLaunch(workerPath, []);
 var options = new InstanceOptions
 {
-    Executable = "/bin/dotnet-service",
-    Image = [new ImageFile("/bin/dotnet-service", File.ReadAllBytes(args[0]), Executable: true)],
-    Arguments = ["dotnet-service", "8080"],
+    Executable = "/bin/kestrel-service",
+    Image = [new ImageFile("/bin/kestrel-service", File.ReadAllBytes(args[0]), Executable: true)],
+    Arguments = ["kestrel-service", "8080"],
     Environment = ["LANG=C", "DOTNET_GCHeapHardLimit=1000000",
-        "DOTNET_GCRegionRange=2000000", "DOTNET_GCRegionSize=100000"],
-    MemoryLimit = 64 * 1024 * 1024,
+        "DOTNET_GCRegionRange=2000000", "DOTNET_GCRegionSize=100000",
+        "DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false", "DOTNET_EnableDiagnostics=0"],
+    MemoryLimit = 128 * 1024 * 1024,
     DescriptorLimit = 128,
     OutputLimit = 16384,
-    InstructionLimit = 20_000_000,
-    WallClockMilliseconds = 30_000,
+    InstructionLimit = 100_000_000,
+    WallClockMilliseconds = 60_000,
     PublishedPorts = [8080]
 };
-using var deadline = new CancellationTokenSource(TimeSpan.FromMinutes(2));
+string? evidenceDirectory = Environment.GetEnvironmentVariable("BLINK_SAMPLE_EVIDENCE_DIRECTORY");
+if (evidenceDirectory != null) Directory.CreateDirectory(evidenceDirectory);
+using var deadline = new CancellationTokenSource(TimeSpan.FromMinutes(3));
 int first = await RunOnce(false);
 int restarted = await RunOnce(true);
 if (first == restarted) throw new InvalidOperationException("Restart did not create a fresh worker.");
@@ -47,7 +51,8 @@ async Task<int> RunOnce(bool cooperativeStop)
     if (endpoints.Length != 1 || endpoints[0].GuestPort != 8080)
         throw new InvalidOperationException("Unexpected guest publication.");
     var endpoint = new IPEndPoint(IPAddress.Loopback, endpoints[0].HostPort);
-    RequireResponse(await Request(endpoint, "GET /health HTTP/1.1\r\nHost: fixture\r\n\r\n", deadline.Token), "ok\n");
+    RequireResponse(await Request(endpoint, "GET /health HTTP/1.1\r\nHost: localhost\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+        cooperativeStop ? "restart-health" : "health", deadline.Token), "ok\n");
     Console.WriteLine("Guest health: ok");
     InstanceResult result;
     if (cooperativeStop)
@@ -55,7 +60,7 @@ async Task<int> RunOnce(bool cooperativeStop)
     else
     {
         RequireResponse(await Request(endpoint,
-            "POST /stop HTTP/1.1\r\nHost: fixture\r\nContent-Length: 0\r\n\r\n", deadline.Token), "stopped\n");
+            "POST /stop HTTP/1.1\r\nHost: localhost\r\nContent-Length: 0\r\nConnection: close\r\n\r\n", "stop", deadline.Token), "stopped\n");
         result = await instance.Completion.WaitAsync(deadline.Token);
     }
     RequireCleanup(result, cooperativeStop);
@@ -66,6 +71,24 @@ async Task<int> RunOnce(bool cooperativeStop)
     string expectedOutput = cooperativeStop ? "READY 8080\n" : "READY 8080\nSTOPPED\n";
     if (Encoding.UTF8.GetString(result.StandardOutput) != expectedOutput)
         throw new InvalidOperationException("Guest output differs from the service contract.");
+    if (evidenceDirectory != null)
+    {
+        string prefix = cooperativeStop ? "cooperative" : "normal";
+        await File.WriteAllTextAsync(Path.Combine(evidenceDirectory, prefix + "-cleanup.json"), result.Detail!, deadline.Token);
+        await File.WriteAllBytesAsync(Path.Combine(evidenceDirectory, prefix + ".stdout"), result.StandardOutput, deadline.Token);
+        await File.WriteAllBytesAsync(Path.Combine(evidenceDirectory, prefix + ".stderr"), result.StandardError, deadline.Token);
+        using var evidence = File.Create(Path.Combine(evidenceDirectory, prefix + "-result.json"));
+        using var writer = new Utf8JsonWriter(evidence);
+        writer.WriteStartObject();
+        writer.WriteNumber("workerProcessId", instance.WorkerProcessId);
+        writer.WriteNumber("workerExitCode", result.WorkerExitCode);
+        writer.WriteString("reason", result.Reason);
+        writer.WriteNumber("exitStatus", result.ExitStatus);
+        writer.WriteNumber("signal", result.Signal);
+        writer.WriteNumber("halt", result.Halt);
+        writer.WriteNumber("instructions", result.Instructions);
+        writer.WriteEndObject();
+    }
     if (!cooperativeStop) Console.WriteLine("Guest stopped: exit 0");
     return instance.WorkerProcessId;
 }
@@ -86,7 +109,7 @@ static void RequireCleanup(InstanceResult result, bool cooperativeStop)
         throw new InvalidOperationException("Worker reported a cleanup or execution error.");
 }
 
-static async Task<byte[]> Request(IPEndPoint endpoint, string request, CancellationToken cancellation)
+async Task<byte[]> Request(IPEndPoint endpoint, string request, string label, CancellationToken cancellation)
 {
     using var client = new TcpClient(AddressFamily.InterNetwork);
     await client.ConnectAsync(endpoint.Address, endpoint.Port, cancellation);
@@ -101,11 +124,38 @@ static async Task<byte[]> Request(IPEndPoint endpoint, string request, Cancellat
         if (response.Length + count > 4096) throw new InvalidOperationException("Response exceeds the sample bound.");
         response.Write(buffer, 0, count);
     }
-    return response.ToArray();
+    byte[] actual = response.ToArray();
+    if (evidenceDirectory != null)
+    {
+        await File.WriteAllBytesAsync(Path.Combine(evidenceDirectory, label + ".request"), Encoding.ASCII.GetBytes(request), cancellation);
+        await File.WriteAllBytesAsync(Path.Combine(evidenceDirectory, label + ".response"), actual, cancellation);
+    }
+    return actual;
 }
 static void RequireResponse(byte[] response, string body)
 {
-    string expected = $"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {Encoding.ASCII.GetByteCount(body)}\r\nConnection: close\r\n\r\n{body}";
-    if (!response.AsSpan().SequenceEqual(Encoding.ASCII.GetBytes(expected)))
-        throw new InvalidOperationException("Service response differs from the pinned bytes.");
+    int boundary = response.AsSpan().IndexOf("\r\n\r\n"u8);
+    if (boundary < 0) throw new InvalidOperationException("Incomplete HTTP response.");
+    string[] lines = Encoding.ASCII.GetString(response, 0, boundary).Split("\r\n");
+    if (lines[0] != "HTTP/1.1 200 OK") throw new InvalidOperationException("Unexpected HTTP status.");
+    var headers = new Dictionary<string, string>(StringComparer.Ordinal);
+    foreach (string line in lines.Skip(1))
+    {
+        int colon = line.IndexOf(':');
+        if (colon <= 0 || !headers.TryAdd(line[..colon].ToLowerInvariant(), line[(colon + 1)..].Trim()))
+            throw new InvalidOperationException("Invalid or duplicate HTTP header.");
+    }
+    if (!headers.Remove("date", out string? date) ||
+        !DateTimeOffset.TryParseExact(date, "r", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out _))
+        throw new InvalidOperationException("Invalid RFC1123 Date.");
+    var expected = new Dictionary<string, string>
+    {
+        ["content-type"] = "text/plain",
+        ["content-length"] = Encoding.ASCII.GetByteCount(body).ToString(CultureInfo.InvariantCulture),
+        ["connection"] = "close",
+        ["server"] = "Kestrel"
+    };
+    if (headers.Count != expected.Count || expected.Any(pair => !headers.TryGetValue(pair.Key, out string? value) || value != pair.Value) ||
+        !response.AsSpan(boundary + 4).SequenceEqual(Encoding.ASCII.GetBytes(body)))
+        throw new InvalidOperationException("Service response differs from the pinned Kestrel contract.");
 }

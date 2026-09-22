@@ -17,6 +17,9 @@ import xml.etree.ElementTree as ET
 HERE = Path(__file__).resolve().parent
 BLINK = HERE.parents[1]
 REPO = BLINK.parent
+sys.path.insert(0, str(BLINK / 'scripts'))
+from semantic_delivery import pin_semantic_delivery
+
 GUEST_SHA = "7bc07c1e8d01dd3d326fdbb436473ff0b2b8dcaf2910aea6fffebdaa7b119865"
 PROFILE_SHA = "e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a"
 ENVIRONMENT = {"LANG": "C", "DOTNET_GCHeapHardLimit": "1000000",
@@ -235,6 +238,7 @@ def main():
             pin(row["object_path"], row["object_sha256"])
         for name, digest in inputs["staged_headers"].items():
             pin(Path(delivery["profile"]) / name, digest)
+        receipt["semantic_intrinsics"] = pin_semantic_delivery(delivery, assembly, pin)
         for name, digest in delivery["compiler"].items():
             pin(REPO / "DotCC/bin/Release/net10.0" / name, digest)
         for row in delivery["results"].values():
