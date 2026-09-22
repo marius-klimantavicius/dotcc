@@ -14,6 +14,7 @@ internal sealed partial class IrBuilder
     private CType ReferenceAggregate(global::LALR.CC.LexicalGrammar.Item tag, bool isUnion)
     {
         var name = Tok(tag);
+        RejectExternalDefinition(name);
         if (_macroEvaluation && !_aggregateTags.ContainsKey(name) && !_structFields.ContainsKey(name))
             throw new IrUnsupportedException("unknown aggregate in macro constant: " + name);
         // time.h and locale.h deliberately omit these bodies: the library owns
@@ -43,7 +44,15 @@ internal sealed partial class IrBuilder
     private CExpr BuildSizeOf(CType type)
     {
         RequireCompleteObject(type, "sizeof");
+        RequireExternalLayout(type, "sizeof");
         return new SizeOfExpr(type) { Type = CType.SizeT };
+    }
+
+    private void RequireExternalLayout(CType type, string use)
+    {
+        if (type.Unqualified is CType.Named { IsExternal: true, ExternalLayout: null } named)
+            throw new IrUnsupportedException(use + " requires layout metadata for external type '" + named.Name + "'");
+        if (type.Unqualified is CType.Array array) RequireExternalLayout(array.Element, use);
     }
 
     /// <summary>Run after every input TU has bound. File-scope tentative objects
@@ -52,6 +61,8 @@ internal sealed partial class IrBuilder
     /// deliberately stay absent from the compiler's aggregate layout table.</summary>
     internal void FinishAggregateTypes()
     {
+        foreach (var type in Types) RejectExternalDefinition(type.Name);
+        foreach (var type in Enums) RejectExternalDefinition(type.Name);
         foreach (var global in Globals) RequireCompleteObject(global.Sym.Type, "object '" + global.Sym.Name + "'");
         foreach (var tag in _aggregateTags)
         {

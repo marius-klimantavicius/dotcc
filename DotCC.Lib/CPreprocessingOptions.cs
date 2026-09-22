@@ -26,7 +26,7 @@ public sealed partial class CPreprocessingOptions
     public string? ProfilePath { get; }
     public string ProfileHash { get; }
     public TextWriter? Report { get; }
-    public bool HasOverrides => Rules.Length != 0 || FieldTypeNames.Count != 0;
+    public bool HasOverrides => Rules.Length != 0 || FieldTypeNames.Count != 0 || FunctionOverrides.Count != 0 || ExternalTypes.Count != 0;
     /// <summary>Stable names for anonymous aggregate types selected through C fields.</summary>
     public IReadOnlyList<FieldTypeNameOverride> FieldTypeNames { get; }
     /// <summary>Additional macro names or glob patterns to emit as public fields.</summary>
@@ -34,8 +34,10 @@ public sealed partial class CPreprocessingOptions
     public bool HasMacroExports => EmitDefines.Count != 0;
     internal MacroExportSelector ExportSelector { get; }
 
-    public CPreprocessingOptions(IReadOnlyList<MacroOverride> macroOverrides, string? profilePath = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null, IReadOnlyList<FieldTypeNameOverride>? fieldTypeNames = null)
+    public CPreprocessingOptions(IReadOnlyList<MacroOverride> macroOverrides, string? profilePath = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null, IReadOnlyList<FieldTypeNameOverride>? fieldTypeNames = null, IReadOnlyList<FunctionOverride>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null)
     {
+        FunctionOverrides = ValidateFunctionOverrides(functionOverrides, profilePath);
+        ExternalTypes = ValidateExternalTypes(externalTypes);
         FieldTypeNames = ValidateFieldTypeNames(fieldTypeNames);
         EmitDefines = Array.AsReadOnly((emitDefines ?? Array.Empty<string>()).ToArray());
         ExportSelector = new MacroExportSelector(EmitDefines);
@@ -59,25 +61,31 @@ public sealed partial class CPreprocessingOptions
                 json.WriteStartObject(); json.WriteString("field", rule.Field); json.WriteString("name", rule.Name);
                 json.WriteBoolean("requireMatch", rule.RequireMatch); json.WriteEndObject();
             }
+            WriteFunctionOverridesProfile(json);
+            WriteExternalTypesProfile(json);
             json.WriteEndArray();
         }
         ProfileHash = Convert.ToHexString(SHA256.HashData(bytes.ToArray())).ToLowerInvariant();
     }
 
-    public CPreprocessingOptions WithoutReport() => new(Rules.Select(r => r.Rule).ToArray(), ProfilePath, emitDefines: EmitDefines, fieldTypeNames: FieldTypeNames);
+    public CPreprocessingOptions WithoutReport() => new(Rules.Select(r => r.Rule).ToArray(), ProfilePath, emitDefines: EmitDefines, fieldTypeNames: FieldTypeNames, functionOverrides: FunctionOverrides, externalTypes: ExternalTypes);
 
     /// <summary>Load strict version-1 JSON and optionally replace a name's profile rules with a literal CLI rule.</summary>
-    public static CPreprocessingOptions Load(string? profilePath = null, IReadOnlyList<string>? overrides = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null)
+    public static CPreprocessingOptions Load(string? profilePath = null, IReadOnlyList<string>? overrides = null, TextWriter? report = null, IReadOnlyList<string>? emitDefines = null, IReadOnlyList<string>? typeNames = null)
     {
         var rules = new List<MacroOverride>();
         var fieldTypeNames = new List<FieldTypeNameOverride>();
+        var functionOverrides = new List<FunctionOverride>();
+        var externalTypes = new List<ExternalTypeOverride>();
         if (profilePath is not null)
         {
             try
             {
                 using var doc = JsonDocument.Parse(File.ReadAllText(profilePath));
                 var root = doc.RootElement;
-                Fields(root, "version", "macroOverrides", "fieldTypeNames");
+                Fields(root, "version", "macroOverrides", "fieldTypeNames", "functionOverrides", "externalTypes");
+                functionOverrides.AddRange(ReadFunctionOverrides(root, profilePath));
+                externalTypes.AddRange(ReadExternalTypes(root));
                 if (root.TryGetProperty("fieldTypeNames", out var names))
                     foreach (var entry in names.EnumerateArray())
                     {
@@ -126,7 +134,8 @@ public sealed partial class CPreprocessingOptions
                 WriteEvent(report, "cli-precedence", ("name", name), ("action", "replaced profile rules"));
             rules.Add(new(name, definition[(equals + 1)..], Literal: true, Origin: "--override-macro"));
         }
-        return new(rules, profilePath, report, emitDefines, fieldTypeNames);
+        externalTypes.AddRange((typeNames ?? Array.Empty<string>()).Select(name => new ExternalTypeOverride(name)));
+        return new(rules, profilePath, report, emitDefines, fieldTypeNames, functionOverrides, externalTypes);
     }
 
     private static void Fields(JsonElement element, params string[] allowed)

@@ -63,12 +63,14 @@ public static partial class Compiler
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, IReadOnlyList<Backends.CSharpGlobalSource> globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 2 — link with `dotcc <objs> -o <out>`.\n");
         sb.Append("//!!dotcc-obj source-language:").Append(usesZig ? "zig" : "c").Append('\n');
         sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
+        sb.Append(SerializeFunctionOverrides(functionOverrides));
+        sb.Append(SerializeExternalTypes(externalTypes));
         sb.Append(InlineFunctionMetadata.Version).Append('\n');
         if (inlineMetadata != null)
             foreach (var (name, metadata) in inlineMetadata) sb.Append(metadata.Serialize(name)).Append('\n');
@@ -147,6 +149,8 @@ public static partial class Compiler
         var globalByName = new Dictionary<string, Backends.CSharpGlobalSource>(StringComparer.Ordinal);
         var functions = new StringBuilder();
         var functionSources = new List<CSharpFunctionSource>();
+        var functionContracts = new Dictionary<string, (FunctionOverrideMetadata Contract, string Path)>(StringComparer.Ordinal);
+        var externalTypeContracts = new Dictionary<string, ExternalTypeLayout?>(StringComparer.Ordinal);
         var inlineMetadata = new Dictionary<string, InlineFunctionMetadata>(StringComparer.Ordinal);
         var usedFunctionAddresses = new HashSet<string>(StringComparer.Ordinal);
         var globalNames = new HashSet<string>(StringComparer.Ordinal);
@@ -178,6 +182,8 @@ public static partial class Compiler
             if (!text.Split('\n').Contains(GlobalLayout, StringComparer.Ordinal))
                 throw new CompileException("Object lacks fixed-address globals metadata; regenerate objects before linking");
             var profileLine = text.Split('\n').FirstOrDefault(l => l.StartsWith("//!!dotcc-obj override-profile:", StringComparison.Ordinal));
+            var replacedFunctions = MergeFunctionOverrides(text, path, functionContracts);
+            MergeExternalTypes(text, path, externalTypeContracts);
             CPreprocessingOptions.WriteEvent(overrideReport, "object-profile", ("path", path),
                 ("profile", profileLine?["//!!dotcc-obj override-profile:".Length..] ?? "unknown (older object)"));
             var objectAggregates = new Dictionary<string, ObjectAggregateMetadata>(StringComparer.Ordinal);
@@ -197,7 +203,7 @@ public static partial class Compiler
                 if (line.StartsWith(InlineFunctionMetadata.Prefix, StringComparison.Ordinal))
                 {
                     var (name, metadata) = InlineFunctionMetadata.Parse(line);
-                    if (!inlineMetadata.TryAdd(name, metadata))
+                    if (!inlineMetadata.TryAdd(name, metadata) && !replacedFunctions.Contains(name))
                         throw new CompileException("duplicate inline definition '" + name + "' in linked objects");
                 }
                 if (line.StartsWith("//!!dotcc-obj function-address:", StringComparison.Ordinal))
@@ -217,7 +223,8 @@ public static partial class Compiler
             var globalStatic = new StringBuilder();
             void FlushFunction()
             {
-                if (functionName != null) functionSources.Add(new(functionName, functionBody.ToString()));
+                if (functionName != null && !(replacedFunctions.Contains(functionName) && functionSources.Any(f => f.Name == functionName)))
+                    functionSources.Add(new(functionName, functionBody.ToString()));
                 functionBody.Clear();
             }
             void FlushType()
@@ -370,6 +377,7 @@ public static partial class Compiler
             throw new CompileException("no `main` function defined in any linked object.");
         }
 
+        ValidateExternalTypeDefinitions(externalTypeContracts, typeByName.Keys);
         if (UsesInlineOptions(outputOptions) && missingBoundaries)
             throw new CompileException("Object lacks function boundaries; regenerate objects before using inline options");
         foreach (var name in usedFunctionAddresses)

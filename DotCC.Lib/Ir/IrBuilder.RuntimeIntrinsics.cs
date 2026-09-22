@@ -5,8 +5,9 @@ namespace DotCC.Ir;
 
 internal sealed partial class IrBuilder
 {
-    private static string UserTypedefName(string name)
+    private string UserTypedefName(string name)
     {
+        RejectExternalDefinition(name);
         if (name == RuntimeIntrinsicNames.IsLittleEndian)
             throw new IrUnsupportedException("reserved runtime intrinsic name cannot be declared as a typedef: " + name);
         return name;

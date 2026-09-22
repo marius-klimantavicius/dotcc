@@ -1111,6 +1111,8 @@ internal sealed partial class WatBackend
 
     private void EmitCall(Call c)
     {
+        if (c.SemanticTarget is { } replacement)
+            throw new CompileException("wat does not support semantic function override target: " + replacement.Kind + ":" + replacement.Value);
         // The printf family with a string-literal format is expanded inline (no
         // runtime function); a user-defined one, if any, wins and routes through the
         // generic path below.

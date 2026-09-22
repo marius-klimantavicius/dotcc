@@ -226,7 +226,7 @@ public static partial class Compiler
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
             return SingleSource(SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
-                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata, inlineMetadata: cg.InlineMetadata, globalNames: irBuilder.Globals.Select(g => g.Sym.TargetName), usedFunctionAddresses: cg.UsedFunctionAddresses));
+                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata, inlineMetadata: cg.InlineMetadata, globalNames: irBuilder.Globals.Select(g => g.Sym.TargetName), usedFunctionAddresses: cg.UsedFunctionAddresses, functionOverrides: irBuilder.FunctionOverrideMetadata, externalTypes: preprocessing?.ExternalTypes));
         }
         if (UsesInlineOptions(outputOptions))
         {

@@ -64,12 +64,17 @@ internal static class Program
             Description = "Export additional object-like macros as const/static readonly fields. Repeatable exact names or * / ? patterns (quote globs).",
             AllowMultipleArgumentsPerToken = false
         };
+        var typeNameOpt = new Option<string[]>("--type-name")
+        {
+            Description = "Register an authored C# type name without a C typedef. Repeatable; use externalTypes in --overrides-file for optional layout.",
+            AllowMultipleArgumentsPerToken = false,
+        };
         var overrideOpt = new Option<string[]>("--override-macro")
         {
             Description = "Replace active C macro definitions: NAME=BODY. Repeatable; use --overrides-file for selectors/templates.",
             AllowMultipleArgumentsPerToken = false,
         };
-        var overridesFileOpt = new Option<string?>("--overrides-file") { Description = "Version-1 JSON translation profile (macro overrides and field type names)." };
+        var overridesFileOpt = new Option<string?>("--overrides-file") { Description = "Version-1 JSON translation profile (macro/function overrides, external types and field type names)." };
         var overrideReportOpt = new Option<string?>("--override-report") { Description = "Write translation override provenance and matches as JSON Lines." };
         var targetOpt = new Option<string?>("--target")
         {
@@ -154,7 +159,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, emitDefineOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, runtimeOpt, deduplicateInlineOpt, exportInlineOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, runtimeOpt, deduplicateInlineOpt, exportInlineOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -271,8 +276,9 @@ internal static class Program
                 var profile = parse.GetValue(overridesFileOpt);
                 var overrides = parse.GetValue(overrideOpt) ?? Array.Empty<string>();
                 var emitDefines = parse.GetValue(emitDefineOpt) ?? Array.Empty<string>();
-                var preprocessing = profile != null || overrides.Length != 0 || report != null || emitDefines.Length != 0
-                    ? CPreprocessingOptions.Load(profile, overrides, report, emitDefines) : null;
+                var typeNames = parse.GetValue(typeNameOpt) ?? Array.Empty<string>();
+                var preprocessing = profile != null || overrides.Length != 0 || report != null || emitDefines.Length != 0 || typeNames.Length != 0
+                    ? CPreprocessingOptions.Load(profile, overrides, report, emitDefines, typeNames: typeNames) : null;
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),

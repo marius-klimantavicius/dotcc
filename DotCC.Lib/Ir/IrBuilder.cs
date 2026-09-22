@@ -784,6 +784,7 @@ internal sealed partial class IrBuilder
         // so the band check is reliable without inspecting the name token.
         var sym = DeclareFunc(sig, fromSystemHeader: fnSig.Position.Line >= SrcPos.SyntheticLineBase);
         ApplyFnMarkers(sym);
+        BindFunctionOverride(sym, sig, fnSig);
         // Import-mode candidate tracking: a prototype not (yet) defined in any TU
         // is a potential native `-l` import. A definition seen later retracts it
         // (BuildFuncDef). System-header protos are flagged above and excluded at
@@ -833,7 +834,7 @@ internal sealed partial class IrBuilder
         _sawNoreturnSpec = false;
         _sawInlineSpec = false;
         var sig = ExtractFnSig(fnSig);
-        if (_staticFunctionSymbols.ContainsKey((_file, sig.Name))) sig = sig with { IsStatic = true };
+        if (_staticFunctionSymbols.ContainsKey((FunctionUnitIdentity, sig.Name))) sig = sig with { IsStatic = true };
         RequireCompleteObject(sig.Return, "function return");
         foreach (var parameter in sig.Params) RequireCompleteObject(parameter.Type, "function parameter");
         // A definition means this name is no longer a pure prototype → not an import.
@@ -850,6 +851,7 @@ internal sealed partial class IrBuilder
                     // re-bind this TU's references to it and build nothing.
                     site.Sym.IsMacroGenerated &= sig.MacroGenerated;
                     _symbols.DeclareAlias(site.Sym);
+                    BindFunctionOverride(site.Sym, sig, fnSig);
                     return;
                 }
             }
@@ -908,6 +910,12 @@ internal sealed partial class IrBuilder
 
         funcSym.IsMacroGenerated = sig.MacroGenerated;
         ApplyFnMarkers(funcSym);
+        BindFunctionOverride(funcSym, sig, fnSig);
+        if (_functionReplacements.ContainsKey(funcSym))
+        {
+            Functions.Add(BuildFunctionReplacement(funcSym));
+            return;
+        }
         _symbols.BeginFunction();
         _setjmpCalls.Clear(); // per-function stray-setjmp tracking (see the field)
         _currentFnName = sig.Name; // drives the `__func__` predefined identifier
@@ -956,7 +964,7 @@ internal sealed partial class IrBuilder
 
     private Symbol DeclareFunc(FnSig sig, bool fromSystemHeader = false)
     {
-        var key = (_file, sig.Name);
+        var key = (FunctionUnitIdentity, sig.Name);
         if (_staticFunctionSymbols.TryGetValue(key, out var localFunction))
             return _symbols.DeclareAlias(localFunction);
         if (sig.IsStatic)
@@ -1098,6 +1106,7 @@ internal sealed partial class IrBuilder
             type.Params.Select((t, i) => new ParamInfo(t, "_p" + i)).ToList(), type.Variadic, isStatic);
         var sym = DeclareFunc(sig, source.Position.Line >= SrcPos.SyntheticLineBase);
         ApplyFnMarkers(sym);
+        BindFunctionOverride(sym, sig, source);
         if (!_fnDefSites.ContainsKey(name)) _protoOnlyFuncs[name] = sym;
     }
 
@@ -1166,8 +1175,12 @@ internal sealed partial class IrBuilder
     /// <summary>The constant byte size of a type — the layout model for a user
     /// aggregate (so the size is exact for an array bound), else the type's own
     /// <see cref="CType.SizeOf"/>.</summary>
-    private long? SizeOfConst(CType t) =>
-        t.Unqualified is CType.Named n && _structFields.ContainsKey(n.Name) ? Layout(t).Size : t.SizeOf;
+    private long? SizeOfConst(CType t) => t.Unqualified switch
+    {
+        CType.Named n when n.IsExternal || _structFields.ContainsKey(n.Name) => Layout(t).Size,
+        CType.Array array => SizeOfConst(array.Element) * (array.Count ?? 0),
+        _ => t.SizeOf,
+    };
 
     // ---- compile-time C-ABI layout (for offsetof / sizeof folding) --------
     // The .NET blittable layout dotcc emits (sequential structs, explicit unions,
@@ -1191,6 +1204,7 @@ internal sealed partial class IrBuilder
     private void BuildStructDef(string? tag, Item memberList, string? alias, bool isUnion, int alignment = 0, int pack = 0)
     {
         var canonical = tag ?? alias ?? throw new IrUnsupportedException("struct with neither tag nor typedef name");
+        RejectExternalDefinition(canonical);
         if (_emittedTypes.Add(canonical))
         {
             // Shared headers can repeat this named definition in later source
@@ -1485,6 +1499,8 @@ internal sealed partial class IrBuilder
     /// <see cref="CType.Int"/> when unknown (e.g. an as-yet-unregistered struct).</summary>
     private CType MemberType(CExpr baseExpr, string field, bool arrow)
     {
+        if (StructCanonical(MemberOwnerType(baseExpr.Type, arrow)) is { } external && _externalTypes.ContainsKey(external))
+            throw new IrUnsupportedException("member access requires a C member definition; externalTypes supplies no members: " + external + "." + field);
         if (StructCanonical(MemberOwnerType(baseExpr.Type, arrow)) is { } name
             && _structFields.TryGetValue(name, out var fields))
         {

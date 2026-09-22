@@ -270,6 +270,8 @@ internal sealed partial class IrBuilder
     {
         var canonical = (type.Unqualified as CType.Named)?.Name
             ?? throw new IrUnsupportedException("aggregate initializer for a non-struct type");
+        if (_externalTypes.ContainsKey(canonical))
+            throw new IrUnsupportedException("aggregate initializer requires member definitions; externalTypes supplies no members: " + canonical);
         return _structFields.TryGetValue(canonical, out var fields) ? fields
             : throw new IrUnsupportedException($"aggregate initializer for unknown struct/union '{canonical}'");
     }

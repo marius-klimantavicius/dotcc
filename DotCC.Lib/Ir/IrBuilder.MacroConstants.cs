@@ -22,6 +22,7 @@ internal sealed partial class IrBuilder
         _warnings = source._warnings;
         _file = source._file;
         Copy(source._typedefs, _typedefs);
+        Copy(source._externalTypes, _externalTypes);
         Copy(source._structFields, _structFields);
         Copy(source._structIsUnion, _structIsUnion);
         Copy(source._enumTypes, _enumTypes);

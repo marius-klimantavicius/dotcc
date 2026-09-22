@@ -108,7 +108,11 @@ public sealed record Assign(BinOp? CompoundOp, CExpr Target, CExpr Value) : CExp
 /// the way (internal-linkage collision with an external of the same name) is
 /// called under its renamed identifier rather than the raw C name.</summary>
 public sealed record Call(string Callee, IReadOnlyList<CExpr> Args,
-    IReadOnlyList<CType>? ParamTypes = null, Symbol? CalleeSym = null) : CExpr;
+    IReadOnlyList<CType>? ParamTypes = null, Symbol? CalleeSym = null) : CExpr
+{
+    /// <summary>A bound replacement operation; retains ordinary call effects.</summary>
+    public FunctionOverrideTarget? SemanticTarget { get; init; }
+}
 
 /// <summary>A call through a computed function-pointer expression — <c>(*fp)(x)</c>,
 /// <c>tbl[i](x)</c>, <c>s.fn(x)</c>, or a named callback variable. A call of a

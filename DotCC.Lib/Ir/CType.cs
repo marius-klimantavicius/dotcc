@@ -176,11 +176,15 @@ public abstract record CType
     /// <summary>A named type the IR doesn't model structurally yet (a typedef
     /// target / opaque libc struct like <c>FILE</c>). <see cref="Name"/> is the
     /// spelling the backend emits verbatim — a residual leak for the few names whose
-    /// spelling differs per target (e.g. <c>Float128</c>); size is unknown (0) until
-    /// struct layout lands in a later phase.</summary>
+    /// spelling differs per target (e.g. <c>Float128</c>). Aggregate layout is
+    /// resolved separately. Authored external types carry an optional storage
+    /// contract and diagnose size queries when that contract is absent.</summary>
     public sealed record Named(string Name) : CType
     {
-        public override int SizeOf => 0;
+        internal bool IsExternal { get; init; }
+        internal ExternalTypeLayout? ExternalLayout { get; init; }
+        public override int SizeOf => ExternalLayout?.Size ?? (IsExternal
+            ? throw new IrUnsupportedException("external type '" + Name + "' requires layout metadata (size and alignment)") : 0);
     }
 
     /// <summary>A C <c>enum</c> with a name (its tag, or the typedef alias for an

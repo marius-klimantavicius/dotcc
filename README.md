@@ -84,6 +84,8 @@ dotcc app.c -lfoo -L/path          # import mode: bind undefined prototypes to a
 | `-std=` | `c90` `c99` `c11` `c17` (default) `c18` `c23` — sets `__STDC_VERSION__`, drives keyword promotion |
 | `-pedantic` / `-pedantic-errors` | Diagnose features newer than the selected `-std=` (gcc model) |
 | `-I` / `-D` | Header search dirs / predefined macros, repeatable |
+| `--overrides-file` | JSON translation profile, including [semantic function replacements](docs/function-overrides.md) with intrinsics or authored C# methods |
+| `--type-name` | Register an authored target type without a C typedef; repeatable. Optional size/alignment lives in the profile's [externalTypes](docs/external-types.md). |
 | `-MD` `-MMD` `-MF` `-MT` | Make-style header dependency files (CMake/Ninja-ready) |
 | `-Wconversion` | Warn on implicit narrowing integer conversions |
 | `-shared` | Shared library: NativeAOT csproj exporting non-static functions C-callably |

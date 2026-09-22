@@ -93,7 +93,7 @@ internal sealed class CFrontend : IFrontend
             // (`const`/`volatile` used to be token-stripped here by a
             // QualifierStripper stage; they now parse as Type prefix/postfix
             // productions and carry a CType qualifier flag, so no stripping.)
-            using var typeRewriter = new TypeNameRewriter(dialectRewriter, Compiler.PredefinedTypeNames);
+            using var typeRewriter = new TypeNameRewriter(dialectRewriter, req.Preprocessing?.TypeNames ?? Compiler.PredefinedTypeNames);
             // Fold sizeof(T) → number so sizeof(int)*8 → 4*8, avoiding an LALR
             // conflict between ArrDims→[E] and Subscript→E[E] that drops
             // binary operators after sizeof in all contexts.
@@ -139,9 +139,14 @@ internal sealed class CFrontend : IFrontend
         // (-pedantic) or one collected error (-pedantic-errors). Off by default.
         var gate = (pedantic || pedanticErrors) ? new DialectGate(activeDialect) : null;
         var naming = req.Preprocessing is { FieldTypeNames.Count: > 0 };
-        Ir.IrBuilder NewBuilder(IReadOnlyDictionary<string, string>? typeNames = null) =>
-            new(typeNames is null ? gate : null, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings)
+        Ir.IrBuilder NewBuilder(IReadOnlyDictionary<string, string>? typeNames = null)
+        {
+            var builder = new Ir.IrBuilder(typeNames is null ? gate : null, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings)
             { StableAnonymousNames = req.ObjectMode || naming, AnonymousTypeNames = typeNames };
+            builder.ConfigureExternalTypes(req.Preprocessing?.ExternalTypes);
+            builder.ConfigureFunctionOverrides(req.Preprocessing);
+            return builder;
+        }
         var irBuilder = NewBuilder();
         var parsed = new List<(Item Root, string File, (string Name, IReadOnlyList<Item> Body, bool Selected)[] Macros)>();
         var typeNames = new Dictionary<string, string>(StringComparer.Ordinal);
@@ -150,8 +155,8 @@ internal sealed class CFrontend : IFrontend
         foreach (var unitPath in inputPaths)
         {
             var root = ParseUnit(unitPath, irParser, quiet: false, gate);
-            if (naming) parsed.Add((root, Path.GetFileName(unitPath), macroBodies.ToArray()));
-            BindUnit(root, Path.GetFileName(unitPath), macroBodies);
+            if (naming) parsed.Add((root, Path.GetFullPath(unitPath), macroBodies.ToArray()));
+            BindUnit(root, Path.GetFullPath(unitPath), macroBodies);
             if (naming) irBuilder.ResolveFieldTypeNames(req.Preprocessing!, typeNames, matchedNames);
             macroBodies.Clear();
         }
@@ -179,7 +184,8 @@ internal sealed class CFrontend : IFrontend
         }
         void BindUnit(Item root, string file, IEnumerable<(string Name, IReadOnlyList<Item> Body, bool Selected)> macros)
         {
-            irBuilder.AddUnit(root, file);
+            irBuilder.TranslationUnitPath = file;
+            irBuilder.AddUnit(root, Path.GetFileName(file));
             // Lower before the next TU can replace typedef/enum bindings.
             var macroEvaluator = irBuilder.CreateMacroEvaluator();
             foreach (var macro in macros)
@@ -193,6 +199,10 @@ internal sealed class CFrontend : IFrontend
             }
         }
         irBuilder.FinishAggregateTypes();
+        irBuilder.FinishFunctionOverrides();
+        foreach (var external in req.Preprocessing?.ExternalTypes ?? Array.Empty<ExternalTypeOverride>())
+            CPreprocessingOptions.WriteEvent(req.Preprocessing?.Report, "external-type", ("name", external.Name),
+                ("size", external.Layout?.Size.ToString() ?? "unknown"), ("alignment", external.Layout?.Alignment.ToString() ?? "unknown"));
         foreach (var global in irBuilder.Globals)
             if (global.Init is { } init) Ir.IrBuilder.RequireNoRuntimeIntrinsic(init, "static initializer of " + global.Sym.Name);
         foreach (var intrinsic in irBuilder.RuntimeIntrinsicsUsed.OrderBy(x => x))

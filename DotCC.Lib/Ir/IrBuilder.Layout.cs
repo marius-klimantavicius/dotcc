@@ -16,6 +16,8 @@ internal sealed partial class IrBuilder
         CType.Pointer or CType.Func => "p:8:8",
         CType.Enum enumeration => LayoutType(enumeration.Underlying),
         CType.Array array => "a:" + (array.Count ?? 0).ToString(CultureInfo.InvariantCulture) + ":" + LayoutType(array.Element),
+        CType.Named { IsExternal: true, ExternalLayout: { } layout } => $"p:{layout.Size}:{layout.Alignment}",
+        CType.Named { IsExternal: true } named => throw new IrUnsupportedException("external type '" + named.Name + "' requires layout metadata (size and alignment) for this operation"),
         CType.Named named => "n:" + named.Name,
         // CType's record formatter prints computed self-referential properties
         // (Unqualified/FlatElement), so diagnostic serialization must never call
@@ -26,6 +28,8 @@ internal sealed partial class IrBuilder
 
     private LayoutAggregate DescribeAggregate(string name)
     {
+        if (_externalTypes.ContainsKey(name))
+            throw new OffsetLayoutException("external type '" + name + "' has no C member layout; provide a C definition for member offsets");
         if (!_structFields.TryGetValue(name, out var fields))
             throw new OffsetLayoutException("Unknown or incomplete aggregate: " + name);
         var aggregate = new LayoutAggregate

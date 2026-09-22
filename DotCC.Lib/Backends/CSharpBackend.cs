@@ -3088,6 +3088,13 @@ internal sealed partial class CSharpBackend
 
     private string CallText(Call c)
     {
+        if (c.SemanticTarget is { } replacement)
+        {
+            if (replacement.Kind == "managedMethod") return replacement.Value + "(" + string.Join(", ", c.Args.Select(Expr)) + ")";
+            if (replacement.Kind == "intrinsic" && replacement.Value == "load.i32.le")
+                return "global::System.Buffers.Binary.BinaryPrimitives.ReadInt32LittleEndian(new global::System.ReadOnlySpan<byte>(" + Expr(c.Args[0]) + ", 4))";
+            throw new CompileException("unsupported semantic function target: " + replacement);
+        }
         if (LowerGnuIntrinsicCall(c) is { } intrinsic) { return intrinsic; }
         if (LowerAtomicCall(c) is { } atomic) { return atomic; }
         if (LowerVaCall(c) is { } va) { return va; }
