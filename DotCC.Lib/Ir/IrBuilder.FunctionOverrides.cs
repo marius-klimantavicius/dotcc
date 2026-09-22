@@ -96,8 +96,10 @@ internal sealed partial class IrBuilder
 
     private static void ValidateFunctionAttributes(FunctionOverride rule, Symbol symbol)
     {
-        if (symbol.IsNoReturn || symbol is { FromSystemHeader: true, Name: "abort" or "exit" or "_Exit" })
-            throw CPreprocessingOptions.FunctionError(rule, "noreturn functions require a target termination contract and are not supported");
+        if (symbol is { FromSystemHeader: true, Name: "abort" or "exit" or "_Exit" })
+            throw CPreprocessingOptions.FunctionError(rule, "special system termination functions are not supported");
+        if (symbol.IsNoReturn != rule.Target.DoesNotReturn)
+            throw CPreprocessingOptions.FunctionError(rule, "noreturn declaration and target doesNotReturn contract must agree");
     }
 
     // Top-level parameter qualifiers do not participate in C function type
@@ -126,7 +128,8 @@ internal sealed partial class IrBuilder
         }).ToArray();
         var call = new Call(symbol.Name, parameters.Select(p => (CExpr)new VarRef(p) { Type = p.Type }).ToArray(), type.Params)
         { Type = type.Return, SemanticTarget = replacement.Rule.Target };
-        CStmt statement = type.Return is CType.VoidType ? new ExprStmt(call) : new Return(call);
+        CStmt statement = type.Return is CType.VoidType || replacement.Rule.Target.DoesNotReturn
+            ? new ExprStmt(call) : new Return(call);
         return new(symbol, parameters, new Block(new[] { statement }), false);
     }
 
@@ -137,11 +140,13 @@ internal sealed partial class IrBuilder
         {
             if (!Functions.Any(f => ReferenceEquals(f.Sym, symbol))) Functions.Add(BuildFunctionReplacement(symbol));
             _protoOnlyFuncs.Remove(symbol.Name);
-            CPreprocessingOptions.WriteEvent(options.Report, "function-override", ("name", symbol.Name),
+            var fields = new List<(string Name, string Value)> { ("name", symbol.Name),
                 ("signature", replacement.Signature), ("target", replacement.Rule.Target.Kind + ":" + replacement.Rule.Target.Value),
                 ("matches", "1"),
                 ("origin", replacement.Rule.Origin), ("translationUnit", replacement.TranslationUnit),
-                ("declarationFile", replacement.DeclarationFile ?? "unknown"));
+                ("declarationFile", replacement.DeclarationFile ?? "unknown") };
+            if (replacement.Rule.Target.DoesNotReturn) fields.Add(("doesNotReturn", "true"));
+            CPreprocessingOptions.WriteEvent(options.Report, "function-override", fields.ToArray());
         }
         foreach (var rule in options.FunctionOverrides)
             if (!_functionOverrideMatches.ContainsKey(rule))

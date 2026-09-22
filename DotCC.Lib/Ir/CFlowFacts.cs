@@ -15,7 +15,7 @@ internal static class CFlowFacts
     }
 
     internal static bool IsNoReturnCall(CExpr expression) => StatementValue(expression) is Call call &&
-        (call.CalleeSym?.IsNoReturn == true || call.CalleeSym is
+        (call.SemanticTarget?.DoesNotReturn == true || call.CalleeSym?.IsNoReturn == true || call.CalleeSym is
             { FromSystemHeader: true, Name: "abort" or "exit" or "_Exit" });
 
     internal static bool TerminatesExpression(CExpr expression)

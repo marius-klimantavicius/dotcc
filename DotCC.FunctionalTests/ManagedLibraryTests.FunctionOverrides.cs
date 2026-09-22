@@ -16,6 +16,76 @@ public sealed partial class ManagedLibraryTests
         new FunctionOverrideTarget("intrinsic", "load.i32.le"), RequireMatch: true);
 
     [Theory]
+    [InlineData(false, false, "void")]
+    [InlineData(false, true, "void")]
+    [InlineData(true, false, "void")]
+    [InlineData(true, true, "void")]
+    [InlineData(false, false, "int")]
+    [InlineData(false, true, "int")]
+    [InlineData(true, false, "int")]
+    [InlineData(true, true, "int")]
+    public void Managed_noreturn_override_throws_if_target_returns_and_preserves_target_unwind(bool objectLink, bool targetReturns, string returnType)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "dotcc-noreturn-target-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var path = Path.Combine(directory, "probe.c");
+            File.WriteAllText(path, $$"""
+                _Noreturn {{returnType}} finish(int code);
+                int indirect(void) {
+                    {{returnType}} (*target)(int) = finish;
+                    target(41);
+                    return 9;
+                }
+                """);
+            var options = new CPreprocessingOptions(Array.Empty<MacroOverride>(), functionOverrides: new[]
+            {
+                new FunctionOverride("finish", new(returnType, new[] { "int" }),
+                    new("managedMethod", "global::Host.Finish", DoesNotReturn: true), RequireMatch: true)
+            });
+            if (objectLink)
+            {
+                var obj = Path.ChangeExtension(path, ".o");
+                File.WriteAllText(obj, Compiler.EmitObject(path, preprocessing: options));
+                path = obj;
+            }
+            var generated = objectLink
+                ? Compiler.LinkObjects(new[] { path }, emit: EmitMode.ManagedLib, className: "Api")
+                : Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib, className: "Api", preprocessing: options);
+            string exit = targetReturns ? (returnType == "void" ? "return;" : "return 77;")
+                : "throw new System.InvalidOperationException(\"actual target unwind\");";
+            string host = $$"""
+                public static class Host {
+                    public static int Calls;
+                    public static int Last;
+                    public static {{returnType}} Finish(int value) { Calls++; Last = value; {{exit}} }
+                }
+                """;
+            var compilation = CSharpCompilation.Create("NoreturnOverride_" + Guid.NewGuid().ToString("N"),
+                new[] { ParseSource(generated), ParseSource(host) }, RuntimeReferences(),
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
+            using var image = new MemoryStream();
+            var result = compilation.Emit(image, cancellationToken: TestContext.Current.CancellationToken);
+            result.Success.ShouldBeTrue(string.Join("\n", result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error)));
+            image.Position = 0;
+            var assembly = new AssemblyLoadContext("noreturn-override-" + Guid.NewGuid(), isCollectible: false).LoadFromStream(image);
+            var api = assembly.GetType("Api")!;
+            foreach (string method in new[] { "finish", "indirect" })
+            {
+                var error = Should.Throw<System.Reflection.TargetInvocationException>(() =>
+                    api.GetMethod(method)!.Invoke(null, method == "finish" ? new object[] { 41 } : null));
+                if (targetReturns) error.InnerException.ShouldBeOfType<System.Diagnostics.UnreachableException>();
+                else error.InnerException.ShouldBeOfType<InvalidOperationException>().Message.ShouldBe("actual target unwind");
+            }
+            var helper = assembly.GetType("Host")!;
+            ((int)helper.GetField("Calls")!.GetValue(null)!).ShouldBe(2);
+            ((int)helper.GetField("Last")!.GetValue(null)!).ShouldBe(41);
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Theory]
     [InlineData(false, SourceSplit.None)]
     [InlineData(false, SourceSplit.Function)]
     [InlineData(true, SourceSplit.None)]

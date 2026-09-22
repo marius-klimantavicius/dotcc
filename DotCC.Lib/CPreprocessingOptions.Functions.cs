@@ -10,7 +10,7 @@ namespace DotCC;
 /// <summary>C types are resolved in the selected declaration's typedef environment.</summary>
 public sealed record FunctionSignature(string ReturnType, IReadOnlyList<string> ParameterTypes, bool Variadic = false);
 /// <summary>An intrinsic name or fully qualified static managed method name.</summary>
-public sealed record FunctionOverrideTarget(string Kind, string Value);
+public sealed record FunctionOverrideTarget(string Kind, string Value, bool DoesNotReturn = false);
 public sealed record FunctionOverride(string Name, FunctionSignature Signature, FunctionOverrideTarget Target,
     string? Linkage = null, string? TranslationUnit = null, string? DeclarationFile = null,
     bool RequireMatch = false, string Origin = "API");
@@ -45,6 +45,8 @@ public sealed partial class CPreprocessingOptions
                 throw FunctionError(rule, "target kind must be intrinsic or managedMethod");
             if (rule.Target.Kind == "intrinsic" && FunctionOverrideIntrinsic.Find(rule.Target.Value) is null)
                 throw FunctionError(rule, "unknown intrinsic: " + rule.Target.Value);
+            if (rule.Target.DoesNotReturn && rule.Target.Kind != "managedMethod")
+                throw FunctionError(rule, "doesNotReturn requires a managedMethod target");
             if (rule.Target.Kind == "managedMethod" && (rule.Target.Value is null || !Regex.IsMatch(rule.Target.Value,
                 @"\Aglobal::@?[A-Za-z_][A-Za-z_0-9]*(\.@?[A-Za-z_][A-Za-z_0-9]*)+\z", RegexOptions.CultureInvariant)))
                 throw FunctionError(rule, "managedMethod requires a fully qualified global::Type.Method name");
@@ -72,11 +74,13 @@ public sealed partial class CPreprocessingOptions
             Fields(signature, "returnType", "parameterTypes", "variadic");
             var target = entry.GetProperty("target");
             var kind = RequiredString(target, "kind");
-            Fields(target, "kind", kind == "managedMethod" ? "method" : "name");
+            if (kind == "managedMethod") Fields(target, "kind", "method", "doesNotReturn");
+            else Fields(target, "kind", "name");
             yield return new(RequiredString(entry, "name"),
                 new(RequiredString(signature, "returnType"), Strings(signature.GetProperty("parameterTypes")),
                     signature.TryGetProperty("variadic", out var variadic) && variadic.GetBoolean()),
-                new(kind, RequiredString(target, kind == "managedMethod" ? "method" : "name")),
+                new(kind, RequiredString(target, kind == "managedMethod" ? "method" : "name"),
+                    target.TryGetProperty("doesNotReturn", out var noReturn) && noReturn.GetBoolean()),
                 OptionalString(entry, "linkage"), OptionalString(entry, "translationUnit"), OptionalString(entry, "declarationFile"),
                 entry.TryGetProperty("requireMatch", out var required) && required.GetBoolean(),
                 $"{profilePath}:functionOverrides[{index++}]");
@@ -94,6 +98,7 @@ public sealed partial class CPreprocessingOptions
             foreach (var type in rule.Signature.ParameterTypes) writer.WriteStringValue(type);
             writer.WriteEndArray(); writer.WriteBoolean("variadic", rule.Signature.Variadic);
             writer.WriteString("kind", rule.Target.Kind); writer.WriteString("target", rule.Target.Value);
+            if (rule.Target.DoesNotReturn) writer.WriteBoolean("doesNotReturn", true);
             writer.WriteString("linkage", rule.Linkage); writer.WriteString("translationUnit", rule.TranslationUnit);
             writer.WriteString("declarationFile", rule.DeclarationFile); writer.WriteBoolean("requireMatch", rule.RequireMatch);
             writer.WriteEndObject(); writer.WriteEndObject();

@@ -74,6 +74,20 @@ memory read, so an intervening write must remain observable. Stores retain call
 effects as well: neither loads nor stores become pure expressions, and both
 store arguments are evaluated once.
 
+## Population count and intrinsic registration
+
+`popcount.u64` requires a signed 32-bit C result and one unsigned 64-bit integer
+parameter, such as `int count_bits(uint64_t value)`. It calls
+`System.Numerics.BitOperations.PopCount` directly. Zero returns 0 and an all-one
+64-bit value returns 64; the input expression is evaluated once.
+
+The compiler's closed intrinsic registry supplies the fully qualified managed
+method, its C signature predicate and an optional argument adapter. The adapter
+receives rendered arguments and retains their order, using each once. Endian
+operations adapt pointers to spans; population count needs no adapter. The C#
+backend invokes this description without selecting a BCL class itself, so a
+new managed intrinsic does not require another backend class-name branch.
+
 ## Authored managed methods
 
 Use a qualified static method name to bind a compatible managed implementation:
@@ -107,6 +121,28 @@ or turn synchronous signatures into tasks. Author a bridge method when needed.
 A prototype-only C function may be selected. dotcc then generates its managed
 implementation rather than treating the declaration as a native-library import.
 Missing or incompatible C# methods fail the generated project's build.
+
+For an explicitly `_Noreturn` C declaration, the managed target must opt into
+the same termination contract:
+
+```json
+"target": {
+  "kind": "managedMethod",
+  "method": "global::MyHost.Process.Exit",
+  "doesNotReturn": true
+}
+```
+
+The flag must agree with the actual selected C declaration. It is not allowed
+on intrinsic targets, and it does not grant a termination contract to an
+ordinary returning C function. Omitted or false retains the existing returning
+target behavior and profile identity. The generated wrapper retains its original
+signature, invokes the target once, and throws `UnreachableException` if the
+target unexpectedly returns. A target's actual exception or process termination
+propagates normally. This also covers indirect calls through the wrapper's
+function pointer. The explicit flag participates in object contract
+compatibility and is recorded in the typed selection report; older objects
+without the flag retain the false contract.
 
 ## Selection
 
@@ -184,8 +220,15 @@ Release run passed all 47 semantic override unit cases and 12 functional cases
 TRX results are retained in `blink/artifacts/attempt-ligxcg0g/`. These in-process
 checks do not claim NativeAOT or postprocessed unsigned-target qualification.
 
-The first version also excludes `noreturn` functions and functions with special
-compiler lowering: `__builtin_*`, `__atomic_*`, `__sync_*`, `__dotcc_*`,
+Functions with special compiler lowering remain excluded: `__builtin_*`,
+`__atomic_*`, `__sync_*`, `__dotcc_*`,
 `setjmp`/`longjmp`, allocation/free operations, `dlsym`, variadic format functions,
 and `va_*`. These are rejected explicitly because their specialized lowering
 requires a separate replacement contract.
+
+The combined intrinsic-registry and explicit nonreturning-target run on
+2026-09-23 passed 55 focused unit cases and 14 functional cases (four unsigned
+endian cases, two population-count cases and eight nonreturning-target cases).
+The latter cover direct/object output, void/value signatures, direct and
+function-pointer calls, actual target unwind and the unexpected-return guard.
+The actual Release CLI build completed with zero warnings and errors.

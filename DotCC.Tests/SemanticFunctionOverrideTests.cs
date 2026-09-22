@@ -247,6 +247,71 @@ public sealed class SemanticFunctionOverrideTests
     }
 
     [Fact]
+    public void Managed_noreturn_profile_preserves_explicit_termination_provenance()
+    {
+        WithFiles(directory =>
+        {
+            var path = Source(directory, "_Noreturn void finish(int code);");
+            var profile = Source(directory, """
+                {"version":1,"functionOverrides":[{
+                  "name":"finish","signature":{"returnType":"void","parameterTypes":["int"]},
+                  "target":{"kind":"managedMethod","method":"global::Host.Finish","doesNotReturn":true},
+                  "requireMatch":true
+                }]}
+                """, "overrides.json");
+            using var report = new StringWriter();
+            var options = CPreprocessingOptions.Load(profile, report: report);
+            options.FunctionOverrides.Single().Target.DoesNotReturn.ShouldBeTrue();
+            options.WithoutReport().ProfileHash.ShouldBe(options.ProfileHash);
+            var output = Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib, preprocessing: options);
+            output.ShouldContain("global::Host.Finish");
+            output.ShouldContain("System.Diagnostics.CodeAnalysis.DoesNotReturn");
+            output.ShouldContain("throw new global::System.Diagnostics.UnreachableException");
+            report.ToString().ShouldContain("\"doesNotReturn\":\"true\"");
+            Compiler.EmitObject(path, preprocessing: options).ShouldContain("\"doesNotReturn\":true");
+        });
+    }
+
+    [Fact]
+    public void Termination_contract_rejects_intrinsics_and_returning_C_declarations()
+    {
+        Should.Throw<CompileException>(() => Options(LoadRule() with
+        { Target = new("intrinsic", "load.i32.le", DoesNotReturn: true) }));
+        WithFiles(directory =>
+        {
+            var path = Source(directory, "void finish(int code);");
+            var rule = new FunctionOverride("finish", new("void", new[] { "int" }),
+                new("managedMethod", "global::Host.Finish", DoesNotReturn: true), RequireMatch: true);
+            Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib,
+                preprocessing: Options(rule))).Message.ShouldContain("must agree");
+        });
+    }
+
+    [Fact]
+    public void Omitted_false_termination_contract_keeps_legacy_profile_identity()
+    {
+        var rule = LoadRule() with { Target = new("managedMethod", "global::Host.Read") };
+        Options(rule).ProfileHash.ShouldBe(Options(rule with { Target = rule.Target with { DoesNotReturn = false } }).ProfileHash);
+    }
+
+    [Fact]
+    public void Object_link_rejects_different_termination_contracts_for_the_same_target()
+    {
+        WithFiles(directory =>
+        {
+            var source = Source(directory, "_Noreturn void finish(int code);");
+            var ordinary = Source(directory, "void finish(int code);", "ordinary.c");
+            var rule = new FunctionOverride("finish", new("void", new[] { "int" }),
+                new("managedMethod", "global::Host.Finish", DoesNotReturn: true), RequireMatch: true);
+            var a = Source(directory, Compiler.EmitObject(source, preprocessing: Options(rule)), "noreturn.o");
+            var b = Source(directory, Compiler.EmitObject(ordinary, preprocessing: Options(rule with
+                { Target = rule.Target with { DoesNotReturn = false } })), "ordinary.o");
+            Should.Throw<CompileException>(() => Compiler.LinkObjects(new[] { a, b }, emit: EmitMode.ManagedLib))
+                .Message.ShouldContain("conflicting semantic function override");
+        });
+    }
+
+    [Fact]
     public void Required_matches_are_per_invocation_and_optional_absence_is_allowed()
     {
         WithFiles(directory =>
