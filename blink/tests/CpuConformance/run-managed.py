@@ -75,6 +75,7 @@ if args.delivery_receipt:
         public=delivery['objects'][name]
         if public['object_path']!=row['object_path'] or public['object_sha256']!=row['object_sha256']:
             raise SystemExit('public object identity differs: '+name)
+    pin(ROOT/'scripts/core_inputs.py',assembly['identity']['compiler_identity_script_sha256'])
     baseline_record['semantic_intrinsics']=pin_semantic_delivery(delivery,assembly,pin)
 for name,digest in inputs['staged_headers'].items():pin(profile/name,digest)
 for row in assembly['objects'].values():

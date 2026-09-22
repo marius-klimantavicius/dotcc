@@ -56,10 +56,16 @@ boundary profile. The two exit targets use an explicit nonreturning compiler
 contract; the SysExit adapter preserves the upstream IsOrphan decision. Narrow
 thread-launch and signal-frame/metadata adaptations remain documented. The
 compiler registry is also being generalized to own the fully qualified managed
-method and argument adaptation. These changes need fresh compiler tests,
-regeneration and runtime qualification; the earlier successful product receipts
-remain evidence only for their exact prior sources. No guest runs are active
-while the root agent verifies the combined compiler changes.
+method and argument adaptation. Combined compiler qualification passes 55 focused unit and 14 functional cases.
+The fresh two-producer preflight passes at
+`managed-boundary-preflight/attempt-oq3bl4lg` (receipt SHA-256
+`6496838240f572f90ea8bd4a99d0958bcc0154c4f46be56b7194e778a918ba55`), including actual
+Machine/System pointer signatures and both nonreturning exit contracts. Full
+regeneration and runtime qualification remain pending; the earlier successful product receipts
+remain evidence only for their exact prior sources. The valid GuestSignals native Linux witness also passes
+(`guest-signals/attempt-y8mbkxpd`, SHA-256
+`78c0dc100f4ac103e990d8f6ebfc6d68526815b9f2dab529c4019b5526306467`).
+Its managed forms wait for the refreshed product.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the

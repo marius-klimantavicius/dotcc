@@ -54,5 +54,34 @@ absence on 53. The final source has one actual BCL implementation of each
 selected load/store, one IsJitDisabled definition and zero Libc.L calls. The
 independent semantic audit rechecks 221 original evidence files.
 
-Actual Kestrel/CPU execution against this delivery remains pending. These finite
-results establish no measured speedup and do not start P6.
+The standalone optimized-JIT Kestrel run against that delivery passes all five
+HTTP cases and normal cleanup (`kestrel-guest-execution/attempt-nfmi2iou`).
+CPU refresh, worker lifecycle and final sample qualification remain pending.
+These finite results establish no measured speedup and do not start P6.
+
+## Typed managed ownership boundaries
+
+The subsequent user-requested conversion uses a separate
+`config/managed-boundaries.json` group. It pins the original machine/syscall
+headers and syscall/memory implementation files. `SignalActor`,
+`KillOtherThreads`, `SysExitGroup` and `SysExit` retain their original C bodies;
+the compiler selects typed methods in the authored BlinkCore partial bridge.
+No external replacement of Machine/System layout is required. SysExit retains
+its upstream IsOrphan decision, and both exit targets explicitly declare
+`doesNotReturn: true`. The generated thunk throws if a terminal target returns.
+
+Every producer records all four selected/unmatched outcomes separately from the
+endian group. Known defining producers require their intended boundary matches.
+The assembly and consumer validator recheck signatures, terminal contracts,
+physical declarations, actual translation units and original report bytes.
+Narrow clone-launch and signal metadata/frame edits remain described in
+`../src/UpstreamGuestThreads/README.md`; complex upstream algorithms are not
+rewritten merely to remove a source patch. Fresh compilation and execution are
+required for this new product identity.
+
+The compiler registry now describes each target's fully qualified managed
+method, signature check and optional argument adaptation. The backend emits
+that descriptor without assuming BinaryPrimitives. A generic `popcount.u64`
+target independently exercises BitOperations.PopCount; the current Blink
+profile still selects only the six reviewed endian optimization rules.
+
