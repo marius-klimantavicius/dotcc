@@ -4,6 +4,7 @@
 /* Explicit C ABI clock identifiers, independent of the managed host OS. */
 #define CLOCK_REALTIME 0
 #define CLOCK_MONOTONIC 1
+#define CLOCK_MONOTONIC_COARSE 6
 #define clock_gettime blink_host_clock_gettime
 int clock_gettime(int, struct timespec *);
 #define clock_getres blink_host_clock_getres

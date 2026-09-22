@@ -76,8 +76,37 @@ actual sender metadata, pending/unmask, two signal returns, per-thread handler
 accounting, normal exit and complete cleanup. All eleven commands pass and
 1,246 recorded identities independently recheck. This finite fixture does not
 claim pre-bind notification or blocked guest IO interruption. The Kestrel worker
-matrix is now retrying with preserved termination diagnostics; CPU and final
-sample refresh remain pending.
+matrix retry `attempt-5czkvcnt` failed in raw JIT (SHA-256
+`942470fcb630e00f78f1dce5508bf435c8a30f5e07eb987ee9b8e30ac109527c`).
+Both owners reached exactly 100M instructions with actual stop reason Budget,
+no guest signal/halt or managed error, and complete cleanup. A health passed;
+B returned empty EOF. B's later controller reason was changed to stopped during
+fixture disposal; the retained child detail independently records Budget.
+All 1,561 checked identities match. Other forms were not attempted.
+
+Read-only diagnosis found an observed missing clock contract. In the unchanged
+native ELF, `Heartbeat__TimerLoop` (0x55bf80) reaches
+`SystemNative_GetLowResolutionTimestamp` (0x40c1e0) and `minipal_lowres_ticks`
+(0x4ddcd0), which calls clock_gettime(6) and reads the timespec without checking
+failure. The prior complete standalone trace records 3,910 clock-6 EINVAL returns
+on the inferred heartbeat thread and no blocking futex waits there. Clock 6 is
+CLOCK_MONOTONIC_COARSE, absent from the selected private host clock capability.
+The read-only disassembly/trace receipt is
+`kestrel-clock-diagnosis/attempt-cdb6r_pz` (SHA-256
+`9ea3c3954b0010ad4afefc95be1862af68897479b7f052b328f2ea0aee04b22b`).
+The minimal same-origin monotonic coarse clock and matching resolution now
+pass native and all four managed host-boundary forms at
+`host-coarse-clock/attempt-ny75u0ux` (SHA-256
+`814a144c582b76521d9b429def663464a66afc1a11c66ac436eeddd3400e3841`):
+15 successful commands, 64 live calls plus 13 controlled-provider rows per mode,
+and 260 independently checked identities. Fresh product generation is next;
+unchanged upstream XlatClock dispatch and actual Kestrel behavior remain unqualified
+for this correction. The 100M/60s
+limits stay unchanged. This defect is established; its contribution to budget
+exhaustion must still be verified by the corrected Kestrel run. The separate
+sysinfo fallback (1 GiB total, zero free) remains a documented audit finding,
+not an established cause or a new implementation task. CPU/final sample refresh
+remain held until the corrected product is stable.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the

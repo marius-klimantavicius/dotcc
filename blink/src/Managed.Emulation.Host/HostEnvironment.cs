@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 
 namespace Managed.Emulation.Host;
 
-public enum HostClock { Realtime = 0, Monotonic = 1 }
+public enum HostClock { Realtime = 0, Monotonic = 1, MonotonicCoarse = 6 }
 public readonly record struct HostTimestamp(long Seconds, long Nanoseconds);
 public interface IHostEntropy { void Fill(Span<byte> destination); }
 public sealed class BclHostEntropy : IHostEntropy
@@ -31,18 +31,21 @@ public sealed class HostEnvironment(TimeProvider? time = null, IHostEntropy? ent
                 {
                     HostClock.Realtime => time.GetUtcNow().UtcDateTime.Ticks - DateTime.UnixEpoch.Ticks,
                     HostClock.Monotonic => time.GetElapsedTime(origin).Ticks,
+                    HostClock.MonotonicCoarse => time.GetElapsedTime(origin).Ticks,
                     _ => throw new ArgumentOutOfRangeException(nameof(clock))
                 };
             }
             long seconds = Math.DivRem(ticks, TimeSpan.TicksPerSecond, out long remainder);
             if (remainder < 0) { --seconds; remainder += TimeSpan.TicksPerSecond; }
+            if (clock == HostClock.MonotonicCoarse) remainder -= remainder % TimeSpan.TicksPerMillisecond;
             return HostResult<HostTimestamp>.Success(new(seconds, remainder * 100));
         }
         catch (ArgumentOutOfRangeException) { return HostResult<HostTimestamp>.Failure(GuestError.Invalid); }
         catch (Exception) { return HostResult<HostTimestamp>.Failure(GuestError.Io); }
     }
     /// <summary>The software clock's output quantum, not clock accuracy. UTC
-    /// uses DateTime ticks; elapsed time also respects the provider tick rate.</summary>
+    /// uses DateTime ticks; coarse elapsed time is quantized to milliseconds.
+    /// Reported precision also respects the provider tick rate.</summary>
     public HostResult<HostTimestamp> GetResolution(HostClock clock)
     {
         try
@@ -51,11 +54,12 @@ public sealed class HostEnvironment(TimeProvider? time = null, IHostEntropy? ent
             lock (sync)
             {
                 if (clock == HostClock.Realtime) nanoseconds = 100;
-                else if (clock == HostClock.Monotonic)
+                else if (clock is HostClock.Monotonic or HostClock.MonotonicCoarse)
                 {
                     long frequency = time.TimestampFrequency;
                     if (frequency <= 0) return HostResult<HostTimestamp>.Failure(GuestError.Io);
                     nanoseconds = Math.Max(100, 1_000_000_000 / frequency + (1_000_000_000 % frequency == 0 ? 0 : 1));
+                    if (clock == HostClock.MonotonicCoarse) nanoseconds = Math.Max(1_000_000, nanoseconds);
                 }
                 else return HostResult<HostTimestamp>.Failure(GuestError.Invalid);
             }
