@@ -66,6 +66,8 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         public string? FirstTrap;
         public Blink.Libc.RuntimeBinding ContextBinding;
         public Stack<Action> Unbind = new();
+        public ManualResetEventSlim SpawnReady = new(false);
+        public List<Worker> PendingStarts = new();
         public Dictionary<int, HostGuestSignalInfo> PendingSignals = new();
         public (int Signal, HostGuestSignalInfo Sender)? ImmediateSignal;
     }
@@ -219,7 +221,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                             worker.Wake.Dispose();
                             if (worker.Wake.NotificationFailure is { } error) throw error;
                         });
-                        Cleanup(worker.Sleep.Dispose); Cleanup(worker.Stop.Dispose);
+                        Cleanup(worker.Sleep.Dispose); Cleanup(worker.Stop.Dispose); Cleanup(worker.SpawnReady.Dispose);
                     }
                     current.Dispose();
                     IsQuiescent = true;
@@ -341,6 +343,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         { stop.RequestBudgetStop(); return false; }
         ThreadedSyscallObservation? observation = trace == null ? null : Observe(worker);
         bool returned = false;
+        int firstPendingStart = worker.PendingStarts.Count;
         ulong instructionPointer = worker.Machine->ip;
         try { program!.ExecuteInstruction(worker.Machine); returned = true; }
         catch (Blink.Libc.JumpBufferException jump)
@@ -350,6 +353,15 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         }
         finally
         {
+            // SysSpawn publishes CLONE_PARENT_SETTID after its managed start
+            // callback. A child must not execute with an unpublished musl TID.
+            // Release only this instruction's children; SignalActor can nest.
+            for (int index = worker.PendingStarts.Count - 1; index >= firstPendingStart; --index)
+            {
+                Worker child = worker.PendingStarts[index];
+                worker.PendingStarts.RemoveAt(index);
+                child.SpawnReady.Set();
+            }
             if (observation != null)
             {
                 var item = observation with { ReturnValue = returned ? Register(worker.Machine, 0) : null };
@@ -408,7 +420,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     }
     int IHostGuestThreads.Start(nint pointer)
     {
-        _ = RequireCurrent();
+        Worker parent = RequireCurrent();
         var child = (Blink.Machine*)pointer;
         if (child == null || child->blink_host_system != system) return 22;
         lock (gate)
@@ -420,19 +432,26 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                 worker = NewWorker(false, child);
                 worker.Thread = new Thread(() => ChildMain(worker)) { IsBackground = true, Name = "translated-guest-child" };
                 workers.Add(worker);
+                parent.PendingStarts.Add(worker);
                 worker.Thread.Start();
                 return 0; // No throwing work may follow successful Start.
             }
             catch (Exception error) when (error is OutOfMemoryException or ThreadStateException)
             {
-                if (worker != null) { workers.Remove(worker); worker.Wake.Dispose(); worker.Sleep.Dispose(); worker.Stop.Dispose(); }
+                if (worker != null)
+                {
+                    parent.PendingStarts.Remove(worker); workers.Remove(worker);
+                    worker.Wake.Dispose(); worker.Sleep.Dispose(); worker.Stop.Dispose(); worker.SpawnReady.Dispose();
+                }
                 return 11;
             }
         }
     }
     private void ChildMain(Worker worker)
     {
-        try { Bind(worker); Execute(worker, true); }
+        // Even cancellation waits for the creating instruction to publish its
+        // TID before child cleanup may clear it. ExecuteOne releases in finally.
+        try { worker.SpawnReady.Wait(); Bind(worker); Execute(worker, true); }
         catch (Exception error) { worker.Error = error; StopGroup(); }
         finally
         {

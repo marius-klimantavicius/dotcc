@@ -30,3 +30,10 @@ retain old array snapshots for in-flight readers during growth. Validate ordinar
 concurrent registration/lookup and repeat the actual guest. No upstream patch or
 synthetic guest fault is required. Also mirror upstream `Blink()` resumption
 after a handled architectural signal; unhandled signals remain terminal.
+
+Actual HTTP/SDK repeats also exposed child execution before `SysSpawn` publishes
+`CLONE_PARENT_SETTID`. Gate new managed workers until their creating instruction
+finishes; publish even when that instruction unwinds, and dispose gates only
+after workers join. Cover the child's initial TID read and immediate clear-TID exit with
+an ordinary valid ELF, plus actual NativeAOT runtime startup. Do not increase
+instruction budgets to mask startup stalls.
