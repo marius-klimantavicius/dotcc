@@ -157,8 +157,13 @@ managed boundary forms pass at `host-coarse-clock/attempt-ny75u0ux` (SHA-256
 Fresh public generation `translation/attempt-kaddtzlg` passes with 108 newly
 emitted objects (receipt SHA-256
 `711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11`).
-The actual Kestrel retry is underway. Its
-standalone gate requires complete traces and successful actual clock-6 calls;
+Actual Kestrel standalone `kestrel-guest-execution/attempt-nb6iv2wz` passes
+(SHA-256 `3b88712a5bac07e432f6dd253d0b749f2033a2bc17e231b87099a3d6ec2bb558`):
+all five native HTTP semantics, normal exit and complete cleanup in 88,831,381
+instructions. Its complete trace has 225 clock-6 calls, all successful; the
+inferred heartbeat thread now performs a real futex wait and only 13,217
+instructions. This qualifies the selected standalone optimized-JIT path.
+The all-four-mode worker matrix and final sample remain separate gates;
 the guest ELF, six variables, 128 MiB memory profile, 100M instruction budget
-and 60-second deadline remain unchanged. The correction's effect on actual
-Kestrel execution is not claimed before that run.
+and 60-second deadline remain unchanged. The observed timer-path improvement is retained as correctness evidence,
+not a general performance measurement.

@@ -122,8 +122,17 @@ direct-source builds pass; the independent semantic audit rechecks 226 files
 and the expected endian 55/53 and managed-boundary 63/45 selection counts.
 Its assembly receipt SHA-256 is
 `078f75c88ddefbf6bf0be133aae7e37b19bd7598f35f85703976c4b53de26921`.
-Actual Kestrel standalone retry `attempt-nb6iv2wz` is running with that exact
-delivery, complete-trace clock-6 checks and unchanged execution limits.
+Actual Kestrel standalone retry `attempt-nb6iv2wz` passes with that exact
+delivery (SHA-256 `3b88712a5bac07e432f6dd253d0b749f2033a2bc17e231b87099a3d6ec2bb558`).
+All five HTTP cases match the native semantics; exit 0, all nine guest threads
+join, and IO/memory release. Its complete trace has 225 clock-6 calls, all
+successful. Execution uses 88,831,381 instructions at unchanged limits. The
+inferred heartbeat thread now uses 13,217 instructions, three successful coarse
+reads and one futex wait, versus the earlier 14.24M instructions, 3,910 failed
+coarse reads and no futex waits. This observed change supports the concrete
+clock diagnosis without claiming a general performance benchmark. Actual
+worker matrix `attempt-838yl87x` is now running all four forms; CPU and final
+sample qualification still follow only after this product is stable.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the
