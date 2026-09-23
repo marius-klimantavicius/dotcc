@@ -3,7 +3,7 @@ using System.Net.Sockets;
 namespace Managed.Emulation.Host;
 
 public readonly record struct SocketLinger(bool Enabled, int Seconds);
-internal readonly record struct SocketEdgeReadiness(uint Events, ulong ReadEpoch, ulong WriteEpoch);
+internal readonly record struct SocketEdgeReadiness(uint Events, ulong ReadEpoch, ulong WriteEpoch, ulong TerminalEpoch);
 
 public sealed partial class VirtualTcpNetwork
 {
@@ -57,7 +57,7 @@ public sealed partial class VirtualTcpNetwork
             try
             {
                 uint ready = SocketReadiness(entry);
-                return HostResult<SocketEdgeReadiness>.Success(new(ready, entry.ReadEpoch, entry.WriteEpoch));
+                return HostResult<SocketEdgeReadiness>.Success(new(ready, entry.ReadEpoch, entry.WriteEpoch, entry.TerminalEpoch));
             }
             catch (SocketException error) { return Fail<SocketEdgeReadiness>(ConvertError(error)); }
             catch (ObjectDisposedException) { return Fail<SocketEdgeReadiness>(GuestError.BadDescriptor); }

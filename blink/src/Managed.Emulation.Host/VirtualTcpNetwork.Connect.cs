@@ -63,6 +63,7 @@ public sealed partial class VirtualTcpNetwork
             source.PendingError = GuestError.None;
             ++source.ReadEpoch;
             ++source.WriteEpoch;
+            ++source.TerminalEpoch;
             // Start and register atomically against close/disposal. The observer
             // catches all operation exceptions and publishes one retained result.
             _ = CompleteConnectionAsync(source, destination, actual, completion);
@@ -91,6 +92,7 @@ public sealed partial class VirtualTcpNetwork
                 if (error == GuestError.None) source.Remote = destination;
                 ++source.ReadEpoch;
                 ++source.WriteEpoch;
+                ++source.TerminalEpoch;
             }
             // No code after completion accesses this entry or any descriptor.
             pending.Remove(completion.Task);

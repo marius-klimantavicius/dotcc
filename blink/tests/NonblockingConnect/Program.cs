@@ -103,6 +103,24 @@ await Task.WhenAll(Enumerable.Range(0, 16).Select(async _ =>
 while (listener.Pending()) { using var accepted = await listener.AcceptSocketAsync(deadline.Token); }
 Console.WriteLine("PASS 16 concurrent owners dispose after initiation");
 
+// Observe pre-connect HUP, then do not inspect epoll again until after graceful
+// full shutdown. No intermediate snapshot may be needed to rearm terminal edges.
+await using (var io = new InstanceIo(new Dictionary<string, ReadOnlyMemory<byte>>(), networkPolicy: policy))
+{
+    int fd = Ok(io.Socket());
+    int epoll = Ok(io.CreateEpoll(0));
+    Ok(io.ControlEpoll(epoll, 1, fd, 0x80000005, 321));
+    var initial = Ok(await io.WaitEpollEventsAsync(epoll, 1, 0, deadline.Token));
+    Check(initial.Length == 1 && (initial[0].Events & 16) != 0, "unconnected HUP consumed");
+    Ok(await io.ConnectAsync(fd, destination, deadline.Token));
+    using var peer = await listener.AcceptSocketAsync(deadline.Token);
+    Ok(io.Shutdown(fd, SocketShutdown.Both));
+    var shutdown = Ok(await io.WaitEpollEventsAsync(epoll, 1, 5000, deadline.Token));
+    Check(shutdown.Length == 1 && shutdown[0].Data == 321 && (shutdown[0].Events & 16) != 0, "fresh HUP after connect and shutdown");
+    Check(Ok(await io.WaitEpollEventsAsync(epoll, 1, 0, deadline.Token)).Length == 0, "shutdown terminal edge delivered once");
+}
+Console.WriteLine("PASS terminal edge rearmed across connection lifecycle");
+
 // Blocking callers share the same establishment and may set SO_SNDTIMEO.
 await using (var io = new InstanceIo(new Dictionary<string, ReadOnlyMemory<byte>>(), networkPolicy: policy))
 {

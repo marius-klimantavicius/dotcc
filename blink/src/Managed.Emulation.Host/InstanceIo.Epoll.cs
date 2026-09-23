@@ -16,6 +16,7 @@ public sealed partial class InstanceIo
         internal readonly ulong Data = data;
         internal ulong? DeliveredRead, DeliveredWrite;
         internal uint DeliveredTerminal;
+        internal ulong DeliveredTerminalEpoch;
     }
     private sealed class EpollState
     {
@@ -87,6 +88,13 @@ public sealed partial class InstanceIo
         ready = result.Value;
         uint events = ready.Events & (interest.Events | 8u | 16u);
         if ((interest.Events & 0x80000000u) == 0) return events;
+        // A HUP delivered before connect must not suppress a later connected
+        // shutdown, even if no readiness snapshot observed the interim state.
+        if (interest.DeliveredTerminalEpoch != ready.TerminalEpoch)
+        {
+            interest.DeliveredTerminal = 0;
+            interest.DeliveredTerminalEpoch = ready.TerminalEpoch;
+        }
         if (interest.DeliveredRead == ready.ReadEpoch) events &= ~1u;
         if (interest.DeliveredWrite == ready.WriteEpoch) events &= ~4u;
         return events & ~interest.DeliveredTerminal;

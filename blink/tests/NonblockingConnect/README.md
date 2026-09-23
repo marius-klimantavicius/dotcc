@@ -12,7 +12,8 @@ blink/artifacts/nonblocking-connect/host-aot/NonblockingConnect
 ```
 
 Checks cover completion through poll and edge-triggered epoll with registration
-before/after connect, no spurious pending HUP, SO_ERROR success/get-clear reads,
+before/after connect, no spurious pending HUP, fresh graceful-shutdown HUP after
+a pre-connect HUP (without an intervening epoll snapshot), SO_ERROR success/get-clear reads,
 repeat connect, shared descriptor flags and duplicate ownership, caller-scope
 cancellation, last-close draining, reused descriptors, concurrent owner disposal,
 and blocking connect with SO_SNDTIMEO. The test does not assert that scheduler

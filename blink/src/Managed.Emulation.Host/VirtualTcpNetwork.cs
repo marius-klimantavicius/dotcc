@@ -28,7 +28,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
         internal ConnectionState Connection;
         internal GuestError PendingError;
         internal Task<HostResult<int>>? ConnectionTask;
-        internal ulong ReadEpoch, WriteEpoch;
+        internal ulong ReadEpoch, WriteEpoch, TerminalEpoch;
         internal int SendTimeoutMilliseconds, ReceiveTimeoutMilliseconds;
     }
     private readonly object sync = new();
