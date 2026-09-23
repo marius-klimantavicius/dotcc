@@ -24,7 +24,7 @@ await using var machine = await BlinkMachine.CreateAsync(new MachineOptions
 });
 
 await machine.MountDirectoryAsync("./published-service", "/app", MountAccess.ReadOnly);
-await machine.MountDirectoryAsync("./work", "/work", MountAccess.CopyOnWrite);
+await machine.MountDirectoryAsync("./work", "/work"); // Default: live read-write.
 
 var result = await machine.ExecuteAsync(new ExecutionOptions
 {
@@ -77,13 +77,15 @@ duplicate mount rejection and cross-mount rename/link behavior.
 | Mount mode | Behavior |
 | --- | --- |
 | Read-only host directory | Read existing host contents; guest writes fail. Host changes can be visible and are not an immutable snapshot. |
-| Read-write host directory | Explicit opt-in live host reads/writes, confined to that mount. Changes persist on the host. |
+| Read-write host directory (default) | Live host reads/writes, confined to the explicitly mounted folder. Changes persist on the host. |
 | Copy-on-write | Read from an imported/frozen base and keep guest changes private, with explicit export/discard. Host source remains unchanged; record copy/import costs and quotas. |
 | Private memory/image storage | Machine-owned content with no implicit host path access. |
 
-Pending user preference, use copy-on-write as the proposed default for a host
-folder mount; callers can select another mode per mount. The final default must
-be documented. Importing a directory must not be described as a live mount.
+User-selected default: host folder mounts are live read-write mappings. Guest
+writes update the host folder directly and persist after execution, reset or
+machine disposal. Callers may explicitly select read-only or private
+copy-on-write behavior for each mount. Importing a directory must not be
+described as a live mount. Access outside the granted mount remains denied.
 
 Resolve executable paths and cwd through the guest filesystem; load from a
 mounted executable as well as an image. Preserve normal guest relative paths,

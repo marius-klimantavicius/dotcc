@@ -593,8 +593,9 @@ and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
 
 - [ ] Deliver create/configure/start/execute/wait/stop/dispose and explicit
       machine-versus-run lifetime, with useful typed errors/results.
-- [ ] Add image/private storage and host directory mounts with read-only,
-      explicit read-write and private copy-on-write modes, including mounting
+- [ ] Add image/private storage and host directory mounts with live read-write
+      as the user-selected default, plus explicit read-only and private
+      copy-on-write modes, including mounting
       over existing guest directories and controlled persistence/export.
 - [ ] Load executable/cwd from the guest namespace; accept arguments and
       dictionary-based machine/per-execution environment values.
