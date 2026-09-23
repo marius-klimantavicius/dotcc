@@ -5,7 +5,7 @@ namespace Managed.Emulation.Host;
 public enum GuestError
 {
     None = 0, NoEntry = 2, Io = 5, BadDescriptor = 9, Again = 11, NoMemory = 12, Access = 13, Busy = 16, Exists = 17,
-    NotDirectory = 20, IsDirectory = 21, Invalid = 22, TooManyFiles = 24,
+    CrossDevice = 18, NotDirectory = 20, IsDirectory = 21, Invalid = 22, TooManyFiles = 24,
     NoSpace = 28, IllegalSeek = 29, ReadOnly = 30, BrokenPipe = 32, NameTooLong = 36, NotEmpty = 39,
     NotSocket = 88, Unsupported = 95, AddressInUse = 98, AddressUnavailable = 99,
     ConnectionReset = 104, AlreadyConnected = 106, NotConnected = 107, TimedOut = 110, ConnectionRefused = 111, Canceled = 125
@@ -27,7 +27,7 @@ public readonly record struct VirtualFileSystemCapacity(ulong TotalBytes, ulong 
 public readonly record struct VirtualDirectoryEntry(string Name, ulong Inode, byte Type);
 
 /// <summary>A private Linux-path namespace. It never consults the host filesystem.</summary>
-public sealed partial class VirtualFileSystem : IDisposable
+public sealed partial class VirtualFileSystem : IGuestFileSystem
 {
     private sealed class Node(byte[] bytes, bool immutable, ulong inode, uint mode)
     {
