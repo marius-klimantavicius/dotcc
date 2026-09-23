@@ -315,7 +315,7 @@ permission to replace the interpreter or guest kernel semantics.
       JIT/NativeAOT. No custom fault injection or invalid-ELF cases are added.
       Memory intrinsics must not bypass guest address translation, protection,
       atomic/volatile behavior or syscall contracts.
-- [ ] Reemit affected C objects: object-only relinking cannot apply function
+- [x] Reemit affected C objects: object-only relinking cannot apply function
       overrides. Include compiler/profile/target identities and selection reports
       in receipts, retain literal pooling and inline deduplication, then rerun
       affected CPU and Kestrel/worker/sample gates against the final delivery.
@@ -347,7 +347,7 @@ the profile selects the replacement, and the authored implementation stays in
       duplicating those algorithms, document the reason for each remaining
       narrow patch. Do not assume an override can call an original body that
       it has replaced; any delegation mechanism must be explicit and qualified.
-- [ ] Record selected overrides and remaining patches in the profile/audit
+- [x] Record selected overrides and remaining patches in the profile/audit
       documentation, regenerate affected objects, and qualify ordinary
       signal/thread behavior plus Kestrel lifecycle and final consumer against
       the resulting product. Prior patch-based passes are baseline evidence,
@@ -521,7 +521,7 @@ workarounds.
       `tests/DotNetService/README.md` and `tests/DotNetService/MUSL.md`. Actual
       Kestrel publication/native reference passes at `kestrel-guest-musl/attempt-o5jvvf7t`;
       see `tests/KestrelService/README.md` for the pinned ELF path and receipt.
-      Its translated execution remains a separate unqualified gate.
+      Its translated execution is qualified separately by the final receipts below.
 - [x] Inspect the actual Kestrel guest ELF/dependencies and native service behavior;
       inventory required startup/runtime instructions, syscalls, TLS, threads,
       synchronization, signals and filesystem inputs. Record required profile
@@ -535,7 +535,7 @@ workarounds.
       normal shutdown, ordinary cancellation and resource cleanup against the
       native reference. A guest build or a container/native-only run is not a
       translated-execution pass. Preserve custom fault/invalid-ELF exclusions.
-- [ ] Deliver `blink/ManagedConsumer.slnx` and its runnable usage sample, consuming
+- [x] Deliver `blink/ManagedConsumer.slnx` and its runnable usage sample, consuming
       `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and the owning API.
       Reference original authored projects/files under `src/`, including Host;
       solution edits must persist there and ordinary builds must use those edits.
@@ -568,7 +568,17 @@ Deadline cleanup. The auxiliary marker files are retained but not read by the
 guest. The raw-socket showcase solution/sample subsequently passed at
 `managed-consumer-delivery/attempt-8k2fus34` (commit `f06256d`), resolving that
 historical sample qualification block. It remains baseline evidence until the
-Kestrel guest is qualified in the final sample. P5 is not complete.
+Kestrel guest is qualified in the final sample.
+
+Observed final Kestrel gate: public delivery `translation/attempt-kaddtzlg`
+passes with 108 freshly emitted objects; `kestrel-worker-instances/attempt-838yl87x`
+passes all four forms, 16 workers and 40 native HTTP comparisons. Exact-product
+signal qualification `guest-signals-managed/attempt-39sz6b58` and CPU refresh
+`cpu-conformance-managed/attempt-mnd6gyjc` pass all four forms (2,056 CPU matches).
+The actual solution and JIT/NativeAOT Kestrel sample pass at
+`managed-consumer-delivery/attempt-ljvj6fxh`. P5 is complete for the documented
+Linux x64 profile. Work stops here; P6 is not started by this authorization.
+See `docs/VALIDATION.md` and `docs/P5-KESTREL-RUNTIME.md` for hashes and limits.
 
 ### P6 — Qualify upstream tests, platforms, and delivery
 

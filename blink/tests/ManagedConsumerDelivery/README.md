@@ -1,16 +1,24 @@
 # Final Kestrel ManagedConsumer qualification
 
-The updated runner is source-ready; Kestrel solution/JIT/NativeAOT execution is
-pending. Run after a passing corrected threaded public translation is available,
-using its reviewed exact receipt identity:
+The actual Kestrel solution/JIT/NativeAOT qualification **passes** at
+`../../artifacts/managed-consumer-delivery/attempt-ljvj6fxh/receipt.json`
+(SHA-256 `502992598acf8897e45020c17aeed4c2007e08d980cac0796fe16433f965aaaf`).
+All six commands pass: actual solution build, JIT sample, real worker/sample
+NativeAOT publishes and AOT sample. Four workers and six native HTTP semantic
+comparisons pass normal exit, restart, cooperative stop and cleanup; no cleanup
+signal supplies success. Independent review checks 2,080 file/tree/source/log/
+binary identities. The solution build retains 17 CS8632 nullable-context
+warnings and no errors; this is not a warning-free-build claim.
+
+Reproduce with the reviewed exact delivery identity:
 
 ```bash
 python3 blink/tests/ManagedConsumerDelivery/run.py \
   --guest blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService \
   --native-receipt blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/receipt.json \
   --profile-receipt blink/artifacts/kestrel-native-profile/attempt-zphi57zq/receipt.json \
-  --delivery-receipt /path/to/reviewed/translation/receipt.json \
-  --delivery-sha256 REVIEWED_EXACT_DELIVERY_SHA256
+  --delivery-receipt blink/artifacts/translation/attempt-kaddtzlg/receipt.json \
+  --delivery-sha256 711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11
 ```
 
 Native producer and six-environment profile identities are fixed in the runner;
@@ -26,7 +34,7 @@ that native sample/worker pair with the same Kestrel ELF and six guest environme
 entries. The selected Kestrel profile couples the guest AS/DATA allowance and
 backing cap at 128 MiB, while the guest GC cap remains 16 MiB. It permits ordinary
 runtime address reservations without claiming 128 MiB physical use. Instruction
-and wall bounds remain 100 million/60 seconds; actual qualification is pending.
+and wall bounds remain 100 million/60 seconds; the passing receipt uses these bounds.
 
 Each pair checks health, normal HTTP stop and exit zero, a fresh worker process,
 health again, cooperative stop, exact guest output, instruction bounds and the

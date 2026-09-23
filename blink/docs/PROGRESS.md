@@ -4,15 +4,45 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-P5 is active. Typed managed ownership overrides, bounded normal guest signal
-delivery, and the coarse monotonic clock boundary are implemented and qualified.
-The corrected public generation passes after the clock-6 correction
-(`a4dd163`); current work is actual Kestrel standalone/two-instance lifecycle checks,
-the current-product CPU matrix, and the final Kestrel usage sample. The previous
-two-instance run reached its instruction budget; the corrected product must
-establish whether the missing clock caused that behavior. Limits are unchanged.
-The detailed records below preserve the sequence and exact earlier identities;
-prior products are not automatically qualified for later source changes.
+**P5 is complete for the selected Linux x64 profile; work is stopped.** The
+real ASP.NET Core/Kestrel NativeAOT guest passes raw/optimized JIT/NativeAOT,
+simultaneous instances, normal/cooperative stop, restart and natural deadlines.
+The actual showcase solution and its JIT/NativeAOT sample pass. P6, Windows and
+broader runtime/performance qualification have not started in this continuation.
+
+All final gates consume public delivery `translation/attempt-kaddtzlg` (SHA-256
+`711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11`),
+with 108 fresh objects, six endian intrinsics, four typed managed ownership
+overrides, literal pooling, inline deduplication and direct original-src references.
+
+| Final gate | Receipt under `artifacts/` | Result |
+| --- | --- | --- |
+| Kestrel standalone | `kestrel-guest-execution/attempt-nb6iv2wz` | Five native HTTP semantics, 225 successful actual coarse-clock calls, normal exit/cleanup. |
+| Actual Kestrel workers | `kestrel-worker-instances/attempt-838yl87x` | All four modes; 16 workers and 40 HTTP comparisons, isolation/restart/stop/deadline/cleanup. |
+| Normal guest signals | `guest-signals-managed/attempt-39sz6b58` | All four modes; sender metadata, masked pending/unmask, signal return and nested accounting. |
+| CPU refresh | `cpu-conformance-managed/attempt-mnd6gyjc` | 514 per mode, 2,056 matched comparisons, native agreement, unchanged 46 exclusions. |
+| Actual public sample | `managed-consumer-delivery/attempt-ljvj6fxh` | Real solution/JIT/AOT pair, four workers, six native HTTP comparisons, normal/cooperative stop and restart. |
+
+The final sample receipt SHA-256 is
+`502992598acf8897e45020c17aeed4c2007e08d980cac0796fe16433f965aaaf`;
+all six commands pass and 2,080 recorded identities independently recheck.
+The build has existing CS8632 nullable-context warnings and no errors. No
+forced process termination supplies a pass. Exact hashes and finite capability
+limits are recorded in [VALIDATION.md](VALIDATION.md) and
+[P5-KESTREL-RUNTIME.md](P5-KESTREL-RUNTIME.md). The guest, six environment values
+and 100M/60s/128MiB execution profile remain unchanged. No speedup benchmark,
+arbitrary signal/epoll semantics or physical-memory reporting is claimed.
+
+The coordinator and both workers are stopping with no active builds or guest
+processes. User work remains separate: all nine staged entries match the saved
+index mode/blob/stage exactly; old BLOCKERS additions and `partial_blink.patch`
+are preserved. No duplicate recovery-branch history was introduced.
+
+## Prior P5 progression (historical snapshots)
+
+The following records preserve their status at the time written. Earlier
+pending gates and failures are superseded only by the exact final receipts
+above; their original artifacts and limitations remain intact.
 
 **Resumed by the user on 2026-09-23.** The saved 25-file source checkpoint was
 compared with its base, current HEAD, index and worktree before recovery; no
@@ -141,7 +171,19 @@ instances, normal and cooperative stop, restart, natural idle deadline and
 complete cleanup. Instructions remain 88.27–88.82M per worker, with 48.9–51.1
 seconds of ordinary idle before the actual deadline. All completions precede
 fixture cleanup; 13 commands pass and 2,090 identities independently recheck.
-The exact-product GuestSignals refresh is running; CPU and final sample follow.
+The exact-product GuestSignals refresh `attempt-39sz6b58` also passes all four
+forms (SHA-256 `988820fa3343ffdfdcd3ad6cf75e4c342f682be702c223be87722b031d594aa2`):
+eleven commands, correct sender/return/handler accounting and complete cleanup;
+1,529 recorded identities recheck. The final 514-case CPU matrix is running,
+followed by the actual public Kestrel sample. No production inputs changed.
+
+The final-product CPU matrix `cpu-conformance-managed/attempt-mnd6gyjc` passes
+all 2,056 comparisons (514 in each raw/optimized JIT/NativeAOT mode), receipt
+SHA-256 `b833f6c176c5a481c8c1c8db7191fb24638604159b1d54390bb4758139b117f2`.
+The 46 exclusions remain unchanged. It retains all 108 actual product objects
+and adds only the test frontend, with explicit endian and typed-boundary
+selection checks. The actual public Kestrel sample is the remaining execution
+gate before final P5 review and milestone commit.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the
@@ -272,17 +314,11 @@ must not be concealed, renamed or routed around. Actual service startup is now q
 
 ## Ownership
 
-Work resumed after the user's instruction that libsmb2 has stopped and Blink
-should continue. All implementation and milestone commits use `sqlite` in the
-main checkout. Historical recovery/detached worktrees remain evidence only.
-
-- Coordinator: current shared-toolchain build/identity freeze, normal-only probe
-  scope alignment, integration, runtime revalidation, durable status and commits.
-- Inputs worker: P5 host boundary qualification and read-only musl stack/GC review.
-- Guest worker: P5 dispatcher integration and read-only guest thread ownership review.
-
-Shared compiler edits and heavy test suites remain serialized. Workers own
-disjoint authored files and do not commit duplicate recovery-branch history.
+All campaign integration and milestone commits use `sqlite` in the main
+checkout. The coordinator owns final integration/status; both workers have
+completed their bounded qualification/review assignments and are idle. Heavy
+suites and shared compiler edits remained serialized. Historical recovery and
+detached worktrees remain evidence only; no duplicate branch work continues.
 
 ## Milestones
 
@@ -292,8 +328,8 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 | P1 | Passed | Actual bounded instructions, synchronous faults/unwind and exit/exit_group match native under raw/optimized JIT/NativeAOT; profile ABI matches a separate native probe. |
 | P2 | Passed, delivery refinements passed | 108 product producers, upstream exports without test/C execution frontends, shared literal pool, direct original-source references and immutable raw comparison. Separate C# sample passes JIT/AOT. |
 | P3 | Passed — selected profile | 504 normal CPU cases per form (2,016 matches), valid ELF/fixed TLS and actual guest-memory lifecycle pass. Bounded coverage and retained producer evidence are documented above. |
-| P4 | Passed — selected profile | Native/all-four contracts, 24 actual HTTP comparisons, eight native completion controls and 44 actual owning stop/deadline cases. Phase stopped; no later phase started. |
-| P5 | Active | Genuine glibc/static-musl NativeAOT guest and native HTTP pass; actual translated startup and first required memory-barrier boundary are recorded below. NativeAOT readiness, threaded runtime, worker/API, restart and two-instance lifecycle remain open. |
+| P4 | Passed — selected profile | Native/all-four contracts, 24 actual HTTP comparisons, eight native completion controls and 44 actual owning stop/deadline cases. Subsequent P5 authorization is recorded separately. |
+| P5 | Passed — selected Kestrel profile | Real NativeAOT Kestrel all-four-mode workers/HTTP/lifecycle, final CPU/signal refresh, actual solution and JIT/AOT sample pass; final receipts are at the top. Phase stopped. |
 | P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
 
 ## Observed environment
@@ -302,13 +338,10 @@ disjoint authored files and do not commit duplicate recovery-branch history.
 
 ## Remaining delivery gates
 
-The current shared Release compiler is frozen and qualified by the receipts
-above. P2 delivery, the separate C# execution sample and P4's actual service and
-stop/deadline gates have passed for the selected Linux x64 profile. P5's
-subprocess worker, restart and two-instance HTTP lifecycle remain unqualified.
-Prepared P6 regression/performance work remains unrun, and actual Windows
-execution still requires that platform. P5 is explicitly active; P6 remains held.
-Earlier automated-review stops are historical evidence.
+P0–P5 pass for their documented finite Linux x64 scopes. P6 remains separate:
+Windows execution, additional upstream/publication/regression qualification and
+performance measurements are not run by this P5 completion. Work is stopped
+for user direction. Earlier automated-review stops are historical evidence.
 
 ## Observed validation (initial campaign baseline)
 

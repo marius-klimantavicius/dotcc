@@ -1,5 +1,12 @@
 # Selected CPU qualification and broader coverage limits
 
+Final P5 product refresh: the same 514 normal cases pass all 2,056 comparisons
+against `translation/attempt-kaddtzlg`, with native agreement and all 46
+exclusions unchanged. Receipt `cpu-conformance-managed/attempt-mnd6gyjc` has
+SHA-256 `b833f6c176c5a481c8c1c8db7191fb24638604159b1d54390bb4758139b117f2`.
+This adds no corpus scope; it qualifies the final endian-intrinsic, typed
+managed-boundary and clock-capability product.
+
 The Kestrel extension adds ten normal SSE comparison-mask cases at IDs550–559.
 All 514 normal native cases pass in `cpu-conformance/attempt-havagw22`; all
 2,056 managed comparisons pass in `cpu-conformance-managed/attempt-jt41ulk6`.

@@ -13,9 +13,14 @@ controller/worker pairs in
 Those historical executions verified exact HTTP responses, normal exit, a fresh worker restart,
 cooperative stop and resource cleanup. See
 [the reproducible check](../tests/ManagedConsumerDelivery/README.md).
-The current sample targets the required ASP.NET Core Kestrel guest. Its final
-solution/JIT/NativeAOT qualification is pending; the earlier receipt does not
-qualify these updated sources or complete P5.
+The current ASP.NET Core/Kestrel sample passes the actual solution build and
+both JIT/NativeAOT controller-worker pairs at
+`artifacts/managed-consumer-delivery/attempt-ljvj6fxh/receipt.json` (SHA-256
+`502992598acf8897e45020c17aeed4c2007e08d980cac0796fe16433f965aaaf`).
+Four actual workers and six native HTTP comparisons pass, including normal
+exit, fresh-process restart, cooperative stop and complete cleanup. It consumes
+public delivery `translation/attempt-kaddtzlg`; the old raw-socket receipt
+remains evidence only for its original sources.
 
 ## Generate, build and run
 

@@ -163,7 +163,7 @@ all five native HTTP semantics, normal exit and complete cleanup in 88,831,381
 instructions. Its complete trace has 225 clock-6 calls, all successful; the
 inferred heartbeat thread now performs a real futex wait and only 13,217
 instructions. This qualifies the selected standalone optimized-JIT path.
-The all-four-mode worker matrix and final sample remain separate gates;
+The all-four-mode worker matrix and final sample have their own receipts below;
 the guest ELF, six variables, 128 MiB memory profile, 100M instruction budget
 and 60-second deadline remain unchanged. The observed timer-path improvement is retained as correctness evidence,
 not a general performance measurement.
@@ -206,4 +206,28 @@ distinct physical endpoints, normal/cooperative stop, fresh-process restart
 and natural idle deadline. All completions occur before diagnostic cleanup;
 all Machines, workers, backing and IO release without a forced-success path.
 The 100M/60s/128MiB profile remains unchanged. Final public sample and CPU
-refresh are still separate pending gates.
+refresh have the separate passing receipts below.
+
+The bounded GuestSignals fixture is refreshed against this exact final product
+at `guest-signals-managed/attempt-39sz6b58/receipt.json` (SHA-256
+`988820fa3343ffdfdcd3ad6cf75e4c342f682be702c223be87722b031d594aa2`).
+All four forms preserve sender metadata, pending/unmask, actual signal return,
+per-thread handler accounting and cleanup with the same native ELF. This
+separate evidence retains the signal scope limits above.
+
+## Final public sample and CPU refresh
+
+The final CPU matrix `cpu-conformance-managed/attempt-mnd6gyjc/receipt.json`
+passes 514 cases per form, 2,056 comparisons, native agreement and the unchanged
+46 exclusions (SHA-256
+`b833f6c176c5a481c8c1c8db7191fb24638604159b1d54390bb4758139b117f2`).
+The actual solution and JIT/NativeAOT Kestrel sample pass at
+`managed-consumer-delivery/attempt-ljvj6fxh/receipt.json` (SHA-256
+`502992598acf8897e45020c17aeed4c2007e08d980cac0796fe16433f965aaaf`):
+four actual workers, six native HTTP comparisons, normal exit, fresh-process
+restart, cooperative stop and complete cleanup. All six commands pass; the
+build retains existing nullable-context warnings.
+
+P5 is complete for this selected Linux x64 profile. The finite scope and
+explicit refused/deferred capabilities above remain; no P6 performance,
+Windows or broader runtime qualification is implied or started.

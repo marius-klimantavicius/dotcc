@@ -1,5 +1,18 @@
 # Qualified normal CPU conformance corpus
 
+The final P5 delivery `translation/attempt-kaddtzlg` passes the unchanged
+514-case corpus in all four modes: **2,056 comparisons**, native agreement,
+and 46 exclusions unchanged. Receipt
+`artifacts/cpu-conformance-managed/attempt-mnd6gyjc/receipt.json` has SHA-256
+`b833f6c176c5a481c8c1c8db7191fb24638604159b1d54390bb4758139b117f2`.
+The fresh native reference is `cpu-conformance/attempt-8ahtsbu9` (SHA-256
+`9a17ec17676a48eb59f1d5c19e330926da5e888ce4659fabe46f47cd5e6b60fd`).
+All 108 actual product objects are retained and only the CPU frontend is added;
+six endian intrinsics and the four typed ownership boundaries retain their
+explicit selection evidence. Independent review verifies 8,610 recorded
+file/tree/log/binary identities. The historical qualification below remains
+evidence for its earlier exact products.
+
 The Kestrel extension now passes **514 normal native cases** in
 `artifacts/cpu-conformance/attempt-havagw22/receipt.json`, SHA256
 `a400af6ae56ad7e0ba4e6a7b5a157caea94b3ab2d418c7857281ba3cb300c267`.

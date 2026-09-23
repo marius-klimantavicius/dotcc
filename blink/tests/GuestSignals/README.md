@@ -98,3 +98,12 @@ the recursive fixed loop participates in per-thread accounting. Total guest
 instruction counts are 24,811–24,815; scheduling differences are preserved.
 All 11 commands completed without cleanup signals. A subsequent audit rechecked
 1,246 individually pinned source, log and binary identities.
+
+The final clock-corrected public delivery `translation/attempt-kaddtzlg` also
+passes all four forms at
+`blink/artifacts/guest-signals-managed/attempt-39sz6b58/receipt.json`, SHA-256
+`988820fa3343ffdfdcd3ad6cf75e4c342f682be702c223be87722b031d594aa2`.
+The same native ELF and 12,295-instruction handler marker spans pass, with
+24,811–24,813 total owner instructions. All eleven commands exit zero and all
+process groups are gone without cleanup signals; 1,529 recorded identities
+independently recheck. This refresh changes no fixture or production source.

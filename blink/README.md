@@ -6,11 +6,11 @@ C# on Linux x64. The qualified delivery translates all 108 selected product sour
 `blink/generated/TranslatedBlink/TranslatedBlink.csproj` and preserves a separate
 immutable raw snapshot. Authored Host/bridge sources are linked directly from
 `src`, and a separate authored C# API owns loading, execution and cleanup.
-The earlier C service sample passed health and normal shutdown in JIT and Linux
-NativeAOT; the replacement .NET worker sample has its separate pending gate.
+The actual ASP.NET Core/Kestrel NativeAOT guest and its final worker sample
+pass the selected Linux x64 qualification.
 Campaign C probes remain test-only.
-The normal CPU corpus passes 504 cases in each of raw/optimized JIT/NativeAOT,
-for 2,016 comparisons, with 46 historical custom fault cases explicitly excluded.
+The normal CPU corpus passes 514 cases in each of raw/optimized JIT/NativeAOT,
+for 2,056 comparisons, with 46 historical custom fault cases explicitly excluded.
 Actual guest-memory lifecycle and valid ELF/fixed TLS tests also pass all four
 forms, completing the finite selected-profile P3 gate.
 
@@ -29,14 +29,14 @@ poll/sleep deadlines, inherited-I/O cancellation and instruction budgeting.
 P4 is complete for the selected Linux x64 profile;
 see [the P4 ledger](docs/P4-HOST-SERVICES.md).
 
-P5 is active. The genuine static-musl .NET NativeAOT HTTP guest now passes raw
-and optimized JIT/NativeAOT hosts, including exact native health/shutdown and
-all guest-thread cleanup. Public translation defaults to this threaded profile.
-See [runtime evidence and limits](docs/P5-NATIVEAOT-RUNTIME.md). The real
-subprocess worker passes all four modes: 16 workers, 40 exact HTTP comparisons,
-simultaneous instances, restart, cooperative stop and idle deadlines. Final
-solution/sample qualification remains blocked by automated review (B036).
-P5 is incomplete; P6 and Windows execution remain open.
+P5 is complete for the selected genuine static-musl ASP.NET Core/Kestrel guest.
+All four host modes pass 16 actual workers and 40 native-reference HTTP
+comparisons, simultaneous private instances, restart, cooperative stop and
+natural idle deadlines. The actual showcase solution and JIT/NativeAOT sample
+also pass. Public translation defaults to that threaded profile. See
+[runtime evidence and limits](docs/P5-KESTREL-RUNTIME.md) and
+[final receipts](docs/VALIDATION.md). Work stops at P5; P6 and Windows
+qualification remain separate and unrun.
 
 The P3 pass is finite selected-profile coverage. Broader ISA, dynamic ELF/TLS
 and unrelated runtime compatibility are not implied. See [progress](docs/PROGRESS.md),
@@ -50,7 +50,7 @@ dotnet build dotcc.sln -c Release -p:UseLocalLalrCc=false
 bash blink/scripts/translate.sh
 dotnet build blink/ManagedConsumer.slnx -c Release
 dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build -- \
-  blink/artifacts/dotnet-guest-musl/attempt-8za50rji/publish/DotNetService \
+  blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService \
   blink/src/Managed.Emulation.Worker/bin/Release/net10.0/Managed.Emulation.Worker.dll
 ```
 
@@ -58,7 +58,7 @@ See [translation delivery](scripts/TRANSLATION.md), the
 [usage sample](ManagedConsumer/README.md) and
 [clean delivery verification](scripts/CLEAN-DELIVERY.md). Finish generation before
 building consumers. The sample exercises normal guest exit and a fresh worker with cooperative stop.
-Its current integration qualification is pending.
+Its actual JIT and NativeAOT integration qualification passes for the pinned Kestrel ELF.
 
 ## Reproduce the core gate
 
@@ -127,8 +127,8 @@ The current ownership rule is one active translated context per worker process.
 The qualified harnesses discard their worker after cleanup; reuse of arbitrary
 process-global interpreter state is not established. Managed emulation and an
 ordinary same-user worker are not a hardened sandbox. Dynamic distro userspace,
-guest fork/exec/threads, native JIT, kernel boot and general Linux compatibility
-are outside the first profile.
+guest fork/exec, arbitrary threading semantics, native JIT, kernel boot and
+general Linux compatibility remain outside this finite profile.
 
 An earlier automated review stopped a service-worker attempt. Its partial worker
 was never qualified; that historical outcome is not a permanent rule against

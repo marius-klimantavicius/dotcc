@@ -3,7 +3,51 @@
 All observed executions below are Linux x64. Windows execution has not run.
 Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
-## Latest corrected-profile qualification
+## Final P5 Kestrel qualification
+
+All final product gates below consume `translation/attempt-kaddtzlg`: 108 freshly
+emitted objects, six unsigned endian intrinsics and four typed managed
+ownership overrides, literal pooling/inline deduplication, original authored
+source references, no CoreProbe/test main/C execution frontend. The unchanged
+real ASP.NET Core/Kestrel static NativeAOT ELF and six-variable native profile
+are pinned in [P5-KESTREL-RUNTIME.md](P5-KESTREL-RUNTIME.md). The focused coarse-clock
+boundary fixture is separately compiled native/all-four evidence, not a product
+execution receipt.
+
+| Gate | Receipt under `artifacts/` | SHA-256 |
+| --- | --- | --- |
+| Public delivery | `translation/attempt-kaddtzlg/receipt.json` | `711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11` |
+| Coarse-clock native/all-four boundary | `host-coarse-clock/attempt-ny75u0ux/receipt.json` | `814a144c582b76521d9b429def663464a66afc1a11c66ac436eeddd3400e3841` |
+| Actual standalone Kestrel | `kestrel-guest-execution/attempt-nb6iv2wz/receipt.json` | `3b88712a5bac07e432f6dd253d0b749f2033a2bc17e231b87099a3d6ec2bb558` |
+| Kestrel all-four worker lifecycle | `kestrel-worker-instances/attempt-838yl87x/receipt.json` | `f4d1e9780d32871eb153f46bef9b51f318b559883938a76117a5858ceca97bae` |
+| Normal guest signals all-four | `guest-signals-managed/attempt-39sz6b58/receipt.json` | `988820fa3343ffdfdcd3ad6cf75e4c342f682be702c223be87722b031d594aa2` |
+| CPU all-four | `cpu-conformance-managed/attempt-mnd6gyjc/receipt.json` | `b833f6c176c5a481c8c1c8db7191fb24638604159b1d54390bb4758139b117f2` |
+| Actual public solution/sample JIT+AOT | `managed-consumer-delivery/attempt-ljvj6fxh/receipt.json` | `502992598acf8897e45020c17aeed4c2007e08d980cac0796fe16433f965aaaf` |
+
+Worker qualification runs 16 actual workers and 40 native HTTP comparisons,
+covering simultaneous private instances, distinct endpoints, normal/cooperative
+stop, restart, natural idle deadline and complete cleanup. Auxiliary marker
+files are not guest-read; distinct executable paths/images and endpoints are
+observed. The actual public sample adds four workers and six HTTP comparisons
+using the real solution and both controller/worker publication forms.
+
+The CPU refresh passes all 2,056 comparisons (514 per mode), native agreement
+and 46 unchanged exclusions; independent review verifies 8,610 recorded
+identities. Signal refresh preserves sender metadata, pending/unmask, actual
+return and per-thread nested accounting. The final sample's six commands and
+2,080 independent identity checks pass. Existing CS8632 warnings remain; no
+warning-free build, Windows pass, arbitrary signal/epoll compatibility or
+performance benchmark is claimed. All execution limits remain 100M/60s/128MiB
+for Kestrel. All process groups exit without forced-success cleanup.
+
+The generic compiler changes also passed the observed 55 focused unit and
+14 functional tests plus the Release CLI build. Those root-run test results
+were not written to a separate durable log receipt; actual compiler and
+postprocessor binary identities are pinned by the public delivery and runners.
+The separate endian fixture retains its native/all-four detailed contract proof
+at `endian-intrinsics/attempt-u1ulwk20`. No P6 work starts at this completion.
+
+## Earlier P4 corrected-profile qualification
 
 | Gate | Latest receipt under `artifacts/` | Result |
 | --- | --- | --- |
@@ -27,7 +71,8 @@ Only four ALU NEG bodies changed after the memory/loader runs; the other 108
 producer records and Host/header/compiler inputs are identical. Those component
 receipts are retained evidence, not post-NEG reexecution. The clean sample row
 qualifies its stated pre-NEG revision. Further P6 regressions/performance remain
-unrun. P5 subprocess/multiple-instance integration and Windows execution remain unqualified.
+unrun at that earlier checkpoint. The final P5 integration is qualified above;
+Windows execution remains unqualified.
 
 ## Current P4 qualification
 
