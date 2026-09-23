@@ -5,6 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAotCompatible>true</IsAotCompatible>
+    <!-- Consumers build this as an independently launched deployment artifact,
+         never as an executable assembly reference with shared runtime policy. -->
+    <ShouldBeValidatedAsExecutableReference>false</ShouldBeValidatedAsExecutableReference>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Managed.Emulation/Managed.Emulation.csproj" />

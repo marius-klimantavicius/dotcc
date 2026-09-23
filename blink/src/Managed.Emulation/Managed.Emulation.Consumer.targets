@@ -6,8 +6,10 @@
     <BlinkDeployWorker Condition="'$(BlinkDeployWorker)' == ''">true</BlinkDeployWorker>
   </PropertyGroup>
   <ItemGroup Condition="'$(BlinkDeployWorker)' == 'true'">
+    <!-- This edge supplies the portable build-time worker. RID/AOT deployment
+         is restored and published independently by BlinkPublishWorker below. -->
     <ProjectReference Include="$(BlinkWorkerProject)" ReferenceOutputAssembly="false" Private="false"
-      GlobalPropertiesToRemove="PublishDir;OutputPath;OutDir" />
+      GlobalPropertiesToRemove="PublishDir;OutputPath;OutDir;RuntimeIdentifier;RuntimeIdentifiers;PublishAot;SelfContained" />
   </ItemGroup>
   <ItemGroup>
     <TrimmerRootAssembly Include="TranslatedBlink" />
@@ -17,7 +19,7 @@
           Condition="'$(BlinkDeployWorker)' == 'true' and '$(DesignTimeBuild)' != 'true'">
     <MSBuild Projects="$(BlinkWorkerProject)" Targets="BlinkGetWorkerBuildFiles"
              Properties="Configuration=$(Configuration);TargetFramework=$(TargetFramework)"
-             RemoveProperties="PublishDir;OutputPath;OutDir">
+             RemoveProperties="PublishDir;OutputPath;OutDir;RuntimeIdentifier;RuntimeIdentifiers;PublishAot;SelfContained">
       <Output TaskParameter="TargetOutputs" ItemName="_BlinkWorkerBuildFile" />
     </MSBuild>
     <Error Condition="'@(_BlinkWorkerBuildFile)' == ''" Text="The worker build returned no deployment files." />
