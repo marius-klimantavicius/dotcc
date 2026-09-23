@@ -1,8 +1,68 @@
 # Campaign validation
 
-Implementation is in progress. P0 establishes inputs and reference behavior;
-the complete translated and post-processed project now builds, while SMB
-interoperability and P1–P6 completion remain separate gates.
+## Current async transport qualification — 2026-09-23
+
+The default product now uses completion-driven C# sockets and fd callbacks.
+The managed facade supports async connection, file operations and disposal;
+synchronous facade methods wait on the same async implementation. No C source
+was added or changed, and generated C# is not patched. The authored four-byte
+`t_socket` stores a registry token separate from Libc descriptors.
+
+Linux x64 qualification passed:
+
+- Clean default translation from outside the repository processes all 53 pinned
+  upstream units and promotes raw and processed outputs to their required paths.
+  Host/build input hashes are included in `artifacts/translation/result.json`.
+  The solution builds without warnings or errors, and semantic postprocessing is
+  idempotent, including unchanged imported host files.
+- **88/88 Samba cases**: sample and lifecycle suites, each in raw/processed ×
+  JIT/NativeAOT. Coverage includes signing, encryption, ordinary rejection cases,
+  Unicode CRUD, large transfers, independent connections, cancellation before
+  submission and disposal with pending operations. The lifecycle harness observes
+  zero I/O completions or service notifications during a settled idle interval.
+  See `artifacts/async-transport/matrix.json` and the individual oracle receipts.
+- Fresh native Samba controls pass **11/11**. All **45 crypto/ABI values** match
+  native controls in both raw/processed JIT and NativeAOT consumers. The native
+  control uses the separate integer-descriptor configuration.
+- Socket loopback checks pass in raw/processed JIT and NativeAOT, exercising
+  IPv4/IPv6, concurrent contexts, short reads/writes, EOF, prepared DNS, token
+  ownership and close/drain. Each run transfers 1 MiB + 137 bytes in each
+  direction per context. Recorded elapsed times are 21–108 ms, allocations
+  65–70 MiB and thread-pool sizes 9–11 for the complete harness. Dividing the
+  roughly 6 MiB transferred by total elapsed time gives 56–286 MiB/s; this
+  includes setup and is not an isolated transport benchmark. Per-socket
+  send/receive buffers peak at 256 KiB each;
+  all registered contexts, sockets and buffered bytes drain to zero.
+  Logs are under `artifacts/async-host/`.
+- Whole-assembly-rooted NativeAOT publication/execution passes for both products.
+  The audit evaluates imported authored C# and build inputs as well as generated
+  files; it finds no unexpected native dependencies. Generic OS runtime imports
+  and dormant loader helpers remain explicitly inventoried in
+  `artifacts/product-audit/result.json`.
+- Both checked-heap finalizer cases pass for raw and processed JIT facade
+  binaries (**4 executions**). Compiler unit tests pass **2,441/2,441**;
+  functional tests pass **619**, with **1,081 existing skips** and no failures;
+  postprocessor tests pass **101/101**.
+
+Unchanged upstream synchronous C tests use an explicit **legacy profile**, with
+separate generated directories and receipts; they do not qualify the async host.
+Ten upstream programs build in raw/processed JIT/NativeAOT. The suite's unchanged
+rerun reports **35 passed, 60 skipped, 1 known native baseline failure and 4
+blocked**. Its initial run also had one processed-JIT connection startup timeout;
+the failing evidence is preserved under
+`artifacts/upstream-tests-first-async-qualification/`. A coarse upstream
+zero-timeout comparison is a suspected cause, not an established diagnosis. No
+source or test expectations were changed to make the rerun pass.
+
+The current aggregate receipt is `artifacts/async-transport/qualification.json`;
+the older `artifacts/qualification/result.json` describes a historical campaign.
+Windows execution remains unverified. Kerberos and DFS remain on hold. Direct
+translated synchronous/manual-poll APIs require the separate legacy profile;
+the default product requires fd callbacks. This completes the Linux async
+transport milestone, not every remaining gate in the overall libsmb2 plan.
+
+The sections below preserve earlier campaign history; their poll-based behavior
+and previously injected fault checks are not current async acceptance evidence.
 
 ## P0 reference baseline
 

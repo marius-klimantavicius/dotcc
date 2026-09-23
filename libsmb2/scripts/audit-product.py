@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import tempfile
 import xml.etree.ElementTree as ET
 from common import ROOT, run, sha
@@ -34,25 +35,50 @@ def without_comments(text):
                        if match.group().startswith(('//', '/*')) else match.group(), text)
 
 
-def source_files(project):
-    return sorted(path for path in project.parent.rglob('*') if path.is_file()
-                  and path.suffix in ('.cs', '.csproj')
-                  and not {'bin', 'obj'}.intersection(path.relative_to(project.parent).parts))
+def project_inputs(project):
+    # Evaluate imports, including Directory.Build.targets, without building.
+    # Scanning only files beside the csproj misses authored transport sources.
+    evaluated = json.loads(subprocess.check_output([
+        'dotnet', 'msbuild', str(project),
+        '-getItem:Compile,PackageReference,ProjectReference,NativeLibrary',
+        '-getProperty:AssemblyName'], text=True))
+    files = {project.resolve()}
+    files.update(Path(item['FullPath']).resolve() for item in evaluated['Items']['Compile'])
+    imports = {Path(item['DefiningProjectFullPath']).resolve()
+               for item in evaluated['Items']['Compile']}
+    # Include the authored import chain in the source receipt as well.
+    for directory in [project.parent, *project.parent.parents]:
+        if not directory.is_relative_to(ROOT.parent):
+            continue
+        for name in ('Directory.Build.props', 'Directory.Build.targets'):
+            path = directory / name
+            if path.is_file():
+                imports.add(path.resolve())
+    imports = {path for path in imports if path.is_relative_to(ROOT.parent)}
+    return sorted(files), sorted(imports), evaluated
 
 
 def inventory(project):
-    tree = ET.parse(project)
-    assembly = tree.findtext('.//AssemblyName') or project.stem
+    files, imports, evaluated = project_inputs(project)
+    assembly = evaluated['Properties']['AssemblyName'] or project.stem
     if assembly != 'TranslatedLibsmb2':
         raise RuntimeError('Rooted audit expects exact assembly name TranslatedLibsmb2: ' + assembly)
-    result = dict(project=str(project), assembly=assembly, files={}, imports=[],
+    result = dict(project=str(project), assembly=assembly, files={}, authored_files={},
+                  build_inputs={str(path.relative_to(ROOT.parent)): sha(path) for path in imports}, imports=[],
                   native_loader_helpers=[], dynamic_code=[], unexpected_dependencies=[],
                   translated_native_loader_calls=[], unparsed_import_attributes=[])
-    for reference in tree.findall('.//PackageReference') + tree.findall('.//ProjectReference') + tree.findall('.//NativeLibrary'):
-        result['unexpected_dependencies'].append(dict(kind=reference.tag, attributes=reference.attrib))
-    for path in source_files(project):
-        relative = str(path.relative_to(project.parent))
-        result['files'][relative] = sha(path)
+    for kind in ('PackageReference', 'ProjectReference', 'NativeLibrary'):
+        result['unexpected_dependencies'].extend(dict(kind=kind, attributes=item)
+                                                  for item in evaluated['Items'][kind])
+    for path in files:
+        if path.is_relative_to(project.parent):
+            relative = str(path.relative_to(project.parent))
+            result['files'][relative] = sha(path)
+        else:
+            if not path.is_relative_to(ROOT / 'src'):
+                raise RuntimeError('Unexpected external compilation source: ' + str(path))
+            relative = str(path.relative_to(ROOT))
+            result['authored_files'][relative] = sha(path)
         if path.suffix != '.cs':
             continue
         original = path.read_text()
@@ -153,20 +179,29 @@ def main():
             destination = stage / variant
             library = destination / 'library'
             harness = destination / 'harness'
+            host = destination / 'host'
             library.mkdir(parents=True)
             harness.mkdir()
+            host.mkdir()
             for relative in audit['files']:
                 target = library / relative
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(project.parent / relative, target)
             if audit['files'] != {relative: sha(library / relative) for relative in audit['files']}:
                 raise RuntimeError('Generated sources changed while snapshotting')
+            for relative, expected in audit['authored_files'].items():
+                target = host / Path(relative).relative_to('src')
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / relative, target)
+                if sha(target) != expected:
+                    raise RuntimeError('Authored host sources changed while snapshotting')
             for path in (ROOT / 'tests/ProductAudit').iterdir():
                 if path.suffix in ('.cs', '.csproj'):
                     shutil.copyfile(path, harness / path.name)
             isolated_project = harness / 'ProductAudit.csproj'
             option = '-p:Libsmb2GeneratedProject=' + str(library / 'TranslatedLibsmb2.csproj')
-            evaluated = run(['dotnet', 'msbuild', isolated_project, option, '-getItem:TrimmerRootAssembly'],
+            host_option = '-p:Libsmb2HostSourceDirectory=' + str(host)
+            evaluated = run(['dotnet', 'msbuild', isolated_project, option, host_option, '-getItem:TrimmerRootAssembly'],
                             logs / (variant + '-roots.log'), receipt)
             roots = json.loads(evaluated)['Items']['TrimmerRootAssembly']
             if not any(item['Identity'] == 'TranslatedLibsmb2' for item in roots):
@@ -174,7 +209,7 @@ def main():
             audit['evaluated_roots'] = roots
             publish = destination / 'publish'
             run(['dotnet', 'publish', isolated_project, '-c', 'Release', '-r', args.rid,
-                 '-p:PublishAot=true', '-p:IlcGenerateMapFile=true', option, '-o', publish, '--nologo'],
+                 '-p:PublishAot=true', '-p:IlcGenerateMapFile=true', option, host_option, '-o', publish, '--nologo'],
                 logs / (variant + '-aot-build.log'), receipt, timeout=1800)
             binary = publish / 'ProductAudit'
             output = run([binary], logs / (variant + '-aot-run.log'), receipt, timeout=30).strip()
@@ -193,8 +228,9 @@ def main():
                 forbidden = re.compile(r'smb|crypto|ssl|krb|gss|ws2_32|secur32', re.IGNORECASE)
                 if any(forbidden.search(name) for name in audit['elf_needed']):
                     raise RuntimeError('Native SMB/crypto dependency needs origin review (BCL implementation dependencies may be legitimate)')
-            if audit['files'] != inventory(project)['files']:
-                raise RuntimeError('Generated sources changed during audit')
+            current = inventory(project)
+            if any(audit[key] != current[key] for key in ('files', 'authored_files', 'build_inputs')):
+                raise RuntimeError('Generated/authored sources or build imports changed during audit')
             print(variant + ': whole-assembly-rooted NativeAOT publish and execution PASS', flush=True)
         if not args.static_only and len({item['aot_output'] for item in receipt['variants'].values()}) != 1:
             raise RuntimeError('Raw and processed audit ABI anchors differ')

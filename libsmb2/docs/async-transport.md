@@ -1,10 +1,11 @@
 # Managed asynchronous socket transport
 
-Status: **implementation authorized and in progress**, 2026-09-23. Compiler
-prerequisites shipped in `10c2c60`; this revision restores the lost plan updates
-for function overrides and external type registration. Replace the product
-facade's poll/select pump with completion-driven C# socket services. Kerberos
-and DFS remain on hold. Commit each significant tested milestone.
+Status: **implemented and qualified on Linux x64**, 2026-09-23. The product
+facade uses completion-driven C# socket services. Shared compiler prerequisites
+shipped in `10c2c60`, integer ABI conversions in `3be9be5`, the typed host in
+`070791d`, and the awaitable facade in `8d0e9f1`. Windows execution remains
+unverified. Kerberos and DFS remain on hold. Qualification details and existing
+upstream baseline gaps are recorded below and in [validation.md](validation.md).
 
 ## Requirements and boundary
 
@@ -366,7 +367,7 @@ to the earlier low-level synchronous-API target in the public API documentation.
 
 ## Generation and deliverables
 
-Proposed authored files and responsibilities:
+Implemented authored files and responsibilities (the header fallback was not needed):
 
 | File | Responsibility |
 | --- | --- |
@@ -456,21 +457,42 @@ checked-heap finalizer cases pass. Broader matrix receipts are recorded under A3
 
 ### A3 — Qualify and promote the product profile
 
-- [ ] Run the existing real Samba sample/API scenarios for raw/processed JIT and
+- [x] Run the existing real Samba sample/API scenarios for raw/processed JIT and
       NativeAOT, preserving dialect/signing/encryption coverage and native controls.
-- [ ] Audit and instrument the product path: no host/wrapper readiness polling,
+- [x] Audit and instrument the product path: no host/wrapper readiness polling,
       no blocked worker per idle connection, no idle recurring wakeup without an
       actual deadline, no unbounded buffered bytes or duplicate service storms.
-- [ ] Record ordinary load evidence: transfer throughput, allocations, buffered
+- [x] Record ordinary load evidence: transfer throughput, allocations, buffered
       bytes, thread behavior with idle connections, fairness and disposal drain.
-- [ ] Run unchanged upstream tests under the declared compatible profile and
+- [x] Run unchanged upstream tests under the declared compatible profile and
       report which cases exercise the new host versus only the legacy baseline.
       Their source-driven manual polling must not silently define product behavior.
-- [ ] Re-run affected compiler/runtime/postprocessor checks, whole-assembly-rooted
+- [x] Re-run affected compiler/runtime/postprocessor checks, whole-assembly-rooted
       NativeAOT, clean regeneration and outside-directory invocation. Record
       Windows/Linux evidence separately; unavailable Windows execution is unverified.
-- [ ] Update host/API/usage/validation docs with the new ABI, compatibility profile,
+- [x] Update host/API/usage/validation docs with the new ABI, compatibility profile,
       cancellation policy, remaining gaps and exact receipts.
+
+A3 evidence (Linux x64, 2026-09-23): all 88 real Samba sample/lifecycle cases
+passed across raw/processed JIT/NativeAOT, plus 11 native control cases. Native,
+JIT and AOT crypto/ABI checks passed all 45 checks for each generated variant;
+both complete generated assemblies passed rooted NativeAOT qualification. Four
+checked-heap lifetime cases passed. Clean generation from outside the repository
+passed with stable authored source hashes; postprocessing a private final copy
+was idempotent and did not change authored host files. Compiler suites passed
+2,441 unit and 619 functional cases (1,081 existing skips), plus 101 postprocessor
+cases. Loopback metrics and authenticated idle checks record bounded buffers,
+actual completion-driven servicing and zero idle completion/notification growth.
+
+The unchanged legacy upstream campaign rerun passed 35 cases, with 60 skips,
+one existing native vector failure and four dependent blocks. Its first run had
+one intermittent processed-JIT copy startup failure; that receipt is retained at
+`artifacts/upstream-tests-first-async-qualification/`. The pinned synchronous
+wait loop's zero-timeout/coarse-clock check is a possible explanation, not a
+proven diagnosis. Neither that failure nor skipped cases are reclassified as
+async product passes. Exact receipts are linked from the validation document.
+Windows execution and unsupported upstream fault-test runtime hooks remain gaps;
+no custom transport or allocation fault injection was added.
 
 Do not introduce custom transport resets, packet corruption or invented allocation
 failures. Any injected failure still needs the exact pinned upstream counterpart

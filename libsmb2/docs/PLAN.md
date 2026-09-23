@@ -467,15 +467,17 @@ earlier phases; their completion still depends on real translated execution.
       preparation, socket options, errors and explicit lifetime ownership.
 - [x] A2: replace the facade's blocking pump with fd callbacks, a serialized
       completion executor, owned awaitable requests and asynchronous disposal.
-- [ ] A3: qualify raw/processed JIT/NativeAOT, real SMB interoperability, idle/load
+- [x] A3: qualify raw/processed JIT/NativeAOT, real SMB interoperability, idle/load
       behavior, handle-domain separation and clean generation/project inclusion.
 
 Detailed gates and files are in [async-transport.md](async-transport.md).
-P10 implementation is authorized and in progress as of 2026-09-23, coordinated
-through subagents with commits after each significant tested milestone. It is
-independent of the paused P8/P9 decisions. P7 results remain valid for their
-recorded transport profile; P6 acceptance must qualify the new product host
-separately and distinguish any legacy upstream-test transport.
+P10 is implemented and qualified on Linux x64 as of 2026-09-23, with separate
+commits for compiler bindings, socket host and awaitable facade. Its raw/processed
+JIT/NativeAOT matrix passed 88 Samba cases and the native control passed 11.
+Windows execution remains unverified. P8/P9 decisions remain paused. P7 results
+retain their explicit legacy transport profile, existing skipped/native-blocked
+cases and the separately recorded intermittent startup failure; see
+[validation.md](validation.md) for exact current evidence and limitations.
 
 ## Validation rules and final acceptance
 

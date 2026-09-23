@@ -62,7 +62,16 @@ try:
         receipt['managed_suite'] = args.suite
         receipt['managed_runtime'] = args.managed
         receipt['managed_variant'] = variant
+        receipt['managed_transport_profile'] = 'async-fd-callbacks'
         receipt['generated_sha256'] = {p.name: sha(p) for p in generated.parent.glob('*.cs')}
+        receipt['authored_sha256'] = {
+            str(p.relative_to(ROOT)): sha(p) for p in
+            [ROOT / 'Directory.Build.targets', ROOT / 'src/LibSmb2.Bcl.cs',
+             *sorted((ROOT / 'src').glob('HostSockets*.cs')),
+             *sorted((ROOT / 'src/Managed').glob('*.cs')),
+             ROOT / 'src/Managed/ManagedSmb.csproj',
+             *sorted(sample.parent.glob('*.cs')), sample]
+        }
         receipt['managed_sha256'] = {p.name: sha(p) for p in managed_output.iterdir() if p.is_file()}
     image = 'dotcc-libsmb2-samba:4.19.5'
     run(['docker', 'build', '-t', image, ROOT / 'tests/Samba'], OUT / 'image-build.log', receipt)
@@ -124,6 +133,8 @@ try:
                 raise RuntimeError('Unexpected client result: ' + name)
         receipt['cases'].append(dict(name=name, passed=True, result=output))
         print(name + ': PASS', flush=True)
+    if args.managed and any(sha(ROOT / path) != digest for path, digest in receipt['authored_sha256'].items()):
+        raise RuntimeError('Authored transport/facade/consumer sources changed during the oracle run; rerun')
     receipt['passed'] = True
 except BaseException as error:
     receipt['failure'] = str(error)

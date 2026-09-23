@@ -63,7 +63,9 @@ try:
     units = ['sha1.c', 'sha224-256.c', 'sha384-512.c', 'usha.c', 'hmac.c', 'md4c.c', 'md5.c',
              'hmac-md5.c', 'aes.c', 'aes_reference.c', 'aes128ccm.c', 'smb2-signing.c', 'errors.c']
     receipt['native_units'] = {unit: sha(source / 'lib' / unit) for unit in units}
-    defines = json.loads((ROOT / 'config/defines.json').read_text())
+    # Native controls retain upstream's integer descriptor ABI. The default
+    # translation profile registers an authored C# t_socket instead.
+    defines = json.loads((ROOT / 'config/legacy-defines.json').read_text())
     command = ['cc', '-std=c17', '-O2', '-ffunction-sections', '-fdata-sections', '-D_DEFAULT_SOURCE', '-D_GNU_SOURCE',
                *['-D' + value for value in defines]]
     for include in (ROOT / 'config/managed', source / 'include', source / 'include/smb2', source / 'lib'):
