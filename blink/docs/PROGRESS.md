@@ -30,11 +30,11 @@ context. Shared libc code remains supported with relevant state ownership audite
 This is planned compiler work, not a qualification claim for the existing scoped
 state-context milestone; see the detailed contract in P6-MACHINE-API.md.
 The user additionally requires cross-platform BCL-only filesystem access in
-both modes. Both workers have resumed with that constraint; the native filesystem
-prototype is being removed and replaced with a System.IO backend. Live read-write
+both modes. The native filesystem prototype has been removed; the System.IO
+backend passes its finite native/JIT/NativeAOT boundary qualification. Live read-write
 mount semantics stay unchanged. Host path mutation and existing inode aliases are
 explicit limitations of portable path-based checks, not a hardened containment claim.
-This replacement is source work, not yet a qualified implementation.
+Actual translated public-machine qualification remains pending.
 The previous P6 platform/performance campaign is now P7. Historical P6 references
 below retain their original meaning. Windows and broader qualification remain open.
 
@@ -80,6 +80,15 @@ changes and authorized P6. No duplicate recovery-branch history was introduced.
 - API worker: common in-process/separate-process machine API, console streams,
   worker protocol/discovery and deployment. The coordinator supplies the fresh
   generated context and shared guest-thread ownership hooks.
+
+Console and descriptor integration passes JIT/NativeAOT at
+`host-console/attempt-071nqrfd` (receipt SHA-256
+`0cf272d2bb4736c0eb43dce0aa1c6331e66517f11703c72e0cccf6a135f34a8c`).
+Binary EOF, bounded backpressure, cancellation, concurrent output ordering and
+owner disposal with pending input/output are covered. Descriptor disposal drains
+its operations while leaving a borrowed console usable. The coordinator rechecked
+149 frozen source/copy/log/binary identities. This is a host boundary result;
+public-machine and actual guest console gates remain pending.
 
 Filesystem milestone `b8287f5` passes a normal native file-description witness
 and BCL JIT/NativeAOT mount contracts at `host-mounts/attempt-rmljxlg0`

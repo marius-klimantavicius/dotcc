@@ -19,7 +19,8 @@ public sealed partial class InstanceIo : IAsyncDisposable
     private readonly object sync = new();
     private readonly Dictionary<int, Description> descriptors = new();
     private readonly HashSet<int> closeOnExec = new();
-    private readonly VirtualFileSystem files;
+    private readonly IGuestFileSystem files;
+    private readonly bool ownsFileSystem;
     private readonly VirtualTcpNetwork network;
     private readonly VirtualPipes pipes;
     private byte[] input;
@@ -33,14 +34,27 @@ public sealed partial class InstanceIo : IAsyncDisposable
     public InstanceIo(IReadOnlyDictionary<string, ReadOnlyMemory<byte>> image,
         ReadOnlyMemory<byte> standardInput = default, int descriptorLimit = 128,
         int outputLimit = 65536, long writableLimit = 1 << 20, long imageLimit = 16 << 20, int inputLimit = 1 << 20,
-        IReadOnlySet<string>? executablePaths = null, int pipeCapacity = 65536, long pipeByteLimit = 1048576, int pipeOperationLimit = 128)
+        IReadOnlySet<string>? executablePaths = null, int pipeCapacity = 65536, long pipeByteLimit = 1048576, int pipeOperationLimit = 128,
+        HostConsole? console = null, GuestNetworkPolicy? networkPolicy = null)
+        : this(new VirtualFileSystem(image, writableLimit, descriptorLimit, imageLimit, executablePaths),
+            standardInput, descriptorLimit, outputLimit, inputLimit, pipeCapacity, pipeByteLimit, pipeOperationLimit, true, console, networkPolicy)
+    { }
+
+    public InstanceIo(IGuestFileSystem fileSystem, ReadOnlyMemory<byte> standardInput = default,
+        int descriptorLimit = 128, int outputLimit = 65536, int inputLimit = 1 << 20,
+        int pipeCapacity = 65536, long pipeByteLimit = 1048576, int pipeOperationLimit = 128, bool ownsFileSystem = false,
+        HostConsole? console = null, GuestNetworkPolicy? networkPolicy = null)
     {
+        ArgumentNullException.ThrowIfNull(fileSystem);
         if (descriptorLimit < 3) throw new ArgumentOutOfRangeException(nameof(descriptorLimit));
         if (outputLimit < 0) throw new ArgumentOutOfRangeException(nameof(outputLimit));
         if (inputLimit < 0 || standardInput.Length > inputLimit) throw new ArgumentOutOfRangeException(nameof(inputLimit));
+        if (console != null && !standardInput.IsEmpty) throw new ArgumentException("Streaming and fixed input cannot be combined.");
+        this.console = console;
         this.descriptorLimit = descriptorLimit; this.outputLimit = outputLimit;
-        files = new(image, writableLimit, descriptorLimit, imageLimit, executablePaths);
-        network = new(descriptorLimit);
+        files = fileSystem;
+        this.ownsFileSystem = ownsFileSystem;
+        network = new(descriptorLimit, networkPolicy);
         pipes = new(descriptorLimit, pipeCapacity, pipeByteLimit, pipeOperationLimit);
         input = standardInput.ToArray();
         descriptors.Add(0, new(Kind.Input));
@@ -50,7 +64,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
     public int OpenDescriptors { get { lock (sync) return descriptors.Count; } }
     public (byte[] StandardOutput, byte[] StandardError) CapturedOutput
     {
-        get { lock (sync) return (output.ToArray(), error.ToArray()); }
+        get { lock (sync) return console?.CapturedOutput ?? (output.ToArray(), error.ToArray()); }
     }
     public HostResult<int> OpenFile(string path, FileAccessMode access, bool create = false,
         bool exclusive = false, bool truncate = false, bool append = false, string? cwd = null,
@@ -213,6 +227,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
             closeOnExec.Remove(fd);
             if (--description.References != 0) return HostResult<int>.Success(0);
             RemoveEpollDescription(description);
+            CloseConsoleDescription(description);
             return description.Kind switch
             {
                 Kind.File => files.Close(description.Handle),
@@ -236,6 +251,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (description.Kind == Kind.File) result = files.Read(description.Handle, destination.Span);
             else if (description.Kind == Kind.Input)
             {
+                if (console != null) return RunConsole(token => console.ReadInputAsync(destination, token, (description.StatusFlags & 2048) != 0), cancellation);
                 int count = Math.Min(destination.Length, input.Length - inputPosition);
                 input.AsSpan(inputPosition, count).CopyTo(destination.Span); inputPosition += count;
                 result = HostResult<int>.Success(count);
@@ -273,6 +289,7 @@ public sealed partial class InstanceIo : IAsyncDisposable
             if (description.Kind == Kind.File) result = files.Write(description.Handle, source.Span);
             else if (description.Kind is Kind.Output or Kind.Error)
             {
+                if (console != null) return RunConsole(token => console.WriteOutputAsync(description.Kind == Kind.Error, source, token, (description.StatusFlags & 2048) != 0), cancellation);
                 int count = Math.Min(source.Length, outputLimit - outputBytes);
                 if (count == 0 && source.Length != 0) result = Fail<int>(GuestError.NoSpace);
                 else
@@ -375,6 +392,8 @@ public sealed partial class InstanceIo : IAsyncDisposable
                 disposed = true;
                 foreach (var description in descriptors.Values)
                     if (description.Epoll is { } epoll) CloseEpoll(epoll);
+                foreach (var description in descriptors.Values.Distinct())
+                    if (description.Kind == Kind.File) files.Close(description.Handle);
                 descriptors.Clear(); closeOnExec.Clear(); input = []; inputPosition = 0; accepting = pending.ToArray();
             }
         }
@@ -382,14 +401,16 @@ public sealed partial class InstanceIo : IAsyncDisposable
         {
             try
             {
+                // Cancellation callbacks must run outside the descriptor gate.
+                consoleLifetime.Cancel();
                 await pipes.DisposeAsync().ConfigureAwait(false);
                 await network.DisposeAsync().ConfigureAwait(false);
                 await Task.WhenAll(accepting).ConfigureAwait(false);
-                files.Dispose();
+                if (ownsFileSystem) files.Dispose();
                 completion.SetResult();
             }
             catch (Exception failure) { completion.SetException(failure); }
-            finally { files.Dispose(); }
+            finally { if (ownsFileSystem) files.Dispose(); consoleLifetime.Dispose(); }
         }
         await completion.Task.ConfigureAwait(false);
     }

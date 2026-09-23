@@ -51,6 +51,8 @@ public sealed partial class InstanceIo
                             events[i] = ready.Succeeded ? ready.Value : (short)32;
                         }
                         else if (description.Kind == Kind.Epoll) events[i] = EpollReadable(description.Epoll!) ? (short)(request.Events & 1) : (short)0;
+                        else if (console != null && description.Kind is Kind.Input or Kind.Output or Kind.Error)
+                            events[i] = ConsoleReadiness(description, request.Events);
                         else events[i] = (short)(request.Events & (1 | 4 | 64 | 256));
                         if (events[i] != 0) ++count;
                     }
