@@ -7,15 +7,12 @@ the managed sample and lifecycle suites pass against Samba under JIT and NativeA
 Full plan acceptance remains open. Fault injection follows the explicit
 [upstream test scope](docs/test-scope.md).
 
-The next requirements are [translated upstream tests, Kerberos on Windows/Linux,
-and domain DFS paths](docs/enterprise-client.md). Kerberos must support explicit
-credentials and existing tickets/current-user sign-in. These additions are not
-yet implemented in the current NTLMSSP profile.
-
-The [managed async transport plan](docs/async-transport.md) replaces the product's
-poll/select pump with C# socket completions, fd-event callbacks and an authored
-int-backed socket handle type. This is currently a planning deliverable; Kerberos
-and DFS remain on hold.
+The [Kerberos and DFS implementation](docs/enterprise-client.md) has been merged
+from the supplied patch and adapted to the async facade. Enterprise qualification
+on Windows and Linux remains open; see [review results](docs/kerberos-dfs-review.md).
+The [async transport](docs/async-transport.md) uses completion-driven BCL sockets,
+fd callbacks and a four-byte authored socket handle. The separate
+`scripts/translate-libc.sh` retains the Libc/poll baseline.
 
 ```sh
 ./libsmb2/scripts/fetch.sh

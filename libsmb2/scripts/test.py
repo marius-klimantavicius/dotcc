@@ -22,8 +22,9 @@ def authored_sources():
 
 def host_sources():
     paths = [ROOT / 'Directory.Build.targets', ROOT / 'src/LibSmb2.Bcl.cs',
-             *sorted((ROOT / 'src').glob('HostSockets*.cs'))]
-    return {str(path.relative_to(ROOT)): sha(path) for path in paths if path.is_file()}
+             *sorted((ROOT / 'src').glob('HostSockets*.cs')), *sorted((ROOT / 'src/Kerberos').glob('*.cs'))]
+    return {**{str(path.relative_to(ROOT)): sha(path) for path in paths if path.is_file()},
+            '../Directory.Packages.props': sha(ROOT.parent / 'Directory.Packages.props')}
 
 try:
     receipt['authored_sources'] = authored_sources()
@@ -45,6 +46,11 @@ try:
         logs / 'solution-build.log', receipt)
     run(['dotnet', 'run', '--project', ROOT / 'samples/ManagedConsumer', '-c', 'Release',
          '--no-build', '--', '--help'], logs / 'sample-help.log', receipt)
+    run(['dotnet', 'run', '--project', ROOT / 'tests/DfsCodec', '-c', 'Release'],
+        logs / 'dfs-codec.log', receipt)
+    for dfs_flags in ([], ['--raw'], ['--aot'], ['--raw', '--aot']):
+        run(['python3', ROOT / 'scripts/test-dfs.py', *dfs_flags],
+            logs / ('dfs-' + ('-'.join(flag[2:] for flag in dfs_flags) or 'processed-jit') + '.log'), receipt, timeout=1800)
     run(['python3', ROOT / 'scripts/test-host-services.py'], logs / 'host-services.log', receipt, timeout=1800)
     for variant in ('TranslatedLibsmb2', 'TranslatedLibsmb2.Raw'):
         host_output = ROOT / 'build' / ('AsyncHost-' + variant)

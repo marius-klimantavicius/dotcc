@@ -32,8 +32,9 @@ product = stage / 'product/TranslatedLibsmb2'
 
 def host_sources():
     paths = [ROOT / 'Directory.Build.targets', *sorted((ROOT / 'src').glob('HostSockets*.cs')),
-             ROOT / 'src/LibSmb2.Bcl.cs']
-    return {str(p.relative_to(ROOT)): sha(p) for p in paths if p.is_file()}
+             ROOT / 'src/LibSmb2.Bcl.cs', *sorted((ROOT / 'src/Kerberos').glob('*.cs'))]
+    return {**{str(p.relative_to(ROOT)): sha(p) for p in paths if p.is_file()},
+            '../Directory.Packages.props': sha(REPO / 'Directory.Packages.props')}
 
 
 def snapshot(directory, destination):

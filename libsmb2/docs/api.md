@@ -82,7 +82,7 @@ caller's immutable .NET string and upstream credential allocation follow their
 respective runtime/upstream lifetimes and are not guaranteed to be erased immediately.
 
 The facade requests signing and an exact dialect, with optional encryption.
-Authentication uses built-in NTLMSSP. Kerberos and DFS remain on hold. A negotiation
+The default connection uses built-in NTLMSSP. Kerberos and DFS entrypoints are described below; enterprise interoperability qualification remains open. A negotiation
 mismatch or upstream failure throws; `SmbException` retains the upstream status
 where the C API provides one. Real Samba qualification is recorded in
 [validation.md](validation.md).
@@ -93,3 +93,29 @@ wait functions and server-hosting loops are unsupported by that profile and thei
 wait adapters fail explicitly. They must not route `t_socket` registry tokens into
 Libc's descriptor table. The isolated legacy translation profile exists for
 unchanged upstream regression tests; it is not a fallback for the managed facade.
+
+## Kerberos and DFS APIs
+
+`ConnectKerberosAsync` accepts a principal, password and realm.
+`ConnectKerberosWithKeytabAsync` accepts a principal, realm and keytab path.
+`ConnectKerberosWithCredentialCacheAsync` accepts an absolute FILE cache path;
+`ConnectKerberosWithExistingCredentialsAsync` uses the Windows logon via SSPI or
+`KRB5CCNAME=FILE:/absolute/path` on other systems. Each has a synchronous counterpart.
+Kerberos selection never falls back to NTLM. DNS resolves the supplied host while
+`cifs/<host>` preserves its service identity, excluding an optional port suffix.
+Signing/encryption uses the established Kerberos session key. Provider acquisition
+cancellation and Windows SSPI limitations are in [enterprise-client.md](enterprise-client.md).
+
+`SmbDfsClient.Create*` factories support the corresponding credentials and retain
+connections until client disposal. Await `ResolvePathAsync`, `ListAsync`,
+`OpenAsync`/`OpenReadAsync`, `StatAsync`, `GetSpaceInfoAsync`, `RenameAsync`,
+`DeleteAsync`, `CreateDirectoryAsync`, `RemoveDirectoryAsync` and `DisposeAsync`.
+Returned files use the existing async file API. Returned targets contain the
+server, share and relative path; pass the original namespace UNC to later DFS
+operations. `SmbException.NtStatus` preserves the callback's original protocol
+status where supplied. Direct shares are used when the server reports that DFS
+referrals are unsupported or absent.
+
+Credential factories trust the namespace's target selection. Transient errors
+after an operation is submitted are propagated without replaying that operation.
+No automatic credential delegation or Kerberos-to-NTLM fallback is requested.

@@ -20,6 +20,8 @@ ALLOWED_IMPORTS = {
                      'CreateToolhelp32Snapshot', 'Process32FirstW', 'Process32NextW',
                      'CloseHandle', 'GetCurrentProcessId', 'OpenProcess', 'TerminateProcess'},
     'psapi.dll': {'GetProcessMemoryInfo'},
+    'secur32.dll': {'AcquireCredentialsHandleW', 'InitializeSecurityContextW', 'QueryContextAttributesW',
+                    'FreeContextBuffer', 'DeleteSecurityContext', 'FreeCredentialsHandle'},
 }
 DYNAMIC_CODE = re.compile(r'\b(?:Reflection\.Emit|DynamicMethod|AssemblyBuilder|TypeBuilder|'
                           r'Assembly\.Load(?:From|File)?\s*\(|Expression\s*\.\s*Compile\s*\(|'
@@ -50,7 +52,7 @@ def project_inputs(project):
     for directory in [project.parent, *project.parent.parents]:
         if not directory.is_relative_to(ROOT.parent):
             continue
-        for name in ('Directory.Build.props', 'Directory.Build.targets'):
+        for name in ('Directory.Build.props', 'Directory.Build.targets', 'Directory.Packages.props'):
             path = directory / name
             if path.is_file():
                 imports.add(path.resolve())
@@ -66,10 +68,14 @@ def inventory(project):
     result = dict(project=str(project), assembly=assembly, files={}, authored_files={},
                   build_inputs={str(path.relative_to(ROOT.parent)): sha(path) for path in imports}, imports=[],
                   native_loader_helpers=[], dynamic_code=[], unexpected_dependencies=[],
-                  translated_native_loader_calls=[], unparsed_import_attributes=[])
+                  translated_native_loader_calls=[], unparsed_import_attributes=[], managed_dependencies=[])
     for kind in ('PackageReference', 'ProjectReference', 'NativeLibrary'):
-        result['unexpected_dependencies'].extend(dict(kind=kind, attributes=item)
-                                                  for item in evaluated['Items'][kind])
+        for item in evaluated['Items'][kind]:
+            dependency = dict(kind=kind, attributes=item)
+            if kind == 'PackageReference' and item['Identity'] == 'Kerberos.NET':
+                result['managed_dependencies'].append(dependency)
+            else:
+                result['unexpected_dependencies'].append(dependency)
     for path in files:
         if path.is_relative_to(project.parent):
             relative = str(path.relative_to(project.parent))
@@ -159,7 +165,9 @@ def main():
                    scope='source dependency inventory and complete generated assembly NativeAOT compilation',
                    limitations=['Not SMB behavioral qualification.',
                                 'Source scanning is an inventory, not a complete call-graph proof.',
-                                'Generic host P/Invokes and dormant native loader helpers remain in the runtime.'],
+                                'Generic host P/Invokes and dormant native loader helpers remain in the runtime.',
+                                'Kerberos.NET and its transitive packages require separate behavioral qualification.',
+                                'Windows current-logon credentials use the explicitly inventoried secur32 SSPI adapter.'],
                    staging_directory=str(stage.relative_to(ROOT)), variants={})
     try:
         for variant, directory in [('raw', 'TranslatedLibsmb2.Raw'), ('processed', 'TranslatedLibsmb2')]:
@@ -172,7 +180,7 @@ def main():
             receipt['variants'][variant] = audit
             if not audit['static_passed']:
                 raise RuntimeError('Unexpected dependency or dynamic-code finding in ' + variant)
-            print(f'{variant}: {len(audit["imports"])} generic host imports, '
+            print(f'{variant}: {len(audit["imports"])} host imports (including Windows SSPI), '
                   f'{len(audit["native_loader_helpers"])} dormant native loader call sites; static inventory PASS', flush=True)
             if args.static_only:
                 continue

@@ -4,7 +4,9 @@ Status: **implemented and qualified on Linux x64**, 2026-09-23. The product
 facade uses completion-driven C# socket services. Shared compiler prerequisites
 shipped in `10c2c60`, integer ABI conversions in `3be9be5`, the typed host in
 `070791d`, and the awaitable facade in `8d0e9f1`. Windows execution remains
-unverified. Kerberos and DFS remain on hold. Qualification details and existing
+unverified. Kerberos/DFS code was subsequently merged; its provider/AOT and
+enterprise gates are tracked in [the patch review](kerberos-dfs-review.md).
+Qualification details and existing
 upstream baseline gaps are recorded below and in [validation.md](validation.md).
 
 ## Requirements and boundary
@@ -395,8 +397,8 @@ source. Include host source/profile hashes in receipts and stale-output checks.
 ## Milestones and acceptance
 
 Implementation is authorized as of 2026-09-23. Commit each significant tested
-milestone locally, retaining the Kerberos/DFS hold and upstream-only
-fault-injection rule. Use coordinator/subagents with explicit file ownership.
+milestone locally, retaining the upstream-only fault-injection rule. Kerberos/DFS
+were held during this milestone and later authorized by the supplied patch review. Use coordinator/subagents with explicit file ownership.
 
 ### A0 — Prove source and compiler bindings
 

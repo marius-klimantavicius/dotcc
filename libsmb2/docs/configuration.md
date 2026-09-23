@@ -1,8 +1,7 @@
 # Initial Linux x64 profile
 
-This page describes the implemented NTLMSSP profile. The expanded
-[Kerberos and DFS requirements](enterprise-client.md) are pending implementation
-and require Windows as well as Linux execution evidence.
+This page describes the async product profile. [Kerberos and DFS](enterprise-client.md)
+are implemented with enterprise qualification pending on Windows and Linux.
 
 The source closure is fixed in [sources.json](../config/sources.json), command-line
 definitions in [defines.json](../config/defines.json), and feature header in
@@ -15,7 +14,7 @@ This is an explicit initial target, not a claim of portability to other ABIs.
 | --- | --- |
 | C/ABI | C17 plus evidenced GNU extensions; little-endian Linux x64 LP64. |
 | Sources | 53 upstream library units, including portable crypto, sync/async/raw APIs and minimal share-enum wrappers. |
-| Authentication | Built-in NTLMSSP; Kerberos/GSSAPI disabled. |
+| Authentication | Built-in NTLMSSP or authored Kerberos.NET/Windows SSPI bridge. Native GSS/Kerberos libraries are not linked. |
 | Dialects | SMB 2.0.2, 2.1, 3.0, 3.0.2, 3.1.1. |
 | Signing | Upstream SMB2 HMAC-SHA256 and SMB3 AES-CMAC paths. |
 | Encryption | Upstream AES-128-CCM; no AES-GCM profile is advertised. |
@@ -48,6 +47,14 @@ Shared Libc networking remains available to other programs and to the explicit
 Both profiles retain the exact same 53 original library source files.
 
 No protocol algorithm or generated C# is rewritten. Server APIs present in shared
-units may be emitted, but SMB server hosting, Kerberos, full DCE/RPC, leases used
+units may be emitted, but SMB server hosting, full DCE/RPC, leases used
 for application caching, and recovery features remain outside the initial client
 qualification. See the plan for the required client behavior and later profiles.
+
+The async profile defines `HAVE_LIBKRB5` and `HAVE_GSSAPI_GSSAPI_H`. The small
+headers under `config/managed/gssapi` and `krb5` provide declarations/storage only;
+they are not a native Kerberos ABI. `krb5-wrapper.c` is not translated: authored
+`src/Kerberos/*.cs` implements its client boundary. `Directory.Build.targets`
+links those files and the centrally pinned Kerberos.NET package into raw and
+processed projects. The legacy profile leaves Kerberos disabled. Source and
+package-version hashes participate in generation/qualification receipts.

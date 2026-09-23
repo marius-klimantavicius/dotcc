@@ -1,5 +1,15 @@
 # Campaign validation
 
+## Kerberos/DFS patch integration
+
+The reviewed patch extends the async product with a Kerberos provider and managed
+DFS. [Review findings and current evidence](kerberos-dfs-review.md) distinguish
+new checks from the earlier async-only qualification below. The whole-assembly
+AOT gate now detects Kerberos.NET IL2104/IL3053 warnings; it remains open and is
+not suppressed. Prior qualification receipts do not certify this expanded
+provider. Enterprise Kerberos and Windows execution remain unverified.
+
+
 ## Current async transport qualification — 2026-09-23
 
 The default product now uses completion-driven C# sockets and fd callbacks.

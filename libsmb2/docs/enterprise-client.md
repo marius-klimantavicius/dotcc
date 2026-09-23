@@ -1,13 +1,12 @@
 # Translated upstream tests, Kerberos, and DFS
 
-Status: requirements and implementation approach recorded; no new runtime
-capability is claimed. The current product is an NTLMSSP client validated on
-Linux x64 against Samba. The user requires explicit Kerberos credentials and
-existing tickets/current-user sign-in on both Windows and Linux.
-
-Current authorization: implement translated upstream tests. Kerberos and DFS are
-on hold while the user decides; the sections below preserve proposals and
-requirements, not authorization to continue those workstreams.
+Status: the supplied Kerberos/DFS patch has been reviewed and merged into the
+completion-driven transport. Explicit passwords, keytabs and FILE caches use
+Kerberos.NET 4.6.168; current Windows credentials use a narrow Kerberos-only SSPI
+adapter. DFS resolution uses the translated IOCTL path and awaitable operations.
+See [patch review and validation](kerberos-dfs-review.md) for fixes and current
+execution evidence. Cross-platform enterprise qualification remains open; the
+patch's reported Windows result was not independently reproduced here.
 
 ## Translate the upstream tests
 
@@ -46,18 +45,18 @@ The pinned `lib/krb5-wrapper.c` already supplies a boundary for credentials,
 GSS/SPNEGO token exchange, context release and session-key retrieval. In particular,
 `krb5_session_get_session_key` queries `GSS_C_INQ_SSPI_SESSION_KEY`; generating
 an initial service ticket alone is insufficient for SMB signing/encryption.
-The current managed profile disables this code with its feature configuration.
+The managed profile now exposes compatible translation-time types but replaces
+the native-provider implementation at this narrow wrapper seam with authored C#.
 
-Evaluate a pinned [Kerberos.NET](https://github.com/dotnet/Kerberos.NET) NuGet
-release first. Its documented client produces service tickets/SPNEGO, and its
+The bridge pins [Kerberos.NET](https://github.com/dotnet/Kerberos.NET) 4.6.168
+(MIT). Its client produces service tickets/GSS tokens, and its
 application [session context](https://github.com/dotnet/Kerberos.NET/blob/develop/Kerberos.NET/Client/ApplicationSessionContext.cs)
 exposes key and response-processing facilities.
-These are feasibility evidence, not proof of SMB interoperability or NativeAOT.
-Pin version, license, transitive dependencies and source provenance before use.
+The generated raw and postprocessed libraries compile with this bridge. This is
+implementation evidence, not proof of SMB interoperability or NativeAOT.
 Retain translated SMB negotiation, session setup, signing, sealing and file I/O;
 implement the smallest supported GSS/authentication adapter around the provider.
-If the existing seam needs adjustment, apply a documented hash-checked input
-adaptation, never an edit to generated C#.
+If the existing seam needs adjustment, prefer semantic function overrides, never an edit to generated C#.
 
 Acceptance must establish token continuation and mutual-authentication behavior,
 the correct negotiated context key (including subkey handling), `cifs/host` service
@@ -71,8 +70,11 @@ Expose the same credential choices on both platforms:
   sign-in and Linux ticket caches. Document exactly which cache types work;
   support for a FILE cache does not establish KCM, KEYRING or Windows logon support.
 
-Windows logon reuse may need a narrow platform authentication/context adapter;
-do not assume protected logon credentials can be exported into a managed cache.
+Keytab and explicit-password authentication use the same managed Kerberos.NET
+context on Windows and Linux. Windows current-logon reuse alone uses SSPI; non-Windows
+existing credentials currently accept only an explicit `KRB5CCNAME=FILE:...`.
+The latter path is not qualified yet; KCM, KEYRING, and DIR caches remain unsupported.
+The authored SSPI adapter requests mutual authentication without delegation.
 Windows SSPI documents [session-key context queries](https://learn.microsoft.com/en-us/windows/win32/secauthn/querycontextattributes--general).
 Evaluate that boundary and its dependency implications explicitly. The current
 plan's native-free product preference must not hide a platform dependency or
@@ -96,22 +98,39 @@ been inspected. For example, `\\work.example\a\finance\x` could resolve to
 `\\files01.work.example\finance$\x`, while `a\engineering\y` resolves elsewhere.
 
 The pinned libsmb2 source defines `SMB2_FSCTL_DFS_GET_REFERRALS`, its EX form,
-DFS flags and `SMB2_STATUS_PATH_NOT_COVERED`. Searching its `lib/` and public
-headers finds no automatic referral-following implementation. The current facade
-accepts a concrete server/share and does not resolve domain DFS paths. DNS lookup
-of the domain alone cannot select a target based on the remaining path.
+DFS flags and `SMB2_STATUS_PATH_NOT_COVERED`, but no automatic referral-following
+implementation. `SmbDfsClient` supplies that managed layer without changing or
+retranslating the C sources. It sends the standard referral request through the
+already translated generic IOCTL path, parses versions 1 through 4, performs
+component-safe prefix replacement, caches by TTL, follows referral servers with a
+bounded cycle check, and authenticates separately to each concrete target.
 
-Add domain/DC discovery, root and link referrals, target selection, path-prefix
-replacement with suffix preservation, referral TTL caching and bounded referral
-chaining. Preserve the original namespace path separately from the resolved
-server/share/path. Authenticate each selected host with its appropriate CIFS SPN;
-a ticket for the namespace host is not a ticket for every referred file server.
+Domain controllers are discovered using the active Windows logon server and
+Kerberos.NET DNS SRV support. Referral target order is preserved for retries; a
+`STATUS_PATH_NOT_COVERED` operation requests a deeper referral using the original
+namespace path. Each target receives its own CIFS authentication. Callers must trust the namespace
+and its administrators to choose targets; no target allowlist is implemented.
 
-The missing referral protocol implementation needs an explicit source decision:
-prefer suitable upstream C code or a small documented C extension translated by
-dotcc. A managed orchestration/cache layer may use translated protocol operations;
-do not quietly replace the SMB client with OS-mounted shares or a C# SMB stack.
-Qualify a real namespace with two links pointing to different servers, nested
-paths, Unicode suffixes, cache expiry and ordinary target selection. Require the
-same public behavior on Windows and Linux; any extra injected-failure tests still
-need an explicit pinned upstream counterpart.
+Parser tests cover exact request encoding, version 4 multi-target responses,
+Unicode path consumption, and malformed responses. Acceptance still requires at
+least two namespace paths resolving to different servers, direct-share parity,
+nested referrals, TTL refresh, target failover, referral loops, and the complete
+explicit/current-user, signing/encryption, raw/processed JIT/NativeAOT matrix.
+
+## Async merge behavior
+
+Ticket acquisition is awaited before registering the translated context; the C
+callback seam only consumes prepared state and handles server tokens. Password
+and keytab `Authenticate` calls have no cancellation overload in the pinned
+provider, so cancellation waits for that provider call to settle. Windows SSPI
+calls are synchronous platform authentication calls; they are not a socket poll
+loop and are not wrapped in `Task.Run`.
+
+DFS uses asynchronous connection, DNS SRV discovery, IOCTL and disposal. Cached
+entries represent storage referrals only. Connection establishment may try another
+target; an ambiguous operation failure is never replayed on another server.
+`STATUS_PATH_NOT_COVERED` can request a deeper referral, bounded by a cycle check
+and hop limit. Referral-only intermediate/name-list targets currently follow the
+first advertised controller; comprehensive target-set/failback selection remains
+unqualified. Rename resolves both endpoints and rejects cross-share moves, but
+does not retry a deeper referral returned by the rename itself.

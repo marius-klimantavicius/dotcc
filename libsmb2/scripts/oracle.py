@@ -68,6 +68,7 @@ try:
             str(p.relative_to(ROOT)): sha(p) for p in
             [ROOT / 'Directory.Build.targets', ROOT / 'src/LibSmb2.Bcl.cs',
              *sorted((ROOT / 'src').glob('HostSockets*.cs')),
+             *sorted((ROOT / 'src/Kerberos').glob('*.cs')),
              *sorted((ROOT / 'src/Managed').glob('*.cs')),
              ROOT / 'src/Managed/ManagedSmb.csproj',
              *sorted(sample.parent.glob('*.cs')), sample]

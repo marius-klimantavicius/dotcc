@@ -5,8 +5,18 @@
   <ItemGroup Condition="'$(MSBuildProjectName)' == 'TranslatedLibsmb2' And '$(Libsmb2LegacyTransport)' != 'true'">
     <Compile Include="$(Libsmb2HostSourceDirectory)/HostSockets*.cs" />
     <Compile Include="$(Libsmb2HostSourceDirectory)/LibSmb2.Bcl.cs" />
+    <Compile Include="$(Libsmb2HostSourceDirectory)/Kerberos/*.cs" />
+    <PackageReference Include="Kerberos.NET" />
   </ItemGroup>
   <PropertyGroup Condition="'$(MSBuildProjectName)' == 'TranslatedLibsmb2'">
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <!-- No authored/generated sources use LoggerMessage. The semantic
+       postprocessor rejects non-SDK generators, so omit this unused transitive one. -->
+  <Target Name="RemoveKerberosLoggingGenerator" BeforeTargets="CoreCompile"
+          Condition="'$(MSBuildProjectName)' == 'TranslatedLibsmb2' And '$(Libsmb2LegacyTransport)' != 'true'">
+    <ItemGroup>
+      <Analyzer Remove="$(NuGetPackageRoot)microsoft.extensions.logging.abstractions/8.0.2/analyzers/**/*.dll" />
+    </ItemGroup>
+  </Target>
 </Project>

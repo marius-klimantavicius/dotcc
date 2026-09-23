@@ -75,3 +75,21 @@ on exit. The implemented Linux suites have passed; full plan acceptance remains
 open. `test.sh` runs the current suites; `verify.sh` also regenerates from an
 outside directory and runs repository test suites. See [current evidence](validation.md)
 and the [upstream-only fault-injection scope](test-scope.md).
+
+## Kerberos and DFS
+
+The sample still defaults to NTLMSSP. For explicit Kerberos set
+`LIBSMB2_AUTH=kerberos`, `LIBSMB2_DOMAIN` to the realm, and `LIBSMB2_PASSWORD`.
+Omit the password to use current Windows credentials or the non-Windows FILE
+cache named by `KRB5CCNAME`.
+
+```sh
+dotnet run --project libsmb2/samples/ManagedConsumer -- list '\\domain.example\namespace\link'
+dotnet run --project libsmb2/samples/ManagedConsumer -- cat '\\domain.example\namespace\link\file' --ccache /absolute/tickets
+# Or: --keytab /absolute/client.keytab --principal user --realm EXAMPLE.COM
+```
+
+`list` and `cat` are read-only DFS commands. The original server/share form still
+creates and removes its own test file. `--encrypt` requests encryption on both
+referral and storage connections. See [review/validation](kerberos-dfs-review.md)
+before treating the implementation as qualified for an enterprise deployment.

@@ -6,10 +6,11 @@ using static Managed.Smb.LibSmb2;
 
 namespace Managed.Smb;
 
-public sealed class SmbException(string operation, int status, string message)
+public sealed class SmbException(string operation, int status, string message, uint? ntStatus = null)
     : IOException($"{operation}: {message} (status {status})")
 {
     public int Status { get; } = status;
+    public uint? NtStatus { get; } = ntStatus;
 }
 
 /// <summary>Owns one translated SMB context. Operations are serialized and driven
@@ -42,9 +43,16 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
         bool encrypt = false, int timeoutSeconds = 10)
         => ConnectAsync(server, share, user, password, domain, dialect, encrypt, timeoutSeconds).GetAwaiter().GetResult();
 
-    public static async Task<SmbConnection> ConnectAsync(string server, string share, string user,
+    public static Task<SmbConnection> ConnectAsync(string server, string share, string user,
         string password, string domain = "WORKGROUP", ushort dialect = (ushort)smb2_negotiate_version.SMB2_VERSION_0311,
         bool encrypt = false, int timeoutSeconds = 10, CancellationToken cancellationToken = default)
+        => ConnectCoreAsync(server, share, user, password, domain, dialect, encrypt, timeoutSeconds,
+            cancellationToken, smb2_sec.SMB2_SEC_NTLMSSP);
+
+    private static async Task<SmbConnection> ConnectCoreAsync(string server, string share, string user,
+        string? password, string? domain, ushort dialect, bool encrypt, int timeoutSeconds,
+        CancellationToken cancellationToken, smb2_sec authentication,
+        PreparedKerberosAuthentication? preparedAuthentication = null)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(timeoutSeconds, 1);
         // Keep the original server identity, including a possible port suffix, for SMB.
@@ -54,8 +62,9 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
         try
         {
             await connection._executor.Invoke(connection.Initialize).ConfigureAwait(false);
+            if (preparedAuthentication != null) RegisterPreparedKerberos(connection._context, preparedAuthentication);
             await connection.RunOperationAsync("connect", operation => connection.StartConnect(operation,
-                server, share, user, password, domain, dialect, encrypt, addresses), operation =>
+                server, share, user, password, domain, dialect, encrypt, addresses, authentication), operation =>
                 {
                     connection._connected = true;
                     return true;
@@ -94,14 +103,14 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
         smb2_set_timeout(Context, 0);
     }
 
-    private unsafe int StartConnect(Operation op, string server, string share, string user, string password,
-        string domain, ushort dialect, bool encrypt, IPAddress[] addresses)
+    private unsafe int StartConnect(Operation op, string server, string share, string user, string? password,
+        string? domain, ushort dialect, bool encrypt, IPAddress[] addresses, smb2_sec authentication)
     {
         smb2_set_version(Context, (smb2_negotiate_version)dialect);
-        smb2_set_authentication(Context, (int)smb2_sec.SMB2_SEC_NTLMSSP);
-        smb2_set_domain(Context, op.Text(domain));
+        smb2_set_authentication(Context, (int)authentication);
+        if (domain != null) smb2_set_domain(Context, op.Text(domain));
         smb2_set_user(Context, op.Text(user));
-        smb2_set_password(Context, op.Text(password, secret: true));
+        if (password != null) smb2_set_password(Context, op.Text(password, secret: true));
         smb2_set_security_mode(Context, SMB2_NEGOTIATE_SIGNING_ENABLED);
         smb2_set_sign(Context, 1);
         if (encrypt) smb2_set_seal(Context, 1);
@@ -114,9 +123,12 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
 
     public SmbFile Open(string path, bool create = false) => Block(() => OpenAsync(path, create));
     public Task<SmbFile> OpenAsync(string path, bool create = false, CancellationToken cancellationToken = default)
-        => RunOperationAsync("open", op => StartOpen(op, path, create), AdoptFile, cancellationToken, Ownership.File);
-    private unsafe int StartOpen(Operation op, string path, bool create)
-        => smb2_open_async(Context, op.Text(path), create ? O_RDWR | O_CREAT | O_EXCL : O_RDWR, &Complete, op.Token);
+        => RunOperationAsync("open", op => StartOpen(op, path, create ? O_RDWR | O_CREAT | O_EXCL : O_RDWR), AdoptFile, cancellationToken, Ownership.File);
+    public SmbFile OpenRead(string path) => Block(() => OpenReadAsync(path));
+    public Task<SmbFile> OpenReadAsync(string path, CancellationToken cancellationToken = default)
+        => RunOperationAsync("open", op => StartOpen(op, path, O_RDONLY), AdoptFile, cancellationToken, Ownership.File);
+    private unsafe int StartOpen(Operation op, string path, int flags)
+        => smb2_open_async(Context, op.Text(path), flags, &Complete, op.Token);
     private unsafe SmbFile AdoptFile(Operation op)
     {
         var file = new SmbFile(this, op.Data);
@@ -229,7 +241,7 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
             result = await Turn(() =>
             {
                 if (op.Failure != null) throw op.Failure;
-                if (op.Status < 0) throw Error(name, op.Status);
+                if (op.Status < 0) throw op.CallbackError ?? Error(name, op.Status);
                 // Cancellation is observed after successful-result ownership is settled.
                 return consume(op);
             }).ConfigureAwait(false);
@@ -285,7 +297,7 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
     private unsafe SmbException Error(string operation, int status) => new(operation, status,
         _context == 0 ? "SMB context closed" : Marshal.PtrToStringUTF8((nint)smb2_get_error(Context)) ?? "SMB operation failed");
 
-    private enum Ownership { None, File, Directory }
+    private enum Ownership { None, File, Directory, IoctlOutput }
     private sealed class Operation : IDisposable
     {
         internal readonly string Name;
@@ -299,6 +311,10 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
         internal nint Data;
         internal nint Output;
         internal Exception? Failure;
+        internal SmbException? CallbackError;
+        internal bool HasIoctlReply;
+        internal uint ControlCode;
+        internal uint DataLength;
         internal Operation(string name, Ownership ownership) { Name = name; Ownership = ownership; _root = GCHandle.Alloc(this); }
         internal unsafe void* Token => (void*)GCHandle.ToIntPtr(_root);
         internal unsafe nint Allocate(int length, bool secret = false)
@@ -335,6 +351,7 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
         {
             var op = (Operation)GCHandle.FromIntPtr((nint)privateData).Target!;
             op.Status = status;
+            if (status < 0) op.CallbackError = CaptureError(context, op.Name, status);
             op.Data = (nint)data;
             op.Finished = true;
             op.Completion.TrySetResult();
@@ -416,7 +433,7 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
     }
     private void Terminate(Exception error)
     {
-        if (_pending is { } op) op.Failure ??= error;
+        if (_pending is { } op) op.Failure ??= op.CallbackError ?? error;
         DestroyContext();
         _pending?.Completion.TrySetResult();
     }
@@ -425,6 +442,7 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
         if (!op.Finished || op.Status < 0 || op.Data == 0) return;
         if (op.Ownership == Ownership.File) FreeHandle((smb2fh*)op.Data);
         else if (op.Ownership == Ownership.Directory) smb2_closedir(Context, (smb2dir*)op.Data);
+        else if (op.Ownership == Ownership.IoctlOutput) smb2_free_data(Context, (void*)op.Data);
         op.Data = 0;
     }
     private static unsafe void FreeHandle(smb2fh* handle) { Libc.free(handle->path); Libc.free(handle); }
@@ -445,6 +463,7 @@ public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
             try { smb2_destroy_context((smb2_context*)context); }
             finally
             {
+                UnregisterPreparedKerberos(context);
                 _context = 0;
                 _connected = false;
                 Connections.TryRemove(context, out _);

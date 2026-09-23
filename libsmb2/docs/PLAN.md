@@ -35,16 +35,15 @@ provide a C# test runtime/runner preserving their checks. Add Kerberos with both
 explicit credentials and existing tickets/current-user sign-in on Windows and
 Linux. Investigate and deliver domain DFS namespace resolution for paths such as
 `\\work.example\a\department\file`. These are requirements, not claims about
-the current NTLMSSP-only product. See [the implementation extension](enterprise-client.md)
+the fully qualified product. See [the implementation extension](enterprise-client.md)
 for evidence, boundaries, milestones, and acceptance criteria.
 
 **Current execution scope:** P7 upstream tests have a committed partial execution
 matrix; see [upstream-tests.md](upstream-tests.md) for the remaining cases. The
 2026-09-22 request adds the [managed async transport plan](async-transport.md),
 with implementation not yet started by that planning request. P8 Kerberos and P9
-DFS remain on hold pending the user's decision. Their requirements and candidate
-designs remain recorded; do not begin further research or implementation for
-either feature until the user resumes that work.
+DFS implementation was authorized through review/application of the supplied patch.
+The async implementation is merged; enterprise qualification gates remain open.
 
 ## Objective and fixed delivery requirements
 
@@ -174,7 +173,7 @@ These are acceptance targets, not claims about a completed port.
 | --- | --- |
 | Dialects | SMB 2.0.2, 2.1, 3.0, 3.0.2, and 3.1.1 negotiation and file access, subject to confirming the pinned source's support; exercise each explicitly. |
 | Authentication | Built-in NTLMSSP plus required Kerberos with explicit credentials and existing tickets/current-user sign-in on Windows and Linux. Explicit mechanism selection; no silent NTLM or guest fallback when Kerberos is required. |
-| Namespace resolution | Domain DFS UNC paths resolved to their backing server/share/path, with authentication to each selected target; implementation and qualification pending. |
+| Namespace resolution | Domain DFS UNC paths resolved to their backing server/share/path, with authentication to each selected target; managed implementation merged; enterprise qualification pending. |
 | Integrity and confidentiality | Required signing and SMB3 encryption profiles using algorithms actually implemented by the pin. Test SMB 3.1.1 preauthentication/key derivation and enforce requested signing/encryption without silent downgrade. |
 | File API | Connect/disconnect; directory enumeration; stat/fstat/statvfs; create/open/close; offset reads/writes; flush/truncate; mkdir/rmdir; rename/unlink; EOF and ordinary error paths. |
 | Request processing | Actual upstream asynchronous requests, compounds, credits, partial I/O, large transfers and deadlines. New transport uses fd-event callbacks and awaitable completions; multiple outstanding operations remain a separate API gate. Managed synchronous conveniences may wait on the async core; upstream poll-based synchronous APIs require an explicit legacy profile. |
@@ -438,6 +437,9 @@ earlier phases; their completion still depends on real translated execution.
 
 ### P8 — Kerberos on Windows and Linux
 
+Implementation merged from the reviewed patch; qualification gates below remain open.
+See [review results](kerberos-dfs-review.md).
+
 - [ ] Qualify a pinned Kerberos.NET provider first: tokens, mutual authentication,
       correct SMB session keys, signing/encryption, and trimmed NativeAOT.
 - [ ] Integrate the translated authentication boundary and owning API with
@@ -446,6 +448,9 @@ earlier phases; their completion still depends on real translated execution.
       supported cache types, dependencies, expiry behavior and mechanism selection.
 
 ### P9 — Domain DFS namespaces
+
+Async managed resolver/codec and IOCTL bridge are implemented; the full enterprise
+acceptance matrix below remains open.
 
 - [ ] Select and document the missing referral implementation while retaining
       translated SMB transport/protocol operations; constants alone are insufficient.
@@ -474,7 +479,7 @@ Detailed gates and files are in [async-transport.md](async-transport.md).
 P10 is implemented and qualified on Linux x64 as of 2026-09-23, with separate
 commits for compiler bindings, socket host and awaitable facade. Its raw/processed
 JIT/NativeAOT matrix passed 88 Samba cases and the native control passed 11.
-Windows execution remains unverified. P8/P9 decisions remain paused. P7 results
+Windows execution remains unverified. P8/P9 code is merged; enterprise qualification remains open. P7 results
 retain their explicit legacy transport profile, existing skipped/native-blocked
 cases and the separately recorded intermittent startup failure; see
 [validation.md](validation.md) for exact current evidence and limitations.
