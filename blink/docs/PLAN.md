@@ -591,12 +591,18 @@ and console IO. Execution must run in the caller's .NET process by default;
 the API must not hide an automatic worker process. Define explicit guest
 filesystem/network/resource isolation and its limits rather than exposing the
 qualification runner's fixed service profile or claiming OS-level containment.
+Also deliver an explicitly selected separate-process mode for better fault
+isolation and worker termination. Both modes share the public API and guest
+mount/environment/console semantics; mode-specific guarantees stay explicit.
 
 The detailed API proposal, mount modes, console semantics, isolation contract
 and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
 
 - [ ] Deliver create/configure/start/execute/wait/stop/dispose and explicit
       machine-versus-run lifetime, with useful typed errors/results.
+- [ ] Provide `ExecutionMode.InProcess` by default and selectable
+      `ExecutionMode.SeparateProcess`, with internal worker discovery for the
+      latter, explicit capabilities and no silent fallback between modes.
 - [ ] Resolve translated globals/caches/TLS and host-binding lifetime for
       in-process sequential reuse and concurrent independent machines; no
       process fallback or process-wide serialization as a substitute.
@@ -614,12 +620,14 @@ and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
       environment/cwd/console or applying process-wide restrictions. Document
       in-process limits and reject unsupported isolation/termination guarantees.
 - [ ] Deliver examples and normal isolation/lifecycle checks using the real
-      translated core and public API under JIT/NativeAOT on Linux x64.
+      translated core and public API under JIT/NativeAOT on Linux x64 in both
+      modes, including process termination versus cooperative in-process stop.
 - [ ] Document state/resource ownership for future full execution snapshots;
       do not require snapshot save/restore implementation in this phase.
 
 **Gate:** a separate consumer application can configure machines and run them
-inside its own process, mount permitted folders, execute a supported ELF with
+inside its own process by default or explicitly in a separate process, mount
+permitted folders, execute a supported ELF with
 its own environment and console streams, interact with it, cooperatively stop
 it and reclaim resources. The documented guest isolation and
 mount behavior must be enforced. P5's fixed HTTP fixture API alone does not

@@ -16,7 +16,9 @@ explicit guest access policies. [P6-MACHINE-API.md](P6-MACHINE-API.md) records t
 updated in-process architecture and future snapshot considerations. Shared
 translated state and host-binding lifetimes must support sequential reuse and
 independent concurrent machines. This is not an OS security boundary against
-the calling application; process mode remains explicit and optional.
+the calling application. Both in-process (default) and explicitly selected
+separate-process execution must be implemented and qualified in P6 through the
+same public API, with mode-specific isolation/termination capabilities.
 The previous P6 platform/performance campaign is now P7. Historical P6 references
 below retain their original meaning. Windows and broader qualification remain open.
 

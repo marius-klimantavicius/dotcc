@@ -12,14 +12,18 @@ executable, then execute it with arguments, environment and console streams
 **inside the caller's .NET process**. This is the user's required default,
 not a facade over an automatically spawned worker. Keep generated machine
 pointers out of ordinary application code. The public surface must remain
-usable from both JIT and NativeAOT applications. Preserve the existing process
-runner only as an explicit optional mode/baseline, with separate guarantees.
+usable from both JIT and NativeAOT applications. Deliver both execution modes
+in P6 through the same public API: `InProcess` (default) and explicitly selected
+`SeparateProcess`. The latter reuses the existing process runner where suitable,
+with separate guarantees and automatic worker discovery/deployment plus an
+advanced explicit worker-location option. Never switch modes implicitly.
 
 Illustrative API shape; names will be finalized during implementation:
 
 ```csharp
 await using var machine = await BlinkMachine.CreateAsync(new MachineOptions
 {
+    ExecutionMode = ExecutionMode.InProcess, // Default; or SeparateProcess.
     MemoryLimit = 256 * 1024 * 1024,
     Environment = new Dictionary<string, string> { ["LANG"] = "C" },
     Network = NetworkPolicy.Isolated,
@@ -47,6 +51,10 @@ a fixture-specific health check in the general API.
 
 ## Machine and execution lifecycle
 
+- Choose execution mode when creating a machine; it remains fixed for that
+  machine's lifetime. Both modes expose the same mounts, environment, console,
+  execution handles and result semantics. Report mode-specific capabilities
+  explicitly and reject unsupported guarantees before starting execution.
 - Separate machine configuration/filesystem lifetime from one execution.
   State transitions are explicit: created, running, exited/stopped, disposed.
   The caller's process owns execution threads and instance resources. Resolve
@@ -56,7 +64,9 @@ a fixture-specific health check in the general API.
   and concurrent independent machines within one CLR process. Concurrent runs
   on the same machine are rejected initially; separate machines must not share
   mutable guest state. A subprocess or process-wide execution lock is not a
-  substitute for this requirement.
+  substitute for qualifying in-process execution. In separate-process mode,
+  create a fresh worker per run while retaining machine-owned configuration
+  and private filesystem state across runs.
 - Preserve the machine's private writable filesystem across sequential runs
   until reset or disposal, with explicit export/discard operations. Restarting
   an executable is distinct from restoring its CPU/memory state.
@@ -65,7 +75,8 @@ a fixture-specific health check in the general API.
 - Provide completion, exit code/signal/reason, bounded diagnostics, instruction
   and resource observations and cooperative stop. Do not expose a purported
   safe force-kill of arbitrary in-process execution threads. Forced process
-  termination is available only in the explicit external-worker mode.
+  termination is available in separate-process mode; distinguish a forced
+  worker exit from a normal guest exit or cooperative stop.
   Distinguish canceling a wait from requesting guest termination. Dispose must
   stop execution and release execution-thread, file, stream and endpoint
   ownership after quiescence; never free guest memory while it is still in use.
@@ -76,6 +87,8 @@ a fixture-specific health check in the general API.
   ignore a limit. Document guest virtual-address/backing limits separately from
   host CLR memory/CPU overhead. In-process deadlines depend on cooperative
   checkpoints and cancellable host operations, not OS termination guarantees.
+  Separate-process mode may enforce worker-level limits with supported OS
+  facilities; unavailable requested limits must not be silently ignored.
 
 ## Filesystem and mounts
 
@@ -94,9 +107,11 @@ duplicate mount rejection and cross-mount rename/link behavior.
 
 User-selected default: host folder mounts are live read-write mappings. Guest
 writes update the host folder directly and persist after execution, reset or
-machine disposal. Callers may explicitly select read-only or private
+  machine disposal. Callers may explicitly select read-only or private
 copy-on-write behavior for each mount. Importing a directory must not be
 described as a live mount. Access outside the granted mount remains denied.
+These semantics hold in both execution modes: a separate worker must not turn
+a live host mount into an input copy with delayed write-back.
 
 Resolve executable paths and cwd through the guest filesystem; load from a
 mounted executable as well as an image. Preserve normal guest relative paths,
@@ -118,7 +133,7 @@ Expose binary stdin/stdout/stderr streams with concurrent async pumping and
 bounded buffering/backpressure. Support closed stdin/EOF, caller-provided streams,
 live output, optional bounded capture, and connection to the current console.
 Guest descriptors must remain separate from application diagnostics and, in
-the optional process mode, worker control channels. Do not globally redirect
+separate-process mode, worker control channels. Do not globally redirect
 Console or mutate process environment/cwd to implement guest IO or settings.
 Document stream ownership/leave-open behavior; completion must not hang on a
 console reader or slow/unread consumer. Define output-limit behavior explicitly.
@@ -144,10 +159,13 @@ protection of the application from emulator memory-safety bugs or host process
 failure. Do not apply process-wide OS restrictions, resource limits, signal
 handlers or termination actions to the application as if they were per-machine.
 Requests for guarantees unavailable in this mode must fail explicitly, not
-silently switch execution to another process. The optional external-worker mode
-can later provide separately qualified OS containment; implementing hardened
-OS containment is not a gate for the default in-process P6 API. Start in-process
-qualification on Linux x64 and record platform-specific limitations honestly.
+silently switch execution to another process. Separate-process mode provides
+an explicit process boundary and permits terminating the worker without killing
+the application; it is not automatically a hardened sandbox when running with
+the same host privileges. Qualify supported OS restrictions/resource limits
+independently and expose the actual capabilities. Hardened OS containment is
+not a gate for default in-process execution. Qualify both modes on Linux x64
+and record platform-specific limitations honestly.
 
 ## Future execution snapshots
 
@@ -181,7 +199,9 @@ today) distinct in naming/documentation from resumable execution snapshots.
   and ordinary denied access. Existing custom fault-injection and
   malformed-ELF exclusions still apply.
 - Build and run the consumer through the public API under JIT and NativeAOT on
-  Linux x64; retain actual guest/reference and current-product evidence. Reuse
+  Linux x64 in both in-process and separate-process modes, including their
+  documented stop/termination and resource capabilities. Retain actual
+  guest/reference and current-product evidence. Reuse
   unaffected P5 evidence with exact provenance, not stale source assumptions.
 - Commit milestones. Complete P6 before the separately planned P7 qualification
   campaign. Snapshots, PTYs and arbitrary Linux software support are not claimed
