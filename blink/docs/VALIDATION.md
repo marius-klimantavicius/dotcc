@@ -3,6 +3,94 @@
 All observed executions below are Linux x64. Windows execution has not run.
 Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
+## P6 IMDSv2 extension (2026-09-23)
+
+[I0–I2](P6-IMDSV2.md) is complete. Each configured execution owns a private BCL
+HTTP listener, with guest `169.254.169.254:80` routed to its loopback endpoint.
+The same serializable metadata options work in both public execution modes.
+Tokens require IMDSv2, expire monotonically and are isolated by execution;
+identity, user data and role credentials are supplied explicitly. Credentials
+retain their configured expiration. Automatic rotation/STS, signed identity
+documents, IPv6 and full EC2 metadata coverage are not claimed.
+
+The static musl .NET 10.0.12 guest uses `AWSSDK.Core` 4.0.102.6 at the ordinary
+metadata endpoint, with IMDSv1 fallback disabled and no endpoint override inside
+Blink. It discovers the role, obtains credentials, reads the SDK cache, clears
+that cache and fetches again. Its SHA-256 is
+`737f351d13ddea894b01e648c4d42546a471eff979521437b95099c609bbc890`.
+The final JIT/NativeAOT × InProcess/SeparateProcess matrix passes twelve guest
+executions, followed by 24 additional executions from cold consumers/workers.
+Every group includes concurrent independent machines and same-machine restart.
+Exact output, normal exit, resource release and actual AOT worker identity are
+checked. Twelve native guest controls use only the simulator's private loopback
+endpoint. No real host link-local metadata endpoint or AWS account is accessed.
+
+Host JIT and NativeAOT checks pass token issuance, expiration, cross-execution
+rejection, restart, reuse, fragmented valid requests, HEAD/UTF-8 length, metadata,
+credentials, concurrent requests, peer identity, default network denial and
+ordinary disposal. A normal page-registry check concurrently registers/resolves
+4,096 backed pages while the registry grows. The focused existing nonblocking
+connect/lifecycle checks and network-grant gates also pass. Existing NativeAOT
+HttpClient, public machine API and Kestrel/general sample matrices pass all four
+consumer/execution forms after the runtime corrections below.
+
+All final receipts pass (paths are under `artifacts/`):
+
+| Gate | Receipt | SHA-256 |
+| --- | --- | --- |
+| Fresh postprocessed instance-v1 delivery | `translation/attempt-y52sy716/receipt.json` | `a7d96d8a6e0b9fd4d70cfc2d19528938260478bfdebb010532dd342866544276` |
+| Serial extension/regression campaign | `imds-campaign/final-awzbgog7/receipt.json` | `7ae653fd0ba07f0b9664ce2bd0fec4aa19526281377d9902c9fc9a675b98678c` |
+| IMDS protocol, native control, public AWS SDK matrix | `imds-campaign/final-awzbgog7/imds/receipt.json` | `da0f286c73352641498935a769def32066fc97ce51ed0b47a7d21a1710b212be` |
+| Existing NativeAOT HttpClient matrix | `nonblocking-guest/attempt-1nf6ze4r/receipt.json` | `2169882d4cc2b9c9cab9a916c0f228d2407ef92b127dbd3208b3d6d04d9dc321` |
+| Public machine API matrix | `machine-api/attempt-i9tei3k9/receipt.json` | `42069aad8efcd46072eceb621da8159d5bcce952d91c20312344209a5d8c2f20` |
+| Kestrel/general sample matrix | `machine-api-kestrel/attempt-fld6ovt2/receipt.json` | `773eb4ea1a5e8e4c059a0b1e5df6e03a0fe290d5fc8dda21903db8d12753a08d` |
+| Existing host network grants, JIT+AOT | `host-network-grants/attempt-7nkipd5l/receipt.json` | `2c571f79f3f663bd6a69b485ad3c5ae30598d68a7998f378ee768f66d7c91b61` |
+
+Actual SDK execution exposed an unsynchronized upstream non-linear host-page
+registry: `TrackHostPage` appends/reallocates while other workers use
+`FindHostPage`. The pair now selects typed managed function overrides backed by
+a per-program BCL table with serialized publication and stable reader snapshots.
+The delivery freshly emits all 108 objects and verifies six endian intrinsics
+and fourteen managed boundaries, including the exact canonical source origin of
+the source-defined tracking function. Inline deduplication, literal pooling and
+direct links to authored sources remain enabled. There is no generated-source
+repair or new upstream C patch. The owner also mirrors upstream resumption after
+handled architectural signals; no synthetic hardware-fault test was added.
+
+Further normal repeats exposed child startup before `SysSpawn` stores
+`CLONE_PARENT_SETTID`. A child could see TID zero and native runtime thread
+startup could stall. The managed owner now opens a child startup gate only after
+the creating instruction completes publication, including unwind, and disposes
+gates after workers join. This matches Linux's publication-before-wake ordering
+in [`kernel_clone`](https://github.com/torvalds/linux/blob/v6.17/kernel/fork.c#L2466-L2481).
+The [normal clone fixture](../tests/GuestThreadPublication/README.md) passes 64
+native, 64 JIT and 64 NativeAOT executions, checking the child's first TID read,
+immediate exit, clear-TID and complete cleanup. Budget/deadline diagnostics now
+retain per-thread instruction counts/locations and any first architectural trap.
+
+Additional diagnostic observations are kept separate from public qualification:
+`imds-campaign/final-awzbgog7/startup-observation.json` (SHA-256
+`4674544e320bbcbc369e460d9b35bdd779a7c8a0d18c10d2256b2f275e941558`)
+records 67 early zero-TID observations before the gate, then zero across 192
+actual HTTP guest executions with the gate. That diagnostic consumer has extra
+startup/stop observations; the final public matrices above use production code.
+
+Failed attempts remain failures. Initial `imds/attempt-l7lzqm7q` and the
+`imds-stable-helper` diagnostics retain actual SDK execution failures preceding
+the page-table fix. `translation/attempt-to31y2ok` retains the unmatched tracking
+selector and interrupted emission; the corrected selector is verified in the
+final delivery. `imds-campaign/final-9gnrht3h` and `final-2uef195r` retain the later
+instruction-budget/HTTP stalls, including
+`nonblocking-guest/attempt-q4b9c5aw`. Diagnostic `imds-stack-trace/run-44` and
+`frames-63` identify native runtime thread startup and preserve stack/TID
+observations. Budgets were not raised to mask these failures. The final campaign
+passes after the publication fix; no custom fault injection or malformed ELF
+cases were introduced. Windows and P7 remain unrun.
+
+Reproduction and usage: [IMDS example](../tests/ImdsMachine/README.md),
+[configuration](../src/Managed.Emulation/IMDSV2.md), and
+[clone publication](../tests/GuestThreadPublication/README.md).
+
 ## P6 nonblocking-connect extension (2026-09-23)
 
 The [N0–N3 sub-plan](P6-NONBLOCKING-CONNECT.md) is complete for Linux x64.

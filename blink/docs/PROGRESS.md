@@ -4,12 +4,12 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-**P6 and its nonblocking-connect extension are complete for the selected Linux
+**P6, nonblocking connect and IMDSv2 simulation are complete for the selected Linux
 x64 profile, including the allocation-free context-scope refinement.** The public `BlinkMachine`
 API executes inside the caller's process by default and supports explicitly
 selected separate-process execution through the same configuration and run API.
-Both modes pass actual JIT and NativeAOT consumers. The coordinator and workers
-stop at this phase boundary; P7, Windows execution and performance work have not
+Both modes pass actual JIT and NativeAOT consumers. Work stops at this extension
+boundary; P7, Windows execution and performance work have not
 started. P0–P5 results retain their original profiles and evidence.
 
 Mounting host `./work` at guest `/work` is sufficient to execute `/work/my_app`;
@@ -24,9 +24,36 @@ readiness, cooperative stop, process-only kill and quiescent disposal.
 Opt-in compiler instance mode supplies real instance methods, pinned per-instance
 globals/TLS and pointer-wide callbacks with explicit origin arguments. Shared
 libc callbacks retain that origin. The product uses all 108 instance-v1 objects,
-literal pooling, inline deduplication, six endian intrinsics and 12 typed managed
+literal pooling, inline deduplication, six endian intrinsics and 14 typed managed
 boundary selections. Authored sources remain linked directly from `src`; no
 CoreProbe/test main/C execution frontend enters the product.
+
+## IMDSv2 extension evidence
+
+[I0–I2](P6-IMDSV2.md) is complete. `MachineOptions.Metadata` enables a small,
+execution-owned BCL listener transparently reached at guest `169.254.169.254:80`.
+It provides IMDSv2 tokens, identity, user data and explicitly supplied role
+credentials without granting other outbound destinations or adding ASP.NET.
+See [configuration and limitations](../src/Managed.Emulation/IMDSV2.md).
+
+The real AWS SDK musl NativeAOT guest passes credential discovery, cache use and
+refresh under JIT/NativeAOT consumers in both execution modes. The final matrix
+and repeats comprise 36 guest executions with concurrent machines and restart;
+twelve native control runs and JIT/AOT host protocol checks also pass.
+
+Actual guests exposed two runtime prerequisites: concurrent non-linear host-page
+publication and child execution before the clone parent-TID store. Typed function
+overrides now use a per-program BCL page registry, and the managed execution owner
+gates children until their creating instruction completes. The normal clone
+fixture passes 64 native, 64 JIT and 64 AOT executions. A separate diagnostic
+repeat passed 192 HTTP guests with no early zero-TID observations. Prior failures
+remain recorded; no instruction budget was raised to hide them.
+
+Final delivery: `translation/attempt-y52sy716`; full extension campaign:
+`imds-campaign/final-awzbgog7`; HTTP regression: `nonblocking-guest/attempt-1nf6ze4r`;
+public API: `machine-api/attempt-i9tei3k9`; Kestrel/sample:
+`machine-api-kestrel/attempt-fld6ovt2`. All final gates pass. Exact hashes and the
+preserved failed attempts are in the [validation ledger](VALIDATION.md).
 
 ## Nonblocking-connect extension evidence
 
@@ -43,7 +70,8 @@ Kestrel/sample: `machine-api-kestrel/attempt-d1jqgowt`. Eight selected host gate
 also pass. The [validation ledger](VALIDATION.md) records exact hashes, preserved
 entropy/tool-drift failures, the unqualified obsolete legacy synthetic lifecycle
 fixture, and final qualification against immutable delivery-matching producers.
-IMDS simulation/routing, P7 and other platforms have not started.
+That extension did not include IMDS; its subsequent completion is recorded above.
+P7 and other platforms remain unrun.
 
 ## Original P6 evidence
 
