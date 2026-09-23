@@ -20,6 +20,24 @@ leave the prior product in place, with a failed receipt in
 `artifacts/translation/result.json`. Check that receipt before using old output.
 `--jobs N` controls independent unit emission (1–16, default 4).
 
+The default product uses completion-driven BCL sockets and the awaitable managed
+facade. `config/dotcc-overrides.json` supplies socket function bindings and the
+four-byte external `t_socket` type; authored host sources are compiled alongside
+both raw and processed output. Low-level C polling/synchronous and server waits
+are unsupported by this product profile.
+
+Unchanged upstream tests retain a separately generated compatibility baseline:
+
+```sh
+./libsmb2/scripts/translate.sh --profile legacy
+./libsmb2/scripts/upstream-tests.sh
+```
+
+Its output is `generated/TranslatedLibsmb2.Legacy/` (and `.Legacy.Raw/`), with
+`artifacts/translation-legacy/result.json`. It never replaces the default product.
+Those original manually polled test programs qualify the legacy baseline, while
+the managed sample and async host/lifetime checks qualify the new transport.
+
 To use an existing share, read the password without echoing it:
 
 ```sh

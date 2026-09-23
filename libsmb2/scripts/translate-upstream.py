@@ -50,10 +50,10 @@ def main():
                    harnessSha256=sha(__file__), stagingDirectory=str(stage), commands=[])
     try:
         source = fetch()
-        translation_file = ROOT / 'artifacts/translation/result.json'
+        translation_file = ROOT / 'artifacts/translation-legacy/result.json'
         translation = json.loads(translation_file.read_text())
-        if not translation.get('passed') or translation['source'] != SOURCE_SPEC:
-            raise RuntimeError('Run libsmb2/scripts/translate.sh successfully for the current source pin first')
+        if not translation.get('passed') or translation['source'] != SOURCE_SPEC or translation.get('profile') != 'legacy':
+            raise RuntimeError('Run libsmb2/scripts/translate.sh --profile legacy successfully for the current source pin first')
         units = json.loads((ROOT / 'config/sources.json').read_text())
         expected_units = {unit: sha(source / unit) for unit in units}
         config = {str(p.relative_to(ROOT)): sha(p) for p in sorted((ROOT / 'config').rglob('*')) if p.is_file()}
@@ -73,7 +73,7 @@ def main():
         receipt['libraryObjects'] = {str(p.relative_to(ROOT)): sha(p) for p in objects}
         receipt['compiler'] = translation['compiler']
         receipt['postprocessor'] = translation['postprocessor']
-        defines = json.loads((ROOT / 'config/defines.json').read_text())
+        defines = json.loads((ROOT / 'config/legacy-defines.json').read_text())
         # The test makefiles rely on platform headers exposing these types;
         # advertise the same available headers as the library configuration.
         flags = ['-std=c17', '-DHAVE_TIME_H="1"', '-DHAVE_STDINT_H="1"',

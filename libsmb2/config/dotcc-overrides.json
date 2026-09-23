@@ -1,0 +1,252 @@
+{
+  "version": 1,
+  "externalTypes": [
+    {
+      "name": "t_socket",
+      "layout": {
+        "size": 4,
+        "alignment": 4
+      }
+    }
+  ],
+  "functionOverrides": [
+    {
+      "name": "socket",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostSocket"
+      }
+    },
+    {
+      "name": "connect",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "const struct sockaddr *",
+          "socklen_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostConnect"
+      }
+    },
+    {
+      "name": "readv",
+      "signature": {
+        "returnType": "ssize_t",
+        "parameterTypes": [
+          "int",
+          "const struct iovec *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostReadv"
+      }
+    },
+    {
+      "name": "writev",
+      "signature": {
+        "returnType": "ssize_t",
+        "parameterTypes": [
+          "int",
+          "const struct iovec *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostWritev"
+      }
+    },
+    {
+      "name": "getsockopt",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int",
+          "void *",
+          "socklen_t *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostGetsockopt"
+      }
+    },
+    {
+      "name": "setsockopt",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int",
+          "const void *",
+          "socklen_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostSetsockopt"
+      }
+    },
+    {
+      "name": "close",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostClose"
+      }
+    },
+    {
+      "name": "getaddrinfo",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const char *",
+          "const char *",
+          "const struct addrinfo *",
+          "struct addrinfo **"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostGetaddrinfo"
+      }
+    },
+    {
+      "name": "freeaddrinfo",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "struct addrinfo *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostFreeaddrinfo"
+      }
+    },
+    {
+      "name": "set_nonblocking",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "t_socket"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostSetNonblocking"
+      },
+      "linkage": "internal"
+    },
+    {
+      "name": "shutdown",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostShutdown"
+      }
+    },
+    {
+      "name": "bind",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "const struct sockaddr *",
+          "socklen_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostBind"
+      }
+    },
+    {
+      "name": "listen",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostListen"
+      }
+    },
+    {
+      "name": "accept",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "struct sockaddr *",
+          "socklen_t *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostAccept"
+      }
+    },
+    {
+      "name": "poll",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "struct pollfd *",
+          "nfds_t",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Smb.LibSmb2.HostPoll"
+      }
+    }
+  ]
+}

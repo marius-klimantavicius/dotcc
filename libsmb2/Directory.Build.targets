@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <Libsmb2HostSourceDirectory Condition="'$(Libsmb2HostSourceDirectory)' == ''">$(MSBuildThisFileDirectory)src</Libsmb2HostSourceDirectory>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'TranslatedLibsmb2' And '$(Libsmb2LegacyTransport)' != 'true'">
+    <Compile Include="$(Libsmb2HostSourceDirectory)/HostSockets*.cs" />
+    <Compile Include="$(Libsmb2HostSourceDirectory)/LibSmb2.Bcl.cs" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'TranslatedLibsmb2'">
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>

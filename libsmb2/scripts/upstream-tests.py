@@ -43,7 +43,7 @@ try:
         raise RuntimeError('Upstream build receipt changed; rebuild the programs')
     if sha(ROOT / 'scripts/translate-upstream.py') != manifest['harnessSha256']:
         raise RuntimeError('Upstream build script changed; rebuild the programs')
-    if sha(ROOT / 'artifacts/translation/result.json') != manifest['translationReceiptSha256']:
+    if sha(ROOT / 'artifacts/translation-legacy/result.json') != manifest['translationReceiptSha256']:
         raise RuntimeError('Library translation changed since upstream executables were built; rebuild them')
     for name, digest in manifest['configurationSha256'].items():
         if sha(ROOT / name) != digest:

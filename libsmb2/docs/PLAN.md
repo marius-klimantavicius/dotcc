@@ -456,9 +456,14 @@ earlier phases; their completion still depends on real translated execution.
 
 ### P10 — Managed async transport without polling
 
-- [ ] A0: prove defines/host bindings and the authored four-byte int-backed socket type,
+- [x] Shared compiler prerequisites: `externalTypes` with optional size/alignment,
+      repeatable `--type-name`, and signature-preserving `functionOverrides` with
+      managed-method targets and object contracts (`10c2c60`). See
+      [external types](../../docs/external-types.md) and
+      [function overrides](../../docs/function-overrides.md).
+- [x] A0: prove defines/host bindings and the authored four-byte int-backed socket type,
       including upstream integer scratch paths and generic compiler support needed.
-- [ ] A1: implement the C# socket host with bounded async send/receive, DNS
+- [x] A1: implement the C# socket host with bounded async send/receive, DNS
       preparation, socket options, errors and explicit lifetime ownership.
 - [ ] A2: replace the facade's blocking pump with fd callbacks, a serialized
       completion executor, owned awaitable requests and asynchronous disposal.
@@ -466,7 +471,8 @@ earlier phases; their completion still depends on real translated execution.
       behavior, handle-domain separation and clean generation/project inclusion.
 
 Detailed gates and files are in [async-transport.md](async-transport.md).
-P10 is currently a planning deliverable, with implementation pending. It is
+P10 implementation is authorized and in progress as of 2026-09-23, coordinated
+through subagents with commits after each significant tested milestone. It is
 independent of the paused P8/P9 decisions. P7 results remain valid for their
 recorded transport profile; P6 acceptance must qualify the new product host
 separately and distinguish any legacy upstream-test transport.

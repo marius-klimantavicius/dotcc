@@ -1,8 +1,10 @@
 # Managed asynchronous socket transport
 
-Status: **plan only**, requested and revised 2026-09-22. No transport or compiler changes are
-implemented by this document. Replace the product facade's poll/select pump with
-completion-driven C# socket services. Kerberos and DFS remain on hold.
+Status: **implementation authorized and in progress**, 2026-09-23. Compiler
+prerequisites shipped in `10c2c60`; this revision restores the lost plan updates
+for function overrides and external type registration. Replace the product
+facade's poll/select pump with completion-driven C# socket services. Kerberos
+and DFS remain on hold. Commit each significant tested milestone.
 
 ## Requirements and boundary
 
@@ -54,17 +56,20 @@ These findings refer to pinned libsmb2
 | `getaddrinfo` inside `smb2_connect_async` | The C entrypoint is nominally async but DNS is synchronous. Prepare DNS asynchronously before entering it. |
 | `lib/sync.c`, server code and several original C tests use poll/select | Their historical execution is not evidence of this new callback-driven product path. Keep compatibility profiles explicit. |
 
-Dotcc's [current overrides](../../docs/macro-overrides.md) replace active macro
-definitions and name anonymous field types. They do **not** introduce arbitrary
-external managed types or rewrite function signatures. Overrides do not predefine
-absent macros, survive `#undef` automatically, or change function-like arity.
-Ordinary `-D` aliases rename tokens but leave bundled socket prototypes typed as
-`int`. The fixed predefined-type list in `Compiler.Resources.cs` is not currently
-a profile-driven custom-type mechanism.
+Dotcc now supports [semantic function overrides](../../docs/function-overrides.md)
+and [external type registration](../../docs/external-types.md), alongside
+[macro overrides](../../docs/macro-overrides.md) and anonymous field naming.
+`functionOverrides` binds an existing C declaration/signature to an intrinsic or
+authored static C# method while preserving an addressable wrapper. Prototype-only
+declarations can receive managed implementations without native imports.
+`externalTypes` registers authored unmanaged types and optional size/alignment;
+repeatable `--type-name` provides name-only registration.
 
-Therefore, function-name redirection should use existing `-D` support where it
-works, but the complete strong-handle requirement needs a compiler feasibility
-milestone. Do not promise a defines-only solution with today's implementation.
+Neither function overrides nor ordinary `-D` aliases change declared C function
+signatures. An int-based socket prototype therefore still needs an audited
+managed bridge at that boundary. Prove the complete strong-handle path in A0,
+using existing features before adding generic compiler support. Macro overrides
+do not predefine absent macros, survive `#undef` automatically, or change arity.
 Do not redefine `int`, enable Windows compatibility branches on Linux, inject C
 declarations through macro bodies, or use regex output rewrites to simulate it.
 
@@ -79,10 +84,10 @@ compatibility macros that replace them; do not combine `-D` and a macro override
 for the same name where dotcc rejects that overlap. Apply configuration to every
 library object and record per-unit override reports before linking.
 
-Plan a generic, explicit managed-host type/binding extension to the translation
-profile if the feasibility check confirms the current gap. Final schema names
-are to be designed in that compiler milestone; none are existing CLI options.
-The contract must provide:
+Use implemented `externalTypes` registration for `t_socket` and semantic
+`functionOverrides` for selected host calls with their actual canonical C
+signatures. Keep any required int/handle adaptation in authored methods and
+operators. The contract must provide:
 
 1. Recognition of `t_socket` as an externally supplied managed type, with
    `T_SOCKET_DEFINED=1` suppressing upstream's existing integer typedef in both
@@ -90,11 +95,12 @@ The contract must provide:
    four-byte signed backing storage, unmanaged layout/alignment and consistent scalar
    operations/conversions. The preferred path adds no C declaration or typedef;
    the permitted config.h fallback can supply the layout instead. Dotcc must know
-   the type during parsing/binding/layout; merely adding the C# file at build
-   time is not enough with the current compiler.
+   the type during parsing/binding/layout via `externalTypes`; adding only the
+   C# file does not register it with the C frontend.
 2. Typed host-call binding for selected socket returns and descriptor parameters,
    including declarations from bundled headers. Renaming an `int` prototype alone
-   cannot accomplish this. Exact signatures and ambiguous matches are checked.
+   cannot accomplish this. Semantic overrides check exact signatures and ambiguous
+   matches, but preserve the C signature. Prove managed int/handle bridges suffice.
 3. Preserve upstream casts and assignments so the authored C# conversion
    operators handle integer round trips: explicit `t_socket` to `int`, implicit
    `int` to `t_socket`. No pointer-width narrowing or special per-helper bridge is
@@ -113,9 +119,50 @@ The contract must provide:
    the generated storage type with an authored partial extension, never both
    complete storage definitions.
 
+### Implemented external types and function overrides
+
+The version-1 profile already accepts optional layout:
+
+```json
+{
+  "version": 1,
+  "externalTypes": [
+    { "name": "t_socket", "layout": { "size": 4, "alignment": 4 } }
+  ]
+}
+```
+
+Name-only registration is also available as repeatable `--type-name NAME`.
+CLI and profile names merge; repeating a name preserves its explicit layout.
+Built-in/reserved names and conflicting layouts are rejected. Names alone permit
+pointer and pass-through signatures. Supply layout for sizeof, alignment and
+aggregate offsets; absent metadata must not become a guessed zero size. Layout
+requires positive size, power-of-two alignment no greater than 128, and size
+divisible by alignment. Registration supplies no fields or conversion operators,
+and emits no duplicate C# struct. It does not accept C source text or full member
+layouts; use the declaration-only fallback if C members are needed.
+
+The same profile's `functionOverrides` entries select an exact name, canonical C
+return/parameter signature, and target such as
+`{"kind":"managedMethod","method":"global::Managed.Smb.HostSockets.Connect"}`.
+Use physical translation-unit/declaration-file selectors where needed and
+`requireMatch` appropriate to each source invocation. Targets are synchronous
+C-facing methods; the host schedules async operations over owned state. This
+does not turn a C return type into a Task or rewrite the original signature.
+The generated wrapper preserves direct calls and function-pointer identity.
+
+Apply both registrations while translating every relevant C input. Options,
+reports and object contracts retain their identities; links reject incompatible
+replacements/layouts. Object-only linking cannot apply new rules to emitted C#.
+Ordinary C# builds validate authored method/type availability. Compiler tests
+already cover authored four-byte structs, conversion operators, signature and
+layout checks, source/object output and managed-method wrappers. A0 still must
+prove the pinned libsmb2 call graph, raw/processed products and descriptor-domain
+separation; compiler tests alone do not establish transport correctness.
+
 ### Permitted declaration-only fallback
 
-If externally supplied type registration is impractical, generate
+If full C members are needed beyond implemented opaque type registration, generate
 `build/managed/config.h` with a C struct containing one int field and its
 `t_socket` typedef. Define `T_SOCKET_DEFINED` so both upstream headers skip their
 integer alias. Verify this declaration is seen before every use in every relevant
@@ -324,7 +371,7 @@ Proposed authored files and responsibilities:
 | File | Responsibility |
 | --- | --- |
 | `config/defines.json` | Proven translation aliases and selected feature defines. |
-| `config/dotcc-overrides.json` | Required macro and future typed host bindings, with exact matches/provenance. |
+| `config/dotcc-overrides.json` | `externalTypes` for the handle and signature-preserving `functionOverrides` for C# host methods, plus required macro overrides and provenance. |
 | `build/managed/config.h` (fallback only) | Reproducibly generated typedef/struct declaration from tracked configuration; no C function bodies. |
 | `src/LibSmb2.Bcl.cs` | Partial-class C-facing entrypoints using generated types/constants. |
 | `src/HostSockets.Types.cs`, other `src/HostSockets*.cs` | Int-backed t_socket and conversion operators, registry, bounded buffers and BCL async operations. |
@@ -346,21 +393,25 @@ source. Include host source/profile hashes in receipts and stale-output checks.
 
 ## Milestones and acceptance
 
-Implementation is not started by this planning request. Once authorized, commit
-each significant tested milestone locally, retaining Kerberos/DFS hold and the
-upstream-only fault-injection rule.
+Implementation is authorized as of 2026-09-23. Commit each significant tested
+milestone locally, retaining the Kerberos/DFS hold and upstream-only
+fault-injection rule. Use coordinator/subagents with explicit file ownership.
 
 ### A0 — Prove source and compiler bindings
 
-- [ ] Inventory active socket/file descriptors, declaration order, macro aliases,
+- [x] Shared compiler prerequisites: `externalTypes` with optional layout,
+      repeatable `--type-name`, and semantic `functionOverrides` with callable
+      wrappers and object contracts (`10c2c60`).
+- [x] Inventory active socket/file descriptors, declaration order, macro aliases,
       integer scratch paths and retained sync/server call sites.
-- [ ] Prove which names work with existing defines; document minimal generic
-      compiler additions for strong types and typed host signatures.
-- [ ] Implement those compiler additions if necessary, with managed-only tests
+- [x] Prove existing defines, type registration and function overrides against
+      the actual socket declarations; document only evidenced remaining generic
+      compiler gaps and required managed int/handle bridges.
+- [x] Implement any remaining compiler additions if necessary, with managed-only tests
       using source strings and the real pinned inputs. Evaluate the permitted
-      generated config.h declaration fallback before requiring a broader type
-      registration feature; retain any binding support actually needed.
-- [ ] Verify four-byte size/alignment/arrays/function pointers, explicit-to-int
+      generated config.h declaration fallback only when full C members are needed;
+      prefer the already implemented opaque registration for authored `t_socket`.
+- [x] Verify four-byte size/alignment/arrays/function pointers, explicit-to-int
       and implicit-from-int round trips (including `-1`), required comparisons,
       raw/processed/object linking and rejection of accidental Libc descriptor use.
 
@@ -371,12 +422,20 @@ extension was required.
 
 ### A1 — Implement the asynchronous socket host
 
-- [ ] Add the C# project inputs and typed registry; implement connect, bounded
+- [x] Add the C# project inputs and typed registry; implement connect, bounded
       send/receive, options, errno/error storage and close/drain ownership.
-- [ ] Exercise ordinary loopback data transfers with partial counts, EOF,
+- [x] Exercise ordinary loopback data transfers with partial counts, EOF,
       backpressure, concurrent directions and independent sockets on Linux and
       Windows when runners exist. Use C# tests; do not add C harness code.
-- [ ] Demonstrate that socket and Libc file-handle ownership cannot be mixed.
+- [x] Demonstrate that socket and Libc file-handle ownership cannot be mixed.
+
+A0/A1 evidence (Linux x64, 2026-09-23): all 53 original units translated and
+linked with the profile, raw/processed builds passed; authored host loopback
+passed raw/processed JIT and processed NativeAOT, including IPv6 and independent
+contexts. Buffer peaks were 256 KiB per direction and registries drained to zero.
+The generic integer-sink conversion fix is committed as `3be9be5`; its two
+raw/object functional cases and 83 compiler override/type cases passed.
+Windows execution is unavailable and remains unverified.
 
 ### A2 — Replace the facade pump
 

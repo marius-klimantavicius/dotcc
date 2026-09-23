@@ -19,12 +19,19 @@ directories, runs native plus raw/processed JIT and NativeAOT, and removes the
 server and temporary credentials:
 
 ```sh
+./libsmb2/scripts/translate.sh --profile legacy
 ./libsmb2/scripts/upstream-tests.sh
 ```
 
+These unchanged C programs retain manual polling and synchronous APIs, so they
+explicitly link the isolated legacy transport objects. Their receipt must be
+`artifacts/translation-legacy/result.json` with profile `legacy`; product async
+objects cannot silently substitute for them. This baseline establishes protocol
+regressions separately from the callback-only product's managed async tests.
+
 Use `--jit-only` for a development run, or `--no-build` to execute the existing
 program manifest. Reuse checks the source/configuration, library translation,
-build script, executable and wrapper hashes. Regenerate the main library first
+build script, executable and wrapper hashes. Regenerate the legacy library first
 if its successful translation receipt or object fragments are absent.
 The top-level receipt is `artifacts/upstream-tests/result.json`; detailed case
 results are under `artifacts/upstream-tests/cases/result.json`.

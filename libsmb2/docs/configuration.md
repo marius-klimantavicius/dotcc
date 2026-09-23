@@ -22,6 +22,8 @@ This is an explicit initial target, not a claim of portability to other ABIs.
 | Preauthentication | Upstream SHA-512 transcript/key derivation for SMB 3.1.1. |
 | AES | `aes_reference.c`, selected by upstream `aes.c`; Apple accelerator not selected. |
 | Entropy | Secure `arc4random_buf`/`getrandom` host functions required; deterministic PRNG fallback is not acceptable for the product. |
+| Product transport | Authored completion-driven BCL socket host, callback registration, bounded send/receive buffers and async DNS preparation. |
+| Socket ABI | External unmanaged `t_socket`, four-byte size/alignment, explicit conversion to integer ABI, separate registry tokens. |
 | Native controls | Same upstream commit and disabled optional dependency profile; native Linux system services. |
 
 [api-coverage.tsv](../config/api-coverage.tsv) inventories every name in the pinned
@@ -30,12 +32,20 @@ This is an explicit initial target, not a claim of portability to other ABIs.
 support. All managed validation rows start pending. Native oracle checks establish
 the selected dialect/protection baseline, not managed coverage or full API parity.
 
-The initial import audit found allocation/string/format/time services in dotcc
-libc and gaps in DNS, secure entropy, scatter/gather I/O, socket readiness,
-nonblocking operation and IPv6. These gaps now have shared BCL runtime services
-with native/JIT/NativeAOT checks; `fcntl`/`poll` use real descriptor/readiness
-semantics. Integration with the complete translated SMB client remains a separate
-gate. See shared `docs/C-SUPPORT.md` for each service's exact supported surface.
+The product profile uses [dotcc-overrides.json](../config/dotcc-overrides.json)
+for exact semantic function replacements and external type registration, and
+[emit-defines.json](../config/emit-defines.json) for named socket, event and open
+constants. Original C signatures are preserved; integer descriptor prototypes
+call audited authored adapters. The static `set_nonblocking` helper is replaced
+directly, avoiding a variadic `fcntl` substitution. Polling and server primitives
+return an explicit unsupported-operation error. The required
+`HAVE_ARC4RANDOM_BUF` branch excludes the integer file-descriptor entropy fallback;
+translation rejects changing that assumption without a descriptor audit.
+
+Shared Libc networking remains available to other programs and to the explicit
+`--profile legacy` upstream-test baseline, whose definitions live in
+[legacy-defines.json](../config/legacy-defines.json). It is not a product fallback.
+Both profiles retain the exact same 53 original library source files.
 
 No protocol algorithm or generated C# is rewritten. Server APIs present in shared
 units may be emitted, but SMB server hosting, Kerberos, full DCE/RPC, leases used

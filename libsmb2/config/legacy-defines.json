@@ -7,6 +7,5 @@
   "_FILE_OFFSET_BITS=64",
   "_U_=__attribute__((unused))",
   "smb2_EXPORTS",
-  "__linux__=1",
-  "T_SOCKET_DEFINED=1"
+  "__linux__=1"
 ]
