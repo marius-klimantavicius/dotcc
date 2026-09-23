@@ -92,6 +92,14 @@ a fixture-specific health check in the general API.
 
 ## Filesystem and mounts
 
+Implement guest filesystem services and host-directory access with cross-platform
+.NET BCL APIs (`System.IO`), in both execution modes. Authored filesystem code
+must not use P/Invoke (`DllImport`/`LibraryImport`), direct native syscalls, native
+helper libraries or subprocess proxies for filesystem access. The BCL's own
+internal OS implementation is permitted. Replace the pending Linux-specific
+native root-handle prototype; do not retain it as an alternate backend. Keep
+Linux guest path semantics distinct from host-platform path rules.
+
 Support image files/directories, private writable temporary storage and host
 directory mappings at absolute guest paths. Mounting over an existing guest
 directory must be explicit: hide its underlying contents while mounted, never
@@ -119,6 +127,12 @@ directory enumeration, metadata, file updates and descriptor offsets. Enforce
 executable permissions explicitly. Define symlink/hard-link/reparse behavior
 within mount roots and nested mounts, including races; lexical path-prefix
 checks alone do not establish containment. Never fall back to the host root.
+Document the BCL backend's supported link/reparse policy and containment limits:
+path validation does not guarantee atomic containment against concurrent hostile
+host-side replacement of directories or links. Do not claim that guarantee or
+introduce native filesystem calls to obtain it; reject requests for unsupported
+guarantees explicitly. Keep default mounts live read-write rather than silently
+substituting imported copies.
 
 ## Environment and console
 
@@ -198,6 +212,10 @@ today) distinct in naming/documentation from resumable execution snapshots.
   process, including resource cleanup, unchanged host environment/cwd/console,
   and ordinary denied access. Existing custom fault-injection and
   malformed-ELF exclusions still apply.
+- Audit authored filesystem access for BCL-only implementation and exercise
+  ordinary mount/path/link-policy behavior. Keep the backend cross-platform;
+  record platforms actually tested without treating Linux validation as Windows
+  qualification.
 - Build and run the consumer through the public API under JIT and NativeAOT on
   Linux x64 in both in-process and separate-process modes, including their
   documented stop/termination and resource capabilities. Retain actual

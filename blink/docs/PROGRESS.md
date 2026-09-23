@@ -19,6 +19,11 @@ independent concurrent machines. This is not an OS security boundary against
 the calling application. Both in-process (default) and explicitly selected
 separate-process execution must be implemented and qualified in P6 through the
 same public API, with mode-specific isolation/termination capabilities.
+The user additionally requires cross-platform BCL-only filesystem access in
+both modes. The coordinator and both workers were interrupted to update their
+goals: replace the pending Linux P/Invoke root-handle prototype with a BCL
+backend, preserving live read-write mounts and documenting containment limits.
+This replacement is required work, not yet a qualified implementation.
 The previous P6 platform/performance campaign is now P7. Historical P6 references
 below retain their original meaning. Windows and broader qualification remain open.
 
@@ -341,7 +346,7 @@ detached worktrees remain evidence only; no duplicate branch work continues.
 | P3 | Passed — selected profile | 504 normal CPU cases per form (2,016 matches), valid ELF/fixed TLS and actual guest-memory lifecycle pass. Bounded coverage and retained producer evidence are documented above. |
 | P4 | Passed — selected profile | Native/all-four contracts, 24 actual HTTP comparisons, eight native completion controls and 44 actual owning stop/deadline cases. Subsequent P5 authorization is recorded separately. |
 | P5 | Passed — selected Kestrel profile | Real NativeAOT Kestrel all-four-mode workers/HTTP/lifecycle, final CPU/signal refresh, actual solution and JIT/AOT sample pass; final receipts are at the top. Phase stopped. |
-| P6 | Planned — public machine API | Configurable machines, mounts, environment, streaming console and enforced isolation; future snapshot design only. See P6-MACHINE-API.md. |
+| P6 | In progress — public machine API | Configurable machines, BCL-only mounts, environment, streaming console and explicit isolation guarantees; future snapshot design only. See P6-MACHINE-API.md. |
 | P7 (formerly P6) | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
 
 ## Observed environment

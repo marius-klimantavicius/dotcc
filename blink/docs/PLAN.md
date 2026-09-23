@@ -610,6 +610,11 @@ and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
       as the user-selected default, plus explicit read-only and private
       copy-on-write modes, including mounting
       over existing guest directories and controlled persistence/export.
+- [ ] Implement filesystem access using cross-platform .NET BCL only in both
+      execution modes; no authored P/Invoke, native syscall/helper or subprocess
+      filesystem backend. Replace the Linux native root-handle prototype.
+      Document link/reparse policies and BCL containment limits, including
+      concurrent host mutation, and reject unsupported guarantees explicitly.
 - [ ] Load executable/cwd from the guest namespace; accept arguments and
       dictionary-based machine/per-execution environment values.
 - [ ] Provide live stdin/stdout/stderr, EOF, current-console attachment,
