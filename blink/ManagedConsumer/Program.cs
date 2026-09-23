@@ -5,6 +5,20 @@ using System.Text;
 using System.Text.Json;
 using Managed.Emulation;
 
+if (args.Length > 0 && args[0] == "--serve")
+{
+    int port = 8080;
+    var mode = ExecutionMode.InProcess;
+    if (args.Length is < 2 or > 4 ||
+        args.Length >= 3 && (!int.TryParse(args[2], NumberStyles.None, CultureInfo.InvariantCulture, out port) || port is < 0 or > 65535) ||
+        args.Length == 4 && (!Enum.TryParse(args[3], out mode) || !Enum.IsDefined(mode)))
+    {
+        Console.Error.WriteLine("Usage: ManagedConsumer --serve GUEST_ELF [HOST_PORT] [InProcess|SeparateProcess]");
+        return 2;
+    }
+    return await KestrelServer.RunAsync(args[1], port, mode);
+}
+
 if (args.Length >= 3 && args[0] is "--run" or "--run-process")
 {
     await using var machine = new BlinkMachine(new MachineOptions
@@ -30,6 +44,8 @@ if (args.Length == 2 && Enum.TryParse<ExecutionMode>(args[1], out var machineMod
 if (args.Length == 1 && args[0] is "--help" or "-h")
 {
     Console.WriteLine("Usage: ManagedConsumer GUEST_ELF [InProcess|SeparateProcess]");
+    Console.WriteLine("       ManagedConsumer --serve GUEST_ELF [HOST_PORT] [InProcess|SeparateProcess]");
+    Console.WriteLine("       --serve keeps Kestrel running for browser access until Ctrl+C (default host port: 8080).");
     Console.WriteLine("       ManagedConsumer --run HOST_DIRECTORY /work/PROGRAM [ARGUMENT ...]");
     Console.WriteLine("       ManagedConsumer --run-process HOST_DIRECTORY /work/PROGRAM [ARGUMENT ...]");
     Console.WriteLine("Runs the ASP.NET Core Kestrel NativeAOT service, checks HTTP, then restarts it and requests cooperative stop.");

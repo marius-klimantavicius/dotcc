@@ -28,6 +28,33 @@ configuration, private storage, RO/COW mounts, streams, ownership and limits.
 
 ## Build and run
 
+To leave the existing Kestrel guest running and visit it in a browser, run from
+the repository root:
+
+```bash
+dotnet build blink/ManagedConsumer/ManagedConsumer.csproj -c Release --disable-build-servers
+dotnet blink/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll --serve \
+  blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService
+```
+
+Open **http://127.0.0.1:8080/health**; the guest responds with `ok`.
+Press **Ctrl+C** in the terminal to stop execution and dispose the machine.
+This mode runs in-process by default, has no execution deadline or configured
+instruction budget, and does not perform automatic HTTP checks/shutdown/restart.
+The existing guest serves `/health`; `/` returns `404`, and `POST /stop` requests
+normal application shutdown. Its executable directory is mounted read-only.
+
+Supply a different host port (or `0` for an automatically assigned port), followed
+optionally by `SeparateProcess`; always use the printed browser URL:
+
+```bash
+dotnet blink/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll --serve \
+  blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService \
+  8081 SeparateProcess
+```
+
+For the automated two-machine demonstration instead:
+
 From the repository root:
 
 ```bash

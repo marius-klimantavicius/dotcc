@@ -20,10 +20,19 @@ internal static class Program
     {
         if (args.Length == 1 && args[0] == "--machine-api-v1")
         {
-            using Stream protocolOutput = Console.OpenStandardOutput();
-            using Stream protocolInput = Console.OpenStandardInput();
-            Console.SetOut(Console.Error);
-            return await MachineWorkerHost.RunAsync(protocolInput, protocolOutput);
+            // Terminal Ctrl+C can reach the entire process group. The controller
+            // owns interrupt policy and sends a protocol stop; do not terminate
+            // this worker before it drains the guest and returns its final result.
+            ConsoleCancelEventHandler interrupt = (_, args) => args.Cancel = true;
+            Console.CancelKeyPress += interrupt;
+            try
+            {
+                using Stream protocolOutput = Console.OpenStandardOutput();
+                using Stream protocolInput = Console.OpenStandardInput();
+                Console.SetOut(Console.Error);
+                return await MachineWorkerHost.RunAsync(protocolInput, protocolOutput);
+            }
+            finally { Console.CancelKeyPress -= interrupt; }
         }
         // Capture raw streams before redirecting any generic translated Console
         // diagnostic. Guest descriptors use only InstanceIo's private captures.
