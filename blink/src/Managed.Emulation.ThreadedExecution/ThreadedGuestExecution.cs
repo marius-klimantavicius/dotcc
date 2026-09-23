@@ -18,7 +18,7 @@ public sealed record ThreadedSyscallObservation(int GuestThreadId, ulong Instruc
 
 /// <summary>One guest process, one dedicated C# worker per upstream Machine.
 /// Run is blocking and must itself run on a dedicated caller thread. The caller
-/// owns IO/stop until IsQuiescent; failure to quiesce requires process discard.</summary>
+/// owns IO/stop until IsQuiescent; failure to quiesce retains the owner and backing for quarantine.</summary>
 public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
 {
     private readonly InstanceIo io;
@@ -39,7 +39,9 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     private int groupStatus;
     private HostExecutionStopReason? executionOutcome;
     private Action<ThreadedSyscallObservation>? trace;
-    private const int MaximumWorkers = 16;
+    private readonly int maximumWorkers;
+    private Blink? program;
+    private int runStarted;
     public bool IsQuiescent { get; private set; }
     public ulong InstructionsCompleted => (ulong)Volatile.Read(ref completed);
 
@@ -66,17 +68,19 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     private sealed class GuestSignal : Exception { }
 
     public ThreadedGuestExecution(InstanceIo io, HostExecutionStop stop,
-        ulong memoryLimitBytes = 64UL * 1024 * 1024)
+        ulong memoryLimitBytes = 64UL * 1024 * 1024, int maximumWorkers = 16)
     {
         ArgumentNullException.ThrowIfNull(io); ArgumentNullException.ThrowIfNull(stop);
-        if (memoryLimitBytes != 64UL * 1024 * 1024 && memoryLimitBytes != 128UL * 1024 * 1024)
-            throw new ArgumentOutOfRangeException(nameof(memoryLimitBytes), "The selected profiles support 64 or 128 MiB.");
+        if (memoryLimitBytes < 8192 || memoryLimitBytes > 256UL * 1024 * 1024 || memoryLimitBytes % 4096 != 0)
+            throw new ArgumentOutOfRangeException(nameof(memoryLimitBytes), "Guest backing requires a page-aligned limit from 8 KiB through 256 MiB.");
+        if (maximumWorkers is < 1 or > 256) throw new ArgumentOutOfRangeException(nameof(maximumWorkers));
         this.io = io; this.stop = stop; this.memoryLimitBytes = memoryLimitBytes;
+        this.maximumWorkers = maximumWorkers;
     }
 
     public ThreadedGuestExecutionResult Run(string imagePath, IReadOnlyList<string> argv,
         IReadOnlyList<string> env, ulong instructionBudget,
-        Action<ThreadedSyscallObservation>? syscallTrace = null)
+        Action<ThreadedSyscallObservation>? syscallTrace = null, string? workingDirectory = null, Action? started = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(imagePath);
         ArgumentNullException.ThrowIfNull(argv); ArgumentNullException.ThrowIfNull(env);
@@ -84,7 +88,10 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         if (argv.Count == 0) throw new ArgumentException("argv includes argv[0].", nameof(argv));
         foreach (string value in argv.Prepend(imagePath).Concat(env))
             if (value == null || value.Contains('\0')) throw new ArgumentException("Guest strings must not contain NUL.");
-        HostGuestProcess.BeginOnce();
+        if (Interlocked.Exchange(ref runStarted, 1) != 0)
+            throw new InvalidOperationException("Each execution owner runs once; create a fresh owner for the next machine run.");
+        program = new Blink();
+        var programBinding = program.__DotCcEnter();
         this.instructionBudget = instructionBudget; trace = syscallTrace;
         variables = new HostVariables(); directories = new HostDirectories(io); barrier = new HostProcessMemoryBarrier();
         var main = NewWorker(true, null);
@@ -111,27 +118,29 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         }
         try
         {
-            memoryToken = Blink.BlinkHostMemoryCreateShared(memoryLimitBytes);
+            memoryToken = program!.BlinkHostMemoryCreateShared(memoryLimitBytes);
             Require(memoryToken != 0, "Create shared memory");
             Bind(main);
-            Require(Blink.BlinkHostSignalActionsBegin() == 0, "Begin shared signal actions"); processState = true;
-            Require(Blink.BlinkHostExitCallbacksBegin() == 0, "Begin shared exit callbacks"); exitState = true;
-            Require(Blink.BlinkHostMemoryEnablePrivateFiles() == 0, "Bind private mapped files");
-            Blink.InitMap(); Blink.InitBus();
-            Require(Blink.SetOverlays(Text(""), false) == 0, "Initialize overlays");
-            system = Blink.NewSystem(new Blink.XedMachineMode { omode = 2, genmode = 1 });
+            if (workingDirectory != null) Require(io.ChangeDirectory(workingDirectory).Succeeded, "Resolve guest working directory");
+            Require(program!.BlinkHostSignalActionsBegin() == 0, "Begin shared signal actions"); processState = true;
+            Require(program!.BlinkHostExitCallbacksBegin() == 0, "Begin shared exit callbacks"); exitState = true;
+            Require(program!.BlinkHostMemoryEnablePrivateFiles() == 0, "Bind private mapped files");
+            program!.InitMap(); program!.InitBus();
+            Require(program!.SetOverlays(Text(""), false) == 0, "Initialize overlays");
+            system = program!.NewSystem(new Blink.XedMachineMode { omode = 2, genmode = 1 });
             Require(system != null, "NewSystem");
-            Require(Blink.BlinkHostInitializeBoundResourceLimits(system) == 0, "Initialize guest limits");
-            main.Machine = Blink.NewMachine(system, null);
+            Require(program!.BlinkHostInitializeBoundResourceLimits(system) == 0, "Initialize guest limits");
+            main.Machine = program!.NewMachine(system, null);
             Require(main.Machine != null, "NewMachine");
             main.GuestId = main.Machine->tid;
-            Blink.SetHostGuestCurrentMachine(main.Machine);
+            program!.SetHostGuestCurrentMachine(main.Machine);
             main.Machine->thread = main.HostIdentity;
             system->trapexit = true;
             byte* path = Text(imagePath);
-            Blink.LoadProgram(main.Machine, path, path, Vector(argv), Vector(env), null);
+            program!.LoadProgram(main.Machine, path, path, Vector(argv), Vector(env), null);
             Require((int)system->loaded != 0 && system->elf.interpreter == null, "Load static image");
-            for (int fd = 0; fd < 3; ++fd) Blink.AddStdFd(&system->fds, fd);
+            for (int fd = 0; fd < 3; ++fd) program!.AddStdFd(&system->fds, fd);
+            started?.Invoke();
             Execute(main, false);
             if (main.Error != null) throw main.Error;
         }
@@ -148,7 +157,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             joined = JoinChildren();
             if (!joined)
                 failure = new AggregateException(failure ?? new TimeoutException("Guest workers did not join."),
-                    new InvalidOperationException("Borrowed resources remain live; discard this worker process."));
+                    new InvalidOperationException("Borrowed resources remain live; retain this execution owner until its workers quiesce."));
             if (joined)
             {
                 lock (gate) outcome = executionOutcome ?? stop.Reason;
@@ -167,7 +176,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                         upstreamReleased = main.Released;
                     }
                     else if (system != null && workers.Count == 1)
-                        Cleanup(() => { Blink.FreeSystem(system); upstreamReleased = true; });
+                        Cleanup(() => { program!.FreeSystem(system); upstreamReleased = true; });
                     else upstreamReleased = main.Released || system == null;
                     if (upstreamReleased)
                     {
@@ -179,21 +188,21 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                             groupStatus = workers.MaxBy(w => w.ExitSequence)!.Status;
                         }
                         if (failure == null && groupExited && outcome == HostExecutionStopReason.None && exitState)
-                            Cleanup(() => Require(Blink.BlinkHostExitCallbacksRun() == 0, "Run shared exit callbacks"));
-                        if (exitState) Cleanup(Blink.BlinkHostExitCallbacksEnd);
-                        if (processState) Cleanup(Blink.BlinkHostSignalActionsEnd);
+                            Cleanup(() => Require(program!.BlinkHostExitCallbacksRun() == 0, "Run shared exit callbacks"));
+                        if (exitState) Cleanup(program!.BlinkHostExitCallbacksEnd);
+                        if (processState) Cleanup(program!.BlinkHostSignalActionsEnd);
                         if (main.Attached)
-                            Cleanup(() => { retainedBytes = Blink.BlinkHostMemoryBytes(); retainedMappings = Blink.BlinkHostMemoryMappings(); });
+                            Cleanup(() => { retainedBytes = program!.BlinkHostMemoryBytes(); retainedMappings = program!.BlinkHostMemoryMappings(); });
                         Cleanup(() => Unbind(main));
                         bool bindingsReleased = workers.All(w => !w.Attached && !w.Bound && w.Unbind.Count == 0) && barrier!.Attachments == 0;
-                        if (!bindingsReleased) failure ??= new InvalidOperationException("Worker bindings did not release; discard the process.");
+                        if (!bindingsReleased) failure ??= new InvalidOperationException("Worker bindings did not release; retain this execution owner.");
                         if (memoryToken != 0 && bindingsReleased)
-                            Cleanup(() => { Require(Blink.BlinkHostMemoryDestroyShared(memoryToken) == 0, "Destroy shared memory"); memoryReleased = true; });
+                            Cleanup(() => { Require(program!.BlinkHostMemoryDestroyShared(memoryToken) == 0, "Destroy shared memory"); memoryReleased = true; });
                         else if (memoryToken == 0 && bindingsReleased) memoryReleased = true;
                     }
-                    else failure ??= new InvalidOperationException("Upstream cleanup failed; shared memory remains live for process discard.");
+                    else failure ??= new InvalidOperationException("Upstream cleanup failed; shared memory remains live with this execution owner.");
                 }
-                else failure ??= new InvalidOperationException("A child Machine remains owned; discard the process.");
+                else failure ??= new InvalidOperationException("A child Machine remains owned; retain this execution owner.");
                 if (memoryReleased)
                 {
                     foreach (nint pointer in strings) Marshal.FreeCoTaskMem(pointer);
@@ -212,6 +221,14 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
                 }
             }
         }
+        // Children have left their contexts before shared backing is retired.
+        // If cleanup could not quiesce, retain the context with this owner.
+        // The main worker has stopped even if a child still owns resources.
+        // Leave only this thread's bindings, in stack order; retain all shared
+        // backing and owner objects until actual worker quiescence.
+        if (!IsQuiescent) Cleanup(() => Unbind(main));
+        Cleanup(programBinding.Dispose);
+        if (IsQuiescent) Cleanup(program.Dispose);
         if (stop.NotificationFailure != null) failure ??= stop.NotificationFailure;
         if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
         return new(groupExited, groupStatus, InstructionsCompleted, outcome, joined, memoryReleased,
@@ -226,13 +243,15 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     };
     private void Bind(Worker worker)
     {
+        var contextBinding = program!.__DotCcEnter();
+        worker.Unbind.Push(contextBinding.Dispose);
         worker.ThreadId = Environment.CurrentManagedThreadId;
         worker.HostIdentity = Blink.Libc.pthread_self();
         current.Value = worker;
         void BindOne(Action bind, Action unbind) { bind(); worker.Unbind.Push(unbind); }
         barrier!.AttachCurrentThread(); worker.Unbind.Push(barrier.DetachCurrentThread);
         BindOne(() => Blink.BindHostMembarrier(barrier), Blink.UnbindHostMembarrier);
-        BindOne(() => Blink.BindHostGuestThreads(this), Blink.UnbindHostGuestThreads);
+        BindOne(() => Blink.BindHostGuestThreads(this, program!), Blink.UnbindHostGuestThreads);
         BindOne(() => Blink.BindHostGuestSignals(OnSignal), Blink.UnbindHostGuestSignals);
         BindOne(() => Blink.BindHostExecutionStop(worker.Stop), Blink.UnbindHostExecutionStop);
         BindOne(() => Blink.BindHostIo(io, worker.Stop.Token, worker.Wake), Blink.UnbindHostIo);
@@ -241,7 +260,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         BindOne(() => Blink.BindHostVariables(variables!), Blink.UnbindHostVariables);
         BindOne(() => Blink.BindHostEnvironment(environment), Blink.UnbindHostEnvironment);
         BindOne(() => Blink.BindHostIdentity(identity), Blink.UnbindHostIdentity);
-        Require(Blink.BlinkHostMemoryAttach(memoryToken) == 0, "Attach shared memory"); worker.Attached = true;
+        Require(program!.BlinkHostMemoryAttach(memoryToken) == 0, "Attach shared memory"); worker.Attached = true;
         worker.Bound = true;
     }
     private void Unbind(Worker worker)
@@ -249,7 +268,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         List<Exception> errors = new();
         if (worker.Attached)
         {
-            try { Require(Blink.BlinkHostMemoryDetach() == 0, "Detach shared memory"); worker.Attached = false; }
+            try { Require(program!.BlinkHostMemoryDetach() == 0, "Detach shared memory"); worker.Attached = false; }
             catch (Exception error) { errors.Add(error); }
         }
         while (worker.Unbind.TryPop(out Action? unbind))
@@ -264,8 +283,8 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     {
         Blink.Machine* machine = worker.Machine;
         worker.GuestId = machine->tid; machine->thread = worker.HostIdentity;
-        Blink.SetHostGuestCurrentMachine(machine);
-        ulong jumpIdentity = Blink.Libc.ArmJumpBuffer(Blink.PrepareVirtualSignalJump(
+        program!.SetHostGuestCurrentMachine(machine);
+        ulong jumpIdentity = Blink.Libc.ArmJumpBuffer(program!.PrepareVirtualSignalJump(
             (Blink.blink_host_signal_jump_storage*)&machine->onhalt, 1));
         try
         {
@@ -273,7 +292,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             machine->canhalt = true;
             while (worker.Stop.Reason == HostExecutionStopReason.None)
             {
-                if ((int)Blink.Atomic.Load(ref machine->attention) != 0) { Blink.CheckForSignals(machine); continue; }
+                if ((int)Blink.Atomic.Load(ref machine->attention) != 0) { program!.CheckForSignals(machine); continue; }
                 if (!ExecuteOne(worker)) break;
             }
             if (worker.Stop.Reason != HostExecutionStopReason.None)
@@ -299,7 +318,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         { stop.RequestBudgetStop(); return false; }
         ThreadedSyscallObservation? observation = trace == null ? null : Observe(worker);
         bool returned = false;
-        try { Blink.ExecuteInstruction(worker.Machine); returned = true; }
+        try { program!.ExecuteInstruction(worker.Machine); returned = true; }
         finally
         {
             if (observation != null)
@@ -324,34 +343,34 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             if ((int)Blink.Atomic.Load(ref machine->attention) != 0)
             {
                 if ((int)machine->restored != 0) break;
-                Blink.CheckForSignals(machine);
+                program!.CheckForSignals(machine);
             }
         }
     }
-    private static void ClearExecution(Worker worker)
+    private void ClearExecution(Worker worker)
     {
         var machine = worker.Machine;
         if (machine == null) return;
         machine->sysdepth = 0; machine->sigdepth = 0;
         machine->canhalt = false; machine->nofault = false; machine->insyscall = false;
-        Blink.CollectPageLocks(machine); Blink.CollectGarbage(machine, 0);
+        program!.CollectPageLocks(machine); program!.CollectGarbage(machine, 0);
     }
-    private static void ClearWorkerTid(Worker worker)
+    private void ClearWorkerTid(Worker worker)
     {
         if (worker.Machine == null || worker.TidCleared) return;
-        Blink.ClearChildTid(worker.Machine);
+        program!.ClearChildTid(worker.Machine);
         worker.TidCleared = true;
     }
-    private static void ReleaseMachine(Worker worker)
+    private void ReleaseMachine(Worker worker)
     {
         var machine = worker.Machine;
         if (machine == null) return;
         ClearWorkerTid(worker);
-        Blink.SetHostGuestCurrentMachine(null);
+        program!.SetHostGuestCurrentMachine(null);
         // FreeMachine removes the target under upstream machines_lock. Until
         // then, a concurrent SysTkill may still legitimately enumerate it and
         // needs its owning metadata/wake target. Never hold gate across free.
-        Blink.FreeMachine(machine);
+        program!.FreeMachine(machine);
         lock (worker.Owner.gate)
         {
             worker.PendingSignals.Clear(); worker.ImmediateSignal = null;
@@ -365,7 +384,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         if (child == null || child->blink_host_system != system) return 22;
         lock (gate)
         {
-            if (closing || stop.Reason != HostExecutionStopReason.None || workers.Count == MaximumWorkers) return 11;
+            if (closing || stop.Reason != HostExecutionStopReason.None || workers.Count == maximumWorkers) return 11;
             Worker? worker = null;
             try
             {
@@ -465,7 +484,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             "Immediate signal sender");
         var previous = worker.ImmediateSignal;
         worker.ImmediateSignal = (signal, new(processId, userId));
-        try { Blink.DeliverSignal(worker.Machine, signal, -6); } // SI_TKILL_LINUX
+        try { program!.DeliverSignal(worker.Machine, signal, -6); } // SI_TKILL_LINUX
         finally { worker.ImmediateSignal = previous; }
     }
     HostGuestSignalInfo? IHostGuestThreads.TakeSignalInfo(nint pointer, int signal, bool discard)
@@ -521,19 +540,19 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             }
         }
     }
-    private static ulong Register(Blink.Machine* machine, int index)
+    private ulong Register(Blink.Machine* machine, int index)
     {
-        byte* p = Blink.GetModrmRegisterWordPointerRead8(machine, (3UL << 22) | ((ulong)index << 7), 0, 0);
+        byte* p = program!.GetModrmRegisterWordPointerRead8(machine, (3UL << 22) | ((ulong)index << 7), 0, 0);
         return BinaryPrimitives.ReadUInt64LittleEndian(new ReadOnlySpan<byte>(p, 8));
     }
-    private static ThreadedSyscallObservation? Observe(Worker worker)
+    private ThreadedSyscallObservation? Observe(Worker worker)
     {
         int saved = Blink.Libc.errno;
         try
         {
             Blink.XedDecodedInst decoded = default;
             var machine = worker.Machine;
-            if (Blink.GetInstruction(machine, (long)machine->ip, &decoded) != 0 || ((decoded.op.rde >> 40) & 0x7ff) != 0x105) return null;
+            if (program!.GetInstruction(machine, (long)machine->ip, &decoded) != 0 || ((decoded.op.rde >> 40) & 0x7ff) != 0x105) return null;
             return new(worker.GuestId, machine->ip, Register(machine, 0), Register(machine, 7), Register(machine, 6),
                 Register(machine, 2), Register(machine, 10), Register(machine, 8), Register(machine, 9), null);
         }

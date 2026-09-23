@@ -9,7 +9,7 @@ namespace Managed.Emulation;
 /// <summary>Calls block on the dedicated C worker. Host pointers are borrowed
 /// for this call only; async BCL operations use bounded owned byte arrays.</summary>
 #if BLINK_FULL_CORE
-public static partial class BlinkCore
+public partial class BlinkCore
 #else
 public static partial class Blink
 #endif

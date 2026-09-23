@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
-from core_inputs import compiler_identity, profile_sources, emission_identity, semantic_selection, managed_boundary_selection
+from core_inputs import compiler_identity, profile_sources, emission_identity, semantic_selection, managed_boundary_selection, instance_methods
 
 ROOT = Path(__file__).resolve().parents[1]
 LINK_OPTIONS = ['--emit=managedlib', '--literal-pool', '--deduplicate-inline', '--nest-types', '--class-name', 'BlinkCore',
@@ -21,6 +21,7 @@ parser.add_argument('--emit-only', action='store_true')
 parser.add_argument('--sources', nargs='+', help='selected filenames for bounded diagnosis; implies --emit-only')
 args = parser.parse_args()
 profile = args.profile.resolve()
+LINK_OPTIONS = LINK_OPTIONS + (['--instance-methods'] if instance_methods(profile) else [])
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 inputs_path = profile / 'inputs.json'
 inputs = json.loads(inputs_path.read_text())

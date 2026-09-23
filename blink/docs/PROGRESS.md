@@ -93,6 +93,19 @@ Actual Blink instance-v1 producers are now under preflight; the public machine,
 worker deployment and Kestrel sample sources remain unqualified until refreshed
 product and actual consumer runs pass.
 
+The P6 API/delivery source checkpoint adds both modes, persistent machine storage,
+live mounts, mounted executable loading, bounded console/protocol streams,
+automatic worker deployment, concurrent-disposal handling and real consumer
+fixtures. These sources are not yet a runtime pass. All 108 instance-v1 Blink
+producers emitted in `translation/attempt-arzehd55`, but link failed on a
+canonical callback declaration seen through both forward and complete struct
+types. The compiler owner is qualifying a conservative merge and the actual
+reachable `pthread_once` adapter. A diagnostic replay is explicitly not a
+qualified delivery. Earlier `attempt-hakhpj6f` was deliberately interrupted before
+fixing a static resource callback; its completed object identities were reused
+only where exact C/compiler/profile identities matched. Final product and all
+public consumer gates remain open.
+
 Console and descriptor integration passes JIT/NativeAOT at
 `host-console/attempt-071nqrfd` (receipt SHA-256
 `0cf272d2bb4736c0eb43dce0aa1c6331e66517f11703c72e0cccf6a135f34a8c`).

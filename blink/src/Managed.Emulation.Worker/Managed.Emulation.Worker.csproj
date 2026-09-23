@@ -11,4 +11,12 @@
     <ProjectReference Include="../Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.csproj" />
     <TrimmerRootAssembly Include="TranslatedBlink" />
   </ItemGroup>
+  <Target Name="BlinkGetWorkerBuildFiles" Returns="@(_BlinkWorkerClosure)">
+    <ItemGroup>
+      <_BlinkWorkerClosure Include="$(TargetDir)**/*"
+                          Exclude="$(TargetDir)publish/**/*;$(TargetDir)blink-worker/**/*;$(TargetDir)**/*.cs">
+        <WorkerRelativePath>%(RecursiveDir)%(Filename)%(Extension)</WorkerRelativePath>
+      </_BlinkWorkerClosure>
+    </ItemGroup>
+  </Target>
 </Project>

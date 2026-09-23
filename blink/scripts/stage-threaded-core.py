@@ -66,6 +66,7 @@ def main():
     parser.add_argument('--base-profile', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True, help='fresh directory under campaign generated/')
     parser.add_argument('--receipt', type=Path, required=True, help='fresh external receipt under campaign artifacts/')
+    parser.add_argument('--instance-methods', action='store_true', help='select explicit instance-v1 object and callback ABI')
     parser.add_argument('--mremap-validation', action='store_true',
                         help='derive reviewed source-range validation after the threaded syscall boundary')
     parser.add_argument('--empty-epoll', action='store_true',
@@ -302,7 +303,9 @@ def main():
             adapted_paths['syscall.c'] = output / 'syscall.c'
 
         track(ROOT / 'config/managed-boundaries.json')
-        stage_managed_boundaries(ROOT, profile)
+        stage_managed_boundaries(ROOT, profile, args.instance_methods)
+        if args.instance_methods:
+            write_json(profile / 'instance-abi.json', {'abi': 'instance-v1'})
 
         overrides = {}
         rows = []

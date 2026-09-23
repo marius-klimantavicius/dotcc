@@ -109,10 +109,30 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
         'SysExitGroup': ('blink_host_guest_group_exit', 'blink/syscall.h', 'void(named:Machine*,int)', True),
         'SysExit': ('blink_host_guest_exit', 'blink/syscall.h', 'void(named:Machine*,int)', True),
     }
+    instance = delivery.get('product_surface', {}).get('instance_abi') == 'instance-v1'
+    if instance:
+        marker = pin(profile / 'instance-abi.json', inputs['staged_headers']['instance-abi.json'])
+        if json.loads(marker.read_text()) != {'abi': 'instance-v1'}:
+            raise RuntimeError('Instance ABI marker differs')
+        targets['blink_host_guest_pthread_atfork'] = ('blink_host_guest_pthread_atfork', None, 'int(void(),void(),void())', False)
+        for name, signature in {
+            'blink_host_guest_thread_start': 'int(named:Machine*)',
+            'blink_host_guest_signal_checkpoint': 'void(named:Machine*)',
+            'blink_host_guest_signal_wake': 'int(named:Machine*)',
+            'blink_host_guest_signal_enqueue_info': 'void(named:Machine*,int,int,unsigned int)',
+            'blink_host_guest_signal_deliver_tkill': 'void(named:Machine*,int,int,unsigned int)',
+            'blink_host_guest_signal_apply_info': 'void(named:Machine*,int,named:siginfo_linux*)',
+        }.items():
+            targets[name] = (name, None, signature, False)
+        targets['TerminateSignal'] = ('TerminateSignal', 'blink/signal.h', 'void(named:Machine*,int,int)', False)
+        authored = spec.get('authored_headers', {})
+        if set(authored) != {'host-guest-threads.h'}:
+            raise RuntimeError('Authored callback header set differs')
+        pin(root / 'src/Host/include/host-guest-threads.h', authored['host-guest-threads.h'])
     rules = {rule['name']: rule for rule in spec['functionOverrides']}
-    if spec['version'] != 1 or len(spec['functionOverrides']) != 4 or set(rules) != set(targets):
+    if spec['version'] != 1 or len(spec['functionOverrides']) != len(targets) or set(rules) != set(targets):
         raise RuntimeError('Managed boundary target set differs')
-    if set(spec['headers']) != {'blink/machine.h', 'blink/syscall.h'} or set(spec['implementations']) != {'blink/syscall.c', 'blink/memorymalloc.c'}:
+    if set(spec['headers']) != ({'blink/machine.h', 'blink/syscall.h', 'blink/signal.h'} if instance else {'blink/machine.h', 'blink/syscall.h'}) or set(spec['implementations']) != {'blink/syscall.c', 'blink/memorymalloc.c'}:
         raise RuntimeError('Managed boundary pinned source set differs')
     for name, digest in {**spec['headers'], **spec['implementations']}.items():
         pin(upstream / name, digest)
@@ -124,16 +144,20 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
         target = {'kind': 'managedMethod', 'method': 'global::Managed.Emulation.BlinkCore.' + method}
         if terminal:
             target['doesNotReturn'] = True
-        if (rule['target'] != target or rule['declarationFile'] != header or rule['linkage'] != 'external'
+        if instance:
+            target['passInstance'] = True
+        if (rule['target'] != target or rule.get('declarationFile') != header or rule['linkage'] != 'external'
                 or rule.get('requireMatch', False) or rule.get('translationUnit') is not None
-                or bound[name] != dict(rule, declarationFile=str(upstream / header))):
+                or bound[name] != (dict(rule, declarationFile=str(upstream / header)) if header else rule)):
             raise RuntimeError('Managed boundary rule contract differs: ' + name)
     objects, coverage = assembly['objects'], summary['coverage']
     if len(objects) != 108 or set(coverage) != set(objects):
         raise RuntimeError('Managed boundary producer coverage differs')
     required = spec['required_units']
-    if (required != {'blink/syscall.c': ['SignalActor', 'SysExitGroup', 'SysExit'],
-                     'blink/memorymalloc.c': ['KillOtherThreads']}):
+    expected_required = {'blink/syscall.c': ['SignalActor', 'SysExitGroup', 'SysExit'], 'blink/memorymalloc.c': ['KillOtherThreads']}
+    if instance:
+        expected_required['blink/signal.c'] = ['TerminateSignal']
+    if required != expected_required:
         raise RuntimeError('Managed boundary required producers differ')
     selected_count = 0
     for source, row in objects.items():
@@ -146,17 +170,25 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
         unmatched = [event['name'] for event in events if event.get('event') == 'function-override-unmatched' and event.get('name') in targets]
         names = [event['name'] for event in selected]
         if (observed['selected'] != selected or observed['unmatched'] != unmatched or observed['absent'] is not (not selected)
-                or len(names + unmatched) != 4 or set(names + unmatched) != set(targets)
+                or len(names + unmatched) != len(targets) or set(names + unmatched) != set(targets)
                 or not set(required.get(source, [])).issubset(names)):
             raise RuntimeError('Managed boundary typed selection differs: ' + source)
         canonical = pin(row['canonical_source'], row['source_sha256'])
         selected_count += bool(selected)
         for event in selected:
             method, header, signature, terminal = targets[event['name']]
+            if header is None:
+                command = row['command']
+                actual_header = Path(command[command.index('-I') + 1]) / 'authored/host-guest-threads.h'
+                if Path(event['declarationFile']) != actual_header:
+                    raise RuntimeError('Authored callback physical selector differs: ' + source)
+                pin(actual_header, spec['authored_headers']['host-guest-threads.h'])
             if (event['matches'] != '1' or event['signature'] != signature
                     or event['target'] != 'managedMethod:global::Managed.Emulation.BlinkCore.' + method
                     or event.get('doesNotReturn', 'false') != str(terminal).lower()
-                    or event['declarationFile'] != str(upstream / header)
+                    or (header is not None and event['declarationFile'] != str(upstream / header))
+                    or (header is None and Path(event['declarationFile']).name != 'host-guest-threads.h')
+                    or event.get('passInstance', 'false') != str(instance).lower()
                     or event['translationUnit'] != str(canonical)):
                 raise RuntimeError('Managed boundary typed provenance differs: ' + source)
     if summary['selected_units'] != selected_count or summary['absent_units'] != 108 - selected_count:

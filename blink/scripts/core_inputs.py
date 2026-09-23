@@ -63,7 +63,7 @@ def semantic_selection(profile: Path, report: Path, source: str) -> dict:
                 selected=selected, absent=not selected)
 
 
-def stage_managed_boundaries(campaign: Path, profile: Path) -> None:
+def stage_managed_boundaries(campaign: Path, profile: Path, instance_methods: bool = False) -> None:
     """Select reviewed whole-function owner handoffs in the threaded profile."""
     import json
     import shutil
@@ -71,23 +71,52 @@ def stage_managed_boundaries(campaign: Path, profile: Path) -> None:
     spec = json.loads(path.read_text())
     if spec['version'] != 1:
         raise RuntimeError('Unknown managed boundary profile')
+    if instance_methods:
+        spec['headers']['blink/signal.h'] = '3f6f2b1fa25ded70132a0ce9d428a2ac69075362db3c4e80ffa19e7e145dba24'
+        spec['required_units']['blink/signal.c'] = ['TerminateSignal']
     upstream = campaign / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
     for name, expected in {**spec['headers'], **spec['implementations']}.items():
         if hashlib.sha256((upstream / name).read_bytes()).hexdigest() != expected:
             raise RuntimeError('Managed boundary upstream identity differs: ' + name)
     overrides = json.loads((profile / 'overrides.json').read_text())
     rules = spec['functionOverrides']
+    if instance_methods:
+        for rule in rules:
+            rule['target']['passInstance'] = True
+        rules.append(dict(name='blink_host_guest_pthread_atfork', linkage='external',
+            signature=dict(returnType='int', parameterTypes=['void (*)(void)'] * 3, variadic=False),
+            target=dict(kind='managedMethod', method='global::Managed.Emulation.BlinkCore.blink_host_guest_pthread_atfork', passInstance=True),
+            requireMatch=False))
+        for name, result, parameters in [
+            ('blink_host_guest_thread_start', 'int', ['struct Machine *']),
+            ('blink_host_guest_signal_checkpoint', 'void', ['struct Machine *']),
+            ('blink_host_guest_signal_wake', 'int', ['struct Machine *']),
+            ('blink_host_guest_signal_enqueue_info', 'void', ['struct Machine *', 'int', 'int', 'unsigned int']),
+            ('blink_host_guest_signal_deliver_tkill', 'void', ['struct Machine *', 'int', 'int', 'unsigned int']),
+            ('blink_host_guest_signal_apply_info', 'void', ['struct Machine *', 'int', 'struct siginfo_linux *']),
+        ]:
+            rules.append(dict(name=name, linkage='external',
+                signature=dict(returnType=result, parameterTypes=parameters, variadic=False),
+                target=dict(kind='managedMethod', method='global::Managed.Emulation.BlinkCore.' + name, passInstance=True),
+                requireMatch=False))
+        rules.append(dict(name='TerminateSignal', linkage='external', declarationFile='blink/signal.h',
+            signature=dict(returnType='void', parameterTypes=['struct Machine *', 'int', 'int'], variadic=False),
+            target=dict(kind='managedMethod', method='global::Managed.Emulation.BlinkCore.TerminateSignal', passInstance=True),
+            requireMatch=False))
+        header = campaign / 'src/Host/include/host-guest-threads.h'
+        spec['authored_headers'] = {'host-guest-threads.h': hashlib.sha256(header.read_bytes()).hexdigest()}
+
     existing = {rule['name'] for rule in overrides['functionOverrides']}
     if existing.intersection(rule['name'] for rule in rules):
         raise RuntimeError('Managed boundary duplicates existing selection')
     for rule in rules:
         if (rule['target']['kind'] != 'managedMethod' or rule['linkage'] != 'external'
-                or rule['declarationFile'] not in spec['headers']):
+                or (rule.get('declarationFile') not in spec['headers'] and not rule['name'].startswith('blink_host_guest_'))):
             raise RuntimeError('Unreviewed managed boundary selector')
-    overrides['functionOverrides'] += [dict(rule, declarationFile=str((upstream / rule['declarationFile']).resolve()))
+    overrides['functionOverrides'] += [dict(rule, declarationFile=str((upstream / rule['declarationFile']).resolve())) if 'declarationFile' in rule else rule
                                        for rule in rules]
     (profile / 'overrides.json').write_text(json.dumps(overrides, indent=2) + '\n')
-    shutil.copyfile(path, profile / 'managed-boundaries.json')
+    (profile / 'managed-boundaries.json').write_text(json.dumps(spec, indent=2) + '\n')
 
 
 def managed_boundary_selection(profile: Path, report: Path, source: str) -> dict:
@@ -112,8 +141,14 @@ def managed_boundary_selection(profile: Path, report: Path, source: str) -> dict
         raise RuntimeError('Required managed boundary missing: ' + source)
     for row in selected:
         rule = bound[row['name']]
+        if 'declarationFile' not in rule:
+            declared = Path(row['declarationFile'])
+            if hashlib.sha256(declared.read_bytes()).hexdigest() != spec['authored_headers'].get(declared.name):
+                raise RuntimeError('Authored callback declaration identity differs: ' + source)
         if (row['target'] != 'managedMethod:' + rule['target']['method'] or row['matches'] != '1'
-                or row['declarationFile'] != rule['declarationFile']
+                or ('declarationFile' in rule and row['declarationFile'] != rule['declarationFile'])
+                or ('declarationFile' not in rule and Path(row['declarationFile']).name != 'host-guest-threads.h')
+                or row.get('passInstance', 'false') != str(rule['target'].get('passInstance', False)).lower()
                 or row.get('doesNotReturn', 'false') != str(rule['target'].get('doesNotReturn', False)).lower()):
             raise RuntimeError('Managed boundary target/declaration differs: ' + source)
     return dict(report=str(report), report_sha256=hashlib.sha256(report.read_bytes()).hexdigest(),
@@ -166,6 +201,20 @@ def profile_sources(profile: Path, campaign: Path, inputs: dict) -> list[dict]:
 OBJECT_OPTIONS = ['-std=c17', '-D_GNU_SOURCE', '-DNDEBUG', '-DNOLINEAR', '--emit=obj']
 
 
+def instance_methods(profile: Path) -> bool:
+    import json
+    marker = profile / 'instance-abi.json'
+    if not marker.exists():
+        return False
+    if json.loads(marker.read_text()) != {'abi': 'instance-v1'}:
+        raise RuntimeError('Unknown program instance ABI')
+    return True
+
+
+def object_options(profile: Path) -> list[str]:
+    return OBJECT_OPTIONS + (['--instance-methods'] if instance_methods(profile) else [])
+
+
 def emission_identity(profile: Path, campaign: Path, inputs: dict, entry: dict) -> dict:
     """Conservative C inputs, excluding independent TUs and consumer C# sources.
 
@@ -188,12 +237,12 @@ def emission_identity(profile: Path, campaign: Path, inputs: dict, entry: dict) 
         if Path(name).suffix == '.c' and any(name == item or name.endswith('/' + item) for item in included):
             dependencies[name] = digest
     dependencies['overrides.json'] = files['overrides.json']
-    for specification in ('semantic-intrinsics.json', 'managed-boundaries.json'):
+    for specification in ('semantic-intrinsics.json', 'managed-boundaries.json', 'instance-abi.json'):
         if specification in files:
             dependencies[specification] = files[specification]
     return dict(version=2, source=entry['path'], source_sha256=entry['sha256'],
                 dependencies=dependencies, compiler_sha256=inputs['compiler'],
-                options=OBJECT_OPTIONS, include_order=['snapshot', 'pinned-upstream', 'authored', 'host'],
+                options=object_options(profile), include_order=['snapshot', 'pinned-upstream', 'authored', 'host'],
                 source_inventory_sha256=sha(campaign / 'config/source-inventory.json'),
                 isolator_sha256=sha(campaign / 'scripts/isolate-core.py'),
                 helper_sha256=sha(campaign / 'scripts/core_inputs.py'))

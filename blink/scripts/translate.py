@@ -92,7 +92,7 @@ def project(path, authored_sources=None):
     for key,value in [('TargetFramework','net10.0'),('LangVersion','14'),('OutputType','Library'),
                       ('AssemblyName','TranslatedBlink'),('RootNamespace','Managed.Emulation'),
                       ('AllowUnsafeBlocks','true'),('Nullable','disable'),('ImplicitUsings','enable'),
-                      ('EnableDefaultCompileItems','false'),('DefineConstants','$(DefineConstants);BLINK_FULL_CORE'),
+                      ('EnableDefaultCompileItems','false'),('DefineConstants','$(DefineConstants);BLINK_FULL_CORE' + (';DOTCC_INSTANCE_FOR_HOST' if args.profile == 'threaded' else '')),
                       ('WarningsAsErrors','$(WarningsAsErrors);CS8500')]:
         ET.SubElement(props,key).text=value
     items = ET.SubElement(tree,'ItemGroup')
@@ -152,7 +152,7 @@ try:
         threaded = generated/'threaded-core'/attempt.name
         boundary = out/'threaded-stage.json'
         run(['python3',ROOT/'scripts/stage-threaded-core.py','--base-profile',profile,
-             '--output',threaded,'--receipt',boundary,'--mremap-validation','--empty-epoll'],
+             '--output',threaded,'--receipt',boundary,'--mremap-validation','--empty-epoll','--instance-methods'],
             'threaded-stage',180)
         derivation = json.loads(boundary.read_text())
         if not derivation.get('staged') or derivation.get('profile') != str(threaded):
@@ -190,9 +190,11 @@ try:
     if any(name in expected for name in ['authored/GuestExecution.c','authored/managed-driver.c']):
         raise RuntimeError('Product must exclude authored C execution and test frontends')
     receipt['product_surface'] = {'execution_owner':'separate authored C# consumer',
-                                  'test_frontend_excluded':True,'c_execution_driver_excluded':True}
+                                  'test_frontend_excluded':True,'c_execution_driver_excluded':True,
+                                  'program_state':'explicit owner instance with pinned globals and TLS' if args.profile == 'threaded' else 'legacy static',
+                                  'instance_abi':'instance-v1' if args.profile == 'threaded' else 'static-v1'}
     linked=attempt/'linked'
-    run(['dotnet',cli,*objects,'--emit=managedlib','--literal-pool','--deduplicate-inline','--nest-types','--class-name','BlinkCore',
+    run(['dotnet',cli,*objects,'--emit=managedlib',*(['--instance-methods'] if args.profile == 'threaded' else []),'--literal-pool','--deduplicate-inline','--nest-types','--class-name','BlinkCore',
          '--namespace','Managed.Emulation','--runtime=c','--split=size','--split-size=102400','-o',linked],'delivery-link',300)
     receipt['linked_output']=manifest(linked)
     raw.mkdir(); (raw/'Sources').mkdir(); (raw/'Bridges').mkdir()

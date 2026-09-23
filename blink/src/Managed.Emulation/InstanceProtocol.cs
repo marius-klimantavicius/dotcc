@@ -62,7 +62,7 @@ public sealed record InstanceOptions
     }
 }
 public sealed record WorkerRequest(string Kind, InstanceOptions? Options = null);
-public sealed record PublishedEndpoint(ushort GuestPort, int HostPort);
+public sealed record PublishedEndpoint(ushort GuestPort, int HostPort, string HostAddress = "127.0.0.1");
 public sealed record WorkerEvent
 {
     public required string Kind { get; init; }

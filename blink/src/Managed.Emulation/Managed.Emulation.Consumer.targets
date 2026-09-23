@@ -1,0 +1,50 @@
+<Project>
+  <!-- Import in an ordinary executable consumer, never in the API or worker.
+       The worker references the API; this non-reference build edge is acyclic. -->
+  <PropertyGroup>
+    <BlinkWorkerProject Condition="'$(BlinkWorkerProject)' == ''">$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '../Managed.Emulation.Worker/Managed.Emulation.Worker.csproj'))</BlinkWorkerProject>
+    <BlinkDeployWorker Condition="'$(BlinkDeployWorker)' == ''">true</BlinkDeployWorker>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(BlinkDeployWorker)' == 'true'">
+    <ProjectReference Include="$(BlinkWorkerProject)" ReferenceOutputAssembly="false" Private="false"
+      GlobalPropertiesToRemove="PublishDir;OutputPath;OutDir" />
+  </ItemGroup>
+  <ItemGroup>
+    <TrimmerRootAssembly Include="TranslatedBlink" />
+  </ItemGroup>
+
+  <Target Name="BlinkCopyWorkerBuild" AfterTargets="Build"
+          Condition="'$(BlinkDeployWorker)' == 'true' and '$(DesignTimeBuild)' != 'true'">
+    <MSBuild Projects="$(BlinkWorkerProject)" Targets="BlinkGetWorkerBuildFiles"
+             Properties="Configuration=$(Configuration);TargetFramework=$(TargetFramework)"
+             RemoveProperties="PublishDir;OutputPath;OutDir">
+      <Output TaskParameter="TargetOutputs" ItemName="_BlinkWorkerBuildFile" />
+    </MSBuild>
+    <Copy SourceFiles="@(_BlinkWorkerBuildFile)"
+          DestinationFiles="@(_BlinkWorkerBuildFile->'$(TargetDir)blink-worker/%(WorkerRelativePath)')"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="BlinkPublishWorker" BeforeTargets="ComputeFilesToPublish"
+          Condition="'$(BlinkDeployWorker)' == 'true' and '$(DesignTimeBuild)' != 'true'">
+    <Error Condition="'$(PublishAot)' == 'true' and '$(RuntimeIdentifier)' == ''"
+           Text="Publishing an AOT consumer with its matching worker requires an explicit RuntimeIdentifier." />
+    <PropertyGroup>
+      <_BlinkWorkerArtifacts>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'blink-worker-artifacts'))</_BlinkWorkerArtifacts>
+      <_BlinkWorkerPublish>$([MSBuild]::NormalizeDirectory('$(_BlinkWorkerArtifacts)', 'publish-closure'))</_BlinkWorkerPublish>
+      <_BlinkWorkerProperties>Configuration=$(Configuration);TargetFramework=$(TargetFramework);RuntimeIdentifier=$(RuntimeIdentifier);PublishAot=$(PublishAot);SelfContained=$(SelfContained);UseArtifactsOutput=true;ArtifactsPath=$(_BlinkWorkerArtifacts);PublishDir=$(_BlinkWorkerPublish);BlinkDeployWorker=false</_BlinkWorkerProperties>
+    </PropertyGroup>
+    <RemoveDir Directories="$(_BlinkWorkerPublish)" />
+    <MSBuild Projects="$(BlinkWorkerProject)" Targets="Restore"
+             Properties="$(_BlinkWorkerProperties)" RemoveProperties="OutputPath;OutDir;BaseIntermediateOutputPath;MSBuildProjectExtensionsPath" />
+    <MSBuild Projects="$(BlinkWorkerProject)" Targets="Publish"
+             Properties="$(_BlinkWorkerProperties)" RemoveProperties="OutputPath;OutDir;BaseIntermediateOutputPath;MSBuildProjectExtensionsPath" />
+    <ItemGroup>
+      <_BlinkWorkerPublished Include="$(_BlinkWorkerPublish)**/*" />
+      <ResolvedFileToPublish Include="@(_BlinkWorkerPublished)">
+        <RelativePath>blink-worker/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+</Project>

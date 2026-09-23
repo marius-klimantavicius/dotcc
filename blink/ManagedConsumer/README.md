@@ -1,3 +1,25 @@
+# Configurable machine sample (P6 integration pending)
+
+The new ordinary entry point is `ManagedConsumer GUEST_ELF [InProcess|SeparateProcess]`.
+It mounts the supplied ELF's parent at guest `/work`, then executes the guest path
+directly. The default is genuinely in-process; separate-process workers are built
+and deployed automatically by the imported consumer targets. No worker path or
+`ImportImage` call is needed.
+
+For an ordinary supported static Linux x64 console program or folder-processing
+program, use `ManagedConsumer --run ./work /work/my_app argument`. The guest cwd is
+`/work`; stdin/stdout/stderr attach as binary streams and host writes persist in
+`./work`. Choose `--run-process` for a separate worker. Network access is denied by
+default; this generic entry supplies `LANG=C` explicitly and uses the machine's
+bounded default memory/instruction settings. The public `BlinkMachine` API exposes
+those settings directly when an application needs different limits.
+
+For the pinned Kestrel fixture the sample starts two independent concurrent
+machines, checks real HTTP, performs normal HTTP shutdown, then restarts the first
+machine and requests cooperative stop. This new path is source preparation until
+its fresh instance-v1 product and actual JIT/NativeAOT runs are recorded. The older
+explicit-worker overload below remains a P5 baseline, not a P6 pass.
+
 # Translated Blink .NET service consumer
 
 The sample uses `BlinkInstance` to start a separate managed worker, which owns

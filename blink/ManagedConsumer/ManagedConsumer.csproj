@@ -8,6 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../src/Managed.Emulation/Managed.Emulation.csproj" />
-    <ProjectReference Include="../src/Managed.Emulation.Worker/Managed.Emulation.Worker.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
+  <Import Project="../src/Managed.Emulation/Managed.Emulation.Consumer.targets" />
 </Project>

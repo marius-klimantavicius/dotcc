@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import time
-from core_inputs import compiler_identity, profile_sources, canonical_emission, semantic_selection, managed_boundary_selection, OBJECT_OPTIONS
+from core_inputs import compiler_identity, profile_sources, canonical_emission, semantic_selection, managed_boundary_selection, object_options
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -43,7 +43,7 @@ for entry in closure['sources']:
         raise SystemExit('staged source checksum mismatch: ' + str(source))
     original_source = source
     emission_profile, source, c_identity, emission_key = canonical_emission(profile, root, profile_inputs, entry)
-    command = ['dotnet', str(compiler / 'dotcc.dll'), *OBJECT_OPTIONS,
+    command = ['dotnet', str(compiler / 'dotcc.dll'), *object_options(profile),
                '-I', str(emission_profile), '-I', str(root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'),
                '-I', str(emission_profile / 'authored'), '-I', str(emission_profile / 'host'),
                '--overrides-file', str(emission_profile / 'overrides.json')]

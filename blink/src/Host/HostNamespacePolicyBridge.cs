@@ -1,7 +1,7 @@
 using global::System;
 namespace Managed.Emulation;
 #if BLINK_FULL_CORE
-public static partial class BlinkCore
+public partial class BlinkCore
 #else
 public static partial class Blink
 #endif

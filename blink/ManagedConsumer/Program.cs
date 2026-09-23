@@ -5,11 +5,35 @@ using System.Text;
 using System.Text.Json;
 using Managed.Emulation;
 
+if (args.Length >= 3 && args[0] is "--run" or "--run-process")
+{
+    await using var machine = new BlinkMachine(new MachineOptions
+    {
+        ExecutionMode = args[0] == "--run-process" ? ExecutionMode.SeparateProcess : ExecutionMode.InProcess,
+        Environment = new Dictionary<string, string> { ["LANG"] = "C" }
+    });
+    machine.MountDirectory("/work", args[1]);
+    var result = await machine.ExecuteAsync(new ExecutionOptions
+    {
+        Executable = args[2], WorkingDirectory = "/work", Arguments = args[3..],
+        Console = ConsoleOptions.AttachCurrent()
+    });
+    if (result.Diagnostic != null) Console.Error.WriteLine(result.Diagnostic);
+    return result.Reason == RunExitReason.Exited ? result.ExitCode : 1;
+}
+
+if (args.Length == 1 && args[0] is not ("--help" or "-h"))
+    return await MachineDemo.RunAsync(args[0]);
+if (args.Length == 2 && Enum.TryParse<ExecutionMode>(args[1], out var machineMode))
+    return await MachineDemo.RunAsync(args[0], machineMode);
+
 if (args.Length == 1 && args[0] is "--help" or "-h")
 {
-    Console.WriteLine("Usage: ManagedConsumer GUEST_ELF WORKER_EXECUTABLE");
+    Console.WriteLine("Usage: ManagedConsumer GUEST_ELF [InProcess|SeparateProcess]");
+    Console.WriteLine("       ManagedConsumer --run HOST_DIRECTORY /work/PROGRAM [ARGUMENT ...]");
+    Console.WriteLine("       ManagedConsumer --run-process HOST_DIRECTORY /work/PROGRAM [ARGUMENT ...]");
     Console.WriteLine("Runs the ASP.NET Core Kestrel NativeAOT service, checks HTTP, then restarts it and requests cooperative stop.");
-    Console.WriteLine("WORKER_EXECUTABLE is the managed worker .dll or its published NativeAOT executable.");
+    Console.WriteLine("Mounts the ELF directory at /work. Default is in-process; separate-process workers deploy automatically.");
     return 0;
 }
 if (args.Length != 2)

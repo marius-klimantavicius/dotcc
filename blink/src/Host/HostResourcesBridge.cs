@@ -1,6 +1,6 @@
 namespace Managed.Emulation;
 #if BLINK_FULL_CORE
-public static partial class BlinkCore
+public partial class BlinkCore
 #else
 public static partial class Blink
 #endif
@@ -25,7 +25,14 @@ public static partial class Blink
         {
             // Private AS/DATA policy: the actual C mapping-owner budget,
             // including its counted records; not OS/process-wide memory usage.
+#if DOTCC_INSTANCE_FOR_HOST
+            // The worker binds its explicit program together with its IO and
+            // guest-thread owner. Resource callbacks borrow that retained owner;
+            // they never consult another machine's translated static storage.
+            limit = (guestProgram ?? throw new global::System.InvalidOperationException("Guest program is unbound.")).BlinkHostMemoryLimit();
+#else
             limit = BlinkHostMemoryLimit();
+#endif
             return limit != 0 ? 0 : ResourceError(19);
         }
         // Recognized selectors need actual accounting/enforcement contracts.

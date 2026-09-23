@@ -16,8 +16,15 @@ internal static class Program
         internal ulong? Returned;
     }
 
-    public static async Task<int> Main()
+    public static async Task<int> Main(string[] args)
     {
+        if (args.Length == 1 && args[0] == "--machine-api-v1")
+        {
+            using Stream protocolOutput = Console.OpenStandardOutput();
+            using Stream protocolInput = Console.OpenStandardInput();
+            Console.SetOut(Console.Error);
+            return await MachineWorkerHost.RunAsync(protocolInput, protocolOutput);
+        }
         // Capture raw streams before redirecting any generic translated Console
         // diagnostic. Guest descriptors use only InstanceIo's private captures.
         using Stream output = Console.OpenStandardOutput();
