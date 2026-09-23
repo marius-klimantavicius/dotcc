@@ -257,7 +257,12 @@ public static partial class Compiler
                         typeByName[name] = ""; // Conflicting TU-local macros have no single public value.
                     else if (name.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
                         && typeByName[name] != buf.ToString())
-                        throw new CompileException("conflicting canonical function pointer declarations for '" + name + "'");
+                    {
+                        if (outputOptions?.InstanceMethods == true && InstanceReferences.TryMergePointerDeclaration(
+                            name[FunctionPointerNames.TypeKeyPrefix.Length..], typeByName[name], buf.ToString(), out var merged))
+                            typeByName[name] = merged;
+                        else throw new CompileException("conflicting canonical function pointer declarations for '" + name + "'");
+                    }
                     else if (name.StartsWith(LiteralPool.TypeKeyPrefix, StringComparison.Ordinal)
                         && typeByName[name] != buf.ToString())
                         throw new CompileException("conflicting literal records for '" + name + "'; regenerate objects");

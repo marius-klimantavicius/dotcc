@@ -12,6 +12,73 @@ namespace DotCC.FunctionalTests;
 public sealed partial class ManagedLibraryTests
 {
     [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Instance_callback_adapter_links_opaque_and_complete_aggregates(bool reverse)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "dotcc-instance-aggregate-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var opaque = Path.Combine(directory, "opaque.c");
+            var complete = Path.Combine(directory, "complete.c");
+            File.WriteAllText(opaque, "struct Box; typedef int (*Boundary)(struct Box *); int external(struct Box *); Boundary address(void) { return external; }");
+            File.WriteAllText(complete, """
+                #include <pthread.h>
+                #include <stdlib.h>
+                #include <string.h>
+                struct Box { int (*callback)(int); };
+                int external(struct Box *);
+                typedef int (*Boundary)(struct Box *); Boundary address(void);
+                int value = 5;
+                int initializations;
+                pthread_once_t once = PTHREAD_ONCE_INIT;
+                void initialize(void) { ++initializations; value += 2; }
+                int add(int n) { return value + n; }
+                int test(void) {
+                    pthread_once(&once, initialize); pthread_once(&once, initialize);
+                    struct Box box = {add}; struct Box *copy = malloc(sizeof(*copy));
+                    memcpy(copy, &box, sizeof(box)); memset(&box, 0, sizeof(box));
+                    int result = address()(copy) + external(copy); free(copy);
+                    return result + initializations;
+                }
+                """);
+            var preprocessing = new CPreprocessingOptions(Array.Empty<MacroOverride>(), functionOverrides: new[] {
+                new FunctionOverride("external", new("int", new[] { "struct Box*" }),
+                    new("managedMethod", "global::AggregateBoundary.Invoke", PassInstance: true), RequireMatch: true) });
+            var objects = new[] { opaque + ".o", complete + ".o" };
+            File.WriteAllText(objects[0], Compiler.EmitObject(opaque, preprocessing: preprocessing, outputOptions: new(InstanceMethods: true)));
+            File.WriteAllText(objects[1], Compiler.EmitObject(complete, preprocessing: preprocessing, outputOptions: new(InstanceMethods: true)));
+            if (reverse) Array.Reverse(objects);
+            var generated = Compiler.LinkObjects(objects, emit: EmitMode.ManagedLib, className: "Api",
+                outputOptions: new(Runtime: RuntimeProfile.C, InstanceMethods: true));
+            const string host = """
+                public static unsafe class AggregateBoundary {
+                    public static int Invoke(Api owner, Box* box) => box->callback(owner, 3);
+                    public static int Run() {
+                        using var a = new Api(); using var b = new Api();
+                        using (b.__DotCcEnter()) {
+                            b.Globals.value = 20;
+                            if (a.test() != 21) throw new System.Exception("first once initialization");
+                            return a.test()*100 + b.test();
+                        }
+                    }
+                }
+                """;
+            var compilation = CSharpCompilation.Create("AggregateBoundary_" + Guid.NewGuid().ToString("N"),
+                new[] { ParseSource(generated), ParseSource(host) }, RuntimeReferences(),
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
+            using var image = new MemoryStream();
+            var result = compilation.Emit(image, cancellationToken: TestContext.Current.CancellationToken);
+            result.Success.ShouldBeTrue(string.Join("\n", result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error)));
+            image.Position = 0;
+            var assembly = new AssemblyLoadContext("aggregate-boundary-" + Guid.NewGuid(), isCollectible: false).LoadFromStream(image);
+            ((int)assembly.GetType("AggregateBoundary")!.GetMethod("Run")!.Invoke(null, null)!).ShouldBe(2151);
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Theory]
     [InlineData(false, false)]
     [InlineData(true, false)]
     [InlineData(true, true)]
@@ -115,6 +182,13 @@ public sealed partial class ManagedLibraryTests
         typedef int (*Callback)(int);
         struct Bag { Callback callbacks[2]; int tail; };
         int value = 7;
+        pthread_once_t once_flag = PTHREAD_ONCE_INIT;
+        int once_count, once_value;
+        void initialize_once(void) { ++once_count; once_value = value; }
+        int once_probe(void) {
+            pthread_once(&once_flag, initialize_once); pthread_once(&once_flag, initialize_once);
+            return once_count * 100 + once_value;
+        }
         int array[] = { 11, 13 };
         int *saved = &value;
         _Alignas(64) int aligned = 17;
@@ -164,6 +238,7 @@ public sealed partial class ManagedLibraryTests
                 using var a = new Api(); using var b = new Api();
                 using (a.__DotCcEnter()) {
                     if (a.step(7) != 0 || a.tls() != 101 || a.spawn() != 8 || a.sort() != 1) return "a";
+                    if (a.once_probe() != 108 || b.once_probe() != 107) return "once origins";
                     var pointer = a.address();
                     if (pointer != b.address() || pointer != POINTERS.add) return "canonical";
                     if (a.callbacks(pointer) != 30 || b.callbacks(pointer) != 27) return "callbacks";
@@ -174,6 +249,7 @@ public sealed partial class ManagedLibraryTests
                         if (b.tls() != 0 || b.special() != 17000 || a.special() != 18101) return "instance special";
                         if (pointer(a, 1) != 9 || pointer(b, 1) != 8) return "explicit pointer";
                         if (b.step(7) != 0) return "b";
+                        if (a.once_probe() != 108 || b.once_probe() != 107) return "once repeated";
                         // Exception unwinding of callback binding restores B.
                     }
                     if (a.tls() != 101) return "restore";

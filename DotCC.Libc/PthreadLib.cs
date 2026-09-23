@@ -470,6 +470,27 @@ public static unsafe partial class Libc
             spin.SpinOnce();
         }
     }
+    public static int pthread_once<T>(T instance, int* once, delegate*<T, void> initialize)
+        where T : class, IProgramInstance
+    {
+        if (once == null || initialize == null) return EINVAL;
+        var context = instance.__DotCcRuntime;
+        using var reservation = context.RetainLease();
+        using var binding = context.Enter();
+        var spin = new SpinWait();
+        while (true)
+        {
+            int state = Volatile.Read(ref *once);
+            if (state == 2) return 0;
+            if (state == 0 && Interlocked.CompareExchange(ref *once, 1, 0) == 0)
+            {
+                try { initialize(instance); Volatile.Write(ref *once, 2); return 0; }
+                catch { Volatile.Write(ref *once, 0); throw; }
+            }
+            if (state != 0 && state != 1) return EINVAL;
+            spin.SpinOnce();
+        }
+    }
     private static ConcurrentDictionary<int, IntPtr> _pthreadKeys => RuntimeState.Keys;
     private static ref int _nextPthreadKey => ref RuntimeState.NextKey;
     private static ref Dictionary<int, IntPtr>? _pthreadValues => ref RuntimeThread.Values;

@@ -48,7 +48,7 @@ callback adapter performs binding on the invoking thread. Merely retaining a
 managed owner reference does not prevent explicit disposal. Do not call through
 a pointer or use guest storage after owner disposal.
 
-Shared libc `qsort`, `bsearch` and `pthread_create` have typed context-forwarding
+Shared libc `qsort`, `bsearch`, `pthread_create` and `pthread_once` have typed context-forwarding
 overloads. Thread creation reserves the explicit origin before launch and keeps
 it until completion, independent of the caller's ambient binding. Other external
 callback boundaries need a typed semantic override:

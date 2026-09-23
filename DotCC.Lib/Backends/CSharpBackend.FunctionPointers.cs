@@ -72,6 +72,11 @@ internal sealed partial class CSharpBackend
         return Visit(type);
     }
 
+    private bool HasInstanceCallbackBoundary(Call call)
+        => ContainsInstanceCallback(call.Type) || call.Args.Select((argument, index) =>
+            call.ParamTypes != null && index < call.ParamTypes.Count ? call.ParamTypes[index] : argument.Type)
+            .Any(ContainsInstanceCallback);
+
     private void RegisterPublicFunctionPointers(IrBuilder unit)
     {
         // Managed consumers need a stable API even when the C source itself never

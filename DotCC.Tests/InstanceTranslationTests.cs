@@ -9,6 +9,62 @@ public sealed class InstanceTranslationTests
 {
     private static readonly CSharpOutputOptions Instance = new(Runtime: RuntimeProfile.C, InstanceMethods: true);
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Instance_canonical_pointer_signature_conflicts_still_fail(bool reverse)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "dotcc-instance-conflict-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var one = Path.Combine(directory, "one.c"); var two = Path.Combine(directory, "two.c");
+            File.WriteAllText(one, "extern int external(int); int (*first(void))(int) { return external; }");
+            File.WriteAllText(two, "extern long external(int); long (*second(void))(int) { return external; }");
+            var objects = new[] { one + ".o", two + ".o" };
+            File.WriteAllText(objects[0], Compiler.EmitObject(one, outputOptions: new(InstanceMethods: true)));
+            File.WriteAllText(objects[1], Compiler.EmitObject(two, outputOptions: new(InstanceMethods: true)));
+            if (reverse) Array.Reverse(objects);
+            Should.Throw<CompileException>(() => Compiler.LinkObjects(objects, emit: EmitMode.ManagedLib, outputOptions: Instance))
+                .Message.ShouldContain("conflicting canonical function pointer declarations");
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void Opaque_and_complete_callback_aggregates_merge_conservatively(bool adapted, bool reverse)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "dotcc-instance-opaque-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var opaque = Path.Combine(directory, "opaque.c");
+            var complete = Path.Combine(directory, "complete.c");
+            File.WriteAllText(opaque, "struct Box; typedef int (*Boundary)(struct Box *); extern int external(struct Box *); Boundary first(void) { return external; }");
+            File.WriteAllText(complete, "struct Box { int (*callback)(int); }; typedef int (*Boundary)(struct Box *); extern int external(struct Box *); Boundary second(void) { return external; }");
+            var preprocessing = adapted ? new CPreprocessingOptions(Array.Empty<MacroOverride>(), functionOverrides: new[] {
+                new FunctionOverride("external", new("int", new[] { "struct Box*" }),
+                    new("managedMethod", "global::Boundary.Invoke", PassInstance: true), RequireMatch: true) }) : null;
+            var objects = new[] { opaque + ".o", complete + ".o" };
+            File.WriteAllText(objects[0], Compiler.EmitObject(opaque, preprocessing: preprocessing, outputOptions: new(InstanceMethods: true)));
+            File.WriteAllText(objects[1], Compiler.EmitObject(complete, preprocessing: preprocessing, outputOptions: new(InstanceMethods: true)));
+            if (reverse) Array.Reverse(objects);
+            if (adapted)
+            {
+                var generated = Compiler.LinkObjects(objects, emit: EmitMode.ManagedLib, outputOptions: Instance);
+                generated.ShouldContain("global::Boundary.Invoke(this,");
+                generated.ShouldNotContain("/*__dotcc_callback_context__*/");
+            }
+            else Should.Throw<CompileException>(() => Compiler.LinkObjects(objects, emit: EmitMode.ManagedLib, outputOptions: Instance))
+                .Message.ShouldContain("unsupported external callback boundary");
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
     [Fact]
     public void Instance_objects_require_matching_explicit_link_convention()
     {

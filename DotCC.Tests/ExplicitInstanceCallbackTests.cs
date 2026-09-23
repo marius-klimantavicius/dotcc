@@ -38,6 +38,33 @@ public sealed unsafe class ExplicitInstanceCallbackTests
         return argument;
     }
 
+    private static void OnceInitialize(Owner owner)
+    {
+        ReferenceEquals(RuntimeContext.Current, owner.__DotCcRuntime).ShouldBeTrue();
+        ++owner.Seen;
+        errno = owner.Direction;
+    }
+
+    [Fact]
+    public void Once_initializers_receive_their_owner_and_restore_unrelated_binding()
+    {
+        using var a = new Owner(17); using var b = new Owner(23); using var ambient = new Owner();
+        int first = 0, second = 0;
+        using (ambient.__DotCcEnter())
+        {
+            errno = 91;
+            pthread_once(a, &first, &OnceInitialize).ShouldBe(0);
+            pthread_once(b, &second, &OnceInitialize).ShouldBe(0);
+            pthread_once(a, &first, &OnceInitialize).ShouldBe(0);
+            pthread_once(b, &second, &OnceInitialize).ShouldBe(0);
+            ReferenceEquals(RuntimeContext.Current, ambient.__DotCcRuntime).ShouldBeTrue();
+            errno.ShouldBe(91);
+        }
+        a.Seen.ShouldBe(1); b.Seen.ShouldBe(1);
+        using (a.__DotCcEnter()) errno.ShouldBe(17);
+        using (b.__DotCcEnter()) errno.ShouldBe(23);
+    }
+
     [Fact]
     public void Sort_and_search_forward_each_explicit_instance_and_restore_ambient_owner()
     {

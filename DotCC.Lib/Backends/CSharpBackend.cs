@@ -3096,7 +3096,7 @@ internal sealed partial class CSharpBackend
             {
                 if (replacement.PassInstance && !_instanceMethods)
                     throw new CompileException("passInstance requires --instance-methods");
-                if (_instanceMethods && !replacement.PassInstance && (c.Args.Any(a => ContainsInstanceCallback(a.Type)) || ContainsInstanceCallback(c.Type)))
+                if (_instanceMethods && !replacement.PassInstance && HasInstanceCallbackBoundary(c))
                     throw new CompileException("managed callback boundary requires explicit passInstance: " + replacement.Value);
                 return replacement.Value + "(" + (replacement.PassInstance ? "this" + (c.Args.Count == 0 ? "" : ", ") : "")
                     + string.Join(", ", c.Args.Select(Expr)) + ")";
@@ -3174,8 +3174,7 @@ internal sealed partial class CSharpBackend
         // same-named external (BuildFuncDef). Falls back to the escaped raw name
         // for libc builtins / fn-ptr-variable / unresolved callees.
         var target = c.CalleeSym != null ? FunctionName(c.CalleeSym) : DotCC.EmitHelpers.Id(c.Callee);
-        var context = _instanceMethods && (c.ParamTypes?.Any(ContainsInstanceCallback) == true
-            || c.Args.Any(argument => ContainsInstanceCallback(argument.Type)) || ContainsInstanceCallback(c.Type))
+        var context = _instanceMethods && HasInstanceCallbackBoundary(c)
             ? InstanceReferences.CallbackContext + (c.CalleeSym?.TargetName ?? DotCC.EmitHelpers.Id(c.Callee)) + " " : "";
         var invocation = $"{target}({context}{string.Join(", ", a)})";
         // Runtime services use void* for C-owned aggregate records whose emitted

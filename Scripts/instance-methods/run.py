@@ -73,7 +73,7 @@ def main():
         native.write_text(probe.read_text() + '''
 #include <stdio.h>
 int main(void) {
-  if (step(7) || tls()!=101 || spawn()!=8 || sort()!=1 || callbacks(address())!=30) return 1;
+  if (step(7) || tls()!=101 || spawn()!=8 || sort()!=1 || callbacks(address())!=30 || once_probe()!=108) return 1;
   puts("native-ok"); return 0;
 }
 ''')
