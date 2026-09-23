@@ -51,6 +51,7 @@ public static class MachineWorkerHost
                 writableLimit: options.WritableStorageLimit, nodeLimit: options.FileNodeLimit);
             fileSystem = new(root, ownsRoot: true, privateWritableLimit: options.WritableStorageLimit,
                 privateNodeLimit: options.FileNodeLimit);
+            MachineDevices.Mount(fileSystem, options.DescriptorLimit);
             foreach (var mount in request.Storage.Mounts)
             {
                 GuestText.Path(mount.GuestPath);

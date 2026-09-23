@@ -26,6 +26,13 @@ public sealed class BlinkMachine : IAsyncDisposable
         (root, rootPath) = CreatePrivateStore();
         fileSystem = new(root, ownsRoot: true, privateWritableLimit: this.options.WritableStorageLimit,
             privateNodeLimit: this.options.FileNodeLimit);
+        try { MachineDevices.Mount(fileSystem, this.options.DescriptorLimit); }
+        catch
+        {
+            fileSystem.Dispose();
+            foreach (string path in privateDirectories) Directory.Delete(path, recursive: true);
+            throw;
+        }
     }
     public ExecutionMode ExecutionMode => options.ExecutionMode;
     public MachineCapabilities Capabilities => new(options.ExecutionMode, CooperativeStop: true,
@@ -100,7 +107,14 @@ public sealed class BlinkMachine : IAsyncDisposable
     }
     public void Unmount(string guestPath)
     {
-        lock (gate) { Idle(); fileSystem.Unmount(guestPath); mounts.RemoveAll(m => m.GuestPath == guestPath); }
+        GuestText.Path(guestPath);
+        lock (gate)
+        {
+            Idle();
+            if (!mounts.Any(m => m.GuestPath == guestPath))
+                throw new ArgumentException("Only explicitly mounted directories can be unmounted.", nameof(guestPath));
+            fileSystem.Unmount(guestPath); mounts.RemoveAll(m => m.GuestPath == guestPath);
+        }
     }
     /// <summary>Discards private root and COW contents; live grants are untouched.
     /// COW contents are cleared, not silently refreshed from the host source.</summary>
