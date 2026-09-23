@@ -84,4 +84,26 @@ also completes, but Kerberos.NET emits **IL2104** (trim analysis) and **IL3053**
 its gate is not weakened. Consequently the prior NTLM-only whole-assembly audit
 is historical and does not qualify the expanded Kerberos product. Normal DFS
 NativeAOT execution does not prove Kerberos acquisition is trim/AOT-safe.
-Final regeneration and regression receipts are recorded below when complete.
+Final Linux x64 results:
+
+- Full 53-unit raw/processed regeneration and the updated solution build pass;
+  solution build has zero warnings/errors. Postprocessing is idempotent on a
+  private copy and preserves imported authored sources.
+- All **88/88** existing managed Samba sample/lifecycle cases pass across
+  raw/processed JIT/NativeAOT. These exercise NTLMSSP signing/encryption, not Kerberos.
+- The new standalone DFS fixture passes all **four** raw/processed JIT/NativeAOT
+  variants. Codec tests and both finalizer cases in each JIT variant pass.
+- All **45 crypto/ABI values** match native controls in raw/processed JIT/NativeAOT.
+- Static source/dependency audits pass for both variants: 17 generic OS imports
+  plus six explicit Windows SSPI imports. The rooted raw NativeAOT binary builds
+  and executes, but the audit correctly fails on Kerberos.NET IL2104/IL3053.
+- The existing legacy project still evaluates with no authored host/Kerberos
+  compilation sources or package references. No compiler or upstream C source
+  changes were needed by this merge.
+
+The aggregate `artifacts/kerberos-dfs-review/result.json` records the patch hash,
+source/receipt fingerprints, resolved package versions/hashes, passed regression
+runs and unqualified gates separately. `regressions.json` contains the exact 18
+commands; DFS receipts are under `artifacts/dfs/`, and the unchanged audit gate's
+failure is in `artifacts/product-audit/result.json`. The full qualification script
+continues to fail at that gate until the provider's AOT/trim support is resolved.

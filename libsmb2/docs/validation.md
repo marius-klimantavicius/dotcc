@@ -6,8 +6,11 @@ The reviewed patch extends the async product with a Kerberos provider and manage
 DFS. [Review findings and current evidence](kerberos-dfs-review.md) distinguish
 new checks from the earlier async-only qualification below. The whole-assembly
 AOT gate now detects Kerberos.NET IL2104/IL3053 warnings; it remains open and is
-not suppressed. Prior qualification receipts do not certify this expanded
-provider. Enterprise Kerberos and Windows execution remain unverified.
+not suppressed. The merge passes all 88 existing managed Samba cases, four
+standalone DFS raw/processed JIT/NativeAOT variants, 45 crypto/ABI values per
+variant and four finalizer checks. Current receipts are under
+`artifacts/kerberos-dfs-review/`. Prior qualification receipts do not certify
+this expanded provider. Enterprise Kerberos and Windows execution remain unverified.
 
 
 ## Current async transport qualification — 2026-09-23
