@@ -4,11 +4,17 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-**P5 is complete for the selected Linux x64 profile; work is stopped.** The
+**P5 is complete for the selected Linux x64 profile.** The
 real ASP.NET Core/Kestrel NativeAOT guest passes raw/optimized JIT/NativeAOT,
 simultaneous instances, normal/cooperative stop, restart and natural deadlines.
-The actual showcase solution and its JIT/NativeAOT sample pass. P6, Windows and
-broader runtime/performance qualification have not started in this continuation.
+The actual showcase solution and its JIT/NativeAOT sample pass.
+
+Next-phase request: the new P6 is a public machine API with configurable limits,
+host-folder mounts, executable/argv/cwd/environment, streaming console IO and
+explicit sandbox capabilities. [P6-MACHINE-API.md](P6-MACHINE-API.md) records the
+proposal and future snapshot considerations; implementation has not started.
+The previous P6 platform/performance campaign is now P7. Historical P6 references
+below retain their original meaning. Windows and broader qualification remain open.
 
 All final gates consume public delivery `translation/attempt-kaddtzlg` (SHA-256
 `711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11`),
@@ -330,7 +336,8 @@ detached worktrees remain evidence only; no duplicate branch work continues.
 | P3 | Passed — selected profile | 504 normal CPU cases per form (2,016 matches), valid ELF/fixed TLS and actual guest-memory lifecycle pass. Bounded coverage and retained producer evidence are documented above. |
 | P4 | Passed — selected profile | Native/all-four contracts, 24 actual HTTP comparisons, eight native completion controls and 44 actual owning stop/deadline cases. Subsequent P5 authorization is recorded separately. |
 | P5 | Passed — selected Kestrel profile | Real NativeAOT Kestrel all-four-mode workers/HTTP/lifecycle, final CPU/signal refresh, actual solution and JIT/AOT sample pass; final receipts are at the top. Phase stopped. |
-| P6 | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
+| P6 | Planned — public machine API | Configurable machines, mounts, environment, streaming console and enforced isolation; future snapshot design only. See P6-MACHINE-API.md. |
+| P7 (formerly P6) | Partial | Native 25 and corrected clean public delivery pass; additional scoped regressions/performance remain unrun. Windows and full performance/dependency gates remain open. |
 
 ## Observed environment
 

@@ -580,7 +580,42 @@ The actual solution and JIT/NativeAOT Kestrel sample pass at
 Linux x64 profile. Work stops here; P6 is not started by this authorization.
 See `docs/VALIDATION.md` and `docs/P5-KESTREL-RUNTIME.md` for hashes and limits.
 
-### P6 — Qualify upstream tests, platforms, and delivery
+### P6 — Deliver the public machine API and isolated host integration
+
+The user requests a configurable machine API after P5: create a machine, set
+memory and other limits, map/mount folders (including existing host and guest
+directories), choose an executable and execute it with environment variables
+and console IO. Define explicit filesystem/network/resource isolation rather
+than exposing the qualification runner's fixed service profile.
+
+The detailed API proposal, mount modes, console semantics, isolation contract
+and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
+
+- [ ] Deliver create/configure/start/execute/wait/stop/dispose and explicit
+      machine-versus-run lifetime, with useful typed errors/results.
+- [ ] Add image/private storage and host directory mounts with read-only,
+      explicit read-write and private copy-on-write modes, including mounting
+      over existing guest directories and controlled persistence/export.
+- [ ] Load executable/cwd from the guest namespace; accept arguments and
+      dictionary-based machine/per-execution environment values.
+- [ ] Provide live stdin/stdout/stderr, EOF, current-console attachment,
+      bounded buffering/capture and explicit stream ownership.
+- [ ] Generalize configurable memory/resource limits and service readiness;
+      remove fixture-only restrictions from the general public interface.
+- [ ] Enforce explicit host capabilities and a supported OS worker isolation
+      profile; document actual guarantees and fail unsupported configurations.
+- [ ] Deliver examples and normal isolation/lifecycle checks using the real
+      translated core and public API under JIT/NativeAOT on Linux x64.
+- [ ] Document state/resource ownership for future full execution snapshots;
+      do not require snapshot save/restore implementation in this phase.
+
+**Gate:** a separate consumer can configure an isolated machine, mount permitted
+folders, execute a supported ELF with its own environment and console streams,
+interact with it, stop it and reclaim resources. The documented isolation and
+mount behavior must be enforced. P5's fixed HTTP fixture API alone does not
+satisfy this gate.
+
+### P7 — Qualify upstream tests, platforms, and delivery (formerly P6)
 
 - [ ] Run applicable pinned upstream tests and preserve case-level results.
       Include fault-injection or invalid-ELF cases only where they already exist
@@ -613,7 +648,7 @@ See `docs/VALIDATION.md` and `docs/P5-KESTREL-RUNTIME.md` for hashes and limits.
 completion may be reported as such, but the two-platform target remains open
 until Windows actually runs. A passing HTTP smoke test is not full qualification.
 
-Dependencies: P0 → P1 → P2 → P3/P4 → P5 → P6. Host feasibility can inform P1,
+Dependencies: P0 → P1 → P2 → P3/P4 → P5 → P6 → P7. Host feasibility can inform P1,
 but later runtime gates require the real translated core.
 
 ## Completion and follow-ups
@@ -627,6 +662,7 @@ kernel virtualization, or hostile-code sandboxing follows from this milestone.
 Follow-ups beyond the selected P5 .NET NativeAOT workload: general dynamic ELF
 userspace, additional guest threading/runtime compatibility, expanded
 signals/syscalls, IPv6/UDP, deterministic virtual
-networks, checkpoints with external-resource reconstruction, hardened OS worker
-containment, multiple in-process instances, and a Wasm backend sharing the
-controller's lifecycle/host concepts. None is an implicit dependency of P0–P6.
+networks, checkpoints with external-resource reconstruction, additional OS
+containment profiles beyond P6's qualified host, multiple in-process instances,
+and a Wasm backend sharing the controller's lifecycle/host concepts. None is an
+implicit dependency of P0–P7; P6 documents future snapshot ownership only.
