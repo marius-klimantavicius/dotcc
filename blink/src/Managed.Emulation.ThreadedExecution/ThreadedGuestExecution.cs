@@ -288,7 +288,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
             (Blink.blink_host_signal_jump_storage*)&machine->onhalt, 1));
         try
         {
-            if (child) Require(Blink.blink_host_sigprocmask(2, &machine->spawn_sigmask, null) == 0, "Restore child signal mask");
+            if (child) Require(program!.blink_host_sigprocmask(2, &machine->spawn_sigmask, null) == 0, "Restore child signal mask");
             machine->canhalt = true;
             while (worker.Stop.Reason == HostExecutionStopReason.None)
             {

@@ -11,11 +11,18 @@
     <ProjectReference Include="../Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.csproj" />
     <TrimmerRootAssembly Include="TranslatedBlink" />
   </ItemGroup>
-  <Target Name="BlinkGetWorkerBuildFiles" Returns="@(_BlinkWorkerClosure)">
+  <Target Name="BlinkGetWorkerBuildFiles" DependsOnTargets="Build" Returns="@(_BlinkWorkerClosure)">
+    <!-- Use this build's output inventory, never a recursive bin glob: bin can
+         also contain old RID, publish, or other configuration closures. -->
+    <FindUnderPath Path="$(TargetDir)" Files="@(FileWrites);@(FileWritesShareable)">
+      <Output TaskParameter="InPath" ItemName="_BlinkWorkerOutput" />
+    </FindUnderPath>
+    <RemoveDuplicates Inputs="@(_BlinkWorkerOutput->'%(FullPath)')">
+      <Output TaskParameter="Filtered" ItemName="_BlinkWorkerClosure" />
+    </RemoveDuplicates>
     <ItemGroup>
-      <_BlinkWorkerClosure Include="$(TargetDir)**/*"
-                          Exclude="$(TargetDir)publish/**/*;$(TargetDir)blink-worker/**/*;$(TargetDir)**/*.cs">
-        <WorkerRelativePath>%(RecursiveDir)%(Filename)%(Extension)</WorkerRelativePath>
+      <_BlinkWorkerClosure>
+        <WorkerRelativePath>$([System.IO.Path]::GetRelativePath('$(TargetDir)', '%(_BlinkWorkerClosure.FullPath)'))</WorkerRelativePath>
       </_BlinkWorkerClosure>
     </ItemGroup>
   </Target>

@@ -123,6 +123,17 @@ resource/signal-mask adapter declarations; the original authored sources were
 corrected, with no generated-source edits. The actual public-machine fixture
 (10 cases, 11 distinct native witnesses) and Kestrel consumer gates are next.
 
+The actual ordinary solution and Probe build now pass after correcting one
+C# child-thread signal-mask call and worker deployment metadata. The deployment
+receipt `worker-deployment/attempt-ke_wftla` (SHA-256
+`68e6e3f080481c89159f520bac06059e55dd603c4e7ea77d1d861085eba5842f`)
+verifies both consumers receive exactly the current 13 worker files and exclude
+201 stale RID-output files. In `machine-api/attempt-4dl_sx8q`, all 11 native
+controls pass and the actual **in-process JIT consumer passes all 10 cases**.
+The separate-process JIT run fails its binary-console outcome assertion after
+successful earlier file/persistence scenarios; its failure is preserved and
+under diagnosis. Neither the full four-mode gate nor Kestrel is yet passed.
+
 Console and descriptor integration passes JIT/NativeAOT at
 `host-console/attempt-071nqrfd` (receipt SHA-256
 `0cf272d2bb4736c0eb43dce0aa1c6331e66517f11703c72e0cccf6a135f34a8c`).

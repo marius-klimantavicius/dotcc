@@ -20,6 +20,9 @@
              RemoveProperties="PublishDir;OutputPath;OutDir">
       <Output TaskParameter="TargetOutputs" ItemName="_BlinkWorkerBuildFile" />
     </MSBuild>
+    <Error Condition="'@(_BlinkWorkerBuildFile)' == ''" Text="The worker build returned no deployment files." />
+    <Error Condition="'%(_BlinkWorkerBuildFile.WorkerRelativePath)' == ''" Text="A worker deployment file has no relative output path: %(_BlinkWorkerBuildFile.Identity)" />
+    <RemoveDir Directories="$(TargetDir)blink-worker" />
     <Copy SourceFiles="@(_BlinkWorkerBuildFile)"
           DestinationFiles="@(_BlinkWorkerBuildFile->'$(TargetDir)blink-worker/%(WorkerRelativePath)')"
           SkipUnchangedFiles="true" />
@@ -42,7 +45,7 @@
     <ItemGroup>
       <_BlinkWorkerPublished Include="$(_BlinkWorkerPublish)**/*" />
       <ResolvedFileToPublish Include="@(_BlinkWorkerPublished)">
-        <RelativePath>blink-worker/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+        <RelativePath>blink-worker/$([System.IO.Path]::GetRelativePath('$(_BlinkWorkerPublish)', '%(_BlinkWorkerPublished.FullPath)'))</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
     </ItemGroup>
