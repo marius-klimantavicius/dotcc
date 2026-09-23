@@ -26,10 +26,13 @@ four-byte external `t_socket` type; authored host sources are compiled alongside
 both raw and processed output. Low-level C polling/synchronous and server waits
 are unsupported by this product profile.
 
-Unchanged upstream tests retain a separately generated compatibility baseline:
+`translate-libc.sh` runs the full translation pipeline using Libc sockets/poll
+and upstream integer descriptors, without the async host or authored `t_socket`
+struct. It accepts the same translation options and fixes the profile to legacy.
+Unchanged upstream tests use this separately generated compatibility baseline:
 
 ```sh
-./libsmb2/scripts/translate.sh --profile legacy
+./libsmb2/scripts/translate-libc.sh
 ./libsmb2/scripts/upstream-tests.sh
 ```
 
