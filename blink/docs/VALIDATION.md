@@ -3,7 +3,98 @@
 All observed executions below are Linux x64. Windows execution has not run.
 Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
-## Final P6 machine API qualification
+## P6 nonblocking-connect extension (2026-09-23)
+
+The [N0–N3 sub-plan](P6-NONBLOCKING-CONNECT.md) is complete for Linux x64.
+Nonblocking connect owns its pending operation beyond the initiating syscall,
+reports EINPROGRESS/EALREADY/EISCONN, retains get-and-clear SO_ERROR, and publishes
+poll/select/epoll completion. Connection epochs prevent an earlier unconnected
+HUP from masking a later ordinary shutdown HUP. Final close and machine disposal
+drain the operation; duplicated descriptors share its lifetime.
+
+The unchanged static musl NativeAOT HttpClient guest passes 72 HTTP requests
+across 12 translated executions: JIT/NativeAOT consumers × InProcess/SeparateProcess,
+with two simultaneous machines and same-machine restart in each form. Its native
+oracle passes 18 requests. Actual AOT worker executables are independently hashed;
+all cases preserve exact responses/stdout, empty stderr, exit zero and resource
+release. Ordinary runtime Activity/Guid initialization required a private BCL
+`/dev/urandom` device, now mounted in both modes without host-device access.
+
+The public API passes eleven native controls and ten cases per form, including
+normal stop, cancellation, disposal, ownership and quotas. The existing sample
+passes twelve Kestrel and twelve general guest runs with twenty native HTTP
+comparisons. Host gates retain their applicable native/raw/optimized/JIT/AOT
+matrices. Focused checks cover 32 connect/epoll/duplicate cycles, 32 caller-scope
+cancellation/close/reuse cycles, sixteen concurrent owner disposals, ordinary
+shutdown terminal edges, configured timed success and valid entropy reads.
+
+All selected final receipts pass:
+
+| Gate | Receipt under `artifacts/` | SHA-256 |
+| --- | --- | --- |
+| Postprocessed instance-v1 delivery | `translation/attempt-cekeeech/receipt.json` | `487e2a7b40b6329736ab53bef3086b782bc46336ae53df616617146120bfa7c5` |
+| Focused connect/lifecycle/entropy JIT+AOT | `nonblocking-campaign/focused/receipt.json` | `5a1e498683fcbfd223c24a1c9cfedfae4a740f7e0276b059f6f00500be1700e4` |
+| Actual NativeAOT HttpClient, all four forms | `nonblocking-guest/attempt-sjizsmch/receipt.json` | `285cc9045e063a5cefeca88dc5b31c71c48ed87e5ec42b7d1e9e0e00b6a7f5e2` |
+| Public machine API, all four forms | `machine-api/attempt-_13omhjd/receipt.json` | `b161777725c8a5c831340af8963afc50a9b976961d5915aba9bc9fd7b3d083a3` |
+| Kestrel/general samples, all four forms | `machine-api-kestrel/attempt-d1jqgowt/receipt.json` | `18e0dc8b10e9e839c1d54840786d900ec0d98d6a33bcc3fcc55ef5b418e628b9` |
+| BCL host socket contract | `host-sockets/receipt.json` | `34e9c2d39c0fc3669b7c896ee81cf4419479b591cdf8b2cda7592b59ca23fadf` |
+| Translated TCP callbacks | `host-network/attempt-ctj5__4m/receipt.json` | `1730dd84e910e7a591518df9397b8ac16630690ff228b66cd6880d4afeec8588` |
+| Socket queries | `host-socket-queries/attempt-n8czn3mh/receipt.json` | `7162760a2e348bc95503664c20ca87eb09e86fee5e90635556c46cccd418d533` |
+| Async socket/edge contract | `host-async-sockets/attempt-lliv1h37/receipt.json` | `d3a65493be67db3a0fb46d2fca1b18507caff2d4bae15529f67ed2c2f50c592c` |
+| Socket timeouts | `host-socket-timeouts/attempt-b2pnvkpb/receipt.json` | `6fe02c58b01b7703d29290c01a2c2f2790d5d4fc6f03b7de0b83fa385e331b4f` |
+| Poll/select readiness | `host-readiness/attempt-skau6xk6/receipt.json` | `224dcdec726f81e08056aada922907a03d3199af79df4ad66c6bd64dd5ecbf71` |
+| Epoll | `host-epoll/attempt-g4s6a397/receipt.json` | `b043f7e1910450bac1313e2de318f862b78fb4cda33b3005380fff0b1b557f89` |
+| Network policy grants | `host-network-grants/attempt-t3wp0fw3/receipt.json` | `7e714374edc3b00cf122aa69d5cf622d9aa59f816acf58419a24995c10bcfa36` |
+
+Fresh generation preserves inline deduplication, semantic postprocessing and
+original-source links. All 108 objects were freshly emitted in the first attempt;
+subsequent delivery refreshes reused those exact objects after host refinements.
+No compiler or authored C syscall bridge changes were needed.
+
+Reproduce the new behavior with the commands in
+[NonblockingConnect](../tests/NonblockingConnect/README.md) and
+[NonblockingGuest](../tests/NonblockingGuest/README.md). Existing gates use
+`bash blink/scripts/test-host-sockets.sh` and `python3 blink/tests/NAME/run.py`
+for HostNetwork, HostSocketQueries, HostAsyncSockets, HostSocketTimeouts,
+HostReadiness, HostEpoll and HostNetworkGrants. Public/sample commands are in
+[MachineApi](../tests/MachineApi/README.md). Exact final commands and receipt
+indexes are retained under `artifacts/nonblocking-campaign/`.
+
+Another session edited/rebuilt the shared postprocessor during qualification.
+Final public/sample and epoll runs use immutable producer closures from
+`artifacts/nonblocking-campaign/producer-tools`: all six compiler and five
+postprocessor file hashes exactly match the delivery. This qualifies those
+recorded producers, not the other session's subsequent uncommitted tool changes.
+Actual compiled Blink source files, membership and build configuration stay
+frozen. Historical Kestrel ELF inputs are checked against their exact retained
+producer archive rather than today's unrelated package versions. No behavior
+assertions or binary/oracle hashes were weakened.
+
+Preserved nonpassing attempts:
+
+- `translation/attempt-zym9j4i9`: host sources changed after staging during the
+  terminal-epoch refinement; the snapshot check rejected it before publication.
+- `nonblocking-guest/attempt-hxbc6kg5`: ordinary HttpClient Activity/Guid entropy
+  failed before networking; native strace identified `/dev/urandom`, resolved by
+  the BCL device without changing the guest or disabling diagnostics.
+- `machine-api/attempt-rqafwfoh`, `machine-api/attempt-rfxhfazq` and
+  `host-epoll/attempt-s810h60q`: unrelated live postprocessor binary/source changes
+  invalidated frozen identities; final archived-producer runs pass.
+- `machine-api-kestrel/attempt-rv9d1i_0`: today's package file differed from the
+  historical native ELF build; validating the retained original input resolves it.
+- `instance-lifecycle/attempt-0wv811qh`: mistakenly selected legacy synthetic
+  protocol-failure fixture has an obsolete frame-budget assertion. Its payload
+  fits the 24 MiB limit introduced by `51948ad` before this extension, so it tries
+  a nonexistent executable. It remains unqualified and was not rerun or expanded:
+  these synthetic failure cases are outside the approved scope. Current valid-guest
+  MachineApi lifecycle cases pass in all four forms.
+
+No manufactured transport failure, deadline expiry or invalid ELF is part of the
+new tests. Nonzero SO_ERROR and every transient race are not deterministically
+qualified by successful loopback traffic. DNS, IPv6, TLS, IMDS routing/simulation,
+Windows, snapshots and P7 remain outside this extension. Stop here.
+
+## Original P6 machine API qualification
 
 All selected P6 gates pass, including fresh generation and complete consumer
 reexecution after the allocation-free struct-scope compiler refinement.

@@ -667,6 +667,14 @@ both execution modes. Use BCL networking, retain explicit outbound grants, and
 preserve the existing fault-injection/invalid-ELF exclusions. Commit at each
 milestone and stop after this extension; IMDSv2 routing and P7 remain separate.
 
+Completed on Linux x64: the real NativeAOT asynchronous HttpClient guest passes
+JIT/NativeAOT consumers in both execution modes (72 HTTP requests across 12 guest
+executions), alongside the focused host gates and existing public machine API
+and Kestrel regressions. The qualified delivery is
+`translation/attempt-cekeeech`; see [the exact validation ledger](VALIDATION.md)
+for receipts, preserved first failures, and scope limits. N0–N3 are complete;
+stop at this extension boundary.
+
 ### P7 — Qualify upstream tests, platforms, and delivery (formerly P6)
 
 - [ ] Run applicable pinned upstream tests and preserve case-level results.

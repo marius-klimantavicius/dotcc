@@ -260,6 +260,23 @@ defaults to isolated; publish selected guest ports on explicit host addresses
 (loopback by default), and separate publication from outbound network policy.
 Do not launch host commands or pass guest instructions to native execution.
 
+The [nonblocking TCP extension](P6-NONBLOCKING-CONNECT.md) adds asynchronous
+outbound connection establishment through the existing `OutboundDestinations`
+grants. It does not change destination policy or add DNS/IMDS routing. Guest
+applications use their ordinary nonblocking socket APIs: pending connects return
+`EINPROGRESS`, completion becomes writable, and `SO_ERROR` supplies the result.
+A blocking connect interrupted by a signal or its send timeout leaves the
+socket-owned attempt pending; timeout returns `EINPROGRESS`, while interruption
+returns the bridge's existing cancellation/signal error. Closing the final alias
+or disposing the machine terminates and drains that operation.
+
+Each machine also has a built-in read-only `/dev` mount containing a BCL-backed
+`/dev/urandom` character device. It supplies fresh cryptographic bytes without
+opening a host device; reads may return a positive short count. The built-in
+mount cannot be unmounted through the directory-grant API. It is recreated for
+separate workers and is excluded from private-storage export/reset. Other device
+paths, entropy writes, seeking and positional reads are outside this profile.
+
 In-process guest mediation is not an OS security boundary between the unsafe
 emulator and the calling application. P6 must enforce the supported guest
 filesystem/network/resource policies and machine separation, but cannot claim

@@ -3,8 +3,11 @@
 getsockopt now reads the actual private BCL socket's type, reuse-address state,
 send/receive buffer sizes and TCP no-delay setting. It uses the same descriptor
 validation and socket owner as setsockopt. No guest descriptor is passed to an
-operating-system descriptor API. SO_ERROR, linger, timeouts and other option
-families remain unqualified; unsupported options fail explicitly.
+operating-system descriptor API. `SO_ERROR` returns the retained Linux guest connection error with get-and-clear
+semantics. The connection state is separate: zero while pending, or after an
+error has been read, does not imply successful establishment. Readiness checks
+do not consume this error. Linger and receive/send timeout support are described
+by the async-socket and timeout fixtures; other options fail explicitly.
 
 The callback copies at most four little-endian bytes into caller storage and
 returns the copied length. Short and zero-length buffers are supported, and

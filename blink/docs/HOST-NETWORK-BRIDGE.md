@@ -15,8 +15,14 @@ or external destination fallback is performed. Connection policy remains the
 instance's private IPv4 namespace; publication returns a separate physical
 loopback endpoint to the controller.
 
-The C callback runs on the dedicated interpreter worker, blocking on actual BCL
-async I/O. Instance disposal closes and drains the underlying socket operations,
+The C callback runs on the dedicated interpreter worker. Blocking operations
+wait for actual BCL async I/O; a nonblocking connect returns immediately with
+success, an immediate error, or `EINPROGRESS`. Its pending task belongs to the
+socket and outlives the initiating syscall's wake-token scope. A repeated connect
+returns `EALREADY` while pending and `EISCONN` after establishment.
+The upstream socket syscall strips `SOCK_NONBLOCK` and applies `fcntl` through
+the descriptor layer; subsequent `F_SETFL` changes the same shared description.
+Completion is observed through poll/select/epoll and `SO_ERROR`. Instance disposal closes and drains the underlying socket operations,
 which makes a blocked translated C accept return a failure. Managed exceptions
 are contained at the callback boundary. The existing trusted-host-pointer scope
 of HOST-IO-BRIDGE.md also applies here; complete guest-address validation awaits
@@ -32,6 +38,8 @@ a worker blocked in C accept. All modes pass without build warnings. The native
 shared test library is used only by the oracle; managed consumers have no native
 emulator or native socket adapter.
 
-Full core selection, recvfrom/sendto, ancillary messages, peer metadata, readiness
-contracts, descriptor nonblocking flags, and actual guest-service startup remain
-open. These tests call translated C server code, not the x86 guest interpreter.
+This original fixture calls translated C server code, not the x86 guest
+interpreter. Later socket/readiness fixtures and the public-machine/Kestrel gates
+qualify their respective extensions; see [VALIDATION.md](VALIDATION.md). The
+[nonblocking-connect sub-plan](P6-NONBLOCKING-CONNECT.md) records the outbound
+NativeAOT HTTP-client qualification.

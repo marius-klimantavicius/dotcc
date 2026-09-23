@@ -4,8 +4,8 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-**P6 is complete for the selected Linux x64 profile, including the requested
-allocation-free context-scope refinement.** The public `BlinkMachine`
+**P6 and its nonblocking-connect extension are complete for the selected Linux
+x64 profile, including the allocation-free context-scope refinement.** The public `BlinkMachine`
 API executes inside the caller's process by default and supports explicitly
 selected separate-process execution through the same configuration and run API.
 Both modes pass actual JIT and NativeAOT consumers. The coordinator and workers
@@ -28,7 +28,24 @@ literal pooling, inline deduplication, six endian intrinsics and 12 typed manage
 boundary selections. Authored sources remain linked directly from `src`; no
 CoreProbe/test main/C execution frontend enters the product.
 
-## Final P6 evidence
+## Nonblocking-connect extension evidence
+
+[N0–N3](P6-NONBLOCKING-CONNECT.md) is complete. The managed network owns pending
+connects, implements SO_ERROR and readiness completion, and drains close/disposal.
+A private BCL entropy device supports the actual NativeAOT HttpClient runtime.
+The unchanged guest passes all four consumer/execution forms: 72 translated HTTP
+requests, two simultaneous machines and same-machine restart. Actual AOT worker
+identity, exact output and release are verified.
+
+Final delivery: `translation/attempt-cekeeech`; HTTP guest:
+`nonblocking-guest/attempt-sjizsmch`; public API: `machine-api/attempt-_13omhjd`;
+Kestrel/sample: `machine-api-kestrel/attempt-d1jqgowt`. Eight selected host gates
+also pass. The [validation ledger](VALIDATION.md) records exact hashes, preserved
+entropy/tool-drift failures, the unqualified obsolete legacy synthetic lifecycle
+fixture, and final qualification against immutable delivery-matching producers.
+IMDS simulation/routing, P7 and other platforms have not started.
+
+## Original P6 evidence
 
 | Gate | Receipt under `artifacts/` | Result |
 | --- | --- | --- |

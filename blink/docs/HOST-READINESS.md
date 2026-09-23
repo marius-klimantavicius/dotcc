@@ -7,7 +7,11 @@ success. Negative descriptors are ignored; unknown descriptors return POLLNVAL.
 Regular private files and captured streams are immediately ready for the
 requested ordinary read/write events, including readable EOF.
 
-Sockets use nonblocking BCL Socket.Poll snapshots. Supported requested events
+Sockets use nonblocking BCL Socket.Poll snapshots together with the managed
+connection state. Pending connects report no fabricated hangup. Completion
+publishes writable/error readiness atomically with its retained error; success
+advances the write epoch used by edge-triggered epoll. Registration before,
+during or after completion observes the established socket's writable state. Supported requested events
 are POLLIN, POLLOUT, POLLRDNORM and POLLWRNORM. Error/hangup/invalid output flags
 are returned independently of the corresponding input flags. Priority and band
 events are explicitly unsupported. Native comparisons cover pending accepts,
@@ -35,4 +39,5 @@ The consumer also forces GC and exercises the socket bridge's cancellation.
 These are translated C callback tests, not completed x86 guest service startup.
 The five-millisecond scan interval is a measured implementation choice to be
 assessed in the later performance gate, not a latency-equivalence promise.
-Guest memory validation remains upstream, and complete core binding is pending.
+Guest memory validation remains upstream. Later full-core/public-machine
+qualification is recorded separately in [VALIDATION.md](VALIDATION.md).

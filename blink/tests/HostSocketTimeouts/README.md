@@ -42,9 +42,12 @@ effective normalized value through getsockopt, and bounds that value to
 int.MaxValue milliseconds. Zero means indefinite. Fractional rounding and the
 maximum range are documented policy, not measured coverage of this whole-second
 fixture. Accepted sockets inherit current listener settings; dup shares the
-socket entry. Nonblocking guest flags remain outside the existing profile.
-Nonzero send timeout on connect is explicitly unsupported rather than silently
-claiming timed connect support. Poll/readiness deadlines remain separate.
+socket entry. This fixture's timeout observations use blocking sockets.
+The [nonblocking-connect extension](../../docs/P6-NONBLOCKING-CONNECT.md) also
+supports guest nonblocking flags and a send timeout during connect: expiry ends
+the wait with EINPROGRESS while the socket retains establishment. Its focused
+fixture qualifies configured timed success, not forced timeout expiry.
+Poll/readiness deadlines remain separate.
 
 After source review the coordinator first releases `run.py --native-only`.
 A full `run.py` repeats native checks before raw/optimized JIT/NativeAOT. Receipts
