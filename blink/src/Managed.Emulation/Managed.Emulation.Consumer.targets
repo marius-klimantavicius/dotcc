@@ -40,8 +40,13 @@
     <RemoveDir Directories="$(_BlinkWorkerPublish)" />
     <MSBuild Projects="$(BlinkWorkerProject)" Targets="Restore"
              Properties="$(_BlinkWorkerProperties)" RemoveProperties="OutputPath;OutDir;BaseIntermediateOutputPath;MSBuildProjectExtensionsPath" />
+    <!-- Restore creates package imports in this isolated artifacts directory.
+         A different global-property set forces evaluation after those imports
+         exist, so a first publish loads the NativeAOT targets as well. -->
     <MSBuild Projects="$(BlinkWorkerProject)" Targets="Publish"
-             Properties="$(_BlinkWorkerProperties)" RemoveProperties="OutputPath;OutDir;BaseIntermediateOutputPath;MSBuildProjectExtensionsPath" />
+             Properties="$(_BlinkWorkerProperties);BlinkWorkerPublishAfterRestore=true" RemoveProperties="OutputPath;OutDir;BaseIntermediateOutputPath;MSBuildProjectExtensionsPath" />
+    <Error Condition="'$(PublishAot)' == 'true' and !Exists('$(_BlinkWorkerPublish)Managed.Emulation.Worker') and !Exists('$(_BlinkWorkerPublish)Managed.Emulation.Worker.exe')"
+           Text="The matching NativeAOT worker publish did not produce its native executable." />
     <ItemGroup>
       <_BlinkWorkerPublished Include="$(_BlinkWorkerPublish)**/*" />
       <ResolvedFileToPublish Include="@(_BlinkWorkerPublished)">

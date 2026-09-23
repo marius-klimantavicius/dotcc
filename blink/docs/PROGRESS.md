@@ -134,6 +134,16 @@ The separate-process JIT run fails its binary-console outcome assertion after
 successful earlier file/persistence scenarios; its failure is preserved and
 under diagnosis. Neither the full four-mode gate nor Kestrel is yet passed.
 
+The complete public fixture gate now **passes all four JIT/NativeAOT ×
+in-process/separate-process forms**, 10 cases per form, at
+`machine-api/attempt-l6hma1sn/receipt.json` (SHA-256 `772f3a54cd3e9bc06d70ad71eaf72ca295c33f4c8471d96087b5300ff2890380`).
+All 11 native controls pass. The actual NativeAOT consumer includes its actual
+NativeAOT worker, discovered automatically; in-process runs launch no worker.
+The process EOF defect was corrected by an explicit EOF frame, and cold worker
+publish now reevaluates restored NativeAOT imports before publishing. The failed
+receipts remain preserved. Sources stay frozen for the final public Kestrel and
+console/folder sample gate; P6 is not complete until that gate and final review.
+
 Console and descriptor integration passes JIT/NativeAOT at
 `host-console/attempt-071nqrfd` (receipt SHA-256
 `0cf272d2bb4736c0eb43dce0aa1c6331e66517f11703c72e0cccf6a135f34a8c`).

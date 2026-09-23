@@ -51,7 +51,8 @@ await using (var machine = Create())
     using var input = new MemoryStream(new byte[] { 0, 255, 17, 10, 128 });
     using var stdout = new MemoryStream(); using var stderr = new MemoryStream();
     var echoed = await machine.ExecuteAsync(Command("echo") with { Console = new() { Input = input, Output = stdout, Error = stderr, BufferBytes = 3, LeaveOpen = true } }, token);
-    Check(echoed.Reason == RunExitReason.Exited && echoed.ExitCode == 0 && echoed.ResourcesReleased, "binary echo outcome");
+    Check(echoed.Reason == RunExitReason.Exited && echoed.ExitCode == 0 && echoed.ResourcesReleased,
+        $"binary echo outcome: reason={echoed.Reason}, exit={echoed.ExitCode}, released={echoed.ResourcesReleased}, instructions={echoed.Instructions}, stdout={Convert.ToHexString(stdout.ToArray())}, stderr={Convert.ToHexString(stderr.ToArray())}, diagnostic={echoed.Diagnostic}");
     Check(stdout.ToArray().SequenceEqual(new byte[] { 0, 255, 17, 10, 128 }) && Encoding.UTF8.GetString(stderr.ToArray()) == "echo-eof\n" && input.CanRead && stdout.CanWrite, "binary/EOF/borrowed streams");
     evidence.Add("argv-env-cwd-private-persistence-binary-eof");
     var ownedInput = new MemoryStream(new byte[] { 0, 255, 17, 10, 128 });
