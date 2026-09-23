@@ -40,9 +40,13 @@ public sealed partial class VirtualTcpNetwork
                 }
                 else
                 {
-                    if (!policy.Destinations.Contains(destination)) return Task.FromResult(Fail<int>(GuestError.Access));
-                    actual = new IPEndPoint(new IPAddress(new byte[] { (byte)(destination.Address >> 24),
-                        (byte)(destination.Address >> 16), (byte)(destination.Address >> 8), (byte)destination.Address }), destination.Port);
+                    if (metadata != null && destination == ImdsV2Server.GuestAddress) actual = metadata.Endpoint;
+                    else
+                    {
+                        if (!policy.Destinations.Contains(destination)) return Task.FromResult(Fail<int>(GuestError.Access));
+                        actual = new IPEndPoint(new IPAddress(new byte[] { (byte)(destination.Address >> 24),
+                            (byte)(destination.Address >> 16), (byte)(destination.Address >> 8), (byte)destination.Address }), destination.Port);
+                    }
                     if (source.Local == null)
                     {
                         ushort port = AllocatePort();

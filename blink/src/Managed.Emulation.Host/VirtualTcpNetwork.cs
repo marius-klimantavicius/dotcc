@@ -41,6 +41,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
     private TaskCompletionSource? shutdown;
     private ushort ephemeral = 49152;
     private volatile bool disposed;
+    private readonly ImdsV2Server? metadata = policy?.Metadata is { } options ? new(options) : null;
 
     public int PendingOperations { get { lock (sync) return pending.Count; } }
     public int OpenDescriptors { get { lock (sync) return entries.Count; } }
@@ -49,7 +50,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
         lock (sync)
         {
             if (disposed) return Fail<int>(GuestError.BadDescriptor);
-            if (policy != null && policy.Publications.Count == 0 && policy.Outbound.Count == 0) return Fail<int>(GuestError.Access);
+            if (policy != null && policy.Publications.Count == 0 && policy.Outbound.Count == 0 && metadata == null) return Fail<int>(GuestError.Access);
             if (entries.Count >= descriptorLimit) return Fail<int>(GuestError.TooManyFiles);
             try
             {
@@ -342,6 +343,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
                 stop.Cancel();
                 foreach (var socket in sockets) socket.Dispose();
                 await Task.WhenAll(operations).ConfigureAwait(false);
+                if (metadata != null) await metadata.DisposeAsync().ConfigureAwait(false);
                 stop.Dispose();
                 completion.SetResult();
             }

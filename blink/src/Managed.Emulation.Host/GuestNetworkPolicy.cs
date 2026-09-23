@@ -13,9 +13,11 @@ public sealed class GuestNetworkPolicy
     public static GuestNetworkPolicy Isolated { get; } = new();
     public IReadOnlyList<GuestPortGrant> Publications { get; }
     public IReadOnlyList<GuestOutboundGrant> Outbound { get; }
+    public ImdsV2Options? Metadata { get; }
     internal readonly Dictionary<ushort, IPEndPoint> Listening = new();
     internal readonly HashSet<GuestEndpoint> Destinations = new();
-    public GuestNetworkPolicy(IEnumerable<GuestPortGrant>? publications = null, IEnumerable<GuestOutboundGrant>? outbound = null)
+    public GuestNetworkPolicy(IEnumerable<GuestPortGrant>? publications = null, IEnumerable<GuestOutboundGrant>? outbound = null,
+        ImdsV2Options? metadata = null)
     {
         var incoming = publications?.ToArray() ?? Array.Empty<GuestPortGrant>();
         var outgoing = outbound?.ToArray() ?? Array.Empty<GuestOutboundGrant>();
@@ -37,6 +39,7 @@ public sealed class GuestNetworkPolicy
         }
         Publications = Array.AsReadOnly(incoming);
         Outbound = Array.AsReadOnly(outgoing);
+        Metadata = metadata?.Snapshot();
     }
     private static IPAddress Address(string value)
     {

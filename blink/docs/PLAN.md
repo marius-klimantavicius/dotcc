@@ -5,6 +5,9 @@ The plan was prepared on branch `sqlite`; it does not require a branch change.
 
 ## Objective and inherited conventions
 
+Current extension: [private IMDSv2 simulation](P6-IMDSV2.md), using an
+execution-owned BCL HTTP listener and guest-address routing in both execution modes.
+
 User test-scope update: exclude custom fault-injection and invalid/malformed-ELF
 tests from campaign work and completion gates. Such cases may run only when
 already present in the pinned upstream test suites; record their upstream

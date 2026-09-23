@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Net;
+using Managed.Emulation.Host;
 
 namespace Managed.Emulation;
 
@@ -49,6 +50,8 @@ public sealed record MachineOptions
     public TimeSpan? ExecutionDeadline { get; init; }
     public IReadOnlyDictionary<string, string> Environment { get; init; } = new Dictionary<string, string>();
     public NetworkPolicy Network { get; init; } = NetworkPolicy.Isolated;
+    /// <summary>Optional private IMDSv2 endpoint at guest 169.254.169.254:80.</summary>
+    public ImdsV2Options? Metadata { get; init; }
     public WorkerLaunch? Worker { get; init; }
 
     internal MachineOptions Freeze()
@@ -65,6 +68,7 @@ public sealed record MachineOptions
         if (ExecutionMode == ExecutionMode.InProcess && Worker != null)
             throw new ArgumentException("Worker location applies only to explicit separate-process execution.");
         return this with { Environment = new ReadOnlyDictionary<string, string>(environment), Network = Network.Freeze(),
+            Metadata = Metadata?.Snapshot(),
             Worker = Worker == null ? null : Worker with { Arguments = Worker.Arguments?.ToArray() ?? throw new ArgumentException("Missing worker arguments.") } };
     }
 }
