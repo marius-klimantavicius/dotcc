@@ -8,10 +8,12 @@ Execution snapshots are a future extension, not a P6 completion requirement.
 ## User-facing workflow
 
 Create a machine, configure its resources and filesystem, select a guest
-executable, then execute it with arguments, environment and console streams.
-Keep worker discovery, protocol frames and generated machine pointers out of
-ordinary application code. Keep an advanced explicit worker-location option.
-The public surface must remain usable from both JIT and NativeAOT applications.
+executable, then execute it with arguments, environment and console streams
+**inside the caller's .NET process**. This is the user's required default,
+not a facade over an automatically spawned worker. Keep generated machine
+pointers out of ordinary application code. The public surface must remain
+usable from both JIT and NativeAOT applications. Preserve the existing process
+runner only as an explicit optional mode/baseline, with separate guarantees.
 
 Illustrative API shape; names will be finalized during implementation:
 
@@ -47,24 +49,33 @@ a fixture-specific health check in the general API.
 
 - Separate machine configuration/filesystem lifetime from one execution.
   State transitions are explicit: created, running, exited/stopped, disposed.
-  A new worker process owns each execution, preserving current upstream static
-  cache constraints. Concurrent runs on one machine are rejected initially;
-  separate machines can execute concurrently.
+  The caller's process owns execution threads and instance resources. Resolve
+  the P5 one-execution-per-process restriction: audit and make mutable translated
+  globals, caches, initialization, TLS and host bindings instance-safe, with
+  deterministic cleanup and rebinding between runs. Qualify sequential reuse
+  and concurrent independent machines within one CLR process. Concurrent runs
+  on the same machine are rejected initially; separate machines must not share
+  mutable guest state. A subprocess or process-wide execution lock is not a
+  substitute for this requirement.
 - Preserve the machine's private writable filesystem across sequential runs
   until reset or disposal, with explicit export/discard operations. Restarting
   an executable is distinct from restoring its CPU/memory state.
 - Allow mount/environment changes before a run or between runs. Freeze accepted
   options for a running execution; do not mutate its namespace concurrently.
 - Provide completion, exit code/signal/reason, bounded diagnostics, instruction
-  and resource observations, graceful stop and explicit forced termination.
+  and resource observations and cooperative stop. Do not expose a purported
+  safe force-kill of arbitrary in-process execution threads. Forced process
+  termination is available only in the explicit external-worker mode.
   Distinguish canceling a wait from requesting guest termination. Dispose must
-  stop execution and release worker, file, stream and endpoint ownership.
+  stop execution and release execution-thread, file, stream and endpoint
+  ownership after quiescence; never free guest memory while it is still in use.
 - Expose configurable guest memory, writable storage, descriptor/thread limits,
   console buffering, instruction budget and optional execution deadline.
   Support long-running services without the current fixture's mandatory short
-  deadline. Validate what the worker can enforce; never silently ignore a limit.
-  Document guest virtual-address/backing limits separately from the host worker's
-  own memory and CPU limits, including interpreter/runtime overhead.
+  deadline. Validate what the selected execution mode can enforce; never silently
+  ignore a limit. Document guest virtual-address/backing limits separately from
+  host CLR memory/CPU overhead. In-process deadlines depend on cooperative
+  checkpoints and cancellable host operations, not OS termination guarantees.
 
 ## Filesystem and mounts
 
@@ -106,7 +117,9 @@ runtime compatibility settings explicit in service examples/profiles.
 Expose binary stdin/stdout/stderr streams with concurrent async pumping and
 bounded buffering/backpressure. Support closed stdin/EOF, caller-provided streams,
 live output, optional bounded capture, and connection to the current console.
-Guest descriptors must remain separate from worker control/diagnostic channels.
+Guest descriptors must remain separate from application diagnostics and, in
+the optional process mode, worker control channels. Do not globally redirect
+Console or mutate process environment/cwd to implement guest IO or settings.
 Document stream ownership/leave-open behavior; completion must not hang on a
 console reader or slow/unread consumer. Define output-limit behavior explicitly.
 Provide an explicit Ctrl+C/interrupt policy using supported guest signals or
@@ -124,15 +137,17 @@ defaults to isolated; publish selected guest ports on explicit host addresses
 (loopback by default), and separate publication from outbound network policy.
 Do not launch host commands or pass guest instructions to native execution.
 
-Guest-level mediation and a worker process alone do not establish a hardened
-boundary. P6 must define and implement an OS-enforced worker containment profile
-for the supported host platform, including host filesystem/network/process
-access and worker resources. Assess placement of mounted-file/network operations
-and any broker so each retains only granted capabilities. Report unavailable
-capabilities before execution and fail when requested isolation cannot be
-enforced; never silently downgrade. State exact guarantees and residual limits,
-not a claim that arbitrary code can never escape. Start qualification on Linux
-x64; Windows isolation requires its own implementation and actual validation.
+In-process guest mediation is not an OS security boundary between the unsafe
+emulator and the calling application. P6 must enforce the supported guest
+filesystem/network/resource policies and machine separation, but cannot claim
+protection of the application from emulator memory-safety bugs or host process
+failure. Do not apply process-wide OS restrictions, resource limits, signal
+handlers or termination actions to the application as if they were per-machine.
+Requests for guarantees unavailable in this mode must fail explicitly, not
+silently switch execution to another process. The optional external-worker mode
+can later provide separately qualified OS containment; implementing hardened
+OS containment is not a gate for the default in-process P6 API. Start in-process
+qualification on Linux x64 and record platform-specific limitations honestly.
 
 ## Future execution snapshots
 
@@ -141,7 +156,7 @@ do not expose save/restore methods that merely restart the executable. A future
 snapshot must account for guest CPU/thread registers, memory mappings/contents,
 pending signals, masks, futexes, timers, descriptor sharing/offsets, private
 filesystem changes, pipes, environment and emulated process/kernel state.
-Worker CLR objects, raw host pointers and native handles are not portable state;
+Host CLR objects, raw host pointers and native handles are not portable state;
 use versioned logical identities and explicit resource reconstruction. A future
 pause must quiesce every guest thread and outstanding host operation coherently.
 
@@ -159,10 +174,11 @@ today) distinct in naming/documentation from resumable execution snapshots.
 - Retain original authored `src` references in `ManagedConsumer.slnx`; update
   stale controller/worker documentation to the actual new public contracts.
 - Qualify memory/settings enforcement, environment/argv/cwd, ordinary filesystem
-  operations in every mount mode, live host-write opt-in, persistent private
+  operations in every mount mode, default live host writes, persistent private
   changes, streaming console/EOF, explicit network grants, stop and disposal.
-  Check independent machines and sequential executions, including resource
-  cleanup and ordinary denied access. Existing custom fault-injection and
+  Check concurrent independent machines and sequential executions in one host
+  process, including resource cleanup, unchanged host environment/cwd/console,
+  and ordinary denied access. Existing custom fault-injection and
   malformed-ELF exclusions still apply.
 - Build and run the consumer through the public API under JIT and NativeAOT on
   Linux x64; retain actual guest/reference and current-product evidence. Reuse

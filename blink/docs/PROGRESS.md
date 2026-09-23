@@ -9,10 +9,14 @@ real ASP.NET Core/Kestrel NativeAOT guest passes raw/optimized JIT/NativeAOT,
 simultaneous instances, normal/cooperative stop, restart and natural deadlines.
 The actual showcase solution and its JIT/NativeAOT sample pass.
 
-Next-phase request: the new P6 is a public machine API with configurable limits,
+P6 implementation is authorized and the coordinator is active. The required
+default is execution inside the caller's .NET process, with configurable limits,
 host-folder mounts, executable/argv/cwd/environment, streaming console IO and
-explicit sandbox capabilities. [P6-MACHINE-API.md](P6-MACHINE-API.md) records the
-proposal and future snapshot considerations; implementation has not started.
+explicit guest access policies. [P6-MACHINE-API.md](P6-MACHINE-API.md) records the
+updated in-process architecture and future snapshot considerations. Shared
+translated state and host-binding lifetimes must support sequential reuse and
+independent concurrent machines. This is not an OS security boundary against
+the calling application; process mode remains explicit and optional.
 The previous P6 platform/performance campaign is now P7. Historical P6 references
 below retain their original meaning. Windows and broader qualification remain open.
 
@@ -39,10 +43,9 @@ limits are recorded in [VALIDATION.md](VALIDATION.md) and
 and 100M/60s/128MiB execution profile remain unchanged. No speedup benchmark,
 arbitrary signal/epoll semantics or physical-memory reporting is claimed.
 
-The coordinator and both workers are stopping with no active builds or guest
-processes. User work remains separate: all nine staged entries match the saved
-index mode/blob/stage exactly; old BLOCKERS additions and `partial_blink.patch`
-are preserved. No duplicate recovery-branch history was introduced.
+At P5 completion the coordinator and workers stopped with no active builds or
+guest processes. The user subsequently reverted the stale pending restart
+changes and authorized P6. No duplicate recovery-branch history was introduced.
 
 ## Prior P5 progression (historical snapshots)
 

@@ -160,10 +160,11 @@ support, but host signal-mask capture cannot be faked by renaming the functions.
 Prove the reachable halt/unwind paths and retain cleanup on every exit.
 
 Inventory mutable globals, thread-local `g_machine`, flags, maps, file tables,
-logging, and initialization. First release permits one active emulation context
-per worker process, with repeated create/run/destroy qualified. Multiple workers
-provide multiple instances. Multiple concurrent emulators inside one CLR process
-remain deferred until all shared state is made instance-local and tested.
+logging, and initialization. P0–P5 used one active emulation context per worker
+process, with multiple workers providing multiple instances. P6 explicitly
+requires execution in the caller's process: make shared mutable state
+instance-safe and qualify sequential reuse and concurrent independent machines
+within one CLR process before claiming the new machine API complete.
 
 ### Files, sockets, and isolation
 
@@ -187,10 +188,11 @@ Fault-injection cases are limited to existing pinned upstream tests.
 Real external access is opt-in through the instance host policy.
 
 Emulation and unsafe C# translation are not a security boundary by themselves.
-The initial claim is isolated behavior for controlled test services. Use one
-worker process per instance for lifecycle containment, but do not call an ordinary
-same-user worker a hardened sandbox. Hostile-code isolation requires separately
-qualified OS restrictions on Linux and Windows and is a follow-up security gate.
+The initial claim is isolated behavior for controlled test services. P0–P5 used
+one worker process per instance for lifecycle containment; P6 defaults to the
+caller process with explicit guest access policies. Neither an unsafe in-process
+emulator nor an ordinary same-user worker is a hardened sandbox. Stronger OS
+containment belongs to a separately qualified, explicitly selected process mode.
 
 ### Allowed adaptations
 
@@ -585,14 +587,19 @@ See `docs/VALIDATION.md` and `docs/P5-KESTREL-RUNTIME.md` for hashes and limits.
 The user requests a configurable machine API after P5: create a machine, set
 memory and other limits, map/mount folders (including existing host and guest
 directories), choose an executable and execute it with environment variables
-and console IO. Define explicit filesystem/network/resource isolation rather
-than exposing the qualification runner's fixed service profile.
+and console IO. Execution must run in the caller's .NET process by default;
+the API must not hide an automatic worker process. Define explicit guest
+filesystem/network/resource isolation and its limits rather than exposing the
+qualification runner's fixed service profile or claiming OS-level containment.
 
 The detailed API proposal, mount modes, console semantics, isolation contract
 and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
 
 - [ ] Deliver create/configure/start/execute/wait/stop/dispose and explicit
       machine-versus-run lifetime, with useful typed errors/results.
+- [ ] Resolve translated globals/caches/TLS and host-binding lifetime for
+      in-process sequential reuse and concurrent independent machines; no
+      process fallback or process-wide serialization as a substitute.
 - [ ] Add image/private storage and host directory mounts with live read-write
       as the user-selected default, plus explicit read-only and private
       copy-on-write modes, including mounting
@@ -603,16 +610,18 @@ and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
       bounded buffering/capture and explicit stream ownership.
 - [ ] Generalize configurable memory/resource limits and service readiness;
       remove fixture-only restrictions from the general public interface.
-- [ ] Enforce explicit host capabilities and a supported OS worker isolation
-      profile; document actual guarantees and fail unsupported configurations.
+- [ ] Enforce guest host-access policies without changing the caller's global
+      environment/cwd/console or applying process-wide restrictions. Document
+      in-process limits and reject unsupported isolation/termination guarantees.
 - [ ] Deliver examples and normal isolation/lifecycle checks using the real
       translated core and public API under JIT/NativeAOT on Linux x64.
 - [ ] Document state/resource ownership for future full execution snapshots;
       do not require snapshot save/restore implementation in this phase.
 
-**Gate:** a separate consumer can configure an isolated machine, mount permitted
-folders, execute a supported ELF with its own environment and console streams,
-interact with it, stop it and reclaim resources. The documented isolation and
+**Gate:** a separate consumer application can configure machines and run them
+inside its own process, mount permitted folders, execute a supported ELF with
+its own environment and console streams, interact with it, cooperatively stop
+it and reclaim resources. The documented guest isolation and
 mount behavior must be enforced. P5's fixed HTTP fixture API alone does not
 satisfy this gate.
 
@@ -663,7 +672,7 @@ kernel virtualization, or hostile-code sandboxing follows from this milestone.
 Follow-ups beyond the selected P5 .NET NativeAOT workload: general dynamic ELF
 userspace, additional guest threading/runtime compatibility, expanded
 signals/syscalls, IPv6/UDP, deterministic virtual
-networks, checkpoints with external-resource reconstruction, additional OS
-containment profiles beyond P6's qualified host, multiple in-process instances,
-and a Wasm backend sharing the controller's lifecycle/host concepts. None is an
+networks, checkpoints with external-resource reconstruction, qualified OS
+containment for the optional process mode, and a Wasm backend sharing the
+machine API's lifecycle/host concepts. None is an
 implicit dependency of P0–P7; P6 documents future snapshot ownership only.
