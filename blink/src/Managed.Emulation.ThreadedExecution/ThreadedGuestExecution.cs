@@ -7,7 +7,10 @@ using Blink = Managed.Emulation.BlinkCore;
 namespace Managed.Emulation.Execution;
 
 public sealed record GuestThreadResult(int GuestThreadId, ulong Instructions, ulong InstructionPointer,
-    string Termination, int Status, int Halt, int Signal, bool MachineReleased);
+    string Termination, int Status, int Halt, int Signal, bool MachineReleased)
+{
+    public string? FirstTrap { get; init; }
+}
 public sealed record ThreadedGuestExecutionResult(bool Exited, int ExitStatus, ulong Instructions,
     HostExecutionStopReason StopReason, bool AllWorkersJoined, bool MemoryReleased,
     ulong RetainedBytesBeforeRelease, ulong RetainedMappingsBeforeRelease,
@@ -60,6 +63,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         public bool Main, Attached, Bound, Released, Finished, Joined, TidCleared;
         public long ExitSequence;
         public Exception? Error;
+        public string? FirstTrap;
         public Blink.Libc.RuntimeBinding ContextBinding;
         public Stack<Action> Unbind = new();
         public Dictionary<int, HostGuestSignalInfo> PendingSignals = new();
@@ -235,7 +239,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
         return new(groupExited, groupStatus, InstructionsCompleted, outcome, joined, memoryReleased,
             retainedBytes, retainedMappings, workers.Select(w => new GuestThreadResult(w.GuestId, w.Instructions,
-                w.Ip, w.Termination, w.Status, w.Halt, w.Signal, w.Released)).ToArray());
+                w.Ip, w.Termination, w.Status, w.Halt, w.Signal, w.Released) { FirstTrap = w.FirstTrap }).ToArray());
     }
 
     private Worker NewWorker(bool main, Blink.Machine* machine) => new()
@@ -291,11 +295,28 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         try
         {
             if (child) Require(program!.blink_host_sigprocmask(2, &machine->spawn_sigmask, null) == 0, "Restore child signal mask");
-            machine->canhalt = true;
             while (worker.Stop.Reason == HostExecutionStopReason.None)
             {
-                if ((int)Blink.Atomic.Load(ref machine->attention) != 0) { program!.CheckForSignals(machine); continue; }
-                if (!ExecuteOne(worker)) break;
+                machine->canhalt = true;
+                try
+                {
+                    while (worker.Stop.Reason == HostExecutionStopReason.None)
+                    {
+                        if ((int)Blink.Atomic.Load(ref machine->attention) != 0) { program!.CheckForSignals(machine); continue; }
+                        if (!ExecuteOne(worker)) break;
+                    }
+                }
+                catch (Blink.Libc.JumpBufferException jump) when (jump.Identity == jumpIdentity &&
+                    jump.Value is -1 or -2 or -3 or -4 or -6 or -7 or -8 or -9 or 1 or 3 or 4)
+                {
+                    // Upstream HaltMachine has already installed the guest's
+                    // signal frame. Blink() cleans up and resumes Actor at that
+                    // handler; this is used by NativeAOT hardware exceptions.
+                    // Unhandled signals instead unwind through OnSignal.
+                    ClearExecution(worker);
+                    jumpIdentity = Blink.Libc.ArmJumpBuffer(program!.PrepareVirtualSignalJump(
+                        (Blink.blink_host_signal_jump_storage*)&machine->onhalt, 1));
+                }
             }
             if (worker.Stop.Reason != HostExecutionStopReason.None)
                 Require(machine->sysdepth == 0 && (int)machine->insyscall == 0 &&
@@ -320,7 +341,13 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         { stop.RequestBudgetStop(); return false; }
         ThreadedSyscallObservation? observation = trace == null ? null : Observe(worker);
         bool returned = false;
+        ulong instructionPointer = worker.Machine->ip;
         try { program!.ExecuteInstruction(worker.Machine); returned = true; }
+        catch (Blink.Libc.JumpBufferException jump)
+        {
+            worker.FirstTrap ??= $"ip=0x{instructionPointer:x} address=0x{worker.Machine->faultaddr:x} code={jump.Value}";
+            throw;
+        }
         finally
         {
             if (observation != null)

@@ -15,10 +15,27 @@
       "SysExit"
     ],
     "blink/memorymalloc.c": [
-      "KillOtherThreads"
+      "KillOtherThreads",
+      "TrackHostPage",
+      "FindHostPage"
     ]
   },
   "functionOverrides": [
+    {
+      "name": "TrackHostPage",
+      "linkage": "internal",
+      "signature": { "returnType": "u64", "parameterTypes": ["u8 *"], "variadic": false },
+      "target": { "kind": "managedMethod", "method": "global::Managed.Emulation.BlinkCore.blink_host_track_page" },
+      "requireMatch": false
+    },
+    {
+      "name": "FindHostPage",
+      "linkage": "internal",
+      "declarationFile": "blink/machine.h",
+      "signature": { "returnType": "u8 *", "parameterTypes": ["u64"], "variadic": false },
+      "target": { "kind": "managedMethod", "method": "global::Managed.Emulation.BlinkCore.blink_host_find_page" },
+      "requireMatch": false
+    },
     {
       "name": "SignalActor",
       "linkage": "external",

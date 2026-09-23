@@ -109,6 +109,12 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
         'SysExitGroup': ('blink_host_guest_group_exit', 'blink/syscall.h', 'void(named:Machine*,int)', True),
         'SysExit': ('blink_host_guest_exit', 'blink/syscall.h', 'void(named:Machine*,int)', True),
     }
+    # Historical deliveries retain their four original owner handoffs. New
+    # deliveries select both members of the reviewed page-table override pair.
+    page_table = {'TrackHostPage', 'FindHostPage'} <= {rule['name'] for rule in spec['functionOverrides']}
+    if page_table:
+        targets['TrackHostPage'] = ('blink_host_track_page', None, 'unsigned long(unsigned char*)', False)
+        targets['FindHostPage'] = ('blink_host_find_page', 'blink/machine.h', 'unsigned char*(unsigned long)', False)
     instance = delivery.get('product_surface', {}).get('instance_abi') == 'instance-v1'
     if instance:
         marker = pin(profile / 'instance-abi.json', inputs['staged_headers']['instance-abi.json'])
@@ -146,7 +152,8 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
             target['doesNotReturn'] = True
         if instance:
             target['passInstance'] = True
-        if (rule['target'] != target or rule.get('declarationFile') != header or rule['linkage'] != 'external'
+        linkage = 'internal' if name in ('TrackHostPage', 'FindHostPage') else 'external'
+        if (rule['target'] != target or rule.get('declarationFile') != header or rule['linkage'] != linkage
                 or rule.get('requireMatch', False) or rule.get('translationUnit') is not None
                 or bound[name] != (dict(rule, declarationFile=str(upstream / header)) if header else rule)):
             raise RuntimeError('Managed boundary rule contract differs: ' + name)
@@ -155,6 +162,8 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
         raise RuntimeError('Managed boundary producer coverage differs')
     required = spec['required_units']
     expected_required = {'blink/syscall.c': ['SignalActor', 'SysExitGroup', 'SysExit'], 'blink/memorymalloc.c': ['KillOtherThreads']}
+    if page_table:
+        expected_required['blink/memorymalloc.c'] += ['TrackHostPage', 'FindHostPage']
     if instance:
         expected_required['blink/signal.c'] = ['TerminateSignal']
     if required != expected_required:
@@ -177,7 +186,11 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
         selected_count += bool(selected)
         for event in selected:
             method, header, signature, terminal = targets[event['name']]
-            if header is None:
+            source_defined = event['name'] == 'TrackHostPage'
+            if source_defined:
+                if source != 'blink/memorymalloc.c' or Path(event['declarationFile']) != canonical:
+                    raise RuntimeError('Page-table source selector differs: ' + source)
+            elif header is None:
                 command = row['command']
                 actual_header = Path(command[command.index('-I') + 1]) / 'authored/host-guest-threads.h'
                 if Path(event['declarationFile']) != actual_header:
@@ -187,7 +200,7 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
                     or event['target'] != 'managedMethod:global::Managed.Emulation.BlinkCore.' + method
                     or event.get('doesNotReturn', 'false') != str(terminal).lower()
                     or (header is not None and event['declarationFile'] != str(upstream / header))
-                    or (header is None and Path(event['declarationFile']).name != 'host-guest-threads.h')
+                    or (not source_defined and header is None and Path(event['declarationFile']).name != 'host-guest-threads.h')
                     or event.get('passInstance', 'false') != str(instance).lower()
                     or event['translationUnit'] != str(canonical)):
                 raise RuntimeError('Managed boundary typed provenance differs: ' + source)

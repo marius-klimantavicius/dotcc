@@ -113,7 +113,8 @@
     "src/Host/HostPipesBridge.cs",
     "src/Host/HostExecutionStopBridge.cs",
     "src/Host/HostGuestSignalsBridge.cs",
-    "src/Host/HostMembarrierBridge.cs"
+    "src/Host/HostMembarrierBridge.cs",
+    "src/Host/HostPageTableBridge.cs"
   ],
   "isolate": [
     "setenv",

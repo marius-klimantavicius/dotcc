@@ -110,8 +110,11 @@ def stage_managed_boundaries(campaign: Path, profile: Path, instance_methods: bo
     if existing.intersection(rule['name'] for rule in rules):
         raise RuntimeError('Managed boundary duplicates existing selection')
     for rule in rules:
-        if (rule['target']['kind'] != 'managedMethod' or rule['linkage'] != 'external'
-                or (rule.get('declarationFile') not in spec['headers'] and not rule['name'].startswith('blink_host_guest_'))):
+        source_defined = (rule['name'] == 'TrackHostPage' and rule['linkage'] == 'internal'
+                          and 'declarationFile' not in rule and 'blink/memorymalloc.c' in spec['implementations'])
+        if (rule['target']['kind'] != 'managedMethod' or rule['linkage'] not in ('external', 'internal')
+                or (rule.get('declarationFile') not in {**spec['headers'], **spec['implementations']}
+                    and not source_defined and not rule['name'].startswith('blink_host_guest_'))):
             raise RuntimeError('Unreviewed managed boundary selector')
     overrides['functionOverrides'] += [dict(rule, declarationFile=str((upstream / rule['declarationFile']).resolve())) if 'declarationFile' in rule else rule
                                        for rule in rules]
@@ -141,13 +144,19 @@ def managed_boundary_selection(profile: Path, report: Path, source: str) -> dict
         raise RuntimeError('Required managed boundary missing: ' + source)
     for row in selected:
         rule = bound[row['name']]
-        if 'declarationFile' not in rule:
+        source_defined = row['name'] == 'TrackHostPage'
+        if source_defined:
+            # The staged C file has a content-addressed path which itself
+            # depends on these rules. Pin its origin after typed selection.
+            if source != 'blink/memorymalloc.c' or row['declarationFile'] != row['translationUnit']:
+                raise RuntimeError('Page-table source selector differs: ' + source)
+        elif 'declarationFile' not in rule:
             declared = Path(row['declarationFile'])
             if hashlib.sha256(declared.read_bytes()).hexdigest() != spec['authored_headers'].get(declared.name):
                 raise RuntimeError('Authored callback declaration identity differs: ' + source)
         if (row['target'] != 'managedMethod:' + rule['target']['method'] or row['matches'] != '1'
                 or ('declarationFile' in rule and row['declarationFile'] != rule['declarationFile'])
-                or ('declarationFile' not in rule and Path(row['declarationFile']).name != 'host-guest-threads.h')
+                or (not source_defined and 'declarationFile' not in rule and Path(row['declarationFile']).name != 'host-guest-threads.h')
                 or row.get('passInstance', 'false') != str(rule['target'].get('passInstance', False)).lower()
                 or row.get('doesNotReturn', 'false') != str(rule['target'].get('doesNotReturn', False)).lower()):
             raise RuntimeError('Managed boundary target/declaration differs: ' + source)

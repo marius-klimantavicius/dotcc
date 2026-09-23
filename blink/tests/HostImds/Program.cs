@@ -7,6 +7,7 @@ if (args.Length == 1)
     await NativeOracle.Run(args[0]);
     return;
 }
+PageTableChecks.Run();
 
 using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 var endpoint = new GuestEndpoint(0xa9fea9fe, 80);

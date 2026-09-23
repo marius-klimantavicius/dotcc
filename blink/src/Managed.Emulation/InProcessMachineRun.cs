@@ -118,9 +118,14 @@ internal sealed class InProcessMachineRun : MachineRun
             HostExecutionStopReason.Budget => RunExitReason.InstructionLimit,
             _ => result?.Exited == true ? RunExitReason.Exited : (outcome?.Signal ?? 0) != 0 ? RunExitReason.GuestSignal : RunExitReason.ExecutionFailure
         };
+        string? diagnostic = failure == null ? null : Bounded(failure.ToString());
+        if (diagnostic == null && result != null && (reason == RunExitReason.ExecutionFailure ||
+            reason == RunExitReason.GuestSignal && result.Threads.Any(t => t.FirstTrap != null)))
+            diagnostic = Bounded("Guest execution stopped without exit: " + string.Join("; ", result.Threads.Select(t =>
+                $"tid={t.GuestThreadId} {t.Termination} ip=0x{t.InstructionPointer:x} halt={t.Halt} signal={t.Signal} first-trap=({t.FirstTrap})")));
         await FinishAsync(new(reason, result?.ExitStatus ?? 0, outcome?.Signal ?? 0, outcome?.Halt ?? 0,
             (long)(result?.Instructions ?? owner.InstructionsCompleted), [], [], false, 0, released,
-            failure == null ? null : Bounded(failure.ToString()))).ConfigureAwait(false);
+            diagnostic)).ConfigureAwait(false);
     }
     protected override ValueTask DisposeExecutionAsync() => ValueTask.CompletedTask;
 }
