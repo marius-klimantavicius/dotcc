@@ -14,11 +14,11 @@ internal static class InPlaceWriter
     // or cancellation during a multi-file commit, without filesystem races.
     internal static int Write(CSharpCompilation original, CSharpCompilation rewritten,
         IReadOnlyDictionary<string, string> sourceHashes, CancellationToken token,
-        Action<string, string>? replaceFile = null)
+        Action<string, string>? replaceFile = null, Action? verifyInputs = null)
     {
         replaceFile ??= (source, target) => File.Move(source, target, overwrite: true);
-        var originals = original.SyntaxTrees.ToArray();
-        var trees = rewritten.SyntaxTrees.ToArray();
+        var originals = original.SyntaxTrees.Where(tree => sourceHashes.ContainsKey(tree.FilePath)).ToArray();
+        var trees = rewritten.SyntaxTrees.Where(tree => sourceHashes.ContainsKey(tree.FilePath)).ToArray();
         if (originals.Length != trees.Length || originals.Where((tree, i) => tree.FilePath != trees[i].FilePath).Any())
             throw new InvalidOperationException("In-place rewriting must preserve source order and paths.");
         var comparison = OperatingSystem.IsWindows() || OperatingSystem.IsMacOS()
@@ -35,7 +35,7 @@ internal static class InPlaceWriter
                 || Hash(File.ReadAllBytes(path)) != expected[path])
                 throw new IOException("Input source changed during processing: " + path);
         }
-        void VerifyInputs() { foreach (var path in expected.Keys) VerifyInput(path); }
+        void VerifyInputs() { verifyInputs?.Invoke(); foreach (var path in expected.Keys) VerifyInput(path); }
 
         try
         {

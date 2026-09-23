@@ -23,14 +23,19 @@ internal static class Program
             var paths = options.InPlace
                 ? (Project: SnapshotPaths.ValidateProject(options.Project), Output: "")
                 : SnapshotPaths.Validate(options.Project, options.Output!);
-            var input = await ProjectInput.ReadAsync(paths.Project, options.Configuration, cancellation.Token);
+            using var input = await ProjectInput.ReadAsync(paths.Project, options.Configuration, cancellation.Token);
             var original = input.CreateCompilation(cancellation.Token);
-            var result = SourcePostProcessor.Rewrite(original, cancellation.Token);
+            var result = SourcePostProcessor.Rewrite(original, cancellation.Token, input.IsProjectSource);
+            var regenerated = input.Regenerate(result.Compilation, cancellation.Token);
+            CondInliner.CheckErrors(regenerated, "Regenerated", cancellation.Token);
+            foreach (var diagnostic in input.Generators!.Diagnostics) Console.Error.WriteLine(diagnostic);
+            input.Generators.VerifyInputs();
             cancellation.Token.ThrowIfCancellationRequested();
 
             if (options.InPlace)
             {
-                int updated = InPlaceWriter.Write(original, result.Compilation, input.SourceHashes, cancellation.Token);
+                int updated = InPlaceWriter.Write(original, regenerated, input.SourceHashes, cancellation.Token,
+                    verifyInputs: input.Generators.VerifyInputs);
                 Console.WriteLine($"Rewrote {result.Rewritten} Cond.B calls; skipped {result.Skipped}.");
                 Console.WriteLine($"Simplified {result.SimplifiedBooleanComparisons} boolean comparisons.");
                 Console.WriteLine($"Removed {result.RemovedEmptyBlocks} standalone empty blocks.");
@@ -46,7 +51,7 @@ internal static class Program
             Directory.CreateDirectory(staging);
             try
             {
-                var projects = SnapshotProjectWriter.Write(input, original, result.Compilation, staging);
+                var projects = SnapshotProjectWriter.Write(input, original, regenerated, staging);
                 var files = Directory.EnumerateFiles(staging, "*", SearchOption.AllDirectories)
                     .Select(file => new { Path = Relative(staging, file), Sha256 = Hash(file) })
                     .OrderBy(file => file.Path, StringComparer.Ordinal).ToArray();
@@ -67,17 +72,22 @@ internal static class Program
                     Notes = new[]
                     {
                         "Separate comparison snapshot; input source files are preserved.",
-                        "Known SDK analyzers are omitted; source-generator trigger attributes and custom analyzers are rejected.",
+                        "Source generators ran with the evaluated compiler inputs; generated C# is frozen into each snapshot. Diagnostic analyzers are omitted.",
                         "Input compiler arguments were evaluated with SkipCompilerExecution=true; project dependencies must already be restored/built."
                     },
                     Sources = input.Arguments.SourceFiles.Select(source => new { Path = source.Path, Sha256 = input.SourceHashes[source.Path] })
                         .OrderBy(source => source.Path, StringComparer.Ordinal).ToArray(),
+                    GeneratedSources = input.Generators.GeneratedSources,
+                    GeneratorInputs = input.Generators.InputHashes.OrderBy(pair => pair.Key, StringComparer.Ordinal)
+                        .Select(pair => new { Path = pair.Key, Sha256 = pair.Value }).ToArray(),
+                    GeneratorDiagnostics = input.Generators.Diagnostics.ToArray(),
                     CompilerArguments = input.RawArguments,
                     Files = files
                 };
                 File.WriteAllText(Path.Combine(staging, "manifest.json"), JsonSerializer.Serialize(manifest,
                     new JsonSerializerOptions { WriteIndented = true }) + "\n");
                 cancellation.Token.ThrowIfCancellationRequested();
+                input.Generators.VerifyInputs();
                 foreach (var source in input.SourceHashes)
                     if (Hash(source.Key) != source.Value)
                         throw new InvalidOperationException("Input source changed during processing: " + source.Key);

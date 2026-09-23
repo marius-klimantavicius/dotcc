@@ -15,6 +15,10 @@ public sealed record RewriteResult(CSharpCompilation Compilation, int Rewritten,
 public static class CondInliner
 {
     public static RewriteResult Rewrite(CSharpCompilation compilation, CancellationToken cancellationToken = default)
+        => Rewrite(compilation, cancellationToken, shouldRewrite: null);
+
+    internal static RewriteResult Rewrite(CSharpCompilation compilation, CancellationToken cancellationToken,
+        Func<SyntaxTree, bool>? shouldRewrite)
     {
         CheckErrors(compilation, "Input", cancellationToken);
         var diagnostics = new List<string>();
@@ -22,6 +26,7 @@ public static class CondInliner
         int rewritten = 0, skipped = 0;
         foreach (var tree in compilation.SyntaxTrees)
         {
+            if (shouldRewrite != null && !shouldRewrite(tree)) continue;
             cancellationToken.ThrowIfCancellationRequested();
             var visitor = ConditionRewriter.Create(compilation.GetSemanticModel(tree), cancellationToken, diagnostics);
             if (visitor is null) continue;

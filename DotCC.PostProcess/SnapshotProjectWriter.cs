@@ -81,8 +81,8 @@ internal static class SnapshotProjectWriter
 
         var originals = original.SyntaxTrees.ToArray();
         var rewrites = optimized.SyntaxTrees.ToArray();
-        if (originals.Length != rewrites.Length || originals.Where((tree, i) => tree.FilePath != rewrites[i].FilePath).Any())
-            throw new InvalidOperationException("Rewritten syntax trees must preserve input order and filenames.");
+        // Regeneration may change the number or names of generated documents.
+        // Each variant captures its own complete compilation.
         var originalProject = WriteVariant("Original", "Original.csproj", originals);
         var optimizedProject = WriteVariant("Optimized", input.AssemblyName + ".csproj", rewrites);
         return new(originalProject, optimizedProject);

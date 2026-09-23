@@ -7,14 +7,19 @@ namespace DotCC.PostProcess;
 public static class SourcePostProcessor
 {
     public static RewriteResult Rewrite(CSharpCompilation compilation, CancellationToken cancellationToken = default)
+        => Rewrite(compilation, cancellationToken, shouldRewrite: null);
+
+    internal static RewriteResult Rewrite(CSharpCompilation compilation, CancellationToken cancellationToken,
+        Func<SyntaxTree, bool>? shouldRewrite)
     {
-        var result = CondInliner.Rewrite(compilation, cancellationToken);
+        var result = CondInliner.Rewrite(compilation, cancellationToken, shouldRewrite);
         var output = result.Compilation;
         int simplified = 0, removed = 0;
         // Bind again after Cond.B/CBool inlining: those rewrites introduce the
         // numeric comparisons that this pass can now recognize.
         foreach (var tree in result.Compilation.SyntaxTrees)
         {
+            if (shouldRewrite != null && !shouldRewrite(tree)) continue;
             var comparisons = new BooleanComparisonRewriter(result.Compilation.GetSemanticModel(tree), cancellationToken);
             var root = comparisons.Visit(tree.GetRoot(cancellationToken))!;
             if (comparisons.Simplified == 0) continue;
@@ -25,6 +30,7 @@ public static class SourcePostProcessor
         var conditions = output;
         foreach (var tree in conditions.SyntaxTrees)
         {
+            if (shouldRewrite != null && !shouldRewrite(tree)) continue;
             var cleanup = new EmptyBlockRewriter(conditions.GetSemanticModel(tree), cancellationToken);
             var root = cleanup.Visit(tree.GetRoot(cancellationToken))!;
             if (cleanup.Removed == 0) continue;

@@ -160,8 +160,31 @@ The first version supports a single `net10.0` target, ordinary executable/librar
 output, embedded resources, evaluated assembly references and copy-local managed
 implementation assemblies. It preserves caller-file paths through directory
 mapping, portable debug information, source embedding and compiler settings.
-SDK analyzers are omitted from the snapshots and documented in the manifest;
-SDK generator-trigger attributes and custom analyzers/configurations are rejected.
+Source generators from the evaluated SDK and package/project analyzer references
+run before semantic analysis, including `LibraryImport`, `LoggerMessage` and
+System.Text.Json contexts. They receive the evaluated parse options, references,
+MSBuild analyzer configuration, additional files and their visible metadata.
+Diagnostic analyzers are not run by the standalone command.
+
+Only evaluated on-disk C# inputs are rewritten. Generated documents participate
+in binding but are not rewritten or saved back to the input project, even when
+`EmitCompilerGeneratedFiles` is enabled. Generators run again on the rewritten
+inputs before publication. In-place processing validates the fresh generated
+compilation; the project's next normal build runs its generators as usual.
+Snapshots capture each variant's generated C# as ordinary source and remove
+analyzer references, so snapshot builds do not generate duplicate definitions.
+The manifest records generated document provenance and content hashes, generator
+input hashes (assemblies, configuration and additional files), and diagnostics.
+Generator exceptions, load failures and error diagnostics abort before source
+files or snapshots are published; warning-as-error settings also apply.
+
+Custom analyzer configuration paths remain unsupported: the accepted inputs are
+SDK global configs and the project's generated MSBuild editorconfig. Relocating
+arbitrary path-scoped editorconfig settings into a snapshot is not implemented.
+Generators execute as build plugins in the postprocessor process. As with a
+normal build, reproducibility depends on generators using declared inputs;
+arbitrary external I/O or nondeterministic generators cannot be made hermetic by
+the snapshot writer.
 
 Inputs using explicit response files, signing, netmodules, linked resources,
 Win32 resources or unsupported compiler switches are rejected with a diagnostic.
@@ -240,9 +263,8 @@ two assemblies in `analyzers/dotnet/cs`, with no application runtime assets or
 dependencies. The analyzer targets .NET Standard 2.0 and Roslyn 4.14; the code fix
 also uses the IDE's Roslyn Workspaces/MEF services. Neither assembly is a
 dependency of dotcc, its compiler library, or translated applications. For
-projects with explicit analyzer/package references, remove those references
-before feeding the project to the standalone command, whose input contract
-still rejects custom analyzers.
+projects with explicit analyzer/package references, the standalone command loads
+any source generators in those references and omits diagnostic analyzers.
 
 The IDE and standalone tool compile the same source files for rewrite proofs,
 observable-context checks, boolean comparison simplification and empty-block cleanup. Documents with compiler
@@ -257,6 +279,8 @@ workspace documents, so apply these fixes to dotcc's on-disk emitted C#.
 dotnet test DotCC.PostProcess.Tests/DotCC.PostProcess.Tests.csproj -c Release
 dotnet test DotCC.PostProcess.Analyzers.Tests/DotCC.PostProcess.Analyzers.Tests.csproj -c Release
 python3 DotCC.PostProcess.Tests/cli-smoke.py \
+  --tool DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll
+python3 DotCC.PostProcess.Tests/generators-smoke.py \
   --tool DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll
 python3 sqlite/scripts/test-postprocess.py \
   sqlite/generated/sqlite-optimized --aot --corpora

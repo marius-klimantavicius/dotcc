@@ -4,16 +4,19 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
 namespace DotCC.PostProcess;
 
 internal sealed record ProjectInput(string ProjectPath, string AssemblyName, string TargetFramework,
     string Configuration, CSharpCommandLineArguments Arguments, IReadOnlyList<string> RawArguments,
-    IReadOnlyList<string> RuntimeReferencePaths)
+    IReadOnlyList<string> RuntimeReferencePaths) : IDisposable
 {
     internal Dictionary<string, string> SourceHashes { get; } = new(StringComparer.Ordinal);
+
+    internal GeneratorHost? Generators { get; private set; }
+    internal bool IsProjectSource(SyntaxTree tree) => SourceHashes.ContainsKey(tree.FilePath);
+    public void Dispose() => Generators?.Dispose();
 
     internal string BaseDirectory => Arguments.BaseDirectory ?? Path.GetDirectoryName(ProjectPath)!;
 
@@ -86,8 +89,14 @@ internal sealed record ProjectInput(string ProjectPath, string AssemblyName, str
             return MetadataReference.CreateFromFile(path, reference.Properties);
         }).ToArray();
         var compilation = CSharpCompilation.Create(AssemblyName, trees, references, Arguments.CompilationOptions);
-        RejectGeneratorDependencies(compilation, cancellationToken);
-        return compilation;
+        Generators = new GeneratorHost(this, cancellationToken);
+        return Generators.Run(compilation, cancellationToken);
+    }
+
+    internal CSharpCompilation Regenerate(CSharpCompilation compilation, CancellationToken cancellationToken)
+    {
+        var sources = compilation.RemoveSyntaxTrees(compilation.SyntaxTrees.Where(tree => !IsProjectSource(tree)));
+        return Generators!.Run(sources, cancellationToken);
     }
 
     internal string ResolveReference(string path)
@@ -109,7 +118,7 @@ internal sealed record ProjectInput(string ProjectPath, string AssemblyName, str
         {
             "keyfile", "keycontainer", "delaysign", "publicsign", "addmodule", "moduleassemblyname",
             "win32res", "win32icon", "win32manifest", "linkresource", "linkres", "appconfig",
-            "ruleset", "additionalfile", "additionalfiles", "instrument", "refonly", "recurse"
+            "ruleset", "instrument", "refonly", "recurse"
         };
         var supported = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -119,7 +128,7 @@ internal sealed record ProjectInput(string ProjectPath, string AssemblyName, str
             "langversion", "embed", "analyzerconfig", "analyzer", "reference", "r", "resource", "res",
             "pathmap", "platform", "main", "pdb", "doc", "codepage", "checksumalgorithm", "nologo",
             "lib", "preferreduilang", "errorendlocation", "reportanalyzer", "skipanalyzers", "nowin32manifest",
-            "subsystemversion", "baseaddress"
+            "subsystemversion", "baseaddress", "additionalfile", "additionalfiles", "generatedfilesout"
         };
         foreach (var argument in RawArguments)
         {
@@ -145,54 +154,6 @@ internal sealed record ProjectInput(string ProjectPath, string AssemblyName, str
                 && path.EndsWith(".GeneratedMSBuildEditorConfig.editorconfig", StringComparison.Ordinal);
             if (!sdk && !generated)
                 throw new InvalidOperationException("Custom analyzer configuration is unsupported because source paths are relocated: " + config);
-        }
-        foreach (var analyzer in Arguments.AnalyzerReferences)
-        {
-            var name = Path.GetFileName(analyzer.FilePath);
-            if (!KnownSdkAnalyzers.Contains(name))
-                throw new InvalidOperationException("Non-SDK analyzer/source generator is unsupported: " + analyzer.FilePath);
-            // The filename alone must not authorize an unrelated custom DLL.
-            var path = analyzer.FilePath.Replace('\\', '/');
-            if (!path.Contains("/sdk/", StringComparison.OrdinalIgnoreCase)
-                && !path.Contains("/packs/Microsoft.NETCore.App.Ref/", StringComparison.OrdinalIgnoreCase)
-                && !path.Contains("/microsoft.net.illink.tasks/", StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException("Analyzer is outside the supported SDK locations: " + analyzer.FilePath);
-        }
-    }
-
-    private static readonly HashSet<string> KnownSdkAnalyzers = new(StringComparer.Ordinal)
-    {
-        "Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll", "Microsoft.CodeAnalysis.NetAnalyzers.dll",
-        "ILLink.CodeFixProvider.dll", "ILLink.RoslynAnalyzer.dll",
-        "Microsoft.Interop.ComInterfaceGenerator.dll", "Microsoft.Interop.JavaScript.JSImportGenerator.dll",
-        "Microsoft.Interop.LibraryImportGenerator.dll", "Microsoft.Interop.SourceGeneration.dll",
-        "System.Text.Json.SourceGeneration.dll", "System.Text.RegularExpressions.Generator.dll"
-    };
-
-    private static readonly HashSet<string> GeneratorAttributes = new(StringComparer.Ordinal)
-    {
-        "System.Runtime.InteropServices.LibraryImportAttribute",
-        "System.Runtime.InteropServices.Marshalling.GeneratedComInterfaceAttribute",
-        "System.Runtime.InteropServices.Marshalling.GeneratedComClassAttribute",
-        "System.Runtime.InteropServices.JavaScript.JSImportAttribute",
-        "System.Runtime.InteropServices.JavaScript.JSExportAttribute",
-        "System.Text.Json.Serialization.JsonSerializableAttribute",
-        "System.Text.Json.Serialization.JsonSourceGenerationOptionsAttribute",
-        "System.Text.RegularExpressions.GeneratedRegexAttribute",
-        "Microsoft.Extensions.Validation.ValidatableTypeAttribute"
-    };
-
-    private static void RejectGeneratorDependencies(CSharpCompilation compilation, CancellationToken cancellationToken)
-    {
-        foreach (var tree in compilation.SyntaxTrees)
-        {
-            var model = compilation.GetSemanticModel(tree);
-            foreach (var attribute in tree.GetRoot(cancellationToken).DescendantNodes().OfType<AttributeSyntax>())
-            {
-                var type = model.GetTypeInfo(attribute, cancellationToken).Type?.ToDisplayString();
-                if (type != null && GeneratorAttributes.Contains(type))
-                    throw new InvalidOperationException("Source-generator attribute is unsupported in a flattened snapshot: " + type);
-            }
         }
     }
 }

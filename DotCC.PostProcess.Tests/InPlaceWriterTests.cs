@@ -91,6 +91,37 @@ public sealed class InPlaceWriterTests
     }
 
     [Fact]
+    public void Regenerated_documents_participate_in_validation_without_becoming_disk_edits()
+    {
+        using var fixture = new Fixture();
+        var original = fixture.Original.AddSyntaxTrees(CSharpSyntaxTree.ParseText(
+            "internal class Before {}", path: "Generator/Before.g.cs"));
+        var regenerated = fixture.Rewritten.AddSyntaxTrees(CSharpSyntaxTree.ParseText(
+            "internal class After {}", path: "Generator/After.g.cs"), CSharpSyntaxTree.ParseText(
+            "internal class Extra {}", path: "Generator/Extra.g.cs"));
+        InPlaceWriter.Write(original, regenerated, fixture.Hashes, TestContext.Current.CancellationToken).ShouldBe(2);
+        Directory.GetFiles(fixture.DirectoryPath).Length.ShouldBe(3);
+        fixture.NoTemporaryFiles();
+    }
+
+    [Fact]
+    public void Changed_generator_inputs_during_commit_roll_back_source_edits()
+    {
+        using var fixture = new Fixture();
+        bool changed = false;
+        Should.Throw<IOException>(() => InPlaceWriter.Write(fixture.Original, fixture.Rewritten, fixture.Hashes,
+            TestContext.Current.CancellationToken, (source, target) =>
+            {
+                File.Move(source, target, overwrite: true);
+                changed = true;
+            }, verifyInputs: () =>
+            {
+                if (changed) throw new IOException("Generator input changed during processing");
+            })).Message.ShouldContain("Generator input changed");
+        fixture.Unchanged(); fixture.NoTemporaryFiles();
+    }
+
+    [Fact]
     public void Rejects_changed_input_even_when_that_file_needs_no_rewrite()
     {
         using var fixture = new Fixture();
