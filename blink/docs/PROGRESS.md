@@ -4,6 +4,16 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
+P5 is active. Typed managed ownership overrides, bounded normal guest signal
+delivery, and the coarse monotonic clock boundary are implemented and qualified.
+The corrected public generation passes after the clock-6 correction
+(`a4dd163`); current work is actual Kestrel standalone/two-instance lifecycle checks,
+the current-product CPU matrix, and the final Kestrel usage sample. The previous
+two-instance run reached its instruction budget; the corrected product must
+establish whether the missing clock caused that behavior. Limits are unchanged.
+The detailed records below preserve the sequence and exact earlier identities;
+prior products are not automatically qualified for later source changes.
+
 **Resumed by the user on 2026-09-23.** The saved 25-file source checkpoint was
 compared with its base, current HEAD, index and worktree before recovery; no
 intervening changes affected those paths. The separate nine staged historical
@@ -21,7 +31,7 @@ races were fixed; existing binding overloads are retained. This does not yet
 qualify epoll/sleep wake or actual guest signal delivery. Fresh six-callback
 source staging/zero-fuzz reproduction passes at
 `threaded-signal-staging/attempt-o_47yol3`; owner integration now compiles in the refreshed public product. Actual signal
-delivery still needs the bounded GuestSignals qualification below. The historical restart checklist
+delivery is qualified by the later bounded GuestSignals receipt below. The historical restart checklist
 is retained in [RESTART-P5-KESTREL.md](RESTART-P5-KESTREL.md).
 
 The six unsigned endian load/store intrinsics are committed in `0377af7`;
@@ -39,8 +49,7 @@ literal pooling and inline deduplication. Actual Kestrel retry
 normal exit and cleanup at 97,443,472 instructions (receipt SHA-256
 `49502a64368a261c6803cb308561891e5da34c6e256f9c1ab9d4787d3a60f64d`).
 Its complete trace contains no tkill or rt_sigreturn, so this success does not
-qualify the recovered signal path. A normal static GuestSignals fixture is being
-prepared to prove sender metadata, masked pending delivery, recursive handler
+qualify the recovered signal path. The later normal static GuestSignals fixture proves sender metadata, masked pending delivery, recursive handler
 accounting and cleanup. The first actual two-instance run
 `kestrel-worker-instances/attempt-3cr6q7v7` fails in raw JIT: A health succeeds;
 B returns EOF before any response. Its receipt SHA-256 is
@@ -55,14 +64,12 @@ C bodies and select typed authored managed methods through a separate pinned
 boundary profile. The two exit targets use an explicit nonreturning compiler
 contract; the SysExit adapter preserves the upstream IsOrphan decision. Narrow
 thread-launch and signal-frame/metadata adaptations remain documented. The
-compiler registry is also being generalized to own the fully qualified managed
-method and argument adaptation. Combined compiler qualification passes 55 focused unit and 14 functional cases.
+compiler registry now owns the fully qualified managed method and argument adaptation. Combined compiler qualification passes 55 focused unit and 14 functional cases.
 The fresh two-producer preflight passes at
 `managed-boundary-preflight/attempt-oq3bl4lg` (receipt SHA-256
 `6496838240f572f90ea8bd4a99d0958bcc0154c4f46be56b7194e778a918ba55`), including actual
-Machine/System pointer signatures and both nonreturning exit contracts. Full
-regeneration and runtime qualification remain pending; the earlier successful product receipts
-remain evidence only for their exact prior sources. The valid GuestSignals native Linux witness also passes
+Machine/System pointer signatures and both nonreturning exit contracts. The later public generation and GuestSignals receipts qualify these changes;
+the earlier successful product receipts remain evidence only for their exact prior sources. The valid GuestSignals native Linux witness also passes
 (`guest-signals/attempt-y8mbkxpd`, SHA-256
 `78c0dc100f4ac103e990d8f6ebfc6d68526815b9f2dab529c4019b5526306467`).
 Fresh public delivery `translation/attempt-8roztrys` now passes (SHA-256
@@ -107,6 +114,16 @@ exhaustion must still be verified by the corrected Kestrel run. The separate
 sysinfo fallback (1 GiB total, zero free) remains a documented audit finding,
 not an established cause or a new implementation task. CPU/final sample refresh
 remain held until the corrected product is stable.
+
+Fresh clock-corrected delivery `translation/attempt-kaddtzlg` passes (SHA-256
+`711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11`).
+All 108 objects are freshly emitted, with no reuse. Raw, postprocessed and
+direct-source builds pass; the independent semantic audit rechecks 226 files
+and the expected endian 55/53 and managed-boundary 63/45 selection counts.
+Its assembly receipt SHA-256 is
+`078f75c88ddefbf6bf0be133aae7e37b19bd7598f35f85703976c4b53de26921`.
+Actual Kestrel standalone retry `attempt-nb6iv2wz` is running with that exact
+delivery, complete-trace clock-6 checks and unchanged execution limits.
 
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the

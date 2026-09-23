@@ -332,11 +332,16 @@ def main():
         if receipt["guest_passed"]:
             clocks = [row for thread in result.get("syscall_threads", []) for row in thread["trace"]
                       if row["number"] == 228 and row["argument1"] == 6]
+            complete_trace = (result.get("syscall_trace_complete_at_snapshot") is True
+                and result.get("unrecorded_thread_observations") == 0
+                and all(thread.get("truncated") is False
+                    and thread.get("syscall_count") == len(thread["trace"])
+                    for thread in result.get("syscall_threads", [])))
             receipt["coarse_monotonic_clock"] = dict(calls=len(clocks),
                 successful=sum(row["return_value"] == 0 for row in clocks),
-                complete_trace=result.get("syscall_trace_complete_at_snapshot") is True)
+                complete_trace=complete_trace)
             if (not clocks or any(row["return_value"] != 0 for row in clocks)
-                    or result.get("syscall_trace_complete_at_snapshot") is not True):
+                    or not complete_trace):
                 raise RuntimeError("Actual Kestrel coarse monotonic clock calls did not all succeed")
         check()
         receipt["passed"] = receipt["guest_passed"]

@@ -333,15 +333,15 @@ whole-function contracts. The original upstream declarations and callers remain;
 the profile selects the replacement, and the authored implementation stays in
 `src` with direct project/source references.
 
-- [ ] Inventory `UpstreamGuestThreads` patch hunks and convert suitable complete
+- [x] Inventory `UpstreamGuestThreads` patch hunks and convert suitable complete
       function substitutions to typed managed overrides. Remove superseded
       patch hunks, callback plumbing and staging assumptions from the active
       pipeline while retaining historical inputs/receipts.
-- [ ] Preserve function identity, pointer signatures, per-thread ownership,
+- [x] Preserve function identity, pointer signatures, per-thread ownership,
       nested instruction accounting, unwind behavior and cleanup. Resolve
       generated record types and managed bridge signatures explicitly; extend
       generic override support only for a demonstrated missing contract.
-- [ ] Keep upstream signal selection, frame construction and return algorithms.
+- [x] Keep upstream signal selection, frame construction and return algorithms.
       For internal statement changes, sender metadata or actual upstream bug
       repairs that cannot be expressed as a whole-function override without
       duplicating those algorithms, document the reason for each remaining
@@ -565,10 +565,10 @@ workers and 40 exact native HTTP comparisons across all four modes. Simultaneous
 instances load distinct private executable paths, publish distinct host ports,
 and complete normal exit, cooperative stop, fresh-process restart and idle
 Deadline cleanup. The auxiliary marker files are retained but not read by the
-guest. The final showcase solution/sample remains unqualified because automated
-review rejected its separate qualification task; see B036. A fresh agent is
-verifying that sample under explicit user direction; even a pass remains
-raw-socket baseline evidence until the Kestrel guest is integrated. P5 is not complete.
+guest. The raw-socket showcase solution/sample subsequently passed at
+`managed-consumer-delivery/attempt-8k2fus34` (commit `f06256d`), resolving that
+historical sample qualification block. It remains baseline evidence until the
+Kestrel guest is qualified in the final sample. P5 is not complete.
 
 ### P6 — Qualify upstream tests, platforms, and delivery
 
