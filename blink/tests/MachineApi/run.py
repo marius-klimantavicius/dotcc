@@ -35,7 +35,8 @@ CASES = {
     'argv-env-cwd-private-persistence-binary-eof', 'mounted-executable-without-import',
     'live-rw-ro-cow-export-reset', 'concurrent-independent-machines-same-machine-exclusion',
     'wait-cancel-stop-or-kill-acknowledged-write-restart', 'natural-deadline', 'instruction-bound',
-    'concurrent-stop-run-and-machine-dispose'
+    'concurrent-stop-run-and-machine-dispose', 'owned-console-stream-disposal',
+    'normal-memory-descriptor-storage-limits'
 }
 
 
@@ -287,6 +288,17 @@ def main():
         binary = bytes([0, 255, 17, 10, 128])
         native('binary-echo', ['echo'], binary, b'echo-eof\n', stdin=binary)
         native('wait-eof', ['wait'], b'WAIT\nleft', b'echo-eof\n', stdin=b'left')
+        # Native controls deliberately do not inherit private machine quotas.
+        # Their normal operations succeed; the managed API separately requires
+        # ENOMEM/EMFILE/ENOSPC under its explicit smaller capacities.
+        native('memory-cap', ['memory-cap'], b'memory-available\n')
+        native('descriptor-cap', ['descriptor-cap', 'quota-fds'], b'descriptors=16 first=3 last=18\n')
+        native('storage-cap', ['storage-cap', 'quota-data'], b'stored=64\n')
+        expected_storage = bytes(ord('A') + i % 26 for i in range(64))
+        if (native_work / 'quota-data').read_bytes() != expected_storage:
+            raise RuntimeError('Native storage witness bytes differ')
+        pin(native_work / 'quota-data')
+        receipt['resource_oracle_scope'] = 'Native succeeds at 64MiB mmap,16 opens,64 bytes; managed explicit32MiB/8 descriptors/16 private bytes rejects excess without corrupting retained prefix'
         run('solution-build', [dotnet, 'build', solution, '-c', 'Release', '--disable-build-servers', '-p:UseSharedCompilation=false'], timeout=1200)
         run('consumer-build', [dotnet, 'build', project, '-c', 'Release', '--disable-build-servers', '-p:UseSharedCompilation=false'], timeout=1200)
         jit = attempt / 'retained-jit'
@@ -331,7 +343,7 @@ def main():
             raise RuntimeError('Preserved JIT closure changed during AOT qualification')
         check()
         receipt.update(passed=True, final_identities_stable=True,
-            native_scope='Eight finite normal stdout/stderr/file/argv/env/cwd witnesses; managed lifecycle limits are separate API assertions',
+            native_scope='Eleven finite normal stdout/stderr/file/argv/env/cwd/resource witnesses; private quota and lifecycle expectations are separate API assertions',
             qualified_modes=4)
     except BaseException as error:
         receipt['failure'] = dict(type=type(error).__name__, message=str(error))

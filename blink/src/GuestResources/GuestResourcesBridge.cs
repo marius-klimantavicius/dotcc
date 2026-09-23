@@ -1,11 +1,15 @@
 namespace Managed.Emulation;
 #if BLINK_FULL_CORE
-public static partial class BlinkCore
+public partial class BlinkCore
 #else
-public static partial class Blink
+public partial class Blink
 #endif
 {
+#if DOTCC_INSTANCE_FOR_HOST
+    public unsafe int BlinkHostInitializeBoundResourceLimits(System* system)
+#else
     public static unsafe int BlinkHostInitializeBoundResourceLimits(System* system)
+#endif
     {
         if (io == null) { Libc.errno = 19; return -1; }
         var capacity = io.DescriptorCapacity();

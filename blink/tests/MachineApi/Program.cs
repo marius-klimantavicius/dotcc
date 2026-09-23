@@ -54,6 +54,22 @@ await using (var machine = Create())
     Check(echoed.Reason == RunExitReason.Exited && echoed.ExitCode == 0 && echoed.ResourcesReleased, "binary echo outcome");
     Check(stdout.ToArray().SequenceEqual(new byte[] { 0, 255, 17, 10, 128 }) && Encoding.UTF8.GetString(stderr.ToArray()) == "echo-eof\n" && input.CanRead && stdout.CanWrite, "binary/EOF/borrowed streams");
     evidence.Add("argv-env-cwd-private-persistence-binary-eof");
+    var ownedInput = new MemoryStream(new byte[] { 0, 255, 17, 10, 128 });
+    var ownedOutput = new MemoryStream(); var ownedError = new MemoryStream();
+    try
+    {
+        var owned = await machine.ExecuteAsync(Command("echo") with {
+            Console = new() { Input = ownedInput, Output = ownedOutput, Error = ownedError, BufferBytes = 3, LeaveOpen = false }
+        }, token);
+        Check(owned.Reason == RunExitReason.Exited && owned.ExitCode == 0 && owned.ResourcesReleased && owned.Diagnostic == null,
+            "owned echo outcome");
+        Check(ownedOutput.ToArray().SequenceEqual(new byte[] { 0, 255, 17, 10, 128 }) && Encoding.UTF8.GetString(ownedError.ToArray()) == "echo-eof\n",
+            "owned stream bytes");
+        Check(!ownedInput.CanRead && !ownedOutput.CanWrite && !ownedError.CanWrite, "owned console streams were not all disposed");
+        if (machine.CurrentRun!.WorkerProcessId is int pid) processes.Add(pid);
+        evidence.Add("owned-console-stream-disposal");
+    }
+    finally { ownedInput.Dispose(); ownedOutput.Dispose(); ownedError.Dispose(); }
 }
 string mountedWork = Directory.CreateDirectory(Path.Combine(output, "mounted-work")).FullName;
 string mountedElf = Path.Combine(mountedWork, "my_app");
@@ -69,6 +85,18 @@ await using (var machine = new BlinkMachine(Options()))
         Arguments = ["store", "/work/result", "mounted-write"] }, "store-ok\n");
     Check(await File.ReadAllTextAsync(Path.Combine(mountedWork, "result"), token) == "mounted-write", "mounted execution did not persist write");
     evidence.Add("mounted-executable-without-import");
+}
+// Execute the ELF from a live read-only mount so the private 16-byte quota
+// contains only guest data, independent of ELF import representation or size.
+await using (var machine = new BlinkMachine(Options() with { DescriptorLimit = 8, WritableStorageLimit = 16 }))
+{
+    machine.MountDirectory("/work", mountedWork, MountAccess.ReadOnly);
+    ExecutionOptions Resource(params string[] arguments) => new() { Executable = "/work/my_app", Arguments = arguments };
+    await Execute(machine, Resource("memory-cap"), "", "errno=12\n", 1);
+    await Execute(machine, Resource("descriptor-cap", "/quota-fds"), "descriptors=5 first=3 last=7\n", "errno=24\n", 1);
+    await Execute(machine, Resource("storage-cap", "/quota-data"), "stored=16\n", "errno=28\n", 1);
+    await Execute(machine, Resource("load", "/quota-data"), "ABCDEFGHIJKLMNOP");
+    evidence.Add("normal-memory-descriptor-storage-limits");
 }
 string live = Directory.CreateDirectory(Path.Combine(output, "live")).FullName;
 string readOnly = Directory.CreateDirectory(Path.Combine(output, "readonly")).FullName;

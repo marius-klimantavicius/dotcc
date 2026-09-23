@@ -102,7 +102,16 @@ public partial class BlinkCore
     public static unsafe int blink_host_guest_pthread_sigmask(int how, blink_host_sigset* mask, blink_host_sigset* previous)
     {
         int saved = Libc.errno;
-        try { return blink_host_sigprocmask(how, mask, previous) == 0 ? 0 : Libc.errno; }
+        try
+        {
+#if DOTCC_INSTANCE_FOR_HOST
+            int result = (guestProgram ?? throw new InvalidOperationException("Guest program is unbound."))
+                .blink_host_sigprocmask(how, mask, previous);
+#else
+            int result = blink_host_sigprocmask(how, mask, previous);
+#endif
+            return result == 0 ? 0 : Libc.errno;
+        }
         finally { Libc.errno = saved; }
     }
     public static int blink_host_guest_pthread_kill(long thread, int signal)

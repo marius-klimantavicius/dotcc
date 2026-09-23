@@ -18,6 +18,11 @@ static int put(long fd, const char *s, long n) {
   return 0;
 }
 static int text(long fd, const char *s) { return put(fd, s, length(s)); }
+static void number(long fd, long value) {
+  char digits[24]; long n = 0;
+  do { digits[n++] = (char)('0' + value % 10); value /= 10; } while (value);
+  while (n) put(fd, &digits[--n], 1);
+}
 static int error(long value) {
   char digits[24]; long n = 0;
   if (value < 0) value = -value;
@@ -28,6 +33,14 @@ long guest_main(long *stack) {
   long argc = stack[0]; char **argv = (char **)(stack + 1);
   char **env = argv + argc + 1;
   if (argc < 2) return 2;
+  if (equal(argv[1], "memory-cap")) {
+    const long bytes = 64L * 1024 * 1024;
+    long address = call(9, 0, bytes, 3, 0x22, -1, 0);
+    if (address < 0 && address >= -4095) return error(address);
+    long result = call(11, address, bytes, 0, 0, 0, 0);
+    if (result < 0) return error(result);
+    text(1, "memory-available\n"); return 0;
+  }
   if (equal(argv[1], "inspect")) {
     char cwd[512]; long result = call(79, (long)cwd, sizeof(cwd), 0, 0, 0, 0);
     if (result < 0) return error(result);
@@ -51,6 +64,40 @@ long guest_main(long *stack) {
     text(2, "echo-eof\n"); return 0;
   }
   if (argc < 3) return 2;
+  if (equal(argv[1], "descriptor-cap")) {
+    long fds[16], opened = 0, result = 0;
+    while (opened < 16) {
+      result = call(257, -100, (long)argv[2], 2 | 64, 0600, 0, 0);
+      if (result < 0) break;
+      fds[opened++] = result;
+    }
+    long close_error = 0;
+    for (long i = 0; i < opened; ++i) {
+      long closed = call(3, fds[i], 0, 0, 0, 0, 0);
+      if (closed < 0) close_error = closed;
+    }
+    text(1, "descriptors="); number(1, opened);
+    if (opened) { text(1, " first="); number(1, fds[0]); text(1, " last="); number(1, fds[opened - 1]); }
+    text(1, "\n");
+    if (close_error) return error(close_error);
+    return result < 0 ? error(result) : 0;
+  }
+  if (equal(argv[1], "storage-cap")) {
+    long fd = call(257, -100, (long)argv[2], 1 | 64 | 512, 0600, 0, 0);
+    if (fd < 0) return error(fd);
+    char bytes[64]; for (long i = 0; i < 64; ++i) bytes[i] = (char)('A' + i % 26);
+    long written = 0, result = 0;
+    while (written < 64) {
+      result = call(1, fd, (long)(bytes + written), 64 - written, 0, 0, 0);
+      if (result <= 0) break;
+      written += result;
+    }
+    long closed = call(3, fd, 0, 0, 0, 0, 0);
+    text(1, "stored="); number(1, written); text(1, "\n");
+    if (closed < 0) return error(closed);
+    if (result < 0) return error(result);
+    return written == 64 ? 0 : 3;
+  }
   if (equal(argv[1], "mkdir")) {
     long result = call(83, (long)argv[2], 0755, 0, 0, 0, 0);
     if (result < 0) return error(result);

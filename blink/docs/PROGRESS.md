@@ -27,8 +27,9 @@ The user-approved plan now includes opt-in wrapping-class instance translation
 and a uniform explicit-instance function-pointer convention. Indirect calls pass
 the current instance; registered callbacks and thread starts retain their owning
 context. Shared libc code remains supported with relevant state ownership audited.
-This is planned compiler work, not a qualification claim for the existing scoped
-state-context milestone; see the detailed contract in P6-MACHINE-API.md.
+The generic instance ABI now has focused native/JIT/NativeAOT qualification;
+actual Blink public-machine execution remains pending. The older scoped
+state-context milestone alone does not satisfy this contract.
 The user additionally requires cross-platform BCL-only filesystem access in
 both modes. The native filesystem prototype has been removed; the System.IO
 backend passes its finite native/JIT/NativeAOT boundary qualification. Live read-write
@@ -99,12 +100,28 @@ automatic worker deployment, concurrent-disposal handling and real consumer
 fixtures. These sources are not yet a runtime pass. All 108 instance-v1 Blink
 producers emitted in `translation/attempt-arzehd55`, but link failed on a
 canonical callback declaration seen through both forward and complete struct
-types. The compiler owner is qualifying a conservative merge and the actual
-reachable `pthread_once` adapter. A diagnostic replay is explicitly not a
-qualified delivery. Earlier `attempt-hakhpj6f` was deliberately interrupted before
+types. Milestone `dcf586a` qualifies the conservative declaration merge, formal-parameter
+boundary checks and explicit-owner `pthread_once`: 88 unit/runtime and 7 functional
+cases pass, plus native/JIT/NativeAOT execution. The execution receipt is
+`DotCC.FunctionalTests/bin/instance-methods-qualification/attempt-5_drpp4j/receipt.json`
+(SHA-256 `64d757af4a3efd1930dafb25bd026ba20ab0cb5e9391c4977da250444d5a361f`),
+with 521 independently verified identities. The mixed 104-old/4-new diagnostic
+link passes but is explicitly not a qualified delivery. Fresh canonical
+production generation with the new compiler completed as recorded below; public
+machine fixture and Kestrel consumer gates still follow that delivery. Earlier `attempt-hakhpj6f` was deliberately interrupted before
 fixing a static resource callback; its completed object identities were reused
 only where exact C/compiler/profile identities matched. Final product and all
 public consumer gates remain open.
+
+Public instance-v1 delivery now passes at `translation/attempt-03tkbonj`
+(receipt SHA-256 `9d93942c018ec30ce66a02afaeac08416a9f794dd1ef93bd79d0b80c01e4cc46`).
+All 108 producers were freshly emitted with the corrected compiler in the
+preceding attempt; this delivery reuses those exact compatible object identities.
+Raw build, semantic postprocessing, reconstructed original-source project and
+final direct-source build pass. Two failed build receipts preserve missed
+resource/signal-mask adapter declarations; the original authored sources were
+corrected, with no generated-source edits. The actual public-machine fixture
+(10 cases, 11 distinct native witnesses) and Kestrel consumer gates are next.
 
 Console and descriptor integration passes JIT/NativeAOT at
 `host-console/attempt-071nqrfd` (receipt SHA-256

@@ -22,13 +22,23 @@ python3 blink/tests/MachineApi/run.py \
 The runner first checks the delivery SHA, all 108 object calling conventions,
 typed semantic reports, compiler identities, final/raw product manifests and
 the actual consumer source/import closure. It builds this valid static ELF and
-runs eight finite Linux native witnesses for argv/env/cwd, file operations and
+runs eleven finite Linux native witnesses for argv/env/cwd, file operations and
 binary console/EOF. It then builds the ordinary solution and Probe project,
 preserves the complete JIT consumer and automatically deployed worker, and
 qualifies InProcess and SeparateProcess in separate attempt directories. AOT
 publishes the actual consumer with the same deployment target and repeats both
 modes. No worker path is supplied to either consumer. Native finite witnesses do
 not substitute for the managed lifecycle, quota or stop assertions.
+
+Owned-stream echo explicitly sets `LeaveOpen=false` and checks all three caller
+streams close after preserving their bytes. A resource machine loads the ELF
+from a read-only mount, leaving its private 16-byte storage quota free of ELF
+import charges. Normal requests for 64 MiB anonymous mmap, additional descriptors
+and a 64-byte file write must produce ENOMEM, EMFILE and ENOSPC under the explicit
+32 MiB memory, eight-descriptor and 16-byte storage limits. Successful descriptor
+numbers and the exact retained file prefix are checked. The same native requests
+succeed without those private quotas; their outputs are intentionally different,
+not treated as a same-limit native comparison.
 
 The actual Kestrel sample has a separate final gate using its existing pinned
 ELF, native producer and profile; it does not rebuild the guest:

@@ -29,6 +29,17 @@ public static partial class Blink
         catch (Exception error) { return IoException(error); }
     }
 
+    private static unsafe int HostEpollSignalMask(blink_host_sigset* mask, blink_host_sigset* previous)
+    {
+#if DOTCC_INSTANCE_FOR_HOST
+        // Binding retains the explicit translated owner on this guest worker.
+        return (guestProgram ?? throw new InvalidOperationException("Guest program is unbound."))
+            .blink_host_sigprocmask(2, mask, previous);
+#else
+        return blink_host_sigprocmask(2, mask, previous);
+#endif
+    }
+
     public static unsafe int blink_host_epoll_pwait(int epfd, blink_host_epoll_event* events,
         int maxEvents, int timeoutMilliseconds, blink_host_sigset* mask)
     {
@@ -42,7 +53,7 @@ public static partial class Blink
             // C TLS must be changed on this calling worker, not an async continuation.
             if (mask != null)
             {
-                if (blink_host_sigprocmask(2, mask, &previous) != 0) return -1;
+                if (HostEpollSignalMask(mask, &previous) != 0) return -1;
                 restore = true;
             }
             using var wake = BeginIoOperation();
@@ -66,7 +77,7 @@ public static partial class Blink
         finally
         {
             int error = Libc.errno;
-            if (restore) blink_host_sigprocmask(2, &previous, null);
+            if (restore) HostEpollSignalMask(&previous, null);
             Libc.errno = error;
         }
     }
