@@ -657,6 +657,16 @@ both execution modes against instance delivery `translation/attempt-tfqtuor3`.
 See [the exact validation ledger](VALIDATION.md). The coordinator stops here;
 P7, Windows execution, performance and hardened OS containment are not implied.
 
+### P6 extension — Nonblocking outbound TCP connect
+
+Authorized on 2026-09-23 as the prerequisite for a future per-machine IMDSv2
+service. Complete [P6-NONBLOCKING-CONNECT.md](P6-NONBLOCKING-CONNECT.md): managed
+connection state and task ownership, EINPROGRESS/EALREADY, SO_ERROR, poll/epoll
+completion, descriptor cleanup, and a real NativeAOT asynchronous HTTP guest in
+both execution modes. Use BCL networking, retain explicit outbound grants, and
+preserve the existing fault-injection/invalid-ELF exclusions. Commit at each
+milestone and stop after this extension; IMDSv2 routing and P7 remain separate.
+
 ### P7 — Qualify upstream tests, platforms, and delivery (formerly P6)
 
 - [ ] Run applicable pinned upstream tests and preserve case-level results.
