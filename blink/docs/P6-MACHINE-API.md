@@ -90,6 +90,87 @@ a fixture-specific health check in the general API.
   Separate-process mode may enforce worker-level limits with supported OS
   facilities; unavailable requested limits must not be silently ignored.
 
+## Instance translation and callback context
+
+User-approved compiler direction: add an opt-in instance translation mode,
+available only when emitting a wrapping class; reject incompatible output modes.
+Keep existing static translation as the default for other consumers. In instance
+mode, emit the wrapping class with instance methods and instance-owned mutable C
+globals, including function-local static storage. Nested C data types retain
+their required layouts; genuinely immutable data and adapter code may be shared.
+Use rooted, pinned per-instance backing storage for addressable globals and
+preserve alignment and initialization ordering. Retire it only after execution
+threads and retained callbacks have quiesced.
+
+Translated C TLS belongs to the pair of program instance and host thread;
+`[ThreadStatic]` alone does not separate instances sharing a host thread. Keep
+that storage distinct from emulated guest ELF TLS. Qualify both concurrent
+instances and sequential/nested use of distinct instances on one host thread.
+
+Use an explicit instance argument as the generated managed calling convention
+for translated function pointers. Upstream C remains unchanged. For example:
+
+```c
+int (*operation)(int);
+int result = operation(42);
+```
+
+Conceptual generated form, with final API names chosen during implementation:
+
+```csharp
+delegate*<Blink, int, int> operation;
+int result = operation(this, 42);
+
+static int OperationEntry(Blink instance, int value)
+    => instance.Operation(value);
+```
+
+Taking a translated method's address selects a generated static adapter accepting
+the instance explicitly. Ordinary direct calls use instance methods. The extra
+argument travels at invocation; the stored function pointer remains one pointer
+wide, so this change does not enlarge C structs or callback tables. This is a
+compiler-wide convention, not a rewrite of selected Blink call sites:
+
+- Lower function-pointer typedefs, parameters, return values, struct/union fields,
+  arrays, global initializers and callback tables consistently.
+- Emit the current instance at every translated indirect invocation, including
+  calls through expressions and pointers returned by other functions.
+- Make function-address expressions and supported function-pointer casts use
+  matching adapters/signatures. Preserve null behavior, repeated-address equality
+  and supported pointer round trips; retain existing C compatibility limits.
+- Record the convention in object/link metadata and reject incompatible mixing
+  with static-mode objects or unadapted callback boundaries. Public pointer APIs
+  expose the actual signature; no silent reinterpretation of old signatures.
+
+An ordinary function pointer identifies code, not its originating instance.
+Passing a pointer from A to B and calling it with B's current context intentionally
+uses B's globals. A callback that must execute on behalf of A retains both the
+pointer and A's context at its registration boundary. Thread launch, deferred
+callbacks and callbacks invoked by shared libc/managed helpers must preserve that
+ownership and pass the retained context, independent of the invoking thread.
+For synchronous helpers such as a comparator-based sort, pass the caller's
+context into the helper and forward it on each comparator invocation. Keep these
+bindings outside fixed-layout C callback fields; do not replace every pointer
+with a larger method/context pair. Release bindings only after callbacks can no
+longer execute, and restore any temporary runtime binding on return or exception.
+
+Audit every reachable external callback boundary. Supply typed adapters/context
+plumbing for supported boundaries and report a translation/link diagnostic for
+unsupported ones. Do not silently omit context or depend on an unrelated ambient
+instance. Per-instance executable trampolines and unmanaged delegate marshalling
+are not required for internal translated callbacks; support JIT and NativeAOT
+with shared generated adapters.
+
+Keep libc implementation code shared. Distinct mutex allocations can remain
+independent even with a shared registry; a shared registry alone is not evidence
+of incorrect machine state. Audit reachable mutable state and ownership instead:
+pthread objects/keys, errno and other TLS, file/stdio/environment state, allocation
+roots and host bindings. Scope relevant state or route it through explicit host
+overrides so one instance's operations and disposal cannot affect another.
+Existing scoped runtime-context work can support this ownership, but an ambient
+context with static translated methods alone does not complete the planned
+instance-method/function-pointer convention.
+
 ## Filesystem and mounts
 
 Implement guest filesystem services and host-directory access with cross-platform
@@ -216,6 +297,12 @@ today) distinct in naming/documentation from resumable execution snapshots.
   ordinary mount/path/link-policy behavior. Keep the backend cross-platform;
   record platforms actually tested without treating Linux validation as Windows
   qualification.
+- Qualify instance translation under JIT and NativeAOT: direct and indirect
+  calls, callback tables and supported casts, shared libc callbacks, thread
+  starts, callbacks retaining their origin, TLS separation and quiescent cleanup.
+  Check unchanged C data layouts and static-mode compatibility, plus compiler
+  diagnostics for unsupported callback boundaries. Use ordinary compiler/runtime
+  cases; do not add malformed-ELF or custom fault-injection fixtures.
 - Build and run the consumer through the public API under JIT and NativeAOT on
   Linux x64 in both in-process and separate-process modes, including their
   documented stop/termination and resource capabilities. Retain actual

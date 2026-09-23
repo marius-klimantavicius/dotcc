@@ -606,6 +606,17 @@ and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
 - [ ] Resolve translated globals/caches/TLS and host-binding lifetime for
       in-process sequential reuse and concurrent independent machines; no
       process fallback or process-wide serialization as a substitute.
+- [ ] Add opt-in wrapping-class instance translation: instance methods, pinned
+      per-instance globals and per-instance/per-host-thread C TLS. Preserve
+      existing default static mode and C data layouts.
+- [ ] Implement the uniform managed function-pointer convention with an explicit
+      instance argument, generated static adapters and current-instance arguments
+      at all translated indirect calls. Cover pointer types/casts/tables and
+      object/link compatibility; reject unadapted callback boundaries.
+- [ ] Retain originating context for registered/deferred callbacks and thread
+      starts; adapt shared libc callbacks to forward context. Audit relevant libc
+      mutable state/cleanup while keeping implementation code shared. Qualify
+      these contracts under JIT and NativeAOT as specified in P6-MACHINE-API.md.
 - [ ] Add image/private storage and host directory mounts with live read-write
       as the user-selected default, plus explicit read-only and private
       copy-on-write modes, including mounting

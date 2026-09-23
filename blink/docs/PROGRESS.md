@@ -19,6 +19,12 @@ independent concurrent machines. This is not an OS security boundary against
 the calling application. Both in-process (default) and explicitly selected
 separate-process execution must be implemented and qualified in P6 through the
 same public API, with mode-specific isolation/termination capabilities.
+The user-approved plan now includes opt-in wrapping-class instance translation
+and a uniform explicit-instance function-pointer convention. Indirect calls pass
+the current instance; registered callbacks and thread starts retain their owning
+context. Shared libc code remains supported with relevant state ownership audited.
+This is planned compiler work, not a qualification claim for the existing scoped
+state-context milestone; see the detailed contract in P6-MACHINE-API.md.
 The user additionally requires cross-platform BCL-only filesystem access in
 both modes. Both workers have resumed with that constraint; the native filesystem
 prototype is being removed and replaced with a System.IO backend. Live read-write
