@@ -1,8 +1,9 @@
 # Machine API source contract
 
-This API is being implemented for P6. Runtime qualification is pending the new
-generated instance ABI and fresh product; these examples describe the intended
-public contract, not a completed platform qualification.
+This API passes the selected Linux x64 P6 qualification under JIT and NativeAOT
+in both execution modes. The public fixture covers ten normal cases per mode;
+the actual Kestrel and console/folder samples pass separately. See
+[the validation ledger](../../docs/VALIDATION.md) for exact receipts and limits.
 
 ```csharp
 await using var machine = new BlinkMachine(new MachineOptions

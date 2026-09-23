@@ -27,7 +27,8 @@ blink/generated/TranslatedBlink/
 `TranslatedBlink` is the assembly name. The translated type is
 `Managed.Emulation.BlinkCore`; generated C records are nested as selected by
 `--nest-types`. The compiler's actual managed-library link uses
-`--runtime=c --literal-pool --deduplicate-inline --split=size --split-size=102400`. No generated C# is manually
+`--instance-methods --runtime=c --literal-pool --deduplicate-inline --split=size --split-size=102400`
+for the default threaded profile; object emission also selects the same instance ABI. No generated C# is manually
 modified. A separate authored project file supplies relative build references.
 
 An external application references `TranslatedBlink.csproj`. Host types in
@@ -35,10 +36,12 @@ An external application references `TranslatedBlink.csproj`. Host types in
 Bridge Compile items link original files under `src/Host`, with headers kept in
 `src/Host/include`. Preserve these parent-relative source paths when relocating
 the final project. The generated API remains unsafe and requires the host
-binding/lifetime contracts. The separate authored `Managed.Emulation.Execution`
-project owns initialization, loading, execution and cleanup through upstream
-exports. The runnable sample exercises one controlled service invocation in a
-fresh process; the P5 subprocess/restart API remains separate.
+binding/lifetime contracts. The separate authored `Managed.Emulation.ThreadedExecution` project owns
+initialization, loading, budgeted execution and cleanup through upstream exports.
+Ordinary consumers use the safe `Managed.Emulation` machine API, which runs
+in-process by default or explicitly in a separate worker. Both modes have
+actual JIT/NativeAOT public consumer qualification. The older single-thread
+`Managed.Emulation.Execution` project remains a historical profile.
 
 Each invocation performs pinned fetch verification, the existing pinned native
 assembly tests, a new frozen core profile, identity-checked complete closure

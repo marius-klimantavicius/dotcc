@@ -1,12 +1,25 @@
-# Public machine API qualification (P6, in progress)
+# Public machine API qualification (P6 complete on Linux x64)
 
 `guest.c` is an authored valid static Linux x86-64 guest for normal console,
 argv/environment/cwd, file and lifecycle scenarios. It uses real guest syscalls
 and also runs natively; it does not substitute for the pinned Kestrel guest.
 
-Source preparation is not an execution pass. The eventual receipt must bind
-this fixture, the native control, current product/compiler/host sources, both
-execution modes and actual JIT/NativeAOT consumers. Windows is not qualified by
+The actual fixture passes all four JIT/NativeAOT × in-process/separate-process
+forms at `artifacts/machine-api/attempt-b074atpe/receipt.json` (SHA-256
+`5841d3b0e8d487e60a1dd685fd5fabf369c4a5bc6d65efef8b979cea343c2be7`).
+All ten public cases and eleven native controls pass. Both process forms use
+25 real workers; both in-process forms use none. The independent review verified
+2,327 retained paths and all 50 worker exits. Current compiler/postprocessor
+binaries were independently rechecked after the final sample run.
+
+The actual Kestrel/public sample also passes all four forms at
+`artifacts/machine-api-kestrel/attempt-cqqbx2eu/receipt.json` (SHA-256
+`e29648060f862ae629d399510e8ec5ac96e99b07b2751c2e2998af80951c9ffa`):
+12 Kestrel runs, 20 native HTTP comparisons and 12 binary console/live-folder
+sample runs. Independent review verified 3,016 retained paths and normal cleanup.
+Both gates consume delivery `translation/attempt-tfqtuor3`; generated instance
+ownership, actual NativeAOT worker deployment and original authored references
+are part of that recorded source closure. Windows is not qualified by
 Linux runs. Filesystem path/reparse checks do not claim atomic containment
 against hostile concurrent mutation by another host process.
 
@@ -71,4 +84,5 @@ concurrent stop/run-disposal/machine-disposal and concurrent process kill calls.
 Both runners retain command lines, exit codes, stdout/stderr, process-group
 cleanup, copied sources, source membership, execution closures before/after,
 and mode evidence. They stop on the first failure and leave a failed receipt.
-Current source preparation makes no claim that these gates have passed.
+The failed build/EOF/publish attempts remain preserved. Only documentation
+changed after the final successful frozen-input review.

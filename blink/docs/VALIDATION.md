@@ -3,6 +3,89 @@
 All observed executions below are Linux x64. Windows execution has not run.
 Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
+## Final P6 machine API qualification
+
+All selected P6 gates pass, including fresh generation and complete consumer
+reexecution after the allocation-free struct-scope compiler refinement.
+
+| Gate | Receipt under `artifacts/` | SHA-256 |
+| --- | --- | --- |
+| Public instance-v1 delivery | `translation/attempt-tfqtuor3/receipt.json` | `83b804796d8ee211ed9589e2acd996fc3a6f05911204579e4eec0e31b8eb314a` |
+| Public machine API all four forms | `machine-api/attempt-b074atpe/receipt.json` | `5841d3b0e8d487e60a1dd685fd5fabf369c4a5bc6d65efef8b979cea343c2be7` |
+| Actual Kestrel and general public samples | `machine-api-kestrel/attempt-cqqbx2eu/receipt.json` | `e29648060f862ae629d399510e8ec5ac96e99b07b2751c2e2998af80951c9ffa` |
+| BCL mount boundary | `host-mounts/attempt-rmljxlg0/receipt.json` | `6d5cd50f78ccd4e71efc7647ed85cf52f233686ffd8b3cb658d0066a867627e0` |
+| Network policy boundary | `host-network-grants/attempt-rhpwmuhv/receipt.json` | `6cefe97940d2a1ab1667be49a0bf579c1f0472c9026801951e32964b3fd8f391` |
+| Console/descriptor ownership boundary | `host-console/attempt-071nqrfd/receipt.json` | `0cf272d2bb4736c0eb43dce0aa1c6331e66517f11703c72e0cccf6a135f34a8c` |
+| Cold NativeAOT worker deployment | `worker-deployment/attempt-bb3ghtd4/receipt.json` | `ee9a29c9dfee62e2937d9b37d5823b867ccb3156a9d46bb63cefdf9ab9d12242` |
+
+Here the four forms mean **JIT/NativeAOT × InProcess/SeparateProcess**, all using
+the actual postprocessed public project. They are distinct from P5's
+raw/optimized × JIT/NativeAOT matrix. The product's raw compilation is checked;
+P6 does not falsely claim a new raw-runtime CPU/service matrix.
+
+The product has 108 instance-v1 objects, 330 endian selections (55 × six) and
+852 managed selections across 12 typed boundaries (100 selected units, eight
+absent). All 108 objects were freshly emitted with the final struct-scope compiler;
+zero objects were reused in this final delivery.
+Original authored Host/adapters are referenced from `src`, with literal pooling
+and inline deduplication; no test/C execution frontend is published.
+
+The machine fixture passes 11 normal native controls and ten API cases in each
+form. It observes concurrent independent instances, no worker in either in-process
+form, private persistence, mounted executable loading without import, RW/RO/COW,
+owned and borrowed streams/EOF, memory/descriptor/storage quota enforcement,
+wait cancellation, stop, concurrent disposal, explicit process kill, deadlines,
+instruction bounds and unchanged host global environment/cwd/Console references.
+Native resource controls intentionally use different capacities and prove normal
+operations; private quota denials are separate managed contract assertions.
+Both process forms use 25 distinct workers each; all 50 are gone. Independent
+review verifies 2,327 retained paths, all 22 commands, four mode records and
+actual NativeAOT consumer/worker ELFs with no DLL-worker fallback.
+
+The actual sample passes 19 commands and four forms: 12 Kestrel executions
+(eight normal exits, four cooperative stops), 20 native-semantic HTTP comparisons
+and 12 general console/live-folder executions. Each form runs two overlapping
+machines with distinct published endpoints, then restarts the same machine.
+All report resource release; instructions range from 88,139,629 to 88,538,215,
+within the unchanged 100M/60s/128MiB service profile. The six separate service
+workers and all controller groups are gone without external cleanup signals.
+Independent review checks 3,016 unique paths, 40 HTTP byte artifacts, exact
+requests, native status/headers/body, valid variable Date and exact Content-Length.
+All 1,372 shared API/sample input identities and eleven compiler/postprocessor
+binary identities match. The general samples prove binary console EOF and host
+file persistence across distinct machines through the ordinary CLI.
+
+All 52 current Host project/C# files match the console receipt. The earlier
+filesystem/network receipts differ only in three later console integration files;
+their filesystem/network implementations remain unchanged. Native boundary controls
+and host-only JIT/AOT contracts are kept separate from translated public execution.
+Read-only source review confirms filesystem backends use System.IO and contain no
+P/Invoke/native helper/proxy implementation. Windows is not thereby qualified.
+
+The generic struct-scope qualification passes native/JIT/actual NativeAOT at
+`DotCC.FunctionalTests/bin/instance-methods-qualification/attempt-l10w7brb/receipt.json`
+(SHA-256 `a4fe5954bfc455049ea2e5ba0249af5286ffdefb83d70855aad88bb94d063437`),
+with eight successful commands and 521 independently checked identities.
+The separate root-run tests passed 85 unit/runtime and ten functional cases;
+the warmed allocation assertion covers 1,000 Enter/Dispose calls at zero bytes.
+That assertion is not a full-emulator performance benchmark. Struct thread/order
+checks, callback origin retention and the reference-based cross-thread retain
+lease remain distinct contracts.
+
+The earlier passing pre-struct baseline is preserved at `translation/attempt-03tkbonj`,
+`machine-api/attempt-l6hma1sn` and `machine-api-kestrel/attempt-wmdytj7d`.
+It is not relabeled as the final compiler. The final packaging fix `987094e`
+passes from cold worker outputs and with ordinary net10.0-only assets, while
+separate explicit publication supplies the actual RID-specific NativeAOT worker.
+
+Earlier failed build, EOF and worker-publish attempts are retained. CS8632 and
+CA1416 build warnings remain; no blanket warning-free publish is claimed.
+Trusted host roots are required: portable BCL path checks do not give atomic
+containment against hostile concurrent mutation, hardlinks or special files.
+In-process stop is cooperative, process force termination is explicit, and
+neither mode claims hardened OS sandboxing or host-wide resource limits.
+P7, Windows, performance, snapshots and PTYs are not covered.
+
 ## Final P5 Kestrel qualification
 
 All final product gates below consume `translation/attempt-kaddtzlg`: 108 freshly

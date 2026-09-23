@@ -1,50 +1,32 @@
-# Configurable machine sample (P6 integration pending)
+# Configurable Blink machine sample
 
-The new ordinary entry point is `ManagedConsumer GUEST_ELF [InProcess|SeparateProcess]`.
-It mounts the supplied ELF's parent at guest `/work`, then executes the guest path
-directly. The default is genuinely in-process; separate-process workers are built
-and deployed automatically by the imported consumer targets. No worker path or
-`ImportImage` call is needed.
+The ordinary entry point is `ManagedConsumer GUEST_ELF [InProcess|SeparateProcess]`.
+It mounts the ELF's parent at guest `/work` and executes `/work/<filename>`.
+The default runs inside this application's process. The optional separate-process
+mode discovers its automatically deployed worker; no worker path or `ImportImage`
+call is needed.
 
-For an ordinary supported static Linux x64 console program or folder-processing
-program, use `ManagedConsumer --run ./work /work/my_app argument`. The guest cwd is
-`/work`; stdin/stdout/stderr attach as binary streams and host writes persist in
-`./work`. Choose `--run-process` for a separate worker. Network access is denied by
-default; this generic entry supplies `LANG=C` explicitly and uses the machine's
-bounded default memory/instruction settings. The public `BlinkMachine` API exposes
-those settings directly when an application needs different limits.
+The public `BlinkMachine` API also runs other supported static Linux x64 programs:
 
-For the pinned Kestrel fixture the sample starts two independent concurrent
-machines, checks real HTTP, performs normal HTTP shutdown, then restarts the first
-machine and requests cooperative stop. This new path is source preparation until
-its fresh instance-v1 product and actual JIT/NativeAOT runs are recorded. The older
-explicit-worker overload below remains a P5 baseline, not a P6 pass.
+```csharp
+await using var machine = new BlinkMachine(new MachineOptions
+{
+    Environment = new Dictionary<string, string> { ["LANG"] = "C" }
+});
+machine.MountDirectory("/work", "./work"); // Live read/write by default.
+var result = await machine.ExecuteAsync(new ExecutionOptions
+{
+    Executable = "/work/my_app",
+    Arguments = ["argument"],
+    WorkingDirectory = "/work",
+    Console = ConsoleOptions.AttachCurrent()
+});
+```
 
-# Translated Blink .NET service consumer
+See [the public API contract](../src/Managed.Emulation/MACHINE-API.md) for
+configuration, private storage, RO/COW mounts, streams, ownership and limits.
 
-The sample uses `BlinkInstance` to start a separate managed worker, which owns
-`ThreadedGuestExecution` and the translated interpreter. It sends real HTTP
-health and stop requests to the .NET NativeAOT guest, verifies normal exit and
-resource release, then starts a fresh worker and demonstrates cooperative stop.
-CPU instructions execute through translated upstream Blink. The .NET guest ELF
-is distinct from the optional NativeAOT build of the emulator worker.
-
-The earlier raw-socket version built and passed with both JIT and NativeAOT
-controller/worker pairs in
-`artifacts/managed-consumer-delivery/attempt-8k2fus34/receipt.json`.
-Those historical executions verified exact HTTP responses, normal exit, a fresh worker restart,
-cooperative stop and resource cleanup. See
-[the reproducible check](../tests/ManagedConsumerDelivery/README.md).
-The current ASP.NET Core/Kestrel sample passes the actual solution build and
-both JIT/NativeAOT controller-worker pairs at
-`artifacts/managed-consumer-delivery/attempt-ljvj6fxh/receipt.json` (SHA-256
-`502992598acf8897e45020c17aeed4c2007e08d980cac0796fe16433f965aaaf`).
-Four actual workers and six native HTTP comparisons pass, including normal
-exit, fresh-process restart, cooperative stop and complete cleanup. It consumes
-public delivery `translation/attempt-kaddtzlg`; the old raw-socket receipt
-remains evidence only for its original sources.
-
-## Generate, build and run
+## Build and run
 
 From the repository root:
 
@@ -54,65 +36,72 @@ bash blink/scripts/translate.sh --offline
 dotnet build blink/ManagedConsumer.slnx -c Release --disable-build-servers
 
 dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build -- \
-  blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService \
-  blink/src/Managed.Emulation.Worker/bin/Release/net10.0/Managed.Emulation.Worker.dll
+  blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService
 ```
 
-The two required arguments are the guest ELF and worker executable. A worker
-`.dll` is launched with `dotnet`; a published native worker is launched directly.
-`--help` prints usage. The retained guest path above contains the natively qualified static
-musl NativeAOT ELF, SHA-256
-`ef6f1433794a42fe32b0fed4851bf88dd0631cd6a836550c6effca79d9e9a3ac`.
-To reproduce its build, follow [the pinned Kestrel musl build](../tests/KestrelService/README.md),
-then pass the resulting attempt's `publish/KestrelService` path. The generated library and guest binary
-are local build artifacts, not checked-in substitutes.
-
-The sample passes the six entries from the reviewed native Kestrel profile:
-`LANG=C`, `DOTNET_GCHeapHardLimit=1000000`, `DOTNET_GCRegionRange=2000000`,
-`DOTNET_GCRegionSize=100000`, `DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false`,
-and `DOTNET_EnableDiagnostics=0`. GC sizes are hexadecimal and belong to the
-guest, not the host CLR. Each worker has a 128 MiB coupled guest address-space
-and backing limit, 128
-descriptors, 16 KiB captured output, a 100-million-instruction budget, and a
-60-second wall deadline. The whole demonstration has a three-minute parent
-deadline. The larger address-space allowance accommodates ordinary runtime reservations;
-it does not assert 128 MiB of physical use. Execution qualification remains pending.
-The current threaded owner bounds the total created guest workers to 16.
-The private guest port is 8080; the host loopback port is allocated independently.
-
-## NativeAOT hosts
-
-Publish the actual worker and controller sample separately:
+Append `SeparateProcess` to select that mode explicitly. For a normal console or
+folder-processing guest, use either command below. Guest cwd is `/work`, binary
+stdin/stdout/stderr attach to the caller's console, and writes persist directly
+in `./work`. This general entry supplies `LANG=C`, denies network access by default,
+and uses configurable machine defaults rather than Kestrel-specific settings.
 
 ```bash
-dotnet publish blink/src/Managed.Emulation.Worker/Managed.Emulation.Worker.csproj \
-  -c Release -r linux-x64 -p:PublishAot=true -o blink/build/worker-aot
-
-dotnet publish blink/ManagedConsumer/ManagedConsumer.csproj \
-  -c Release -r linux-x64 -p:PublishAot=true -o blink/build/managed-consumer-aot
-
-blink/build/managed-consumer-aot/ManagedConsumer \
-  blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService \
-  blink/build/worker-aot/Managed.Emulation.Worker
+dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build -- \
+  --run ./work /work/my_app argument
+# Use --run-process instead of --run for a separate worker.
 ```
 
-The solution references original authored projects under `src`. The generated
-`TranslatedBlink` project links original adapters and the Host project directly.
-Edit authored code there and build normally; generation never overwrites it.
-The public translation pipeline selects the threaded NativeAOT guest profile by
-default. `--profile single-thread` retains the older library profile but is not
-compatible with this threaded worker sample. Raw snapshots are archival test
-inputs; only generated code transformations are published after postprocessing.
+Publish one actual NativeAOT consumer; its matching worker is published and
+packaged automatically:
 
-The worker reserves raw stdin/stdout for bounded control frames and keeps guest
-output in private descriptors. A final stopped status alone is insufficient:
-the sample requires a clean worker exit and the actual joined/quiescent/IO and
-memory-release report. A new worker process owns every restart because upstream
-retains static caches. This is controlled local execution, not an OS security
-sandbox or a Windows qualification claim.
+```bash
+dotnet publish blink/ManagedConsumer/ManagedConsumer.csproj \
+  -c Release -r linux-x64 -p:PublishAot=true -o blink/build/managed-consumer-aot
+blink/build/managed-consumer-aot/ManagedConsumer \
+  blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService SeparateProcess
+```
 
-HTTP checks require the native status, every header value and body. The actual
-RFC1123 Date is validated but may vary; header order may vary. The optional
-`BLINK_SAMPLE_EVIDENCE_DIRECTORY` environment variable retains actual request
-and response bytes, guest output, worker results and cleanup reports for the
-qualification runner.
+Ordinary applications reference the authored `Managed.Emulation` project and
+import `src/Managed.Emulation/Managed.Emulation.Consumer.targets` when packaging
+both modes. The showcase solution references original projects and the generated
+project links original `src` adapters. Edit authored code there; regeneration
+never replaces it. Public translation defaults to the instance-enabled threaded
+profile. The legacy `--profile single-thread` output is not compatible with this
+machine API.
+
+## Actual service and evidence
+
+The Kestrel demonstration starts two independent overlapping machines, checks
+real HTTP and distinct published ports, performs normal HTTP shutdown, then
+restarts the first machine and requests cooperative stop. In-process runs have
+no worker PID. Separate-process runs create a fresh worker per execution while
+machine-owned storage persists.
+
+The guest is a real static-musl ASP.NET Core NativeAOT ELF, SHA-256
+`ef6f1433794a42fe32b0fed4851bf88dd0631cd6a836550c6effca79d9e9a3ac`.
+Its build is documented in [KestrelService](../tests/KestrelService/README.md).
+The guest and optional NativeAOT emulator are separate binaries. The service
+example explicitly selects the six native-profile environment values and
+128MiB guest address-space/backing limit, 100M instructions, 60-second deadline
+and 16-worker bound. Those settings are not defaults imposed by the public API.
+They do not assert physical memory use or an OS process-wide resource sandbox.
+
+The final P6 fixture and actual sample pass JIT/NativeAOT in both modes:
+`machine-api/attempt-b074atpe` and `machine-api-kestrel/attempt-cqqbx2eu`.
+The sample gate records 12 Kestrel executions, 20 native HTTP comparisons and
+12 console/folder executions. Exact requests, status, headers and bodies match;
+only validated RFC1123 Date values and header order may vary. Set
+`BLINK_SAMPLE_EVIDENCE_DIRECTORY` to preserve actual HTTP and execution evidence.
+See [validation](../docs/VALIDATION.md) for current receipts and follow-up status.
+
+This is finite Linux x64 qualification, not arbitrary Linux software support,
+Windows qualification or hostile-code containment. In-process stop is cooperative;
+separate-process force termination is explicit. BCL mount checks require trusted
+host roots and cannot make path operations atomic against hostile concurrent
+host mutation, hard-link aliases or special files.
+
+The advanced legacy `GUEST_ELF WORKER_PATH` overload remains a P5 baseline.
+Its earlier raw-socket receipt is `managed-consumer-delivery/attempt-8k2fus34`;
+its Kestrel receipt is `managed-consumer-delivery/attempt-ljvj6fxh` (SHA-256
+`502992598acf8897e45020c17aeed4c2007e08d980cac0796fe16433f965aaaf`).
+These historical subprocess results are not relabeled as the new machine API.

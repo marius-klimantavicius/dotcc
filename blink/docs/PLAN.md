@@ -595,15 +595,15 @@ Also deliver an explicitly selected separate-process mode for better fault
 isolation and worker termination. Both modes share the public API and guest
 mount/environment/console semantics; mode-specific guarantees stay explicit.
 
-The detailed API proposal, mount modes, console semantics, isolation contract
+The detailed API contract, mount modes, console semantics, isolation contract
 and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
 
-- [ ] Deliver create/configure/start/execute/wait/stop/dispose and explicit
+- [x] Deliver create/configure/start/execute/wait/stop/dispose and explicit
       machine-versus-run lifetime, with useful typed errors/results.
-- [ ] Provide `ExecutionMode.InProcess` by default and selectable
+- [x] Provide `ExecutionMode.InProcess` by default and selectable
       `ExecutionMode.SeparateProcess`, with internal worker discovery for the
       latter, explicit capabilities and no silent fallback between modes.
-- [ ] Resolve translated globals/caches/TLS and host-binding lifetime for
+- [x] Resolve translated globals/caches/TLS and host-binding lifetime for
       in-process sequential reuse and concurrent independent machines; no
       process fallback or process-wide serialization as a substitute.
 - [x] Add opt-in wrapping-class instance translation: instance methods, pinned
@@ -617,27 +617,27 @@ and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
       starts; adapt shared libc callbacks to forward context. Audit relevant libc
       mutable state/cleanup while keeping implementation code shared. Qualify
       these contracts under JIT and NativeAOT as specified in P6-MACHINE-API.md.
-- [ ] Add image/private storage and host directory mounts with live read-write
+- [x] Add image/private storage and host directory mounts with live read-write
       as the user-selected default, plus explicit read-only and private
       copy-on-write modes, including mounting
       over existing guest directories and controlled persistence/export.
-- [ ] Implement filesystem access using cross-platform .NET BCL only in both
+- [x] Implement filesystem access using cross-platform .NET BCL only in both
       execution modes; no authored P/Invoke, native syscall/helper or subprocess
       filesystem backend. Replace the Linux native root-handle prototype.
       Document link/reparse policies and BCL containment limits, including
       concurrent host mutation, and reject unsupported guarantees explicitly.
-- [ ] Load executable/cwd from the guest namespace; accept arguments and
+- [x] Load executable/cwd from the guest namespace; accept arguments and
       dictionary-based machine/per-execution environment values. Mount host
       `./work` at guest `/work` and execute `/work/my_app` directly without
       `ImportImage` or separate registration; qualify both execution modes.
-- [ ] Provide live stdin/stdout/stderr, EOF, current-console attachment,
+- [x] Provide live stdin/stdout/stderr, EOF, current-console attachment,
       bounded buffering/capture and explicit stream ownership.
-- [ ] Generalize configurable memory/resource limits and service readiness;
+- [x] Generalize configurable memory/resource limits and service readiness;
       remove fixture-only restrictions from the general public interface.
-- [ ] Enforce guest host-access policies without changing the caller's global
+- [x] Enforce guest host-access policies without changing the caller's global
       environment/cwd/console or applying process-wide restrictions. Document
       in-process limits and reject unsupported isolation/termination guarantees.
-- [ ] Deliver examples and normal isolation/lifecycle checks using the real
+- [x] Deliver examples and normal isolation/lifecycle checks using the real
       translated core and public API under JIT/NativeAOT on Linux x64 in both
       modes, including process termination versus cooperative in-process stop.
 - [x] Document state/resource ownership for future full execution snapshots;
@@ -650,6 +650,12 @@ its own environment and console streams, interact with it, cooperatively stop
 it and reclaim resources. The documented guest isolation and
 mount behavior must be enforced. P5's fixed HTTP fixture API alone does not
 satisfy this gate.
+
+P6 completed on Linux x64: public fixture `machine-api/attempt-b074atpe`
+and actual sample `machine-api-kestrel/attempt-cqqbx2eu` pass JIT/NativeAOT in
+both execution modes against instance delivery `translation/attempt-tfqtuor3`.
+See [the exact validation ledger](VALIDATION.md). The coordinator stops here;
+P7, Windows execution, performance and hardened OS containment are not implied.
 
 ### P7 — Qualify upstream tests, platforms, and delivery (formerly P6)
 

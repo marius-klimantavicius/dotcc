@@ -9,7 +9,7 @@ immutable raw snapshot. Authored Host/bridge sources are linked directly from
 The actual ASP.NET Core/Kestrel NativeAOT guest and its final worker sample
 pass the selected Linux x64 qualification.
 Campaign C probes remain test-only.
-The normal CPU corpus passes 514 cases in each of raw/optimized JIT/NativeAOT,
+The P5 normal CPU corpus passes 514 cases in each of raw/optimized JIT/NativeAOT,
 for 2,056 comparisons, with 46 historical custom fault cases explicitly excluded.
 Actual guest-memory lifecycle and valid ELF/fixed TLS tests also pass all four
 forms, completing the finite selected-profile P3 gate.
@@ -35,8 +35,17 @@ comparisons, simultaneous private instances, restart, cooperative stop and
 natural idle deadlines. The actual showcase solution and JIT/NativeAOT sample
 also pass. Public translation defaults to that threaded profile. See
 [runtime evidence and limits](docs/P5-KESTREL-RUNTIME.md) and
-[final receipts](docs/VALIDATION.md). Work stops at P5; P6 and Windows
-qualification remain separate and unrun.
+[final receipts](docs/VALIDATION.md).
+
+The P6 public `BlinkMachine` API now passes JIT/NativeAOT in both execution
+modes: in-process by default or explicitly separate-process with an
+automatically deployed worker. It supports direct mounted ELF execution, live
+RW mounts by default, RO/COW, private persistence, resource limits, binary
+console streams, guest argv/cwd/environment and explicit network grants.
+Both forms qualify overlapping Kestrel instances, restart and cleanup.
+See [the machine API](src/Managed.Emulation/MACHINE-API.md) and
+[current progress](docs/PROGRESS.md) for final receipts and limits.
+Windows and the separate P7 qualification/performance campaign remain unrun.
 
 The P3 pass is finite selected-profile coverage. Broader ISA, dynamic ELF/TLS
 and unrelated runtime compatibility are not implied. See [progress](docs/PROGRESS.md),
@@ -50,15 +59,16 @@ dotnet build dotcc.sln -c Release -p:UseLocalLalrCc=false
 bash blink/scripts/translate.sh
 dotnet build blink/ManagedConsumer.slnx -c Release
 dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build -- \
-  blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService \
-  blink/src/Managed.Emulation.Worker/bin/Release/net10.0/Managed.Emulation.Worker.dll
+  blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService
 ```
 
 See [translation delivery](scripts/TRANSLATION.md), the
 [usage sample](ManagedConsumer/README.md) and
 [clean delivery verification](scripts/CLEAN-DELIVERY.md). Finish generation before
-building consumers. The sample exercises normal guest exit and a fresh worker with cooperative stop.
-Its actual JIT and NativeAOT integration qualification passes for the pinned Kestrel ELF.
+building consumers. Append `SeparateProcess` for an explicit worker; otherwise
+execution is inside the caller. `--run ./work /work/my_app` demonstrates direct
+mounted console/folder execution, with `--run-process` selecting a worker.
+Both actual JIT and NativeAOT integration forms pass for the pinned Kestrel ELF.
 
 ## Reproduce the core gate
 

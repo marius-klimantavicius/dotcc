@@ -1,8 +1,10 @@
 # Observed blockers
 
-These are historical and current observed campaign results. P0–P3 now pass for
-the selected profile; older open/pending labels retain their original context.
-Current P4 status is B035 below and [P4-HOST-SERVICES.md](P4-HOST-SERVICES.md).
+These are historical observed campaign results. P0–P6 now pass for their stated
+selected profiles; older open/pending labels retain their original context and
+are not current P6 blockers. See [PROGRESS.md](PROGRESS.md) and
+[VALIDATION.md](VALIDATION.md) for final instance-product/API/Kestrel receipts.
+P7, Windows and broader compatibility remain outside the completed phase.
 A passed native baseline is not translated service execution.
 
 ## B001 — Comma-separated bit-field declarations (fixed)

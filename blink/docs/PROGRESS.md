@@ -4,176 +4,127 @@ Campaign started 2026-09-14 on branch `sqlite`. The approved plan is [PLAN.md](P
 
 ## Current gate
 
-**P5 is complete for the selected Linux x64 profile.** The
-real ASP.NET Core/Kestrel NativeAOT guest passes raw/optimized JIT/NativeAOT,
-simultaneous instances, normal/cooperative stop, restart and natural deadlines.
-The actual showcase solution and its JIT/NativeAOT sample pass.
+**P6 is complete for the selected Linux x64 profile, including the requested
+allocation-free context-scope refinement.** The public `BlinkMachine`
+API executes inside the caller's process by default and supports explicitly
+selected separate-process execution through the same configuration and run API.
+Both modes pass actual JIT and NativeAOT consumers. The coordinator and workers
+stop at this phase boundary; P7, Windows execution and performance work have not
+started. P0–P5 results retain their original profiles and evidence.
 
-P6 implementation is authorized and the coordinator is active. The required
-default is execution inside the caller's .NET process, with configurable limits,
-host-folder mounts, executable/argv/cwd/environment, streaming console IO and
-explicit guest access policies. [P6-MACHINE-API.md](P6-MACHINE-API.md) records the
-updated in-process architecture and future snapshot considerations. Shared
-translated state and host-binding lifetimes must support sequential reuse and
-independent concurrent machines. This is not an OS security boundary against
-the calling application. Both in-process (default) and explicitly selected
-separate-process execution must be implemented and qualified in P6 through the
-same public API, with mode-specific isolation/termination capabilities.
-The mount-backed executable workflow is explicit: mount host `./work` at guest
-`/work`, then execute `/work/my_app` without `ImportImage` or separate executable
-registration. This remains a required public API acceptance case in both modes;
-the executable path resolves within the VM namespace.
-The user-approved plan now includes opt-in wrapping-class instance translation
-and a uniform explicit-instance function-pointer convention. Indirect calls pass
-the current instance; registered callbacks and thread starts retain their owning
-context. Shared libc code remains supported with relevant state ownership audited.
-The generic instance ABI now has focused native/JIT/NativeAOT qualification;
-actual Blink public-machine execution remains pending. The older scoped
-state-context milestone alone does not satisfy this contract.
-The user additionally requires cross-platform BCL-only filesystem access in
-both modes. The native filesystem prototype has been removed; the System.IO
-backend passes its finite native/JIT/NativeAOT boundary qualification. Live read-write
-mount semantics stay unchanged. Host path mutation and existing inode aliases are
-explicit limitations of portable path-based checks, not a hardened containment claim.
-Actual translated public-machine qualification remains pending.
-The previous P6 platform/performance campaign is now P7. Historical P6 references
-below retain their original meaning. Windows and broader qualification remain open.
+Mounting host `./work` at guest `/work` is sufficient to execute `/work/my_app`;
+no `ImportImage` or executable registration is required. Host mounts are live
+read-write by default, with explicit read-only and eager private COW modes.
+The filesystem backend uses only cross-platform .NET BCL APIs. Independent
+machines execute concurrently; private files persist across sequential runs,
+including fresh process workers. The public API supports argv/cwd/environment,
+resource limits, binary streams/console attachment, explicit network grants,
+readiness, cooperative stop, process-only kill and quiescent disposal.
 
-All final P5 gates consume public delivery `translation/attempt-kaddtzlg` (SHA-256
-`711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11`),
-with 108 fresh objects, six endian intrinsics, four typed managed ownership
-overrides, literal pooling, inline deduplication and direct original-src references.
+Opt-in compiler instance mode supplies real instance methods, pinned per-instance
+globals/TLS and pointer-wide callbacks with explicit origin arguments. Shared
+libc callbacks retain that origin. The product uses all 108 instance-v1 objects,
+literal pooling, inline deduplication, six endian intrinsics and 12 typed managed
+boundary selections. Authored sources remain linked directly from `src`; no
+CoreProbe/test main/C execution frontend enters the product.
 
-| Final gate | Receipt under `artifacts/` | Result |
+## Final P6 evidence
+
+| Gate | Receipt under `artifacts/` | Result |
 | --- | --- | --- |
-| Kestrel standalone | `kestrel-guest-execution/attempt-nb6iv2wz` | Five native HTTP semantics, 225 successful actual coarse-clock calls, normal exit/cleanup. |
-| Actual Kestrel workers | `kestrel-worker-instances/attempt-838yl87x` | All four modes; 16 workers and 40 HTTP comparisons, isolation/restart/stop/deadline/cleanup. |
-| Normal guest signals | `guest-signals-managed/attempt-39sz6b58` | All four modes; sender metadata, masked pending/unmask, signal return and nested accounting. |
-| CPU refresh | `cpu-conformance-managed/attempt-mnd6gyjc` | 514 per mode, 2,056 matched comparisons, native agreement, unchanged 46 exclusions. |
-| Actual public sample | `managed-consumer-delivery/attempt-ljvj6fxh` | Real solution/JIT/AOT pair, four workers, six native HTTP comparisons, normal/cooperative stop and restart. |
+| Instance product | `translation/attempt-tfqtuor3` | Raw build, semantic postprocess and final original-source build pass; 108 freshly emitted objects, zero reuse. |
+| Public machine fixture | `machine-api/attempt-b074atpe` | 11 native controls; ten cases in each JIT/AOT × in-process/separate-process form. |
+| Actual public sample | `machine-api-kestrel/attempt-cqqbx2eu` | 12 real Kestrel executions, 20 native HTTP comparisons and 12 console/folder sample executions across all four forms. |
+| BCL filesystem | `host-mounts/attempt-rmljxlg0` | Normal native file witness plus JIT/AOT live RW/RO/COW, overlays, export/reset, quota and link-policy contracts. |
+| Explicit network policy | `host-network-grants/attempt-rhpwmuhv` | JIT/AOT default denial and configured publication/outbound grants using real BCL peers. |
+| Console/descriptor lifetime | `host-console/attempt-071nqrfd` | JIT/AOT binary EOF, backpressure, cancellation, ordering and disposal drain. |
 
-The final sample receipt SHA-256 is
-`502992598acf8897e45020c17aeed4c2007e08d980cac0796fe16433f965aaaf`;
-all six commands pass and 2,080 recorded identities independently recheck.
-The build has existing CS8632 nullable-context warnings and no errors. No
-forced process termination supplies a pass. Exact hashes and finite capability
-limits are recorded in [VALIDATION.md](VALIDATION.md) and
-[P5-KESTREL-RUNTIME.md](P5-KESTREL-RUNTIME.md). The guest, six environment values
-and 100M/60s/128MiB execution profile remain unchanged. No speedup benchmark,
-arbitrary signal/epoll semantics or physical-memory reporting is claimed.
+Product receipt SHA-256:
+`83b804796d8ee211ed9589e2acd996fc3a6f05911204579e4eec0e31b8eb314a`.
+Public fixture SHA-256:
+`5841d3b0e8d487e60a1dd685fd5fabf369c4a5bc6d65efef8b979cea343c2be7`.
+Final sample SHA-256:
+`e29648060f862ae629d399510e8ec5ac96e99b07b2751c2e2998af80951c9ffa`.
 
-At P5 completion the coordinator and workers stopped with no active builds or
-guest processes. The user subsequently reverted the stale pending restart
-changes and authorized P6. No duplicate recovery-branch history was introduced.
+Independent review rechecks 2,327 fixture paths and 3,016 final sample paths,
+including preserved source/binary/log identities and native HTTP byte evidence.
+All recorded process groups exit without external cleanup signals. In-process
+forms create no worker processes; the fixture's 50 recorded separate workers
+and the service sample's six separate workers are gone. Actual NativeAOT
+controller and worker ELFs are preserved with no DLL-worker fallback.
+The sample checks two overlapping instances, distinct endpoints, normal HTTP
+stop, same-machine restart and cooperative stop. Kestrel retains its pinned ELF,
+six environment entries and 100M-instruction/60-second/128MiB profile.
 
-## Active P6 implementation
+The fixture additionally proves mounted execution, guest argv/cwd/environment,
+unchanged host environment/cwd/Console objects, private persistence, all mount
+modes, owned/borrowed streams, EOF, memory/descriptor/storage quotas, canceled
+waits, stop/kill, concurrent disposal, deadlines and instruction bounds.
+The native resource controls intentionally succeed without the smaller private
+managed quotas; they are not mislabeled as identical quota semantics.
 
-- Coordinator: opt-in generated program contexts/runtime ownership, execution-owner
-  binding/retirement, explicit numeric TCP grants, delivery integration and serial
-  qualification. `--state-context --runtime=c --emit=managedlib` now has focused
-  passing functional tests (3 cases: direct/object, split/nested) covering distinct
-  global/TLS/aligned storage, GC-stable addresses, nested/concurrent bindings,
-  pthread callback inheritance, fresh initialization and live-binding disposal
-  refusal. Existing pthread/errno tests pass 23/23. These are compiler/runtime
-  results, not yet a Blink in-process execution pass.
-- Filesystem worker: BCL-only live RW/RO host mounts, eager explicit COW,
-  machine-owned namespace/persistence and run-scoped descriptor sessions.
-- API worker: common in-process/separate-process machine API, console streams,
-  worker protocol/discovery and deployment. The coordinator supplies the fresh
-  generated context and shared guest-thread ownership hooks.
+The current 52 Host C# project/source files match the last console qualification.
+The earlier mount/network receipts differ only in three later console integration
+files; their filesystem and network implementations remain byte-identical.
+Their boundary results are distinct from the later translated API/sample runs.
+See [VALIDATION.md](VALIDATION.md) for exact hashes and
+[the public contract](../src/Managed.Emulation/MACHINE-API.md) for usage and limits.
 
-Instance ABI milestone `f0d67ff` adds optional `--instance-methods` at object
-emission and library link, pointer-wide callbacks with an explicit owner argument,
-pinned instance globals/TLS, typed host boundaries and retained callback/thread
-lifetimes. It passes 107 unit/runtime and 16 functional cases. Native, JIT and
-NativeAOT pass `DotCC.FunctionalTests/bin/instance-methods-qualification/attempt-qmp5ow8s/receipt.json`
-(SHA-256 `8c210a216baec3d53183a0e3e89b018ed0d57bef32c01f8d41728bffab62163a`);
-519 recorded identities independently recheck. This supersedes the ambient-only
-architecture for the new machine API without removing static translation support.
-Actual Blink instance-v1 producers are now under preflight; the public machine,
-worker deployment and Kestrel sample sources remain unqualified until refreshed
-product and actual consumer runs pass.
+## Milestones and preserved findings
 
-The P6 API/delivery source checkpoint adds both modes, persistent machine storage,
-live mounts, mounted executable loading, bounded console/protocol streams,
-automatic worker deployment, concurrent-disposal handling and real consumer
-fixtures. These sources are not yet a runtime pass. All 108 instance-v1 Blink
-producers emitted in `translation/attempt-arzehd55`, but link failed on a
-canonical callback declaration seen through both forward and complete struct
-types. Milestone `dcf586a` qualifies the conservative declaration merge, formal-parameter
-boundary checks and explicit-owner `pthread_once`: 88 unit/runtime and 7 functional
-cases pass, plus native/JIT/NativeAOT execution. The execution receipt is
-`DotCC.FunctionalTests/bin/instance-methods-qualification/attempt-5_drpp4j/receipt.json`
-(SHA-256 `64d757af4a3efd1930dafb25bd026ba20ab0cb5e9391c4977da250444d5a361f`),
-with 521 independently verified identities. The mixed 104-old/4-new diagnostic
-link passes but is explicitly not a qualified delivery. Fresh canonical
-production generation with the new compiler completed as recorded below; public
-machine fixture and Kestrel consumer gates still follow that delivery. Earlier `attempt-hakhpj6f` was deliberately interrupted before
-fixing a static resource callback; its completed object identities were reused
-only where exact C/compiler/profile identities matched. Final product and all
-public consumer gates remain open.
+- `bd4d4c0`: earlier scoped state-context foundation; not alone the instance ABI.
+- `b8287f5`, `a3a5cb8`, `5d81c95`: BCL mounts, network grants and console lifetime.
+- `f0d67ff`: generic explicit instance ABI, focused compiler/runtime tests and
+  native/JIT/AOT callback ownership qualification.
+- `dcf586a`: conservative opaque/complete callback declaration merge, formal
+  parameter contracts and explicit-owner `pthread_once`; 88 unit/runtime and
+  seven functional cases plus native/JIT/AOT pass. Execution receipt
+  `DotCC.FunctionalTests/bin/instance-methods-qualification/attempt-5_drpp4j/receipt.json`
+  has SHA-256 `64d757af4a3efd1930dafb25bd026ba20ab0cb5e9391c4977da250444d5a361f`.
+- `d9172f0`, `759ec20`: common machine API, instance product integration and
+  authored resource/signal-mask adapter corrections.
+- `ed0bb81`: actual in-process cases and current-output worker deployment.
+- `04aedc5`: complete four-mode fixture qualification, explicit EOF protocol and
+  cold NativeAOT worker publishing with post-restore target reevaluation.
 
-Public instance-v1 delivery now passes at `translation/attempt-03tkbonj`
-(receipt SHA-256 `9d93942c018ec30ce66a02afaeac08416a9f794dd1ef93bd79d0b80c01e4cc46`).
-All 108 producers were freshly emitted with the corrected compiler in the
-preceding attempt; this delivery reuses those exact compatible object identities.
-Raw build, semantic postprocessing, reconstructed original-source project and
-final direct-source build pass. Two failed build receipts preserve missed
-resource/signal-mask adapter declarations; the original authored sources were
-corrected, with no generated-source edits. The actual public-machine fixture
-(10 cases, 11 distinct native witnesses) and Kestrel consumer gates are next.
+Failed/interrupted attempts remain preserved. `translation/attempt-hakhpj6f`
+was stopped before source mutation; `attempt-arzehd55` exposed cross-object
+callback declarations. `attempt-j3fke0t9` freshly emitted all 108 objects and
+linked, then exposed an authored static adapter; `attempt-7jro3xhv` exposed
+three remaining signal-mask calls. The first passing instance delivery reused only exact compatible objects, with
+no generated edits; the final struct-scope delivery freshly emitted all 108. `machine-api/attempt-4dl_sx8q` retained the
+process input-EOF defect; `attempt-eoq5c7m8` retained a non-AOT worker package.
+These are superseded by successful current gates, not rewritten as passes.
 
-The actual ordinary solution and Probe build now pass after correcting one
-C# child-thread signal-mask call and worker deployment metadata. The deployment
-receipt `worker-deployment/attempt-ke_wftla` (SHA-256
-`68e6e3f080481c89159f520bac06059e55dd603c4e7ea77d1d861085eba5842f`)
-verifies both consumers receive exactly the current 13 worker files and exclude
-201 stale RID-output files. In `machine-api/attempt-4dl_sx8q`, all 11 native
-controls pass and the actual **in-process JIT consumer passes all 10 cases**.
-The separate-process JIT run fails its binary-console outcome assertion after
-successful earlier file/persistence scenarios; its failure is preserved and
-under diagnosis. Neither the full four-mode gate nor Kestrel is yet passed.
+The allocation-free scope refinement `b33190f` returns concrete `RuntimeBinding`
+structs, including generated entry APIs and explicit callback adapters, and avoids
+boxing in the authored threaded owner. Its focused 85 unit/runtime and ten
+functional tests pass; the warmed 1,000-entry allocation assertion reports zero
+bytes. Native/JIT/actual NativeAOT qualification also passes eight commands at
+`DotCC.FunctionalTests/bin/instance-methods-qualification/attempt-l10w7brb/receipt.json`
+(SHA-256 `a4fe5954bfc455049ea2e5ba0249af5286ffdefb83d70855aad88bb94d063437`),
+with 521 independently checked identities. The final product, API and sample
+rows above were all regenerated/reexecuted afterward. `987094e` separates the
+portable worker build from explicit RID/AOT publication; a cold publish and
+TFM-only ordinary assets check pass. No stale restore result supplies a pass.
 
-The complete public fixture gate now **passes all four JIT/NativeAOT ×
-in-process/separate-process forms**, 10 cases per form, at
-`machine-api/attempt-l6hma1sn/receipt.json` (SHA-256 `772f3a54cd3e9bc06d70ad71eaf72ca295c33f4c8471d96087b5300ff2890380`).
-All 11 native controls pass. The actual NativeAOT consumer includes its actual
-NativeAOT worker, discovered automatically; in-process runs launch no worker.
-The process EOF defect was corrected by an explicit EOF frame, and cold worker
-publish now reevaluates restored NativeAOT imports before publishing. The failed
-receipts remain preserved. Sources stay frozen for the final public Kestrel and
-console/folder sample gate; P6 is not complete until that gate and final review.
+The earlier fully passing instance baseline remains preserved at
+`translation/attempt-03tkbonj`, `machine-api/attempt-l6hma1sn` and
+`machine-api-kestrel/attempt-wmdytj7d`. The final rows supersede those exact
+compiler identities rather than relabeling them.
 
-Console and descriptor integration passes JIT/NativeAOT at
-`host-console/attempt-071nqrfd` (receipt SHA-256
-`0cf272d2bb4736c0eb43dce0aa1c6331e66517f11703c72e0cccf6a135f34a8c`).
-Binary EOF, bounded backpressure, cancellation, concurrent output ordering and
-owner disposal with pending input/output are covered. Descriptor disposal drains
-its operations while leaving a borrowed console usable. The coordinator rechecked
-149 frozen source/copy/log/binary identities. This is a host boundary result;
-public-machine and actual guest console gates remain pending.
+## Limits and stop boundary
 
-Filesystem milestone `b8287f5` passes a normal native file-description witness
-and BCL JIT/NativeAOT mount contracts at `host-mounts/attempt-rmljxlg0`
-(receipt SHA-256 `6d5cd50f78ccd4e71efc7647ed85cf52f233686ffd8b3cb658d0066a867627e0`).
-Live RW/RO, nested overlays, private persistence, eager COW/export/discard,
-aggregate private byte/node quotas and ordinary link denial are covered. The
-coordinator independently rechecked 159 source/copy/log/binary entries; the only
-subsequent difference is the explicitly documented result-only fixture README.
-Explicit network grants also pass JIT/NativeAOT boundary checks at
-`host-network-grants/attempt-rhpwmuhv`, with real BCL socket peers. These Host
-checks do not substitute for translated public-machine execution.
-
-The filesystem worker now owns the new generic instance-method/function-pointer
-ABI; the API worker owns console ordering/ownership and deployment review. The
-coordinator owns public fixtures, integration, current delivery and qualification.
-
-Current public delivery remains the qualified P5 artifact above. P6 Host/API and
-pipeline source edits are unqualified until a fresh delivery and actual consumer
-runs. Remaining gates are filesystem/console/network normal contracts, actual
-sequential and concurrent in-process guests, both modes under JIT/NativeAOT,
-Kestrel through the public API, examples/documentation and final cleanup checks.
-No platform pass, hardened sandbox, snapshot implementation or PTY is inferred.
+This is finite Linux x64 qualification, not arbitrary Linux compatibility,
+Windows execution, a performance result or a hardened OS sandbox. BCL path checks
+cannot provide atomic containment against hostile concurrent host mutation,
+hard-link aliases or special files: host roots must satisfy the documented
+trusted-root contract. In-process stop is cooperative and cannot force-kill CLR
+threads; process-wide hard resource enforcement is not advertised. Separate
+processes provide explicit fault isolation/kill, not automatically an OS sandbox.
+Snapshots remain a future ownership design; PTYs and P7 are outside this phase.
+No builds or guest runs remain active. Completion documentation changed only
+after the final frozen-source audits; no executable source changed afterward.
 
 ## Prior P5 progression (historical snapshots)
 

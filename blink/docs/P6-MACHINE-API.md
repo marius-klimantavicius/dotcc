@@ -1,8 +1,9 @@
 # P6: public machine API, mounts, console and isolation
 
-Requested after P5 completion on 2026-09-23. This is the next implementation
-phase; the former P6 platform/performance qualification phase becomes P7.
-This document specifies proposed behavior, not implemented or qualified APIs.
+Requested after P5 completion on 2026-09-23 and now completed for the selected
+Linux x64 profile. The public API passes JIT/NativeAOT in both execution modes;
+[VALIDATION.md](VALIDATION.md) records exact receipts and limits. The former
+platform/performance qualification phase is P7 and remains unrun.
 Execution snapshots are a future extension, not a P6 completion requirement.
 
 ## User-facing workflow
@@ -18,10 +19,10 @@ in P6 through the same public API: `InProcess` (default) and explicitly selected
 with separate guarantees and automatic worker discovery/deployment plus an
 advanced explicit worker-location option. Never switch modes implicitly.
 
-Illustrative API shape; names will be finalized during implementation:
+Implemented public API:
 
 ```csharp
-await using var machine = await BlinkMachine.CreateAsync(new MachineOptions
+await using var machine = new BlinkMachine(new MachineOptions
 {
     ExecutionMode = ExecutionMode.InProcess, // Default; or SeparateProcess.
     MemoryLimit = 256 * 1024 * 1024,
@@ -29,14 +30,14 @@ await using var machine = await BlinkMachine.CreateAsync(new MachineOptions
     Network = NetworkPolicy.Isolated,
 });
 
-await machine.MountDirectoryAsync("./work", "/work"); // Default: live read-write.
+machine.MountDirectory("/work", "./work"); // Default: live read-write.
 
 var result = await machine.ExecuteAsync(new ExecutionOptions
 {
     Executable = "/work/my_app", // Host ./work/my_app, resolved via the mount.
     Arguments = ["--example"], // Excludes argv[0]; executable supplies it once.
     WorkingDirectory = "/work",
-    Environment = new Dictionary<string, string> { ["APP_MODE"] = "demo" },
+    Environment = new Dictionary<string, string?> { ["APP_MODE"] = "demo" },
     Console = ConsoleOptions.AttachCurrent(leaveOpen: true),
 });
 ```
