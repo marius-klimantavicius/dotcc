@@ -56,12 +56,7 @@ public sealed partial class VirtualTcpNetwork
             if (!Find(handle, out var entry)) return Fail<SocketEdgeReadiness>(GuestError.BadDescriptor);
             try
             {
-                uint ready = 0;
-                if (entry.Socket.Poll(0, SelectMode.SelectRead)) ready |= 1;
-                // Listening sockets have no writable stream; do not manufacture OUT.
-                if (!entry.Listening && entry.Remote != null && entry.Socket.Poll(0, SelectMode.SelectWrite)) ready |= 4;
-                if (entry.Socket.Poll(0, SelectMode.SelectError)) ready |= 8;
-                if (!entry.Listening && entry.Remote == null) ready |= 16;
+                uint ready = SocketReadiness(entry);
                 return HostResult<SocketEdgeReadiness>.Success(new(ready, entry.ReadEpoch, entry.WriteEpoch));
             }
             catch (SocketException error) { return Fail<SocketEdgeReadiness>(ConvertError(error)); }

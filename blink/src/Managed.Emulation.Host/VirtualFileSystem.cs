@@ -8,7 +8,9 @@ public enum GuestError
     CrossDevice = 18, NotDirectory = 20, IsDirectory = 21, Invalid = 22, TooManyFiles = 24,
     NoSpace = 28, IllegalSeek = 29, ReadOnly = 30, BrokenPipe = 32, NameTooLong = 36, NotEmpty = 39,
     NotSocket = 88, Unsupported = 95, AddressInUse = 98, AddressUnavailable = 99,
-    ConnectionReset = 104, AlreadyConnected = 106, NotConnected = 107, TimedOut = 110, ConnectionRefused = 111, Canceled = 125
+    NetworkDown = 100, NetworkUnreachable = 101, NetworkReset = 102, ConnectionAborted = 103,
+    ConnectionReset = 104, NoBufferSpace = 105, AlreadyConnected = 106, NotConnected = 107,
+    TimedOut = 110, ConnectionRefused = 111, HostUnreachable = 113, AlreadyInProgress = 114, InProgress = 115, Canceled = 125
 }
 
 public readonly record struct HostResult<T>(T Value, GuestError Error)

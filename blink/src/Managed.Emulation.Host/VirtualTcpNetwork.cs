@@ -15,6 +15,8 @@ public readonly record struct AcceptedSocket(int Handle, GuestEndpoint Remote);
 /// Guest addresses never become implicit external host destinations.</summary>
 public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNetworkPolicy? policy = null) : IAsyncDisposable
 {
+    private enum ConnectionState { Unconnected, Connecting, Connected, Failed, Closed }
+
     private sealed class Entry(Socket socket)
     {
         internal readonly Socket Socket = socket;
@@ -23,6 +25,9 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
         internal bool Listening, PublicationGranted;
         internal bool ReadShutdown, WriteShutdown;
         internal bool NonBlocking;
+        internal ConnectionState Connection;
+        internal GuestError PendingError;
+        internal Task<HostResult<int>>? ConnectionTask;
         internal ulong ReadEpoch, WriteEpoch;
         internal int SendTimeoutMilliseconds, ReceiveTimeoutMilliseconds;
     }
@@ -137,54 +142,6 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
             ? HostResult<GuestEndpoint>.Success(entry.Local ?? new(0, 0)) : Fail<GuestEndpoint>(GuestError.BadDescriptor);
     }
 
-    public Task<HostResult<int>> ConnectAsync(int handle, GuestEndpoint destination, CancellationToken cancellation = default)
-        => RunAsync<int>(async token =>
-        {
-            Entry source;
-            IPEndPoint actual;
-            lock (sync)
-            {
-                if (!Find(handle, out source!)) return Fail<int>(GuestError.BadDescriptor);
-                if (source.Remote != null) return Fail<int>(GuestError.AlreadyConnected);
-                if (source.Listening) return Fail<int>(GuestError.Invalid);
-                // Nonblocking connect needs a pending-connect/error contract;
-                // the selected Kestrel transport only accepts incoming streams.
-                if (source.NonBlocking) return Fail<int>(GuestError.Unsupported);
-                // A timed connect needs a retained in-progress connection state;
-                // canceling ConnectAsync cannot truthfully provide that contract.
-                if (source.SendTimeoutMilliseconds != 0) return Fail<int>(GuestError.Unsupported);
-                if (policy is null)
-                {
-                    if (destination.Address != GuestEndpoint.Loopback) return Fail<int>(GuestError.Access);
-                    if (!bindings.TryGetValue(destination.Port, out var target) || !target.Listening) return Fail<int>(GuestError.ConnectionRefused);
-                    if (source.Local == null)
-                    {
-                        var bound = Bind(handle, new(GuestEndpoint.Loopback, 0));
-                        if (!bound.Succeeded) return Fail<int>(bound.Error);
-                    }
-                    actual = (IPEndPoint)target.Socket.LocalEndPoint!;
-                }
-                else
-                {
-                    if (!policy.Destinations.Contains(destination)) return Fail<int>(GuestError.Access);
-                    actual = new IPEndPoint(new IPAddress(new byte[] { (byte)(destination.Address >> 24),
-                        (byte)(destination.Address >> 16), (byte)(destination.Address >> 8), (byte)destination.Address }), destination.Port);
-                    // An outbound grant permits an ephemeral source, not a public
-                    // listener. Do not route this through the publication check.
-                    if (source.Local == null)
-                    {
-                        ushort port = AllocatePort();
-                        if (port == 0) return Fail<int>(GuestError.AddressInUse);
-                        source.Socket.Bind(new IPEndPoint(IPAddress.Any, 0));
-                        source.Local = new GuestEndpoint(GuestEndpoint.Loopback, port);
-                    }
-                }
-            }
-            await source.Socket.ConnectAsync(actual, token).ConfigureAwait(false);
-            lock (sync) source.Remote = destination;
-            return HostResult<int>.Success(0);
-        }, cancellation);
-
     public Task<HostResult<AcceptedSocket>> AcceptAsync(int handle, CancellationToken cancellation = default)
         => RunAsync<AcceptedSocket>(async token =>
         {
@@ -227,6 +184,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
                     var entry = new Entry(accepted)
                     {
                         Local = listener.Local!.Value with { Address = GuestEndpoint.Loopback }, Remote = remote,
+                        Connection = ConnectionState.Connected,
                         SendTimeoutMilliseconds = listener.SendTimeoutMilliseconds,
                         ReceiveTimeoutMilliseconds = listener.ReceiveTimeoutMilliseconds
                     };
@@ -257,7 +215,8 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
                 {
                     // The operation and observed drain generation are atomic with
                     // readiness snapshots. References retain this exact entry.
-                    if (destination.Length != 0 || entry.Socket.Poll(0, SelectMode.SelectRead))
+                    if (entry.Connection != ConnectionState.Connecting &&
+                        (destination.Length != 0 || entry.Socket.Poll(0, SelectMode.SelectRead)))
                     {
                         int count = entry.Socket.Receive(destination.Span,
                             peek ? SocketFlags.Peek : SocketFlags.None, out SocketError error);
@@ -287,10 +246,13 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
                 token.ThrowIfCancellationRequested();
                 lock (sync)
                 {
-                    int count = entry.Socket.Send(source.Span, SocketFlags.None, out SocketError error);
-                    // A real completed transfer always wins; never repeat bytes.
-                    if (count > 0 || error == SocketError.Success) return HostResult<int>.Success(count);
-                    if (error != SocketError.WouldBlock) throw new SocketException((int)error);
+                    if (entry.Connection != ConnectionState.Connecting)
+                    {
+                        int count = entry.Socket.Send(source.Span, SocketFlags.None, out SocketError error);
+                        // A real completed transfer always wins; never repeat bytes.
+                        if (count > 0 || error == SocketError.Success) return HostResult<int>.Success(count);
+                        if (error != SocketError.WouldBlock) throw new SocketException((int)error);
+                    }
                     ++entry.WriteEpoch;
                     if (entry.NonBlocking) return Fail<int>(GuestError.Again);
                 }
@@ -335,6 +297,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
 
     public HostResult<int> Close(int handle)
     {
+        Task<HostResult<int>>? connection;
         lock (sync)
         {
             if (!entries.Remove(handle, out var entry)) return Fail<int>(GuestError.BadDescriptor);
@@ -343,9 +306,13 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
                 bindings.Remove(local.Port);
                 if (entry.Socket.LocalEndPoint is IPEndPoint physical) origins.Remove(physical.Port);
             }
+            entry.Connection = ConnectionState.Closed;
+            connection = entry.ConnectionTask;
             entry.Socket.Dispose();
-            return HostResult<int>.Success(0);
         }
+        // Completion takes only network.sync. Never wait while holding it.
+        connection?.GetAwaiter().GetResult();
+        return HostResult<int>.Success(0);
     }
 
     public async ValueTask DisposeAsync()
@@ -362,6 +329,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
             if (owner)
             {
                 disposed = true;
+                foreach (var entry in entries.Values) entry.Connection = ConnectionState.Closed;
                 sockets = entries.Values.Select(entry => entry.Socket).ToArray();
                 operations = pending.ToArray();
                 entries.Clear(); bindings.Clear(); origins.Clear();
@@ -431,7 +399,15 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNe
         SocketError.AddressAlreadyInUse => GuestError.AddressInUse,
         SocketError.AddressNotAvailable => GuestError.AddressUnavailable,
         SocketError.ConnectionRefused => GuestError.ConnectionRefused,
-        SocketError.ConnectionReset or SocketError.ConnectionAborted => GuestError.ConnectionReset,
+        SocketError.ConnectionReset => GuestError.ConnectionReset,
+        SocketError.ConnectionAborted => GuestError.ConnectionAborted,
+        SocketError.NetworkDown => GuestError.NetworkDown,
+        SocketError.NetworkUnreachable => GuestError.NetworkUnreachable,
+        SocketError.NetworkReset => GuestError.NetworkReset,
+        SocketError.HostUnreachable => GuestError.HostUnreachable,
+        SocketError.NoBufferSpaceAvailable => GuestError.NoBufferSpace,
+        SocketError.InProgress => GuestError.InProgress,
+        SocketError.AlreadyInProgress => GuestError.AlreadyInProgress,
         SocketError.NotConnected => GuestError.NotConnected,
         SocketError.IsConnected => GuestError.AlreadyConnected,
         SocketError.Shutdown => GuestError.BrokenPipe,
