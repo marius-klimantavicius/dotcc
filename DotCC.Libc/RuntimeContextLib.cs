@@ -10,6 +10,13 @@ namespace DotCC.Libc;
 
 public static unsafe partial class Libc
 {
+    /// <summary>Explicit runtime identity carried by generated instance callback
+    /// adapters. The caller must not substitute an unrelated ambient binding.</summary>
+    public interface IProgramInstance
+    {
+        RuntimeContext __DotCcRuntime { get; }
+    }
+
     /// <summary>Explicit runtime ownership for a generated C program context.
     /// Binding is thread-affine and stack ordered; it does not flow through async
     /// execution. Pinned globals and pthread objects belong to this context.
@@ -46,6 +53,21 @@ public static unsafe partial class Libc
                 return binding;
             }
             catch { Release(); throw; }
+        }
+        /// <summary>Reserves an instance for an explicitly registered deferred
+        /// callback without binding this thread. The registration owner must
+        /// dispose the lease after its last possible callback; disposal may
+        /// occur on any thread and is idempotent.</summary>
+        public IDisposable RetainLease()
+        {
+            Retain();
+            try { return new RuntimeLease(this); }
+            catch { Release(); throw; }
+        }
+        private sealed class RuntimeLease(RuntimeContext context) : IDisposable
+        {
+            private RuntimeContext? retained = context;
+            public void Dispose() => Interlocked.Exchange(ref retained, null)?.Release();
         }
         internal void Retain()
         {

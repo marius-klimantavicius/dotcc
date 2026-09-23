@@ -1,5 +1,9 @@
 # Explicit managed C program state
 
+For true instance methods and explicit-owner function pointers, use
+[instance translation](instance-translation.md). This older option retains
+static methods and its existing callback convention.
+
 `--emit=managedlib --runtime=c --state-context` emits a library with explicitly
 owned C globals. It is a link-time option; the same object files can still link
 without it for the existing static-library behavior.

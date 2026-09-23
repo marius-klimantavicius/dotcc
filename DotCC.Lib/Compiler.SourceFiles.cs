@@ -62,7 +62,7 @@ public static partial class Compiler
     private static IReadOnlyDictionary<string, string> BuildSourceFiles(string functions,
         IReadOnlyList<CSharpFunctionSource>? parts, string aliases, EmitMode emit, string libraryClass,
         string importsClass, bool importsAreStatic, SourceSplit split, int splitSize, string? namespaceName, bool nested,
-        Func<string, string, bool, string> shell)
+        Func<string, string, bool, string> shell, bool instanceMethods = false)
     {
         bool library = emit is EmitMode.ManagedLib or EmitMode.SharedLib;
         var owner = library ? libraryClass : "DotCcProgram";
@@ -89,7 +89,7 @@ public static partial class Compiler
             + $"using static global::{scope}Libc;\nusing static global::{scope}{HelperClass(owner, "Globals")}Special;\nusing DotCcGlobals = global::{scope}{HelperClass(owner, "Globals")}Special;\nusing static {owner};\nusing DotCcFunctions = global::{NamespacePrefix(namespaceName)}{owner};\n"
             + (nested ? string.Join("\n", aliases.Split('\n').Where(line => !line.StartsWith("using __DotCcFunctionOwner_", StringComparison.Ordinal))) + "\n" : "")
             + (importsClass.Length == 0 ? "" : $"using static global::{scope}{(importsAreStatic ? "DotCcStaticImports" : "DotCcImports")};\n")
-            + (emit == EmitMode.ManagedLib ? "public " : "internal ") + $"static unsafe partial class {owner}\n{{\n";
+            + (emit == EmitMode.ManagedLib ? "public " : "internal ") + $"{(instanceMethods ? "sealed" : "static")} unsafe partial class {owner}\n{{\n";
         const string footer = "\n}\n";
         var group = new StringBuilder();
         int groupBytes = Encoding.UTF8.GetByteCount(header + footer), index = 0;
@@ -116,7 +116,7 @@ public static partial class Compiler
         {
             if (group.Length == 0) firstName = part.Name;
             var method = IndentBlock(part.Text.Replace("static unsafe ",
-                library ? "public static unsafe " : "internal static unsafe "), "    ") + "\n\n";
+                library ? "public static unsafe " : "internal static unsafe ").Replace("/*__dotcc_instance_method__*/ unsafe ", "public unsafe "), "    ") + "\n\n";
             group.Append(method);
             groupBytes = checked(groupBytes + Encoding.UTF8.GetByteCount(method));
             // Append first, then close on the first crossing. A large method is

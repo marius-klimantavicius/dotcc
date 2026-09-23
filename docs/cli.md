@@ -12,6 +12,7 @@
 | `--emit=csproj` | Default — `DotCcProgram.cs` + paired csproj to `-o` dir. |
 | `--emit=build` | As `csproj`, then run `dotnet build -c Release` in the output dir. |
 | `--emit=managedlib` | Emit a reusable managed library with public functions and aggregate types. Add `-c` to compile it. |
+| `--instance-methods` | Opt-in instance methods, owner storage and explicit-owner function pointers. Select at object emission and managed-library link (`--runtime=c`); incompatible object conventions are rejected. See [instance translation](instance-translation.md). |
 | `--overrides-file <path>` | Load a strict version-1 translation profile: macro selectors/templates and `fieldTypeNames` for stable anonymous struct/union names selected through fields. See [translation overrides](macro-overrides.md). |
 | `--override-macro NAME=BODY` | Replace each active definition of NAME, preserving its signature. Repeat for distinct names; replaces same-name profile rules and conflicts with `-DNAME`. |
 | `--override-report <path>` | Write JSONL selection/expansion/provenance diagnostics for macro overrides, field type names and runtime intrinsics. |

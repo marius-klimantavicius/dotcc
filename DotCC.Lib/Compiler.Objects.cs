@@ -56,17 +56,18 @@ public static partial class Compiler
         IReadOnlyList<string>? includeDirs = null,
         IReadOnlyList<string>? defines = null,
         CDialect? dialect = null,
-        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null)
+        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
         => EmitCSharp(new[] { inputPath }, includeDirs, defines,
-                      emit: EmitMode.Object, dialect: dialect, warnings: warnings, preprocessing: preprocessing);
+                      emit: EmitMode.Object, dialect: dialect, warnings: warnings, preprocessing: preprocessing, outputOptions: outputOptions);
 
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, IReadOnlyList<Backends.CSharpGlobalSource> globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 2 — link with `dotcc <objs> -o <out>`.\n");
+        sb.Append("//!!dotcc-obj calling-convention:").Append(instanceMethods ? "instance-v1" : "static-v1").Append('\n');
         sb.Append("//!!dotcc-obj source-language:").Append(usesZig ? "zig" : "c").Append('\n');
         sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
         sb.Append(SerializeFunctionOverrides(functionOverrides));
@@ -167,6 +168,7 @@ public static partial class Compiler
         foreach (var path in objectPaths)
         {
             var text = File.ReadAllText(path).ReplaceLineEndings("\n");
+            ValidateInstanceObject(text, path, outputOptions?.InstanceMethods == true);
             if (text.Split('\n').Contains("//!!dotcc-obj source-language:zig", StringComparer.Ordinal)) usesZig = true;
             else if (usesZig != true && !text.Split('\n').Contains("//!!dotcc-obj source-language:c", StringComparer.Ordinal)) usesZig = null;
             if (!text.Contains(MagicObject, StringComparison.Ordinal))
@@ -411,22 +413,24 @@ public static partial class Compiler
         bool includeZig = IncludeZigRuntime(outputOptions, usesZig);
         var owner = libraryMode ? libraryClass : "DotCcProgram";
         var literals = LiteralPool.CreateOutput(typeByName, HelperClass(owner, "Literals"), outputOptions?.LiteralPool == true);
-        var pointerResolvers = ResolveExternalPointerOwners(typeByName, definedNames, typeByName.Keys);
+        var pointerResolvers = ResolveExternalPointerOwners(typeByName, definedNames, typeByName.Keys, outputOptions?.InstanceMethods == true);
         var storage = new GlobalStorageReferences(inline.Globals,
             functionSources.Select(f => f.Name).Concat(typeByName.Keys),
-            owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName));
+            owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName), outputOptions?.InstanceMethods == true);
         var types = storage.Rewrite(RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout));
         ValidateContextNames(outputOptions, functionSources.Select(f => f.Name).Concat(typeByName.Keys).Append(owner));
         var globalText = RenderGlobals(inline.Globals, literals, storage);
-        if (outputOptions?.StateContext == true)
-            globalText = RenderStateContext(globalText, inline.Globals, literals, storage, owner);
-        var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = storage.Rewrite(literals.Rewrite(part.Text)) }).ToArray();
-        return BuildSourceFiles(storage.Rewrite(literals.Rewrite(functions.ToString())), parts, aliasText,
+        if (outputOptions?.StateContext == true || outputOptions?.InstanceMethods == true)
+            globalText = RenderStateContext(globalText, inline.Globals, literals, storage, owner, outputOptions?.InstanceMethods == true);
+        string ResolveInstanceCalls(string text) => outputOptions?.InstanceMethods == true
+            ? InstanceReferences.Resolve(text, definedNames, "this") : text;
+        var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(part.Text))) }).ToArray();
+        return BuildSourceFiles(storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(functions.ToString()))), parts, aliasText,
             emit, libraryClass, importsClass, false, split, splitSize, namespaceName, nested,
             (functionText, fileAliases, partial) => BuildShell(mainArity, pointerResolvers.Methods + RenderMacroFields(typeByName, owner, definedNames) + functionText, types, fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
-                mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig));
+                mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig), instanceMethods: outputOptions?.InstanceMethods == true);
     }
 
     private static string GeneratedOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null, bool nested = false, bool literalPool = false)

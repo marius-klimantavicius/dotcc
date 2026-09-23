@@ -13,7 +13,7 @@ using DotCC.Ir;
 /// type is a <c>delegate*</c>. This reproduces exactly the spellings the IR type
 /// model used to bake in via the old <c>CType.CsType</c> property.
 /// </summary>
-internal sealed class CSharpTarget : ITarget
+internal sealed class CSharpTarget(bool instanceMethods = false) : ITarget
 {
     public string RenderType(CType t) => t switch
     {
@@ -29,7 +29,9 @@ internal sealed class CSharpTarget : ITarget
         // `-shared` exports' [UnmanagedCallersOnly(CallConvs=CallConvCdecl)]); the
         // `CallConvCdecl` modifier resolves without a using. Default (managed) is
         // unchanged — `&fn` of dotcc's own methods stays a managed delegate*.
+        CType.Func { IsNativeCallConv: true } when instanceMethods => throw new CompileException("native function-pointer ABI is unsupported with --instance-methods"),
         CType.Func f => (f.IsNativeCallConv ? "delegate* unmanaged[Cdecl]<" : "delegate*<")
+            + (instanceMethods && !f.IsNativeCallConv ? "DotCcFunctions, " : "")
             + string.Join(", ", f.Params.Select(RenderType)
                 .Concat(f.Variadic && !f.IsNativeCallConv ? new[] { "global::System.ReadOnlySpan<VaArg>" } : global::System.Array.Empty<string>())
                 .Append(RenderType(f.Return))) + ">",

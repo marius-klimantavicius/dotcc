@@ -35,7 +35,7 @@ internal sealed record CSharpGlobalSource(string Name, string Field, string Init
 
 internal sealed record CSharpGlobalOutput(string Fields, string Initializers, string ThreadFields, string StaticMembers,
     string GlobalName, string ThreadName, string ThreadBackingName,
-    string? ContextMembers = null);
+    string? ContextMembers = null, bool InstanceMethods = false);
 
 /// <summary>
 /// Lowers the typed IR to low-level unsafe C# text. Deliberately DUMB: every
@@ -50,7 +50,8 @@ internal sealed partial class CSharpBackend
     /// type-spelling map (<see cref="ITarget"/>, the seam a second target slots
     /// into). The statement / expression emitter in this class is still the
     /// C#-specific one.</summary>
-    private readonly ITarget _target = new CSharpTarget();
+    private ITarget _target = new CSharpTarget();
+    private bool _instanceMethods;
     private readonly DotCC.LiteralPool _literals = new();
     private bool _publicTypes;
     private bool _relocatable;
@@ -68,10 +69,10 @@ internal sealed partial class CSharpBackend
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
     private string Cs(CType t) => _target.RenderType(t);
 
-    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false)
+    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false, bool instanceMethods = false)
     {
         VaListLifetimeValidator.Validate(unit);
-        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass, _inlineMetadata = inlineMetadata };
+        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass, _inlineMetadata = inlineMetadata, _instanceMethods = instanceMethods, _target = new CSharpTarget(instanceMethods) };
         foreach (var type in unit.Types) cg._aggregateDefinitions.Add(type.Name, type);
         cg.RegisterPublicFunctionPointers(unit);
         cg._offsetDocument = unit.CreateOffsetDocument();
@@ -694,7 +695,7 @@ internal sealed partial class CSharpBackend
         // faithful lowering of C's "please inline this". Short spelling: the shell's
         // usings include System.Runtime.CompilerServices.
         if (fn.Sym.IsInline) { sb.Append("[MethodImpl(MethodImplOptions.AggressiveInlining)]\n"); }
-        sb.Append($"static unsafe {Cs(retTy)} {FunctionName(fn.Sym)}({ps})\n");
+        sb.Append($"{(_instanceMethods ? "/*__dotcc_instance_method__*/" : "static")} unsafe {Cs(retTy)} {FunctionName(fn.Sym)}({ps})\n");
         // C lets a goto jump INTO a nested block; C# scopes labels to their
         // block. Hoist labeled tails until every goto is legal (no-op for the
         // overwhelming majority of functions — see GotoScopeNormalizer).
@@ -3091,7 +3092,15 @@ internal sealed partial class CSharpBackend
     {
         if (c.SemanticTarget is { } replacement)
         {
-            if (replacement.Kind == "managedMethod") return replacement.Value + "(" + string.Join(", ", c.Args.Select(Expr)) + ")";
+            if (replacement.Kind == "managedMethod")
+            {
+                if (replacement.PassInstance && !_instanceMethods)
+                    throw new CompileException("passInstance requires --instance-methods");
+                if (_instanceMethods && !replacement.PassInstance && (c.Args.Any(a => ContainsInstanceCallback(a.Type)) || ContainsInstanceCallback(c.Type)))
+                    throw new CompileException("managed callback boundary requires explicit passInstance: " + replacement.Value);
+                return replacement.Value + "(" + (replacement.PassInstance ? "this" + (c.Args.Count == 0 ? "" : ", ") : "")
+                    + string.Join(", ", c.Args.Select(Expr)) + ")";
+            }
             if (replacement.Kind == "intrinsic" && FunctionOverrideIntrinsic.Find(replacement.Value) is { } operation)
                 return operation.RenderCall(c.Args.Select(Expr).ToArray());
             throw new CompileException("unsupported semantic function target: " + replacement);
@@ -3165,7 +3174,10 @@ internal sealed partial class CSharpBackend
         // same-named external (BuildFuncDef). Falls back to the escaped raw name
         // for libc builtins / fn-ptr-variable / unresolved callees.
         var target = c.CalleeSym != null ? FunctionName(c.CalleeSym) : DotCC.EmitHelpers.Id(c.Callee);
-        var invocation = $"{target}({string.Join(", ", a)})";
+        var context = _instanceMethods && (c.ParamTypes?.Any(ContainsInstanceCallback) == true
+            || c.Args.Any(argument => ContainsInstanceCallback(argument.Type)) || ContainsInstanceCallback(c.Type))
+            ? InstanceReferences.CallbackContext + (c.CalleeSym?.TargetName ?? DotCC.EmitHelpers.Id(c.Callee)) + " " : "";
+        var invocation = $"{target}({context}{string.Join(", ", a)})";
         // Runtime services use void* for C-owned aggregate records whose emitted
         // struct type is defined by the header (e.g. protoent and dirent).
         // Preserve the C declaration's result type at the managed call boundary.

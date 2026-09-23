@@ -13,6 +13,7 @@ internal sealed partial class CSharpBackend
         var signature = call.Callee.Type.Unqualified as CType.Func;
         var callee = Sub(call.Callee, PPostfix);
         var arguments = new List<string>();
+        if (_instanceMethods && signature?.IsNativeCallConv != true) arguments.Add("this");
         var fixedCount = signature is { Variadic: true, IsNativeCallConv: false }
             ? signature.Params.Count : call.Args.Count;
         for (var index = 0; index < fixedCount && index < call.Args.Count; index++)

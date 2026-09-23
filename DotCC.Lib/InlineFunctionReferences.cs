@@ -14,7 +14,11 @@ internal static class InlineFunctionReferences
         (annotate && symbol.IsInline && symbol.Storage == Storage.Static ? Marker : "") + symbol.TargetName;
 
     internal static string Rewrite(string source, IReadOnlyDictionary<string, string> names) =>
-        BoundSymbolReferences.Rewrite(source, names, Marker);
+        BoundSymbolReferences.Rewrite(
+            BoundSymbolReferences.Rewrite(
+                BoundSymbolReferences.Rewrite(source, names, Marker),
+                name => InstanceReferences.Target + names.GetValueOrDefault(name, name), InstanceReferences.Target),
+            name => InstanceReferences.CallbackContext + names.GetValueOrDefault(name, name), InstanceReferences.CallbackContext);
 }
 
 /// <summary>Resolve explicit bound-symbol annotations, preserving strings and comments.</summary>
@@ -22,6 +26,9 @@ internal static class BoundSymbolReferences
 {
     internal static string Rewrite(string source, IReadOnlyDictionary<string, string> names, string marker,
         string fallbackPrefix = "")
+        => Rewrite(source, name => names.TryGetValue(name, out var target) ? target : fallbackPrefix + name, marker);
+
+    internal static string Rewrite(string source, Func<string, string> resolve, string marker)
     {
         if (!source.Contains(marker, StringComparison.Ordinal)) return source;
         var result = new StringBuilder(source.Length);
@@ -36,7 +43,7 @@ internal static class BoundSymbolReferences
                 while (i < source.Length && (char.IsAsciiLetterOrDigit(source[i]) || source[i] is '_' or '@')) i++;
                 if (start == i) throw new CompileException("invalid bound symbol relocation; regenerate objects");
                 var name = source[start..i];
-                result.Append(names.TryGetValue(name, out var target) ? target : fallbackPrefix + name);
+                result.Append(resolve(name));
                 continue;
             }
             if (source[i] is '\'' or '"')

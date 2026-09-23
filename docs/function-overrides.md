@@ -144,6 +144,13 @@ function pointer. The explicit flag participates in object contract
 compatibility and is recorded in the typed selection report; older objects
 without the flag retain the false contract.
 
+With `--instance-methods`, `"passInstance": true` on a managed target prepends
+its generated owner to the managed arguments and explicitly acknowledges the
+instance callback convention. Callback parameters and returns require this
+contract; the target's function-pointer types include the owner argument.
+The flag is hashed and recorded in object contracts and selected reports.
+See [instance translation](instance-translation.md) for lifetime and boundary rules.
+
 ## Selection
 
 Every rule requires an exact original C function `name`, a `signature`, and a

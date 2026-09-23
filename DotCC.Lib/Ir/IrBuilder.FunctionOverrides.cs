@@ -76,14 +76,16 @@ internal sealed partial class IrBuilder
 
     private static void ValidateOverrideTarget(FunctionOverride rule, CType.Func type)
     {
-        static bool Supported(CType t) => !t.IsVolatile && !t.IsAtomic && t.Unqualified switch
+        bool Supported(CType t) => !t.IsVolatile && !t.IsAtomic && t.Unqualified switch
         {
             CType.Prim or CType.VoidType or CType.Named or CType.Enum => true,
             CType.Pointer p => Supported(p.Pointee),
+            CType.Func f => rule.Target.PassInstance && !f.Variadic && !f.IsNativeCallConv
+                && Supported(f.Return) && f.Params.All(Supported),
             _ => false,
         };
         if (type.Variadic || !Supported(type.Return) || type.Params.Any(p => !Supported(p)))
-            throw CPreprocessingOptions.FunctionError(rule, "unsupported signature: variadic, volatile/atomic, and callback signatures are not supported");
+            throw CPreprocessingOptions.FunctionError(rule, "unsupported signature: variadic and volatile/atomic signatures are not supported; callbacks require passInstance with a managed target");
         if (rule.Target.Kind == "intrinsic")
         {
             var intrinsic = FunctionOverrideIntrinsic.Find(rule.Target.Value)
@@ -145,6 +147,7 @@ internal sealed partial class IrBuilder
                 ("matches", "1"),
                 ("origin", replacement.Rule.Origin), ("translationUnit", replacement.TranslationUnit),
                 ("declarationFile", replacement.DeclarationFile ?? "unknown") };
+            if (replacement.Rule.Target.PassInstance) fields.Add(("passInstance", "true"));
             if (replacement.Rule.Target.DoesNotReturn) fields.Add(("doesNotReturn", "true"));
             CPreprocessingOptions.WriteEvent(options.Report, "function-override", fields.ToArray());
         }

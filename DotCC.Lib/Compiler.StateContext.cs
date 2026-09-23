@@ -9,7 +9,7 @@ public static partial class Compiler
 {
     private static void ValidateContextNames(CSharpOutputOptions? options, IEnumerable<string> names)
     {
-        if (options?.StateContext != true) return;
+        if (options?.StateContext != true && options?.InstanceMethods != true) return;
         foreach (var name in names)
             if (name.TrimStart('@').StartsWith("__DotCc", StringComparison.Ordinal))
                 throw new CompileException("--state-context reserves the __DotCc member prefix");
@@ -19,7 +19,7 @@ public static partial class Compiler
     // after relocation, so the same objects can still produce a legacy library.
     private static Backends.CSharpGlobalOutput RenderStateContext(
         Backends.CSharpGlobalOutput output, IReadOnlyList<Backends.CSharpGlobalSource> globals,
-        LiteralPool.Output literals, GlobalStorageReferences storage, string owner)
+        LiteralPool.Output literals, GlobalStorageReferences storage, string owner, bool instanceMethods = false)
     {
         var specialFields = new StringBuilder();
         var threadFields = new StringBuilder();
@@ -88,6 +88,7 @@ public static partial class Compiler
                     private readonly object disposeGate = new();
                     private bool disposed;
                     internal __DotCcContext() { runtime = new Libc.RuntimeContext(this); }
+                    internal Libc.RuntimeContext Runtime => runtime;
                     public global::System.IDisposable Enter() => runtime.Enter();
                     public void Dispose()
                     {
@@ -119,6 +120,43 @@ public static partial class Compiler
                     catch { context.Dispose(); throw; }
                 }
             """;
+        if (instanceMethods)
+        {
+            // Compiler-owned recipes become owner members; all special/TLS
+            // access resolves this owner even under another runtime binding.
+            var instanceSpecial = Regex.Replace(specialMembers.ToString(),
+                @"(?m)^([ \t]*(?:(?:public|private|internal) )?)static ", "$1")
+                .Replace(owner + ".__DotCcCurrent", "__DotCcState", StringComparison.Ordinal);
+            int ambientStart = members.IndexOf("internal static __DotCcContext __DotCcCurrent", StringComparison.Ordinal);
+            int ambientEnd = members.IndexOf(';', ambientStart);
+            members = members.Remove(ambientStart, ambientEnd - ambientStart + 1);
+            members = members.Replace("public static ref ", "public ref ", StringComparison.Ordinal)
+                .Replace("internal static ref ", "internal ref ", StringComparison.Ordinal)
+                .Replace("=> ref __DotCcCurrent.", "=> ref __DotCcState.", StringComparison.Ordinal);
+            int factory = members.IndexOf("public static unsafe __DotCcContext __DotCcCreateContext()", StringComparison.Ordinal);
+            members = members[..factory] + $$"""
+                private readonly __DotCcContext __DotCcState;
+                public {{owner}}()
+                {
+                    __DotCcState = new __DotCcContext();
+                    try
+                    {
+                        using (__DotCcEnter())
+                        {
+                            __DotCcInitialize();
+            {{output.Initializers}}
+                        }
+                    }
+                    catch { __DotCcState.Dispose(); throw; }
+                }
+                public Libc.RuntimeContext __DotCcRuntime => __DotCcState.Runtime;
+                public global::System.IDisposable __DotCcEnter() => __DotCcState.Enter();
+                public global::System.IDisposable __DotCcRetain() => __DotCcState.Runtime.RetainLease();
+                public void Dispose() => __DotCcState.Dispose();
+            {{instanceSpecial}}
+            """;
+            return output with { StaticMembers = "", ContextMembers = members, InstanceMethods = true };
+        }
         return output with { StaticMembers = specialMembers.ToString(), ContextMembers = members };
     }
 

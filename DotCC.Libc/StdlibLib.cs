@@ -464,4 +464,59 @@ public static unsafe partial class Libc
         }
         return null;
     }
+
+    /// <summary>Instance callback ABI: forwards the same explicit owner to every
+    /// comparison and keeps its runtime alive until sorting finishes.</summary>
+    public static void qsort<T>(T instance, void* @base, int n, int size,
+        delegate*<T, void*, void*, int> cmp) where T : class, IProgramInstance
+    {
+        ArgumentNullException.ThrowIfNull(instance);
+        if (n < 2 || size <= 0) return;
+        RuntimeContext context = instance.__DotCcRuntime;
+        context.Retain();
+        byte* temporary = null;
+        try
+        {
+            byte* bytes = (byte*)@base;
+            temporary = (byte*)NativeMemory.Alloc((nuint)size);
+            for (int i = 1; i < n; ++i)
+            {
+                Buffer.MemoryCopy(bytes + (long)i * size, temporary, size, size);
+                int j = i - 1;
+                while (j >= 0 && cmp(instance, bytes + (long)j * size, temporary) > 0)
+                {
+                    Buffer.MemoryCopy(bytes + (long)j * size, bytes + (long)(j + 1) * size, size, size);
+                    --j;
+                }
+                Buffer.MemoryCopy(temporary, bytes + (long)(j + 1) * size, size, size);
+            }
+        }
+        finally { NativeMemory.Free(temporary); context.Release(); }
+    }
+
+    /// <summary>Instance callback ABI for binary search. Comparator adapters bind
+    /// the supplied owner; the surrounding ambient context is not the identity.</summary>
+    public static void* bsearch<T>(T instance, void* key, void* @base, int n, int size,
+        delegate*<T, void*, void*, int> cmp) where T : class, IProgramInstance
+    {
+        ArgumentNullException.ThrowIfNull(instance);
+        RuntimeContext context = instance.__DotCcRuntime;
+        context.Retain();
+        try
+        {
+            byte* bytes = (byte*)@base;
+            int lo = 0, hi = n - 1;
+            while (lo <= hi)
+            {
+                int mid = lo + (hi - lo) / 2;
+                byte* element = bytes + (long)mid * size;
+                int order = cmp(instance, key, element);
+                if (order < 0) hi = mid - 1;
+                else if (order > 0) lo = mid + 1;
+                else return element;
+            }
+            return null;
+        }
+        finally { context.Release(); }
+    }
 }

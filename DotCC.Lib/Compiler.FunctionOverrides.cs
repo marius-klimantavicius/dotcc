@@ -23,6 +23,7 @@ public static partial class Compiler
             {
                 json.WriteStartObject(); json.WriteNumber("version", 1); json.WriteString("name", contract.Name); json.WriteString("signature", contract.Signature);
                 json.WriteString("kind", contract.Target?.Kind); json.WriteString("target", contract.Target?.Value);
+                if (contract.Target?.PassInstance == true) json.WriteBoolean("passInstance", true);
                 if (contract.Target?.DoesNotReturn == true) json.WriteBoolean("doesNotReturn", true);
                 json.WriteString("translationUnit", contract.TranslationUnit); json.WriteString("declarationFile", contract.DeclarationFile);
                 json.WriteString("linkage", contract.Linkage); json.WriteEndObject();
@@ -48,12 +49,13 @@ public static partial class Compiler
                 var signature = root.GetProperty("signature").GetString()!;
                 var kind = root.GetProperty("kind").GetString();
                 var target = root.GetProperty("target").GetString();
+                bool passInstance = root.TryGetProperty("passInstance", out var context) && context.GetBoolean();
                 bool doesNotReturn = root.TryGetProperty("doesNotReturn", out var termination) && termination.GetBoolean();
                 if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(signature)
                     || kind is not (null or "intrinsic" or "managedMethod") || (kind is null) != (target is null)
-                    || doesNotReturn && kind != "managedMethod")
+                    || (doesNotReturn || passInstance) && kind != "managedMethod")
                     throw new CompileException("invalid semantic function override metadata in object '" + path + "'");
-                var contract = new FunctionOverrideMetadata(name, signature, kind is null ? null : new(kind, target!, doesNotReturn),
+                var contract = new FunctionOverrideMetadata(name, signature, kind is null ? null : new(kind, target!, doesNotReturn, passInstance),
                     root.GetProperty("translationUnit").GetString(), root.GetProperty("declarationFile").GetString(), root.GetProperty("linkage").GetString());
                 if (!incoming.TryAdd(name, contract)) throw new CompileException("duplicate function contract in object '" + path + "': " + name);
             }

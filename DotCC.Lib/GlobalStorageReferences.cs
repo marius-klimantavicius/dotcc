@@ -25,7 +25,7 @@ internal sealed class GlobalStorageReferences
     private static readonly IReadOnlyDictionary<string, string> NoRenames = new Dictionary<string, string>();
 
     internal GlobalStorageReferences(IReadOnlyList<CSharpGlobalSource> globals,
-        IEnumerable<string> memberNames, string owner, string scope, string namespacePrefix)
+        IEnumerable<string> memberNames, string owner, string scope, string namespacePrefix, bool instanceMethods = false)
     {
         var reserved = new HashSet<string>(memberNames.Select(n =>
             (n.StartsWith(Compiler.MacroConstantPrefix, StringComparison.Ordinal)
@@ -39,8 +39,8 @@ internal sealed class GlobalStorageReferences
         GlobalName = Allocate("Globals");
         ThreadName = Allocate("ThreadGlobals");
         ThreadBackingName = Allocate("__threadGlobals");
-        var ownerPath = "global::" + namespacePrefix + owner + ".";
-        var specialPath = "global::" + scope + owner.TrimStart('@') + "GlobalsSpecial.";
+        var ownerPath = instanceMethods ? "this." : "global::" + namespacePrefix + owner + ".";
+        var specialPath = instanceMethods ? "this." : "global::" + scope + owner.TrimStart('@') + "GlobalsSpecial.";
         _runtimePath = "global::" + scope + "Libc.";
         foreach (var global in globals)
         {

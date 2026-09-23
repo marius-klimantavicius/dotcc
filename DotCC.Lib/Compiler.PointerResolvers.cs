@@ -13,9 +13,25 @@ public static partial class Compiler
     // the lexical lookup used by direct calls, inside the translated owner.
     private static (IReadOnlyDictionary<string, string> Types, string Methods) ResolveExternalPointerOwners(
         IReadOnlyDictionary<string, string> declarations, IEnumerable<string> definitions,
-        IEnumerable<string> otherNames)
+        IEnumerable<string> otherNames, bool instanceMethods = false)
     {
         var defined = new HashSet<string>(definitions, StringComparer.Ordinal);
+        if (instanceMethods)
+        {
+            var instanceTypes = new Dictionary<string, string>(StringComparer.Ordinal);
+            var adapters = new StringBuilder();
+            foreach (var (key, source) in declarations)
+            {
+                const string marker = "    //!!dotcc-instance-adapter\n";
+                int adapter = key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
+                    ? source.IndexOf(marker, StringComparison.Ordinal) : -1;
+                if (adapter < 0) { instanceTypes.Add(key, source); continue; }
+                int end = source.LastIndexOf('}');
+                adapters.Append(InstanceReferences.Resolve(source[(adapter + marker.Length)..end], defined, "instance"));
+                instanceTypes.Add(key, source[..adapter] + "}\n");
+            }
+            return (instanceTypes, adapters.ToString());
+        }
         var occupied = new HashSet<string>(defined.Concat(otherNames).Concat(declarations.Keys), StringComparer.Ordinal);
         var types = new Dictionary<string, string>(declarations, StringComparer.Ordinal);
         var methods = new StringBuilder();

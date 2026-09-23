@@ -26,6 +26,7 @@ public static unsafe partial class Libc
     {
         public long Id;
         public IntPtr Function, Argument, Result;
+        public Func<IntPtr, IntPtr>? InstanceStart;
         public Thread Thread = null!;
         public RuntimeContext? Context;
         public bool Detached, Joining, Finished;
@@ -85,13 +86,46 @@ public static unsafe partial class Libc
             return EAGAIN;
         }
     }
+    /// <summary>Creates a thread in the explicitly supplied program runtime,
+    /// even when invoked while another program is bound on the caller thread.</summary>
+    public static int pthread_create<T>(T instance, long* thread, int* attr,
+        delegate*<T, void*, void*> start, void* arg) where T : class, IProgramInstance
+    {
+        if (instance == null || thread == null || start == null || (attr != null && *attr != 2 && *attr != 3)) return EINVAL;
+        RuntimeContext context = instance.__DotCcRuntime;
+        PthreadState? state = null;
+        context.Retain();
+        try
+        {
+            IntPtr address = (IntPtr)start;
+            state = new PthreadState
+            {
+                Context = context, Id = Interlocked.Increment(ref context.NextThread),
+                InstanceStart = argument => (IntPtr)((delegate*<T, void*, void*>)address)(instance, (void*)argument),
+                Argument = (IntPtr)arg, Detached = attr != null && *attr == 3
+            };
+            state.Thread = new Thread(PthreadEntry);
+            context.Threads[state.Id] = state;
+            state.Thread.Start(state);
+            *thread = state.Id;
+            return 0;
+        }
+        catch (Exception error)
+        {
+            if (state != null) context.Threads.TryRemove(state.Id, out _);
+            context.Release();
+            if (error is OutOfMemoryException or ThreadStateException) return EAGAIN;
+            throw;
+        }
+    }
     private static void PthreadEntry(object? argument)
     {
         var state = (PthreadState)argument!;
         using var contextBinding = state.Context?.Enter();
         _pthreadSelf = state.Id;
         _pthreadCreated = true;
-        try { state.Result = (IntPtr)((delegate*<void*, void*>)state.Function)((void*)state.Argument); }
+        try { state.Result = state.InstanceStart != null ? state.InstanceStart(state.Argument)
+            : (IntPtr)((delegate*<void*, void*>)state.Function)((void*)state.Argument); }
         catch (PthreadExitException ex) { state.Result = ex.Result; }
         finally
         {

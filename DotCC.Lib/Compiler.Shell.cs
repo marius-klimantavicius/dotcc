@@ -444,7 +444,8 @@ public static partial class Compiler
         // default is private, which would block DotCcExports from calling
         // them. Promote to `public static unsafe …`. Managed mode exposes this
         // low-level API directly; native shared mode keeps DotCcLib internal.
-        var publicFns = emittedFnList.Replace("static unsafe ", "public static unsafe ");
+        var publicFns = emittedFnList.Replace("static unsafe ", "public static unsafe ")
+            .Replace("/*__dotcc_instance_method__*/ unsafe ", "public unsafe ");
         // Indent the user-function block so it lives correctly inside the class body.
         var indentedFns = IndentBlock(publicFns, "    ");
         var globalOwnerMembers = globals.Fields.Length == 0 ? "" : $$"""
@@ -542,7 +543,7 @@ public static partial class Compiler
             // ---- typedef'd `using` aliases (same as exe mode).
             {{usingAliases}}
             // Translated methods use direct calls and managed function pointers.
-            {{(managedLibrary ? "public" : "internal")}} static {{(partial || nested ? "partial " : "")}}class {{libraryClass}}
+            {{(managedLibrary ? "public" : "internal")}} {{(globals.InstanceMethods ? "sealed unsafe " : "static ")}}{{(partial || nested ? "partial " : "")}}class {{libraryClass}}{{(globals.InstanceMethods ? " : global::System.IDisposable, global::" + scope + "Libc.IProgramInstance" : "")}}
             {
             {{globalOwnerMembers}}
             {{threadGlobalOwnerMembers}}

@@ -14,6 +14,12 @@ public static partial class Compiler
         if (options.ExportInline != null) _ = new MacroExportSelector(options.ExportInline, "--export-inline");
         if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options) || options.LiteralPool || options.StateContext))
             throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline --literal-pool and --state-context must be set at link time for objects");
+        if (options.InstanceMethods && emit is not (EmitMode.Object or EmitMode.ManagedLib))
+            throw new CompileException("--instance-methods requires object or managed-library output");
+        if (options.InstanceMethods && options.StateContext)
+            throw new CompileException("--instance-methods already owns state; do not combine with --state-context");
+        if (options.InstanceMethods && emit != EmitMode.Object && options.Runtime != RuntimeProfile.C)
+            throw new CompileException("--instance-methods currently requires --runtime=c at managed-library link");
         if (options.StateContext && emit != EmitMode.ManagedLib)
             throw new CompileException("--state-context requires managed-library output");
         if (options.StateContext && options.Runtime != RuntimeProfile.C)
