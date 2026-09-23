@@ -3,8 +3,61 @@
 This fixture uses `Microsoft.NET.Sdk.Web`, `WebApplication.CreateSlimBuilder`,
 Minimal API routing and Kestrel's normal socket transport. It is separate from
 the preserved raw TCP `../DotNetService` fixture. No custom listener, HTTP parser
-or transport replaces Kestrel. The first native qualification passed; translated
-managed Kestrel execution remains unqualified.
+or transport replaces Kestrel. Native and translated Blink execution pass the
+selected Linux x64 qualification; see [current validation](../../docs/VALIDATION.md).
+
+## Build an executable with Docker or Podman
+
+From the repository root, export a static musl NativeAOT executable:
+
+```bash
+docker build --platform linux/amd64 \
+  --output type=local,dest=blink/build/kestrel-nativeaot \
+  blink/tests/KestrelService
+```
+
+The Dockerfile uses the pinned Alpine SDK below; no host .NET SDK or native
+compiler is needed to build the guest. Package restore requires network access.
+The build context is the service directory, not the repository root.
+Docker's [local artifact exporter](https://docs.docker.com/build/building/export/)
+copies the final publish directory to the host, including `KestrelService` and
+its debugging symbols. No running container is needed afterward.
+
+With Podman (including versions without `build --output`), build the export image
+and copy from a temporary container without starting it:
+
+```bash
+podman build --platform linux/amd64 -t blink-kestrel-nativeaot blink/tests/KestrelService
+podman create --name blink-kestrel-export blink-kestrel-nativeaot /unused
+mkdir -p blink/build/kestrel-nativeaot
+podman cp blink-kestrel-export:/. blink/build/kestrel-nativeaot/
+podman rm blink-kestrel-export
+```
+
+Run that executable through Blink and leave it serving browser requests:
+
+```bash
+dotnet build blink/ManagedConsumer/ManagedConsumer.csproj -c Release --disable-build-servers
+dotnet blink/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll --serve \
+  blink/build/kestrel-nativeaot/KestrelService
+```
+
+Visit **http://127.0.0.1:8080/health** and press **Ctrl+C** in the terminal to stop.
+Append `8081 SeparateProcess` to use another host port and a separate worker.
+The sample supplies the guest's required runtime settings; the Dockerfile
+controls compilation, not the VM's environment or network grants.
+
+Edit `Program.cs` to customize this example and rebuild. To reuse the Dockerfile
+for another .NET 10 NativeAOT-compatible project, copy it and `.dockerignore` to
+that project's build context and pass `--build-arg PROJECT=YourApp.csproj` (or a
+relative project path). Include referenced projects in that context and keep any
+`global.json` compatible with SDK 10.0.401. The exported executable name follows
+the project's assembly name. Static musl packaging alone does not guarantee that
+every application uses only guest facilities implemented by Blink. `--serve` is
+the Kestrel example launcher and passes a port argument; use `--run` for a general
+console guest as described in [ManagedConsumer](../../ManagedConsumer/README.md).
+
+## Service and qualification recipe
 
 The deliberate service configuration is HTTP/1 on IPv4 loopback, a port supplied
 as the sole argument (zero selects an actual ephemeral port), and cleared logging

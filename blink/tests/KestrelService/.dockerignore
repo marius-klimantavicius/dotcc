@@ -1,0 +1,8 @@
+**/bin
+**/obj
+**/publish
+.git
+Dockerfile
+.dockerignore
+README.md
+*.py

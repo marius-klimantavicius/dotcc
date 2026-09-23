@@ -28,6 +28,9 @@ configuration, private storage, RO/COW mounts, streams, ownership and limits.
 
 ## Build and run
 
+To build your own guest ELF first, use the
+[Kestrel Dockerfile instructions](../tests/KestrelService/README.md#build-an-executable-with-docker-or-podman).
+
 To leave the existing Kestrel guest running and visit it in a browser, run from
 the repository root:
 
