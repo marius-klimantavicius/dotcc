@@ -606,14 +606,14 @@ and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
 - [ ] Resolve translated globals/caches/TLS and host-binding lifetime for
       in-process sequential reuse and concurrent independent machines; no
       process fallback or process-wide serialization as a substitute.
-- [ ] Add opt-in wrapping-class instance translation: instance methods, pinned
+- [x] Add opt-in wrapping-class instance translation: instance methods, pinned
       per-instance globals and per-instance/per-host-thread C TLS. Preserve
       existing default static mode and C data layouts.
-- [ ] Implement the uniform managed function-pointer convention with an explicit
+- [x] Implement the uniform managed function-pointer convention with an explicit
       instance argument, generated static adapters and current-instance arguments
       at all translated indirect calls. Cover pointer types/casts/tables and
       object/link compatibility; reject unadapted callback boundaries.
-- [ ] Retain originating context for registered/deferred callbacks and thread
+- [x] Retain originating context for registered/deferred callbacks and thread
       starts; adapt shared libc callbacks to forward context. Audit relevant libc
       mutable state/cleanup while keeping implementation code shared. Qualify
       these contracts under JIT and NativeAOT as specified in P6-MACHINE-API.md.
@@ -640,7 +640,7 @@ and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
 - [ ] Deliver examples and normal isolation/lifecycle checks using the real
       translated core and public API under JIT/NativeAOT on Linux x64 in both
       modes, including process termination versus cooperative in-process stop.
-- [ ] Document state/resource ownership for future full execution snapshots;
+- [x] Document state/resource ownership for future full execution snapshots;
       do not require snapshot save/restore implementation in this phase.
 
 **Gate:** a separate consumer application can configure machines and run them

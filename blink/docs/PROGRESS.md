@@ -81,6 +81,18 @@ changes and authorized P6. No duplicate recovery-branch history was introduced.
   worker protocol/discovery and deployment. The coordinator supplies the fresh
   generated context and shared guest-thread ownership hooks.
 
+Instance ABI milestone `f0d67ff` adds optional `--instance-methods` at object
+emission and library link, pointer-wide callbacks with an explicit owner argument,
+pinned instance globals/TLS, typed host boundaries and retained callback/thread
+lifetimes. It passes 107 unit/runtime and 16 functional cases. Native, JIT and
+NativeAOT pass `DotCC.FunctionalTests/bin/instance-methods-qualification/attempt-qmp5ow8s/receipt.json`
+(SHA-256 `8c210a216baec3d53183a0e3e89b018ed0d57bef32c01f8d41728bffab62163a`);
+519 recorded identities independently recheck. This supersedes the ambient-only
+architecture for the new machine API without removing static translation support.
+Actual Blink instance-v1 producers are now under preflight; the public machine,
+worker deployment and Kestrel sample sources remain unqualified until refreshed
+product and actual consumer runs pass.
+
 Console and descriptor integration passes JIT/NativeAOT at
 `host-console/attempt-071nqrfd` (receipt SHA-256
 `0cf272d2bb4736c0eb43dce0aa1c6331e66517f11703c72e0cccf6a135f34a8c`).
