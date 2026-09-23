@@ -2,6 +2,8 @@ using System.Net;
 using System.Net.Sockets;
 using Managed.Emulation.Host;
 
+await EntropyChecks.Run();
+
 using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 using var listener = new TcpListener(IPAddress.Loopback, 0);
 listener.Start(128);

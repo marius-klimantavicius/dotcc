@@ -38,6 +38,7 @@ public sealed partial class VirtualFileSystem : IGuestFileSystem
         internal readonly ulong Inode = inode;
         internal uint Mode = mode;
         internal bool Linked = true;
+        internal HostEnvironment? Entropy;
         internal VirtualFileTime AccessTime = VirtualFileTime.UtcNow;
         internal VirtualFileTime ModifyTime = VirtualFileTime.UtcNow;
         internal VirtualFileTime ChangeTime = VirtualFileTime.UtcNow;
@@ -206,6 +207,12 @@ public sealed partial class VirtualFileSystem : IGuestFileSystem
         {
             if (!TryDescription(descriptor, out var file) || !file.Access.HasFlag(FileAccessMode.Read)) return Fail<int>(GuestError.BadDescriptor);
             if (file.DirectoryPath != null) return Fail<int>(GuestError.IsDirectory);
+            if (file.Node.Entropy != null)
+            {
+                var result = file.Node.Entropy.GetRandom(destination);
+                if (result.Succeeded && result.Value != 0) file.Node.AccessTime = VirtualFileTime.UtcNow;
+                return result;
+            }
             int count = (int)Math.Min(destination.Length, Math.Max(0, file.Node.Bytes.LongLength - file.Position));
             if (count != 0) file.Node.Bytes.AsSpan((int)file.Position, count).CopyTo(destination);
             file.Position += count;
@@ -219,6 +226,7 @@ public sealed partial class VirtualFileSystem : IGuestFileSystem
         {
             if (!TryDescription(descriptor, out var file) || !file.Access.HasFlag(FileAccessMode.Read)) return Fail<int>(GuestError.BadDescriptor);
             if (file.DirectoryPath != null) return Fail<int>(GuestError.IsDirectory);
+            if (file.Node.Entropy != null) return Fail<int>(GuestError.IllegalSeek);
             if (offset < 0) return Fail<int>(GuestError.Invalid);
             int count = (int)Math.Min(destination.Length, Math.Max(0, file.Node.Bytes.LongLength - offset));
             if (count != 0) file.Node.Bytes.AsSpan((int)offset, count).CopyTo(destination);
@@ -231,6 +239,7 @@ public sealed partial class VirtualFileSystem : IGuestFileSystem
         lock (sync)
         {
             if (!TryDescription(descriptor, out var file) || !file.Access.HasFlag(FileAccessMode.Read)) return Fail<long>(GuestError.BadDescriptor);
+            if (file.Node.Entropy != null) return Fail<long>(GuestError.IllegalSeek);
             return file.DirectoryPath != null ? Fail<long>(GuestError.IsDirectory) : HostResult<long>.Success(file.Node.Bytes.LongLength);
         }
     }
@@ -304,7 +313,8 @@ public sealed partial class VirtualFileSystem : IGuestFileSystem
     // filesystem. No persistent host storage or delayed write queue exists.
     public HostResult<int> Synchronize(int descriptor)
     {
-        lock (sync) return TryDescription(descriptor, out _) ? HostResult<int>.Success(0) : Fail<int>(GuestError.BadDescriptor);
+        lock (sync) return !TryDescription(descriptor, out var file) ? Fail<int>(GuestError.BadDescriptor)
+            : file.Node.Entropy != null ? Fail<int>(GuestError.Invalid) : HostResult<int>.Success(0);
     }
 
     public HostResult<long> Seek(int descriptor, long offset, SeekOrigin origin)
@@ -313,6 +323,7 @@ public sealed partial class VirtualFileSystem : IGuestFileSystem
         {
             if (!TryDescription(descriptor, out var file)) return Fail<long>(GuestError.BadDescriptor);
             if (file.DirectoryPath != null) return Fail<long>(GuestError.Unsupported);
+            if (file.Node.Entropy != null) return Fail<long>(GuestError.IllegalSeek);
             long start;
             switch (origin)
             {
@@ -430,7 +441,7 @@ public sealed partial class VirtualFileSystem : IGuestFileSystem
                 if (entries.Count == entryLimit || length + 1 > nameBytesLimit - bytes)
                     return Fail<VirtualDirectoryEntry[]>(GuestError.NoMemory);
                 bytes += length + 1;
-                entries.Add(new(name, item.Value.Inode, (byte)((item.Value.Mode & 0xf000) == 0x4000 ? 4 : 8)));
+                entries.Add(new(name, item.Value.Inode, (byte)((item.Value.Mode & 0xf000) >> 12)));
             }
             entries.Sort(2, entries.Count - 2, Comparer<VirtualDirectoryEntry>.Create((a,b) => StringComparer.Ordinal.Compare(a.Name,b.Name)));
             return HostResult<VirtualDirectoryEntry[]>.Success(entries.ToArray());

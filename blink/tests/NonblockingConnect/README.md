@@ -29,3 +29,14 @@ SO_ERROR clears only the error, and never changes failed/pending state to connec
 
 The translated NativeAOT HTTP-client fixture and public-machine execution gates
 are separate from these host-only checks; see the nonblocking-connect sub-plan.
+
+The focused executable also checks the NativeAOT runtime's entropy-device
+prerequisite. `VirtualFileSystem.CreateDeviceFileSystem(descriptorLimit)` supplies
+an immutable character `/urandom` entry for mounting at `/dev`. Its reads use the
+existing BCL entropy provider with at most 256 bytes returned per call; callers
+may loop on positive short reads. Reads do not end at the stat length of zero,
+retain entropy bytes, open a host device, or charge private writable storage.
+Normal path walking, openat, stat/fstat, directory type, duplicate descriptors,
+read readiness, and close ownership are checked. The selected device is read-only;
+seeks and positional reads are unsupported (ESPIPE). This is not a general devfs,
+`/dev/random`, or a snapshot of entropy-provider state.

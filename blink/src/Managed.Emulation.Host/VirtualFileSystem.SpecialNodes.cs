@@ -2,8 +2,8 @@ namespace Managed.Emulation.Host;
 
 public sealed partial class VirtualFileSystem
 {
-    /// <summary>This namespace contains ordinary files and directories only.
-    /// Validate the proposed destination without publishing a special node.</summary>
+    /// <summary>Guest creation of special nodes remains unsupported, including
+    /// in the built-in device namespace. Validate without publishing a node.</summary>
     public HostResult<int> RejectSpecialNode(string path, string cwd = "/")
     {
         lock (sync)
