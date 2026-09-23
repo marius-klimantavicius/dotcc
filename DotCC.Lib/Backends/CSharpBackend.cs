@@ -1560,6 +1560,16 @@ internal sealed partial class CSharpBackend
         var tgt = target.Unqualified;
         var src = value.Type.Unqualified;
 
+        // Authored external scalar wrappers can deliberately expose only an
+        // explicit conversion back to C's integer ABI. C still converts at
+        // assignment, return and parameter sinks; make that boundary visible
+        // in C# instead of requiring an implicit user-defined conversion.
+        if (src is CType.Named { IsExternal: true } && tgt is CType.Prim { Integer: true })
+        {
+            text = $"({Cs(tgt)})({Expr(value)})";
+            return true;
+        }
+
         // C _Bool stores already contain 0 or 1. C# cannot implicitly chain
         // CBool's int conversion into unsigned/narrow integer conversions (or
         // another user-defined conversion, such as Int128). Normalize through

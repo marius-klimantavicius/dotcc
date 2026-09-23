@@ -195,6 +195,15 @@ public sealed partial class ManagedLibraryTests
                 ManagedHandle increment(ManagedHandle);
                 struct Envelope { char prefix; ManagedHandle handle; char tail; };
                 int run(void) { ManagedHandle h = 41; return (int)increment(h); }
+                int accept_int(int value) { return value; }
+                int implicit_sinks(void) {
+                    ManagedHandle h = 17;
+                    int local = h;
+                    struct Envelope pair = { 0, -1, 0 };
+                    int (*callback)(int) = accept_int;
+                    return accept_int(h) + callback(h) + local + accept_int(pair.handle);
+                }
+                int implicit_return(void) { ManagedHandle h = -1; return h; }
                 int layout(void) {
                     return sizeof(ManagedHandle) * 1000 + offsetof(struct Envelope, handle) * 100 +
                         offsetof(struct Envelope, tail) * 10 + sizeof(struct Envelope);
@@ -234,6 +243,8 @@ public sealed partial class ManagedLibraryTests
             var assembly = new AssemblyLoadContext("typed-host-" + Guid.NewGuid(), isCollectible: false).LoadFromStream(image);
             var api = assembly.GetType("Api")!;
             ((int)api.GetMethod("run")!.Invoke(null, null)!).ShouldBe(42);
+            ((int)api.GetMethod("implicit_sinks")!.Invoke(null, null)!).ShouldBe(50);
+            ((int)api.GetMethod("implicit_return")!.Invoke(null, null)!).ShouldBe(-1);
             ((int)api.GetMethod("layout")!.Invoke(null, null)!).ShouldBe(4492);
         }
         finally { Directory.Delete(directory, true); }

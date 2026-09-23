@@ -52,3 +52,11 @@ same type registration when compiling every translation unit sharing its ABI.
 These settings are compiler configuration only. They do not inject C source,
 alter macros, generate host behavior, or enable target-language operator binding
 beyond the compiler's existing expression lowering.
+
+At integer assignment, return and call-argument boundaries, generated C# emits
+an explicit cast from an external type. An authored handle can therefore expose
+an explicit conversion to `int` and an implicit conversion from `int`, while C
+prototypes retain their original integer ABI. The C# build checks that the
+required operator exists; storage registration does not create it. Typed host
+profiles must still redirect every descriptor-consuming function to the proper
+handle registry.
