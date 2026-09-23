@@ -488,6 +488,12 @@ public static partial class Compiler
             {{globals.ThreadFields}}}
             """;
 
+        if (globals.ContextMembers is not null)
+        {
+            globalOwnerMembers = globals.ContextMembers;
+            threadGlobalOwnerMembers = "";
+        }
+
         // Build the [UnmanagedCallersOnly] wrappers. Skip varargs functions —
         // C# `params` collections aren't a valid signature for the attribute and
         // can't survive AOT publish.

@@ -20,14 +20,15 @@ the calling application. Both in-process (default) and explicitly selected
 separate-process execution must be implemented and qualified in P6 through the
 same public API, with mode-specific isolation/termination capabilities.
 The user additionally requires cross-platform BCL-only filesystem access in
-both modes. The coordinator and both workers were interrupted to update their
-goals: replace the pending Linux P/Invoke root-handle prototype with a BCL
-backend, preserving live read-write mounts and documenting containment limits.
-This replacement is required work, not yet a qualified implementation.
+both modes. Both workers have resumed with that constraint; the native filesystem
+prototype is being removed and replaced with a System.IO backend. Live read-write
+mount semantics stay unchanged. Host path mutation and existing inode aliases are
+explicit limitations of portable path-based checks, not a hardened containment claim.
+This replacement is source work, not yet a qualified implementation.
 The previous P6 platform/performance campaign is now P7. Historical P6 references
 below retain their original meaning. Windows and broader qualification remain open.
 
-All final gates consume public delivery `translation/attempt-kaddtzlg` (SHA-256
+All final P5 gates consume public delivery `translation/attempt-kaddtzlg` (SHA-256
 `711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11`),
 with 108 fresh objects, six endian intrinsics, four typed managed ownership
 overrides, literal pooling, inline deduplication and direct original-src references.
@@ -53,6 +54,29 @@ arbitrary signal/epoll semantics or physical-memory reporting is claimed.
 At P5 completion the coordinator and workers stopped with no active builds or
 guest processes. The user subsequently reverted the stale pending restart
 changes and authorized P6. No duplicate recovery-branch history was introduced.
+
+## Active P6 implementation
+
+- Coordinator: opt-in generated program contexts/runtime ownership, execution-owner
+  binding/retirement, explicit numeric TCP grants, delivery integration and serial
+  qualification. `--state-context --runtime=c --emit=managedlib` now has focused
+  passing functional tests (3 cases: direct/object, split/nested) covering distinct
+  global/TLS/aligned storage, GC-stable addresses, nested/concurrent bindings,
+  pthread callback inheritance, fresh initialization and live-binding disposal
+  refusal. Existing pthread/errno tests pass 23/23. These are compiler/runtime
+  results, not yet a Blink in-process execution pass.
+- Filesystem worker: BCL-only live RW/RO host mounts, eager explicit COW,
+  machine-owned namespace/persistence and run-scoped descriptor sessions.
+- API worker: common in-process/separate-process machine API, console streams,
+  worker protocol/discovery and deployment. The coordinator supplies the fresh
+  generated context and shared guest-thread ownership hooks.
+
+Current public delivery remains the qualified P5 artifact above. P6 Host/API and
+pipeline source edits are unqualified until a fresh delivery and actual consumer
+runs. Remaining gates are filesystem/console/network normal contracts, actual
+sequential and concurrent in-process guests, both modes under JIT/NativeAOT,
+Kestrel through the public API, examples/documentation and final cleanup checks.
+No platform pass, hardened sandbox, snapshot implementation or PTY is inferred.
 
 ## Prior P5 progression (historical snapshots)
 

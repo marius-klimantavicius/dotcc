@@ -27,8 +27,7 @@ namespace DotCC.Libc;
 /// </remarks>
 public static unsafe partial class Libc
 {
-    [ThreadStatic]
-    private static int _errno;
+    private static ref int _errno => ref RuntimeThread.Errno;
 
     /// <summary><c>errno</c> — the thread-local error indicator. Settable and
     /// readable; initialised to 0 per thread.</summary>

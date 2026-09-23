@@ -416,7 +416,10 @@ public static partial class Compiler
             functionSources.Select(f => f.Name).Concat(typeByName.Keys),
             owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName));
         var types = storage.Rewrite(RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout));
+        ValidateContextNames(outputOptions, functionSources.Select(f => f.Name).Concat(typeByName.Keys).Append(owner));
         var globalText = RenderGlobals(inline.Globals, literals, storage);
+        if (outputOptions?.StateContext == true)
+            globalText = RenderStateContext(globalText, inline.Globals, literals, storage, owner);
         var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = storage.Rewrite(literals.Rewrite(part.Text)) }).ToArray();
         return BuildSourceFiles(storage.Rewrite(literals.Rewrite(functions.ToString())), parts, aliasText,
             emit, libraryClass, importsClass, false, split, splitSize, namespaceName, nested,

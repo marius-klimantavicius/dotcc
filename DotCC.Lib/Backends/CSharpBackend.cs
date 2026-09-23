@@ -34,7 +34,8 @@ internal sealed record CSharpBackendResult(
 internal sealed record CSharpGlobalSource(string Name, string Field, string Initializer, string ThreadField, string StaticMembers);
 
 internal sealed record CSharpGlobalOutput(string Fields, string Initializers, string ThreadFields, string StaticMembers,
-    string GlobalName, string ThreadName, string ThreadBackingName);
+    string GlobalName, string ThreadName, string ThreadBackingName,
+    string? ContextMembers = null);
 
 /// <summary>
 /// Lowers the typed IR to low-level unsafe C# text. Deliberately DUMB: every

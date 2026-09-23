@@ -22,18 +22,19 @@ public static unsafe partial class Libc
     public const int PTHREAD_PROCESS_SHARED = 1;
     public const int PTHREAD_DESTRUCTOR_ITERATIONS = 4;
 
-    private sealed class PthreadState
+    internal sealed class PthreadState
     {
         public long Id;
         public IntPtr Function, Argument, Result;
         public Thread Thread = null!;
+        public RuntimeContext? Context;
         public bool Detached, Joining, Finished;
     }
     private sealed class PthreadExitException : Exception { public IntPtr Result; }
-    private static readonly ConcurrentDictionary<long, PthreadState> _pthreads = new();
-    private static long _nextPthread;
-    [ThreadStatic] private static long _pthreadSelf;
-    [ThreadStatic] private static bool _pthreadCreated;
+    private static ConcurrentDictionary<long, PthreadState> _pthreads => RuntimeState.Threads;
+    private static ref long _nextPthread => ref RuntimeState.NextThread;
+    private static ref long _pthreadSelf => ref RuntimeThread.Self;
+    private static ref bool _pthreadCreated => ref RuntimeThread.Created;
 
     public static long pthread_self()
     {
@@ -64,9 +65,12 @@ public static unsafe partial class Libc
     {
         if (thread == null || start == null || (attr != null && *attr != 2 && *attr != 3)) return EINVAL;
         PthreadState? state = null;
+        RuntimeContext? context = RuntimeContext.Current;
+        bool retained = false;
         try
         {
-            state = new PthreadState { Id = Interlocked.Increment(ref _nextPthread),
+            if (context != null) { context.Retain(); retained = true; }
+            state = new PthreadState { Context = context, Id = Interlocked.Increment(ref _nextPthread),
                 Function = (IntPtr)start, Argument = (IntPtr)arg, Detached = attr != null && *attr == 3 };
             state.Thread = new Thread(PthreadEntry);
             _pthreads[state.Id] = state;
@@ -77,12 +81,14 @@ public static unsafe partial class Libc
         catch (Exception ex) when (ex is OutOfMemoryException or ThreadStateException)
         {
             if (state != null) _pthreads.TryRemove(state.Id, out _);
+            if (retained) context!.Release();
             return EAGAIN;
         }
     }
     private static void PthreadEntry(object? argument)
     {
         var state = (PthreadState)argument!;
+        using var contextBinding = state.Context?.Enter();
         _pthreadSelf = state.Id;
         _pthreadCreated = true;
         try { state.Result = (IntPtr)((delegate*<void*, void*>)state.Function)((void*)state.Argument); }
@@ -98,6 +104,7 @@ public static unsafe partial class Libc
                     if (state.Detached) _pthreads.TryRemove(state.Id, out _);
                 }
                 _pthreadCreated = false;
+                state.Context?.Release();
             }
         }
     }
@@ -133,22 +140,23 @@ public static unsafe partial class Libc
         throw new PthreadExitException { Result = (IntPtr)result };
     }
 
-    private sealed class PthreadMutex
+    internal sealed class PthreadMutex
     {
         public int Type, Owner, Depth, Waiters, ConditionWaiters;
         public bool Destroyed;
     }
-    private sealed class PthreadWaiter { public bool Signaled; }
-    private sealed class PthreadCondition
+    internal sealed class PthreadWaiter { public bool Signaled; }
+    internal sealed class PthreadCondition
     {
         public readonly LinkedList<PthreadWaiter> Waiters = new();
         public bool Destroyed;
         public int MutexId;
     }
-    private static readonly object _pthreadObjects = new();
-    private static readonly Dictionary<int, PthreadMutex> _pthreadMutexes = new();
-    private static readonly Dictionary<int, PthreadCondition> _pthreadConditions = new();
-    private static int _nextPthreadMutex, _nextPthreadCondition;
+    private static object _pthreadObjects => RuntimeState.Objects;
+    private static Dictionary<int, PthreadMutex> _pthreadMutexes => RuntimeState.Mutexes;
+    private static Dictionary<int, PthreadCondition> _pthreadConditions => RuntimeState.Conditions;
+    private static ref int _nextPthreadMutex => ref RuntimeState.NextMutex;
+    private static ref int _nextPthreadCondition => ref RuntimeState.NextCondition;
 
     public static int pthread_mutexattr_init(int* attr) { if (attr == null) return EINVAL; *attr = 0; return 0; }
     public static int pthread_mutexattr_destroy(int* attr)
@@ -428,10 +436,10 @@ public static unsafe partial class Libc
             spin.SpinOnce();
         }
     }
-    private static readonly ConcurrentDictionary<int, IntPtr> _pthreadKeys = new();
-    private static int _nextPthreadKey;
-    [ThreadStatic] private static Dictionary<int, IntPtr>? _pthreadValues;
-    [ThreadStatic] private static int _pthreadSets;
+    private static ConcurrentDictionary<int, IntPtr> _pthreadKeys => RuntimeState.Keys;
+    private static ref int _nextPthreadKey => ref RuntimeState.NextKey;
+    private static ref Dictionary<int, IntPtr>? _pthreadValues => ref RuntimeThread.Values;
+    private static ref int _pthreadSets => ref RuntimeThread.PthreadSets;
     public static int pthread_key_create(int* key, delegate*<void*, void> destructor)
     {
         if (key == null) return EINVAL;

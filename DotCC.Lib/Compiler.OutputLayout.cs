@@ -12,8 +12,12 @@ public static partial class Compiler
         if (options is null) return;
         if (!Enum.IsDefined(options.Runtime)) throw new CompileException("unknown runtime profile");
         if (options.ExportInline != null) _ = new MacroExportSelector(options.ExportInline, "--export-inline");
-        if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options) || options.LiteralPool))
-            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline and --literal-pool must be set at link time for objects");
+        if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options) || options.LiteralPool || options.StateContext))
+            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline --literal-pool and --state-context must be set at link time for objects");
+        if (options.StateContext && emit != EmitMode.ManagedLib)
+            throw new CompileException("--state-context requires managed-library output");
+        if (options.StateContext && options.Runtime != RuntimeProfile.C)
+            throw new CompileException("--state-context currently requires --runtime=c");
         if (options.NestTypes && emit is not (EmitMode.ManagedLib or EmitMode.SharedLib))
             throw new CompileException("--nest-types requires managed-library or shared-library output");
     }

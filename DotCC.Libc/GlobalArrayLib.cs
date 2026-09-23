@@ -23,7 +23,8 @@ public static unsafe partial class Libc
 
     private static T* PinAndRoot<T>(T[] arr) where T : unmanaged
     {
-        lock (_globalArrayRoots) { _globalArrayRoots.Add(arr); }
+        var roots = RuntimeContext.Current?.ArrayRoots ?? _globalArrayRoots;
+        lock (roots) { roots.Add(arr); }
         // The array is on the Pinned Object Heap (GC.AllocateArray(pinned:true)),
         // so its data address is stable for the program lifetime.
         return (T*)Unsafe.AsPointer(ref MemoryMarshal.GetArrayDataReference(arr));
@@ -80,7 +81,12 @@ public static unsafe partial class Libc
     public static unsafe void* PinFnPtrArray(Array arr)
     {
         var handle = GCHandle.Alloc(arr, GCHandleType.Pinned);
-        lock (_fnPtrArrays) { _fnPtrArrays.Add((handle, arr)); }
-        return (void*)handle.AddrOfPinnedObject();
+        var roots = RuntimeContext.Current?.FunctionArrays ?? _fnPtrArrays;
+        try
+        {
+            lock (roots) { roots.Add((handle, arr)); }
+            return (void*)handle.AddrOfPinnedObject();
+        }
+        catch { handle.Free(); throw; }
     }
 }
