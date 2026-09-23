@@ -126,8 +126,9 @@ def verify_delivery(args, receipt, pin, tree):
         if not path.is_relative_to(final) and delivery['authored_sources'].get(str(path.relative_to(ROOT))) != digest:
             raise RuntimeError('Product references an unpinned authored source: ' + str(path))
     for folder, category in [('DotCC', 'compiler'), ('DotCC.PostProcess', 'postprocessor')]:
+        tools = args.producer_tools.resolve() / category if args.producer_tools else REPO / folder / 'bin/Release/net10.0'
         for name, digest in delivery[category].items():
-            pin(REPO / folder / 'bin/Release/net10.0' / name, digest)
+            pin(tools / name, digest)
     for row in delivery['results'].values():
         if row['exit_code'] != 0:
             raise RuntimeError('Delivery command failed')
@@ -139,6 +140,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--delivery-receipt', type=Path, required=True)
     parser.add_argument('--delivery-sha256', required=True)
+    parser.add_argument('--producer-tools', type=Path, help='Optional immutable compiler/ and postprocessor/ folders; hashes must exactly match the delivery')
     args = parser.parse_args()
     base = ROOT / 'artifacts/machine-api'
     base.mkdir(parents=True, exist_ok=True)
@@ -256,8 +258,15 @@ def main():
         for directory in ['src/Managed.Emulation', 'src/Managed.Emulation.Worker', 'src/Managed.Emulation.ThreadedExecution',
                           'src/Managed.Emulation.Host', 'tests/MachineApi', 'ManagedConsumer']:
             tree(ROOT / directory)
-        for directory in ['DotCC.Lib', 'DotCC.Libc', 'DotCC', 'DotCC.PostProcess']:
-            tree(REPO / directory)
+        if args.producer_tools:
+            # These runners build only the Blink consumer solution. Archived
+            # producers are bound above to exact delivery hashes; unrelated live
+            # producer sources do not enter consumer compilation.
+            for category in ('compiler', 'postprocessor'): tree(args.producer_tools / category)
+            receipt['producer_source_policy'] = 'Immutable delivery-matching binaries; live producer sources are not build inputs'
+        else:
+            for directory in ['DotCC.Lib', 'DotCC.Libc', 'DotCC', 'DotCC.PostProcess']:
+                tree(REPO / directory)
         receipt['optional_inputs'] = {str(REPO / name): sha(REPO / name) if (REPO / name).is_file() else None
             for name in ('Directory.Build.props', 'Directory.Build.targets', 'Directory.Packages.props', 'nuget.config', 'global.json')}
         pin(sys.executable)

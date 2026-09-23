@@ -12,8 +12,8 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 REPO = ROOT.parent
-CLI = REPO / 'DotCC/bin/Release/net10.0/dotcc.dll'
-POST = REPO / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
+CLI = Path(os.environ.get('BLINK_COMPILER', REPO / 'DotCC/bin/Release/net10.0/dotcc.dll')).resolve()
+POST = Path(os.environ.get('BLINK_POSTPROCESSOR', REPO / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll')).resolve()
 EXPECTED = (b'private layout 16 8 8\nempty epoll common passed\n'
             b'private cancellation final-close owner-drain mask canary passed\n')
 

@@ -54,6 +54,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--delivery-receipt', type=Path, required=True)
     parser.add_argument('--delivery-sha256', required=True)
+    parser.add_argument('--producer-tools', type=Path, help='Optional immutable compiler/ and postprocessor/ folders matching the delivery')
     parser.add_argument('--guest', type=Path, required=True)
     parser.add_argument('--native-receipt', type=Path, required=True)
     parser.add_argument('--profile-receipt', type=Path, required=True)
@@ -170,7 +171,14 @@ def main():
                 or profile['binary'] != native['binary'] or profile['native_environment'] != ENVIRONMENT
                 or not all(row['passed'] for row in profile['native_cases'])):
             raise RuntimeError('Pinned Kestrel profile differs')
-        for name, digest in native['sources'].items(): pin(REPO / name, digest)
+        # This gate reuses the exact pinned native ELF, not a new guest build.
+        # Verify its original archived build inputs rather than unrelated current
+        # repository package versions that never enter this guest executable.
+        for name, digest in native['sources'].items():
+            archived = 'source/' + Path(name).name
+            if native['frozen_inputs'].get(archived) != digest:
+                raise RuntimeError('Native producer source lacks its exact archived input: ' + name)
+            pin(native_path.parent / archived, digest)
         for category in ('frozen_inputs', 'artifacts', 'package_manifests'):
             for name, digest in native[category].items(): pin(native_path.parent / name, digest)
         pin(native_path.parent / 'source/obj/project.assets.json', native['assets_sha256'])
@@ -200,7 +208,11 @@ def main():
         for directory in ('src/Managed.Emulation', 'src/Managed.Emulation.Worker', 'src/Managed.Emulation.ThreadedExecution',
                           'src/Managed.Emulation.Host', 'ManagedConsumer', 'tests/MachineApi'):
             tree(ROOT / directory)
-        for directory in ('DotCC.Lib', 'DotCC.Libc', 'DotCC', 'DotCC.PostProcess'): tree(REPO / directory)
+        if args.producer_tools:
+            for category in ('compiler', 'postprocessor'): tree(args.producer_tools / category)
+            receipt['producer_source_policy'] = 'Immutable delivery-matching binaries; live producer sources are not build inputs'
+        else:
+            for directory in ('DotCC.Lib', 'DotCC.Libc', 'DotCC', 'DotCC.PostProcess'): tree(REPO / directory)
         receipt['optional_inputs'] = {str(REPO / name): sha(REPO / name) if (REPO / name).is_file() else None
             for name in ('Directory.Build.props', 'Directory.Build.targets', 'Directory.Packages.props', 'nuget.config', 'global.json')}
         pin(sys.executable); dotnet = pin(shutil.which('dotnet'))

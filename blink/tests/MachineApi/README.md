@@ -32,6 +32,14 @@ python3 blink/tests/MachineApi/run.py \
   --delivery-sha256 EXACT_SHA256
 ```
 
+When other sessions rebuild shared tools, both runners accept `--producer-tools
+/absolute/path/to/snapshot`. That directory must contain `compiler/` and
+`postprocessor/` output closures. Every producer hash must still match the exact
+delivery receipt; this changes the lookup location, not the binary identity
+checks. The immutable tool closures replace the live producer source inventory,
+which is not compiled by these consumer-only runs. All actual Blink compiled
+sources and source membership remain frozen.
+
 The runner first checks the delivery SHA, all 108 object calling conventions,
 typed semantic reports, compiler identities, final/raw product manifests and
 the actual consumer source/import closure. It builds this valid static ELF and
@@ -54,7 +62,9 @@ succeed without those private quotas; their outputs are intentionally different,
 not treated as a same-limit native comparison.
 
 The actual Kestrel sample has a separate final gate using its existing pinned
-ELF, native producer and profile; it does not rebuild the guest:
+ELF, native producer and profile; it does not rebuild the guest. Original guest
+build inputs are verified against their immutable producer archive, so changing
+unrelated current repository package versions cannot redefine that old ELF:
 
 ```sh
 python3 blink/tests/MachineApi/run-kestrel.py \
