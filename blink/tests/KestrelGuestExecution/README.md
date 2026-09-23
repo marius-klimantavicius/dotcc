@@ -1,15 +1,20 @@
 # Actual translated Kestrel execution
 
 The current optimized-JIT gate **passes** at
-`../../artifacts/kestrel-guest-execution/attempt-nfmi2iou/receipt.json`
-(SHA-256 `49502a64368a261c6803cb308561891e5da34c6e256f9c1ab9d4787d3a60f64d`).
-The refreshed intrinsic/signal product executes the unchanged native Kestrel ELF:
-all five HTTP comparisons, normal exit zero and all resource cleanup pass at
-97,443,472 instructions with ten guest Machines. The original 100M/60s bounds
-remain. The complete trace contains no `tkill` or `rt_sigreturn`; this pass does
-not qualify activation-signal delivery. The separate worker matrix and normal
-GuestSignals fixture cover the remaining lifecycle and signal requirements.
-Historical failed attempts below retain their original evidence.
+`../../artifacts/kestrel-guest-execution/attempt-nb6iv2wz/receipt.json`
+(SHA-256 `3b88712a5bac07e432f6dd253d0b749f2033a2bc17e231b87099a3d6ec2bb558`).
+Public delivery `attempt-kaddtzlg` executes the unchanged NativeAOT Kestrel ELF:
+all five native HTTP semantics, normal exit zero and complete cleanup pass at
+88,831,381 instructions with nine guest Machines. All 225 actual clock-6 calls
+succeed and the trace is complete. The original 100M/60s bounds remain.
+No tkill/tgkill/rt_sigreturn occurs in this trace, so activation delivery is not
+claimed. The separate GuestSignals fixture supplies bounded signal evidence.
+The worker matrix now also passes all four modes; see `../KestrelWorkerInstances`.
+
+The earlier `attempt-nfmi2iou` receipt remains a historical pass on its exact
+pre-override, pre-clock product at 97,443,472 instructions. It contains clock-6
+EINVAL calls and is not relabeled as qualification of the corrected product.
+Other historical failed attempts below retain their original evidence.
 
 
 The original first gate ran only optimized JIT, using exact public threaded delivery
@@ -22,8 +27,8 @@ the instruction budget was exhausted in guest GC before readiness.
 
 ```sh
 python3 blink/tests/KestrelGuestExecution/run.py \
-  --delivery-receipt blink/artifacts/translation/attempt-5vi_voys/receipt.json \
-  --delivery-sha256 20d1eda5d5915c7ee38eb37f0c3e8ef5203a542a0c4d8d5aa20df92118b2c43a \
+  --delivery-receipt blink/artifacts/translation/attempt-kaddtzlg/receipt.json \
+  --delivery-sha256 711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11 \
   --native-receipt blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/receipt.json \
   --profile-receipt blink/artifacts/kestrel-native-profile/attempt-zphi57zq/receipt.json
 ```

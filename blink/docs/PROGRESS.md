@@ -134,6 +134,15 @@ clock diagnosis without claiming a general performance benchmark. Actual
 worker matrix `attempt-838yl87x` is now running all four forms; CPU and final
 sample qualification still follow only after this product is stable.
 
+Actual Kestrel worker matrix `attempt-838yl87x` now passes all four modes
+(SHA-256 `f4d1e9780d32871eb153f46bef9b51f318b559883938a76117a5858ceca97bae`).
+All 16 workers and 40 native HTTP comparisons pass: simultaneous isolated
+instances, normal and cooperative stop, restart, natural idle deadline and
+complete cleanup. Instructions remain 88.27–88.82M per worker, with 48.9–51.1
+seconds of ordinary idle before the actual deadline. All completions precede
+fixture cleanup; 13 commands pass and 2,090 identities independently recheck.
+The exact-product GuestSignals refresh is running; CPU and final sample follow.
+
 P5 is now explicitly authorized: build and execute a real ASP.NET Core/Kestrel
 NativeAOT HTTP guest through translated Blink, distinct from NativeAOT compilation of the
 emulator host. Guest creation first uses the installed SDK for ordinary Linux

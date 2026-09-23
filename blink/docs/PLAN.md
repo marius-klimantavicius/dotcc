@@ -522,15 +522,15 @@ workarounds.
       Kestrel publication/native reference passes at `kestrel-guest-musl/attempt-o5jvvf7t`;
       see `tests/KestrelService/README.md` for the pinned ELF path and receipt.
       Its translated execution remains a separate unqualified gate.
-- [ ] Inspect the actual Kestrel guest ELF/dependencies and native service behavior;
+- [x] Inspect the actual Kestrel guest ELF/dependencies and native service behavior;
       inventory required startup/runtime instructions, syscalls, TLS, threads,
       synchronization, signals and filesystem inputs. Record required profile
       extensions explicitly and implement them through translated upstream
       algorithms and the managed host boundary, without success stubs.
-      The raw-socket baseline's finite observed surface, four-mode results and explicit
-      unsupported/tolerated operations are recorded in
-      `docs/P5-NATIVEAOT-RUNTIME.md`; broader runtime compatibility is not claimed.
-- [ ] Execute the Kestrel NativeAOT guest through translated Blink in raw/optimized
+      The selected Kestrel surface and explicit unsupported/tolerated operations
+      are recorded in `docs/P5-KESTREL-RUNTIME.md`; the earlier raw-socket baseline
+      remains in `docs/P5-NATIVEAOT-RUNTIME.md`. Broader runtime compatibility is not claimed.
+- [x] Execute the Kestrel NativeAOT guest through translated Blink in raw/optimized
       JIT/NativeAOT host forms on Linux x64. Verify readiness, real HTTP requests,
       normal shutdown, ordinary cancellation and resource cleanup against the
       native reference. A guest build or a container/native-only run is not a
@@ -547,9 +547,9 @@ workarounds.
       authored C execution wrapper translated into the product.
 - [x] Implement one managed worker per instance and a bounded control protocol.
       Distinguish guest exit, guest fault, budget exhaustion, and worker failure.
-- [ ] Run two simultaneous Kestrel instances using the same guest port, distinct files,
+- [x] Run two simultaneous Kestrel instances using the same guest port, distinct files,
       and distinct published endpoints. Verify restart and resource cleanup.
-- [ ] Send real HTTP requests to Kestrel from a separate BCL client and verify status,
+- [x] Send real HTTP requests to Kestrel from a separate BCL client and verify status,
       headers/body as specified by the fixture, including large/fragmented traffic.
       Define deterministic comparison rules for any variable protocol fields;
       do not substitute raw-socket response bytes for Kestrel evidence.

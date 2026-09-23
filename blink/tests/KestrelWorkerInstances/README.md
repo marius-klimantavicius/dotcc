@@ -1,5 +1,15 @@
 # Genuine Kestrel worker lifecycle matrix
 
+All four modes **pass** at `../../artifacts/kestrel-worker-instances/attempt-838yl87x/receipt.json`
+(SHA-256 `f4d1e9780d32871eb153f46bef9b51f318b559883938a76117a5858ceca97bae`),
+using public delivery `translation/attempt-kaddtzlg`. All 16 actual workers and
+40 native-reference HTTP comparisons pass, including simultaneous instances,
+normal and cooperative stop, restart, natural idle deadline and cleanup. All
+workers completed before fixture cleanup; no forced termination supplied a pass.
+The 13 commands exit zero and 2,090 recorded identities independently recheck.
+
+## Preserved failures and diagnostic correction
+
 The first matrix attempt failed in raw JIT after A's health request passed and
 B's health request returned an empty response. Its unchanged receipt is
 `artifacts/kestrel-worker-instances/attempt-3cr6q7v7/receipt.json`
@@ -9,7 +19,7 @@ no signals. That attempt did not retain the failing worker's final result, so it
 does not establish whether a budget, guest signal or runtime error caused EOF.
 The remaining three modes were not attempted.
 
-The updated diagnostic capture is source-ready and pending execution. It retains
+The updated diagnostic capture is exercised by the passing matrix above. It retains
 every launched worker's actual completion even when HTTP or lifecycle checks
 fail. It records completion state and reason before any cleanup and immediately
 before that worker's disposal. A still-pending worker is marked as potentially
@@ -75,7 +85,7 @@ times, idle wait, worker details, stdout/stderr and response hashes are retained
 The memory setting is an admission ceiling, not measured physical usage. It
 addresses the preserved standalone 64 MiB address-space failure documented in
 `../KestrelGuestExecution/README.md`; the native guest's 16 MiB GC cap and six
-environment entries remain unchanged. The full matrix remains unqualified.
+environment entries remain unchanged. The passing matrix above uses those same limits.
 
 A pass requires all 16 processes and 40 HTTP comparisons. Child final detail
 must independently report the actual None/Requested/Deadline stop reason,

@@ -167,3 +167,43 @@ The all-four-mode worker matrix and final sample remain separate gates;
 the guest ELF, six variables, 128 MiB memory profile, 100M instruction budget
 and 60-second deadline remain unchanged. The observed timer-path improvement is retained as correctness evidence,
 not a general performance measurement.
+
+## Current selected runtime surface
+
+The complete `nb6iv2wz` standalone trace contains 4,319 observations across
+51 syscall kinds and nine guest TIDs. Its read-only inventory, including every
+syscall count and return, is `kestrel-runtime-inventory/attempt-navzu3w8/receipt.json`
+(SHA-256 `687fb1c65734c71734832dcd1890d89be7ff523c830536f117b6e03dd8d167f3`).
+Counts describe this schedule, not required equality with native's 12 TIDs or
+the later worker matrix. The table records the exercised finite profile.
+
+| Surface | Actual guest observation and boundary |
+| --- | --- |
+| Static image, TLS and threads | The pinned static ELF loads; ARCH_SET_FS and set_tid_address succeed, followed by eight successful clones. Upstream register/TLS/TID algorithms remain; authored C# owns each Machine's execution and lifetime. |
+| Memory | 95 mmap, 65 mprotect, eight munmap, five brk and 57 madvise calls return nonnegative values. The selected 128 MiB AS/DATA/backing limit is distinct from the 16 MiB guest GC setting. Final retained backing is not a peak or RSS measurement. The 2,048 mremap calls remain validation-only (2,047 ENOMEM and one EFAULT), with no successful remapping. |
+| Synchronization | Normal futex WAIT/WAKE completes, with ordinary EAGAIN, timeout and shutdown EINTR; REQUEUE is absent and remains unsupported. Membarrier query/registration and three private expedited fences succeed. One normal nanosleep completes. |
+| Async TCP | Six epoll ADDs, eleven delivered events, five successful accepts and five sends; ten successful receives include five MSG_PEEK calls. EAGAIN occurs after draining receive/listener state. Actual IPv4 TCP, nonblocking flags, NODELAY and zero-second LINGER use the finite registered-socket contract above. No arbitrary Linux edge-transition equivalence is claimed. |
+| Clocks | All 307 clock calls succeed: 225 coarse monotonic, 76 fine monotonic and six realtime. The complete trace qualifies the actual translated clock-6 dispatch; exact provider behavior is separately tested. |
+| Signals and exit | Signal dispositions/masks succeed. This run has no tkill/tgkill/rt_sigreturn and does not claim activation-handler execution. The separate normal GuestSignals matrix supplies bounded sender/frame/return/accounting evidence. Guest exit/group-exit unwind through the typed owner callbacks; all Machines join and backing/IO release. |
+| Private descriptors and resources | Descriptor duplication/flags, pipe creation, ordinary file metadata for the mounted image, PID/TID and affinity queries succeed. Paths and option payloads are not guessed from scalar pointer traces. |
+
+The selected service tolerates missing-path ENOENT, resource-usage EOPNOTSUPP,
+CPU/NUMA ENOSYS, thread-name EINVAL, terminal ENOTTY and unsupported datagram/
+Unix socket probes. The shutdown pipe read returns private ECANCELED; epoll
+and futex shutdown return EINTR. These are distinct observed contracts.
+Successful sysinfo calls still report the old modeled fallback (1 GiB total,
+zero free); they do not establish physical or quota-capacity reporting. Neither
+that deferred improvement nor optional refused probes are relabeled as supported.
+
+## Actual four-mode worker qualification
+
+`kestrel-worker-instances/attempt-838yl87x/receipt.json` passes on this exact
+public delivery (SHA-256
+`f4d1e9780d32871eb153f46bef9b51f318b559883938a76117a5858ceca97bae`).
+Raw/optimized JIT/NativeAOT run 16 actual workers and 40 native-reference HTTP
+comparisons, including simultaneous private instances on the same guest port,
+distinct physical endpoints, normal/cooperative stop, fresh-process restart
+and natural idle deadline. All completions occur before diagnostic cleanup;
+all Machines, workers, backing and IO release without a forced-success path.
+The 100M/60s/128MiB profile remains unchanged. Final public sample and CPU
+refresh are still separate pending gates.
