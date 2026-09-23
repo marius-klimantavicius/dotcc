@@ -13,14 +13,14 @@ public readonly record struct AcceptedSocket(int Handle, GuestEndpoint Remote);
 
 /// <summary>Per-instance IPv4/TCP bindings with explicit loopback publication.
 /// Guest addresses never become implicit external host destinations.</summary>
-public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyncDisposable
+public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128, GuestNetworkPolicy? policy = null) : IAsyncDisposable
 {
     private sealed class Entry(Socket socket)
     {
         internal readonly Socket Socket = socket;
         internal GuestEndpoint? Local;
         internal GuestEndpoint? Remote;
-        internal bool Listening;
+        internal bool Listening, PublicationGranted;
         internal bool ReadShutdown, WriteShutdown;
         internal bool NonBlocking;
         internal ulong ReadEpoch, WriteEpoch;
@@ -44,6 +44,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
         lock (sync)
         {
             if (disposed) return Fail<int>(GuestError.BadDescriptor);
+            if (policy != null && policy.Publications.Count == 0 && policy.Outbound.Count == 0) return Fail<int>(GuestError.Access);
             if (entries.Count >= descriptorLimit) return Fail<int>(GuestError.TooManyFiles);
             try
             {
@@ -68,13 +69,17 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
             if (!Find(handle, out var entry)) return Fail<GuestEndpoint>(GuestError.BadDescriptor);
             if (entry.Local != null) return Fail<GuestEndpoint>(GuestError.Invalid);
             if (endpoint.Address is not (0 or GuestEndpoint.Loopback)) return Fail<GuestEndpoint>(GuestError.AddressUnavailable);
+            IPEndPoint actual = new(IPAddress.Loopback, 0);
+            if (policy != null && !policy.Listening.TryGetValue(endpoint.Port, out actual!))
+                return Fail<GuestEndpoint>(GuestError.Access);
             ushort port = endpoint.Port;
             if (port == 0) port = AllocatePort();
             if (port == 0 || bindings.ContainsKey(port)) return Fail<GuestEndpoint>(GuestError.AddressInUse);
             try
             {
-                entry.Socket.Bind(new IPEndPoint(IPAddress.Loopback, 0));
+                entry.Socket.Bind(actual);
                 entry.Local = endpoint with { Port = port };
+                entry.PublicationGranted = true;
                 bindings.Add(port, entry);
                 origins.Add(((IPEndPoint)entry.Socket.LocalEndPoint!).Port, entry.Local.Value with { Address = GuestEndpoint.Loopback });
                 return HostResult<GuestEndpoint>.Success(entry.Local.Value);
@@ -88,6 +93,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
         lock (sync)
         {
             if (!Find(handle, out var entry)) return Fail<int>(GuestError.BadDescriptor);
+            if (policy != null && !entry.PublicationGranted) return Fail<int>(GuestError.Access);
             if (entry.Local == null || backlog < 0) return Fail<int>(GuestError.Invalid);
             try { entry.Socket.Listen(backlog); entry.Listening = true; return HostResult<int>.Success(0); }
             catch (SocketException error) { return Fail<int>(ConvertError(error)); }
@@ -122,7 +128,7 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
             if (!Find(handle, out var entry)) return Fail<IPEndPoint>(GuestError.BadDescriptor);
             if (!entry.Listening) return Fail<IPEndPoint>(GuestError.Invalid);
             var endpoint = (IPEndPoint)entry.Socket.LocalEndPoint!;
-            return HostResult<IPEndPoint>.Success(new(IPAddress.Loopback, endpoint.Port));
+            return HostResult<IPEndPoint>.Success(new(endpoint.Address, endpoint.Port));
         }
     }
     public HostResult<GuestEndpoint> LocalEndpoint(int handle)
@@ -147,14 +153,32 @@ public sealed partial class VirtualTcpNetwork(int descriptorLimit = 128) : IAsyn
                 // A timed connect needs a retained in-progress connection state;
                 // canceling ConnectAsync cannot truthfully provide that contract.
                 if (source.SendTimeoutMilliseconds != 0) return Fail<int>(GuestError.Unsupported);
-                if (destination.Address != GuestEndpoint.Loopback) return Fail<int>(GuestError.Access);
-                if (!bindings.TryGetValue(destination.Port, out var target) || !target.Listening) return Fail<int>(GuestError.ConnectionRefused);
-                if (source.Local == null)
+                if (policy is null)
                 {
-                    var bound = Bind(handle, new(GuestEndpoint.Loopback, 0));
-                    if (!bound.Succeeded) return Fail<int>(bound.Error);
+                    if (destination.Address != GuestEndpoint.Loopback) return Fail<int>(GuestError.Access);
+                    if (!bindings.TryGetValue(destination.Port, out var target) || !target.Listening) return Fail<int>(GuestError.ConnectionRefused);
+                    if (source.Local == null)
+                    {
+                        var bound = Bind(handle, new(GuestEndpoint.Loopback, 0));
+                        if (!bound.Succeeded) return Fail<int>(bound.Error);
+                    }
+                    actual = (IPEndPoint)target.Socket.LocalEndPoint!;
                 }
-                actual = (IPEndPoint)target.Socket.LocalEndPoint!;
+                else
+                {
+                    if (!policy.Destinations.Contains(destination)) return Fail<int>(GuestError.Access);
+                    actual = new IPEndPoint(new IPAddress(new byte[] { (byte)(destination.Address >> 24),
+                        (byte)(destination.Address >> 16), (byte)(destination.Address >> 8), (byte)destination.Address }), destination.Port);
+                    // An outbound grant permits an ephemeral source, not a public
+                    // listener. Do not route this through the publication check.
+                    if (source.Local == null)
+                    {
+                        ushort port = AllocatePort();
+                        if (port == 0) return Fail<int>(GuestError.AddressInUse);
+                        source.Socket.Bind(new IPEndPoint(IPAddress.Any, 0));
+                        source.Local = new GuestEndpoint(GuestEndpoint.Loopback, port);
+                    }
+                }
             }
             await source.Socket.ConnectAsync(actual, token).ConfigureAwait(false);
             lock (sync) source.Remote = destination;

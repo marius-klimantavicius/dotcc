@@ -77,6 +77,21 @@ changes and authorized P6. No duplicate recovery-branch history was introduced.
   worker protocol/discovery and deployment. The coordinator supplies the fresh
   generated context and shared guest-thread ownership hooks.
 
+Filesystem milestone `b8287f5` passes a normal native file-description witness
+and BCL JIT/NativeAOT mount contracts at `host-mounts/attempt-rmljxlg0`
+(receipt SHA-256 `6d5cd50f78ccd4e71efc7647ed85cf52f233686ffd8b3cb658d0066a867627e0`).
+Live RW/RO, nested overlays, private persistence, eager COW/export/discard,
+aggregate private byte/node quotas and ordinary link denial are covered. The
+coordinator independently rechecked 159 source/copy/log/binary entries; the only
+subsequent difference is the explicitly documented result-only fixture README.
+Explicit network grants also pass JIT/NativeAOT boundary checks at
+`host-network-grants/attempt-rhpwmuhv`, with real BCL socket peers. These Host
+checks do not substitute for translated public-machine execution.
+
+The filesystem worker now owns the new generic instance-method/function-pointer
+ABI; the API worker owns console ordering/ownership and deployment review. The
+coordinator owns public fixtures, integration, current delivery and qualification.
+
 Current public delivery remains the qualified P5 artifact above. P6 Host/API and
 pipeline source edits are unqualified until a fresh delivery and actual consumer
 runs. Remaining gates are filesystem/console/network normal contracts, actual
