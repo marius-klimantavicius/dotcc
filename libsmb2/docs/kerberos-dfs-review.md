@@ -34,8 +34,9 @@ not applied. The verified pinned-source acquisition remains unchanged.
   agree on version. Canonical paths reject dot components; UTF-16 path consumption
   preserves surrogate pairs and component boundaries.
 - Updated dependency/source inventories to include the authored bridge and
-  centrally pinned package. Removed only the unused transitive logging generator
-  rejected by the semantic postprocessor; no generated C# patching is used.
+  centrally pinned package. The temporary transitive logging-generator exclusion
+  was subsequently removed when the semantic postprocessor gained source-generator
+  support; no generated C# patching is used.
 
 ## Provider provenance and boundaries
 
