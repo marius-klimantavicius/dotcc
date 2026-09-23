@@ -20,7 +20,7 @@ try
     bool created = false;
     try
     {
-        using (var file = client.Open(path, create: true))
+        await using (var file = await client.OpenAsync(path, create: true))
         {
             created = true;
             if (await file.ReadAsync(Array.Empty<byte>()) != 0 || await file.WriteAsync(Array.Empty<byte>()) != 0)
@@ -33,8 +33,8 @@ try
                 if (written == 0) throw new IOException("Write made no progress");
                 offset += written;
             }
-            file.Flush();
-            if (file.Stat().Size != (ulong)payload.Length) throw new IOException("File length differs");
+            await file.FlushAsync();
+            if ((await file.StatAsync()).Size != (ulong)payload.Length) throw new IOException("File length differs");
             var actual = new byte[payload.Length];
             offset = 0;
             while (offset < actual.Length)
@@ -47,18 +47,18 @@ try
             }
             if (!payload.AsSpan().SequenceEqual(actual)) throw new IOException("Read-back bytes differ");
             if (await file.ReadAsync(new byte[1], (ulong)actual.Length) != 0) throw new IOException("Expected EOF");
-            file.Truncate(17);
-            if (file.Stat().Size != 17) throw new IOException("Truncated length differs");
+            await file.TruncateAsync(17);
+            if ((await file.StatAsync()).Size != 17) throw new IOException("Truncated length differs");
         }
-        client.Rename(path, path + ".renamed");
+        await client.RenameAsync(path, path + ".renamed");
         path += ".renamed";
-        if (client.Stat(path).Size != 17 || !(await client.ListAsync()).Any(entry => entry.Name == path))
+        if ((await client.StatAsync(path)).Size != 17 || !(await client.ListAsync()).Any(entry => entry.Name == path))
             throw new IOException("Renamed file missing or length differs");
-        client.Delete(path);
+        await client.DeleteAsync(path);
         created = false;
         Console.WriteLine($"passed:dialect={client.Dialect:x4},protection={(args.Contains("--encrypt") ? "encrypt" : "sign")},bytes=65537,entries={entries.Count}");
     }
-    finally { if (created) client.Delete(path); }
+    finally { if (created) await client.DeleteAsync(path); }
     return 0;
 }
 catch (Exception ex)

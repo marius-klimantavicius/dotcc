@@ -34,6 +34,7 @@ internal static class Program
 
             await using var client = await settings.ConnectAsync();
             Require(client.Dialect == dialect, "Negotiated dialect differs");
+            await VerifyIdleAsync();
             var directory = "dotcc-lifecycle-Ž-東京-" + Guid.NewGuid().ToString("N");
             client.CreateDirectory(directory);
             var cleanup = new HashSet<string>(StringComparer.Ordinal);
@@ -113,7 +114,7 @@ internal static class Program
                 Expect<ObjectDisposedException>(() => client.List(), "disposed connection list");
                 await ExpectAsync<ObjectDisposedException>(() => client.ListAsync(), "disposed connection async list");
                 Console.WriteLine($"passed:lifecycle,dialect={dialect:x4},protection={(settings.Encrypt ? "encrypt" : "sign")}," +
-                    $"bytes={payload.Length},writes={writes},reads={reads},parallel=2,pending={race}");
+                    $"bytes={payload.Length},writes={writes},reads={reads},parallel=2,pending={race},idleNotifications=0");
                 preserveFailure = false;
             }
             catch (Exception primary)
@@ -196,6 +197,21 @@ internal static class Program
 
     private static byte[] Payload(int size, int seed) => Enumerable.Range(0, size)
         .Select(index => unchecked((byte)(index * seed + 17))).ToArray();
+
+    private static async Task VerifyIdleAsync()
+    {
+        // Let already queued connect notifications settle, then observe an idle
+        // authenticated connection. This delay is a measurement window, not a
+        // transport readiness mechanism or a simulated network failure.
+        await Task.Delay(100);
+        var before = HostSockets.Snapshot();
+        await Task.Delay(250);
+        var after = HostSockets.Snapshot();
+        Require(after.ServiceNotifications == before.ServiceNotifications,
+            "Idle context generated repeated service notifications");
+        Require(after.IoCompletions == before.IoCompletions,
+            "Idle context performed unexpected socket I/O");
+    }
 
     private static async Task<int> WriteAll(SmbConnection.SmbFile file, byte[] payload)
     {

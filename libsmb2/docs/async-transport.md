@@ -439,14 +439,20 @@ Windows execution is unavailable and remains unverified.
 
 ### A2 — Replace the facade pump
 
-- [ ] Register fd-event callbacks, implement the serialized completion executor,
+- [x] Register fd-event callbacks, implement the serialized completion executor,
       prepared async DNS, Happy Eyeballs and one-shot operation deadlines.
-- [ ] Replace Task.Run/Wait/stack callback state with owned awaitable operations;
+- [x] Replace Task.Run/Wait/stack callback state with owned awaitable operations;
       move DisposeAsync and optional synchronous facade methods onto the same core.
-- [ ] Verify normal connect/read/write/metadata/disconnect, simultaneous contexts,
+- [x] Verify normal connect/read/write/metadata/disconnect, simultaneous contexts,
       queued operations/disposal and ordinary GC/lifetime behavior. Test event
       registration ordering and synchronous completions as scheduler correctness,
       not custom network fault injection.
+
+A2 evidence (Linux x64, 2026-09-23): the full solution builds without warnings;
+all 11 normal Samba sample cases pass in raw/processed JIT and NativeAOT. The
+processed JIT lifecycle matrix passes all 11 cases, including >1 MiB transfers,
+independent contexts, queued work/disposal and idle notification checks. Both
+checked-heap finalizer cases pass. Broader matrix receipts are recorded under A3.
 
 ### A3 — Qualify and promote the product profile
 

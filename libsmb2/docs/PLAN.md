@@ -465,7 +465,7 @@ earlier phases; their completion still depends on real translated execution.
       including upstream integer scratch paths and generic compiler support needed.
 - [x] A1: implement the C# socket host with bounded async send/receive, DNS
       preparation, socket options, errors and explicit lifetime ownership.
-- [ ] A2: replace the facade's blocking pump with fd callbacks, a serialized
+- [x] A2: replace the facade's blocking pump with fd callbacks, a serialized
       completion executor, owned awaitable requests and asynchronous disposal.
 - [ ] A3: qualify raw/processed JIT/NativeAOT, real SMB interoperability, idle/load
       behavior, handle-domain separation and clean generation/project inclusion.

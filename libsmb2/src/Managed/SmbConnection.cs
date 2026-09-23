@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using static Managed.Smb.LibSmb2;
@@ -10,503 +12,487 @@ public sealed class SmbException(string operation, int status, string message)
     public int Status { get; } = status;
 }
 
-/// <summary>Owns one translated SMB context. Operations on a connection are
-/// serialized; independent connections may run concurrently. Cancellation waits
-/// for an active upstream operation to drain before releasing its buffers.</summary>
-public sealed unsafe class SmbConnection : IDisposable, IAsyncDisposable
+/// <summary>Owns one translated SMB context. Operations are serialized and driven
+/// by socket completions. Cancellation of a submitted request waits for its callback
+/// or terminal context cleanup before releasing buffers.</summary>
+public sealed partial class SmbConnection : IDisposable, IAsyncDisposable
 {
     private static readonly object ContextRegistry = new();
-    // O_CREAT/O_EXCL are not exported in this generated closure. These two
-    // fallback values match the selected dotcc Linux fcntl.h ABI.
-    private const int LinuxOpenCreate = 0x40;
-    private const int LinuxOpenExclusive = 0x80;
-    private readonly object _gate = new();
+    private static readonly ConcurrentDictionary<nint, WeakReference<SmbConnection>> Connections = new();
+    private readonly ContextExecutor _executor = new();
+    private readonly SemaphoreSlim _operations = new(1);
     private readonly HashSet<SmbFile> _files = new();
-    private smb2_context* _context;
+    private readonly object _disposeGate = new();
+    private readonly ConcurrentDictionary<int, byte> _notifications = new();
+    private nint _context;
     private bool _connected;
-    private int _timeoutSeconds = 10;
+    private int _timeoutSeconds;
+    private int _disposing;
+    private Task? _disposeTask;
+    private Task _transportDrain = Task.CompletedTask;
+    private Operation? _pending;
+    private Timer? _connectTimer;
+    private long _connectTimerVersion;
 
-    private SmbConnection()
-    {
-        lock (ContextRegistry) _context = smb2_init_context();
-        if (_context == null) throw new OutOfMemoryException("SMB context allocation failed");
-    }
+    private SmbConnection(int timeoutSeconds) => _timeoutSeconds = timeoutSeconds;
+    private unsafe smb2_context* Context => (smb2_context*)_context;
 
     public static SmbConnection Connect(string server, string share, string user,
         string password, string domain = "WORKGROUP", ushort dialect = (ushort)smb2_negotiate_version.SMB2_VERSION_0311,
         bool encrypt = false, int timeoutSeconds = 10)
+        => ConnectAsync(server, share, user, password, domain, dialect, encrypt, timeoutSeconds).GetAwaiter().GetResult();
+
+    public static async Task<SmbConnection> ConnectAsync(string server, string share, string user,
+        string password, string domain = "WORKGROUP", ushort dialect = (ushort)smb2_negotiate_version.SMB2_VERSION_0311,
+        bool encrypt = false, int timeoutSeconds = 10, CancellationToken cancellationToken = default)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(timeoutSeconds, 1);
-        var connection = new SmbConnection();
+        // Keep the original server identity, including a possible port suffix, for SMB.
+        var addressName = DnsName(server);
+        var addresses = await Dns.GetHostAddressesAsync(addressName, cancellationToken).ConfigureAwait(false);
+        var connection = new SmbConnection(timeoutSeconds);
         try
         {
-            var serverBytes = Utf8(server); var shareBytes = Utf8(share);
-            var userBytes = Utf8(user); var domainBytes = Utf8(domain); var passwordBytes = Utf8(password);
-            try
-            {
-                fixed (byte* host = serverBytes, tree = shareBytes, username = userBytes,
-                    workgroup = domainBytes, secret = passwordBytes)
+            await connection._executor.Invoke(connection.Initialize).ConfigureAwait(false);
+            await connection.RunOperationAsync("connect", operation => connection.StartConnect(operation,
+                server, share, user, password, domain, dialect, encrypt, addresses), operation =>
                 {
-                    connection._timeoutSeconds = timeoutSeconds;
-                    // One managed deadline owns cancellation of the entire operation.
-                    // Do not let independent PDU timers release callback state early.
-                    smb2_set_timeout(connection._context, 0);
-                    smb2_set_version(connection._context, (smb2_negotiate_version)dialect);
-                    smb2_set_authentication(connection._context, (int)smb2_sec.SMB2_SEC_NTLMSSP);
-                    smb2_set_domain(connection._context, workgroup);
-                    smb2_set_user(connection._context, username);
-                    smb2_set_password(connection._context, secret);
-                    smb2_set_security_mode(connection._context, SMB2_NEGOTIATE_SIGNING_ENABLED);
-                    smb2_set_sign(connection._context, 1);
-                    if (encrypt) smb2_set_seal(connection._context, 1);
-                    CallbackState state = default;
-                    using var pending = new OperationScope(connection, &state);
-                    connection.Wait(smb2_connect_share_async(connection._context, host, tree, username, &Complete, &state), &state, "connect");
                     connection._connected = true;
-                }
-            }
-            finally { System.Security.Cryptography.CryptographicOperations.ZeroMemory(passwordBytes); }
+                    return true;
+                }, cancellationToken).ConfigureAwait(false);
             if (connection.Dialect != dialect) throw new IOException("Server negotiated a different SMB dialect");
             return connection;
         }
         catch
         {
-            try { connection.Dispose(); } catch { /* Preserve the connection failure. */ }
+            try { await connection.DisposeAsync().ConfigureAwait(false); } catch { }
             throw;
         }
     }
 
-    public static Task<SmbConnection> ConnectAsync(string server, string share, string user,
-        string password, string domain = "WORKGROUP", ushort dialect = (ushort)smb2_negotiate_version.SMB2_VERSION_0311,
-        bool encrypt = false, int timeoutSeconds = 10, CancellationToken cancellationToken = default)
-        => Task.Run(() =>
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            var connection = Connect(server, share, user, password, domain, dialect, encrypt, timeoutSeconds);
-            if (cancellationToken.IsCancellationRequested)
-            {
-                try { connection.Dispose(); } catch { /* Preserve cancellation after cleanup. */ }
-                cancellationToken.ThrowIfCancellationRequested();
-            }
-            return connection;
-        }, cancellationToken);
-
-    public ushort Dialect { get { lock (_gate) { RequireContext(); return smb2_get_dialect(_context); } } }
-
-    public SmbFile Open(string path, bool create = false)
+    private static string DnsName(string server)
     {
-        lock (_gate)
+        ArgumentException.ThrowIfNullOrEmpty(server);
+        if (server[0] == '[')
         {
-            RequireContext();
-            fixed (byte* name = Utf8(path))
-            {
-                CallbackState state = default;
-                using var pending = new OperationScope(this, &state, ResultOwnership.File);
-                Wait(smb2_open_async(_context, name, create ? O_RDWR | LinuxOpenCreate | LinuxOpenExclusive : O_RDWR, &Complete, &state),
-                    &state, "open", ResultOwnership.File);
-                var handle = (smb2fh*)state.Data;
-                try
-                {
-                    var file = new SmbFile(this, handle);
-                    _files.Add(file);
-                    return file;
-                }
-                catch
-                {
-                    FreeHandle(handle);
-                    DestroyContext();
-                    throw;
-                }
-            }
+            int end = server.IndexOf(']');
+            if (end > 0) return server[1..end];
         }
+        int colon = server.LastIndexOf(':');
+        return colon > 0 && server.IndexOf(':') == colon ? server[..colon] : server;
     }
 
-    public IReadOnlyList<Entry> List(string path = "")
+    private unsafe void Initialize()
     {
-        lock (_gate)
-        {
-            RequireContext();
-            fixed (byte* name = Utf8(path))
-            {
-                CallbackState state = default;
-                using var pending = new OperationScope(this, &state, ResultOwnership.Directory);
-                Wait(smb2_opendir_async(_context, name, &Complete, &state), &state, "opendir", ResultOwnership.Directory);
-                var directory = (smb2dir*)state.Data;
-                try
-                {
-                    var result = new List<Entry>();
-                    smb2dirent* entry;
-                    while ((entry = smb2_readdir(_context, directory)) != null)
-                        result.Add(new(Marshal.PtrToStringUTF8((nint)entry->name) ?? "", entry->st.smb2_size,
-                            entry->st.smb2_type == SMB2_TYPE_DIRECTORY));
-                    return result;
-                }
-                finally { smb2_closedir(_context, directory); }
-            }
-        }
+        lock (ContextRegistry) _context = (nint)smb2_init_context();
+        if (_context == 0) throw new OutOfMemoryException("SMB context allocation failed");
+        var weak = new WeakReference<SmbConnection>(this);
+        Connections[_context] = weak;
+        HostSockets.RegisterContext(_context, socket => { if (weak.TryGetTarget(out var owner)) owner.Notify(socket); });
+        using var scope = HostSockets.EnterContext(_context);
+        smb2_fd_event_callbacks(Context, &ChangeFd, &ChangeEvents);
+        smb2_set_timeout(Context, 0);
     }
 
-    public void Delete(string path)
+    private unsafe int StartConnect(Operation op, string server, string share, string user, string password,
+        string domain, ushort dialect, bool encrypt, IPAddress[] addresses)
     {
-        lock (_gate)
-        {
-            RequireContext();
-            CallbackState state = default;
-            fixed (byte* name = Utf8(path))
-            {
-                using var pending = new OperationScope(this, &state);
-                    Wait(smb2_unlink_async(_context, name, &Complete, &state), &state, "unlink");
-            }
-        }
+        smb2_set_version(Context, (smb2_negotiate_version)dialect);
+        smb2_set_authentication(Context, (int)smb2_sec.SMB2_SEC_NTLMSSP);
+        smb2_set_domain(Context, op.Text(domain));
+        smb2_set_user(Context, op.Text(user));
+        smb2_set_password(Context, op.Text(password, secret: true));
+        smb2_set_security_mode(Context, SMB2_NEGOTIATE_SIGNING_ENABLED);
+        smb2_set_sign(Context, 1);
+        if (encrypt) smb2_set_seal(Context, 1);
+        using var prepared = HostSockets.PreparedAddresses(DnsName(server), addresses);
+        return smb2_connect_share_async(Context, op.Text(server), op.Text(share), op.Text(user), &Complete, op.Token);
     }
 
-    public Metadata Stat(string path)
+    public ushort Dialect => Block(() => Turn(() => { RequireContext(); return ReadDialect(); }));
+    private unsafe ushort ReadDialect() => smb2_get_dialect(Context);
+
+    public SmbFile Open(string path, bool create = false) => Block(() => OpenAsync(path, create));
+    public Task<SmbFile> OpenAsync(string path, bool create = false, CancellationToken cancellationToken = default)
+        => RunOperationAsync("open", op => StartOpen(op, path, create), AdoptFile, cancellationToken, Ownership.File);
+    private unsafe int StartOpen(Operation op, string path, bool create)
+        => smb2_open_async(Context, op.Text(path), create ? O_RDWR | O_CREAT | O_EXCL : O_RDWR, &Complete, op.Token);
+    private unsafe SmbFile AdoptFile(Operation op)
     {
-        lock (_gate)
-        {
-            RequireContext();
-            smb2_stat_64 value = default;
-            CallbackState state = default;
-            fixed (byte* name = Utf8(path))
-            {
-                using var pending = new OperationScope(this, &state);
-                    Wait(smb2_stat_async(_context, name, &value, &Complete, &state), &state, "stat");
-            }
-            return Metadata.From(value);
-        }
+        var file = new SmbFile(this, op.Data);
+        _files.Add(file);
+        op.Data = 0;
+        return file;
     }
 
-    public void Rename(string path, string newPath)
-    {
-        lock (_gate)
-        {
-            RequireContext();
-            CallbackState state = default;
-            fixed (byte* oldName = Utf8(path), newName = Utf8(newPath))
-            {
-                using var pending = new OperationScope(this, &state);
-                    Wait(smb2_rename_async(_context, oldName, newName, &Complete, &state), &state, "rename");
-            }
-        }
-    }
-
-    public void CreateDirectory(string path) => DirectoryOperation(path, true);
-    public void RemoveDirectory(string path) => DirectoryOperation(path, false);
-    private void DirectoryOperation(string path, bool create)
-    {
-        lock (_gate)
-        {
-            RequireContext();
-            CallbackState state = default;
-            fixed (byte* name = Utf8(path))
-            {
-                using var pending = new OperationScope(this, &state);
-                    Wait(create ? smb2_mkdir_async(_context, name, &Complete, &state)
-                        : smb2_rmdir_async(_context, name, &Complete, &state), &state, create ? "mkdir" : "rmdir");
-            }
-        }
-    }
-
-    public SpaceInfo GetSpaceInfo(string path = "")
-    {
-        lock (_gate)
-        {
-            RequireContext();
-            LibSmb2.__DotCcTags.smb2_statvfs value = default;
-            CallbackState state = default;
-            fixed (byte* name = Utf8(path))
-            {
-                using var pending = new OperationScope(this, &state);
-                    Wait(smb2_statvfs_async(_context, name, &value, &Complete, &state), &state, "statvfs");
-            }
-            return new(value.f_bsize, value.f_frsize, value.f_blocks, value.f_bfree, value.f_bavail);
-        }
-    }
-
+    public IReadOnlyList<Entry> List(string path = "") => Block(() => ListAsync(path));
     public Task<IReadOnlyList<Entry>> ListAsync(string path = "", CancellationToken cancellationToken = default)
-        => RunAsync(() => List(path), cancellationToken);
-
-    private Task<T> RunAsync<T>(Func<T> operation, CancellationToken token) => Task.Run(() =>
+        => RunOperationAsync("opendir", op => StartList(op, path), ReadDirectory, cancellationToken, Ownership.Directory);
+    private unsafe int StartList(Operation op, string path) => smb2_opendir_async(Context, op.Text(path), &Complete, op.Token);
+    private unsafe IReadOnlyList<Entry> ReadDirectory(Operation op)
     {
-        lock (_gate)
-        {
-            token.ThrowIfCancellationRequested();
-            RequireContext();
-            T value = operation();
-            token.ThrowIfCancellationRequested();
-            return value;
-        }
-    }, token);
-
-    private static byte[] Utf8(string value)
-    {
-        ArgumentNullException.ThrowIfNull(value);
-        if (value.Contains('\0')) throw new ArgumentException("SMB text cannot contain NUL", nameof(value));
-        return Encoding.UTF8.GetBytes(value + '\0');
-    }
-    private void RequireContext() => ObjectDisposedException.ThrowIf(_context == null, this);
-    private SmbException Error(string operation, int status) => new(operation, status,
-        Marshal.PtrToStringUTF8((nint)smb2_get_error(_context)) ?? "SMB operation failed");
-    // This state lives on the caller's stack. Wait returns only after the actual
-    // callback, or after destruction has synchronously cancelled every PDU.
-    // The caller's pinned buffers and stack outputs remain valid throughout.
-    private struct CallbackState
-    {
-        public bool Finished;
-        public bool Settled;
-        public int Status;
-        public void* Data;
-    }
-    private enum ResultOwnership { None, File, Directory }
-    private readonly ref struct OperationScope(SmbConnection owner, CallbackState* state,
-        ResultOwnership ownership = ResultOwnership.None)
-    {
-        public void Dispose()
-        {
-            // Covers exceptions from submission itself, before Wait is entered.
-            if (!state->Settled) owner.Abort(state, ownership);
-        }
-    }
-    private void Abort(CallbackState* state, ResultOwnership ownership)
-    {
-        if (state->Finished && state->Status >= 0 && state->Data != null)
-        {
-            if (ownership == ResultOwnership.File) FreeHandle((smb2fh*)state->Data);
-            else if (ownership == ResultOwnership.Directory) smb2_closedir(_context, (smb2dir*)state->Data);
-            state->Data = null;
-        }
-        try { DestroyContext(); }
-        finally { state->Settled = true; }
-    }
-    private static void Complete(smb2_context* context, int status, void* data, void* privateData)
-    {
-        var state = (CallbackState*)privateData;
-        state->Status = status;
-        state->Data = data;
-        state->Finished = true;
-    }
-
-    private int Wait(int started, CallbackState* state, string operation,
-        ResultOwnership ownership = ResultOwnership.None, bool closesTransport = false)
-    {
-        bool abort = started < 0;
+        var directory = (smb2dir*)op.Data;
         try
         {
-            if (started < 0) throw Error(operation, started);
-            long deadline = Environment.TickCount64 + (long)_timeoutSeconds * 1000;
-            while (!state->Finished)
-            {
-                if (Environment.TickCount64 >= deadline)
-                {
-                    abort = true;
-                    throw new SmbException(operation, -Libc.ETIMEDOUT, "SMB operation timed out");
-                }
-                ulong count = 0;
-                int connectTimeout = -1;
-                int* descriptors = smb2_get_fds(_context, &count, &connectTimeout);
-                var polls = new pollfd[checked((int)count)];
-                for (int i = 0; i < polls.Length; i++)
-                    polls[i] = new pollfd { fd = descriptors[i], events = (short)smb2_which_events(_context) };
-                int delay = (int)Math.Min(100, deadline - Environment.TickCount64);
-                if (connectTimeout >= 0) delay = Math.Min(delay, connectTimeout);
-                fixed (pollfd* fds = polls)
-                {
-                    if (Libc.poll(fds, count, Math.Max(0, delay)) < 0)
-                    {
-                        abort = true;
-                        throw new SmbException(operation, -Libc.EIO, "SMB socket poll failed");
-                    }
-                    for (int i = 0; i < polls.Length && !state->Finished; i++)
-                    {
-                        if (fds[i].revents != 0 && smb2_service_fd(_context, fds[i].fd, fds[i].revents) < 0
-                            && !(closesTransport && state->Finished && state->Status >= 0))
-                        {
-                            abort = true;
-                            throw Error(operation, -Libc.EIO);
-                        }
-                    }
-                }
-                if (!state->Finished && connectTimeout >= 0 && smb2_service_fd(_context, -1, 0) < 0)
-                {
-                    abort = true;
-                    throw Error(operation, -Libc.EIO);
-                }
-            }
-            state->Settled = true;
-            if (state->Status < 0) throw Error(operation, state->Status);
-            return state->Status;
+            var entries = new List<Entry>();
+            smb2dirent* entry;
+            while ((entry = smb2_readdir(Context, directory)) != null)
+                entries.Add(new(Marshal.PtrToStringUTF8((nint)entry->name) ?? "", entry->st.smb2_size,
+                    entry->st.smb2_type == SMB2_TYPE_DIRECTORY));
+            return entries;
         }
-        catch
+        finally { smb2_closedir(Context, directory); op.Data = 0; }
+    }
+
+    public void Delete(string path) => Block(() => DeleteAsync(path));
+    public Task DeleteAsync(string path, CancellationToken cancellationToken = default)
+        => SimpleAsync("unlink", op => StartPath(op, path, "unlink"), cancellationToken);
+    public void CreateDirectory(string path) => Block(() => CreateDirectoryAsync(path));
+    public Task CreateDirectoryAsync(string path, CancellationToken cancellationToken = default)
+        => SimpleAsync("mkdir", op => StartPath(op, path, "mkdir"), cancellationToken);
+    public void RemoveDirectory(string path) => Block(() => RemoveDirectoryAsync(path));
+    public Task RemoveDirectoryAsync(string path, CancellationToken cancellationToken = default)
+        => SimpleAsync("rmdir", op => StartPath(op, path, "rmdir"), cancellationToken);
+    private unsafe int StartPath(Operation op, string path, string action) => action switch
+    {
+        "unlink" => smb2_unlink_async(Context, op.Text(path), &Complete, op.Token),
+        "mkdir" => smb2_mkdir_async(Context, op.Text(path), &Complete, op.Token),
+        _ => smb2_rmdir_async(Context, op.Text(path), &Complete, op.Token)
+    };
+    public void Rename(string path, string newPath) => Block(() => RenameAsync(path, newPath));
+    public Task RenameAsync(string path, string newPath, CancellationToken cancellationToken = default)
+        => SimpleAsync("rename", op => StartRename(op, path, newPath), cancellationToken);
+    private unsafe int StartRename(Operation op, string path, string newPath)
+        => smb2_rename_async(Context, op.Text(path), op.Text(newPath), &Complete, op.Token);
+
+    public Metadata Stat(string path) => Block(() => StatAsync(path));
+    public Task<Metadata> StatAsync(string path, CancellationToken cancellationToken = default)
+        => RunOperationAsync("stat", op => StartStat(op, path), ReadMetadata, cancellationToken);
+    private unsafe int StartStat(Operation op, string path)
+    {
+        op.Output = op.Allocate(sizeof(smb2_stat_64));
+        return smb2_stat_async(Context, op.Text(path), (smb2_stat_64*)op.Output, &Complete, op.Token);
+    }
+    private static unsafe Metadata ReadMetadata(Operation op) => Metadata.From(*(smb2_stat_64*)op.Output);
+    public SpaceInfo GetSpaceInfo(string path = "") => Block(() => GetSpaceInfoAsync(path));
+    public Task<SpaceInfo> GetSpaceInfoAsync(string path = "", CancellationToken cancellationToken = default)
+        => RunOperationAsync("statvfs", op => StartSpace(op, path), ReadSpace, cancellationToken);
+    private unsafe int StartSpace(Operation op, string path)
+    {
+        op.Output = op.Allocate(sizeof(__DotCcTags.smb2_statvfs));
+        return smb2_statvfs_async(Context, op.Text(path), (__DotCcTags.smb2_statvfs*)op.Output, &Complete, op.Token);
+    }
+    private static unsafe SpaceInfo ReadSpace(Operation op)
+    {
+        var value = *(__DotCcTags.smb2_statvfs*)op.Output;
+        return new(value.f_bsize, value.f_frsize, value.f_blocks, value.f_bfree, value.f_bavail);
+    }
+
+    private Task SimpleAsync(string name, Func<Operation, int> submit, CancellationToken token, bool disposing = false,
+        Action? validate = null)
+        => RunOperationAsync(name, submit, static _ => true, token, disposing: disposing, validate: validate);
+
+    private async Task<T> RunOperationAsync<T>(string name, Func<Operation, int> submit,
+        Func<Operation, T> consume, CancellationToken token, Ownership ownership = Ownership.None, bool disposing = false,
+        Action? validate = null)
+    {
+        if (!disposing) ObjectDisposedException.ThrowIf(Volatile.Read(ref _disposing) != 0, this);
+        await _operations.WaitAsync(token).ConfigureAwait(false);
+        using var op = new Operation(name, ownership);
+        T result;
+        try
         {
-            if (abort || !state->Finished)
+            await Turn(() =>
             {
-                // Also releases successful Open/List results if service detected
-                // a later failure before the caller could adopt the resource.
-                Abort(state, ownership);
-            }
-            throw;
+                token.ThrowIfCancellationRequested();
+                if (!disposing) ObjectDisposedException.ThrowIf(Volatile.Read(ref _disposing) != 0, this);
+                RequireContext();
+                validate?.Invoke();
+                _pending = op;
+                try
+                {
+                    int started = submit(op);
+                    if (started < 0) Terminate(Error(name, started));
+                    else
+                    {
+                        op.Deadline = new Timer(_ => _executor.Post(() =>
+                        {
+                            if (ReferenceEquals(_pending, op) && !op.Finished)
+                                InContext(() => Terminate(new SmbException(name, -Libc.ETIMEDOUT, "SMB operation timed out")));
+                        }), null, TimeSpan.FromSeconds(_timeoutSeconds), Timeout.InfiniteTimeSpan);
+                        ScheduleConnectDeadline();
+                    }
+                }
+                catch (Exception error) { Terminate(error); }
+            }).ConfigureAwait(false);
+            await op.Completion.Task.ConfigureAwait(false);
+            result = await Turn(() =>
+            {
+                if (op.Failure != null) throw op.Failure;
+                if (op.Status < 0) throw Error(name, op.Status);
+                // Cancellation is observed after successful-result ownership is settled.
+                return consume(op);
+            }).ConfigureAwait(false);
+
         }
-    }
-
-    private static void FreeHandle(smb2fh* handle)
-    {
-        // Mirrors upstream free_smb2fh. Idle handles are not owned by the
-        // context; they must be released after its pending callbacks drain.
-        Libc.free(handle->path);
-        Libc.free(handle);
-    }
-
-    private void DestroyContext()
-    {
-        if (_context == null) return;
-        var context = _context;
-        _context = null;
-        _connected = false;
-        try { lock (ContextRegistry) smb2_destroy_context(context); }
         finally
         {
-            foreach (var file in _files) file.ReleaseAfterDestroy();
-            _files.Clear();
+            try
+            {
+                await Turn(() =>
+                {
+                    op.Deadline?.Dispose();
+                    CleanupResult(op);
+                    if (ReferenceEquals(_pending, op)) _pending = null;
+                }).ConfigureAwait(false);
+                await _transportDrain.ConfigureAwait(false);
+            }
+            finally { _operations.Release(); }
+        }
+        if (token.IsCancellationRequested)
+        {
+            // Settle an acquired handle before reporting cancellation to its caller.
+            if (result is SmbFile file) await file.DisposeAsyncCore(disposing: true).ConfigureAwait(false);
+            token.ThrowIfCancellationRequested();
+        }
+        return result;
+    }
+
+    private Task Turn(Action action) => _executor.Invoke(() => InContext(action));
+    private Task<T> Turn<T>(Func<T> action) => _executor.Invoke(() =>
+    {
+        if (_context == 0) return action();
+        using var scope = HostSockets.EnterContext(_context);
+        return action();
+    });
+    private void InContext(Action action)
+    {
+        if (_context == 0) { action(); return; }
+        using var scope = HostSockets.EnterContext(_context);
+        action();
+    }
+    private T Block<T>(Func<Task<T>> operation)
+    {
+        if (_executor.IsCurrent) throw new InvalidOperationException("Synchronous SMB operations cannot run inside the context executor");
+        return operation().GetAwaiter().GetResult();
+    }
+    private void Block(Func<Task> operation)
+    {
+        if (_executor.IsCurrent) throw new InvalidOperationException("Synchronous SMB operations cannot run inside the context executor");
+        operation().GetAwaiter().GetResult();
+    }
+    private void RequireContext() => ObjectDisposedException.ThrowIf(_context == 0, this);
+    private unsafe SmbException Error(string operation, int status) => new(operation, status,
+        _context == 0 ? "SMB context closed" : Marshal.PtrToStringUTF8((nint)smb2_get_error(Context)) ?? "SMB operation failed");
+
+    private enum Ownership { None, File, Directory }
+    private sealed class Operation : IDisposable
+    {
+        internal readonly string Name;
+        internal readonly Ownership Ownership;
+        internal readonly TaskCompletionSource Completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        internal readonly List<(nint Pointer, int Length, bool Secret)> Allocations = new();
+        private GCHandle _root;
+        internal Timer? Deadline;
+        internal bool Finished;
+        internal int Status;
+        internal nint Data;
+        internal nint Output;
+        internal Exception? Failure;
+        internal Operation(string name, Ownership ownership) { Name = name; Ownership = ownership; _root = GCHandle.Alloc(this); }
+        internal unsafe void* Token => (void*)GCHandle.ToIntPtr(_root);
+        internal unsafe nint Allocate(int length, bool secret = false)
+        {
+            var pointer = (nint)NativeMemory.AllocZeroed((nuint)Math.Max(1, length));
+            if (pointer == 0) throw new OutOfMemoryException();
+            Allocations.Add((pointer, length, secret));
+            return pointer;
+        }
+        internal unsafe byte* Text(string value, bool secret = false)
+        {
+            ArgumentNullException.ThrowIfNull(value);
+            if (value.Contains('\0')) throw new ArgumentException("SMB text cannot contain NUL", nameof(value));
+            int length = Encoding.UTF8.GetByteCount(value);
+            byte* pointer = (byte*)Allocate(checked(length + 1), secret);
+            Encoding.UTF8.GetBytes(value, new Span<byte>(pointer, length));
+            return pointer;
+        }
+        public unsafe void Dispose()
+        {
+            Deadline?.Dispose();
+            foreach (var allocation in Allocations)
+            {
+                if (allocation.Secret) System.Security.Cryptography.CryptographicOperations.ZeroMemory(new Span<byte>((void*)allocation.Pointer, allocation.Length));
+                NativeMemory.Free((void*)allocation.Pointer);
+            }
+            _root.Free();
+        }
+    }
+    private static unsafe void Complete(smb2_context* context, int status, void* data, void* privateData)
+    {
+        // Root lifetime extends through callback completion or destruction and transport drain.
+        try
+        {
+            var op = (Operation)GCHandle.FromIntPtr((nint)privateData).Target!;
+            op.Status = status;
+            op.Data = (nint)data;
+            op.Finished = true;
+            op.Completion.TrySetResult();
+        }
+        catch (Exception error) { CallbackFailed((nint)context, error); }
+    }
+
+    private static unsafe void ChangeFd(smb2_context* context, t_socket fd, int command)
+    {
+        try
+        {
+            if (command == SMB2_ADD_FD) HostSockets.Add((nint)context, fd);
+            else if (command == SMB2_DEL_FD) HostSockets.Remove((nint)context, fd);
+        }
+        catch (Exception error) { CallbackFailed((nint)context, error); }
+    }
+    private static unsafe void ChangeEvents(smb2_context* context, t_socket fd, int events)
+    {
+        try { HostSockets.SetEvents((nint)context, fd, events); }
+        catch (Exception error) { CallbackFailed((nint)context, error); }
+    }
+    private static void CallbackFailed(nint context, Exception error)
+    {
+        if (Connections.TryGetValue(context, out var weak) && weak.TryGetTarget(out var owner))
+            owner._executor.Post(() => owner.InContext(() => owner.Terminate(error)));
+    }
+    private void Notify(t_socket fd)
+    {
+        int token = (int)fd;
+        if (!_notifications.TryAdd(token, 0)) return;
+        _executor.Post(() =>
+        {
+            _notifications.TryRemove(token, out _);
+            if (_context == 0) return;
+            InContext(() => Service(fd));
+        });
+    }
+    private unsafe void Service(t_socket fd)
+    {
+        try
+        {
+            int events = HostSockets.Events(_context, fd);
+            if (events == 0) return;
+            int result = smb2_service_fd(Context, fd, events);
+            if (result < 0 && !(_pending is { Name: "disconnect", Finished: true, Status: >= 0 }))
+                Terminate(Error(_pending?.Name ?? "service", result));
+            if (_context != 0)
+            {
+                HostSockets.Rearm(_context, fd);
+                ScheduleConnectDeadline();
+            }
+        }
+        catch (Exception error) { Terminate(error); }
+    }
+    private unsafe void ScheduleConnectDeadline()
+    {
+        _connectTimer?.Dispose();
+        _connectTimer = null;
+        long version = ++_connectTimerVersion;
+        if (_context == 0) return;
+        ulong count = 0;
+        int delay = -1;
+        smb2_get_fds(Context, &count, &delay);
+        if (delay < 0) return;
+        _connectTimer = new Timer(_ => _executor.Post(() =>
+        {
+            if (_context == 0 || version != _connectTimerVersion) return;
+            InContext(ConnectDeadline);
+        }), null, delay, Timeout.Infinite);
+    }
+    private unsafe void ConnectDeadline()
+    {
+        try
+        {
+            if (smb2_service_fd(Context, -1, 0) < 0) Terminate(Error("connect", -Libc.EIO));
+            else ScheduleConnectDeadline();
+        }
+        catch (Exception error) { Terminate(error); }
+    }
+    private void Terminate(Exception error)
+    {
+        if (_pending is { } op) op.Failure ??= error;
+        DestroyContext();
+        _pending?.Completion.TrySetResult();
+    }
+    private unsafe void CleanupResult(Operation op)
+    {
+        if (!op.Finished || op.Status < 0 || op.Data == 0) return;
+        if (op.Ownership == Ownership.File) FreeHandle((smb2fh*)op.Data);
+        else if (op.Ownership == Ownership.Directory) smb2_closedir(Context, (smb2dir*)op.Data);
+        op.Data = 0;
+    }
+    private static unsafe void FreeHandle(smb2fh* handle) { Libc.free(handle->path); Libc.free(handle); }
+    private unsafe void DestroyContext()
+    {
+        if (_context == 0) return;
+        var context = _context;
+        _connectTimer?.Dispose();
+        _connectTimer = null;
+        ++_connectTimerVersion;
+        // A successful result may have arrived in the service turn that discovered failure.
+        if (_pending is { } before) CleanupResult(before);
+        // Keep address retirement under the same lock as allocation. The native
+        // allocator may immediately reuse a destroyed context address on another
+        // connection; its host registration must be retired before that happens.
+        lock (ContextRegistry)
+        {
+            try { smb2_destroy_context((smb2_context*)context); }
+            finally
+            {
+                _context = 0;
+                _connected = false;
+                Connections.TryRemove(context, out _);
+                foreach (var file in _files) file.ReleaseAfterDestroy();
+                _files.Clear();
+                _transportDrain = HostSockets.DrainContextAsync(context);
+            }
         }
     }
 
-    public void Dispose()
+    public void Dispose() => Block(() => DisposeAsync().AsTask());
+    public ValueTask DisposeAsync()
     {
-        DisposeCore();
-        GC.SuppressFinalize(this);
-    }
-    private void DisposeCore(bool graceful = true)
-    {
-        lock (_gate)
+        lock (_disposeGate)
         {
-            if (_context == null) return;
-            try
-            {
-                if (graceful)
-                {
-                    foreach (var file in _files.ToArray()) file.Dispose();
-                    if (_connected)
-                    {
-                        CallbackState state = default;
-                        using var pending = new OperationScope(this, &state);
-                        // A successful disconnect callback closes its socket. The
-                        // remaining service read can consequently report EBADF.
-                        Wait(smb2_disconnect_share_async(_context, &Complete, &state), &state, "disconnect", closesTransport: true);
-                    }
-                }
-            }
-            finally
-            {
-                DestroyContext();
-            }
+            Interlocked.Exchange(ref _disposing, 1);
+            return new(_disposeTask ??= DisposeCoreAsync());
         }
     }
-    ~SmbConnection() { try { DisposeCore(graceful: false); } catch { /* Never throw on the finalizer thread. */ } }
-    public ValueTask DisposeAsync() => new(Task.Run(Dispose));
+    private async Task DisposeCoreAsync()
+    {
+        try
+        {
+            // Establish a barrier behind an active request before inspecting idle handles.
+            await _operations.WaitAsync().ConfigureAwait(false);
+            _operations.Release();
+            var files = await Turn(() => _files.ToArray()).ConfigureAwait(false);
+            foreach (var file in files) await file.DisposeAsyncCore(disposing: true).ConfigureAwait(false);
+            if (_connected) await SimpleAsync("disconnect", StartDisconnect, default, disposing: true).ConfigureAwait(false);
+        }
+        finally
+        {
+            await Turn(DestroyContext).ConfigureAwait(false);
+            await _transportDrain.ConfigureAwait(false);
+            GC.SuppressFinalize(this);
+        }
+    }
+    private unsafe int StartDisconnect(Operation op) => smb2_disconnect_share_async(Context, &Complete, op.Token);
+    ~SmbConnection()
+    {
+        // Local close/destruction only; finalization never performs a graceful exchange.
+        _executor.Post(() => { try { InContext(DestroyContext); } catch { } });
+    }
 
     public sealed record Entry(string Name, ulong Size, bool IsDirectory);
     public sealed record Metadata(ulong Size, ulong Inode, uint Type, uint Attributes)
     {
-        internal static Metadata From(smb2_stat_64 value) => new(value.smb2_size, value.smb2_ino,
-            value.smb2_type, value.smb2_attributes);
+        internal static Metadata From(smb2_stat_64 value) => new(value.smb2_size, value.smb2_ino, value.smb2_type, value.smb2_attributes);
     }
     public sealed record SpaceInfo(uint BlockSize, uint FragmentSize, ulong Blocks, ulong FreeBlocks, ulong AvailableBlocks);
-
-    public sealed class SmbFile : IDisposable
-    {
-        private readonly SmbConnection _owner;
-        private smb2fh* _handle;
-        internal SmbFile(SmbConnection owner, smb2fh* handle) { _owner = owner; _handle = handle; }
-        public int Read(byte[] buffer, ulong offset = 0) => Transfer(buffer, offset, false);
-        public int Write(byte[] buffer, ulong offset = 0) => Transfer(buffer, offset, true);
-        private int Transfer(byte[] buffer, ulong offset, bool writing)
-        {
-            ArgumentNullException.ThrowIfNull(buffer);
-            lock (_owner._gate)
-            {
-                _owner.RequireContext();
-                ObjectDisposedException.ThrowIf(_handle == null, this);
-                // Upstream credit calculation subtracts one from count. Avoid
-                // underflow and passing a null fixed pointer for an empty array.
-                if (buffer.Length == 0) return 0;
-                fixed (byte* data = buffer)
-                {
-                    CallbackState state = default;
-                    using var pending = new OperationScope(_owner, &state);
-                    int started = writing ? smb2_pwrite_async(_owner._context, _handle, data, (uint)buffer.Length, offset, &Complete, &state)
-                        : smb2_pread_async(_owner._context, _handle, data, (uint)buffer.Length, offset, &Complete, &state);
-                    return _owner.Wait(started, &state, writing ? "write" : "read");
-                }
-            }
-        }
-        public void Flush()
-        {
-            lock (_owner._gate)
-            {
-                _owner.RequireContext();
-                ObjectDisposedException.ThrowIf(_handle == null, this);
-                CallbackState state = default;
-                using var pending = new OperationScope(_owner, &state);
-                _owner.Wait(smb2_fsync_async(_owner._context, _handle, &Complete, &state), &state, "flush");
-            }
-        }
-        public Metadata Stat()
-        {
-            lock (_owner._gate)
-            {
-                _owner.RequireContext();
-                ObjectDisposedException.ThrowIf(_handle == null, this);
-                smb2_stat_64 value = default;
-                CallbackState state = default;
-                using var pending = new OperationScope(_owner, &state);
-                _owner.Wait(smb2_fstat_async(_owner._context, _handle, &value, &Complete, &state), &state, "fstat");
-                return Metadata.From(value);
-            }
-        }
-        public void Truncate(ulong length)
-        {
-            lock (_owner._gate)
-            {
-                _owner.RequireContext();
-                ObjectDisposedException.ThrowIf(_handle == null, this);
-                CallbackState state = default;
-                using var pending = new OperationScope(_owner, &state);
-                _owner.Wait(smb2_ftruncate_async(_owner._context, _handle, length, &Complete, &state), &state, "truncate");
-            }
-        }
-        public Task<int> ReadAsync(byte[] buffer, ulong offset = 0, CancellationToken cancellationToken = default)
-            => _owner.RunAsync(() => Read(buffer, offset), cancellationToken);
-        public Task<int> WriteAsync(byte[] buffer, ulong offset = 0, CancellationToken cancellationToken = default)
-            => _owner.RunAsync(() => Write(buffer, offset), cancellationToken);
-        internal void ReleaseAfterDestroy()
-        {
-            if (_handle != null) FreeHandle(_handle);
-            _handle = null;
-        }
-        public void Dispose()
-        {
-            lock (_owner._gate)
-            {
-                if (_handle == null) return;
-                if (_owner._context == null) { ReleaseAfterDestroy(); return; }
-                var handle = _handle;
-                _handle = null;
-                _owner._files.Remove(this);
-                CallbackState state = default;
-                try
-                {
-                    // Remove the handle from idle ownership before submission.
-                    // A close callback owns/frees it, including during shutdown.
-                    using var pending = new OperationScope(_owner, &state);
-                    _owner.Wait(smb2_close_async(_owner._context, handle, &Complete, &state), &state, "close");
-                }
-                finally
-                {
-                    // Scope disposal has drained all pending callbacks. If none
-                    // ran, submission never transferred ownership upstream.
-                    if (!state.Finished) FreeHandle(handle);
-                }
-            }
-        }
-    }
 }

@@ -8,6 +8,10 @@ finalization. Synthetic failed-close and pending-read cases are excluded under
 the updated [upstream test scope](../../docs/test-scope.md). Normal I/O and
 concurrency coverage lives in `ManagedLifecycle`.
 
+Cleanup runs on the async facade's serialized executor. The tests wait for an
+executor barrier after finalization before inspecting native allocations; they
+do not scan the heap concurrently with background cleanup.
+
 Run after building the facade/sample:
 
 ```sh
