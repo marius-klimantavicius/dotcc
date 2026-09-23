@@ -52,7 +52,7 @@ for block in re.findall(r"/\* dotcc-layout-v1\n(.*?)end-dotcc-layout \*/", sourc
 
 
 def struct_body(name):
-    match = re.search(r"\bpublic\s+(?:unsafe\s+)?struct\s+" + re.escape(name) + r"\s*\{", source)
+    match = re.search(r"\bpublic\s+(?:unsafe\s+)?(?:partial\s+)?struct\s+" + re.escape(name) + r"\s*\{", source)
     if not match:
         raise SystemExit("Missing public product aggregate: " + name)
     cursor, depth = match.end(), 1
