@@ -5,6 +5,9 @@ in both execution modes. The public fixture covers ten normal cases per mode;
 the actual Kestrel and console/folder samples pass separately. See
 [the validation ledger](../../docs/VALIDATION.md) for exact receipts and limits.
 
+`MachineOptions.Metadata` enables [private IMDSv2 simulation](IMDSV2.md),
+including explicit instance identity and role credentials, in both execution modes.
+
 ```csharp
 await using var machine = new BlinkMachine(new MachineOptions
 {

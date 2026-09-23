@@ -158,9 +158,11 @@ def main():
     finally:
         receipt["inputs_after"] = input_identity()
         receipt["inputs_unchanged"] = receipt.get("inputs_before") == receipt["inputs_after"]
-        if not receipt["inputs_unchanged"]:
+        receipt["guest_unchanged"] = receipt.get("guest_sha256") == sha(elf)
+        receipt["fixture_sources_unchanged"] = all(sha(ROOT / path) == digest for path, digest in receipt["sources"].items())
+        if not all(receipt[key] for key in ("inputs_unchanged", "guest_unchanged", "fixture_sources_unchanged")):
             receipt["passed"] = False
-            receipt.setdefault("error", "Source or compiler identity changed during qualification")
+            receipt.setdefault("error", "Guest, fixture, source or compiler identity changed during qualification")
         save()
     if not receipt["passed"]:
         raise RuntimeError(receipt["error"])

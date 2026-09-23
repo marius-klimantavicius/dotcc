@@ -24,6 +24,9 @@ exact guest output, normal exit, released resources, translated instruction
 counts and the actual worker binary. Focused host checks run under JIT and AOT
 through guest socket APIs, including token expiration/isolation, fragmented valid
 requests, HEAD, UTF-8 user data, concurrent requests and ordinary disposal.
+The same guest also runs natively twelve times against this simulator's private
+loopback endpoint as a control; only that native control sets an endpoint override.
+The host checks exercise concurrent page registration and lookup during growth.
 
 Receipts, commands, hashes and results remain in `blink/artifacts/imds/attempt-*`.
 The native guest is not run against the host's real link-local metadata address.

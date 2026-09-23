@@ -54,12 +54,14 @@ public sealed partial class InstanceIo : IAsyncDisposable
         this.descriptorLimit = descriptorLimit; this.outputLimit = outputLimit;
         files = fileSystem;
         this.ownsFileSystem = ownsFileSystem;
-        network = new(descriptorLimit, networkPolicy);
         pipes = new(descriptorLimit, pipeCapacity, pipeByteLimit, pipeOperationLimit);
         input = standardInput.ToArray();
         descriptors.Add(0, new(Kind.Input));
         descriptors.Add(1, new(Kind.Output));
         descriptors.Add(2, new(Kind.Error));
+        // Start owned listeners only after ordinary argument validation and
+        // descriptor initialization have completed.
+        network = new(descriptorLimit, networkPolicy);
     }
     public int OpenDescriptors { get { lock (sync) return descriptors.Count; } }
     public (byte[] StandardOutput, byte[] StandardError) CapturedOutput

@@ -47,6 +47,11 @@ See [the machine API](src/Managed.Emulation/MACHINE-API.md) and
 [current progress](docs/PROGRESS.md) for final receipts and limits.
 Windows and the separate P7 qualification/performance campaign remain unrun.
 
+Optional [IMDSv2 simulation](src/Managed.Emulation/IMDSV2.md) supplies private
+instance metadata and explicit role credentials at guest `169.254.169.254:80`.
+It uses a small BCL listener and works with ordinary AWS SDK credential providers
+in both execution modes. See the [NativeAOT AWS SDK example](tests/ImdsMachine/README.md).
+
 The P3 pass is finite selected-profile coverage. Broader ISA, dynamic ELF/TLS
 and unrelated runtime compatibility are not implied. See [progress](docs/PROGRESS.md),
 [validation](docs/VALIDATION.md), [blockers](docs/BLOCKERS.md) and the
