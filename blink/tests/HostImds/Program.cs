@@ -2,6 +2,12 @@ using System.Text;
 using System.Text.Json;
 using Managed.Emulation.Host;
 
+if (args.Length == 1)
+{
+    await NativeOracle.Run(args[0]);
+    return;
+}
+
 using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 var endpoint = new GuestEndpoint(0xa9fea9fe, 80);
 var options = new ImdsV2Options { InstanceId = "i-first", RoleName = "test-role", UserData = "hello žemė\n",

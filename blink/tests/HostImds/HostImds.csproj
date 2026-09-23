@@ -5,6 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAotCompatible>true</IsAotCompatible>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <ItemGroup><ProjectReference Include="../../src/Managed.Emulation.Host/Managed.Emulation.Host.csproj" /></ItemGroup>
+  <!-- Link the actual implementation to exercise its internal listener as a
+       native-guest oracle without adding a public host-endpoint API. -->
+  <ItemGroup><Compile Include="../../src/Managed.Emulation.Host/*.cs" Link="Host/%(Filename)%(Extension)" /></ItemGroup>
 </Project>
