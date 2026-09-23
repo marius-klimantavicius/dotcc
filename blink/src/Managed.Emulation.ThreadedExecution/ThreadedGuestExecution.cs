@@ -60,6 +60,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         public bool Main, Attached, Bound, Released, Finished, Joined, TidCleared;
         public long ExitSequence;
         public Exception? Error;
+        public Blink.Libc.RuntimeBinding ContextBinding;
         public Stack<Action> Unbind = new();
         public Dictionary<int, HostGuestSignalInfo> PendingSignals = new();
         public (int Signal, HostGuestSignalInfo Sender)? ImmediateSignal;
@@ -227,7 +228,8 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         // Leave only this thread's bindings, in stack order; retain all shared
         // backing and owner objects until actual worker quiescence.
         if (!IsQuiescent) Cleanup(() => Unbind(main));
-        Cleanup(programBinding.Dispose);
+        try { programBinding.Dispose(); }
+        catch (Exception error) { failure = failure == null ? error : new AggregateException(failure, error); }
         if (IsQuiescent) Cleanup(program.Dispose);
         if (stop.NotificationFailure != null) failure ??= stop.NotificationFailure;
         if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
@@ -243,8 +245,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
     };
     private void Bind(Worker worker)
     {
-        var contextBinding = program!.__DotCcEnter();
-        worker.Unbind.Push(contextBinding.Dispose);
+        worker.ContextBinding = program!.__DotCcEnter();
         worker.ThreadId = Environment.CurrentManagedThreadId;
         worker.HostIdentity = Blink.Libc.pthread_self();
         current.Value = worker;
@@ -275,6 +276,7 @@ public sealed unsafe class ThreadedGuestExecution : IHostGuestThreads
         {
             try { unbind(); } catch (Exception error) { errors.Add(error); }
         }
+        try { worker.ContextBinding.Dispose(); } catch (Exception error) { errors.Add(error); }
         current.Value = null;
         worker.Bound = errors.Count != 0;
         if (errors.Count != 0) throw new AggregateException("Worker binding cleanup failed.", errors);

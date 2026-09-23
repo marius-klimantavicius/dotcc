@@ -40,19 +40,20 @@ public static unsafe partial class Libc
         private readonly ConditionalWeakTable<Thread, RuntimeThreadState> threadStates = new();
         public object? ProgramState { get; }
         public RuntimeContext(object? programState = null) { ProgramState = programState; }
-        public static RuntimeContext? Current => currentRuntimeBinding?.Context;
+        public static RuntimeContext? Current => currentRuntimeContext;
         internal RuntimeThreadState ThreadState => threadStates.GetValue(Thread.CurrentThread, static _ => new RuntimeThreadState());
 
-        public IDisposable Enter()
+        public RuntimeBinding Enter()
         {
+            // A unique token distinguishes recursive bindings of the same context
+            // and prevents a copied/stale scope from releasing a newer binding.
+            long token = checked(nextRuntimeBinding + 1);
             Retain();
-            try
-            {
-                var binding = new RuntimeBinding(this, currentRuntimeBinding);
-                currentRuntimeBinding = binding;
-                return binding;
-            }
-            catch { Release(); throw; }
+            var binding = new RuntimeBinding(this, currentRuntimeContext, currentRuntimeBinding, token);
+            nextRuntimeBinding = token;
+            currentRuntimeContext = this;
+            currentRuntimeBinding = token;
+            return binding;
         }
         /// <summary>Reserves an instance for an explicitly registered deferred
         /// callback without binding this thread. The registration owner must
@@ -99,22 +100,39 @@ public static unsafe partial class Libc
         internal bool Created;
         internal Dictionary<int, IntPtr>? Values;
     }
-    private sealed class RuntimeBinding(RuntimeContext context, RuntimeBinding? previous) : IDisposable
+    /// <summary>Allocation-free, thread-affine runtime scope. Dispose in stack
+    /// order and do not dispose multiple copies of the same active scope.</summary>
+    public struct RuntimeBinding : IDisposable
     {
-        internal readonly RuntimeContext Context = context;
-        private readonly int thread = Environment.CurrentManagedThreadId;
-        private bool disposed;
+        private RuntimeContext? context;
+        private readonly RuntimeContext? previousContext;
+        private readonly long previousToken, token;
+        private readonly int thread;
+
+        internal RuntimeBinding(RuntimeContext context, RuntimeContext? previousContext,
+            long previousToken, long token)
+        {
+            this.context = context;
+            this.previousContext = previousContext;
+            this.previousToken = previousToken;
+            this.token = token;
+            thread = Environment.CurrentManagedThreadId;
+        }
+
         public void Dispose()
         {
-            if (disposed) return;
-            if (thread != Environment.CurrentManagedThreadId || !ReferenceEquals(currentRuntimeBinding, this))
+            if (context is null) return;
+            if (thread != Environment.CurrentManagedThreadId || currentRuntimeBinding != token)
                 throw new InvalidOperationException("C program bindings must be left on their entering thread in stack order.");
-            currentRuntimeBinding = previous;
-            disposed = true;
-            Context.Release();
+            currentRuntimeContext = previousContext;
+            currentRuntimeBinding = previousToken;
+            var released = context;
+            context = null;
+            released.Release();
         }
     }
-    [ThreadStatic] private static RuntimeBinding? currentRuntimeBinding;
+    [ThreadStatic] private static RuntimeContext? currentRuntimeContext;
+    [ThreadStatic] private static long currentRuntimeBinding, nextRuntimeBinding;
     private static readonly RuntimeContext legacyRuntime = new();
     private static RuntimeContext RuntimeState => RuntimeContext.Current ?? legacyRuntime;
     private static RuntimeThreadState RuntimeThread => RuntimeState.ThreadState;

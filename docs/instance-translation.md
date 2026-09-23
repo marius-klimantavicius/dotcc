@@ -31,6 +31,15 @@ uses the called owner, even when another owner is bound, but direct calls using
 shared runtime services require the matching entry binding. Constructor
 initialization establishes its own temporary binding. Disposing an owner with
 active bindings, threads or retained callbacks fails and preserves its backing.
+`__DotCcEnter()`, `__DotCcContext.Enter()` and `Libc.RuntimeContext.Enter()` return
+the concrete `Libc.RuntimeBinding` struct, so normal `using` scopes do not allocate
+or box a disposable object. Keep the concrete type (`var` is suitable); converting
+it to `IDisposable` or capturing its `Dispose` method as a delegate can box it.
+Dispose the scope on its entering thread in stack order. Repeated disposal of
+the same mutable variable and disposal of a default scope are harmless; disposing
+a stale copy is rejected rather than releasing a different active binding.
+Deferred `__DotCcRetain()` leases remain reference objects because they support
+shared, idempotent release across threads.
 
 A C function pointer remains one pointer wide, with generated type
 `delegate*<ProgramOwner, ..., TResult>`. It identifies shared code, not an owner.

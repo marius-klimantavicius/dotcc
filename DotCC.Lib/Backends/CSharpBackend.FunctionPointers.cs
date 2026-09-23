@@ -34,7 +34,7 @@ internal sealed partial class CSharpBackend
             var target = InstanceReferences.Target + name;
             var context = (type.Params.Any(ContainsInstanceCallback) || ContainsInstanceCallback(type.Return)) ? InstanceReferences.CallbackContext + name + " " : "";
             adapter = "    //!!dotcc-instance-adapter\n" + $"    internal static {Cs(type.Return)} {entry}({string.Join(", ", parameters)})\n"
-                + "    {\n        using var binding = global::System.Object.ReferenceEquals(Libc.RuntimeContext.Current, instance.__DotCcRuntime) ? null : instance.__DotCcEnter();\n        "
+                + "    {\n        using var binding = global::System.Object.ReferenceEquals(Libc.RuntimeContext.Current, instance.__DotCcRuntime) ? default(Libc.RuntimeBinding) : instance.__DotCcEnter();\n        "
                 + (type.Return is CType.VoidType ? "" : "return ") + target + "(" + context
                 + string.Join(", ", arguments) + ");\n    }\n";
         }

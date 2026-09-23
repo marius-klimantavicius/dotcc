@@ -89,7 +89,7 @@ public static partial class Compiler
                     private bool disposed;
                     internal __DotCcContext() { runtime = new Libc.RuntimeContext(this); }
                     internal Libc.RuntimeContext Runtime => runtime;
-                    public global::System.IDisposable Enter() => runtime.Enter();
+                    public Libc.RuntimeBinding Enter() => runtime.Enter();
                     public void Dispose()
                     {
                         lock (disposeGate)
@@ -150,7 +150,7 @@ public static partial class Compiler
                     catch { __DotCcState.Dispose(); throw; }
                 }
                 public Libc.RuntimeContext __DotCcRuntime => __DotCcState.Runtime;
-                public global::System.IDisposable __DotCcEnter() => __DotCcState.Enter();
+                public Libc.RuntimeBinding __DotCcEnter() => __DotCcState.Enter();
                 public global::System.IDisposable __DotCcRetain() => __DotCcState.Runtime.RetainLease();
                 public void Dispose() => __DotCcState.Dispose();
             {{instanceSpecial}}

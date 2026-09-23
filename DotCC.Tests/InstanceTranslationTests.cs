@@ -85,6 +85,8 @@ public sealed class InstanceTranslationTests
                 .Message.ShouldContain("calling convention mismatch");
             var result = Compiler.LinkObjects(new[] { newObject }, emit: EmitMode.ManagedLib, outputOptions: Instance);
             result.ShouldContain("sealed unsafe class DotCcLib");
+            result.ShouldContain("public Libc.RuntimeBinding Enter()");
+            result.ShouldContain("public Libc.RuntimeBinding __DotCcEnter()");
             result.ShouldContain("delegate*<DotCcFunctions, int>");
             result.ShouldContain("public unsafe int step(");
             result.ShouldNotContain("public static unsafe int step(");

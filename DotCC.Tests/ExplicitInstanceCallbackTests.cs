@@ -16,7 +16,7 @@ public sealed unsafe class ExplicitInstanceCallbackTests
         public int Direction = direction, Comparisons, Seen;
         public long ThreadId;
         public readonly ManualResetEventSlim Entered = new(), Leave = new();
-        public IDisposable __DotCcEnter() => __DotCcRuntime.Enter();
+        public RuntimeBinding __DotCcEnter() => __DotCcRuntime.Enter();
         public void Dispose() { __DotCcRuntime.Dispose(); Entered.Dispose(); Leave.Dispose(); }
     }
     private static int Compare(Owner owner, void* left, void* right)
