@@ -627,7 +627,9 @@ and future snapshot design are in [P6-MACHINE-API.md](P6-MACHINE-API.md).
       Document link/reparse policies and BCL containment limits, including
       concurrent host mutation, and reject unsupported guarantees explicitly.
 - [ ] Load executable/cwd from the guest namespace; accept arguments and
-      dictionary-based machine/per-execution environment values.
+      dictionary-based machine/per-execution environment values. Mount host
+      `./work` at guest `/work` and execute `/work/my_app` directly without
+      `ImportImage` or separate registration; qualify both execution modes.
 - [ ] Provide live stdin/stdout/stderr, EOF, current-console attachment,
       bounded buffering/capture and explicit stream ownership.
 - [ ] Generalize configurable memory/resource limits and service readiness;

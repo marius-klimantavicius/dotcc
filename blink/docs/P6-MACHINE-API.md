@@ -29,18 +29,21 @@ await using var machine = await BlinkMachine.CreateAsync(new MachineOptions
     Network = NetworkPolicy.Isolated,
 });
 
-await machine.MountDirectoryAsync("./published-service", "/app", MountAccess.ReadOnly);
 await machine.MountDirectoryAsync("./work", "/work"); // Default: live read-write.
 
 var result = await machine.ExecuteAsync(new ExecutionOptions
 {
-    Executable = "/app/MyService",
+    Executable = "/work/my_app", // Host ./work/my_app, resolved via the mount.
     Arguments = ["--example"], // Excludes argv[0]; executable supplies it once.
     WorkingDirectory = "/work",
     Environment = new Dictionary<string, string> { ["APP_MODE"] = "demo" },
     Console = ConsoleOptions.AttachCurrent(leaveOpen: true),
 });
 ```
+
+Mounting the directory is sufficient to execute its supported ELF files. The
+example requires no `ImportImage` call, separate executable registration or
+caller-managed copy. `Executable` is a VM-scoped path, never a host path.
 
 Also support starting execution and obtaining a run handle immediately, to
 consume streams, publish endpoints, inspect status or request stop while it
@@ -203,7 +206,16 @@ These semantics hold in both execution modes: a separate worker must not turn
 a live host mount into an input copy with delayed write-back.
 
 Resolve executable paths and cwd through the guest filesystem; load from a
-mounted executable as well as an image. Preserve normal guest relative paths,
+mounted executable as well as an image. Explicit acceptance workflow: mount
+host `./work` at guest `/work`, then start `/work/my_app` when the host directory
+contains `my_app`, without calling `ImportImage`. Resolve the executable using
+the same mount precedence and access policy as other guest file reads, including
+mounts over existing guest directories. The ELF loader reads through that
+namespace; internal loading into guest memory does not require an image-import
+step from the caller. Both execution modes support this workflow, and neither
+interprets `/work/my_app` as a host executable to launch.
+
+Preserve normal guest relative paths,
 directory enumeration, metadata, file updates and descriptor offsets. Enforce
 executable permissions explicitly. Define symlink/hard-link/reparse behavior
 within mount roots and nested mounts, including races; lexical path-prefix
@@ -286,6 +298,9 @@ today) distinct in naming/documentation from resumable execution snapshots.
   host-folder data processing and the actual NativeAOT Kestrel service.
 - Retain original authored `src` references in `ManagedConsumer.slnx`; update
   stale controller/worker documentation to the actual new public contracts.
+- Execute a supported ELF directly from a host-directory mount at its guest
+  path, without `ImportImage` or separate image registration, in both execution
+  modes under JIT and NativeAOT. Include this workflow in the public sample.
 - Qualify memory/settings enforcement, environment/argv/cwd, ordinary filesystem
   operations in every mount mode, default live host writes, persistent private
   changes, streaming console/EOF, explicit network grants, stop and disposal.

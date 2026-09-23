@@ -19,6 +19,10 @@ independent concurrent machines. This is not an OS security boundary against
 the calling application. Both in-process (default) and explicitly selected
 separate-process execution must be implemented and qualified in P6 through the
 same public API, with mode-specific isolation/termination capabilities.
+The mount-backed executable workflow is explicit: mount host `./work` at guest
+`/work`, then execute `/work/my_app` without `ImportImage` or separate executable
+registration. This remains a required public API acceptance case in both modes;
+the executable path resolves within the VM namespace.
 The user-approved plan now includes opt-in wrapping-class instance translation
 and a uniform explicit-instance function-pointer convention. Indirect calls pass
 the current instance; registered callbacks and thread starts retain their owning
