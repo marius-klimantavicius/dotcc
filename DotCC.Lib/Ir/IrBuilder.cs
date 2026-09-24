@@ -576,13 +576,12 @@ internal sealed partial class IrBuilder
             {
                 CExpr? gInit = null;
                 if (initItem is { } ii) { gInit = BuildStaticAggregateInitializer(sym.Type, () => BuildDeclaratorInitializer(sym.Type, ii)); EnsureNotEmbed(gInit); CheckQualifierDiscard(gInit, sym.Type, SrcPos.From(ii), "initialization"); }
-                // A .NET [ThreadStatic] initializer runs on the FIRST thread only,
-                // so C's "every thread starts at the initial value" holds only for
-                // the zero/default value .NET gives every thread's slot anyway.
-                if (sym.IsThreadLocal && gInit is not null && ConstEval(gInit) is not 0)
+                // The lazy per-thread storage constructor applies constant scalar
+                // initializers independently for every thread and program owner.
+                if (sym.IsThreadLocal && gInit is not null && ConstEval(gInit) is null)
                 {
                     Diagnostics.Add(new Diagnostic(Severity.Error,
-                        $"'{name}': a non-zero-initialized _Thread_local is not supported (a .NET [ThreadStatic] initializer runs only on the first thread)",
+                        $"'{name}': _Thread_local requires a supported constant integer initializer",
                         SrcPos.From(typeItem), _file));
                 }
                 if (sym.IsConstexpr) { BindConstexpr(sym, gInit, SrcPos.From(typeItem)); }
@@ -1120,6 +1119,8 @@ internal sealed partial class IrBuilder
                 case C.ParamUnnamedArrayRowsSized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg4), "_p" + unnamed++)); break;
                 case C.ParamPointerToArray p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg5), Tok(p.Arg3))); break;
                 case C.ParamUnnamedPointerToArray p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg4), "_p" + unnamed++)); break;
+                case C.ParamPointerToIncompleteArray p: acc.Add(new(new CType.Pointer(new CType.Array(ResolveType(p.Arg0), null)), Tok(p.Arg3))); break;
+                case C.ParamUnnamedPointerToIncompleteArray p: acc.Add(new(new CType.Pointer(new CType.Array(ResolveType(p.Arg0), null)), "_p" + unnamed++)); break;
                 // Function-pointer parameter: `Ret (*name)(paramTypes)`.
                 case C.ParamFnPtr p: acc.Add(new(FnPtrType(p.Arg0, p.Arg6), Tok(p.Arg3))); break;
                 case C.ParamFnPtrNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg3))); break;
@@ -1236,7 +1237,7 @@ internal sealed partial class IrBuilder
     private long? SizeOfConst(CType t) => t.Unqualified switch
     {
         CType.Named n when n.IsExternal || _structFields.ContainsKey(n.Name) => Layout(t).Size,
-        CType.Array array => SizeOfConst(array.Element) * (array.Count ?? 0),
+        CType.Array array => array.RuntimeCount is null ? SizeOfConst(array.Element) * (array.Count ?? 0) : null,
         _ => t.SizeOf,
     };
 
@@ -3039,9 +3040,11 @@ internal sealed partial class IrBuilder
 
     /// <summary>A local array declaration. Lowers to a C# <c>stackalloc</c>. A
     /// constant dimension types the symbol as <see cref="CType.Array"/> (so
-    /// <c>sizeof(arr)</c> and the array-length idiom resolve); a runtime extent
-    /// (VLA-ish) decays to a pointer. Multi-dimensional arrays are deferred.</summary>
-    private ArrayDecl BuildArrDecl(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, bool implicitSize, bool inferOuter = false)
+    /// <c>sizeof(arr)</c> and the array-length idiom resolve). Multi-dimensional
+    /// arrays may have a captured runtime outer extent and constant inner row
+    /// bounds. The older single-dimensional runtime form remains pointer-typed.</summary>
+    private int _vlaExtentSequence;
+    private CStmt BuildArrDecl(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, bool implicitSize, bool inferOuter = false)
     {
         var elem = ResolveType(typeItem);
         RequireCompleteObject(elem, "array element");
@@ -3050,6 +3053,7 @@ internal sealed partial class IrBuilder
 
         CType arrType;
         CExpr? countExpr = null;
+        LocalDecl? capturedExtent = null;
         List<CExpr>? inits = null;
         if (initItem is { } ii)
         {
@@ -3078,9 +3082,26 @@ internal sealed partial class IrBuilder
             arrType = new CType.Pointer(elem);
             countExpr = runtimeDims[0];
         }
-        else if (dimsItem is { })
+        else if (dimsItem is { } runtimeDimensions)
         {
-            throw new IrUnsupportedException("multi-dimensional array with a non-constant dimension");
+            var extents = BuildArrDims(runtimeDimensions);
+            var inner = new List<int>();
+            foreach (var extent in extents.Skip(1))
+            {
+                if (ConstEval(extent) is not { } bound || bound <= 0 || bound > int.MaxValue)
+                    throw new IrUnsupportedException("runtime array inner dimensions must be positive constant bounds");
+                inner.Add((int)bound);
+            }
+            var extentSymbol = _symbols.Declare(new Symbol {
+                Name = "__dotcc_vla_extent_" + _vlaExtentSequence++, Kind = SymKind.Var,
+                Type = extents[0].Type, Storage = Storage.Auto,
+            });
+            capturedExtent = new LocalDecl(extentSymbol, extents[0]);
+            var extentValue = new VarRef(extentSymbol) { Type = extentSymbol.Type, IsLValue = true };
+            arrType = new CType.Array(MakeArrayType(elem, inner), null) { RuntimeCount = extentValue };
+            int rowElements = inner.Aggregate(1, (product, bound) => checked(product * bound));
+            var rowCount = new LitInt(rowElements.ToString(System.Globalization.CultureInfo.InvariantCulture), rowElements) { Type = CType.Int };
+            countExpr = new Binary(BinOp.Mul, extentValue, rowCount) { Type = extentSymbol.Type };
         }
         else
         {
@@ -3088,7 +3109,8 @@ internal sealed partial class IrBuilder
         }
 
         var sym = _symbols.Declare(new Symbol { Name = name, Alignment = DeclarationAlignment(typeItem, elem), Kind = SymKind.Var, Type = arrType, Storage = Storage.Auto });
-        return new ArrayDecl(sym, elem, countExpr, inits);
+        var declaration = new ArrayDecl(sym, elem, countExpr, inits);
+        return capturedExtent is null ? declaration : new Seq(new CStmt[] { new DeclStmt(new[] { capturedExtent }), declaration });
     }
 
     /// <summary>Collect the dimension expressions of an <c>ArrDims</c> node,
@@ -3666,6 +3688,11 @@ internal sealed partial class IrBuilder
         {
             return new NameRef("__dotcc_complex_I") { Type = CType.Complex };
         }
+        // stdio's runtime-owned handles are properties rather than emitted C
+        // globals. Their pointer type must still participate in C type checking
+        // (notably conditional expressions and sizeof), before C# name binding.
+        if (name is "stdin" or "stdout" or "stderr")
+            return new NameRef(name) { Type = new CType.Pointer(new CType.Named("FILE")) };
         if (name is "__func__" && _currentFnName.Length != 0)
         {
             var fnSegs = new[] { $"\"{_currentFnName}\"" };

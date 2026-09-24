@@ -35,6 +35,8 @@ internal sealed partial class IrBuilder
                 throw new IrUnsupportedException($"{use} requires a complete type: incomplete aggregate '{named.Name}'");
             case CType.Func { IsFunctionType: true }:
                 throw new IrUnsupportedException(use + " requires an object type, not a function type");
+            case CType.Array { Count: null, RuntimeCount: null }:
+                throw new IrUnsupportedException(use + " requires a complete array type");
             case CType.Array array:
                 RequireCompleteObject(array.Element, use);
                 break;
@@ -45,6 +47,9 @@ internal sealed partial class IrBuilder
     {
         RequireCompleteObject(type, "sizeof");
         RequireExternalLayout(type, "sizeof");
+        if (type.Unqualified is CType.Array { RuntimeCount: { } count } array)
+            return new Binary(BinOp.Mul, new Cast(CType.SizeT, count) { Type = CType.SizeT }, BuildSizeOf(array.Element))
+                { Type = CType.SizeT };
         return new SizeOfExpr(type) { Type = CType.SizeT };
     }
 

@@ -120,10 +120,9 @@ public sealed class Symbol
 
     /// <summary>True when the object has THREAD storage duration — C11
     /// <c>_Thread_local</c> (C23 <c>thread_local</c>) or Zig <c>threadlocal var</c>.
-    /// The C# backend emits <c>[ThreadStatic]</c> on the global's field. Constraint
-    /// (enforced at build time): only a zero/default initializer — a .NET
-    /// [ThreadStatic] initializer would run on the first thread only, breaking C's
-    /// "every thread starts at the initial value".</summary>
+    /// The C# backend uses a pinned per-thread globals struct. Its constructor
+    /// applies supported constant scalar initializers on each thread, and on
+    /// each program owner when contextual storage is selected.</summary>
     public bool IsThreadLocal { get; init; }
 
     /// <summary>True for a C23 <c>constexpr</c> object declaration. The symbol's

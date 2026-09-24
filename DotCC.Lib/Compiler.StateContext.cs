@@ -56,6 +56,7 @@ public static partial class Compiler
             """;
         string threadStorage = output.ThreadFields.Length == 0 ? "" : $$"""
                     internal {{threadType}}[] Values = global::System.GC.AllocateArray<{{threadType}}>(1, pinned: true);
+                    internal __DotCcThreadState() { Values[0] = new {{threadType}}(); }
             """;
         string accessors = output.Fields.Length == 0 ? "" : $$"""
                 public static ref {{globalsType}} {{output.GlobalName}} => ref __DotCcCurrent.Values[0];

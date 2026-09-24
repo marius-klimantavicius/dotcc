@@ -3,8 +3,7 @@
  * thread-local counter (different rep counts), so the "shared global"
  * would race and sum to 1250 — but each thread sees a distinct
  * zero-initialized slot, and main's own slot is untouched by the workers.
- * (dotcc supports zero/default-initialized thread-locals only; a non-zero
- * initializer is a documented compile error.) */
+ */
 #include <stdio.h>
 #include <threads.h>
 

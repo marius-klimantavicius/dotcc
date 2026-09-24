@@ -185,14 +185,16 @@ internal sealed partial class CSharpBackend
                 globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
                 continue;
             }
-            // C11 `_Thread_local` / Zig `threadlocal` — thread storage duration:
-            // every thread gets its own zero-initialized slot. (The builder rejects
-            // a non-zero initializer — a [ThreadStatic] initializer runs on the
-            // first thread only, which would break C's per-thread-initial-value.)
+            // A constructor on the lazily allocated thread storage applies the
+            // initial value separately for every thread (and program owner).
             if (g.Sym.IsThreadLocal)
             {
                 var type = NintStorage(g.Sym) ? "nint" : cg.Cs(g.Sym.Type);
-                threadField.Append($"    public {type} {g.Sym.TargetName};\n");
+                var value = g.Init is { } tlsInit ? cg.Coerced(tlsInit, g.Sym.Type) : null;
+                if (value is not null && NintStorage(g.Sym)) value = $"(nint)({value})";
+                threadField.Append($"    public {type} {g.Sym.TargetName}");
+                if (value is not null) threadField.Append($" = {value}");
+                threadField.Append(";\n");
                 globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
                 continue;
             }
@@ -1481,15 +1483,15 @@ internal sealed partial class CSharpBackend
     };
 
     /// <summary>The C# backend's decision to store a pointer/fn-ptr-typed
-    /// <em>global</em> as an <c>nint</c> field: when volatile access requires a fenced
-    /// integer slot, or its address is taken (the abstract
-    /// <see cref="Symbol.AddressTaken"/> fact), a pointer T can't be the type arg of
+    /// <em>global</em> as an <c>nint</c> field: pointer objects use a stable
+    /// integer-slot ABI because another translation unit can take their address.
+    /// A pointer T can't be the type arg of
     /// Unsafe.AsPointer / Volatile.* (CS0306) nor have a bare <c>&amp;</c> of a moveable
     /// globals-struct field (CS0212), so the slot is an <c>nint</c>. The <see cref="Symbol.IsGlobal"/>
     /// guard scopes this to file-scope/function-static storage: locals are emitted as real
     /// pointers (no moveable-field/Unsafe constraints apply), so an address-taken local —
     /// which now also carries the neutral fact — must NOT be reinterpreted as <c>nint</c>.</summary>
-    private static bool NintStorage(Symbol s) => (s.AddressTaken || s.Type.IsVolatile) && s.IsGlobal && s.Type.IsPointerLowered;
+    private static bool NintStorage(Symbol s) => s.IsGlobal && s.Kind == SymKind.Var && s.Type.IsPointerLowered;
 
     /// <summary>True when an lvalue is a pointer global whose backing field codegen
     /// declared as <c>nint</c>; such a slot is reinterpreted directly, not through
@@ -3249,7 +3251,9 @@ internal sealed partial class CSharpBackend
 
     /// <summary>The number of flat (innermost-scalar) elements an array type holds —
     /// the stride, in elements, of one row when a multi-dim array is flattened.</summary>
-    private static int FlatCount(CType t) => t.Unqualified is CType.Array a ? (a.Count ?? 0) * FlatCount(a.Element) : 1;
+    private static int FlatCount(CType t) => t.Unqualified is CType.Array a
+        ? a.RuntimeCount is not null ? throw new IrUnsupportedException("pointer arithmetic over a runtime-sized array object")
+            : (a.Count ?? 0) * FlatCount(a.Element) : 1;
 
     private static string Pad(int ind) => new string(' ', ind * 4);
 }

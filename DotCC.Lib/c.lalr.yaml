@@ -792,6 +792,8 @@ productions:
       - { lhs: Param, rhs: [Type, '[', E, ']', ArrDims], action: paramUnnamedArrayRowsSized }
       - { lhs: Param, rhs: [Type, '(', '*', ID, ')', ArrDims], action: paramPointerToArray }
       - { lhs: Param, rhs: [Type, '(', '*', ')', ArrDims], action: paramUnnamedPointerToArray }
+      - { lhs: Param, rhs: [Type, '(', '*', ID, ')', '[', ']'], action: paramPointerToIncompleteArray }
+      - { lhs: Param, rhs: [Type, '(', '*', ')', '[', ']'], action: paramUnnamedPointerToIncompleteArray }
       # Function-pointer parameter — `void qsort(…, int (*cmp)(const void*, const void*))`.
       # Same `( * ID ) ( … )` shape as the local fn-ptr declarator; lowers to a
       # `delegate*<args…, ret>` parameter. (The typedef'd form `Comparator cmp`

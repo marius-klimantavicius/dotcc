@@ -31,7 +31,7 @@ public sealed class ExternFnPtrTests
                 emitted.ShouldContain("nint callback");
                 emitted.ShouldContain("Volatile.Read(ref global::DotCcProgram.Globals.callback)");
             }
-            else emitted.ShouldContain("public delegate*<int, int> callback;");
+            else emitted.ShouldContain("public nint callback;");
         }
         finally { File.Delete(path); }
     }

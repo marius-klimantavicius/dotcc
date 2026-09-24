@@ -43,4 +43,14 @@ void *dlsym(void *handle, const char *symbol);
 int   dlclose(void *handle);
 char *dlerror(void);
 
+/* GNU/Linux address-information layout. Declaring this interface does not
+   imply that a managed method has a native dynamic-loader symbol. */
+typedef struct {
+    const char *dli_fname;
+    void *dli_fbase;
+    const char *dli_sname;
+    void *dli_saddr;
+} Dl_info;
+int dladdr(const void *address, Dl_info *info);
+
 #endif /* _DLFCN_H */

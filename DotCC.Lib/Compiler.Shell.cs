@@ -203,7 +203,7 @@ public static partial class Compiler
                         if (storage is null)
                         {
                             storage = global::System.GC.AllocateUninitializedArray<{{threadGlobalsType}}>(1, pinned: true);
-                            storage[0] = default;
+                            storage[0] = new {{threadGlobalsType}}();
                             {{globals.ThreadBackingName}} = storage;
                         }
                         return ref storage[0];
@@ -213,7 +213,8 @@ public static partial class Compiler
         var threadGlobalsDeclaration = globals.ThreadFields.Length == 0 ? "" : $$"""
             internal unsafe struct {{threadGlobalsType}}
             {
-            {{globals.ThreadFields}}}
+            {{globals.ThreadFields}}    public {{threadGlobalsType}}() { }
+            }
             """;
         // A `void`-returning main (Zig's `pub fn main() void`; also a non-standard
         // `void main()` in C) can't be `return`ed from the int-typed entry, so it is
@@ -476,7 +477,7 @@ public static partial class Compiler
                         if (storage is null)
                         {
                             storage = global::System.GC.AllocateUninitializedArray<{{threadGlobalsType}}>(1, pinned: true);
-                            storage[0] = default;
+                            storage[0] = new {{threadGlobalsType}}();
                             {{globals.ThreadBackingName}} = storage;
                         }
                         return ref storage[0];
@@ -486,7 +487,8 @@ public static partial class Compiler
         var threadGlobalsDeclaration = globals.ThreadFields.Length == 0 ? "" : $$"""
             internal unsafe struct {{threadGlobalsType}}
             {
-            {{globals.ThreadFields}}}
+            {{globals.ThreadFields}}    public {{threadGlobalsType}}() { }
+            }
             """;
 
         if (globals.ContextMembers is not null)

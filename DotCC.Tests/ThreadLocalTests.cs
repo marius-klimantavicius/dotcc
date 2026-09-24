@@ -12,8 +12,7 @@ namespace DotCC.Tests;
 /// `threadlocal var` — thread storage duration, lowered to a field of a pinned
 /// per-thread globals struct (the marker rides `Symbol.IsThreadLocal`, set
 /// by the spec resolution / the Zig container-var lowering). V1 constraints,
-/// all loud: explicit static storage at block scope, zero/default initializer only (a .NET [ThreadStatic]
-/// initializer runs on the first thread only), scalars only on the Zig side.
+/// all loud: explicit static storage at block scope, supported constant integer initializers, scalars only on the Zig side.
 /// End-to-end in the `c11-thread-local/` fixture (gcc `-pthread` oracle) and
 /// the `threadlocal_var` Zig oracle program.
 /// </summary>
@@ -39,7 +38,7 @@ public sealed class ThreadLocalTests
         try
         {
             Compiler.EmitCSharp(new[] { src })
-                .ShouldContain("public int* current;");
+                .ShouldContain("public nint current;");
         }
         finally { File.Delete(src); }
     }
@@ -64,20 +63,33 @@ public sealed class ThreadLocalTests
     }
 
     [Fact]
-    public void Zero_initializer_is_allowed_nonzero_is_rejected()
+    public void Constant_integer_initializers_are_allowed_nonconstant_is_rejected()
     {
-        // Zero-init matches the zero/default value .NET gives every thread's
-        // slot anyway; a non-zero initializer would only reach the FIRST thread
-        // ([ThreadStatic] semantics), so it is a loud compile error.
-        var ok = WriteTemp("_Thread_local int a = 0; int main(void) { return a; }");
-        var bad = WriteTemp("_Thread_local int b = 7; int main(void) { return b; }");
+        var ok = WriteTemp("_Thread_local int a = -1; int main(void) { return a; }");
+        var bad = WriteTemp("int f(void); _Thread_local int b = f(); int main(void) { return b; }");
         try
         {
             Should.NotThrow(() => Compiler.EmitCSharp(new[] { ok }));
             Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { bad }))
-                .Message.ShouldContain("non-zero-initialized _Thread_local is not supported");
+                .Message.ShouldContain("_Thread_local requires a supported constant integer initializer");
         }
         finally { File.Delete(ok); File.Delete(bad); }
+    }
+
+    [Theory]
+    [InlineData("-1")]
+    [InlineData("(3 * 7) - 22")]
+    [InlineData("sizeof(int)")]
+    public void Constant_initializers_are_emitted_for_global_and_block_storage(string value)
+    {
+        var src = WriteTemp($"_Thread_local int index = {value}; int next(void) {{ static _Thread_local int local = {value}; return index + ++local; }}");
+        try
+        {
+            string emitted = Compiler.EmitCSharp(new[] { src }, emit: EmitMode.ManagedLib);
+            emitted.ShouldContain("public int index = ");
+            emitted.ShouldContain("public int local__s0 = ");
+        }
+        finally { File.Delete(src); }
     }
 
     [Fact]
@@ -138,14 +150,14 @@ public sealed class ThreadLocalTests
     }
 
     [Fact]
-    public void Block_static_tls_rejects_nonzero_initializers_and_preserves_scope()
+    public void Block_static_tls_rejects_nonconstant_initializers_and_preserves_scope()
     {
-        var nonzero = WriteTemp("int main(void) { _Thread_local static int value = 9; return value; }");
+        var nonzero = WriteTemp("int f(void); int main(void) { _Thread_local static int value = f(); return value; }");
         var scope = WriteTemp("int main(void) { int outer = 7; { static _Thread_local int outer; ++outer; } return outer; }");
         try
         {
             Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { nonzero }))
-                .Message.ShouldContain("non-zero-initialized _Thread_local");
+                .Message.ShouldContain("_Thread_local requires a supported constant integer initializer");
             Compiler.EmitCSharp(new[] { scope }).ShouldContain("return outer;");
         }
         finally { File.Delete(nonzero); File.Delete(scope); }
@@ -195,7 +207,7 @@ public sealed class ThreadLocalTests
         try
         {
             Compiler.EmitCSharp(new[] { src })
-                .ShouldContain("public int tl;");
+                .ShouldContain("public int tl = 0;");
         }
         finally { File.Delete(src); }
     }

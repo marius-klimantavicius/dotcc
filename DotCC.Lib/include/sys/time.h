@@ -32,4 +32,14 @@ int gettimeofday(struct timeval *tv, void *tz);
 /* settimeofday: a managed process can't set the system clock; fails EPERM. */
 int settimeofday(const struct timeval *tv, const struct timezone *tz);
 
+struct itimerval {
+    struct timeval it_interval;
+    struct timeval it_value;
+};
+#define ITIMER_REAL 0
+#define ITIMER_VIRTUAL 1
+#define ITIMER_PROF 2
+int getitimer(int which, struct itimerval *value);
+int setitimer(int which, const struct itimerval *value, struct itimerval *old_value);
+
 #endif /* _SYS_TIME_H */

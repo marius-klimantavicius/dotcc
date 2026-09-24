@@ -128,7 +128,9 @@ public abstract partial record CType
     /// sizeof(element)</c> (recursing through the dimensions).</summary>
     public sealed record Array(CType Element, int? Count) : CType
     {
-        public override int SizeOf => Element.SizeOf * (Count ?? 0);
+        public CExpr? RuntimeCount { get; init; }
+        public override int SizeOf => RuntimeCount is null ? Element.SizeOf * (Count ?? 0)
+            : throw new IrUnsupportedException("variable-length array has no constant size");
 
         /// <summary>The innermost non-array element (peels all array dimensions) —
         /// the flat scalar/struct the storage holds.</summary>
