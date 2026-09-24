@@ -115,11 +115,12 @@ internal static class GccWslOracle
 
         // ── gcc compile ──  (-lm so the math fixtures link; harmless otherwise)
         var sourceList = string.Join(' ', localNames);
-        // -lm for the math fixtures, -pthread for the <threads.h> fixtures
+        // -I. matches dotcc's fixture includeDirs for both quoted and angle
+        // includes. -lm for math fixtures, -pthread for <threads.h> fixtures
         // (harmless when unused; a no-op on glibc >= 2.34 where pthread folded
         // into libc, required on older glibc to link C11 threads).
         var compileCmd =
-            $"cd '{shellWorkDir}' && gcc -std={std} {sourceList} -o {binName} -lm -pthread";
+            $"cd '{shellWorkDir}' && gcc -std={std} -I. {sourceList} -o {binName} -lm -pthread";
         var (compileOut, compileErr, compileExit) = RunShell(compileCmd);
         if (compileExit != 0)
         {

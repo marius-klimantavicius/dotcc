@@ -13,23 +13,36 @@ internal sealed partial class CPreprocessor
         .Where(symbol => symbol.Name is "CHAR" or "WCHAR" or "U16CHAR" or "U32CHAR" or "U8CHAR")
         .Select(symbol => symbol.ID).ToHashSet();
 
-    /// <summary>The generic conditional evaluator accepts integer tokens. C
-    /// character constants therefore need decoding after macro substitution,
-    /// only in conditional expressions. Ordinary tokens retain their spelling
-    /// and type, including arguments used by macro stringification.</summary>
+    /// <summary>The generic directive stack owns branch suppression; C owns
+    /// intmax_t/uintmax_t expression semantics. A lazy expression token reaches
+    /// the rewrite hook only when its #if/#elif branch needs evaluation.</summary>
     internal PreprocessorTokenStream WrapStream(ISyncIterator<Item> inner)
     {
         var conditionals = C.BuildConditionals(this);
         return new PreprocessorTokenStream(
-            new ConditionalExpressionTokens(inner, conditionals.IfSymbol, conditionals.ElifSymbol),
+            new ConditionalExpressionTokens(inner, conditionals.IfSymbol, conditionals.ElifSymbol, _numSymbolId),
             C.BuildPreprocessor(this), RewriteConditionalToken, conditionals,
             (name, args) => NormalizeConditionalCharacters(ExpandFuncMacro(name, args)));
     }
 
     private IEnumerable<Item> RewriteConditionalToken(Item token)
     {
-        var replacement = Rewrite(token);
-        return token is ConditionalExpressionItem ? NormalizeConditionalCharacters(replacement) : replacement;
+        if (token is ConditionalExpressionItem expression)
+        {
+            try
+            {
+                return new[] { SourceMappedItem.Create(_numSymbolId,
+                    EvaluateConditionalExpression(expression.Tokens) ? "1" : "0", token) };
+            }
+            catch (CompileException error)
+            {
+                var origin = expression.Tokens.Count > 0 ? expression.Tokens[0] : token;
+                var position = SourceMappedItem.Physical(origin);
+                var file = SourceMappedItem.FileOf(origin)?.Name ?? _currentlyIncluding;
+                throw new CompileException($"{error.Message} ({file}:{position.Line}:{position.Column})", error);
+            }
+        }
+        return Rewrite(token);
     }
 
     private IEnumerable<Item> NormalizeConditionalCharacters(IEnumerable<Item> tokens)
@@ -52,30 +65,41 @@ internal sealed partial class CPreprocessor
         }
     }
 
-    private sealed class ConditionalExpressionItem(Item token) : SourceMappedItem(token);
+    private sealed class ConditionalExpressionItem(Item token, IReadOnlyList<Item> tokens) : SourceMappedItem(token)
+    {
+        internal IReadOnlyList<Item> Tokens { get; } = tokens;
+    }
 
     /// <summary>Keep expression membership on the token, since the directive
     /// reader looks ahead into the next line before invoking macro callbacks.
     /// Each included file has its own iterator and logical line coordinates.</summary>
-    private sealed class ConditionalExpressionTokens(ISyncIterator<Item> inner, int ifSymbol, int elifSymbol)
+    private sealed class ConditionalExpressionTokens(ISyncIterator<Item> inner, int ifSymbol, int elifSymbol, int numberSymbol)
         : RewritingTokenStream(inner)
     {
-        private int _conditionalLine = -1;
+        private int _previousLine = -1;
 
         protected override void ProcessToken(Item token)
         {
+            bool firstOnLine = token.Position.Line != _previousLine;
+            _previousLine = token.Position.Line;
+            if (firstOnLine && token.Content?.ToString() == "#")
+            {
+                // A lone # (including trailing whitespace/comments) is C's
+                // null directive. Preserve nonempty unknown directives so they
+                // still diagnose; # and ## inside #define stay untouched.
+                var rest = CollectUntil(next => next.Position.Line != token.Position.Line && next.Position.Line != 0);
+                if (rest.Count > 0) { Emit(token); EmitRange(rest); }
+                return;
+            }
             if (token.ID == ifSymbol || token.ID == elifSymbol)
             {
-                _conditionalLine = token.Position.Line;
                 Emit(token);
+                var expression = CollectUntil(next => next.Position.Line != token.Position.Line && next.Position.Line != 0);
+                Emit(new ConditionalExpressionItem(SourceMappedItem.Create(numberSymbol, "0", token), expression));
             }
-            else Emit(token.Position.Line == _conditionalLine ? new ConditionalExpressionItem(token) : token);
+            else Emit(token);
         }
 
-        public override void Reset()
-        {
-            _conditionalLine = -1;
-            base.Reset();
-        }
+        public override void Reset() { _previousLine = -1; base.Reset(); }
     }
 }

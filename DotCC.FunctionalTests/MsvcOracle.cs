@@ -108,6 +108,8 @@ internal static class MsvcOracle
         };
         ApplyCachedEnv(cl);
         cl.ArgumentList.Add("/nologo");
+        // Match dotcc's fixture includeDirs for angle as well as quoted headers.
+        cl.ArgumentList.Add("/I.");
         if (stdFlag is not null) { cl.ArgumentList.Add(stdFlag); }
         cl.ArgumentList.Add($"/Fe:{exeName}");
         foreach (var n in localNames) { cl.ArgumentList.Add(n); }

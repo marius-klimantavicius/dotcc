@@ -235,6 +235,11 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
 
     public IEnumerable<Item> OnInclude(IReadOnlyList<Item> args)
     {
+        // Literal header names are not macro-expanded. The third C include
+        // form (#include HEADER or HEADER(name)) expands to either literal form.
+        if (args.Count > 0 && args[0].Content is string first
+            && !first.StartsWith('"') && first != "<")
+            args = ExpandDirectiveTokens(args);
         var name = ResolveIncludeName(args, out var isSystem);
         if (name is null) { return Array.Empty<Item>(); }
         var key = _files.Resolve(name, _currentSourcePath, isSystem);
@@ -911,6 +916,16 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         {
             return new[] { new Item(_numSymbolId, EvalHasInclude(argTokens) ? "1" : "0", default) };
         }
+        if (name == "__has_attribute")
+        {
+            if (argTokens.Count != 1 || argTokens[0].Content is not string attribute)
+                throw new CompileException("#if: __has_attribute requires one attribute name");
+            // Advertise only GNU attributes the shared frontend accepts. This
+            // says nothing about unsupported placements or argument forms.
+            bool supported = attribute.Trim('_') is "packed" or "aligned" or "format" or "alloc_size"
+                or "noreturn" or "unused" or "always_inline" or "noinline" or "no_instrument_function" or "malloc";
+            return new[] { new Item(_numSymbolId, supported ? "1" : "0", default) };
+        }
         if (!_macros.TryGetValue(name, out var macro) || !macro.IsFunctionLike)
         {
             // Not a known function-like macro — emit name + args verbatim,
@@ -966,7 +981,8 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         return ExpandObjectLikeBody(body, new HashSet<string>(StringComparer.Ordinal) { name });
     }
 
-    public bool IsDefined(string name) => name != null && _macros.ContainsKey(name);
+    public bool IsDefined(string name) => name is "__has_include" or "__has_embed" or "__has_attribute"
+        || (name != null && _macros.ContainsKey(name));
 
     /// <summary>
     /// <c>#pragma</c> dispatcher. <c>once</c> and layout-affecting <c>pack</c>

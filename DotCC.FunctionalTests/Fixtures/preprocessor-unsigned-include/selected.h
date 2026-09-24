@@ -1,0 +1,5 @@
+#
+#ifndef FIXTURE_SELECTED_H
+#define FIXTURE_SELECTED_H
+#define INCLUDE_RESULT 42
+#endif
