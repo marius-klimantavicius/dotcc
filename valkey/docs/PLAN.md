@@ -1,9 +1,17 @@
 # Translate Valkey to C# with dotcc
 
 Created 2026-09-24. Campaign directory: `<repo>/valkey/`.
-Status: **Planning and source review complete; translation implementation has
-not started.** The downloaded release and checksum are recorded in
-[source.md](source.md). All implementation gates below remain open.
+Status: **Implementation authorized and in progress with a coordinator and
+sub-agents** (2026-09-24). The downloaded release and checksum are recorded in
+[source.md](source.md). Implementation gates remain open until their execution
+evidence is recorded.
+
+User update: libc may return an error for `fork()` for now. The current shared
+runtime already returns `-1` with `errno = EPERM`; retain that honest failure.
+Fork-dependent operations remain unsupported and must report failure without
+corrupting the owning server. This does not defer foreground persistence or
+permit a successful fake fork. Background snapshot design is not a prerequisite
+for the authorized initial profile.
 
 ## Objective and inherited conventions
 
@@ -37,8 +45,9 @@ Keep Roslyn and C compilation out of the delivered application's runtime.
 Commit locally after each significant milestone and each coherent tested
 compiler/runtime repair; do not wait for the entire campaign. Include evidence
 and update this plan in milestone commits. Preserve unrelated work, stay on the
-current branch unless otherwise requested, and do not push. This planning request
-does not itself execute the implementation campaign or authorize sub-agents.
+current branch unless otherwise requested, and do not push. The user has now
+authorized the coordinator to delegate implementation to sub-agents. Coordinate
+shared builds, file ownership and commits; do not inherit unrelated delegations.
 
 ## Reviewed baseline and reproducible inputs
 

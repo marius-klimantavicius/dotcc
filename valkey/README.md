@@ -4,11 +4,12 @@ The [translation plan](docs/PLAN.md) follows the SQLite, picotls, MsQuic, libsmb
 and Blink campaigns. [Source review](docs/source.md) records the downloaded
 Valkey 9.1.2 revision, archive checksum and implementation boundaries.
 
-Status: planning only. No Valkey translation, native baseline or managed runtime
-qualification has been performed. The plan specifies the future
+Status: implementation authorized and in progress with a coordinator and
+sub-agents. Completed gates and limitations are tracked in the plan and campaign
+validation ledger. The plan specifies the
 `valkey/scripts/translate.sh`, `valkey/src/` and root
-`valkey/ManagedConsumer.slnx` deliverables; those scripts and projects are not
-implemented by this planning change.
+`valkey/ManagedConsumer.slnx` deliverables; those scripts and projects are
+all required to complete the delivery.
 
 The implementation must resolve Python like `sqlite/scripts/common.sh`, fetch
 verified inputs by default, support explicit `--no-fetch` with verified existing

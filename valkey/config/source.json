@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "project": "valkey-io/valkey",
+  "version": "9.1.2",
+  "commit": "7f1dffedff6de73058b2c2a389422b6ecd56c8fb",
+  "url": "https://codeload.github.com/valkey-io/valkey/tar.gz/7f1dffedff6de73058b2c2a389422b6ecd56c8fb",
+  "archive": "valkey-7f1dffedff6de73058b2c2a389422b6ecd56c8fb.tar.gz",
+  "directory": "valkey-7f1dffedff6de73058b2c2a389422b6ecd56c8fb",
+  "archive_sha256": "c34214a05899f52771ec0441ff0557d87e6fa73ae0c16204cbecc59ca30798bb",
+  "file_manifest": "source-files.json",
+  "file_manifest_sha256": "91b048f02436282ebf2ccc2f758f5266fc51dbd5c851bcb884f0e3e8a79f3672"
+}
