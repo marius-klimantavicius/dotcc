@@ -3,8 +3,9 @@
     <TargetFramework>net10.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <IsAotCompatible>true</IsAotCompatible>
+    <TranslatedValkeyProject Condition="'$(TranslatedValkeyProject)' == ''">../../generated/TranslatedValkey/TranslatedValkey.csproj</TranslatedValkeyProject>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../../generated/TranslatedValkey/TranslatedValkey.csproj" />
+    <ProjectReference Include="$(TranslatedValkeyProject)" />
   </ItemGroup>
 </Project>

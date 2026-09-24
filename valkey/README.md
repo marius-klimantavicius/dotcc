@@ -6,10 +6,9 @@ Valkey 9.1.2 revision, archive checksum and implementation boundaries.
 
 Status: implementation authorized and in progress with a coordinator and
 sub-agents. Completed gates and limitations are tracked in the plan and campaign
-validation ledger. The plan specifies the
-`valkey/scripts/translate.sh`, `valkey/src/` and root
-`valkey/ManagedConsumer.slnx` deliverables; those scripts and projects are
-all required to complete the delivery.
+validation ledger. `valkey/scripts/translate.sh` emits and builds the library;
+`valkey/ManagedConsumer.slnx` includes it, the owning API under `valkey/src/`,
+the sample and the integration consumer.
 
 The final generated and post-processed C# project belongs at
 `valkey/generated/TranslatedValkey/TranslatedValkey.csproj`. The pipeline builds
@@ -20,12 +19,15 @@ code and the authored C# host use namespace `Managed.Database`. Linking enables
 
 Translation applies reviewed, hash-checked staging edits from
 `config/managed-adaptations.json` by default. They connect upstream code to the
-C# host, choose the select event backend, and enforce the embedding profile.
+C# host and enforce the embedding profile; portable build flags select the
+upstream select event backend.
 `ref/` stays unchanged. Host implementations live in `src/Host/*.cs`; C calls
 use declarations in `src/Host/valkey_host.h` and typed bindings from
 `config/dotcc-overrides.json`. Generated projects link the authored C# files.
 `--unadapted --probe` is available for original-source diagnostics.
 The embedded server is not yet qualified.
+
+See [generation and usage](docs/usage.md) for build, sample and validation commands.
 
 The implementation must resolve Python like `sqlite/scripts/common.sh`, fetch
 verified inputs by default, support explicit `--no-fetch` with verified existing

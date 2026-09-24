@@ -6,8 +6,8 @@ The pinned 9.1.2 native control was built and exercised on Linux x64 on
 [profile.json](../config/profile.json) classifies all 425 upstream command and
 subcommand definitions: 307 required, 76 deferred and 42 translated but
 unqualified. These labels express the delivery requirement, not passing managed
-results. Deferred handlers remain in the source closure; runtime capability
-rejection still needs implementation.
+results. Deferred handlers remain in the source closure; C# host guards reject
+their dispatch and unsupported configuration before upstream side effects.
 
 [licenses.json](../config/licenses.json) records the selected dependency notice
 files and hashes, including Lua, libvalkey, fpconv, histogram and the fast-float
@@ -93,8 +93,8 @@ AOF enabled from startup with `appendfsync always`. It never invokes fork-based
 background persistence. The user's authorized interim libc behavior is
 `fork() == -1` with an appropriate error `EPERM`; fake child success is
 not permitted. Foreground SAVE and initial AOF replay remain required managed
-features. Deferred background commands and related automatic options must fail
-explicitly once the managed configuration layer exists.
+features. The managed configuration and dispatch layers reject deferred
+background commands and related automatic options explicitly.
 
 The native control passed 20 checks covering binary SET/GET, pipelined and
 fragmented requests, lists/hashes/sets/sorted sets, bundled Lua with JSON and bit

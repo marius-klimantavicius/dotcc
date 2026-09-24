@@ -6,8 +6,9 @@ consumer build. Managed server execution and NativeAOT product gates remain open
 
 ## Input and pipeline infrastructure
 
-`python3 -m unittest discover -s valkey/tests` passes 28 tests: 12 acquisition
-checks, nine pipeline checks and seven managed-adaptation checks. These run the real campaign orchestration
+`python3 -m unittest discover -s valkey/tests` passes 30 tests: 12 acquisition
+checks, nine pipeline checks, seven managed-adaptation checks and two notice
+checks. These run the real campaign orchestration
 against isolated test sources and an explicitly test-only dotnet executable.
 They establish acquisition forwarding, source immutability, deterministic
 generators, interpreter selection, failure preservation and publication rollback;
@@ -120,12 +121,15 @@ The root consumer solution subsequently built with zero warnings/errors.
 
 Literal pooling was enabled for that run. The pipeline now also passes
 `--deduplicate-inline` at link time; all nine pipeline tests pass with both
-options required. Full regeneration with the new option remains pending.
+options required. Full regeneration with both options passed in
+`attempt-rj1nminy`: 164 units, 85 generated C# files, raw and processed builds,
+post-processing and final-path promotion (88 warnings, zero errors).
 
 The first real sample execution (`artifacts/managed-smoke/rdb-1f1k99e9`) failed
 while constructing the generated owner: its globals structure exceeds the CLR
-array-element size limit. Pinned byte backing with typed references is being
-qualified in the shared compiler before retrying startup. No readiness, command
+array-element size limit. Pinned byte backing with typed references fixed this,
+with source/object, owner/TLS isolation, GC, native and NativeAOT regressions.
+No readiness, command
 or persistence pass is claimed from this attempt.
 
 The real integration harness in `tests/ManagedHostTests` builds with zero
@@ -139,3 +143,45 @@ Its functional run passed 691 cases, failed nine and skipped 1,151 optional
 oracles. The failures reduced to two name collisions (the BCL `Path` helper and
 a volatile runtime helper); both have been repaired and passed focused managed
 and native checks. This is not a claim that the full functional suite was rerun.
+
+## Running JIT and NativeAOT server evidence
+
+`artifacts/reductions/startup-3077111h` relinks the complete real 164-object closure
+with literal pooling, inline deduplication and the repaired storage runtime.
+It references the actual C# host/API/sample sources. Authenticated RDB and AOF
+samples pass, including two owners, binary values, lists/hashes, transactions,
+Lua, save/reload and joined cleanup. The preceding diagnostic correctly exposed
+a failed SAVE: directory handles now report `EISDIR`, a platform limitation
+explicitly accepted by unmodified upstream `fsyncFileDir`. Directory durability
+is not claimed (see [persistence.md](persistence.md)).
+
+The integration harness passed ten cases in both JIT and whole-assembly-rooted
+NativeAOT, covering owner/authentication isolation, RESP2/RESP3, fragmented large
+binary requests, collections/transactions/TTL, Lua cache/functions, capability
+guards, failed SAVE recovery, RDB reload, AOF replay and repeated cleanup/rebind.
+`integration-retry.json` and `aot-integration.json` identify the actual execution
+mode and each case. `exchange-result.json` records all eight additional
+native↔managed RDB/AOF exchange gates across JIT/AOT, with native integrity
+checks and data/type/absolute-expiry/function assertions.
+
+Pinned Tcl `unit/protocol` executed against that managed endpoint and passed
+29 checks, zero failures (`protocol-final/receipt.json`). Six DEBUG PROTOCOL
+tests are explicitly excluded because DEBUG is outside the admitted profile.
+The ordinary HELLO availability-zone test passes; its setter is per-owner and
+is admitted by the C# configuration policy. The external test launcher cannot
+start a substitute native server.
+
+The native/actual-assembly ABI probe passed 133 checks across 21 types, including
+Valkey object bitfield bytes, packed SDS, dict, client/server and Lua layouts.
+131 match exactly. Two documented internal event-loop differences derive from
+the managed pthread mutex handle; see [ABI evidence](../tests/abi/README.md).
+
+The subsequent frozen full regression run `runtime-storage-r2filo4c` passed all
+709 functional cases, with 1,157 optional oracle cases skipped. 2,734 unit tests
+passed and one failed because its negative `var z` substring assertion also
+matched the unrelated runtime local `var zone`. The assertion now targets the
+complete declaration and its focused rerun passes.
+
+These diagnostic runtime passes precede the final generated-product matrix.
+The reproducible raw/processed JIT/NativeAOT validation script is being executed
+against final paths, including fresh notice propagation and worker coverage.

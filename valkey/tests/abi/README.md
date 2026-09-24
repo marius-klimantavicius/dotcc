@@ -76,10 +76,11 @@ comments. Standalone notices alone omit individual notices such as Lua CJSON's
 Mark Pulford MIT notice and per-file Redis/Valkey copyright text. Lua's full MIT
 notice in `deps/lua/src/lua.h` occurs near the end of that header.
 
-A deterministic distribution bundle should preserve complete matching comment
-blocks from every pinned source/header in `config/sources.json`, including
+`scripts/notices.py` now creates a deterministic distribution bundle preserving
+complete matching comment blocks from every pinned source/header in
+`config/sources.json`, including
 contiguous `//` blocks and comments outside the file prefix, together with all
 standalone notice files. Original relative paths and verified file hashes should
-identify each extracted notice. `ffc.h` should contribute its complete inline
-MIT/Apache/Boost notice block rather than its implementation code. The bundle
-must accompany build/publish output as well as generated sources.
+identify each extracted notice. `ffc.h` contributes its complete inline
+MIT/Apache/Boost notice block. The bundle accompanies build/publish output as
+well as generated sources.
