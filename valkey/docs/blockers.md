@@ -114,8 +114,6 @@ a typedef in `server.h`. Other first failures are GNU vector/aligned attributes,
 weak functions, an alignment query on a pointer declaration and `sizeof` of an
 array type. This is still object-emission evidence only.
 
-## Other observed frontend families
-
 ## B9 — Attributes, weak definitions, array sizes and alignment
 
 The next full snapshot emits 154/164 units
@@ -148,7 +146,32 @@ four functional and four GCC oracle passes) and
 `artifacts/probe/alignas-combined-*.log` (64 units, 38 functional including 22
 weak-link checks, and four GCC oracle passes). The latter batch covers the newly
 reached initializer, alignment, typedef and header repairs after the 154/164
-snapshot. A targeted real-source retry is in progress.
+snapshot. Targeted retry `artifacts/translation/attempt-psw_qppy/result.json`
+emits commands, expire, io_threads, t_zset and queues. Config, debug and server
+advance to newly reached syntax/type declarations; networking's incomplete row
+pointer and zmalloc's nonzero TLS initializer are being handled separately.
+
+## B10 — Remaining source emission and runtime foundations
+
+Full product attempt `artifacts/translation/attempt-xjnipamb/result.json`
+emits 161/164 objects, stopping before linking. A fresh targeted retry
+`artifacts/translation/attempt-z8pfr_sk/result.json` emits debug and networking
+after adding native-checked resource/timer declarations, incomplete row-pointer
+parameters and runtime outer array extents with constant inner row strides.
+The outer extent is evaluated once and retained for `sizeof`.
+
+Keyword macro parameters and replacement-boundary rescanning remove config's
+macro failures and server's `FMTARGS` failure. Server now reaches a standard
+stream handle used in a conditional expression; its missing pointer type is
+being repaired. TLS source execution passes, but cross-object pointer storage
+still requires the next repaired snapshot and runtime checks.
+
+The combined focused batch passes 785 unit checks and eight enabled native GCC
+comparisons. Thirteen functional checks pass; five cross-object pointer cases
+remain failures in that snapshot. Logs are under
+`artifacts/reductions/managed-pipes/`. The batch also qualifies real managed
+pipe/select behavior and per-owner native allocation reclamation. These runtime
+foundations are committed independently; Valkey startup is still unqualified.
 
 ## Initial failure inventory
 

@@ -63,6 +63,21 @@ never publishes partial output. See [blockers.md](blockers.md).
 
 ## Remaining execution gates
 
+The latest full product attempt emits 161/164 units
+(`artifacts/translation/attempt-xjnipamb/result.json`). Debug, networking and
+server still fail before linking. See the precise receipts and reduced-test
+counts in [blockers.md](blockers.md). These attempts still have
+no successful linked C# product. Shared runtime descriptor ownership has passed
+31 focused checks; server startup and simultaneous managed owners remain open.
+
+The latest broader regression snapshot passes 2,603 unit checks with three TLS
+assertion failures, and 669 functional checks with three TLS object-link failures
+and 1,131 optional oracle skips. The assertion expectations have been corrected;
+the cross-object pointer storage repair and fresh verification remain pending.
+Logs are `artifacts/probe/full-regression-{unit,functional}.log`. Five explicitly
+enabled GCC differential checks passed. These are compiler/runtime reductions,
+not translated Valkey execution.
+
 P1 ABI/host feasibility, P2 complete library emission/build and P3–P9 server,
 command, scripting, persistence, consumer and delivery gates remain open. Do not
 interpret source audits or native checks as translated execution passes. The

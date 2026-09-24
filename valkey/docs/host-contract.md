@@ -35,10 +35,22 @@ Do not replace a nonreturning failure with a returning no-op.
 
 ## Earliest concrete boundary blockers
 
+The shared libc descriptor table, standard FILE handles and temporary-name buffer
+are now owned by `RuntimeContext`. Cross-owner FILE access is rejected before
+dereferencing the handle, and disposal closes only the captured owner's backing
+files/sockets while leaving process console writers open. The 31-check focused
+file/runtime batch passed, including owner isolation, disposal under a different
+binding, legacy unbound calls and standard-stream redirection. This establishes
+descriptor ownership, not a working Valkey event loop. Managed pipes now provide
+bounded buffering, nonblocking/EOF/error behavior and poll readiness; select uses
+the Linux LP64 1024-bit fd set. The broader 785-check batch, translated pipe/select
+fixture and GCC comparison pass. Native allocations also belong to their bound
+runtime and are reclaimed only after bindings/workers release their leases.
+
 | Boundary | Source evidence | Required implementation |
 | --- | --- | --- |
-| Wakeup pipe | `module.c:13063` unconditionally calls `anetPipe`; `DotCC.Libc/PosixFsLib.cs:417` currently fails `pipe` with EPERM. | Real per-owner readable/writable wakeup descriptors or a typed adaptation of the module notification transport; preserve nonblocking behavior and errors. |
-| Readiness | `ae.c:52` selects OS backend; fallback `ae_select.c` requires fd sets/select. `DotCC.Libc/UnistdLib.cs` fd-set operations are no-ops and select throws. | Explicit working backend with create/add/delete/resize/poll/free and wakeup. Falling back to select does not establish support. |
+| Wakeup pipe | `module.c:13063` unconditionally calls `anetPipe`; `DotCC.Libc/PipeLib.cs` now supplies managed owner-scoped endpoints. | Qualify actual module notification delivery and shutdown, beyond the reduced pipe tests. |
+| Readiness | `ae.c:52` selects OS backend; fallback `ae_select.c` requires fd sets/select, now supplied by `DotCC.Libc/SelectLib.cs`. | Select the backend explicitly, cap descriptors below 1024 and qualify upstream create/add/delete/resize/poll/free and wakeup. |
 | Static Lua symbols | `module.c:13540` resolves static symbols with `dlopen(NULL)` and `dlsym`. | Resolve the actual translated `ValkeyModule_OnLoad_lua` and `ValkeyModule_OnUnload_lua`; preserve normal module registration/unregistration. |
 | Paths | `config.c:2851` changes cwd; libc `chdir` calls `Directory.SetCurrentDirectory`. | Per-owner path context for all relative file operations, including temporary files and manifests, without process cwd changes. |
 | Shutdown | `db.c:1486` and `server.c:1548,1551` exit after successful upstream shutdown. | Owner stop/unwind with upstream persistence/error decisions retained and no process exit. |
