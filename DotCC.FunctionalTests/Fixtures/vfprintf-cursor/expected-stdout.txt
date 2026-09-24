@@ -1,0 +1,6 @@
+file=27 bytes=27 size=27 count=22 zero=0 tail=195,169
+copy=next:42|next:42| result=26
+buffer=6 last=255 terminator=0
+stdout=42 ok
+stdout-count=13
+readonly=1 error=1 errno=1

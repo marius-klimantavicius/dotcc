@@ -59,6 +59,9 @@ typedef long off_t;
 #include <stdarg.h>
 #include <stddef.h>
 int vsnprintf(char* dst, size_t n, const char* fmt, va_list args);
+int vsprintf(char* dst, const char* fmt, va_list args);
+int vfprintf(FILE* stream, const char* fmt, va_list args);
+int vprintf(const char* fmt, va_list args);
 int asprintf(char** dst, const char* fmt, ...);
 int vasprintf(char** dst, const char* fmt, va_list args);
 
