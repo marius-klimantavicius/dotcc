@@ -52,18 +52,22 @@ public static partial class Compiler
         specialMembers.Append("    internal static void __DotCcInitialize()\n    {\n").Append(specialInitializers).Append("    }\n");
         string globalsType = HelperClass(owner, "Globals"), threadType = globalsType + "ThreadLocal";
         string globalStorage = output.Fields.Length == 0 ? "" : $$"""
-                    internal {{globalsType}}[] Values = global::System.GC.AllocateArray<{{globalsType}}>(1, pinned: true);
+                    internal byte[] Values = global::System.Runtime.CompilerServices.RuntimeHelpers.IsReferenceOrContainsReferences<{{globalsType}}>()
+                        ? throw new global::System.InvalidOperationException("C global storage must not contain managed references.")
+                        : global::System.GC.AllocateArray<byte>(global::System.Runtime.CompilerServices.Unsafe.SizeOf<{{globalsType}}>(), pinned: true);
             """;
         string threadStorage = output.ThreadFields.Length == 0 ? "" : $$"""
-                    internal {{threadType}}[] Values = global::System.GC.AllocateArray<{{threadType}}>(1, pinned: true);
-                    internal __DotCcThreadState() { Values[0] = new {{threadType}}(); }
+                    internal byte[] Values = global::System.Runtime.CompilerServices.RuntimeHelpers.IsReferenceOrContainsReferences<{{threadType}}>()
+                        ? throw new global::System.InvalidOperationException("C thread storage must not contain managed references.")
+                        : global::System.GC.AllocateArray<byte>(global::System.Runtime.CompilerServices.Unsafe.SizeOf<{{threadType}}>(), pinned: true);
+                    internal __DotCcThreadState() { global::System.Runtime.CompilerServices.Unsafe.As<byte, {{threadType}}>(ref Values[0]) = new {{threadType}}(); }
             """;
         string accessors = output.Fields.Length == 0 ? "" : $$"""
-                public static ref {{globalsType}} {{output.GlobalName}} => ref __DotCcCurrent.Values[0];
+                public static ref {{globalsType}} {{output.GlobalName}} => ref global::System.Runtime.CompilerServices.Unsafe.As<byte, {{globalsType}}>(ref __DotCcCurrent.Values[0]);
             """;
         if (output.ThreadFields.Length != 0) accessors += $$"""
 
-                internal static ref {{threadType}} {{output.ThreadName}} => ref __DotCcCurrent.ThreadState.Values[0];
+                internal static ref {{threadType}} {{output.ThreadName}} => ref global::System.Runtime.CompilerServices.Unsafe.As<byte, {{threadType}}>(ref __DotCcCurrent.ThreadState.Values[0]);
             """;
         string members = $$"""
                 // Every entry into translated code must bind its program context
@@ -102,7 +106,7 @@ public static partial class Compiler
                         disposed = true;
                         threads.Dispose();
                         Special = null!;
-                        {{(output.Fields.Length == 0 ? "" : $"Values = global::System.Array.Empty<{globalsType}>();")}}
+                        {{(output.Fields.Length == 0 ? "" : "Values = global::System.Array.Empty<byte>();")}}
                         }
                     }
                 }
@@ -133,7 +137,7 @@ public static partial class Compiler
             members = members.Remove(ambientStart, ambientEnd - ambientStart + 1);
             members = members.Replace("public static ref ", "public ref ", StringComparison.Ordinal)
                 .Replace("internal static ref ", "internal ref ", StringComparison.Ordinal)
-                .Replace("=> ref __DotCcCurrent.", "=> ref __DotCcState.", StringComparison.Ordinal);
+                .Replace("__DotCcCurrent.", "__DotCcState.", StringComparison.Ordinal);
             int factory = members.IndexOf("public static unsafe __DotCcContext __DotCcCreateContext()", StringComparison.Ordinal);
             members = members[..factory] + $$"""
                 private readonly __DotCcContext __DotCcState;

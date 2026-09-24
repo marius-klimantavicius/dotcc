@@ -2675,11 +2675,13 @@ internal sealed partial class IrBuilder
     /// globals-struct field with a positional aggregate initializer.</summary>
     private void BuildGlobalStructInit(Item typeItem, Item nameItem, Item initListItem)
     {
+        _sawThreadLocalSpec = false;
         var type = ResolveType(typeItem);
         var position = SrcPos.From(nameItem);
         var declaration = RegisterScalarGlobal(new Symbol
         {
             Name = Tok(nameItem), Alignment = DeclarationAlignment(typeItem, type), Kind = SymKind.Var, Type = type, Storage = Storage.Static, IsGlobal = true,
+            IsThreadLocal = _sawThreadLocalSpec,
         }, position);
         if (declaration is null) return;
         CExpr initializer;
@@ -2693,6 +2695,7 @@ internal sealed partial class IrBuilder
                 { Type = new CType.Pointer(element) };
         }
         else initializer = BuildStaticAggregateInitializer(type, () => BuildAggregateInit(type, initListItem));
+        ValidateThreadAggregateInitializer(declaration.Symbol, initializer);
         DefineRegisteredGlobal(declaration, initializer, hasInitializer: true, position);
     }
 

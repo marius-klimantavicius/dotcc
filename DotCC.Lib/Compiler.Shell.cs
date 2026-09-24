@@ -193,7 +193,7 @@ public static partial class Compiler
         var threadGlobalsType = globalsType + "ThreadLocal";
         var threadGlobalOwnerMembers = globals.ThreadFields.Length == 0 ? "" : $$"""
                 [ThreadStatic]
-                private static {{threadGlobalsType}}[] {{globals.ThreadBackingName}};
+                private static byte[] {{globals.ThreadBackingName}};
 
                 internal static ref {{threadGlobalsType}} {{globals.ThreadName}}
                 {
@@ -202,11 +202,13 @@ public static partial class Compiler
                         var storage = {{globals.ThreadBackingName}};
                         if (storage is null)
                         {
-                            storage = global::System.GC.AllocateUninitializedArray<{{threadGlobalsType}}>(1, pinned: true);
-                            storage[0] = new {{threadGlobalsType}}();
+                            if (global::System.Runtime.CompilerServices.RuntimeHelpers.IsReferenceOrContainsReferences<{{threadGlobalsType}}>())
+                                throw new global::System.InvalidOperationException("C thread storage must not contain managed references.");
+                            storage = global::System.GC.AllocateArray<byte>(global::System.Runtime.CompilerServices.Unsafe.SizeOf<{{threadGlobalsType}}>(), pinned: true);
+                            global::System.Runtime.CompilerServices.Unsafe.As<byte, {{threadGlobalsType}}>(ref storage[0]) = new {{threadGlobalsType}}();
                             {{globals.ThreadBackingName}} = storage;
                         }
-                        return ref storage[0];
+                        return ref global::System.Runtime.CompilerServices.Unsafe.As<byte, {{threadGlobalsType}}>(ref storage[0]);
                     }
                 }
             """;
@@ -467,7 +469,7 @@ public static partial class Compiler
         var threadGlobalsType = globalsType + "ThreadLocal";
         var threadGlobalOwnerMembers = globals.ThreadFields.Length == 0 ? "" : $$"""
                 [ThreadStatic]
-                private static {{threadGlobalsType}}[] {{globals.ThreadBackingName}};
+                private static byte[] {{globals.ThreadBackingName}};
 
                 internal static ref {{threadGlobalsType}} {{globals.ThreadName}}
                 {
@@ -476,11 +478,13 @@ public static partial class Compiler
                         var storage = {{globals.ThreadBackingName}};
                         if (storage is null)
                         {
-                            storage = global::System.GC.AllocateUninitializedArray<{{threadGlobalsType}}>(1, pinned: true);
-                            storage[0] = new {{threadGlobalsType}}();
+                            if (global::System.Runtime.CompilerServices.RuntimeHelpers.IsReferenceOrContainsReferences<{{threadGlobalsType}}>())
+                                throw new global::System.InvalidOperationException("C thread storage must not contain managed references.");
+                            storage = global::System.GC.AllocateArray<byte>(global::System.Runtime.CompilerServices.Unsafe.SizeOf<{{threadGlobalsType}}>(), pinned: true);
+                            global::System.Runtime.CompilerServices.Unsafe.As<byte, {{threadGlobalsType}}>(ref storage[0]) = new {{threadGlobalsType}}();
                             {{globals.ThreadBackingName}} = storage;
                         }
-                        return ref storage[0];
+                        return ref global::System.Runtime.CompilerServices.Unsafe.As<byte, {{threadGlobalsType}}>(ref storage[0]);
                     }
                 }
             """;

@@ -54,10 +54,10 @@ public sealed class ThreadLocalTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("[ThreadStatic]\n    private static DotCcProgramGlobalsThreadLocal[] __threadGlobals;");
+            emitted.ShouldContain("[ThreadStatic]\n    private static byte[] __threadGlobals;");
             emitted.ShouldContain("public int tls_count;");
             emitted.ShouldContain("public long tls_static;");
-            emitted.ShouldContain("GC.AllocateUninitializedArray<DotCcProgramGlobalsThreadLocal>(1, pinned: true)");
+            emitted.ShouldContain("GC.AllocateArray<byte>(global::System.Runtime.CompilerServices.Unsafe.SizeOf<DotCcProgramGlobalsThreadLocal>(), pinned: true)");
         }
         finally { File.Delete(src); }
     }
@@ -74,6 +74,20 @@ public sealed class ThreadLocalTests
                 .Message.ShouldContain("_Thread_local requires a supported constant integer initializer");
         }
         finally { File.Delete(ok); File.Delete(bad); }
+    }
+
+    [Theory]
+    [InlineData("{f()}")]
+    [InlineData("{.value = f()}")]
+    public void Aggregate_tls_rejects_nonconstant_initializers(string initializer)
+    {
+        var source = WriteTemp("struct S { int value; }; int f(void); _Thread_local struct S s = " + initializer + ";");
+        try
+        {
+            Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { source }))
+                .Message.ShouldContain("_Thread_local requires a supported constant aggregate initializer");
+        }
+        finally { File.Delete(source); }
     }
 
     [Theory]
