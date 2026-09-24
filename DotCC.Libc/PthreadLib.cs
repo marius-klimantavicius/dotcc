@@ -44,27 +44,9 @@ public static unsafe partial class Libc
     }
     public static int pthread_equal(long a, long b) => a == b ? 1 : 0;
 
-    // Thread attributes encode initialization plus detach state. Stack and
-    // scheduling controls are deliberately absent: the BCL cannot honor them.
-    public static int pthread_attr_init(int* attr) { if (attr == null) return EINVAL; *attr = 2; return 0; }
-    public static int pthread_attr_destroy(int* attr)
-    {
-        if (attr == null || (*attr != 2 && *attr != 3)) return EINVAL;
-        *attr = -1; return 0;
-    }
-    public static int pthread_attr_setdetachstate(int* attr, int state)
-    {
-        if (attr == null || (*attr != 2 && *attr != 3) || (state != 0 && state != 1)) return EINVAL;
-        *attr = 2 | state; return 0;
-    }
-    public static int pthread_attr_getdetachstate(int* attr, int* state)
-    {
-        if (attr == null || state == null || (*attr != 2 && *attr != 3)) return EINVAL;
-        *state = *attr & 1; return 0;
-    }
     public static int pthread_create(long* thread, int* attr, delegate*<void*, void*> start, void* arg)
     {
-        if (thread == null || start == null || (attr != null && *attr != 2 && *attr != 3)) return EINVAL;
+        if (thread == null || start == null || !TryPthreadAttributes(RuntimeState, attr, out int stackSize, out bool detached)) return EINVAL;
         PthreadState? state = null;
         RuntimeContext? context = RuntimeContext.Current;
         bool retained = false;
@@ -72,8 +54,8 @@ public static unsafe partial class Libc
         {
             if (context != null) { context.Retain(); retained = true; }
             state = new PthreadState { Context = context, Id = Interlocked.Increment(ref _nextPthread),
-                Function = (IntPtr)start, Argument = (IntPtr)arg, Detached = attr != null && *attr == 3 };
-            state.Thread = new Thread(PthreadEntry);
+                Function = (IntPtr)start, Argument = (IntPtr)arg, Detached = detached };
+            state.Thread = new Thread(PthreadEntry, stackSize);
             _pthreads[state.Id] = state;
             state.Thread.Start(state);
             *thread = state.Id;
@@ -91,8 +73,9 @@ public static unsafe partial class Libc
     public static int pthread_create<T>(T instance, long* thread, int* attr,
         delegate*<T, void*, void*> start, void* arg) where T : class, IProgramInstance
     {
-        if (instance == null || thread == null || start == null || (attr != null && *attr != 2 && *attr != 3)) return EINVAL;
+        if (instance == null || thread == null || start == null) return EINVAL;
         RuntimeContext context = instance.__DotCcRuntime;
+        if (!TryPthreadAttributes(context, attr, out int stackSize, out bool detached)) return EINVAL;
         PthreadState? state = null;
         context.Retain();
         try
@@ -102,9 +85,9 @@ public static unsafe partial class Libc
             {
                 Context = context, Id = Interlocked.Increment(ref context.NextThread),
                 InstanceStart = argument => (IntPtr)((delegate*<T, void*, void*>)address)(instance, (void*)argument),
-                Argument = (IntPtr)arg, Detached = attr != null && *attr == 3
+                Argument = (IntPtr)arg, Detached = detached
             };
-            state.Thread = new Thread(PthreadEntry);
+            state.Thread = new Thread(PthreadEntry, stackSize);
             context.Threads[state.Id] = state;
             state.Thread.Start(state);
             *thread = state.Id;

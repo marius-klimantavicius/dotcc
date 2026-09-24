@@ -1,0 +1,1 @@
+POSIX clock_gettime and nanosleep are unavailable in MSVC CRT.

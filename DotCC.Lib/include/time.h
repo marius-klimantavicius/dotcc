@@ -23,8 +23,13 @@
 
 typedef long time_t;
 typedef long clock_t;
+typedef int clockid_t;
 
 #define CLOCKS_PER_SEC 1000
+
+/* Linux clock identifiers; availability is a runtime implementation concern. */
+#define CLOCK_REALTIME 0
+#define CLOCK_MONOTONIC 1
 
 time_t time(time_t* t);
 clock_t clock(void);
@@ -37,6 +42,8 @@ double difftime(time_t end, time_t beginning);
    timed calls, which #include this header. */
 #define TIME_UTC 1
 int timespec_get(struct timespec* ts, int base);
+int clock_gettime(clockid_t clock_id, struct timespec *value);
+int nanosleep(const struct timespec *request, struct timespec *remaining);
 
 /* Calendar conversions. gmtime/localtime/asctime/ctime return a pointer
    into a reused static buffer (overwritten by the next call). */
@@ -54,5 +61,7 @@ struct tm* gmtime_r(time_t* timer, struct tm* result);
 struct tm* localtime_r(time_t* timer, struct tm* result);
 char* asctime_r(struct tm* t, char* buf);
 char* ctime_r(time_t* timer, char* buf);
+
+void tzset(void);
 
 #endif

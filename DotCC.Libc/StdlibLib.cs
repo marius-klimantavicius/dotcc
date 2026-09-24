@@ -200,6 +200,13 @@ public static unsafe partial class Libc
         return AllocateHeap(count * elementSize, true);
     }
 
+    /// <summary>LP64 size_t entry point; rejects overflowing products before allocation.</summary>
+    public static void* calloc(ulong n, ulong size)
+    {
+        if (size != 0 && n > (ulong)nuint.MaxValue / size) return null;
+        return AllocateHeap((nuint)(n * size), true);
+    }
+
     /// <summary><c>realloc(p, size)</c> — resize a prior allocation, preserving
     /// contents up to the smaller of old/new size. Routes to
     /// <see cref="NativeMemory.Realloc(void*, nuint)"/>. On allocation failure,
@@ -207,8 +214,11 @@ public static unsafe partial class Libc
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void* realloc(void* p, int size)
     {
-        return ReallocateHeap(p, size);
+        return ReallocateHeap(p, (nuint)size);
     }
+
+    /// <summary>LP64 size_t entry point, preserving the old allocation on failure.</summary>
+    public static void* realloc(void* p, ulong size) => size > (ulong)nuint.MaxValue ? null : ReallocateHeap(p, (nuint)size);
 
     // ---------------------------------------------------------------------
     // Pseudo-random numbers

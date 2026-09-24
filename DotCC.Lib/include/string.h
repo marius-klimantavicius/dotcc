@@ -54,4 +54,6 @@ void* memmove(void* dst, const void* src, size_t count);
 int memcmp(const void* a, const void* b, size_t count);
 void* memchr(const void* s, int c, size_t count);
 
+int strerror_r(int error, char *buffer, size_t length);
+
 #endif

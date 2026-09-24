@@ -99,6 +99,7 @@ int fread(void* ptr, int size, int nmemb, FILE* stream);
 int fwrite(void* ptr, int size, int nmemb, FILE* stream);
 int fseek(FILE* stream, long offset, int whence);
 long ftell(FILE* stream);
+off_t ftello(FILE* stream);
 void rewind(FILE* stream);
 int feof(FILE* stream);
 int ferror(FILE* stream);

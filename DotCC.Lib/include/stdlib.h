@@ -5,8 +5,8 @@
 
 /* dotcc's <stdlib.h> — memory, conversions, RNG, environment, program
    control, and generic sort/search. Implementations: malloc/free/strtod/
-   atof in DotCC.Libc/Libc.cs, the rest in DotCC.Libc/StdlibLib.cs. Length
-   arguments use plain `int` (dotcc's size_t stand-in). */
+   atof in DotCC.Libc/Libc.cs, the rest in DotCC.Libc/StdlibLib.cs. Allocation sizes use the LP64
+   size_t ABI, including calls through function pointers. */
 
 #ifndef NULL
 #define NULL ((void*)0)
@@ -21,9 +21,9 @@
    the Libc.div_t / ldiv_t / lldiv_t value structs — no typedef needed. */
 
 /* Memory management. */
-void* malloc(int size);
-void* calloc(int n, int size);
-void* realloc(void* p, int size);
+void* malloc(size_t size);
+void* calloc(size_t n, size_t size);
+void* realloc(void* p, size_t size);
 void free(void* p);
 /* POSIX: returns an error number directly, without modifying errno. */
 int posix_memalign(void **memptr, size_t alignment, size_t size);
@@ -31,6 +31,7 @@ int posix_memalign(void **memptr, size_t alignment, size_t size);
 /* String -> number conversions. strtod parses a leading double and (if endptr
    is non-null) reports where parsing stopped; atof is strtod without endptr. */
 double strtod(const char *nptr, char **endptr);
+long double strtold(const char *nptr, char **endptr);
 double atof(const char *nptr);
 long strtol(const char *nptr, char **endptr, int base);
 long strtoll(const char *nptr, char **endptr, int base);
@@ -70,5 +71,7 @@ void abort(void);
 /* Generic sort / search — comparator is a function pointer. */
 void qsort(void* base, int n, int size, int (*cmp)(const void*, const void*));
 void* bsearch(const void* key, const void* base, int n, int size, int (*cmp)(const void*, const void*));
+
+int mkstemp(char *template);
 
 #endif

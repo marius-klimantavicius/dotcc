@@ -48,6 +48,7 @@ double sqrt(double x);  float sqrtf(float x);
 /* Mantissa / exponent (C90). frexp writes the exponent through its pointer. */
 double frexp(double x, int* exp); float frexpf(float x, int* exp);
 double ldexp(double x, int exp);  float ldexpf(float x, int exp);
+double modf(double x, double *integral);
 double cbrt(double x);  float cbrtf(float x);
 
 /* Rounding (C99). */
@@ -56,6 +57,8 @@ double floor(double x); float floorf(float x);
 double round(double x); float roundf(float x);
 /* Default nearest/ties-even only: dotcc has no mutable fenv or FP flags. */
 double rint(double x); float rintf(float x);
+long long llrint(double x);
+long long llroundl(long double x);
 double trunc(double x); float truncf(float x);
 
 /* Absolute value, remainder, min/max (C99 for fmin/fmax). The `l` variant is
@@ -65,6 +68,18 @@ long double fabsl(long double x);
 double fmod(double x, double y); float fmodf(float x, float y);
 double fmin(double x, double y); float fminf(float x, float y);
 double fmax(double x, double y); float fmaxf(float x, float y);
+
+/* Classification values follow the Linux header ABI. */
+#define FP_NAN 0
+#define FP_INFINITE 1
+#define FP_ZERO 2
+#define FP_SUBNORMAL 3
+#define FP_NORMAL 4
+int __dotcc_fpclassify_float(float x);
+int __dotcc_fpclassify_double(double x);
+/* sizeof does not evaluate a floating operand; exactly one selected branch
+   evaluates x. Preserve float subnormals instead of first promoting to double. */
+#define fpclassify(x) (sizeof(x) == sizeof(float) ? __dotcc_fpclassify_float((float)(x)) : __dotcc_fpclassify_double((double)(x)))
 
 /* Classification (C99). Returns int (non-zero on match) — NOT bool. */
 int isnan(double x);

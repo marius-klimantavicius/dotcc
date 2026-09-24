@@ -100,7 +100,7 @@ public static unsafe partial class Libc
 
     // realloc need only preserve ordinary malloc alignment. Copy into its
     // existing allocator so subsequent free/realloc keep their normal route.
-    private static bool ReallocAlignedBlock(void* pointer, int size, out void* replacement)
+    private static bool ReallocAlignedBlock(void* pointer, nuint size, out void* replacement)
     {
         replacement = null;
         if (pointer == null || Volatile.Read(ref _alignedCount) == 0) return false;
@@ -110,7 +110,7 @@ public static unsafe partial class Libc
             if (!_alignedBlocks.TryGetValue((nuint)pointer, out block)) return false;
         }
         ValidateAlignedBlock((nuint)pointer, block, "realloc");
-        replacement = malloc(size);
+        replacement = AllocateHeap(size);
         if (replacement == null) return true; // Retain original on failure.
         nuint length = block.Size < (nuint)size ? block.Size : (nuint)size;
         NativeMemory.Copy(pointer, replacement, length);

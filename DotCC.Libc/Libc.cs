@@ -41,6 +41,9 @@ public static unsafe partial class Libc
         return AllocateHeap((nuint)size);
     }
 
+    /// <summary>LP64 size_t entry point, including typed C function addresses.</summary>
+    public static void* malloc(ulong size) => size > (ulong)nuint.MaxValue ? null : AllocateHeap((nuint)size);
+
     /// <inheritdoc cref="malloc(int)"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void* Malloc(int size) => malloc(size);

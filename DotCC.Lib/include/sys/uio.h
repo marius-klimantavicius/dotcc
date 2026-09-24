@@ -1,6 +1,7 @@
 #ifndef _DOTCC_SYS_UIO_H
 #define _DOTCC_SYS_UIO_H
 #include <sys/types.h>
+#include <limits.h>
 struct iovec {
     void *iov_base;
     size_t iov_len;

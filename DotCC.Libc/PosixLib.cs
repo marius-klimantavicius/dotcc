@@ -107,15 +107,23 @@ public static unsafe partial class Libc
 
     // ---- <sys/time.h> ----------------------------------------------------
 
-    /// <summary><c>gettimeofday(tv, tz)</c> — UTC wall clock into
-    /// <c>struct timeval { long tv_sec; long tv_usec; }</c>. The obsolete
-    /// timezone argument is ignored (NULL on all modern callers). Always 0.</summary>
+    /// <summary>Read UTC wall time and, when requested, the local standard-time
+    /// offset used by portable callers. Either output may be null.</summary>
     public static int gettimeofday(void* tv, void* tz)
     {
-        var t = (long*)tv;
-        var ticks = (global::System.DateTime.UtcNow - global::System.DateTime.UnixEpoch).Ticks; // 100 ns units
-        t[0] = ticks / TimeSpan.TicksPerSecond;
-        t[1] = ticks % TimeSpan.TicksPerSecond / 10;
+        if (tv != null)
+        {
+            var t = (long*)tv;
+            var ticks = (global::System.DateTime.UtcNow - global::System.DateTime.UnixEpoch).Ticks;
+            t[0] = ticks / TimeSpan.TicksPerSecond;
+            t[1] = ticks % TimeSpan.TicksPerSecond / 10;
+        }
+        if (tz != null)
+        {
+            var zone = (int*)tz;
+            zone[0] = -(int)global::System.TimeZoneInfo.Local.BaseUtcOffset.TotalMinutes;
+            zone[1] = 0; // Obsolete DST rule code; calendar functions determine DST.
+        }
         return 0;
     }
 

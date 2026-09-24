@@ -120,7 +120,7 @@ public static unsafe partial class Libc
                         (!noEscape && match.Length > 1 && match[0] == (byte)'\\' && match[1] == (byte)'.');
                     var names = new List<string>();
                     if (dots) { names.Add("."); names.Add(".."); }
-                    foreach (string entry in entries) names.Add(Path.GetFileName(entry));
+                    foreach (string entry in entries) names.Add(global::System.IO.Path.GetFileName(entry));
                     foreach (string name in names)
                     {
                         if (name.StartsWith('.') && !dots) continue;

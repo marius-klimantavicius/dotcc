@@ -8,6 +8,7 @@
 #include <endian.h>
 
 #define NBBY CHAR_BIT
+#define MAXPATHLEN PATH_MAX
 #ifndef MIN
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #endif

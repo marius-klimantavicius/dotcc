@@ -100,6 +100,11 @@ public static unsafe partial class Libc
     public const int ECONNREFUSED = 111;   // Connection refused
     public const int EHOSTUNREACH = 113;   // No route to host
     public const int EINPROGRESS = 115;    // Operation now in progress
+    public const int EALREADY = 114;       // Operation already in progress
+    public const int EBADMSG = 74;         // Bad message
+    public const int ENETDOWN = 100;       // Network is down
+    public const int EPFNOSUPPORT = 96;    // Protocol family not supported
+    public const int ESOCKTNOSUPPORT = 94; // Socket type not supported
 
     public const int ETXTBSY = 26; // Text file busy
     public const int ENAMETOOLONG = 36; // File name too long

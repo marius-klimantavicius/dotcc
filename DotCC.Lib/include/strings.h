@@ -5,4 +5,6 @@
    C-locale runtime implementations with dotcc's string.h. */
 #include <string.h>
 
+void bzero(void *destination, size_t length);
+
 #endif

@@ -16,7 +16,7 @@ namespace DotCC.Libc;
 /// scanf's return value).
 /// </summary>
 /// <remarks>
-/// Supported conversions: <c>%d</c>/<c>%i</c>/<c>%u</c> (decimal int),
+/// Supported conversions: <c>%d</c>/<c>%u</c> (decimal), <c>%i</c> (base-detecting integer),
 /// <c>%x</c>/<c>%X</c> (hex int), <c>%o</c> (octal int), <c>%f</c>/<c>%e</c>/<c>%g</c>
 /// (double), <c>%s</c> (whitespace-delimited token → NUL-terminated UTF-8),
 /// <c>%c</c> (byte(s)). A <b>maximum field width</b> (<c>%3d</c>, <c>%8s</c>) is
@@ -31,8 +31,9 @@ namespace DotCC.Libc;
 /// (<c>%n</c>, a <c>%[…]</c> scanset), or a format/argument-type mismatch (a
 /// float spec against an <c>int*</c>) — <b>throws</b> <see cref="FormatException"/>
 /// rather than silently skipping it. dotcc fails loudly, never silently wrong.
-/// Assignment-suppression (<c>%*d</c>) is not modeled (it would desync the fluent
-/// <c>.Read(ptr)</c> chain); the <c>*</c> is skipped so the spec letter still parses.
+/// Assignment suppression is supported for integer and string/character conversions.
+/// Literal separators are matched before the following conversion; a failed match
+/// leaves that and subsequent destinations unchanged.
 /// </para>
 /// </remarks>
 public unsafe ref struct ScanfReader
@@ -40,56 +41,88 @@ public unsafe ref struct ScanfReader
     private readonly TextReader _r;
     private byte* _fmt;
     private int _matched;
+    private bool _failed;
 
     internal ScanfReader(TextReader r, byte* fmt)
     {
         _r = r;
         _fmt = fmt;
         _matched = 0;
+        _failed = false;
     }
 
-    public ScanfReader Read(int* dst)
+    public ScanfReader Read(int* dst) { if (ReadInteger(out ulong value)) *dst = unchecked((int)value); return this; }
+    public ScanfReader Read(uint* dst) { if (ReadInteger(out ulong value)) *dst = unchecked((uint)value); return this; }
+    public ScanfReader Read(long* dst) { if (ReadInteger(out ulong value)) *dst = unchecked((long)value); return this; }
+    public ScanfReader Read(ulong* dst) { if (ReadInteger(out ulong value)) *dst = value; return this; }
+    public ScanfReader Read(short* dst) { if (ReadInteger(out ulong value)) *dst = unchecked((short)value); return this; }
+    public ScanfReader Read(ushort* dst) { if (ReadInteger(out ulong value)) *dst = unchecked((ushort)value); return this; }
+    public ScanfReader Read(sbyte* dst) { if (ReadInteger(out ulong value)) *dst = unchecked((sbyte)value); return this; }
+    public ScanfReader Read(float* dst)
     {
-        var spec = ExpectSpec(out int width);
-        int @base = spec switch
+        double value = 0;
+        int before = _matched;
+        Read(&value);
+        if (_matched != before) *dst = (float)value;
+        return this;
+    }
+
+    private bool ReadInteger(out ulong value)
+    {
+        value = 0;
+        if (_failed) return false;
+        byte spec = ExpectSpec(out int width);
+        if (_failed) return false;
+        if (!ReadIntegerValue(spec, width, out value)) { _failed = true; return false; }
+        _matched++;
+        return true;
+    }
+
+    private bool ReadIntegerValue(byte spec, int width, out ulong value)
+    {
+        int radix = spec switch
         {
-            (byte)'d' or (byte)'i' or (byte)'u' => 10,
+            (byte)'d' or (byte)'u' => 10,
+            (byte)'i' => 0,
             (byte)'x' or (byte)'X' => 16,
             (byte)'o' => 8,
-            _ => throw Unsupported(spec, "an int (%d %i %u %x %X %o)"),
+            _ => throw Unsupported(spec, "an integer (%d %i %u %x %X %o)"),
         };
         SkipInputWs();
-        int consumed = 0;
-        bool neg = false;
+        int remaining = width < 0 ? int.MaxValue : width;
+        bool negative = false, any = false;
+        value = 0;
         int peek = _r.Peek();
-        if ((peek == '-' || peek == '+') && (width < 0 || consumed < width))
+        if (remaining > 0 && (peek == '-' || peek == '+'))
         {
-            neg = peek == '-';
-            _r.Read();
-            consumed++;
+            negative = peek == '-'; _r.Read(); remaining--;
         }
-        long val = 0;
-        bool any = false;
-        while ((width < 0 || consumed < width) && (peek = _r.Peek()) != -1)
+        if (remaining > 0 && _r.Peek() == '0')
         {
-            int d = DigitValue(peek, @base);
-            if (d < 0) { break; }
-            val = val * @base + d;
-            any = true;
-            _r.Read();
-            consumed++;
+            any = true; _r.Read(); remaining--;
+            if (radix == 0) radix = 8;
+            if (remaining > 0 && (radix == 8 && spec == 'i' || radix == 16) && (_r.Peek() == 'x' || _r.Peek() == 'X'))
+            {
+                _r.Read(); remaining--; radix = 16;
+            }
         }
-        if (any)
+        if (radix == 0) radix = 10;
+        while (remaining > 0 && (peek = _r.Peek()) != -1)
         {
-            *dst = (int)(neg ? -val : val);
-            _matched++;
+            int digit = DigitValue(peek, radix);
+            if (digit < 0) break;
+            value = unchecked(value * (uint)radix + (uint)digit);
+            any = true; _r.Read(); remaining--;
         }
-        return this;
+        if (negative) value = unchecked(0UL - value);
+        return any;
     }
 
     public ScanfReader Read(double* dst)
     {
+        if (_failed) return this;
         var spec = ExpectSpec(out int width);
+        if (_failed) return this;
         if (spec != (byte)'f' && spec != (byte)'e' && spec != (byte)'g'
             && spec != (byte)'F' && spec != (byte)'E' && spec != (byte)'G')
         {
@@ -126,15 +159,20 @@ public unsafe ref struct ScanfReader
             *dst = v;
             _matched++;
         }
+        else _failed = true;
         return this;
     }
 
     public ScanfReader Read(byte* dst)
     {
+        if (_failed) return this;
         var spec = ExpectSpec(out int width);
+        if (_failed) return this;
         if (spec != (byte)'s' && spec != (byte)'c')
         {
-            throw Unsupported(spec, "a string/char (%s %c)");
+            if (ReadIntegerValue(spec, width, out ulong value)) { *dst = unchecked((byte)value); _matched++; }
+            else _failed = true;
+            return this;
         }
         // %c: default field width 1 (read exactly one byte); %s: unbounded unless capped.
         int max = width >= 0 ? width : (spec == (byte)'c' ? 1 : int.MaxValue);
@@ -165,7 +203,7 @@ public unsafe ref struct ScanfReader
             }
         }
         if (spec != (byte)'c') { dst[written] = 0; }
-        if (written > 0) { _matched++; }
+        if (written > 0) { _matched++; } else _failed = true;
         return this;
     }
 
@@ -177,7 +215,9 @@ public unsafe ref struct ScanfReader
     /// <c>scanf</c> never targets a <c>char*</c>, so this overload is wide-only.</summary>
     public ScanfReader Read(char* dst)
     {
+        if (_failed) return this;
         var spec = ExpectSpec(out int width);
+        if (_failed) return this;
         if (spec != (byte)'s' && spec != (byte)'c')
         {
             throw Unsupported(spec, "a wide string/char (%ls %lc)");
@@ -193,38 +233,56 @@ public unsafe ref struct ScanfReader
             dst[written++] = (char)_r.Read();
         }
         if (spec != (byte)'c') { dst[written] = '\0'; }
-        if (written > 0) { _matched++; }
+        if (written > 0) { _matched++; } else _failed = true;
         return this;
     }
 
     public int Done() => _matched;
 
     /// <summary>Consume the next <c>%</c> spec from the format: skip leading fmt
-    /// whitespace, the <c>%</c>, an assignment-suppression <c>*</c> (unmodeled),
-    /// the optional max field <paramref name="width"/>, and the length modifier;
+    /// whitespace and matching input literals, suppressed conversions, the
+    /// optional max field <paramref name="width"/>, and the length modifier;
     /// return the conversion letter (0 at end of format).</summary>
     private byte ExpectSpec(out int width)
     {
         width = -1;
-        // Whitespace in fmt matches any (incl. zero) input whitespace.
-        while (*_fmt != 0 && IsAsciiWs(*_fmt)) { _fmt++; }
-        if (*_fmt != (byte)'%') { return 0; }
-        _fmt++;
-        // Assignment suppression '%*d' isn't modeled by the fluent .Read chain
-        // (no arg is consumed, which would desync); skip so the letter parses.
-        if (*_fmt == (byte)'*') { _fmt++; }
-        // Maximum field width.
-        while (*_fmt >= (byte)'0' && *_fmt <= (byte)'9')
+        while (true)
         {
-            if (width < 0) { width = 0; }
-            width = width * 10 + (*_fmt - (byte)'0');
+            while (*_fmt != 0)
+            {
+                if (IsAsciiWs(*_fmt)) { _fmt++; SkipInputWs(); continue; }
+                if (*_fmt == '%' && _fmt[1] != '%') break;
+                byte literal = *_fmt++;
+                if (literal == '%') _fmt++;
+                if (_r.Peek() != literal) { _failed = true; return 0; }
+                _r.Read();
+            }
+            if (*_fmt != '%') return 0;
             _fmt++;
+            bool suppress = *_fmt == '*';
+            if (suppress) _fmt++;
+            width = -1;
+            while (*_fmt >= '0' && *_fmt <= '9')
+            {
+                if (width < 0) width = 0;
+                width = width > (int.MaxValue - 9) / 10 ? int.MaxValue : width * 10 + (*_fmt - '0');
+                _fmt++;
+            }
+            while (*_fmt is (byte)'l' or (byte)'L' or (byte)'h' or (byte)'z' or (byte)'j' or (byte)'t') _fmt++;
+            byte spec = *_fmt;
+            if (spec != 0) _fmt++;
+            if (!suppress) return spec;
+            if (spec == 's' || spec == 'c')
+            {
+                if (spec == 's') SkipInputWs();
+                int remaining = width < 0 ? (spec == 'c' ? 1 : int.MaxValue) : width;
+                bool any = false;
+                while (remaining-- > 0 && _r.Peek() != -1 && (spec == 'c' || !char.IsWhiteSpace((char)_r.Peek())))
+                { _r.Read(); any = true; }
+                if (!any) { _failed = true; return 0; }
+            }
+            else if (!ReadIntegerValue(spec, width, out _)) { _failed = true; return 0; }
         }
-        // Length modifiers — recognized, ignored (the Read overload has the type).
-        while (*_fmt is (byte)'l' or (byte)'L' or (byte)'h' or (byte)'z' or (byte)'j' or (byte)'t') { _fmt++; }
-        var spec = *_fmt;
-        if (spec != 0) { _fmt++; }
-        return spec;
     }
 
     private void SkipInputWs()
@@ -254,7 +312,7 @@ public unsafe ref struct ScanfReader
         string s = spec == 0 ? "<end of format>" : "%" + (char)spec;
         return new FormatException(
             $"dotcc scanf: conversion '{s}' is not supported for {expected}. " +
-            "Supported: %d %i %u %x %X %o (int), %f %e %g (double), %s %c (string/char); " +
+            "Supported: %d %i %u %x %X %o (integer), %f %e %g (floating point), %s %c (string/char); " +
             "%n and %[...] scansets are not implemented.");
     }
 

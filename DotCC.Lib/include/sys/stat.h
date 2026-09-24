@@ -68,4 +68,8 @@ int mkdir(const char *path, unsigned int mode);
 int mkfifo(const char *path, unsigned int mode);
 int chmod(const char *path, unsigned int mode);
 
+int fchmod(int fd, mode_t mode);
+
+mode_t umask(mode_t mask);
+
 #endif /* _SYS_STAT_H */

@@ -60,6 +60,7 @@ struct sigaction {
 /* Further POSIX signal numbers (Linux values). */
 #define SIGHUP   1
 #define SIGQUIT  3
+#define SIGBUS   7
 #define SIGKILL  9
 #define SIGUSR1  10
 #define SIGUSR2  12
@@ -72,16 +73,20 @@ struct sigaction {
 #define SIGTTIN  21
 #define SIGTTOU  22
 
+#define SI_USER 0
+
 /* sa_flags bits + sigprocmask() 'how' values. */
 #define SA_SIGINFO  0x00000004
 #define SA_RESTART  0x10000000
 #define SA_NODEFER  0x40000000
+#define SA_RESETHAND 0x80000000U
 #define SIG_BLOCK   0
 #define SIG_UNBLOCK 1
 #define SIG_SETMASK 2
 
 int sigaction(int sig, const struct sigaction *act, struct sigaction *oldact);
 int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
+int pthread_sigmask(int how, const sigset_t *set, sigset_t *oldset);
 int sigemptyset(sigset_t *set);
 int sigfillset(sigset_t *set);
 int sigaddset(sigset_t *set, int signum);

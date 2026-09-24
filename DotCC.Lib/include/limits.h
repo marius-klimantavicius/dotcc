@@ -18,6 +18,11 @@
 /* Atomic write bound for the managed Linux-profile anonymous pipe. */
 #define PIPE_BUF   4096
 
+/* Linux path bound and LP64 signed byte-count range. */
+#define PATH_MAX   4096
+#define IOV_MAX    1024
+#define SSIZE_MAX  LONG_MAX
+
 /* Multi-byte char max length — historical, mostly tied to locale
    handling we don't implement. 1 is the safe answer for our UTF-8-
    in-`char*` model where each byte stands alone. */

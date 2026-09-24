@@ -101,7 +101,7 @@ public static unsafe partial class Libc
         }
     }
 
-    private static void* ReallocateHeap(void* pointer, int size)
+    private static void* ReallocateHeap(void* pointer, nuint size)
     {
         if (pointer == null) return AllocateHeap((nuint)size);
         lock (ownedHeapLock)

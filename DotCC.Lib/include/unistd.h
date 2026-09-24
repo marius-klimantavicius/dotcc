@@ -3,6 +3,9 @@
 
 #include <sys/types.h>
 
+#define _SC_PAGESIZE 30
+#define _SC_PAGE_SIZE _SC_PAGESIZE
+
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
 #define STDERR_FILENO 2
@@ -80,6 +83,8 @@ long readlink(const char *path, char *buf, unsigned long bufsiz);
 int access(const char *path, int mode);
 int chown(const char *path, unsigned int owner, unsigned int group);
 int ftruncate(int fd, off_t length);
+int fsync(int fd);
+int truncate(const char *path, off_t length);
 int dup(int fd);
 int dup2(int oldfd, int newfd);
 int pipe(int *pipefd);
@@ -94,5 +99,9 @@ int execvp(const char *file, char *const argv[]);
 int execv(const char *path, char *const argv[]);
 unsigned int alarm(unsigned int seconds);
 void _exit(int status);
+
+long sysconf(int name);
+int setsid(void);
+int execve(const char *path, char *const arguments[], char *const environment[]);
 
 #endif /* _UNISTD_H */

@@ -16,8 +16,12 @@ typedef int pthread_condattr_t;
 typedef int pthread_once_t;
 typedef int pthread_key_t;
 
+#define PTHREAD_STACK_MIN 16384
 #define PTHREAD_CREATE_JOINABLE 0
 #define PTHREAD_CREATE_DETACHED 1
+/* Cancellation policy constants do not imply cancellation support. */
+#define PTHREAD_CANCEL_ENABLE 0
+#define PTHREAD_CANCEL_ASYNCHRONOUS 1
 #define PTHREAD_MUTEX_NORMAL 0
 #define PTHREAD_MUTEX_RECURSIVE 1
 #define PTHREAD_MUTEX_ERRORCHECK 2
@@ -33,6 +37,8 @@ int pthread_attr_init(pthread_attr_t *attr);
 int pthread_attr_destroy(pthread_attr_t *attr);
 int pthread_attr_setdetachstate(pthread_attr_t *attr, int state);
 int pthread_attr_getdetachstate(const pthread_attr_t *attr, int *state);
+int pthread_attr_getstacksize(const pthread_attr_t *attr, size_t *size);
+int pthread_attr_setstacksize(pthread_attr_t *attr, size_t size);
 int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start)(void *), void *arg);
 int pthread_join(pthread_t thread, void **result);
 int pthread_detach(pthread_t thread);
@@ -69,5 +75,9 @@ int pthread_key_create(pthread_key_t *key, void (*destructor)(void *));
 int pthread_key_delete(pthread_key_t key);
 void *pthread_getspecific(pthread_key_t key);
 int pthread_setspecific(pthread_key_t key, const void *value);
+
+int pthread_cancel(pthread_t thread);
+int pthread_setcancelstate(int state, int *previous);
+int pthread_setcanceltype(int type, int *previous);
 
 #endif

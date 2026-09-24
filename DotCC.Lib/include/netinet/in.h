@@ -69,6 +69,10 @@ struct sockaddr_in6 {
 #define IPPROTO_ICMP 1
 #define IPPROTO_TCP  6
 #define IPPROTO_UDP  17
+#define IPPROTO_IPV6 41
+
+/* Linux IPv6 socket option number. */
+#define IPV6_V6ONLY 26
 
 /* Byte-order conversions (glibc declares these here) */
 uint16_t htons(uint16_t hostshort);

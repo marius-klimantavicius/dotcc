@@ -75,6 +75,11 @@
 #define ECONNREFUSED     111
 #define EHOSTUNREACH     113
 #define EINPROGRESS      115
+#define EALREADY         114
+#define EBADMSG          74
+#define ENETDOWN         100
+#define EPFNOSUPPORT     96
+#define ESOCKTNOSUPPORT  94
 
 #define ETXTBSY 26
 #define ENAMETOOLONG 36
