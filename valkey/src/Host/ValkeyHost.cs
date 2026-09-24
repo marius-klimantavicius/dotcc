@@ -123,7 +123,7 @@ public static unsafe partial class ValkeyHost
         "stop-writes-on-bgsave-error", "activerehashing", "lazyfree-lazy-eviction", "lazyfree-lazy-expire",
         "lazyfree-lazy-server-del", "lazyfree-lazy-user-del", "lazyfree-lazy-user-flush", "lua-time-limit",
         "busy-reply-threshold", "notify-keyspace-events", "slowlog-log-slower-than", "slowlog-max-len",
-        "client-output-buffer-limit", "maxmemory-clients"
+        "client-output-buffer-limit", "maxmemory-clients", "availability-zone"
     };
 
     private static bool ValidateOptions(ValkeyCore core, byte* options)

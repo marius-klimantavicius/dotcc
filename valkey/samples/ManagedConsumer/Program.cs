@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using Managed.Valkey;
 
@@ -28,6 +29,7 @@ var firstOptions = new ValkeyOptions
 var peerOptions = firstOptions with { DataDirectory = Path.Combine(directory, "peer"), Port = peerPort };
 using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(90));
 ValkeyServer? first = null, peer = null, restarted = null;
+ExceptionDispatchInfo? primaryFailure = null;
 try
 {
     first = new ValkeyServer(firstOptions);
@@ -69,6 +71,7 @@ try
     Console.WriteLine($"PASS: TCP, binary values, list/hash, MULTI, Lua, two owners and {(appendOnly ? "AOF" : "RDB")} restart.");
     Console.WriteLine("Persistence files: " + directory);
 }
+catch (Exception error) { primaryFailure = ExceptionDispatchInfo.Capture(error); }
 finally
 {
     // This sample owns its test data and explicitly chooses NOSAVE on a failed
@@ -80,8 +83,14 @@ finally
         try { await server.StopAsync(ValkeyShutdownMode.NoSave).WaitAsync(TimeSpan.FromSeconds(20)); }
         catch (Exception error) { failures.Add(error); }
     }
-    if (failures.Count != 0) throw new AggregateException("Sample cleanup failed.", failures);
+    if (primaryFailure is null && failures.Count != 0)
+        throw new AggregateException("Sample cleanup failed.", failures);
+    if (primaryFailure is not null)
+        foreach (var error in failures)
+            if (!ReferenceEquals(error, primaryFailure.SourceException))
+                Console.Error.WriteLine("Additional cleanup failure: " + error.Message);
 }
+primaryFailure?.Throw();
 
 static void Check(object? actual, object expected)
 {
