@@ -62,6 +62,7 @@ public sealed class GccWslOracleTests
     [MemberData(nameof(Fixtures))]
     public void Dotcc_matches_gcc_output(string name, string dir)
     {
+        FixtureRunner.RequireSupportedHost(dir);
         if (!GccRunRequested)
         {
             Assert.Skip(

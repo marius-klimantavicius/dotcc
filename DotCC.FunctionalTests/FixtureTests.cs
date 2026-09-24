@@ -23,6 +23,7 @@ public sealed class FixtureTests
     [MemberData(nameof(Fixtures))]
     public void Fixture_emits_csharp_runnable_with_matching_stdout(string name, string dir)
     {
+        FixtureRunner.RequireSupportedHost(dir);
         var match = FixtureRunner.Discover().Single(f => f.name == name);
 
         var emitted = Compiler.EmitCSharp(

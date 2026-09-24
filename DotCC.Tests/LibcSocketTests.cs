@@ -298,14 +298,18 @@ public sealed class LibcSocketTests
     [Fact]
     public unsafe void so_reuseport_set_get_roundtrips()
     {
-        // SO_REUSEPORT maps to ReuseAddress (documented substitution); the fix made
-        // the round-trip consistent — getsockopt reads back what setsockopt stored.
         const int SO_REUSEPORT = 15;
         int fd = socket(AF_INET, SOCK_STREAM, 0);
         fd.ShouldBeGreaterThanOrEqualTo(0);
         try
         {
             int one = 1;
+            if (!OperatingSystem.IsLinux())
+            {
+                setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &one, 4).ShouldBe(-1);
+                errno.ShouldBe(ENOTSUP);
+                return;
+            }
             setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &one, 4).ShouldBe(0);
             int got = 0;
             uint len = 4;

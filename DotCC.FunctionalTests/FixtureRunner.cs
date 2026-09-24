@@ -19,6 +19,15 @@ namespace DotCC.FunctionalTests;
 /// </summary>
 internal static class FixtureRunner
 {
+    // Keep host-specific cases visible as skipped rather than inventing a
+    // successful expected output on hosts lacking the required OS contract.
+    public static void RequireSupportedHost(string directory)
+    {
+        var marker = Path.Combine(directory, "linux-only.txt");
+        if (!OperatingSystem.IsLinux() && File.Exists(marker))
+            Xunit.Assert.Skip("Fixture requires Linux: " + File.ReadAllText(marker).Trim());
+    }
+
     // Console.Out is process-global state; redirecting it isn't thread-safe.
     // Two parallel test theories iterating Fixtures/ would race on the
     // redirect (one finishes, restores prevOut which was already overwritten

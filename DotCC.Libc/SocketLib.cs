@@ -304,13 +304,21 @@ public static unsafe partial class Libc
             {
                 switch (optname)
                 {
-                    case SO_REUSEADDR: sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, ival); break;
-                    // SO_REUSEPORT (per-socket load-balanced port sharing) has no .NET
-                    // equivalent; a single managed process can't self-load-balance anyway,
-                    // so it's mapped to ReuseAddress (the closest useful behavior — quick
-                    // rebind). Documented substitution, NOT silent: getsockopt(SO_REUSEPORT)
-                    // reads back the same ReuseAddress bit, so the round-trip is consistent.
-                    case SO_REUSEPORT: sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, ival); break;
+                    case SO_REUSEADDR:
+                    case SO_REUSEPORT:
+                        if (optlen < sizeof(int)) { errno = EINVAL; return -1; }
+                        if (optval == null) { errno = EFAULT; return -1; }
+                        if (OperatingSystem.IsLinux())
+                        {
+                            // The BCL ReuseAddress mapping also enables native
+                            // SO_REUSEPORT on Unix. Preserve independent Linux
+                            // flags so reuseaddr cannot share an active listener.
+                            sock.SetRawSocketOption(SOL_SOCKET, optname, new ReadOnlySpan<byte>(optval, sizeof(int)));
+                        }
+                        else if (optname == SO_REUSEADDR)
+                            sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, ival);
+                        else { errno = ENOTSUP; return -1; }
+                        break;
                     case SO_LINGER:
                         if (optlen < 8) { errno = EINVAL; return -1; }
                         if (optval == null) { errno = EFAULT; return -1; }
@@ -341,6 +349,21 @@ public static unsafe partial class Libc
     {
         if (SockByFd(fd, out var err) is not { } sock) { errno = err; return -1; }
         if (optlen == null) { errno = EINVAL; return -1; }
+        if (level == SOL_SOCKET && (optname == SO_REUSEADDR || optname == SO_REUSEPORT))
+        {
+            if (optname == SO_REUSEPORT && !OperatingSystem.IsLinux()) { errno = ENOTSUP; return -1; }
+            if (OperatingSystem.IsLinux())
+            {
+                int count = (int)Math.Min(*optlen, (uint)sizeof(int));
+                if (count != 0 && optval == null) { errno = EFAULT; return -1; }
+                try
+                {
+                    *optlen = (uint)sock.GetRawSocketOption(SOL_SOCKET, optname, new Span<byte>(optval, count));
+                    return 0;
+                }
+                catch (SocketException ex) { errno = SocketErrno(ex.SocketErrorCode); return -1; }
+            }
+        }
         if (level == SOL_SOCKET && optname == SO_LINGER)
         {
             if (*optlen != 0 && optval == null) { errno = EFAULT; return -1; }
@@ -366,9 +389,6 @@ public static unsafe partial class Libc
                     SO_ERROR => ReadSocketError(SlotByFd(fd)!),
                     SO_TYPE => sock.SocketType == SocketType.Dgram ? SOCK_DGRAM : SOCK_STREAM,
                     SO_REUSEADDR => (int)sock.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress)!,
-                    // Symmetric with setsockopt's documented SO_REUSEPORT→ReuseAddress
-                    // substitution — reads back the same bit so a set/get round-trip agrees.
-                    SO_REUSEPORT => (int)sock.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress)!,
                     SO_KEEPALIVE => (int)sock.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive)!,
                     SO_RCVBUF => sock.ReceiveBufferSize,
                     SO_SNDBUF => sock.SendBufferSize,

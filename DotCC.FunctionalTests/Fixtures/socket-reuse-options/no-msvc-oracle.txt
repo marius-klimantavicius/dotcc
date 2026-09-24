@@ -1,0 +1,1 @@
+Linux socket option constants and independent SO_REUSEPORT semantics.

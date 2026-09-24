@@ -66,6 +66,7 @@ public sealed class MsvcOracleTests
     [MemberData(nameof(Fixtures))]
     public void Dotcc_matches_msvc_output(string name, string dir)
     {
+        FixtureRunner.RequireSupportedHost(dir);
         if (!MsvcRunRequested)
         {
             Assert.Skip(
