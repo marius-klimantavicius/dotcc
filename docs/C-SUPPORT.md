@@ -900,7 +900,9 @@ Results use the owner's heap, and typed callbacks retain the explicit owner.
 Unsupported flags return GLOB_ABORTED/ENOTSUP. The implementation is qualified by
 runtime ownership tests and native comparisons, not a claim of full glibc glob.
 
-`fsync` flushes real FileStream storage; `ftello` preserves 64-bit positions;
+`fsync` flushes real FileStream storage; directory handles are unsupported
+(`open` returns `-1/EISDIR`), so no directory-entry durability is promised.
+`ftello` preserves 64-bit positions;
 `truncate`, `fchmod` and `mkstemp` respect owner paths/descriptors. `mkstemp` creates
 files atomically with Unix mode 0600. `fchmod` reports ENOTSUP on Windows.
 `clock_gettime` supports realtime and monotonic clocks; `nanosleep` uses a

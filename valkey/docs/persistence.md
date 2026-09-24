@@ -86,6 +86,12 @@ workers and their atomic status/offset publication; a successful no-op job is
 not persistence. File flush and directory durability are distinct capabilities;
 no power-loss or cross-filesystem rename guarantee is established by this audit.
 
+The current BCL runtime flushes file contents with `FileStream.Flush(true)` but
+cannot open directory handles. `open` reports `-1/EISDIR` for a directory; the
+unmodified upstream `fsyncFileDir` explicitly accepts this platform limitation.
+SAVE and AOF operations therefore cannot promise durable directory entries after
+power loss, even when file flushing succeeds. No directory flush is simulated.
+
 `finishShutdown` (`server.c:4806`) flushes AOF, calls `valkey_fsync`, optionally
 performs a synchronous final RDB save and closes listeners/unloads modules. Its
 AOF fsync failure is logged rather than automatically changing every shutdown

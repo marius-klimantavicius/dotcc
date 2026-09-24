@@ -13,6 +13,31 @@ public sealed unsafe class FileDurabilityTests
     private static byte[] CString(string text) => Encoding.UTF8.GetBytes(text + '\0');
 
     [Fact]
+    public void Directory_open_reports_unsupported_handle_kind_in_the_owners_directory()
+    {
+        string root = Directory.CreateTempSubdirectory("dotcc-directory-sync-").FullName;
+        using var owner = new RuntimeContext();
+        try
+        {
+            using (owner.Enter())
+            fixed (byte* directory = CString(root))
+            fixed (byte* relative = CString("."))
+            fixed (byte* missing = CString("missing"))
+            {
+                chdir(directory).ShouldBe(0);
+                foreach (int flags in new[] { 0, 1, 2, 0x10000 })
+                {
+                    open(relative, flags).ShouldBe(-1);
+                    errno.ShouldBe(EISDIR);
+                }
+                open(missing, 0).ShouldBe(-1);
+                errno.ShouldBe(ENOENT);
+            }
+        }
+        finally { Directory.Delete(root); }
+    }
+
+    [Fact]
     public void Temporary_files_sync_permissions_and_truncation_follow_each_owner()
     {
         string root = Directory.CreateTempSubdirectory("dotcc-durable-").FullName;

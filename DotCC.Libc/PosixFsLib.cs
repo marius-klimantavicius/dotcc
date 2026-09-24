@@ -135,6 +135,10 @@ public static unsafe partial class Libc
     {
         if (path == null) { errno = ENOENT; return -1; }
         var p = ResolvePath(path);
+        // FileStream cannot own directory handles. Report that capability
+        // boundary explicitly instead of misclassifying it as a permission
+        // failure; callers may support platforms without directory fsync.
+        if (Directory.Exists(p)) { errno = EISDIR; return -1; }
         const int oCreat = 0x40, oExcl = 0x80, oTrunc = 0x200, oAppend = 0x400;
         var access = (flags & 0x3) switch
         {
