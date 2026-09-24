@@ -1,0 +1,3362 @@
+{
+  "schema_version": 1,
+  "commit": "7f1dffedff6de73058b2c2a389422b6ecd56c8fb",
+  "evidence": "native ENGINE_SERVER_OBJ plus archive members in GNU linker map; transitive project dependencies from -MMD",
+  "dialect": "GNU C11 server/module; C99 libvalkey/histogram; upstream default Lua",
+  "abi": {
+    "model": "LP64",
+    "byte_order": "little",
+    "pointer_bits": 64
+  },
+  "groups": {
+    "server": {
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ]
+    },
+    "libvalkey": {
+      "defines": [],
+      "include_dirs": [
+        "deps/libvalkey/include/valkey",
+        "src"
+      ]
+    },
+    "hdr_histogram": {
+      "defines": [
+        "HDR_MALLOC_INCLUDE=\"hdr_redis_malloc.h\""
+      ],
+      "include_dirs": [
+        "deps/hdr_histogram"
+      ]
+    },
+    "fpconv": {
+      "defines": [],
+      "include_dirs": [
+        "deps/fpconv"
+      ]
+    },
+    "lua_module": {
+      "defines": [
+        "_GNU_SOURCE",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src/modules/lua",
+        "deps/lua/src",
+        "deps/fpconv"
+      ]
+    },
+    "lua": {
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ]
+    }
+  },
+  "sources": [
+    {
+      "path": "src/acl.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "4c7a1f141b643b43719fe9e3126f436fc0afb90d41374ae3b744487e970ae643"
+    },
+    {
+      "path": "src/adlist.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "166f916e9482069379498b1624c75a1e93e77a99904fef3c48a489a05e310987"
+    },
+    {
+      "path": "src/ae.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "5f7b30f88e1d3daa19c5fbc124a64387951183f7d4607eea1c25484b2aa6ccb5"
+    },
+    {
+      "path": "src/allocator_defrag.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "60b94638b49597d49d00161767cf3ad0b2789eb2610a7dd7047ee78de0efc98c"
+    },
+    {
+      "path": "src/anet.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "18d4d6d88320a58c49c307b7d84fd34e4a6f691baa3da75cfca7740c7bd8abe4"
+    },
+    {
+      "path": "src/aof.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "16cdc13449113462cef5865a7b25ffc2bd69939ba13fbed87c4104cec4177a2a"
+    },
+    {
+      "path": "src/bio.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "e11b400e55fae19e8bfc954520512006aa2f145cb01c4c5820cb93cb76def951"
+    },
+    {
+      "path": "src/bitops.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "9fbca209f16b062c97e2de85baa05a149aba609561e10a3748ed62ea8a2d4cd0"
+    },
+    {
+      "path": "src/blocked.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "e8dc48eeb78fdd899b1e62128f2b43c9148c88509e27737b02c7c8da1e48e39f"
+    },
+    {
+      "path": "src/call_reply.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "8cd84c86d9993e881478b448c383cddcd4c4ef83638dab7008884f0e871f9d8d"
+    },
+    {
+      "path": "src/childinfo.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "2abe4100e57fc1c9bb9403a395d1f49dde36a5a0bf4e32223fa5ddb2e84f56da"
+    },
+    {
+      "path": "src/cluster.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "b11928f74049cc38ffab897791cc69c813ec11396ddbb58f72920b335b2f4b2a"
+    },
+    {
+      "path": "src/cluster_legacy.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "4dc210b8d86b1a52308014754fcf9a79f5f1e068b8c9808f1bdd6112607fed33"
+    },
+    {
+      "path": "src/cluster_migrateslots.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "a6a37c5c771c8e54124e99d41b5f1c56fd57451b8a219e7f01c42bc491867b22"
+    },
+    {
+      "path": "src/cluster_slot_stats.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "84b5e077fa8517ed62be852b3494f617f5f9e86ba3972b32cc202ee1c1a99977"
+    },
+    {
+      "path": "src/commandlog.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "88480f158ebc19a1f3f6372412022bfb99f7b68ad749ea509b7ca4dc173ded7b"
+    },
+    {
+      "path": "src/commands.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "b7ccf7df4eaf80ee036795666ffbe7111e9d1f267ab4c5200a2b775e276b8c18"
+    },
+    {
+      "path": "src/config.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "f912fc92d24aa4e24c2614479e5cdc63e8dddb7df21902c48482fd61abc55db2"
+    },
+    {
+      "path": "src/connection.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "a0352dc21e0699111f3a43a8b61df14abad7148b1aebc59ceee78b3afe07a037"
+    },
+    {
+      "path": "src/crc16.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "b299814e53008f2cb7ee76051b07ae812e55ca3e04d6260bba826ded7a4f7a00"
+    },
+    {
+      "path": "src/crc16_slottable.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "299c00e23b08ced4b9fc038f6736b16f69e114d837cc832bf30ae057a434c410"
+    },
+    {
+      "path": "src/crc64.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "5760aed5c7b581242f5ca53bded0a15ed2b1a61fe1af26a30a96351929685d7f"
+    },
+    {
+      "path": "src/crccombine.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "c3e292850d80021a5635f483e243e43fcd65b8be27fbeadc14654d117da65c1d"
+    },
+    {
+      "path": "src/crcspeed.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "0d8ff7e3c468de28f5cfd66218f5df1efe2df1c04ea675465f30b2634ff5b7a7"
+    },
+    {
+      "path": "src/db.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "9b2e703efdd514d79754ae61fc841341fd76b72a85299ea80fa6a55133755fbb"
+    },
+    {
+      "path": "src/debug.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "a82c922b081a67f9b00dbe09a1473bed899d8a27f701822dbb1247d6cd2c06fc"
+    },
+    {
+      "path": "src/defrag.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "09e9720b6ec90beadb893527cc0b3e90aa7dee74f86abee4800e851125cd3766"
+    },
+    {
+      "path": "src/dict.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "ca3e77861c8c7e9c1be2bdf5101227a9d8577e1419279b39943eb048d9df2526"
+    },
+    {
+      "path": "src/entry.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "fe2a762452592404ba3822dd9f1d9e5a557907f51ef67cb0f98264dc3d694798"
+    },
+    {
+      "path": "src/eval.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "85c34302d62a048ecca36511b960d35616931beecdef67ae456eb4773771a635"
+    },
+    {
+      "path": "src/evict.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "fd2563718bd5c56e44da24bcfd28e89005f6e0c7ec42be45b4296bcaa594f9a0"
+    },
+    {
+      "path": "src/expire.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "f79066d33edf2e60cfcbc9d98923d75cc72b3fade2463ea46272293d9c602cf3"
+    },
+    {
+      "path": "src/fifo.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "c63b5dd2246fa210c018512fe9b5814289414b61df4d08956c3ead8b7abdc252"
+    },
+    {
+      "path": "src/functions.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "1405547853f074737ec9171bcd2ae23633306f692b9557e744c8dc59f0b0d36b"
+    },
+    {
+      "path": "src/geo.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "b57f57c5f532f96e9e93edac88f3bd366fdbf6243988171cc48c497b45687489"
+    },
+    {
+      "path": "src/geohash.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "5b3b06a0d7c5267cc1e6c59d16ab329a50f69935dcdf4aaf83ac61a76b2a559b"
+    },
+    {
+      "path": "src/geohash_helper.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "5187f959475669acb9ff980efff847c31fb7f946e5d978cb187517181b6b8935"
+    },
+    {
+      "path": "src/hashtable.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "c848d84dc73d7c6d861a1776f7c093efa2b769af6b64294362d981c1f6a1d70b"
+    },
+    {
+      "path": "src/hyperloglog.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "cf4294a81690325a988ebe401882bdebb770c489a52ab086245874f50d7c13c4"
+    },
+    {
+      "path": "src/intset.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "cf7873f0d464e218c6f72bbefdf14f5aad2f8a7419a83c3dc31b62e7568735a0"
+    },
+    {
+      "path": "src/io_threads.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "bfb6428d528a0ba2ee98a72aa32f8fb23cec461d3705c1f2dd7d494639649d05"
+    },
+    {
+      "path": "src/kvstore.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "58e5bb8af68b8e2c89cf7bf3e391fcfd90feafb773e87cc4221f02634c8a4227"
+    },
+    {
+      "path": "src/latency.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "f1a3663e7812725a6453a3b65e9d3abdb85433be7a90a65325d5f2154fa8491b"
+    },
+    {
+      "path": "src/lazyfree.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "cebb61d29d999b16737e3b8ce3b5995b0a2f51236da17a82a16931388464edba"
+    },
+    {
+      "path": "src/listpack.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "8faff41f66a005cbca8fa71630a931b2869081a9371a08cede5b78a90b2f26b5"
+    },
+    {
+      "path": "src/localtime.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "2ce119a0c32201d65b054d354f777cc04bae4a118db0249c86e635c7a3d39912"
+    },
+    {
+      "path": "src/logreqres.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "1c1e4745a168d17156dcd7e655145cb69ccd4b79799a567ad36f7c5edd775f48"
+    },
+    {
+      "path": "src/lolwut.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "3bcdd877ff049391b2b968e6aac5e402ff7913827e12ff75ee53a85c1bc619da"
+    },
+    {
+      "path": "src/lolwut5.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "32a53d45340d68d5656c26eb9b055a584a0c4248f98243a7e8c145ed2ecaf3af"
+    },
+    {
+      "path": "src/lolwut6.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "f9463c89e202ae2cd8bf2a55e3ae455386231048d4310c86855f32fa2c19154d"
+    },
+    {
+      "path": "src/lolwut9.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "efa7e14835835038feee38d57ec0752b175ab3c8583cd674c73c427130210782"
+    },
+    {
+      "path": "src/lrulfu.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "996681732e4495de80e6beec6c2bf08257388098a10eca0ad9e0c778f324fcf2"
+    },
+    {
+      "path": "src/lzf_c.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "8603f4ea178ea343dbd1bf54179380d79c120aa338af4366282a742326aa14e9"
+    },
+    {
+      "path": "src/lzf_d.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "5bc74a3cb8a2cf60e174a2e67dc32cc092b1c5dc4474f7bf88f81d30b0cfc194"
+    },
+    {
+      "path": "src/memory_prefetch.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "3e52f289a6f883d7a1a5cc29bd22d077d2169276772e182600bba88adc70f948"
+    },
+    {
+      "path": "src/memtest.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "a81cbfbf42b4707f01c55fc6167e7961228c6316cbeb207c840e53eff28e32c5"
+    },
+    {
+      "path": "src/module.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "63696a4d5a10c1f1fb7ec6d973d1b13e7e6af3ff07f9f0b04da370f0d9a78116"
+    },
+    {
+      "path": "src/monotonic.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "dd8ff04aae567b2b96e8598d5838cc5ddac5a89024a865e26cf6f8b685e9dcf1"
+    },
+    {
+      "path": "src/mt19937-64.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "f4f3670d45a06b8abed55d0158b89adb6aa4e0bc83ec6adf3dba04fdce8d7de6"
+    },
+    {
+      "path": "src/multi.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "d2700bc3fe66a7af9cbab1a85e9662389341f1fce577c6fcc326ec1dc12b2eb0"
+    },
+    {
+      "path": "src/mutexqueue.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "082b5b8efb6ab3b309b60919606853809834b867182d57b8825009582367ab76"
+    },
+    {
+      "path": "src/networking.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "4252530fd42abd2ac50b6ee99fec4536ffa5536da0b054541a47d23b7f8fba04"
+    },
+    {
+      "path": "src/notify.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "af7d9e9b21dabec2611f0a5e97874cfb6ff80ec5245c921cf12d09e9e69745ac"
+    },
+    {
+      "path": "src/object.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "df8e42974318812831264e5b48fada5394cdbcf5a3881d7460405f140ca45f3c"
+    },
+    {
+      "path": "src/pqsort.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "38671e9fb37c5f7e3dfedb4a010f375b4f3f389ef13867f43df7f7ed144ff20b"
+    },
+    {
+      "path": "src/pubsub.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "da53702aaa2228731bde9ea6f911ae72b76631fc2fb7a8523df47c4565867bf8"
+    },
+    {
+      "path": "src/quicklist.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "180974619df1a28cdbbb0c7329b64beb675c0047e26d60f157f75dc65f4e57b7"
+    },
+    {
+      "path": "src/rand.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "a01bb2987626e5de156b53126c40484a8fb96f173575548515b4a6c7dfe3aa83"
+    },
+    {
+      "path": "src/rax.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "4268262a0a44e9d0085a8b3d7c98237c089d20ac748a6316bf0b5aa94ca2199c"
+    },
+    {
+      "path": "src/rdb.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "499a988b4213ccb6aaef2587167422d0bfedde5f83cd5ea1ae0196d7c4a29c06"
+    },
+    {
+      "path": "src/rdma.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "12659e2d60724ee99b154ce8b2dae23c2700b5d3fc1502a5c926043575e5aa02"
+    },
+    {
+      "path": "src/release.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "dd59d07f5c3b9d32bea96ed213e02b2fbd725a6a3e65143a46bb9484d3d9ab0b"
+    },
+    {
+      "path": "src/replication.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "60996ac9fec7d63f7ebfadfe493a87328ed148505fde3203e68751ac32b3c008"
+    },
+    {
+      "path": "src/resp_parser.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "bcfe859dc5f678d4a388872a0f403cd04f57a7e2a3584a0e4111211104496592"
+    },
+    {
+      "path": "src/rio.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "4f502026fa5227604734f82246e4afebc1822e919d3484bd17c3b32ff98d9a3d"
+    },
+    {
+      "path": "src/script.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "5b82e2b12db47f5f1e53f704d74f1af5fd855cbdb5e2af7d1f64f84fa8b4da7b"
+    },
+    {
+      "path": "src/scripting_engine.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "4648b5176ef475d2aa4c0504617c0011004ae2ed09dacbe7325b47d6596dee59"
+    },
+    {
+      "path": "src/sds.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "968dbe15a198ae8af8dc9f254ff65cb0f71f4104346190d879584262f75028e8"
+    },
+    {
+      "path": "src/sentinel.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "bd7a941fe1794cde815ee35c6298979ad31cd62d42719b08154907e3f1d737e7"
+    },
+    {
+      "path": "src/server.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "31bf50440be2bcb241f0eaa919889715978df897cdde88f71ba2c34c362a5352"
+    },
+    {
+      "path": "src/setcpuaffinity.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "8111075f48505398c98c6b65d89983191513a113955b5bb80a99102fb6a6caa4"
+    },
+    {
+      "path": "src/setproctitle.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "93f0ccc7c81ae28905db68ea9068b62cd9acc040a5260072fbbd58d55e4c06bc"
+    },
+    {
+      "path": "src/sha1.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "06ce7151fd90b870a461a480d39fcc4a1bde0c40fa5193d0a23514cd6f0928a6"
+    },
+    {
+      "path": "src/sha256.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "86a1e95abe8087e7ee003df5168266513a84666411550c9fb1485814d49200c4"
+    },
+    {
+      "path": "src/siphash.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "11466f1ecfc914d514a32b905a084a12c41bcc110336e59489eb446a2b9c1836"
+    },
+    {
+      "path": "src/socket.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "255dafa99ff528f58673f822300a99206abd513b78b38b44adfd8387edda44bb"
+    },
+    {
+      "path": "src/sort.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "01d31c756b50ff0d2ba1c898a29f3c85b7f997b852e28a3377a3369bb7fa56d9"
+    },
+    {
+      "path": "src/sparkline.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "cba6a3f4d30d53c9fcc15eeb953c7771165f8496950c34b5c6c863745ec66f9e"
+    },
+    {
+      "path": "src/strl.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "529a6fdc5239d86f975848a16e719b16298a10d3b5714a6f7bf7df5a3e1e2805"
+    },
+    {
+      "path": "src/syncio.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "17c44c43962029b9123316bfd9cb29947e57e32a9cadd63f8a21dd4df4681bed"
+    },
+    {
+      "path": "src/syscheck.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "52a4c5810f5f939687b0303048d1806280fc0653c9376914f47bd3b4d2c35826"
+    },
+    {
+      "path": "src/t_hash.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "13c23bf17b8920f70fc05aea9e6a9844cde58102f78e88cd2c7def3bf8b80233"
+    },
+    {
+      "path": "src/t_list.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "48ae1c90d1a4c96853504b9880fe14462937a606200914020d3147a52e1c2d83"
+    },
+    {
+      "path": "src/t_set.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "8cfef69c02a17857bb6dbb548cd4d23d61d51480c33bcea48a98c1027bc852fe"
+    },
+    {
+      "path": "src/t_stream.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "d411953e5a1f92d59fbaa552b8333f29b27310a1b7f52d3371b05677c6650ec3"
+    },
+    {
+      "path": "src/t_string.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "2fd6d57608343e4a22415e0575402df0cc95f5a9261dbf370c5f652e85d41fbc"
+    },
+    {
+      "path": "src/t_zset.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "5384db27700614b64e40f81f39905ddf0a67e11dee854ca710103b501a0906be"
+    },
+    {
+      "path": "src/threads_mngr.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "035407c8b126de436d97dc0563091fed0434a08fa1ef5914b0ea1b9a3be56a2c"
+    },
+    {
+      "path": "src/timeout.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "7c73f2e0de29e190c87cc3d44fb9efd16425ba82793eae535a98bc7f5bc1c202"
+    },
+    {
+      "path": "src/tls.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "dbd60aaa3c0ce1745f487f4a443513d7041d33ba6638dbe401e7505216a04ba6"
+    },
+    {
+      "path": "src/tracking.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "592999a29be1f7f7149e86ee4ff2c9a700d9499bc7d5f960acf9d453eaa81413"
+    },
+    {
+      "path": "src/unix.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "4583dd83c02a87b57f9d4785f32f4f80939c116fccb1a6f455bfc08e74c3de4e"
+    },
+    {
+      "path": "src/util.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "70b8a5c2a79ee4c8391151ddf5d6474d0631701def1dbbdac7a262a1dd0eb646"
+    },
+    {
+      "path": "src/valkey-check-aof.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "c631a645e7798b2aa4b7c81fb6f62081992a745b3f2e63c69f3e00e5934622de"
+    },
+    {
+      "path": "src/valkey-check-rdb.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "3f7e1364cb6ce479e58c495f7ac6faead9f8e756ab370d9397182121a0a3542b"
+    },
+    {
+      "path": "src/valkey_strtod.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "e82266c55ac33fa2f7070f053660c22c7c9e435e78a1c055b05261dccc9d2a66"
+    },
+    {
+      "path": "src/vector.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "da85492369d7f64d061fe9b6e090d4f8d60c7833bd4817c73c54ca239b147616"
+    },
+    {
+      "path": "src/vset.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "b360b7c1ccd52da688a4865ea3a1c539e597cb8427fada4900a797708ceb82db"
+    },
+    {
+      "path": "src/ziplist.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "55e8197c91ad08c5eb9539cb49533c6ddee6fe712e160d2d6fd6f159bfa0027d"
+    },
+    {
+      "path": "src/zipmap.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "5ea168c4d75917ac0c0d44becaf60c88231211a8a8974ecba3196b4d29041c70"
+    },
+    {
+      "path": "src/zmalloc.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "32b3b0abf2ef52e3feea54d4fbe9300ba3d14e87a8dfc63d218b20dcd7364e07"
+    },
+    {
+      "path": "src/queues.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "e0e9468eeaf69490884559776e9727e447aa62ba70e392cc74cff2b87334febe"
+    },
+    {
+      "path": "src/trace/trace.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "072b1eae70e37601569c776dcf7dfb7ff95636a329538d0038568011a823d641"
+    },
+    {
+      "path": "src/trace/trace_aof.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "ed3199bad3940c6b1efbdb72a892036a8a98f92d99c96ca9dfb3f2beb4e9fda1"
+    },
+    {
+      "path": "src/trace/trace_cluster.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "fdc1fd4ab58a503caf19a7c047f2d5b55236b8b8fb132b8c039f5f9a7408ef2c"
+    },
+    {
+      "path": "src/trace/trace_commands.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "b1b4406267bd1647840a020b8ef9f130f014059b75b899d82709b7f6a31acb60"
+    },
+    {
+      "path": "src/trace/trace_db.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "7955a6ef4006f986e0cbeb2d1264d9adb2973d24839faa8619c871912ceaf9b7"
+    },
+    {
+      "path": "src/trace/trace_rdb.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "06ff69080a82256a231f1c81918f4e56086ee043a2143f66b87cdf2c57f4dca9"
+    },
+    {
+      "path": "src/trace/trace_server.c",
+      "group": "server",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ],
+      "sha256": "a9520ebeb56c613ed14f8bb6c51fb9fead8e1df75e493f903d7fe9665c09b113"
+    },
+    {
+      "path": "deps/libvalkey/src/async.c",
+      "group": "libvalkey",
+      "defines": [],
+      "include_dirs": [
+        "deps/libvalkey/include/valkey",
+        "src"
+      ],
+      "sha256": "b966d971f026c4eeda9f04f5a103cc3594c1a231f635a233c340436e5870787f"
+    },
+    {
+      "path": "deps/libvalkey/src/net.c",
+      "group": "libvalkey",
+      "defines": [],
+      "include_dirs": [
+        "deps/libvalkey/include/valkey",
+        "src"
+      ],
+      "sha256": "2bdc3cd1c211c48328d5eacb67fdaebc5a8fa87d25709cd36e50d0e0eec4fff9"
+    },
+    {
+      "path": "deps/libvalkey/src/valkey.c",
+      "group": "libvalkey",
+      "defines": [],
+      "include_dirs": [
+        "deps/libvalkey/include/valkey",
+        "src"
+      ],
+      "sha256": "b5801fc8b6b846ea8a6772beb88f442fc3420624a9c299f1f38b9a1533d5685a"
+    },
+    {
+      "path": "deps/libvalkey/src/alloc.c",
+      "group": "libvalkey",
+      "defines": [],
+      "include_dirs": [
+        "deps/libvalkey/include/valkey",
+        "src"
+      ],
+      "sha256": "d8b11818b683c783d67e9f68322595c4dfde5e757843efaee36942661b77d1ce"
+    },
+    {
+      "path": "deps/libvalkey/src/conn.c",
+      "group": "libvalkey",
+      "defines": [],
+      "include_dirs": [
+        "deps/libvalkey/include/valkey",
+        "src"
+      ],
+      "sha256": "27e11e91f6be7a773e3162d25dc8011f5287a91d2845e0a65c029cb8e39ebd00"
+    },
+    {
+      "path": "deps/libvalkey/src/read.c",
+      "group": "libvalkey",
+      "defines": [],
+      "include_dirs": [
+        "deps/libvalkey/include/valkey",
+        "src"
+      ],
+      "sha256": "e36aeecb5397e73760a86d8d26b1a707398463b22825c8addc049c37ab8cbe92"
+    },
+    {
+      "path": "deps/hdr_histogram/hdr_histogram.c",
+      "group": "hdr_histogram",
+      "defines": [
+        "HDR_MALLOC_INCLUDE=\"hdr_redis_malloc.h\""
+      ],
+      "include_dirs": [
+        "deps/hdr_histogram"
+      ],
+      "sha256": "59ca3437ee52a796a6432c1160b24ae8d8bd415d01a9ada60f952d03a3457bcb"
+    },
+    {
+      "path": "deps/fpconv/fpconv_dtoa.c",
+      "group": "fpconv",
+      "defines": [],
+      "include_dirs": [
+        "deps/fpconv"
+      ],
+      "sha256": "38f5d3f52e6c9487eab7c40ecd60f1387e1b19585d917602a3dd48558709814d"
+    },
+    {
+      "path": "src/modules/lua/debug_lua.c",
+      "group": "lua_module",
+      "defines": [
+        "_GNU_SOURCE",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src/modules/lua",
+        "deps/lua/src",
+        "deps/fpconv"
+      ],
+      "sha256": "f9cecc789d4720a7236f5561ac082f7dffb2ed3ced82432433767761c7c85a5a"
+    },
+    {
+      "path": "src/modules/lua/engine_lua.c",
+      "group": "lua_module",
+      "defines": [
+        "_GNU_SOURCE",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src/modules/lua",
+        "deps/lua/src",
+        "deps/fpconv"
+      ],
+      "sha256": "8524c54cf0d56ab77cbe0a2ab0880225dba2b6f03d70c36fbfd502beca40e251"
+    },
+    {
+      "path": "src/modules/lua/function_lua.c",
+      "group": "lua_module",
+      "defines": [
+        "_GNU_SOURCE",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src/modules/lua",
+        "deps/lua/src",
+        "deps/fpconv"
+      ],
+      "sha256": "0c5436114c952c63b5f9ad0b4214f3739fe50a7aabe24c7a600bff877508c8e4"
+    },
+    {
+      "path": "src/modules/lua/list.c",
+      "group": "lua_module",
+      "defines": [
+        "_GNU_SOURCE",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src/modules/lua",
+        "deps/lua/src",
+        "deps/fpconv"
+      ],
+      "sha256": "a347532a2e264d43ba03453d4b5e0bff8746566b8a511a66747563c7ec9ece38"
+    },
+    {
+      "path": "src/modules/lua/script_lua.c",
+      "group": "lua_module",
+      "defines": [
+        "_GNU_SOURCE",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src/modules/lua",
+        "deps/lua/src",
+        "deps/fpconv"
+      ],
+      "sha256": "83d1cc7b444d14246d05a8e01027ea47429acd70936f05975e5f176cbf5c71f7"
+    },
+    {
+      "path": "deps/lua/src/lapi.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "634d878872539a279b8802f6387840a1170c4ac249f2fc447b5c225a4b797fd4"
+    },
+    {
+      "path": "deps/lua/src/ldebug.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "62af4ed93404345bcbf2c3fefc3677d85492d848c217ad58f53cb1ea5ae00c1c"
+    },
+    {
+      "path": "deps/lua/src/ldo.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "63be5771e5cd19d5cb6a1904f6ae87c11d953553ee69c6962ae178901b76365f"
+    },
+    {
+      "path": "deps/lua/src/ldump.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "80a322fa7528be6cc7f598f5b9049b89acda206b1a54a33dc3af85f298093c93"
+    },
+    {
+      "path": "deps/lua/src/lfunc.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "525681d79098958530e5c937f7cbe94a4dafa679746ffdb16258f82b7ece29ce"
+    },
+    {
+      "path": "deps/lua/src/lgc.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "35be212ad0e4d89336f50f11cd0e991c04fe59b023ec03a626bf3f98e69fd1dc"
+    },
+    {
+      "path": "deps/lua/src/lmem.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "e63c50cb1c75356bd4123c9ca05f77bd0cd99e05c099cf6d1bf472086761e9c5"
+    },
+    {
+      "path": "deps/lua/src/lobject.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "d704915c79c721556cc5850d741ed3bef1611221356f0e3a2f0ee5cfd5fd3632"
+    },
+    {
+      "path": "deps/lua/src/lopcodes.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "63cd74edc75970092a8ce078c4ab970efa1ee18de960d00eb826d49fe98d8a76"
+    },
+    {
+      "path": "deps/lua/src/lparser.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "abd12d9c8a707b48b4eea42257edb466a72c9b8792c9cfc69a1203a0ef40364a"
+    },
+    {
+      "path": "deps/lua/src/lstate.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "c36d6b9354aaa30b5323b4984f3172783f69e0deb3186c2ef6f16a8281c59c29"
+    },
+    {
+      "path": "deps/lua/src/lstring.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "9de85b6a9fe22418f7d6a1b2e11d3c7083a73a8695441f6f920520ca23422a19"
+    },
+    {
+      "path": "deps/lua/src/ltable.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "9bc25aa5e4f8b437510a44ee63b5bc9e359a8d6fdfc677b8fadc2bb28084b760"
+    },
+    {
+      "path": "deps/lua/src/ltm.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "9759ae5d1aa3b11e1c7faa6c0f65e05c7126417f7f8f3f989d82fc170b07f891"
+    },
+    {
+      "path": "deps/lua/src/lundump.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "55ccb55abde44e94e6c4d0bafc94f5870d2674d1944e9a81f6537d9ac92e8ebc"
+    },
+    {
+      "path": "deps/lua/src/lvm.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "0c08a5debd90217df50d85dae26fba9c96f9725949696834a048e8af88a8f23f"
+    },
+    {
+      "path": "deps/lua/src/lzio.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "892bc24d898c19cbedceba419c68f910b99321c0b462be2c2c00b9d763563173"
+    },
+    {
+      "path": "deps/lua/src/lauxlib.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "9d3c723346c27706fdc341ef0e6da85f599a224849e0ff9d165d211e8739701b"
+    },
+    {
+      "path": "deps/lua/src/lbaselib.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "c3dbeb8761004132670b201922626859a1bfeedb454496e4b11dfc3a87fde6ac"
+    },
+    {
+      "path": "deps/lua/src/ldblib.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "eb8b056711f037e764f746d989f4e40621d8f9ff45add3336790c389849ed0ab"
+    },
+    {
+      "path": "deps/lua/src/lmathlib.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "e2933a56332d567cdd69f0fe514d638a8f82da6878754ff259e77cf2157263c3"
+    },
+    {
+      "path": "deps/lua/src/loslib.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "82a412e8b4cf2102e98e9c275e934d4766d590c0b047a6638ff7beae3fcaa1ba"
+    },
+    {
+      "path": "deps/lua/src/ltablib.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "2a9445dbe73e8b0593432d94e2a87f1879556443aa30aae2a11beab2c8c5204a"
+    },
+    {
+      "path": "deps/lua/src/lstrlib.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "e8048c79ae34be0fd29aa8db1a341cd600f5e09b9133b5810910e07b855a32d5"
+    },
+    {
+      "path": "deps/lua/src/lua_cjson.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "b8c3fba2bfcfc3d9d7daa1e33e3d905df0b0d04df0427e400f5bab1aa529b1e5"
+    },
+    {
+      "path": "deps/lua/src/lua_struct.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "57bc18e91a747a846ba76c070d9213452283c0ed9e652861ee7fabf87d590878"
+    },
+    {
+      "path": "deps/lua/src/lua_cmsgpack.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "e0173d8ae43b0c768bd118c95f4b6b679575dd82d5641d83225760411726999f"
+    },
+    {
+      "path": "deps/lua/src/lua_bit.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "78e10247b33d0db026cbe906d19b4bd3636840f195a63e93ce08c5dee9fb578a"
+    },
+    {
+      "path": "deps/lua/src/lcode.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "027030bbef34115588bd4a64cf4c8c18236a56936835475a154277478767bac5"
+    },
+    {
+      "path": "deps/lua/src/llex.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "0ae764b4ac27c6db323f68b530e03d25f1b76d8e6aed4fc090c5e5991dfde12b"
+    },
+    {
+      "path": "deps/lua/src/strbuf.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "46f386f1640d436a1fe03b4150e6be5751114e9f5de007ef231774e06ac95ebd"
+    },
+    {
+      "path": "deps/lua/src/fpconv.c",
+      "group": "lua",
+      "defines": [
+        "LUA_ANSI",
+        "ENABLE_CJSON_GLOBAL",
+        "LUA_USE_MKSTEMP"
+      ],
+      "include_dirs": [
+        "deps/lua/src"
+      ],
+      "sha256": "29f80d82e6356f2110eb2721cdcaad4dd49f80463774334d747ffd882c4c05df"
+    }
+  ],
+  "headers": [
+    {
+      "path": "deps/fast_float/ffc.h",
+      "sha256": "0ae94bc6118e8f83c2eca9a0ea95e3d2af6c62ef7545e5940d2445414075343f"
+    },
+    {
+      "path": "deps/fpconv/fpconv_dtoa.h",
+      "sha256": "8aaf2fe7435b148760ebf1f24c1b6a0da204f35eda961e6f5106c7fb3fa4e6c7"
+    },
+    {
+      "path": "deps/fpconv/fpconv_powers.h",
+      "sha256": "22142747e7871bce7c63f134ffff2213cb518492270dcd7dfc88a69033f730c6"
+    },
+    {
+      "path": "deps/hdr_histogram/hdr_atomic.h",
+      "sha256": "286ad54caba3a82a18a4b1b9f90d3692242c94f97a5d0d04dee2e1fd6c0dc877"
+    },
+    {
+      "path": "deps/hdr_histogram/hdr_histogram.h",
+      "sha256": "ec8292a9a912ca6b5a6c53e99145761f0ec2bd044af131f5dbf470e553bf17b7"
+    },
+    {
+      "path": "deps/hdr_histogram/hdr_redis_malloc.h",
+      "sha256": "d0de82c9324bcadcecc37f3500332c31bee92f056e8ef3c8a20e8bd0d87b68c3"
+    },
+    {
+      "path": "deps/hdr_histogram/hdr_tests.h",
+      "sha256": "b727ad8899fc5717a94e0eb60f9f690d15bcec4ac98bd098c2d076189321f9e6"
+    },
+    {
+      "path": "deps/libvalkey/include/valkey/alloc.h",
+      "sha256": "ce371f33fefb82f370347e35a9e64d0209ec071d534bb9fd1e9b39b401ca9f33"
+    },
+    {
+      "path": "deps/libvalkey/include/valkey/async.h",
+      "sha256": "090a499c61f9a8b158d99a8b19cb33d10987880e99f3051c70dc3b69c01a74a3"
+    },
+    {
+      "path": "deps/libvalkey/include/valkey/net.h",
+      "sha256": "c24ef21d886035af6154875c481e1bfe2e0a0727eafb650d14d5dcff0625c930"
+    },
+    {
+      "path": "deps/libvalkey/include/valkey/read.h",
+      "sha256": "d3d22d821929bfd3c03ecb75b2510ee6e3e7c47cbbbdeacfeaebe28e00f78b27"
+    },
+    {
+      "path": "deps/libvalkey/include/valkey/sockcompat.h",
+      "sha256": "28798fc8c38d01de352080fd9574a3430db524213ae2bf046c65c8ce7325c5b1"
+    },
+    {
+      "path": "deps/libvalkey/include/valkey/valkey.h",
+      "sha256": "ed7e55eefc34ef8a654703f73acaf5032c30970fde3000475bb8363f7901a245"
+    },
+    {
+      "path": "deps/libvalkey/include/valkey/visibility.h",
+      "sha256": "5a824180d94ffdd91e713ab0f4492d716fd96478a208bc7fd1986f72f3313719"
+    },
+    {
+      "path": "deps/libvalkey/src/async_private.h",
+      "sha256": "f4ccb0c76ad5c1b141abddaec403e32594df17b9eb7edd42b5593d6b85bc5ebe"
+    },
+    {
+      "path": "deps/libvalkey/src/fmacros.h",
+      "sha256": "1847ac412737063d17739df2866809394f6af6cd305a666f00033347412f4eca"
+    },
+    {
+      "path": "deps/libvalkey/src/valkey_private.h",
+      "sha256": "e049b7ac64a8cf00eb7a40370a26328411e9a5d4c72c563141efecafb07ebc80"
+    },
+    {
+      "path": "deps/libvalkey/src/vkutil.h",
+      "sha256": "88ee9554f6746be8c813e9514603d2b19f3f7b66f13b13cc04b85a13a7b5c6a2"
+    },
+    {
+      "path": "deps/libvalkey/src/win32.h",
+      "sha256": "3f9cc4d4c3f0d728d940daf55f3de74d9941d538d026245307b35e059eeb6830"
+    },
+    {
+      "path": "deps/lua/src/fpconv.h",
+      "sha256": "61cb0f044e1dfccfcda0908b9330da250d386454e95acda4bf78b2188fc64070"
+    },
+    {
+      "path": "deps/lua/src/lapi.h",
+      "sha256": "4aea4c1b975d43184f4f1fd1a42c79cf11d74d2801315740cec07fe9abebb56d"
+    },
+    {
+      "path": "deps/lua/src/lauxlib.h",
+      "sha256": "c741f9c1587f29fd08a79acbe0c46884768a47f89bee4147669f774c5cf50fc0"
+    },
+    {
+      "path": "deps/lua/src/lcode.h",
+      "sha256": "97d5a37f3b1b19eda1ef39607b3358aa0f7e917568ccd27ed0f14bc6a70d4b17"
+    },
+    {
+      "path": "deps/lua/src/ldebug.h",
+      "sha256": "d036f0dbb996bdecd48d505746f72c31b82fb2fc38f111b780568338d4ed9e9c"
+    },
+    {
+      "path": "deps/lua/src/ldo.h",
+      "sha256": "591ad9a90098d3fbf06839da3de752d2c2585cbf5801dde4cdaffe12b23a182e"
+    },
+    {
+      "path": "deps/lua/src/lfunc.h",
+      "sha256": "3cea0071ffda94eac378adb5f1ecb467ef2ffafff4315459e4ccdf05b5119da4"
+    },
+    {
+      "path": "deps/lua/src/lgc.h",
+      "sha256": "fbab2b989515377729d4c029dd58b3b6242877a88a7c4cfa703ea0deeb069a1e"
+    },
+    {
+      "path": "deps/lua/src/llex.h",
+      "sha256": "0f3715d22b025727ef11debd641600a123b81718d195cd8445ac6378814458e6"
+    },
+    {
+      "path": "deps/lua/src/llimits.h",
+      "sha256": "1910669296681d9d2814ca46c325063724bb634c0428dae4e5ff59be54e0b758"
+    },
+    {
+      "path": "deps/lua/src/lmem.h",
+      "sha256": "abd1258418486c69bf5a93ceea3a1b9f8af2c7497a4fa6c27b442ffec2c5bbb1"
+    },
+    {
+      "path": "deps/lua/src/lobject.h",
+      "sha256": "a66ee0a558b4cb23d9c9035143b098c6fa46570afb807ee6a933314f246c4444"
+    },
+    {
+      "path": "deps/lua/src/lopcodes.h",
+      "sha256": "a15fe349da7c1e73b563e8c3249fe7d535eccc844cb30ec80b4e335b0699279b"
+    },
+    {
+      "path": "deps/lua/src/lparser.h",
+      "sha256": "84512d6540b83ab599cd8de5a1c8c4deaf71ff353f8e4fbc2e4ca135ba4e9ef0"
+    },
+    {
+      "path": "deps/lua/src/lstate.h",
+      "sha256": "dc64ea7ec74d7c1efaeaf6a9e2257f0b7856a5c988747948af2e76cf079d20fe"
+    },
+    {
+      "path": "deps/lua/src/lstring.h",
+      "sha256": "c0e8af4eb33e3357be79f906e7e1191ba53a3a790d36ca15b50471d3a339e1f0"
+    },
+    {
+      "path": "deps/lua/src/ltable.h",
+      "sha256": "219e6ac2bf43aaa93093c6bcd571c012660325e6b87ea3d6c1b40679a0acfd64"
+    },
+    {
+      "path": "deps/lua/src/ltm.h",
+      "sha256": "54f4c2fa76b8ed8d48163e31807a19999f5d65b009ae862cb757e0773f2aa485"
+    },
+    {
+      "path": "deps/lua/src/lua.h",
+      "sha256": "369ad9d340f09bfcbbbb7a55e0ad79dae754b816ff906d1fa9aaf4acfad3c8e3"
+    },
+    {
+      "path": "deps/lua/src/luaconf.h",
+      "sha256": "0410ff22f66c275ba8fcee1fa87a0749d26d7952ed30d3bc9161688b39775464"
+    },
+    {
+      "path": "deps/lua/src/lualib.h",
+      "sha256": "13f880e9dd997a0f7fd0b17ccd949c98f33e95bd120f084de66084e888217413"
+    },
+    {
+      "path": "deps/lua/src/lundump.h",
+      "sha256": "9f3a2924d1585620993a70eea6cf3def34acb8322b2d9c3629bcdacc037edc64"
+    },
+    {
+      "path": "deps/lua/src/lvm.h",
+      "sha256": "db4b79dc7f4e7656078aa527350fbf14b2fde5d136ccf1cb4f3dc397def5fb67"
+    },
+    {
+      "path": "deps/lua/src/lzio.h",
+      "sha256": "0ec77d0179bf29c1ccab97028fed761944d5c21c02808e10cd7b5883b58b2ca6"
+    },
+    {
+      "path": "deps/lua/src/strbuf.h",
+      "sha256": "830ab40b6da9ae6aa2d53452720be83b1e1ff7f02899739a1b1b288e15182362"
+    },
+    {
+      "path": "src/adlist.h",
+      "sha256": "c0b4828d78332f121917974039142bb2bf3710c9047ca75f99fbaacb4f64ff55"
+    },
+    {
+      "path": "src/ae.h",
+      "sha256": "da08b83d4e0966c8e6e35d7fb13916bf321a0d8241de7c42637d74c618ab89fe"
+    },
+    {
+      "path": "src/ae_epoll.c",
+      "sha256": "bf1314f3e0d7922a3df1be24bb482e3ba7dcf2e2503f2616d50d471519347c8e"
+    },
+    {
+      "path": "src/allocator_defrag.h",
+      "sha256": "a68fbd1dc0c611517d895608b091bbb191d735507cee5e88bcf48ac5a74fc6e4"
+    },
+    {
+      "path": "src/anet.h",
+      "sha256": "df47d7cf084a11fcfe51cb8bb3dc56d4b8e1b1e4d06fd81645a8fa6469e36b56"
+    },
+    {
+      "path": "src/asciilogo.h",
+      "sha256": "69897b76968d3c141df460f9cc275a9c012bf6c0417f483ab0da6cc8142046b0"
+    },
+    {
+      "path": "src/bio.h",
+      "sha256": "1164aabfb28664fa5c8c345e47b6a9644e67bdc9a464aa86941f84a3d3eee439"
+    },
+    {
+      "path": "src/call_reply.h",
+      "sha256": "eeb2e02126017acca613cab782bab6841f63079f4530a8f1958208cdb0673dbf"
+    },
+    {
+      "path": "src/cluster.h",
+      "sha256": "11dfada278330189ef983fdc9b3b522696edde06ac94521bf30adb491f675e35"
+    },
+    {
+      "path": "src/cluster_legacy.h",
+      "sha256": "195b56373f60e870b8e5fcdfb76bb351bba513e3bb7d841645a1921f8ad4c308"
+    },
+    {
+      "path": "src/cluster_migrateslots.h",
+      "sha256": "b0a6f36cda780b257874fba8192f6a508b1b973474ba9b6c9c30b9fbf197ce82"
+    },
+    {
+      "path": "src/cluster_slot_stats.h",
+      "sha256": "3c062cad68df44b1b2487e1eb8db198588e01fcbb3c3d55f46c13d6f5d8dd6d8"
+    },
+    {
+      "path": "src/commandlog.h",
+      "sha256": "3b8399c16c512277adbdba862267e08412b8f0496be1bb0c6f5c5d91ddd5d0c0"
+    },
+    {
+      "path": "src/commands.def",
+      "sha256": "605fb7314c2bf8633f76c15e30199d84606123d8a5bbffc1164727e387f4fa92"
+    },
+    {
+      "path": "src/commands.h",
+      "sha256": "b49ca109a1f887884bcdc7fd2ed4fac313006ea7af23315c1d155bb07a35c2f5"
+    },
+    {
+      "path": "src/config.h",
+      "sha256": "a5282e9c1f199942fbb54fa2f8ad5617081b8530eb11deb854fc834f4f53b445"
+    },
+    {
+      "path": "src/connection.h",
+      "sha256": "4559e116c085e9cf67e7b5eb67248e30b2a9c22aa4a9b173977b7ef64ef5ded9"
+    },
+    {
+      "path": "src/connhelpers.h",
+      "sha256": "7bbdf3a0af2fe2f2ff4dcc50279e179fb85cc016bee4524957055f23221c5c37"
+    },
+    {
+      "path": "src/crc16_slottable.h",
+      "sha256": "185fe6430ff75e1e2d6f21c1abc8f04f4ceb5756cac876f30c2bb17e3bedd48f"
+    },
+    {
+      "path": "src/crc64.h",
+      "sha256": "f670c78f1e432ac7cb524ef95c9319a3ee964c45488064a9337367a4533d8f6b"
+    },
+    {
+      "path": "src/crccombine.h",
+      "sha256": "27f65aeeb1eb606b3ae148b5632acaf257d7baf257456c8f006a58b99ebf7ed5"
+    },
+    {
+      "path": "src/crcspeed.h",
+      "sha256": "3bbc220a97219199bda53a9a3359e4caec9e1aec232e270acdc09277286ca225"
+    },
+    {
+      "path": "src/debugmacro.h",
+      "sha256": "df160d834d168f08fa46b5a7735b15b2eb02a6959aa2715c4bef114424ffde7a"
+    },
+    {
+      "path": "src/dict.h",
+      "sha256": "8059647b2c4bd1c7900dcf9fd5a1562815bb91ea31efa1a63b76513efdb5559e"
+    },
+    {
+      "path": "src/endianconv.h",
+      "sha256": "ea0d454340aff9d997d8109b6a7332bfcbc1df062907a3973f8cb13034c9aeb1"
+    },
+    {
+      "path": "src/entry.h",
+      "sha256": "bfde8f57935d9765ca74cfc05ad1bd1441ae8a8626ef8c9786dedd7cc0ed8cd6"
+    },
+    {
+      "path": "src/eval.h",
+      "sha256": "edaa23f3ae6300b5e7b1eca33cc355b1088364b606482d1429ee7d0a26f0afd6"
+    },
+    {
+      "path": "src/expire.h",
+      "sha256": "15baa331e01c00fed687cd0451f91b9107df96453dbd00170b75cb3a847511cb"
+    },
+    {
+      "path": "src/fifo.h",
+      "sha256": "fd48f9827c0f6a495d50b53c5df755dc872a5c58bf37511ea430b835a304c7ad"
+    },
+    {
+      "path": "src/fmacros.h",
+      "sha256": "1b3078e6cffe928e47313890a4efc947138262bdd23ed65c7882fb4d323e82af"
+    },
+    {
+      "path": "src/fmtargs.h",
+      "sha256": "395cb851e40c12304b28061c64dd54bb5aa27594a7adcbcb8e5c27bf530bfc29"
+    },
+    {
+      "path": "src/functions.h",
+      "sha256": "c822e01a160fa86bd93be833753e84f1bafa7583d605c67c6bbe3ea09230bd96"
+    },
+    {
+      "path": "src/geo.h",
+      "sha256": "3807e2b7169b2644da5abb2d4f34210785144edaedbfaebab2eb2fdb2e7e5d70"
+    },
+    {
+      "path": "src/geohash.h",
+      "sha256": "de1625c497e3b1577b603e4f6845d7d1aa56a892562bbcc953c3000f6908df3a"
+    },
+    {
+      "path": "src/geohash_helper.h",
+      "sha256": "923486eeae0204ceb1b762e10d8bf57db49884a9517255fc0ea97cca17fea04e"
+    },
+    {
+      "path": "src/hashtable.h",
+      "sha256": "9c6e7e865c5b933181e5ecd7f644c2247384b59a0c100a89845c93d087926ee0"
+    },
+    {
+      "path": "src/intrinsics.h",
+      "sha256": "52ccd1d39165bcd36163c235affbd9f4ad7b23c40ddb28226c9d276ee075fa6b"
+    },
+    {
+      "path": "src/intset.h",
+      "sha256": "5fa3829aca80683dd21fce23d49bcfba1dd983b474b9d15abcd37c52bd667886"
+    },
+    {
+      "path": "src/io_threads.h",
+      "sha256": "cfcd2550da8ebcc5f16b98af613234692acb20918d6b3ea6b06112a1f5d9524f"
+    },
+    {
+      "path": "src/kvstore.h",
+      "sha256": "d7e7fadf27cb0acf6c7a8b5235ca170de33d0430ee11ae6dbbf6a9b1007924e1"
+    },
+    {
+      "path": "src/latency.h",
+      "sha256": "b4d5d983f18e61042b8878d2a95c8d48efbd85529287c73411230532073f6df3"
+    },
+    {
+      "path": "src/listpack.h",
+      "sha256": "e8b99880b1d8307a77c411f13664719528f7abbd0d424c502d62ea91289f6a1e"
+    },
+    {
+      "path": "src/listpack_malloc.h",
+      "sha256": "64836684c48c7d73c45a40cf721f2e66fa5f61d3627aae46fb064c8f354574ac"
+    },
+    {
+      "path": "src/lolwut.h",
+      "sha256": "424a8d0c6225a71d2ce77b9debdf892cef6406bd9d2eca2318c4b43d3a688eaf"
+    },
+    {
+      "path": "src/lrulfu.h",
+      "sha256": "d008d1ce178510642443af068139e492d90ed00b3bebc0d35868fc41a84845b2"
+    },
+    {
+      "path": "src/lzf.h",
+      "sha256": "1d54240184ae3a66bf12a29bd7c00989ef8a910ce98b32d9363582cee9bcfcc8"
+    },
+    {
+      "path": "src/lzfP.h",
+      "sha256": "eaf7b33e1cdf846866274d6ea9b3ed3575a6abb4b88fb5592fd47e7cc212933f"
+    },
+    {
+      "path": "src/memory_prefetch.h",
+      "sha256": "592abf8482ac1cb39efc1c364f3ea527f32350bebb0e393f57ffdbfe25d8f3d8"
+    },
+    {
+      "path": "src/module.h",
+      "sha256": "4952b299050624918158877973de103c878a32b479901d10d3cf3060c0e59988"
+    },
+    {
+      "path": "src/modules/lua/debug_lua.h",
+      "sha256": "8012559be53246754e60c1c83cf737785b7d7d8f0a0a7613fd616796cd6e1a6a"
+    },
+    {
+      "path": "src/modules/lua/engine_structs.h",
+      "sha256": "7c0dd9ce098bdbff817717943e4912a7682c50d4ca89a3e6ac60f502a2ec6f27"
+    },
+    {
+      "path": "src/modules/lua/function_lua.h",
+      "sha256": "819b04d7f3fd358a015d1c634a3d81e74a3715375f5fe680867a4ed2f4198b7a"
+    },
+    {
+      "path": "src/modules/lua/list.h",
+      "sha256": "d13cf398b987df7403c7d8109f50cfc36e8fc1d7cc7bd74f62b13f0c0b87a5dd"
+    },
+    {
+      "path": "src/modules/lua/script_lua.h",
+      "sha256": "ba99a58223ca0e3308e29968c5510c2eb8fd470e2c762da54bc5a8596754f2be"
+    },
+    {
+      "path": "src/monotonic.h",
+      "sha256": "62d285588654d8923adca4ca10a357e49e3d446bc7b23cd239fc39b9b69508ff"
+    },
+    {
+      "path": "src/mt19937-64.h",
+      "sha256": "7fd75cd859ef0c363568fd2addeeac06f62adcbeb53c90352e8d66851105bfec"
+    },
+    {
+      "path": "src/mutexqueue.h",
+      "sha256": "bf42025f23249d9051e56a87c37266d2ecae1eb2f4a223cc739783d27624ed55"
+    },
+    {
+      "path": "src/pqsort.h",
+      "sha256": "54baba686890fab1e3d19b8d361c1c3cb5f25ebcf93388572f375f0541bed5c8"
+    },
+    {
+      "path": "src/queues.h",
+      "sha256": "7255f7054affc72c14ffdf947c4bbcb58736cb1e01f5eb0788a287386bf71be9"
+    },
+    {
+      "path": "src/quicklist.h",
+      "sha256": "65e9f659b0e2d1bdfd27cb0a56f7ce080f4444f4e5e245a45b8dae3887a65d1d"
+    },
+    {
+      "path": "src/rand.h",
+      "sha256": "9b7004bf218e5ec9e1fe3e4d5f0dcce13a3ace53617f272279ea0cf4ef4990c4"
+    },
+    {
+      "path": "src/rax.h",
+      "sha256": "53d85dc60218cf45cee2906144541b89f87952085a11009d89e738d48f7733b5"
+    },
+    {
+      "path": "src/rax_malloc.h",
+      "sha256": "371cb945631672bfefac53195ce0446e5be151d8f2193f63c8679a414c88e277"
+    },
+    {
+      "path": "src/rdb.h",
+      "sha256": "2e437e7616d285f103047315b593411152a4f17da117e98dcd6b3210930dbc9e"
+    },
+    {
+      "path": "src/release.h",
+      "sha256": "b3937f382a437e9483333954ab79f464413718f0796a28164e5e8a64f2998a78"
+    },
+    {
+      "path": "src/resp_parser.h",
+      "sha256": "5bb050c2c26013171946d9f61f2c8b0a104f6f0b90653cdd4ad89572734bf205"
+    },
+    {
+      "path": "src/rio.h",
+      "sha256": "669ad6dc42394cb604d96e91fb8fc0fdbdf1d36d604c929e454c94efed3dcb2a"
+    },
+    {
+      "path": "src/script.h",
+      "sha256": "a310672fa56521a0b7232cbac0ac6d04cc788fce491aac12d3ec499db9303a22"
+    },
+    {
+      "path": "src/scripting_engine.h",
+      "sha256": "44dd7b994858518425fdba7e8b52685e012fa4a0d98b0c2a5fc4d1b7e52ed7e4"
+    },
+    {
+      "path": "src/sds.h",
+      "sha256": "08d8430eb5fbff6373a4651c0cb6389ba8517410f10787cae80fb977f1d8c4f4"
+    },
+    {
+      "path": "src/sdsalloc.h",
+      "sha256": "6874d285702922b908a9b2a50927c9c28ed6b134d82d7f86c868c5f3562ae4fd"
+    },
+    {
+      "path": "src/server.h",
+      "sha256": "496aa4c0671b5202ea3bf0719d6c68a78c7a6877e630b46a9170cba0ea963469"
+    },
+    {
+      "path": "src/serverassert.h",
+      "sha256": "e33ae53d01b731126477632fcaa5f53d035fbeeaf057f2dbeca958fbca4fb191"
+    },
+    {
+      "path": "src/sha1.h",
+      "sha256": "e1444ead74d761aa5a046cb5bc6c7d0479305ab2ddbeb1d5fa54b755165360b2"
+    },
+    {
+      "path": "src/sha256.h",
+      "sha256": "e42759956c0dbdac8cbaa07d36bb38d77ffe07835575b3e8f896fa36467e07c7"
+    },
+    {
+      "path": "src/solarisfixes.h",
+      "sha256": "51fd694480549aa27f071f98134d72be038e703f11ca790c2032b99986516f3a"
+    },
+    {
+      "path": "src/sparkline.h",
+      "sha256": "7a7a693c75ca88bba441bfb0ab426e7b4c50882b44f4103a8d88f0f7096aa103"
+    },
+    {
+      "path": "src/stream.h",
+      "sha256": "7c6fe5096a8da97ed1f98aec983d335b7fc350c33661cb7630f0e04e60919de0"
+    },
+    {
+      "path": "src/syscheck.h",
+      "sha256": "6ff44d77be169077d32e10669cc53ea13d3b612a4174734e0aac4f6dff498888"
+    },
+    {
+      "path": "src/threads_mngr.h",
+      "sha256": "ca135df2d17850ca791d61a1598881ab323061a1dcbc8c72eee9c86dc8d74751"
+    },
+    {
+      "path": "src/tls.h",
+      "sha256": "8d90c72df3d2e53beeb73572ba3de7e0165ff04637708731805d4d2e7e48456a"
+    },
+    {
+      "path": "src/trace/trace.h",
+      "sha256": "e969d4e3c93a708e32bf932973f15f6a287dacfad893d7a4686e4459b0580327"
+    },
+    {
+      "path": "src/trace/trace_aof.h",
+      "sha256": "7124fc5f39f83639386022863aa072dfc815f25ec04e5fd4ff43037adf18f22b"
+    },
+    {
+      "path": "src/trace/trace_cluster.h",
+      "sha256": "b24064a5c724a5f589f92492a9eb00135c0776296d9f113b7cef906db7aa25c0"
+    },
+    {
+      "path": "src/trace/trace_commands.h",
+      "sha256": "6e4c804ef786ddfd9290b3dd4c6a4f39d5c47124bf9965c4d7fc1d9315e87b80"
+    },
+    {
+      "path": "src/trace/trace_db.h",
+      "sha256": "7c9c81356e73c738feb02f0f15fe5d96834ce4307e572e0163cf261ad52c9f13"
+    },
+    {
+      "path": "src/trace/trace_rdb.h",
+      "sha256": "c60fd476eb21943c0a556166feb9d31c041ff1726d1833d0d92b3ffa9a2c4cbd"
+    },
+    {
+      "path": "src/trace/trace_server.h",
+      "sha256": "cc38f2937f16c80dd30dbd092fc30a5bb3b5e3b16ee90fd2d6b00fc7a5b55af5"
+    },
+    {
+      "path": "src/util.h",
+      "sha256": "59686348969780509f3db4004cf88e9fb43574e7444a09cc86057d8fcf9513b1"
+    },
+    {
+      "path": "src/valkey_strtod.h",
+      "sha256": "9adb3d31024e46d08241f7040860d8dfa58f2d50d849c7b7d73ba85a3b91a7bf"
+    },
+    {
+      "path": "src/valkeymodule.h",
+      "sha256": "6d66a5871effaf47e804e28b0f85cc09910ef92b69342d65b07fee9724e1332f"
+    },
+    {
+      "path": "src/vector.h",
+      "sha256": "12f0d250b778c3814601457f4e722bba473fda5914fbeab7d5b999b10a61c111"
+    },
+    {
+      "path": "src/version.h",
+      "sha256": "b1a7b980d0dba239341b917fd9bd310d3a00ff4da9a1349ff189c2cbe7fb47f8"
+    },
+    {
+      "path": "src/vset.h",
+      "sha256": "cc7c3bfaccabc34b2ee714b4b11d282a56885b7c4ba9d42048c6bcb2ff163c21"
+    },
+    {
+      "path": "src/ziplist.h",
+      "sha256": "ac95bcfc483d01cd2a918619c5acd4471c0d20da3ddee17c5588fde32a580109"
+    },
+    {
+      "path": "src/zipmap.h",
+      "sha256": "e914adb5b57016275c514ce355a66d8c810f2a9ec11816556bb72a06eed4f86b"
+    },
+    {
+      "path": "src/zmalloc.h",
+      "sha256": "94e9ee1f29cfe88db71ac6b88dfb2c276960c881c3e79905f389089ee5c8f45b"
+    }
+  ],
+  "generated": [
+    "src/commands.def",
+    "src/fmtargs.h",
+    "src/release.h"
+  ],
+  "native_only": [
+    "src/valkey-cli.c",
+    "deps/linenoise/linenoise.c",
+    "tests/**/*.tcl",
+    "src/unit/*.cpp"
+  ],
+  "notes": [
+    "Deferred command handlers remain translated; policy guards are separate work.",
+    "libvalkey has six selected units because sentinel.o references async client symbols.",
+    "CPU/OS compiler predefined macros are native oracle evidence, not managed translation flags."
+  ]
+}

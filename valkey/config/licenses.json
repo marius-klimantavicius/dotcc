@@ -1,0 +1,34 @@
+{
+  "commit": "7f1dffedff6de73058b2c2a389422b6ecd56c8fb",
+  "scope": "Notice-file inventory for selected dependency groups; retain per-file notices in all translated upstream sources too.",
+  "files": [
+    {
+      "path": "COPYING",
+      "sha256": "1a53dca3aab7ce048e91e77b03c0342f3075366f9dede8ec4d19d0cf229e12a0"
+    },
+    {
+      "path": "deps/lua/COPYRIGHT",
+      "sha256": "ee5e3e82af1e1b543c4f216e399d7c8cfee797711913f349e385101c4ae60a79"
+    },
+    {
+      "path": "deps/libvalkey/COPYING",
+      "sha256": "0efc9de6403982e1794b5e4c932b94f809f875c24c00e4a4473fe325abe71c7a"
+    },
+    {
+      "path": "deps/fpconv/LICENSE.txt",
+      "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+    },
+    {
+      "path": "deps/hdr_histogram/COPYING.txt",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    },
+    {
+      "path": "deps/hdr_histogram/LICENSE.txt",
+      "sha256": "c124afa369aae960fa33f6944c82e161e482f2e998d6f07b37ae2c018f3c6c69"
+    },
+    {
+      "path": "deps/fast_float/ffc.h",
+      "sha256": "0ae94bc6118e8f83c2eca9a0ea95e3d2af6c62ef7545e5940d2445414075343f"
+    }
+  ]
+}

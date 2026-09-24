@@ -1,0 +1,3867 @@
+{
+  "schema_version": 1,
+  "commit": "7f1dffedff6de73058b2c2a389422b6ecd56c8fb",
+  "native_build": {
+    "MALLOC": "libc",
+    "BUILD_LUA": "yes",
+    "BUILD_TLS": "no",
+    "BUILD_RDMA": "no",
+    "USE_SYSTEMD": "no",
+    "OPTIMIZATION": "-O1"
+  },
+  "runtime": {
+    "bind": "127.0.0.1",
+    "io-threads": 1,
+    "save": "",
+    "auto-aof-rewrite-percentage": 0,
+    "appendonly": "no (RDB baseline) / yes (startup AOF baseline)",
+    "appendfsync": "always"
+  },
+  "managed_capability_guards": {
+    "status": "not implemented; inventory is a requirement, not an enforcement claim",
+    "reject": [
+      "cluster-enabled yes",
+      "replicaof",
+      "sentinel mode",
+      "native MODULE LOAD/LOADEX",
+      "tls-port nonzero",
+      "RDMA listeners",
+      "daemonize yes",
+      "supervised systemd",
+      "io-threads > 1",
+      "automatic save schedule",
+      "automatic AOF rewrite",
+      "runtime appendonly enablement",
+      "BGSAVE",
+      "BGREWRITEAOF"
+    ],
+    "fork": "libc may return -1 and errno=EPERM; no child process or fake success"
+  },
+  "commands": [
+    {
+      "command": "ACL CAT",
+      "group": "server",
+      "arity": -2,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-cat.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL DELUSER",
+      "group": "server",
+      "arity": -3,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-deluser.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL DRYRUN",
+      "group": "server",
+      "arity": -4,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-dryrun.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL GENPASS",
+      "group": "server",
+      "arity": -2,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-genpass.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL GETUSER",
+      "group": "server",
+      "arity": 3,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-getuser.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL HELP",
+      "group": "server",
+      "arity": 2,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-help.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL LIST",
+      "group": "server",
+      "arity": 2,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-list.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL LOAD",
+      "group": "server",
+      "arity": 2,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-load.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL LOG",
+      "group": "server",
+      "arity": -2,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-log.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL SAVE",
+      "group": "server",
+      "arity": 2,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-save.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL SETUSER",
+      "group": "server",
+      "arity": -3,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-setuser.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL USERS",
+      "group": "server",
+      "arity": 2,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-users.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL WHOAMI",
+      "group": "server",
+      "arity": 2,
+      "handler": "aclCommand",
+      "source": "src/commands/acl-whoami.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ACL",
+      "group": "server",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/acl.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "APPEND",
+      "group": "string",
+      "arity": 3,
+      "handler": "appendCommand",
+      "source": "src/commands/append.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ASKING",
+      "group": "cluster",
+      "arity": 1,
+      "handler": "askingCommand",
+      "source": "src/commands/asking.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "AUTH",
+      "group": "connection",
+      "arity": -2,
+      "handler": "authCommand",
+      "source": "src/commands/auth.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BGREWRITEAOF",
+      "group": "server",
+      "arity": 1,
+      "handler": "bgrewriteaofCommand",
+      "source": "src/commands/bgrewriteaof.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "BGSAVE",
+      "group": "server",
+      "arity": -1,
+      "handler": "bgsaveCommand",
+      "source": "src/commands/bgsave.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "BITCOUNT",
+      "group": "bitmap",
+      "arity": -2,
+      "handler": "bitcountCommand",
+      "source": "src/commands/bitcount.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BITFIELD",
+      "group": "bitmap",
+      "arity": -2,
+      "handler": "bitfieldCommand",
+      "source": "src/commands/bitfield.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BITFIELD_RO",
+      "group": "bitmap",
+      "arity": -2,
+      "handler": "bitfieldroCommand",
+      "source": "src/commands/bitfield_ro.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BITOP",
+      "group": "bitmap",
+      "arity": -4,
+      "handler": "bitopCommand",
+      "source": "src/commands/bitop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BITPOS",
+      "group": "bitmap",
+      "arity": -3,
+      "handler": "bitposCommand",
+      "source": "src/commands/bitpos.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BLMOVE",
+      "group": "list",
+      "arity": 6,
+      "handler": "blmoveCommand",
+      "source": "src/commands/blmove.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BLMPOP",
+      "group": "list",
+      "arity": -5,
+      "handler": "blmpopCommand",
+      "source": "src/commands/blmpop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BLPOP",
+      "group": "list",
+      "arity": -3,
+      "handler": "blpopCommand",
+      "source": "src/commands/blpop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BRPOP",
+      "group": "list",
+      "arity": -3,
+      "handler": "brpopCommand",
+      "source": "src/commands/brpop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BRPOPLPUSH",
+      "group": "list",
+      "arity": 4,
+      "handler": "brpoplpushCommand",
+      "source": "src/commands/brpoplpush.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BZMPOP",
+      "group": "sorted_set",
+      "arity": -5,
+      "handler": "bzmpopCommand",
+      "source": "src/commands/bzmpop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BZPOPMAX",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "bzpopmaxCommand",
+      "source": "src/commands/bzpopmax.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "BZPOPMIN",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "bzpopminCommand",
+      "source": "src/commands/bzpopmin.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT CACHING",
+      "group": "connection",
+      "arity": 3,
+      "handler": "clientCachingCommand",
+      "source": "src/commands/client-caching.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT CAPA",
+      "group": "connection",
+      "arity": -3,
+      "handler": "clientCapaCommand",
+      "source": "src/commands/client-capa.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT GETNAME",
+      "group": "connection",
+      "arity": 2,
+      "handler": "clientGetNameCommand",
+      "source": "src/commands/client-getname.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT GETREDIR",
+      "group": "connection",
+      "arity": 2,
+      "handler": "clientGetredirCommand",
+      "source": "src/commands/client-getredir.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT HELP",
+      "group": "connection",
+      "arity": 2,
+      "handler": "clientHelpCommand",
+      "source": "src/commands/client-help.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT ID",
+      "group": "connection",
+      "arity": 2,
+      "handler": "clientIDCommand",
+      "source": "src/commands/client-id.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT IMPORT-SOURCE",
+      "group": "connection",
+      "arity": 3,
+      "handler": "clientImportSourceCommand",
+      "source": "src/commands/client-import-source.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT INFO",
+      "group": "connection",
+      "arity": 2,
+      "handler": "clientInfoCommand",
+      "source": "src/commands/client-info.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT KILL",
+      "group": "connection",
+      "arity": -3,
+      "handler": "clientKillCommand",
+      "source": "src/commands/client-kill.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT LIST",
+      "group": "connection",
+      "arity": -2,
+      "handler": "clientListCommand",
+      "source": "src/commands/client-list.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT NO-EVICT",
+      "group": "connection",
+      "arity": 3,
+      "handler": "clientNoEvictCommand",
+      "source": "src/commands/client-no-evict.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT NO-TOUCH",
+      "group": "connection",
+      "arity": 3,
+      "handler": "clientNoTouchCommand",
+      "source": "src/commands/client-no-touch.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT PAUSE",
+      "group": "connection",
+      "arity": -3,
+      "handler": "clientPauseCommand",
+      "source": "src/commands/client-pause.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT REPLY",
+      "group": "connection",
+      "arity": 3,
+      "handler": "clientReplyCommand",
+      "source": "src/commands/client-reply.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT SETINFO",
+      "group": "connection",
+      "arity": 4,
+      "handler": "clientSetinfoCommand",
+      "source": "src/commands/client-setinfo.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT SETNAME",
+      "group": "connection",
+      "arity": 3,
+      "handler": "clientSetNameCommand",
+      "source": "src/commands/client-setname.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT TRACKING",
+      "group": "connection",
+      "arity": -3,
+      "handler": "clientTrackingCommand",
+      "source": "src/commands/client-tracking.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT TRACKINGINFO",
+      "group": "connection",
+      "arity": 2,
+      "handler": "clientTrackingInfoCommand",
+      "source": "src/commands/client-trackinginfo.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT UNBLOCK",
+      "group": "connection",
+      "arity": -3,
+      "handler": "clientUnblockCommand",
+      "source": "src/commands/client-unblock.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT UNPAUSE",
+      "group": "connection",
+      "arity": 2,
+      "handler": "clientUnpauseCommand",
+      "source": "src/commands/client-unpause.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLIENT",
+      "group": "connection",
+      "arity": -2,
+      "handler": "clientCommand",
+      "source": "src/commands/client.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CLUSTER ADDSLOTS",
+      "group": "cluster",
+      "arity": -3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-addslots.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER ADDSLOTSRANGE",
+      "group": "cluster",
+      "arity": -4,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-addslotsrange.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER BUMPEPOCH",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-bumpepoch.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER CANCELSLOTMIGRATIONS",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-cancelslotmigrations.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER COUNT-FAILURE-REPORTS",
+      "group": "cluster",
+      "arity": 3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-count-failure-reports.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER COUNTKEYSINSLOT",
+      "group": "cluster",
+      "arity": 3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-countkeysinslot.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER DELSLOTS",
+      "group": "cluster",
+      "arity": -3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-delslots.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER DELSLOTSRANGE",
+      "group": "cluster",
+      "arity": -4,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-delslotsrange.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER FAILOVER",
+      "group": "cluster",
+      "arity": -2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-failover.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER FLUSHSLOT",
+      "group": "cluster",
+      "arity": -3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-flushslot.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER FLUSHSLOTS",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-flushslots.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER FORGET",
+      "group": "cluster",
+      "arity": 3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-forget.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER GETKEYSINSLOT",
+      "group": "cluster",
+      "arity": 4,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-getkeysinslot.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER GETSLOTMIGRATIONS",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-getslotmigrations.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER HELP",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-help.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER INFO",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-info.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER KEYSLOT",
+      "group": "cluster",
+      "arity": 3,
+      "handler": "clusterKeySlotCommand",
+      "source": "src/commands/cluster-keyslot.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER LINKS",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-links.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER MEET",
+      "group": "cluster",
+      "arity": -4,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-meet.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER MIGRATESLOTS",
+      "group": "cluster",
+      "arity": -4,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-migrateslots.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER MYID",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-myid.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER MYSHARDID",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-myshardid.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER NODES",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-nodes.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER REPLICAS",
+      "group": "cluster",
+      "arity": 3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-replicas.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER REPLICATE",
+      "group": "cluster",
+      "arity": -3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-replicate.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER RESET",
+      "group": "cluster",
+      "arity": -2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-reset.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER SAVECONFIG",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-saveconfig.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER SET-CONFIG-EPOCH",
+      "group": "cluster",
+      "arity": 3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-set-config-epoch.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER SETSLOT",
+      "group": "cluster",
+      "arity": -4,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-setslot.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER SHARDS",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-shards.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER SLAVES",
+      "group": "cluster",
+      "arity": 3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-slaves.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER SLOT-STATS",
+      "group": "cluster",
+      "arity": -4,
+      "handler": "clusterSlotStatsCommand",
+      "source": "src/commands/cluster-slot-stats.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER SLOTS",
+      "group": "cluster",
+      "arity": 2,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-slots.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER SYNCSLOTS",
+      "group": "cluster",
+      "arity": -3,
+      "handler": "clusterCommand",
+      "source": "src/commands/cluster-syncslots.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTER",
+      "group": "cluster",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/cluster.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "CLUSTERSCAN",
+      "group": "cluster",
+      "arity": -2,
+      "handler": "clusterscanCommand",
+      "source": "src/commands/clusterscan.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "COMMAND COUNT",
+      "group": "server",
+      "arity": 2,
+      "handler": "commandCountCommand",
+      "source": "src/commands/command-count.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "COMMAND DOCS",
+      "group": "server",
+      "arity": -2,
+      "handler": "commandDocsCommand",
+      "source": "src/commands/command-docs.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "COMMAND GETKEYS",
+      "group": "server",
+      "arity": -3,
+      "handler": "commandGetKeysCommand",
+      "source": "src/commands/command-getkeys.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "COMMAND GETKEYSANDFLAGS",
+      "group": "server",
+      "arity": -3,
+      "handler": "commandGetKeysAndFlagsCommand",
+      "source": "src/commands/command-getkeysandflags.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "COMMAND HELP",
+      "group": "server",
+      "arity": 2,
+      "handler": "commandHelpCommand",
+      "source": "src/commands/command-help.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "COMMAND INFO",
+      "group": "server",
+      "arity": -2,
+      "handler": "commandInfoCommand",
+      "source": "src/commands/command-info.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "COMMAND LIST",
+      "group": "server",
+      "arity": -2,
+      "handler": "commandListCommand",
+      "source": "src/commands/command-list.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "COMMAND",
+      "group": "server",
+      "arity": -1,
+      "handler": "commandCommand",
+      "source": "src/commands/command.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "COMMANDLOG GET",
+      "group": "server",
+      "arity": 4,
+      "handler": "commandlogCommand",
+      "source": "src/commands/commandlog-get.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "COMMANDLOG HELP",
+      "group": "server",
+      "arity": 2,
+      "handler": "commandlogCommand",
+      "source": "src/commands/commandlog-help.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "COMMANDLOG LEN",
+      "group": "server",
+      "arity": 3,
+      "handler": "commandlogCommand",
+      "source": "src/commands/commandlog-len.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "COMMANDLOG RESET",
+      "group": "server",
+      "arity": 3,
+      "handler": "commandlogCommand",
+      "source": "src/commands/commandlog-reset.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "COMMANDLOG",
+      "group": "server",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/commandlog.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "CONFIG GET",
+      "group": "server",
+      "arity": -3,
+      "handler": "configGetCommand",
+      "source": "src/commands/config-get.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CONFIG HELP",
+      "group": "server",
+      "arity": 2,
+      "handler": "configHelpCommand",
+      "source": "src/commands/config-help.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CONFIG RESETSTAT",
+      "group": "server",
+      "arity": 2,
+      "handler": "configResetStatCommand",
+      "source": "src/commands/config-resetstat.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CONFIG REWRITE",
+      "group": "server",
+      "arity": 2,
+      "handler": "configRewriteCommand",
+      "source": "src/commands/config-rewrite.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CONFIG SET",
+      "group": "server",
+      "arity": -4,
+      "handler": "configSetCommand",
+      "source": "src/commands/config-set.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "CONFIG",
+      "group": "server",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/config.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "COPY",
+      "group": "generic",
+      "arity": -3,
+      "handler": "copyCommand",
+      "source": "src/commands/copy.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "DBSIZE",
+      "group": "server",
+      "arity": 1,
+      "handler": "dbsizeCommand",
+      "source": "src/commands/dbsize.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "DEBUG",
+      "group": "server",
+      "arity": -2,
+      "handler": "debugCommand",
+      "source": "src/commands/debug.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "DECR",
+      "group": "string",
+      "arity": 2,
+      "handler": "decrCommand",
+      "source": "src/commands/decr.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "DECRBY",
+      "group": "string",
+      "arity": 3,
+      "handler": "decrbyCommand",
+      "source": "src/commands/decrby.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "DEL",
+      "group": "generic",
+      "arity": -2,
+      "handler": "delCommand",
+      "source": "src/commands/del.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "DELIFEQ",
+      "group": "string",
+      "arity": 3,
+      "handler": "delifeqCommand",
+      "source": "src/commands/delifeq.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "DISCARD",
+      "group": "transactions",
+      "arity": 1,
+      "handler": "discardCommand",
+      "source": "src/commands/discard.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "DUMP",
+      "group": "generic",
+      "arity": 2,
+      "handler": "dumpCommand",
+      "source": "src/commands/dump.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ECHO",
+      "group": "connection",
+      "arity": 2,
+      "handler": "echoCommand",
+      "source": "src/commands/echo.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "EVAL",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "evalCommand",
+      "source": "src/commands/eval.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "EVAL_RO",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "evalRoCommand",
+      "source": "src/commands/eval_ro.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "EVALSHA",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "evalShaCommand",
+      "source": "src/commands/evalsha.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "EVALSHA_RO",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "evalShaRoCommand",
+      "source": "src/commands/evalsha_ro.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "EXEC",
+      "group": "transactions",
+      "arity": 1,
+      "handler": "execCommand",
+      "source": "src/commands/exec.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "EXISTS",
+      "group": "generic",
+      "arity": -2,
+      "handler": "existsCommand",
+      "source": "src/commands/exists.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "EXPIRE",
+      "group": "generic",
+      "arity": -3,
+      "handler": "expireCommand",
+      "source": "src/commands/expire.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "EXPIREAT",
+      "group": "generic",
+      "arity": -3,
+      "handler": "expireatCommand",
+      "source": "src/commands/expireat.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "EXPIRETIME",
+      "group": "generic",
+      "arity": 2,
+      "handler": "expiretimeCommand",
+      "source": "src/commands/expiretime.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FAILOVER",
+      "group": "server",
+      "arity": -1,
+      "handler": "failoverCommand",
+      "source": "src/commands/failover.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "FCALL",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "fcallCommand",
+      "source": "src/commands/fcall.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FCALL_RO",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "fcallroCommand",
+      "source": "src/commands/fcall_ro.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FLUSHALL",
+      "group": "server",
+      "arity": -1,
+      "handler": "flushallCommand",
+      "source": "src/commands/flushall.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FLUSHDB",
+      "group": "server",
+      "arity": -1,
+      "handler": "flushdbCommand",
+      "source": "src/commands/flushdb.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION DELETE",
+      "group": "scripting",
+      "arity": 3,
+      "handler": "functionDeleteCommand",
+      "source": "src/commands/function-delete.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION DUMP",
+      "group": "scripting",
+      "arity": 2,
+      "handler": "functionDumpCommand",
+      "source": "src/commands/function-dump.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION FLUSH",
+      "group": "scripting",
+      "arity": -2,
+      "handler": "functionFlushCommand",
+      "source": "src/commands/function-flush.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION HELP",
+      "group": "scripting",
+      "arity": 2,
+      "handler": "functionHelpCommand",
+      "source": "src/commands/function-help.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION KILL",
+      "group": "scripting",
+      "arity": 2,
+      "handler": "functionKillCommand",
+      "source": "src/commands/function-kill.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION LIST",
+      "group": "scripting",
+      "arity": -2,
+      "handler": "functionListCommand",
+      "source": "src/commands/function-list.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION LOAD",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "functionLoadCommand",
+      "source": "src/commands/function-load.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION RESTORE",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "functionRestoreCommand",
+      "source": "src/commands/function-restore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION STATS",
+      "group": "scripting",
+      "arity": 2,
+      "handler": "functionStatsCommand",
+      "source": "src/commands/function-stats.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "FUNCTION",
+      "group": "scripting",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/function.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEOADD",
+      "group": "geo",
+      "arity": -5,
+      "handler": "geoaddCommand",
+      "source": "src/commands/geoadd.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEODIST",
+      "group": "geo",
+      "arity": -4,
+      "handler": "geodistCommand",
+      "source": "src/commands/geodist.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEOHASH",
+      "group": "geo",
+      "arity": -2,
+      "handler": "geohashCommand",
+      "source": "src/commands/geohash.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEOPOS",
+      "group": "geo",
+      "arity": -2,
+      "handler": "geoposCommand",
+      "source": "src/commands/geopos.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEORADIUS",
+      "group": "geo",
+      "arity": -6,
+      "handler": "georadiusCommand",
+      "source": "src/commands/georadius.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEORADIUS_RO",
+      "group": "geo",
+      "arity": -6,
+      "handler": "georadiusroCommand",
+      "source": "src/commands/georadius_ro.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEORADIUSBYMEMBER",
+      "group": "geo",
+      "arity": -5,
+      "handler": "georadiusbymemberCommand",
+      "source": "src/commands/georadiusbymember.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEORADIUSBYMEMBER_RO",
+      "group": "geo",
+      "arity": -5,
+      "handler": "georadiusbymemberroCommand",
+      "source": "src/commands/georadiusbymember_ro.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEOSEARCH",
+      "group": "geo",
+      "arity": -7,
+      "handler": "geosearchCommand",
+      "source": "src/commands/geosearch.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GEOSEARCHSTORE",
+      "group": "geo",
+      "arity": -8,
+      "handler": "geosearchstoreCommand",
+      "source": "src/commands/geosearchstore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GET",
+      "group": "string",
+      "arity": 2,
+      "handler": "getCommand",
+      "source": "src/commands/get.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GETBIT",
+      "group": "bitmap",
+      "arity": 3,
+      "handler": "getbitCommand",
+      "source": "src/commands/getbit.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GETDEL",
+      "group": "string",
+      "arity": 2,
+      "handler": "getdelCommand",
+      "source": "src/commands/getdel.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GETEX",
+      "group": "string",
+      "arity": -2,
+      "handler": "getexCommand",
+      "source": "src/commands/getex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GETRANGE",
+      "group": "string",
+      "arity": 4,
+      "handler": "getrangeCommand",
+      "source": "src/commands/getrange.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "GETSET",
+      "group": "string",
+      "arity": 3,
+      "handler": "getsetCommand",
+      "source": "src/commands/getset.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HDEL",
+      "group": "hash",
+      "arity": -3,
+      "handler": "hdelCommand",
+      "source": "src/commands/hdel.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HELLO",
+      "group": "connection",
+      "arity": -1,
+      "handler": "helloCommand",
+      "source": "src/commands/hello.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HEXISTS",
+      "group": "hash",
+      "arity": 3,
+      "handler": "hexistsCommand",
+      "source": "src/commands/hexists.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HEXPIRE",
+      "group": "hash",
+      "arity": -6,
+      "handler": "hexpireCommand",
+      "source": "src/commands/hexpire.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HEXPIREAT",
+      "group": "hash",
+      "arity": -6,
+      "handler": "hexpireatCommand",
+      "source": "src/commands/hexpireat.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HEXPIRETIME",
+      "group": "hash",
+      "arity": -5,
+      "handler": "hexpiretimeCommand",
+      "source": "src/commands/hexpiretime.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HGET",
+      "group": "hash",
+      "arity": 3,
+      "handler": "hgetCommand",
+      "source": "src/commands/hget.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HGETALL",
+      "group": "hash",
+      "arity": 2,
+      "handler": "hgetallCommand",
+      "source": "src/commands/hgetall.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HGETDEL",
+      "group": "hash",
+      "arity": -5,
+      "handler": "hgetdelCommand",
+      "source": "src/commands/hgetdel.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HGETEX",
+      "group": "hash",
+      "arity": -5,
+      "handler": "hgetexCommand",
+      "source": "src/commands/hgetex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HINCRBY",
+      "group": "hash",
+      "arity": 4,
+      "handler": "hincrbyCommand",
+      "source": "src/commands/hincrby.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HINCRBYFLOAT",
+      "group": "hash",
+      "arity": 4,
+      "handler": "hincrbyfloatCommand",
+      "source": "src/commands/hincrbyfloat.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HKEYS",
+      "group": "hash",
+      "arity": 2,
+      "handler": "hkeysCommand",
+      "source": "src/commands/hkeys.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HLEN",
+      "group": "hash",
+      "arity": 2,
+      "handler": "hlenCommand",
+      "source": "src/commands/hlen.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HMGET",
+      "group": "hash",
+      "arity": -3,
+      "handler": "hmgetCommand",
+      "source": "src/commands/hmget.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HMSET",
+      "group": "hash",
+      "arity": -4,
+      "handler": "hsetCommand",
+      "source": "src/commands/hmset.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HPERSIST",
+      "group": "hash",
+      "arity": -5,
+      "handler": "hpersistCommand",
+      "source": "src/commands/hpersist.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HPEXPIRE",
+      "group": "hash",
+      "arity": -6,
+      "handler": "hpexpireCommand",
+      "source": "src/commands/hpexpire.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HPEXPIREAT",
+      "group": "hash",
+      "arity": -6,
+      "handler": "hpexpireatCommand",
+      "source": "src/commands/hpexpireat.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HPEXPIRETIME",
+      "group": "hash",
+      "arity": -5,
+      "handler": "hpexpiretimeCommand",
+      "source": "src/commands/hpexpiretime.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HPTTL",
+      "group": "hash",
+      "arity": -5,
+      "handler": "hpttlCommand",
+      "source": "src/commands/hpttl.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HRANDFIELD",
+      "group": "hash",
+      "arity": -2,
+      "handler": "hrandfieldCommand",
+      "source": "src/commands/hrandfield.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HSCAN",
+      "group": "hash",
+      "arity": -3,
+      "handler": "hscanCommand",
+      "source": "src/commands/hscan.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HSET",
+      "group": "hash",
+      "arity": -4,
+      "handler": "hsetCommand",
+      "source": "src/commands/hset.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HSETEX",
+      "group": "hash",
+      "arity": -6,
+      "handler": "hsetexCommand",
+      "source": "src/commands/hsetex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HSETNX",
+      "group": "hash",
+      "arity": 4,
+      "handler": "hsetnxCommand",
+      "source": "src/commands/hsetnx.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HSTRLEN",
+      "group": "hash",
+      "arity": 3,
+      "handler": "hstrlenCommand",
+      "source": "src/commands/hstrlen.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HTTL",
+      "group": "hash",
+      "arity": -5,
+      "handler": "httlCommand",
+      "source": "src/commands/httl.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "HVALS",
+      "group": "hash",
+      "arity": 2,
+      "handler": "hvalsCommand",
+      "source": "src/commands/hvals.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "INCR",
+      "group": "string",
+      "arity": 2,
+      "handler": "incrCommand",
+      "source": "src/commands/incr.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "INCRBY",
+      "group": "string",
+      "arity": 3,
+      "handler": "incrbyCommand",
+      "source": "src/commands/incrby.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "INCRBYFLOAT",
+      "group": "string",
+      "arity": 3,
+      "handler": "incrbyfloatCommand",
+      "source": "src/commands/incrbyfloat.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "INFO",
+      "group": "server",
+      "arity": -1,
+      "handler": "infoCommand",
+      "source": "src/commands/info.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "KEYS",
+      "group": "generic",
+      "arity": 2,
+      "handler": "keysCommand",
+      "source": "src/commands/keys.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LASTSAVE",
+      "group": "server",
+      "arity": 1,
+      "handler": "lastsaveCommand",
+      "source": "src/commands/lastsave.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LATENCY DOCTOR",
+      "group": "server",
+      "arity": 2,
+      "handler": "latencyCommand",
+      "source": "src/commands/latency-doctor.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LATENCY GRAPH",
+      "group": "server",
+      "arity": 3,
+      "handler": "latencyCommand",
+      "source": "src/commands/latency-graph.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LATENCY HELP",
+      "group": "server",
+      "arity": 2,
+      "handler": "latencyCommand",
+      "source": "src/commands/latency-help.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LATENCY HISTOGRAM",
+      "group": "server",
+      "arity": -2,
+      "handler": "latencyCommand",
+      "source": "src/commands/latency-histogram.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LATENCY HISTORY",
+      "group": "server",
+      "arity": 3,
+      "handler": "latencyCommand",
+      "source": "src/commands/latency-history.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LATENCY LATEST",
+      "group": "server",
+      "arity": 2,
+      "handler": "latencyCommand",
+      "source": "src/commands/latency-latest.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LATENCY RESET",
+      "group": "server",
+      "arity": -2,
+      "handler": "latencyCommand",
+      "source": "src/commands/latency-reset.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LATENCY",
+      "group": "server",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/latency.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LCS",
+      "group": "string",
+      "arity": -3,
+      "handler": "lcsCommand",
+      "source": "src/commands/lcs.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LINDEX",
+      "group": "list",
+      "arity": 3,
+      "handler": "lindexCommand",
+      "source": "src/commands/lindex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LINSERT",
+      "group": "list",
+      "arity": 5,
+      "handler": "linsertCommand",
+      "source": "src/commands/linsert.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LLEN",
+      "group": "list",
+      "arity": 2,
+      "handler": "llenCommand",
+      "source": "src/commands/llen.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LMOVE",
+      "group": "list",
+      "arity": 5,
+      "handler": "lmoveCommand",
+      "source": "src/commands/lmove.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LMPOP",
+      "group": "list",
+      "arity": -4,
+      "handler": "lmpopCommand",
+      "source": "src/commands/lmpop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LOLWUT",
+      "group": "server",
+      "arity": -1,
+      "handler": "lolwutCommand",
+      "source": "src/commands/lolwut.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "LPOP",
+      "group": "list",
+      "arity": -2,
+      "handler": "lpopCommand",
+      "source": "src/commands/lpop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LPOS",
+      "group": "list",
+      "arity": -3,
+      "handler": "lposCommand",
+      "source": "src/commands/lpos.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LPUSH",
+      "group": "list",
+      "arity": -3,
+      "handler": "lpushCommand",
+      "source": "src/commands/lpush.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LPUSHX",
+      "group": "list",
+      "arity": -3,
+      "handler": "lpushxCommand",
+      "source": "src/commands/lpushx.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LRANGE",
+      "group": "list",
+      "arity": 4,
+      "handler": "lrangeCommand",
+      "source": "src/commands/lrange.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LREM",
+      "group": "list",
+      "arity": 4,
+      "handler": "lremCommand",
+      "source": "src/commands/lrem.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LSET",
+      "group": "list",
+      "arity": 4,
+      "handler": "lsetCommand",
+      "source": "src/commands/lset.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "LTRIM",
+      "group": "list",
+      "arity": 4,
+      "handler": "ltrimCommand",
+      "source": "src/commands/ltrim.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "MEMORY DOCTOR",
+      "group": "server",
+      "arity": 2,
+      "handler": "memoryCommand",
+      "source": "src/commands/memory-doctor.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MEMORY HELP",
+      "group": "server",
+      "arity": 2,
+      "handler": "memoryCommand",
+      "source": "src/commands/memory-help.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MEMORY MALLOC-STATS",
+      "group": "server",
+      "arity": 2,
+      "handler": "memoryCommand",
+      "source": "src/commands/memory-malloc-stats.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MEMORY PURGE",
+      "group": "server",
+      "arity": 2,
+      "handler": "memoryCommand",
+      "source": "src/commands/memory-purge.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MEMORY STATS",
+      "group": "server",
+      "arity": 2,
+      "handler": "memoryCommand",
+      "source": "src/commands/memory-stats.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MEMORY USAGE",
+      "group": "server",
+      "arity": -3,
+      "handler": "memoryCommand",
+      "source": "src/commands/memory-usage.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MEMORY",
+      "group": "server",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/memory.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MGET",
+      "group": "string",
+      "arity": -2,
+      "handler": "mgetCommand",
+      "source": "src/commands/mget.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "MIGRATE",
+      "group": "generic",
+      "arity": -6,
+      "handler": "migrateCommand",
+      "source": "src/commands/migrate.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "MODULE HELP",
+      "group": "server",
+      "arity": 2,
+      "handler": "moduleCommand",
+      "source": "src/commands/module-help.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MODULE LIST",
+      "group": "server",
+      "arity": 2,
+      "handler": "moduleCommand",
+      "source": "src/commands/module-list.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MODULE LOAD",
+      "group": "server",
+      "arity": -3,
+      "handler": "moduleCommand",
+      "source": "src/commands/module-load.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "MODULE LOADEX",
+      "group": "server",
+      "arity": -3,
+      "handler": "moduleCommand",
+      "source": "src/commands/module-loadex.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "MODULE UNLOAD",
+      "group": "server",
+      "arity": 3,
+      "handler": "moduleCommand",
+      "source": "src/commands/module-unload.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "MODULE",
+      "group": "server",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/module.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MONITOR",
+      "group": "server",
+      "arity": 1,
+      "handler": "monitorCommand",
+      "source": "src/commands/monitor.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MOVE",
+      "group": "generic",
+      "arity": 3,
+      "handler": "moveCommand",
+      "source": "src/commands/move.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "MSET",
+      "group": "string",
+      "arity": -3,
+      "handler": "msetCommand",
+      "source": "src/commands/mset.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "MSETEX",
+      "group": "string",
+      "arity": -4,
+      "handler": "msetexCommand",
+      "source": "src/commands/msetex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "MSETNX",
+      "group": "string",
+      "arity": -3,
+      "handler": "msetnxCommand",
+      "source": "src/commands/msetnx.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "MULTI",
+      "group": "transactions",
+      "arity": 1,
+      "handler": "multiCommand",
+      "source": "src/commands/multi.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "OBJECT ENCODING",
+      "group": "generic",
+      "arity": 3,
+      "handler": "objectCommand",
+      "source": "src/commands/object-encoding.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "OBJECT FREQ",
+      "group": "generic",
+      "arity": 3,
+      "handler": "objectCommand",
+      "source": "src/commands/object-freq.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "OBJECT HELP",
+      "group": "generic",
+      "arity": 2,
+      "handler": "objectCommand",
+      "source": "src/commands/object-help.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "OBJECT IDLETIME",
+      "group": "generic",
+      "arity": 3,
+      "handler": "objectCommand",
+      "source": "src/commands/object-idletime.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "OBJECT REFCOUNT",
+      "group": "generic",
+      "arity": 3,
+      "handler": "objectCommand",
+      "source": "src/commands/object-refcount.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "OBJECT",
+      "group": "generic",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/object.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "PERSIST",
+      "group": "generic",
+      "arity": 2,
+      "handler": "persistCommand",
+      "source": "src/commands/persist.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PEXPIRE",
+      "group": "generic",
+      "arity": -3,
+      "handler": "pexpireCommand",
+      "source": "src/commands/pexpire.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PEXPIREAT",
+      "group": "generic",
+      "arity": -3,
+      "handler": "pexpireatCommand",
+      "source": "src/commands/pexpireat.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PEXPIRETIME",
+      "group": "generic",
+      "arity": 2,
+      "handler": "pexpiretimeCommand",
+      "source": "src/commands/pexpiretime.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PFADD",
+      "group": "hyperloglog",
+      "arity": -2,
+      "handler": "pfaddCommand",
+      "source": "src/commands/pfadd.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PFCOUNT",
+      "group": "hyperloglog",
+      "arity": -2,
+      "handler": "pfcountCommand",
+      "source": "src/commands/pfcount.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PFDEBUG",
+      "group": "hyperloglog",
+      "arity": 3,
+      "handler": "pfdebugCommand",
+      "source": "src/commands/pfdebug.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PFMERGE",
+      "group": "hyperloglog",
+      "arity": -2,
+      "handler": "pfmergeCommand",
+      "source": "src/commands/pfmerge.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PFSELFTEST",
+      "group": "hyperloglog",
+      "arity": 1,
+      "handler": "pfselftestCommand",
+      "source": "src/commands/pfselftest.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PING",
+      "group": "connection",
+      "arity": -1,
+      "handler": "pingCommand",
+      "source": "src/commands/ping.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PSETEX",
+      "group": "string",
+      "arity": 4,
+      "handler": "psetexCommand",
+      "source": "src/commands/psetex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PSUBSCRIBE",
+      "group": "pubsub",
+      "arity": -2,
+      "handler": "psubscribeCommand",
+      "source": "src/commands/psubscribe.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PSYNC",
+      "group": "server",
+      "arity": -3,
+      "handler": "syncCommand",
+      "source": "src/commands/psync.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "PTTL",
+      "group": "generic",
+      "arity": 2,
+      "handler": "pttlCommand",
+      "source": "src/commands/pttl.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PUBLISH",
+      "group": "pubsub",
+      "arity": 3,
+      "handler": "publishCommand",
+      "source": "src/commands/publish.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PUBSUB CHANNELS",
+      "group": "pubsub",
+      "arity": -2,
+      "handler": "pubsubCommand",
+      "source": "src/commands/pubsub-channels.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PUBSUB HELP",
+      "group": "pubsub",
+      "arity": 2,
+      "handler": "pubsubCommand",
+      "source": "src/commands/pubsub-help.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PUBSUB NUMPAT",
+      "group": "pubsub",
+      "arity": 2,
+      "handler": "pubsubCommand",
+      "source": "src/commands/pubsub-numpat.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PUBSUB NUMSUB",
+      "group": "pubsub",
+      "arity": -2,
+      "handler": "pubsubCommand",
+      "source": "src/commands/pubsub-numsub.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PUBSUB SHARDCHANNELS",
+      "group": "pubsub",
+      "arity": -2,
+      "handler": "pubsubCommand",
+      "source": "src/commands/pubsub-shardchannels.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PUBSUB SHARDNUMSUB",
+      "group": "pubsub",
+      "arity": -2,
+      "handler": "pubsubCommand",
+      "source": "src/commands/pubsub-shardnumsub.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PUBSUB",
+      "group": "pubsub",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/pubsub.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "PUNSUBSCRIBE",
+      "group": "pubsub",
+      "arity": -1,
+      "handler": "punsubscribeCommand",
+      "source": "src/commands/punsubscribe.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "QUIT",
+      "group": "connection",
+      "arity": -1,
+      "handler": "quitCommand",
+      "source": "src/commands/quit.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "RANDOMKEY",
+      "group": "generic",
+      "arity": 1,
+      "handler": "randomkeyCommand",
+      "source": "src/commands/randomkey.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "READONLY",
+      "group": "cluster",
+      "arity": 1,
+      "handler": "readonlyCommand",
+      "source": "src/commands/readonly.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "READWRITE",
+      "group": "cluster",
+      "arity": 1,
+      "handler": "readwriteCommand",
+      "source": "src/commands/readwrite.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "RENAME",
+      "group": "generic",
+      "arity": 3,
+      "handler": "renameCommand",
+      "source": "src/commands/rename.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "RENAMENX",
+      "group": "generic",
+      "arity": 3,
+      "handler": "renamenxCommand",
+      "source": "src/commands/renamenx.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "REPLCONF",
+      "group": "server",
+      "arity": -1,
+      "handler": "replconfCommand",
+      "source": "src/commands/replconf.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "REPLICAOF",
+      "group": "server",
+      "arity": 3,
+      "handler": "replicaofCommand",
+      "source": "src/commands/replicaof.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "RESET",
+      "group": "connection",
+      "arity": 1,
+      "handler": "resetCommand",
+      "source": "src/commands/reset.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "RESTORE-ASKING",
+      "group": "server",
+      "arity": -4,
+      "handler": "restoreCommand",
+      "source": "src/commands/restore-asking.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "RESTORE",
+      "group": "generic",
+      "arity": -4,
+      "handler": "restoreCommand",
+      "source": "src/commands/restore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ROLE",
+      "group": "server",
+      "arity": 1,
+      "handler": "roleCommand",
+      "source": "src/commands/role.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "RPOP",
+      "group": "list",
+      "arity": -2,
+      "handler": "rpopCommand",
+      "source": "src/commands/rpop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "RPOPLPUSH",
+      "group": "list",
+      "arity": 3,
+      "handler": "rpoplpushCommand",
+      "source": "src/commands/rpoplpush.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "RPUSH",
+      "group": "list",
+      "arity": -3,
+      "handler": "rpushCommand",
+      "source": "src/commands/rpush.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "RPUSHX",
+      "group": "list",
+      "arity": -3,
+      "handler": "rpushxCommand",
+      "source": "src/commands/rpushx.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SADD",
+      "group": "set",
+      "arity": -3,
+      "handler": "saddCommand",
+      "source": "src/commands/sadd.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SAVE",
+      "group": "server",
+      "arity": 1,
+      "handler": "saveCommand",
+      "source": "src/commands/save.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCAN",
+      "group": "generic",
+      "arity": -2,
+      "handler": "scanCommand",
+      "source": "src/commands/scan.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCARD",
+      "group": "set",
+      "arity": 2,
+      "handler": "scardCommand",
+      "source": "src/commands/scard.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCRIPT DEBUG",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "scriptCommand",
+      "source": "src/commands/script-debug.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCRIPT EXISTS",
+      "group": "scripting",
+      "arity": -3,
+      "handler": "scriptCommand",
+      "source": "src/commands/script-exists.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCRIPT FLUSH",
+      "group": "scripting",
+      "arity": -2,
+      "handler": "scriptCommand",
+      "source": "src/commands/script-flush.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCRIPT HELP",
+      "group": "scripting",
+      "arity": 2,
+      "handler": "scriptCommand",
+      "source": "src/commands/script-help.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCRIPT KILL",
+      "group": "scripting",
+      "arity": 2,
+      "handler": "scriptCommand",
+      "source": "src/commands/script-kill.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCRIPT LOAD",
+      "group": "scripting",
+      "arity": 3,
+      "handler": "scriptCommand",
+      "source": "src/commands/script-load.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCRIPT SHOW",
+      "group": "scripting",
+      "arity": 3,
+      "handler": "scriptCommand",
+      "source": "src/commands/script-show.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SCRIPT",
+      "group": "scripting",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/script.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SDIFF",
+      "group": "set",
+      "arity": -2,
+      "handler": "sdiffCommand",
+      "source": "src/commands/sdiff.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SDIFFSTORE",
+      "group": "set",
+      "arity": -3,
+      "handler": "sdiffstoreCommand",
+      "source": "src/commands/sdiffstore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SELECT",
+      "group": "connection",
+      "arity": 2,
+      "handler": "selectCommand",
+      "source": "src/commands/select.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SENTINEL CKQUORUM",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-ckquorum.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL CONFIG",
+      "group": "sentinel",
+      "arity": -4,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-config.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL DEBUG",
+      "group": "sentinel",
+      "arity": -2,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-debug.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL FAILOVER",
+      "group": "sentinel",
+      "arity": -3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-failover.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL FLUSHCONFIG",
+      "group": "sentinel",
+      "arity": 2,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-flushconfig.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL GET-MASTER-ADDR-BY-NAME",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-get-master-addr-by-name.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL GET-PRIMARY-ADDR-BY-NAME",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-get-primary-addr-by-name.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL HELP",
+      "group": "sentinel",
+      "arity": 2,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-help.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL INFO-CACHE",
+      "group": "sentinel",
+      "arity": -3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-info-cache.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL IS-MASTER-DOWN-BY-ADDR",
+      "group": "sentinel",
+      "arity": 6,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-is-master-down-by-addr.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL IS-PRIMARY-DOWN-BY-ADDR",
+      "group": "sentinel",
+      "arity": 6,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-is-primary-down-by-addr.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL MASTER",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-master.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL MASTERS",
+      "group": "sentinel",
+      "arity": 2,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-masters.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL MONITOR",
+      "group": "sentinel",
+      "arity": 6,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-monitor.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL MYID",
+      "group": "sentinel",
+      "arity": 2,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-myid.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL PENDING-SCRIPTS",
+      "group": "sentinel",
+      "arity": 2,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-pending-scripts.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL PRIMARIES",
+      "group": "sentinel",
+      "arity": 2,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-primaries.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL PRIMARY",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-primary.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL REMOVE",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-remove.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL REPLICAS",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-replicas.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL RESET",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-reset.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL SENTINELS",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-sentinels.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL SET",
+      "group": "sentinel",
+      "arity": -5,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-set.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL SIMULATE-FAILURE",
+      "group": "sentinel",
+      "arity": -3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-simulate-failure.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL SLAVES",
+      "group": "sentinel",
+      "arity": 3,
+      "handler": "sentinelCommand",
+      "source": "src/commands/sentinel-slaves.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SENTINEL",
+      "group": "sentinel",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/sentinel.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SET",
+      "group": "string",
+      "arity": -3,
+      "handler": "setCommand",
+      "source": "src/commands/set.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SETBIT",
+      "group": "bitmap",
+      "arity": 4,
+      "handler": "setbitCommand",
+      "source": "src/commands/setbit.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SETEX",
+      "group": "string",
+      "arity": 4,
+      "handler": "setexCommand",
+      "source": "src/commands/setex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SETNX",
+      "group": "string",
+      "arity": 3,
+      "handler": "setnxCommand",
+      "source": "src/commands/setnx.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SETRANGE",
+      "group": "string",
+      "arity": 4,
+      "handler": "setrangeCommand",
+      "source": "src/commands/setrange.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SHUTDOWN",
+      "group": "server",
+      "arity": -1,
+      "handler": "shutdownCommand",
+      "source": "src/commands/shutdown.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SINTER",
+      "group": "set",
+      "arity": -2,
+      "handler": "sinterCommand",
+      "source": "src/commands/sinter.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SINTERCARD",
+      "group": "set",
+      "arity": -3,
+      "handler": "sinterCardCommand",
+      "source": "src/commands/sintercard.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SINTERSTORE",
+      "group": "set",
+      "arity": -3,
+      "handler": "sinterstoreCommand",
+      "source": "src/commands/sinterstore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SISMEMBER",
+      "group": "set",
+      "arity": 3,
+      "handler": "sismemberCommand",
+      "source": "src/commands/sismember.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SLAVEOF",
+      "group": "server",
+      "arity": 3,
+      "handler": "replicaofCommand",
+      "source": "src/commands/slaveof.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "SLOWLOG GET",
+      "group": "server",
+      "arity": -2,
+      "handler": "slowlogCommand",
+      "source": "src/commands/slowlog-get.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "SLOWLOG HELP",
+      "group": "server",
+      "arity": 2,
+      "handler": "slowlogCommand",
+      "source": "src/commands/slowlog-help.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "SLOWLOG LEN",
+      "group": "server",
+      "arity": 2,
+      "handler": "slowlogCommand",
+      "source": "src/commands/slowlog-len.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "SLOWLOG RESET",
+      "group": "server",
+      "arity": 2,
+      "handler": "slowlogCommand",
+      "source": "src/commands/slowlog-reset.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "SLOWLOG",
+      "group": "server",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/slowlog.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "SMEMBERS",
+      "group": "set",
+      "arity": 2,
+      "handler": "sinterCommand",
+      "source": "src/commands/smembers.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SMISMEMBER",
+      "group": "set",
+      "arity": -3,
+      "handler": "smismemberCommand",
+      "source": "src/commands/smismember.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SMOVE",
+      "group": "set",
+      "arity": 4,
+      "handler": "smoveCommand",
+      "source": "src/commands/smove.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SORT",
+      "group": "generic",
+      "arity": -2,
+      "handler": "sortCommand",
+      "source": "src/commands/sort.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SORT_RO",
+      "group": "generic",
+      "arity": -2,
+      "handler": "sortroCommand",
+      "source": "src/commands/sort_ro.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SPOP",
+      "group": "set",
+      "arity": -2,
+      "handler": "spopCommand",
+      "source": "src/commands/spop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SPUBLISH",
+      "group": "pubsub",
+      "arity": 3,
+      "handler": "spublishCommand",
+      "source": "src/commands/spublish.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SRANDMEMBER",
+      "group": "set",
+      "arity": -2,
+      "handler": "srandmemberCommand",
+      "source": "src/commands/srandmember.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SREM",
+      "group": "set",
+      "arity": -3,
+      "handler": "sremCommand",
+      "source": "src/commands/srem.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SSCAN",
+      "group": "set",
+      "arity": -3,
+      "handler": "sscanCommand",
+      "source": "src/commands/sscan.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SSUBSCRIBE",
+      "group": "pubsub",
+      "arity": -2,
+      "handler": "ssubscribeCommand",
+      "source": "src/commands/ssubscribe.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "STRLEN",
+      "group": "string",
+      "arity": 2,
+      "handler": "strlenCommand",
+      "source": "src/commands/strlen.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SUBSCRIBE",
+      "group": "pubsub",
+      "arity": -2,
+      "handler": "subscribeCommand",
+      "source": "src/commands/subscribe.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SUBSTR",
+      "group": "string",
+      "arity": 4,
+      "handler": "getrangeCommand",
+      "source": "src/commands/substr.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SUNION",
+      "group": "set",
+      "arity": -2,
+      "handler": "sunionCommand",
+      "source": "src/commands/sunion.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SUNIONSTORE",
+      "group": "set",
+      "arity": -3,
+      "handler": "sunionstoreCommand",
+      "source": "src/commands/sunionstore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SUNSUBSCRIBE",
+      "group": "pubsub",
+      "arity": -1,
+      "handler": "sunsubscribeCommand",
+      "source": "src/commands/sunsubscribe.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SWAPDB",
+      "group": "server",
+      "arity": 3,
+      "handler": "swapdbCommand",
+      "source": "src/commands/swapdb.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "SYNC",
+      "group": "server",
+      "arity": 1,
+      "handler": "syncCommand",
+      "source": "src/commands/sync.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "TIME",
+      "group": "server",
+      "arity": 1,
+      "handler": "timeCommand",
+      "source": "src/commands/time.json",
+      "status": "translated-but-unqualified",
+      "reason": "requires individual operational/diagnostic qualification"
+    },
+    {
+      "command": "TOUCH",
+      "group": "generic",
+      "arity": -2,
+      "handler": "touchCommand",
+      "source": "src/commands/touch.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "TTL",
+      "group": "generic",
+      "arity": 2,
+      "handler": "ttlCommand",
+      "source": "src/commands/ttl.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "TYPE",
+      "group": "generic",
+      "arity": 2,
+      "handler": "typeCommand",
+      "source": "src/commands/type.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "UNLINK",
+      "group": "generic",
+      "arity": -2,
+      "handler": "unlinkCommand",
+      "source": "src/commands/unlink.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "UNSUBSCRIBE",
+      "group": "pubsub",
+      "arity": -1,
+      "handler": "unsubscribeCommand",
+      "source": "src/commands/unsubscribe.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "UNWATCH",
+      "group": "transactions",
+      "arity": 1,
+      "handler": "unwatchCommand",
+      "source": "src/commands/unwatch.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "WAIT",
+      "group": "generic",
+      "arity": 3,
+      "handler": "waitCommand",
+      "source": "src/commands/wait.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "WAITAOF",
+      "group": "generic",
+      "arity": 4,
+      "handler": "waitaofCommand",
+      "source": "src/commands/waitaof.json",
+      "status": "deferred",
+      "reason": "background/process, replication/cluster, native modules, or vectors"
+    },
+    {
+      "command": "WATCH",
+      "group": "transactions",
+      "arity": -2,
+      "handler": "watchCommand",
+      "source": "src/commands/watch.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XACK",
+      "group": "stream",
+      "arity": -4,
+      "handler": "xackCommand",
+      "source": "src/commands/xack.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XADD",
+      "group": "stream",
+      "arity": -5,
+      "handler": "xaddCommand",
+      "source": "src/commands/xadd.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XAUTOCLAIM",
+      "group": "stream",
+      "arity": -6,
+      "handler": "xautoclaimCommand",
+      "source": "src/commands/xautoclaim.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XCLAIM",
+      "group": "stream",
+      "arity": -6,
+      "handler": "xclaimCommand",
+      "source": "src/commands/xclaim.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XDEL",
+      "group": "stream",
+      "arity": -3,
+      "handler": "xdelCommand",
+      "source": "src/commands/xdel.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XGROUP CREATE",
+      "group": "stream",
+      "arity": -5,
+      "handler": "xgroupCommand",
+      "source": "src/commands/xgroup-create.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XGROUP CREATECONSUMER",
+      "group": "stream",
+      "arity": 5,
+      "handler": "xgroupCommand",
+      "source": "src/commands/xgroup-createconsumer.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XGROUP DELCONSUMER",
+      "group": "stream",
+      "arity": 5,
+      "handler": "xgroupCommand",
+      "source": "src/commands/xgroup-delconsumer.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XGROUP DESTROY",
+      "group": "stream",
+      "arity": 4,
+      "handler": "xgroupCommand",
+      "source": "src/commands/xgroup-destroy.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XGROUP HELP",
+      "group": "stream",
+      "arity": 2,
+      "handler": "xgroupCommand",
+      "source": "src/commands/xgroup-help.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XGROUP SETID",
+      "group": "stream",
+      "arity": -5,
+      "handler": "xgroupCommand",
+      "source": "src/commands/xgroup-setid.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XGROUP",
+      "group": "stream",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/xgroup.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XINFO CONSUMERS",
+      "group": "stream",
+      "arity": 4,
+      "handler": "xinfoCommand",
+      "source": "src/commands/xinfo-consumers.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XINFO GROUPS",
+      "group": "stream",
+      "arity": 3,
+      "handler": "xinfoCommand",
+      "source": "src/commands/xinfo-groups.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XINFO HELP",
+      "group": "stream",
+      "arity": 2,
+      "handler": "xinfoCommand",
+      "source": "src/commands/xinfo-help.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XINFO STREAM",
+      "group": "stream",
+      "arity": -3,
+      "handler": "xinfoCommand",
+      "source": "src/commands/xinfo-stream.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XINFO",
+      "group": "stream",
+      "arity": -2,
+      "handler": null,
+      "source": "src/commands/xinfo.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XLEN",
+      "group": "stream",
+      "arity": 2,
+      "handler": "xlenCommand",
+      "source": "src/commands/xlen.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XPENDING",
+      "group": "stream",
+      "arity": -3,
+      "handler": "xpendingCommand",
+      "source": "src/commands/xpending.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XRANGE",
+      "group": "stream",
+      "arity": -4,
+      "handler": "xrangeCommand",
+      "source": "src/commands/xrange.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XREAD",
+      "group": "stream",
+      "arity": -4,
+      "handler": "xreadCommand",
+      "source": "src/commands/xread.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XREADGROUP",
+      "group": "stream",
+      "arity": -7,
+      "handler": "xreadCommand",
+      "source": "src/commands/xreadgroup.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XREVRANGE",
+      "group": "stream",
+      "arity": -4,
+      "handler": "xrevrangeCommand",
+      "source": "src/commands/xrevrange.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XSETID",
+      "group": "stream",
+      "arity": -3,
+      "handler": "xsetidCommand",
+      "source": "src/commands/xsetid.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "XTRIM",
+      "group": "stream",
+      "arity": -4,
+      "handler": "xtrimCommand",
+      "source": "src/commands/xtrim.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZADD",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zaddCommand",
+      "source": "src/commands/zadd.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZCARD",
+      "group": "sorted_set",
+      "arity": 2,
+      "handler": "zcardCommand",
+      "source": "src/commands/zcard.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZCOUNT",
+      "group": "sorted_set",
+      "arity": 4,
+      "handler": "zcountCommand",
+      "source": "src/commands/zcount.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZDIFF",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "zdiffCommand",
+      "source": "src/commands/zdiff.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZDIFFSTORE",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zdiffstoreCommand",
+      "source": "src/commands/zdiffstore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZINCRBY",
+      "group": "sorted_set",
+      "arity": 4,
+      "handler": "zincrbyCommand",
+      "source": "src/commands/zincrby.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZINTER",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "zinterCommand",
+      "source": "src/commands/zinter.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZINTERCARD",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "zinterCardCommand",
+      "source": "src/commands/zintercard.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZINTERSTORE",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zinterstoreCommand",
+      "source": "src/commands/zinterstore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZLEXCOUNT",
+      "group": "sorted_set",
+      "arity": 4,
+      "handler": "zlexcountCommand",
+      "source": "src/commands/zlexcount.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZMPOP",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zmpopCommand",
+      "source": "src/commands/zmpop.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZMSCORE",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "zmscoreCommand",
+      "source": "src/commands/zmscore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZPOPMAX",
+      "group": "sorted_set",
+      "arity": -2,
+      "handler": "zpopmaxCommand",
+      "source": "src/commands/zpopmax.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZPOPMIN",
+      "group": "sorted_set",
+      "arity": -2,
+      "handler": "zpopminCommand",
+      "source": "src/commands/zpopmin.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZRANDMEMBER",
+      "group": "sorted_set",
+      "arity": -2,
+      "handler": "zrandmemberCommand",
+      "source": "src/commands/zrandmember.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZRANGE",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zrangeCommand",
+      "source": "src/commands/zrange.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZRANGEBYLEX",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zrangebylexCommand",
+      "source": "src/commands/zrangebylex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZRANGEBYSCORE",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zrangebyscoreCommand",
+      "source": "src/commands/zrangebyscore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZRANGESTORE",
+      "group": "sorted_set",
+      "arity": -5,
+      "handler": "zrangestoreCommand",
+      "source": "src/commands/zrangestore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZRANK",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "zrankCommand",
+      "source": "src/commands/zrank.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZREM",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "zremCommand",
+      "source": "src/commands/zrem.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZREMRANGEBYLEX",
+      "group": "sorted_set",
+      "arity": 4,
+      "handler": "zremrangebylexCommand",
+      "source": "src/commands/zremrangebylex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZREMRANGEBYRANK",
+      "group": "sorted_set",
+      "arity": 4,
+      "handler": "zremrangebyrankCommand",
+      "source": "src/commands/zremrangebyrank.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZREMRANGEBYSCORE",
+      "group": "sorted_set",
+      "arity": 4,
+      "handler": "zremrangebyscoreCommand",
+      "source": "src/commands/zremrangebyscore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZREVRANGE",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zrevrangeCommand",
+      "source": "src/commands/zrevrange.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZREVRANGEBYLEX",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zrevrangebylexCommand",
+      "source": "src/commands/zrevrangebylex.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZREVRANGEBYSCORE",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zrevrangebyscoreCommand",
+      "source": "src/commands/zrevrangebyscore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZREVRANK",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "zrevrankCommand",
+      "source": "src/commands/zrevrank.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZSCAN",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "zscanCommand",
+      "source": "src/commands/zscan.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZSCORE",
+      "group": "sorted_set",
+      "arity": 3,
+      "handler": "zscoreCommand",
+      "source": "src/commands/zscore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZUNION",
+      "group": "sorted_set",
+      "arity": -3,
+      "handler": "zunionCommand",
+      "source": "src/commands/zunion.json",
+      "status": "required",
+      "reason": "standalone profile"
+    },
+    {
+      "command": "ZUNIONSTORE",
+      "group": "sorted_set",
+      "arity": -4,
+      "handler": "zunionstoreCommand",
+      "source": "src/commands/zunionstore.json",
+      "status": "required",
+      "reason": "standalone profile"
+    }
+  ]
+}

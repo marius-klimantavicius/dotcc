@@ -422,18 +422,23 @@ custom fault-injection campaigns are not a prerequisite for this initial plan.
 
 ### P0 — Freeze the profile, scripts and native baseline
 
-- [ ] Turn the reviewed pin into source/file manifests, license inventory and
+- [x] Turn the reviewed pin into source/file manifests, license inventory and
       verified fetch recipes; create the required workspace structure.
-- [ ] Implement common Python resolution and explicit `--no-fetch` semantics,
+- [x] Implement common Python resolution and explicit `--no-fetch` semantics,
       including the script checks above and receipts distinguishing both modes.
-- [ ] Freeze command/configuration/source/dependency inventories, generated
+- [x] Freeze command/configuration/source/dependency inventories, generated
       inputs, ABI and host imports. Record required/deferred capability guards.
-- [ ] Build the matching native server/CLI in `build/`, run baseline selected
+- [x] Build the matching native server/CLI in `build/`, run baseline selected
       upstream tests, and record tool versions and existing dotcc test results.
-- [ ] Attempt the complete managed source closure and record actual first blockers.
+- [x] Attempt the complete managed source closure and record actual first blockers.
 
 **Gate:** reproducible verified inputs, working native control, tested acquisition
 behavior and an evidence-based blocker ledger. Commit the baseline milestone.
+
+P0 completed on Linux x64. The native control passes 20 baseline checks and 35
+upstream protocol assertions; the initial full object probe emits 58/164 units
+and records 106 failures. This establishes the baseline, not a working translated
+server. See [validation.md](validation.md) and [blockers.md](blockers.md).
 
 ### P1 — Prove ABI, ownership and host feasibility
 
