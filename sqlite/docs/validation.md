@@ -1622,3 +1622,44 @@ linked authored VFS source files match the qualified optimized snapshot.
 The separate `normal-optimized-product/results.json` receipt records this final
 working-tree state and the optimizer identities. The default product is left
 optimized.
+
+
+## Regression after current dotcc changes (2026-09-24)
+
+Rebuilt the solution with `UseLocalLalrCc=false` and ran the full
+`SQLITE_AOT=1 scripts/verify.sh` campaign against the compiler/runtime sources
+at `f974a11`. Those sources, the postprocessor, and the SQLite configuration and
+scripts stayed unchanged throughout the run. SQLite 3.53.4 was freshly generated
+and left in the normal in-place optimized product configuration.
+
+The initial unit run found one test-only regression: the scalar-sizeof folding
+test searched all emitted C# for `sizeof(int)`, including the newly embedded
+socket runtime, which legitimately uses that expression. Commit `b85ffd1`
+scopes the assertion to runtime-free object output while retaining both folding
+assertions. All seven focused tests pass. The complete campaign then passed:
+
+- 2 source-preparation tests, 2,741 compiler unit tests, and 710 functional tests;
+  1,159 opt-in functional oracle cases skipped.
+- All eight native reference baselines and all seven translated corpora: core,
+  API, memory VFS, virtual tables, allocation failures, upstream JSONB, and FTS5.
+- ManagedConsumer under JIT and linux-x64 NativeAOT, including preupdate callbacks,
+  SQL workloads, JSONB/FTS5, optional features, WAL, and callback lifetimes.
+- Varargs, copied-translation isolation, endian interoperability, product and
+  corpus layouts, threading, and API coverage with their NativeAOT checks.
+- Host VFS/mmap/WAL tests and independent-process native interoperability,
+  crash recovery, function-pointer identity, and database-image exchange.
+
+Separately, all 103 postprocessor tests and 37 analyzer tests pass; the opt-in
+analyzer SQLite snapshot test is skipped. The campaign did not request the
+optional Lua/Chibi/WAT `--with-ports` extension or non-Linux execution.
+
+The generated managed consumer builds without warnings. The solution rebuild
+reported libc field and xUnit analyzer warnings, with no errors. Postprocessing
+rewrote 24,218 `Cond.B` calls, simplified 872 boolean comparisons, and removed
+2,208 standalone empty blocks. No compiler/runtime fixes were needed.
+
+The retained receipt is `artifacts/reverify-20260924-final/results.json`, with
+copied logs, input/binary hashes and generated product hashes. It preserves the
+initial failed unit log and the successful full rerun, plus postprocessor and
+analyzer results. The top-level transcript is
+`artifacts/reverify-2026-09-24.log`.
