@@ -24,7 +24,7 @@ public sealed partial class ManagedLibraryTests
         var path = Path.Combine(Path.GetTempPath(), "dotcc-inline-pointers-" + Guid.NewGuid().ToString("N") + ".c");
         File.WriteAllText(path, """
             typedef int (*Callback)(int);
-            struct Bag { int *items[2]; void *contexts[2]; int **indirect[2]; Callback callbacks[2]; int tail; };
+            struct Bag { int *items[2]; void *contexts[2]; int **indirect[2]; Callback callbacks[2]; int tail; int *null[2]; };
             static int add(int x) { return x + 2; }
             void initialize(struct Bag *b, int *value) {
                 b->items[0] = value;
@@ -32,6 +32,7 @@ public sealed partial class ManagedLibraryTests
                 b->indirect[0] = &b->items[0];
                 b->callbacks[0] = add;
                 b->tail = 17;
+                b->null[1] = value;
             }
             int invoke(struct Bag *b) { return b->callbacks[1](*b->items[1]) + **b->indirect[0] + b->tail; }
             """);
@@ -59,6 +60,7 @@ public sealed partial class ManagedLibraryTests
                         int a = 5, b = 10;
                         DotCcLib.initialize(&bag, &a);
                         if (*bag.items[0].Value != 5 || bag.contexts[1].Value != &a) return -2;
+                        if (bag.@null[1].Value != &a || sizeof(__IA_Bag_null) != 2 * sizeof(void*)) return -7;
                         if (bag.indirect[0].Value != (int**)&bag.items) return -3;
                         var items = System.Runtime.InteropServices.MemoryMarshal.CreateSpan(ref bag.items[0], 2);
                         items[1].Value = &b;

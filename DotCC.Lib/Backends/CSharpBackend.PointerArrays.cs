@@ -69,6 +69,10 @@ internal sealed partial class CSharpBackend
     private string ForPost(CExpr value)
     {
         while (value is Paren parenthesized) value = parenthesized.Inner;
+        if (value is Assign { Target.Type.IsVolatile: true, Target.Type.IsPointerLowered: true }
+            or Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec,
+                Operand.Type.IsVolatile: true, Operand.Type.IsPointerLowered: true })
+            return $"_ = {Expr(value)}";
         return value is Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec } unary
             && NeedsPointerUpdateLowering(unary.Operand)
             ? PointerArrayUpdate(unary, discard: true).Item1

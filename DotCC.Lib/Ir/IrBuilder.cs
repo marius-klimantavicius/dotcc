@@ -3716,6 +3716,7 @@ internal sealed partial class IrBuilder
             if (_macroEvaluation && _symbols.Resolve(name) == null)
                 throw new IrUnsupportedException("unresolved function in macro constant: " + name);
             if (TryBuildGnuIntrinsic(name, args) is { } gnuIntrinsic) return gnuIntrinsic;
+            if (TryBuildAtomicCall(name, args) is { } atomicCall) return atomicCall;
             if (name == RuntimeIntrinsicNames.IsLittleEndian)
             {
                 if (args.Count != 0) throw new IrUnsupportedException("__dotcc_is_little_endian requires zero arguments");

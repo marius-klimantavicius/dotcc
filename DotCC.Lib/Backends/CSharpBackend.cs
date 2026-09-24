@@ -56,6 +56,7 @@ internal sealed partial class CSharpBackend
     private bool _publicTypes;
     private bool _relocatable;
     private bool _inlineMetadata;
+    private bool _renderingStaticStorage;
     private string FunctionName(Symbol symbol) => InlineFunctionReferences.Emit(symbol, _inlineMetadata);
     private string _pointerClass = "DotCcProgramFunctionPointers";
     private readonly HashSet<string> _enumAliases = new(StringComparer.Ordinal);
@@ -161,6 +162,7 @@ internal sealed partial class CSharpBackend
         // Thread-local and explicitly over-aligned objects retain dedicated static
         // owner members because their storage requirements differ.
         var globals = new List<CSharpGlobalSource>();
+        cg._renderingStaticStorage = true;
         foreach (var g in unit.Globals)
         {
             var field = new StringBuilder();
@@ -216,6 +218,8 @@ internal sealed partial class CSharpBackend
             if (init != null) initializer.Append($"        {GlobalStorageReferences.Emit(g.Sym.TargetName)} = {init};\n");
             globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
         }
+
+        cg._renderingStaticStorage = false;
 
         // struct/union/enum type declarations → the top-level type-decls section.
         var structs = new StringBuilder();
@@ -361,7 +365,9 @@ internal sealed partial class CSharpBackend
                 }
                 else
                 {
-                    var wrap = $"__IA_{t.Name}_{fid}";
+                    // Escape the complete synthesized identifier, not an embedded
+                    // keyword field (e.g. C `null` must not become `_@null`).
+                    var wrap = DotCC.EmitHelpers.Id($"__IA_{t.Name.TrimStart('@')}_{f.Name.TrimStart('@')}");
                     var element = Cs(flat);
                     if (flat.IsPointerLowered)
                     {
@@ -853,7 +859,8 @@ internal sealed partial class CSharpBackend
             case ArrayDecl a:
                 {
                     if (EmitAlignedArray(sb, pad, a)) break;
-                    var elemCs = Cs(a.Element);
+                    var row = a.Inits is null ? a.Element.Unqualified as CType.Array : null;
+                    var elemCs = Cs(row?.FlatElement ?? a.Element);
                     if (a.Inits is { } inits)
                     {
                         // Coerce each element to the array's element type — a no-op
@@ -865,6 +872,9 @@ internal sealed partial class CSharpBackend
                     {
                         // No initializer → zeroed stackalloc of the given extent.
                         var count = a.CountExpr is { } ce ? Expr(ce) : "0";
+                        if (row is not null) count = $"({count}) * {FlatCount(row)}";
+                        if (row is not null || a.CountExpr is { } extent && Cs(extent.Type.Unqualified) is "long" or "ulong" or "nint" or "nuint")
+                            count = $"checked((int)({count}))";
                         sb.Append(pad).Append($"{elemCs}* {a.Sym.TargetName} = stackalloc {elemCs}[{count}];\n");
                     }
                 }
@@ -1434,7 +1444,8 @@ internal sealed partial class CSharpBackend
         // A pointer/fn-ptr volatile lvalue can't be a Volatile.Read<T> type arg
         // (CS0306): reinterpret its slot as `nint` through its address, cast back.
         : lv.Type.IsVolatile && lv.Type.IsPointerLowered
-            ? ($"({Cs(lv.Type.Unqualified)}){VolatileRead($"*(nint*)&{bare}")}", PUnary)
+            ? ($"({Cs(lv.Type.Unqualified)}){VolatileRead(QualifiedPointerSlot(lv, bare))}", PUnary)
+        : lv.Type.IsVolatile && lv.Type.Unqualified is CType.Enum ? ($"VolatileValue.Load(ref {bare})", PPrimary)
         : lv.Type.IsVolatile ? (VolatileRead(bare), PPrimary)
         : (bare, barePrec);
 
@@ -2228,6 +2239,10 @@ internal sealed partial class CSharpBackend
             case StructInit si: return (StructInitText(si), PPrimary);
             case StackArray sa:
             {
+                // A compound literal inside a static initializer has static
+                // lifetime too, including literals nested in aggregate fields.
+                if (_renderingStaticStorage)
+                    return (PinnedArrayText(new PinnedArray(sa.Element, sa.Elems, null) { Type = sa.Type }), PPrimary);
                 if (TypeAlignment(sa.Element) is var alignment && alignment > 8)
                 {
                     if (!_canHoist) throw new IrUnsupportedException("over-aligned array compound literal requires a hoistable storage context");
@@ -2366,29 +2381,7 @@ internal sealed partial class CSharpBackend
                     return (text, PPrimary);
                 }
             case Assign a when a.Target.Type.IsVolatile:
-                {
-                    // A volatile lvalue stores through Volatile.Write(ref lv, …); a
-                    // compound op is a fenced read-modify-write. (Returns void, so —
-                    // like the legacy — only valid in statement position.)
-                    var lv = BareLValue(a.Target);
-                    // A pointer/fn-ptr volatile target can't be a Volatile.Write<T>
-                    // type arg (CS0306): reinterpret the slot as `nint` (a global
-                    // stored-as-nint already IS a nint field; otherwise via address)
-                    // and cast the stored value to nint.
-                    if (a.Target.Type.IsPointerLowered)
-                    {
-                        var pty = Cs(a.Target.Type.Unqualified);
-                        var slot = StoredAsNint(a.Target) ? lv : $"*(nint*)&{lv}";
-                        var pstored = a.CompoundOp is { } pcop
-                            ? $"({pty}){VolatileRead(slot)} {BinSym(pcop)} {Sub(a.Value, Prec(pcop) + 1)}"
-                            : Coerced(a.Value, a.Target.Type);
-                        return ($"global::System.Threading.Volatile.Write(ref {slot}, (nint)({pstored}))", PPrimary);
-                    }
-                    var stored = a.CompoundOp is { } cop
-                        ? $"{VolatileRead(lv)} {BinSym(cop)} {Sub(a.Value, Prec(cop) + 1)}"
-                        : Coerced(a.Value, a.Target.Type);
-                    return ($"global::System.Threading.Volatile.Write(ref {lv}, {stored})", PPrimary);
-                }
+                return VolatileAssignment(a);
             case Assign a when StoredAsNint(a.Target):
                 {
                     // A pointer global stored as `nint`: write the raw field and cast
@@ -2472,14 +2465,12 @@ internal sealed partial class CSharpBackend
             };
             return ($"Atomic.{helper}(ref {lv}, ({cs})1)", PPrimary);
         }
-        // ++/-- of a volatile lvalue is a fenced read-modify-write (returns void —
-        // statement position only, like the legacy). Handled before the plain forms.
+        // Preserve prefix/postfix result and evaluate the volatile address once.
         if (u.Op is UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec && u.Operand.Type.IsVolatile)
-        {
-            var lv = BareLValue(u.Operand);
-            var step = u.Op is UnOp.PreInc or UnOp.PostInc ? "+" : "-";
-            return ($"global::System.Threading.Volatile.Write(ref {lv}, {VolatileRead(lv)} {step} 1)", PPrimary);
-        }
+            return VolatileUpdate(u.Operand,
+                u.Op is UnOp.PreInc or UnOp.PostInc ? BinOp.Add : BinOp.Sub,
+                new LitInt("1", 1) { Type = CType.Int },
+                u.Op is UnOp.PostInc or UnOp.PostDec);
         switch (u.Op)
         {
             // C's unary arithmetic treats an enum as its underlying int — decay it
@@ -2894,6 +2885,7 @@ internal sealed partial class CSharpBackend
         // though the source IR is a call. A discard also preserves ordinary
         // bool-returning calls without evaluating them twice. The C11 generic
         // spellings retain the call resolver's int type, so identify those too.
+        Call { CalleeSym.FromSystemHeader: true, Type.Unqualified: CType.Pointer { Pointee.Unqualified: CType.Named } } => false,
         Call c when c.Type.Unqualified == CType.Bool || c.Callee is
             "atomic_compare_exchange_strong" or "atomic_compare_exchange_strong_explicit" or
             "atomic_compare_exchange_weak" or "atomic_compare_exchange_weak_explicit" or
@@ -2907,6 +2899,9 @@ internal sealed partial class CSharpBackend
         // an invocation-expression is a legal C# statement whatever its return type.
         // ZigListCall likewise — deinit/clearRetainingCapacity are void statements.
         StatementExpression { Type.Unqualified: CType.VoidType } => true,
+        Assign a when a.Target.Type.IsVolatile && a.Target.Type.IsPointerLowered => false,
+        Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec } u
+            when u.Operand.Type.IsVolatile && u.Operand.Type.IsPointerLowered => false,
         Assign or Call or IndirectCall or AllocCall or FreeCall or CreateCall or DestroyCall or ReallocCall or ResizeCall or RemapCall or ZigMemCall or ZigListCall => true,
         Unary u => u.Op is UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec,
         Paren p => IsStmtExpr(p.Inner),
@@ -3019,7 +3014,8 @@ internal sealed partial class CSharpBackend
             ? Cs(p.Pointee.Unqualified) : null;
         // The atomic object as a ref-able location: `*(arg0)`.
         string Obj() => $"*({Expr(args[0])})";
-        bool Eligible() => Pointee() is string p && _atomicEligible.Contains(p);
+        bool Eligible() => Pointee() is string p && (_atomicEligible.Contains(p)
+            || args[0].Type.Unqualified is CType.Pointer { Pointee.Unqualified: CType.Enum });
         // Cast a value arg to the element type so the generic Atomic.* call infers T.
         string Cast(int i) => Pointee() is string p ? $"({p})({Expr(args[i])})" : Expr(args[i]);
 
