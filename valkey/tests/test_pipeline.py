@@ -190,6 +190,23 @@ urllib.request.urlopen = fixture_fetch
         self.assertTrue((self.root / "generated/TranslatedValkey/TranslatedValkey.csproj").is_file())
         self.assertTrue((self.root / "generated/TranslatedValkey.Raw/TranslatedValkey.csproj").is_file())
 
+    def test_managed_profile_includes_bridge_and_preserves_reference_tree(self):
+        (self.root / "src").mkdir()
+        bridge = self.root / "src/bridge.c"
+        bridge.write_text("int bridge(void) { return 12; }\n")
+        self.write_json(self.root / "config/managed-adaptations.json", {
+            "name": "test-managed", "commit": "0123456789abcdef", "adaptations": [],
+            "injected_files": [{"source": "src/bridge.c", "path": "src/bridge.c"}],
+            "extra_sources": [{"path": "src/bridge.c", "defines": [], "include_dirs": ["src"]}]})
+        result = self.translate("--no-fetch", "--no-build-tools", "--managed-profile")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        receipt = self.receipt()
+        self.assertEqual([unit["path"] for unit in receipt["units"]],
+                         ["src/server.c", "src/second.c", "src/bridge.c"])
+        self.assertEqual(receipt["managed_profile"]["injected_files"][0]["sha256"], sha(bridge))
+        self.assertEqual(hashes(self.tree), self.reference_hashes)
+        self.assertTrue((self.root / "generated/TranslatedValkey/TranslatedValkey.csproj").is_file())
+
     def test_offline_nested_generators_are_deterministic_and_ref_is_immutable(self):
         result = self.translate("--no-fetch", "--no-build-tools")
         self.assertEqual(result.returncode, 0, result.stderr)

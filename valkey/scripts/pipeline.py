@@ -37,7 +37,60 @@ def run(command, log, receipt, *, cwd=REPO, timeout=600, check=True):
     return result.returncode
 
 
-def stage_source(source, destination, receipt, logs):
+def apply_managed_profile(destination, receipt, *, root=ROOT):
+    """Apply reviewed exact-input edits only to an isolated staging tree."""
+    destination, root = Path(destination), Path(root)
+    specification = root / "config/managed-adaptations.json"
+    profile = json.loads(specification.read_text())
+    if profile["commit"] != receipt["inputs"]["commit"]:
+        raise RuntimeError("Managed adaptations do not match the verified source commit")
+    pending = []
+    identities = []
+
+    def child(base, name):
+        path = base / name
+        if Path(name).is_absolute() or ".." in Path(name).parts or not path.resolve().is_relative_to(base.resolve()):
+            raise RuntimeError(f"Unsafe managed adaptation path: {name}")
+        return path
+
+    # Validate every input and edit before changing any file. A partial profile
+    # must never be mistaken for the reviewed managed configuration.
+    for entry in profile["adaptations"]:
+        path = child(destination, entry["path"])
+        before = sha(path)
+        if before != entry["sha256"]:
+            raise RuntimeError(f"Managed adaptation input hash mismatch: {entry['path']}")
+        text = path.read_text()
+        for replacement in entry["replacements"]:
+            if text.count(replacement["before"]) != 1:
+                raise RuntimeError(f"Managed adaptation match is not unique: {entry['path']}")
+            text = text.replace(replacement["before"], replacement["after"], 1)
+        pending.append((path, text.encode()))
+        identities.append({"path": entry["path"], "before_sha256": before,
+                           "after_sha256": hashlib.sha256(text.encode()).hexdigest(),
+                           "purpose": entry["purpose"]})
+    injected = []
+    for entry in profile["injected_files"]:
+        source = child(root, entry["source"])
+        target = child(destination, entry["path"])
+        if target.exists():
+            raise RuntimeError(f"Managed adaptation injection already exists: {entry['path']}")
+        data = source.read_bytes()
+        pending.append((target, data))
+        injected.append({"source": entry["source"], "path": entry["path"],
+                         "sha256": hashlib.sha256(data).hexdigest()})
+    for path, data in pending:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+    receipt["managed_profile"] = {
+        "name": profile["name"], "specification_sha256": sha(specification),
+        "adaptations": identities, "injected_files": injected,
+        "extra_sources": profile["extra_sources"],
+        "qualification": "staged source adaptations; embedded lifecycle not yet qualified",
+    }
+
+
+def stage_source(source, destination, receipt, logs, *, managed_profile=False):
     shutil.copytree(source, destination)
     run([sys.executable, destination / "utils/generate-command-code.py"],
         logs / "generate-commands.log", receipt, cwd=destination)
@@ -58,6 +111,8 @@ def stage_source(source, destination, receipt, logs):
         '#define REDIS_BUILD_ID_RAW SERVER_NAME VALKEY_VERSION REDIS_BUILD_ID REDIS_GIT_DIRTY REDIS_GIT_SHA1\n')
     receipt["generated_inputs"] = {name: sha(destination / name) for name in
                                    ("src/commands.def", "src/fmtargs.h", "src/release.h")}
+    if managed_profile:
+        apply_managed_profile(destination, receipt)
     return destination
 
 

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "name": "managed-embedding-foundation",
+  "commit": "7f1dffedff6de73058b2c2a389422b6ecd56c8fb",
+  "adaptations": [
+    {
+      "path": "src/module.c",
+      "sha256": "63696a4d5a10c1f1fb7ec6d973d1b13e7e6af3ff07f9f0b04da370f0d9a78116",
+      "purpose": "Resolve only supported static Lua entrypoints using actual translated C function addresses; preserve upstream module lifecycle.",
+      "replacements": [
+        {
+          "before": "static int moduleLoadStaticSymbol(void **out, void **handle, const char *symbol_name, const char *module_name) {\n    char symbol_full_name[128];\n    int n = snprintf(symbol_full_name, sizeof(symbol_full_name), \"%s_%s\", symbol_name, module_name);\n    if (n >= (int)sizeof(symbol_full_name)) {\n        serverLog(LL_WARNING, \"Module name is too long\");\n        return C_ERR;\n    }\n\n    /* Open a handle to self */\n    *handle = dlopen(NULL, RTLD_NOW);\n    if (*handle == NULL) {\n        char *error = dlerror();\n        if (error == NULL) error = \"Unknown error\";\n\n        serverLog(LL_WARNING, \"Failed to load static module: %s. %s\", module_name, error);\n        return C_ERR;\n    }\n\n    *out = dlsym(*handle, symbol_full_name);\n    if (*out == NULL) {\n        char *error = dlerror();\n        if (error == NULL) error = \"Unknown error\";\n\n        serverLog(LL_WARNING,\n                  \"Failed to load static module: %s. Could not load method: %s. %s\", module_name,\n                  symbol_full_name, error);\n        dlclose(*handle);\n        return C_ERR;\n    }\n    return C_OK;\n}\n",
+          "after": "#include \"dotcc/valkey_host.h\"\n\nstatic int moduleLoadStaticSymbol(void **out, void **handle, const char *symbol_name, const char *module_name) {\n    return valkeyManagedResolveStaticModuleSymbol(out, handle, symbol_name, module_name);\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "src/ae.c",
+      "sha256": "5f7b30f88e1d3daa19c5fbc124a64387951183f7d4607eea1c25484b2aa6ccb5",
+      "purpose": "Use the upstream select event backend against managed owner-scoped descriptors; do not impersonate an operating system.",
+      "replacements": [
+        {
+          "before": "/* Include the best multiplexing layer supported by this system.\n * The following should be ordered by performances, descending. */\n#ifdef HAVE_EVPORT\n#include \"ae_evport.c\"\n#else\n#ifdef HAVE_EPOLL\n#include \"ae_epoll.c\"\n#else\n#ifdef HAVE_KQUEUE\n#include \"ae_kqueue.c\"\n#else\n#include \"ae_select.c\"\n#endif\n#endif\n#endif\n",
+          "after": "/* The managed profile implements descriptor readiness through libc select. */\n#include \"ae_select.c\"\n"
+        }
+      ]
+    }
+  ],
+  "injected_files": [
+    {
+      "source": "src/Host/valkey_host.c",
+      "path": "src/dotcc/valkey_host.c"
+    },
+    {
+      "source": "src/Host/valkey_host.h",
+      "path": "src/dotcc/valkey_host.h"
+    }
+  ],
+  "extra_sources": [
+    {
+      "path": "src/dotcc/valkey_host.c",
+      "group": "managed-host",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src/dotcc"
+      ]
+    }
+  ]
+}

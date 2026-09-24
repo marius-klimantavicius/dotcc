@@ -16,6 +16,7 @@ def main():
     parser.add_argument("--no-fetch", action="store_true", help="verify existing reference inputs without fetching")
     parser.add_argument("--no-build-tools", action="store_true", help="snapshot existing compiler/postprocessor binaries")
     parser.add_argument("--probe", action="store_true", help="diagnose every unit without linking or publishing a product")
+    parser.add_argument("--managed-profile", action="store_true", help="apply reviewed staged host adaptations and include their C bridge")
     parser.add_argument("--unit", action="append", help="probe selected manifest paths (requires --probe)")
     parser.add_argument("--jobs", type=int, default=4, help="independent unit translation workers (1-16, default 4)")
     args = parser.parse_args()
@@ -38,7 +39,11 @@ def main():
         receipt["inputs"] = prepare_inputs(no_fetch=args.no_fetch)
         manifest_path = ROOT / "config/sources.json"
         manifest = json.loads(manifest_path.read_text())
-        records = manifest["sources"]
+        records = list(manifest["sources"])
+        extra_sources = []
+        if args.managed_profile:
+            extra_sources = json.loads((ROOT / "config/managed-adaptations.json").read_text())["extra_sources"]
+            records.extend(extra_sources)
         paths = [record["path"] for record in records]
         if not paths or len(paths) != len(set(paths)):
             raise RuntimeError("Empty or duplicate source manifest")
@@ -54,7 +59,10 @@ def main():
                     logs / (name + "-build.log"), receipt)
         receipt["compiler"] = snapshot_tools("DotCC", stage / "tools/compiler")
         receipt["postprocessor"] = snapshot_tools("DotCC.PostProcess", stage / "tools/postprocessor")
-        source = stage_source(Path(receipt["inputs"]["source_root"]), stage / "source", receipt, logs)
+        source = stage_source(Path(receipt["inputs"]["source_root"]), stage / "source", receipt, logs,
+                              managed_profile=args.managed_profile)
+        if args.managed_profile and receipt["managed_profile"]["extra_sources"] != extra_sources:
+            raise RuntimeError("Managed source inventory changed during staging; retry")
         compiler = stage / "tools/compiler/dotcc.dll"
         objects = []
         (stage / "objects").mkdir()
