@@ -104,12 +104,14 @@ public static partial class Compiler
     }
 
     /// <summary>
-    /// Resolve includes: scan every <c>-I</c> directory and input directory,
+    /// Resolve includes: scan every <c>-I</c> directory,
     /// then combine with the synthetic system headers. Returns both
     /// the <c>name → content</c> map the preprocessor reads AND a
     /// <c>name → on-disk path</c> map used to render dependency files
-    /// (<c>-MD</c>/<c>-MMD</c>). Last-wins (in the same dir order) so a user
-    /// <c>-I</c> overrides a system header, and the two maps stay consistent.
+    /// (<c>-MD</c>/<c>-MMD</c>). The first <c>-I</c> directory wins over later
+    /// directories and embedded headers. Quoted includes separately search the
+    /// physical including file's directory first; angle includes never gain an
+    /// implicit input-directory search. The two maps stay consistent.
     /// The synthetic system headers are embedded resources with no disk path,
     /// so they appear only in <c>Content</c> — never in <c>Paths</c>; that is
     /// exactly what keeps them out of the dependency file (nothing for
@@ -123,9 +125,8 @@ public static partial class Compiler
         var lazy = new Dictionary<string, string>(StringComparer.Ordinal);
         var paths = new Dictionary<string, string>(StringComparer.Ordinal);
         var dirs = (includeDirs ?? Array.Empty<string>())
-            .Concat(inputPaths.Select(p => Path.GetDirectoryName(Path.GetFullPath(p)) ?? "."))
             .Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
-        foreach (var dir in dirs)
+        foreach (var dir in dirs.Reverse())
         {
             if (!Directory.Exists(dir)) { continue; }
             // Include names have no extension restriction; non-headers are lazy.
@@ -213,7 +214,7 @@ public static partial class Compiler
             if (ContainsKey(name)) return SourceIdentity(name) is { } known ? RegisterPath(known) : name;
             // Traversal names (e.g. ../impl/body.c) are not descendants indexed
             // by the initial directory scan. Resolve them on demand as well.
-            foreach (var directory in _searchDirectories.Reverse())
+            foreach (var directory in _searchDirectories)
             {
                 var found = RegisterPath(Path.Combine(directory, name));
                 if (found is not null) return found;
