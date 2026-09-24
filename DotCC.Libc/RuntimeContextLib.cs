@@ -86,6 +86,7 @@ public static unsafe partial class Libc
                 if (disposed) return;
                 if (users != 0) throw new InvalidOperationException("C program context still has active bindings or threads.");
                 disposed = true;
+                DisposeFileDescriptors(this);
                 foreach (var item in FunctionArrays) item.Handle.Free();
                 FunctionArrays.Clear(); ArrayRoots.Clear();
                 Threads.Clear(); Mutexes.Clear(); Conditions.Clear(); Keys.Clear();

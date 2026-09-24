@@ -74,18 +74,12 @@ public static unsafe partial class Libc
                                         // pushback); -1 = none. See ReadWideFrom.
     }
 
-    // Slots 0/1/2 are the std streams. fopen() appends (or reuses a freed slot).
-    private static readonly List<FileSlot?> _files = new()
-    {
-        new FileSlot { Kind = FileSlot.K.In },
-        new FileSlot { Kind = FileSlot.K.Out, StatusFlags = 1 },
-        new FileSlot { Kind = FileSlot.K.Err, StatusFlags = 1 },
-    };
-    private static readonly Lock _filesLock = new();
-
-    // Stable native FILE structs for the std streams, so stdin/stdout/stderr
-    // can hand out a fixed FILE* for the program's lifetime.
-    private static FILE* _stdinP, _stdoutP, _stderrP;
+    // Runtime-bound descriptors are isolated; unbound calls use the legacy context.
+    private static List<FileSlot?> _files => FileDescriptors.Files;
+    private static Lock _filesLock => FileDescriptors.Sync;
+    private static ref FILE* _stdinP => ref FileDescriptors.Stdin;
+    private static ref FILE* _stdoutP => ref FileDescriptors.Stdout;
+    private static ref FILE* _stderrP => ref FileDescriptors.Stderr;
 
     // Thread-safe lazy init for the std-stream FILE*s: build under _filesLock
     // and publish only the finished pointer, so concurrent first-callers (e.g.
@@ -98,8 +92,7 @@ public static unsafe partial class Libc
         lock (_filesLock)
         {
             if (slotField != null) { return slotField; }
-            var p = (FILE*)NativeMemory.Alloc((nuint)sizeof(FILE));
-            p->_slot = slot;
+            var p = AllocateFileHandle(slot);
             slotField = p;       // publish only after _slot is set
             return p;
         }
@@ -117,10 +110,13 @@ public static unsafe partial class Libc
     private static FileSlot? Slot(FILE* f)
     {
         if (f == null) { return null; }
-        int i = f->_slot;
-        lock (_filesLock)
+        var state = FileDescriptors;
+        lock (state.Sync)
         {
-            return (uint)i < (uint)_files.Count ? _files[i] : null;
+            // Check ownership before dereferencing a foreign or retired FILE*.
+            if (!state.Handles.Contains((nint)f)) { errno = EBADF; return null; }
+            int i = f->_slot;
+            return (uint)i < (uint)state.Files.Count ? state.Files[i] : null;
         }
     }
 
@@ -281,9 +277,7 @@ public static unsafe partial class Libc
             catch (IOException) { errno = EIO; return null; }
         }
         int slot = RegisterFileSlot(stream);
-        var fp = (FILE*)NativeMemory.Alloc((nuint)sizeof(FILE));
-        fp->_slot = slot;
-        return fp;
+        return AllocateFileHandle(slot);
     }
 
     /// <summary>
@@ -335,12 +329,12 @@ public static unsafe partial class Libc
         if (slot == null) { return -1; }
         // Invalidate the slot index BEFORE freeing, so a double-fclose on the
         // same FILE* won't read freed memory and corrupt a different file's slot.
-        int savedSlot = stream->_slot;
         stream->_slot = -1;
         CloseSlot(slot);
         // Free the native FILE struct (but never the cached std-stream structs).
         if (stream != _stdinP && stream != _stdoutP && stream != _stderrP)
         {
+            lock (_filesLock) FileDescriptors.Handles.Remove((nint)stream);
             NativeMemory.Free(stream);
         }
         return 0;
@@ -351,7 +345,7 @@ public static unsafe partial class Libc
     /// indices ARE its fds (0/1/2 = std streams, fopen'd slots follow), so
     /// this is just the stored index. -1 for NULL / a closed stream.
     /// </summary>
-    public static int fileno(FILE* stream) => stream == null ? -1 : stream->_slot;
+    public static int fileno(FILE* stream) => Slot(stream) == null ? -1 : stream->_slot;
 
     /// <summary>
     /// POSIX <c>close(fd)</c> — close by fd. The slot-level half of
@@ -617,7 +611,7 @@ public static unsafe partial class Libc
     }
 
     // Shared buffer returned by tmpnam(NULL); kept in sync with L_tmpnam.
-    private static byte* _tmpnamBuf;
+    private static ref byte* _tmpnamBuf => ref FileDescriptors.Tmpnam;
 
     /// <summary>
     /// <c>tmpnam(s)</c> — produce a unique temp-file name (NOT created on disk,
@@ -779,9 +773,7 @@ public static unsafe partial class Libc
         }
         catch (IOException) { errno = EIO; return null; }
         int slot = RegisterFileSlot(stream);
-        var fp = (FILE*)NativeMemory.Alloc((nuint)sizeof(FILE));
-        fp->_slot = slot;
-        return fp;
+        return AllocateFileHandle(slot);
     }
 
     // ---------------------------------------------------------------------
