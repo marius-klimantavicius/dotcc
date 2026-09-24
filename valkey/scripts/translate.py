@@ -1,5 +1,6 @@
 """Translate the verified Valkey closure; publish only a built, processed library."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 import shutil
@@ -16,9 +17,12 @@ def main():
     parser.add_argument("--no-build-tools", action="store_true", help="snapshot existing compiler/postprocessor binaries")
     parser.add_argument("--probe", action="store_true", help="diagnose every unit without linking or publishing a product")
     parser.add_argument("--unit", action="append", help="probe selected manifest paths (requires --probe)")
+    parser.add_argument("--jobs", type=int, default=4, help="independent unit translation workers (1-16, default 4)")
     args = parser.parse_args()
     if args.unit and not args.probe:
         parser.error("--unit requires --probe; partial translation cannot publish a product")
+    if not 1 <= args.jobs <= 16:
+        parser.error("--jobs must be between 1 and 16")
     base = ROOT / "artifacts/translation"
     base.mkdir(parents=True, exist_ok=True)
     attempt = Path(tempfile.mkdtemp(prefix="attempt-", dir=base))
@@ -54,7 +58,9 @@ def main():
         compiler = stage / "tools/compiler/dotcc.dll"
         objects = []
         (stage / "objects").mkdir()
-        for index, record in enumerate(records):
+        def emit(index_record):
+            index, record = index_record
+            unit_receipt = {"commands": []}
             name = record["path"]
             output = stage / "objects" / (f"{index:03d}-" + Path(name).stem + ".cs")
             flags = ["-std=c11", "--instance-methods"]
@@ -64,14 +70,17 @@ def main():
                 flags.extend(["-I", source / directory])
             log = logs / (f"{index:03d}-" + Path(name).stem + ".log")
             code = run(["dotnet", compiler, *flags, source / name, "--emit=obj", "-o", output],
-                       log, receipt, check=False)
-            receipt["units"].append({"path": name, "source_sha256": sha(source / name),
-                                      "exit_code": code, "log": str(log.relative_to(ROOT))})
-            print(f"{'PASS' if code == 0 else 'FAIL'} {name}", flush=True)
-            write_receipt(attempt / "result.json", receipt)
-            if code and not args.probe:
-                raise RuntimeError(f"Translation failed: {name}; see {log}")
-            objects.append(output)
+                       log, unit_receipt, check=False)
+            unit = {"path": name, "source_sha256": sha(source / name),
+                    "exit_code": code, "log": str(log.relative_to(ROOT))}
+            return unit, output, unit_receipt["commands"]
+        with ThreadPoolExecutor(max_workers=args.jobs) as workers:
+            for unit, output, commands in workers.map(emit, enumerate(records)):
+                receipt["units"].append(unit)
+                receipt["commands"].extend(commands)
+                print(f"{'PASS' if unit['exit_code'] == 0 else 'FAIL'} {unit['path']}", flush=True)
+                write_receipt(attempt / "result.json", receipt)
+                objects.append(output)
         failures = [unit for unit in receipt["units"] if unit["exit_code"]]
         if failures:
             raise RuntimeError(f"{len(failures)} of {len(records)} translation units failed; see unit logs")

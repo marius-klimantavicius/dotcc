@@ -1,0 +1,1 @@
+POSIX libgen.h is not provided by MSVC. This fixture qualifies the Linux choice for double-slash roots.
