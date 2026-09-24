@@ -16,6 +16,11 @@ The final generated and post-processed C# project belongs at
 and post-processes in isolated staging before promoting validated output there;
 `generated/TranslatedValkey.Raw/` is a separate comparison artifact.
 
+The optional `--managed-profile` translation flag applies reviewed, hash-checked
+staging adaptations for managed descriptor readiness and static Lua symbols.
+This profile is being extended with lifecycle guards; it is not yet a qualified
+embedded server.
+
 The implementation must resolve Python like `sqlite/scripts/common.sh`, fetch
 verified inputs by default, support explicit `--no-fetch` with verified existing
 reference sources, and commit each significant milestone locally.

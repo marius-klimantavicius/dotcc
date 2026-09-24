@@ -6,12 +6,14 @@ product has passed a runtime gate yet.
 
 ## Input and pipeline infrastructure
 
-`python3 -m unittest discover -s valkey/tests` passes 20 tests: 12 acquisition
-checks and eight pipeline checks. These run the real campaign orchestration
+`python3 -m unittest discover -s valkey/tests` passes 28 tests: 12 acquisition
+checks, nine pipeline checks and seven managed-adaptation checks. These run the real campaign orchestration
 against isolated test sources and an explicitly test-only dotnet executable.
 They establish acquisition forwarding, source immutability, deterministic
 generators, interpreter selection, failure preservation and publication rollback;
-they do not establish C translation or C# compilation correctness.
+they do not establish complete C translation or C# compilation correctness.
+The adapter checks also compile and execute the C symbol resolver against test
+callbacks, verifying signatures and failure behavior, not Lua execution.
 
 The real `scripts/fetch.sh` default and `--no-fetch` paths both verified the
 pinned archive and all 1,922 reference files. The checked-in trusted manifest
@@ -72,8 +74,10 @@ no successful linked C# product. Shared runtime descriptor ownership has passed
 
 The latest broader regression snapshot passes 2,603 unit checks with three TLS
 assertion failures, and 669 functional checks with three TLS object-link failures
-and 1,131 optional oracle skips. The assertion expectations have been corrected;
-the cross-object pointer storage repair and fresh verification remain pending.
+and 1,131 optional oracle skips. A repaired snapshot now passes all 35 focused
+unit checks and all 11 TLS/pointer/standard-stream functional checks, including
+source and object modes. It follows the 785-check runtime/compiler batch and
+nine enabled GCC comparisons. A full product retry is in progress.
 Logs are `artifacts/probe/full-regression-{unit,functional}.log`. Five explicitly
 enabled GCC differential checks passed. These are compiler/runtime reductions,
 not translated Valkey execution.
