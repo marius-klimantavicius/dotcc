@@ -11,6 +11,11 @@ validation ledger. The plan specifies the
 `valkey/ManagedConsumer.slnx` deliverables; those scripts and projects are
 all required to complete the delivery.
 
+The final generated and post-processed C# project belongs at
+`valkey/generated/TranslatedValkey/TranslatedValkey.csproj`. The pipeline builds
+and post-processes in isolated staging before promoting validated output there;
+`generated/TranslatedValkey.Raw/` is a separate comparison artifact.
+
 The implementation must resolve Python like `sqlite/scripts/common.sh`, fetch
 verified inputs by default, support explicit `--no-fetch` with verified existing
 reference sources, and commit each significant milestone locally.
