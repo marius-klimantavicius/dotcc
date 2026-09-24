@@ -75,7 +75,8 @@ public static partial class LibSmb2
 
         public void ProcessManagedToken(byte* buffer, int length)
         {
-            bool emptyInput = buffer == null && length == 0;
+            // libsmb2 may retain a non-null pointer for a zero-length buffer.
+            bool emptyInput = length == 0;
             if (ExchangeState == KerberosExchangeState.InitialTokenPending)
             {
                 if (!emptyInput || OutputTokenLength == 0)
@@ -85,7 +86,7 @@ public static partial class LibSmb2
             }
             if (ExchangeState == KerberosExchangeState.Completed && emptyInput)
                 return; // Never replace an already validated AP-REP key with the ticket key.
-            if (ExchangeState != KerberosExchangeState.InitialTokenSent || (length == 0 && !emptyInput))
+            if (ExchangeState != KerberosExchangeState.InitialTokenSent)
                 throw new AuthenticationException("Unexpected Kerberos exchange transition");
 
             // Pinned libsmb2 calls once with NULL/0 from negotiate_cb to emit

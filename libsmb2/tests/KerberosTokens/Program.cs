@@ -41,14 +41,15 @@ internal static unsafe class Program
 
         // Match the actual non-mutual call sequence, including an empty final
         // security buffer. A prepared ticket or its initial emission is not completion.
-        foreach (bool encrypt in new[] { false, true })
+        foreach (var (encrypt, nonNullBuffer) in new[] { (false, false), (false, true), (true, false), (true, true) })
         {
             using var fixture = new AuthenticationFixture();
             Reject(() => fixture.ExportKey(), "prepared ticket cannot export key");
             fixture.SendInitialToken();
             Reject(() => fixture.ExportKey(), "initial emission cannot export key");
-            Require(fixture.CompleteWithServerToken(null) == 0 && fixture.State.Authenticated,
-                "empty final SMB security buffer completes non-mutual exchange");
+            int result = nonNullBuffer ? fixture.CompleteWithNonNullEmptyBuffer() : fixture.CompleteWithServerToken(null);
+            Require(result == 0 && fixture.State.Authenticated,
+                "empty final SMB security buffer completes non-mutual exchange regardless of pointer");
             Require(fixture.State.ExchangeState == KerberosExchangeState.Completed, "explicit completed state");
             Require(krb5_get_output_token_length(fixture.Auth) == 0 && krb5_get_output_token_buffer(fixture.Auth) == null,
                 "final empty response clears outgoing AP-REQ");
@@ -106,6 +107,8 @@ internal static unsafe class Program
             Require(fixture.CompleteWithServerToken(completed) == -1, "provider failure is sticky");
             Require(fixture.CompleteWithServerToken(null) == -1 && fixture.State.ExchangeState == KerberosExchangeState.Failed,
                 "empty callback cannot recover a failed exchange");
+            Require(fixture.CompleteWithNonNullEmptyBuffer() == -1 && fixture.State.ExchangeState == KerberosExchangeState.Failed,
+                "non-null empty buffer cannot recover a failed exchange");
             Reject(() => fixture.ExportKey(), "sticky failure refuses key export");
         }
 
@@ -128,6 +131,13 @@ internal static unsafe class Program
             fixture.SendInitialToken();
             Require(fixture.CompleteWithServerToken(token) == -1, "no AP-REP cannot complete a mutual context");
             Reject(() => fixture.ExportKey(), "mutual context cannot guess the session key");
+        }
+        using (var fixture = new AuthenticationFixture(mutual: true))
+        {
+            fixture.SendInitialToken();
+            Require(fixture.CompleteWithNonNullEmptyBuffer() == -1 && fixture.State.ExchangeState == KerberosExchangeState.Failed,
+                "non-null empty buffer cannot complete a mutual context");
+            Reject(() => fixture.ExportKey(), "mutual context still requires a validated AP-REP");
         }
         using (var fixture = new AuthenticationFixture())
         {
@@ -208,6 +218,14 @@ internal static unsafe class Program
         {
             if (!_initialSent) throw new InvalidOperationException("Test must send the AP-REQ before simulating a server response");
             fixed (byte* bytes = token) return krb5_session_request(Context, Auth, bytes, token?.Length ?? 0);
+        }
+        internal int CompleteWithNonNullEmptyBuffer()
+        {
+            if (!_initialSent) throw new InvalidOperationException("Test must send the AP-REQ before simulating a server response");
+            // An empty fixed managed array may yield null. This buffer is
+            // genuinely non-null but has zero protocol bytes to consume.
+            byte* buffer = stackalloc byte[1];
+            return krb5_session_request(Context, Auth, buffer, 0);
         }
         internal byte[] ExportKey()
         {

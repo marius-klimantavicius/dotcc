@@ -12,7 +12,10 @@ The executable uses the actual managed provider callbacks and locally generated
 AES keys/AP-REPs. Every server-response fixture first calls `SendInitialToken()`
 to return a prepared AP-REQ without completing authentication. It then calls
 `CompleteWithServerToken(...)`, including `null` to model successful SMB session
-setup with no security buffer. That empty completion clears the outgoing AP-REQ
+setup with no security buffer. `CompleteWithNonNullEmptyBuffer()` uses a real
+stack-allocated pointer and zero length to cover libsmb2's other empty-buffer
+representation, including mutual-context and sticky-failure rejection.
+Empty completion clears the outgoing AP-REQ
 and exports the service-ticket key only for a non-mutual context. Mutual contexts
 still require a validated AP-REP; failed contexts cannot recover via empty input.
 
