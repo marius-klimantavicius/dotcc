@@ -459,10 +459,10 @@ internal sealed partial class IrBuilder
             case C.TypedefEnum e: _typedefs[UserTypedefName(Tok(e.Arg6))] = RegisterEnum(Tok(e.Arg2), null, e.Arg4, Tok(e.Arg6)); break;
             case C.TypedefEnumAnon e: _typedefs[UserTypedefName(Tok(e.Arg5))] = RegisterEnum(null, null, e.Arg3, Tok(e.Arg5)); break;
             // struct/union definitions.
-            case C.TypedefAttributedStruct s: BuildStructDef(Tok(s.Arg3), s.Arg5, Tok(s.Arg7), false, GnuAggregateAlignment(s.Arg2), pack: SourcePacking.Of(fn)); break;
-            case C.TypedefAttributedUnion s: BuildStructDef(Tok(s.Arg3), s.Arg5, Tok(s.Arg7), true, GnuAggregateAlignment(s.Arg2), pack: SourcePacking.Of(fn)); break;
-            case C.AttributedStruct s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, false, GnuAggregateAlignment(s.Arg1), pack: SourcePacking.Of(fn)); break;
-            case C.AttributedUnion s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, true, GnuAggregateAlignment(s.Arg1), pack: SourcePacking.Of(fn)); break;
+            case C.TypedefAttributedStruct s: BuildStructDef(Tok(s.Arg3), s.Arg5, Tok(s.Arg7), false, GnuAggregateAlignment(s.Arg2), pack: GnuAggregatePack(s.Arg2, fn), pragmaPack: SourcePacking.Of(fn)); break;
+            case C.TypedefAttributedUnion s: BuildStructDef(Tok(s.Arg3), s.Arg5, Tok(s.Arg7), true, GnuAggregateAlignment(s.Arg2), pack: GnuAggregatePack(s.Arg2, fn), pragmaPack: SourcePacking.Of(fn)); break;
+            case C.AttributedStruct s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, false, GnuAggregateAlignment(s.Arg1), pack: GnuAggregatePack(s.Arg1, fn), pragmaPack: SourcePacking.Of(fn)); break;
+            case C.AttributedUnion s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, true, GnuAggregateAlignment(s.Arg1), pack: GnuAggregatePack(s.Arg1, fn), pragmaPack: SourcePacking.Of(fn)); break;
             case C.StructDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: false, pack: SourcePacking.Of(fn)); break;
             case C.UnionDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: true, pack: SourcePacking.Of(fn)); break;
             case C.TypedefStruct s: BuildStructDef(Tok(s.Arg2), s.Arg4, Tok(s.Arg6), isUnion: false, pack: SourcePacking.Of(fn)); break;
@@ -519,8 +519,6 @@ internal sealed partial class IrBuilder
             // storage; do not lower their adjusted C# pointer as a scalar slot.
             if (type.Unqualified is CType.Array array)
             {
-                if (initItem is not null)
-                    throw new IrUnsupportedException("initialized array in a file-scope declarator list is not supported");
                 if (_sawConstexprSpec)
                     throw new IrUnsupportedException("constexpr array typedef objects are not supported");
                 var arrayDeclaration = RegisterScalarGlobal(new Symbol
@@ -532,14 +530,19 @@ internal sealed partial class IrBuilder
                 if (arrayDeclaration is not null && storage != Storage.Extern)
                 {
                     var count = 1;
+                    var dimensions = new List<int>();
                     for (CType current = array; current.Unqualified is CType.Array dimension; current = dimension.Element)
                     {
                         if (dimension.Count is not { } bound)
                             throw new IrUnsupportedException("file-scope array typedef requires complete constant bounds");
+                        dimensions.Add(bound);
                         count = checked(count * bound);
                     }
                     var length = new LitInt(count.ToString(System.Globalization.CultureInfo.InvariantCulture), count) { Type = CType.Int };
-                    var initializer = new PinnedArray(array.FlatElement, null, length) { Type = new CType.Pointer(array.FlatElement) };
+                    var values = initItem is { } arrayInit
+                        ? BuildArrayElems(array.FlatElement, dimensions, ParseInitList(arrayInit)) : null;
+                    var initializer = new PinnedArray(array.FlatElement, values, values is null ? length : null)
+                        { Type = new CType.Pointer(array.FlatElement) };
                     DefineRegisteredGlobal(arrayDeclaration, initializer, false, SrcPos.From(typeItem));
                 }
                 return;
@@ -1085,6 +1088,8 @@ internal sealed partial class IrBuilder
                 case C.ParamUnnamedArraySized p: acc.Add(new(new CType.Pointer(ResolveType(p.Arg0)), "_p" + unnamed++)); break;
                 case C.ParamUnnamedArrayRowsUnsized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg3), "_p" + unnamed++)); break;
                 case C.ParamUnnamedArrayRowsSized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg4), "_p" + unnamed++)); break;
+                case C.ParamPointerToArray p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg5), Tok(p.Arg3))); break;
+                case C.ParamUnnamedPointerToArray p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg4), "_p" + unnamed++)); break;
                 // Function-pointer parameter: `Ret (*name)(paramTypes)`.
                 case C.ParamFnPtr p: acc.Add(new(FnPtrType(p.Arg0, p.Arg6), Tok(p.Arg3))); break;
                 case C.ParamFnPtrNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg3))); break;
@@ -1224,7 +1229,7 @@ internal sealed partial class IrBuilder
     /// for an anonymous <c>typedef struct {…} Alias</c>); <paramref name="alias"/>
     /// the typedef name if any. Emits a C# struct under a canonical name, records
     /// its fields for member-type resolution, and maps the typedef alias to it.</summary>
-    private void BuildStructDef(string? tag, Item memberList, string? alias, bool isUnion, int alignment = 0, int pack = 0)
+    private void BuildStructDef(string? tag, Item memberList, string? alias, bool isUnion, int alignment = 0, int pack = 0, int? pragmaPack = null)
     {
         var canonical = tag ?? alias ?? throw new IrUnsupportedException("struct with neither tag nor typedef name");
         RejectExternalDefinition(canonical);
@@ -1235,7 +1240,7 @@ internal sealed partial class IrBuilder
             // rebuilding would route later member accesses through fresh hidden
             // fields absent from the already-emitted canonical definition.
             _structPacks[canonical] = pack;
-            var fields = BuildStructFields(memberList, canonical);
+            var fields = BuildStructFields(memberList, canonical, pragmaPack);
             _structFields[canonical] = fields;
             _structIsUnion[canonical] = isUnion;
             _structAlignments[canonical] = alignment;
@@ -1329,13 +1334,13 @@ internal sealed partial class IrBuilder
     /// the <paramref name="owner"/> aggregate. Scalar/pointer, array (incl.
     /// multi-dim / flexible / non-primitive), bit-field, and C11 anonymous
     /// struct/union members are supported.</summary>
-    private List<StructField> BuildStructFields(Item memberList, string owner)
+    private List<StructField> BuildStructFields(Item memberList, string owner, int? pragmaPack = null)
     {
         var fields = new List<StructField>();
         void Member(Item m)
         {
             if (m.Content is not (C.MembersCons or C.MembersOne)
-                && SourcePacking.Of(m) != _structPacks.GetValueOrDefault(owner))
+                && SourcePacking.Of(m) != (pragmaPack ?? _structPacks.GetValueOrDefault(owner)))
                 throw new IrUnsupportedException("#pragma pack changes between members of one aggregate are not supported");
             switch (m.Content)
             {
@@ -1897,9 +1902,27 @@ internal sealed partial class IrBuilder
             C.AttrListCons list => Math.Max(Walk(list.Arg0), Walk(list.Arg2)),
             C.AttrCall a when Tok(a.Arg0).Trim('_') == "aligned" =>
                 CheckedAlignment(ConstEval(BuildExpr(a.Arg2)) ?? throw new IrUnsupportedException("non-constant GNU alignment")),
+            C.AttrIdent a when Tok(a.Arg0).Trim('_') == "packed" => 0,
             _ => throw new IrUnsupportedException("unsupported GNU aggregate attribute"),
         };
         return Walk(attrs.Arg3);
+    }
+
+    private static int GnuAggregatePack(Item attribute, Item declaration)
+    {
+        // GNU packed caps member alignment at one byte. An accompanying aligned
+        // attribute independently raises the aggregate alignment/tail padding.
+        // Reuse the same layout/storage model as #pragma pack(1), including
+        // flexible tails and nested aggregate fields, rather than only changing
+        // sizeof constants or dropping the annotation.
+        bool Packed(Item item) => item.Content switch
+        {
+            C.AttrListCons list => Packed(list.Arg0) || Packed(list.Arg2),
+            C.AttrIdent name => Tok(name.Arg0).Trim('_') == "packed",
+            _ => false,
+        };
+        return attribute.Content is C.GnuFunctionAttrs attrs && Packed(attrs.Arg3)
+            ? 1 : SourcePacking.Of(declaration);
     }
 
     private CType AlignasType(Item operandType, Item inner, Item it)

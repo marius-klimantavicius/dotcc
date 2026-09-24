@@ -27,6 +27,9 @@ internal sealed partial class IrBuilder
     private abstract record Init;
     private sealed record InitVal(CExpr Value) : Init;
     private sealed record InitGroup(IReadOnlyList<Init> Items) : Init;
+    // Member expressions need the selected aggregate field types, so retain
+    // the designators until their containing array/field supplies that type.
+    private sealed record InitMembers(Item Members) : Init;
     private sealed record InitAt(int Index, CExpr Value) : Init;
 
     /// <summary>Parse an <c>InitList</c> (its element list, with the optional
@@ -85,6 +88,7 @@ internal sealed partial class IrBuilder
     {
         C.InitElemExpr e => new InitVal(BuildExpr(e.Arg0)),
         C.InitElemNest nest => new InitGroup(ParseInitList(nest.Arg1)),
+        C.InitElemMembers members => Gated(1999, "designated aggregate initializers", it, new InitMembers(members.Arg1)),
         C.InitElemDesignated d => Gated(1999, "array designators", it, new InitAt(
             ConstEval(BuildExpr(d.Arg1)) is { } ix && ix >= 0 ? (int)ix
                 : throw new IrUnsupportedException("array designator index must be a constant non-negative integer"),
@@ -140,6 +144,7 @@ internal sealed partial class IrBuilder
         }
         return initializer switch
         {
+            InitMembers members => BuildStructDesignated(type, members.Members),
             InitVal value => value.Value,
             InitGroup group when type.Unqualified is CType.Named named && _structFields.ContainsKey(named.Name)
                 => BuildStructPositional(type, group.Items),
@@ -328,6 +333,9 @@ internal sealed partial class IrBuilder
             {
                 switch (it)
                 {
+                    case InitMembers members:
+                        outp.Add(BuildStructDesignated(elem, members.Members));
+                        break;
                     case InitGroup group:
                         outp.Add(BuildStructPositional(elem, group.Items));
                         break;

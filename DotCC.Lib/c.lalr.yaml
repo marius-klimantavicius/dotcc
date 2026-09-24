@@ -786,6 +786,8 @@ productions:
       - { lhs: Param, rhs: [Type, '[', E, ']'], action: paramUnnamedArraySized }
       - { lhs: Param, rhs: [Type, '[', ']', ArrDims], action: paramUnnamedArrayRowsUnsized }
       - { lhs: Param, rhs: [Type, '[', E, ']', ArrDims], action: paramUnnamedArrayRowsSized }
+      - { lhs: Param, rhs: [Type, '(', '*', ID, ')', ArrDims], action: paramPointerToArray }
+      - { lhs: Param, rhs: [Type, '(', '*', ')', ArrDims], action: paramUnnamedPointerToArray }
       # Function-pointer parameter — `void qsort(…, int (*cmp)(const void*, const void*))`.
       # Same `( * ID ) ( … )` shape as the local fn-ptr declarator; lowers to a
       # `delegate*<args…, ret>` parameter. (The typedef'd form `Comparator cmp`
@@ -1488,6 +1490,7 @@ productions:
     rules:
       - { lhs: InitElem, rhs: [E],                  action: initElemExpr }
       - { lhs: InitElem, rhs: ['{', InitList, '}'], action: initElemNest }
+      - { lhs: InitElem, rhs: ['{', MemberInitList, '}'], action: initElemMembers }
       # Array designator (C99): `[index] = value` inside an array initializer,
       # e.g. `int a[5] = {[2] = 9, [4] = 1}`. Conflict-free: `[` can't begin an
       # expression, so the lookahead after `{`/`,` cleanly picks this over the

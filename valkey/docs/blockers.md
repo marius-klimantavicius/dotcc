@@ -63,6 +63,40 @@ managed checks cover exact bytes, UTF-8, embedded NULs, return counts, readonly
 errors and redirected standard streams. Their actual source-unit retry is part
 of attempt-14em_5wb above.
 
+## B5 — Packed layouts and nested array designators
+
+GNU packed structs/unions now cap member alignment separately from source
+`#pragma pack` state, and combine with explicit aggregate alignment. The reduced
+SDS-style flexible-header fixture checks byte offsets, size, alignment, nested
+storage and actual reads/writes. Array element initializers now accept member
+designators, including reordered, repeated and omitted members in static and
+automatic storage. Native GCC and translated execution agree for both fixtures.
+The focused combined batch under `artifacts/probe/designated-arrays/` passes 263
+unit checks, seven functional checks and four explicitly enabled GCC oracles
+(including preprocessing and POSIX path components). Fourteen optional oracle
+cases were skipped. These are reduced checks, not full Valkey execution.
+
+## B6 — POSIX path components
+
+`dirname` and `basename` operate on writable C byte strings and return aliases
+into the input or stable libc-owned dot storage. Eighteen runtime checks cover
+roots, trailing/repeated slashes, empty/null inputs, UTF-8 bytes, lifetime and
+buffer boundaries. The native differential fixture confirms Linux path rules.
+This provides the path helpers used by persistence; it does not establish the
+remaining filesystem or persistence lifecycle.
+
+## B7 — Preprocessor integer widths and directive expansion
+
+Conditional expressions now use C intmax_t/uintmax_t signedness and conversions,
+with short-circuit evaluation. Macro-expanded include names, null directives and
+truthful GNU attribute capability queries are supported. This removes the false
+64-bit architecture rejection and the subsequently exposed `__has_attribute`
+parse failure. The final targeted batch passes 44 checks; five functional checks
+and two native GCC oracles pass (also covering the global array declaration-list
+repair). Logs live under `artifacts/reductions/preprocessor/`. Real-source retries
+emit `rax.c` and `valkey_strtod.c`; `quicklist.c` and `server.c` advance to typedef
+parameter shadowing. No target architecture macro is forged to bypass checks.
+
 ## Other observed frontend families
 
 The initial full probe also records typedef-name parameter shadowing,

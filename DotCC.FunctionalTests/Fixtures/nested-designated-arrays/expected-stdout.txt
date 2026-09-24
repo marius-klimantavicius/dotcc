@@ -1,0 +1,5 @@
+11 0 alpha 33 22
+55 44 beta 0
+66 0 gamma 77
+local 0 7 9
+local 0 7 10

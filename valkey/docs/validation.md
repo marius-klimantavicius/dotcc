@@ -50,6 +50,11 @@ The prior `attempt-re83cscr` records a pipeline option error (`--runtime=c` at
 object emission instead of link time); it is not a source-compatibility result.
 The corrected driver retains that first attempt instead of overwriting evidence.
 
+Independent object translations now use four workers by default (`--jobs 1..16`)
+while receipts retain manifest order. All failures are collected before linking
+is considered; a failed or partial run cannot publish a product. The same 20
+pipeline/acquisition checks pass after this change.
+
 The full default pipeline is implemented through linking, raw build,
 post-processing, final build and failure-safe promotion, but currently stops on
 real translation errors. It has not published a successful product.
