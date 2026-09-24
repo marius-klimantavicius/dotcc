@@ -67,7 +67,9 @@ public sealed class SizeofTypeArithTests
     {
         // `sizeof(int) * 8` — a foldable scalar type folds to a NUM in the token
         // stream (no `sizeof(...)` survives), so the wrap path never applies.
-        var emitted = Compiler.EmitCSharp(new[] { WriteTemp(Probe("sizeof(int) * 8")) });
+        // Object output contains translated code without the embedded runtime,
+        // whose hand-written C# may legitimately use sizeof(int).
+        var emitted = Compiler.EmitObject(WriteTemp(Probe("sizeof(int) * 8")));
         emitted.ShouldNotContain("sizeof(int)");
         emitted.ShouldContain("4UL * (ulong)(8)");
     }
