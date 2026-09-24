@@ -2,6 +2,8 @@
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import json
+import os
+import xml.etree.ElementTree as ET
 from pathlib import Path
 import shutil
 import sys
@@ -11,15 +13,35 @@ from inputs import prepare_inputs
 from pipeline import ROOT, REPO, run, sha, snapshot_tools, stage_source, write_receipt
 
 
+def link_host_sources(project, sources):
+    """Keep authored host code outside generated output, with relocatable links."""
+    tree = ET.parse(project)
+    root = tree.getroot()
+    for group in list(root):
+        if group.get("Label") == "ValkeyHost":
+            root.remove(group)
+    group = ET.SubElement(root, "ItemGroup", Label="ValkeyHost")
+    for source in sources:
+        ET.SubElement(group, "Compile", Include=os.path.relpath(source, project.parent),
+                      Link="Host/" + source.name)
+    ET.indent(tree, space="  ")
+    tree.write(project, encoding="unicode")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--no-fetch", action="store_true", help="verify existing reference inputs without fetching")
     parser.add_argument("--no-build-tools", action="store_true", help="snapshot existing compiler/postprocessor binaries")
     parser.add_argument("--probe", action="store_true", help="diagnose every unit without linking or publishing a product")
-    parser.add_argument("--managed-profile", action="store_true", help="apply reviewed staged host adaptations and include their C bridge")
+    parser.add_argument("--managed-profile", action="store_true", default=True,
+                        help="apply the managed embedding profile (default)")
+    parser.add_argument("--unadapted", action="store_false", dest="managed_profile",
+                        help="probe original sources without embedding adaptations (requires --probe)")
     parser.add_argument("--unit", action="append", help="probe selected manifest paths (requires --probe)")
     parser.add_argument("--jobs", type=int, default=4, help="independent unit translation workers (1-16, default 4)")
     args = parser.parse_args()
+    if not args.managed_profile and not args.probe:
+        parser.error("--unadapted requires --probe; products use the managed embedding profile")
     if args.unit and not args.probe:
         parser.error("--unit requires --probe; partial translation cannot publish a product")
     if not 1 <= args.jobs <= 16:
@@ -64,6 +86,25 @@ def main():
         if args.managed_profile and receipt["managed_profile"]["extra_sources"] != extra_sources:
             raise RuntimeError("Managed source inventory changed during staging; retry")
         compiler = stage / "tools/compiler/dotcc.dll"
+        overrides = []
+        authored = []
+        staged_host = []
+        if args.managed_profile:
+            override_file = stage / "dotcc-overrides.json"
+            shutil.copy2(ROOT / "config/dotcc-overrides.json", override_file)
+            overrides = ["--overrides-file", override_file]
+            authored = sorted((ROOT / "src/Host").glob("*.cs"))
+            if not authored:
+                raise RuntimeError("Managed host C# sources are missing")
+            receipt["authored_host"] = {str(p.relative_to(ROOT)): sha(p) for p in authored}
+            host_directory = stage / "authored-host"
+            host_directory.mkdir()
+            for path in authored:
+                target = host_directory / path.name
+                shutil.copy2(path, target)
+                if sha(target) != receipt["authored_host"][str(path.relative_to(ROOT))]:
+                    raise RuntimeError("Host sources changed during snapshot; retry")
+                staged_host.append(target)
         objects = []
         (stage / "objects").mkdir()
         def emit(index_record):
@@ -77,7 +118,7 @@ def main():
             for directory in record.get("include_dirs", []):
                 flags.extend(["-I", source / directory])
             log = logs / (f"{index:03d}-" + Path(name).stem + ".log")
-            code = run(["dotnet", compiler, *flags, source / name, "--emit=obj", "-o", output],
+            code = run(["dotnet", compiler, *flags, *overrides, source / name, "--emit=obj", "-o", output],
                        log, unit_receipt, check=False)
             unit = {"path": name, "source_sha256": sha(source / name),
                     "exit_code": code, "log": str(log.relative_to(ROOT))}
@@ -99,14 +140,22 @@ def main():
         raw = stage / "raw/TranslatedValkey"
         product = stage / "product/TranslatedValkey"
         run(["dotnet", compiler, *objects, "--emit=managedlib", "--instance-methods", "--runtime=c",
-             "--literal-pool", "--nest-types", "--class-name", "ValkeyCore", "--namespace", "Managed.Valkey.Generated",
+             "--literal-pool", "--nest-types", "--class-name", "ValkeyCore", "--namespace", "Managed.Database",
              "--split=size", "--split-size=102400", "-o", raw], logs / "link.log", receipt)
         project = "TranslatedValkey.csproj"
+        link_host_sources(raw / project, staged_host)
         run(["dotnet", "build", raw / project, "-c", "Release", "--nologo"], logs / "raw-build.log", receipt)
         shutil.copytree(raw, product, ignore=shutil.ignore_patterns("bin", "obj"))
+        link_host_sources(product / project, staged_host)
         run(["dotnet", "restore", product / project, "--nologo"], logs / "restore.log", receipt)
         run(["dotnet", stage / "tools/postprocessor/dotcc-postprocess.dll", product / project, "--in-place"],
             logs / "postprocess.log", receipt)
+        # Postprocessing sees isolated host copies for full semantic analysis;
+        # the product compiles the original authored C# without rewriting it.
+        if any(sha(p) != receipt["authored_host"][str(p.relative_to(ROOT))] for p in authored):
+            raise RuntimeError("Host sources changed during translation; retry")
+        link_host_sources(raw / project, authored)
+        link_host_sources(product / project, authored)
         run(["dotnet", "build", product / project, "-c", "Release", "--nologo"], logs / "product-build.log", receipt)
         # Validate complete trees before changing either public output. Restore both
         # previous directories if relocation or a final-path build fails.
@@ -124,6 +173,7 @@ def main():
                     backups.append((backup, target))
                 tree.rename(target)
                 moved.append(target)
+                link_host_sources(target / project, authored)
             run(["dotnet", "build", generated / "TranslatedValkey" / project, "-c", "Release", "--nologo"],
                 logs / "final-path-build.log", receipt)
         except BaseException:

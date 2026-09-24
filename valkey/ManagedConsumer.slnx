@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="generated/TranslatedValkey/TranslatedValkey.csproj" />
+  <Project Path="src/Managed.Valkey/Managed.Valkey.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>

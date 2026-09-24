@@ -1,8 +1,8 @@
 #ifndef DOTCC_VALKEY_HOST_H
 #define DOTCC_VALKEY_HOST_H
 
-/* Module-facing declarations for the authored C# static-Lua resolver.
- * The core exposes the same objects through its robj alias. */
+/* The core aliases ValkeyModuleString to robj. Only the separate module-facing
+ * bridge unit needs the opaque API declarations used by engine_lua.c. */
 #ifndef VALKEYMODULE_CORE
 typedef struct ValkeyModuleCtx ValkeyModuleCtx;
 typedef struct serverObject ValkeyModuleString;
@@ -32,9 +32,5 @@ int valkeyManagedCommandAllowed(struct client *c);
 int valkeyManagedConfigAllowed(const char *name, const char *value, int startup);
 void valkeyManagedShutdownCompleted(void);
 int bioManagedStop(int abandon);
-void valkeyManagedBioQueueCreated(void *queue);
-void valkeyManagedBioWorkerStarted(void *queue, long thread);
-int valkeyManagedBioJobAllowed(void);
-int valkeyManagedBioShouldStop(void *job);
 
 #endif

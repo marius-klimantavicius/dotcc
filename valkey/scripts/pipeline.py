@@ -37,10 +37,10 @@ def run(command, log, receipt, *, cwd=REPO, timeout=600, check=True):
     return result.returncode
 
 
-def apply_managed_profile(destination, receipt, *, root=ROOT):
+def apply_managed_profile(destination, receipt, *, root=ROOT, specification=None):
     """Apply reviewed exact-input edits only to an isolated staging tree."""
     destination, root = Path(destination), Path(root)
-    specification = root / "config/managed-adaptations.json"
+    specification = Path(specification) if specification is not None else root / "config/managed-adaptations.json"
     profile = json.loads(specification.read_text())
     if profile["commit"] != receipt["inputs"]["commit"]:
         raise RuntimeError("Managed adaptations do not match the verified source commit")
@@ -112,7 +112,8 @@ def stage_source(source, destination, receipt, logs, *, managed_profile=False):
     receipt["generated_inputs"] = {name: sha(destination / name) for name in
                                    ("src/commands.def", "src/fmtargs.h", "src/release.h")}
     if managed_profile:
-        apply_managed_profile(destination, receipt)
+        apply_managed_profile(destination, receipt,
+                              specification=None if managed_profile is True else managed_profile)
     return destination
 
 

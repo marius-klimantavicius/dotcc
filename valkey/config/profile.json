@@ -18,7 +18,7 @@
     "appendfsync": "always"
   },
   "managed_capability_guards": {
-    "status": "not implemented; inventory is a requirement, not an enforcement claim",
+    "status": "C# command/config policy is staged for the optional managed profile; managed runtime qualification remains pending",
     "reject": [
       "cluster-enabled yes",
       "replicaof",
@@ -35,7 +35,20 @@
       "BGSAVE",
       "BGREWRITEAOF"
     ],
-    "fork": "libc may return -1 and errno=EPERM; no child process or fake success"
+    "fork": "libc may return -1 and errno=EPERM; no child process or fake success",
+    "inventory_semantics": "required describes intended coverage, not a passing qualification result; deferred and translated-but-unqualified commands are denied unless an explicit exception is recorded",
+    "required_command_exceptions": [
+      {
+        "command": "CONFIG REWRITE",
+        "policy": "deny",
+        "reason": "Embedded startup has no writable configuration file; runtime configuration is supplied by the owning API."
+      },
+      {
+        "command": "SCRIPT DEBUG",
+        "policy": "deny",
+        "reason": "The Lua debugger requires process-level behavior outside the managed embedding profile."
+      }
+    ]
   },
   "commands": [
     {

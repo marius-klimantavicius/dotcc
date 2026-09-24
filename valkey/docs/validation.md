@@ -65,24 +65,46 @@ never publishes partial output. See [blockers.md](blockers.md).
 
 ## Remaining execution gates
 
-The latest full product attempt emits 161/164 units
-(`artifacts/translation/attempt-xjnipamb/result.json`). Debug, networking and
-server still fail before linking. See the precise receipts and reduced-test
-counts in [blockers.md](blockers.md). These attempts still have
-no successful linked C# product. Shared runtime descriptor ownership has passed
-31 focused checks; server startup and simultaneous managed owners remain open.
+Full object emission reached 164/164 units in `attempt-pacp2mye`, followed by
+166/166 in the earlier C-host profile (`attempt-gkmsc4bi`). The latter reached
+link-time external callback checks after header resolution and module opaque
+type fixes. Product host code has since moved to authored C# with declarations
+and typed overrides. The C#-host product has not yet linked and built successfully.
 
-The latest broader regression snapshot passes 2,603 unit checks with three TLS
-assertion failures, and 669 functional checks with three TLS object-link failures
-and 1,131 optional oracle skips. A repaired snapshot now passes all 35 focused
-unit checks and all 11 TLS/pointer/standard-stream functional checks, including
-source and object modes. It follows the 785-check runtime/compiler batch and
-nine enabled GCC comparisons. A full product retry is in progress.
-Logs are `artifacts/probe/full-regression-{unit,functional}.log`. Five explicitly
-enabled GCC differential checks passed. These are compiler/runtime reductions,
-not translated Valkey execution.
+The frozen regression snapshot in
+`artifacts/verification/runtime-ownership-eqoa3ltj` completed with 2,655 unit
+passes/four failures and 678 functional passes/eight failures/1,139 optional
+oracle skips. All twelve failures were traced to Zig stderr typing, global
+pointer increments, and assertions affected by prior ABI/diagnostic changes.
+The repaired build passed 412 focused unit checks and 12 functional checks,
+including calc/json-pretty execution, Zig stderr, global pointers and literal
+pool behavior. See `artifacts/reductions/regression-repairs/`. This does not claim
+a subsequent full-suite run.
+
+Owner-scoped C random generators passed 32 focused new/existing unit checks.
+Acquisition, immutable staging and pipeline orchestration passed 28 Python
+checks, including explicit no-fetch reuse, namespace selection, authored host
+links and failed-build rollback. Compiler/runtime reductions and native control
+checks do not establish translated Valkey execution.
 
 P1 ABI/host feasibility, P2 complete library emission/build and P3–P9 server,
 command, scripting, persistence, consumer and delivery gates remain open. Do not
 interpret source audits or native checks as translated execution passes. The
-root `ManagedConsumer.slnx` will be created with real projects, not empty targets.
+root `ManagedConsumer.slnx`, API and sample are authored; their build and runtime
+qualification await the real generated library.
+
+
+## C# host wiring and reduced adaptations
+
+The C# host profile emits all 164 units in `attempt-9aq_edkg`. Its first link
+invocation incorrectly passed the source-only override option; the driver now
+applies overrides only at object emission, where typed bindings are persisted.
+The 28 pipeline/acquisition checks pass with that correction. A diagnostic
+166-object link of the preceding native-host snapshot succeeded and exposed
+additional generated C# errors; it is not the product and was not published.
+
+The product now needs four adapted files and 13 exact replacements. Native
+compilation of the common dispatch hook passed, and a real unmodified `ae.c`
+translation selected `select` (`artifacts/reductions/reduced-profile/receipt.json`).
+C# host and consumer sources are authored and being checked against the actual
+generated API. They are not yet a qualified running managed Valkey server.

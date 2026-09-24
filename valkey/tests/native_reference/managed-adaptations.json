@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "name": "managed-embedding",
+  "commit": "7f1dffedff6de73058b2c2a389422b6ecd56c8fb",
+  "adaptations": [
+    {
+      "path": "src/module.c",
+      "sha256": "63696a4d5a10c1f1fb7ec6d973d1b13e7e6af3ff07f9f0b04da370f0d9a78116",
+      "purpose": "Resolve only supported static Lua entrypoints using actual translated C function addresses; preserve upstream module lifecycle.",
+      "replacements": [
+        {
+          "before": "static int moduleLoadStaticSymbol(void **out, void **handle, const char *symbol_name, const char *module_name) {\n    char symbol_full_name[128];\n    int n = snprintf(symbol_full_name, sizeof(symbol_full_name), \"%s_%s\", symbol_name, module_name);\n    if (n >= (int)sizeof(symbol_full_name)) {\n        serverLog(LL_WARNING, \"Module name is too long\");\n        return C_ERR;\n    }\n\n    /* Open a handle to self */\n    *handle = dlopen(NULL, RTLD_NOW);\n    if (*handle == NULL) {\n        char *error = dlerror();\n        if (error == NULL) error = \"Unknown error\";\n\n        serverLog(LL_WARNING, \"Failed to load static module: %s. %s\", module_name, error);\n        return C_ERR;\n    }\n\n    *out = dlsym(*handle, symbol_full_name);\n    if (*out == NULL) {\n        char *error = dlerror();\n        if (error == NULL) error = \"Unknown error\";\n\n        serverLog(LL_WARNING,\n                  \"Failed to load static module: %s. Could not load method: %s. %s\", module_name,\n                  symbol_full_name, error);\n        dlclose(*handle);\n        return C_ERR;\n    }\n    return C_OK;\n}\n",
+          "after": "#include \"dotcc/valkey_host.h\"\n\nstatic int moduleLoadStaticSymbol(void **out, void **handle, const char *symbol_name, const char *module_name) {\n    return valkeyManagedResolveStaticModuleSymbol(out, handle, symbol_name, module_name);\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "src/ae.c",
+      "sha256": "5f7b30f88e1d3daa19c5fbc124a64387951183f7d4607eea1c25484b2aa6ccb5",
+      "purpose": "Use the upstream select event backend against managed owner-scoped descriptors; do not impersonate an operating system.",
+      "replacements": [
+        {
+          "before": "/* Include the best multiplexing layer supported by this system.\n * The following should be ordered by performances, descending. */\n#ifdef HAVE_EVPORT\n#include \"ae_evport.c\"\n#else\n#ifdef HAVE_EPOLL\n#include \"ae_epoll.c\"\n#else\n#ifdef HAVE_KQUEUE\n#include \"ae_kqueue.c\"\n#else\n#include \"ae_select.c\"\n#endif\n#endif\n#endif\n",
+          "after": "/* The managed profile implements descriptor readiness through libc select. */\n#include \"ae_select.c\"\n"
+        }
+      ]
+    },
+    {
+      "path": "src/server.c",
+      "sha256": "31bf50440be2bcb241f0eaa919889715978df897cdde88f71ba2c34c362a5352",
+      "purpose": "Managed lifecycle capability guards and owner-safe startup/shutdown; preserve upstream server algorithms.",
+      "replacements": [
+        {
+          "before": "#include \"server.h\"",
+          "after": "#include \"server.h\"\n#include \"dotcc/valkey_host.h\""
+        },
+        {
+          "before": "    signal(SIGHUP, SIG_IGN);\n    signal(SIGPIPE, SIG_IGN);\n    setupSignalHandlers();\n    ThreadsManager_init();\n    makeThreadKillable();",
+          "after": "    /* Managed owner startup does not install process signal/cancellation handlers. */"
+        },
+        {
+          "before": "    /* Make sure the locale is set on startup based on the config file. */\n    if (setlocale(LC_COLLATE, server.locale_collate) == NULL) {\n        if (server.locale_collate[0] == '\\0') {\n            /* If we fail to set the locale_collate through environment variables, we maintain\n             * backward compatibility and do not exit. */\n            serverLog(LL_WARNING,\n                      \"Warning: Failed to configure LOCALE derived from the environment variables, \"\n                      \"using the default locale '%s'.\",\n                      setlocale(LC_COLLATE, NULL));\n        } else {\n            serverLog(LL_WARNING, \"Failed to configure LOCALE for invalid locale name: '%s'.\", server.locale_collate);\n            exit(1);\n        }\n    }\n\n",
+          "after": "    /* The managed profile uses its fixed C locale without changing process locale. */\n\n"
+        },
+        {
+          "before": "    adjustOpenFilesLimit();",
+          "after": "    /* Managed descriptors are owner-scoped; maxclients is capped by profile validation. */"
+        },
+        {
+          "before": "    applyWatchdogPeriod();",
+          "after": "    /* Process watchdog signals are outside the managed profile. */"
+        },
+        {
+          "before": "    uint64_t cmd_flags = getCommandFlags(c);",
+          "after": "    if (!valkeyManagedCommandAllowed(c)) {\n        rejectCommandSds(c, sdsnew(\"-ERR command or configuration is outside the managed profile\"), 1);\n        return C_OK;\n    }\n    uint64_t cmd_flags = getCommandFlags(c);"
+        },
+        {
+          "before": "    serverLog(LL_WARNING, \"%s is now ready to exit, bye bye...\", server.sentinel_mode ? \"Sentinel\" : \"Valkey\");\n    return C_OK;",
+          "after": "    serverLog(LL_WARNING, \"%s is now ready to exit, bye bye...\", server.sentinel_mode ? \"Sentinel\" : \"Valkey\");\n    valkeyManagedShutdownCompleted();\n    return C_OK;"
+        }
+      ]
+    },
+    {
+      "path": "src/config.c",
+      "sha256": "f912fc92d24aa4e24c2614479e5cdc63e8dddb7df21902c48482fd61abc55db2",
+      "purpose": "Managed lifecycle capability guards and owner-safe startup/shutdown; preserve upstream server algorithms.",
+      "replacements": [
+        {
+          "before": "#include \"server.h\"",
+          "after": "#include \"server.h\"\n#include \"dotcc/valkey_host.h\""
+        },
+        {
+          "before": "void configSetCommand(client *c) {",
+          "after": "void configSetCommand(client *c) {\n    /* Recheck at execution as well as before transaction enqueue. */\n    if (!valkeyManagedCommandAllowed(c)) {\n        addReplyError(c, \"Configuration is outside the managed profile\");\n        return;\n    }"
+        },
+        {
+          "before": "static int updateAppendOnly(const char **err) {",
+          "after": "static int updateAppendOnly(const char **err) {\n    if (server.aof_enabled && server.aof_state == AOF_OFF) {\n        *err = \"Runtime appendonly enablement is outside the managed profile\";\n        return 0;\n    }"
+        },
+        {
+          "before": "static int setConfigSaveOption(standardConfig *config, sds *argv, int argc, const char **err) {\n    UNUSED(config);",
+          "after": "static int setConfigSaveOption(standardConfig *config, sds *argv, int argc, const char **err) {\n    if (argc > 1 || (argc == 1 && argv[0][0])) {\n        *err = \"Automatic save schedules are outside the managed profile\";\n        return 0;\n    }\n    UNUSED(config);"
+        },
+        {
+          "before": "static int updateWatchdogPeriod(const char **err) {\n    UNUSED(err);\n    applyWatchdogPeriod();\n    return 1;\n}\n",
+          "after": "static int updateWatchdogPeriod(const char **err) {\n    if (server.watchdog_period) {\n        *err = \"Process watchdog is outside the managed profile\";\n        return 0;\n    }\n    return 1;\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "src/bio.c",
+      "sha256": "e11b400e55fae19e8bfc954520512006aa2f145cb01c4c5820cb93cb76def951",
+      "purpose": "Managed lifecycle capability guards and owner-safe startup/shutdown; preserve upstream server algorithms.",
+      "replacements": [
+        {
+          "before": "#include \"server.h\"",
+          "after": "#include \"server.h\"\n#include \"dotcc/valkey_host.h\""
+        },
+        {
+          "before": "    mutexQueue *bio_jobs;",
+          "after": "    mutexQueue *bio_jobs;\n    int managed_started;\n    int managed_stop_sent;"
+        },
+        {
+          "before": "} bio_job;",
+          "after": "} bio_job;\n\n/* One per-owner static marker, never counted or freed as a regular job. */\nstatic bio_job managed_bio_stop;\nstatic int managed_bio_stopping;"
+        },
+        {
+          "before": "            exit(1);\n        }\n    }\n    pthread_attr_destroy(&attr);",
+          "after": "            pthread_attr_destroy(&attr);\n            exit(1);\n        }\n        bwd->managed_started = 1;\n    }\n    pthread_attr_destroy(&attr);"
+        },
+        {
+          "before": "void bioSubmitJob(int type, bio_job *job) {\n    job->header.type = type;",
+          "after": "void bioSubmitJob(int type, bio_job *job) {\n    serverAssert(!managed_bio_stopping);\n    job->header.type = type;"
+        },
+        {
+          "before": "    sigset_t sigset;\n\n    valkey_set_thread_title(bwd->bio_worker_title);\n\n    serverSetCpuAffinity(server.bio_cpulist);\n\n    makeThreadKillable();\n\n    /* Block SIGALRM so we are sure that only the main thread will\n     * receive the watchdog signal. */\n    sigemptyset(&sigset);\n    sigaddset(&sigset, SIGALRM);\n    int err = pthread_sigmask(SIG_BLOCK, &sigset, NULL);\n    if (err)\n        serverLog(LL_WARNING, \"Warning: can't mask SIGALRM in bio.c thread: %s\", strerror(err));\n\n",
+          "after": "    /* No process signal masks, thread titles or affinity changes in this profile. */\n\n"
+        },
+        {
+          "before": "        bio_job *job = mutexQueuePop(bwd->bio_jobs, true);\n\n        /* Process",
+          "after": "        bio_job *job = mutexQueuePop(bwd->bio_jobs, true);\n        if (job == &managed_bio_stop) return NULL;\n\n        /* Process"
+        },
+        {
+          "before": "void *bioProcessBackgroundJobs(void *arg);",
+          "after": "void *bioProcessBackgroundJobs(void *arg);\n\n/* Called only after the owning executor stops command/job producers. Normal\n * stop appends a FIFO sentinel after all queued work. Terminal-fault cleanup\n * abandons queued callbacks but still joins every successfully started worker\n * before owner allocations can be reclaimed. A failed join retains the queues. */\nint bioManagedStop(int abandon) {\n    managed_bio_stopping = 1;\n    for (bio_worker_data *bwd = bio_workers; bwd != bio_worker_end; ++bwd) {\n        if (!bwd->bio_jobs) continue;\n        if (abandon) {\n            bio_job *job;\n            while ((job = mutexQueuePop(bwd->bio_jobs, false)) != NULL)\n                if (job != &managed_bio_stop) zfree(job);\n            bwd->managed_stop_sent = 0;\n        }\n        if (bwd->managed_started && !bwd->managed_stop_sent) {\n            mutexQueueAdd(bwd->bio_jobs, &managed_bio_stop);\n            bwd->managed_stop_sent = 1;\n        }\n    }\n    for (bio_worker_data *bwd = bio_workers; bwd != bio_worker_end; ++bwd) {\n        if (bwd->managed_started) {\n            if (pthread_join(bwd->bio_thread_id, NULL) != 0) return C_ERR;\n            bwd->managed_started = 0;\n        }\n    }\n    for (bio_worker_data *bwd = bio_workers; bwd != bio_worker_end; ++bwd) {\n        if (!bwd->bio_jobs) continue;\n        bio_job *job;\n        while ((job = mutexQueuePop(bwd->bio_jobs, false)) != NULL)\n            if (job != &managed_bio_stop) zfree(job);\n        mutexQueueRelease(bwd->bio_jobs);\n        bwd->bio_jobs = NULL;\n    }\n    return C_OK;\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "src/valkeymodule.h",
+      "sha256": "6d66a5871effaf47e804e28b0f85cc09910ef92b69342d65b07fee9724e1332f",
+      "purpose": "Preserve opaque module string/reply APIs with actual serverObject and CallReply tags so core and module callback pointer signatures agree across translated objects.",
+      "replacements": [
+        {
+          "before": "typedef struct ValkeyModuleString ValkeyModuleString;",
+          "after": "typedef struct serverObject ValkeyModuleString;"
+        },
+        {
+          "before": "typedef struct ValkeyModuleCallReply ValkeyModuleCallReply;",
+          "after": "typedef struct CallReply ValkeyModuleCallReply;"
+        }
+      ]
+    }
+  ],
+  "injected_files": [
+    {
+      "source": "tests/native_reference/valkey_host.c",
+      "path": "src/dotcc/valkey_host.c"
+    },
+    {
+      "source": "tests/native_reference/valkey_host.h",
+      "path": "src/dotcc/valkey_host.h"
+    },
+    {
+      "source": "tests/native_reference/valkey_lifecycle.c",
+      "path": "src/dotcc/valkey_lifecycle.c"
+    }
+  ],
+  "extra_sources": [
+    {
+      "path": "src/dotcc/valkey_host.c",
+      "group": "managed-host",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src/dotcc"
+      ]
+    },
+    {
+      "path": "src/dotcc/valkey_lifecycle.c",
+      "group": "managed-host",
+      "defines": [
+        "LUA_ENABLED",
+        "STATIC_LUA=1"
+      ],
+      "include_dirs": [
+        "src/dotcc",
+        "src",
+        "src/trace",
+        "deps/libvalkey/include",
+        "deps/linenoise",
+        "deps/hdr_histogram",
+        "deps/fpconv",
+        "deps/fast_float"
+      ]
+    }
+  ]
+}

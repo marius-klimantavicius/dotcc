@@ -71,6 +71,12 @@ class PipelineTests(unittest.TestCase):
         self.write_json(self.root / "config/sources.json", {"sources": [
             {"path": "src/server.c", "defines": ["PROFILE=1"], "include_dirs": ["src"]},
             {"path": "src/second.c", "defines": [], "include_dirs": ["src"]}]})
+        self.write_json(self.root / "config/managed-adaptations.json", {
+            "name": "test-managed", "commit": "0123456789abcdef", "adaptations": [],
+            "injected_files": [], "extra_sources": []})
+        self.write_json(self.root / "config/dotcc-overrides.json", {"functions": []})
+        (self.root / "src/Host").mkdir(parents=True)
+        (self.root / "src/Host/ValkeyHost.cs").write_text("// authored host fixture\n")
         self.seed_archive()
         # Real snapshot_tools verifies and copies these inert fixtures; only the
         # test dotnet executable consumes them. They never enter product sources.
@@ -184,6 +190,18 @@ urllib.request.urlopen = fixture_fetch
         self.assertTrue(receipt["inputs"]["download_attempted"])
         self.assertTrue(receipt["passed"])
         self.assertEqual(len(receipt["units"]), 2)
+        link = next(args for args in self.dotnet_commands() if "--emit=managedlib" in args)
+        self.assertEqual(link[link.index("--namespace") + 1], "Managed.Database")
+        self.assertNotIn("--overrides-file", link)
+        self.assertTrue(all("--overrides-file" in args for args in self.dotnet_commands() if "--emit=obj" in args))
+        self.assertIn("managed_profile", receipt)
+        for name in ("TranslatedValkey", "TranslatedValkey.Raw"):
+            project = self.root / "generated" / name / "TranslatedValkey.csproj"
+            import xml.etree.ElementTree as ET
+            include = ET.parse(project).find(".//Compile").get("Include")
+            self.assertFalse(Path(include).is_absolute())
+            self.assertEqual((project.parent / include).resolve(), self.root / "src/Host/ValkeyHost.cs")
+            self.assertFalse((project.parent / "ValkeyHost.cs").exists())
         builds = [args for args in self.dotnet_commands() if args[0] == "build"]
         self.assertTrue(any(args[1].endswith("DotCC.csproj") for args in builds))
         self.assertTrue(any(args[1].endswith("DotCC.PostProcess.csproj") for args in builds))
@@ -191,7 +209,7 @@ urllib.request.urlopen = fixture_fetch
         self.assertTrue((self.root / "generated/TranslatedValkey.Raw/TranslatedValkey.csproj").is_file())
 
     def test_managed_profile_includes_bridge_and_preserves_reference_tree(self):
-        (self.root / "src").mkdir()
+        (self.root / "src").mkdir(exist_ok=True)
         bridge = self.root / "src/bridge.c"
         bridge.write_text("int bridge(void) { return 12; }\n")
         self.write_json(self.root / "config/managed-adaptations.json", {

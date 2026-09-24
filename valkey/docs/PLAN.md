@@ -13,6 +13,12 @@ corrupting the owning server. This does not defer foreground persistence or
 permit a successful fake fork. Background snapshot design is not a prerequisite
 for the authorized initial profile.
 
+Implementation decisions: generated and post-processed code goes to
+`generated/TranslatedValkey` and uses namespace `Managed.Database`. Host
+implementations are authored C#, with C declarations in headers. Prefer typed
+function overrides over staged text replacements; retain small source hooks
+only where preserving an upstream function's internal behavior requires them.
+
 ## Objective and inherited conventions
 
 Translate Valkey's actual C server into a reusable unsafe C# library using dotcc,

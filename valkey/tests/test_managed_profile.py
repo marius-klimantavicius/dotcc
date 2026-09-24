@@ -80,7 +80,7 @@ class ManagedProfileTests(unittest.TestCase):
         self.assertEqual((self.stage / "first.c").read_text(), "first old\n")
 
     @unittest.skipUnless(shutil.which("cc"), "native C compiler is required")
-    def test_c_resolver_preserves_callback_signatures_and_rejects_unknown_symbols(self):
+    def test_native_reference_resolver_preserves_callback_signatures_and_rejects_unknown_symbols(self):
         # These test callbacks check pointer identity and invocation only; this
         # does not substitute for running the actual translated Lua engine.
         harness = self.root / "resolver-test.c"
@@ -109,8 +109,8 @@ int main(void) {
 }
 ''')
         binary = self.root / "resolver-test"
-        subprocess.run(["cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-I", str(ROOT / "src/Host"),
-                        str(ROOT / "src/Host/valkey_host.c"), str(harness), "-o", str(binary)], check=True)
+        subprocess.run(["cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-I", str(ROOT / "tests/native_reference"),
+                        str(ROOT / "tests/native_reference/valkey_host.c"), str(harness), "-o", str(binary)], check=True)
         subprocess.run([str(binary)], check=True)
 
 

@@ -1,0 +1,420 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "valkeyManagedResolveStaticModuleSymbol",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "void **",
+          "void **",
+          "const char *",
+          "const char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ResolveStaticModuleSymbol",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedStart",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.Start",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedProcessEvents",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ProcessEvents",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedStop",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.Stop",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedCleanup",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.Cleanup",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedPort",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.Port",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedState",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.State",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedLastError",
+      "signature": {
+        "returnType": "const char *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.LastError",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedCommandAllowed",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "struct client *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.CommandAllowed",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedConfigAllowed",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const char *",
+          "const char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ConfigAllowed",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedShutdownCompleted",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ShutdownCompleted",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "bioManagedStop",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.BioStop",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedBioQueueCreated",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.BioQueueCreated",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedBioWorkerStarted",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.BioWorkerStarted",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedBioJobAllowed",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.BioJobAllowed",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "valkeyManagedBioShouldStop",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.BioShouldStop",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "glob",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const char *",
+          "int",
+          "int (*)(const char *, int)",
+          "glob_t *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.Glob",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "globfree",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "glob_t *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.GlobFree",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sigaction",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "const struct sigaction *",
+          "struct sigaction *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.Sigaction",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "signal",
+      "signature": {
+        "returnType": "void (*)(int)",
+        "parameterTypes": [
+          "int",
+          "void (*)(int)"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.Signal",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "moduleLoadStaticSymbol",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "void **",
+          "void **",
+          "const char *",
+          "const char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ResolveStaticModuleSymbol",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "adjustOpenFilesLimit",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ManagedProcessSetup",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "setupSignalHandlers",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ManagedProcessSetup",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "ThreadsManager_init",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ManagedProcessSetup",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "makeThreadKillable",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ManagedProcessSetup",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "applyWatchdogPeriod",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.ManagedProcessSetup",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "pthread_sigmask",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int",
+          "const sigset_t *",
+          "sigset_t *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.PthreadSigmask",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "IOThreadMain",
+      "signature": {
+        "returnType": "void *",
+        "parameterTypes": [
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.ValkeyHost.RejectIoThread",
+        "passInstance": true
+      }
+    }
+  ]
+}

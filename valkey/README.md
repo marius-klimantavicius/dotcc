@@ -14,12 +14,17 @@ all required to complete the delivery.
 The final generated and post-processed C# project belongs at
 `valkey/generated/TranslatedValkey/TranslatedValkey.csproj`. The pipeline builds
 and post-processes in isolated staging before promoting validated output there;
-`generated/TranslatedValkey.Raw/` is a separate comparison artifact.
+`generated/TranslatedValkey.Raw/` is a separate comparison artifact. Generated
+code and the authored C# host use namespace `Managed.Database`.
 
-The optional `--managed-profile` translation flag applies reviewed, hash-checked
-staging adaptations for managed descriptor readiness and static Lua symbols.
-This profile is being extended with lifecycle guards; it is not yet a qualified
-embedded server.
+Translation applies reviewed, hash-checked staging edits from
+`config/managed-adaptations.json` by default. They connect upstream code to the
+C# host, choose the select event backend, and enforce the embedding profile.
+`ref/` stays unchanged. Host implementations live in `src/Host/*.cs`; C calls
+use declarations in `src/Host/valkey_host.h` and typed bindings from
+`config/dotcc-overrides.json`. Generated projects link the authored C# files.
+`--unadapted --probe` is available for original-source diagnostics.
+The embedded server is not yet qualified.
 
 The implementation must resolve Python like `sqlite/scripts/common.sh`, fetch
 verified inputs by default, support explicit `--no-fetch` with verified existing

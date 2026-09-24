@@ -1,22 +1,35 @@
 # Managed embedding profile
 
-`scripts/translate.sh --managed-profile` applies the exact-input adaptations in
-`config/managed-adaptations.json` to an isolated staging tree. Every changed
-upstream file must match its pinned SHA-256 and every replacement must be unique.
-The receipt records both input and output hashes. Reference sources are untouched.
+`scripts/translate.sh` uses the managed embedding profile by default. Whole-function
+host behavior is selected through typed `managedMethod` bindings in
+`config/dotcc-overrides.json`. Implementations live in `src/Host/*.cs`, with
+namespace `Managed.Database`; C declarations live in `src/Host/valkey_host.h`.
+The generated project links these authored files instead of generating host C#
+from C implementations. `--unadapted --probe` diagnoses original sources.
 
-The profile selects upstream `ae_select`, resolves static Lua entrypoints through
-real translated C function addresses, and aligns opaque module string/reply tags
-with their actual core identities (`serverObject` and `CallReply`). It preserves
-the opaque module API; it does not expose or replace the objects' implementation.
+Prefer function overrides and existing portable behavior over source edits.
+The static Lua resolver and process setup functions use overrides. Existing
+portable platform selection chooses `ae_select`; libc already supplies the fixed
+C locale. Unsupported signal registration returns an error. The managed host
+owns descriptor limits and worker lifetime, so process-only setup overrides are
+empty. None of these cases requires replacing C source text.
 
-The authored C lifecycle initializes upstream configuration, modules, listeners,
-Lua, workers and persistence before reporting readiness. Calls run serially on
-the managed owner's executor. Each call requires an explicit runtime binding.
-Event dispatch is nonblocking; the managed executor supplies pacing and stop
-requests. Startup options are checked before the upstream parser can perform
-side effects. Deferred commands are rejected before transaction queuing, and
-runtime configuration changes are checked again before their setters execute.
+`config/managed-adaptations.json` retains narrowly scoped staging edits for
+hooks inside command dispatch, completed shutdown, configuration dispatch and
+BIO queue/worker lifetime, plus opaque module type identities. These hooks need
+to preserve the surrounding upstream algorithms; whole-function overrides do
+not currently retain a callable original body. Every changed file must match its
+pinned SHA-256, and every replacement must be unique. Receipts record input and
+output hashes. Reference sources remain untouched.
+
+The C# lifecycle initializes upstream configuration, modules, listeners, Lua,
+workers and persistence before reporting readiness. Calls run serially on the
+owner's executor with explicit runtime binding. Event dispatch is nonblocking;
+the executor supplies pacing and stop requests. Startup options are checked
+before the upstream parser can perform side effects. Command checks run before
+transaction queuing and at common execution dispatch, including module calls.
+The configuration-dispatch hook also covers direct command execution during AOF
+replay. Runtime configuration policy is enforced before setters execute.
 
 The initial profile disables process signals/watchdogs, daemonization, process
 title changes, background persistence, replication, cluster and dynamic modules.
@@ -31,7 +44,9 @@ owner must reclaim remaining allocations and descriptors only after cleanup
 returns success. Failed startup and worker-fault paths require managed runtime
 qualification; the native harness cannot establish isolation or CLR unwinding.
 
-`scripts/host-oracle.sh --no-fetch` passes 32 checks against real adapted native
+The separate C reference host in `tests/native_reference/` is only a native
+control, not the product implementation. Its recorded
+`scripts/host-oracle.sh --no-fetch` run passed 32 checks against real adapted native
 Valkey objects, including static Lua, configuration/transaction guards, RDB
 reload, startup AOF replay, pending lazy-free work and worker shutdown. Its
 receipt is `artifacts/native-host/receipt.json`. Default invocation fetches and

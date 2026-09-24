@@ -31,7 +31,7 @@ def main():
             raise RuntimeError("Build the matching native baseline with scripts/oracle.sh first")
         receipt["native_baseline_receipt_sha256"] = sha(native_receipt)
         source = stage_source(Path(receipt["inputs"]["source_root"]), stage / "source", receipt, artifacts,
-                              managed_profile=True)
+                              managed_profile=ROOT / "tests/native_reference/managed-adaptations.json")
         native = ROOT / "build/native/source"
         group = json.loads((ROOT / "config/sources.json").read_text())["groups"]["server"]
         flags = ["-std=gnu11", "-O1", "-g", "-Wall", "-Werror"]
