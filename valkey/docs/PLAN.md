@@ -18,6 +18,8 @@ Implementation decisions: generated and post-processed code goes to
 implementations are authored C#, with C declarations in headers. Prefer typed
 function overrides over staged text replacements; retain small source hooks
 only where preserving an upstream function's internal behavior requires them.
+Link with `--literal-pool` and `--deduplicate-inline` so generated literals share
+storage and equivalent static inline methods are deduplicated.
 
 ## Objective and inherited conventions
 
@@ -465,7 +467,7 @@ boundary. Prototypes do not substitute for whole-server execution. Commit result
 - [ ] Repair real compiler/libc failures with regressions and full-source retries.
 - [ ] Translate the complete selected closure, including dependencies and static
       Lua registration; audit unresolved imports and command-handler reachability.
-- [ ] Implement the full `scripts/translate.sh` pipeline and final/raw project
+- [x] Implement the full `scripts/translate.sh` pipeline and final/raw project
       paths, receipts, failure-safe promotion and authored-source references.
 - [ ] Build raw/processed libraries with JIT and whole-assembly-rooted NativeAOT
       checks so trimming cannot hide uncompiled required handlers.
@@ -529,7 +531,7 @@ native Valkey; no fake fork or native persistence helper. Commit the milestone.
 
 ### P7 — Deliver the managed API and consumer solution
 
-- [ ] Create `valkey/ManagedConsumer.slnx` with the final generated library,
+- [x] Create `valkey/ManagedConsumer.slnx` with the final generated library,
       original authored projects and separate sample; validate its references.
 - [ ] Expose typed configuration, start/readiness/status, endpoint discovery,
       logs, stop and asynchronous disposal with explicit ownership/cancellation.
