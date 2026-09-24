@@ -17,7 +17,28 @@ public sealed class LinuxHeaderTests
     [InlineData("sys/uio.h")]
     [InlineData("netdb.h")]
     [InlineData("sys/ioctl.h")]
+    [InlineData("sys/param.h")]
+    [InlineData("syslog.h")]
     public void Linux_header_is_embedded(string header) => Compiler.SystemHeaders.ContainsKey(header).ShouldBeTrue();
+
+    [Fact]
+    public void Unix_parameter_and_syslog_constants_are_integer_constant_expressions()
+    {
+        const string source = """
+            #include <sys/param.h>
+            #include <syslog.h>
+            #if !defined(BYTE_ORDER) || (BYTE_ORDER != BIG_ENDIAN && BYTE_ORDER != LITTLE_ENDIAN)
+            #error Undefined or invalid BYTE_ORDER
+            #endif
+            _Static_assert(BYTE_ORDER == LITTLE_ENDIAN, "dotcc byte order");
+            _Static_assert(NBBY == 8, "bits per byte");
+            _Static_assert(LOG_LOCAL7 == 184, "facility encoding");
+            _Static_assert(LOG_UPTO(LOG_NOTICE) == 63, "priority mask");
+            _Static_assert(LOG_FAC(LOG_MAKEPRI(LOG_LOCAL3, LOG_ERR)) == 19, "facility extraction");
+            int parameter_header(void) { return MIN(8, 5) + MAX(3, 7); }
+            """;
+        WithSource(source, path => Compiler.EmitCSharp([path], emit: EmitMode.ManagedLib).ShouldContain("parameter_header"));
+    }
 
     [Fact]
     public void Linux_network_and_io_declarations_parse_and_bind()

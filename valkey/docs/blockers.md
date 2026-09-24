@@ -17,7 +17,11 @@ invent a logging runtime or claim that Valkey syslog hosting works. The reduced
 old-binary failure is `artifacts/probe/unix-parameter-headers-red.log`.
 The rebuilt object emits, all 15 `LinuxHeaderTests` pass, and the functional
 fixture plus native GCC oracle pass (two checks). Logs share the
-`artifacts/probe/unix-parameter-headers-` prefix. Full-source retry is in progress.
+`artifacts/probe/unix-parameter-headers-` prefix. Full-source retry
+`artifacts/translation/attempt-lehgdnjb/result.json` emits 60/164 units, with 104
+remaining failures. The parameter/logging header diagnostics are gone; newly
+reachable source exposes the recorded declarator/attribute families. The full
+functional suite passes 620 tests with 1,083 optional oracle skips after this fix.
 
 ## B2 — GNU allocation annotations
 

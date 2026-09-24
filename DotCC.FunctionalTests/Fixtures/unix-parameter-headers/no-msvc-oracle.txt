@@ -1,0 +1,1 @@
+POSIX sys/param.h and syslog.h are not provided by MSVC.
