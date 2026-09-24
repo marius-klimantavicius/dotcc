@@ -21,7 +21,7 @@ public static unsafe partial class Libc
     /// <summary>POSIX aligned allocation. Returns EINVAL/ENOMEM directly,
     /// preserving errno and the output pointer on failure. Zero size succeeds
     /// with a unique freeable pointer. LP64 size_t arguments retain all 64 bits.</summary>
-    public static int posix_memalign(void** memptr, ulong alignment, ulong size)
+    private static int AllocateAlignedRaw(void** memptr, ulong alignment, ulong size)
     {
         if (alignment < (ulong)sizeof(void*) || (alignment & (alignment - 1)) != 0)
             return EINVAL;

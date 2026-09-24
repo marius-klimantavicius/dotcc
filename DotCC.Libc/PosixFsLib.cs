@@ -221,7 +221,7 @@ public static unsafe partial class Libc
     {
         var cwd = Directory.GetCurrentDirectory();
         var need = Encoding.UTF8.GetByteCount(cwd) + 1;
-        if (buf == null) { buf = (byte*)NativeMemory.Alloc((nuint)need); size = (ulong)need; }
+        if (buf == null) { buf = (byte*)AllocateHeap((nuint)need); if (buf == null) { errno = ENOMEM; return null; } size = (ulong)need; }
         else if ((ulong)need > size) { errno = ERANGE; return null; }
         var n = Encoding.UTF8.GetBytes(cwd, new Span<byte>(buf, (int)size));
         buf[n] = 0;
@@ -332,7 +332,7 @@ public static unsafe partial class Libc
         catch (Exception) { errno = EINVAL; return null; }
         if (!File.Exists(full) && !Directory.Exists(full)) { errno = ENOENT; return null; }
         var need = Encoding.UTF8.GetByteCount(full) + 1;
-        if (resolved == null) { resolved = (byte*)NativeMemory.Alloc((nuint)need); }
+        if (resolved == null) { resolved = (byte*)AllocateHeap((nuint)need); if (resolved == null) { errno = ENOMEM; return null; } }
         var n = Encoding.UTF8.GetBytes(full, new Span<byte>(resolved, need));
         resolved[n] = 0;
         return resolved;

@@ -19,9 +19,8 @@ namespace DotCC.Libc;
 /// </summary>
 /// <remarks>
 /// Unsafe-by-design — every entry takes/returns raw pointers because that's
-/// what real C code passes around. The library never allocates a GC object on
-/// any hot path (Printf's <see cref="PrintfBuilder"/> is a ref struct,
-/// strlen/strcmp/memset are bare loops).
+/// what real C code passes around. Explicit program contexts track their native
+/// allocations so disposal can reclaim outstanding storage after callbacks stop.
 /// </remarks>
 public static unsafe partial class Libc
 {
@@ -39,8 +38,7 @@ public static unsafe partial class Libc
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void* malloc(int size)
     {
-        try { return _dbgHeap ? DbgAlloc((nuint)size, false) : NativeMemory.Alloc((nuint)size); }
-        catch (OutOfMemoryException) { return null; }
+        return AllocateHeap((nuint)size);
     }
 
     /// <inheritdoc cref="malloc(int)"/>
@@ -54,8 +52,7 @@ public static unsafe partial class Libc
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void free(void* p)
     {
-        if (FreeAlignedBlock(p)) { return; }
-        if (_dbgHeap) { DbgFree(p); } else { NativeMemory.Free(p); }
+        FreeHeap(p);
     }
 
     // ---------------------------------------------------------------------

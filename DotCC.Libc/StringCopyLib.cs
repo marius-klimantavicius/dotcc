@@ -23,13 +23,7 @@ public static unsafe partial class Libc
     {
         // Reserve the terminator before narrowing to the native allocation size.
         if (length >= (ulong)nuint.MaxValue) { errno = ENOMEM; return null; }
-        byte* result;
-        try
-        {
-            nuint bytes = (nuint)length + 1;
-            result = (byte*)(_dbgHeap ? DbgAlloc(bytes, false) : global::System.Runtime.InteropServices.NativeMemory.Alloc(bytes));
-        }
-        catch (global::System.OutOfMemoryException) { errno = ENOMEM; return null; }
+        byte* result = (byte*)AllocateHeap((nuint)length + 1);
         if (result == null) { errno = ENOMEM; return null; }
         if (length != 0) memcpy(result, source, length);
         result[length] = 0;

@@ -197,8 +197,7 @@ public static unsafe partial class Libc
     {
         nuint count = (nuint)n, elementSize = (nuint)size;
         if (elementSize != 0 && count > nuint.MaxValue / elementSize) { return null; }
-        try { return _dbgHeap ? DbgAlloc(count * elementSize, true) : NativeMemory.AllocZeroed(count, elementSize); }
-        catch (OutOfMemoryException) { return null; }
+        return AllocateHeap(count * elementSize, true);
     }
 
     /// <summary><c>realloc(p, size)</c> — resize a prior allocation, preserving
@@ -208,9 +207,7 @@ public static unsafe partial class Libc
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void* realloc(void* p, int size)
     {
-        if (ReallocAlignedBlock(p, size, out var replacement)) { return replacement; }
-        try { return _dbgHeap ? DbgRealloc(p, (nuint)size) : NativeMemory.Realloc(p, (nuint)size); }
-        catch (OutOfMemoryException) { return null; }
+        return ReallocateHeap(p, size);
     }
 
     // ---------------------------------------------------------------------
