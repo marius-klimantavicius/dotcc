@@ -1,0 +1,5 @@
+# Downloaded upstream inputs and reproducible campaign output.
+/ref/
+/generated/
+/build/
+/artifacts/
