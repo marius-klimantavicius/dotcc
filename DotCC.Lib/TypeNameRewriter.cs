@@ -306,9 +306,15 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         _previousSymbol = typedefToken.ID;
         var afterDeclarationType = false;
         var parenthesizedTypes = new Stack<bool>();
+        var aggregateScopes = new Stack<bool>();
+        var aggregateHead = false;
         for (var i = 0; i < body.Count; i++)
         {
             var t = body[i];
+            var closesAggregate = false;
+            if (t.ID == _openBraceSymbol) aggregateScopes.Push(aggregateHead);
+            else if (t.ID == _closeBraceSymbol && aggregateScopes.Count > 0)
+                closesAggregate = aggregateScopes.Pop();
             var closesParenthesizedType = false;
             if (t.ID == _openParenSymbol)
                 parenthesizedTypes.Push(_parenthesizedTypeOperators.Contains(_previousSymbol));
@@ -320,6 +326,8 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             var afterTag = i > 0 && (body[i - 1].ID == _structSymbol
                 || body[i - 1].ID == _unionSymbol
                 || body[i - 1].ID == _enumSymbol);
+            aggregateHead = t.ID == _structSymbol || t.ID == _unionSymbol || t.ID == _enumSymbol
+                || (afterTag && t.ID == _idSymbol);
             if (i != aliasIndex
                 && t.ID == _idSymbol
                 && !afterTag
@@ -338,7 +346,8 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             {
                 Emit(t);
                 _previousSymbol = t.ID;
-                afterDeclarationType = closesParenthesizedType || IsAfterDeclarationType(t, afterTag, afterDeclarationType);
+                afterDeclarationType = closesAggregate || closesParenthesizedType
+                    || IsAfterDeclarationType(t, afterTag, afterDeclarationType);
             }
         }
 

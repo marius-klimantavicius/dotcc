@@ -1,0 +1,4 @@
+glob=72 align=8 callbacks=32,40,48,56,64
+paths=0,8,16,24 callback=42 flags=5136 errors=1,2,3,4
+mmap=7,34,1048576 sync=6 advice=4,4 lock=3 failed=1 off=8
+utsname=390 align=1 fields=0,65,130,195,260,325 width=65

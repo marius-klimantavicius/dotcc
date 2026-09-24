@@ -34,7 +34,7 @@ public enum TypeQual
 /// diagnostics, <see cref="Describe"/> gives a source-C spelling. Qualifiers ride
 /// along via <see cref="Quals"/>.
 /// </summary>
-public abstract record CType
+public abstract partial record CType
 {
     /// <summary>Qualifiers applied to this type (const/volatile/_Atomic/restrict).</summary>
     public TypeQual Quals { get; init; } = TypeQual.None;
@@ -79,6 +79,7 @@ public abstract record CType
         Enum e => "enum " + e.Name,
         ComplexType => "_Complex",
         Float128Type => "_Float128",
+        UnsupportedVector v => v.Element.Describe() + " __attribute__((vector_size(" + v.Bytes + ")))",
         Optional o => "?" + o.Inner.Describe(),
         ErrorUnion eu => "!" + eu.Payload.Describe(),
         ErrorSetType => "anyerror",

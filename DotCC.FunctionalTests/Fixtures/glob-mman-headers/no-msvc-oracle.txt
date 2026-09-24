@@ -1,0 +1,1 @@
+This fixture validates Linux/glibc glob_t callback layout and Linux sys/mman constants, which are not supplied by the MSVC C library. GCC on Linux is the matching ABI oracle; no glob or mapping runtime operation is performed.

@@ -63,7 +63,7 @@ public static partial class Compiler
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, IReadOnlyList<Backends.CSharpGlobalSource> globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false, IEnumerable<string>? weakFunctions = null, IEnumerable<string>? weakReferences = null)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 2 — link with `dotcc <objs> -o <out>`.\n");
@@ -73,6 +73,10 @@ public static partial class Compiler
         sb.Append(SerializeFunctionOverrides(functionOverrides));
         sb.Append(SerializeExternalTypes(externalTypes));
         sb.Append(InlineFunctionMetadata.Version).Append('\n');
+        if (weakReferences != null)
+            foreach (var name in weakReferences) sb.Append(FragWeakReference).Append(name).Append('\n');
+        if (weakFunctions != null)
+            foreach (var name in weakFunctions) sb.Append(FragWeakFunction).Append(name).Append('\n');
         if (inlineMetadata != null)
             foreach (var (name, metadata) in inlineMetadata) sb.Append(metadata.Serialize(name)).Append('\n');
         if (usedFunctionAddresses != null)
@@ -165,8 +169,10 @@ public static partial class Compiler
         var importSpecs = new Dictionary<string, string>(StringComparer.Ordinal);
         var definedNames = new HashSet<string>(StringComparer.Ordinal);
 
-        foreach (var path in objectPaths)
+        var discardedWeakFunctions = ResolveWeakObjectFunctions(objectPaths);
+        for (int objectIndex = 0; objectIndex < objectPaths.Count; objectIndex++)
         {
+            var path = objectPaths[objectIndex];
             var text = File.ReadAllText(path).ReplaceLineEndings("\n");
             ValidateInstanceObject(text, path, outputOptions?.InstanceMethods == true);
             if (text.Split('\n').Contains("//!!dotcc-obj source-language:zig", StringComparer.Ordinal)) usesZig = true;
@@ -198,6 +204,8 @@ public static partial class Compiler
                 if (!objectAggregates.TryAdd(fields[0], new(fields[1] == "1", fields[2] == "1", fields[3])))
                     throw new CompileException("duplicate aggregate metadata for '" + fields[0] + "' in object '" + path + "'");
             }
+            if (text.Contains(FragWeakFunction, StringComparison.Ordinal) && !text.Contains(FragFunction, StringComparison.Ordinal))
+                throw new CompileException("Weak function objects require function boundaries; regenerate objects");
             if (UsesInlineOptions(outputOptions) && !text.Split('\n').Contains(InlineFunctionMetadata.Version, StringComparer.Ordinal))
                 throw new CompileException("Object lacks inline metadata; regenerate objects before using --deduplicate-inline or --export-inline");
             foreach (var line in text.Split('\n'))
@@ -205,6 +213,7 @@ public static partial class Compiler
                 if (line.StartsWith(InlineFunctionMetadata.Prefix, StringComparison.Ordinal))
                 {
                     var (name, metadata) = InlineFunctionMetadata.Parse(line);
+                    if (discardedWeakFunctions.Contains((objectIndex, name))) continue;
                     if (!inlineMetadata.TryAdd(name, metadata) && !replacedFunctions.Contains(name))
                         throw new CompileException("duplicate inline definition '" + name + "' in linked objects");
                 }
@@ -225,7 +234,8 @@ public static partial class Compiler
             var globalStatic = new StringBuilder();
             void FlushFunction()
             {
-                if (functionName != null && !(replacedFunctions.Contains(functionName) && functionSources.Any(f => f.Name == functionName)))
+                if (functionName != null && !discardedWeakFunctions.Contains((objectIndex, functionName))
+                    && !(replacedFunctions.Contains(functionName) && functionSources.Any(f => f.Name == functionName)))
                     functionSources.Add(new(functionName, functionBody.ToString()));
                 functionBody.Clear();
             }
@@ -304,6 +314,8 @@ public static partial class Compiler
             foreach (var line in text.Split('\n'))
             {
                 if (line.StartsWith(FragAggregate, StringComparison.Ordinal)) continue;
+                if (discardedWeakFunctions.Contains((objectIndex, "main")) &&
+                    (line.StartsWith(FragMain, StringComparison.Ordinal) || line.StartsWith(FragMainVoid, StringComparison.Ordinal) || line.StartsWith(FragMainErr, StringComparison.Ordinal))) continue;
                 if (line.StartsWith(FragFunction, StringComparison.Ordinal))
                 {
                     FlushFunction();

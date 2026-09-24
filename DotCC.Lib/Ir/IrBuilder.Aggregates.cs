@@ -30,6 +30,7 @@ internal sealed partial class IrBuilder
     // Member expressions need the selected aggregate field types, so retain
     // the designators until their containing array/field supplies that type.
     private sealed record InitMembers(Item Members) : Init;
+    private sealed record InitMember(string Path, Item Value) : Init;
     private sealed record InitAt(int Index, CExpr Value) : Init;
 
     /// <summary>Parse an <c>InitList</c> (its element list, with the optional
@@ -60,6 +61,14 @@ internal sealed partial class IrBuilder
             switch (n.Content)
             {
                 case C.InitListCons c: Walk(c.Arg0); AddElem(ParseInitElem(c.Arg2)); break;
+                case C.InitListMember c:
+                    Walk(c.Arg0);
+                    foreach (var (path, value) in ParseMemberInits(c.Arg2)) items.Add(new InitMember(path, value));
+                    break;
+                case C.InitListAfterMembers c:
+                    foreach (var (path, value) in ParseMemberInits(c.Arg0)) items.Add(new InitMember(path, value));
+                    AddElem(ParseInitElem(c.Arg2));
+                    break;
                 case C.InitListTrail t: Walk(t.Arg0); break;     // trailing comma — no element
                 case C.InitListOne o: AddElem(ParseInitElem(o.Arg0)); break;
                 default: AddElem(ParseInitElem(n)); break;
@@ -106,6 +115,7 @@ internal sealed partial class IrBuilder
     /// struct-array element builder converge.</summary>
     private StructInit BuildStructPositional(CType type, IReadOnlyList<Init> items)
     {
+        if (items.Any(item => item is InitMember)) return BuildStructMixed(type, items);
         // C's universal {0} initializer zeroes the complete aggregate, including
         // nested arrays. Avoid interpreting its one scalar as an array pointer.
         if (items is [InitVal { Value: LitInt { Value: 0 } }])
@@ -235,6 +245,22 @@ internal sealed partial class IrBuilder
     private void SetDesignatedMember(CType type, List<FieldInit> members, string field, Item valueItem)
     {
         var canonical = ((CType.Named)type.Unqualified).Name;
+        if (field.IndexOf('.') is var separator && separator >= 0)
+        {
+            var outer = field[..separator];
+            var outerFields = StructFieldsOf(type);
+            int selectedIndex = outerFields.FindIndex(member => member.Name == outer);
+            if (selectedIndex < 0)
+                throw new IrUnsupportedException($"unknown initializer member '{outer}' in struct/union '{canonical}'");
+            var selectedField = outerFields[selectedIndex];
+            SelectUnionMember(outer);
+            var index = members.FindIndex(member => member.Name == outer);
+            var nested = index >= 0 && members[index].Value is StructInit previous
+                ? previous.Members.ToList() : new List<FieldInit>();
+            SetDesignatedMember(selectedField.Type, nested, field[(separator + 1)..], valueItem);
+            Store(index, new FieldInit(outer, selectedField.Type, new StructInit(nested) { Type = selectedField.Type }));
+            return;
+        }
         if (_promoted.TryGetValue(canonical, out var promoted) && promoted.TryGetValue(field, out var path))
         {
             SelectUnionMember(path.Hidden);
@@ -286,14 +312,15 @@ internal sealed partial class IrBuilder
     private List<(string field, Item value)> ParseMemberInits(Item memberList)
     {
         var outp = new List<(string, Item)>();
-        void Add(Item mi)
+        void Add(Item mi, string prefix = "")
         {
             switch (mi.Content)
             {
-                case C.MemberInit m: outp.Add((Tok(m.Arg1), m.Arg3)); break;
-                case C.MemberInitBrace m: outp.Add((Tok(m.Arg1), m.Arg4)); break;
-                case C.MemberInitDesignated m: outp.Add((Tok(m.Arg1), m.Arg4)); break;
-                case C.MemberInitEmpty m: outp.Add((Tok(m.Arg1), mi)); break;
+                case C.MemberInitNested m: Add(m.Arg2, prefix + Tok(m.Arg1) + "."); break;
+                case C.MemberInit m: outp.Add((prefix + Tok(m.Arg1), m.Arg3)); break;
+                case C.MemberInitBrace m: outp.Add((prefix + Tok(m.Arg1), m.Arg4)); break;
+                case C.MemberInitDesignated m: outp.Add((prefix + Tok(m.Arg1), m.Arg4)); break;
+                case C.MemberInitEmpty m: outp.Add((prefix + Tok(m.Arg1), mi)); break;
                 default: throw new IrUnsupportedException(TypeName(mi.Content));
             }
         }
@@ -326,6 +353,11 @@ internal sealed partial class IrBuilder
         var elemName = (elem.Unqualified as CType.Named)?.Name;
         if (elemName is not null && _structFields.ContainsKey(elemName))
         {
+            if (items is [InitVal { Value: LitInt { Value: 0 } }])
+            {
+                int count = dims is { Count: > 0 } ? dims.Aggregate(1, (left, right) => checked(left * right)) : 1;
+                return Enumerable.Range(0, count).Select(_ => (CExpr)new DefaultLit { Type = elem }).ToList();
+            }
             // A struct/union element can initialize its members with braces or
             // copy an already-typed aggregate value (a variable/call/literal).
             var outp = new List<CExpr>(items.Count);
@@ -478,7 +510,7 @@ internal sealed partial class IrBuilder
         var elem = ResolveType(typeItem);
         var dims = TryConstDims(dimsItem) ?? throw new IrUnsupportedException("pointer-to-array needs constant dimensions");
         var type = new CType.Pointer(MakeArrayType(elem, dims));
-        var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
+        var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Auto, Alignment = DeclarationAlignment(typeItem, type) });
         return new DeclStmt(new[] { new LocalDecl(sym, initItem is { } ii ? BuildExpr(ii) : null) });
     }
 
@@ -489,7 +521,12 @@ internal sealed partial class IrBuilder
         var outp = new List<int>();
         foreach (var d in BuildArrDims(arrDims))
         {
-            if (ConstEval(d) is { } n) { outp.Add((int)n); }
+            if (ConstEval(d) is { } n)
+            {
+                if (n < 0 || n > int.MaxValue)
+                    throw new CompileException("array bound is negative or exceeds the supported maximum");
+                outp.Add((int)n);
+            }
             else { return null; }
         }
         return outp;
@@ -564,12 +601,12 @@ internal sealed partial class IrBuilder
     /// store). When <paramref name="csName"/> is non-null this is a static local —
     /// the field takes that mangled name and an alias symbol is registered so
     /// in-function uses resolve to it; otherwise it's a file-scope name.</summary>
-    private void BuildGlobalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, bool inferOuter = false)
+    private void BuildGlobalArr(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, bool inferOuter = false, int alignment = 0)
     {
         _sawThreadLocalSpec = false;
         var element = csName is not null ? ResolveStaticLocalType(typeItem) : ResolveType(typeItem);
         var threadLocal = _sawThreadLocalSpec;
-        BuildGlobalArr(element, nameItem, dimsItem, initItem, csName, DeclarationAlignment(typeItem), inferOuter, threadLocal);
+        BuildGlobalArr(element, nameItem, dimsItem, initItem, csName, Math.Max(alignment, DeclarationAlignment(typeItem, element)), inferOuter, threadLocal);
     }
 
     private void BuildGlobalArr(CType elem, Item nameItem, Item? dimsItem, Item? initItem, string? csName, int alignment = 0, bool inferOuter = false, bool threadLocal = false)
@@ -639,7 +676,7 @@ internal sealed partial class IrBuilder
             elems.Add(new LitInt(v.ToString(inv), v) { Type = CType.Int });
         }
         AddGlobalArray(Tok(nameItem), new CType.Array(elem, total),
-            new PinnedArray(elem, elems, null) { Type = new CType.Pointer(elem) }, csName, DeclarationAlignment(typeItem), threadLocal);
+            new PinnedArray(elem, elems, null) { Type = new CType.Pointer(elem) }, csName, DeclarationAlignment(typeItem, elem), threadLocal);
     }
 
     /// <summary>An <c>extern T a[N];</c> / <c>extern T a[];</c> declaration — storage
@@ -650,6 +687,7 @@ internal sealed partial class IrBuilder
     {
         _sawThreadLocalSpec = false;
         var element = ResolveType(typeItem);
+        DeclarationAlignment(typeItem, element);
         BuildExternArr(element, nameItem, dimsItem, _sawThreadLocalSpec, outerIncomplete);
     }
 

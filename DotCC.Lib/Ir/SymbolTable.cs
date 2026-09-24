@@ -115,6 +115,9 @@ public sealed class Symbol
     /// hint, the faithful lowering of C's "please inline this".</summary>
     public bool IsInline { get; set; }
 
+    /// <summary>The selected external function definition has GNU weak linkage.</summary>
+    public bool IsWeak { get; set; }
+
     /// <summary>True when the object has THREAD storage duration — C11
     /// <c>_Thread_local</c> (C23 <c>thread_local</c>) or Zig <c>threadlocal var</c>.
     /// The C# backend emits <c>[ThreadStatic]</c> on the global's field. Constraint

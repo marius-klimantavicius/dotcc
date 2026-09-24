@@ -590,6 +590,7 @@ productions:
       # C# already infers usage from the underlying type and the lexer hack
       # has done its job at parse time.
       - { lhs: Fn, rhs: ['typedef', Type, ID, ';'], action: typedefAlias }
+      - { lhs: Fn, rhs: ['typedef', Type, ID, GnuFormatAttr, ';'], action: typedefAttributedAlias }
       # `typedef T Name[N];` — a typedef of an ARRAY type (C89). The alias
       # denotes `T[N]`: a variable of the alias type declares an array, a
       # struct member becomes a fixed buffer, a parameter decays to `T*`, and
@@ -650,6 +651,7 @@ productions:
       # for variables (they're never exported), so this lowers exactly like a
       # plain global: a field in DotCcGlobals. The `static` keyword is consumed.
       - { lhs: Fn, rhs: ['static', Type, DeclItemList, ';'], action: globalStaticDeclList }
+      - { lhs: Fn, rhs: ['static', GnuFormatAttr, Type, DeclItemList, ';'], action: globalAttributedStaticDeclList }
 
       # `extern` declarations. An extern function prototype (`extern T f(args);`)
       # and an extern variable declaration (`extern T x;`) DECLARE without
@@ -698,6 +700,8 @@ productions:
       # `static` file-scope arrays — internal linkage is a no-op (never exported),
       # so each lowers identically to its plain counterpart; `static` is consumed.
       - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, ';'],                           action: globalStaticArr }
+      - { lhs: Fn, rhs: ['static', GnuFormatAttr, Type, ID, ArrDims, ';'], action: globalAttributedStaticArr }
+      - { lhs: Fn, rhs: ['static', GnuFormatAttr, Type, ID, ArrDims, '=', '{', InitList, '}', ';'], action: globalAttributedStaticArrInit }
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', ';'],                          action: globalStaticArrIncomplete }
       - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', '{', InitList, '}', ';'],  action: globalStaticArrInit }
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', '{', InitList, '}', ';'], action: globalStaticArrInitImplicit }
@@ -1484,6 +1488,8 @@ productions:
     rules:
       - { lhs: InitList, rhs: [InitElem], action: initListOne }
       - { lhs: InitList, rhs: [InitList, ',', InitElem], action: initListCons }
+      - { lhs: InitList, rhs: [InitList, ',', MemberInit], action: initListMember }
+      - { lhs: InitList, rhs: [MemberInitList, ',', InitElem], action: initListAfterMembers }
       - { lhs: InitList, rhs: [InitList, ','], action: initListTrail }
 
   - derivation: none
@@ -1502,6 +1508,7 @@ productions:
   - derivation: none
     rules:
       - { lhs: MemberInit, rhs: ['.', ID, '=', E], action: memberInit }
+      - { lhs: MemberInit, rhs: ['.', ID, MemberInit], action: memberInitNested }
       - { lhs: MemberInit, rhs: ['.', ID, '=', '{', InitList, '}'], action: memberInitBrace }
       - { lhs: MemberInit, rhs: ['.', ID, '=', '{', MemberInitList, '}'], action: memberInitDesignated }
       - { lhs: MemberInit, rhs: ['.', ID, '=', '{', '}'], action: memberInitEmpty }
@@ -1656,6 +1663,7 @@ productions:
       # in unsafe context. All dotcc structs are unmanaged (only primitive
       # and pointer fields) so this is always valid.
       - { lhs: Unary, rhs: ['sizeof', '(', Type, ')'], action: sizeofType }
+      - { lhs: Unary, rhs: ['sizeof', '(', Type, ArrDims, ')'], action: sizeofArrayType }
       # `sizeof expr` — the operand's synthesized CType (propagated up through
       # EmitContent) gives the size. Conflict-free with `sizeof ( Type )`: the
       # TypeNameRewriter has already split `sizeof ( ID )` (parenthesized expr,

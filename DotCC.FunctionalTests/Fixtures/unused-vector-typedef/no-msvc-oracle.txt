@@ -1,0 +1,1 @@
+The fixture contains GNU __attribute__((vector_size(16))) syntax, which the MSVC C oracle does not support. GCC provides the native differential; dotcc must accept only the unused declaration and reject actual vector use.

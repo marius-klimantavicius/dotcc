@@ -116,6 +116,42 @@ array type. This is still object-emission evidence only.
 
 ## Other observed frontend families
 
+## B9 — Attributes, weak definitions, array sizes and alignment
+
+The next full snapshot emits 154/164 units
+(`artifacts/translation/attempt-clliaomh/result.json`). This includes all bundled
+Lua units. Remaining first failures are recorded below; successful object
+emission does not establish successful C# compilation.
+
+- Unused GNU vector typedefs retain an explicitly unsupported vector type.
+  Any use or layout query diagnoses unsupported lowering; the attribute is never
+  erased into an ABI-incompatible scalar. The scalar CRC path can now translate.
+- GNU alignment on static scalar/array declarations reaches actual managed
+  aligned storage. `sizeof(T[N])` accepts constant dimensions and rejects negative
+  or unrepresentable bounds, preserving libvalkey's compile-time assertion.
+- Weak function definitions are resolved against strong definitions in either
+  source or object input order, with canonical callback addresses preserved.
+  Weak-only definitions remain callable; duplicate strong definitions and
+  unresolved optional weak references fail explicitly.
+- `_Alignas` checks the complete declared object, including pointers and mixed
+  declarator lists, and combines repeated requests. It no longer queries the
+  layout of void when aligning a void pointer.
+- Mixed positional/member initializers preserve nested designators, union member
+  selection and continuation through nested fields. Aggregate arrays accept the
+  universal `{0}` initializer. Buffered typedef parsing recognizes nested
+  aggregate fields whose names match typedefs.
+- Linux `glob.h`, `sys/mman.h` and `sys/utsname.h` now provide declarations and
+  native-checked layouts/constants. This does not provide their runtime backends.
+
+Validation is recorded under `artifacts/reductions/vector-typedef/` (65 units,
+four functional and four GCC oracle passes) and
+`artifacts/probe/alignas-combined-*.log` (64 units, 38 functional including 22
+weak-link checks, and four GCC oracle passes). The latter batch covers the newly
+reached initializer, alignment, typedef and header repairs after the 154/164
+snapshot. A targeted real-source retry is in progress.
+
+## Initial failure inventory
+
 The initial full probe also records typedef-name parameter shadowing,
 pointer-to-array members, incomplete multidimensional extern arrays,
 parenthesized function parameters, packed/vector attributes, missing additional
