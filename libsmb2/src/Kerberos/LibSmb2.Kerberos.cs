@@ -24,14 +24,19 @@ public static partial class LibSmb2
         public void Dispose() => Interlocked.Exchange(ref _state, null)?.Dispose();
     }
 
+    internal enum KerberosExchangeState { InitialTokenPending, InitialTokenSent, Completed, Failed }
+
     internal sealed unsafe class KerberosAuthState : IDisposable
     {
         public KerberosClient? Client { get; }
         public ApplicationSessionContext? Session { get; }
         public WindowsKerberosContext? Sspi { get; }
         public byte[] SessionKey { get; set; }
-        public bool Failed { get; set; }
-        public bool Authenticated { get; set; }
+        public KerberosExchangeState ExchangeState { get; set; }
+        public bool Failed => ExchangeState == KerberosExchangeState.Failed;
+        // Exchange completion permits key export. The SMB callback must still
+        // cryptographically verify the signed SESSION_SETUP before accepting it.
+        public bool Authenticated => ExchangeState == KerberosExchangeState.Completed;
         public byte* OutputToken { get; private set; }
         public int OutputTokenLength { get; private set; }
 
@@ -66,6 +71,39 @@ public static partial class LibSmb2
             }
             OutputToken = null;
             OutputTokenLength = 0;
+        }
+
+        public void ProcessManagedToken(byte* buffer, int length)
+        {
+            bool emptyInput = buffer == null && length == 0;
+            if (ExchangeState == KerberosExchangeState.InitialTokenPending)
+            {
+                if (!emptyInput || OutputTokenLength == 0)
+                    throw new AuthenticationException("Expected initial Kerberos token emission");
+                ExchangeState = KerberosExchangeState.InitialTokenSent;
+                return;
+            }
+            if (ExchangeState == KerberosExchangeState.Completed && emptyInput)
+                return; // Never replace an already validated AP-REP key with the ticket key.
+            if (ExchangeState != KerberosExchangeState.InitialTokenSent || (length == 0 && !emptyInput))
+                throw new AuthenticationException("Unexpected Kerberos exchange transition");
+
+            // Pinned libsmb2 calls once with NULL/0 from negotiate_cb to emit
+            // the AP-REQ, then from successful session_setup_cb with the server
+            // buffer. An empty second input is therefore final SMB success,
+            // not another request to emit the prepared ticket.
+            ReadOnlyMemory<byte> response = emptyInput ? ReadOnlyMemory<byte>.Empty
+                : KerberosTokenResponse.Read(new ReadOnlySpan<byte>(buffer, length).ToArray());
+            if (response.IsEmpty && (Session!.ClientSubSessionKey != null ||
+                (Session.ApReq.ApOptions & ApOptions.MutualRequired) != 0))
+                throw new AuthenticationException("A mutual Kerberos context requires an AP-REP");
+            byte[] key = (response.IsEmpty
+                ? Session!.ServiceTicketSessionKey ?? Session.SessionKey
+                : Session!.AuthenticateServiceResponse(response)).KeyValue.ToArray();
+            CryptographicOperations.ZeroMemory(SessionKey);
+            SessionKey = key;
+            ClearOutputToken();
+            ExchangeState = KerberosExchangeState.Completed;
         }
 
         public void Dispose()
@@ -182,29 +220,21 @@ public static partial class LibSmb2
                     CryptographicOperations.ZeroMemory(state.SessionKey);
                     state.SessionKey = sessionKey;
                 }
+                state.ExchangeState = state.Sspi.IsAuthenticated
+                    ? KerberosExchangeState.Completed : KerberosExchangeState.InitialTokenSent;
             }
-            else if (state.Session != null && buffer != null && length > 0)
+            else if (state.Session != null)
             {
-                ReadOnlyMemory<byte> response = KerberosTokenResponse.Read(new ReadOnlyMemory<byte>(
-                    new ReadOnlySpan<byte>(buffer, length).ToArray()));
-                if (response.IsEmpty && (state.Session.ClientSubSessionKey != null ||
-                    (state.Session.ApReq.ApOptions & ApOptions.MutualRequired) != 0))
-                    throw new AuthenticationException("A mutual Kerberos context requires an AP-REP");
-                byte[] sessionKey = (response.IsEmpty
-                    ? state.Session.ServiceTicketSessionKey ?? state.Session.SessionKey
-                    : state.Session.AuthenticateServiceResponse(response)).KeyValue.ToArray();
-                CryptographicOperations.ZeroMemory(state.SessionKey);
-                state.SessionKey = sessionKey;
-                state.ClearOutputToken();
+                state.ProcessManagedToken(buffer, length);
             }
-            if (buffer != null && length > 0) state.Authenticated = state.Sspi?.IsAuthenticated ?? true;
             authData->output_token.length = (ulong)state.OutputTokenLength;
             authData->output_token.value = state.OutputToken;
             return 0;
         }
         catch (Exception error)
         {
-            if (authData != null && authData->context != null) GetKerberosState(authData).Failed = true;
+            if (authData != null && authData->context != null)
+                GetKerberosState(authData).ExchangeState = KerberosExchangeState.Failed;
             SetKerberosError(smb2, error);
             return -1;
         }

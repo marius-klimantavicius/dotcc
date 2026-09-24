@@ -9,8 +9,15 @@ dotnet run --project libsmb2/tests/KerberosTokens -c Release \
 ```
 
 The executable uses the actual managed provider callbacks and locally generated
-AES keys/AP-REPs. It covers non-mutual request options and absence of an AP-REQ
-subkey, DER and BER SPNEGO completion without AP-REP, wrapped and unwrapped AP-REP,
+AES keys/AP-REPs. Every server-response fixture first calls `SendInitialToken()`
+to return a prepared AP-REQ without completing authentication. It then calls
+`CompleteWithServerToken(...)`, including `null` to model successful SMB session
+setup with no security buffer. That empty completion clears the outgoing AP-REQ
+and exports the service-ticket key only for a non-mutual context. Mutual contexts
+still require a validated AP-REP; failed contexts cannot recover via empty input.
+
+It also covers non-mutual request options and absence of an AP-REQ subkey,
+DER and BER SPNEGO completion without AP-REP, wrapped and unwrapped AP-REP,
 AP-REP subkey export, explicit Kerberos mechanism selection, failed/incomplete
 negotiation, sticky failure and mandatory signed final session setup even when
 SMB encryption disables the ordinary signing flag. SSPI package/mutual-authentication
@@ -25,6 +32,6 @@ on Windows/Linux, plus Windows current-logon SSPI. Exercise signed SMB2 and
 encrypted SMB3 list/read/write operations and confirm Kerberos was selected.
 Neither this executable nor a successful build establishes those results.
 
-Local verification on 2026-09-24: all 75 checks pass against both freshly
-regenerated raw and postprocessed products. Full 53-unit async translation and
-both product builds pass; `ManagedConsumer.slnx` builds with zero warnings/errors.
+The earlier 75-check fixture skipped initial token emission and did not cover
+empty final security buffers. Passing offline checks does not establish live
+keytab/password/FILE-cache interoperability or Windows SSPI interoperability.
