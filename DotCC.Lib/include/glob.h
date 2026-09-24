@@ -7,8 +7,8 @@
 #include <sys/stat.h>
 #endif
 
-/* Linux/glibc ABI declarations. These declarations do not supply a glob
-   implementation or claim success for filesystem operations. */
+/* Linux/glibc ABI declarations. The managed runtime supports filesystem glob
+   with C-locale matching; unsupported option flags report GLOB_ABORTED/ENOTSUP. */
 #define GLOB_ERR (1 << 0)
 #define GLOB_MARK (1 << 1)
 #define GLOB_NOSORT (1 << 2)

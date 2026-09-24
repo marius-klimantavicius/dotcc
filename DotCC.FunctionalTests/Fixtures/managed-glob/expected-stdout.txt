@@ -1,0 +1,13 @@
+*.conf 0 4 a.conf b.conf literal*.conf é.conf
+?.conf 0 2 a.conf b.conf
+[a-b].conf 0 2 a.conf b.conf
+[[:alpha:]].conf 0 2 a.conf b.conf
+[!b].conf 0 1 a.conf
+literal\*.conf 0 1 literal*.conf
+*.conf 0 5 .hidden.conf a.conf b.conf literal*.conf é.conf
+*/ 0 1 sub/
+error absent 2
+absent/* 2 0
+a.conf/* 3 0
+missing* 0 1 missing*
+errors 1
