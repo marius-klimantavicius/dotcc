@@ -10,11 +10,11 @@ namespace DotCC.Tests;
 /// <summary>
 /// Unit tests for faithful <c>volatile</c> lowering (phase V1). A volatile lvalue
 /// of eligible scalar type reads through <c>Volatile.Read(ref …)</c> and writes
-/// through <c>VolatileValue.Store(ref …, …)</c> — C's "do not elide/reorder this
-/// access" guarantee, rather than the old erase-the-qualifier behaviour. A
-/// non-eligible volatile lvalue (struct / pointer / enum) falls back to a plain
-/// access for now. End-to-end behaviour is checked by the <c>volatile-access/</c>
-/// functional fixture.
+/// through <c>Libc.VolatileValue.Store(ref …, …)</c> — C's "do not elide/reorder this
+/// access" guarantee. Scalar assignment/update helpers return C's stored or
+/// pre-update value while evaluating the target once. Pointer storage uses nint;
+/// enum accesses use same-width fences. End-to-end behaviour is covered by
+/// volatile-access and qualified-assignment-values fixtures.
 /// </summary>
 [Collection("Runtime")]
 public sealed class VolatileTests
@@ -38,8 +38,8 @@ public sealed class VolatileTests
             // The declaration itself is a plain field (`int n = 0`) — volatile is a
             // store/load property, not a storage difference.
             emitted.ShouldContain("int n = 0");
-            // Write → Volatile.Write; read → Volatile.Read.
-            emitted.ShouldContain("VolatileValue.Store(ref n, 5)");
+            // Store returns the written value; reads retain the volatile fence.
+            emitted.ShouldContain("Libc.VolatileValue.Store(ref n, 5)");
             emitted.ShouldContain("Volatile.Read(ref n)");
         }
         finally { File.Delete(src); }
@@ -54,8 +54,8 @@ public sealed class VolatileTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            // `n += 3` → VolatileValue.Store(ref n, Volatile.Read(ref n) + 3).
-            emitted.ShouldContain("VolatileValue.Update(ref n, 3, static (");
+            // The update helper reads/writes once and returns the new value.
+            emitted.ShouldContain("Libc.VolatileValue.Update(ref n, 3, static (");
         }
         finally { File.Delete(src); }
     }
@@ -71,11 +71,11 @@ public sealed class VolatileTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("VolatileValue.Store(ref s.trap, 1)");
+            emitted.ShouldContain("Libc.VolatileValue.Store(ref s.trap, 1)");
             emitted.ShouldContain("Volatile.Read(ref s.trap)");
             // The non-volatile sibling field stays a plain access.
             emitted.ShouldContain("s.n = 2");
-            emitted.ShouldNotContain("VolatileValue.Store(ref s.n");
+            emitted.ShouldNotContain("Libc.VolatileValue.Store(ref s.n");
         }
         finally { File.Delete(src); }
     }
@@ -91,7 +91,7 @@ public sealed class VolatileTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("VolatileValue.Store(ref p->trap, 7)");
+            emitted.ShouldContain("Libc.VolatileValue.Store(ref p->trap, 7)");
         }
         finally { File.Delete(src); }
     }
@@ -146,8 +146,8 @@ public sealed class VolatileTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("int* p =");                       // the pointer is plain
-            emitted.ShouldContain("VolatileValue.Store(ref *p, 5)");
-            emitted.ShouldContain("VolatileValue.Store(ref p[1], 7)");
+            emitted.ShouldContain("Libc.VolatileValue.Store(ref *p, 5)");
+            emitted.ShouldContain("Libc.VolatileValue.Store(ref p[1], 7)");
             emitted.ShouldContain("Volatile.Read(ref *p)");
             emitted.ShouldContain("Volatile.Read(ref p[1])");
         }
@@ -166,7 +166,7 @@ public sealed class VolatileTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("void poke(int* reg, int v)");
-            emitted.ShouldContain("VolatileValue.Store(ref *reg, v)");
+            emitted.ShouldContain("Libc.VolatileValue.Store(ref *reg, v)");
         }
         finally { File.Delete(src); }
     }
@@ -183,8 +183,8 @@ public sealed class VolatileTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("p = &b");                          // plain pointer reassignment
-            emitted.ShouldNotContain("VolatileValue.Store(ref p,");       // not a fenced pointer store
-            emitted.ShouldContain("VolatileValue.Store(ref *p, 3)");      // but the pointee write fences
+            emitted.ShouldNotContain("Libc.VolatileValue.Store(ref p,");       // not a fenced pointer store
+            emitted.ShouldContain("Libc.VolatileValue.Store(ref *p, 3)");      // but the pointee write fences
         }
         finally { File.Delete(src); }
     }

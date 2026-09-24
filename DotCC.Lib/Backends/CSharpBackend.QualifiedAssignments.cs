@@ -23,9 +23,9 @@ internal sealed partial class CSharpBackend
         if (target.Type.IsPointerLowered)
         {
             slot = QualifiedPointerSlot(target, slot);
-            return ($"({logical})VolatileValue.Store(ref {slot}, (nint)({stored}))", PUnary);
+            return ($"({logical})Libc.VolatileValue.Store(ref {slot}, (nint)({stored}))", PUnary);
         }
-        return ($"VolatileValue.Store(ref {slot}, {stored})", PPrimary);
+        return ($"Libc.VolatileValue.Store(ref {slot}, {stored})", PPrimary);
     }
 
     private (string, int) VolatileUpdate(CExpr target, BinOp operation, CExpr value, bool returnOld)
@@ -42,7 +42,7 @@ internal sealed partial class CSharpBackend
         var calculation = new Binary(operation, old, argument) { Type = resultType };
         string result = Coerced(calculation, type);
         if (pointer) result = $"(nint)({result})";
-        string call = $"VolatileValue.Update(ref {slot}, {Expr(value)}, static ({oldName}, {argName}) => unchecked({result}), {(returnOld ? "true" : "false")})";
+        string call = $"Libc.VolatileValue.Update(ref {slot}, {Expr(value)}, static ({oldName}, {argName}) => unchecked({result}), {(returnOld ? "true" : "false")})";
         return pointer ? ($"({Cs(type)}){call}", PUnary) : (call, PPrimary);
     }
 }

@@ -7,6 +7,8 @@ namespace DotCC.Libc;
 
 /// <summary>Value-producing C volatile operations. A read/modify/write is not
 /// an atomic RMW; each individual access has acquire/release ordering.</summary>
+public static unsafe partial class Libc
+{
 public static class VolatileValue
 {
     public static T Load<T>(ref T location) where T : unmanaged
@@ -36,4 +38,5 @@ public static class VolatileValue
         Store(ref location, after);
         return returnOld ? before : after;
     }
+}
 }

@@ -1445,7 +1445,7 @@ internal sealed partial class CSharpBackend
         // (CS0306): reinterpret its slot as `nint` through its address, cast back.
         : lv.Type.IsVolatile && lv.Type.IsPointerLowered
             ? ($"({Cs(lv.Type.Unqualified)}){VolatileRead(QualifiedPointerSlot(lv, bare))}", PUnary)
-        : lv.Type.IsVolatile && lv.Type.Unqualified is CType.Enum ? ($"VolatileValue.Load(ref {bare})", PPrimary)
+        : lv.Type.IsVolatile && lv.Type.Unqualified is CType.Enum ? ($"Libc.VolatileValue.Load(ref {bare})", PPrimary)
         : lv.Type.IsVolatile ? (VolatileRead(bare), PPrimary)
         : (bare, barePrec);
 

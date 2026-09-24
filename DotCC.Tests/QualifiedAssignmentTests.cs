@@ -12,10 +12,10 @@ public sealed class QualifiedAssignmentTests
     public void Volatile_store_returns_converted_byte_and_update_preserves_old_value()
     {
         byte storage = 2;
-        VolatileValue.Store(ref storage, (byte)255).ShouldBe((byte)255);
-        VolatileValue.Update(ref storage, 2, static (old, amount) => unchecked((byte)(old + amount)), true).ShouldBe((byte)255);
+        global::DotCC.Libc.Libc.VolatileValue.Store(ref storage, (byte)255).ShouldBe((byte)255);
+        global::DotCC.Libc.Libc.VolatileValue.Update(ref storage, 2, static (old, amount) => unchecked((byte)(old + amount)), true).ShouldBe((byte)255);
         storage.ShouldBe((byte)1);
-        VolatileValue.Update(ref storage, 4, static (old, amount) => (byte)(old + amount), false).ShouldBe((byte)5);
+        global::DotCC.Libc.Libc.VolatileValue.Update(ref storage, 4, static (old, amount) => (byte)(old + amount), false).ShouldBe((byte)5);
     }
 
     [Fact]
