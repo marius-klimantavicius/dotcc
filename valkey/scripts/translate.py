@@ -10,6 +10,7 @@ import sys
 import tempfile
 import time
 from inputs import prepare_inputs
+from notices import write_notices
 from pipeline import ROOT, REPO, run, sha, snapshot_tools, stage_source, write_receipt
 
 
@@ -143,6 +144,7 @@ def main():
              "--literal-pool", "--deduplicate-inline", "--nest-types", "--class-name", "ValkeyCore", "--namespace", "Managed.Database",
              "--split=size", "--split-size=102400", "-o", raw], logs / "link.log", receipt)
         project = "TranslatedValkey.csproj"
+        receipt["notices"] = write_notices(Path(receipt["inputs"]["source_root"]), ROOT / "config", raw / project)
         link_host_sources(raw / project, staged_host)
         run(["dotnet", "build", raw / project, "-c", "Release", "--nologo"], logs / "raw-build.log", receipt)
         shutil.copytree(raw, product, ignore=shutil.ignore_patterns("bin", "obj"))

@@ -37,8 +37,9 @@ class PipelineTests(unittest.TestCase):
             "with Path('generator-interpreters.txt').open('a') as stream:\n"
             "    stream.write(sys.executable + '\\n')\n")
         files = {
-            "src/server.c": b"int server(void) { return 42; }\n",
+            "src/server.c": b"/* Copyright fixture author; licensed for testing. */\nint server(void) { return 42; }\n",
             "src/second.c": b"int second(void) { return 24; }\n",
+            "COPYING": b"Fixture redistribution notice.\n",
             "src/fmtargs.h": b"/* fixed preamble */\n/* Everything below this line is generated */\nstale\n",
             "src/version.h": b'#define VALKEY_VERSION "fixture"\n',
             "utils/generate-command-code.py": (generator_prefix +
@@ -68,7 +69,9 @@ class PipelineTests(unittest.TestCase):
             "archive": self.archive.name, "url": "https://invalid.example/valkey-fixture.tar.gz",
             "archive_sha256": archive_sha, "file_manifest": "source-files.json",
             "file_manifest_sha256": sha(self.root / "config/source-files.json")})
-        self.write_json(self.root / "config/sources.json", {"sources": [
+        self.write_json(self.root / "config/licenses.json", {"commit": "0123456789abcdef", "files": [
+            {"path": "COPYING", "sha256": self.reference_hashes["COPYING"]}]})
+        self.write_json(self.root / "config/sources.json", {"commit": "0123456789abcdef", "sources": [
             {"path": "src/server.c", "defines": ["PROFILE=1"], "include_dirs": ["src"]},
             {"path": "src/second.c", "defines": [], "include_dirs": ["src"]}]})
         self.write_json(self.root / "config/managed-adaptations.json", {
@@ -204,6 +207,11 @@ urllib.request.urlopen = fixture_fetch
             self.assertFalse(Path(include).is_absolute())
             self.assertEqual((project.parent / include).resolve(), self.root / "src/Host/ValkeyHost.cs")
             self.assertFalse((project.parent / "ValkeyHost.cs").exists())
+            notice = (project.parent / "UPSTREAM-NOTICES.txt").read_text()
+            self.assertIn("Fixture redistribution notice.", notice)
+            self.assertIn("Copyright fixture author", notice)
+            self.assertNotIn("int server(void)", notice)
+            self.assertEqual(ET.parse(project).find(".//None").get("CopyToPublishDirectory"), "PreserveNewest")
         builds = [args for args in self.dotnet_commands() if args[0] == "build"]
         self.assertTrue(any(args[1].endswith("DotCC.csproj") for args in builds))
         self.assertTrue(any(args[1].endswith("DotCC.PostProcess.csproj") for args in builds))
