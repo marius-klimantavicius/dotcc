@@ -29,6 +29,15 @@ Cancellation of a Stop task cancels the wait, not a queued shutdown operation.
 Failed worker cleanup retains the owner; `ValkeyCleanupException.InstanceId`
 identifies that retained instance. It never frees memory underneath a worker.
 
+`GetPersistenceStatusAsync` queues an AOF progress snapshot on the owner executor.
+It reports enabled state, current AOF bytes, primary and completed-fsync
+replication offsets, and background fsync failure. The offsets are positions in
+the replication stream, not file byte counts. To observe completion of preceding
+writes, capture `PrimaryOffset` after their replies and wait for `FsyncedOffset`
+to reach it while checking `BackgroundFsyncFailed`. This does not promise
+directory-entry crash durability. Shutdown faults unserved snapshot requests;
+cancellation cancels waiting without interrupting the executor.
+
 The BCL-only TCP sample exercises two owners, binary values, lists/hashes,
 transactions, Lua, and a persistence restart:
 

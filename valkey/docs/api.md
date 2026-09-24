@@ -30,6 +30,16 @@ operation already submitted. A token already cancelled prevents submission.
 `DisposeAsync` uses `DisposeMode`, including the same failed-SAVE behavior.
 Concurrent stop requests settle after the chosen successful shutdown.
 
+`GetPersistenceStatusAsync` returns an immutable `ValkeyPersistenceStatus` from
+the owned executor after an event-loop turn. `AppendOnlyEnabled` and
+`AofCurrentBytes` describe AOF state; `PrimaryOffset` and `FsyncedOffset` describe
+replication-stream positions, not byte counts. The latter is upstream's published
+fsync completion offset and can be -1 when unavailable. Check
+`BackgroundFsyncFailed` while waiting for completion. These values do not imply
+directory-entry crash durability. Snapshot batches are bounded so observers do
+not starve events or shutdown. Startup failure and shutdown fault pending
+snapshots; cancellation only cancels the caller's wait.
+
 No runtime binding crosses an `await`. Executor entry and translated workers
 bind the appropriate runtime owner synchronously. If worker cleanup fails, the
 API retains the owner instead of releasing memory under a live worker;

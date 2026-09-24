@@ -15,11 +15,13 @@ public sealed class ValkeyServer : IAsyncDisposable
     private readonly TaskCompletionSource<IPEndPoint> ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly TaskCompletionSource completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly ConcurrentQueue<StopRequest> stops = new();
+    private readonly ConcurrentQueue<TaskCompletionSource<ValkeyPersistenceStatus>> persistenceSnapshots = new();
     private readonly AutoResetEvent wake = new(false);
     private readonly object gate = new();
     private readonly Thread executor;
     private ValkeyCore? core;
     private bool terminal, running;
+    private Exception? terminalFailure;
     private StopRequest? activeStop;
     // Failed cleanup must not let an unreachable startup failure lose its owner.
     // Such instances are retained, with their ID exposed by the cleanup error.
@@ -47,6 +49,29 @@ public sealed class ValkeyServer : IAsyncDisposable
         var server = new ValkeyServer(options);
         await server.Ready.ConfigureAwait(false);
         return server;
+    }
+
+    /// <summary>Read an AOF progress snapshot on the owning executor. Replication
+    /// offsets are stream positions, not AOF byte counts. Cancellation cancels
+    /// waiting; shutdown faults requests that have not yet been serviced.</summary>
+    public Task<ValkeyPersistenceStatus> GetPersistenceStatusAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        Task<ValkeyPersistenceStatus> pending;
+        lock (gate)
+        {
+            if (terminal)
+                pending = Task.FromException<ValkeyPersistenceStatus>(terminalFailure ??
+                    new ValkeyException("Valkey has stopped; persistence status is unavailable."));
+            else
+            {
+                var request = new TaskCompletionSource<ValkeyPersistenceStatus>(TaskCreationOptions.RunContinuationsAsynchronously);
+                persistenceSnapshots.Enqueue(request);
+                pending = request.Task;
+                wake.Set();
+            }
+        }
+        return cancellationToken.CanBeCanceled ? pending.WaitAsync(cancellationToken) : pending;
     }
 
     /// <summary>Queue an upstream SAVE/NOSAVE shutdown. Cancellation stops waiting
@@ -123,6 +148,17 @@ public sealed class ValkeyServer : IAsyncDisposable
                     if (ValkeyHost.ProcessEvents(core) < 0)
                         throw new ValkeyException(ReadError("Valkey event processing failed."));
                     if (ValkeyHost.State(core) == 3) { cleanStop = true; break; }
+                    // beforeSleep publishes completed BIO fsync offsets during
+                    // ProcessEvents. Bound the batch so observers cannot starve
+                    // event processing or a queued stop request.
+                    for (int i = 0; i < 32 && persistenceSnapshots.TryDequeue(out var request); ++i)
+                    {
+                        ref var server = ref core.Globals.server;
+                        request.TrySetResult(new ValkeyPersistenceStatus(
+                            server.aof_state != ValkeyCore.AOF_OFF, server.aof_current_size,
+                            server.primary_repl_offset, server.fsynced_reploff,
+                            Volatile.Read(ref server.aof_bio_fsync_status) != 0));
+                    }
                 }
                 // The bridge performs a nonblocking upstream event-loop turn.
                 // This wait bounds idle polling and wakes immediately for Stop.
@@ -192,6 +228,9 @@ public sealed class ValkeyServer : IAsyncDisposable
         lock (gate)
         {
             terminal = true;
+            terminalFailure = failure;
+            var snapshotFailure = failure ?? new ValkeyException("Valkey stopped before the persistence status request completed.");
+            while (persistenceSnapshots.TryDequeue(out var snapshot)) snapshot.TrySetException(snapshotFailure);
             if (!ready.Task.IsCompleted)
                 ready.TrySetException(failure ?? new ValkeyException("Valkey stopped before startup completed."));
             if (failure is null)
