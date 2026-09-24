@@ -1,0 +1,236 @@
+[
+  {
+    "c": "struct dictEntry",
+    "cs": "dictEntry",
+    "fields": [
+      "key",
+      "v",
+      "next"
+    ]
+  },
+  {
+    "c": "dictType",
+    "cs": "dictType",
+    "fields": [
+      "hashFunction",
+      "keyCompare",
+      "valDestructor",
+      "dictMetadataBytes"
+    ]
+  },
+  {
+    "c": "dict",
+    "cs": "dict",
+    "fields": [
+      "type",
+      "ht_table",
+      "rehashidx",
+      "pauseAutoResize"
+    ],
+    "flexible": [
+      "metadata"
+    ],
+    "fixed": [
+      "ht_used"
+    ]
+  },
+  {
+    "c": "robj",
+    "cs": "serverObject",
+    "fields": [
+      "val_ptr"
+    ]
+  },
+  {
+    "c": "client",
+    "cs": "client",
+    "fields": [
+      "id",
+      "conn",
+      "argv",
+      "cmd",
+      "db",
+      "reply"
+    ],
+    "promoted": [
+      "raw_flag1",
+      "raw_flag2"
+    ]
+  },
+  {
+    "c": "struct valkeyServer",
+    "cs": "valkeyServer",
+    "fields": [
+      "pid",
+      "port",
+      "el",
+      "db"
+    ]
+  },
+  {
+    "c": "serverDb",
+    "cs": "serverDb",
+    "fields": [
+      "id"
+    ]
+  },
+  {
+    "c": "struct sdshdr5",
+    "cs": "sdshdr5",
+    "fields": [
+      "flags"
+    ],
+    "flexible": [
+      "buf"
+    ]
+  },
+  {
+    "c": "struct sdshdr8",
+    "cs": "sdshdr8",
+    "fields": [
+      "len",
+      "alloc",
+      "flags"
+    ],
+    "flexible": [
+      "buf"
+    ]
+  },
+  {
+    "c": "struct sdshdr16",
+    "cs": "sdshdr16",
+    "fields": [
+      "len",
+      "alloc",
+      "flags"
+    ],
+    "flexible": [
+      "buf"
+    ]
+  },
+  {
+    "c": "struct sdshdr32",
+    "cs": "sdshdr32",
+    "fields": [
+      "len",
+      "alloc",
+      "flags"
+    ],
+    "flexible": [
+      "buf"
+    ]
+  },
+  {
+    "c": "struct sdshdr64",
+    "cs": "sdshdr64",
+    "fields": [
+      "len",
+      "alloc",
+      "flags"
+    ],
+    "flexible": [
+      "buf"
+    ]
+  },
+  {
+    "c": "aeFileEvent",
+    "cs": "aeFileEvent",
+    "fields": [
+      "mask",
+      "rfileProc",
+      "wfileProc",
+      "clientData"
+    ]
+  },
+  {
+    "c": "aeEventLoop",
+    "cs": "aeEventLoop",
+    "fields": [
+      "maxfd",
+      "events",
+      "fired",
+      "beforesleep",
+      "aftersleep",
+      "poll_mutex",
+      "flags"
+    ]
+  },
+  {
+    "c": "connection",
+    "cs": "connection",
+    "fields": [
+      "type",
+      "state",
+      "fd",
+      "write_handler",
+      "read_handler"
+    ]
+  },
+  {
+    "c": "struct serverCommand",
+    "cs": "serverCommand",
+    "fields": [
+      "declared_name",
+      "proc",
+      "flags",
+      "subcommands"
+    ]
+  },
+  {
+    "c": "lua_State",
+    "cs": "lua_State",
+    "fields": [
+      "status",
+      "top",
+      "base",
+      "l_G",
+      "ci",
+      "stack",
+      "hook",
+      "l_gt",
+      "env",
+      "errfunc"
+    ]
+  },
+  {
+    "c": "global_State",
+    "cs": "global_State",
+    "fields": [
+      "frealloc",
+      "ud",
+      "mainthread"
+    ]
+  },
+  {
+    "c": "TValue",
+    "cs": "lua_TValue",
+    "fields": [
+      "value",
+      "tt"
+    ]
+  },
+  {
+    "c": "CallInfo",
+    "cs": "CallInfo",
+    "fields": [
+      "base",
+      "func",
+      "top",
+      "savedpc"
+    ]
+  },
+  {
+    "c": "lua_Debug",
+    "cs": "lua_Debug",
+    "fields": [
+      "event",
+      "name",
+      "source",
+      "currentline",
+      "i_ci"
+    ],
+    "fixed": [
+      "short_src"
+    ]
+  }
+]
