@@ -192,6 +192,8 @@ urllib.request.urlopen = fixture_fetch
         self.assertEqual(len(receipt["units"]), 2)
         link = next(args for args in self.dotnet_commands() if "--emit=managedlib" in args)
         self.assertEqual(link[link.index("--namespace") + 1], "Managed.Database")
+        self.assertIn("--literal-pool", link)
+        self.assertIn("--deduplicate-inline", link)
         self.assertNotIn("--overrides-file", link)
         self.assertTrue(all("--overrides-file" in args for args in self.dotnet_commands() if "--emit=obj" in args))
         self.assertIn("managed_profile", receipt)

@@ -140,7 +140,7 @@ def main():
         raw = stage / "raw/TranslatedValkey"
         product = stage / "product/TranslatedValkey"
         run(["dotnet", compiler, *objects, "--emit=managedlib", "--instance-methods", "--runtime=c",
-             "--literal-pool", "--nest-types", "--class-name", "ValkeyCore", "--namespace", "Managed.Database",
+             "--literal-pool", "--deduplicate-inline", "--nest-types", "--class-name", "ValkeyCore", "--namespace", "Managed.Database",
              "--split=size", "--split-size=102400", "-o", raw], logs / "link.log", receipt)
         project = "TranslatedValkey.csproj"
         link_host_sources(raw / project, staged_host)

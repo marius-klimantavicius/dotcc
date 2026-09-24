@@ -15,7 +15,8 @@ The final generated and post-processed C# project belongs at
 `valkey/generated/TranslatedValkey/TranslatedValkey.csproj`. The pipeline builds
 and post-processes in isolated staging before promoting validated output there;
 `generated/TranslatedValkey.Raw/` is a separate comparison artifact. Generated
-code and the authored C# host use namespace `Managed.Database`.
+code and the authored C# host use namespace `Managed.Database`. Linking enables
+`--literal-pool` and `--deduplicate-inline` (proven-equivalent static inline methods).
 
 Translation applies reviewed, hash-checked staging edits from
 `config/managed-adaptations.json` by default. They connect upstream code to the
