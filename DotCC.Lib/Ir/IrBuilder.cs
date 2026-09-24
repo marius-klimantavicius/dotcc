@@ -261,14 +261,7 @@ internal sealed partial class IrBuilder
             ValidateGnuFunctionAttrs(attrs.Arg3);
             return;
         }
-        if (item.Content is not C.GnuFormatAttr attr ||
-            Tok(attr.Arg3) is not ("format" or "__format__"))
-            throw new IrUnsupportedException("only GNU format attributes are supported");
-        // This annotation affects diagnostics only. Never erase unknown GNU
-        // attributes: packed/aligned/calling-convention attributes affect ABI.
-        if (Tok(attr.Arg5) is not ("printf" or "__printf__" or "scanf" or "__scanf__" or
-            "strftime" or "__strftime__" or "strfmon" or "__strfmon__" or "gnu_printf" or "gnu_scanf"))
-            throw new IrUnsupportedException("unsupported GNU format archetype: " + Tok(attr.Arg5));
+        throw new IrUnsupportedException("unsupported GNU attribute list");
     }
 
     private void ValidateGnuFunctionAttrs(Item item)
@@ -284,11 +277,38 @@ internal sealed partial class IrBuilder
                     case "unused": break; // diagnostic-only annotation
                     case "always_inline": break; // optimization hint; no observable C behavior
                     case "noinline": case "no_instrument_function": break;
+                    case "malloc": break; // allocation/aliasing optimization hint
                     default: throw new IrUnsupportedException("unsupported GNU attribute: " + Tok(a.Arg0));
                 }
                 break;
+            case C.AttrCall a when Tok(a.Arg0).Trim('_') == "alloc_size":
+                ValidateAllocationSizeIndex(a.Arg2);
+                break;
+            case C.AttrCallTwo a when Tok(a.Arg0).Trim('_') == "alloc_size":
+                ValidateAllocationSizeIndex(a.Arg2);
+                ValidateAllocationSizeIndex(a.Arg4);
+                break;
+            case C.AttrCallThree a when Tok(a.Arg0).Trim('_') == "format":
+                // The format archetype is a name, not a variable expression.
+                // Parse it through the same argument grammar as alloc_size so
+                // mixed attribute lists do not compete with a special production.
+                if (a.Arg2.Content is not C.Var archetype ||
+                    Tok(archetype.Arg0) is not ("printf" or "__printf__" or "scanf" or "__scanf__" or
+                        "strftime" or "__strftime__" or "strfmon" or "__strfmon__" or "gnu_printf" or "gnu_scanf"))
+                    throw new IrUnsupportedException("unsupported GNU format archetype");
+                break;
             default: throw new IrUnsupportedException("unsupported GNU attribute: " + TypeName(item.Content));
         }
+    }
+
+    private void ValidateAllocationSizeIndex(Item expression)
+    {
+        // alloc_size describes the allocation result for diagnostics and
+        // optimization; it does not perform allocation or change the C ABI.
+        // Accept only integer constant argument positions, never arbitrary
+        // expressions whose side effects might otherwise be silently dropped.
+        if (ConstEval(BuildExpr(expression)) is not { } index || index <= 0 || index > int.MaxValue)
+            throw new IrUnsupportedException("GNU alloc_size requires positive constant argument positions");
     }
 
     private void BuildTopLevel(Item fn)
@@ -410,6 +430,7 @@ internal sealed partial class IrBuilder
             // `extern T a[N];` / `extern T a[];` — declaration only (storage elsewhere).
             case C.ExternArr g: BuildExternArr(g.Arg1, g.Arg2, g.Arg3); break;
             case C.ExternArrIncomplete g: BuildExternArr(g.Arg1, g.Arg2, null); break;
+            case C.ExternArrOuterIncomplete g: BuildExternArr(g.Arg1, g.Arg2, g.Arg5, outerIncomplete: true); break;
             // `static T x = { … };` at file scope — a once-initialised struct/union field.
             case C.GlobalStaticStructInit g: BuildGlobalStructInit(g.Arg1, g.Arg2, g.Arg5); break;
             case C.GlobalStructInit g: BuildGlobalStructInit(g.Arg0, g.Arg1, g.Arg4); break;
@@ -1069,6 +1090,8 @@ internal sealed partial class IrBuilder
                 case C.ParamFnPtrNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg3))); break;
                 case C.ParamFunction p: acc.Add(new(FnPtrType(p.Arg0, p.Arg3), Tok(p.Arg1))); break;
                 case C.ParamFunctionNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg1))); break;
+                case C.ParamFunctionParen p: acc.Add(new(FnPtrType(p.Arg0, p.Arg5), Tok(p.Arg2))); break;
+                case C.ParamFunctionParenNoArgs p: acc.Add(new(FnPtrType(p.Arg0, null), Tok(p.Arg2))); break;
                 case C.ParamFnPtrOutput p: acc.Add(new(new CType.Pointer(FnPtrType(p.Arg0, p.Arg7)), Tok(p.Arg4))); break;
                 case C.ParamFnPtrOutputNoArgs p: acc.Add(new(new CType.Pointer(FnPtrType(p.Arg0, null)), Tok(p.Arg4))); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
@@ -1352,6 +1375,12 @@ internal sealed partial class IrBuilder
                 // buffer for a primitive element, an [InlineArray] wrapper for a
                 // non-primitive one). Multi-dimensional bounds give a nested array
                 // type so `s.m[i][j]` strides; bounds must be constant expressions.
+                case C.StructPtrToArrMember sm:
+                {
+                    var dims = TryConstDims(sm.Arg5) ?? throw new IrUnsupportedException("non-constant pointer-to-array member bound");
+                    fields.Add(new StructField(Tok(sm.Arg3), new CType.Pointer(MakeArrayType(ResolveType(sm.Arg0), dims)), Alignment: DeclarationAlignment(sm.Arg0)));
+                    break;
+                }
                 case C.StructArrMember sm:
                 {
                     var dims = TryConstDims(sm.Arg2) ?? throw new IrUnsupportedException("non-constant struct array bound");

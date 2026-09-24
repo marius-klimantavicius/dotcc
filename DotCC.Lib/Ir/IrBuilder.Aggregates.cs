@@ -638,17 +638,20 @@ internal sealed partial class IrBuilder
     /// lives in another TU (or a later same-TU definition), so emit no field; just
     /// register the name's type so same-TU references resolve (a sized extent keeps
     /// the array type for <c>sizeof</c>; an incomplete one decays to a pointer).</summary>
-    private void BuildExternArr(Item typeItem, Item nameItem, Item? dimsItem)
+    private void BuildExternArr(Item typeItem, Item nameItem, Item? dimsItem, bool outerIncomplete = false)
     {
         _sawThreadLocalSpec = false;
         var element = ResolveType(typeItem);
-        BuildExternArr(element, nameItem, dimsItem, _sawThreadLocalSpec);
+        BuildExternArr(element, nameItem, dimsItem, _sawThreadLocalSpec, outerIncomplete);
     }
 
-    private void BuildExternArr(CType elem, Item nameItem, Item? dimsItem, bool threadLocal = false)
+    private void BuildExternArr(CType elem, Item nameItem, Item? dimsItem, bool threadLocal = false, bool outerIncomplete = false)
     {
         var dims = dimsItem is { } di ? TryConstDims(di) : null;
-        var type = dims is { Count: >= 1 } ? MakeArrayType(elem, dims) : new CType.Pointer(elem);
+        CType type = dims is { Count: >= 1 } ? MakeArrayType(elem, dims) : new CType.Pointer(elem);
+        // Only the outer dimension is unknown: preserve the complete row type
+        // so decay, indexing, and sizeof(row) keep the correct byte stride.
+        if (outerIncomplete) type = new CType.Array(type, 0);
         _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Extern, IsGlobal = true, IsThreadLocal = threadLocal });
     }
 

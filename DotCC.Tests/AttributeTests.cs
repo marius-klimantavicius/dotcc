@@ -54,6 +54,30 @@ public sealed class AttributeTests
     }
 
     [Fact]
+    public void Gnu_allocation_hints_preserve_function_declarations()
+    {
+        var src = WriteTemp("""
+            #include <stddef.h>
+            __attribute__((malloc, alloc_size(1), noinline)) void *one(size_t size);
+            __attribute__((__malloc__, __alloc_size__(1, 2))) void *many(size_t n, size_t size);
+            int main(void) { return 0; }
+            """);
+        try { Compiler.EmitCSharp(new[] { src }).ShouldNotContain("__attribute__"); }
+        finally { File.Delete(src); }
+    }
+
+    [Theory]
+    [InlineData("alloc_size(0)")]
+    [InlineData("alloc_size(1, 0)")]
+    [InlineData("aligned(16, 32)")]
+    public void Invalid_or_unknown_argument_attributes_remain_errors(string attribute)
+    {
+        var src = WriteTemp($"__attribute__(({attribute})) void *one(int size);");
+        try { Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { src })); }
+        finally { File.Delete(src); }
+    }
+
+    [Fact]
     public void Unknown_Gnu_attribute_is_not_silently_discarded()
     {
         var src = WriteTemp("__attribute__((aligned(16))) int value;");

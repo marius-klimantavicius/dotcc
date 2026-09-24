@@ -64,6 +64,10 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     private readonly Stack<HashSet<string>> _scopeTypeNames = new();
     private readonly Stack<HashSet<string>> _scopeShadowedTypeNames = new();
     private readonly Stack<bool> _aggregateScopes = new();
+    // Parameter names may hide typedefs in the parameter list and function
+    // body, but must not leak out of a prototype or function definition.
+    private readonly Stack<HashSet<string>> _parenShadowedTypeNames = new();
+    private HashSet<string>? _pendingParameterShadows;
 
     // True when the previous token forwarded through ProcessToken was a
     // `struct` / `union` / `enum` keyword — so the NEXT ID is a tag, not a
@@ -133,12 +137,29 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             _scopeTypeNames.Push(new HashSet<string>(StringComparer.Ordinal));
             _scopeShadowedTypeNames.Push(new HashSet<string>(StringComparer.Ordinal));
             _aggregateScopes.Push(_aggregateHead);
+            if (_pendingParameterShadows is { } parameters)
+            {
+                foreach (var parameter in parameters)
+                {
+                    _typeNames.Remove(parameter);
+                    _scopeShadowedTypeNames.Peek().Add(parameter);
+                }
+            }
         }
         else if (token.ID == _closeBraceSymbol && _scopeTypeNames.Count > 0)
         {
             foreach (var local in _scopeTypeNames.Pop()) _typeNames.Remove(local);
             foreach (var shadowed in _scopeShadowedTypeNames.Pop()) _typeNames.Add(shadowed);
             _aggregateScopes.Pop();
+        }
+
+        _pendingParameterShadows = null;
+        if (token.ID == _openParenSymbol)
+            _parenShadowedTypeNames.Push(new HashSet<string>(StringComparer.Ordinal));
+        else if (token.ID == _closeParenSymbol && _parenShadowedTypeNames.Count > 0)
+        {
+            _pendingParameterShadows = _parenShadowedTypeNames.Pop();
+            foreach (var parameter in _pendingParameterShadows) _typeNames.Add(parameter);
         }
 
         // Did a struct/union/enum keyword just go by? Snapshot it, then update
@@ -176,10 +197,18 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         // A block-local declaration can hide a typedef until that block exits.
         // Aggregate fields have their own namespace and must not hide the type.
         if (_afterTypedefType && token.ID == _idSymbol && token.Content is string localName
-            && _typeNames.Contains(localName) && _aggregateScopes.Count > 0 && !_aggregateScopes.Peek())
+            && _typeNames.Contains(localName))
         {
-            _typeNames.Remove(localName);
-            _scopeShadowedTypeNames.Peek().Add(localName);
+            if (_parenShadowedTypeNames.Count > 0)
+            {
+                _typeNames.Remove(localName);
+                _parenShadowedTypeNames.Peek().Add(localName);
+            }
+            else if (_aggregateScopes.Count > 0 && !_aggregateScopes.Peek())
+            {
+                _typeNames.Remove(localName);
+                _scopeShadowedTypeNames.Peek().Add(localName);
+            }
         }
         if (!_pointerQualifiers.Contains(token.ID)) _afterTypedefType = false;
 
@@ -341,6 +370,8 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         _scopeTypeNames.Clear();
         _scopeShadowedTypeNames.Clear();
         _aggregateScopes.Clear();
+        _parenShadowedTypeNames.Clear();
+        _pendingParameterShadows = null;
         foreach (var name in _seedTypeNames) { _typeNames.Add(name); }
         _afterTagKeyword = false;
         _previousSymbol = -1;

@@ -736,6 +736,7 @@ productions:
       # `extern const char lua_ident[];`). No init form (extern + init is a
       # definition, vanishingly rare — left unsupported).
       - { lhs: Fn, rhs: ['extern', Type, ID, ArrDims, ';'],  action: externArr }
+      - { lhs: Fn, rhs: ['extern', Type, ID, '[', ']', ArrDims, ';'], action: externArrOuterIncomplete }
       - { lhs: Fn, rhs: ['extern', Type, ID, '[', ']', ';'], action: externArrIncomplete }
 
       # `_Static_assert(expr, "msg");` (C11) and `_Static_assert(expr);`
@@ -795,6 +796,9 @@ productions:
       # e.g. `int dispatch(int callback(int), int value)`.
       - { lhs: Param, rhs: [Type, ID, '(', ParamList, ')'], action: paramFunction }
       - { lhs: Param, rhs: [Type, ID, '(', ')'], action: paramFunctionNoArgs }
+      # Grouping a function-form parameter name does not change its adjustment.
+      - { lhs: Param, rhs: [Type, '(', ID, ')', '(', ParamList, ')'], action: paramFunctionParen }
+      - { lhs: Param, rhs: [Type, '(', ID, ')', '(', ')'], action: paramFunctionParenNoArgs }
       # Pointer to callback storage: xFindFunction writes through **pxFunc.
       - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')'], action: paramFnPtrOutput }
       - { lhs: Param, rhs: [Type, '(', '*', '*', ID, ')', '(', ')'], action: paramFnPtrOutputNoArgs }
@@ -1189,6 +1193,8 @@ productions:
       # machinery block-scope multi-dim arrays use).
       - { lhs: Member, rhs: [Type, ID, ArrDims, ';'],     action: structArrMember }
       - { lhs: Member, rhs: [Type, ID, '[', ']', ';'],    action: structFlexArrMember }
+      # Pointer to array retains its row extent for field indexing and sizeof.
+      - { lhs: Member, rhs: [Type, '(', '*', ID, ')', ArrDims, ';'], action: structPtrToArrMember }
       # Function-pointer member `Ret (*name)(params);` — the struct-member
       # counterpart of the fn-ptr typedef/param forms (same `( * ID ) ( … )`
       # declarator shape, so conflict-free: after `Type`, only the fn-ptr forms
@@ -1837,6 +1843,8 @@ productions:
       - { lhs: Attr, rhs: [ID, ':', ':', ID],                        action: attrNamespaced }
       - { lhs: Attr, rhs: [ID, '(', ')'],                            action: attrCallEmpty }
       - { lhs: Attr, rhs: [ID, '(', E, ')'],                         action: attrCall }
+      - { lhs: Attr, rhs: [ID, '(', E, ',', E, ')'],                 action: attrCallTwo }
+      - { lhs: Attr, rhs: [ID, '(', E, ',', E, ',', E, ')'],         action: attrCallThree }
       - { lhs: Attr, rhs: [ID, ':', ':', ID, '(', ')'],              action: attrNsCallEmpty }
       - { lhs: Attr, rhs: [ID, ':', ':', ID, '(', E, ')'],           action: attrNsCall }
 
@@ -1845,7 +1853,6 @@ productions:
   - derivation: none
     rules:
       - { lhs: GnuFormatAttr, rhs: [__attribute__, '(', '(', AttrList, ')', ')'], action: gnuFunctionAttrs }
-      - { lhs: GnuFormatAttr, rhs: [__attribute__, '(', '(', ID, '(', ID, ',', E, ',', E, ')', ')', ')'], action: gnuFormatAttr }
 
 lexer:
   root:

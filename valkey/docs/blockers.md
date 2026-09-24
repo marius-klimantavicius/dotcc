@@ -29,8 +29,39 @@ Ten units first fail in `zmalloc.h` on `alloc_size(1, 2)`. The grammar accepts
 only one generic attribute argument, and the attribute validator also lacks
 the diagnostic/optimization-only `malloc` and `alloc_size` hints. A native-checked
 allocation fixture prints `7 0 9`; the old compiler's comma parse failure is
-preserved in `artifacts/probe/allocation-red.log`. Repair and validation are in
-progress; layout-changing attributes must not be silently discarded.
+preserved in `artifacts/probe/allocation-red.log`. The repaired grammar accepts
+two/three argument annotations without competing with the old special format
+production. Validation accepts allocation hints and keeps unknown/layout-changing
+annotations as errors. Existing GNU-format tests and allocation execution pass.
+
+## B3 — Declarator and typedef-parameter scope
+
+Native-checked reducers under `artifacts/probe/declarators/` establish failures
+for typedef-name parameters, pointer-to-array fields, incomplete outer dimensions
+of extern arrays and parenthesized function-form parameters. Shared grammar,
+binding and typedef scope repairs preserve row strides and prototype/function
+scope. The execution fixture prints `0 7 4 16 8 4 42` under native and translated
+execution. Further real-source typedef shadowing still needs investigation;
+these reduced passes do not claim all declarators are resolved.
+
+Combined B2/B3, additional POSIX declarations and vfprintf validation passes 32
+focused compiler/header tests, 24 stdio/lifetime tests, eight functional tests
+(12 optional oracles skipped) and four explicitly executed GCC differential
+oracles. Full retry `artifacts/translation/attempt-14em_5wb/result.json` emits
+70/164 units, with 94 failures. New leading failures include unsigned preprocessor
+limits and packed aggregate layout. The improved count is object emission only.
+
+## B4 — Additional POSIX declarations and vfprintf
+
+The complete closure requires `grp.h`, `strings.h`, `termios.h` and `libgen.h`.
+Shared declarations/layouts were checked against native Linux. Existing C-locale
+case comparison implementations back strings.h; declarations for other host
+functions do not imply a runtime backend. The byte-oriented `vfprintf`/`vprintf`/
+`vsprintf` functions and fixed va_list prototypes remove the bundled Lua strbuf
+lifetime error, preserve an already advanced cursor and format once. Native and
+managed checks cover exact bytes, UTF-8, embedded NULs, return counts, readonly
+errors and redirected standard streams. Their actual source-unit retry is part
+of attempt-14em_5wb above.
 
 ## Other observed frontend families
 
