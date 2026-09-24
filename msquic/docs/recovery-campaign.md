@@ -1,5 +1,9 @@
 # Packet recovery and independent interop campaign
 
+The [2026-09-24 compiler refresh](verification-20260924.md) records a fresh
+execution against the latest regenerated sources. The checkpoints below retain
+their historical inputs and outcomes.
+
 The complete ordinary managed/aioquic matrix has passed all 88 cases, and the
 separate CID matrix has passed all 152 cases. Their receipts before the proxy
 lifetime-evidence change are preserved at

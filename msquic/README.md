@@ -1,5 +1,8 @@
 # MsQuic translation campaign
 
+See the [2026-09-24 compiler refresh verification](docs/verification-20260924.md)
+for freshly regenerated PicoTLS/MsQuic results and the retained recovery failures.
+
 Regenerate the selected core and its postprocessed product with:
 
 ```sh

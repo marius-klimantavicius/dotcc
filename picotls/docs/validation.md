@@ -1,5 +1,35 @@
 # Campaign validation record
 
+## Compiler refresh (2026-09-24)
+
+Fresh translation with dotcc at `1abb6a813ee4a8e8880a103abc8558f3b09dbf85`
+passes the complete Linux x64 raw/optimized × JIT/NativeAOT matrix. The native
+oracle also passes (two files, 24 tests). Each translated form passes the
+copied-source consumer, 92 ABI checks, 2,962 provider checks, eight upstream
+utility cases / 232 checks, TLS tests, and 56 independent peer cases (224 peer
+executions total). Provider checks include the 124 real-handshake allocation
+boundaries and two ticket-clone failure paths. The dependency audit reports
+zero violations and zero missing prerequisites.
+
+Commands, run serially from the repository root:
+
+```sh
+bash picotls/scripts/oracle.sh
+bash picotls/scripts/translate.sh
+bash picotls/scripts/test.sh --all --aot --runtime linux-x64
+python3 picotls/scripts/audit-product.py
+```
+
+Evidence: `artifacts/tests/PASS.json`, `artifacts/tests/run-_d0wplxf/`, and
+`artifacts/dependencies/report.json`. The matrix result SHA-256 is
+`fef113e6d922a32c1b04360db36ac2e7c03f63d60b65297de5cbf9c56db1739c`;
+the translation SHA-256 is
+`9f0e2962ed629b1223333bb2882c529dd3465bfc10423613eb8987d3c1a23138`.
+The combined rerun's commands and compiler source hashes are retained under
+`../msquic/artifacts/reverify-20260924/`. MsQuic transport results are recorded
+separately in [its verification report](../../msquic/docs/verification-20260924.md).
+SQLite and other execution platforms were not rerun in this campaign.
+
 ## Final result (2026-09-11)
 
 **The unchanged pinned picotls core and BCL-only product pass the complete Linux
