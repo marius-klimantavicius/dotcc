@@ -20,6 +20,9 @@ public sealed class GnuIntrinsicTests
     [InlineData("__atomic_compare_exchange_n((int*)0, (int*)0, 1, 0, 0, 2)", "stronger than success")]
     [InlineData("__atomic_compare_exchange_n((int*)0, (short*)0, 1, 0, 5, 0)", "same type")]
     [InlineData("__builtin_bswap32((void*)0)", "arithmetic argument")]
+    [InlineData("__builtin_clz()", "requires 1 arguments")]
+    [InlineData("__builtin_ctzl(1, 2)", "requires 1 arguments")]
+    [InlineData("__builtin_popcountll((void*)0)", "arithmetic argument")]
     public void Invalid_builtin_arguments_fail_during_binding(string expression, string diagnostic)
     {
         var exception = Should.Throw<CompileException>(() => Emit("int main(void) { " + expression + "; return 0; }"));

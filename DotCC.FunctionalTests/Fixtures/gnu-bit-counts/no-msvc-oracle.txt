@@ -1,0 +1,1 @@
+GNU compiler builtins; MSVC has different intrinsic names.

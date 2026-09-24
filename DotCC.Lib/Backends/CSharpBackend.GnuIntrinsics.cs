@@ -10,6 +10,13 @@ internal sealed partial class CSharpBackend
     {
         var name = call.Callee;
         var args = call.Args;
+        if (IrBuilder.GnuBitCount(name) is { } bits)
+        {
+            // Builtins have fixed unsigned parameter widths even when the
+            // expression supplied by C is wider or signed. Evaluate it once.
+            string width = bits.Wide ? "ulong" : "uint";
+            return $"global::System.Numerics.BitOperations.{bits.Operation}(unchecked(({width})({Expr(args[0])})))";
+        }
         if (name is "__builtin_bswap16" or "__builtin_bswap32" or "__builtin_bswap64")
             return $"global::System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(unchecked(({Cs(call.Type)})({Expr(args[0])})))";
         if (name == "__sync_synchronize") return "Atomic.ThreadFence()";

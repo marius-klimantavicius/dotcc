@@ -8,6 +8,12 @@ internal sealed partial class IrBuilder
 {
     private CExpr? TryBuildGnuIntrinsic(string name, List<CExpr> args)
     {
+        if (GnuBitCount(name) is not null)
+        {
+            RequireCount(1);
+            if (!args[0].Type.IsArithmetic) throw Bad("requires an arithmetic argument");
+            return new Call(name, args) { Type = CType.Int };
+        }
         if (name is "__builtin_bswap16" or "__builtin_bswap32" or "__builtin_bswap64")
         {
             RequireCount(1);
@@ -74,6 +80,17 @@ internal sealed partial class IrBuilder
                 throw Bad("invalid memory order " + order);
         }
     }
+
+    internal static (string Operation, bool Wide)? GnuBitCount(string name) => name switch
+    {
+        "__builtin_clz" => ("LeadingZeroCount", false),
+        "__builtin_clzl" or "__builtin_clzll" => ("LeadingZeroCount", true),
+        "__builtin_ctz" => ("TrailingZeroCount", false),
+        "__builtin_ctzl" or "__builtin_ctzll" => ("TrailingZeroCount", true),
+        "__builtin_popcount" => ("PopCount", false),
+        "__builtin_popcountl" or "__builtin_popcountll" => ("PopCount", true),
+        _ => null,
+    };
 
     private static bool GnuFailureOrderAllowed(long success, long failure) => failure switch
     {
