@@ -4,9 +4,10 @@ The [translation plan](docs/PLAN.md) follows the SQLite, picotls, MsQuic, libsmb
 and Blink campaigns. [Source review](docs/source.md) records the downloaded
 Valkey 9.1.2 revision, archive checksum and implementation boundaries.
 
-Status: implementation authorized and in progress with a coordinator and
-sub-agents. Completed gates and limitations are tracked in the plan and campaign
-validation ledger. `valkey/scripts/translate.sh` emits and builds the library;
+Status: the initial Linux x64 managed profile passes raw/processed JIT and
+NativeAOT execution, protocol tests and native persistence exchange. Broader
+command/upstream coverage and unrun platforms remain tracked in the
+[validation ledger](docs/validation.md). `valkey/scripts/translate.sh` emits and builds the library;
 `valkey/ManagedConsumer.slnx` includes it, the owning API under `valkey/src/`,
 the sample and the integration consumer.
 
@@ -25,7 +26,8 @@ upstream select event backend.
 use declarations in `src/Host/valkey_host.h` and typed bindings from
 `config/dotcc-overrides.json`. Generated projects link the authored C# files.
 `--unadapted --probe` is available for original-source diagnostics.
-The embedded server is not yet qualified.
+The qualified scope and exclusions are recorded per test; this is not complete
+qualification of every upstream Valkey feature.
 
 See [generation and usage](docs/usage.md) for build, sample and validation commands.
 

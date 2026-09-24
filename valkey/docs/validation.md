@@ -2,7 +2,8 @@
 
 Implementation began on 2026-09-24. Linux x64 is the only execution host used
 so far. The complete translated library, owning API, sample and integration
-consumer build. Managed server execution and NativeAOT product gates remain open.
+consumer build. The initial managed profile passes raw/processed JIT/NativeAOT
+execution; broader command/scripting coverage and other platforms remain open.
 
 ## Input and pipeline infrastructure
 
@@ -88,11 +89,11 @@ checks, including explicit no-fetch reuse, namespace selection, authored host
 links and failed-build rollback. Compiler/runtime reductions and native control
 checks do not establish translated Valkey execution.
 
-P1 ABI/host feasibility, P2 NativeAOT and P3–P9 server, command, scripting,
-persistence, consumer execution and delivery gates remain open. Do not
+Broader P4/P5 command and scripting coverage, recovery/performance campaigns,
+other-platform execution and clean-checkout reproduction remain open. Do not
 interpret source audits or native checks as translated execution passes. The
 root `ManagedConsumer.slnx`, API and sample build against the real generated
-library; their runtime qualification remains open.
+library; the initial runtime matrix now passes as recorded below.
 
 
 ## C# host wiring and reduced adaptations
@@ -108,7 +109,8 @@ The product now needs four adapted files and 13 exact replacements. Native
 compilation of the common dispatch hook passed, and a real unmodified `ae.c`
 translation selected `select` (`artifacts/reductions/reduced-profile/receipt.json`).
 C# host and consumer sources are authored and being checked against the actual
-generated API. They are not yet a qualified running managed Valkey server.
+generated API. The later final-product matrix below qualifies the initial
+running profile.
 
 ## Complete C# library build and first startup
 
@@ -135,7 +137,7 @@ or persistence pass is claimed from this attempt.
 The real integration harness in `tests/ManagedHostTests` builds with zero
 warnings/errors. `scripts/validate-managed.sh` executes it and can add the pinned
 native RESP comparison, external-server Tcl protocol suite and a whole-assembly
-NativeAOT gate. Its runtime checks are pending successful startup.
+NativeAOT gate. Runtime results are recorded below.
 
 The newer frozen compiler/runtime regression snapshot
 `artifacts/verification/runtime-expanded-haejvtoa` passed 2,706 unit checks.
@@ -183,5 +185,77 @@ matched the unrelated runtime local `var zone`. The assertion now targets the
 complete declaration and its focused rerun passes.
 
 These diagnostic runtime passes precede the final generated-product matrix.
-The reproducible raw/processed JIT/NativeAOT validation script is being executed
-against final paths, including fresh notice propagation and worker coverage.
+
+## Final-path delivery matrix
+
+`./valkey/scripts/verify.sh --no-build-tools` passed with default fetching enabled.
+It ran 30 acquisition/pipeline/notice checks, rebuilt the native control, emitted
+all 164 units, linked with both pooling/deduplication options, post-processed,
+built/promoted final output, built the real root solution and executed the matrix.
+The translation receipt is `artifacts/translation/attempt-lshtv_ga/result.json`.
+
+| Product | JIT integration | Whole-assembly NativeAOT integration | Pinned Tcl protocol | Native↔managed RDB/AOF exchange |
+| --- | --- | --- | --- | --- |
+| Raw (`run-qel76rfs`) | 16 passed | 16 passed | 29 passed, 6 explicit DEBUG exclusions | 4 directions/formats in each execution mode passed |
+| Processed (`run-52d_lfqb`) | 16 passed | 16 passed | 29 passed, 6 explicit DEBUG exclusions | 4 directions/formats in each execution mode passed |
+
+These run directories are under `artifacts/managed-validation/`. They include
+commands/logs, assembly hashes, per-case results, actual execution modes,
+persistence file hashes and native integrity checks. The native AOF checker
+misclassifies this pin's `VALKEY`-signature RDB base files; the validator instead
+checks strict manifest structure, runs native check-rdb on bases (requiring a
+checksum pass), checks incremental AOF segments, and requires real replay.
+
+The integration cases additionally qualify background lazyfree work using its
+completed counter, pending-job drain and shutdown joins. EverySecond AOF uses
+owner-bound persistence snapshots to require the published fsynced offset to
+catch up with acknowledged writes, then reloads 256 values. Command-family
+assertions run against both managed and pinned native servers, covering numeric
+and bit operations, collection transitions, stream groups, HLL, geo, SCAN,
+WATCH conflicts and ACL command/key denials. This remains representative
+coverage, not an exhaustive pass of all 307 required inventory entries.
+
+The actual sample project passed authenticated RDB and AOF restart under JIT
+and NativeAOT (`artifacts/managed-smoke/delivery-o8suqatu/result.json`). Its
+isolated build outputs prevent interference with the raw/processed test builds.
+`UPSTREAM-NOTICES.txt` accompanies generated, build and publish outputs and
+preserves 259 source/license notice sections with original source hashes.
+
+The final assembly passes the 133-case ABI probe with only the two documented
+pthread-handle differences (`artifacts/abi/final-product/receipt.json`). A second
+postprocessor pass leaves all 85 generated C# hashes unchanged and does not
+touch authored originals (`artifacts/postprocess-idempotence/check-kzayl3t2`).
+Default-fetch and explicit-no-fetch generation both pass; temporary staging paths
+enter internal unit-name hashes, so byte-identical C# across staging roots is
+not claimed. The outputs have equivalent tested behavior.
+
+Measured raw/processed NativeAOT publications use standard system/BCL libraries;
+no separate native Valkey/Lua backend was linked or observed during live PING/Lua
+execution. Import, loaded-image, child-process and source evidence is recorded in
+`artifacts/native-dependencies/run-lxgb9a22/summary.json`, with the limits of each
+check stated. This is not an exhaustive proof about every future execution path.
+
+Freshly translating the existing SQLite core and VFS corpora with the current
+compiler passes both exact-output comparisons
+(`artifacts/regressions/sqlite/receipt.json`). Other campaigns' entire delivery
+matrices were not rerun. No Windows, power-loss, exhaustive upstream scripting,
+full-command inventory or performance-parity claim is made.
+
+## Occupied-port lifecycle regression
+
+A final failed-startup case exposed a shared socket mismatch after the initial
+matrix above: .NET's Linux `ReuseAddress` mapping enabled both native reuse
+options, allowing two owners to listen on the same port. Independent native C
+and BCL probes establish the difference in
+`artifacts/reductions/socket-reuse-abi/receipt.json`. The shared runtime now uses
+BCL raw socket options on Linux to keep `SO_REUSEADDR` and `SO_REUSEPORT`
+independent. Port sharing requires the explicit latter option; unsupported
+non-Linux reuseport returns an error.
+
+The repair passes 44 affected socket/ownership/termination unit checks, six
+focused reuse-option checks, four functional socket fixtures and four native
+GCC comparisons. The new fixture is explicitly Linux-only. A fresh 164-object
+diagnostic relink passes all 17 integration cases, including occupied-port
+failure, queued-snapshot failure, cleanup without quarantine and surviving peer
+owners (`artifacts/reductions/failed-startup-mata4cmu/managed.json`). The final
+generation/matrix is being repeated with this runtime repair.

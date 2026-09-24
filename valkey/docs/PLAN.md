@@ -6,6 +6,11 @@ sub-agents** (2026-09-24). The downloaded release and checksum are recorded in
 [source.md](source.md). Implementation gates remain open until their execution
 evidence is recorded.
 
+The initial Linux x64 library, owning API and consumer now run under raw and
+post-processed JIT/NativeAOT, with protocol and native persistence-exchange
+evidence. Broader command/scripting, recovery, performance and platform gates
+below remain explicit follow-up work; see [validation.md](validation.md).
+
 User update: libc may return an error for `fork()` for now. The current shared
 runtime already returns `-1` with `errno = EPERM`; retain that honest failure.
 Fork-dependent operations remain unsupported and must report failure without
@@ -450,11 +455,11 @@ server. See [validation.md](validation.md) and [blockers.md](blockers.md).
 
 ### P1 — Prove ABI, ownership and host feasibility
 
-- [ ] Check actual layouts, tagged/packed storage, canonical callbacks and
+- [x] Check actual layouts, tagged/packed storage, canonical callbacks and
       cross-unit/instance initialization against native probes.
 - [ ] Exercise two independent translated owners, Lua callback context, allocator
       accounting, worker owner propagation and quiescent disposal under JIT/AOT.
-- [ ] Prototype BCL event wakeup, nonblocking TCP, real file/flush operations and
+- [x] Prototype BCL event wakeup, nonblocking TCP, real file/flush operations and
       stop while waiting; identify any missing shared runtime contracts.
 - [ ] Resolve startup/shutdown, protected Lua calls and foreground persistence
       seams before committing to a facade or claiming an embeddable server.
@@ -464,12 +469,12 @@ boundary. Prototypes do not substitute for whole-server execution. Commit result
 
 ### P2 — Translate, link and post-process the selected server
 
-- [ ] Repair real compiler/libc failures with regressions and full-source retries.
-- [ ] Translate the complete selected closure, including dependencies and static
+- [x] Repair real compiler/libc failures with regressions and full-source retries.
+- [x] Translate the complete selected closure, including dependencies and static
       Lua registration; audit unresolved imports and command-handler reachability.
 - [x] Implement the full `scripts/translate.sh` pipeline and final/raw project
       paths, receipts, failure-safe promotion and authored-source references.
-- [ ] Build raw/processed libraries with JIT and whole-assembly-rooted NativeAOT
+- [x] Build raw/processed libraries with JIT and whole-assembly-rooted NativeAOT
       checks so trimming cannot hide uncompiled required handlers.
 
 **Gate:** complete libraries build in all four forms; default and `--no-fetch`
@@ -478,13 +483,13 @@ Commit the translation milestone and each independent repair along the way.
 
 ### P3 — Run the actual server and RESP lifecycle
 
-- [ ] Start/load/listen through the owning API, signal readiness, and serve real
+- [x] Start/load/listen through the owning API, signal readiness, and serve real
       TCP clients with upstream parsing/dispatch/replies in all four forms.
 - [ ] Cover RESP2/3, pipelining, partial/large binary traffic, multiple clients,
       backpressure, timers, ordinary disconnects and protocol errors.
-- [ ] Implement stop, SHUTDOWN, cancellation and disposal without host process
+- [x] Implement stop, SHUTDOWN, cancellation and disposal without host process
       side effects; verify restart and simultaneous independent instances.
-- [ ] Qualify required background workers and callback/buffer lifetimes under GC.
+- [x] Qualify required background workers and callback/buffer lifetimes under GC.
 
 **Gate:** independent clients exchange real commands and two servers complete
 their full lifecycle without shared state or resource leakage. Commit evidence.
@@ -517,11 +522,11 @@ raw/processed JIT/NativeAOT; a standalone Lua smoke test is insufficient. Commit
 
 ### P6 — Qualify foreground RDB and startup AOF persistence
 
-- [ ] Implement/verify required file, flush, rename and worker contracts with
+- [x] Implement/verify required file, flush, rename and worker contracts with
       explicit durability capabilities and per-instance path ownership.
-- [ ] Run RDB save/reload and AOF fresh/existing startup, append/fsync/replay,
+- [x] Run RDB save/reload and AOF fresh/existing startup, append/fsync/replay,
       multipart manifests, transactions and script/function persistence cases.
-- [ ] Exchange same-pin files in both native/managed directions and verify data,
+- [x] Exchange same-pin files in both native/managed directions and verify data,
       types and TTL semantics after graceful stop and restart.
 - [ ] Verify background/runtime-enable configuration guards, ordinary file errors
       and applicable upstream recovery tests; record unsupported crash guarantees.
@@ -535,10 +540,10 @@ native Valkey; no fake fork or native persistence helper. Commit the milestone.
       original authored projects and separate sample; validate its references.
 - [ ] Expose typed configuration, start/readiness/status, endpoint discovery,
       logs, stop and asynchronous disposal with explicit ownership/cancellation.
-- [ ] Make the sample start its own translated server, connect a separate .NET
+- [x] Make the sample start its own translated server, connect a separate .NET
       client, exercise data structures, transaction, script and persistence, then
       stop/restart and dispose it. Use generated constants where available.
-- [ ] Build/run the sample under JIT and NativeAOT; verify edits under `src/`
+- [x] Build/run the sample under JIT and NativeAOT; verify edits under `src/`
       survive translation and are picked up by ordinary solution rebuilds.
 
 **Gate:** documented commands produce a working consumer of the delivered product,
@@ -548,10 +553,11 @@ without native Valkey or a translated campaign test driver. Commit the delivery.
 
 - [ ] Expand case-level upstream coverage for the required profile, with Tcl
       server tests and applicable C/C++ assertions handled by suitable runners.
-- [ ] Audit published imports, static Lua registration, trimming roots and all
+- [x] Audit published imports, static Lua registration, trimming roots and all
       application-owned native dependencies; no fallback to native engine code.
-- [ ] Complete Linux x64 raw/processed × JIT/NativeAOT execution and run Windows
-      x64 separately when available. A cross-build is not a platform execution.
+- [x] Complete Linux x64 raw/processed × JIT/NativeAOT execution.
+- [ ] Run Windows x64 separately when available. A cross-build is not a platform
+      execution; Windows has not been run in this campaign.
 - [ ] Measure startup, representative command/pipeline latency/throughput, memory,
       allocations, persistence and output size against equivalent native settings.
 
@@ -567,7 +573,7 @@ parity claim. Commit the qualification ledger.
       cleanup, failed-stage receipts and post-processing idempotence.
 - [ ] Rebuild the actual root solution/sample from final paths, audit authored
       source links, and run affected shared and existing-campaign regressions.
-- [ ] Publish usage, API, configuration, persistence and validation documentation;
+- [x] Publish usage, API, configuration, persistence and validation documentation;
       list unrun/deferred cases separately from passes.
 
 **Gate:** a new consumer can regenerate, build and run the selected profile using
