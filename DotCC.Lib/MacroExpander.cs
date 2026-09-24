@@ -155,6 +155,11 @@ internal sealed class MacroExpander : RewritingTokenStream
                                 functionHiding.UnionWith(hiding);
                                 functionHiding.Add(name);
                                 var replacement = ExpandTokenList(substituted, functionHiding);
+                                if (RescanReplacementBoundary(replacement, tokens, end + 1, hiding) is { } remainder)
+                                {
+                                    AppendReplacement(result, remainder, token.LeadingSpace);
+                                    return result;
+                                }
                                 AppendReplacement(result, replacement, token.LeadingSpace);
                                 pendingSpace = replacement.Count == 0 && token.LeadingSpace;
                                 i = end;
@@ -167,6 +172,11 @@ internal sealed class MacroExpander : RewritingTokenStream
                         if (!_metadata) _cpp.RecordExpansion(macro, token.Item);
                         activeHiding.Add(name);
                         var replacement = ExpandTokenList(ReadBody(macro.Body, token.Item), activeHiding);
+                        if (RescanReplacementBoundary(replacement, tokens, i + 1, hiding) is { } remainder)
+                        {
+                            AppendReplacement(result, remainder, token.LeadingSpace);
+                            return result;
+                        }
                         AppendReplacement(result, replacement, token.LeadingSpace);
                         pendingSpace = replacement.Count == 0 && token.LeadingSpace;
                         continue;
@@ -183,6 +193,26 @@ internal sealed class MacroExpander : RewritingTokenStream
             result.Add(token with { Item = MacroExpansionItem.Disable(token.Item, hiding) });
         }
         return result;
+    }
+
+    private List<Token>? RescanReplacementBoundary(List<Token> replacement, IReadOnlyList<Token> tokens,
+        int following, HashSet<string> hiding)
+    {
+        // A replacement can produce a callable macro name whose opening '(' is
+        // still in the caller: CAT(prefix, suffix)(args). Rescan that boundary
+        // with the unconsumed input. Disabled names stay attached to replacement
+        // tokens; do not apply the expanded macro's hideset to the caller's tail.
+        if (replacement.Count == 0 || following >= tokens.Count || tokens[following].ID != _openParenSymbol)
+            return null;
+        var last = replacement[^1];
+        if (last.ID != _idSymbol || last.Content is not string name || hiding.Contains(name)
+            || MacroExpansionItem.IsDisabled(last.Item, name)
+            || !_cpp.TryGetMacro(name, out var macro) || !macro.IsFunctionLike)
+            return null;
+        var combined = new List<Token>(replacement.Count + tokens.Count - following);
+        combined.AddRange(replacement);
+        for (var i = following; i < tokens.Count; ++i) combined.Add(tokens[i]);
+        return ExpandTokenList(combined, hiding);
     }
 
     private Arguments CollectArgsFromStream(Item opening)
@@ -355,7 +385,9 @@ internal sealed class MacroExpander : RewritingTokenStream
                 ++i;
                 continue;
             }
-            if (token.ID == _idSymbol && token.Content is string parameter && expanded.TryGetValue(parameter, out var replacement))
+            // Formal parameters are preprocessing identifiers even when the C
+            // lexer classifies their spelling as a keyword (e.g. default).
+            if (token.Content is string parameter && expanded.TryGetValue(parameter, out var replacement))
             {
                 AppendReplacement(result, replacement, token.LeadingSpace);
                 pendingSpace = replacement.Count == 0 && token.LeadingSpace;
@@ -367,7 +399,7 @@ internal sealed class MacroExpander : RewritingTokenStream
 
     private IReadOnlyList<Token> ResolveOperand(Token token, Dictionary<string, IReadOnlyList<Token>> parameters)
     {
-        return token.ID == _idSymbol && token.Content is string name && parameters.TryGetValue(name, out var value)
+        return token.Content is string name && parameters.TryGetValue(name, out var value)
             ? value : new[] { token };
     }
 
