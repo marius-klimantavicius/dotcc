@@ -22,11 +22,12 @@ public static unsafe partial class Libc
     /// execution. Pinned globals and pthread objects belong to this context.
     /// Ambient filesystem, stdio and other host facilities still require the
     /// embedding application's explicit host bindings.</summary>
-    public sealed class RuntimeContext : IDisposable
+    public sealed partial class RuntimeContext : IDisposable
     {
         private readonly object gate = new();
         private int users;
         private bool disposed;
+        internal string WorkingDirectory;
         internal readonly List<object> ArrayRoots = new();
         internal readonly HashSet<nuint> NativeAllocations = new();
         internal readonly List<(GCHandle Handle, Array Arr)> FunctionArrays = new();
@@ -40,7 +41,12 @@ public static unsafe partial class Libc
         internal int NextKey;
         private readonly ConditionalWeakTable<Thread, RuntimeThreadState> threadStates = new();
         public object? ProgramState { get; }
-        public RuntimeContext(object? programState = null) { ProgramState = programState; }
+        public RuntimeContext(object? programState = null) : this(programState, true) { }
+        internal RuntimeContext(object? programState, bool captureWorkingDirectory)
+        {
+            ProgramState = programState;
+            WorkingDirectory = captureWorkingDirectory ? global::System.IO.Directory.GetCurrentDirectory() : string.Empty;
+        }
         public static RuntimeContext? Current => currentRuntimeContext;
         internal RuntimeThreadState ThreadState => threadStates.GetValue(Thread.CurrentThread, static _ => new RuntimeThreadState());
 
@@ -88,6 +94,7 @@ public static unsafe partial class Libc
                 if (users != 0) throw new InvalidOperationException("C program context still has active bindings or threads.");
                 disposed = true;
                 DisposeFileDescriptors(this);
+                DisposePathState(this);
                 DisposeOwnedHeap(this);
                 foreach (var item in FunctionArrays) item.Handle.Free();
                 FunctionArrays.Clear(); ArrayRoots.Clear();
@@ -136,7 +143,7 @@ public static unsafe partial class Libc
     }
     [ThreadStatic] private static RuntimeContext? currentRuntimeContext;
     [ThreadStatic] private static long currentRuntimeBinding, nextRuntimeBinding;
-    private static readonly RuntimeContext legacyRuntime = new();
+    private static readonly RuntimeContext legacyRuntime = new(null, false);
     private static RuntimeContext RuntimeState => RuntimeContext.Current ?? legacyRuntime;
     private static RuntimeThreadState RuntimeThread => RuntimeState.ThreadState;
 }

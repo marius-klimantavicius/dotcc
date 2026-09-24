@@ -382,7 +382,7 @@ public static unsafe partial class Libc
         // C: system(NULL) probes for a command processor — we always have one.
         if (command == null) { return 1; }
         var cmd = Encoding.UTF8.GetString(command, strlen(command));
-        var psi = new global::System.Diagnostics.ProcessStartInfo { UseShellExecute = false };
+        var psi = new global::System.Diagnostics.ProcessStartInfo { UseShellExecute = false, WorkingDirectory = CurrentWorkingDirectory };
         if (OperatingSystem.IsWindows())
         {
             // Mirror the MSVC CRT: ComSpec (cmd.exe) with /c, the whole string

@@ -54,6 +54,8 @@ public static partial class Libc
             return (void*)NativeLibrary.GetMainProgramHandle();
         }
         string path = Str(filename);
+        // Bare sonames retain the platform loader's search rules.
+        if (path.Contains('/') || OperatingSystem.IsWindows() && path.Contains('\\')) path = ResolvePath(path);
         if (NativeLibrary.TryLoad(path, out IntPtr handle))
         {
             return (void*)handle;
