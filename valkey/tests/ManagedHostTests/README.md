@@ -34,7 +34,10 @@ NativeAOT execution to pass; a successful cross-build alone does not count.
 The managed cases cover:
 
 - Two simultaneous owners with distinct authentication, key spaces, script caches,
-  function registries, data directories, and independent shutdown.
+  function registries, data directories, and independent shutdown. Occupied-port
+  startup runs partial initialization, then faults readiness, completion and a
+  queued persistence snapshot; cleanup must finish without quarantine while
+  both existing owners remain responsive.
 - Real TCP RESP2/RESP3, fragmented 256 KiB binary data, pipelining, collections,
   transactions, expiration metadata, Lua callbacks, cjson/bit, protected script
   errors, and callback survival after GC.

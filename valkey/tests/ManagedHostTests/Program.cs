@@ -139,6 +139,36 @@ internal static class Program
         Check.True(first.InstanceId != peer.InstanceId, "Owners have identical identities.");
         await using var client = await RespConnection.Connect(await first.Endpoint, cancellation, firstOptions.Password);
         await using var other = await RespConnection.Connect(await peer.Endpoint, cancellation, peerOptions.Password);
+        await Case("owners:occupied-port-startup-failure-and-cleanup", async () =>
+        {
+            // This owner intentionally faults, so it is not registered with the
+            // normal-success cleanup loop. Its real listener initialization runs.
+            var failed = new ValkeyServer(peerOptions with { DataDirectory = Path.Combine(options.Directory, "failed-startup") });
+            Task<ValkeyPersistenceStatus> queuedSnapshot = failed.GetPersistenceStatusAsync(cancellation);
+            try
+            {
+                async Task<ValkeyException> Fails(Task task, string operation)
+                {
+                    try { await task.WaitAsync(TimeSpan.FromSeconds(20), cancellation); }
+                    catch (ValkeyException error) when (error is not ValkeyCleanupException) { return error; }
+                    throw new InvalidOperationException(operation + " unexpectedly succeeded for an occupied-port owner.");
+                }
+                ValkeyException startup = await Fails(failed.Ready, "Ready");
+                await Fails(failed.Completion, "Completion");
+                await Fails(queuedSnapshot, "Startup persistence request");
+                Check.True(!failed.IsRunning && !failed.IsQuarantined, "Failed startup did not release the partially initialized owner.");
+                Check.Equal(await other.Command("PING"), "PONG");
+                await Fails(failed.StopAsync(ValkeyShutdownMode.NoSave), "StopAsync");
+                await Fails(failed.DisposeAsync().AsTask(), "DisposeAsync");
+                Check.Equal(await client.Command("PING"), "PONG");
+                RecordEvidence("Ready, Completion, queued snapshot, Stop and Dispose faulted; cleanup completed without quarantine: " + startup.Message);
+            }
+            finally
+            {
+                try { await failed.StopAsync(ValkeyShutdownMode.NoSave).WaitAsync(TimeSpan.FromSeconds(20)); }
+                catch (ValkeyException) when (!failed.IsQuarantined) { }
+            }
+        });
         await Case("owners:auth-and-data-isolation", async () =>
         {
             await using var anonymous = await RespConnection.Connect(await first.Endpoint, cancellation);
