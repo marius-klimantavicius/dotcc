@@ -51,15 +51,24 @@ public static unsafe partial class Libc
     private static readonly object RandomGate = new();
     private static Random PosixRandom = new(1);
 
-    /// <summary>Process-wide 31-bit noncryptographic PRNG. Seed repeatability
+    /// <summary>Owner-scoped 31-bit noncryptographic PRNG, process-wide when unbound. Seed repeatability
     /// and range match random(); sequences are not glibc-compatible.</summary>
     public static long random()
     {
+        if (OwnedRandom is { } state)
+        {
+            lock (state.Gate) return state.Posix.NextInt64(0, 1L << 31);
+        }
         lock (RandomGate) return PosixRandom.NextInt64(0, 1L << 31);
     }
 
     public static void srandom(uint seed)
     {
+        if (OwnedRandom is { } state)
+        {
+            lock (state.Gate) state.Posix = new Random(unchecked((int)seed));
+            return;
+        }
         lock (RandomGate) PosixRandom = new Random(unchecked((int)seed));
     }
 }

@@ -222,13 +222,17 @@ public static unsafe partial class Libc
     private static Random? _rand;
 
     /// <summary><c>rand()</c> — pseudo-random int in <c>[0, RAND_MAX]</c>. Uses a
-    /// thread-local generator (reentrant; real C's <c>rand</c> shares one global
-    /// state). Seeded as if <c>srand(1)</c> until <see cref="srand"/> is called,
+    /// generator shared by the bound program's threads; legacy unbound calls
+    /// retain their thread-local generator. Seeded as if <c>srand(1)</c> until <see cref="srand"/> is called,
     /// per C. Note: the .NET PRNG differs from any C library's, so sequences are
     /// not byte-compatible with gcc/MSVC — only the contract (range, determinism
     /// per seed) holds.</summary>
     public static int rand()
     {
+        if (OwnedRandom is { } state)
+        {
+            lock (state.Gate) return state.Rand.Next(0, RAND_MAX + 1);
+        }
         _rand ??= new Random(1);
         return _rand.Next(0, RAND_MAX + 1);
     }
@@ -236,7 +240,12 @@ public static unsafe partial class Libc
     /// <summary><c>srand(seed)</c> — reseed <see cref="rand"/>. Takes a wide
     /// integer so any C integer argument (incl. <c>(unsigned)time(NULL)</c>)
     /// widens in without a cast; truncated to unsigned-int per C.</summary>
-    public static void srand(long seed) => _rand = new Random(unchecked((int)(uint)seed));
+    public static void srand(long seed)
+    {
+        var random = new Random(unchecked((int)(uint)seed));
+        if (OwnedRandom is { } state) { lock (state.Gate) state.Rand = random; }
+        else _rand = random;
+    }
 
     // ---------------------------------------------------------------------
     // Environment + program control
