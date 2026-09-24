@@ -322,7 +322,7 @@ public sealed partial class CompilerTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("int z = 7");
-            emitted.ShouldNotContain("var z");   // not the inference form
+            emitted.ShouldNotContain("var z ="); // Match this declaration, not runtime locals such as `zone`.
         }
         finally { File.Delete(src); }
     }
