@@ -30,6 +30,11 @@ internal sealed partial class CSharpBackend
             : Sub(target, PUnary);
     }
 
+    private static bool NeedsPointerUpdateLowering(CExpr target) =>
+        PointerArrayStride(target.Type) != 1 ||
+        (target.Type.Unqualified is CType.Pointer && StoredAsNint(target)
+            && !target.Type.IsAtomic && !target.Type.IsVolatile);
+
     private (string, int) PointerArrayUpdate(Unary value, bool discard = false)
     {
         var stride = PointerArrayStride(value.Operand.Type);
@@ -65,7 +70,7 @@ internal sealed partial class CSharpBackend
     {
         while (value is Paren parenthesized) value = parenthesized.Inner;
         return value is Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec } unary
-            && PointerArrayStride(unary.Operand.Type) != 1
+            && NeedsPointerUpdateLowering(unary.Operand)
             ? PointerArrayUpdate(unary, discard: true).Item1
             : Expr(value);
     }

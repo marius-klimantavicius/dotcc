@@ -282,7 +282,8 @@ public sealed class LiteralPoolTests
                         byte* first = Api.first();
                         byte* binary = Api.binary();
                         GC.Collect(2, GCCollectionMode.Forced, true, true);
-                if (first != Api.first() || first != Api.duplicate() || first != Api.Globals.global_text) throw new Exception("identity");
+                        // Public global pointer slots use the stable nint storage ABI.
+                        if (first != Api.first() || first != Api.duplicate() || (nint)first != Api.Globals.global_text) throw new Exception("identity");
                         if (Marshal.PtrToStringUTF8((nint)first) != "one" || Marshal.PtrToStringUTF8((nint)Api.second()) != "second") throw new Exception("text");
                         if (Marshal.PtrToStringUTF8((nint)Api.unicode()) != "é😀" || Api.unicode_size() != 7) throw new Exception("unicode");
                         if (!new ReadOnlySpan<byte>(binary, 4).SequenceEqual(new byte[] { 255, 90, 128, 0 })) throw new Exception("binary");

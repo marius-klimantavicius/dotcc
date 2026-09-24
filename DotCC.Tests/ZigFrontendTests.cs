@@ -4486,8 +4486,8 @@ public sealed class ZigFrontendTests
             "fn laterFn(x: i32) i32 { return x * 2; }\n" +
             "pub fn main() u8 { return @intCast(handler(10) + alias(11)); }\n"); // 20 + 22 = 42
         cs.ShouldContain("global::DotCcProgramFunctionPointers.laterFn");   // the function's address bound to the global
-        cs.ShouldContain("handler(10)");
-        cs.ShouldContain("alias(11)");  // the inferred fn-ptr global is callable
+        cs.ShouldContain("((delegate*<int, int>)global::DotCcProgram.Globals.handler)(10)");
+        cs.ShouldContain("((delegate*<int, int>)global::DotCcProgram.Globals.alias)(11)");  // typed read from addressable nint storage
     }
 
     [Fact]

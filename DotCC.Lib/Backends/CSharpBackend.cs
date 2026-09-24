@@ -2457,7 +2457,7 @@ internal sealed partial class CSharpBackend
     private (string, int) RenderUnary(Unary u)
     {
         if (u.Op is UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec
-            && PointerArrayStride(u.Operand.Type) != 1)
+            && NeedsPointerUpdateLowering(u.Operand))
             return PointerArrayUpdate(u);
         // ++/-- of an atomic lvalue is a seq-cst step: prefix yields the NEW value
         // (AddFetch/SubFetch), postfix the OLD (FetchAdd/FetchSub) — matching C.
@@ -2869,7 +2869,7 @@ internal sealed partial class CSharpBackend
         // `((c) ? a() : b())` arrives parenthesized) — strip them to see the shape.
         while (e is Paren p) { e = p.Inner; }
         if (e is Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec } arrayUpdate
-            && PointerArrayStride(arrayUpdate.Operand.Type) != 1)
+            && NeedsPointerUpdateLowering(arrayUpdate.Operand))
             return PointerArrayUpdate(arrayUpdate, discard: true).Item1;
         // A comma in statement position discards every operand's value (the whole
         // comma's value is unused here), so emit each operand as its own statement

@@ -599,7 +599,7 @@ public sealed partial class CompilerTests
         try
         {
             Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { src }))
-                .Message.ShouldContain("non-constant dimension");
+                .Message.ShouldContain("runtime array inner dimensions must be positive constant bounds");
         }
         finally { File.Delete(src); }
     }

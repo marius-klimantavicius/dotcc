@@ -37,6 +37,13 @@ public sealed class GlobalPointerObjectTests
                     int **address = &pointer;
                     int (**callback_address)(int) = &callback;
                     if (observe() != 22 || *address != values) return 1;
+                    if (pointer++ != values || pointer != values + 1) return 6;
+                    if (--pointer != values || pointer != values) return 7;
+                    ++pointer;
+                    pointer--;
+                    int steps = 0;
+                    for (; pointer != values + 2; pointer++) steps++;
+                    if (steps != 2 || pointer != values + 2) return 8;
                     pointer = values + 1;
                     callback = doubled;
                     if (observe() != 42 || (*callback_address)(7) != 14) return 2;

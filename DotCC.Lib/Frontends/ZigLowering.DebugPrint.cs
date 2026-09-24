@@ -38,7 +38,7 @@ internal sealed partial class ZigLowering
         Name = "stderr",
         TargetName = "stderr",
         Kind = SymKind.Var,
-        Type = new CType.Pointer(CType.Void),
+        Type = new CType.Pointer(new CType.Named("FILE")),
         IsGlobal = true,
         FromSystemHeader = true,
     };
