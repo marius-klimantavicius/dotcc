@@ -70,6 +70,7 @@ public static unsafe partial class Libc
         public IntPtr Arg;    // (void*)
         public int Result;
         public Thread? Thread;
+        public RuntimeContext? Context;
         public bool Detached;
     }
 
@@ -113,14 +114,26 @@ public static unsafe partial class Libc
     /// </summary>
     public static int thrd_create(thrd_t* thr, delegate*<void*, int> func, void* arg)
     {
-        if (thr == null) { return thrd_error; }
+        if (thr == null || func == null) { return thrd_error; }
         int id = Interlocked.Increment(ref _nextThrdId);
-        var st = new ThrdState { Func = (IntPtr)func, Arg = (IntPtr)arg };
-        st.Thread = new Thread(ThrdEntry);
-        _threads[id] = st;
-        thr->Id = id;
-        st.Thread.Start(id);
-        return thrd_success;
+        RuntimeContext? context = RuntimeContext.Current;
+        bool retained = false;
+        try
+        {
+            if (context != null) { context.Retain(); retained = true; }
+            var st = new ThrdState { Func = (IntPtr)func, Arg = (IntPtr)arg, Context = context };
+            st.Thread = new Thread(ThrdEntry);
+            _threads[id] = st;
+            st.Thread.Start(id);
+            thr->Id = id;
+            return thrd_success;
+        }
+        catch (Exception error) when (error is OutOfMemoryException or ThreadStateException)
+        {
+            _threads.TryRemove(id, out _);
+            if (retained) context!.Release();
+            return error is OutOfMemoryException ? thrd_nomem : thrd_error;
+        }
     }
 
     // Static entry — a lambda can't capture the function pointer, so the body
@@ -129,21 +142,31 @@ public static unsafe partial class Libc
     {
         int id = (int)idObj!;
         var st = _threads[id];
+        using var contextBinding = st.Context?.Enter();
         _selfThrdId = id;
         try
         {
-            var f = (delegate*<void*, int>)st.Func;
-            st.Result = f((void*)st.Arg);
+            bool completed = false;
+            try
+            {
+                try { st.Result = ((delegate*<void*, int>)st.Func)((void*)st.Arg); }
+                catch (ThrdExitException ex) { st.Result = ex.Code; }
+                completed = true;
+            }
+            finally
+            {
+                if (st.Context is null || (completed && st.Context.Termination is null))
+                { RunPthreadDtors(); RunTssDtors(); }
+            }
         }
-        catch (ThrdExitException ex)
+        catch (Exception error) when (st.Context is not null)
         {
-            st.Result = ex.Code;   // thrd_exit(res) inside the thread
+            st.Context.RecordWorkerFailure(error);
         }
         finally
         {
-            RunPthreadDtors();                               // POSIX keys used by a C11-created thread
-            RunTssDtors();                                   // C11: dtors run at thread exit
             if (st.Detached) { _threads.TryRemove(id, out _); }
+            st.Context?.Release();
         }
     }
 

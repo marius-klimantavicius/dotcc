@@ -123,7 +123,8 @@ public static unsafe partial class Libc
 
     /// <summary><c>_exit(status)</c> — immediate termination, no handlers/flush
     /// (POSIX). Same backing as <see cref="_Exit"/>.</summary>
-    public static void _exit(int status) => Environment.Exit(status);
+    [global::System.Diagnostics.CodeAnalysis.DoesNotReturn]
+    public static void _exit(int status) => TerminateRuntime(RuntimeTerminationKind.ImmediateExit, status);
 
     // ---- <sys/wait.h> ------------------------------------------------------
 

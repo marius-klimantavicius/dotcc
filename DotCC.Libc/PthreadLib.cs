@@ -124,22 +124,39 @@ public static unsafe partial class Libc
         using var contextBinding = state.Context?.Enter();
         _pthreadSelf = state.Id;
         _pthreadCreated = true;
-        try { state.Result = state.InstanceStart != null ? state.InstanceStart(state.Argument)
-            : (IntPtr)((delegate*<void*, void*>)state.Function)((void*)state.Argument); }
-        catch (PthreadExitException ex) { state.Result = ex.Result; }
-        finally
+        try
         {
-            try { RunPthreadDtors(); RunTssDtors(); }
+            bool completed = false;
+            try
+            {
+                try { state.Result = state.InstanceStart != null ? state.InstanceStart(state.Argument)
+                    : (IntPtr)((delegate*<void*, void*>)state.Function)((void*)state.Argument); }
+                catch (PthreadExitException ex) { state.Result = ex.Result; }
+                completed = true;
+            }
             finally
             {
-                lock (state)
-                {
-                    state.Finished = true;
-                    if (state.Detached) _pthreads.TryRemove(state.Id, out _);
-                }
-                _pthreadCreated = false;
-                state.Context?.Release();
+                // Preserve legacy destructor behavior. An owned terminal fault
+                // must not resume arbitrary translated code through destructors.
+                if (state.Context is null || (completed && state.Context.Termination is null))
+                { RunPthreadDtors(); RunTssDtors(); }
             }
+        }
+        catch (Exception error) when (state.Context is not null)
+        {
+            // This is the outer worker boundary, never a successful return to C.
+            // The host receives the exact failure and must stop its other workers.
+            state.Context.RecordWorkerFailure(error);
+        }
+        finally
+        {
+            lock (state)
+            {
+                state.Finished = true;
+                if (state.Detached) _pthreads.TryRemove(state.Id, out _);
+            }
+            _pthreadCreated = false;
+            state.Context?.Release();
         }
     }
     public static int pthread_join(long thread, void** result)

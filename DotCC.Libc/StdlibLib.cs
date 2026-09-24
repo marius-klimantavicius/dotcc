@@ -349,17 +349,21 @@ public static unsafe partial class Libc
     }
 
     /// <summary><c>exit(code)</c> — terminate the program with
-    /// <paramref name="code"/>. Routes to <see cref="Environment.Exit(int)"/>.
-    /// (dotcc does not yet run <c>atexit</c> handlers.)</summary>
-    public static void exit(int code) => Environment.Exit(code);
+    /// <paramref name="code"/>. A bound program records and throws an owning
+    /// termination request; an unbound program uses Environment.Exit.
+    /// dotcc does not yet run <c>atexit</c> handlers.</summary>
+    [global::System.Diagnostics.CodeAnalysis.DoesNotReturn]
+    public static void exit(int code) => TerminateRuntime(RuntimeTerminationKind.Exit, code);
 
     /// <summary><c>_Exit(code)</c> (C99) — terminate immediately without flushing
     /// or running handlers. Same backing as <see cref="exit"/> here.</summary>
-    public static void _Exit(int code) => Environment.Exit(code);
+    [global::System.Diagnostics.CodeAnalysis.DoesNotReturn]
+    public static void _Exit(int code) => TerminateRuntime(RuntimeTerminationKind.ImmediateExit, code);
 
-    /// <summary><c>abort()</c> — abnormal termination. Routes to
-    /// <see cref="Environment.FailFast(string)"/>.</summary>
-    public static void abort() => Environment.FailFast("abort() called");
+    /// <summary><c>abort()</c> records abnormal termination for an explicitly
+    /// bound program; unbound calls retain Environment.FailFast behavior.</summary>
+    [global::System.Diagnostics.CodeAnalysis.DoesNotReturn]
+    public static void abort() => TerminateRuntime(RuntimeTerminationKind.Abort, 0);
 
     /// <summary>
     /// <c>system(command)</c> — hand <paramref name="command"/> to the host
