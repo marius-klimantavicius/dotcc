@@ -192,12 +192,13 @@ These diagnostic runtime passes precede the final generated-product matrix.
 It ran 30 acquisition/pipeline/notice checks, rebuilt the native control, emitted
 all 164 units, linked with both pooling/deduplication options, post-processed,
 built/promoted final output, built the real root solution and executed the matrix.
-The translation receipt is `artifacts/translation/attempt-lshtv_ga/result.json`.
+The final translation receipt, including the socket repair below, is
+`artifacts/translation/attempt-juk2fdh_/result.json`.
 
 | Product | JIT integration | Whole-assembly NativeAOT integration | Pinned Tcl protocol | Native↔managed RDB/AOF exchange |
 | --- | --- | --- | --- | --- |
-| Raw (`run-qel76rfs`) | 16 passed | 16 passed | 29 passed, 6 explicit DEBUG exclusions | 4 directions/formats in each execution mode passed |
-| Processed (`run-52d_lfqb`) | 16 passed | 16 passed | 29 passed, 6 explicit DEBUG exclusions | 4 directions/formats in each execution mode passed |
+| Raw (`run-kyun50vr`) | 17 passed | 17 passed | 29 passed in each execution mode, 6 explicit DEBUG exclusions | 4 directions/formats in each execution mode passed |
+| Processed (`run-38bsgb05`) | 17 passed | 17 passed | 29 passed in each execution mode, 6 explicit DEBUG exclusions | 4 directions/formats in each execution mode passed |
 
 These run directories are under `artifacts/managed-validation/`. They include
 commands/logs, assembly hashes, per-case results, actual execution modes,
@@ -216,15 +217,17 @@ WATCH conflicts and ACL command/key denials. This remains representative
 coverage, not an exhaustive pass of all 307 required inventory entries.
 
 The actual sample project passed authenticated RDB and AOF restart under JIT
-and NativeAOT (`artifacts/managed-smoke/delivery-o8suqatu/result.json`). Its
+and NativeAOT with the final socket-fixed library
+(`artifacts/managed-smoke/delivery-final-2bg5x258/result.json`). Its
 isolated build outputs prevent interference with the raw/processed test builds.
 `UPSTREAM-NOTICES.txt` accompanies generated, build and publish outputs and
 preserves 259 source/license notice sections with original source hashes.
 
 The final assembly passes the 133-case ABI probe with only the two documented
-pthread-handle differences (`artifacts/abi/final-product/receipt.json`). A second
-postprocessor pass leaves all 85 generated C# hashes unchanged and does not
-touch authored originals (`artifacts/postprocess-idempotence/check-kzayl3t2`).
+pthread-handle differences (`artifacts/abi/final-socket-product/receipt.json`).
+On the preceding generation, a second postprocessor pass left all 85 generated
+C# hashes unchanged and did not touch authored originals
+(`artifacts/postprocess-idempotence/check-kzayl3t2`).
 Default-fetch and explicit-no-fetch generation both pass; temporary staging paths
 enter internal unit-name hashes, so byte-identical C# across staging roots is
 not claimed. The outputs have equivalent tested behavior.
@@ -244,7 +247,7 @@ full-command inventory or performance-parity claim is made.
 ## Occupied-port lifecycle regression
 
 A final failed-startup case exposed a shared socket mismatch after the initial
-matrix above: .NET's Linux `ReuseAddress` mapping enabled both native reuse
+16-case matrix: .NET's Linux `ReuseAddress` mapping enabled both native reuse
 options, allowing two owners to listen on the same port. Independent native C
 and BCL probes establish the difference in
 `artifacts/reductions/socket-reuse-abi/receipt.json`. The shared runtime now uses
@@ -258,4 +261,6 @@ GCC comparisons. The new fixture is explicitly Linux-only. A fresh 164-object
 diagnostic relink passes all 17 integration cases, including occupied-port
 failure, queued-snapshot failure, cleanup without quarantine and surviving peer
 owners (`artifacts/reductions/failed-startup-mata4cmu/managed.json`). The final
-generation/matrix is being repeated with this runtime repair.
+generation and all four execution modes now pass with this runtime repair,
+as recorded in the delivery matrix above. The pinned protocol suite also runs
+against each NativeAOT endpoint, with the same 29 passes and six exclusions.

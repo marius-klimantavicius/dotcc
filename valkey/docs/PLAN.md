@@ -1,10 +1,10 @@
 # Translate Valkey to C# with dotcc
 
 Created 2026-09-24. Campaign directory: `<repo>/valkey/`.
-Status: **Implementation authorized and in progress with a coordinator and
-sub-agents** (2026-09-24). The downloaded release and checksum are recorded in
-[source.md](source.md). Implementation gates remain open until their execution
-evidence is recorded.
+Status: **Initial Linux x64 profile implemented and qualified by the coordinator
+and sub-agents** (2026-09-24). The downloaded release and checksum are recorded in
+[source.md](source.md). Broader qualification gates remain open until their
+execution evidence is recorded.
 
 The initial Linux x64 library, owning API and consumer now run under raw and
 post-processed JIT/NativeAOT, with protocol and native persistence-exchange
