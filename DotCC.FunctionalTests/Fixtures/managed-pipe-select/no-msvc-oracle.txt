@@ -1,0 +1,1 @@
+POSIX pipe, select, poll and fd_set APIs are not supplied by MSVC.

@@ -51,6 +51,7 @@ public static unsafe partial class Libc
             foreach (var slot in state.Files)
             {
                 if (slot is null) continue;
+                if (slot.Kind == FileSlot.K.Pipe) ClosePipe(slot);
                 try { slot.Writer?.Flush(); } catch (IOException) { }
                 try { slot.Stream?.Dispose(); } catch (IOException) { }
                 slot.Socket?.Dispose();

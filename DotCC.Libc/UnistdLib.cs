@@ -7,15 +7,6 @@ namespace DotCC.Libc;
 /// declares — just enough for portable Unix C (chibi-scheme's non-<c>_WIN32</c>
 /// path) to compile and behave honestly.
 /// </summary>
-/// <remarks>
-/// <c>usleep</c> / <c>isatty</c> have faithful BCL lowerings. The
-/// <c>select()</c> family compiles (poll-style code is pervasive in portable C)
-/// but <c>select</c> itself THROWS at runtime — .NET exposes no fd-level
-/// readiness primitive, and a silent "always ready" would spin-loop the caller.
-/// Fail loudly at the use site, per dotcc's no-silent-miscompile rule. The
-/// <c>FD_*</c> manipulators are no-ops: their only meaning is as input to the
-/// <c>select</c> that throws.
-/// </remarks>
 public static unsafe partial class Libc
 {
     /// <summary>POSIX <c>usleep</c> — suspend for at least <paramref name="usec"/>
@@ -38,20 +29,4 @@ public static unsafe partial class Libc
         _ => 0,
     };
 
-    /// <summary>POSIX <c>FD_ZERO</c> — no-op; see class remarks.</summary>
-    public static void FD_ZERO(long* set) { }
-
-    /// <summary>POSIX <c>FD_SET</c> — no-op; see class remarks.</summary>
-    public static void FD_SET(int fd, long* set) { }
-
-    /// <summary>POSIX <c>FD_CLR</c> — no-op; see class remarks.</summary>
-    public static void FD_CLR(int fd, long* set) { }
-
-    /// <summary>POSIX <c>FD_ISSET</c> — always 0; see class remarks.</summary>
-    public static int FD_ISSET(int fd, long* set) => 0;
-
-    /// <summary>POSIX <c>select</c> — unsupported on .NET; throws so a caller
-    /// fails loudly at the use site instead of spin-looping on a fake "ready".</summary>
-    public static int select(int nfds, long* readfds, long* writefds, long* errorfds, void* timeout)
-        => throw new global::System.NotSupportedException("select() is not supported by the dotcc runtime");
 }

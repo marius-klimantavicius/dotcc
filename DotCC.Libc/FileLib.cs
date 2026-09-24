@@ -55,9 +55,10 @@ public static unsafe partial class Libc
     /// <summary>Managed backing for one open <see cref="FILE"/>.</summary>
     private sealed class FileSlot
     {
-        public enum K { In, Out, Err, File, Socket }
+        public enum K { In, Out, Err, File, Socket, Pipe }
         public K Kind;
         public Stream? Stream;          // null for the console + socket kinds
+        public ManagedPipe? Pipe;
         public Socket? Socket;          // socket kind only (BSD sockets, SocketLib)
         public int StatusFlags;         // Linux O_ACCMODE/O_APPEND/O_NONBLOCK
         public int DescriptorFlags;     // FD_CLOEXEC (dotcc has no managed exec)
@@ -152,6 +153,7 @@ public static unsafe partial class Libc
     private static bool WriteByteSlot(FileSlot s, byte b)
     {
         // Socket-backed fd: one byte onto the connection (fputc on an fdopen'd socket).
+        if (s.Kind == FileSlot.K.Pipe) { bool ok = PipeWrite(s, &b, 1) == 1; if (!ok) s.Err = true; return ok; }
         if (s.Kind == FileSlot.K.Socket) { return SocketWriteByte(s, b); }
         // Only file-backed slots carry a Stream; the console kinds have none.
         if (s.Stream is { } st)
@@ -176,6 +178,14 @@ public static unsafe partial class Libc
         // (covers fgetc / getc / getchar / fgets — the common ungetc consumers).
         if (s.Pushback >= 0) { int p = s.Pushback; s.Pushback = -1; return p; }
         // Socket-backed fd: one byte off the connection (fgetc on an fdopen'd socket).
+        if (s.Kind == FileSlot.K.Pipe)
+        {
+            byte value;
+            long count = PipeRead(s, &value, 1);
+            if (count == 0) s.Eof = true;
+            if (count < 0) s.Err = true;
+            return count == 1 ? value : -1;
+        }
         if (s.Kind == FileSlot.K.Socket) { return SocketReadByte(s); }
         int r;
         if (s.Stream is { } st)
@@ -369,6 +379,7 @@ public static unsafe partial class Libc
         if (s == null) { errno = EBADF; return -1; }
         // A socket fd must return whatever is available NOW (up to count), not block
         // for the full count like the file byte-loop below would — one Receive.
+        if (s.Kind == FileSlot.K.Pipe) return PipeRead(s, buf, count);
         if (s.Kind == FileSlot.K.Socket) { return SocketRecvInto(s, buf, count, 0); }
         var dst = (byte*)buf;
         long got = 0;
@@ -389,6 +400,7 @@ public static unsafe partial class Libc
         if (s == null) { errno = EBADF; return -1; }
         // Socket fd: one Send of the whole buffer (the byte-loop below is for the
         // file/console kinds whose backing has no bulk write).
+        if (s.Kind == FileSlot.K.Pipe) return PipeWrite(s, buf, count);
         if (s.Kind == FileSlot.K.Socket) { return SocketSendFrom(s, buf, count, 0); }
         var src = (byte*)buf;
         long written = 0;
@@ -432,6 +444,16 @@ public static unsafe partial class Libc
 
     private static void CloseSlot(FileSlot slot)
     {
+        if (slot.Kind == FileSlot.K.Pipe)
+        {
+            ClosePipe(slot);
+            lock (_filesLock)
+            {
+                int index = _files.IndexOf(slot);
+                if (index >= 3) _files[index] = null;
+            }
+            return;
+        }
         if (slot.Kind == FileSlot.K.Socket)
         {
             // close(sockfd): Dispose closes the handle (sending FIN for a connected

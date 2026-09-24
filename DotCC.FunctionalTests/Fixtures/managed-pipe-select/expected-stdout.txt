@@ -1,0 +1,5 @@
+fdset=128 high=1 cleared=0
+empty=-1 again=1
+initial=1 read=0 write=1
+ready=2 bytes=2 value=ok
+eof=0 ready=1 hup=1

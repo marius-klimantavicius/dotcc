@@ -411,15 +411,6 @@ public static unsafe partial class Libc
     [DllImport("libc", EntryPoint = "mkfifo", SetLastError = true)]
     private static extern int PosixMkfifo(byte* path, uint mode);
 
-    /// <summary><c>pipe(pipefd)</c> — anonymous pipes aren't modeled in dotcc's
-    /// FileSlot fd space; fail with EPERM. Defined so the module links; unused by
-    /// the R7RS suite.</summary>
-    public static int pipe(int* pipefd)
-    {
-        errno = EPERM;
-        return -1;
-    }
-
     /// <summary><c>dup(fd)</c> — fd duplication isn't modeled (a dotcc fd owns its
     /// backing stream; two fds sharing one stream has no clean close semantics);
     /// fail with EPERM. Defined so the module links; unused by the R7RS suite.</summary>

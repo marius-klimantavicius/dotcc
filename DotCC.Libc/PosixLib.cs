@@ -229,7 +229,15 @@ public static unsafe partial class Libc
         try
         {
             if (slot.Socket is { } sock) sock.Blocking = (arg & 0x800) == 0;
-            slot.StatusFlags = (slot.StatusFlags & 3) | (arg & 0xc00);
+            if (slot.Pipe is { } pipe)
+            {
+                lock (pipe.Sync)
+                {
+                    slot.StatusFlags = (slot.StatusFlags & 3) | (arg & 0xc00);
+                    global::System.Threading.Monitor.PulseAll(pipe.Sync);
+                }
+            }
+            else slot.StatusFlags = (slot.StatusFlags & 3) | (arg & 0xc00);
             return 0;
         }
         catch (SocketException ex) { return FcntlError(SocketErrno(ex.SocketErrorCode)); }
@@ -266,6 +274,13 @@ public static unsafe partial class Libc
                 if (fd < 0) continue;
                 var slot = SlotByFd(fd);
                 if (slot is null) { *(short*)(p + 6) = 0x20; ready++; continue; }
+                if (slot.Kind == FileSlot.K.Pipe)
+                {
+                    short result = PollPipe(slot, events);
+                    *(short*)(p + 6) = result;
+                    if (result != 0) ready++;
+                    continue;
+                }
                 if (slot.Socket is { } socket)
                 {
                     // Read readiness also detects orderly EOF; errors are
@@ -299,6 +314,16 @@ public static unsafe partial class Libc
                     int fd = *(int*)p;
                     if (fd < 0) continue;
                     var slot = SlotByFd(fd);
+                    // Pipes may change readiness while Socket.Select blocks.
+                    // Rescan before deciding that this timeout expired.
+                    if (slot is null || slot.Kind == FileSlot.K.Pipe)
+                    {
+                        if (*(short*)(p + 6) != 0) ready--;
+                        short pipeResult = slot is null ? (short)32 : PollPipe(slot, *(short*)(p + 4));
+                        *(short*)(p + 6) = pipeResult;
+                        if (pipeResult != 0) ready++;
+                        continue;
+                    }
                     if (slot?.Socket is not { } socket) continue;
                     short events = *(short*)(p + 4), result = 0;
                     bool readable = reads.Contains(socket), writable = writes.Contains(socket), exceptional = errors.Contains(socket);

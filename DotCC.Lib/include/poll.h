@@ -1,7 +1,7 @@
 #ifndef _POLL_H
 #define _POLL_H
 
-/* Linux pollfd ABI. Readiness uses real sockets/regular files. Unsupported
+/* Linux pollfd ABI. Readiness uses sockets, regular files and managed pipes. Unsupported
    console input readiness returns ENOTSUP; a negative fd is ignored. */
 
 #define POLLIN  0x001

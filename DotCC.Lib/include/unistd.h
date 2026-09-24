@@ -13,12 +13,8 @@
 
    - usleep / isatty route to the obvious BCL primitives (Thread.Sleep,
      Console.Is*Redirected) in DotCC.Libc.UnistdLib.
-   - The select() surface (fd_set, FD_* and struct timeval — glibc exposes
-     them transitively from here, which is what portable code relies on) is
-     declared so poll-style code COMPILES; calling select() at runtime throws
-     NotSupportedException (fail loudly — .NET has no fd-level select). The
-     FD_* manipulators are no-op functions (not macros, so no statement-form
-     expansion edge cases); their only consumer is the select() that throws. */
+   - select() and its 1024-bit fd_set operate on managed descriptors.
+     Console input readiness returns ENOTSUP. */
 
 /* Advertise the POSIX.1-2008 API surface. dotcc provides that surface on EVERY
    target OS — each call routes to the host primitive at runtime (the
@@ -27,14 +23,15 @@
    branch (#ifdef _POSIX_VERSION) instead of silently compiling a non-POSIX
    fallback or #error-ing out — so calls dotcc fully supports (kill / getpid /
    opendir / …) are actually reached. It is NOT a conformance guarantee: the
-   unsupported corners (fork / exec / pipe / dup) still return EPERM/-1 — see
+   unsupported corners (fork / exec / dup) still return EPERM/-1 — see
    C-SUPPORT.md. As on a real system the macro lives in <unistd.h>, so it's
    visible only after this header is included (we don't predefine the _input_
    feature-test macros _POSIX_C_SOURCE / _POSIX_SOURCE — those are the program's
    to set; dotcc's headers declare unconditionally and ignore them). */
 #define _POSIX_VERSION 200809L
 
-typedef long fd_set;
+#define FD_SETSIZE 1024
+typedef struct { unsigned long __fds_bits[16]; } fd_set;
 
 #ifndef _OFF_T_DEFINED
 #define _OFF_T_DEFINED
