@@ -97,6 +97,23 @@ repair). Logs live under `artifacts/reductions/preprocessor/`. Real-source retri
 emit `rax.c` and `valkey_strtod.c`; `quicklist.c` and `server.c` advance to typedef
 parameter shadowing. No target architecture macro is forged to bypass checks.
 
+## B8 — Primitive typedef shadowing and POSIX base types
+
+Typedef rewriting now recognizes primitive and tagged declaration specifiers,
+preserves prototype/function scopes and distinguishes grouped callback names.
+`unistd.h` exposes `ssize_t` through `sys/types.h`; `sys/ioctl.h` declares Linux
+`winsize` and its window-size request constants. These declarations do not add a
+successful ioctl backend. The combined batch passes 34 unit checks, three
+functional checks and three enabled GCC differential oracles, also covering
+explicit pointer-to-array parameters. Logs use the
+`artifacts/probe/posix-base-type-headers-` prefix.
+
+Full retry `artifacts/translation/attempt-wq79iazt/result.json` emits 91/164 units.
+Of its 73 failures, 67 stop at a newly reachable atomic field whose name matches
+a typedef in `server.h`. Other first failures are GNU vector/aligned attributes,
+weak functions, an alignment query on a pointer declaration and `sizeof` of an
+array type. This is still object-emission evidence only.
+
 ## Other observed frontend families
 
 The initial full probe also records typedef-name parameter shadowing,

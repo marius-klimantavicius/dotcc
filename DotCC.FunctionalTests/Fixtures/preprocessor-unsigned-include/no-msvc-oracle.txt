@@ -1,0 +1,1 @@
+This fixture also exercises GNU __has_attribute capability queries. The MSVC C oracle does not provide that GNU operator; GCC supplies the native differential. Standard integer preprocessing remains covered independently by unit regressions.

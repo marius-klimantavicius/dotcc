@@ -60,6 +60,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     private readonly int _arrowSymbol;
     private readonly HashSet<int> _pointerQualifiers;
     private readonly HashSet<int> _typeSpecifiers;
+    private readonly HashSet<int> _parenthesizedTypeOperators;
     private readonly HashSet<string> _typeNames;
     private readonly HashSet<string> _seedTypeNames;
     private readonly Stack<HashSet<string>> _scopeTypeNames = new();
@@ -67,10 +68,11 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     private readonly Stack<bool> _aggregateScopes = new();
     // Parameter names may hide typedefs in the parameter list and function
     // body, but must not leak out of a prototype or function definition.
-    private sealed class ParenthesisScope(bool declaratorGroup, int blockDepth)
+    private sealed class ParenthesisScope(bool declaratorGroup, int blockDepth, bool completesType)
     {
         public bool DeclaratorGroup { get; } = declaratorGroup;
         public int BlockDepth { get; } = blockDepth;
+        public bool CompletesType { get; } = completesType;
         public HashSet<string> Shadows { get; } = new(StringComparer.Ordinal);
     }
     private readonly Stack<ParenthesisScope> _parenthesisScopes = new();
@@ -125,6 +127,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         _dotSymbol = map["."];
         _arrowSymbol = map["->"];
         _pointerQualifiers = new HashSet<int> { _starSymbol, map["const"], map["volatile"], map["restrict"] };
+        _parenthesizedTypeOperators = new HashSet<int> { map["_Atomic"], map["typeof"] };
         _typeSpecifiers = new HashSet<int>();
         foreach (var keyword in new[] { "void", "char", "short", "int", "long", "signed", "unsigned",
                      "float", "double", "_Bool", "_Complex", "_Float128", "__int128" })
@@ -166,11 +169,17 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         }
 
         _pendingParameterShadows = null;
+        var closesParenthesizedType = false;
         if (token.ID == _openParenSymbol)
-            _parenthesisScopes.Push(new ParenthesisScope(_afterDeclarationType, _aggregateScopes.Count));
+        {
+            var completesType = _parenthesizedTypeOperators.Contains(_previousSymbol);
+            _parenthesisScopes.Push(new ParenthesisScope(_afterDeclarationType || completesType, _aggregateScopes.Count, completesType));
+        }
         else if (token.ID == _closeParenSymbol && _parenthesisScopes.Count > 0)
         {
-            _pendingParameterShadows = _parenthesisScopes.Pop().Shadows;
+            var scope = _parenthesisScopes.Pop();
+            closesParenthesizedType = scope.CompletesType;
+            _pendingParameterShadows = scope.Shadows;
             foreach (var parameter in _pendingParameterShadows) _typeNames.Add(parameter);
         }
 
@@ -214,7 +223,8 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             _typeNames.Remove(localName);
             shadows.Add(localName);
         }
-        _afterDeclarationType = closesAggregate || IsAfterDeclarationType(token, afterTag, _afterDeclarationType);
+        _afterDeclarationType = closesAggregate || closesParenthesizedType
+            || IsAfterDeclarationType(token, afterTag, _afterDeclarationType);
 
         if (token.ID == _typedefSymbol)
         {
@@ -295,9 +305,15 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         Emit(typedefToken);
         _previousSymbol = typedefToken.ID;
         var afterDeclarationType = false;
+        var parenthesizedTypes = new Stack<bool>();
         for (var i = 0; i < body.Count; i++)
         {
             var t = body[i];
+            var closesParenthesizedType = false;
+            if (t.ID == _openParenSymbol)
+                parenthesizedTypes.Push(_parenthesizedTypeOperators.Contains(_previousSymbol));
+            else if (t.ID == _closeParenSymbol && parenthesizedTypes.Count > 0)
+                closesParenthesizedType = parenthesizedTypes.Pop();
             // Same tag rule as ProcessToken: an ID right after struct/union/enum
             // is a tag, never a typedef-name — don't promote it (covers e.g.
             // `typedef struct PriorAlias NewName;`).
@@ -322,7 +338,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             {
                 Emit(t);
                 _previousSymbol = t.ID;
-                afterDeclarationType = IsAfterDeclarationType(t, afterTag, afterDeclarationType);
+                afterDeclarationType = closesParenthesizedType || IsAfterDeclarationType(t, afterTag, afterDeclarationType);
             }
         }
 
