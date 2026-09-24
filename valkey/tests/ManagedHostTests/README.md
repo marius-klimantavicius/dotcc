@@ -18,7 +18,10 @@ writable build staging and runs its Tcl `unit/protocol` suite using `--host` and
 `--port` against the managed process. The reference tree stays unchanged. The Tcl bootstrap sees an executable barrier
 that always fails if invoked; attempting to launch a native server fails the gate.
 Six explicitly named `needs:debug` tests are excluded because DEBUG is outside
-the managed profile; the exact names and reasons appear in the receipt.
+the managed profile; the exact names and reasons appear in the receipt. With
+`--aot`, the same protocol suite and exclusions also run against the NativeAOT
+`--serve` host; separate logs live in `aot-upstream/` and the receipt records
+`checks.native_aot_upstream_protocol`.
 `--variant raw|processed` selects the real generated project (processed by default)
 through the public API project reference. `--no-build` explicitly reuses a
 previously compiled **real** consumer and verifies its translated-library hash

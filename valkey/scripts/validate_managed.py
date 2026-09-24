@@ -419,6 +419,10 @@ def main():
             if aot["status"] != "passed" or aot["execution"] != "NativeAOT":
                 raise RuntimeError("NativeAOT binary did not execute the real host successfully.")
             receipt["checks"]["native_aot"] = aot
+            if args.upstream_protocol:
+                protocol_output = output / "aot-upstream"
+                protocol_output.mkdir()
+                receipt["checks"]["native_aot_upstream_protocol"] = upstream_protocol([str(binary)], protocol_output)
             if args.persistence_exchange:
                 receipt["checks"]["aot_persistence_exchange"] = persistence_exchange([str(binary)], output / "aot-exchange", "NativeAOT")
         receipt["status"] = "passed"
