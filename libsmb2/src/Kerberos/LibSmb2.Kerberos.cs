@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Concurrent;
+using System.Security.Authentication;
 using Kerberos.NET;
 using Kerberos.NET.Client;
 using Kerberos.NET.Credentials;
@@ -112,16 +113,7 @@ public static partial class LibSmb2
                     await client.Authenticate(new KerberosPasswordCredential(user, password, realm)).ConfigureAwait(false);
                 else ConfigureExistingCredentials(client);
                 cancellationToken.ThrowIfCancellationRequested();
-                var session = await client.GetServiceTicket(new RequestServiceTicket
-                {
-                    ServicePrincipalName = "cifs/" + host,
-                    ApOptions = ApOptions.MutualRequired,
-                    GssContextFlags = GssContextEstablishmentFlag.GSS_C_MUTUAL_FLAG |
-                        GssContextEstablishmentFlag.GSS_C_REPLAY_FLAG |
-                        GssContextEstablishmentFlag.GSS_C_SEQUENCE_FLAG |
-                        GssContextEstablishmentFlag.GSS_C_INTEG_FLAG |
-                        GssContextEstablishmentFlag.GSS_C_CONF_FLAG
-                }, cancellationToken).ConfigureAwait(false);
+                var session = await client.GetServiceTicket(ManagedServiceTicketRequest(host), cancellationToken).ConfigureAwait(false);
                 state = new KerberosAuthState(client, session);
                 client = null;
                 state.SetOutputToken(GssApiToken.Encode(new Oid(MechType.KerberosGssApi), session.ApReq));
@@ -131,6 +123,18 @@ public static partial class LibSmb2
         }
         catch { state?.Dispose(); client?.Dispose(); throw; }
     }
+
+    // A non-mutual GSS exchange does not generate an AP-REQ subkey or require
+    // an AP-REP. The signed SMB SESSION_SETUP reply authenticates the server.
+    internal static RequestServiceTicket ManagedServiceTicketRequest(string host) => new()
+    {
+        ServicePrincipalName = "cifs/" + host,
+        ApOptions = default,
+        GssContextFlags = GssContextEstablishmentFlag.GSS_C_REPLAY_FLAG |
+            GssContextEstablishmentFlag.GSS_C_SEQUENCE_FLAG |
+            GssContextEstablishmentFlag.GSS_C_INTEG_FLAG |
+            GssContextEstablishmentFlag.GSS_C_CONF_FLAG
+    };
 
     internal static string FileCredentialCache(string path)
     {
@@ -166,6 +170,8 @@ public static partial class LibSmb2
         try
         {
             KerberosAuthState state = GetKerberosState(authData);
+            if (state.Failed) throw new AuthenticationException("Kerberos authentication previously failed");
+            if (length < 0 || (buffer == null && length != 0)) throw new AuthenticationException("Invalid Kerberos response buffer");
             if (state.Sspi != null && buffer != null && length > 0)
             {
                 state.SetOutputToken(state.Sspi.RequestToken(
@@ -179,9 +185,14 @@ public static partial class LibSmb2
             }
             else if (state.Session != null && buffer != null && length > 0)
             {
-                ReadOnlyMemory<byte> response = UnwrapKerberosResponse(new ReadOnlyMemory<byte>(
+                ReadOnlyMemory<byte> response = KerberosTokenResponse.Read(new ReadOnlyMemory<byte>(
                     new ReadOnlySpan<byte>(buffer, length).ToArray()));
-                byte[] sessionKey = state.Session.AuthenticateServiceResponse(response).KeyValue.ToArray();
+                if (response.IsEmpty && (state.Session.ClientSubSessionKey != null ||
+                    (state.Session.ApReq.ApOptions & ApOptions.MutualRequired) != 0))
+                    throw new AuthenticationException("A mutual Kerberos context requires an AP-REP");
+                byte[] sessionKey = (response.IsEmpty
+                    ? state.Session.ServiceTicketSessionKey ?? state.Session.SessionKey
+                    : state.Session.AuthenticateServiceResponse(response)).KeyValue.ToArray();
                 CryptographicOperations.ZeroMemory(state.SessionKey);
                 state.SessionKey = sessionKey;
                 state.ClearOutputToken();
@@ -205,7 +216,12 @@ public static partial class LibSmb2
         try
         {
             KerberosAuthState state = GetKerberosState(authData);
-            if (state.Failed || !state.Authenticated) throw new InvalidOperationException("Kerberos mutual authentication did not complete");
+            if (state.Failed || !state.Authenticated) throw new AuthenticationException("Kerberos authentication did not complete");
+            // session_setup_cb derives signing keys and verifies the PDU after
+            // this returns. Require the signed bit even when encryption has
+            // disabled smb2->sign; otherwise upstream can skip that proof.
+            if (state.Session != null && (smb2->hdr.flags & SMB2_FLAGS_SIGNED) == 0)
+                throw new AuthenticationException("Managed Kerberos requires a signed session-setup reply");
             byte[] key = state.SessionKey;
             if (key.Length == 0 && state.Sspi != null) key = state.Sspi.SessionKey;
             if (key.Length < SMB2_KEY_SIZE || key.Length > byte.MaxValue) throw new InvalidOperationException("Kerberos returned an invalid session key");
@@ -315,29 +331,6 @@ public static partial class LibSmb2
             return;
         }
         throw new InvalidOperationException("KRB5CCNAME must identify a FILE credential cache when no password is supplied");
-    }
-
-    private static unsafe ReadOnlyMemory<byte> UnwrapKerberosResponse(ReadOnlyMemory<byte> token)
-    {
-        if (token.IsEmpty) throw new InvalidOperationException("The SMB server returned an empty Kerberos response");
-        if (token.Span[0] == 0xa1)
-        {
-            NegotiationToken negotiation = NegotiationToken.Decode(token);
-            token = negotiation.ResponseToken?.ResponseToken ?? ReadOnlyMemory<byte>.Empty;
-        }
-        if (!token.IsEmpty && token.Span[0] == 0x60)
-        {
-            GssApiToken outer = GssApiToken.Decode(token);
-            token = outer.Token;
-            if (outer.ThisMech?.Value == MechType.SPNEGO)
-            {
-                NegotiationToken negotiation = NegotiationToken.Decode(token);
-                token = negotiation.ResponseToken?.ResponseToken ?? ReadOnlyMemory<byte>.Empty;
-            }
-        }
-        if (!token.IsEmpty && token.Span[0] == 0x60) token = GssApiToken.Decode(token).Token;
-        if (token.IsEmpty) throw new InvalidOperationException("The SMB server returned no Kerberos AP-REP token");
-        return token;
     }
 
     private static unsafe void SetKerberosError(smb2_context* smb2, Exception error)

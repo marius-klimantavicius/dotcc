@@ -15,14 +15,21 @@ not applied. The verified pinned-source acquisition remains unchanged.
   can overwrite it. IOCTL request storage lives until callback/destruction and its
   output allocation is released through translated `smb2_free_data`. Truncated
   (`STATUS_BUFFER_OVERFLOW`) referrals are rejected rather than cached as complete.
-- Required Kerberos mutual authentication and made final provider failure sticky.
+- Made final provider failure sticky. Managed password/keytab/FILE-cache modes
+  use non-mutual GSS and accept a BER SPNEGO Kerberos `accept-completed` response
+  without AP-REP, retaining the service-ticket key. An AP-REP, when present, is
+  decrypted and validated and its returned key is used. Missing/rejected/incomplete
+  SPNEGO negotiation does not authorize key export. A signed final SMB session-setup
+  response is required even when encryption has disabled the signing flag;
+  translated libsmb2 verifies its signature after deriving the signing key.
   Upstream ignores the final `krb5_session_request` return in one success path;
-  key retrieval therefore fails the managed service turn if authentication did
-  not complete, including when encryption has disabled the signing flag.
+  failed/incomplete providers therefore throw during key retrieval.
 - Replaced the package's current-logon `SspiContext` helper with a narrow Windows
   SSPI adapter. The pinned helper's defaults request delegation and do not request
-  mutual authentication. The authored adapter selects the Kerberos package,
-  requests/verifies mutual authentication and never requests delegation. This
+  mutual authentication. The authored adapter selects the Negotiate package to
+  consume SMB's SPNEGO tokens, requests/verifies mutual authentication, then
+  requires `SECPKG_ATTR_NEGOTIATION_INFO` to identify Kerberos before exporting
+  `SECPKG_ATTR_SESSION_KEY`. It never requests delegation. This
   path depends on Windows `secur32.dll` and still requires Windows execution.
 - Used the translated allocator for session keys freed by the translated engine;
   auth-state/token allocations retain paired managed allocation/free ownership.
@@ -65,6 +72,14 @@ Protocol references: [DFS referral entry rules](https://learn.microsoft.com/en-u
 and [SSPI context establishment](https://learn.microsoft.com/en-us/windows/win32/secauthn/initializesecuritycontext--negotiate).
 
 ## Validation
+
+The token-format corrections have a local regression executable at
+`tests/KerberosTokens`. It exercises BER completion-only responses, optional
+cryptographically valid AP-REP/subkeys, rejected/incomplete/wrong-mechanism
+responses, the signed-session-setup requirement and SSPI completion policy.
+These checks need neither domain credentials nor a KDC. They do not exercise
+Windows SSPI native calls or establish real-domain interoperability; those
+remain remote-environment acceptance gates.
 
 The staged raw project and facade build without warnings or errors. Parser tests
 pass for request encoding, multiple targets, Unicode paths and invalid boundaries.

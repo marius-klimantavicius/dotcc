@@ -2,6 +2,7 @@
   <Project Path="generated/TranslatedLibsmb2/TranslatedLibsmb2.csproj" />
   <Project Path="src/Managed/ManagedSmb.csproj" />
   <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+  <Project Path="tests/KerberosTokens/KerberosTokens.csproj" />
   <Project Path="tests/DfsCodec/DfsCodec.csproj" />
   <Project Path="tests/ManagedDfs/ManagedDfs.csproj" />
 </Solution>

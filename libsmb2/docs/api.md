@@ -103,7 +103,10 @@ unchanged upstream regression tests; it is not a fallback for the managed facade
 `KRB5CCNAME=FILE:/absolute/path` on other systems. Each has a synchronous counterpart.
 Kerberos selection never falls back to NTLM. DNS resolves the supplied host while
 `cifs/<host>` preserves its service identity, excluding an optional port suffix.
-Signing/encryption uses the established Kerberos session key. Provider acquisition
+Managed credential modes support completed BER SPNEGO responses with or without
+AP-REP and require the final SMB session-setup signature. Windows logon uses SSPI
+Negotiate and verifies that the selected package is Kerberos with mutual
+authentication. Signing/encryption uses the established context key. Provider acquisition
 cancellation and Windows SSPI limitations are in [enterprise-client.md](enterprise-client.md).
 
 `SmbDfsClient.Create*` factories support the corresponding credentials and retain

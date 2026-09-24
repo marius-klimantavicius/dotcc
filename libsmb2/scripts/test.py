@@ -53,6 +53,9 @@ try:
             logs / ('dfs-' + ('-'.join(flag[2:] for flag in dfs_flags) or 'processed-jit') + '.log'), receipt, timeout=1800)
     run(['python3', ROOT / 'scripts/test-host-services.py'], logs / 'host-services.log', receipt, timeout=1800)
     for variant in ('TranslatedLibsmb2', 'TranslatedLibsmb2.Raw'):
+        run(['dotnet', 'run', '--project', ROOT / 'tests/KerberosTokens', '-c', 'Release',
+             '-p:Libsmb2GeneratedProject=' + str(ROOT / 'generated' / variant / 'TranslatedLibsmb2.csproj')],
+            logs / (variant + '-kerberos-tokens.log'), receipt)
         host_output = ROOT / 'build' / ('AsyncHost-' + variant)
         run(['dotnet', 'build', ROOT / 'tests/AsyncHost/AsyncHost.csproj', '-c', 'Release',
              '-p:Libsmb2GeneratedProject=' + str(ROOT / 'generated' / variant / 'TranslatedLibsmb2.csproj'),

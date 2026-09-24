@@ -74,8 +74,19 @@ Keytab and explicit-password authentication use the same managed Kerberos.NET
 context on Windows and Linux. Windows current-logon reuse alone uses SSPI; non-Windows
 existing credentials currently accept only an explicit `KRB5CCNAME=FILE:...`.
 The latter path is not qualified yet; KCM, KEYRING, and DIR caches remain unsupported.
-The authored SSPI adapter requests mutual authentication without delegation.
-Windows SSPI documents [session-key context queries](https://learn.microsoft.com/en-us/windows/win32/secauthn/querycontextattributes--general).
+Managed password/keytab/FILE-cache modes request non-mutual Kerberos GSS, so
+Kerberos.NET does not generate an AP-REQ subkey that would require an AP-REP.
+BER SPNEGO responses must explicitly identify a Kerberos mechanism and
+`accept-completed`; rejected/incomplete results fail. An optional AP-REP is
+validated and may supply a new key; otherwise the service-ticket session key is
+used. The final SMB session-setup response must be signed, and translated libsmb2
+verifies that signature before accepting the session, including encrypted sessions.
+
+The authored SSPI adapter uses **Negotiate**, which accepts SMB's SPNEGO tokens,
+and requests mutual authentication without delegation. On completion it requires
+`SECPKG_ATTR_NEGOTIATION_INFO` to identify Kerberos before querying
+`SECPKG_ATTR_SESSION_KEY`. NTLM is not accepted. See Microsoft's
+[Negotiate context queries](https://learn.microsoft.com/en-us/windows/win32/secauthn/querycontextattributes--negotiate).
 Evaluate that boundary and its dependency implications explicitly. The current
 plan's native-free product preference must not hide a platform dependency or
 silently drop the requested current-user mode. A translated C Kerberos library
