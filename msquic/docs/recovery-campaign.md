@@ -1,5 +1,9 @@
 # Packet recovery and independent interop campaign
 
+The [2026-09-25 investigation](recovery-investigation-20260925.md) captures the
+pending PATH_RESPONSE overwrite, oversized retransmissions and separate harness
+deadline behavior without changing the core or relabeling strict failures.
+
 The [2026-09-24 compiler refresh](verification-20260924.md) records a fresh
 execution against the latest regenerated sources. The checkpoints below retain
 their historical inputs and outcomes.

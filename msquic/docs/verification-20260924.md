@@ -1,5 +1,9 @@
 # Compiler refresh verification — 2026-09-24
 
+The subsequent [recovery investigation](recovery-investigation-20260925.md)
+traces the failure mechanisms and distinguishes demonstrated timing controls
+from the two historical deadline cases whose packet histories were not captured.
+
 MsQuic and PicoTLS were freshly translated and postprocessed with dotcc at
 `1abb6a813ee4a8e8880a103abc8558f3b09dbf85`, using `--literal-pool` and
 `--nest-types`. This campaign runs on Linux x64 with both raw and optimized
