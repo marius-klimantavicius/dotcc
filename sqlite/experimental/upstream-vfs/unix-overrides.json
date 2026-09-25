@@ -24,6 +24,21 @@
         "method": "global::System.Threading.Thread.MemoryBarrier"
       },
       "requireMatch": true
+    },
+    {
+      "name": "uvfs_stat",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const char *",
+          "struct uvfs_stat *"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.UpstreamUnix.Libc.uvfs_stat"
+      },
+      "requireMatch": true
     }
   ]
 }

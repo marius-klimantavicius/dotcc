@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using static Managed.Database.Sqlite;
 using System.Runtime.CompilerServices;

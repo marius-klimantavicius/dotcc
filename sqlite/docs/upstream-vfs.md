@@ -34,6 +34,10 @@ lock bookkeeping, rollback journals, WAL shared memory and database mmap.
 Ship this shim alongside the experimental assembly/native executable.
 Dotcc's libraries still supply the ordinary C runtime. APPDEF mutexes use the
 existing BCL-backed HostMutex, compiled into the experiment's own namespace.
+`unix-overrides.json` binds the default mutex and memory-barrier prototypes to
+managed methods; no C mutex bridge is included. It also explicitly binds the
+`uvfs_stat` function to `Libc.uvfs_stat`, avoiding a C# lookup collision with the
+same-named C struct. The Windows probe has its own mutex override profile.
 
 The bindings currently **require Linux x64**. Their flag/errno profile is Linux;
 the shim rejects other targets instead of assuming compatible ABIs. macOS, BSD,

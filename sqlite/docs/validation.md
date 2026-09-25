@@ -1663,3 +1663,53 @@ copied logs, input/binary hashes and generated product hashes. It preserves the
 initial failed unit log and the successful full rerun, plus postprocessor and
 analyzer results. The top-level transcript is
 `artifacts/reverify-2026-09-24.log`.
+
+
+## Authored C# adapters and direct amalgamation input (2026-09-25)
+
+Removed `src/engine.c` and `src/host_mutex.c`. Product emission now consumes
+`generated/sqlite-port/sqlite3.c` directly and uses semantic function overrides
+for `sqlite3_os_init`, `sqlite3_os_end`, `sqlite3DefaultMutex` and
+`sqlite3MemoryBarrier`. The checksum-guarded mutex-selection adaptation remains
+necessary because semantic overrides run after preprocessing. The downloaded
+reference source is unchanged.
+
+`src/MemoryVfs.cs` is an authored C# adapter using managed file data and a BCL
+state lock. The product and translated test harnesses share it. Compatibility
+entrypoints/constants remain in `src/Sqlite.MemoryVfs.cs`. The original C adapter
+is retained only as `tests/native/memory_vfs.c` for GCC reference builds; no dotcc
+invocation compiles it. Both C probes and the test VFS header moved into `tests/`.
+Corpus scripts pass the amalgamation and C harness as separate translation units.
+The layout probe alone includes the amalgamation to inspect private types.
+See [memory VFS](memory-vfs.md) for ownership, limits and bindings.
+
+The complete `SQLITE_AOT=1 scripts/verify.sh` campaign passes:
+
+- 2 source-preparation tests, 2,741 compiler unit tests and 710 functional tests;
+  1,159 opt-in oracle cases skipped. No compiler/runtime implementation changes.
+- All eight native baselines and seven translated SQL/API/VFS/virtual-table/
+  allocation/JSONB/FTS5 corpora, plus independent-process image exchange.
+- The full memory-VFS contract corpus under JIT and NativeAOT, now using C#,
+  including zero-filled short reads/growth, locking, fault injection and recovery.
+- ManagedConsumer under JIT and NativeAOT, including new compacting-GC, stable
+  table-address, busy-reset, storage-limit and cleanup checks. Oversized memory
+  files return SQLITE_FULL without attempting a multi-gigabyte allocation.
+- Product/corpus layout checks, varargs, copied-source isolation, endian exchange,
+  function identity, concurrent initialization/connections, injected failures,
+  host mmap, cross-process locking and WAL crash recovery/interoperability.
+
+The experimental Unix VFS was also migrated from the C mutex bridge to overrides.
+Its extra build exposed an implicit-binding ambiguity between the `uvfs_stat`
+struct and the authored method imported from Libc. An explicit typed function
+rule selects `Managed.Database.UpstreamUnix.Libc.uvfs_stat`. JIT and NativeAOT
+then pass disk CRUD, process locking, WAL, actual mmap fetches, JSONB/FTS5,
+integrity and shutdown. The Windows probe and cross-platform CI recipe were
+updated, but Windows/macOS execution was not available locally.
+
+The final managed consumer rebuild has zero warnings/errors and passes again
+under JIT and NativeAOT. Product postprocessing rewrites 23,987 Cond.B calls,
+simplifies 848 boolean comparisons and removes 2,208 standalone empty blocks.
+The full receipt and copied logs are in
+`artifacts/csharp-vfs-20260925-final/results.json`; main transcripts are
+`artifacts/csharp-vfs-verification.log` and `artifacts/csharp-vfs-upstream-unix.log`.
+The optional Lua/Chibi/WAT extension was not run for this adapter-only change.

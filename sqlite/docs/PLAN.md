@@ -163,7 +163,7 @@ workspace changes or push any branch.
 - [x] Download SQLite into `ref/` and record provenance in `docs/source.md`.
 - [x] Record existing dotcc build/test results separately from SQLite failures.
 - [x] Build a native reference from the pinned amalgamation, using the same
-      feature definitions and, once available, the same memory VFS and C harness.
+      feature definitions, equivalent memory VFS contracts, and the same C harness.
 - [x] Attempt full preprocessing and translation; record actual blockers rather
       than treating existing C-support documentation as proof of compatibility.
 
