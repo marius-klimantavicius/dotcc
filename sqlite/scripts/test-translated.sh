@@ -40,13 +40,14 @@ diff -u "$SQLITE_ROOT/tests/$expected" "$SQLITE_ROOT/artifacts/translated-$suite
 cat "$SQLITE_ROOT/artifacts/translated-$suite.out"
 
 # The API corpus covers managed-boundary contracts and optional math/percentile/
-# metadata behavior beyond the separate consumer's smoke checks.
-if [[ "$suite" == api && "${SQLITE_AOT:-0}" == 1 ]]; then
-  publish="$SQLITE_ROOT/build/api-aot"
-  dotnet publish "$output/Test-api.csproj" -c Release -r linux-x64 \
+# metadata behavior beyond the separate consumer's smoke checks. The VFS corpus
+# checks the authored managed adapter against the full native contract in AOT too.
+if [[ "${SQLITE_AOT:-0}" == 1 && ( "$suite" == api || "$suite" == vfs ) ]]; then
+  publish="$SQLITE_ROOT/build/$suite-aot"
+  dotnet publish "$output/Test-$suite.csproj" -c Release -r linux-x64 \
     -p:PublishAot=true -o "$publish" --nologo \
-    > "$SQLITE_ROOT/artifacts/translated-api-aot-build.log" 2>&1
-  run_sqlite_process "$publish/Test-api" > "$SQLITE_ROOT/artifacts/translated-api-aot.out"
-  diff -u "$SQLITE_ROOT/tests/$expected" "$SQLITE_ROOT/artifacts/translated-api-aot.out"
-  echo "PASS NativeAOT API corpus including math, percentiles and column metadata"
+    > "$SQLITE_ROOT/artifacts/translated-$suite-aot-build.log" 2>&1
+  run_sqlite_process "$publish/Test-$suite" > "$SQLITE_ROOT/artifacts/translated-$suite-aot.out"
+  diff -u "$SQLITE_ROOT/tests/$expected" "$SQLITE_ROOT/artifacts/translated-$suite-aot.out"
+  echo "PASS NativeAOT $suite corpus"
 fi

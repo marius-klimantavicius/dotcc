@@ -32,8 +32,10 @@ compacting GC. `src/Sqlite.MemoryVfs.cs` keeps the existing managed
 `config/dotcc-overrides.json` binds the product's OS-init/end and mutex/barrier
 functions to authored managed methods. `config/corpus-overrides.json` binds C
 harness declarations to the same memory VFS. `Directory.Build.targets` imports
-the adapter for product and corpus projects; `DOTCC_SQLITE_PRODUCT` selects the
-product's nested generated types and host-default registration.
+the adapter for product and corpus projects. The source defaults to the product's
+nested `Sqlite` types and host registration, including when copied to a consumer.
+Only corpus projects define `DOTCC_SQLITE_CORPUS` to select their executable
+wrapper and memory-default registration.
 
 The original C VFS lives only in `tests/native/memory_vfs.c`. Native GCC oracle
 builds compile it; dotcc never does. Both implementations run the identical
@@ -45,7 +47,7 @@ Useful checks:
 
 ```sh
 scripts/test-vfs-native.sh
-scripts/test-translated.sh vfs
+SQLITE_AOT=1 scripts/test-translated.sh vfs
 SQLITE_AOT=1 scripts/test-managed-consumer.sh
 SQLITE_AOT=1 scripts/test-threading.sh
 scripts/test-image-exchange.sh

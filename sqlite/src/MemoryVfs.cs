@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-#if DOTCC_SQLITE_PRODUCT
+#if !DOTCC_SQLITE_CORPUS
 using static Managed.Database.Sqlite;
 #else
 using static DotCcProgram;
@@ -94,7 +94,7 @@ internal static unsafe class MemoryVfs
     {
         var vfs = GetVfs();
         if (vfs == null) return SQLITE_NOMEM;
-#if DOTCC_SQLITE_PRODUCT
+#if !DOTCC_SQLITE_CORPUS
         int rc = sqlite3_vfs_register(vfs, 0);
         if (rc != SQLITE_OK) return rc;
         rc = HostVfs.RegisterVfs();
@@ -107,7 +107,7 @@ internal static unsafe class MemoryVfs
 
     public static int Shutdown()
     {
-#if DOTCC_SQLITE_PRODUCT
+#if !DOTCC_SQLITE_CORPUS
         int rc = HostVfs.UnregisterVfs();
         if (rc != SQLITE_OK) return rc;
 #endif

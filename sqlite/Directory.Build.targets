@@ -9,7 +9,9 @@
 
     <PropertyGroup Condition="'$(MSBuildProjectName)' == 'TranslatedSqlite'">
         <Nullable>enable</Nullable>
-        <DefineConstants>$(DefineConstants);DOTCC_SQLITE_PRODUCT</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="$([System.String]::Copy('$(MSBuildProjectName)').StartsWith('Test-'))">
+        <DefineConstants>$(DefineConstants);DOTCC_SQLITE_CORPUS</DefineConstants>
     </PropertyGroup>
     <ItemGroup Condition="$([System.String]::Copy('$(MSBuildProjectName)').StartsWith('Test-'))">
         <Compile Include="$(MSBuildThisFileDirectory)src/MemoryVfs.cs" />
