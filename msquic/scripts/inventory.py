@@ -4,15 +4,12 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from source_inputs import source_units
 
 ROOT = Path(__file__).resolve().parents[1]
 pin = json.loads((ROOT / 'config/source.json').read_text())
 source = ROOT / 'ref' / pin['directory']
-cmake = (source / 'src/core/CMakeLists.txt').read_text()
-core = re.findall(r'\b[\w]+\.c\b', cmake.split('set(SOURCES', 1)[1].split(')', 1)[0])
-units = ['src/core/' + name for name in core]
-units += ['src/platform/' + name + '.c'
-          for name in ('crypt', 'hashtable', 'pcp', 'platform_worker', 'toeplitz')]
+units = source_units(source)
 inventory = {'revision': pin['commit'], 'role': 'compiler survey candidates',
              'product_closure_frozen': False,
              'data_model': 'LP64, little-endian, Linux x64 first; host ABI not yet validated',

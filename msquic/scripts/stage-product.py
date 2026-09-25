@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+from source_inputs import portable_fragments, source_units
 
 ROOT = Path(__file__).resolve().parents[1]
 pin = json.loads((ROOT / 'config/source.json').read_text())
@@ -15,15 +16,24 @@ else:
     if sys.argv[1:]:
         raise SystemExit('Usage: stage-product.py [--no-fetch]')
     subprocess.run([sys.executable, str(ROOT / 'scripts/fetch.py')], check=True)
-inventory = json.loads((ROOT / 'config/source-inventory.json').read_text())
 host = ROOT / 'config/managed-host'
 overlay = json.loads((host / 'overlay.json').read_text())
 reference = ROOT / 'ref' / pin['directory']
 if not reference.is_dir():
     raise SystemExit('Missing pinned source directory: ' + str(reference))
+units = source_units(reference)
+# These are unchanged upstream implementations, not maintained source patches.
+# Refresh them before copying the host inputs for this selected version.
+for filename, contents in portable_fragments(reference, overlay).items():
+    target = ROOT / 'src/Host' / filename
+    if not target.is_file() or target.read_text() != contents:
+        target.write_text(contents)
 stage = ROOT / 'build/product-source'
 stage.mkdir(parents=True, exist_ok=True)
 replacements = {item['source']: item for item in overlay['overlays']}
+for relative in replacements:
+    if not (reference / relative).is_file():
+        raise RuntimeError('Missing upstream header for host overlay: ' + relative)
 manifest = dict(revision=pin['commit'], source_archive_sha256=pin['sha256'],
     data_model='LP64, little-endian, Linux x64; host ABI validation required',
     product_closure_frozen=False, files=[], units=[], excluded_units=['src/platform/pcp.c'],
@@ -51,8 +61,6 @@ for directory in ('src/inc', 'src/core', 'src/platform'):
         relative = source.relative_to(reference).as_posix()
         if relative in replacements:
             replacement = replacements[relative]
-            if digest(source.read_bytes()) != replacement['original_sha256']:
-                raise RuntimeError('Overlay source pin mismatch: ' + relative)
             path = host / replacement['overlay']
             write(relative, path.read_bytes(), str(path.relative_to(ROOT)), 'host overlay')
         else:
@@ -62,21 +70,12 @@ for prefix, directory in [('system', host / 'system'), ('host', ROOT / 'src/Host
         if source.is_file():
             write((Path(prefix) / source.relative_to(directory)).as_posix(), source.read_bytes(),
                   source.relative_to(ROOT).as_posix(), 'authored host contract')
-for unit in inventory['units']:
-    relative = unit['path']
+for relative in units:
     if relative in manifest['excluded_units']:
         continue
-    if digest((reference / relative).read_bytes()) != unit['sha256']:
-        raise RuntimeError('Source inventory pin mismatch: ' + relative)
     manifest['units'].append(relative)
 manifest['units'].extend((Path('host') / p.relative_to(ROOT / 'src/Host')).as_posix()
                          for p in sorted((ROOT / 'src/Host').glob('*.c')))
-for key, filename in [('portable_fragment', 'portable.c'), ('route_fragment', 'route.c')]:
-    fragment = overlay[key]
-    text = (reference / fragment['source']).read_text()
-    extracted = text[text.index(fragment['start']):text.index(fragment['end'])]
-    if digest(extracted.encode()) != fragment['sha256'] or not (ROOT / 'src/Host' / filename).read_text().endswith(extracted):
-        raise RuntimeError('Portable upstream fragment changed: ' + filename)
 # Remove obsolete files only from this generated staging directory. Never edit ref.
 selected = {entry['path'] for entry in manifest['files']}
 for path in stage.rglob('*'):

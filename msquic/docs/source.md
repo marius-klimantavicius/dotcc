@@ -1,9 +1,32 @@
 # Source and native reference provenance
 
-Implementation uses the immutable latest-main snapshot requested by the user,
-`80a065112426bce68c1da42d026478d3e40fd45e` (version header 2.7.0), resolved
-2026-09-12. [source.json](../config/source.json) records its archive hash and URL.
-`python3 msquic/scripts/fetch.py` verifies the archive and archived source files.
+The active snapshot is recorded in [source.json](../config/source.json).
+Select another upstream version with one command, then regenerate:
+
+```sh
+python3 msquic/scripts/fetch.py --ref stable  # latest published release
+# Alternatives: --ref main, --ref v2.6.1, --ref release/2.6, --ref <commit>
+msquic/scripts/translate.sh
+```
+
+Selection resolves the ref to a commit, downloads its source, updates the native
+reference's quictls dependency from that commit's gitlinks, and regenerates the
+source/API/test inventories. It does not translate or validate the new version.
+`fetch.py` without `--ref` uses the recorded selection without following updates.
+For translation without validation, use `translate.sh --fast` after fetching.
+
+The three managed platform headers are reused across versions without checking
+hashes of the upstream headers they replace. Staging discovers the core C files
+from the selected source's CMake list and extracts the reference/rundown and
+route-copy functions into `src/Host/portable.c` and `src/Host/route.c` anew. There
+are no manually maintained source hashes to update for these inputs. Missing
+files or function boundaries are reported; compilation and ABI/runtime tests
+determine compatibility, including semantic differences that compilation misses.
+
+Archive checksums still verify downloads. Generated manifests and test receipts
+still identify the inputs actually built/tested; they are not compatibility
+allowlists for new upstream versions. Regenerate and rerun the relevant tests
+after switching: historical passing receipts do not validate a new source.
 The MsQuic input is MIT licensed (`LICENSE` in the unchanged reference tree).
 
 The required picotls input remains
@@ -14,11 +37,9 @@ and [source documentation](../../picotls/docs/source.md).
 `python3 msquic/scripts/inventory.py` regenerates
 [source-inventory.json](../config/source-inventory.json) and
 [public-api-inventory.json](../config/public-api-inventory.json) from the pinned
-input. The 39 core files and five portable-platform candidates are a compiler
-survey, not an accepted product closure. The public API/parameter inventory
-explicitly records unimplemented and unreviewed entries. The product closure,
-settings policy and managed CxPlat ABI remain P0/P1 work; Linux POSIX diagnostic
-headers do not define the product host contract.
+input. These are descriptive compiler survey inventories, not staging gates.
+Their historical support labels are not the current product qualification;
+see the [qualification ledger](qualification.md) for executed verification.
 
 [native-inputs.json](../config/native-inputs.json) records every upstream gitlink
 from the pinned GitHub tree, including the exact quictls archive checksum.
@@ -36,7 +57,8 @@ python3 msquic/scripts/test-native-peer.py
 
 The recipe verifies the MsQuic input, verifies quictls SHA-256, and builds
 upstream `quicsample` in `build/native-oracle/`. A separate source working copy
-protects `ref/` from CMake/Perl generated files. Full commands and logs are kept in
+protects `ref/` from CMake/Perl generated files. Switching either MsQuic or quictls
+recreates that working copy and build directory on the next native build. Full commands and logs are kept in
 `artifacts/native-oracle/`. This native executable is a test peer only and never
 enters the translated product. Building the peer alone does not prove an
 authenticated stream exchange or the required cipher/group profile. Native

@@ -13,6 +13,23 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def prepare_worktree(source, native):
+    # Never reuse source copies or CMake/OpenSSL outputs from another selection.
+    work = ROOT / 'build/native-oracle-source'
+    build = ROOT / 'build/native-oracle'
+    marker = ROOT / 'build/native-oracle-inputs.json'
+    identity = dict(msquic=source['commit'], quictls=native['quictls']['revision'])
+    previous = json.loads(marker.read_text()) if marker.is_file() else None
+    if previous != identity:
+        for directory in (work, build):
+            if directory.exists():
+                shutil.rmtree(directory)
+    if not work.exists():
+        shutil.copytree(ROOT / 'ref' / source['directory'], work)
+    marker.write_text(json.dumps(identity, indent=2) + '\n')
+    return work, build
+
+
 def run(command, name):
     logs = ROOT / 'artifacts/native-oracle'
     logs.mkdir(parents=True, exist_ok=True)
@@ -45,9 +62,7 @@ def main():
     if hashlib.sha256(archive.read_bytes()).hexdigest() != dependency['sha256']:
         raise SystemExit('quictls archive checksum mismatch')
     # CMake/Perl may create source-side outputs. Isolate those from immutable ref/.
-    work = ROOT / 'build/native-oracle-source'
-    if not work.exists():
-        shutil.copytree(ROOT / 'ref' / source['directory'], work)
+    work, build = prepare_worktree(source, native)
     tls = work / 'submodules/quictls'
     if not (tls / 'Configure').exists():
         extraction = ROOT / 'build/native-dependencies'
@@ -56,7 +71,6 @@ def main():
             top = Path(package.getmembers()[0].name).parts[0]
             package.extractall(extraction, filter='data')
         shutil.copytree(extraction / top, tls, dirs_exist_ok=True)
-    build = ROOT / 'build/native-oracle'
     run(['cmake', '-S', str(work), '-B', str(build), '-G', 'Ninja',
          '-DCMAKE_BUILD_TYPE=Release', '-DQUIC_TLS_LIB=quictls',
          '-DCMAKE_C_FLAGS=-DIS_OPENSSL_3=1 -DVER_GIT_HASH=' + source['commit'],

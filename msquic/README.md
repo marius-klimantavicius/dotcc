@@ -9,6 +9,11 @@ Regenerate the selected core and its postprocessed product with:
 msquic/scripts/translate.sh
 ```
 
+To switch source versions first, run `python3 msquic/scripts/fetch.py --ref stable`
+(or `--ref main`, a release tag, branch, or commit). Platform headers are reused;
+source inventories, portable function fragments, and native reference inputs
+follow the selected version automatically. See [source selection](docs/source.md).
+
 The final project is
 `msquic/generated/TranslatedMsQuic/TranslatedMsQuic.csproj`. Translation links
 with `--literal-pool --nest-types --runtime=c`; ABI types and runtime helpers live inside

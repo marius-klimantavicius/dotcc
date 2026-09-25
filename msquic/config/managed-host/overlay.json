@@ -1,32 +1,26 @@
 {
-  "revision": "80a065112426bce68c1da42d026478d3e40fd45e",
   "overlays": [
     {
       "source": "src/inc/quic_platform_posix.h",
-      "overlay": "inc/quic_platform_posix.h",
-      "original_sha256": "61a11ae143c590677732ec8b8404995f6c068679e181183f2e18524d3dcf852b"
+      "overlay": "inc/quic_platform_posix.h"
     },
     {
       "source": "src/platform/platform_internal.h",
-      "overlay": "platform/platform_internal.h",
-      "original_sha256": "dc070792445b09b744bff0e7b5dc843728d7725aa65320e90cb29ca580d2dbfb"
+      "overlay": "platform/platform_internal.h"
     },
     {
       "source": "src/inc/msquic_posix.h",
-      "overlay": "inc/msquic_posix.h",
-      "original_sha256": "a0e11c5eb1a4bbd5e18e4f7a381dd024064df2ee76ed555b49c0b8a66c15f526"
+      "overlay": "inc/msquic_posix.h"
     }
   ],
   "portable_fragment": {
     "source": "src/platform/platform_posix.c",
     "start": "void\nCxPlatRefInitialize(",
-    "end": "uint64_t\nCxPlatTimespecToUs(",
-    "sha256": "80a31a1da4a9b429770253364e867ad54e13b25e25c24ef08231adc715a9cd1c"
+    "end": "uint64_t\nCxPlatTimespecToUs("
   },
   "route_fragment": {
     "source": "src/platform/datapath_xplat.c",
     "start": "_IRQL_requires_max_(PASSIVE_LEVEL)\nvoid\nQuicCopyRouteInfo(",
-    "end": "void\nCxPlatResolveRouteComplete(",
-    "sha256": "517459b341e0ace2fe479999a8346693d8eea4325e6f41e644f7c3920f01384b"
+    "end": "void\nCxPlatResolveRouteComplete("
   }
 }
