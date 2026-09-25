@@ -292,3 +292,17 @@ Local ignored evidence is preserved under `artifacts/verification-20260925/`:
 `product-audit-*-result.json` receipts, `remaining-results.json`, repository TRX
 files, and `repository-tests.json`. Fresh generation, Samba, DFS, crypto/ABI,
 host, and upstream receipts remain in their respective `artifacts/` directories.
+
+### User-approved Kerberos.NET warning exception
+
+Following the verification above, the user requested ignoring Kerberos.NET's
+NativeAOT warnings. `scripts/audit-product.py` now accepts only the IL2104/IL3053
+assembly summaries naming `Kerberos.NET`, retaining them in logs and receipts.
+All other analysis warnings still fail the audit. Filter checks covered both
+accepted summaries and rejection of other assembly names and warning codes.
+
+A fresh `python3 libsmb2/scripts/audit-product.py` run passes both raw and
+processed static inventories, whole-assembly-rooted NativeAOT publication and
+execution, and native dependency checks. Each variant records two ignored
+warnings and zero blocking warnings. The full verifier was not rerun after this
+policy change; the other test results above are unchanged.

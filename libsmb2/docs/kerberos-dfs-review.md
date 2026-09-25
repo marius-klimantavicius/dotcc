@@ -96,8 +96,8 @@ server, including signing/encryption and raw/processed JIT/NativeAOT on both OSe
 remain acceptance gates. No enterprise credentials are available in this review.
 The staged DFS fixture passes JIT and NativeAOT. Whole-assembly-rooted publication
 also completes, but Kerberos.NET emits **IL2104** (trim analysis) and **IL3053**
-(AOT analysis). The product audit deliberately continues to reject those warnings;
-its gate is not weakened. Consequently the prior NTLM-only whole-assembly audit
+(AOT analysis). At the time of this review, the product audit rejected those warnings.
+Consequently the prior NTLM-only whole-assembly audit
 is historical and does not qualify the expanded Kerberos product. Normal DFS
 NativeAOT execution does not prove Kerberos acquisition is trim/AOT-safe.
 Final Linux x64 results:
@@ -120,6 +120,14 @@ Final Linux x64 results:
 The aggregate `artifacts/kerberos-dfs-review/result.json` records the patch hash,
 source/receipt fingerprints, resolved package versions/hashes, passed regression
 runs and unqualified gates separately. `regressions.json` contains the exact 18
-commands; DFS receipts are under `artifacts/dfs/`, and the unchanged audit gate's
-failure is in `artifacts/product-audit/result.json`. The full qualification script
-continues to fail at that gate until the provider's AOT/trim support is resolved.
+commands; DFS receipts are under `artifacts/dfs/`. The audit failure described
+above is historical; `artifacts/product-audit/result.json` reflects the latest run.
+
+## Updated audit policy (2026-09-25)
+
+At the user's request, the product audit now ignores the assembly-level IL2104
+and IL3053 summaries specifically naming `Kerberos.NET`. Build logs and the
+receipt retain these diagnostics in `aot_analysis_warnings` and
+`ignored_aot_analysis_warnings`. Other analysis warnings remain blocking and are
+listed in `blocking_aot_analysis_warnings`. This changes warning acceptance;
+it does not establish Kerberos.NET runtime interoperability under NativeAOT.

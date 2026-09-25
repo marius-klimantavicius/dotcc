@@ -30,6 +30,11 @@ IMPORT = re.compile(r'\[(?:[\w:.]+\.)?(DllImport|LibraryImport)(?:Attribute)?\(\
                     r'\s*((?:public|private|internal|protected|static|extern|partial|unsafe|\w+[?*]?|\s)+)'
                     r'\s+(\w+)\s*\(', re.MULTILINE)
 LEXICAL = re.compile(r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'', re.DOTALL)
+# User-approved exception for Kerberos.NET's assembly-level analysis warnings.
+# Keep them in the receipt; do not suppress these warning codes for other assemblies.
+IGNORED_AOT_WARNING = re.compile(
+    r"^warning (?:IL2104: Assembly 'Kerberos\.NET' produced trim warnings\."
+    r"|IL3053: Assembly 'Kerberos\.NET' produced AOT analysis warnings\.)")
 
 
 def without_comments(text):
@@ -228,7 +233,13 @@ def main():
             inspect_aot_artifacts(harness, audit)
             audit['aot_analysis_warnings'] = re.findall(r'warning IL\d+[^\n]*',
                 (logs / (variant + '-aot-build.log')).read_text())
-            if audit['aot_analysis_warnings']:
+            audit['ignored_aot_analysis_warnings'] = [warning for warning in audit['aot_analysis_warnings']
+                                                     if IGNORED_AOT_WARNING.match(warning)]
+            audit['blocking_aot_analysis_warnings'] = [warning for warning in audit['aot_analysis_warnings']
+                                                      if not IGNORED_AOT_WARNING.match(warning)]
+            if audit['ignored_aot_analysis_warnings']:
+                print(variant + ': ignoring Kerberos.NET IL2104/IL3053 warnings (retained in receipt)', flush=True)
+            if audit['blocking_aot_analysis_warnings']:
                 raise RuntimeError('NativeAOT/trim analysis warnings require review')
             if args.rid.startswith('linux-'):
                 dependencies = run(['readelf', '-d', binary], logs / (variant + '-elf-dynamic.log'), receipt)
