@@ -4,8 +4,10 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
 from pathlib import Path
 import shutil
+import runpy
 import subprocess
 import sys
 import tarfile
@@ -171,6 +173,83 @@ class SourceSelectionTests(unittest.TestCase):
         self.native.prepare_worktree(second, {'quictls': {'revision': 'tls-second'}})
         self.assertFalse(build.exists())
         self.assertFalse((work / 'tls-old').exists())
+
+    def test_translate_no_fetch_routes_full_and_fast_modes(self):
+        shutil.copy2(ROOT / 'scripts/translate.sh', self.root / 'scripts/translate.sh')
+        commands = self.root / 'commands.jsonl'
+        binary = self.root / 'bin'
+        binary.mkdir()
+        # Intercept orchestration only; no compiler or network runs in this test.
+        launcher = binary / 'python3'
+        launcher.write_text('#!' + sys.executable + '\nimport json, sys\n'
+                            'if sys.argv[1] != "-c":\n'
+                            '    with open(' + repr(str(commands)) + ', "a") as log:\n'
+                            '        log.write(json.dumps(sys.argv[1:]) + "\\n")\n')
+        launcher.chmod(0o755)
+        for flags in ([], ['--no-fetch'], ['--fast', '--no-fetch']):
+            commands.write_text('')
+            subprocess.run(['bash', self.root / 'scripts/translate.sh', '--no-build-tools', *flags],
+                           check=True, env={**os.environ, 'PATH': str(binary) + os.pathsep + os.environ['PATH']})
+            calls = [json.loads(line) for line in commands.read_text().splitlines()]
+            scripts = {Path(call[0]).name: call[1:] for call in calls}
+            if '--fast' in flags:
+                self.assertEqual(list(scripts), ['translate-fast.py'])
+            else:
+                self.assertEqual('fetch.py' in scripts, '--no-fetch' not in flags)
+                for script in ('test-host-contract.py', 'test-abi.py'):
+                    self.assertEqual('--no-fetch' in scripts[script], '--no-fetch' in flags)
+                self.assertIn('build-product.py', scripts)
+                self.assertEqual(scripts['freeze-product.py'], ['--without-sqlite'])
+
+    def test_host_no_fetch_reaches_real_staging_without_archive(self):
+        spec = self.snapshot('local')
+        (self.root / 'ref' / spec['archive']).unlink()
+        (self.root / 'config/source.json').write_text(json.dumps(spec))
+        shutil.copy2(ROOT / 'scripts/test-host-contract.py', self.root / 'scripts/test-host-contract.py')
+        (self.root / 'scripts/fetch.py').write_text('raise RuntimeError("Unexpected fetch")\n')
+        real_run = subprocess.run
+
+        class Staged(BaseException):
+            pass
+
+        def run(command, **kwargs):
+            if Path(command[1]).name == 'generate-host-contract.py':
+                return subprocess.CompletedProcess(command, 0, '', '')
+            self.assertEqual(Path(command[1]).name, 'stage-product.py')
+            self.assertIn('--no-fetch', command)
+            result = real_run(command, **kwargs)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            raise Staged()
+
+        with patch.object(subprocess, 'run', side_effect=run), \
+                patch.object(sys, 'argv', ['test-host-contract.py', '--no-fetch']), \
+                self.assertRaises(Staged):
+            runpy.run_path(str(self.root / 'scripts/test-host-contract.py'), run_name='__main__')
+        self.assertTrue((self.root / 'build/product-source/host/portable.c').is_file())
+
+    def test_abi_local_source_mode_needs_no_archive_and_records_inputs(self):
+        pin = self.snapshot('local')
+        (self.root / 'ref' / pin['archive']).unlink()
+        (self.root / 'config/source.json').write_text(json.dumps(pin))
+        (self.root / 'config/dotcc-overrides.json').write_text('{}')
+        shutil.copy2(ROOT / 'scripts/test-abi.py', self.root / 'scripts/test-abi.py')
+        spec = importlib.util.spec_from_file_location('offline_abi', self.root / 'scripts/test-abi.py')
+        abi = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(abi)
+        with patch.object(abi, 'verify_reference', side_effect=AssertionError('Unexpected archive verification')), \
+                patch.object(abi.subprocess, 'run', side_effect=lambda command, **kwargs:
+                             subprocess.CompletedProcess(command, 0, 'layout fixture 4\n', '')), \
+                patch.object(sys, 'argv', ['test-abi.py', '--no-fetch', '--native-only', '--groups', 'public']), \
+                patch.object(abi.os, 'sched_setaffinity'), patch('sys.stdout', new_callable=io.StringIO):
+            self.assertEqual(abi.main(), 0)
+        report = json.loads((self.root / 'artifacts/abi/results.json').read_text())
+        self.assertEqual(report['reference_verification'], 'local-source')
+        self.assertEqual(report['verified_reference_files'], 0)
+        self.assertTrue(report['reference_stable'])
+        self.assertTrue(report['local_reference_sha256'])
+        header = self.root / 'ref' / pin['directory'] / 'src/inc/msquic.h'
+        header.write_text(header.read_text() + '/* changed */\n')
+        self.assertNotEqual(report['local_reference_sha256'], abi.local_reference_hashes())
 
     def test_download_integrity_is_independent_of_compatibility(self):
         archive = self.root / 'ref/archive.tar.gz'

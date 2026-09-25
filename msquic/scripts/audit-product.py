@@ -180,7 +180,10 @@ try:
     require(sha(ROOT / 'config/api-profile.json') == closure['api_profile_sha256'], 'API profile differs from closure')
     require(stage['units'] == closure['units'], 'Translation unit closure changed')
     reference = ROOT / 'ref' / pin['directory']
-    require(sha(ROOT / 'ref' / pin['archive']) == pin['sha256'], 'Pinned source archive mismatch')
+    reference_verification = closure.get('reference_verification', 'archive')
+    require(reference_verification in ('archive', 'local-source'), 'Unknown source verification mode')
+    if reference_verification == 'archive':
+        require(sha(ROOT / 'ref' / pin['archive']) == pin['sha256'], 'Pinned source archive mismatch')
     for item in closure['source_files']:
         staged = ROOT / 'build/product-source' / item['path']
         require(staged.is_file() and sha(staged) == item['sha256'], 'Staged source changed: ' + item['path'])
@@ -188,6 +191,11 @@ try:
         require(origin.is_file() and sha(origin) == item['sha256'], 'Authored/upstream input changed: ' + str(origin))
         if origin.is_file(): bind(origin)
     check_hashes(closure['evidence_sha256'], ROOT, 'P2 evidence')
+    if reference_verification == 'local-source':
+        abi = read(ROOT / 'artifacts/abi/results.json')
+        require(abi.get('reference_verification') == 'local-source' and abi.get('reference_stable'),
+                'Local source closure lacks matching ABI evidence')
+        check_hashes(abi.get('local_reference_sha256', {}), ROOT, 'Local reference inputs')
     # The frozen emitter directory is the actual compiler used by the P2 object
     # campaign; a separately rebuilt CLI is not a substitute for its provenance.
     check_hashes(closure['compiler_hashes'], ROOT / 'build/host-contract/compiler', 'Frozen compiler')

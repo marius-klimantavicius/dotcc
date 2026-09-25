@@ -11,16 +11,19 @@ if ! "$python_cmd" -c 'import sys; raise SystemExit(sys.version_info.major != 3)
 fi
 build_tools=true
 fast=false
+fetch_args=()
 jobs=()
+usage="Usage: $0 [--fast] [--no-fetch] [--no-build-tools] [--jobs count]"
 while (( $# )); do
   case "$1" in
     --fast) fast=true; shift ;;
+    --no-fetch) fetch_args=(--no-fetch); shift ;;
     --no-build-tools) build_tools=false; shift ;;
     --jobs)
-      if (( $# < 2 )); then echo "Usage: $0 [--fast] [--no-build-tools] [--jobs count]" >&2; exit 1; fi
+      if (( $# < 2 )); then echo "$usage" >&2; exit 1; fi
       jobs=(--jobs "$2"); shift 2 ;;
-    --help|-h) echo "Usage: $0 [--fast] [--no-build-tools] [--jobs count]"; exit 0 ;;
-    *) echo "Usage: $0 [--fast] [--no-build-tools] [--jobs count]" >&2; exit 1 ;;
+    --help|-h) echo "$usage"; exit 0 ;;
+    *) echo "$usage" >&2; exit 1 ;;
   esac
 done
 
@@ -43,9 +46,11 @@ if "$build_tools"; then
   dotnet build "$repo_root/DotCC/DotCC.csproj" -c Release --nologo
   dotnet build "$repo_root/DotCC.PostProcess/DotCC.PostProcess.csproj" -c Release --nologo
 fi
-"$python_cmd" "$msquic_root/scripts/fetch.py"
-"$python_cmd" "$msquic_root/scripts/test-host-contract.py"
-"$python_cmd" "$msquic_root/scripts/test-abi.py" --groups public
+if (( ${#fetch_args[@]} == 0 )); then
+  "$python_cmd" "$msquic_root/scripts/fetch.py"
+fi
+"$python_cmd" "$msquic_root/scripts/test-host-contract.py" "${fetch_args[@]}"
+"$python_cmd" "$msquic_root/scripts/test-abi.py" --groups public "${fetch_args[@]}"
 "$python_cmd" "$msquic_root/scripts/build-product.py"
 # This regeneration does not rerun or relabel historical SQLite/runtime evidence.
 "$python_cmd" "$msquic_root/scripts/freeze-product.py" --without-sqlite

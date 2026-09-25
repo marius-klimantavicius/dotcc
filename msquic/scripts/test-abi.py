@@ -48,6 +48,13 @@ def verify_reference():
     return count
 
 
+def local_reference_hashes():
+    if not (SOURCE / 'src/inc/msquic.h').is_file():
+        raise RuntimeError('Missing selected local MsQuic source: ' + str(SOURCE))
+    return {str(path.relative_to(ROOT)): sha256(path)
+            for path in sorted(SOURCE.rglob('*')) if path.is_file()}
+
+
 def observations(text):
     lines = [line.rstrip() for line in text.splitlines() if line.strip()]
     if not lines or any(not line.startswith(('layout ', 'offset ', 'bytes ', 'callback ')) for line in lines):
@@ -62,6 +69,7 @@ def main():
     parser.add_argument('--jit-only', action='store_true', help='Skip NativeAOT; records JIT-only evidence')
     parser.add_argument('--timeout', type=int, default=240)
     parser.add_argument('--compiler', type=Path, default=COMPILER, help='dotcc.dll path; accepts a frozen compiler directory')
+    parser.add_argument('--no-fetch', action='store_true', help='Validate local source directly without requiring its archive')
     args = parser.parse_args()
     compiler = args.compiler.resolve()
     if platform.system() != 'Linux' or platform.machine() not in ('x86_64', 'amd64'):
@@ -82,7 +90,9 @@ def main():
                    'Source-level callback calls are compared separately in each runtime; no native-to-managed callback export is claimed.',
                    'Only listed fields, layouts, and initialized byte observations are covered.',
                    'No diagnostic source copies or declaration-only replacement headers are used.'],
-        'verified_reference_files': verify_reference(),
+        'reference_verification': 'local-source' if args.no_fetch else 'archive',
+        'verified_reference_files': 0 if args.no_fetch else verify_reference(),
+        'local_reference_sha256': local_reference_hashes() if args.no_fetch else {},
         'source_sha256': {str(p.relative_to(ROOT)): sha256(p) for p in [Path(__file__).resolve(), *sorted((ROOT / 'tests/Abi').glob('*'))] if p.is_file()},
         'translation_profile_sha256': sha256(ROOT / 'config/dotcc-overrides.json'),
         'compiler_sha256': {str(p): sha256(p) for p in
@@ -185,7 +195,8 @@ def main():
     report['compiler_sha256_after'] = {str(p): sha256(p) for p in
         [compiler, compiler.parent / 'DotCC.Lib.dll'] if p.is_file()}
     report['compiler_stable'] = report['compiler_sha256'] == report['compiler_sha256_after']
-    report['passed'] = not args.native_only and report['compiler_stable'] and all(group['passed'] for group in report['groups'])
+    report['reference_stable'] = not args.no_fetch or report['local_reference_sha256'] == local_reference_hashes()
+    report['passed'] = not args.native_only and report['compiler_stable'] and report['reference_stable'] and all(group['passed'] for group in report['groups'])
     write_report()
     print(json.dumps({group['name']: group['status'] for group in report['groups']}, indent=2))
     if args.native_only:

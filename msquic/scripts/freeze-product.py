@@ -232,8 +232,15 @@ stage_path = ROOT / 'build/product-source/manifest.json'
 stage, pin = read(stage_path), read(ROOT / 'config/source.json')
 check(sha(stage_path) == host['stage_manifest_sha256'] == product['stage_manifest_sha256'], 'Staged inputs differ between gates')
 check(stage['revision'] == pin['commit'] and 'VER_GIT_HASH=' + pin['commit'] in stage['defines'], 'Missing pinned revision metadata')
-check(stage['source_archive_sha256'] == pin['sha256'] and sha(ROOT / 'ref' / pin['archive']) == pin['sha256'],
-      'Pinned source archive differs from staging')
+reference_verification = abi.get('reference_verification', 'archive')
+check(reference_verification in ('archive', 'local-source'), 'Unknown source verification mode')
+check(abi['snapshot'] == pin, 'Public ABI source selection differs from staging')
+if reference_verification == 'local-source':
+    check(abi.get('reference_stable') and abi.get('local_reference_sha256'), 'Missing stable local source evidence')
+    verified(abi['local_reference_sha256'], ROOT, 'Local reference inputs')
+else:
+    check(stage['source_archive_sha256'] == pin['sha256'] and sha(ROOT / 'ref' / pin['archive']) == pin['sha256'],
+          'Pinned source archive differs from staging')
 verified({item['path']: item['sha256'] for item in stage['files']}, stage_path.parent, 'Staged source')
 for item in stage['files']:
     origin = (ROOT / 'ref' / pin['directory'] / item['origin'] if item['role'] == 'unchanged upstream'
@@ -318,6 +325,8 @@ value = dict(schema_version=1, status='Nested MsQuic ABI/build closure passed; d
         public_abi_native_records=public['native_records'], raw_optimized_jit_nativeaot=True,
         entire_generated_assembly_rooted_for_aot=True, shared_compiler_sqlite_campaign_passed=args.sqlite_receipt is not None,
         normal_optimized_sqlite_product_passed=args.sqlite_receipt is not None))
+if reference_verification == 'local-source':
+    value['reference_verification'] = reference_verification
 # Validate all current evidence above before considering a no-op. Reusing an
 # unchanged valid closure keeps its original checkpoint and byte identity, so
 # dependent receipts are not invalidated by running this command twice.

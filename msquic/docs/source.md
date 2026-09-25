@@ -15,6 +15,20 @@ source/API/test inventories. It does not translate or validate the new version.
 `fetch.py` without `--ref` uses the recorded selection without following updates.
 For translation without validation, use `translate.sh --fast` after fetching.
 
+When GitHub is unavailable, supply the source manually at
+`msquic/ref/<directory>` (the `directory` in `config/source.json`) and run:
+
+```sh
+msquic/scripts/translate.sh --no-fetch
+```
+
+Keep the source selection metadata consistent with the tree supplied. This mode
+uses the unpacked tree directly, without fetching or requiring its original
+tarball. ABI validation and closure/audit evidence record the actual local input
+files rather than claiming archive verification. The option also works with
+`--fast` (which already skips fetching) and `--no-build-tools`. It controls source
+fetching; .NET builds still require their SDK and NuGet dependencies to be available.
+
 The three managed platform headers are reused across versions without checking
 hashes of the upstream headers they replace. Staging discovers the core C files
 from the selected source's CMake list and extracts the reference/rundown and

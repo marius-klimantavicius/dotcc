@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Validate the explicit managed host binding and ABI against the same native headers."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -9,6 +10,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--no-fetch', action='store_true', help='Use the selected local source tree without fetching')
+args = parser.parse_args()
 build = ROOT / 'build/host-contract'
 logs = ROOT / 'artifacts/host-contract'
 build.mkdir(parents=True, exist_ok=True)
@@ -28,7 +32,8 @@ def run(command, name):
 
 try:
     run([sys.executable, str(ROOT / 'scripts/generate-host-contract.py')], 'generate')
-    run([sys.executable, str(ROOT / 'scripts/stage-product.py')], 'stage')
+    run([sys.executable, str(ROOT / 'scripts/stage-product.py'),
+         *(['--no-fetch'] if args.no_fetch else [])], 'stage')
     stage = ROOT / 'build/product-source'
     manifest = json.loads((stage / 'manifest.json').read_text())
     receipt['stage_manifest_sha256'] = hashlib.sha256((stage / 'manifest.json').read_bytes()).hexdigest()

@@ -14,6 +14,12 @@ To switch source versions first, run `python3 msquic/scripts/fetch.py --ref stab
 source inventories, portable function fragments, and native reference inputs
 follow the selected version automatically. See [source selection](docs/source.md).
 
+For manually supplied source, use `msquic/scripts/translate.sh --no-fetch`.
+Place the unpacked tree at `msquic/ref/<directory>` selected by
+`config/source.json`; an archive is not required. This skips source downloads
+throughout the pipeline and records validation against the local files.
+It also works with `--fast` and `--no-build-tools`.
+
 The final project is
 `msquic/generated/TranslatedMsQuic/TranslatedMsQuic.csproj`. Translation links
 with `--literal-pool --nest-types --runtime=c`; ABI types and runtime helpers live inside
