@@ -246,3 +246,49 @@ fresh native/translated builds, all five execution variants, and server cleanup.
 The default `test.sh` now includes `upstream-tests.sh`; the combined expanded
 qualification command has not been rerun in this milestone. Its earlier authored
 suite results above and the new upstream receipt are separate execution evidence.
+
+## Verification after shared compiler changes (2026-09-25)
+
+Verified code at `e099ba2874ca727e8806dc773c6f43d700783d19` on Linux x64,
+starting with a clean working tree. `scripts/verify.sh` freshly built the compiler
+and postprocessor and regenerated all 53 library units with the async profile.
+The separate legacy LibC/poll profile also freshly regenerated all 53 units for
+the unchanged upstream programs. Both generation receipts record the same
+`DotCC.Lib.dll` SHA-256:
+`5aca1bc3379efd32c18b6c56b217e05762f16ec7a8adf97b985e219d1b183a0a`.
+
+The verifier **failed** at the whole-assembly NativeAOT audit on the already
+documented Kerberos.NET **IL2104** trim and **IL3053** AOT analysis warnings.
+Raw and processed static import checks pass, and both rooted binaries publish
+and execute, but neither passes the warning gate. No warning was suppressed.
+The remaining qualification steps and repository tests were run separately
+after this stop; this is not a passing `verify.sh` or `test.sh` receipt.
+
+Current successful checks:
+
+- Release `ManagedConsumer.slnx` build, sample help, DFS codec, and standalone
+  DFS integration in all four raw/processed × JIT/NativeAOT combinations.
+- Seven host fixtures across native/JIT/NativeAOT; 258 Kerberos token checks
+  per raw/processed variant; both async transport suites; 45 crypto/ABI transcript
+  checks per variant against native/JIT/NativeAOT.
+- Postprocessor idempotence, native Samba 11/11, and sample and lifecycle Samba
+  matrices each 11/11 in all four combinations (88 managed case passes).
+- Two ordinary facade lifetime checks per raw/processed JIT variant (4 total).
+- Fresh upstream builds of ten original C programs across five variants
+  (50 binaries), with 35 case passes and 295 process invocations. The existing
+  standalone NTLM native baseline failure remains, with four dependent managed
+  cases blocked and 60 prerequisite skips (12 per variant); `complete:false`.
+- Repository suites: 2,741 compiler unit tests, 710 functional tests, and 103
+  postprocessor tests pass; 1,159 optional functional cases are skipped.
+
+The continuation confirmed unchanged authored libsmb2 sources, host sources,
+and HEAD throughout execution. `git diff --check` passes. Disposable Samba
+containers were cleaned up. Concurrent unrelated MsQuic edits were left intact.
+No enterprise KDC, domain DFS, refreshed FILE cache, or Windows current-logon
+SSPI interoperability was exercised by this Linux run.
+
+Local ignored evidence is preserved under `artifacts/verification-20260925/`:
+`verifier-result.json`, `qualification-prefix.json`, both
+`product-audit-*-result.json` receipts, `remaining-results.json`, repository TRX
+files, and `repository-tests.json`. Fresh generation, Samba, DFS, crypto/ABI,
+host, and upstream receipts remain in their respective `artifacts/` directories.
