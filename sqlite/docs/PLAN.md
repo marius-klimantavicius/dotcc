@@ -239,10 +239,10 @@ pass, and a separate C# consumer can call the translated engine. Commit per fix.
 
 ### M4 — Memory VFS and platform contract
 
-- [x] Prefer a small portable C VFS in `src/`, compiled by dotcc and by the native
-      oracle. Back storage with dotcc allocation/memory routines; use existing
-      runtime facilities for clocks/randomness or an explicit deterministic test
-      provider. Keep platform-specific code behind this adapter boundary.
+- [x] Implement the memory VFS as authored C# in `src/MemoryVfs.cs`, shared by
+      the product and translated test harnesses. Keep the original portable C
+      VFS under `tests/native/` solely as an independent native oracle; never
+      translate it. Use managed storage and deterministic clocks/randomness.
 - [x] Implement initialization/registration and a versioned `sqlite3_vfs` /
       `sqlite3_io_methods` table. Initial file methods version 1 is sufficient;
       advertise only implemented capabilities. Supply open/close, read/write,
@@ -263,8 +263,8 @@ pass, and a separate C# consumer can call the translated engine. Commit per fix.
 Exit: native and translated engines pass the same VFS contract and multi-connection
 tests under serialized calls. No persistence across processes, cross-process
 locking, power-loss durability, or concurrent-thread guarantee is claimed.
-The same C adapter and all listed contracts pass through both native and
-translated engines.
+The same contract harness checks the native C reference VFS and authored C#
+VFS independently. The managed VFS serializes its state with a BCL lock.
 Follow upstream [VFS](https://www.sqlite.org/vfs.html),
 [VFS object](https://www.sqlite.org/c3ref/vfs.html), and
 [file methods](https://www.sqlite.org/c3ref/io_methods.html) contracts.

@@ -26,9 +26,9 @@ flags=()
 while IFS= read -r definition; do flags+=("-D$definition"); done < "$prefix-defines.txt"
 compiler="$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll"
 source_directory="$SQLITE_ROOT/generated/sqlite-port"
-dotnet "$compiler" -std=c17 "${flags[@]}" -I "$source_directory" -I "$SQLITE_ROOT/src" \
+dotnet "$compiler" -std=c17 "${flags[@]}" -I "$source_directory" -I "$SQLITE_ROOT/tests" \
   --overrides-file "$SQLITE_ROOT/config/dotcc-overrides.json" \
-  -E "$SQLITE_ROOT/src/engine.c" > "$prefix-preprocessed.c"
+  -E "$source_directory/sqlite3.c" > "$prefix-preprocessed.c"
 python3 "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
   "$prefix-preprocessed.c" "$generated/layout_requests.h"
 # Flexible-array storage can require additional offset contracts even when C
@@ -56,7 +56,7 @@ print(f"Added {len(additional)} native probes for emitted flexible-array contrac
 PY
 
 gcc -std=c17 -O1 "${SQLITE_NATIVE_FLAGS[@]}" "${flags[@]}" -DDOTCC_LAYOUT_REQUESTS \
-  -I "$source_directory" -I "$SQLITE_ROOT/src" -I "$generated" \
+  -I "$source_directory" -I "$SQLITE_ROOT/tests" -I "$generated" \
   "$SQLITE_ROOT/tests/ProductLayout/native.c" -lm -o "$SQLITE_ROOT/build/product-layout-native" \
   > "$prefix-native-build.log" 2>&1
 run_sqlite_process "$SQLITE_ROOT/build/product-layout-native" > "$prefix-native.out"

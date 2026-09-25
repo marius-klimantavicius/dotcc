@@ -1,12 +1,17 @@
 <Project>
     <!-- Product-specific managed OS services, compiled beside dotcc's unchanged
-         generated source. Native and deterministic C corpora keep their own VFS. -->
+         generated source. Translated C corpora share the authored memory VFS; native oracles use C. -->
     <ItemGroup Condition="'$(MSBuildProjectName)' == 'TranslatedSqlite'">
         <Compile Include="$(MSBuildThisFileDirectory)src/HostVfs*.cs" />
         <Compile Include="$(MSBuildThisFileDirectory)src/Sqlite*.cs" />
+        <Compile Include="$(MSBuildThisFileDirectory)src/MemoryVfs.cs" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(MSBuildProjectName)' == 'TranslatedSqlite'">
         <Nullable>enable</Nullable>
+        <DefineConstants>$(DefineConstants);DOTCC_SQLITE_PRODUCT</DefineConstants>
     </PropertyGroup>
+    <ItemGroup Condition="$([System.String]::Copy('$(MSBuildProjectName)').StartsWith('Test-'))">
+        <Compile Include="$(MSBuildThisFileDirectory)src/MemoryVfs.cs" />
+    </ItemGroup>
 </Project>

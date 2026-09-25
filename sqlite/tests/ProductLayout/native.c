@@ -11,8 +11,8 @@ SQLITE_PRIVATE sqlite3_mutex_methods const *sqlite3DefaultMutex(void) { abort();
 SQLITE_PRIVATE void sqlite3MemoryBarrier(void) { abort(); }
 #endif
 #ifdef DOTCC_HOST_VFS
-int dotcc_host_vfs_init(void) { abort(); }
-int dotcc_host_vfs_end(void) { abort(); }
+int sqlite3_os_init(void) { abort(); }
+int sqlite3_os_end(void) { abort(); }
 #endif
 
 int main(void) {

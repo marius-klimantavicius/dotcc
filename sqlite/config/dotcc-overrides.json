@@ -3,14 +3,68 @@
   "macroOverrides": [
     {
       "name": "SQLITE_BIGENDIAN",
-      "match": { "exact": "(*(char *)(&sqlite3one)==0)" },
+      "match": {
+        "exact": "(*(char *)(&sqlite3one)==0)"
+      },
       "replacement": "(!__dotcc_is_little_endian())",
       "requireMatch": true
     },
     {
       "name": "SQLITE_LITTLEENDIAN",
-      "match": { "exact": "(*(char *)(&sqlite3one)==1)" },
+      "match": {
+        "exact": "(*(char *)(&sqlite3one)==1)"
+      },
       "replacement": "(__dotcc_is_little_endian())",
+      "requireMatch": true
+    }
+  ],
+  "functionOverrides": [
+    {
+      "name": "sqlite3_os_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.Initialize"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "sqlite3_os_end",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.Shutdown"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "sqlite3DefaultMutex",
+      "signature": {
+        "returnType": "const sqlite3_mutex_methods *",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.HostMutex.GetMutextMethods"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "sqlite3MemoryBarrier",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::System.Threading.Thread.MemoryBarrier"
+      },
       "requireMatch": true
     }
   ]

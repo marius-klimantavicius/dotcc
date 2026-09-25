@@ -1,6 +1,6 @@
 /* Compile as one TU to inspect actual private, unchanged SQLite aggregates. */
 #include "sqlite3.c"
-#include "memory_vfs.c"
+#include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
 #define HEADER(T) printf("header %s %lu %lu\n", #T, (unsigned long)sizeof(T), (unsigned long)_Alignof(T))

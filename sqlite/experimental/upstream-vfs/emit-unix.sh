@@ -14,7 +14,7 @@ dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" "$experiment/unix.c" \
   -DSQLITE_THREADSAFE=1 -DSQLITE_MUTEX_APPDEF=1 -DDOTCC_HOST_VFS=1 \
   -DSQLITE_DEFAULT_MMAP_SIZE=67108864 -DSQLITE_MAX_MMAP_SIZE=268435456 \
   -DHAVE_MREMAP=0 -DHAVE_READLINK=1 -DHAVE_LSTAT=1 -DHAVE_NANOSLEEP=0 -DHAVE_USLEEP=1 \
-  --emit=managedlib --class-name Sqlite --namespace Managed.Database.UpstreamUnix --split=function -o "$out"
+  --overrides-file "$experiment/unix-overrides.json" --emit=managedlib --class-name Sqlite --namespace Managed.Database.UpstreamUnix --split=function -o "$out"
 cp "$experiment/managed/UnixNative.cs" "$out/UnixNative.cs"
 sed 's/Managed.Database/Managed.Database.UpstreamUnix/g' "$SQLITE_ROOT/src/HostVfs.Mutex.cs" > "$out/HostMutex.cs"
 cc -std=c11 -Wall -Wextra -Werror -shared -fPIC "$experiment/native/unix.c" -o "$out/libdotcc_sqlite_os.so"

@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Threading;
 
 namespace Managed.Database;
 
@@ -41,11 +40,4 @@ public static unsafe partial class Sqlite
             return sqlite3_bind_blob(statement, index, ptr, value.Length, SQLITE_TRANSIENT);
     }
 
-    public static int dotcc_host_vfs_init() => HostVfs.RegisterVfs();
-
-    public static int dotcc_host_vfs_end() => HostVfs.UnregisterVfs();
-
-    public static sqlite3_mutex_methods* dotcc_host_mutex_methods() => HostMutex.GetMutextMethods();
-
-    public static void dotcc_host_memory_barrier() => Thread.MemoryBarrier();
 }

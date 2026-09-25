@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Intentionally portable C: the same adapter is compiled with the native oracle
- * and translated with SQLite. Allocation/memory calls use dotcc's libc port. */
+/* Native-only reference VFS for differential tests. Never passed to dotcc.
+ * The product and translated harnesses use src/MemoryVfs.cs instead. */
 #define MEM_PATH_MAX 1024
 #define MEM_I64_MAX 9223372036854775807LL
 #ifndef SQLITE_THREADSAFE

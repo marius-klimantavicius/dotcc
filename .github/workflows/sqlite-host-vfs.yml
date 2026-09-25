@@ -97,7 +97,11 @@ jobs:
           $definitions = @($definitionByName.Values | ForEach-Object { '-D' + $_ })
           $arguments = @('-std=c17') + $definitions + @(
             '-I', (Join-Path $root 'generated/sqlite-port'),
-            '-I', (Join-Path $root 'src'), (Join-Path $root 'src/engine.c'),
+            (Join-Path $root 'generated/sqlite-port/sqlite3.c'),
+            '--overrides-file', (Join-Path $root 'config/dotcc-overrides.json'),
+            '--nest-types', '--runtime=c', '--literal-pool',
+            '--class-name', 'Sqlite', '--namespace', 'Managed.Database',
+            '--split=size', '--split-size=102400',
             '--emit=managedlib', '-o', (Join-Path $root 'generated/TranslatedSqlite'))
           dotnet DotCC/bin/Release/net10.0/dotcc.dll @arguments 2>&1 |
             Tee-Object -FilePath sqlite/artifacts/host-vfs-ci-emission.log

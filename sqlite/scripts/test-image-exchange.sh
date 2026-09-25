@@ -7,16 +7,12 @@ if [[ $# -gt 1 || ( -n "${1:-}" && "$1" != --emit-only ) ]]; then
   exit 2
 fi
 
-translation_unit="$SQLITE_ROOT/generated/test-image.c"
-cat > "$translation_unit" <<'C'
-#include "engine.c"
-#include "image_native.c"
-C
 output="$SQLITE_ROOT/generated/Test-image"
 dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   -std=c17 "${SQLITE_DEFINES[@]}" -I "$SQLITE_AMALGAMATION" \
-  -I "$SQLITE_ROOT/src" -I "$SQLITE_ROOT/tests" \
-  "$translation_unit" --emit=csproj -o "$output" \
+  -I "$SQLITE_ROOT/tests" \
+  "$SQLITE_AMALGAMATION/sqlite3.c" "$SQLITE_ROOT/tests/image_native.c" \
+  --overrides-file "$SQLITE_ROOT/config/corpus-overrides.json" --emit=csproj -o "$output" \
   > "$SQLITE_ROOT/artifacts/translated-image-emission.log" 2>&1
 if [[ "${1:-}" == --emit-only ]]; then
   echo "Emitted $output"

@@ -13,6 +13,6 @@ python3 "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
   "$SQLITE_ROOT/artifacts/layout-sqlite3.i" "$SQLITE_ROOT/generated/layout_requests.h" >&2
 gcc -std=c17 -O0 "${SQLITE_LAYOUT_FLAGS[@]}" "${SQLITE_DEFINES[@]}" \
   -DDOTCC_LAYOUT_REQUESTS -I "$SQLITE_ROOT/generated" \
-  -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/src" "$SQLITE_ROOT/src/layout_probe.c" \
+  -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/tests" "$SQLITE_ROOT/tests/layout_probe.c" "$SQLITE_ROOT/tests/native/memory_vfs.c" \
   -lm -o "$SQLITE_ROOT/build/layout-native"
 run_sqlite_process "$SQLITE_ROOT/build/layout-native"

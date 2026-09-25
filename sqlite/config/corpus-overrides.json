@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "sqlite3_os_init",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.Initialize"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "sqlite3_os_end",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.Shutdown"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "dotcc_memory_vfs",
+      "signature": {
+        "returnType": "sqlite3_vfs *",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.GetVfs"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "dotcc_memory_vfs_reset",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.Reset"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "dotcc_memory_vfs_file_count",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.FileCount"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "dotcc_memory_vfs_handle_count",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.HandleCount"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "dotcc_memory_vfs_fail_after",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.FailAfter"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "dotcc_memory_vfs_seed",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "unsigned int"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.Seed"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "dotcc_memory_vfs_time",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "sqlite3_int64"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.SetTime"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "dotcc_memory_vfs_export",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const char *",
+          "void *",
+          "sqlite3_int64",
+          "sqlite3_int64 *"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.Export"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "dotcc_memory_vfs_import",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "const char *",
+          "const void *",
+          "sqlite3_int64"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.MemoryVfs.Import"
+      },
+      "requireMatch": false
+    }
+  ]
+}

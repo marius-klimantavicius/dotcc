@@ -7,8 +7,8 @@ FTS5 implementation and application extensions remain translated/managed C#;
 there is no native SQLite dependency or dynamic extension loader.
 
 `scripts/build.sh` builds this library. `scripts/emit-engine.sh` applies the host
-threading/mmap profile; translated `sqlite3_os_init` explicitly registers the host
-adapter. `sqlite/Directory.Build.targets` compiles the managed VFS/mutex sidecars
+threading/mmap profile; a semantic override binds `sqlite3_os_init` to authored
+C# registration of the host and [memory VFS](memory-vfs.md) adapters. `sqlite/Directory.Build.targets` compiles the managed VFS/mutex sidecars
 alongside the generated project. Downloaded references and emitted C# remain
 unchanged; a generated input copy has one guarded mutex-selection adaptation
 ([details](threading-mmap.md)). Keep that targets file and the sidecars when building the

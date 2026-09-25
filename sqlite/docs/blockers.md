@@ -189,8 +189,9 @@ reject actual character overflow. The full configured amalgamation now emits
 
 ## B014 — completed include expansion (preprocessor, fixed 840ab96)
 
-`scripts/emit-engine.sh` compiles `src/engine.c`, including unchanged sqlite3.c
-and the memory VFS. It failed at reported8614:27, unexpected `(`, because tokens
+At this historical checkpoint, `scripts/emit-engine.sh` compiled `src/engine.c`,
+including sqlite3.c and the then-C memory VFS. (The wrapper and translated C VFS
+were removed in the 2026-09-25 adapter cleanup.) It failed at reported8614:27, unexpected `(`, because tokens
 already expanded inside the included file were rescanned by the outer expander
 using the header's final macro definitions. This retrospectively expanded the
 earlier sqlite3_mutex_alloc prototype. Completed include tokens now preserve

@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "sqlite3DefaultMutex",
+      "signature": {
+        "returnType": "const sqlite3_mutex_methods *",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Database.UpstreamWindows.HostMutex.GetMutextMethods"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "sqlite3MemoryBarrier",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::System.Threading.Thread.MemoryBarrier"
+      },
+      "requireMatch": true
+    }
+  ]
+}

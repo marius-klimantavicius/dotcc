@@ -21,7 +21,7 @@ while IFS= read -r definition; do
 done < "$SQLITE_ROOT/config/host-defines.txt"
 dotnet "${DOTCC_COMPILER:-$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll}" \
   -std=c17 "${SQLITE_DEFINES[@]}" "${SQLITE_HOST_DEFINES[@]}" -I "$SQLITE_ROOT/generated/sqlite-port" \
-  -I "$SQLITE_ROOT/src" "$SQLITE_ROOT/src/engine.c" \
+  "$SQLITE_ROOT/generated/sqlite-port/sqlite3.c" \
   --overrides-file "$SQLITE_ROOT/config/dotcc-overrides.json" \
   --override-report "$SQLITE_ROOT/artifacts/engine-overrides.jsonl" \
   -MD -MF "$SQLITE_ROOT/artifacts/engine.d" \

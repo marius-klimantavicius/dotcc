@@ -417,6 +417,7 @@ internal static unsafe partial class Program
             CheckEndianDatabases(directory, write: true);
             CheckOptionalFeatures(db);
             CheckPreupdateHook(db);
+            CheckMemoryVfs();
             CheckSqlWorkloads(db);
             CheckFullTextSearch(db);
             CheckFunctionIdentity();

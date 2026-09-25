@@ -8,8 +8,8 @@ python3 "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
 output="$SQLITE_ROOT/generated/Test-layout"
 dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   -std=c17 "${SQLITE_DEFINES[@]}" -DDOTCC_LAYOUT_REQUESTS \
-  -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/src" -I "$SQLITE_ROOT/generated" \
-  "$SQLITE_ROOT/src/layout_probe.c" --emit=csproj -o "$output" \
+  -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/tests" -I "$SQLITE_ROOT/generated" \
+  "$SQLITE_ROOT/tests/layout_probe.c" --overrides-file "$SQLITE_ROOT/config/corpus-overrides.json" --emit=csproj -o "$output" \
   > "$SQLITE_ROOT/artifacts/translated-layout-emission.log" 2>&1
 python3 "$SQLITE_ROOT/scripts/check-layout-metadata.py" "$output/DotCcProgram.cs"
 python3 "$SQLITE_ROOT/scripts/generate-layout-storage-checks.py" \

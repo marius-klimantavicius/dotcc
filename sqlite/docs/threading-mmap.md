@@ -22,9 +22,12 @@ their own synchronization, so distinct connections can run concurrently.
 Setting `THREADSAFE=1` alone is insufficient with upstream `SQLITE_OS_OTHER`:
 that configuration selects no-op mutexes and removes initialization barriers.
 `scripts/prepare-host-source.py` generates a copy under `generated/sqlite-port/`
-with one guarded adjustment to permit `SQLITE_MUTEX_APPDEF`. The adapter supplies
-`sqlite3DefaultMutex()` and `sqlite3MemoryBarrier()`; the latter calls BCL
-`Thread.MemoryBarrier`. SQLite retains its own initialization and configuration
+with one guarded adjustment to permit `SQLITE_MUTEX_APPDEF`. The semantic function rules in
+`config/dotcc-overrides.json` bind `sqlite3DefaultMutex()` to
+`HostMutex.GetMutextMethods()` and `sqlite3MemoryBarrier()` to BCL
+`Thread.MemoryBarrier`. No C mutex bridge is compiled. The preprocessing guard
+is still needed: semantic overrides cannot restore calls already removed by
+SQLite's no-op-mutex macros. SQLite retains its own initialization and configuration
 logic, including concurrent cold initialization. No module initializer is used.
 
 The generator requires exact SQLite 3.53.4 source/header hashes, exactly one

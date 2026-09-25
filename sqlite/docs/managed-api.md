@@ -26,10 +26,13 @@ scripts/emit-engine.sh
 dotnet build generated/TranslatedSqlite/TranslatedSqlite.csproj -c Release
 ```
 
-`src/engine.c` includes the amalgamation, host mutex bridge and memory VFS as
-one logical translation unit. The script supplies the common features plus host
-profile overrides and prepares the hash-checked mutex-selection guard adaptation
-in `generated/sqlite-port/`; downloaded references remain unchanged.
+`scripts/emit-engine.sh` translates `generated/sqlite-port/sqlite3.c` directly.
+There is no C wrapper or C mutex/VFS implementation in the product. The script
+supplies the common features plus host profile overrides and prepares the
+hash-checked mutex-selection guard adaptation in `generated/sqlite-port/`;
+downloaded references remain unchanged. Semantic function overrides bind the
+OS initialization/termination and mutex/barrier hooks to authored C# methods.
+`src/MemoryVfs.cs` supplies the optional named memory VFS.
 `Directory.Build.targets` includes the managed OS sidecars. See
 [threading and mmap](threading-mmap.md) for the platform adaptation. `dotcc-host` is the library default, while the named memory adapter
 remains available. dotcc emits offsetof

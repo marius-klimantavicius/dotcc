@@ -11,7 +11,9 @@
 #define DOTCC_VFS_FAIL_SYNC 16
 #define DOTCC_VFS_FAIL_DELETE 32
 
-/* Process-local files survive close until deleted/reset. Shared VFS state is
+/* Test harness declarations, bound to the C# VFS by corpus-overrides.json or
+ * implemented by native/memory_vfs.c in the native oracle.
+ * Process-local files survive close until deleted/reset. Shared VFS state is
  * protected by a SQLite static mutex when THREADSAFE is enabled. The
  * THREADSAFE=0 deterministic corpus still requires serialized callers.
  * No OS files, native interop, shared-memory/WAL, mmap, or durability guarantee.

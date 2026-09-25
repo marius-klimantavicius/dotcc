@@ -33,7 +33,7 @@ source/configuration give 8 + 80 = 88 bytes with MS bit-field packing and
 the resulting offsets also remove padding before `colUsed`. This size change
 comes from the GNU ABI migration, not from narrowing or aligning backing fields.
 
-`src/layout_probe.c` includes the unchanged amalgamation and tests all 39 active
+`tests/layout_probe.c` includes the unchanged amalgamation and tests all 39 active
 `offsetof` requests extracted from its preprocessed source. It compares native
 and translated aggregate sizes, alignment constants, generated offsets, and
 actual member address differences. Eight additional pointer-array probes cover
