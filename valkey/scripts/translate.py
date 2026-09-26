@@ -142,7 +142,7 @@ def main():
         product = stage / "product/TranslatedValkey"
         run(["dotnet", compiler, *objects, "--emit=managedlib", "--instance-methods", "--runtime=c",
              "--literal-pool", "--deduplicate-inline", "--nest-types", "--class-name", "ValkeyCore", "--namespace", "Managed.Database",
-             "--split=size", "--split-size=102400", "-o", raw], logs / "link.log", receipt)
+             "--split=size", "--split-size=262144", "-o", raw], logs / "link.log", receipt)
         project = "TranslatedValkey.csproj"
         receipt["notices"] = write_notices(Path(receipt["inputs"]["source_root"]), ROOT / "config", raw / project)
         link_host_sources(raw / project, staged_host)

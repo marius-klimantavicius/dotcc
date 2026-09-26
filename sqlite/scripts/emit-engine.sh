@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 source "$(dirname "$0")/common.sh"
 postprocess=true
-# Group whole functions into roughly 100 KiB files for navigation in Rider.
+# Group whole functions into roughly 256 KiB files for navigation in Rider.
 split="${SQLITE_SOURCE_SPLIT:-size}"
-split_size="${SQLITE_SOURCE_SPLIT_SIZE:-102400}"
+split_size="${SQLITE_SOURCE_SPLIT_SIZE:-262144}"
 case "${1:-}" in
   --no-postprocess) postprocess=false; shift ;;
   --help|-h) echo "Usage: $0 [--no-postprocess] (SQLITE_SOURCE_SPLIT=none|function|size; SQLITE_SOURCE_SPLIT_SIZE=bytes)"; exit 0 ;;
