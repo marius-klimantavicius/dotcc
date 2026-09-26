@@ -1713,3 +1713,41 @@ The full receipt and copied logs are in
 `artifacts/csharp-vfs-20260925-final/results.json`; main transcripts are
 `artifacts/csharp-vfs-verification.log` and `artifacts/csharp-vfs-upstream-unix.log`.
 The optional Lua/Chibi/WAT extension was not run for this adapter-only change.
+
+
+## 2026-09-26 — Memory VFS restricted to test corpora
+
+Removed the authored `src/MemoryVfs.cs`, its public compatibility wrappers and
+`config/corpus-overrides.json`. Product OS-init/end overrides now call
+`HostVfs.RegisterVfs`/`HostVfs.UnregisterVfs` directly. This supersedes the earlier
+C# memory-VFS integration recorded above. Production in-memory databases use
+SQLite's built-in `:memory:` mode.
+
+The retained C implementation moved from `tests/native/memory_vfs.c` to
+`tests/memory_vfs.c`. Native and dotcc test builds compile that same source;
+translated harnesses use separate input translation units. Removed its obsolete
+product host-registration bridge. Production threading tests retain host
+rollback/WAL and built-in memory SQL coverage; tests specific to the deleted
+C# adapter and its managed lock/array implementation were removed.
+
+Regenerated the product and verified ManagedConsumer under JIT and NativeAOT.
+Its replacement memory-database check verifies SQL across compacting GC, no
+host file handles, a fresh database after closing/reopening, and absence of
+`dotcc-memory` in the product registry. Product generation contains the direct
+HostVfs overrides and no MemoryVfs symbols. Builds reported zero warnings/errors.
+The native VFS contract passed. All seven translated corpora matched their
+committed native baselines: core, API, VFS, virtual tables, allocation failures,
+upstream JSONB and FTS5. API and VFS also passed NativeAOT. This includes all 128
+injected allocation failures, 37 upstream JSONB cases and 34 FTS5 assertions.
+Translated layout checks passed JIT and NativeAOT. Native-to-managed,
+managed-to-native and managed-to-managed image exchange all passed.
+Product ThreadingTests and HostVfsTests passed under JIT and NativeAOT against
+the regenerated library, including concurrent initialization/restart, mutex
+contracts, built-in memory SQL, host rollback/WAL writers, raw WAL state,
+checkpoints, mapped reads, fallback, VACUUM and read-only reopen.
+
+Logs are under `artifacts/test-only-vfs-*.log` and
+`artifacts/test-only-vfs-native.out`; emission/build logs retain their usual
+`translated-*.log` names. Tests were run serially on Linux x64. This change does
+not modify dotcc itself; repository-wide compiler suites and other operating
+systems were not rerun.
