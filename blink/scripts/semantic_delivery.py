@@ -23,10 +23,9 @@ def pin_semantic_delivery(delivery, assembly, pin):
         raise RuntimeError('Semantic specification differs from staged profile identity')
     spec = json.loads(specification.read_text())
     header = root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink/endian.h'
-    header_sha = '630c0a03219a13ef0382cb77f30ebe9b9a65c41bdf76621311e3720e91384e8c'
-    if spec['version'] != 1 or spec['header'] != 'blink/endian.h' or spec['header_sha256'] != header_sha:
-        raise RuntimeError('Semantic specification does not identify the pinned upstream endian header')
-    pin(header, header_sha)
+    if spec['version'] != 1 or spec['header'] != 'blink/endian.h':
+        raise RuntimeError('Semantic specification does not identify the endian header')
+    pin(header, spec['header_sha256'])
     expected = {prefix + str(bits): 'intrinsic:' + operation + '.u' + str(bits) + '.le'
                 for bits in (16, 32, 64) for prefix, operation in [('Get', 'load'), ('Put', 'store')]}
     rules = spec['functionOverrides']

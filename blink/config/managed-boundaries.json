@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "headers": {
-    "blink/machine.h": "337f3a3a56e560994b269e667be5e84597f5da989bcd94d1ef8519c4a8cc780f",
-    "blink/syscall.h": "c53fcecbad10b91cce9554611b17ff9bcbf28f1fdc74a0a312bef81fd6687a7e"
-  },
-  "implementations": {
-    "blink/syscall.c": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3",
-    "blink/memorymalloc.c": "589becd0e214d5f422e75a9b63b1bf5d5280b3f8ca4e00dc212ede120e945b12"
-  },
+  "headers": [
+    "blink/machine.h",
+    "blink/syscall.h"
+  ],
+  "implementations": [
+    "blink/syscall.c",
+    "blink/memorymalloc.c"
+  ],
   "required_units": {
     "blink/syscall.c": [
       "SignalActor",
@@ -24,16 +24,34 @@
     {
       "name": "TrackHostPage",
       "linkage": "internal",
-      "signature": { "returnType": "u64", "parameterTypes": ["u8 *"], "variadic": false },
-      "target": { "kind": "managedMethod", "method": "global::Managed.Emulation.BlinkCore.blink_host_track_page" },
+      "signature": {
+        "returnType": "u64",
+        "parameterTypes": [
+          "u8 *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Emulation.BlinkCore.blink_host_track_page"
+      },
       "requireMatch": false
     },
     {
       "name": "FindHostPage",
       "linkage": "internal",
       "declarationFile": "blink/machine.h",
-      "signature": { "returnType": "u8 *", "parameterTypes": ["u64"], "variadic": false },
-      "target": { "kind": "managedMethod", "method": "global::Managed.Emulation.BlinkCore.blink_host_find_page" },
+      "signature": {
+        "returnType": "u8 *",
+        "parameterTypes": [
+          "u64"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Emulation.BlinkCore.blink_host_find_page"
+      },
       "requireMatch": false
     },
     {

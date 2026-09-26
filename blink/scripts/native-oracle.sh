@@ -48,7 +48,7 @@ rows = []
 for record in manifest['selectedAssemblyTests']:
     name = pathlib.Path(record['path']).stem
     obj, elf = tests / (name + '.o'), tests / (name + '.elf')
-    row = dict(case=name, sourceSha256=record['sha256'])
+    row = dict(case=name, sourceSha256=digest(source / record['path']))
     try:
         run(['gcc', '-c', '-I.', record['path'], '-o', str(obj)], name + '.compile.log')
         run(['ld', '-static', '--omagic', '-z', 'noexecstack', '-z', 'max-page-size=65536', '-z', 'common-page-size=65536', str(obj), '-o', str(elf)], name + '.link.log')

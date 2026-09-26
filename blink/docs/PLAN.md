@@ -209,6 +209,16 @@ native Blink for an independent behavior comparison. Do not patch instruction
 algorithms or generated C# to conceal compiler defects. Upstream bugs need their
 own minimized evidence and explicitly tracked correction.
 
+Historical content hashes gate only manual text adaptations outside the typed
+`overrides.json` mechanism. Ordinary source files, host headers and typed
+function overrides must not require compatibility hash updates. Header text
+edits use unique exact anchors and preserve unrelated declarations; threaded
+overlays are derived from the current runtime headers during staging.
+Archive checksums verify downloads. Fresh staging records actual source and
+tool hashes for cache invalidation and receipts, as in MsQuic; those records
+must not become historical compatibility allowlists. Compilation, typed
+selection and runtime tests establish compatibility after source changes.
+
 ## Workspace and generation
 
 ```text

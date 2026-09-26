@@ -9,6 +9,12 @@ immutable raw snapshot. Authored Host/bridge sources are linked directly from
 The actual ASP.NET Core/Kestrel NativeAOT guest and its final worker sample
 pass the selected Linux x64 qualification.
 Campaign C probes remain test-only.
+
+Translation accepts current source and runtime headers without historical hash
+allowlists. Only manual text adaptations retain compatibility pins or exact
+replacement anchors; typed overrides use declaration/signature checks. Fresh
+input hashes still identify builds and invalidate caches. See the
+[adaptation policy](docs/PLAN.md#allowed-adaptations).
 The P5 normal CPU corpus passes 514 cases in each of raw/optimized JIT/NativeAOT,
 for 2,056 comparisons, with 46 historical custom fault cases explicitly excluded.
 Actual guest-memory lifecycle and valid ELF/fixed TLS tests also pass all four

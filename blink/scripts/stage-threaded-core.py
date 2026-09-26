@@ -156,12 +156,12 @@ def main():
                 raise RuntimeError('Base Host snapshot/provenance differs: ' + name)
         inventory_path = ROOT / 'config/source-inventory.json'
         track(inventory_path)
-        pins = {row['path']: row['sha256'] for row in read_json(inventory_path)['files']}
+        pins = inputs['upstream_inputs']
         upstream = ROOT / 'ref' / read_json(ROOT / 'config/source-manifest.json')['upstream']['directory']
         track(ROOT / 'config/source-manifest.json')
         for name, expected in pins.items():
             if track(upstream / name) != expected:
-                raise RuntimeError('Pinned upstream changed: ' + name)
+                raise RuntimeError('Upstream changed since base staging: ' + name)
 
         profile.mkdir(parents=True)
         for name in inputs['staged_headers']:
@@ -196,12 +196,6 @@ def main():
         config_path.write_text(config)
         changes = [dict(path='config.h', base_sha256=digest(old_config), derived_sha256=sha(config_path),
                         operation='select managed guest threads' + (' and private empty epoll waits' if args.empty_epoll else ''))]
-        for name in ('pthread.h', 'signal.h'):
-            original = ROOT / 'config/managed-threaded' / name
-            old = sha(profile / 'host' / name)
-            copy(original, profile / 'host' / name)
-            changes.append(dict(path='host/' + name, base_sha256=old, derived_sha256=sha(original),
-                                original=str(original), operation='highest-priority existing host include slot'))
         if args.empty_epoll:
             original = ROOT / 'config/managed-threaded/sys/epoll.h'
             if (profile / 'host/sys/epoll.h').exists():
@@ -261,6 +255,12 @@ def main():
         if result.returncode:
             raise RuntimeError('Thread source derivation failed; inspect guest-threads-stage.log')
         boundary = read_json(stage_receipt)
+        for name in ('pthread.h', 'signal.h'):
+            original = stage_output / 'include' / name
+            old = sha(profile / 'host' / name)
+            copy(original, profile / 'host' / name)
+            changes.append(dict(path='host/' + name, base_sha256=old, derived_sha256=sha(original),
+                                original=str(original), operation='derive from current runtime header'))
         if (boundary['stage_sha256'] != track(thread_dir / 'stage.py')
                 or boundary['patch_sha256'] != track(thread_dir / 'guest-threads.patch')
                 or boundary['required_headers'][THREAD_HEADER] != sha(original_header)):
@@ -370,7 +370,7 @@ def main():
             changes=changes, threaded_boundary_sha256=sha(stage_receipt),
             mremap_boundary_sha256=sha(mremap_receipt) if mremap_receipt else None,
             preserved_upstream_pins=pins, source_inputs=source_inputs))
-        derived_inputs = dict(compiler=compiler, source_overrides=overrides,
+        derived_inputs = dict(compiler=compiler, source_overrides=overrides, upstream_inputs=pins,
             staged_headers={str(path.relative_to(profile)): sha(path) for path in profile.rglob('*') if path.is_file()})
         write_json(profile / 'inputs.json', derived_inputs)
         entries = profile_sources(profile, ROOT, derived_inputs)

@@ -99,7 +99,7 @@ change profile configuration:
    context, per-worker stop/binding support, and the C# owning group lifecycle.
    Qualify the process-wide memory barrier against that lifecycle before use.
 
-`pthread.h` derives from the pinned generic BCL-only runtime header. Internal
+`pthread.h` derives from the current generic BCL-only runtime header. Internal
 `pthread_t` is signed 64-bit long; mutex, condition, attributes, once and key
 types are four-byte ints. Initializers are zero. Mutex/condition/once and
 identity primitives can use the actual generic implementations. These types
@@ -107,11 +107,18 @@ describe interpreter internals, not guest musl pthread objects or native glibc
 pthread layouts. The generic create/exit names deliberately redirect to
 unresolved names to prevent bypassing managed execution ownership.
 
-The companion `signal.h` derives from the pinned campaign header, replacing only
+The companion `signal.h` derives from the current campaign header, replacing only
 its retained unsigned thread identity / mutex-attribute union aliases with the
 managed pthread header. Campaign signal records and bindings are preserved.
 `abi.h` and `retained-thread-types.h` are unchanged. Include order must not
 silently choose incompatible aliases.
+
+Product staging generates both headers afresh into the profile. Exact unique
+replacement anchors protect these small text edits; whole-file compatibility
+hashes and equality with the old `config/managed-threaded` copies are not required.
+Typed managed function overrides use declaration/signature matching, without
+historical source or header hashes. Fresh receipt hashes identify actual inputs
+and invalidate caches. The remaining C text patches retain their reviewed pins.
 
 The overlay declares private `pthread_sigmask`, `pthread_kill`, and
 `pthread_atfork` bindings through `host-guest-threads.h`:

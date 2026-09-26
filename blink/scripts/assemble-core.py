@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
-from core_inputs import compiler_identity, profile_sources, emission_identity, semantic_selection, managed_boundary_selection, instance_methods
+from core_inputs import compiler_identity, profile_sources, emission_identity, semantic_selection, managed_boundary_selection, instance_methods, upstream_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 LINK_OPTIONS = ['--emit=managedlib', '--literal-pool', '--deduplicate-inline', '--nest-types', '--class-name', 'BlinkCore',
@@ -36,13 +36,9 @@ if sha(profile / 'compiler-identity.py') != sha(ROOT / 'scripts/core_inputs.py')
     raise SystemExit('compiler identity helper differs from frozen profile; stage a new profile')
 if compiler != inputs['compiler']:
     raise SystemExit('compiler differs from frozen profile; stage a new profile before assembly')
-# Every upstream include remains pinned; unchanged source files are never edited.
-inventory = json.loads((ROOT / 'config/source-inventory.json').read_text())
-source_manifest = json.loads((ROOT / 'config/source-manifest.json').read_text())
-upstream = ROOT / 'ref' / source_manifest['upstream']['directory']
-for row in inventory['files']:
-    if sha(upstream / row['path']) != row['sha256']:
-        raise SystemExit('upstream checksum mismatch: ' + row['path'])
+# A current-run snapshot prevents stale cached objects without an old allowlist.
+if upstream_identity(ROOT) != inputs['upstream_inputs']:
+    raise SystemExit('upstream inputs changed since staging; stage a fresh profile')
 isolator = ROOT / 'scripts/isolate-core.py'
 identity = dict(profile_inputs_sha256=sha(inputs_path), compiler_sha256=compiler,
                 isolation_script_sha256=sha(isolator), closure_sha256=sha(profile / 'closure.json'),

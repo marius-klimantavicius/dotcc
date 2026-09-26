@@ -1,7 +1,6 @@
 {
   "version": 1,
   "header": "blink/endian.h",
-  "header_sha256": "630c0a03219a13ef0382cb77f30ebe9b9a65c41bdf76621311e3720e91384e8c",
   "required_units": [
     "blink/machine.c",
     "blink/syscall.c",

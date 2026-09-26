@@ -14,7 +14,6 @@ REVISION = 'f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
 ORIGINAL_PIN = '4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3'
 PREDECESSOR_PIN = '33d8714ae03d9051342554ed3d1643f1be7360f6efb121ce84120a628efae3d3'
 BLOCK_PIN = '1ac9b2d866051b6ae2d2554ab8ebdf0f5992474df744d76ea67cd62188034f97'
-MEMORY_PIN = '589becd0e214d5f422e75a9b63b1bf5d5280b3f8ca4e00dc212ede120e945b12'
 SIGNAL_PIN = 'e4a1a44787a5e99022a5d8224165e0c551275b4706b9f689f4f826e4f0b95c5a'
 sha = lambda data: hashlib.sha256(data).hexdigest()
 VALIDATION = '''  // Validate ordinary source ranges using guest page-table reservations.
@@ -99,7 +98,7 @@ def main():
     original = read(ROOT / 'ref' / ('blink-' + REVISION) / 'blink/syscall.c')
     memory = read(ROOT / 'ref' / ('blink-' + REVISION) / 'blink/memorymalloc.c')
     signal = read(ROOT / 'ref' / ('blink-' + REVISION) / 'blink/signal.c')
-    if sha(original) != ORIGINAL_PIN or sha(memory) != MEMORY_PIN or sha(signal) != SIGNAL_PIN:
+    if sha(original) != ORIGINAL_PIN or sha(signal) != SIGNAL_PIN:
         raise SystemExit('Immutable upstream source pin differs')
     predecessor = read(args.predecessor)
     prior_bytes = read(args.predecessor_receipt)
@@ -123,7 +122,7 @@ def main():
             or prior.get('patch_sha256') != sha(thread_patch)
             or prior['sources']['syscall.c'] != dict(source_sha256=ORIGINAL_PIN,
                 predecessor_sha256=threads.PREDECESSOR_PIN, staged_sha256=PREDECESSOR_PIN)
-            or prior['sources']['memorymalloc.c'] != dict(source_sha256=MEMORY_PIN,
+            or prior['sources']['memorymalloc.c'] != dict(source_sha256=sha(memory),
                 staged_sha256=sha(thread_sources['memorymalloc.c']))
             or prior['sources']['signal.c'] != dict(source_sha256=SIGNAL_PIN,
                 staged_sha256=sha(thread_sources['signal.c']))
@@ -145,17 +144,12 @@ def main():
         for name, expected in recorded['frozen_inputs'].items():
             if sha(read(name)) != expected:
                 raise SystemExit('Predecessor frozen input differs: ' + name)
-    if prior['base_headers'] != threads.BASE_HEADERS:
-        raise SystemExit('Thread ABI base-header pins differ')
     bases = {name: read(ROOT / name) for name in threads.BASE_HEADERS}
-    for name, expected in threads.BASE_HEADERS.items():
-        if sha(bases[name]) != expected: raise SystemExit('Base header differs: ' + name)
+    if prior['base_headers'] != {name: sha(data) for name, data in bases.items()}:
+        raise SystemExit('Thread header inputs changed since staging')
     overlays = threads.overlay_headers(bases['../DotCC.Lib/include/pthread.h'], bases['config/managed-host/signal.h'])
     if prior['overlays'] != {name: sha(data) for name, data in overlays.items()}:
         raise SystemExit('Thread overlay receipt differs')
-    for name, data in overlays.items():
-        if read(ROOT / 'config/managed-threaded' / name) != data:
-            raise SystemExit('Thread overlay does not reproduce: ' + name)
     for name, expected in prior['required_headers'].items():
         header = (ROOT / name).resolve()
         if not header.is_relative_to((ROOT / 'src/Host/include').resolve()) or sha(read(header)) != expected:

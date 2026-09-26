@@ -4,20 +4,18 @@ from pathlib import Path
 
 
 def stage_semantic_intrinsics(campaign: Path, profile: Path) -> None:
-    """Pin the reviewed physical header before selecting ordinary byte helpers.
+    """Select ordinary byte helpers by physical declaration and typed signature.
 
     Optional per-TU rules allow producers which never include endian.h. Emission
     reports and the final assembly require the complete set on the core units.
     """
     import json
-    import shutil
     specification = campaign / 'config/semantic-intrinsics.json'
     spec = json.loads(specification.read_text())
     if spec['version'] != 1 or spec['header'] != 'blink/endian.h':
         raise RuntimeError('Unknown semantic intrinsic profile')
     header = campaign / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580' / spec['header']
-    if hashlib.sha256(header.read_bytes()).hexdigest() != spec['header_sha256']:
-        raise RuntimeError('Reviewed endian implementation changed')
+    spec['header_sha256'] = hashlib.sha256(header.read_bytes()).hexdigest()
     expected = {prefix + str(width): f'{operation}.u{width}.le'
                 for width in (16, 32, 64) for prefix, operation in [('Get', 'load'), ('Put', 'store')]}
     if {rule['name']: rule['target']['name'] for rule in spec['functionOverrides']} != expected:
@@ -28,7 +26,7 @@ def stage_semantic_intrinsics(campaign: Path, profile: Path) -> None:
     overrides['functionOverrides'] = [dict(rule, declarationFile=str(header.resolve()))
                                       for rule in spec['functionOverrides']]
     (profile / 'overrides.json').write_text(json.dumps(overrides, indent=2) + '\n')
-    shutil.copyfile(specification, profile / 'semantic-intrinsics.json')
+    (profile / 'semantic-intrinsics.json').write_text(json.dumps(spec, indent=2) + '\n')
 
 
 def semantic_selection(profile: Path, report: Path, source: str) -> dict:
@@ -66,18 +64,18 @@ def semantic_selection(profile: Path, report: Path, source: str) -> dict:
 def stage_managed_boundaries(campaign: Path, profile: Path, instance_methods: bool = False) -> None:
     """Select reviewed whole-function owner handoffs in the threaded profile."""
     import json
-    import shutil
     path = campaign / 'config/managed-boundaries.json'
     spec = json.loads(path.read_text())
     if spec['version'] != 1:
         raise RuntimeError('Unknown managed boundary profile')
     if instance_methods:
-        spec['headers']['blink/signal.h'] = '3f6f2b1fa25ded70132a0ce9d428a2ac69075362db3c4e80ffa19e7e145dba24'
+        spec['headers'].append('blink/signal.h')
         spec['required_units']['blink/signal.c'] = ['TerminateSignal']
     upstream = campaign / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
-    for name, expected in {**spec['headers'], **spec['implementations']}.items():
-        if hashlib.sha256((upstream / name).read_bytes()).hexdigest() != expected:
-            raise RuntimeError('Managed boundary upstream identity differs: ' + name)
+    # Record this build's inputs; typed overrides do not require historical bytes.
+    for category in ('headers', 'implementations'):
+        spec[category] = {name: hashlib.sha256((upstream / name).read_bytes()).hexdigest()
+                          for name in spec[category]}
     overrides = json.loads((profile / 'overrides.json').read_text())
     rules = spec['functionOverrides']
     if instance_methods:
@@ -175,6 +173,15 @@ def compiler_identity(directory: Path) -> dict[str, str]:
     return {path.name:hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
 
 
+def upstream_identity(campaign: Path) -> dict[str, str]:
+    """Current include/source inputs for cache freshness, not compatibility pins."""
+    import json
+    manifest = json.loads((campaign / 'config/source-manifest.json').read_text())
+    upstream = campaign / 'ref' / manifest['upstream']['directory']
+    return {str(path.relative_to(upstream)): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in sorted((upstream / 'blink').rglob('*')) if path.is_file()}
+
+
 def profile_sources(profile: Path, campaign: Path, inputs: dict) -> list[dict]:
     """Resolve the frozen upstream/addition/author list through every override."""
     import json
@@ -250,6 +257,7 @@ def emission_identity(profile: Path, campaign: Path, inputs: dict, entry: dict) 
         if specification in files:
             dependencies[specification] = files[specification]
     return dict(version=2, source=entry['path'], source_sha256=entry['sha256'],
+                upstream_sha256=inputs.get('upstream_inputs', {}),
                 dependencies=dependencies, compiler_sha256=inputs['compiler'],
                 options=object_options(profile), include_order=['snapshot', 'pinned-upstream', 'authored', 'host'],
                 source_inventory_sha256=sha(campaign / 'config/source-inventory.json'),
@@ -269,6 +277,7 @@ def canonical_emission(profile: Path, campaign: Path, inputs: dict, entry: dict)
     # every TU must share the same canonical header tree, while each selected
     # source retains its own canonical path for static symbol qualification.
     header_identity = dict(dependencies=identity['dependencies'],
+                           upstream_sha256=identity['upstream_sha256'],
                            source_inventory_sha256=identity['source_inventory_sha256'])
     header_key = hashlib.sha256(json.dumps(header_identity, sort_keys=True).encode()).hexdigest()
     header_target = parent / 'headers' / header_key

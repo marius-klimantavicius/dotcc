@@ -19,8 +19,6 @@ p = pathlib.Path(sys.argv[1]); out = p/'artifacts/core'
 objects = sorted(set(re.findall(r'blink\.a\(([^()]+)\.o\)', (out/'native-link.map').read_text())))
 upstream = p/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
 sources = []
-inventory = json.loads((p/'config/source-inventory.json').read_text())
-pins = {row['path']: row['sha256'] for row in inventory['files']}
 native_config=(p/'build/native/source/config.h').read_text()
 core_config=(p/'config/core-config.h').read_text()
 exclusions=lambda content:set(re.findall(r'^#define\s+(DISABLE_[A-Z0-9_]+)\b',content,re.M))
@@ -36,7 +34,6 @@ for obj in objects:
     name = str(source.relative_to(upstream))
     content = source.read_bytes()
     digest = hashlib.sha256(content).hexdigest()
-    if digest != pins[name]: raise SystemExit('upstream source checksum mismatch: '+name)
     target = stage/source.name
     target.write_bytes(content)
     if hashlib.sha256(target.read_bytes()).hexdigest() != digest:
@@ -59,7 +56,8 @@ import hashlib, json, pathlib, shutil, subprocess, sys, tempfile
 p=pathlib.Path(sys.argv[1])
 stage=pathlib.Path(tempfile.mkdtemp(prefix='attempt-',dir=p/'generated/core-profile'))
 sys.path.insert(0,str(p/'scripts'))
-from core_inputs import compiler_identity, stage_semantic_intrinsics
+from core_inputs import compiler_identity, stage_semantic_intrinsics, upstream_identity
+upstream_inputs = upstream_identity(p)
 shutil.copyfile(p/'scripts/core_inputs.py',stage/'compiler-identity.py')
 shutil.copyfile(p/'artifacts/core/closure.json',stage/'closure.json')
 shutil.copyfile(p/'config/core-config.h',stage/'config.h')
@@ -78,9 +76,9 @@ for original in [p/'src/Host/HostSignals.c', p/'src/Host/include/HostSignals.h',
                  p/'src/Host/HostMemory.c', p/'src/Host/include/HostMemory.h']:
     shutil.copyfile(original,authored/original.name)
 additions_path=p/'config/core-managed-additions.json'
-shutil.copyfile(additions_path,stage/'managed-additions.json')
-additions=json.loads(additions_path.read_text())['sources']
-pins={row['path']:row['sha256'] for row in json.loads((p/'config/source-inventory.json').read_text())['files']}
+addition_manifest=json.loads(additions_path.read_text())
+additions=addition_manifest['sources']
+pins=upstream_inputs
 upstream=p/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
 additional=stage/'additional'
 additional.mkdir()
@@ -88,13 +86,13 @@ paths=[]
 for row in additions:
     original=upstream/row['path']
     digest=hashlib.sha256(original.read_bytes()).hexdigest()
-    if digest != row['sha256'] or digest != pins[row['path']]:
-        raise SystemExit('managed-only upstream source checksum mismatch: '+row['path'])
+    row['sha256'] = digest
     target=additional/original.name
     shutil.copyfile(original,target)
     if hashlib.sha256(target.read_bytes()).hexdigest() != digest:
         raise SystemExit('staged managed-only source checksum mismatch: '+row['path'])
     paths.append(str(target))
+(stage/'managed-additions.json').write_text(json.dumps(addition_manifest,indent=2)+'\n')
 (stage/'managed-source-paths.txt').write_text(''.join(path+'\n' for path in paths))
 config=(stage/'config.h').read_text()
 if '#define NOLINEAR 1' not in config or '#define HAVE_MAP_ANONYMOUS 1' not in config or not (stage/'host/sys/mman.h').is_file():
@@ -262,7 +260,7 @@ for path in native_paths:
 (stage/'core-source-paths.txt').write_text(''.join(path+'\n' for path in selected))
 files={str(f.relative_to(stage)):hashlib.sha256(f.read_bytes()).hexdigest() for f in stage.rglob('*') if f.is_file()}
 compiler=p.parent/'DotCC/bin/Release/net10.0'
-manifest={'staged_headers':files,'compiler':compiler_identity(compiler)}
+manifest={'staged_headers':files,'compiler':compiler_identity(compiler),'upstream_inputs':upstream_inputs}
 manifest['source_overrides']=source_overrides
 (stage/'inputs.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print(stage)
