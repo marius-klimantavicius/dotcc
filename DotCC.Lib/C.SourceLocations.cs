@@ -23,7 +23,8 @@ public static partial class C
                 var actionName = _productionActionNames[productionIndex++];
                 if (actionName is not null && actions.TryGetValue(actionName, out var action))
                     productions.Add(new Production(production.Left,
-                        (lhs, children) => SourceFileOrigin.Attach(action(lhs, children), children), production.Right));
+                        (lhs, children) => SourceFileOrigin.Attach(
+                            SyntaxIdentity.Attach(action(lhs, children), actionName, children), children), production.Right));
                 else productions.Add(production);
             }
             groups[index] = new PrecedenceGroup(source.Derivation, productions.ToArray());

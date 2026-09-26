@@ -56,25 +56,38 @@ internal sealed partial class IrBuilder
             }
             else { items.Add(e); }
         }
-        void Walk(Item n)
+        // The grammar is left-recursive: a flat initializer can contain many
+        // thousands of elements without any nesting in the C source. Keep that
+        // spine on the heap, pushing the right side first for source order.
+        var pending = new Stack<(Item Node, bool Members)>();
+        pending.Push((initList, false));
+        while (pending.TryPop(out var next))
         {
+            var n = next.Node;
+            if (next.Members)
+            {
+                foreach (var (path, value) in ParseMemberInits(n)) items.Add(new InitMember(path, value));
+                continue;
+            }
             switch (n.Content)
             {
-                case C.InitListCons c: Walk(c.Arg0); AddElem(ParseInitElem(c.Arg2)); break;
+                case C.InitListCons c:
+                    pending.Push((c.Arg2, false));
+                    pending.Push((c.Arg0, false));
+                    break;
                 case C.InitListMember c:
-                    Walk(c.Arg0);
-                    foreach (var (path, value) in ParseMemberInits(c.Arg2)) items.Add(new InitMember(path, value));
+                    pending.Push((c.Arg2, true));
+                    pending.Push((c.Arg0, false));
                     break;
                 case C.InitListAfterMembers c:
-                    foreach (var (path, value) in ParseMemberInits(c.Arg0)) items.Add(new InitMember(path, value));
-                    AddElem(ParseInitElem(c.Arg2));
+                    pending.Push((c.Arg2, false));
+                    pending.Push((c.Arg0, true));
                     break;
-                case C.InitListTrail t: Walk(t.Arg0); break;     // trailing comma — no element
+                case C.InitListTrail t: pending.Push((t.Arg0, false)); break; // trailing comma — no element
                 case C.InitListOne o: AddElem(ParseInitElem(o.Arg0)); break;
                 default: AddElem(ParseInitElem(n)); break;
             }
         }
-        Walk(initList);
         return items;
     }
 
@@ -314,9 +327,13 @@ internal sealed partial class IrBuilder
         var outp = new List<(string, Item)>();
         void Add(Item mi, string prefix = "")
         {
+            while (mi.Content is C.MemberInitNested nested)
+            {
+                prefix += Tok(nested.Arg1) + ".";
+                mi = nested.Arg2;
+            }
             switch (mi.Content)
             {
-                case C.MemberInitNested m: Add(m.Arg2, prefix + Tok(m.Arg1) + "."); break;
                 case C.MemberInit m: outp.Add((prefix + Tok(m.Arg1), m.Arg3)); break;
                 case C.MemberInitBrace m: outp.Add((prefix + Tok(m.Arg1), m.Arg4)); break;
                 case C.MemberInitDesignated m: outp.Add((prefix + Tok(m.Arg1), m.Arg4)); break;
@@ -324,17 +341,18 @@ internal sealed partial class IrBuilder
                 default: throw new IrUnsupportedException(TypeName(mi.Content));
             }
         }
-        void Walk(Item n)
+        var pending = new Stack<Item>();
+        pending.Push(memberList);
+        while (pending.TryPop(out var n))
         {
             switch (n.Content)
             {
-                case C.MemberInitListCons c: Walk(c.Arg0); Add(c.Arg2); break;
-                case C.MemberInitListTrail t: Walk(t.Arg0); break;
+                case C.MemberInitListCons c: pending.Push(c.Arg2); pending.Push(c.Arg0); break;
+                case C.MemberInitListTrail t: pending.Push(t.Arg0); break;
                 case C.MemberInitListOne o: Add(o.Arg0); break;
                 default: Add(n); break;
             }
         }
-        Walk(memberList);
         return outp;
     }
 

@@ -510,7 +510,7 @@ internal sealed partial class IrBuilder
     /// TU its OWN copy of a header-defined MUTABLE <c>static</c> variable; dotcc
     /// merges them into one field. For the idiom that actually occurs (header
     /// <c>static const</c> tables) the two are indistinguishable.</summary>
-    private bool AlreadySeenTopLevel(Item fn) => !_seenTopLevelDefs.Add(fn.ToString());
+    private bool AlreadySeenTopLevel(Item fn) => !_seenTopLevelDefs.Add(SyntaxIdentity.Of(fn));
 
     /// <summary>File-scope variable declaration. Each declarator becomes a
     /// generated globals-struct field;
@@ -833,7 +833,7 @@ internal sealed partial class IrBuilder
 
     /// <summary>One already-built function DEFINITION: its parse subtrees (retained
     /// so the structural fingerprint is computed lazily — only names that actually
-    /// collide across TUs pay for the <c>ToString</c>) and the symbol it bound.</summary>
+    /// collide across TUs pay for the structural walk) and the symbol it bound.</summary>
     private sealed class FnDefSite
     {
         public required Item Sig;
@@ -847,7 +847,7 @@ internal sealed partial class IrBuilder
         public string Print => PrintCache ??= Fingerprint(Sig, Block);
     }
 
-    private static string Fingerprint(Item sig, Item block) => sig.ToString() + "" + block.ToString();
+    private static string Fingerprint(Item sig, Item block) => SyntaxIdentity.Of(sig) + "" + SyntaxIdentity.Of(block);
 
     // Definitions seen so far, by C name — the whole-program merge's handling of
     // C internal linkage. Even identical static bodies in different TUs name
@@ -1099,9 +1099,6 @@ internal sealed partial class IrBuilder
         {
             switch (it.Content)
             {
-                case C.ParamsCons c: Walk(c.Arg0); Walk(c.Arg2); break;
-                case C.ParamsOne o: Walk(o.Arg0); break;
-                case C.ParamsVararg v: Walk(v.Arg0); vararg = true; break;
                 // A param whose TYPE resolves to an array (an array-typedef
                 // alias like chibi's `sexp_abi_identifier_t`) decays to a
                 // pointer exactly like the explicit `T name[]` forms below
@@ -1138,7 +1135,18 @@ internal sealed partial class IrBuilder
             var dims = TryConstDims(dimensions) ?? throw new IrUnsupportedException("array parameter inner dimensions must be constant");
             return new CType.Pointer(MakeArrayType(ResolveType(element), dims));
         }
-        Walk(paramList);
+        var pending = new Stack<Item>();
+        pending.Push(paramList);
+        while (pending.TryPop(out var parameter))
+        {
+            switch (parameter.Content)
+            {
+                case C.ParamsCons cons: pending.Push(cons.Arg2); pending.Push(cons.Arg0); break;
+                case C.ParamsOne one: pending.Push(one.Arg0); break;
+                case C.ParamsVararg variable: pending.Push(variable.Arg0); vararg = true; break;
+                default: Walk(parameter); break;
+            }
+        }
         variadic = vararg;
         return acc;
     }
@@ -1195,16 +1203,18 @@ internal sealed partial class IrBuilder
         CType.Enum? enumType = enumName is null ? null : new CType.Enum(enumName, underlying);
         var members = new List<EnumMember>();
         long next = 0;
-        void Walk(Item it)
+        var pending = new Stack<Item>();
+        pending.Push(enumList);
+        while (pending.TryPop(out var item))
         {
-            switch (it.Content)
+            switch (item.Content)
             {
-                case C.EnumListCons c: Walk(c.Arg0); Walk(c.Arg2); break;
-                case C.EnumListOne o: Walk(o.Arg0); break;
-                case C.EnumListTrail t: Walk(t.Arg0); break;  // trailing `,` — no member
+                case C.EnumListCons c: pending.Push(c.Arg2); pending.Push(c.Arg0); break;
+                case C.EnumListOne o: pending.Push(o.Arg0); break;
+                case C.EnumListTrail t: pending.Push(t.Arg0); break;  // trailing `,` — no member
                 case C.EnumItem e: Add(Tok(e.Arg0), null); break;
                 case C.EnumItemInit e: Add(Tok(e.Arg0), e.Arg2); break;
-                default: throw new IrUnsupportedException(TypeName(it.Content));
+                default: throw new IrUnsupportedException(TypeName(item.Content));
             }
         }
         void Add(string name, Item? valueItem)
@@ -1222,7 +1232,6 @@ internal sealed partial class IrBuilder
             if (enumType is not null) { members.Add(new EnumMember(name, next)); }
             next++;
         }
-        Walk(enumList);
         if (enumType is not null)
         {
             if (tag is not null) { _enumTypes[tag] = enumType; }
@@ -1372,13 +1381,10 @@ internal sealed partial class IrBuilder
             new(Tok(name), fieldType, IsFlexibleArray: flexible, Alignment: DeclarationAlignment(specifier, fieldType));
         void Member(Item m)
         {
-            if (m.Content is not (C.MembersCons or C.MembersOne)
-                && SourcePacking.Of(m) != (pragmaPack ?? _structPacks.GetValueOrDefault(owner)))
+            if (SourcePacking.Of(m) != (pragmaPack ?? _structPacks.GetValueOrDefault(owner)))
                 throw new IrUnsupportedException("#pragma pack changes between members of one aggregate are not supported");
             switch (m.Content)
             {
-                case C.MembersCons c: Member(c.Arg0); Member(c.Arg1); break;
-                case C.MembersOne o: Member(o.Arg0); break;
                 case C.AnonymousTypedefMember am: AddExistingAnonymousMember(ResolveTypeName(Tok(am.Arg0)), owner, fields); break;
                 case C.AnonymousStructTagMember am: AddExistingAnonymousMember(ReferenceAggregate(am.Arg1, false), owner, fields); break;
                 case C.AnonymousUnionTagMember am: AddExistingAnonymousMember(ReferenceAggregate(am.Arg1, true), owner, fields); break;
@@ -1491,7 +1497,27 @@ internal sealed partial class IrBuilder
                 default: throw new IrUnsupportedException(TypeName(m.Content));
             }
         }
-        Member(memberList);
+        // The grammar represents a flat field list as a deep MembersCons tree.
+        // Keep its traversal off the call stack; Member itself has a large frame
+        // and ordinary Valkey headers already contain hundreds of fields.
+        var pendingMembers = new Stack<Item>();
+        pendingMembers.Push(memberList);
+        while (pendingMembers.TryPop(out var member))
+        {
+            switch (member.Content)
+            {
+                case C.MembersCons cons:
+                    pendingMembers.Push(cons.Arg1);
+                    pendingMembers.Push(cons.Arg0);
+                    break;
+                case C.MembersOne one:
+                    pendingMembers.Push(one.Arg0);
+                    break;
+                default:
+                    Member(member);
+                    break;
+            }
+        }
         if (_promoted.TryGetValue(owner, out var promotedMembers))
             foreach (var field in fields)
                 if (!field.IsAnonymousAggregate && promotedMembers.ContainsKey(field.Name))
@@ -2974,8 +3000,6 @@ internal sealed partial class IrBuilder
         {
             switch (it.Content)
             {
-                case C.DeclItemListCons c: Walk(c.Arg0); Walk(c.Arg2); break;
-                case C.DeclItemListOne o: Walk(o.Arg0); break;
                 case C.DeclItemListBraceHead di:
                     add(Tok(di.Arg0), di.Arg3, baseType); WalkTail(di.Arg6, element); break;
                 case C.DeclItemListDesignatedHead di:
@@ -3003,7 +3027,17 @@ internal sealed partial class IrBuilder
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
         }
-        Walk(listItem);
+        var pending = new Stack<Item>();
+        pending.Push(listItem);
+        while (pending.TryPop(out var declarator))
+        {
+            switch (declarator.Content)
+            {
+                case C.DeclItemListCons cons: pending.Push(cons.Arg2); pending.Push(cons.Arg0); break;
+                case C.DeclItemListOne one: pending.Push(one.Arg0); break;
+                default: Walk(declarator); break;
+            }
+        }
     }
 
     private static CType WrapPtr(CType t, int stars)
@@ -3975,16 +4009,17 @@ internal sealed partial class IrBuilder
     private List<string> CollectStrSegments(Item strSeq)
     {
         var segs = new List<string>();
-        void Walk(Item node)
+        var pending = new Stack<Item>();
+        pending.Push(strSeq);
+        while (pending.TryPop(out var node))
         {
             switch (node.Content)
             {
-                case C.StrSeqCons sc: Walk(sc.Arg0); segs.Add(Tok(sc.Arg1)); break;
-                case C.StrSeqOne so: segs.Add(Tok(so.Arg0)); break;
+                case C.StrSeqCons sc: pending.Push(sc.Arg1); pending.Push(sc.Arg0); break;
+                case C.StrSeqOne so: pending.Push(so.Arg0); break;
                 default: segs.Add(Tok(node)); break;
             }
         }
-        Walk(strSeq);
         return segs;
     }
 
@@ -4004,22 +4039,23 @@ internal sealed partial class IrBuilder
             raw.Length >= 2 && raw[0] == 'u' && raw[1] == '8' ? raw[2..]
             : raw.Length >= 1 && raw[0] is 'u' or 'U' or 'L' ? raw[1..]
             : raw;
-        void Walk(Item node)
+        var pending = new Stack<Item>();
+        pending.Push(strSeq);
+        while (pending.TryPop(out var node))
         {
             switch (node.Content)
             {
-                case C.U16strSeqCons sc: Walk(sc.Arg0); segs.Add(StripPrefix(Tok(sc.Arg1))); break;
-                case C.U16strSeqOne so: segs.Add(StripPrefix(Tok(so.Arg0))); break;
-                case C.WstrSeqCons sc: Walk(sc.Arg0); segs.Add(StripPrefix(Tok(sc.Arg1))); break;
-                case C.WstrSeqOne so: segs.Add(StripPrefix(Tok(so.Arg0))); break;
-                case C.U32strSeqCons sc: Walk(sc.Arg0); segs.Add(StripPrefix(Tok(sc.Arg1))); break;
-                case C.U32strSeqOne so: segs.Add(StripPrefix(Tok(so.Arg0))); break;
-                case C.U8strSeqCons sc: Walk(sc.Arg0); segs.Add(StripPrefix(Tok(sc.Arg1))); break;
-                case C.U8strSeqOne so: segs.Add(StripPrefix(Tok(so.Arg0))); break;
+                case C.U16strSeqCons sc: pending.Push(sc.Arg1); pending.Push(sc.Arg0); break;
+                case C.U16strSeqOne so: pending.Push(so.Arg0); break;
+                case C.WstrSeqCons sc: pending.Push(sc.Arg1); pending.Push(sc.Arg0); break;
+                case C.WstrSeqOne so: pending.Push(so.Arg0); break;
+                case C.U32strSeqCons sc: pending.Push(sc.Arg1); pending.Push(sc.Arg0); break;
+                case C.U32strSeqOne so: pending.Push(so.Arg0); break;
+                case C.U8strSeqCons sc: pending.Push(sc.Arg1); pending.Push(sc.Arg0); break;
+                case C.U8strSeqOne so: pending.Push(so.Arg0); break;
                 default: segs.Add(StripPrefix(Tok(node))); break;
             }
         }
-        Walk(strSeq);
         return segs;
     }
 
