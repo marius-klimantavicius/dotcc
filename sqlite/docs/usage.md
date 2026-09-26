@@ -71,10 +71,15 @@ To regenerate only TranslatedSqlite with the already-built dotcc compiler,
 and run the postprocessor in place, without compiling the generated C#:
 
 ```sh
-scripts/emit-engine.sh
+scripts/translate.sh
 # To retain raw dotcc output instead:
-scripts/emit-engine.sh --no-postprocess
+scripts/translate.sh --no-postprocess
 ```
+
+`translate.sh` delegates to `emit-engine.sh`, the same pipeline used by build and
+verification scripts. Output goes to `generated/TranslatedSqlite/`; the old
+bootstrap `generated/sqlite3.cs` object fragment is no longer generated.
+Both entry points accept the same options and source-splitting environment variables.
 
 SQLite emission defaults to size-based groups targeting 100 KiB (102,400 bytes),
 followed by in-place postprocessing. All methods belong to
