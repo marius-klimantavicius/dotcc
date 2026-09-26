@@ -25,6 +25,17 @@ public sealed partial class ManagedLibraryTests
         try
         {
             File.WriteAllText(Path.Combine(dir, "shared.h"), """
+                #include <stdarg.h>
+                static inline int api_mode(int flags, ...) {
+                    unsigned int mode = 0600;
+                    if (flags & 64) {
+                        va_list arguments;
+                        va_start(arguments, flags);
+                        mode = va_arg(arguments, unsigned int);
+                        va_end(arguments);
+                    }
+                    return mode;
+                }
                 typedef int (*Callback)(int);
                 typedef struct Pair { int x; int y; } Pair;
                 struct Hidden;
@@ -59,6 +70,7 @@ public sealed partial class ManagedLibraryTests
                 Callback first_pointer(void) { return first_saved; }
                 int first(Pair* p) { return api_sum(p) + variant_caller(); }
                 int first_state(void) { return state(); }
+                int first_mode(void) { return api_mode(0); }
                 static inline int api_solo(int x) { return x * 3; }
                 Callback solo_saved = api_solo;
                 Callback solo_pointer(void) { return solo_saved; }
@@ -76,6 +88,7 @@ public sealed partial class ManagedLibraryTests
                 Callback second_pointer(void) { return second_saved; }
                 int second(Pair* p) { return api_sum(p) + variant_caller(); }
                 int second_state(void) { return state(); }
+                int second_mode(void) { return api_mode(64, 0644u); }
                 """);
             if (link)
                 paths = paths.Select(p => { var obj = Path.ChangeExtension(p, ".o"); File.WriteAllText(obj, Compiler.EmitObject(p)); return obj; }).ToArray();
@@ -107,6 +120,8 @@ public sealed partial class ManagedLibraryTests
                         return System.Runtime.InteropServices.Marshal.PtrToStringUTF8((nint)Api.api_text()) == "inline literal"
                             && Api.auto_value(&holder) == 23 && Api.api_sum(&pair) == 15 && Api.first(&pair) == 26 && Api.second(&pair) == 32
                             && Api.api_constant(5) == 17 && Api.api_recursive(5) == 42 && a != b && a(3) == 10 && b(4) == 11
+                            && Api.first_mode() == 384 && Api.second_mode() == 420
+                            && Api.api_mode(64, 511u) == 511
                             && a == Api.first_pointer() && b == Api.second_pointer()
                             && Api.first_state() == 1 && Api.first_state() == 2 && Api.second_state() == 1
                             && external(7) == 12 && Api.external_inline(7) == 12

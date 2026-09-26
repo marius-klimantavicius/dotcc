@@ -126,6 +126,62 @@ public sealed class InlineFunctionTests
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
+    public void Equivalent_variadic_helpers_merge(bool link)
+    {
+        const string header = """
+            #include <stdarg.h>
+            static inline int helper(int flags, ...) {
+                unsigned int mode = 0600;
+                if (flags & 64) {
+                    va_list arguments;
+                    va_start(arguments, flags);
+                    mode = va_arg(arguments, unsigned int);
+                    va_end(arguments);
+                }
+                return mode;
+            }
+            """;
+        var source = Translate(link, header,
+            "#include \"shared.h\"\nint first(void) { return helper(0); }",
+            "#include \"shared.h\"\nint second(void) { return helper(64, 0644u); }",
+            new(DeduplicateInline: true));
+        Methods(source, "helper").ShouldBe(1);
+        source.ShouldContain("int helper(int flags, params ReadOnlySpan<VaArg> _va)");
+        source.ShouldNotContain("helper__unit_");
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Different_va_arg_types_or_cursors_stay_separate(bool link)
+    {
+        const string header = """
+            #include <stdarg.h>
+            static inline long helper(int count, ...) {
+                va_list first, second;
+                va_start(first, count);
+                va_copy(second, first);
+                (void)va_arg(first, int);
+                long result = va_arg(CURSOR, TYPE);
+                va_end(first);
+                va_end(second);
+                return result;
+            }
+            """;
+        const string first = "#define CURSOR first\n#define TYPE int\n" + First;
+        foreach (var second in new[] {
+            "#define CURSOR first\n#define TYPE unsigned int\n" + Second,
+            "#define CURSOR second\n#define TYPE int\n" + Second,
+        })
+        {
+            var source = Translate(link, header, first, second, new(DeduplicateInline: true));
+            Methods(source, "helper").ShouldBe(2);
+        }
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
     public void Locals_are_compared_by_binding_and_signature_types_must_match(bool link)
     {
         var source = Translate(link, "", "static inline int helper(int a) { int b = a + 1; return b; }",

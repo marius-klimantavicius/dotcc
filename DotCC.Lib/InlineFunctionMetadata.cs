@@ -179,6 +179,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
                 case NullPtr: Atom("null"); break;
                 case DefaultLit: Atom("default"); break;
                 case RuntimeIntrinsic e: Atom("runtime"); Atom(e.Kind); break;
+                case VaArgGet e: Atom("va-arg"); Type(e.Target); Expression(e.Ap); break;
                 case VarRef e: Atom("ref"); Reference(e.Sym); break;
                 case EnumConstRef e: Atom("enum-ref"); Reference(e.Sym); break;
                 case Unary e: Atom("unary"); Atom(e.Op); Expression(e.Operand); break;
