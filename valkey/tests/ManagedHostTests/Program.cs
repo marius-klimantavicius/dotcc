@@ -144,6 +144,12 @@ internal static class Program
         Check.True(first.InstanceId != peer.InstanceId, "Owners have identical identities.");
         await using var client = await RespConnection.Connect(await first.Endpoint, cancellation, firstOptions.Password);
         await using var other = await RespConnection.Connect(await peer.Endpoint, cancellation, peerOptions.Password);
+        await Case("profile:included-startup-configuration", async () =>
+        {
+            RecordEvidence(StartupConfigurationProbe.Run(Path.Combine(options.Directory, "startup-includes")));
+            Check.Equal(await client.Command("PING"), "PONG");
+            Check.Equal(await other.Command("PING"), "PONG");
+        });
         await Case("owners:occupied-port-startup-failure-and-cleanup", async () =>
         {
             // This owner intentionally faults, so it is not registered with the

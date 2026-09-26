@@ -181,6 +181,11 @@ public static unsafe partial class ValkeyHost
         if (core.connTypeInitialize() != 0) return Failure(core, "Connection type initialization failed");
         byte[] config = Encoding.UTF8.GetBytes(DefaultConfiguration + (Text(options) ?? "") + '\0');
         fixed (byte* configuration = config) core.loadServerConfig(null, 0, configuration);
+        // Includes and configuration aliases are parsed by upstream. Check the
+        // resulting state too, before initialization can start background work.
+        if (server.saveparamslen > 0 || server.aof_rewrite_perc > 0 ||
+            server.daemonize != 0 || server.primary_host != null)
+            return Failure(core, "Startup configuration requires fork, which is unavailable in the managed runtime");
         if (server.port is < 1 or > 65535) return Failure(core, "A TCP listener port is required");
         state.ServerEntered = true;
         core.initServer();

@@ -364,8 +364,8 @@ raw/processed builds in `artifacts/campaign/20260926-183836-0b6b2957/receipt.jso
 The 30 Python tests passed again. An earlier processed JIT run passed 19 checks
 in `artifacts/managed-validation/run-diyl5oig/receipt.json`; the final raw JIT run
 passed 20 checks in `artifacts/managed-validation/run-z8lbr5j3/jit.json`, adding
-the native-module ABI/queued-startup probe. NativeAOT and final processed execution
-are pending at this milestone.
+the native-module ABI/queued-startup probe. The final qualification after the
+effective startup-configuration check is recorded below.
 
 New RESP checks include OBJECT ENCODING/REFCOUNT (including a missing key),
 MEMORY USAGE, LATENCY, SLOWLOG, CONFIG REWRITE/unknown-option upstream errors,
@@ -373,3 +373,30 @@ maxclients 600, upstream CLUSTER-disabled behavior and MODULE LIST. Four clients
 verify pipelined values while changing io-threads 2 → 4 → 1 → 4; upstream threaded
 read/write counters advance, shutdown joins the workers, and a peer remains live.
 These passes do not qualify all newly admitted commands or Windows execution.
+
+Final effective-configuration validation also checks settings loaded through
+INCLUDE before server initialization. Four included fork-dependent settings fail
+with a fork-specific error and clean partial-startup disposal. An ordinary
+include sets latency threshold 7 and starts two I/O threads; stop/cleanup succeed
+and the existing peers remain responsive.
+
+Final receipts:
+
+- `artifacts/managed-validation/run-0v9uggft/receipt.json`: raw JIT and NativeAOT,
+  21 integration checks each, all passed.
+- `artifacts/managed-validation/run-x68qh2cn/receipt.json`: post-processed JIT and
+  NativeAOT, 21 integration checks each, all passed. Both modes also pass 29
+  upstream Tcl protocol assertions (six DEBUG-dependent exclusions) and four
+  RDB/AOF native↔managed exchanges each, including integrity checks.
+- `artifacts/reductions/fork-only-policy/python-final.log`: 30 Python checks.
+- `artifacts/standalone/fork-only-we6fkmlq/receipt.json`: eight real TCP checks
+  against the rebuilt standalone consumer, including OBJECT ENCODING xxx → int,
+  Redis compatibility, ordinary configuration, I/O worker activation and clean
+  shutdown with workers. Standard input was closed throughout.
+
+`dotnet build valkey/ManagedConsumer.slnx -c Release --nologo` succeeded and copied
+the current translated library into the sample output. A preliminary manual
+standalone run (`fork-only-qqbv7rk3`) started before that build completed and hit
+the old profile error from the stale sample library; its failed receipt is
+retained separately from the successful rebuilt-product run. Restart an existing
+standalone process to load the updated library.

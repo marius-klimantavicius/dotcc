@@ -54,6 +54,8 @@ The managed cases cover:
   C_ERR/ENOTSUP for LOAD and LOADEX without terminating its owner.
 - OBJECT ENCODING/REFCOUNT, MEMORY USAGE, LATENCY, SLOWLOG and ordinary CONFIG
   changes; unknown or immutable settings retain upstream validation.
+- Included startup settings: fork-dependent options fail before server initialization;
+  an ordinary include starts with the requested latency threshold and two I/O threads.
 - Live I/O worker reconfiguration (2 → 4 → 1 → 4) with four concurrent clients,
   verified pipelined values and advancing upstream worker counters, followed by
   shutdown with four configured threads and an unaffected peer.

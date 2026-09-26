@@ -25,8 +25,8 @@ output hashes. Reference sources remain untouched.
 The C# lifecycle initializes upstream configuration, modules, listeners, Lua,
 workers and persistence before reporting readiness. Calls run serially on the
 owner's executor with explicit runtime binding. Event dispatch is nonblocking;
-the executor supplies pacing and stop requests. Startup options are checked
-before the upstream parser can perform side effects. Command checks run before
+the executor supplies pacing and stop requests. Startup options and effective
+parsed settings (including INCLUDE files) are checked before server initialization. Command checks run before
 transaction queuing and at common execution dispatch, including module calls.
 The configuration-dispatch hook also covers direct command execution during AOF
 replay. Runtime configuration policy is enforced before setters execute.
