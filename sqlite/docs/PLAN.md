@@ -239,10 +239,11 @@ pass, and a separate C# consumer can call the translated engine. Commit per fix.
 
 ### M4 — Memory VFS and platform contract
 
-- [x] Implement the memory VFS as authored C# in `src/MemoryVfs.cs`, shared by
-      the product and translated test harnesses. Keep the original portable C
-      VFS under `tests/native/` solely as an independent native oracle; never
-      translate it. Use managed storage and deterministic clocks/randomness.
+- [x] Keep the portable memory VFS in `tests/memory_vfs.c` only, compiled by
+      GCC and translated by dotcc for differential test corpora. Remove the
+      authored C# version and product registration; production uses HostVfs
+      and SQLite's built-in `:memory:` mode. Retain deterministic test clocks,
+      randomness, named files and I/O failure injection.
 - [x] Implement initialization/registration and a versioned `sqlite3_vfs` /
       `sqlite3_io_methods` table. Initial file methods version 1 is sufficient;
       advertise only implemented capabilities. Supply open/close, read/write,
@@ -585,8 +586,9 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
 - [x] Generate a hash-checked copy of SQLite 3.53.4 with one mutex-selection guard
       adaptation for `SQLITE_MUTEX_APPDEF`. Keep downloaded references unchanged;
       supply default mutex and memory-barrier hooks in the platform adapter.
-- [x] Synchronize the named memory VFS callbacks, state and public controls;
-      audit host VFS inode/shared-memory state and shared libc allocation state.
+- [x] Audit host VFS inode/shared-memory state and shared libc allocation state.
+      The custom memory VFS is now test-only; its single-thread corpus profile
+      is separate from production concurrency coverage.
 - [x] Implement VFS method version 3 with read-only BCL file mappings from existing
       handles, `xFetch`/`xUnfetch`, and query/set `SQLITE_FCNTL_MMAP_SIZE` semantics.
       Product default 64 MiB, maximum 256 MiB; the memory corpus remains unmapped.
@@ -595,7 +597,7 @@ configured but unexecuted locally. M9 remains plan-only; M10 is completed above.
       readonly handles, and fall back to `xRead` when mapping is unavailable.
 - [x] Pass concurrent cold initialization/restart, mutex identity/try/recursion,
       shared FULLMUTEX and separate NOMUTEX connections, host rollback/WAL and
-      named-memory workloads, callback reentry, allocator/error recovery and cleanup.
+      built-in `:memory:` workloads, callback reentry, allocation and cleanup.
 - [x] Pass raw mapping lifetime/range/cap tests and actual SQL mapped-read checks
       through snapshots, growth, checkpoints, mmap disable/re-enable, VACUUM and
       readonly reopen. Exercise JIT and NativeAOT with native interoperability.

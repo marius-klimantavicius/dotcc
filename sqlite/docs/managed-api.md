@@ -32,10 +32,9 @@ supplies the common features plus host profile overrides and prepares the
 hash-checked mutex-selection guard adaptation in `generated/sqlite-port/`;
 downloaded references remain unchanged. Semantic function overrides bind the
 OS initialization/termination and mutex/barrier hooks to authored C# methods.
-`src/MemoryVfs.cs` supplies the optional named memory VFS.
 `Directory.Build.targets` includes the managed OS sidecars. See
-[threading and mmap](threading-mmap.md) for the platform adaptation. `dotcc-host` is the library default, while the named memory adapter
-remains available. dotcc emits offsetof
+[threading and mmap](threading-mmap.md) for the platform adaptation. `dotcc-host` is the library default; in-memory databases use SQLite's
+built-in `:memory:` mode. The custom memory VFS is test-only. dotcc emits offsetof
 constants directly into the library source. The command produces the working engine; the remaining campaign checks are
 recorded in `PLAN.md` and `validation.md`.
 The CLI's optional `-c` also builds the emitted project.

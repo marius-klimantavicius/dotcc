@@ -1,47 +1,24 @@
-# Managed memory VFS
+# Test-only memory VFS
 
-`src/MemoryVfs.cs` implements the named `dotcc-memory` VFS in authored C#.
-It is compiled beside the translated engine, not generated from C. Product
-builds register it as an additional VFS and keep `dotcc-host` as the default.
-Translated test executables register the same implementation as their default.
+`tests/memory_vfs.c` implements the deterministic `dotcc-memory` VFS used by
+native and translated C test corpora. GCC compiles it for reference runs; dotcc
+translates it as a separate input alongside SQLite and each harness. There is
+no authored C# memory VFS or corpus-specific managed override profile.
 
-Files use managed byte arrays and handles reference managed state through a
-locked dictionary keyed by SQLite's file address. A BCL lock serializes shared
-state; the VFS never calls SQLite's allocator or mutex API while holding it.
-This permits concurrent connections without lock inversion during initialization,
-failure recovery or restart. SQLite owns each `sqlite3_file` allocation. Closing
-a handle removes its dictionary entry; unlinking frees file state after its last
-handle closes. Named files otherwise remain until deletion or an explicit reset.
-Reset returns `SQLITE_BUSY` while handles remain open.
+The production library registers only HostVfs through the OS-init/end function
+overrides. Applications use SQLite's built-in `:memory:` mode for in-memory
+SQL databases; no custom memory VFS is required. ManagedConsumer verifies SQL,
+compacting GC, close/reopen isolation, absence of host file handles, and absence
+of the test VFS from the product's registry.
 
-Read/write, zero-filled growth and short reads, truncate, path normalization,
-shared/reserved/pending/exclusive locks, delete-on-close, file controls, image
-import/export, deterministic time/randomness and one-shot I/O failure injection
-retain the reference contracts. Storage is limited to `Array.MaxLength` bytes
-per file: requests beyond it return `SQLITE_FULL`; allocation failures return
-`SQLITE_NOMEM`. There is no disk persistence, cross-process locking, WAL, mmap,
-dynamic loading or physical durability. File methods advertise version 1.
-Path keys preserve raw bytes, including invalid UTF-8.
-
-Callback addresses are captured once in static tables. Unmanaged copies of the
-small VFS/method/name tables are retained for process lifetime, including across
-SQLite shutdown/reinitialization. File data is managed and remains valid across
-compacting GC. `src/Sqlite.MemoryVfs.cs` keeps the existing managed
-`dotcc_memory_vfs_*` convenience APIs and test constants available.
-
-`config/dotcc-overrides.json` binds the product's OS-init/end and mutex/barrier
-functions to authored managed methods. `config/corpus-overrides.json` binds C
-harness declarations to the same memory VFS. `Directory.Build.targets` imports
-the adapter for product and corpus projects. The source defaults to the product's
-nested `Sqlite` types and host registration, including when copied to a consumer.
-Only corpus projects define `DOTCC_SQLITE_CORPUS` to select their executable
-wrapper and memory-default registration.
-
-The original C VFS lives only in `tests/native/memory_vfs.c`. Native GCC oracle
-builds compile it; dotcc never does. Both implementations run the identical
-`tests/vfs_native.c` contract harness and SQL/API/image corpora. The translated
-harness and amalgamation are independent dotcc input files. The layout probe
-intentionally includes the amalgamation so its tests can inspect private types.
+The test VFS models named files stored in RAM rather than SQLite's `:memory:`
+database path. It exercises file reads/writes, rollback journals, zero-filled
+growth and short reads, lock transitions, delete-on-close, import/export,
+deterministic time/randomness, and one-shot I/O failure injection. Named files
+survive closing their connections until deletion or reset. It has no disk
+persistence, cross-process locking, WAL, mmap, or dynamic loading. File methods
+advertise version 1. The deterministic corpora use `SQLITE_THREADSAFE=0`;
+production concurrency, WAL and mmap are tested independently against HostVfs.
 
 Useful checks:
 

@@ -16,8 +16,8 @@ identities remain stable across shutdown/reinitialization; SQLite frees dynamic
 connection/initialization mutexes. Monitor recursion permits callback reentry on
 the same connection. Twelve static GCHandles intentionally live for the process
 lifetime, including across `sqlite3_shutdown`; collectible assembly unloading
-is unsupported. Shared host inode/WAL state and named memory VFS state have
-their own synchronization, so distinct connections can run concurrently.
+is unsupported. Shared host inode/WAL state has
+its own synchronization, so distinct connections can run concurrently.
 
 Setting `THREADSAFE=1` alone is insufficient with upstream `SQLITE_OS_OTHER`:
 that configuration selects no-op mutexes and removes initialization barriers.
@@ -91,7 +91,7 @@ Mapping is not a promise of higher throughput for every workload.
 
 - `SQLITE_AOT=1 scripts/test-threading.sh`: cold initialization/restart, mutex
   identity/ownership/recursion/try, shared FULLMUTEX callbacks, separate NOMUTEX
-  host rollback/WAL and named-memory connections, error recovery and allocation.
+  host rollback/WAL connections, built-in `:memory:` connections and allocation.
 - `SQLITE_AOT=1 scripts/test-host-vfs.sh`: raw I/O/WAL/mmap lifetime contracts,
   actual SQL mapping/fallback, growth, snapshots, checkpoint, VACUUM, readonly
   reopen, and independent native/managed process interoperability.

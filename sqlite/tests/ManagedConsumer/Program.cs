@@ -417,7 +417,7 @@ internal static unsafe partial class Program
             CheckEndianDatabases(directory, write: true);
             CheckOptionalFeatures(db);
             CheckPreupdateHook(db);
-            CheckMemoryVfs();
+            CheckMemoryDatabase();
             CheckSqlWorkloads(db);
             CheckFullTextSearch(db);
             CheckFunctionIdentity();
@@ -445,8 +445,7 @@ internal static unsafe partial class Program
                 throw new InvalidOperationException("The default VFS did not persist a database file");
             if (Managed.Database.HostVfs.OpenHandleCount != 0) throw new InvalidOperationException("Leaked host VFS handle");
             if (ftsDestroyed != 1) throw new InvalidOperationException("FTS5 context destructor must run exactly once on close");
-            if (dotcc_memory_vfs_handle_count() != 0) throw new InvalidOperationException("Leaked VFS handle");
-            if (dotcc_memory_vfs_reset() != SQLITE_OK || sqlite3_shutdown() != SQLITE_OK)
+            if (sqlite3_shutdown() != SQLITE_OK)
                 throw new InvalidOperationException("Shutdown failed");
             Console.WriteLine("managed consumer: SQLite 3.53.4, WAL SQL workloads, JSONB, FTS5, cached C# callbacks, nested SQL, function identity, GC and cleanup passed");
             return 0;

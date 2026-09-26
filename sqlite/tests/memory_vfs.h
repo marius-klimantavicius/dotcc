@@ -11,14 +11,12 @@
 #define DOTCC_VFS_FAIL_SYNC 16
 #define DOTCC_VFS_FAIL_DELETE 32
 
-/* Test harness declarations, bound to the C# VFS by corpus-overrides.json or
- * implemented by native/memory_vfs.c in the native oracle.
- * Process-local files survive close until deleted/reset. Native reference state
- * uses a SQLite static mutex when THREADSAFE is enabled; the C# adapter uses a
- * BCL lock. The THREADSAFE=0 SQLite corpus still requires serialized callers.
- * No OS files, native interop, shared-memory/WAL, mmap, or durability guarantee.
- * sqlite3_os_init registers this as default unless DOTCC_HOST_VFS enables the
- * managed product's real-file default; this VFS remains available by name.
+/* Test-only VFS implemented in memory_vfs.c for both GCC and dotcc corpora.
+ * Process-local files survive close until deleted/reset. State uses a SQLite
+ * static mutex when THREADSAFE is enabled; THREADSAFE=0 requires serialized
+ * callers. No OS files, native interop, shared-memory/WAL, mmap, or durability.
+ * sqlite3_os_init registers it as the test executable's default VFS.
+ * The production library uses HostVfs and SQLite's built-in :memory: mode.
  */
 sqlite3_vfs *dotcc_memory_vfs(void);
 int dotcc_memory_vfs_reset(void); /* SQLITE_BUSY while any file is open. */

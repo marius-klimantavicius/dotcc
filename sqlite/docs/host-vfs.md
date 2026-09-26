@@ -8,16 +8,15 @@ there is no native SQLite dependency or dynamic extension loader.
 
 `scripts/build.sh` builds this library. `scripts/emit-engine.sh` applies the host
 threading/mmap profile; a semantic override binds `sqlite3_os_init` to authored
-C# registration of the host and [memory VFS](memory-vfs.md) adapters. `sqlite/Directory.Build.targets` compiles the managed VFS/mutex sidecars
+C# `HostVfs.RegisterVfs`; `sqlite3_os_end` binds to `HostVfs.UnregisterVfs`. `sqlite/Directory.Build.targets` compiles the managed VFS/mutex sidecars
 alongside the generated project. Downloaded references and emitted C# remain
 unchanged; a generated input copy has one guarded mutex-selection adaptation
 ([details](threading-mmap.md)). Keep that targets file and the sidecars when building the
 generated project; the built DLL is independently usable by other C# projects.
 
-The named `dotcc-memory` VFS remains available through `sqlite3_open_v2` for
-intentional process-local databases. C/native differential fixtures omit
-`DOTCC_HOST_VFS` and retain their deterministic memory default and error injection.
-The engine still supports SQLite's normal `:memory:` databases.
+Use SQLite's built-in `:memory:` mode for in-memory databases. The named
+`dotcc-memory` VFS exists only in [test corpora](memory-vfs.md), which compile
+`tests/memory_vfs.c` for deterministic file behavior and error injection.
 
 ## Files and durability
 

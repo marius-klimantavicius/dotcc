@@ -12,7 +12,7 @@ dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   -std=c17 "${SQLITE_DEFINES[@]}" -I "$SQLITE_AMALGAMATION" \
   -I "$SQLITE_ROOT/tests" \
   "$SQLITE_AMALGAMATION/sqlite3.c" "$SQLITE_ROOT/tests/image_native.c" \
-  --overrides-file "$SQLITE_ROOT/config/corpus-overrides.json" --emit=csproj -o "$output" \
+  "$SQLITE_ROOT/tests/memory_vfs.c" --emit=csproj -o "$output" \
   > "$SQLITE_ROOT/artifacts/translated-image-emission.log" 2>&1
 if [[ "${1:-}" == --emit-only ]]; then
   echo "Emitted $output"

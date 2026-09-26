@@ -221,9 +221,8 @@ internal static unsafe class Program
                     for (var iteration = 0; iteration < Iterations; iteration++)
                     {
                         int rc = 5;
-                        // Memory VFS xSleep intentionally does not wait. Give
-                        // actual owner threads a scheduling opportunity instead
-                        // of counting simulated busy-handler sleep as wall time.
+                        // Bound retries under writer contention and allow other
+                        // workers a scheduling opportunity between attempts.
                         var started = Stopwatch.GetTimestamp();
                         var retry = new SpinWait();
                         while ((rc & 255) == 5 && Stopwatch.GetElapsedTime(started) < TimeSpan.FromSeconds(10))
@@ -245,51 +244,6 @@ internal static unsafe class Program
         }
         finally { Require(sqlite3_close(setup) == 0, "setup close"); }
         Console.WriteLine("PASS separate NOMUTEX connections " + (vfs ?? "host") + (wal ? " WAL" : " rollback"));
-    }
-
-    private static void MemoryFaultRecovery()
-    {
-        foreach (var injected in new[] { 7, 10 })
-        {
-            using var failedOpenFinished = new ManualResetEventSlim();
-            ParallelWorkers(worker =>
-            {
-                var vfs = dotcc_memory_vfs();
-                var file = (sqlite3_file*)NativeMemory.AllocZeroed((nuint)vfs->szOsFile);
-                try
-                {
-                    if (worker == 0)
-                    {
-                        try
-                        {
-                            dotcc_memory_vfs_fail_after(1, 0, injected);
-                            fixed (byte* name = Utf8("fault-memory"))
-                                Require(vfs->xOpen(vfs, name, file, 0x106, null) == injected, "injected OPEN result");
-                        }
-                        finally { failedOpenFinished.Set(); }
-                    }
-                    else
-                    {
-                        Require(failedOpenFinished.Wait(TimeSpan.FromSeconds(30)), "failed OPEN completion");
-                        // A leaked recursive gate would pass on the failing thread;
-                        // these other threads must independently acquire it.
-                        fixed (byte* name = Utf8("recovery-" + worker))
-                        {
-                            Require(dotcc_memory_vfs_import(name, null, 0) == 0, "cross-thread import after failure");
-                            Require(vfs->xOpen(vfs, name, file, 0x106, null) == 0, "cross-thread open after failure");
-                        }
-                        int level = -1;
-                        Require(file->pMethods->xFileControl(file, 1, &level) == 0 && level == 0, "cross-thread file control");
-                    }
-                }
-                finally
-                {
-                    if (file->pMethods != null) Require(file->pMethods->xClose(file) == 0, "raw recovery close");
-                    NativeMemory.Free(file);
-                }
-            });
-        }
-        Console.WriteLine("PASS injected OPEN NOMEM/IOERR release the memory VFS gate for other threads");
     }
 
     private static void AllocationAndRandomness()
@@ -326,12 +280,8 @@ internal static unsafe class Program
             SharedConnection();
             SeparateConnections(Path.Combine(directory, "rollback.db"), null, wal: false);
             SeparateConnections(Path.Combine(directory, "wal.db"), null, wal: true);
-            var memoryVfs = Marshal.PtrToStringUTF8((nint)dotcc_memory_vfs()->zName)!;
-            SeparateConnections("threading-memory", memoryVfs, wal: false);
-            MemoryFaultRecovery();
             AllocationAndRandomness();
-            Require(HostVfs.OpenHandleCount == 0 && dotcc_memory_vfs_handle_count() == 0, "no leaked VFS handles");
-            Require(dotcc_memory_vfs_reset() == 0, "quiescent memory reset");
+            Require(HostVfs.OpenHandleCount == 0, "no leaked VFS handles");
             Require(sqlite3_shutdown() == 0, "final shutdown after joined workers");
             ParallelWorkers(_ => Require(sqlite3_initialize() == 0, "final concurrent restart"));
             Require(sqlite3_shutdown() == 0, "final restarted shutdown");

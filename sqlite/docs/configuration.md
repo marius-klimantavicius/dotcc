@@ -9,9 +9,8 @@
 compiled FTS5 are enabled, together with SQL math functions, median/percentile
 aggregates and windows, UTF-8/UTF-16 result-column origin metadata, and preupdate
 callbacks. FTS3 and FTS4 remain deferred. There is no native SQLite interop or dynamic
-extension loading. Translated C corpora use the same authored `src/MemoryVfs.cs` as the product,
-with the memory VFS selected as default. Native reference builds alone compile
-`tests/native/memory_vfs.c`. The
+extension loading. Native and translated C corpora both compile the test-only
+`tests/memory_vfs.c`, selecting its deterministic memory VFS as default. The
 managed-library build applies `config/host-defines.txt` afterward, enabling
 `SQLITE_THREADSAFE=1`, `SQLITE_MUTEX_APPDEF=1`, `DOTCC_HOST_VFS=1`,
 `SQLITE_DEFAULT_MMAP_SIZE=67108864` and `SQLITE_MAX_MMAP_SIZE=268435456`. It compiles the

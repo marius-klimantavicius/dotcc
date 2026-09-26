@@ -27,7 +27,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Database.MemoryVfs.Initialize"
+        "method": "global::Managed.Database.HostVfs.RegisterVfs"
       },
       "requireMatch": true
     },
@@ -39,7 +39,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Database.MemoryVfs.Shutdown"
+        "method": "global::Managed.Database.HostVfs.UnregisterVfs"
       },
       "requireMatch": true
     },

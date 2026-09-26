@@ -26,7 +26,7 @@ output="$SQLITE_ROOT/generated/Test-$suite"
 dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   -std=c17 "${SQLITE_DEFINES[@]}" -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/tests" -I "$(dirname "$harness")" \
   "$SQLITE_AMALGAMATION/sqlite3.c" "$harness" \
-  --overrides-file "$SQLITE_ROOT/config/corpus-overrides.json" --emit=csproj -o "$output" \
+  "$SQLITE_ROOT/tests/memory_vfs.c" --emit=csproj -o "$output" \
   > "$SQLITE_ROOT/artifacts/translated-$suite-emission.log" 2>&1
 if [[ "${2:-}" == --emit-only ]]; then
   echo "Emitted $output"
@@ -41,7 +41,7 @@ cat "$SQLITE_ROOT/artifacts/translated-$suite.out"
 
 # The API corpus covers managed-boundary contracts and optional math/percentile/
 # metadata behavior beyond the separate consumer's smoke checks. The VFS corpus
-# checks the authored managed adapter against the full native contract in AOT too.
+# checks the translated test VFS against the native contract in AOT too.
 if [[ "${SQLITE_AOT:-0}" == 1 && ( "$suite" == api || "$suite" == vfs ) ]]; then
   publish="$SQLITE_ROOT/build/$suite-aot"
   dotnet publish "$output/Test-$suite.csproj" -c Release -r linux-x64 \
