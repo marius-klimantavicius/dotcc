@@ -3,6 +3,36 @@
 All observed executions below are Linux x64. Windows execution has not run.
 Every skipped/unrun form remains open; a decoder pass is not CPU execution.
 
+## Translation inputs and variadic deduplication (2026-09-26)
+
+The pipeline no longer uses historical whole-file compatibility hashes for
+ordinary source inventories, runtime headers or typed overrides. Manual C text
+adaptations retain their pins; header edits require unique exact anchors.
+Archive checksums and freshly recorded build/cache identities remain.
+`python3 -B blink/scripts/test-source-inputs.py` passes four tests covering
+evolving extracted sources, new runtime declarations, replacement anchors,
+current override provenance and cache invalidation.
+
+The `VaArgGet` equivalence change passed 39 targeted compiler/runtime unit tests
+and six emitted-library execution tests (direct/object linking and output
+layouts). Delivery `artifacts/translation/attempt-epwu51me/receipt.json` passes
+all 108 producer objects, linking, raw/postprocessed/direct-source builds,
+semantic post-processing, and the separate typed-override delivery audit.
+The 25 selected native oracle cases pass. Receipt SHA-256:
+`a0f5957cfcc8ca7eda8c8b4ac500a9ba741cc2ef820757e829e6c200b83506d7`.
+Published sources contain exactly one `blink_io_open_mode` definition and no
+remaining unit-suffixed references, down from 97 definitions.
+`dotnet build blink/ManagedConsumer.slnx -c Release --disable-build-servers`
+also passes with zero warnings and errors.
+
+The initial attempts remain recorded: `attempt-4jrbvmvj` stopped at the old
+pthread header pin, `attempt-xim2lgpd` exposed unsupported placement of the
+`dontinline` attribute, and `attempt-v2d8rx7h` exposed the authored bridge's
+pointer-to-`nint` assignment. The latter two were corrected through the macro
+override profile and an explicit authored C# cast. The final retry reused all
+108 successfully translated objects. Prior JIT/NativeAOT guest matrices were
+not rerun and remain tied to their original delivery below.
+
 ## P6 IMDSv2 extension (2026-09-23)
 
 [I0–I2](P6-IMDSV2.md) is complete. Each configured execution owns a private BCL

@@ -28,6 +28,22 @@ literal pooling, inline deduplication, six endian intrinsics and 14 typed manage
 boundary selections. Authored sources remain linked directly from `src`; no
 CoreProbe/test main/C execution frontend enters the product.
 
+## Translation refresh (2026-09-26)
+
+Compatibility pins now apply only to manual text adaptations. Ordinary source
+inventories and typed overrides record current inputs without requiring old
+hashes; threaded headers are generated from the current runtime headers using
+exact replacement anchors. Build/cache freshness checks remain. Four focused
+source-policy tests pass.
+
+Delivery `translation/attempt-epwu51me` passes translation of all 108 units,
+linking, semantic post-processing and final direct-source builds. The compiler's
+`VaArgGet` equivalence support reduces `blink_io_open_mode` from 97 definitions
+to one. The refresh also normalizes the `dontinline` hint through macro
+overrides and casts the authored current-machine TLS assignment to dotcc's
+current `nint` storage. This is a translation refresh; the runtime matrices below
+retain their original delivery and evidence. See [validation](VALIDATION.md).
+
 ## IMDSv2 extension evidence
 
 [I0–I2](P6-IMDSV2.md) is complete. `MachineOptions.Metadata` enables a small,
