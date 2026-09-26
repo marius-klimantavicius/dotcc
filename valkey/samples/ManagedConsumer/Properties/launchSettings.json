@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "ManagedConsumer": {
+      "commandName": "Project"
+    },
+    "Standalone": {
+      "commandName": "Project",
+      "commandLineArgs": "--standalone --port 6379"
+    }
+  }
+}

@@ -37,6 +37,33 @@ directories and prints their location. Add `--appendonly` for startup AOF,
 Use distinct free ports. [API documentation](../src/Managed.Valkey/README.md)
 describes lifecycle, cancellation and failed-SAVE behavior.
 
+To run a persistent server for external Redis/Valkey clients, including Rider:
+
+```sh
+dotnet run --project valkey/samples/ManagedConsumer -c Release --no-build \
+  --launch-profile Standalone
+# Or supply options explicitly:
+dotnet run --project valkey/samples/ManagedConsumer -c Release --no-build -- \
+  --standalone --port 6379 --directory ./valkey-data
+```
+
+Select the `Standalone` launch profile in Rider to launch this mode from the IDE.
+The `ManagedConsumer` profile runs the demo.
+
+Connect to host `127.0.0.1`, port `6379`, without TLS. Authentication is disabled
+unless `--password VALUE` is supplied; when enabled, use username `default` and
+that password. The server prints its endpoint and data directory after startup.
+Standalone mode starts one server, runs no demo commands, and keeps running even
+when stdin is redirected or closed. `--peer-port` applies only to the demo.
+
+The default standalone directory is `valkey-data` beneath the working directory;
+an explicit `--directory` is used directly, without the demo's `first`/`peer`
+subdirectories. Reusing it restores saved data. Ctrl+C or SIGTERM on Unix shuts
+down gracefully, saving an RDB snapshot (or flushing the AOF when `--appendonly`
+is enabled). A client can also issue `SHUTDOWN`. If the final SAVE fails, the
+server stays running and reports the error so it can be fixed and shutdown
+retried. There is no demo timeout in this mode.
+
 ```sh
 ./valkey/scripts/test.sh
 # Build and qualify the pinned native test oracle before differential checks:

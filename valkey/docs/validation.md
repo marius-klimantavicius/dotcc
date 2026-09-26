@@ -316,3 +316,16 @@ calling shell's limit unchanged. `--no-fetch` here explicitly reuses verified
 downloaded sources; ordinary translation still fetches by default. This probes
 the compiler under reduced Linux stack limits; it is not an actual Windows run
 or qualification of the Windows Valkey host.
+
+## Standalone consumer (2026-09-26)
+
+`ManagedConsumer --standalone` and the `Standalone` launch profile run one
+long-lived server for external clients. Both the Release JIT build and the
+NativeAOT publication passed seven checks: closed-stdin startup with an empty
+database and external RESP commands (including INFO and HELLO 3), Ctrl+C/RDB
+restart and client shutdown, password authentication, SIGTERM/AOF restart,
+failed-SAVE recovery and retry, occupied-port failure, and the existing demo.
+The actual `dotnet run --launch-profile Standalone` invocation also passed an
+external PING and client shutdown on port 6379. Logs and receipts are in
+`artifacts/standalone/run-fyqek9uz/`. These are Linux process/client checks;
+Rider's GUI and Windows signal handling were not exercised here.

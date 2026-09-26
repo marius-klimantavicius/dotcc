@@ -4,9 +4,9 @@ using System.Text;
 using Managed.Valkey;
 
 int port = 6379, peerPort = 6380;
-string directory = Path.Combine(Path.GetTempPath(), "dotcc-valkey-" + Guid.NewGuid().ToString("N"));
+string? directory = null;
 string? password = null;
-bool appendOnly = false;
+bool appendOnly = false, standalone = false;
 for (int i = 0; i < args.Length; ++i)
 {
     string Value() => ++i < args.Length ? args[i] : throw new ArgumentException("Missing option value.");
@@ -17,8 +17,24 @@ for (int i = 0; i < args.Length; ++i)
         case "--directory": directory = Path.GetFullPath(Value()); break;
         case "--password": password = Value(); break;
         case "--appendonly": appendOnly = true; break;
-        default: throw new ArgumentException("Options: --port N --peer-port N --directory PATH --password VALUE --appendonly");
+        case "--standalone": standalone = true; break;
+        case "--help":
+        case "-h":
+            Console.WriteLine("Options: --standalone --port N --directory PATH --password VALUE --appendonly --peer-port N (demo only)");
+            return;
+        default: throw new ArgumentException("Options: --standalone --port N --peer-port N --directory PATH --password VALUE --appendonly");
     }
+}
+directory ??= standalone ? Path.GetFullPath("valkey-data")
+    : Path.Combine(Path.GetTempPath(), "dotcc-valkey-" + Guid.NewGuid().ToString("N"));
+if (standalone)
+{
+    await StandaloneServer.RunAsync(new ValkeyOptions
+    {
+        DataDirectory = directory, Port = port, Password = password, AppendOnly = appendOnly,
+        DisposeMode = appendOnly ? ValkeyShutdownMode.NoSave : ValkeyShutdownMode.Save
+    });
+    return;
 }
 if (port == peerPort) throw new ArgumentException("The two instances require distinct TCP ports.");
 var firstOptions = new ValkeyOptions
