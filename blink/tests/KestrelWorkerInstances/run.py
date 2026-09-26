@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Actual Kestrel worker/controller lifecycle over a reviewed public threaded delivery."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/KestrelWorkerInstances/run.py']
+
 import argparse
 import glob
 import hashlib
@@ -147,9 +155,9 @@ def main():
         pin(__file__); pin(ROOT / 'scripts/core_inputs.py')
         receipt['optional_inputs'] = {str(REPO / n): sha(REPO / n) if (REPO / n).is_file() else None for n in
             ('Directory.Build.props', 'Directory.Build.targets', 'Directory.Packages.props', 'nuget.config', 'global.json')}
-        native_path = pin(args.native_receipt, '7bc07c1e8d01dd3d326fdbb436473ff0b2b8dcaf2910aea6fffebdaa7b119865')
+        native_path = pin(args.native_receipt, _CAMPAIGN_INPUTS['native_receipt_sha256'])
         native = json.loads(native_path.read_text())
-        profile_path = pin(args.profile_receipt, 'e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a')
+        profile_path = pin(args.profile_receipt, _CAMPAIGN_INPUTS['profile_receipt_sha256'])
         profile = json.loads(profile_path.read_text())
         expected_env = {'LANG': 'C', 'DOTNET_GCHeapHardLimit': '1000000', 'DOTNET_GCRegionRange': '2000000',
                         'DOTNET_GCRegionSize': '100000', 'DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE': 'false', 'DOTNET_EnableDiagnostics': '0'}

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Compare endian-sensitive C APIs and files with the unmodified native engine.
-source "$(dirname "$0")/common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
 mkdir -p "$TMPDIR"
 "$SQLITE_ROOT/scripts/emit-engine.sh" > "$SQLITE_ROOT/artifacts/endian-emission.log" 2>&1
-project="$SQLITE_ROOT/tests/ManagedConsumer/ManagedConsumer.csproj"
+project="$SQLITE_ROOT/samples/ManagedConsumer/ManagedConsumer.csproj"
 dotnet build "$project" -c Release --nologo > "$SQLITE_ROOT/artifacts/endian-build.log" 2>&1
 gcc -std=c17 -O1 -DSQLITE_THREADSAFE=0 -DSQLITE_OMIT_LOAD_EXTENSION \
   -I "$SQLITE_AMALGAMATION" "$SQLITE_AMALGAMATION/sqlite3.c" \
@@ -24,7 +24,7 @@ check_exchange() {
   cat "$root/expected.out"
   echo "PASS $label: native/managed UTF16LE and UTF16BE database exchange"
 }
-check_exchange jit dotnet "$SQLITE_ROOT/tests/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll"
+check_exchange jit dotnet "$SQLITE_ROOT/samples/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll"
 if [[ "${SQLITE_AOT:-0}" == 1 ]]; then
   dotnet publish "$project" -c Release -r linux-x64 -p:PublishAot=true \
     -o "$SQLITE_ROOT/build/managed-consumer-aot" --nologo \

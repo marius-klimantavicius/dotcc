@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/common.sh"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
 mkdir -p "$TMPDIR"
 
@@ -18,7 +19,7 @@ case "$suite" in
   fts5) harness="$SQLITE_ROOT/tests/fts5_native.c"; expected=native-fts5.expected ;;
   allocation) harness="$SQLITE_ROOT/tests/allocation_native.c"; expected=native-allocation.expected ;;
   upstream)
-    python3 "$SQLITE_ROOT/scripts/generate-upstream-jsonb.py" >&2
+    "$PYTHON_CMD" "$SQLITE_ROOT/scripts/generate-upstream-jsonb.py" >&2
     harness="$SQLITE_ROOT/generated/upstream-jsonb.c"; expected=upstream-jsonb.expected ;;
   *) echo "Usage: $0 [core|api|vfs|vtable|allocation|upstream|fts5] [--emit-only]" >&2; exit 2 ;;
 esac

@@ -13,6 +13,10 @@ import urllib.parse
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.inputs import acquire
+from campaigns.model import Source
+from campaigns.compat import policy
 REPOSITORY = 'https://github.com/microsoft/msquic'
 API = 'https://api.github.com/repos/microsoft/msquic'
 
@@ -31,39 +35,20 @@ def download(url, archive, expected=None):
             while data := response.read(1024 * 1024):
                 output.write(data)
         if expected and hashlib.sha256(temporary.read_bytes()).hexdigest() != expected:
-            raise RuntimeError('Downloaded archive checksum mismatch: ' + str(archive))
+            policy().issue('Downloaded archive checksum mismatch: ' + str(archive))
         temporary.replace(archive)
     digest = hashlib.sha256(archive.read_bytes()).hexdigest()
     if expected and digest != expected:
-        raise RuntimeError('Archive checksum mismatch: ' + str(archive))
+        policy().issue('Archive checksum mismatch: ' + str(archive))
     return digest
 
 
 def fetch(spec):
-    ref = ROOT / 'ref'
-    archive = ref / spec['archive']
-    download(spec['url'], archive, spec['sha256'])
-    with tarfile.open(archive) as contents:
-        for member in contents:
-            relative = Path(member.name).relative_to(spec['directory'])
-            if '..' in relative.parts or relative.is_absolute():
-                raise RuntimeError(f'Unsafe path: {member.name}')
-            target = ref / spec['directory'] / relative
-            if target.is_symlink() or any(p.is_symlink() for p in target.parents):
-                raise RuntimeError(f'Symlink in reference path: {target}')
-            if member.isdir():
-                target.mkdir(parents=True, exist_ok=True)
-            elif member.isfile():
-                data = contents.extractfile(member).read()
-                if target.exists() and target.read_bytes() != data:
-                    raise RuntimeError(f'Modified reference file: {target}')
-                if not target.exists():
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    target.write_bytes(data)
-                    target.chmod(member.mode)
-            else:
-                raise RuntimeError(f'Unsupported archive entry: {member.name}')
-    return ref / spec['directory']
+    import os
+    return acquire(Source("product", spec["url"], ROOT / "ref" / spec["archive"],
+                          ROOT / "ref" / spec["directory"], spec["directory"],
+                          spec.get("sha256"), ("src/inc/msquic.h",)),
+                   policy(), os.environ.get("DOTCC_CAMPAIGN_FETCH", "missing"))
 
 
 def resolve_source(selector):

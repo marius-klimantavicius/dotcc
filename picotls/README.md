@@ -1,5 +1,7 @@
 # picotls with dotcc
 
+Build orchestration uses the [shared campaign helpers](../docs/campaigns.md).
+
 [Translation plan](docs/PLAN.md) · [Pinned upstream source](docs/source.md) ·
 [Validation](docs/validation.md) · [Compiler blockers](docs/blockers.md)
 

@@ -119,6 +119,6 @@ are defined only for rowid tables: the old rowid on UPDATE/DELETE and the new ro
 on INSERT/UPDATE. Hooks cover real tables, including changes made by triggers;
 they do not report virtual-table changes directly.
 
-`tests/ManagedConsumer/PreupdateHook.cs` demonstrates registration and cleanup,
+`samples/ManagedConsumer/PreupdateHook.cs` demonstrates registration and cleanup,
 captures INSERT/UPDATE/DELETE old/new values, checks trigger depth and rowid
 changes, and verifies that unregistering stops delivery.

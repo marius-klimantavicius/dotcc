@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Qualify staged upstream InitMap and bounded anonymous host allocation."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import difflib, hashlib, json, os
 from pathlib import Path
 import shutil, subprocess, tempfile, time
@@ -9,7 +17,7 @@ REPO=ROOT.parent
 BASE=ROOT/'generated/host-memory'; BASE.mkdir(parents=True,exist_ok=True)
 ATTEMPT=Path(tempfile.mkdtemp(prefix='attempt-',dir=BASE))
 OUT=ROOT/'artifacts/host-memory'/ATTEMPT.name; OUT.mkdir(parents=True)
-UPSTREAM=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+UPSTREAM=ROOT/("ref/" + _CAMPAIGN_SOURCE["directory"])
 CLI=REPO/'DotCC/bin/Release/net10.0/dotcc.dll'
 POST=REPO/'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
 ENV=dict(os.environ,LC_ALL='C')

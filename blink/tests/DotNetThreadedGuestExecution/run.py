@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Prepare the pinned .NET guest; --run executes raw JIT, --all-modes executes exact delivery raw/optimized JIT/AOT."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/DotNetThreadedGuestExecution/run.py']
+
 import argparse
 import hashlib
 import json
@@ -118,9 +126,9 @@ def main():
         delivery = json.loads(delivery_path.read_text())
         guest_path = verify(args.guest_receipt)
         guest = json.loads(guest_path.read_text())
-        gc_path = verify(args.native_gc_receipt, "f145da71d5032421fdd40bd368d248cad4918065b0b07ee545e32772fab7bb55")
+        gc_path = verify(args.native_gc_receipt, _CAMPAIGN_INPUTS['gc_receipt_sha256'])
         gc = json.loads(gc_path.read_text())
-        if sha(guest_path) != "8876eaf0cda1c0cc9ec81e163a9293745caa436215dec90790ff6f57acce8505":
+        if sha(guest_path) != _CAMPAIGN_INPUTS['guest_receipt_sha256']:
             raise RuntimeError("Only the reviewed pinned musl producer is selected")
         if not gc.get("passed") or gc["producer"]["sha256"] != sha(guest_path) or gc["binary"] != guest["binary"]:
             raise RuntimeError("Native GC witness does not identify this guest")

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Retained libc prerequisite evidence; this does not claim translated TLS passes.
-source "$(dirname -- "$0")/common.sh"
+source "$(dirname -- "$0")/legacy-common.sh"
 if (( $# )); then echo "Usage: $0 (runs the Linux x64 NativeAOT dependency suite)" >&2; exit 1; fi
 if [[ "$(uname -s):$(uname -m)" != Linux:x86_64 ]]; then
     echo "This validation recipe executes linux-x64 NativeAOT binaries; run it on Linux x64." >&2

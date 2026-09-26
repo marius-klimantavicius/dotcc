@@ -16,6 +16,7 @@ import tempfile
 import time
 
 from common import ROOT, SOURCE_SPEC, fetch, run, sha
+from campaigns.compat import policy, provenance
 
 PROGRAMS = {
     'prog_mkdir': 'tests/prog_mkdir.c',
@@ -50,29 +51,31 @@ def main():
                    harnessSha256=sha(__file__), stagingDirectory=str(stage), commands=[])
     try:
         source = fetch()
-        translation_file = ROOT / 'artifacts/translation-legacy/result.json'
+        current = provenance(ROOT, 'TranslatedLibsmb2', 'async', 'legacy')
+        translation_file = Path(current.get('receipt', ''))
+        if not translation_file.is_file():
+            raise RuntimeError('Upstream harness emission needs retained legacy object fragments; translate --profile legacy first')
         translation = json.loads(translation_file.read_text())
-        if not translation.get('passed') or translation['source'] != SOURCE_SPEC or translation.get('profile') != 'legacy':
+        if translation.get('status') != 'passed' or translation.get('profile') != 'legacy':
             raise RuntimeError('Run libsmb2/scripts/translate.sh --profile legacy successfully for the current source pin first')
         units = json.loads((ROOT / 'config/sources.json').read_text())
         expected_units = {unit: sha(source / unit) for unit in units}
         config = {str(p.relative_to(ROOT)): sha(p) for p in sorted((ROOT / 'config').rglob('*')) if p.is_file()}
-        if translation['units'] != expected_units or translation['config'] != config:
-            raise RuntimeError('Library translation is stale for the current sources/configuration; regenerate it first')
-        library_stage = ROOT / translation['staging_directory']
-        for key, subdir in [('compiler', 'compiler'), ('postprocessor', 'postprocessor')]:
-            for name, digest in translation[key].items():
-                if sha(library_stage / 'tools' / subdir / name) != digest:
-                    raise RuntimeError('Library translation tool snapshot changed: ' + name)
-        compiler = library_stage / 'tools/compiler/dotcc.dll'
-        postprocessor = library_stage / 'tools/postprocessor/dotcc-postprocess.dll'
-        objects = [library_stage / 'objects' / (f'{i:02d}-' + Path(unit).stem + '.cs') for i, unit in enumerate(units)]
+        for name, digest in translation.get('input_hashes', {}).items():
+            policy().check(ROOT / name, digest)
+        library_stage = ROOT / translation['staging']
+        for subdir, hashes in translation['tools'].items():
+            for name, digest in hashes.items():
+                policy().check(library_stage / 'tools' / subdir / name, digest)
+        compiler = library_stage / 'tools/DotCC/dotcc.dll'
+        postprocessor = library_stage / 'tools/DotCC.PostProcess/dotcc-postprocess.dll'
+        objects = [library_stage / 'objects' / (f'{i:03d}-' + Path(unit).stem + '.cs') for i, unit in enumerate(units)]
         if not all(p.is_file() for p in objects):
             raise RuntimeError('Library object fragments are absent; regenerate the library first')
         receipt['translationReceiptSha256'] = sha(translation_file)
         receipt['libraryObjects'] = {str(p.relative_to(ROOT)): sha(p) for p in objects}
-        receipt['compiler'] = translation['compiler']
-        receipt['postprocessor'] = translation['postprocessor']
+        receipt['compiler'] = translation['tools']['DotCC']
+        receipt['postprocessor'] = translation['tools']['DotCC.PostProcess']
         defines = json.loads((ROOT / 'config/legacy-defines.json').read_text())
         # The test makefiles rely on platform headers exposing these types;
         # advertise the same available headers as the library configuration.
@@ -169,7 +172,7 @@ def main():
                     logs=dict(stdout=str(stdout), stderr=str(stderr)))
         manifest = dict(sourceRoot=str(source), source=SOURCE_SPEC,
                         configurationSha256=config, librarySourceSha256=expected_units,
-                        translationReceiptSha256=sha(translation_file),
+                        translationReceipt=str(translation_file), translationReceiptSha256=sha(translation_file),
                         harnessSha256=receipt['harnessSha256'],
                         baselineBlockedPrograms=baseline_blocked,
                         variants=[dict(name=v, programs={name: commands[v] for name, commands, info in results}) for v in variant_names],

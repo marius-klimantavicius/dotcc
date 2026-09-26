@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 """Stage reviewed INC/NEG auxiliary-carry and CMPXCHG8B width corrections."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['src/UpstreamInteger/stage.py']
+
 import argparse
 import difflib
 import hashlib
@@ -8,28 +17,11 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-REVISION = 'f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+REVISION = _CAMPAIGN_SOURCE["revision"]
 UPSTREAM = ROOT / 'ref' / ('blink-' + REVISION) / 'blink'
 sha = lambda value: hashlib.sha256(value).hexdigest()
-SOURCE_PINS = {
-    'alu.c': '673ddd60cb6fb1de6ea9f02a4e8e958f3c299a522dd754b4e82950e7a21fc4f4',
-    'machine.c': '73a32c95fbc191394c116bd2f41ebba464c963718b3785adaca22c5a93e8dc89',
-}
-BLOCK_PINS = {
-    'alu.c': {
-        'i64 Inc32(': '4ef5bca0e414c90dbdd7d9950307d6be646f2e1222d644ba10e07761255c3615',
-        'i64 Inc64(': '6fa095c3f530cb3d83f58d40497208a1e8dbfcfe27717d7b860b7e091e0fb31b',
-        'i64 Inc8(': 'b02161171469198c16b474a358e15062f432341ef68dac007e092383f7e2485b',
-        'i64 Inc16(': '545b606a9e35e75333458ad6c6bcea92a6f77376ce9ed4c5ba7cad157071e4ce',
-        'i64 Neg8(': '417b944192c72d338237baf6d67bbae8f68919a900bc52ecbe0cdc45996fe977',
-        'i64 Neg16(': '825a6b2244d383cea1edf171708d5e85b521c44f55051beacd9c3d1d482635e3',
-        'i64 Neg32(': 'e37d213f44cd21a71742d6f6c102e54525b6742f9857d0812c113b6efd9539d7',
-        'i64 Neg64(': '649df0cbad243bd670f84ab2543cf6fb2eccb2bff02fee1e0bd173fa46bcfa36',
-    },
-    'machine.c': {
-        'static void OpCmpxchg8b(': 'd7ae10f0e906c9b3a6037c00c04b82384f850715541bab82c42e5293d928865c',
-    },
-}
+SOURCE_PINS = _CAMPAIGN_INPUTS['SOURCE_PINS']
+BLOCK_PINS = _CAMPAIGN_INPUTS['BLOCK_PINS']
 GUARD = '#ifndef DISABLE_JIT\n#error Reviewed integer staging requires DISABLE_JIT\n#endif\n'
 
 parser = argparse.ArgumentParser(description=__doc__)

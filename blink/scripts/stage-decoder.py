@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 """Extract the decoder's Mode macro dependency without Machine/POSIX headers."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import hashlib, json, pathlib
 root = pathlib.Path(__file__).resolve().parents[1]
-upstream = root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+upstream = root / ("ref/" + _CAMPAIGN_SOURCE["directory"])
 inventory = json.loads((root / 'config/source-inventory.json').read_text())
 hashes = {row['path']: row['sha256'] for row in inventory['files']}
 for name in ['blink/x86.c', 'blink/modrm.h', 'blink/bitscan.c']:

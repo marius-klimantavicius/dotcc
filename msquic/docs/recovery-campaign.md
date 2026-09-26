@@ -1,5 +1,22 @@
 # Packet recovery and independent interop campaign
 
+The current verification driver continues after recognized upstream recovery
+limitations and emits a warning stating that these tests are timing dependent
+and the outcomes are also observable in upstream MsQuic. This covers the
+dual-live-mapping rebinding snapshot (new path unvalidated, old path validated)
+and the previously classified decreasing-MTU idle/deadline outcomes. The existing
+observation classifier must validate the endpoint, proxy and cleanup evidence;
+an arbitrary failure in either scenario is still fatal. Expired-mapping rebinding
+remains a required positive control.
+
+Warning cases retain `passed: false`, the original error and the recognized
+outcome in `results.json`. `verification_passed: true` means the selected matrix
+finished with no unexpected failure; `cases_warned` counts known limitations
+separately from `cases_passed`. The campaign records and displays these test
+warnings regardless of its hash policy. Use `--strict-recovery` on
+`scripts/test-recovery.py` to restore fail-fast recovery qualification. Historical
+strict results described below remain unchanged.
+
 The [2026-09-25 investigation](recovery-investigation-20260925.md) captures the
 pending PATH_RESPONSE overwrite, oversized retransmissions and separate harness
 deadline behavior without changing the core or relabeling strict failures.
@@ -150,8 +167,9 @@ threshold; it does not synthesize ICMP or by itself establish MTU discovery.
 The pinned upstream discovery algorithm increases MTU monotonically. A ceiling
 decrease may produce a bounded failure in native MsQuic as well; that requires
 a native-to-native control before diagnosing a compiler or host regression.
-`--roles native` selects such an additional test-only control. The current driver
-still requires successful delivery and records a failure otherwise.
+`--roles native` selects such an additional test-only control. The driver records
+incomplete delivery as failed recovery, but recognized upstream outcomes now
+warn and continue unless `--strict-recovery` is selected.
 The separate `scripts/classify-native-recovery.py` observation classifier
 previously validated an optimized JIT IPv4/AES-128 set against its recorded
 historical baseline in

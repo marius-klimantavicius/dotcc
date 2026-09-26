@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 # Serial native oracle build/test. Coordinate the repository build slot first.
 set -euo pipefail
 campaign=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 export TMPDIR="$campaign/artifacts/tmp/p0"
 mkdir -p "$TMPDIR" "$campaign/artifacts/oracle"
-source_root=$("$campaign/scripts/fetch.sh")
+source_root=$("$PYTHON_CMD" "$CAMPAIGN_REPO/Scripts/campaign-reference.py" picotls)
 build="$campaign/build/oracle"
 logs="$campaign/artifacts/oracle"
 {
@@ -23,7 +24,7 @@ cmake -S "$source_root" -B "$build" \
     -DWITH_DTRACE=OFF -DWITH_FUSION=OFF -DWITH_AEGIS=OFF \
     -DWITH_MBEDTLS=OFF -DBUILD_FUZZER:BOOL=OFF 2>&1 | tee "$logs/configure.log"
 # Verify configure did not silently widen the selected source closure.
-python3 - "$build" <<'PY'
+"$PYTHON_CMD" - "$build" <<'PY'
 import json
 from pathlib import Path
 import sys

@@ -258,7 +258,7 @@ try:
     r['expected_sample_transcript_without_footer'] = expected
     r['phase'] = 'sample'
     run(['dotnet', 'build', 'blink/ManagedConsumer.slnx', '-c', 'Release'], 'sample-solution-build', worktree)
-    sample = worktree / 'blink/ManagedConsumer/ManagedConsumer.csproj'
+    sample = worktree / 'blink/samples/ManagedConsumer/ManagedConsumer.csproj'
     execute(['dotnet', 'run', '--project', sample, '-c', 'Release', '--no-build'], 'sample-jit',
             sample.parent / 'bin/Release/net10.0', expected)
     publish = worktree / 'blink/build/managed-consumer-aot'

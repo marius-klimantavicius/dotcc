@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
 """Fail-closed tests use private copies; immutable upstream files are never edited."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import hashlib, json, shutil, subprocess, tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'src/UpstreamScalarFp'
-UPSTREAM = ROOT / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink'
+UPSTREAM = ROOT / ("ref/" + _CAMPAIGN_SOURCE["directory"] + '/blink')
 base = ROOT / 'artifacts/scalar-fp-staging'
 base.mkdir(parents=True, exist_ok=True)
 a = Path(tempfile.mkdtemp(prefix='attempt-', dir=base))

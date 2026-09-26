@@ -37,12 +37,12 @@ def run(command, log, receipt, *, cwd=REPO, timeout=600, check=True):
     return result.returncode
 
 
-def apply_managed_profile(destination, receipt, *, root=ROOT, specification=None):
+def apply_managed_profile(destination, receipt, *, root=ROOT, specification=None, policy=None):
     """Apply reviewed exact-input edits only to an isolated staging tree."""
     destination, root = Path(destination), Path(root)
     specification = Path(specification) if specification is not None else root / "config/managed-adaptations.json"
     profile = json.loads(specification.read_text())
-    if profile["commit"] != receipt["inputs"]["commit"]:
+    if policy is None and profile["commit"] != receipt["inputs"]["commit"]:
         raise RuntimeError("Managed adaptations do not match the verified source commit")
     pending = []
     identities = []
@@ -58,7 +58,10 @@ def apply_managed_profile(destination, receipt, *, root=ROOT, specification=None
     for entry in profile["adaptations"]:
         path = child(destination, entry["path"])
         before = sha(path)
-        if before != entry["sha256"]:
+        if policy is not None:
+            if policy.mode == "strict":
+                policy.check(path, entry["sha256"])
+        elif before != entry["sha256"]:
             raise RuntimeError(f"Managed adaptation input hash mismatch: {entry['path']}")
         text = path.read_text()
         for replacement in entry["replacements"]:
@@ -90,16 +93,17 @@ def apply_managed_profile(destination, receipt, *, root=ROOT, specification=None
     }
 
 
-def stage_source(source, destination, receipt, logs, *, managed_profile=False):
+def stage_source(source, destination, receipt, logs, *, managed_profile=False, runner=None, policy=None):
+    execute = runner or run
     shutil.copytree(source, destination)
-    run([sys.executable, destination / "utils/generate-command-code.py"],
+    execute([sys.executable, destination / "utils/generate-command-code.py"],
         logs / "generate-commands.log", receipt, cwd=destination)
     fmtargs = destination / "src/fmtargs.h"
     text = fmtargs.read_text()
     marker = "/* Everything below this line"
     if text.count(marker) != 1:
         raise RuntimeError("Unexpected upstream fmtargs.h generator boundary")
-    run([sys.executable, destination / "utils/generate-fmtargs.py"],
+    execute([sys.executable, destination / "utils/generate-fmtargs.py"],
         logs / "generate-fmtargs.log", receipt, cwd=destination)
     fmtargs.write_text(text.split(marker)[0] + (logs / "generate-fmtargs.log").read_text())
     commit = receipt["inputs"]["commit"]
@@ -113,7 +117,7 @@ def stage_source(source, destination, receipt, logs, *, managed_profile=False):
                                    ("src/commands.def", "src/fmtargs.h", "src/release.h")}
     if managed_profile:
         apply_managed_profile(destination, receipt,
-                              specification=None if managed_profile is True else managed_profile)
+                              specification=None if managed_profile is True else managed_profile, policy=policy)
     return destination
 
 

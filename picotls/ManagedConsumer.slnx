@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+  <Project Path="src/BclProvider/BclProvider.csproj" />
+  <Project Path="generated/TranslatedPicotls/TranslatedPicotls.csproj" />
+</Solution>

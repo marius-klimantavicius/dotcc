@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-set -euo pipefail
-source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
-exec "$PYTHON_CMD" "$VALKEY_ROOT/scripts/inputs.py" "$@"
+source "$(dirname -- "${BASH_SOURCE[0]}")/common.sh"
+campaign_exec fetch "$@"

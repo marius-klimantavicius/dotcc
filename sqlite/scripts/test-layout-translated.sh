@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/common.sh"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
 mkdir -p "$TMPDIR"
 "$SQLITE_ROOT/scripts/preprocess.sh" > "$SQLITE_ROOT/artifacts/layout-sqlite3.i"
-python3 "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
   "$SQLITE_ROOT/artifacts/layout-sqlite3.i" "$SQLITE_ROOT/generated/layout_requests.h" >&2
 output="$SQLITE_ROOT/generated/Test-layout"
 dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
@@ -11,8 +12,8 @@ dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
   -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/tests" -I "$SQLITE_ROOT/generated" \
   "$SQLITE_ROOT/tests/layout_probe.c" "$SQLITE_ROOT/tests/memory_vfs.c" --emit=csproj -o "$output" \
   > "$SQLITE_ROOT/artifacts/translated-layout-emission.log" 2>&1
-python3 "$SQLITE_ROOT/scripts/check-layout-metadata.py" "$output/DotCcProgram.cs"
-python3 "$SQLITE_ROOT/scripts/generate-layout-storage-checks.py" \
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/check-layout-metadata.py" "$output/DotCcProgram.cs"
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/generate-layout-storage-checks.py" \
   "$SQLITE_ROOT/tests/layout-native.expected" "$output/LayoutStorageChecks.cs"
 dotnet build "$output/Test-layout.csproj" -c Release --nologo \
   > "$SQLITE_ROOT/artifacts/translated-layout-build.log" 2>&1

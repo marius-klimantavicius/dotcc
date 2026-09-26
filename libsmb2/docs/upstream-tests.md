@@ -25,7 +25,8 @@ server and temporary credentials:
 
 These unchanged C programs retain manual polling and synchronous APIs, so they
 explicitly link the isolated legacy transport objects. Their receipt must be
-`artifacts/translation-legacy/result.json` with profile `legacy`; product async
+the framework receipt referenced by `artifacts/campaign/current-legacy.json`
+with profile `legacy`; product async
 objects cannot silently substitute for them. This baseline establishes protocol
 regressions separately from the callback-only product's managed async tests.
 

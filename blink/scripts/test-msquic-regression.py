@@ -7,6 +7,7 @@ owning consumer under raw/optimized JIT/NativeAOT. Never builds compiler tools.
 The synthetic initialization-failure assertion is excluded through exact,
 receipt-bound derived C/runner copies.
 """
+import sys
 import argparse
 import ast
 import difflib
@@ -180,7 +181,7 @@ def prepare_archive(cache_root):
             for name, digest in closure_members(previous).items():
                 if sha(archive_path(CAMPAIGN, name)) != digest:
                     raise RuntimeError("Neither a sound archive nor matching live evidence exists: " + name)
-            execute("archive-current", ["python3", CAMPAIGN / "scripts/freeze-product.py", "--archive-current"], 600)
+            execute("archive-current", [sys.executable, CAMPAIGN / "scripts/freeze-product.py", "--archive-current"], 600)
     receipt["historical_archive"] = validate_archive(destination, closure_hash)
     save()
 
@@ -287,7 +288,7 @@ try:
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(CAMPAIGN / name, destination)
         for name in ("src/Host", "tests/HostContract"): (mirror / name).mkdir(parents=True)
-        execute("generator-preflight", ["python3", mirror / "scripts/generate-host-contract.py"], 30)
+        execute("generator-preflight", [sys.executable, mirror / "scripts/generate-host-contract.py"], 30)
         for name in ("src/Host/msquic_host.h", "src/Host/forwarders.c", "src/Host/required_slots.inc", "tests/HostContract/callbacks.inc"):
             if sha(mirror / name) != sha(CAMPAIGN / name):
                 raise RuntimeError("Generator would change tracked source: " + name)
@@ -295,12 +296,12 @@ try:
         verified_copy(args.cache_root / "ref" / pin["archive"], CAMPAIGN / "ref" / pin["archive"], pin["sha256"])
         prepare_archive(args.cache_root.resolve())
         prepare_adaptation()
-        execute("fetch-verify", ["python3", CAMPAIGN / "scripts/fetch.py"], 120)
+        execute("fetch-verify", [sys.executable, CAMPAIGN / "scripts/fetch.py"], 120)
         execute("fast-regenerate", [CAMPAIGN / "scripts/translate.sh", "--fast", "--no-build-tools", "--jobs", "2"], 3600)
-        execute("host-contract", ["python3", receipt["adaptation"]["host_runner"]], 7200)
+        execute("host-contract", [sys.executable, receipt["adaptation"]["host_runner"]], 7200)
         check_host_evidence()
-        execute("public-abi", ["python3", CAMPAIGN / "scripts/test-abi.py", "--groups", "public"], 1200)
-        execute("product-gates", ["python3", CAMPAIGN / "scripts/build-product.py"], 3600)
+        execute("public-abi", [sys.executable, CAMPAIGN / "scripts/test-abi.py", "--groups", "public"], 1200)
+        execute("product-gates", [sys.executable, CAMPAIGN / "scripts/build-product.py"], 3600)
         receipt["prepared_evidence"] = {name: sha(CAMPAIGN / name) for name in
             ("artifacts/host-contract/results.json", "artifacts/abi/results.json", "artifacts/product-build/results.json")}
         receipt["prepared"] = True
@@ -313,7 +314,7 @@ try:
                 raise RuntimeError("Prepared evidence changed: " + name)
         validate_archive(Path(receipt["historical_archive"]["path"]), receipt["closure_before_sha256"])
         shutil.copyfile(ROOT / CLOSURE, run / "closure-before.json")
-        execute("freeze-qualified-closure", ["python3", receipt["adaptation"]["freeze_runner"], "--without-sqlite"], 600)
+        execute("freeze-qualified-closure", [sys.executable, receipt["adaptation"]["freeze_runner"], "--without-sqlite"], 600)
         shutil.copyfile(ROOT / CLOSURE, run / "closure-after.json")
         receipt["closure_after_sha256"] = sha(ROOT / CLOSURE)
         closure = json.loads((ROOT / CLOSURE).read_text())
@@ -321,7 +322,7 @@ try:
             raise RuntimeError("Frozen closure does not bind actually executed host adaptation")
         receipt["closure_binding_source_sha256"] = receipt["host_contract"]["cases"][0]["source_sha256"]
         save()
-        execute("public-consumer-all4", ["python3", CAMPAIGN / "scripts/test-public-consumer.py"], 7200)
+        execute("public-consumer-all4", [sys.executable, CAMPAIGN / "scripts/test-public-consumer.py"], 7200)
         check_public_coverage()
         receipt["passed"] = True
         receipt["completed_unix"] = time.time()

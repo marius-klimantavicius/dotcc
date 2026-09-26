@@ -9,6 +9,11 @@ import subprocess
 import tarfile
 import tempfile
 import unittest
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'Scripts'))
+from campaigns.inputs import acquire
+from campaigns.identity import HashPolicy
+from campaigns.model import Source
 
 import core_inputs
 
@@ -24,8 +29,6 @@ class SourceInputsTests(unittest.TestCase):
             campaign = Path(temporary)
             for name in ('scripts', 'config', 'ref'):
                 (campaign / name).mkdir()
-            script = campaign / 'scripts/fetch.sh'
-            shutil.copyfile(ROOT / 'scripts/fetch.sh', script)
             source = campaign / 'ref/blink-test'
             source.mkdir()
             header = source / 'include.h'
@@ -39,8 +42,9 @@ class SourceInputsTests(unittest.TestCase):
                             assemblyInclude=dict(path='include.h', sha256='historical-inventory-only'))
             (campaign / 'config/source-manifest.json').write_text(json.dumps(manifest))
             header.write_text('/* current source */\n')
-            result = subprocess.run(['bash', str(script), '--offline'], capture_output=True, text=True)
-            self.assertEqual(result.returncode, 0, result.stderr)
+            result = acquire(Source('product', '', archive, source, source.name,
+                             manifest['upstream']['sha256'], ('include.h',)), HashPolicy('warn'), 'never')
+            self.assertEqual(result, source)
             self.assertEqual(header.read_text(), '/* current source */\n')
 
     def test_thread_headers_preserve_new_declarations(self):

@@ -5,8 +5,9 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <IsAotCompatible>true</IsAotCompatible>
+    <BlinkProject Condition="'$(BlinkProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedBlink/TranslatedBlink.csproj</BlinkProject>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../../generated/TranslatedBlink/TranslatedBlink.csproj" />
+    <ProjectReference Include="$(BlinkProject)" />
   </ItemGroup>
 </Project>

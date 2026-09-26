@@ -15,7 +15,7 @@ manifest = artifacts / 'tls-feasibility-run.json'
 manifest.unlink(missing_ok=True)
 records, receipts = [], {}
 for variant in ['raw', 'optimized']:
-    product = picotls / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls') / 'TranslatedPicotls.csproj'
+    product = picotls / 'generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls') / 'TranslatedPicotls.csproj'
     if not product.exists():
         raise SystemExit(f'Generate picotls first: missing {product}')
     build = root / 'build/tls-feasibility' / variant
@@ -47,7 +47,7 @@ for variant in ['raw', 'optimized']:
         receipts[variant + '-' + runtime] = receipt
 sources = list(project.parent.glob('*.cs')) + [project]
 sources += list((picotls / 'src/BclProvider').glob('*.cs'))
-for directory in ['TranslatedPicotls', 'TranslatedPicotlsRaw']:
+for directory in ['TranslatedPicotls', 'TranslatedPicotls.Raw']:
     sources += list((picotls / 'generated' / directory).glob('*.cs'))
 source_hashes = {str(path.relative_to(root.parent)): hashlib.sha256(path.read_bytes()).hexdigest() for path in sources}
 manifest.write_text(json.dumps({'commands': records, 'source_sha256': source_hashes,

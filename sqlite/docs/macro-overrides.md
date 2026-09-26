@@ -35,7 +35,7 @@ From the repository root, after fetching the pinned SQLite reference:
 ```bash
 dotnet build DotCC/DotCC.csproj -c Release
 sqlite/scripts/emit-engine.sh --no-postprocess
-dotnet run --project sqlite/tests/ManagedConsumer -c Release
+dotnet run --project sqlite/samples/ManagedConsumer -c Release
 SQLITE_AOT=1 sqlite/scripts/test-endian.sh
 SQLITE_AOT=1 sqlite/scripts/test-host-vfs.sh
 sqlite/scripts/test-product-layout.sh

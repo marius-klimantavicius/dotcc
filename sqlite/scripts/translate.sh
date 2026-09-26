@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-# Regenerate the managed SQLite library using the shared translation pipeline.
-# Forward options such as --no-postprocess and --help unchanged.
-exec bash "$(dirname "$0")/emit-engine.sh" "$@"
+source "$(dirname -- "${BASH_SOURCE[0]}")/common.sh"
+campaign_exec translate "$@"

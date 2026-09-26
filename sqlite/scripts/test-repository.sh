@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 # Unit fixtures create C files in the temporary directory. Include discovery
 # recursively scans that directory; isolate it from unrelated host temporary data.
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"

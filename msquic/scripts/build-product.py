@@ -6,6 +6,7 @@ assembly, and only exercises an invalid-table rejection and unbound cleanup.
 """
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -14,6 +15,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
+if '--existing' not in sys.argv[1:]:
+    os.execv(sys.executable, [sys.executable, str(REPO / 'Scripts/campaign.py'),
+                             'translate', 'msquic', *sys.argv[1:]])
 STAGE = ROOT / 'build/product-source'
 HOST = ROOT / 'build/host-contract'
 LOGS = ROOT / 'artifacts/product-build'
@@ -94,39 +98,19 @@ try:
         receipt['objects'].append(dict(source=unit, source_sha256=sha(STAGE / unit),
             object=str(obj.relative_to(ROOT)), object_sha256=sha(obj), arguments=command,
             abi_object_receipt_sha256=sha(obj.with_suffix('.json'))))
-    # Only tool binaries and their runtime dependencies are copied; shared builds
-    # cannot change the postprocessor while a complete core pass is in progress.
-    post_source = REPO / 'DotCC.PostProcess/bin/Release/net10.0'
-    contents = {p.name: p.read_bytes() for p in post_source.iterdir() if p.suffix in ('.dll', '.json')}
-    post_hashes = {name: hashlib.sha256(data).hexdigest() for name, data in contents.items()}
-    post_id = hashlib.sha256(json.dumps(post_hashes, sort_keys=True).encode()).hexdigest()
-    post = ROOT / 'artifacts/toolchains' / post_id
-    post.mkdir(parents=True, exist_ok=True)
-    for name, data in contents.items():
-        (post / name).write_bytes(data)
-    if any(sha(post_source / name) != digest for name, digest in post_hashes.items()):
-        raise RuntimeError('Postprocessor changed during snapshot')
-    receipt['postprocessor_hashes'] = post_hashes
+    current = json.loads((ROOT / 'artifacts/campaign/current-default.json').read_text())
+    translated = json.loads(Path(current['receipt']).read_text())
+    receipt['framework_translation'] = current['receipt']
+    receipt['postprocessor_hashes'] = translated['tools']['DotCC.PostProcess']
     inline_exports = [line.strip() for line in (ROOT / 'config/inline-exports.txt').read_text().splitlines()
                       if line.strip() and not line.lstrip().startswith('#')]
     if not inline_exports or len(set(inline_exports)) != len(inline_exports):
         raise RuntimeError('Inline export selectors must be nonempty and unique')
     inline_flags = ['--deduplicate-inline', *[part for pattern in inline_exports for part in ['--export-inline', pattern]]]
     receipt['output_options'] = dict(nest_types=True, runtime='c', literal_pool=True, deduplicate_inline=True, export_inline=inline_exports)
-    receipt['generated_directories'] = dict(raw='generated/raw/TranslatedMsQuic', optimized='generated/TranslatedMsQuic')
-    raw = ROOT / 'generated/raw/TranslatedMsQuic'
+    receipt['generated_directories'] = dict(raw='generated/TranslatedMsQuic.Raw', optimized='generated/TranslatedMsQuic')
+    raw = ROOT / 'generated/TranslatedMsQuic.Raw'
     optimized = ROOT / 'generated/TranslatedMsQuic'
-    run(['dotnet', compiler, '--emit=managedlib', '--literal-pool', '--nest-types', '--runtime=c', '--class-name', 'MsQuic',
-         '--namespace', 'Managed.Transport', '--split=size', *inline_flags, *objects, '-o', raw], 'raw-link')
-    optimized.mkdir(parents=True, exist_ok=True)
-    # Cleanup is limited to previously generated manifest-owned files.
-    if (optimized / 'Dotcc.SourceFiles.txt').exists():
-        for name in set(generated_files(optimized)) - set(generated_files(raw)):
-            (optimized / name).unlink()
-    for name in generated_files(raw) + ['Dotcc.SourceFiles.txt', 'TranslatedMsQuic.csproj']:
-        shutil.copyfile(raw / name, optimized / name)
-    run(['dotnet', 'restore', optimized / 'TranslatedMsQuic.csproj', '--nologo'], 'optimized-restore')
-    run(['dotnet', post / 'dotcc-postprocess.dll', optimized / 'TranslatedMsQuic.csproj', '--in-place'], 'optimize')
     for variant, directory in [('raw', raw), ('optimized', optimized)]:
         project = directory / 'TranslatedMsQuic.csproj'
         sources = hashes(directory)

@@ -4,5 +4,5 @@
   <Project Path="src/Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.csproj" />
   <Project Path="src/Managed.Emulation/Managed.Emulation.csproj" />
   <Project Path="src/Managed.Emulation.Worker/Managed.Emulation.Worker.csproj" />
-  <Project Path="ManagedConsumer/ManagedConsumer.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
 </Solution>

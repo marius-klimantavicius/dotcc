@@ -3,10 +3,13 @@
 
 This qualifies packet delivery under the selected faults, not the other P7
 feature gates. Build and qualify current peers with test-managed-peer.py first.
+Known upstream recovery limitations warn and continue; --strict-recovery retains
+the original fail-fast qualification behavior.
 """
 import argparse
 import errno
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -39,6 +42,7 @@ SCENARIOS = {
     'payload-ceiling-down': {direction: {'mtu_bytes': 1472, 'mtu_change_after': 20,
                                        'mtu_bytes_after': 1300} for direction in DIRECTIONS},
 }
+CLASSIFIER = ROOT / 'scripts/classify-native-recovery.py'
 
 
 def sha(path):
@@ -64,9 +68,9 @@ def validate_baseline(baseline, variants):
     check(baseline['closure_sha256'] == sha(ROOT / 'config/product-closure.json'), 'Baseline closure changed')
     for variant in variants:
         directories = (
-            ('generated_hashes', ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')),
+            ('generated_hashes', ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')),
             ('picotls_generated_hashes', REPO / 'picotls/generated' /
-                ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')),
+                ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')),
         )
         for field, directory in directories:
             current = {path.name: sha(path) for path in sorted(directory.glob('*.cs'))}
@@ -349,6 +353,48 @@ def exchange(args, receipt, variant, runtime, role, family, cipher, scenario):
             case['proxy'] = json.loads(stats_path.read_text())
 
 
+def known_upstream_outcome(case):
+    """Recognize bounded, evidenced outcomes, never arbitrary scenario failures."""
+    if case['scenario'] == 'rebinding':
+        if case.get('error') != 'Server did not validate the new source port':
+            return None
+    elif case['scenario'] == 'payload-ceiling-down':
+        if case.get('error') != 'Peer or proxy exit failed: ' + case['name']:
+            return None
+    else:
+        return None
+    spec = importlib.util.spec_from_file_location('native_recovery_observations', CLASSIFIER)
+    classifier = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(classifier)
+    try:
+        return classifier.validate_case(case, allow_mixed=True)
+    except (RuntimeError, KeyError, TypeError, ValueError, OSError):
+        # Missing evidence, different terminal states, resource leaks, proxy
+        # failures and other regressions retain the original fatal failure.
+        return None
+
+
+def run_case(args, receipt, variant, runtime, role, family, cipher, scenario):
+    first = len(receipt['cases'])
+    try:
+        exchange(args, receipt, variant, runtime, role, family, cipher, scenario)
+    except RuntimeError:
+        if args.strict_recovery or len(receipt['cases']) != first + 1:
+            raise
+        case = receipt['cases'][-1]
+        observation = known_upstream_outcome(case)
+        if observation is None:
+            raise
+        message = (f"[test] {case['name']}: {case['error']}. "
+                   "These tests are timing dependent and these outcomes are also observable in upstream MsQuic. "
+                   f"Known outcome: {observation['kind']}; continuing verification. "
+                   "This does not count as successful recovery.")
+        case['known_upstream_observation'] = observation
+        case['warning'] = message
+        receipt.setdefault('warnings', []).append(message)
+        print('WARNING: ' + message, file=sys.stderr, flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variants', nargs='+', choices=['raw', 'optimized'], default=['raw', 'optimized'])
@@ -362,6 +408,8 @@ def main():
     parser.add_argument('--ciphers', nargs='+', choices=['128', '256'], default=['128', '256'])
     parser.add_argument('--scenarios', nargs='+', choices=SCENARIOS, default=list(SCENARIOS))
     parser.add_argument('--seed', type=int, default=7381)
+    parser.add_argument('--strict-recovery', action='store_true',
+                        help='Fail instead of warning for recognized upstream recovery limitations')
     parser.add_argument('--peer-receipt', type=Path, default=ROOT / 'artifacts/managed-peer/results.json')
     parser.add_argument('--output', type=Path, default=ROOT / 'artifacts/recovery')
     args = parser.parse_args()
@@ -370,9 +418,10 @@ def main():
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     if hasattr(os, 'sched_getaffinity'):
         os.sched_setaffinity(0, sorted(os.sched_getaffinity(0))[:4])
-    receipt = dict(passed=False, targeted_passed=False, phase='P7 packet recovery subset',
-                   entire_p7_qualified=False, cases=[], source_hashes={
-                       str(path.relative_to(REPO)): sha(path) for path in (Path(__file__), PROXY)})
+    receipt = dict(passed=False, targeted_passed=False, verification_passed=False,
+                   phase='P7 packet recovery subset', strict_recovery=args.strict_recovery,
+                   entire_p7_qualified=False, cases=[], warnings=[], source_hashes={
+                       str(path.relative_to(REPO)): sha(path) for path in (Path(__file__), PROXY, CLASSIFIER)})
     runtimes = args.runtimes or (['jit'] if args.jit_only else ['jit', 'aot'])
     if len(runtimes) != len(set(runtimes)):
         parser.error('Runtimes must be unique')
@@ -394,20 +443,24 @@ def main():
                                       for case in baseline['cases']),
                                   'Baseline lacks selected variant/runtime/role/family/cipher')
                             for scenario in args.scenarios:
-                                exchange(args, receipt, variant, runtime, role, family, cipher, scenario)
+                                run_case(args, receipt, variant, runtime, role, family, cipher, scenario)
         validate_baseline(baseline, args.variants)
         bind_files(receipt['source_hashes'], 'Recovery source')
         check(sha(args.peer_receipt) == receipt['peer_receipt']['sha256'], 'Baseline receipt changed during recovery')
         full = (set(args.variants) == {'raw', 'optimized'} and set(runtimes) == {'jit', 'aot'}
                 and set(args.roles) == {'both', 'client', 'server'} and set(args.families) == {'ipv4', 'ipv6'}
                 and set(args.ciphers) == {'128', '256'} and set(args.scenarios) == set(SCENARIOS))
-        receipt.update(passed=full, targeted_passed=not full, cases_passed=len(receipt['cases']))
+        warned = sum('warning' in case for case in receipt['cases'])
+        receipt.update(passed=full and not warned, targeted_passed=not full and not warned,
+                       verification_passed=True, cases_passed=sum(case['passed'] for case in receipt['cases']),
+                       cases_warned=warned)
     except BaseException as error:
         receipt['error'] = str(error)
         raise
     finally:
         (args.output / 'results.json').write_text(json.dumps(receipt, indent=2) + '\n')
-    print(json.dumps({key: receipt[key] for key in ('passed', 'targeted_passed', 'cases_passed', 'entire_p7_qualified')}))
+    print(json.dumps({key: receipt[key] for key in ('passed', 'targeted_passed', 'verification_passed',
+                                                  'cases_passed', 'cases_warned', 'entire_p7_qualified')}))
 
 
 if __name__ == '__main__':

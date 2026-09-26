@@ -11,7 +11,7 @@ TOKENS = re.compile(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|/\*[\s\S]*?\*/|//[^
 NOTICE = re.compile(r'copyright|SPDX|licen[cs]e|redistribution|permission is hereby', re.I)
 
 
-def write_notices(reference, configuration, project):
+def write_notices(reference, configuration, project, policy=None):
     reference, configuration, project = map(Path, (reference, configuration, project))
     manifest = json.loads((configuration / "sources.json").read_text())
     licenses = json.loads((configuration / "licenses.json").read_text())
@@ -28,7 +28,10 @@ def write_notices(reference, configuration, project):
             continue
         contents = path.read_bytes()
         digest = hashlib.sha256(contents).hexdigest()
-        if record.get("sha256") and record["sha256"] != digest:
+        if policy is not None:
+            if policy.mode == "strict" and record.get("sha256"):
+                policy.check(path, record["sha256"])
+        elif record.get("sha256") and record["sha256"] != digest:
             raise RuntimeError("Notice source hash mismatch: " + name)
         records[name] = (contents.decode("utf-8"), digest)
     standalone = {r["path"] for r in licenses["files"] if Path(r["path"]).suffix not in (".c", ".h")}

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 campaign=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-"$campaign/scripts/fetch.sh" "${1:-}"
-python3 - "$campaign" <<'PY'
+"$PYTHON_CMD" "$CAMPAIGN_REPO/Scripts/campaign-reference.py" blink "$@"
+"$PYTHON_CMD" - "$campaign" <<'PY'
 import hashlib, json, os, pathlib, platform, shutil, subprocess, sys, time
 root = pathlib.Path(sys.argv[1])
 manifest = json.loads((root / 'config/source-manifest.json').read_text())

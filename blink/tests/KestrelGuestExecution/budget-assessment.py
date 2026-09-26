@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """One larger-workload budget assessment of an immutable failed Kestrel baseline."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/KestrelGuestExecution/budget-assessment.py']
+
 import difflib
 import hashlib
 import json
@@ -15,8 +23,8 @@ import time
 
 BLINK = Path(__file__).resolve().parents[2]
 BASE = BLINK / "artifacts/kestrel-guest-execution/attempt-md2uqfje"
-BASE_SHA = "95e9dcd1133dcc11d74c3fb5b1c359c6876dd6757dec041fc92a2a5f188d8e44"
-HELPER_SHA = "cc34c2fed39764057a9ebb8fa1d54bd351c7510575172b499630ec5fa6e95953"
+BASE_SHA = _CAMPAIGN_INPUTS['BASE_SHA']
+HELPER_SHA = _CAMPAIGN_INPUTS['HELPER_SHA']
 
 
 def sha(path):

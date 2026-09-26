@@ -285,7 +285,7 @@ generated project and is separate from its translated sources.
 
 `blink/ManagedConsumer.slnx` is the showcase solution for the final translation.
 Include the generated project, required host/API/worker projects, and a separate
-runnable usage sample under `blink/ManagedConsumer/`. The sample consumes the
+runnable usage sample under `blink/samples/ManagedConsumer/`. The sample consumes the
 final generated project through project references and the owning API, showing
 service startup, readiness, a real HTTP request, captured output and cleanup.
 All sample execution goes through the authored C# API, not a translated test

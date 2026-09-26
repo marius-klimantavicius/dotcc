@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Compile staged upstream core TUs separately to isolate the first failure."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import argparse
 import hashlib
 import json
@@ -44,7 +52,7 @@ for entry in closure['sources']:
     original_source = source
     emission_profile, source, c_identity, emission_key = canonical_emission(profile, root, profile_inputs, entry)
     command = ['dotnet', str(compiler / 'dotcc.dll'), *object_options(profile),
-               '-I', str(emission_profile), '-I', str(root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'),
+               '-I', str(emission_profile), '-I', str(root / ("ref/" + _CAMPAIGN_SOURCE["directory"])),
                '-I', str(emission_profile / 'authored'), '-I', str(emission_profile / 'host'),
                '--overrides-file', str(emission_profile / 'overrides.json')]
     log = out / (source.stem + '.log')

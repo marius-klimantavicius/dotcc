@@ -1,0 +1,140 @@
+{
+  "scripts/build-dotnet-guest-musl.py": {
+    "IMAGE_DIGEST": "sha256:240a20b94625153877c8ec4ed0394d3396f243a5663fe74b8f601c31f1dac3fc"
+  },
+  "scripts/test-clean-reproduction.py": {
+    "revision": "717ba668cb0575e459b0ff21dfdf16fba1cdb58a"
+  },
+  "scripts/test-zig-regression.py": {
+    "DIGEST": "70e49664a74374b48b51e6f3fdfbf437f6395d42509050588bd49abe52ba3d00"
+  },
+  "src/Host/scripts/stage-cpuid.py": {
+    "PIN": "0675b9d86847b17398936d052f863762b3ef367ad6d964f7bb64fade3d74abca"
+  },
+  "src/Host/scripts/stage-debug.py": {
+    "PIN": "09ffcc0e51c93b3f9382cc5e5c384b4cabe3144694a6e70cb1ba037e12665c3b"
+  },
+  "src/Host/scripts/stage-map.py": {
+    "PIN": "f35096d88178f3acf3e6bf475974379d7e7b2ce116325c2a3ea9b355cbc93267"
+  },
+  "src/UpstreamExecutionStop/stage.py": {
+    "BLOCK_PINS": {
+      "bool CheckInterrupt(": "e907f75f5d88bdfda6f10b49deb9a450637489ee2da8ece9e85ce085073c635c",
+      "static int Poll(": "c270251f91a5249085c6317057279a6738cb1d80e5ae10cfde6c399895e1c61b"
+    },
+    "SOURCE_PIN": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3"
+  },
+  "src/UpstreamGuestRuntime/stage.py": {
+    "ORIGINAL_PIN": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3",
+    "PREDECESSOR_PIN": "653c1ef70a4db9fef7968cf7cac5e57f1c9883668b6ba7899c2bbe232958f011"
+  },
+  "src/UpstreamGuestThreads/stage.py": {
+    "ORIGINAL_PIN": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3",
+    "PREDECESSOR_PIN": "6f25ab2610e6a4fc722213aff297abb32ac2d0ea7ca248d4b4a65313243796ec",
+    "SIGNAL_PIN": "e4a1a44787a5e99022a5d8224165e0c551275b4706b9f689f4f826e4f0b95c5a"
+  },
+  "src/UpstreamInteger/stage.py": {
+    "BLOCK_PINS": {
+      "alu.c": {
+        "i64 Inc32(": "4ef5bca0e414c90dbdd7d9950307d6be646f2e1222d644ba10e07761255c3615",
+        "i64 Inc64(": "6fa095c3f530cb3d83f58d40497208a1e8dbfcfe27717d7b860b7e091e0fb31b",
+        "i64 Inc8(": "b02161171469198c16b474a358e15062f432341ef68dac007e092383f7e2485b",
+        "i64 Inc16(": "545b606a9e35e75333458ad6c6bcea92a6f77376ce9ed4c5ba7cad157071e4ce",
+        "i64 Neg8(": "417b944192c72d338237baf6d67bbae8f68919a900bc52ecbe0cdc45996fe977",
+        "i64 Neg16(": "825a6b2244d383cea1edf171708d5e85b521c44f55051beacd9c3d1d482635e3",
+        "i64 Neg32(": "e37d213f44cd21a71742d6f6c102e54525b6742f9857d0812c113b6efd9539d7",
+        "i64 Neg64(": "649df0cbad243bd670f84ab2543cf6fb2eccb2bff02fee1e0bd173fa46bcfa36"
+      },
+      "machine.c": {
+        "static void OpCmpxchg8b(": "d7ae10f0e906c9b3a6037c00c04b82384f850715541bab82c42e5293d928865c"
+      }
+    },
+    "SOURCE_PINS": {
+      "alu.c": "673ddd60cb6fb1de6ea9f02a4e8e958f3c299a522dd754b4e82950e7a21fc4f4",
+      "machine.c": "73a32c95fbc191394c116bd2f41ebba464c963718b3785adaca22c5a93e8dc89"
+    }
+  },
+  "src/UpstreamMremap/stage.py": {
+    "BLOCK_PIN": "1ac9b2d866051b6ae2d2554ab8ebdf0f5992474df744d76ea67cd62188034f97",
+    "ORIGINAL_PIN": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3",
+    "PREDECESSOR_PIN": "33d8714ae03d9051342554ed3d1643f1be7360f6efb121ce84120a628efae3d3",
+    "SIGNAL_PIN": "e4a1a44787a5e99022a5d8224165e0c551275b4706b9f689f4f826e4f0b95c5a"
+  },
+  "tests/CpuConformance/selection.py": {
+    "FIRST512_SHA256": "b1476860cd0c7037f08b54f74cafe0b7d1a718b8393f2c7ab6187b2339d1dcd3",
+    "FIRST514_SHA256": "7c71d33bb67e493105de9bac0b4fc82d4ff1626a246f8dbfa582569895a70bc6",
+    "FIRST546_SHA256": "2d539a5ace85abde2cf5f6e352d9889e68b49c743bb294f81470ef6c9edf2ed0",
+    "FIRST550_SHA256": "954b09d324ef358a960cb283ed3f2b8f7b5ed85961f0dc2d34ff4dae39efa1f4",
+    "ORIGINAL_CASES_SHA256": "bcdd790f0b537c50715135afdd8401850cdff1ffa58cd4f04e46484fc208767a",
+    "REVIEWED_INPUTS": {
+      "corpus.h": "b3fc0b8a8422a6293559b0de8c55971d343c616cf3dd976e8e26afbe97ec1fa9",
+      "fp-cases.h": "0ecfbb3df62bb8b9838315eafa473455019e60e384023b118b5fe96587c79053"
+    }
+  },
+  "tests/DotNetService/native-gc-profile.py": {
+    "BINARY_SHA": "b8fc2c2ba465ded0349c46ecd332dc361ebd0d8c7265b17938adc7e79eac82b3",
+    "BUILD_RECEIPT_SHA": "8876eaf0cda1c0cc9ec81e163a9293745caa436215dec90790ff6f57acce8505",
+    "ORACLE_SHA": "0f89f12c6eb2f990e4841cc60d329f6db85df78f33412bc2c665605fa0d74833"
+  },
+  "tests/DotNetThreadedGuestExecution/run.py": {
+    "gc_receipt_sha256": "f145da71d5032421fdd40bd368d248cad4918065b0b07ee545e32772fab7bb55",
+    "guest_receipt_sha256": "8876eaf0cda1c0cc9ec81e163a9293745caa436215dec90790ff6f57acce8505"
+  },
+  "tests/EndianIntrinsics/run.py": {
+    "PINNED": {
+      "endian.h": "630c0a03219a13ef0382cb77f30ebe9b9a65c41bdf76621311e3720e91384e8c",
+      "builtin.h": "c31706d513c771644bd3e5e2f813f0506a7a8fc3f4c8150f0e6fae49c8fa98c4",
+      "swap.h": "ce00462ce0cf05153e9a301b333aac9ebd7d2e07a06d23b5fd44bf7689ea2a11",
+      "types.h": "99c285ad5988a520fc3b815feca32d6f91a387c6aa7ab214d0fa1a73d3175736"
+    }
+  },
+  "tests/KestrelGuestExecution/budget-assessment.py": {
+    "BASE_SHA": "95e9dcd1133dcc11d74c3fb5b1c359c6876dd6757dec041fc92a2a5f188d8e44",
+    "HELPER_SHA": "cc34c2fed39764057a9ebb8fa1d54bd351c7510575172b499630ec5fa6e95953"
+  },
+  "tests/KestrelGuestExecution/float-register-assessment.py": {
+    "BASE_SHA": "95e9dcd1133dcc11d74c3fb5b1c359c6876dd6757dec041fc92a2a5f188d8e44",
+    "HELPER_SHA": "cc34c2fed39764057a9ebb8fa1d54bd351c7510575172b499630ec5fa6e95953",
+    "debug_binary_sha256": "170bb1bad50c7f4585f4ebc0d0528274ca4cfd42480ac5246a1f0c621a8dd6ae",
+    "guest_elf_sha256": "ef6f1433794a42fe32b0fed4851bf88dd0631cd6a836550c6effca79d9e9a3ac"
+  },
+  "tests/KestrelGuestExecution/register-assessment.py": {
+    "BASE_SHA": "95e9dcd1133dcc11d74c3fb5b1c359c6876dd6757dec041fc92a2a5f188d8e44",
+    "HELPER_SHA": "cc34c2fed39764057a9ebb8fa1d54bd351c7510575172b499630ec5fa6e95953",
+    "debug_binary_sha256": "170bb1bad50c7f4585f4ebc0d0528274ca4cfd42480ac5246a1f0c621a8dd6ae",
+    "guest_elf_sha256": "ef6f1433794a42fe32b0fed4851bf88dd0631cd6a836550c6effca79d9e9a3ac"
+  },
+  "tests/KestrelGuestExecution/reservation-evidence.py": {
+    "attempt_receipt_sha256": "e7e2075e1b6b6088724093069e592dd7d8a7fbb23bd35c720094b2995c4e4af7",
+    "core_source_00005_sha256": "891ff71b4d29d13498abfe2878fc2df496f4c7414f046aa40ace8f48ae0d56ca",
+    "core_source_00010_sha256": "b89d3e87366c5fae3042f7c4da543472c663f6e4d6f932e4d4a46088c2a41ff0",
+    "execution_source_sha256": "be5a6a6a4806bbb9d408c87a82abdf36a270b1410cae2635fdb94458114435ed",
+    "guest_elf_sha256": "ef6f1433794a42fe32b0fed4851bf88dd0631cd6a836550c6effca79d9e9a3ac",
+    "guest_resources_source_sha256": "88f3e01f7f50c98b55e06e0eea5e79840fb894c3678ea9e1161e564bf418961f",
+    "loader_sha256": "8175b61a1de47f9decf91e71f682e73f5260b66ca1eba6686c2d4d302bcd751c",
+    "memorymalloc_sha256": "589becd0e214d5f422e75a9b63b1bf5d5280b3f8ca4e00dc212ede120e945b12",
+    "native_trace_sha256": "5114818b518b04fb4e1902f24f3faa2dfda9edcac6c7b06d21c91ffe32122132",
+    "result_sha256": "5fe079f63162191852f93819771e74bc82605eb02b8e074151b8a7bf418ce544",
+    "syscall_sha256": "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3",
+    "tunables_sha256": "f9126c9f4f52f17afe9fee2ad65ab3797391e32868dd3823f9ef8989e9268f90"
+  },
+  "tests/KestrelGuestExecution/run.py": {
+    "GUEST_SHA": "7bc07c1e8d01dd3d326fdbb436473ff0b2b8dcaf2910aea6fffebdaa7b119865",
+    "PROFILE_SHA": "e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a"
+  },
+  "tests/KestrelService/build-native.py": {
+    "IMAGE_DIGEST": "sha256:240a20b94625153877c8ec4ed0394d3396f243a5663fe74b8f601c31f1dac3fc"
+  },
+  "tests/KestrelWorkerInstances/run.py": {
+    "native_receipt_sha256": "7bc07c1e8d01dd3d326fdbb436473ff0b2b8dcaf2910aea6fffebdaa7b119865",
+    "profile_receipt_sha256": "e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a"
+  },
+  "tests/MachineApi/run-kestrel.py": {
+    "NATIVE_SHA": "7bc07c1e8d01dd3d326fdbb436473ff0b2b8dcaf2910aea6fffebdaa7b119865",
+    "PROFILE_SHA": "e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a"
+  },
+  "tests/ManagedConsumerDelivery/run.py": {
+    "NATIVE_SHA": "7bc07c1e8d01dd3d326fdbb436473ff0b2b8dcaf2910aea6fffebdaa7b119865",
+    "PROFILE_SHA": "e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a"
+  }
+}

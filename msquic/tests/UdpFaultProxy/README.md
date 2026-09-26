@@ -49,6 +49,12 @@ The refreshed run is recorded in `artifacts/udp-proxy-expired-controls.log`.
 peer binaries through this proxy. It checks the baseline source/executable
 hashes before reuse, requires successful payload/FIN/shutdown results, and
 rejects a case when its requested fault did not actually occur. Selected runs
-produce `targeted_passed`; only the complete packet recovery subset can produce
-`passed`. Neither qualifies the entire P7 feature matrix. The recovery driver
+without warnings produce `targeted_passed`; only the complete packet recovery
+subset without warnings can produce `passed`. Recognized upstream rebinding and
+decreasing-MTU limitations warn and continue by default, retaining failed recovery
+results and counting them separately in `cases_warned`. `verification_passed`
+records completion without unexpected failures. Use `--strict-recovery` for
+fail-fast qualification. Neither mode qualifies the entire P7 feature matrix.
+Run `python3 msquic/tests/UdpFaultProxy/test_recovery_warnings.py` for the warning
+policy's acceptance and rejection controls. The recovery driver
 has targeted results described in [the recovery campaign](../../docs/recovery-campaign.md).

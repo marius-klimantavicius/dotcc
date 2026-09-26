@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 """Stage a guarded membarrier dispatch after the exact reviewed stop adapter."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['src/UpstreamGuestRuntime/stage.py']
+
 import argparse
 import difflib
 import hashlib
@@ -9,9 +18,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-REVISION = "f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580"
-ORIGINAL_PIN = "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3"
-PREDECESSOR_PIN = "653c1ef70a4db9fef7968cf7cac5e57f1c9883668b6ba7899c2bbe232958f011"
+REVISION = _CAMPAIGN_SOURCE["revision"]
+ORIGINAL_PIN = _CAMPAIGN_INPUTS['ORIGINAL_PIN']
+PREDECESSOR_PIN = _CAMPAIGN_INPUTS['PREDECESSOR_PIN']
 sha = lambda value: hashlib.sha256(value).hexdigest()
 HELPER = '''#include "host-membarrier.h"
 #if !defined(DISABLE_THREADS) || !defined(NOLINEAR) || !defined(DISABLE_JIT) || defined(HAVE_THREADS) || defined(HAVE_FORK)

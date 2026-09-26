@@ -38,19 +38,18 @@ def run(command,label,timeout=600):
     return (out / (label+'.log')).read_text()
 try:
     receipt['inputs']={str(p.relative_to(ROOT)):sha(p)
-        for directory in ['sqlite/src','sqlite/config','sqlite/tests/ManagedConsumer','sqlite/scripts']
+        for directory in ['sqlite/src','sqlite/config','sqlite/samples/ManagedConsumer','sqlite/scripts']
         for p in (ROOT / directory).rglob('*') if p.is_file() and not any(part in ('bin','obj','__pycache__') for part in p.parts)}
-    run(['bash',SQLITE / 'scripts/emit-engine.sh','--no-postprocess'],'fresh-emission',1200)
-    library=SQLITE / 'generated/TranslatedSqlite'
+    run(['bash',SQLITE / 'scripts/translate.sh','--tools','reuse'],'fresh-emission',1800)
+    library=SQLITE / 'generated/TranslatedSqlite.Raw'
     receipt['raw_sources']={str(p.relative_to(library)):sha(p) for p in library.rglob('*') if p.is_file()}
     shutil.copytree(library,work / 'raw')
-    project=SQLITE / 'tests/ManagedConsumer/ManagedConsumer.csproj'
+    project=SQLITE / 'samples/ManagedConsumer/ManagedConsumer.csproj'
     expected=None
     for mode in ['raw','optimized']:
-        if mode=='optimized':
-            run(['dotnet','restore',library / 'TranslatedSqlite.csproj'],'optimized-restore')
-            run(['dotnet',post,library / 'TranslatedSqlite.csproj','--in-place'],'postprocess')
-        run(['dotnet','build',project,'-c','Release','-p:WarningsAsErrors=CS8500'],mode+'-build')
+        library=SQLITE / 'generated' / ('TranslatedSqlite.Raw' if mode=='raw' else 'TranslatedSqlite')
+        property='-p:SqliteProject='+str(library / 'TranslatedSqlite.csproj')
+        run(['dotnet','build',project,'-c','Release','-p:WarningsAsErrors=CS8500',property],mode+'-build')
         jit=project.parent / 'bin/Release/net10.0/ManagedConsumer.dll'
         jit_hashes={p.name:sha(p) for p in jit.parent.glob('*.dll')}
         output=run(['dotnet',jit],mode+'-jit',120)
@@ -59,7 +58,7 @@ try:
         if expected is None:expected=output
         if output!=expected or 'GC and cleanup passed' not in output:raise RuntimeError('Managed consumer transcript mismatch')
         publish=work / (mode+'-aot')
-        run(['dotnet','publish',project,'-c','Release','-r','linux-x64','-p:PublishAot=true','-p:WarningsAsErrors=CS8500','-o',publish],mode+'-aot-build',900)
+        run(['dotnet','publish',project,'-c','Release','-r','linux-x64','-p:PublishAot=true','-p:WarningsAsErrors=CS8500',property,'-o',publish],mode+'-aot-build',900)
         executable=publish / 'ManagedConsumer';digest=sha(executable)
         if run([executable],mode+'-aot',120)!=expected:raise RuntimeError('AOT transcript mismatch')
         if sha(executable)!=digest:raise RuntimeError('AOT binary drift')

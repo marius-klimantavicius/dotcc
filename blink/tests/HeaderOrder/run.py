@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Native-check socket/guest records in both include orders, then link objects."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import argparse,hashlib,json,os
 from pathlib import Path
 import shutil,subprocess,sys,tempfile,xml.etree.ElementTree as ET
@@ -10,7 +18,7 @@ parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--nativ
 base=ROOT/'generated/header-order';base.mkdir(parents=True,exist_ok=True)
 a=Path(tempfile.mkdtemp(prefix='attempt-',dir=base));out=ROOT/'artifacts/header-order'/a.name;out.mkdir(parents=True)
 cli=REPO/'DotCC/bin/Release/net10.0/dotcc.dll';post=REPO/'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
-upstream=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+upstream=ROOT/("ref/" + _CAMPAIGN_SOURCE["directory"])
 r={'scope':'opposite socket/guest header orders and real record layout, not guest execution','passed':False,'results':{}}
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 def save():(out/'receipt.json').write_text(json.dumps(r,indent=2)+'\n')

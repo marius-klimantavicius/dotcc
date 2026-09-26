@@ -14,4 +14,15 @@ wint_t pinta_test_putwchar(wchar_t value);
 #define wcslen pinta_test_wcslen
 #define wcscmp pinta_test_wcscmp
 #define wcstombs_s pinta_test_wcstombs_s
+/* Authored test diagnostics; engine-only/product builds do not define these. */
+void pinta_test_trace_step(void *thread, unsigned code);
+void pinta_test_trace_type(void *object);
+void pinta_test_trace_load(int exception, void *domain);
+void pinta_test_trace_gc(void *parent, void *child, unsigned index, unsigned field);
+void pinta_test_trace_scratch(void *start, void *end, unsigned count);
+#define PINTA_TEST_TRACE_STEP(thread, code) pinta_test_trace_step(thread, code)
+#define PINTA_TEST_TRACE_TYPE(object) pinta_test_trace_type(object)
+#define PINTA_TEST_TRACE_LOAD(exception, domain) pinta_test_trace_load(exception, domain)
+#define PINTA_TEST_TRACE_GC(parent, child, index, field) pinta_test_trace_gc(parent, child, index, field)
+#define PINTA_TEST_TRACE_SCRATCH(start, end, count) pinta_test_trace_scratch(start, end, count)
 #endif

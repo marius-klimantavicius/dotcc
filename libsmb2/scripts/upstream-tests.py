@@ -4,6 +4,7 @@
 Shell assertions are orchestrated by the C# UpstreamRunner; native instrumentation
 and unavailable server profiles remain explicit skips in its per-case receipt.
 """
+import sys
 import argparse
 import json
 from pathlib import Path
@@ -13,6 +14,7 @@ import subprocess
 import tempfile
 import time
 from common import ROOT, SOURCE_SPEC, fetch, run, sha
+from campaigns.compat import policy
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--no-build', action='store_true', help='Use the existing upstream executable manifest')
@@ -30,7 +32,7 @@ container = None
 try:
     source = fetch()
     if not args.no_build:
-        command = ['python3', ROOT / 'scripts/translate-upstream.py']
+        command = [sys.executable, ROOT / 'scripts/translate-upstream.py']
         if not args.jit_only:
             command.append('--aot')
         run(command, logs / 'translation.log', receipt, timeout=14400)
@@ -43,8 +45,7 @@ try:
         raise RuntimeError('Upstream build receipt changed; rebuild the programs')
     if sha(ROOT / 'scripts/translate-upstream.py') != manifest['harnessSha256']:
         raise RuntimeError('Upstream build script changed; rebuild the programs')
-    if sha(ROOT / 'artifacts/translation-legacy/result.json') != manifest['translationReceiptSha256']:
-        raise RuntimeError('Library translation changed since upstream executables were built; rebuild them')
+    policy().check(Path(manifest['translationReceipt']), manifest['translationReceiptSha256'])
     for name, digest in manifest['configurationSha256'].items():
         if sha(ROOT / name) != digest:
             raise RuntimeError('Library translation configuration changed; regenerate first')

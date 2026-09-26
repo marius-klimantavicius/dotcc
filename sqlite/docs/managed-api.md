@@ -63,7 +63,7 @@ with `-shared`, `--shared`, or an explicit native library binding failed as inte
 These checks exercise a reduced callback table, not the SQLite engine.
 
 
-The actual `tests/ManagedConsumer` project references the complete generated
+The actual `samples/ManagedConsumer` project references the complete generated
 SQLite library and selects WAL on its real temporary database. Its JIT and
 linux-x64 NativeAOT checks exercise schema,
 indexes/views/triggers, prepared inserts, joins/aggregates, correlated queries,

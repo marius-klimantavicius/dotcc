@@ -1,0 +1,26 @@
+--- a/Marius.Pinta/src/gc.c
++++ b/Marius.Pinta/src/gc.c
+@@ -28,6 +28,9 @@
+             if (internal == NULL)
+                 continue;
+ 
++#ifdef PINTA_TEST_TRACE_GC
++            PINTA_TEST_TRACE_GC(object, internal, state.index, state.field);
++#endif
+             pinta_gc_mark_object(core, internal);
+         }
+     }
+@@ -740,7 +743,12 @@
+         // look through threads for space for reloc info, use the one that has the most free space [all mutators must be stopped at this point]
+         // in the worst case we will use single entry allocated in the native stack
+ 
+-        count = (u32)((PintaHeapReloc*)&current->stack_end[0] - (PintaHeapReloc*)&current->frame->stack[1]);
++        /* The free stack byte count need not be a multiple of sizeof(PintaHeapReloc).
++         * Subtract bytes first: subtracting cast struct pointers is undefined here. */
++        count = (u32)(((u8*)current->stack_end - (u8*)&current->frame->stack[1]) / sizeof(PintaHeapReloc));
++#ifdef PINTA_TEST_TRACE_SCRATCH
++        PINTA_TEST_TRACE_SCRATCH(&current->frame->stack[1], &current->stack_end[0], count);
++#endif
+ 
+         if (count > reloc_count)
+         {

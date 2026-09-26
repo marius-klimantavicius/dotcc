@@ -32,3 +32,7 @@ ir-emit-probe.txt
 
 # captured test-run output
 *.log
+
+# Python campaign helpers and shared tool-build lock
+__pycache__/
+Scripts/.campaign-tools.lock

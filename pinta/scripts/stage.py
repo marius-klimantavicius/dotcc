@@ -1,20 +1,57 @@
 #!/usr/bin/env python3
-"""Copy immutable core/test closure, then apply exact before/patch/after hashes."""
-import hashlib,json,pathlib,shutil,subprocess,sys,tempfile
-ROOT=pathlib.Path(__file__).resolve().parents[1]
-def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+"""Copy the core/test closure and apply unambiguous local-context patches."""
+import json
+from pathlib import Path
+import shutil
+import sys
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, references
+from campaigns.identity import apply_unified_patch
+
+
+def stage(source, destination, *, pristine=False, hashes=None):
+    hashes = hashes or policy()
+    shutil.copytree(source / "Marius.Pinta", destination / "Marius.Pinta")
+    if pristine:
+        return destination
+    pending = []
+    for item in json.loads((ROOT / "config/patches.json").read_text()):
+        target = destination / item["path"]
+        patch = ROOT / "config" / item["patch"]
+        if not target.resolve().is_relative_to(destination.resolve()) or not patch.resolve().is_relative_to((ROOT / "config").resolve()):
+            raise RuntimeError("Unsafe patch path")
+        if hashes.mode == "strict":
+            hashes.check(target, item["before_sha256"])
+            hashes.check(patch, item["patch_sha256"])
+        adapted = apply_unified_patch(target.read_text(), patch.read_text(), label=item["path"])
+        pending.append((target, adapted, item))
+    for target, adapted, item in pending:
+        target.write_text(adapted)
+        if hashes.mode == "strict":
+            hashes.check(target, item["after_sha256"])
+    return destination
+
+
 def main():
-    subprocess.run([sys.executable,str(ROOT/'scripts/fetch.py'),'--offline'],check=True)
-    dest=ROOT/'generated/native-input';dest.parent.mkdir(exist_ok=True)
-    with tempfile.TemporaryDirectory(dir=dest.parent) as tmp:
-        temp=pathlib.Path(tmp)
-        shutil.copytree(ROOT/'ref/upstream/Marius.Pinta',temp/'Marius.Pinta')
-        for item in json.loads((ROOT/'config/patches.json').read_text()):
-            source=temp/item['path'];patch=ROOT/'config'/item['patch']
-            if sha(source)!=item['before_sha256'] or sha(patch)!=item['patch_sha256']:raise SystemExit('Patch input hash mismatch: '+item['path'])
-            subprocess.run(['patch','--batch','--forward','-p1','-i',str(patch)],cwd=temp,check=True)
-            if sha(source)!=item['after_sha256']:raise SystemExit('Patch output hash mismatch: '+item['path'])
-        if dest.exists():shutil.rmtree(dest)
-        temp.rename(dest)
-    print(dest)
-if __name__=='__main__':main()
+    source = references(ROOT, no_fetch=True)["product"]
+    destination = ROOT / "generated/native-input"
+    destination.parent.mkdir(exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=destination.parent) as temp:
+        staged = stage(source, Path(temp) / "source")
+        backup = Path(temp) / "previous"
+        if destination.exists():
+            destination.rename(backup)
+        try:
+            staged.rename(destination)
+        except BaseException:
+            if backup.exists():
+                backup.rename(destination)
+            raise
+    print(destination)
+
+
+if __name__ == "__main__":
+    main()

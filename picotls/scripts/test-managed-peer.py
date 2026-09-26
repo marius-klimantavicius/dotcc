@@ -47,7 +47,7 @@ if args.no_prepare:
     if not (source / "include/picotls.h").is_file():
         raise SystemExit("Missing pinned source; prepare it with scripts/fetch.sh before product-only tests")
 else:
-    source = Path(subprocess.check_output([str(root / "scripts/fetch.sh")], text=True).strip())
+    source = Path(subprocess.check_output([os.environ.get("PYTHON_CMD", "python3"), str(root.parent / "Scripts/campaign-reference.py"), "picotls"], text=True).strip())
 oracle = root / "build/oracle"
 if not (oracle / "libpicotls-openssl.a").exists():
     if args.no_prepare:
@@ -62,8 +62,8 @@ execute("build-native", ["cc", "-std=c17", "-O2", "-g", "-Wall", "-Wextra", "-We
 project = root / "tests/IndependentPeer/IndependentPeer.csproj"
 execute("build-independent", ["dotnet", "build", str(project), "-c", "Release"], 600)
 independent = ["dotnet", str(project.parent / "bin/Release/net10.0/IndependentPeer.dll")]
-managed_project = root / "ManagedConsumer/ManagedConsumer.csproj"
-translated_project = root / ("generated/TranslatedPicotlsRaw/TranslatedPicotls.csproj" if args.raw else "generated/TranslatedPicotls/TranslatedPicotls.csproj")
+managed_project = root / "samples/ManagedConsumer/ManagedConsumer.csproj"
+translated_project = root / ("generated/TranslatedPicotls.Raw/TranslatedPicotls.csproj" if args.raw else "generated/TranslatedPicotls/TranslatedPicotls.csproj")
 if not translated_project.exists():
     raise SystemExit("Run scripts/translate.sh before managed TLS validation")
 properties = ["-p:PicotlsProject=" + str(translated_project)]

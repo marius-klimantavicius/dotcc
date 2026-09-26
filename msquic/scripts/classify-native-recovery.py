@@ -86,10 +86,11 @@ def validate_harness_deadline(case):
     return evidence
 
 
-def validate_case(case):
+def validate_case(case, *, allow_mixed=False):
     scenario, role = case['scenario'], case['managed_role']
     result = dict(kind='strict_success' if case['passed'] else 'rebinding_new_path_unvalidated', evidence_files={})
-    check(role in ('native', 'both'), 'Classifier requires native/native or managed/managed pairs')
+    check(role in (('native', 'both', 'client', 'server') if allow_mixed else ('native', 'both')),
+          'Classifier requires native/native or managed/managed pairs')
     check(case['proxy_stopped_before_server_cleanup'], 'Missing proxy/endpoint cleanup barrier')
     # The peer sends its response only after receiving the complete request.
     # A client-direction black hole can therefore prevent the server from ever
@@ -107,7 +108,7 @@ def validate_case(case):
         check(case['both_stream_fin_acknowledged_before_close'], 'Missing pre-close stream FIN acknowledgment barrier')
         for endpoint in ('client', 'server'):
             peer = case[endpoint]
-            recovery.validate_peer(peer, endpoint, role == 'both', case['runtime'], case['cipher'], case['family'])
+            recovery.validate_peer(peer, endpoint, role in ('both', endpoint), case['runtime'], case['cipher'], case['family'])
             check(peer['send_fin_acknowledged'], 'Endpoint did not acknowledge its send FIN')
             check(peer['connected'] == peer['finished'] == peer['closed'] == 1, 'Endpoint did not complete')
             check(peer['transport_status'] == peer['transport_error'] == peer['peer_error'] == 0, 'Unexpected terminal error')
@@ -129,13 +130,13 @@ def validate_case(case):
                   and peer['cipher'] == (0x1301 if case['cipher'] == '128' else 0x1302), 'Negotiation mismatch')
             check(0 <= peer[endpoint + '_bytes'] < 65537 and peer['statistics_status'] == 0,
                   'Expected sampled incomplete payload accounting')
-            if role == 'both':
+            if role in ('both', endpoint):
                 ownership(peer)
     recovery.validate_faults(case['proxy'], 'mtu-probe-loss' if scenario == 'payload-ceiling-down' else scenario,
                             recovery.completed_server_pid(case) if scenario != 'payload-ceiling-down' else None)
     if scenario.startswith('rebinding'):
         server = case['server']
-        if role == 'native':
+        if role not in ('both', 'server'):
             check(server['private_paths_snapshot'], 'Missing actual native core-header path snapshot')
         paths = [p for p in server['paths'] if p['in_use']]
         active = [p for p in paths if p['active']]

@@ -1,6 +1,6 @@
 # Build and run
 
-The Linux x64 campaign requires .NET 10 SDK and Python 3.12+. Native controls also
+The Linux x64 campaign requires .NET 10 SDK and Python 3.11+. Native controls also
 require CMake, a C compiler, and Docker; NativeAOT requires the SDK's native
 toolchain prerequisites. First source acquisition and tool restore use the network.
 
@@ -13,11 +13,13 @@ dotnet run --project libsmb2/samples/ManagedConsumer -c Release -- --help
 ```
 
 Translation resolves inputs relative to the script and also works when invoked
-by absolute path from another directory. It verifies the pinned source, emits all
+by absolute path from another directory. It prepares the selected source, emits all
 53 units, links and builds raw C#, runs the semantic postprocessor, and builds
 the product before promotion to `generated/TranslatedLibsmb2/`. Failed attempts
 leave the prior product in place, with a failed receipt in
-`artifacts/translation/result.json`. Check that receipt before using old output.
+`artifacts/campaign/<run-id>/receipt.json`. Check `latest-attempt.json` before
+using old output. Hash drift is advisory by default; see the
+[shared campaign commands](../../docs/campaigns.md).
 `--jobs N` controls independent unit emission (1–16, default 4).
 
 The default product uses completion-driven BCL sockets and the awaitable managed
@@ -36,8 +38,9 @@ Unchanged upstream tests use this separately generated compatibility baseline:
 ./libsmb2/scripts/upstream-tests.sh
 ```
 
-Its output is `generated/TranslatedLibsmb2.Legacy/` (and `.Legacy.Raw/`), with
-`artifacts/translation-legacy/result.json`. It never replaces the default product.
+Its output is `generated/profiles/legacy/TranslatedLibsmb2/` (and
+`TranslatedLibsmb2.Raw/`), with `artifacts/campaign/current-legacy.json`
+pointing at its translation receipt. It never replaces the default product.
 Those original manually polled test programs qualify the legacy baseline, while
 the managed sample and async host/lifetime checks qualify the new transport.
 

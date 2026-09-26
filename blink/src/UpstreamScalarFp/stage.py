@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
 """Stage only reviewed pinned scalar FP paths, requiring interpreter mode."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import argparse, difflib, hashlib, json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-UPSTREAM = ROOT / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink'
+UPSTREAM = ROOT / ("ref/" + _CAMPAIGN_SOURCE["directory"] + '/blink')
 sha = lambda data: hashlib.sha256(data).hexdigest()
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output', type=Path, required=True)
@@ -13,7 +21,7 @@ p.add_argument('--receipt', type=Path, required=True)
 a = p.parse_args()
 a.output.mkdir(parents=True, exist_ok=True)
 receipt = {'kind': 'reviewed-upstream-scalar-fp-correction',
-           'upstream': 'f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580',
+           'upstream': _CAMPAIGN_SOURCE["revision"],
            'stage_sha256': sha(Path(__file__).read_bytes()),
            'manifest_sha256': sha((HERE / 'patch-inputs.json').read_bytes()),
            'scope': 'scalar COMIS/UCOMIS, SS/SD-to-GPR, SS/SD/PS/PD comparison masks, and SIMD Linux signal code; DISABLE_JIT required',

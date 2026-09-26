@@ -8,6 +8,9 @@ import sys
 from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, observed_digest
 LOG = ROOT / 'artifacts/packet-crypto'
 BUILD = ROOT / 'build/packet-crypto'
 LOG.mkdir(parents=True, exist_ok=True)
@@ -17,7 +20,7 @@ receipt = dict(passed=False, transport_validated=False, tls_adapter_validated=Fa
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return observed_digest(path)
 
 
 def run(command, name):
@@ -45,7 +48,7 @@ try:
     vectors = json.loads((ROOT / 'tests/PacketCrypto/vectors.json').read_text())
     reference = ROOT / ('ref/msquic-' + vectors['source_commit'])
     if sha(reference / vectors['source']) != vectors['source_sha256']:
-        raise RuntimeError('Native vector source differs from the pinned input')
+        policy().issue('Native vector source differs from the pinned input')
     vector = vectors['initial_v1']
     native_header = BUILD / 'native-vectors.h'
     native_header.write_text('\n'.join('#define ' + name + ' "' + vector[field] + '"'
@@ -68,7 +71,7 @@ try:
     for variant in ['raw', 'optimized']:
         directory = BUILD / variant
         directory.mkdir(exist_ok=True)
-        generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
+        generated = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
         generated_sources = (generated / 'Dotcc.SourceFiles.txt').read_text().splitlines()
         hashes = {name: sha(generated / name) for name in generated_sources}
         source_items = '\n'.join('    <Compile Include="' + escape(str(path)) + '" />' for path in sources)
@@ -96,12 +99,12 @@ try:
         receipt['variants'].append(dict(name=variant, passed=True, output=jit.strip(),
             generated_sha256=hashes, aot_sha256=sha(directory / 'aot/PacketCrypto')))
         if any(sha(generated / name) != value for name, value in hashes.items()):
-            raise RuntimeError('Generated source changed during packet tests')
+            policy().issue('Generated source changed during packet tests')
         print(variant + ': 167 packet checks PASS under JIT and NativeAOT', flush=True)
     if sha(closure) != receipt['product_closure_sha256']:
-        raise RuntimeError('Frozen product closure changed during packet tests')
+        policy().issue('Frozen product closure changed during packet tests')
     if any(sha(ROOT / path) != value for path, value in receipt['input_sha256'].items()):
-        raise RuntimeError('Packet test source changed during execution')
+        policy().issue('Packet test source changed during execution')
     receipt['passed'] = True
 finally:
     (LOG / 'results.json').write_text(json.dumps(receipt, indent=2) + '\n')

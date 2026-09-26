@@ -1,5 +1,7 @@
 # Build and verify translated SQLite
 
+See the [shared campaign commands and hash policy](../../docs/campaigns.md).
+
 Run commands from the repository's `sqlite/` directory. The supported initial
 profile is Linux x64, LP64, little endian, .NET 10, concurrent connections with
 serialized connections by default, and the real file-backed `dotcc-host` VFS
@@ -107,7 +109,7 @@ methods; public translated aggregate types and `delegate*` signatures preserve
 SQLite's callback surface. Numeric/string macros are also exposed as constants,
 for example `Sqlite.SQLITE_CHECKPOINT_TRUNCATE`, `Sqlite.SQLITE_OK`, and
 `Sqlite.SQLITE_VERSION`. Use `using Managed.Database;` for generated types and
-`using static Managed.Database.Sqlite;` for the API methods. `tests/ManagedConsumer` demonstrates explicit C#
+`using static Managed.Database.Sqlite;` for the API methods. `samples/ManagedConsumer` demonstrates explicit C#
 extension registration, ownership, callback re-entry and cleanup. No native SQLite
 library or dynamic extension loader is part of that integration. The default VFS
 uses `Managed.Database.HostVfs` for real files; OS-level P/Invoke supplies platform locking/durability alongside

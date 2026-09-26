@@ -32,7 +32,7 @@ An unrelated opaque type becoming complete therefore does not prevent sharing:
 of helpers such as `QuicConnIsServer`. Incompatible complete layouts still fail.
 
 The final postprocessed output stays in `generated/TranslatedMsQuic`; raw output
-stays in `generated/raw/TranslatedMsQuic`. Regenerate both with
+stays in `generated/TranslatedMsQuic.Raw`. Regenerate both with
 `scripts/translate.sh`. Older objects must be rebuilt to add inline metadata.
 
 ## Constant-backed helper sharing
@@ -52,7 +52,7 @@ one emitted global, despite having different method names.
 
 All 47 product units were rebuilt and postprocessed into
 `generated/TranslatedMsQuic` (raw output remains in
-`generated/raw/TranslatedMsQuic`).
+`generated/TranslatedMsQuic.Raw`).
 
 | Final generated source | Previous | Current |
 |---|---:|---:|

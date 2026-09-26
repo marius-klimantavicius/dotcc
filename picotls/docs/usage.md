@@ -87,13 +87,13 @@ is supplied separately under `src/BclProvider/`.
 
 Reference `src/BclProvider/BclProvider.csproj`; it references the generated
 `TranslatedPicotls.csproj`. The public namespace is `Managed.Security`. The
-[ManagedConsumer example](../ManagedConsumer/README.md) demonstrates the complete
+[ManagedConsumer example](../samples/ManagedConsumer/README.md) demonstrates the complete
 transport loop and explicit certificate policy. Build it independently after
 translation:
 
 ```sh
-dotnet build ManagedConsumer/ManagedConsumer.csproj -c Release
-dotnet publish ManagedConsumer/ManagedConsumer.csproj -c Release \
+dotnet build samples/ManagedConsumer/ManagedConsumer.csproj -c Release
+dotnet publish samples/ManagedConsumer/ManagedConsumer.csproj -c Release \
   -r linux-x64 -p:PublishAot=true -o build/managed-consumer-aot
 ```
 

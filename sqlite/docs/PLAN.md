@@ -332,7 +332,7 @@ regressions. Parser success, a build-only stub, or a SQL smoke test is insuffici
 
 ### M7 — Managed SQL workloads and canonical function pointers (complete)
 
-- [x] Extend `tests/ManagedConsumer` to create related tables, indexes/views and
+- [x] Extend `samples/ManagedConsumer` to create related tables, indexes/views and
       triggers; insert parameter-bound data; and assert complete result sets.
 - [x] Exercise simple predicates, joins, aggregates, correlated subqueries, CTEs,
       window functions, stored JSONB, updates, UPSERT, deletes, transactions and

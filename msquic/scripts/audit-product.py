@@ -211,7 +211,7 @@ try:
                                        tool_sha256=pico.get('tool_sha256', {}), input_revision=pico['inputs']['picotls']['revision'])
     patterns = dict(lex.PATTERNS)
     patterns['native TLS facade'] = re.compile(r'\bSslStream\b')
-    folders = [ROOT / 'src/BclHost', ROOT / 'src/ManagedApi', REPO / 'picotls/src/BclProvider', ROOT / 'samples/StreamRoundTrip']
+    folders = [ROOT / 'src/BclHost', ROOT / 'src/ManagedApi', REPO / 'picotls/src/BclProvider', ROOT / 'samples/ManagedConsumer']
     authored = [path for folder in folders for path in product_sources(folder)]
     global_aliases = {m[2]: re.sub(r'\s+', '', m[3]).replace('::', '.') for path in authored
                       for m in ALIASES.finditer(normalized_code(path.read_text())) if m[1]}
@@ -235,7 +235,7 @@ try:
             require(not any(n.tag.split('}')[-1] in ('PackageReference', 'Reference') for n in nodes), 'Unexpected external authored project dependency: ' + str(path))
     marker = lex.RUNTIME_MARKER
     for variant in ['raw', 'optimized']:
-        directory = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
+        directory = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
         check_hashes(closure['generated'][variant], directory, variant + ' generated closure')
         names = (directory / 'Dotcc.SourceFiles.txt').read_text().splitlines()
         require(bool(names) and len(names) == len(set(names)) and
@@ -254,7 +254,7 @@ try:
             report['violations'].extend(forbidden_quic(translated, path, {}))
             if separator:
                 report['embedded_runtime_imports'].extend(lex.native_imports(runtime, str(path.relative_to(REPO)), translated.count('\n')))
-        pico_directory = REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+        pico_directory = REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
         pico_files = lex.generated_files(pico_directory)
         require({p.name: sha(p) for p in pico_files} == pico[variant], 'Reused picotls generated closure differs: ' + variant)
         report['generated']['picotls-' + variant] = {p.name: sha(p) for p in pico_files}

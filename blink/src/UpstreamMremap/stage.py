@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 """Stage only old-mapping validation ahead of the existing unsupported mremap path."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['src/UpstreamMremap/stage.py']
+
 import argparse
 import difflib
 import hashlib
@@ -10,11 +19,11 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-REVISION = 'f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
-ORIGINAL_PIN = '4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3'
-PREDECESSOR_PIN = '33d8714ae03d9051342554ed3d1643f1be7360f6efb121ce84120a628efae3d3'
-BLOCK_PIN = '1ac9b2d866051b6ae2d2554ab8ebdf0f5992474df744d76ea67cd62188034f97'
-SIGNAL_PIN = 'e4a1a44787a5e99022a5d8224165e0c551275b4706b9f689f4f826e4f0b95c5a'
+REVISION = _CAMPAIGN_SOURCE["revision"]
+ORIGINAL_PIN = _CAMPAIGN_INPUTS['ORIGINAL_PIN']
+PREDECESSOR_PIN = _CAMPAIGN_INPUTS['PREDECESSOR_PIN']
+BLOCK_PIN = _CAMPAIGN_INPUTS['BLOCK_PIN']
+SIGNAL_PIN = _CAMPAIGN_INPUTS['SIGNAL_PIN']
 sha = lambda data: hashlib.sha256(data).hexdigest()
 VALIDATION = '''  // Validate ordinary source ranges using guest page-table reservations.
   // This does not implement resizing or relocation: mapped requests retain

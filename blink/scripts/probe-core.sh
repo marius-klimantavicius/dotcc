@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 campaign=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 repo=$(cd "$campaign/.." && pwd)
 native="$campaign/build/native/source"
-upstream="$campaign/ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580"
+upstream="$campaign/ref/$("$PYTHON_CMD" -c 'import json,sys; print(json.load(open(sys.argv[1]))["upstream"]["directory"])' "$campaign/config/source-manifest.json")"
 out="$campaign/artifacts/core"
 mkdir -p "$out" "$campaign/generated/core-profile"
 [[ -f "$native/o/blink/blink.a" ]] || { echo 'Run scripts/native-oracle.sh first' >&2; exit 1; }
@@ -13,11 +14,11 @@ timeout 60 cc -D_GNU_SOURCE -D_DEFAULT_SOURCE -DNOLINEAR -I "$native" \
 timeout 15 "$campaign/build/core-native" > "$out/native.txt" 2> "$out/native.stderr"
 # Linker extraction establishes an observed native dependency closure; it is
 # not yet the final managed profile and does not qualify host dependencies.
-python3 - "$campaign" <<'PY'
+"$PYTHON_CMD" - "$campaign" <<'PY'
 import hashlib, json, pathlib, re, sys
 p = pathlib.Path(sys.argv[1]); out = p/'artifacts/core'
 objects = sorted(set(re.findall(r'blink\.a\(([^()]+)\.o\)', (out/'native-link.map').read_text())))
-upstream = p/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+upstream = p/'ref'/json.loads((p/'config/source-manifest.json').read_text())['upstream']['directory']
 sources = []
 native_config=(p/'build/native/source/config.h').read_text()
 core_config=(p/'config/core-config.h').read_text()
@@ -51,7 +52,7 @@ print('native core probe passed; extracted', len(sources), 'upstream translation
 PY
 if [[ ${1:-} == --native-only ]]; then exit 0; fi
 # Match native core exclusions while keeping host capabilities explicit.
-attempt=$(python3 - "$campaign" <<'PY'
+attempt=$("$PYTHON_CMD" - "$campaign" <<'PY'
 import hashlib, json, pathlib, shutil, subprocess, sys, tempfile
 p=pathlib.Path(sys.argv[1])
 stage=pathlib.Path(tempfile.mkdtemp(prefix='attempt-',dir=p/'generated/core-profile'))
@@ -79,7 +80,7 @@ additions_path=p/'config/core-managed-additions.json'
 addition_manifest=json.loads(additions_path.read_text())
 additions=addition_manifest['sources']
 pins=upstream_inputs
-upstream=p/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+upstream=p/'ref'/json.loads((p/'config/source-manifest.json').read_text())['upstream']['directory']
 additional=stage/'additional'
 additional.mkdir()
 paths=[]
@@ -290,7 +291,7 @@ timeout "${CORE_TRANSLATION_TIMEOUT:-1800}" dotnet "$repo/DotCC/bin/Release/net1
   -o "$campaign/generated/CoreProbe" > "$out/translate.log" 2>&1
 status=$?
 set -e
-python3 - "$out" "$status" "$attempt" <<'PY'
+"$PYTHON_CMD" - "$out" "$status" "$attempt" <<'PY'
 import json, pathlib, shutil, sys
 p=pathlib.Path(sys.argv[1]); status=int(sys.argv[2]); attempt=pathlib.Path(sys.argv[3])
 receipt={'exit_code':status,'emitted':status==0,'managed_execution':'not run','log':'translate.log','staged_profile':str(attempt),'inputs':json.loads((attempt/'inputs.json').read_text())}

@@ -1,0 +1,19 @@
+--- a/Marius.Pinta/tests/pinta_tests.h
++++ b/Marius.Pinta/tests/pinta_tests.h
+@@ -40,7 +40,7 @@
+ #define PINTA_TEST_END(expected_exception) PINTA_EXIT: \
+     PINTA_GC_EXIT(core); \
+     pinta_dispose_tests(); \
+-    sput_fail_if(exception != (expected_exception), pinta_tests_message(L"Expected result - %d, actual result - %d", expected_exception, exception)); \
++    sput_fail_if(exception != (expected_exception), pinta_tests_exception_message(expected_exception, exception)); \
+ }
+ 
+ void pinta_init_tests(int heap_size, int stack_size);
+@@ -65,6 +65,7 @@
+ void pinta_tests_json(void);
+ 
+ char *pinta_tests_message(const wchar *format, ...);
++char *pinta_tests_exception_message(PintaException expected, PintaException actual);
+ 
+ PintaException pinta_test_load_module(PintaCore *core, wchar *filename, PintaModuleDomain **result);
+ PintaException pinta_test_execute_module(PintaCore *core, wchar *filename, PintaModuleDomain **result);

@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Derive CPU frontend and optional reviewed source corrections; qualify actual core all4."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import argparse,difflib,hashlib,json,os,shutil,subprocess,sys,tempfile,time
 from pathlib import Path
 import xml.etree.ElementTree as ET
@@ -196,7 +204,7 @@ try:
         for filename in staged['sources']:
             old=assembly['objects']['blink/'+filename]
             old_source=Path(old['command'][old['command'].index('-o')-1])
-            immutable=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink'/filename
+            immutable=ROOT/("ref/" + _CAMPAIGN_SOURCE["directory"] + '/blink')/filename
             if sha(old_source)!=old['emission_identity']['source_sha256']:
                 raise RuntimeError(family+' producer source changed: '+filename)
             corrected=prefix+(a/stage_name/filename).read_bytes()
@@ -217,7 +225,7 @@ try:
     r['inputs']={str(p.relative_to(a)):sha(p)for p in a.rglob('*')if p.is_file()}
     r['runner_sha256']=sha(Path(__file__));r['frontend_template_object']=prior
     if not adding_frontend:r['replaced_object']=prior
-    upstream=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+    upstream=ROOT/("ref/" + _CAMPAIGN_SOURCE["directory"])
     cpu_object=a/'objects/cpu-driver.cs'
     command=list(prior['command'])
     old_source=prior.get('canonical_source', command[command.index('-o')-1])

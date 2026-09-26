@@ -11,13 +11,17 @@ import tempfile
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import require_hash, observed_digest
+from provenance import picotls_provenance
 REPO = ROOT.parent
 PICO = REPO / 'picotls'
 PROJECT = ROOT / 'tests/EndpointControls/EndpointControls.csproj'
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return observed_digest(path)
 
 
 def require(value, message):
@@ -36,10 +40,11 @@ def generated(directory, recorded):
     actual = {str(p.relative_to(directory)) for p in directory.rglob('*.cs')
               if not {'bin', 'obj'}.intersection(p.relative_to(directory).parts)}
     require(actual == set(names), 'Unmanifested generated source')
-    require({n: sha(directory / n) for n in names} ==
+    require_hash({n: sha(directory / n) for n in names} ==
             {n: h for n, h in recorded.items() if n.endswith('.cs')}, 'Changed generated sources')
     for name, value in recorded.items():
-        require(Path(name).name == name and sha(directory / name) == value, 'Changed generated input: ' + name)
+        require(Path(name).name == name, 'Unsafe provenance path: ' + name)
+        require_hash(sha(directory / name) == value, 'Changed generated input: ' + name)
     return [directory / name for name in recorded]
 
 
@@ -86,9 +91,10 @@ def main():
 
     try:
         closure_path = ROOT / 'config/product-closure.json'
-        pico_path = PICO / 'artifacts/translation/success.json'
+        pico_path = PICO / 'artifacts/campaign/current-default.json'
         pin_path = ROOT / 'config/source.json'
-        closure, pico, pin = [json.loads(p.read_text()) for p in (closure_path, pico_path, pin_path)]
+        closure, pin = [json.loads(p.read_text()) for p in (closure_path, pin_path)]
+        pico = picotls_provenance(PICO)
         require(closure['revision'] == pin['commit'], 'Closure revision mismatch')
         receipt['product_closure_sha256'] = sha(closure_path)
         receipt['picotls_provenance_sha256'] = sha(pico_path)
@@ -113,12 +119,12 @@ def main():
                 if ancestor == REPO: break
         for relative, digest in pico['tool_sha256'].items():
             path = REPO / relative
-            require(sha(path) == digest, 'Changed qualified compiler/postprocessor')
+            require_hash(sha(path) == digest, 'Changed qualified compiler/postprocessor')
             paths.append(path)
         generated_inputs = {}
         for variant in args.variants:
-            ms = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
-            tls = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+            ms = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
+            tls = PICO / 'generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
             selected = generated(ms, closure['generated'][variant]) + generated(tls, pico[variant])
             paths += selected
             generated_inputs[variant] = (ms, tls)
@@ -130,15 +136,16 @@ def main():
         if native:
             baseline_path = ROOT / 'artifacts/managed-peer/results.json'
             baseline = json.loads(baseline_path.read_text())
-            require(baseline['passed'] and baseline['closure_sha256'] == sha(closure_path), 'Native comparison needs current full peer baseline')
+            require(baseline['passed'], 'Native comparison needs a passing peer baseline')
+            require_hash(baseline['closure_sha256'] == sha(closure_path), 'Peer baseline closure changed')
             for relative, digest in baseline['source_hashes'].items():
                 path = REPO / relative
-                require(sha(path) == digest, 'Native/host baseline source changed: ' + relative)
+                require_hash(sha(path) == digest, 'Native/host baseline source changed: ' + relative)
                 paths.append(path)
             native_peer = ROOT / 'build/managed-peer/native-peer'
             library = ROOT / 'build/native-oracle/bin/Release/libmsquic.so'
             for path in (native_peer, library):
-                require(baseline['binary_hashes'][str(path.relative_to(REPO))] == sha(path), 'Changed qualified native oracle')
+                require_hash(baseline['binary_hashes'][str(path.relative_to(REPO))] == sha(path), 'Changed qualified native oracle')
                 paths.append(path)
             openssl_config = ROOT / 'build/managed-peer/p256.cnf'
             require(openssl_config.read_text() == baseline['openssl_configuration'], 'Native group configuration changed')
@@ -192,8 +199,8 @@ def main():
                         mode=mode, profiles=actual, evidence=[line for line in lines if line.startswith('EVIDENCE endpoint ')],
                         stdout=text, binary_sha256=binaries))
                     save()
-                require(snapshot(p for p in directory.rglob('*') if p.is_file()) == binaries, 'Executed binaries changed')
-        require(snapshot(paths) == frozen, 'Endpoint execution inputs changed during campaign')
+                require_hash(snapshot(p for p in directory.rglob('*') if p.is_file()) == binaries, 'Executed binaries changed')
+        require_hash(snapshot(paths) == frozen, 'Endpoint execution inputs changed during campaign')
         for variant, (ms, tls) in generated_inputs.items():
             generated(ms, closure['generated'][variant]); generated(tls, pico[variant])
         receipt['targeted_passed'] = True

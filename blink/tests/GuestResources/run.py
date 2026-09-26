@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Run private resource C behavior through native and authored BCL callbacks."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import hashlib,json,os
 from pathlib import Path
 import shutil,subprocess,tempfile,xml.etree.ElementTree as ET
@@ -35,7 +43,7 @@ try:
     sys.path.insert(0,str(ROOT/'scripts'))
     from core_inputs import compiler_identity
     r['compiler']=compiler_identity(cli.parent);r['postprocessorSha256']=sha(post);r['runnerSha256']=sha(Path(__file__));r['head']=subprocess.check_output(['git','-C',str(REPO),'rev-parse','HEAD'],text=True).strip();save()
-    upstream=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+    upstream=ROOT/("ref/" + _CAMPAIGN_SOURCE["directory"])
     native=ROOT/'build/native/source'
     r['nativeArchiveSha256']=sha(native/'o/blink/blink.a')
     manifest=ROOT/'config/source-inventory.json'

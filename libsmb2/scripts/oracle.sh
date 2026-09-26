@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
-exec python3 "$(dirname -- "$0")/oracle.py" "$@"
+exec "$PYTHON_CMD" "$(dirname -- "$0")/oracle.py" "$@"

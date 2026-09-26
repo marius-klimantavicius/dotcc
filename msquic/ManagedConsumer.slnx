@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="generated/TranslatedMsQuic/TranslatedMsQuic.csproj" />
+  <Project Path="src/BclHost/BclHost.csproj" />
+  <Project Path="src/ManagedApi/ManagedApi.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>

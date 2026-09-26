@@ -37,8 +37,8 @@ podman rm blink-kestrel-export
 Run that executable through Blink and leave it serving browser requests:
 
 ```bash
-dotnet build blink/ManagedConsumer/ManagedConsumer.csproj -c Release --disable-build-servers
-dotnet blink/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll --serve \
+dotnet build blink/samples/ManagedConsumer/ManagedConsumer.csproj -c Release --disable-build-servers
+dotnet blink/samples/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll --serve \
   blink/build/kestrel-nativeaot/KestrelService
 ```
 

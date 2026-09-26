@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """One bounded scalar-register observation of the immutable Kestrel baseline."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/KestrelGuestExecution/register-assessment.py']
+
 import difflib
 import hashlib
 import json
@@ -15,8 +23,8 @@ import time
 
 BLINK = Path(__file__).resolve().parents[2]
 BASE = BLINK / "artifacts/kestrel-guest-execution/attempt-md2uqfje"
-BASE_SHA = "95e9dcd1133dcc11d74c3fb5b1c359c6876dd6757dec041fc92a2a5f188d8e44"
-HELPER_SHA = "cc34c2fed39764057a9ebb8fa1d54bd351c7510575172b499630ec5fa6e95953"
+BASE_SHA = _CAMPAIGN_INPUTS['BASE_SHA']
+HELPER_SHA = _CAMPAIGN_INPUTS['HELPER_SHA']
 
 
 def sha(path):
@@ -138,9 +146,9 @@ def main():
             diff="".join(difflib.unified_diff(owner_before.splitlines(True), owner_after.splitlines(True),
                  fromfile="baseline/ThreadedGuestExecution.cs", tofile="diagnostic/ThreadedGuestExecution.cs")),
             observer_source=str(observer_source), observer_sha256=sha(observer))
-        elf = pin(attempt / "image/0.elf", "ef6f1433794a42fe32b0fed4851bf88dd0631cd6a836550c6effca79d9e9a3ac")
+        elf = pin(attempt / "image/0.elf", _CAMPAIGN_INPUTS['guest_elf_sha256'])
         debug = pin(BLINK / "artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService.dbg",
-            "170bb1bad50c7f4585f4ebc0d0528274ca4cfd42480ac5246a1f0c621a8dd6ae")
+            _CAMPAIGN_INPUTS['debug_binary_sha256'])
         receipt["guest_identity"] = dict(elf=str(elf), elf_sha256=sha(elf), debug=str(debug), debug_sha256=sha(debug))
         receipt["derivation"] = dict(path="private/tests/KestrelGuestExecution/Program.cs",
             before_sha256=hashlib.sha256(before.encode()).hexdigest(), after_sha256=sha(program),

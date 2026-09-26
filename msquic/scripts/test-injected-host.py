@@ -9,12 +9,16 @@ import subprocess
 from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, observed_digest
+from provenance import picotls_provenance
 REPO = ROOT.parent
 SCENARIOS = ['virtual-timeout', 'send-allocation', 'send-error', 'receive-error', 'socket-create']
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return observed_digest(path)
 
 
 def main():
@@ -36,8 +40,8 @@ def main():
     # injection controls in the delivered host or modifying generated libraries.
     tracked = authored + sorted((REPO / 'picotls/src/BclProvider').glob('*.cs')) + [Path(__file__).resolve(), ROOT / 'config/product-closure.json']
     for variant in args.variants:
-        generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
-        picotls = REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+        generated = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
+        picotls = REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
         tracked += sorted(generated.glob('*.cs')) + sorted(generated.glob('*.csproj'))
         tracked += sorted(picotls.glob('*.cs')) + sorted(picotls.glob('*.csproj'))
     tracked += sorted((REPO / 'picotls/src/BclProvider').glob('*.csproj'))
@@ -60,10 +64,10 @@ def main():
         receipt['certificate_sha256'] = sha(args.certificate) if args.certificate.is_file() else None
         closure = json.loads((ROOT / 'config/product-closure.json').read_text())
         for variant in args.variants:
-            generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
+            generated = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
             if any(closure['generated'][variant].get(p.name) != sha(p) for p in generated.glob('*.cs')):
-                raise RuntimeError(variant + ' generated sources differ from frozen product closure')
-            picotls = REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+                policy().issue(variant + ' generated sources differ from frozen product closure')
+            picotls = REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
             project = build / variant
             project.mkdir(exist_ok=True)
             project_file = project / 'InjectedHost.csproj'
@@ -101,7 +105,7 @@ def main():
                 for folder in [project / 'bin/Release/net10.0', project / 'aot'] if folder.exists()
                 for p in sorted(folder.rglob('*')) if p.is_file()})
         if receipt['input_sha256'] != {str(path.relative_to(REPO)): sha(path) for path in tracked}:
-            raise RuntimeError('Inputs changed during injected host qualification')
+            policy().issue('Inputs changed during injected host qualification')
         receipt['targeted_passed'] = True
         receipt['keepalive_qualified'] = not args.jit_only and set(args.variants) == {'raw', 'optimized'} and set(args.families) == {'ipv4', 'ipv6'} and 'keepalive' in args.scenarios and all(case.get('completed_controls') == 6 for case in receipt['cases'] if case.get('scenario') == 'keepalive')
         receipt['passed'] = not args.jit_only and set(args.variants) == {'raw', 'optimized'} and set(args.families) == {'ipv4', 'ipv6'} and set(args.scenarios) == set(SCENARIOS)

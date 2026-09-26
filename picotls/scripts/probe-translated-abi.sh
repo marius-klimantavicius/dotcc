@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 # Audit actual product structs, a separate header's compiler metadata, and native C.
-source "$(dirname -- "$0")/common.sh"
+source "$(dirname -- "$0")/legacy-common.sh"
 variant=optimized
 metadata_only=false
 while (( $# )); do
@@ -15,7 +16,7 @@ done
 project="$PICOTLS_PROJECT"
 [[ "$variant" != raw ]] || project="$PICOTLS_RAW_PROJECT"
 if ! "$metadata_only"; then require_picotls_project "$project"; fi
-source_dir=$("$PICOTLS_ROOT/scripts/fetch.sh")
+source_dir=$("$PYTHON_CMD" "$CAMPAIGN_REPO/Scripts/campaign-reference.py" picotls)
 artifacts="$PICOTLS_ROOT/artifacts/translated-abi/$variant"
 mkdir -p "$artifacts"
 timeout --kill-after=10s 120s cc -std=c11 "${PICOTLS_DEFINES[@]}" \
@@ -28,7 +29,7 @@ timeout --kill-after=10s "${PICOTLS_TRANSLATE_TIMEOUT:-600}s" \
     dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" -std=c17 \
     "${PICOTLS_DEFINES[@]}" -I "$source_dir/include" "$PICOTLS_ROOT/tests/native-layout.c" \
     --emit=obj -o "$artifacts/layout-metadata.cs" 2>&1 | tee "$artifacts/metadata-emission.log"
-python3 "$PICOTLS_ROOT/scripts/check-translated-abi-metadata.py" \
+"$PYTHON_CMD" "$PICOTLS_ROOT/scripts/check-translated-abi-metadata.py" \
     "$artifacts/native-layout.txt" "$artifacts/layout-metadata.cs"
 if "$metadata_only"; then exit 0; fi
 consumer="$PICOTLS_ROOT/tests/TranslatedAbi/TranslatedAbi.csproj"

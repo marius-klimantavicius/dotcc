@@ -1,4 +1,12 @@
 """Pin the actual typed endian selection evidence consumed by P5 runners."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import json
 from pathlib import Path
 
@@ -22,7 +30,7 @@ def pin_semantic_delivery(delivery, assembly, pin):
     if inputs['staged_headers'].get('semantic-intrinsics.json') != summary['specification_sha256']:
         raise RuntimeError('Semantic specification differs from staged profile identity')
     spec = json.loads(specification.read_text())
-    header = root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink/endian.h'
+    header = root / ("ref/" + _CAMPAIGN_SOURCE["directory"] + '/blink/endian.h')
     if spec['version'] != 1 or spec['header'] != 'blink/endian.h':
         raise RuntimeError('Semantic specification does not identify the endian header')
     pin(header, spec['header_sha256'])
@@ -101,7 +109,7 @@ def pin_managed_boundaries(delivery, assembly, pin, inputs, all_bound):
         raise RuntimeError('Managed boundary specification differs from profile identity')
     spec = json.loads(specification.read_text())
     root = Path(__file__).resolve().parents[1]
-    upstream = root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+    upstream = root / ("ref/" + _CAMPAIGN_SOURCE["directory"])
     targets = {
         'SignalActor': ('blink_host_guest_signal_actor', 'blink/machine.h', 'void(named:Machine*)', False),
         'KillOtherThreads': ('blink_host_guest_stop_other_threads', 'blink/machine.h', 'void(named:System*)', False),

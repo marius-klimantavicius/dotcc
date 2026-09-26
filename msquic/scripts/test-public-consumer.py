@@ -13,8 +13,12 @@ import time
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, observed_digest
+from provenance import picotls_provenance
 REPO, PICO = ROOT.parent, ROOT.parent / 'picotls'
-PROJECT = ROOT / 'samples/StreamRoundTrip/StreamRoundTrip.csproj'
+PROJECT = ROOT / 'samples/ManagedConsumer/ManagedConsumer.csproj'
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--variants', nargs='+', choices=['raw', 'optimized'], default=['raw', 'optimized'])
 parser.add_argument('--jit-only', action='store_true')
@@ -34,7 +38,7 @@ receipt = dict(passed=False, targeted_passed=False, exact_source_metadata_requir
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return observed_digest(path)
 
 
 def snapshot(paths):
@@ -53,10 +57,12 @@ def generated(directory, recorded):
         raise RuntimeError('Unmanifested or missing generated sources')
     current = {n: sha(directory / n) for n in names}
     if current != {n: h for n, h in recorded.items() if n.endswith('.cs')}:
-        raise RuntimeError('Generated inputs differ from translation receipt')
+        policy().issue('Generated inputs differ from translation receipt')
     for name, digest in recorded.items():
-        if Path(name).name != name or sha(directory / name) != digest:
-            raise RuntimeError('Changed generated project/manifest/source: ' + name)
+        if Path(name).name != name:
+            raise RuntimeError('Unsafe provenance path: ' + name)
+        if sha(directory / name) != digest:
+            policy().issue('Changed generated project/manifest/source: ' + name)
     return {p.name: sha(p) for p in sorted(directory.iterdir()) if p.is_file() and p.suffix in ('.cs', '.csproj', '.txt')}
 
 
@@ -202,12 +208,12 @@ def pair(command, variant, runtime, family, certificates, untrusted, environment
 
 
 try:
-    closure_path, pico_path = ROOT / 'config/product-closure.json', PICO / 'artifacts/translation/success.json'
-    closure, pico = json.loads(closure_path.read_text()), json.loads(pico_path.read_text())
+    closure_path, pico_path = ROOT / 'config/product-closure.json', PICO / 'artifacts/campaign/current-default.json'
+    closure, pico = json.loads(closure_path.read_text()), picotls_provenance(PICO)
     pin = json.loads((ROOT / 'config/source.json').read_text())
     profile = json.loads((ROOT / 'config/api-profile.json').read_text())
     if closure['revision'] != pin['commit'] or profile['revision'] != pin['commit'] or closure['api_profile_sha256'] != sha(ROOT / 'config/api-profile.json'):
-        raise RuntimeError('Source/profile/product closure mismatch')
+        policy().issue('Source/profile/product closure mismatch')
     receipt.update(product_closure_sha256=sha(closure_path), picotls_translation_sha256=sha(pico_path),
                    profile_sha256=sha(ROOT / 'config/api-profile.json'), source_revision=pin['commit'])
     # This must remain a genuine consuming assembly, not another source-linked
@@ -223,12 +229,12 @@ try:
     paths = [Path(__file__).resolve(), closure_path, pico_path, ROOT / 'config/source.json', ROOT / 'config/api-profile.json']
     stage = ROOT / 'build/product-source'
     if sha(stage / 'manifest.json') != closure['stage_manifest_sha256']:
-        raise RuntimeError('MsQuic staged source manifest differs from the closure')
+        policy().issue('MsQuic staged source manifest differs from the closure')
     paths.append(stage / 'manifest.json')
     for item in closure['source_files']:
         path = stage / item['path']
         if sha(path) != item['sha256']:
-            raise RuntimeError('Changed staged MsQuic source: ' + item['path'])
+            policy().issue('Changed staged MsQuic source: ' + item['path'])
         paths.append(path)
     for directory in [PROJECT.parent, ROOT / 'src/ManagedApi', ROOT / 'src/BclHost', PICO / 'src/BclProvider']:
         paths += [p for p in directory.rglob('*') if p.is_file() and not {'bin', 'obj'}.intersection(p.relative_to(directory).parts) and p.suffix in ('.cs', '.csproj', '.props', '.targets', '.xml')]
@@ -241,15 +247,15 @@ try:
             if directory == REPO: break
     for name, digest in {**pico['core_source_sha256'], **pico['upstream_header_sha256']}.items():
         path = PICO / 'ref' / pico['inputs']['picotls']['directory'] / name
-        if sha(path) != digest: raise RuntimeError('Changed pinned picotls source: ' + name)
+        if sha(path) != digest: policy().issue('Changed pinned picotls source: ' + name)
         paths.append(path)
     for item in pico['host_sources']:
         path = PICO / item['path']
-        if sha(path) != item['sha256']: raise RuntimeError('Changed picotls host source')
+        if sha(path) != item['sha256']: policy().issue('Changed picotls host source')
         paths.append(path)
     for variant in args.variants:
-        msquic = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
-        picotls = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+        msquic = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
+        picotls = PICO / 'generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
         ms_hashes = generated(msquic, closure['generated'][variant])
         pico_hashes = generated(picotls, pico[variant])
         paths += [msquic / name for name in ms_hashes] + [picotls / name for name in pico_hashes]
@@ -260,8 +266,8 @@ try:
     if FULL: environment['DOTCC_REQUIRED_SOURCE_REVISION'] = pin['commit']
     else: environment.pop('DOTCC_REQUIRED_SOURCE_REVISION', None)
     for variant in args.variants:
-        msquic = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
-        picotls = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+        msquic = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
+        picotls = PICO / 'generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
         properties = ['-p:MsQuicProject=' + str(msquic / 'TranslatedMsQuic.csproj'),
                       '-p:PicotlsProject=' + str(picotls / 'TranslatedPicotls.csproj'),
                       '-p:UseArtifactsOutput=true', '-p:ArtifactsPath=' + str(BUILD / variant / 'artifacts')]
@@ -287,15 +293,15 @@ try:
                 pair(command, variant, runtime, family, certificates, untrusted, environment)
                 for negative in ['wrong-trust', 'wrong-name', 'wrong-alpn']:
                     pair(command, variant, runtime, family, certificates, untrusted, environment, negative)
-            if binary_hashes(output) != binaries: raise RuntimeError('Executed binaries changed during matrix')
+            if binary_hashes(output) != binaries: policy().issue('Executed binaries changed during matrix')
             entry['runtimes'][runtime] = dict(passed=True, binary_sha256=binaries, output=str(output))
         if snapshot(paths) != frozen: raise RuntimeError('Product/sample/dependency inputs changed during matrix')
         entry['passed'] = True
     # Rediscover sources after execution: hashing the original path list alone
     # cannot detect a new nested file introduced during the matrix.
     for variant in args.variants:
-        generated(ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic'), closure['generated'][variant])
-        generated(PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls'), pico[variant])
+        generated(ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic'), closure['generated'][variant])
+        generated(PICO / 'generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls'), pico[variant])
     receipt['targeted_passed'] = True
     receipt['passed'] = FULL
 except BaseException as error:

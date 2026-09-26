@@ -18,3 +18,13 @@
  
      for (index = 0; index < 101; index++)
      {
+@@ -407,6 +411,9 @@
+         return &core->null_type;
+ 
+     kind = object->block_kind;
++#ifdef PINTA_TEST_TRACE_TYPE
++    PINTA_TEST_TRACE_TYPE(object);
++#endif
+     pinta_assert(kind < PINTA_KIND_LENGTH);
+ 
+     return &core->types[kind];

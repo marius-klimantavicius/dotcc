@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/common.sh"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 SQLITE_LAYOUT_FLAGS=("${SQLITE_NATIVE_FLAGS[@]}")
 if [[ "${SQLITE_MS_BITFIELDS:-0}" == 1 ]]; then
   SQLITE_LAYOUT_FLAGS=()
@@ -9,7 +10,7 @@ if [[ "${SQLITE_MS_BITFIELDS:-0}" == 1 ]]; then
   SQLITE_LAYOUT_FLAGS+=(-mms-bitfields)
 fi
 "$SQLITE_ROOT/scripts/preprocess.sh" > "$SQLITE_ROOT/artifacts/layout-sqlite3.i"
-python3 "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
   "$SQLITE_ROOT/artifacts/layout-sqlite3.i" "$SQLITE_ROOT/generated/layout_requests.h" >&2
 gcc -std=c17 -O0 "${SQLITE_LAYOUT_FLAGS[@]}" "${SQLITE_DEFINES[@]}" \
   -DDOTCC_LAYOUT_REQUESTS -I "$SQLITE_ROOT/generated" \

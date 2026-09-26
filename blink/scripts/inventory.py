@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 """Deterministic lexical inventory; deliberately not a reachability claim."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import hashlib, json, pathlib, re
 root = pathlib.Path(__file__).resolve().parents[1]
-source = root / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+source = root / ("ref/" + _CAMPAIGN_SOURCE["directory"])
 rows = []
 for path in sorted((source / 'blink').glob('*.[ch]')):
     text = path.read_text()

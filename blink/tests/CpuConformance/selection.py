@@ -1,4 +1,12 @@
 """Reviewed normal-only selection; original stable IDs and bytes are retained."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/CpuConformance/selection.py']
+
 import hashlib
 import json
 
@@ -7,19 +15,16 @@ import json
 # with DF=0. The exact balanced stack recipe saves/restores RSP through DI,
 # then clears DI; no other row may change RSP and none changes R12..R15.
 # REP MOVSB normalizes SI/DI into AX/DX. New rows require renewed review.
-REVIEWED_INPUTS = {
-    'corpus.h': 'b3fc0b8a8422a6293559b0de8c55971d343c616cf3dd976e8e26afbe97ec1fa9',
-    'fp-cases.h': '0ecfbb3df62bb8b9838315eafa473455019e60e384023b118b5fe96587c79053',
-}
+REVIEWED_INPUTS = _CAMPAIGN_INPUTS['REVIEWED_INPUTS']
 # Exact first495 exported descriptors from the qualified normal-only baseline
 # artifacts/cpu-conformance/attempt-7j03qmvz/corpus.stdout, canonical JSON.
-ORIGINAL_CASES_SHA256 = 'bcdd790f0b537c50715135afdd8401850cdff1ffa58cd4f04e46484fc208767a'
+ORIGINAL_CASES_SHA256 = _CAMPAIGN_INPUTS['ORIGINAL_CASES_SHA256']
 # First512 descriptors are pinned from the preserved failing native attempt;
 # later source repairs must not change those architectural observations/inputs.
-FIRST512_SHA256 = 'b1476860cd0c7037f08b54f74cafe0b7d1a718b8393f2c7ab6187b2339d1dcd3'
-FIRST514_SHA256 = '7c71d33bb67e493105de9bac0b4fc82d4ff1626a246f8dbfa582569895a70bc6'
-FIRST546_SHA256 = '2d539a5ace85abde2cf5f6e352d9889e68b49c743bb294f81470ef6c9edf2ed0'
-FIRST550_SHA256 = '954b09d324ef358a960cb283ed3f2b8f7b5ed85961f0dc2d34ff4dae39efa1f4'
+FIRST512_SHA256 = _CAMPAIGN_INPUTS['FIRST512_SHA256']
+FIRST514_SHA256 = _CAMPAIGN_INPUTS['FIRST514_SHA256']
+FIRST546_SHA256 = _CAMPAIGN_INPUTS['FIRST546_SHA256']
+FIRST550_SHA256 = _CAMPAIGN_INPUTS['FIRST550_SHA256']
 APPENDED_NAMES = [
     'inc-qword-preserve-carry', 'inc-dword-preserve-clear-carry',
     'dec-byte-preserve-clear-carry', 'dec-word-preserve-carry',

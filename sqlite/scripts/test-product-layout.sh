@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/common.sh"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
 mkdir -p "$TMPDIR"
 if [[ $# != 0 ]]; then
@@ -29,11 +30,11 @@ source_directory="$SQLITE_ROOT/generated/sqlite-port"
 dotnet "$compiler" -std=c17 "${flags[@]}" -I "$source_directory" -I "$SQLITE_ROOT/tests" \
   --overrides-file "$SQLITE_ROOT/config/dotcc-overrides.json" \
   -E "$source_directory/sqlite3.c" > "$prefix-preprocessed.c"
-python3 "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
   "$prefix-preprocessed.c" "$generated/layout_requests.h"
 # Flexible-array storage can require additional offset contracts even when C
 # never spells offsetof for that tail. Measure those independently in C too.
-python3 - "$generated/layout_requests.h" "$SQLITE_ROOT/generated/TranslatedSqlite/Sqlite.cs" <<'PY'
+"$PYTHON_CMD" - "$generated/layout_requests.h" "$SQLITE_ROOT/generated/TranslatedSqlite/Sqlite.cs" <<'PY'
 import base64, pathlib, re, sys
 header, engine = map(pathlib.Path, sys.argv[1:])
 content = header.read_text()
@@ -60,9 +61,9 @@ gcc -std=c17 -O1 "${SQLITE_NATIVE_FLAGS[@]}" "${flags[@]}" -DDOTCC_LAYOUT_REQUES
   "$SQLITE_ROOT/tests/ProductLayout/native.c" -lm -o "$SQLITE_ROOT/build/product-layout-native" \
   > "$prefix-native-build.log" 2>&1
 run_sqlite_process "$SQLITE_ROOT/build/product-layout-native" > "$prefix-native.out"
-python3 "$SQLITE_ROOT/scripts/generate-layout-storage-checks.py" \
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/generate-layout-storage-checks.py" \
   "$prefix-native.out" "$generated/LayoutStorageChecks.cs"
-python3 "$SQLITE_ROOT/scripts/generate-product-offset-checks.py" \
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/generate-product-offset-checks.py" \
   "$prefix-native.out" "$SQLITE_ROOT/generated/TranslatedSqlite/Sqlite.cs" \
   "$generated/ProductOffsetChecks.cs" > "$prefix-metadata.log"
 cat "$prefix-metadata.log"

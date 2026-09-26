@@ -1,13 +1,22 @@
 #!/usr/bin/env python3
 """Apply the reviewed two-function host capability boundary to pinned map.c."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['src/Host/scripts/stage-map.py']
+
 import argparse
 import hashlib
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-UPSTREAM = ROOT / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink/map.c'
-PIN = 'f35096d88178f3acf3e6bf475974379d7e7b2ce116325c2a3ea9b355cbc93267'
+UPSTREAM = ROOT / ("ref/" + _CAMPAIGN_SOURCE["directory"] + '/blink/map.c')
+PIN = _CAMPAIGN_INPUTS['PIN']
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output', required=True, type=Path)
 parser.add_argument('--receipt', required=True, type=Path)

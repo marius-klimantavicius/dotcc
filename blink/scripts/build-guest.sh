@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 campaign=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 archive="$campaign/ref/musl-1.2.5.tar.gz"
@@ -7,12 +8,17 @@ if [[ ! -f "$archive" ]]; then
   curl --fail --location --retry 2 --max-time 120 https://musl.libc.org/releases/musl-1.2.5.tar.gz -o "$archive.part"
   mv "$archive.part" "$archive"
 fi
-printf '%s  %s\n' a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4 "$archive" | sha256sum --check --status
+"$PYTHON_CMD" - "$campaign" "$archive" <<'PY_CHECK'
+import json, pathlib, sys
+from campaigns.compat import policy
+root, archive = map(pathlib.Path, sys.argv[1:])
+policy().check(archive, json.loads((root / 'tests/ServiceFixture/inputs.json').read_text())['musl']['sha256'])
+PY_CHECK
 # Rebuild from the verified archive, never from stale objects or an edited ref.
 rm -rf "$campaign/build/musl" "$campaign/build/musl-install" "$campaign/build/musl-source"
 mkdir -p "$campaign/build/musl" "$campaign/build/musl-source"
 tar -xzf "$archive" -C "$campaign/build/musl-source" --strip-components=1
-python3 - "$campaign" <<'PY'
+"$PYTHON_CMD" - "$campaign" <<'PY'
 import hashlib, json, pathlib, sys
 p = pathlib.Path(sys.argv[1]); lock = json.loads((p / 'tests/ServiceFixture/inputs.json').read_text())
 for name, expected in lock['sources'].items():
@@ -26,7 +32,7 @@ timeout 60 make install > "$campaign/artifacts/guest/musl-install.log" 2>&1
 flags=(-std=c11 -D_POSIX_C_SOURCE=200809L -O2 -static -fno-pie -no-pie -Wl,--build-id=none -Wall -Wextra -Werror)
 timeout 30 "$campaign/build/musl-install/bin/musl-gcc" "${flags[@]}" "$campaign/tests/ServiceFixture/service.c" -o "$campaign/build/guest/service"
 readelf -h -l "$campaign/build/guest/service" > "$campaign/artifacts/guest/elf.txt"
-python3 - "$campaign" "${flags[@]}" <<'PY'
+"$PYTHON_CMD" - "$campaign" "${flags[@]}" <<'PY'
 import hashlib, json, pathlib, shutil, struct, subprocess, sys
 p = pathlib.Path(sys.argv[1]); exe = p / 'build/guest/service'; data = exe.read_bytes()
 assert data[:6] == b'\x7fELF\x02\x01' and struct.unpack_from('<HH', data, 16) == (2, 62), 'expected Linux x64 ELF64 ET_EXEC'

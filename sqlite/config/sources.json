@@ -1,0 +1,16 @@
+{
+  "product": {
+    "url": "https://www.sqlite.org/2026/sqlite-amalgamation-3530400.zip",
+    "archive": "sqlite-amalgamation-3530400.zip",
+    "directory": "sqlite-amalgamation-3530400",
+    "sha256": "1e71ddf93849c6a6ecf58b827c0692073d2dd7ee40196158068f7b29f422e87d",
+    "required": ["sqlite3.c", "sqlite3.h"]
+  },
+  "tests": {
+    "url": "https://www.sqlite.org/2026/sqlite-src-3530400.zip",
+    "archive": "upstream-tests/sqlite-src-3530400.zip",
+    "directory": "upstream-tests/sqlite-src-3530400",
+    "sha256": "d18fa15aec74d8c17e1463f861095adc01b5ad190256acb4f91d22f0368d232b",
+    "required": ["test/jsonb01.test"]
+  }
+}

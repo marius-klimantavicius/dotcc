@@ -15,11 +15,15 @@ import subprocess
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, observed_digest
+from provenance import picotls_provenance
 PICO = ROOT.parent / 'picotls'
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return observed_digest(path)
 
 
 def generated(directory):
@@ -69,7 +73,7 @@ def main():
             raise RuntimeError('Corpus pin differs from product source')
         for name, digest in corpus['source_sha256'].items():
             if sha(source / name) != digest:
-                raise RuntimeError('Pinned corpus source changed: ' + name)
+                policy().issue('Pinned corpus source changed: ' + name)
         cases = corpus['cases']
         if len({c['id'] for c in cases}) != len(cases):
             raise RuntimeError('Duplicate corpus case ID')
@@ -111,18 +115,18 @@ def main():
         receipt['native'] = dict(passed=True, output_sha256=hashlib.sha256(baseline.encode()).hexdigest(), executable_sha256=sha(native))
         if not args.native_only:
             closure = ROOT / 'config/product-closure.json'
-            provenance = PICO / 'artifacts/translation/success.json'
-            frozen, pico_frozen = json.loads(closure.read_text()), json.loads(provenance.read_text())
+            provenance = PICO / 'artifacts/campaign/current-default.json'
+            frozen, pico_frozen = json.loads(closure.read_text()), picotls_provenance(PICO)
             receipt['product_closure_sha256'] = sha(closure)
             receipt['picotls_provenance_sha256'] = sha(provenance)
             for variant in args.variants:
-                msquic = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
-                pico = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+                msquic = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
+                pico = PICO / 'generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
                 hashes, pico_hashes = generated(msquic), generated(pico)
                 if any(frozen['generated'][variant].get(n) != h for n, h in hashes.items()):
-                    raise RuntimeError('MsQuic source differs from frozen product closure')
+                    policy().issue('MsQuic source differs from frozen product closure')
                 if any(pico_frozen[variant].get(n) != h for n, h in pico_hashes.items()):
-                    raise RuntimeError('picotls source differs from successful translation')
+                    policy().issue('picotls source differs from successful translation')
                 project = ROOT / 'tests/MalformedCorpus/MalformedCorpus.csproj'
                 props = ['-p:MsQuicProject=' + str(msquic / 'TranslatedMsQuic.csproj'),
                          '-p:PicotlsProject=' + str(pico / 'TranslatedPicotls.csproj')]
@@ -142,15 +146,15 @@ def main():
                         raise RuntimeError('Exact decoder result/offset/field/allocation mismatch: ' + variant + '-' + runtime)
                     entry[runtime] = dict(passed=True, output_sha256=hashlib.sha256(output.encode()).hexdigest())
                 if generated(msquic) != hashes or generated(pico) != pico_hashes:
-                    raise RuntimeError('Generated source changed during corpus')
+                    policy().issue('Generated source changed during corpus')
                 entry['passed'] = True
                 receipt['variants'].append(entry)
             if sha(closure) != receipt['product_closure_sha256'] or sha(provenance) != receipt['picotls_provenance_sha256']:
-                raise RuntimeError('Frozen source metadata changed during corpus')
+                policy().issue('Frozen source metadata changed during corpus')
         if any(sha(Path(name)) != digest for name, digest in receipt['native_dependency_sha256'].items()):
-            raise RuntimeError('Native dependency changed during corpus')
+            policy().issue('Native dependency changed during corpus')
         if receipt['input_sha256'] != {os.path.relpath(p, ROOT): sha(p) for p in inputs}:
-            raise RuntimeError('Corpus or host inputs changed during execution')
+            policy().issue('Corpus or host inputs changed during execution')
         receipt['targeted_passed'] = True
         receipt['passed'] = not args.native_only and not args.jit_only and set(args.variants) == {'raw', 'optimized'}
     finally:

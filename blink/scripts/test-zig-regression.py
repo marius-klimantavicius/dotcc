@@ -4,6 +4,14 @@
 The downloaded oracle stays under ignored blink/ref; it never replaces dotcc.
 Already-built test libraries must match the frozen campaign compiler exactly.
 """
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['scripts/test-zig-regression.py']
+
 import argparse
 import hashlib
 import json
@@ -19,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[2]
 BLINK = ROOT / 'blink'
 VERSION = '0.16.0'
 ARCHIVE = 'zig-x86_64-linux-' + VERSION + '.tar.xz'
-DIGEST = '70e49664a74374b48b51e6f3fdfbf437f6395d42509050588bd49abe52ba3d00'
+DIGEST = _CAMPAIGN_INPUTS['DIGEST']
 URL = 'https://ziglang.org/download/' + VERSION + '/' + ARCHIVE
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--offline', action='store_true')

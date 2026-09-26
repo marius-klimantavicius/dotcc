@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 """Stage two explicit cooperative execution-stop safe points in pinned Blink."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['src/UpstreamExecutionStop/stage.py']
+
 import argparse
 import difflib
 import hashlib
@@ -8,12 +17,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-REVISION = 'f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
-SOURCE_PIN = '4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3'
-BLOCK_PINS = {
-    'bool CheckInterrupt(': 'e907f75f5d88bdfda6f10b49deb9a450637489ee2da8ece9e85ce085073c635c',
-    'static int Poll(': 'c270251f91a5249085c6317057279a6738cb1d80e5ae10cfde6c399895e1c61b',
-}
+REVISION = _CAMPAIGN_SOURCE["revision"]
+SOURCE_PIN = _CAMPAIGN_INPUTS['SOURCE_PIN']
+BLOCK_PINS = _CAMPAIGN_INPUTS['BLOCK_PINS']
 GUARD = '''#include "host-execution-stop.h"
 #if !defined(DISABLE_JIT) || !defined(NOLINEAR)
 #error Private execution-stop staging requires the nonlinear interpreter profile

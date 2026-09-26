@@ -1,4 +1,12 @@
 """Content identity of the actual compiler process and its local dependencies."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import hashlib
 from pathlib import Path
 
@@ -14,7 +22,7 @@ def stage_semantic_intrinsics(campaign: Path, profile: Path) -> None:
     spec = json.loads(specification.read_text())
     if spec['version'] != 1 or spec['header'] != 'blink/endian.h':
         raise RuntimeError('Unknown semantic intrinsic profile')
-    header = campaign / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580' / spec['header']
+    header = campaign / ("ref/" + _CAMPAIGN_SOURCE["directory"]) / spec['header']
     spec['header_sha256'] = hashlib.sha256(header.read_bytes()).hexdigest()
     expected = {prefix + str(width): f'{operation}.u{width}.le'
                 for width in (16, 32, 64) for prefix, operation in [('Get', 'load'), ('Put', 'store')]}
@@ -71,7 +79,7 @@ def stage_managed_boundaries(campaign: Path, profile: Path, instance_methods: bo
     if instance_methods:
         spec['headers'].append('blink/signal.h')
         spec['required_units']['blink/signal.c'] = ['TerminateSignal']
-    upstream = campaign / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+    upstream = campaign / ("ref/" + _CAMPAIGN_SOURCE["directory"])
     # Record this build's inputs; typed overrides do not require historical bytes.
     for category in ('headers', 'implementations'):
         spec[category] = {name: hashlib.sha256((upstream / name).read_bytes()).hexdigest()

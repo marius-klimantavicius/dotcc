@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Native Linux and separately built, pinned threaded Blink witness. No managed gate."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import hashlib
 import json
 import os
@@ -18,8 +26,8 @@ import time
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
 EXPECTED = b"guest-threads: tls=isolated shared=42 tid=cleared\n"
-REVISION = "f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580"
-ARCHIVE_SHA = "e0bad68ba2927a1ca1d53537afee1644e11a1e683d26676a36e5b9b17a63d6af"
+REVISION = _CAMPAIGN_SOURCE["revision"]
+ARCHIVE_SHA = _CAMPAIGN_SOURCE["sha256"]
 
 
 def sha(path):

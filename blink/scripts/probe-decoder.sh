@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 BLINK_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DOTCC_ROOT="$(cd "$BLINK_ROOT/.." && pwd)"
-UPSTREAM="$BLINK_ROOT/ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580"
+UPSTREAM="$BLINK_ROOT/ref/$("$PYTHON_CMD" -c 'import json,sys; print(json.load(open(sys.argv[1]))["upstream"]["directory"])' "$BLINK_ROOT/config/source-manifest.json")"
 mkdir -p "$BLINK_ROOT/generated/decoder-profile" "$BLINK_ROOT/artifacts/decoder" "$BLINK_ROOT/build"
 rm -f "$BLINK_ROOT/artifacts/decoder/receipt.json"
-python3 "$BLINK_ROOT/scripts/stage-decoder.py"
+"$PYTHON_CMD" "$BLINK_ROOT/scripts/stage-decoder.py"
 args=(-std=c17 -DNDEBUG -I "$BLINK_ROOT/generated/decoder-profile" -I "$UPSTREAM")
 inputs=("$UPSTREAM/blink/x86.c" "$UPSTREAM/blink/bitscan.c" "$BLINK_ROOT/tests/Decoder/probe.c")
 cc -D_GNU_SOURCE "${args[@]}" "${inputs[@]}" -o "$BLINK_ROOT/build/decoder-native"
@@ -20,7 +21,7 @@ dotnet build "$BLINK_ROOT/generated/DecoderProbe" -c Release > "$BLINK_ROOT/arti
 timeout 30 dotnet "$BLINK_ROOT/generated/DecoderProbe/bin/Release/net10.0/DecoderProbe.dll" > "$BLINK_ROOT/artifacts/decoder/managed.txt"
 diff -u "$BLINK_ROOT/artifacts/decoder/native.txt" "$BLINK_ROOT/artifacts/decoder/managed.txt"
 # Preserve an immutable-by-convention raw generation snapshot before optimization.
-python3 - "$BLINK_ROOT" <<'PY'
+"$PYTHON_CMD" - "$BLINK_ROOT" <<'PY'
 import pathlib, shutil, sys
 root = pathlib.Path(sys.argv[1]); generated = root/'generated'
 for name in ['DecoderRaw', 'DecoderOptimized']:
@@ -39,7 +40,7 @@ diff -u "$BLINK_ROOT/artifacts/decoder/native.txt" "$BLINK_ROOT/artifacts/decode
 dotnet publish "$BLINK_ROOT/generated/DecoderOptimized/DecoderProbe.csproj" -c Release -r linux-x64 -p:PublishAot=true -o "$BLINK_ROOT/build/decoder-optimized-aot" > "$BLINK_ROOT/artifacts/decoder/optimized-aot-build.log" 2>&1
 timeout 30 "$BLINK_ROOT/build/decoder-optimized-aot/DecoderProbe" > "$BLINK_ROOT/artifacts/decoder/optimized-aot.txt"
 diff -u "$BLINK_ROOT/artifacts/decoder/native.txt" "$BLINK_ROOT/artifacts/decoder/optimized-aot.txt"
-python3 - "$BLINK_ROOT" "$DOTCC_ROOT" <<'PY'
+"$PYTHON_CMD" - "$BLINK_ROOT" "$DOTCC_ROOT" <<'PY'
 import hashlib, json, pathlib, sys
 root, repo = map(pathlib.Path, sys.argv[1:])
 hashfile = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()

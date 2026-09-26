@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 campaign=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-source_dir=$("$campaign/scripts/fetch.sh")
+source_dir=$("$PYTHON_CMD" "$CAMPAIGN_REPO/Scripts/campaign-reference.py" picotls)
 artifacts="$campaign/artifacts/p1/boundaries"
 export TMPDIR="$campaign/artifacts/tmp/p1"
 mkdir -p "$artifacts" "$TMPDIR"

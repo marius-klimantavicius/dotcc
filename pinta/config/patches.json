@@ -9,9 +9,9 @@
   {
     "path": "Marius.Pinta/src/api.c",
     "before_sha256": "138bf65ccbe3884193ceddf32af2149ec4e8eeaeb3bb071e2d09dce72bae307d",
-    "after_sha256": "5bfb20688558e3c8dbc3f4888670e5d075fd707d2b39e714357e0d85c7a482fd",
+    "after_sha256": "33791bb94a032f8bc6f487d1245b7ea85953ab15bc78769b3b85ade270cdb70e",
     "patch": "patches/api-creation-safety.patch",
-    "patch_sha256": "3cb73ddf9f99bde15e7a6cabed54e96ade4cc1a320007af496f2ad0d432658db"
+    "patch_sha256": "96005fd617d176a4d3e818c3ea0a8c59aca79c3bfc753e217cf9518d4790ce25"
   },
   {
     "path": "Marius.Pinta/src/stack.c",
@@ -23,9 +23,9 @@
   {
     "path": "Marius.Pinta/src/core.c",
     "before_sha256": "30fd07886e6d4ca11069d6d21d1a1184f052cc08c27b40b2fdf5746a5ac9f207",
-    "after_sha256": "aa31a7f71a05d90ba9b4bde948a369071d08527ca53fd5cdacb3c35dde3b27d5",
+    "after_sha256": "f1fbf2d68c70f2daf7ff79012c28363facee32d4f419d6c58939c1403ee0aa98",
     "patch": "patches/core-creation-safety.patch",
-    "patch_sha256": "cab5838b68575ec9333c8a121bab884a4100c4aead45d1750191d61373579412"
+    "patch_sha256": "831398cae511b4dec435b5fbb5e63d3a07874816f505d680bff7cc060d82a8ac"
   },
   {
     "path": "Marius.Pinta/tests/weak_tests.c",
@@ -61,5 +61,26 @@
     "after_sha256": "6406abf3b2a584f369956dcd9e85b447982b84de27197d2c5d6b57fb10dbaa40",
     "patch": "patches/weak-allocation-safety.patch",
     "patch_sha256": "0c27ac97e544e7b35aa4c657005cd774a2b7d5b788b339f04e44dd86f0c83f10"
+  },
+  {
+    "path": "Marius.Pinta/tests/pinta_tests.h",
+    "before_sha256": "f8a8c03e21d3aa64749ddbad8ddba10a47a580e696e2cfafa6183cf15657e281",
+    "after_sha256": "6445f4a89d14207d1ec5caeb1994998c8681df7f6d0a323dd7eeb53a118c9bf6",
+    "patch": "patches/test-exception-diagnostics.patch",
+    "patch_sha256": "c3b04a8f91ffaa70732177b60805e1013825077bc376765b79d52fdbbf5a559d"
+  },
+  {
+    "path": "Marius.Pinta/src/code.c",
+    "before_sha256": "d28af5e3f57c1f0c448a5f19b9ebf4274eec5942027187515f7d68a657b3e677",
+    "patch": "patches/code-test-trace.patch",
+    "after_sha256": "3ad1898875c7b064dfefff2d19c1113967b7ae0947821d1a22f76202040365af",
+    "patch_sha256": "43e2599c2a85da272294700f935e6095d88a36d9224c3054e4b3eea2409bce07"
+  },
+  {
+    "path": "Marius.Pinta/src/gc.c",
+    "before_sha256": "e11e6511879e529262f1cd997655a7fbc701a8d1ceebc47f36773f6cbcb6d736",
+    "after_sha256": "d70fa64f053e5056443b47c0f7b395aefb93aa93f0bc87eecfb57a4b6f26ee89",
+    "patch": "patches/gc-compaction-scratch.patch",
+    "patch_sha256": "9e9eb3463f0118f015ec4699b8c4dcec604ccec3cfacc7a6900a6ae7e6522435"
   }
 ]

@@ -10,3 +10,13 @@
      core->internal_functions_length = 1;
  
      core->internal_functions[0] = pinta_api_internal_out;
+@@ -161,6 +164,9 @@
+     if (handle != NULL)
+         environment->file_close(environment->environment_context, handle);
+ 
++    #ifdef PINTA_TEST_TRACE_LOAD
++    PINTA_TEST_TRACE_LOAD(exception, domain);
++    #endif
+     if (exception != PINTA_OK)
+         return NULL;
+ 

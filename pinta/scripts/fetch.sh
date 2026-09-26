@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-set -euo pipefail
-exec python3 "$(dirname "$(realpath "$0")")/fetch.py" "$@"
+source "$(dirname -- "${BASH_SOURCE[0]}")/common.sh"
+campaign_exec fetch "$@"

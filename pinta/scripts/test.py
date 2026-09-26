@@ -43,13 +43,13 @@ def main():
     if rid is None:
         raise RuntimeError("Linux and Windows execution are the required platform matrix")
     # Verify the exact translated inputs and output hashes before consuming the products.
-    subprocess.run([sys.executable, str(ROOT / "scripts/dependency-audit.py"), "--profile", args.profile], check=True)
-    project = ROOT / "tests/ManagedConsumer/ManagedConsumer.csproj"
+    subprocess.run([sys.executable, str(ROOT / "scripts/dependency-audit.py"), "--profile", args.profile, "--form", "processed" if args.form == "optimized" else args.form], check=True)
+    project = ROOT / "samples/ManagedConsumer/ManagedConsumer.csproj"
     fixtures = ROOT / "ref/upstream/Marius.Pinta.Test.Files"
     forms = ["raw", "optimized"] if args.form == "all" else [args.form]
     modes = ["jit", "aot"] if args.mode == "all" else [args.mode]
     receipts = []
-    variant = Path() if args.profile == "release" else Path("debug")
+    variant = Path() if args.profile == "release" else Path("profiles/debug")
     artifacts = ROOT / "artifacts/managed" / variant / rid
     artifacts.mkdir(parents=True, exist_ok=True)
     receipt = {"platform": platform.platform(), "rid": rid, "profile": args.profile, "runs": receipts,
@@ -59,13 +59,13 @@ def main():
         "authored_module_variants_sha256": {name: hashlib.sha256((ROOT / "tests/fixtures" / name).read_bytes()).hexdigest()
             for name in ("receipt-swapped.pint", "invalid-opcode.pint")},
         "host_consumer_sha256": {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
-            for folder in (ROOT / "src/ManagedApi", ROOT / "tests/ManagedConsumer")
+            for folder in (ROOT / "src/ManagedApi", ROOT / "samples/ManagedConsumer")
             for path in sorted(folder.iterdir()) if path.suffix in (".cs", ".csproj")},
         "qualification_scope": "owning consumer ABI/globals/callbacks/lifetime; not the complete P0-P6 corpus"}
     reference_stdout = None
     try:
         for form in forms:
-            library = ROOT / "generated" / variant / ("TranslatedPintaRaw" if form == "raw" else "TranslatedPinta") / "TranslatedPinta.csproj"
+            library = ROOT / "generated" / variant / ("TranslatedPinta.Raw" if form == "raw" else "TranslatedPinta") / "TranslatedPinta.csproj"
             for mode in modes:
                 output = ROOT / "build/managed" / variant / rid / form / mode
                 common = ["-c", "Release", "--nologo", "--artifacts-path", str(output / "intermediate"),
@@ -97,7 +97,7 @@ def main():
                     print("Consumer output differs across forms", file=sys.stderr)
                     return 1
                 if mode == "jit":
-                    audit = run([sys.executable, ROOT / "scripts/dependency-audit.py", "--profile", args.profile, "--deps",
+                    audit = run([sys.executable, ROOT / "scripts/dependency-audit.py", "--profile", args.profile, "--form", "processed" if form == "optimized" else form, "--deps",
                         output / "app/ManagedConsumer.deps.json"], artifacts / f"{form}-{mode}-audit.log", 60)
                     item["dependency_audit"] = audit
                     if audit["exit_code"]:

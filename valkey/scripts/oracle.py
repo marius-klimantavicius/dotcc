@@ -17,7 +17,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT / "artifacts/native"
-COMMIT = "7f1dffedff6de73058b2c2a389422b6ecd56c8fb"
+COMMIT = json.loads((ROOT / "config/source.json").read_text())["commit"]
 OPTIONS = ["MALLOC=libc", "BUILD_LUA=yes", "BUILD_TLS=no", "BUILD_RDMA=no", "USE_SYSTEMD=no", "OPTIMIZATION=-O1", "release_hdr=", "CFLAGS=-MMD"]
 
 

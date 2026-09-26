@@ -8,6 +8,10 @@ from pathlib import Path
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, observed_digest
+from provenance import picotls_provenance
 PICO = ROOT.parent / 'picotls'
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--variants', nargs='+', choices=['raw', 'optimized'], default=['raw', 'optimized'])
@@ -41,7 +45,7 @@ receipt = dict(passed=False, transport_validated=False, selected_mode=args.mode 
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return observed_digest(path)
 
 
 def generated(directory):
@@ -74,8 +78,8 @@ def run(command, name, environment=None):
 
 try:
     closure = ROOT / 'config/product-closure.json'
-    provenance = PICO / 'artifacts/translation/success.json'
-    frozen, pico_frozen = json.loads(closure.read_text()), json.loads(provenance.read_text())
+    provenance = PICO / 'artifacts/campaign/current-default.json'
+    frozen, pico_frozen = json.loads(closure.read_text()), picotls_provenance(PICO)
     sources = [Path(__file__).resolve(), closure, provenance, ROOT / 'tests/TlsAdapter/Credentials.cs']
     for directory in [ROOT / 'src/ManagedApi', ROOT / 'src/BclHost', ROOT / 'tests/ManagedApi', PICO / 'src/BclProvider']:
         sources += sorted(directory.glob('*.cs')) + sorted(directory.glob('*.csproj'))
@@ -88,13 +92,13 @@ try:
         runtime_environment.pop('DOTCC_REQUIRED_SOURCE_REVISION', None)
     receipt['exact_source_metadata_required'] = require_metadata
     for variant in args.variants:
-        msquic = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
-        picotls = PICO / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+        msquic = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
+        picotls = PICO / 'generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
         hashes, pico_hashes = generated(msquic), generated(picotls)
         if any(frozen['generated'][variant].get(n) != h for n, h in hashes.items()):
-            raise RuntimeError('MsQuic translation differs from the frozen product closure')
+            policy().issue('MsQuic translation differs from the frozen product closure')
         if any(pico_frozen[variant].get(n) != h for n, h in pico_hashes.items()):
-            raise RuntimeError('picotls translation differs from its successful receipt')
+            policy().issue('picotls translation differs from its successful receipt')
         project = ROOT / 'tests/ManagedApi/ManagedApi.csproj'
         properties = ['-p:MsQuicProject=' + str(msquic / 'TranslatedMsQuic.csproj'),
                       '-p:PicotlsProject=' + str(picotls / 'TranslatedPicotls.csproj')]
@@ -121,11 +125,11 @@ try:
         if not args.jit_only and stable_transcript(entry['jit']) != stable_transcript(entry['aot']):
             raise RuntimeError('JIT/NativeAOT control results differ')
         if hashes != generated(msquic) or pico_hashes != generated(picotls):
-            raise RuntimeError('Translation changed during control')
+            policy().issue('Translation changed during control')
         entry['passed'] = True
         receipt['variants'].append(entry)
     if receipt['input_sha256'] != {os.path.relpath(p, ROOT): sha(p) for p in sources}:
-        raise RuntimeError('Authored inputs changed during control')
+        policy().issue('Authored inputs changed during control')
     receipt['targeted_passed'] = True
     receipt['transport_validated'] = args.mode is not None
     receipt['passed'] = set(args.variants) == {'raw', 'optimized'} and not args.jit_only

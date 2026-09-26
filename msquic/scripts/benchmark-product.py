@@ -193,7 +193,7 @@ def main():
     for directory in [TEST, ROOT / 'src/ManagedApi', ROOT / 'src/BclHost', REPO / 'picotls/src/BclProvider']:
         inputs += sorted(p for p in directory.rglob('*') if p.is_file() and p.suffix in ('.cs', '.c', '.csproj') and not {'bin', 'obj'}.intersection(p.relative_to(directory).parts))
     for variant in args.variants:
-        for directory in [ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic'), REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')]:
+        for directory in [ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic'), REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')]:
             inputs += sorted(directory.glob('*.cs')) + sorted(directory.glob('*.csproj')) + [directory / 'Dotcc.SourceFiles.txt']
     certificate = ROOT / 'build/managed-peer/ecdsa.pem'
     key = ROOT / 'build/managed-peer/ecdsa.key'
@@ -260,9 +260,9 @@ def main():
         pico_provenance = json.loads((REPO / 'picotls/artifacts/translation/success.json').read_text())
         receipt['compiler_provenance'] = dict(commit=closure['compiler_commit'], dotcc_lib_sha256=closure['compiler_hashes']['DotCC.Lib.dll'])
         for variant in args.variants:
-            generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
+            generated = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
             validate_generated(generated, closure['generated'][variant])
-            pico = REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+            pico = REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
             validate_generated(pico, pico_provenance[variant])
         receipt['environment']['dotnet_info'] = run(['dotnet', '--info'], 'dotnet-info')
         receipt['environment']['gcc_version'] = run(['gcc', '--version'], 'gcc-version').splitlines()[0]
@@ -278,8 +278,8 @@ def main():
             for family in args.families:
                 for cipher in args.ciphers: exchange('native', 'native', 'native', family, cipher, [])
         for variant in args.variants:
-            generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic') / 'TranslatedMsQuic.csproj'
-            pico = REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls') / 'TranslatedPicotls.csproj'
+            generated = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic') / 'TranslatedMsQuic.csproj'
+            pico = REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls') / 'TranslatedPicotls.csproj'
             project = TEST / 'ManagedEndpoint/ManagedEndpoint.csproj'
             props = ['-p:MsQuicProject=' + str(generated), '-p:PicotlsProject=' + str(pico)]
             output = build / variant / 'jit'
@@ -297,8 +297,8 @@ def main():
                         for cipher in args.ciphers: exchange(variant, runtime, pair, family, cipher, executable)
         check(receipt['input_sha256'] == {str(p.relative_to(REPO)): sha(p) for p in inputs}, 'Benchmark inputs changed during measurement')
         for variant in args.variants:
-            validate_generated(ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic'), closure['generated'][variant])
-            validate_generated(REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls'),
+            validate_generated(ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic'), closure['generated'][variant])
+            validate_generated(REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls'),
                                pico_provenance[variant])
         check(all(sha(Path(p)) == h for p, h in receipt['native_dependency_sha256'].items()), 'Native benchmark dependency changed')
         check(all(sha(REPO / p) == h for p, h in receipt['binary_sha256'].items()), 'Executed benchmark binary changed')

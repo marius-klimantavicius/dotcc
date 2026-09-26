@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fresh native and raw/optimized JIT/AOT runs of SQLite's five non-injection C corpora."""
+import sys
 import argparse
 import hashlib
 import json
@@ -70,10 +71,8 @@ def sources(directory):
         and not {'bin', 'obj'}.intersection(p.relative_to(directory).parts)}
 save(); print(out / 'receipt.json', flush=True)
 try:
-    for relative, digest in {
-        'sqlite-amalgamation-3530400.zip': '1e71ddf93849c6a6ecf58b827c0692073d2dd7ee40196158068f7b29f422e87d',
-        'upstream-tests/sqlite-src-3530400.zip': 'd18fa15aec74d8c17e1463f861095adc01b5ad190256acb4f91d22f0368d232b',
-    }.items():
+    for pin in json.loads((SQLITE / 'config/sources.json').read_text()).values():
+        relative, digest = pin['archive'], pin['sha256']
         cached = args.cache / relative
         if sha(cached) != digest: raise RuntimeError('Pinned archive cache mismatch: ' + relative)
         destination = SQLITE / 'ref' / relative
@@ -81,7 +80,7 @@ try:
         if not destination.exists(): shutil.copyfile(cached, destination)
         if sha(destination) != digest: raise RuntimeError('Pinned archive destination mismatch: ' + relative)
         receipt['archives'][relative] = digest
-    run(['python3', SQLITE / 'scripts/fetch.py'], 'verify-pinned-inputs', 180)
+    run([sys.executable, SQLITE / 'scripts/fetch.py'], 'verify-pinned-inputs', 180)
     upstream = SQLITE / 'ref/upstream-tests/sqlite-src-3530400/test/jsonb01.test'
     receipt['upstream_test'] = {'path': str(upstream), 'sha256': sha(upstream),
                                 'archive': 'upstream-tests/sqlite-src-3530400.zip',

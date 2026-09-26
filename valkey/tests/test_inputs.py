@@ -27,6 +27,17 @@ class InputTests(unittest.TestCase):
         self.root = Path(self.temp.name) / "campaign with spaces"
         (self.root / "config").mkdir(parents=True)
         shutil.copytree(SCRIPTS, self.root / "scripts", ignore=shutil.ignore_patterns("__pycache__"))
+        # This suite covers the opt-in strict acquisition API. Shared command
+        # dispatch and relaxed modes have their own framework integration tests.
+        support = self.root.parent / "Scripts"
+        support.mkdir()
+        shutil.copy2(SCRIPTS.parents[1] / "Scripts/campaign-common.sh", support / "campaign-common.sh")
+        (self.root / "scripts/fetch.sh").write_text(
+            '#!/usr/bin/env bash\nsource "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"\n'
+            'export DOTCC_CAMPAIGN_HASHES=strict\nexec "$PYTHON_CMD" "$(dirname -- "$0")/inputs.py" "$@"\n')
+        environment = patch.dict(os.environ, DOTCC_CAMPAIGN_HASHES="strict")
+        environment.start()
+        self.addCleanup(environment.stop)
         self.tree = self.root / "ref/valkey-fixture"
         self.archive = self.root / "ref/valkey-fixture.tar.gz"
         self.files = {"src/server.c": b"int main(void) { return 0; }\n", "deps/lua/lua.h": b"/* bundled Lua */\n",

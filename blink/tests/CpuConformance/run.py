@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Native hardware versus pinned native interpreter; no managed core claim."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import argparse,hashlib,json,os,platform,shutil,subprocess,tempfile,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];REPO=ROOT.parent
@@ -27,7 +35,7 @@ implementation_names = ['run.py','run-managed.py','selection.py','contracts.py',
 r['implementation']={name:sha(ROOT/'tests/CpuConformance'/name) for name in implementation_names}
 try:
     if platform.system()!='Linux' or platform.machine()!='x86_64':raise RuntimeError('reference requires Linux x86-64, no substituted expectations')
-    native=ROOT/'build/native/source';upstream=ROOT/'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+    native=ROOT/'build/native/source';upstream=ROOT/("ref/" + _CAMPAIGN_SOURCE["directory"])
     manifest=ROOT/'config/source-inventory.json'
     for row in json.loads(manifest.read_text())['files']:
         if sha(upstream/row['path'])!=row['sha256']:raise RuntimeError('pinned source changed: '+row['path'])

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-set -euo pipefail
-exec python3 "$(dirname -- "$0")/translate.py" "$@"
+source "$(dirname -- "${BASH_SOURCE[0]}")/common.sh"
+campaign_exec translate "$@"

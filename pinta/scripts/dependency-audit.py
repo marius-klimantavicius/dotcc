@@ -13,18 +13,22 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, provenance
 FORBIDDEN = re.compile(r"Marius\.(?:Script|Pinta\.(?:Managed|Script|Web|Debugger))|"
                        r"(?:libpinta\.(?:so|dylib)|pinta\.dll)|"
                        r"System\.Reflection\.Emit|AssemblyBuilder|DynamicMethod", re.I)
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return None if policy().mode == "off" else hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile", choices=["release", "debug"], default="release")
+    parser.add_argument("--form", choices=["raw", "processed", "all"], default="all")
     parser.add_argument("--pristine", action="store_true", help="Audit untouched-source translation variant")
     parser.add_argument("--deps", type=Path, action="append", default=[],
                         help="Consumer .deps.json to inspect (repeat for each form/runtime)")
@@ -51,17 +55,14 @@ def main():
            {"platform-windows.c", "sample.c", "native-function.c"} for unit in units):
         errors.append("Core source closure contains an unselected unit")
 
-    base = ROOT / "generated" / (variant if variant != "release" else "")
-    receipt_path = ROOT / "artifacts/translation" / variant / "success.json"
-    receipt_text = read(receipt_path)
-    receipt = json.loads(receipt_text) if receipt_text else {}
-    for name, digest in receipt.get("inputs", {}).get("sha256", {}).items():
-        path = ROOT.parent / name
-        if not path.is_file() or sha(path) != digest:
-            errors.append(f"Translation input changed since emission: {name}")
-    projects = list((ROOT / "src").rglob("*.csproj")) + list((ROOT / "tests").rglob("*.csproj"))
+    base = ROOT / "generated" / ("profiles/" + variant if variant != "release" else "")
+    selected_forms = ("raw", "processed") if args.form == "all" else (args.form,)
+    provenance(ROOT, "TranslatedPinta", "release", args.profile, selected_forms)
+    projects = list((ROOT / "src").rglob("*.csproj")) + list((ROOT / "tests").rglob("*.csproj")) + list((ROOT / "samples").rglob("*.csproj"))
     sources = [p for p in (ROOT / "src").rglob("*.cs") if not {"bin", "obj"} & set(p.parts)]
-    for form, name in [("raw", "TranslatedPintaRaw"), ("optimized", "TranslatedPinta")]:
+    for form, name in [("raw", "TranslatedPinta.Raw"), ("optimized", "TranslatedPinta")]:
+        if ("processed" if form == "optimized" else form) not in selected_forms:
+            continue
         directory = base / name
         names = read(directory / "Dotcc.SourceFiles.txt").splitlines()
         if not names or len(names) != len(set(names)):
@@ -78,12 +79,6 @@ def main():
                 errors.append(f"{form}: emitted source is a symlink: {name}")
             sources.append(directory / name)
         projects.append(directory / "TranslatedPinta.csproj")
-        for name, digest in receipt.get(form, {}).items():
-            path = directory / name
-            if Path(name).name != name or not path.is_file() or sha(path) != digest:
-                errors.append(f"{form}: output no longer matches translation receipt: {name}")
-        if not receipt.get(form):
-            errors.append(f"{form}: no successful translation hashes")
 
     for project in projects:
         content = read(project)

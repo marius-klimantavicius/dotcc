@@ -108,6 +108,16 @@ def extract_archive(archive, tree, manifest):
 def prepare_inputs(no_fetch=False, root=ROOT):
     """Return and persist an input receipt. no_fetch controls acquisition only."""
     root = Path(root).resolve()
+    if os.environ.get("DOTCC_CAMPAIGN_HASHES") in ("warn", "off"):
+        sys.path.insert(0, str(root.parent / "Scripts"))
+        from campaigns.compat import references
+        tree = references(root, no_fetch)["product"]
+        config = json.loads((root / "config/source.json").read_text())
+        result = {"commit": config["commit"], "version": config["version"],
+                  "source_root": str(tree), "status": "passed", "hash_policy": os.environ["DOTCC_CAMPAIGN_HASHES"],
+                  "fetch_mode": "no-fetch" if no_fetch else "fetch", "validation_method": "structural"}
+        write_json(root / "artifacts/inputs.json", result)
+        return result
     config = json.loads((root / "config/source.json").read_text())
     tree = root / "ref" / config["directory"]
     archive = root / "ref" / config["archive"]

@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Run one frozen static-musl HTTP witness with explicit NativeAOT GC settings."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/DotNetService/native-gc-profile.py']
+
 import argparse
 import hashlib
 import json
@@ -14,9 +22,9 @@ import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[3]
-BUILD_RECEIPT_SHA = "8876eaf0cda1c0cc9ec81e163a9293745caa436215dec90790ff6f57acce8505"
-BINARY_SHA = "b8fc2c2ba465ded0349c46ecd332dc361ebd0d8c7265b17938adc7e79eac82b3"
-ORACLE_SHA = "0f89f12c6eb2f990e4841cc60d329f6db85df78f33412bc2c665605fa0d74833"
+BUILD_RECEIPT_SHA = _CAMPAIGN_INPUTS['BUILD_RECEIPT_SHA']
+BINARY_SHA = _CAMPAIGN_INPUTS['BINARY_SHA']
+ORACLE_SHA = _CAMPAIGN_INPUTS['ORACLE_SHA']
 ENVIRONMENT = {"LANG": "C", "DOTNET_GCHeapHardLimit": "1000000",
                "DOTNET_GCRegionRange": "2000000", "DOTNET_GCRegionSize": "100000"}
 

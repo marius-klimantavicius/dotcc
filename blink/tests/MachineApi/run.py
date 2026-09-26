@@ -243,7 +243,7 @@ def main():
         project = Path(__file__).with_name('Probe.csproj')
         solution = ROOT / 'ManagedConsumer.slnx'
         closure = source_closure(project)
-        closure.update(source_closure(ROOT / 'ManagedConsumer/ManagedConsumer.csproj'))
+        closure.update(source_closure(ROOT / 'samples/ManagedConsumer/ManagedConsumer.csproj'))
         for path in [Path(__file__), Path(__file__).with_name('README.md'), Path(__file__).with_name('guest.c'), HELPER,
                      ROOT / 'scripts/core_inputs.py', solution]:
             closure[path] = sha(path)

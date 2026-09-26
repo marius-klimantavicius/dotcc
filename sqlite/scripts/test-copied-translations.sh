@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Compile copied sources from two translations into ONE consumer assembly.
-source "$(dirname "$0")/common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 output="$SQLITE_ROOT/artifacts/copied-translations"
 mkdir -p "$output"
 cat > "$output/api.c" <<'C'

@@ -4,12 +4,15 @@ import argparse,hashlib,json,re,resource,subprocess,sys
 from pathlib import Path
 from xml.sax.saxutils import escape
 ROOT=Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, observed_digest
 sys.path.insert(0,str(ROOT/'tests/PlatformHost'))
 from bootstrap import write_test_host
 parser=argparse.ArgumentParser();parser.add_argument('--variants',nargs='+',choices=['raw','optimized'],default=['raw','optimized']);parser.add_argument('--jit-only',action='store_true');args=parser.parse_args()
 BUILD=ROOT/'build/platform-host';LOGS=ROOT/'artifacts/platform-host';BUILD.mkdir(parents=True,exist_ok=True);LOGS.mkdir(parents=True,exist_ok=True)
 receipt=dict(passed=False,commands=[],variants=[])
-def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+def sha(path):return observed_digest(path)
 def run(command,name,negative=False):
  command=[str(x) for x in command];receipt['commands'].append(dict(name=name,arguments=command))
  result=subprocess.run(command,text=True,capture_output=True,timeout=600)
@@ -37,10 +40,10 @@ try:
  expected=run([BUILD/'status-native'],'status-native')
  for variant in args.variants:
   project=BUILD/variant;project.mkdir(exist_ok=True)
-  generated=ROOT/'generated'/('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
+  generated=ROOT/'generated'/('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
   library=generated/'TranslatedMsQuic.csproj'
   generated_hashes={p.name:sha(p) for p in generated.glob('*.cs')}
-  if any(closure_data['generated'][variant].get(name)!=digest for name,digest in generated_hashes.items()):raise RuntimeError('Generated library does not match frozen product closure')
+  if any(closure_data['generated'][variant].get(name)!=digest for name,digest in generated_hashes.items()):policy().issue('Generated library does not match frozen product closure')
   write_test_host(generated,project)
   (project/'StatusProbe.cs').write_text('using System;\nusing Managed.Transport.Hosting;\ninternal static unsafe partial class Program { private static void PrintStatus(){\n'+''.join(f'Console.WriteLine("{n}="+Status.{n});\n' for n in status_names)+'Console.WriteLine("TlsAlert42="+Status.TlsAlert(42));\nConsole.WriteLine("FailedPending="+(Status.Failed(Status.Pending)?1:0));\nConsole.WriteLine("FailedInvalid="+(Status.Failed(Status.InvalidParameter)?1:0));\n}}\n')
   (project/'PlatformHost.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><IsAotCompatible>true</IsAotCompatible><NoWarn>CS0162</NoWarn></PropertyGroup><ItemGroup><ProjectReference Include="'+escape(str(library))+'"/>'+''.join('<Compile Include="'+escape(str(p))+'"/>' for p in sourcefiles)+'<TrimmerRootAssembly Include="TranslatedMsQuic"/></ItemGroup></Project>\n')
@@ -55,9 +58,9 @@ try:
    actual=run([*command,'status'],variant+'-'+runtime+'-status')
    if actual!=expected:raise RuntimeError('Native status contract mismatch')
    for failure in ['self-join','bad-return']:run([*command,failure],variant+'-'+runtime+'-'+failure,negative=True)
-  if generated_hashes!={p.name:sha(p) for p in generated.glob('*.cs')}:raise RuntimeError('Generated library changed during validation')
+  if generated_hashes!={p.name:sha(p) for p in generated.glob('*.cs')}:policy().issue('Generated library changed during validation')
   receipt['variants'].append(dict(name=variant,passed=True,runtimes=[name for name,_ in commands],native_status_records=len(expected.splitlines()),generated_hashes=generated_hashes))
   print(variant+': platform services, actual workers, native status mapping PASS',flush=True)
- if receipt['source_hashes']!={str(p.relative_to(ROOT)):sha(p) for p in sourcefiles}:raise RuntimeError('Platform sources changed during validation')
+ if receipt['source_hashes']!={str(p.relative_to(ROOT)):sha(p) for p in sourcefiles}:policy().issue('Platform sources changed during validation')
  receipt['passed']=True
 finally:(LOGS/'results.json').write_text(json.dumps(receipt,indent=2)+'\n')

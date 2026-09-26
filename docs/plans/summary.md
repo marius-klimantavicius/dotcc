@@ -12,6 +12,11 @@ runtime-fidelity divergences) and the two committed probe reports
 [`wasm-surface-probe.report.txt`](wasm-surface-probe.report.txt)), which are regenerated
 data rather than plans. Permanent out-of-scope lives in the SUPPORT docs.
 
+For new upstream translation campaigns, use the
+[shared planning baseline](translation-baseline.md) and copy the
+[project template](translation-template.md) into `<project>/docs/PLAN.md`.
+These are reusable planning guides, not active campaigns with completion rows.
+
 Last verified against `main` on **2026-09-06** (`c5e49b3`, plus S3 on `feat/zig-synthetic-builtin`).
 
 | Plan | Status |

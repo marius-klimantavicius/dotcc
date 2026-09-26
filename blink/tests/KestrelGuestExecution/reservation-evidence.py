@@ -4,6 +4,15 @@
 Prints JSON to stdout. Does not run the guest, edit an attempt, or claim a direct
 snapshot of vss/rss or peak backing. All evidence inputs are exact content pins.
 """
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/KestrelGuestExecution/reservation-evidence.py']
+
 import hashlib
 import json
 from pathlib import Path
@@ -11,22 +20,22 @@ import struct
 
 ROOT = Path(__file__).resolve().parents[2]
 ATTEMPT = 'artifacts/kestrel-guest-execution/attempt-7lswgkg3/'
-UPSTREAM = 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink/'
+UPSTREAM = ("ref/" + _CAMPAIGN_SOURCE["directory"] + '/blink/')
 ELF = 'artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService'
 NATIVE_TRACE = 'artifacts/kestrel-native-profile/attempt-zphi57zq/native.strace'
 PINS = {
-    ATTEMPT + 'receipt.json': 'e7e2075e1b6b6088724093069e592dd7d8a7fbb23bd35c720094b2995c4e4af7',
-    ATTEMPT + 'result/result.json': '5fe079f63162191852f93819771e74bc82605eb02b8e074151b8a7bf418ce544',
-    ATTEMPT + 'private/src/Managed.Emulation.ThreadedExecution/ThreadedGuestExecution.cs': 'be5a6a6a4806bbb9d408c87a82abdf36a270b1410cae2635fdb94458114435ed',
-    ATTEMPT + 'private/generated/TranslatedBlink/Sources/BlinkCore.00005.cs': '891ff71b4d29d13498abfe2878fc2df496f4c7414f046aa40ace8f48ae0d56ca',
-    ATTEMPT + 'private/generated/TranslatedBlink/Sources/BlinkCore.00010.cs': 'b89d3e87366c5fae3042f7c4da543472c663f6e4d6f932e4d4a46088c2a41ff0',
-    'src/GuestResources/GuestResources.c': '88f3e01f7f50c98b55e06e0eea5e79840fb894c3678ea9e1161e564bf418961f',
-    UPSTREAM + 'loader.c': '8175b61a1de47f9decf91e71f682e73f5260b66ca1eba6686c2d4d302bcd751c',
-    UPSTREAM + 'memorymalloc.c': '589becd0e214d5f422e75a9b63b1bf5d5280b3f8ca4e00dc212ede120e945b12',
-    UPSTREAM + 'syscall.c': '4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3',
-    UPSTREAM + 'tunables.h': 'f9126c9f4f52f17afe9fee2ad65ab3797391e32868dd3823f9ef8989e9268f90',
-    ELF: 'ef6f1433794a42fe32b0fed4851bf88dd0631cd6a836550c6effca79d9e9a3ac',
-    NATIVE_TRACE: '5114818b518b04fb4e1902f24f3faa2dfda9edcac6c7b06d21c91ffe32122132',
+    ATTEMPT + 'receipt.json': _CAMPAIGN_INPUTS['attempt_receipt_sha256'],
+    ATTEMPT + 'result/result.json': _CAMPAIGN_INPUTS['result_sha256'],
+    ATTEMPT + 'private/src/Managed.Emulation.ThreadedExecution/ThreadedGuestExecution.cs': _CAMPAIGN_INPUTS['execution_source_sha256'],
+    ATTEMPT + 'private/generated/TranslatedBlink/Sources/BlinkCore.00005.cs': _CAMPAIGN_INPUTS['core_source_00005_sha256'],
+    ATTEMPT + 'private/generated/TranslatedBlink/Sources/BlinkCore.00010.cs': _CAMPAIGN_INPUTS['core_source_00010_sha256'],
+    'src/GuestResources/GuestResources.c': _CAMPAIGN_INPUTS['guest_resources_source_sha256'],
+    UPSTREAM + 'loader.c': _CAMPAIGN_INPUTS['loader_sha256'],
+    UPSTREAM + 'memorymalloc.c': _CAMPAIGN_INPUTS['memorymalloc_sha256'],
+    UPSTREAM + 'syscall.c': _CAMPAIGN_INPUTS['syscall_sha256'],
+    UPSTREAM + 'tunables.h': _CAMPAIGN_INPUTS['tunables_sha256'],
+    ELF: _CAMPAIGN_INPUTS['guest_elf_sha256'],
+    NATIVE_TRACE: _CAMPAIGN_INPUTS['native_trace_sha256'],
 }
 
 

@@ -62,7 +62,7 @@ Reproduce from `picotls/`, serially:
 ./scripts/oracle.sh
 ./scripts/translate.sh
 ./scripts/build-only.sh
-dotnet build ManagedConsumer/ManagedConsumer.slnx -c Release
+dotnet build samples/ManagedConsumer/ManagedConsumer.slnx -c Release
 ./scripts/test.sh --all --aot --runtime linux-x64
 python3 scripts/audit-product.py
 ```

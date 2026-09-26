@@ -175,7 +175,13 @@ class SourceSelectionTests(unittest.TestCase):
         self.assertFalse((work / 'tls-old').exists())
 
     def test_translate_no_fetch_routes_full_and_fast_modes(self):
-        shutil.copy2(ROOT / 'scripts/translate.sh', self.root / 'scripts/translate.sh')
+        repository = self.root / 'wrapper-repository'
+        campaign = repository / 'msquic'
+        (campaign / 'scripts').mkdir(parents=True)
+        (repository / 'Scripts').mkdir()
+        for name in ('translate.sh', 'common.sh'):
+            shutil.copy2(ROOT / 'scripts' / name, campaign / 'scripts' / name)
+        shutil.copy2(ROOT.parent / 'Scripts/campaign-common.sh', repository / 'Scripts/campaign-common.sh')
         commands = self.root / 'commands.jsonl'
         binary = self.root / 'bin'
         binary.mkdir()
@@ -188,18 +194,12 @@ class SourceSelectionTests(unittest.TestCase):
         launcher.chmod(0o755)
         for flags in ([], ['--no-fetch'], ['--fast', '--no-fetch']):
             commands.write_text('')
-            subprocess.run(['bash', self.root / 'scripts/translate.sh', '--no-build-tools', *flags],
+            subprocess.run(['bash', campaign / 'scripts/translate.sh', '--no-build-tools', *flags],
                            check=True, env={**os.environ, 'PATH': str(binary) + os.pathsep + os.environ['PATH']})
             calls = [json.loads(line) for line in commands.read_text().splitlines()]
-            scripts = {Path(call[0]).name: call[1:] for call in calls}
-            if '--fast' in flags:
-                self.assertEqual(list(scripts), ['translate-fast.py'])
-            else:
-                self.assertEqual('fetch.py' in scripts, '--no-fetch' not in flags)
-                for script in ('test-host-contract.py', 'test-abi.py'):
-                    self.assertEqual('--no-fetch' in scripts[script], '--no-fetch' in flags)
-                self.assertIn('build-product.py', scripts)
-                self.assertEqual(scripts['freeze-product.py'], ['--without-sqlite'])
+            self.assertEqual(len(calls), 1)
+            self.assertEqual(Path(calls[0][0]).name, 'campaign.py')
+            self.assertEqual(calls[0][1:], ['translate', 'msquic', '--no-build-tools', *flags])
 
     def test_host_no_fetch_reaches_real_staging_without_archive(self):
         spec = self.snapshot('local')
@@ -251,11 +251,15 @@ class SourceSelectionTests(unittest.TestCase):
         header.write_text(header.read_text() + '/* changed */\n')
         self.assertNotEqual(report['local_reference_sha256'], abi.local_reference_hashes())
 
-    def test_download_integrity_is_independent_of_compatibility(self):
+    def test_download_hash_policy(self):
         archive = self.root / 'ref/archive.tar.gz'
         archive.write_bytes(b'cached archive')
-        with self.assertRaisesRegex(RuntimeError, 'Archive checksum mismatch'):
+        with patch.dict(os.environ, DOTCC_CAMPAIGN_HASHES='warn'), patch('sys.stderr', new_callable=io.StringIO) as warnings:
             self.fetch.download('unused', archive, expected='incorrect')
+            self.assertIn('WARNING', warnings.getvalue())
+        with patch.dict(os.environ, DOTCC_CAMPAIGN_HASHES='strict'):
+            with self.assertRaisesRegex(RuntimeError, 'Archive checksum mismatch'):
+                self.fetch.download('unused', archive, expected='incorrect')
 
 
 if __name__ == '__main__':

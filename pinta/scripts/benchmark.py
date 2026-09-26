@@ -92,7 +92,7 @@ def main():
         native_run["binary"] = {"sha256": sha(native), "bytes": native.stat().st_size}
         modes = ["jit", "aot"] if args.mode == "all" else [args.mode]
         for form in ["raw", "optimized"]:
-            library = ROOT / "generated" / variant / ("TranslatedPintaRaw" if form == "raw" else "TranslatedPinta") / "TranslatedPinta.csproj"
+            library = ROOT / "generated" / variant / ("TranslatedPinta.Raw" if form == "raw" else "TranslatedPinta") / "TranslatedPinta.csproj"
             for mode in modes:
                 directory = output / form / mode
                 command = ["dotnet", "build" if mode == "jit" else "publish", ROOT / "tests/Benchmark/Benchmark.csproj",

@@ -2,7 +2,7 @@
 
 The final postprocessed project is
 `msquic/generated/TranslatedMsQuic/TranslatedMsQuic.csproj`.
-Raw output is retained at `msquic/generated/raw/TranslatedMsQuic`.
+Raw output is retained at `msquic/generated/TranslatedMsQuic.Raw`.
 Both use
 `--nest-types --runtime=c --class-name MsQuic --namespace Managed.Transport`.
 No generated global using directives are needed by a consumer.

@@ -1,5 +1,7 @@
 # MsQuic translation campaign
 
+Build orchestration uses the [shared campaign helpers](../docs/campaigns.md).
+
 See the [2026-09-24 compiler refresh verification](docs/verification-20260924.md)
 for freshly regenerated PicoTLS/MsQuic results and the retained recovery failures.
 
@@ -35,7 +37,7 @@ as `MsQuic.QUIC_STATUS_PENDING`, preserving their unsigned C values. Object
 compilation retains `--emit-define 'QUIC_STATUS_*'` to require these API exports. Macro-generated function helpers
 receive canonical pointer fields only when translated C uses their addresses.
 
-The script preserves raw nested output at `generated/raw/TranslatedMsQuic`,
+The script preserves raw nested output at `generated/TranslatedMsQuic.Raw`,
 postprocesses the final project in place, and checks native/JIT/NativeAOT ABI and
 whole-assembly consumers. `--no-build-tools` reuses already-built compiler and
 postprocessor binaries. Earlier closure evidence is archived before regeneration;

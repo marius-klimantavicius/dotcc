@@ -37,11 +37,11 @@ pinta/scripts/dependency-audit.sh
 
 `--pristine` selects the untouched-source comparison for translation/build/audit;
 `--profile debug` selects diagnostic code. The default corrected release outputs
-are `generated/TranslatedPintaRaw` and `generated/TranslatedPinta`. All selected
+are `generated/TranslatedPinta.Raw` and `generated/TranslatedPinta`. All selected
 sources, including core diagnostics, remain in the library. No source-language
 compiler, old wrapper, external debugger or native Pinta library supplies execution.
 
-`src/ManagedApi` is the owning BCL facade; `tests/ManagedConsumer` is a separate
+`src/ManagedApi` is the owning BCL facade; `samples/ManagedConsumer` is a separate
 project that consumes it. Its project references the generated library normally.
 The [host contract](host-contract.md) describes arena ownership, module handles,
 UTF-16 lengths, copied output and callback lifetimes. Run its qualification matrix

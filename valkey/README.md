@@ -1,5 +1,7 @@
 # Valkey translation campaign
 
+Build orchestration uses the [shared campaign helpers](../docs/campaigns.md).
+
 The [translation plan](docs/PLAN.md) follows the SQLite, picotls, MsQuic, libsmb2
 and Blink campaigns. [Source review](docs/source.md) records the downloaded
 Valkey 9.1.2 revision, archive checksum and implementation boundaries.

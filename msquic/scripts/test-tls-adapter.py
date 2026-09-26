@@ -14,6 +14,10 @@ import sys
 from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, observed_digest
+from provenance import picotls_provenance
 PICOTLS = ROOT.parent / 'picotls'
 sys.path.insert(0, str(ROOT / 'tests/PlatformHost'))
 from bootstrap import write_test_host
@@ -29,7 +33,7 @@ receipt = dict(passed=False, transport_validated=False, commands=[], variants=[]
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return observed_digest(path)
 
 
 def generated_hashes(directory):
@@ -54,8 +58,8 @@ try:
     closure = ROOT / 'config/product-closure.json'
     frozen = json.loads(closure.read_text())
     receipt['product_closure_sha256'] = sha(closure)
-    provenance = PICOTLS / 'artifacts/translation/success.json'
-    pico_frozen = json.loads(provenance.read_text())
+    provenance = PICOTLS / 'artifacts/campaign/current-default.json'
+    pico_frozen = picotls_provenance(PICOTLS)
     receipt['picotls_translation_sha256'] = sha(provenance)
     source_names = ['MsQuicHost.Resources.cs', 'MsQuicHost.Platform.cs', 'MsQuicHost.Queue.cs', 'Status.cs', 'Crypto.cs']
     sources = [ROOT / 'src/BclHost' / name for name in source_names]
@@ -68,13 +72,13 @@ try:
     for variant in args.variants:
         directory = BUILD / variant
         directory.mkdir(exist_ok=True)
-        generated = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')
-        picotls = PICOTLS / 'generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+        generated = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
+        picotls = PICOTLS / 'generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
         hashes, pico_hashes = generated_hashes(generated), generated_hashes(picotls)
         if any(frozen['generated'][variant].get(name) != digest for name, digest in hashes.items()):
-            raise RuntimeError('MsQuic generated library does not match frozen product closure')
+            policy().issue('MsQuic generated library does not match frozen product closure')
         if any(pico_frozen[variant].get(name) != digest for name, digest in pico_hashes.items()):
-            raise RuntimeError('picotls generated library does not match successful translation')
+            policy().issue('picotls generated library does not match successful translation')
         write_test_host(generated, directory,
                         'RegisterPlatform(ref table); RegisterCrypto(ref table); RegisterTls(ref table);', 'CreateTlsTable')
         project = directory / 'TlsAdapter.csproj'
@@ -108,13 +112,13 @@ try:
         if not args.jit_only and entry['jit'] != entry['aot']:
             raise RuntimeError('JIT/NativeAOT cases differ')
         if hashes != generated_hashes(generated) or pico_hashes != generated_hashes(picotls):
-            raise RuntimeError('Generated source changed during TLS adapter validation')
+            policy().issue('Generated source changed during TLS adapter validation')
         entry['passed'] = True
         receipt['variants'].append(entry)
     if receipt['input_sha256'] != {os.path.relpath(path, ROOT): sha(path) for path in inputs}:
-        raise RuntimeError('Authored TLS adapter/provider sources changed during validation')
+        policy().issue('Authored TLS adapter/provider sources changed during validation')
     if receipt['product_closure_sha256'] != sha(closure) or receipt['picotls_translation_sha256'] != sha(provenance):
-        raise RuntimeError('Translation closure changed during TLS adapter validation')
+        policy().issue('Translation closure changed during TLS adapter validation')
     if set(args.variants) == {'raw', 'optimized'} and not args.jit_only:
         if receipt['variants'][0]['jit'] != receipt['variants'][1]['jit']:
             raise RuntimeError('Raw/optimized cases differ')

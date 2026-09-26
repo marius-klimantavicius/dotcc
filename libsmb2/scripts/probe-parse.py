@@ -14,8 +14,9 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
-REVISION = '99d5cffc85e4aa8d517649568ff8ec2008e35e90'
-ARCHIVE_HASH = 'e67e8803969336a50b3c7063870376f944a0ab9638cd39629fc8fcd76bff9031'
+SOURCE_SPEC = json.loads((ROOT / 'config/source.json').read_text())
+REVISION = SOURCE_SPEC['revision']
+ARCHIVE_HASH = SOURCE_SPEC['sha256']
 URL = f'https://codeload.github.com/sahlberg/libsmb2/tar.gz/{REVISION}'
 SOURCE = ROOT / 'ref' / f'libsmb2-{REVISION}'
 OUT = ROOT / 'artifacts/parse-probe'

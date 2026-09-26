@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Build the frozen real-core object link with its owning managed consumer."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+
 import argparse
 import difflib
 import hashlib
@@ -68,7 +76,7 @@ def run(command, label, timeout=180):
 def diagnostic_inventory(log):
     errors = sorted(set(line.strip() for line in log.read_text().splitlines() if ': error CS' in line))
     rows = []
-    upstream = ROOT / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580/blink'
+    upstream = ROOT / ("ref/" + _CAMPAIGN_SOURCE["directory"] + '/blink')
     source_lines = {path: path.read_text().splitlines() for path in upstream.glob('*.[ch]')}
     for line in errors:
         symbols = re.findall(r"'([^']+)'", line)
@@ -206,7 +214,7 @@ try:
     if not native_rows or not native_rows[0].startswith('abi '):
         raise RuntimeError('unexpected native oracle output')
     expected_rows = native_rows[1:]
-    upstream = ROOT / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
+    upstream = ROOT / ("ref/" + _CAMPAIGN_SOURCE["directory"])
     run(['cc', '-std=c17', '-D_GNU_SOURCE', '-DNDEBUG', '-DNOLINEAR', '-I', profile,
          '-I', upstream, '-iquote', profile / 'host', a / 'abi.c', '-o', a / 'native-abi'], 'native-abi-build')
     expected_abi = run([a / 'native-abi'], 'native-abi', 30).strip()

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 mkdir -p "$root/artifacts/instance-io"
@@ -11,7 +12,7 @@ timeout --kill-after=5s 30 "$root/build/instance-io-aot/InstanceIo" > "$root/art
 diff -u "$root/artifacts/instance-io/jit.txt" "$root/artifacts/instance-io/aot.txt"
 cat "$root/artifacts/instance-io/jit.txt"
 
-python3 - "$root" <<'PYRECEIPT'
+"$PYTHON_CMD" - "$root" <<'PYRECEIPT'
 import hashlib,json,pathlib,subprocess,sys
 root=pathlib.Path(sys.argv[1]); out=root/'artifacts/instance-io'
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

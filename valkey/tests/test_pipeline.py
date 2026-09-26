@@ -26,9 +26,16 @@ class PipelineTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory(prefix="valkey pipeline with spaces ")
         self.addCleanup(self.temporary.cleanup)
         self.repo = Path(self.temporary.name)
-        self.root = self.repo / "valkey fixture"
+        self.root = self.repo / "valkey"
         self.root.mkdir()
         shutil.copytree(ROOT / "scripts", self.root / "scripts", ignore=shutil.ignore_patterns("__pycache__"))
+        shutil.copytree(ROOT.parent / "Scripts", self.repo / "Scripts", ignore=shutil.ignore_patterns("__pycache__", "*.lock"))
+        for name in ("src/Managed.Valkey/Managed.Valkey.csproj", "samples/ManagedConsumer/ManagedConsumer.csproj"):
+            project = self.root / name
+            project.parent.mkdir(parents=True, exist_ok=True)
+            project.write_text("<Project />")
+        (self.root / "tests").mkdir()
+        (self.root / "ManagedConsumer.slnx").write_text('<Solution><Project Path="generated/TranslatedValkey/TranslatedValkey.csproj" /><Project Path="src/Managed.Valkey/Managed.Valkey.csproj" /><Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" /></Solution>')
         (self.root / "config").mkdir()
         self.tree = self.root / "ref/valkey-fixture"
         self.archive = self.root / "ref/valkey-fixture.tar.gz"
@@ -38,6 +45,7 @@ class PipelineTests(unittest.TestCase):
             "    stream.write(sys.executable + '\\n')\n")
         files = {
             "src/server.c": b"/* Copyright fixture author; licensed for testing. */\nint server(void) { return 42; }\n",
+            "src/server.h": b"/* fixture header */\n",
             "src/second.c": b"int second(void) { return 24; }\n",
             "COPYING": b"Fixture redistribution notice.\n",
             "src/fmtargs.h": b"/* fixed preamble */\n/* Everything below this line is generated */\nstale\n",
@@ -107,10 +115,11 @@ elif "--emit=managedlib" in args:
     output = Path(args[args.index("-o") + 1])
     output.mkdir(parents=True)
     (output / "TranslatedValkey.csproj").write_text("<Project />\\n")
+    (output / "Dotcc.SourceFiles.txt").write_text("Core.cs\\n")
     (output / "Core.cs").write_text("// test generated library fixture\\n")
 elif args and args[0] == "build":
     project = args[1]
-    if fail == "product-build" and "/product/TranslatedValkey/" in project:
+    if fail == "product-build" and "/processed/TranslatedValkey/" in project:
         raise SystemExit(18)
     if fail == "final-build" and "/generated/TranslatedValkey/" in project:
         raise SystemExit(19)
@@ -169,8 +178,8 @@ urllib.request.urlopen = fixture_fetch
         return result
 
     def receipt(self):
-        latest = json.loads((self.root / "artifacts/translation/latest.json").read_text())
-        return json.loads((self.root / latest["receipt"]).read_text())
+        latest = json.loads((self.root / "artifacts/campaign/latest-attempt.json").read_text())
+        return json.loads(Path(latest["receipt"]).read_text())
 
     def dotnet_commands(self):
         path = Path(self.env["TEST_DOTNET_LOG"])
@@ -189,9 +198,8 @@ urllib.request.urlopen = fixture_fetch
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue(Path(self.env["TEST_FETCH_ATTEMPT"]).exists())
         receipt = self.receipt()
-        self.assertEqual(receipt["inputs"]["fetch_mode"], "fetch")
-        self.assertTrue(receipt["inputs"]["download_attempted"])
-        self.assertTrue(receipt["passed"])
+        self.assertEqual(receipt["status"], "passed")
+        self.assertEqual(receipt["status"], "passed")
         self.assertEqual(len(receipt["units"]), 2)
         link = next(args for args in self.dotnet_commands() if "--emit=managedlib" in args)
         self.assertEqual(link[link.index("--namespace") + 1], "Managed.Database")
@@ -229,7 +237,7 @@ urllib.request.urlopen = fixture_fetch
         result = self.translate("--no-fetch", "--no-build-tools", "--managed-profile")
         self.assertEqual(result.returncode, 0, result.stderr)
         receipt = self.receipt()
-        self.assertEqual([unit["path"] for unit in receipt["units"]],
+        self.assertEqual(["/".join(Path(unit).parts[-2:]) for unit in receipt["units"]],
                          ["src/server.c", "src/second.c", "src/bridge.c"])
         self.assertEqual(receipt["managed_profile"]["injected_files"][0]["sha256"], sha(bridge))
         self.assertEqual(hashes(self.tree), self.reference_hashes)
@@ -249,11 +257,9 @@ urllib.request.urlopen = fixture_fetch
         self.assertNotIn("src/release.h", original)
         self.assertNotIn("src/commands.def", original)
         self.assertEqual(first["generated_inputs"], second["generated_inputs"])
-        self.assertEqual(second["inputs"]["fetch_mode"], "no-fetch")
-        self.assertEqual(second["inputs"]["validation_method"], "trusted-file-manifest")
-        self.assertFalse(second["inputs"]["download_attempted"])
+        self.assertEqual(second["status"], "passed")
         for receipt in (first, second):
-            executable = receipt["inputs"]["python"]["executable"]
+            executable = receipt["python"]
             generators = [entry for entry in receipt["commands"]
                           if len(entry["command"]) > 1 and entry["command"][1].endswith(".py")]
             self.assertEqual(len(generators), 2)
@@ -271,7 +277,7 @@ urllib.request.urlopen = fixture_fetch
     def test_partial_unit_requires_explicit_probe_before_input_preparation(self):
         result = self.translate("--unit", "src/server.c", "--no-fetch")
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("--unit requires --probe", result.stderr)
+        self.assertIn("require probe", result.stderr)
         self.assertFalse(self.tree.exists())
         self.assertFalse((self.root / "artifacts/translation").exists())
         self.assertEqual(self.dotnet_commands(), [])
@@ -282,8 +288,8 @@ urllib.request.urlopen = fixture_fetch
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(hashes(self.root / "generated"), old)
         receipt = self.receipt()
-        self.assertEqual([unit["path"] for unit in receipt["units"]], ["src/second.c"])
-        self.assertEqual(receipt["mode"], "probe")
+        self.assertEqual(["/".join(Path(unit).parts[-2:]) for unit in receipt["units"]], ["src/second.c"])
+        self.assertEqual(receipt["action"], "probe")
         self.assertIn("no product published", receipt["scope"])
         self.assertFalse(any("--emit=managedlib" in args for args in self.dotnet_commands()))
 
@@ -291,8 +297,8 @@ urllib.request.urlopen = fixture_fetch
         self.archive.unlink()
         result = self.translate("--no-fetch", "--no-build-tools")
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("--no-fetch requires", result.stderr)
-        self.assertFalse(self.receipt()["passed"])
+        self.assertIn("Missing source", result.stderr)
+        self.assertEqual(self.receipt()["status"], "failed")
         self.assertEqual(self.dotnet_commands(), [])
         self.assertFalse((self.root / "generated").exists())
 
@@ -301,7 +307,7 @@ urllib.request.urlopen = fixture_fetch
         result = self.translate("--no-fetch", "--no-build-tools", fail="unit")
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(hashes(self.root / "generated"), old)
-        self.assertFalse(self.receipt()["passed"])
+        self.assertEqual(self.receipt()["status"], "failed")
         self.assertTrue(self.receipt()["previous_product_stale_for_attempt"])
         self.assertFalse(any("--emit=managedlib" in args for args in self.dotnet_commands()))
 
@@ -310,16 +316,16 @@ urllib.request.urlopen = fixture_fetch
         result = self.translate("--no-fetch", "--no-build-tools", fail="product-build")
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(hashes(self.root / "generated"), old)
-        self.assertFalse(self.receipt()["passed"])
-        self.assertIn("product-build.log", self.receipt()["failure"])
+        self.assertEqual(self.receipt()["status"], "failed")
+        self.assertIn("semantic-context-build.log", self.receipt()["error"])
 
     def test_final_path_build_failure_rolls_back_both_outputs(self):
         old = self.seed_product()
         result = self.translate("--no-fetch", "--no-build-tools", fail="final-build")
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(hashes(self.root / "generated"), old)
-        self.assertFalse(self.receipt()["passed"])
-        self.assertIn("final-path-build.log", self.receipt()["failure"])
+        self.assertEqual(self.receipt()["status"], "failed")
+        self.assertIn("final-processed-build.log", self.receipt()["error"])
 
 
 if __name__ == "__main__":

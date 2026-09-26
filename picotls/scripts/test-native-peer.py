@@ -31,7 +31,7 @@ def execute(name, argv, timeout=60):
                        env=env, timeout=timeout)
 
 
-source = Path(subprocess.check_output([str(root / "scripts/fetch.sh")], text=True).strip())
+source = Path(subprocess.check_output([os.environ.get("PYTHON_CMD", "python3"), str(root.parent / "Scripts/campaign-reference.py"), "picotls"], text=True).strip())
 oracle = root / "build/oracle"
 if not (oracle / "libpicotls-openssl.a").exists():
     execute("oracle", [str(root / "scripts/oracle.sh")], 600)

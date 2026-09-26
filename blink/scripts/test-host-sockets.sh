@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 BLINK_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 mkdir -p "$BLINK_ROOT/artifacts/host-sockets"
@@ -11,7 +12,7 @@ timeout --kill-after=5s 30 "$BLINK_ROOT/build/host-sockets-aot/HostSockets" > "$
 diff -u "$BLINK_ROOT/artifacts/host-sockets/jit.txt" "$BLINK_ROOT/artifacts/host-sockets/aot.txt"
 cat "$BLINK_ROOT/artifacts/host-sockets/jit.txt"
 
-python3 - "$BLINK_ROOT" <<'PYRECEIPT'
+"$PYTHON_CMD" - "$BLINK_ROOT" <<'PYRECEIPT'
 import hashlib, json, pathlib, subprocess, sys
 root = pathlib.Path(sys.argv[1]); artifact = root/'artifacts/host-sockets'
 def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()

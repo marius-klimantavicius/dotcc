@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 """Prepare an empty detached checkout, then explicitly resume its core reproduction."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['scripts/test-clean-reproduction.py']
+
+import sys
 import argparse
 import hashlib
 import json
@@ -17,7 +26,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 action = parser.add_mutually_exclusive_group(required=True)
 action.add_argument('--prepare', action='store_true', help='No compilation or execution gates')
 action.add_argument('--resume', type=Path, help='Explicitly start builds from a prepared receipt')
-parser.add_argument('--revision', default='717ba668cb0575e459b0ff21dfdf16fba1cdb58a')
+parser.add_argument('--revision', default=_CAMPAIGN_INPUTS['revision'])
 parser.add_argument('--worktree-parent', type=Path, default=Path('/home/marius/p'))
 args = parser.parse_args()
 def output(command, cwd=REPO):
@@ -108,9 +117,9 @@ try:
             ['bash', 'blink/scripts/fetch.sh', '--offline'],
             ['bash', 'blink/scripts/native-oracle.sh', '--offline'],
             ['bash', 'blink/scripts/probe-core.sh', '--stage-only'],
-            ['python3', 'blink/scripts/assemble-core.py', '--profile', '<fresh-profile>', '--jobs', '4', '--timeout', '300'],
-            ['python3', 'blink/tests/CoreExecution/run.py', '--assembly-receipt', '<fresh-109-object-receipt>'],
-            ['python3', 'blink/scripts/audit-published-core.py', '<fresh-execution-receipt>']]
+            [sys.executable, 'blink/scripts/assemble-core.py', '--profile', '<fresh-profile>', '--jobs', '4', '--timeout', '300'],
+            [sys.executable, 'blink/tests/CoreExecution/run.py', '--assembly-receipt', '<fresh-109-object-receipt>'],
+            [sys.executable, 'blink/scripts/audit-published-core.py', '<fresh-execution-receipt>']]
         r['prepared_status'] = clean(worktree)
         r['prepared'] = True; r['phase'] = 'awaiting-build-release'; save()
         print('Prepared without builds: ' + str(out / 'receipt.json'))
@@ -136,7 +145,7 @@ try:
         run(r['documented_commands'][3], 'stage', worktree, 180)
         profile = Path((worktree/'blink/artifacts/core/latest-profile.txt').read_text().strip())
         if not profile.is_relative_to(worktree): raise RuntimeError('Profile escaped clean checkout')
-        run(['python3','blink/scripts/assemble-core.py','--profile',profile,'--jobs','4','--timeout','300'], 'assemble', worktree, 3600)
+        run([sys.executable,'blink/scripts/assemble-core.py','--profile',profile,'--jobs','4','--timeout','300'], 'assemble', worktree, 3600)
         assemblies = list((worktree/'blink/artifacts/core/objects').glob('*/receipt.json'))
         if len(assemblies) != 1: raise RuntimeError('Expected exactly one fresh assembly receipt')
         assembly_path = assemblies[0]; assembly = json.loads(assembly_path.read_text())
@@ -146,14 +155,14 @@ try:
             if not Path(row['object_path']).is_relative_to(worktree) or sha(Path(row['object_path'])) != row['object_sha256']:
                 raise RuntimeError('Invalid fresh object identity: '+name)
         r['assembly'] = evidence(assembly_path); save()
-        run(['python3','blink/tests/CoreExecution/run.py','--assembly-receipt',assembly_path], 'core-execution', worktree, 1800)
+        run([sys.executable,'blink/tests/CoreExecution/run.py','--assembly-receipt',assembly_path], 'core-execution', worktree, 1800)
         executions = list((worktree/'blink/artifacts/core-execution').glob('attempt-*/receipt.json'))
         if len(executions) != 1: raise RuntimeError('Expected one fresh core execution')
         execution_path = executions[0]; execution = json.loads(execution_path.read_text())
         if not execution['passed'] or not execution['runtime_matrix_passed'] or execution['diagnostic_replay']:
             raise RuntimeError('Actual core all4 gate failed')
         r['execution'] = evidence(execution_path); save()
-        run(['python3','blink/scripts/audit-published-core.py',execution_path], 'publication', worktree, 120)
+        run([sys.executable,'blink/scripts/audit-published-core.py',execution_path], 'publication', worktree, 120)
         publications = list((worktree/'blink/artifacts/publication-audit').glob('attempt-*/receipt.json'))
         if len(publications) != 1 or not json.loads(publications[0].read_text())['passed']: raise RuntimeError('Publication gate incomplete')
         r['publication'] = evidence(publications[0]); r['final_status'] = clean(worktree)

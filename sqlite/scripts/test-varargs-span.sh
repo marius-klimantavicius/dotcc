@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
 mkdir -p "$TMPDIR"
 if [[ $# != 0 ]]; then

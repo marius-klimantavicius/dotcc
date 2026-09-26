@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-set -euo pipefail
-root="$(cd -- "$(dirname -- "$0")/.." && pwd)"
-exec python3 "$root/scripts/test-campaign.py" "$@"
+source "$(dirname -- "${BASH_SOURCE[0]}")/common.sh"
+campaign_exec test "$@"

@@ -16,6 +16,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 mode = parser.add_mutually_exclusive_group(required=True)
 mode.add_argument('--archive-current', action='store_true')
 mode.add_argument('--sqlite-receipt', type=Path)
+parser.add_argument('--output', type=Path, help='Write fresh evidence without replacing the historical checkpoint')
 mode.add_argument('--without-sqlite', action='store_true',
                   help='Freeze the MsQuic ABI/build gates without claiming a fresh shared SQLite campaign')
 args = parser.parse_args()
@@ -205,7 +206,7 @@ inline_exports = [line.strip() for line in (ROOT / 'config/inline-exports.txt').
 check(product.get('output_options') == dict(nest_types=True, runtime='c', literal_pool=True, deduplicate_inline=True,
                                           export_inline=inline_exports),
       'Product was not generated with the selected nested C layout and inline options')
-check(product.get('generated_directories') == dict(raw='generated/raw/TranslatedMsQuic',
+check(product.get('generated_directories') == dict(raw='generated/TranslatedMsQuic.Raw',
                                                  optimized='generated/TranslatedMsQuic'),
       'Product output locations differ from the selected layout')
 verified(host['compiler_hashes'], compiler, 'Frozen emitter')
@@ -280,7 +281,7 @@ for variant in product['variants']:
     check(variant.get('passed') and variant.get('complete_assembly_rooted_for_aot') and
           variant.get('jit') == 'jit: boundary rejection passed' and
           variant.get('aot') == 'nativeaot: boundary rejection passed', 'Incomplete product consumer gate: ' + name)
-    directory = ROOT / 'generated' / ('raw/TranslatedMsQuic' if name == 'raw' else 'TranslatedMsQuic')
+    directory = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if name == 'raw' else 'TranslatedMsQuic')
     verified(variant['generated_sha256'], directory, 'Generated product')
     generated[name] = variant['generated_sha256']
 # Read the actual assembly attribute from the already-verified snapshot. Repository
@@ -327,6 +328,15 @@ value = dict(schema_version=1, status='Nested MsQuic ABI/build closure passed; d
         normal_optimized_sqlite_product_passed=args.sqlite_receipt is not None))
 if reference_verification == 'local-source':
     value['reference_verification'] = reference_verification
+if args.output is not None:
+    # The framework keeps historical checkpoints unchanged and retains the
+    # complete previous product through its publication transaction.
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    value['historical_checkpoint'] = dict(path=str(CLOSURE), sha256=old_hash)
+    value['scope'] = 'Fresh host/public ABI and raw/processed rooted JIT/AOT boundary gates'
+    args.output.write_text(json.dumps(value, indent=2) + '\n')
+    print(args.output)
+    raise SystemExit(0)
 # Validate all current evidence above before considering a no-op. Reusing an
 # unchanged valid closure keeps its original checkpoint and byte identity, so
 # dependent receipts are not invalidated by running this command twice.

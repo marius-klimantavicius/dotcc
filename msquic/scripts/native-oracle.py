@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build the pinned, separate native reference. Never used by the product."""
+import sys
 import argparse
 import hashlib
 import json
@@ -52,7 +53,7 @@ def main():
         os.sched_setaffinity(0, sorted(os.sched_getaffinity(0))[:args.jobs])
     source = json.loads((ROOT / 'config/source.json').read_text())
     native = json.loads((ROOT / 'config/native-inputs.json').read_text())
-    run(['python3', str(ROOT / 'scripts/fetch.py')], 'verify-msquic')
+    run([sys.executable, str(ROOT / 'scripts/fetch.py')], 'verify-msquic')
     dependency = native['quictls']
     archive = ROOT / 'ref' / dependency['archive']
     if not archive.exists():

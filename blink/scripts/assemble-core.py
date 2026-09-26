@@ -4,6 +4,7 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -60,7 +61,8 @@ if args.sources:
 selected = {entry['path']:entry for entry in entries}
 expected_emission = {entry['path']:emission_identity(profile, ROOT, inputs, entry) for entry in entries}
 objects = {}
-for receipt_path in sorted((ROOT / 'artifacts/core').glob('isolate-*/result.json')):
+for receipt_path in (sorted((ROOT / 'artifacts/core').glob('isolate-*/result.json'))
+                     if os.environ.get('DOTCC_CAMPAIGN_HASHES') != 'off' else []):
     try:
         receipt = json.loads(receipt_path.read_text())
         for row in receipt['rows']:

@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """Qualify the ordinary machine sample with the pinned actual Kestrel guest."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/MachineApi/run-kestrel.py']
+
 import argparse
 from datetime import datetime, timezone
 import importlib.util
@@ -24,8 +32,8 @@ spec = importlib.util.spec_from_file_location('machine_api_evidence', SHARED)
 shared = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(shared)
 sha, helper = shared.sha, shared.helper
-NATIVE_SHA = '7bc07c1e8d01dd3d326fdbb436473ff0b2b8dcaf2910aea6fffebdaa7b119865'
-PROFILE_SHA = 'e1e3c2ecf4c929f6f13d0f4937757cdc0dc82ee2b55d2c76d1fd88c4ec7db01a'
+NATIVE_SHA = _CAMPAIGN_INPUTS['NATIVE_SHA']
+PROFILE_SHA = _CAMPAIGN_INPUTS['PROFILE_SHA']
 ENVIRONMENT = {'LANG': 'C', 'DOTNET_GCHeapHardLimit': '1000000', 'DOTNET_GCRegionRange': '2000000',
     'DOTNET_GCRegionSize': '100000', 'DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE': 'false', 'DOTNET_EnableDiagnostics': '0'}
 
@@ -194,7 +202,7 @@ def main():
             for suffix in ('request', 'response'):
                 original = pin(profile_path.parent / (name + '.' + suffix), native_rows[name][suffix + '_sha256'])
                 copied = oracle / original.name; shutil.copyfile(original, copied); pin(copied, sha(original))
-        project = ROOT / 'ManagedConsumer/ManagedConsumer.csproj'
+        project = ROOT / 'samples/ManagedConsumer/ManagedConsumer.csproj'
         solution = ROOT / 'ManagedConsumer.slnx'
         sources = shared.source_closure(project)
         for path in (Path(__file__), SHARED, Path(__file__).with_name('README.md'), shared.HELPER,

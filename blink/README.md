@@ -1,5 +1,7 @@
 # Blink through dotcc
 
+Build orchestration uses the [shared campaign helpers](../docs/campaigns.md).
+
 The selected Blink interpreter executes Linux x86-64 instructions as translated
 C# on Linux x64. The qualified delivery translates all 108 selected product sources through
 `blink/scripts/translate.sh`, which publishes the post-processed project at
@@ -69,7 +71,7 @@ and unrelated runtime compatibility are not implied. See [progress](docs/PROGRES
 dotnet build dotcc.sln -c Release -p:UseLocalLalrCc=false
 bash blink/scripts/translate.sh
 dotnet build blink/ManagedConsumer.slnx -c Release
-dotnet run --project blink/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build -- \
+dotnet run --project blink/samples/ManagedConsumer/ManagedConsumer.csproj -c Release --no-build -- \
   blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService
 ```
 

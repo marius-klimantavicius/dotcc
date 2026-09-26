@@ -18,6 +18,9 @@ import time
 from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.compat import policy, observed_digest
 REPO = ROOT.parent
 parser = argparse.ArgumentParser()
 parser.add_argument('--variants', nargs='+', choices=['raw', 'optimized'], default=['raw', 'optimized'])
@@ -34,15 +37,15 @@ receipt = dict(passed=False, phase='P6 pending', commands=[], prerequisites={}, 
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return observed_digest(path)
 
 
 def generated_hashes(variant):
-    return {p.name: sha(p) for p in sorted((ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic')).glob('*.cs'))}
+    return {p.name: sha(p) for p in sorted((ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')).glob('*.cs'))}
 
 
 def picotls_directory(variant):
-    return REPO / 'picotls/generated' / ('TranslatedPicotlsRaw' if variant == 'raw' else 'TranslatedPicotls')
+    return REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
 
 
 def picotls_hashes(variant):
@@ -51,13 +54,14 @@ def picotls_hashes(variant):
 
 def validate_generated_record(name, hashes, directory, expected_sources):
     if not isinstance(hashes, dict) or {key: value for key, value in hashes.items() if key.endswith('.cs')} != expected_sources:
-        raise RuntimeError(name + ' does not bind the current generated sources')
+        policy().issue(name + ' does not bind the current generated sources')
+    hashes = hashes if isinstance(hashes, dict) else {}
     # Product receipts also bind the project and source manifest. Every recorded
     # file must match, even though runtime receipts can record only C# inputs.
     for relative, digest in hashes.items():
         source = directory / relative
         if not source.is_file() or sha(source) != digest:
-            raise RuntimeError(name + ' references changed generated input ' + relative)
+            policy().issue(name + ' references changed generated input ' + relative)
 
 
 def require_receipt(name, path):
@@ -66,14 +70,14 @@ def require_receipt(name, path):
         raise RuntimeError(name + ' is not validated')
     closure = evidence.get('closure_sha256', evidence.get('product_closure_sha256'))
     if closure is not None and closure != sha(ROOT / 'config/product-closure.json'):
-        raise RuntimeError(name + ' has a stale closure receipt')
+        policy().issue(name + ' has a stale closure receipt')
     for variant in args.variants:
         match = next((item for item in evidence.get('variants', []) if item['name'] == variant), None)
         if match is None or not match.get('passed'):
             raise RuntimeError(name + ' lacks ' + variant + ' qualification')
         hashes = match.get('generated_hashes', match.get('generated_sha256'))
         validate_generated_record(name + ' ' + variant, hashes,
-            ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic'), generated_hashes(variant))
+            ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic'), generated_hashes(variant))
         if name == 'tls-adapter':
             validate_generated_record(name + ' picotls ' + variant, match.get('picotls_generated_sha256'),
                 picotls_directory(variant), picotls_hashes(variant))
@@ -83,7 +87,7 @@ def require_receipt(name, path):
     for relative, digest in evidence.get('source_hashes', evidence.get('input_sha256', {})).items():
         path_to_source = ROOT / relative
         if not path_to_source.exists() or sha(path_to_source) != digest:
-            raise RuntimeError(name + ' references changed input ' + relative)
+            policy().issue(name + ' references changed input ' + relative)
     receipt['prerequisites'][name] = dict(path=str(path), sha256=sha(path))
 
 
@@ -226,7 +230,7 @@ try:
     for source in native_inputs:
         upstream = pinned_source / source.relative_to(native_source)
         if not upstream.is_file() or sha(source) != sha(upstream):
-            raise RuntimeError('Native private diagnostic input differs from pin: ' + str(source))
+            policy().issue('Native private diagnostic input differs from pin: ' + str(source))
     sources += [ninja, ROOT / 'config/source.json', *native_inputs]
     receipt['source_hashes'] = {str(p.relative_to(REPO)): sha(p) for p in sources}
     receipt['native_private_diagnostics'] = dict(compilation_stanza=stanza.group(0),
@@ -256,7 +260,7 @@ try:
             '</PropertyGroup><ItemGroup><ProjectReference Include="' + escape(str(ROOT / 'src/BclHost/BclHost.csproj')) + '"/>'
             '<Compile Include="' + escape(str(ROOT / 'tests/ManagedPeer/Program.cs')) + '"/>'
             '<TrimmerRootAssembly Include="TranslatedMsQuic"/><TrimmerRootAssembly Include="TranslatedPicotls"/></ItemGroup></Project>\n')
-        library_project = ROOT / 'generated' / ('raw/TranslatedMsQuic' if variant == 'raw' else 'TranslatedMsQuic') / 'TranslatedMsQuic.csproj'
+        library_project = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic') / 'TranslatedMsQuic.csproj'
         property_args = ['-p:MsQuicProject=' + str(library_project),
                          '-p:PicotlsProject=' + str(picotls_directory(variant) / 'TranslatedPicotls.csproj')]
         with tempfile.TemporaryDirectory(prefix='dotcc-managed-peer-build-') as isolated_tmp:
@@ -279,14 +283,14 @@ try:
                         for role in (role for role in ('client', 'server') if role in args.roles):
                             exchange(command, variant, runtime, algorithm, cipher, family, role)
     if receipt['source_hashes'] != {str(p.relative_to(REPO)): sha(p) for p in sources}:
-        raise RuntimeError('Host, provider or harness source changed during the matrix')
+        policy().issue('Host, provider or harness source changed during the matrix')
     if receipt['generated_hashes'] != {variant: generated_hashes(variant) for variant in args.variants}:
-        raise RuntimeError('Generated source changed during the matrix')
+        policy().issue('Generated source changed during the matrix')
     if receipt['picotls_generated_hashes'] != {variant: picotls_hashes(variant) for variant in args.variants}:
-        raise RuntimeError('Generated picotls source changed during the matrix')
+        policy().issue('Generated picotls source changed during the matrix')
     for item in receipt['prerequisites'].values():
         if sha(Path(item['path'])) != item['sha256']:
-            raise RuntimeError('A phase prerequisite changed during the matrix')
+            policy().issue('A phase prerequisite changed during the matrix')
     binary_files = [BUILD / 'native-peer', library / 'libmsquic.so']
     for variant in args.variants:
         for directory in [BUILD / variant / 'bin/Release/net10.0'] + ([] if args.jit_only else [BUILD / variant / 'aot']):

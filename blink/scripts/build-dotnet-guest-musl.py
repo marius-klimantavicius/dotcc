@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 """One ordinary pinned-container static-musl publish and native HTTP witness."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['scripts/build-dotnet-guest-musl.py']
+
 import argparse
 import hashlib
 import json
@@ -18,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[2]
 BLINK = ROOT / "blink"
 SOURCE = BLINK / "tests/DotNetService"
 IMAGE_TAG = "mcr.microsoft.com/dotnet/sdk:10.0.401-alpine3.23-aot-amd64"
-IMAGE_DIGEST = "sha256:240a20b94625153877c8ec4ed0394d3396f243a5663fe74b8f601c31f1dac3fc"
+IMAGE_DIGEST = _CAMPAIGN_INPUTS['IMAGE_DIGEST']
 IMAGE = IMAGE_TAG + "@" + IMAGE_DIGEST
 SDK = "10.0.401"
 RUNTIME = "10.0.12"

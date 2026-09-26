@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/common.sh"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
 export SQLITE_EXECUTION_TIMEOUT="${SQLITE_PORT_TIMEOUT:-600}"
 mkdir -p "$TMPDIR"
@@ -53,7 +54,7 @@ dotnet build "$chibi_output/Regression-Chibi.csproj" -c Release --nologo \
   CHIBI_IGNORE_SYSTEM_PATH=1 CHIBI_MODULE_PATH=lib \
     run_sqlite_process dotnet "$chibi_output/bin/Release/net10.0/Regression-Chibi.dll" tests/r7rs-tests.scm
 ) > "$SQLITE_ROOT/artifacts/regression-chibi.out" 2>&1
-python3 - "$SQLITE_ROOT/artifacts/regression-chibi.out" "$chibi_root/baseline-r7rs.txt" <<'PY'
+"$PYTHON_CMD" - "$SQLITE_ROOT/artifacts/regression-chibi.out" "$chibi_root/baseline-r7rs.txt" <<'PY'
 import difflib, pathlib, re, sys
 def normalized(path):
     text = pathlib.Path(path).read_text()

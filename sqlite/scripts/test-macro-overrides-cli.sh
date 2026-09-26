@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 # Run a runtime-loaded regex profile with a NativeAOT compiler, compare with C,
 # and verify CLI dependency and mixed source/object behavior.
-source "$(dirname "$0")/common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 compiler="${DOTCC_OVERRIDE_COMPILER:-$SQLITE_ROOT/build/dotcc-overrides-aot/dotcc}"
 fixture="$DOTCC_ROOT/examples/macro-overrides"
 output="$SQLITE_ROOT/artifacts/macro-overrides-cli"
@@ -16,7 +17,7 @@ dotnet build "$output/generated" -c Release --nologo > "$output/build.log" 2>&1
 run_sqlite_process dotnet "$output/generated/bin/Release/net10.0/generated.dll" > "$output/managed.out"
 diff -u "$output/native.out" "$output/managed.out"
 "$compiler" -E "$fixture/main.c" --overrides-file "$fixture/profile.json" > "$output/preprocessed.c"
-python3 - "$output" "$fixture/profile.json" <<'PY'
+"$PYTHON_CMD" - "$output" "$fixture/profile.json" <<'PY'
 import json, pathlib, sys
 root=pathlib.Path(sys.argv[1])
 assert sys.argv[2] in (root/'probe.d').read_text()

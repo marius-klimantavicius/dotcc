@@ -4,9 +4,6 @@ Windows x64 is deferred by explicit user instruction and does not block the
 current Linux scope. The following limits remain separate from passing consumer
 and upstream test results; see [VALIDATION.md](VALIDATION.md) for executed evidence.
 
-- The native `code_globals_properties_v2` case crashes in release and fails an
-  object-kind assertion in debug. The translated case passes 54 assertions. A
-  native crash is not counted as successful differential parity.
 - Additional malformed-module/debugger investigation was stopped by an automated
   safety check on the native subagent. No specific rejected command was supplied.
   That new diagnostic work was paused rather than routed through another agent.

@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 """Derive an inactive managed-thread owner boundary from exact reviewed inputs."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['src/UpstreamGuestThreads/stage.py']
+
 import argparse
 import difflib
 import hashlib
@@ -9,10 +18,10 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-REVISION = "f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580"
-ORIGINAL_PIN = "4eb3f54173ba37341b300e7668cc4ba3650578cc3d23d713573ffa486ae0e2c3"
-PREDECESSOR_PIN = "6f25ab2610e6a4fc722213aff297abb32ac2d0ea7ca248d4b4a65313243796ec"
-SIGNAL_PIN = "e4a1a44787a5e99022a5d8224165e0c551275b4706b9f689f4f826e4f0b95c5a"
+REVISION = _CAMPAIGN_SOURCE["revision"]
+ORIGINAL_PIN = _CAMPAIGN_INPUTS['ORIGINAL_PIN']
+PREDECESSOR_PIN = _CAMPAIGN_INPUTS['PREDECESSOR_PIN']
+SIGNAL_PIN = _CAMPAIGN_INPUTS['SIGNAL_PIN']
 BASE_HEADERS = ("../DotCC.Lib/include/pthread.h", "config/managed-host/signal.h")
 REQUIRED = ["BLINK_MANAGED_GUEST_THREADS", "HAVE_THREADS", "NOLINEAR", "DISABLE_JIT"]
 FORBIDDEN = ["DISABLE_THREADS", "HAVE_FORK", "HAVE_PTHREAD_PROCESS_SHARED", "HAVE_PTHREAD_SETCANCELSTATE"]

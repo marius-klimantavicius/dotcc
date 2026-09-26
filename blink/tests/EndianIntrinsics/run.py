@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 """Normal pinned-header endian differential; no guest or performance claim."""
+
+# Source revisions and reviewed fingerprints are data, not executable policy.
+import json as _campaign_json
+from pathlib import Path as _CampaignPath
+_CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
+                      if (parent / "config/source-manifest.json").is_file())
+_CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/EndianIntrinsics/run.py']
+
 import hashlib
 import json
 import os
@@ -18,13 +27,8 @@ REPO = ROOT.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
 from core_inputs import compiler_identity
 
-UPSTREAM = ROOT / 'ref/blink-f006a4fc6f9b8de9272504fdff0dbbe5ce5dc580'
-PINNED = {
-    'endian.h': '630c0a03219a13ef0382cb77f30ebe9b9a65c41bdf76621311e3720e91384e8c',
-    'builtin.h': 'c31706d513c771644bd3e5e2f813f0506a7a8fc3f4c8150f0e6fae49c8fa98c4',
-    'swap.h': 'ce00462ce0cf05153e9a301b333aac9ebd7d2e07a06d23b5fd44bf7689ea2a11',
-    'types.h': '99c285ad5988a520fc3b815feca32d6f91a387c6aa7ab214d0fa1a73d3175736',
-}
+UPSTREAM = ROOT / ("ref/" + _CAMPAIGN_SOURCE["directory"])
+PINNED = _CAMPAIGN_INPUTS['PINNED']
 base = ROOT / 'generated/endian-intrinsics'
 base.mkdir(parents=True, exist_ok=True)
 attempt = Path(tempfile.mkdtemp(prefix='attempt-', dir=base))

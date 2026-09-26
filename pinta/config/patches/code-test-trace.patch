@@ -1,0 +1,12 @@
+--- a/Marius.Pinta/src/code.c
++++ b/Marius.Pinta/src/code.c
+@@ -2477,6 +2477,9 @@
+     pinta_debug_raise_step(thread);
+ 
+     PINTA_CHECK(pinta_code_next(thread, &code));
++#ifdef PINTA_TEST_TRACE_STEP
++    PINTA_TEST_TRACE_STEP(thread, code);
++#endif
+ 
+     if (code == PINTA_CODE_BREAK)
+         pinta_debug_raise_break(thread, &code);

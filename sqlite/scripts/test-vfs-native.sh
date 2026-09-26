@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/common.sh"
+source "$(dirname "$0")/legacy-common.sh"
 SQLITE_SANITIZE_FLAGS=()
 if [[ "${SQLITE_SANITIZE:-0}" == 1 ]]; then
   SQLITE_SANITIZE_FLAGS=(-fsanitize=address,undefined -fno-omit-frame-pointer)

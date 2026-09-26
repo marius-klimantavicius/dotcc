@@ -5,6 +5,7 @@ Preparation copies only checksum-verified archives, verifies/extracts using the
 campaign recipe, builds its native oracle, and regenerates raw/optimized output.
 Validation runs copied-source/ABI and normal/authentication peer subsets only.
 """
+import sys
 import argparse
 import ast
 import hashlib
@@ -168,7 +169,7 @@ def normal_matrix():
         tests=['t/openssl.c', 't/minicrypto.c', 't/picotls.c'], oracle_script_sha256=sha(CAMPAIGN / 'scripts/oracle.sh'))
     receipt['suite_matrix'] = []; receipt['peer_matrix'] = []
     expected_outputs = {}; expected_public_peers = None
-    for variant, directory in [('raw', 'TranslatedPicotlsRaw'), ('optimized', 'TranslatedPicotls')]:
+    for variant, directory in [('raw', 'TranslatedPicotls.Raw'), ('optimized', 'TranslatedPicotls')]:
         product = CAMPAIGN / 'generated' / directory / 'TranslatedPicotls.csproj'
         frozen = source_hashes(product.parent)
         receipt.setdefault('products', {})[variant] = dict(project=str(product), sources=frozen)
@@ -194,7 +195,7 @@ def normal_matrix():
                 receipt['suite_matrix'].append(dict(suite=suite, mode=variant + '-' + mode, passed=True)); save()
         for mode in ('jit', 'aot'):
             peer_receipt = run / (variant + '-peer-' + mode + '.json')
-            argv = ['python3', peer, '--no-prepare', '--runtime', 'linux-x64', '--receipt', peer_receipt]
+            argv = [sys.executable, peer, '--no-prepare', '--runtime', 'linux-x64', '--receipt', peer_receipt]
             if variant == 'raw': argv.append('--raw')
             if mode == 'aot': argv.append('--aot')
             execute(variant + '-peer-' + mode, argv, 2400)

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Explicit original/optimized snapshot verification; never a normal build hook."""
+import sys
 import argparse
 import json
 import os
@@ -67,7 +68,7 @@ for variant, key in [('Original', 'OriginalProject'), ('Optimized', 'OptimizedPr
         assembly = project.parent / 'bin/Release/net10.0' / (name + '.dll')
         outputs[variant, name, 'jit'] = execute(f'{variant}-{name}-jit', ['dotnet', assembly], runtime=True)
         if name == 'HostVfsTests':
-            execute(f'{variant}-host-processes-jit', ['python3', ROOT / 'scripts/test-host-vfs-processes.py',
+            execute(f'{variant}-host-processes-jit', [sys.executable, ROOT / 'scripts/test-host-vfs-processes.py',
                     '--managed', 'dotnet', assembly, '--native', ROOT / 'build/host-vfs-native'])
         if args.aot:
             publish = ROOT / 'build/postprocess' / variant / name
@@ -78,7 +79,7 @@ for variant, key in [('Original', 'OriginalProject'), ('Optimized', 'OptimizedPr
             if name != 'PostprocessBenchmark' and outputs[variant, name, 'jit'] != outputs[variant, name, 'aot']:
                 raise SystemExit(f'{variant} {name}: JIT/AOT transcripts differ')
             if name == 'HostVfsTests':
-                execute(f'{variant}-host-processes-aot', ['python3', ROOT / 'scripts/test-host-vfs-processes.py',
+                execute(f'{variant}-host-processes-aot', [sys.executable, ROOT / 'scripts/test-host-vfs-processes.py',
                         '--managed', executable, '--native', ROOT / 'build/host-vfs-native'])
         if name == 'PostprocessBenchmark':
             for mode in ['jit', 'aot'] if args.aot else ['jit']:

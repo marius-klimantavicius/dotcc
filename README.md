@@ -27,6 +27,12 @@ cd build && dotnet run
 
 ## Why
 
+SQLite, picotls, MsQuic, Blink, Valkey, libsmb2, and Pinta use the
+[shared translation campaign helpers](docs/campaigns.md) for fetching,
+translation, builds, tests, and verification. Start a new project with the
+[translation planning baseline](docs/plans/translation-baseline.md) and its
+[project plan template](docs/plans/translation-template.md).
+
 - **One source of truth, two worlds.** The same `.c` file compiles under both `dotcc` and `clang -std=c99` with equivalent observable behavior. The grammar is a strict subset of real C — no invented keywords, no dialect of its own.
 - **Modern output, any input dialect.** C enums become real C# enums, strings become pinned UTF-8 `u8` literals, `malloc`/`free` pairs that never escape get promoted to stack values. `-std=c90` through `-std=c23` all emit the same modern C#.
 - **AOT-clean by construction.** The compiler library is `IsAotCompatible`, the frontend publishes with NativeAOT, and emitted programs need nothing but the embedded libc-shaped runtime.
