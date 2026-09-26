@@ -1,9 +1,9 @@
 #nullable enable
 using System;
-using static Managed.Database.Sqlite;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using static Managed.Database.Sqlite;
 
 namespace Managed.Database;
 
@@ -25,6 +25,7 @@ public static unsafe class HostMutex
 
     // A blittable static table has a stable address for the assembly's lifetime.
     // Each method address is captured exactly once, including assertion callbacks.
+    [FixedAddressValueType]
     private static readonly sqlite3_mutex_methods Methods = new sqlite3_mutex_methods
     {
         xMutexInit = &Initialize,
