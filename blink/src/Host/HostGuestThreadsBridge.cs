@@ -14,7 +14,7 @@ public partial class BlinkCore
 #else
     public static unsafe void SetHostGuestCurrentMachine(Machine* machine)
 #endif
-        => ThreadGlobals.g_machine = machine;
+        => ThreadGlobals.g_machine = (nint)machine;
 #if DOTCC_INSTANCE_FOR_HOST
     [ThreadStatic] private static BlinkCore? guestProgram;
     private static IHostGuestThreads GuestOwner(BlinkCore program)
