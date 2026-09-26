@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """Source changes must invalidate caches, not require compatibility hash updates."""
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import shutil
+import subprocess
+import tarfile
 import tempfile
 import unittest
 
@@ -16,6 +19,30 @@ SPEC.loader.exec_module(THREADS)
 
 
 class SourceInputsTests(unittest.TestCase):
+    def test_fetch_accepts_existing_source_changes_with_verified_archive(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            campaign = Path(temporary)
+            for name in ('scripts', 'config', 'ref'):
+                (campaign / name).mkdir()
+            script = campaign / 'scripts/fetch.sh'
+            shutil.copyfile(ROOT / 'scripts/fetch.sh', script)
+            source = campaign / 'ref/blink-test'
+            source.mkdir()
+            header = source / 'include.h'
+            header.write_text('/* original */\n')
+            archive = campaign / 'ref/blink-test.tar.gz'
+            with tarfile.open(archive, 'w:gz') as output:
+                output.add(source, arcname='blink-test')
+            manifest = dict(upstream=dict(archive=archive.name, directory=source.name,
+                            sha256=hashlib.sha256(archive.read_bytes()).hexdigest()),
+                            licenses=[], bootstrapTools=[], selectedAssemblyTests=[],
+                            assemblyInclude=dict(path='include.h', sha256='historical-inventory-only'))
+            (campaign / 'config/source-manifest.json').write_text(json.dumps(manifest))
+            header.write_text('/* current source */\n')
+            result = subprocess.run(['bash', str(script), '--offline'], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(header.read_text(), '/* current source */\n')
+
     def test_thread_headers_preserve_new_declarations(self):
         pthread = (ROOT.parent / 'DotCC.Lib/include/pthread.h').read_bytes()
         signal = (ROOT / 'config/managed-host/signal.h').read_bytes()
