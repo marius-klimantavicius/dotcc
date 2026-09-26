@@ -264,3 +264,55 @@ owners (`artifacts/reductions/failed-startup-mata4cmu/managed.json`). The final
 generation and all four execution modes now pass with this runtime repair,
 as recorded in the delivery matrix above. The pinned protocol suite also runs
 against each NativeAOT endpoint, with the same 29 passes and six exclusions.
+
+## Compiler stack limits (2026-09-26)
+
+The Windows translation failures were reproduced on Linux before changing the
+compiler. Running each recorded Valkey object-emission command through
+`prlimit --stack=1048576 --core=0 -- dotnet ...` reduced the process stack from
+8 MiB to 1 MiB. Of 164 units, 96 passed, 67 aborted with a stack overflow in the
+recursive struct-member walk, and `crc16_slottable.c` failed with
+`InsufficientExecutionStackException` while formatting a syntax fingerprint.
+The immutable baseline compiler, commands and crash traces are under
+`artifacts/reductions/compiler-stack-before-bmh4f2mv/`.
+
+The compiler now uses explicit stacks for flat struct members, positional and
+designated initializer lists, enum members, parameter/declarator lists and
+adjacent string segments. Syntax fingerprints also use `Stack<Item>` instead
+of recursive generated-record `ToString()` calls. Parser reduction metadata
+supplies the children without reflection, keeping the NativeAOT compiler
+supported. These changes preserve upstream Valkey sources and do not increase
+the compiler's thread stack size.
+
+Focused reductions independently reproduced each affected list family and the
+duplicate-function fingerprint failure. The unit regressions execute on
+`new Thread(..., 1024 * 1024)`, checking member layout, initializer ordering,
+repeated designators, enum dependencies, all string encodings and duplicate
+definition handling on a small stack on either platform.
+
+After the repair, all 164 Valkey units pass at 1 MiB, and every emitted object
+matches its previously qualified counterpart byte-for-byte. The full unit suite
+passes all 2,759 tests, including 14 new small-stack cases.
+The linked library also succeeds at 1 MiB with `--literal-pool` and
+`--deduplicate-inline`; all 85 generated C# files are byte-identical to the
+previously qualified raw product. A freshly published NativeAOT compiler
+successfully emits `server.c` and `crc16_slottable.c` at 1 MiB, also with
+byte-identical output. These results and command receipts are under
+`artifacts/reductions/compiler-stack-after-qdvweq39/`.
+
+To repeat the Linux source-closure probe after building the compiler and
+postprocessor normally:
+
+```sh
+(
+    ulimit -c 0
+    ulimit -s 1024
+    ./valkey/scripts/translate.sh --no-fetch --no-build-tools --probe --jobs 4
+)
+```
+
+`ulimit -s` takes KiB; `prlimit --stack` takes bytes. The subshell leaves the
+calling shell's limit unchanged. `--no-fetch` here explicitly reuses verified
+downloaded sources; ordinary translation still fetches by default. This probes
+the compiler under reduced Linux stack limits; it is not an actual Windows run
+or qualification of the Windows Valkey host.
