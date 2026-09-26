@@ -2,6 +2,12 @@
   "version": 1,
   "macroOverrides": [
     {
+      "name": "dontinline",
+      "match": { "exact": "__attribute__((__noinline__))" },
+      "replacement": "",
+      "requireMatch": false
+    },
+    {
       "name": "pureconst",
       "match": { "exact": "__attribute__((__const__))" },
       "replacement": "",
