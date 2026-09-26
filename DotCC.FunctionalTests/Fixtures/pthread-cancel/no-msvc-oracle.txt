@@ -1,0 +1,1 @@
+POSIX pthread cancellation is not available in the native MSVC C environment.

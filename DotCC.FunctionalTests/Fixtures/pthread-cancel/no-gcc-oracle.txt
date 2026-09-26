@@ -1,0 +1,1 @@
+Generic oracle does not pass -pthread. Also checked directly using cc -pthread.

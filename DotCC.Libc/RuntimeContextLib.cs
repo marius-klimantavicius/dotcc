@@ -108,6 +108,8 @@ public static unsafe partial class Libc
         internal int Errno, PthreadSets;
         internal long Self;
         internal bool Created;
+        internal int CancellationState;
+        internal Stack<Action>? PthreadCleanup;
         internal Dictionary<int, IntPtr>? Values;
     }
     /// <summary>Allocation-free, thread-affine runtime scope. Dispose in stack

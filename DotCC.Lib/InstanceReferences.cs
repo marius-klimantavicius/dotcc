@@ -23,7 +23,7 @@ internal static class InstanceReferences
     internal static string Resolve(string text, IReadOnlySet<string> definitions, string instance)
     {
         text = BoundSymbolReferences.Rewrite(text, name => definitions.Contains(name) ? ""
-            : name is "qsort" or "bsearch" or "pthread_create" or "pthread_once" ? instance + ", "
+            : name is "qsort" or "bsearch" or "pthread_create" or "pthread_once" or "pthread_cleanup_push" ? instance + ", "
             : throw new CompileException("unsupported external callback boundary in instance ABI: '" + name
                 + "'; supply a typed managedMethod override with passInstance: true"), CallbackContext);
         return BoundSymbolReferences.Rewrite(text,

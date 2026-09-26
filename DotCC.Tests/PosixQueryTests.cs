@@ -77,9 +77,9 @@ public sealed unsafe class PosixQueryTests
                 execve(null, null, null).ShouldBe(-1);
                 setsid().ShouldBe(-1);
                 ((nint)mmap(null, 4096, 3, 0x22, -1, 0)).ShouldBe((nint)(-1));
-                pthread_cancel(1).ShouldBe(ENOTSUP);
+                pthread_cancel(1).ShouldBe(ESRCH);
                 int previous = 99;
-                pthread_setcancelstate(0, &previous).ShouldBe(ENOTSUP);
+                pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &previous).ShouldBe(ENOTSUP);
                 previous.ShouldBe(99);
                 dladdr(null, record).ShouldBe(0);
                 record[0].ShouldBe(31);

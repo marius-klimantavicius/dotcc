@@ -30,6 +30,7 @@ public static unsafe partial class Libc
         public Thread Thread = null!;
         public RuntimeContext? Context;
         public bool Detached, Joining, Finished;
+        public int CancellationRequested;
     }
     private sealed class PthreadExitException : Exception { public IntPtr Result; }
     private static ConcurrentDictionary<long, PthreadState> _pthreads => RuntimeState.Threads;
@@ -115,6 +116,7 @@ public static unsafe partial class Libc
                 try { state.Result = state.InstanceStart != null ? state.InstanceStart(state.Argument)
                     : (IntPtr)((delegate*<void*, void*>)state.Function)((void*)state.Argument); }
                 catch (PthreadExitException ex) { state.Result = ex.Result; }
+                catch (PthreadCancellationException) { state.Result = (IntPtr)(-1); }
                 completed = true;
             }
             finally
@@ -151,7 +153,17 @@ public static unsafe partial class Libc
             if (state.Detached || state.Joining) return EINVAL;
             state.Joining = true;
         }
-        try { state.Thread.Join(); }
+        try
+        {
+            do { PthreadTestCancellation(false); } while (!state.Thread.Join(100));
+            PthreadTestCancellation(false);
+        }
+        catch (PthreadCancellationException)
+        {
+            lock (state) state.Joining = false;
+            RunPthreadCleanup();
+            throw;
+        }
         catch { lock (state) state.Joining = false; throw; }
         if (result != null) *result = (void*)state.Result;
         _pthreads.TryRemove(thread, out _);
@@ -171,6 +183,7 @@ public static unsafe partial class Libc
     public static void pthread_exit(void* result)
     {
         if (!_pthreadCreated) throw new PlatformNotSupportedException("pthread_exit requires a pthread_create thread in dotcc.");
+        RunPthreadCleanup();
         throw new PthreadExitException { Result = (IntPtr)result };
     }
 
@@ -396,11 +409,22 @@ public static unsafe partial class Libc
     public static int pthread_cond_broadcast(int* condition) => PthreadSignal(condition, true);
     private static int PthreadWait(int* condition, int* mutex, timespec* deadline, bool timed)
     {
+        try { return PthreadWaitCore(condition, mutex, deadline, timed); }
+        catch (PthreadCancellationException)
+        {
+            // PthreadWaitCore has reacquired the mutex before cleanup runs.
+            RunPthreadCleanup();
+            throw;
+        }
+    }
+    private static int PthreadWaitCore(int* condition, int* mutex, timespec* deadline, bool timed)
+    {
         if (timed && !PthreadValidDeadline(deadline)) return EINVAL;
         var cv = PthreadGetCondition(condition, out int error);
         if (cv == null) return error;
         var m = PthreadGetMutex(mutex, out error);
         if (m == null) return error;
+        PthreadTestCancellation(false);
         int result = 0;
         bool released = false;
         try
@@ -426,9 +450,10 @@ public static unsafe partial class Libc
                 {
                     while (!node.Value.Signaled)
                     {
+                        PthreadTestCancellation(false);
                         int timeout = timed ? PthreadTimeout(deadline) : Timeout.Infinite;
                         if (timeout == 0) { result = ETIMEDOUT; break; }
-                        Monitor.Wait(cv, timeout);
+                        Monitor.Wait(cv, Math.Min(timeout < 0 ? 100 : timeout, 100));
                     }
                 }
                 finally

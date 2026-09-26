@@ -20,9 +20,6 @@ public static unsafe partial class Libc
     { errno = SlotByFd(descriptor) is null ? EBADF : ENOTTY; return -1; }
     public static int dladdr(void* address, void* information) => 0;
     public static void* getgrnam(byte* name) { UnsupportedPosix(); return null; }
-    public static int pthread_cancel(long thread) => ENOTSUP;
-    public static int pthread_setcancelstate(int state, int* previous) => ENOTSUP;
-    public static int pthread_setcanceltype(int type, int* previous) => ENOTSUP;
     public static void openlog(byte* identity, int options, int facility) => UnsupportedPosix();
     public static void syslog(int priority, byte* format, params ReadOnlySpan<VaArg> arguments) => UnsupportedPosix();
     // Calendar queries use TimeZoneInfo directly; process TZ reconfiguration is unsupported.

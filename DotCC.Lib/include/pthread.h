@@ -19,8 +19,11 @@ typedef int pthread_key_t;
 #define PTHREAD_STACK_MIN 16384
 #define PTHREAD_CREATE_JOINABLE 0
 #define PTHREAD_CREATE_DETACHED 1
-/* Cancellation policy constants do not imply cancellation support. */
+/* Deferred cancellation at explicit tests, joins and condition waits. */
 #define PTHREAD_CANCEL_ENABLE 0
+#define PTHREAD_CANCEL_DISABLE 1
+#define PTHREAD_CANCEL_DEFERRED 0
+#define PTHREAD_CANCELED ((void *)-1)
 #define PTHREAD_CANCEL_ASYNCHRONOUS 1
 #define PTHREAD_MUTEX_NORMAL 0
 #define PTHREAD_MUTEX_RECURSIVE 1
@@ -77,6 +80,9 @@ void *pthread_getspecific(pthread_key_t key);
 int pthread_setspecific(pthread_key_t key, const void *value);
 
 int pthread_cancel(pthread_t thread);
+void pthread_testcancel(void);
+void pthread_cleanup_push(void (*routine)(void *), void *arg);
+void pthread_cleanup_pop(int execute);
 int pthread_setcancelstate(int state, int *previous);
 int pthread_setcanceltype(int type, int *previous);
 
