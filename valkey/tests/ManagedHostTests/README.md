@@ -17,8 +17,8 @@ The validator consumes existing generated inputs; it does not download sources.
 writable build staging and runs its Tcl `unit/protocol` suite using `--host` and
 `--port` against the managed process. The reference tree stays unchanged. The Tcl bootstrap sees an executable barrier
 that always fails if invoked; attempting to launch a native server fails the gate.
-Six explicitly named `needs:debug` tests are excluded because DEBUG is outside
-the managed profile; the exact names and reasons appear in the receipt. With
+Six explicitly named `needs:debug` tests are excluded because upstream
+`enable-debug-command` defaults to `no`; the exact names and reasons appear in the receipt. With
 `--aot`, the same protocol suite and exclusions also run against the NativeAOT
 `--serve` host; separate logs live in `aot-upstream/` and the receipt records
 `checks.native_aot_upstream_protocol`.
@@ -47,9 +47,16 @@ The managed cases cover:
 - Admitted numeric, bit, hash, list, set, sorted-set, stream consumer-group, HLL,
   geo, scan, WATCH conflict and ACL command/key-permission transitions.
 - Explicit rejection of fork-dependent commands and configuration, replication,
-  native module loading and Lua debugging, including MULTI/EXEC and Lua dispatch.
+  and asynchronous Lua debugging, including MULTI/EXEC and Lua dispatch.
   Checks require real RESP errors and unchanged configuration/state rather than
   depending on one error wording or which admission layer rejects the request.
+- An existing native library fails at the generated module loader boundary with
+  C_ERR/ENOTSUP for LOAD and LOADEX without terminating its owner.
+- OBJECT ENCODING/REFCOUNT, MEMORY USAGE, LATENCY, SLOWLOG and ordinary CONFIG
+  changes; unknown or immutable settings retain upstream validation.
+- Live I/O worker reconfiguration (2 → 4 → 1 → 4) with four concurrent clients,
+  verified pipelined values and advancing upstream worker counters, followed by
+  shutdown with four configured threads and an unaffected peer.
 - Failed foreground SAVE retaining a live server, recovery and retry, followed by
   a fresh owner's RDB reload of binary data, types, TTL and registered functions.
 - Fresh startup AOF, a nonempty multipart manifest, synchronous append, two

@@ -77,8 +77,9 @@ copied for the complete lifetime of a host operation.
 creation, API registration, ACL command-bit recomputation and module events.
 Preserve this path. Static unload also resolves through `moduleLoadStaticSymbol`
 (`module.c:13635`). Resolve only the explicitly supported static module/symbol
-pairs, returning failure for unknown names; arbitrary native module loading is
-outside the initial profile. A staged, hash-checked direct-symbol adaptation is
+pairs, returning failure for unknown names. Native module loading returns
+`C_ERR`/`ENOTSUP` at a typed host boundary because its native callback ABI cannot
+carry translated instance owners. MODULE-family dispatch is not blanket-denied. A staged, hash-checked direct-symbol adaptation is
 appropriate if an instance-aware typed override cannot preserve these pointer
 signatures.
 

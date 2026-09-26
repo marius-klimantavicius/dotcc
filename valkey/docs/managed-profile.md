@@ -31,12 +31,23 @@ transaction queuing and at common execution dispatch, including module calls.
 The configuration-dispatch hook also covers direct command execution during AOF
 replay. Runtime configuration policy is enforced before setters execute.
 
-The initial profile disables process signals/watchdogs, daemonization, process
-title changes, background persistence, replication, cluster and dynamic modules.
-It uses one I/O thread and caps clients at 512 for the 1024-descriptor select
-backend. Foreground RDB saving and startup-enabled AOF remain upstream operations.
-The authored option/command guards still need auditing against the complete
-required/deferred inventory and managed execution tests.
+Command and configuration admission does not depend on the qualification inventory.
+`OBJECT ENCODING`, diagnostics, ordinary configuration and cluster commands reach
+upstream validation. Only fork-dependent operations are rejected: background
+RDB/AOF work, replication/failover (including cluster replication and fork-based
+slot migration), asynchronous Lua debugging and daemonization. Runtime AOF
+activation requires a background rewrite; startup-enabled AOF and foreground
+RDB saves remain available. Multi-option CONFIG SET is checked before mutation.
+
+One I/O thread and 512 clients are defaults, not enforced caps. Runtime I/O
+workers use upstream code with libc deferred pthread cancellation and cleanup
+handlers. Shutdown joins I/O workers before disposing their owner. Debug and
+native-module commands remain disabled by upstream startup defaults; upstream
+ACLs, immutable options, feature availability and actual libc failures still
+apply. Native module binaries cannot use the translated owner-carrying callback
+ABI: the typed `moduleLoad` boundary logs this incompatibility and returns
+`C_ERR`/`ENOTSUP`, without calling native exports. Startup module directives are
+processed through the upstream queue and fail explicitly when loading fails. Allowing dispatch does not establish that every feature is qualified.
 
 Successful stop preserves upstream save/flush decisions. Cleanup drains and
 joins workers, releases the event loop and closes wakeup descriptors. The managed
@@ -44,7 +55,8 @@ owner must reclaim remaining allocations and descriptors only after cleanup
 returns success. Failed startup and worker-fault paths require managed runtime
 qualification; the native harness cannot establish isolation or CLR unwinding.
 
-The separate C reference host in `tests/native_reference/` is only a native
+The separate C reference host retains its historical, narrower allowlist. It is
+not the current managed admission policy. The separate C reference host in `tests/native_reference/` is only a native
 control, not the product implementation. Its recorded
 `scripts/host-oracle.sh --no-fetch` run passed 32 checks against real adapted native
 Valkey objects, including static Lua, configuration/transaction guards, RDB

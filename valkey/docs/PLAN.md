@@ -18,6 +18,13 @@ corrupting the owning server. This does not defer foreground persistence or
 permit a successful fake fork. Background snapshot design is not a prerequisite
 for the authorized initial profile.
 
+Admission policy update (2026-09-26): qualification categories are not command
+or configuration allowlists. Restrict fork-dependent operations (including
+replication); otherwise run upstream validation. This supersedes the initial
+blanket exclusions below. I/O workers use translated upstream code and shared
+libc deferred cancellation. Broader feature and platform qualification remains
+open; allowing dispatch does not count as a passing execution gate.
+
 Implementation decisions: generated and post-processed code goes to
 `generated/TranslatedValkey` and uses namespace `Managed.Database`. Host
 implementations are authored C#, with C declarations in headers. Prefer typed
@@ -234,7 +241,7 @@ inventory with required, translated-but-unqualified and deferred entries.
 | Access | AUTH/ACL user, key, command and channel checks; loopback default, explicit endpoints and credentials, useful command/server diagnostics. |
 | Persistence | Foreground RDB save/load plus AOF configured at startup, append/replay and declared fsync modes; same-pin native file interoperability. Explicit restrictions on background operations below. |
 | Hosting | Authored C# create/start/readiness/stop/dispose API, per-instance configuration/files/endpoints and multiple independent instances in one .NET process. |
-| Execution services | One serialized command executor per instance, real BCL TCP/files/time/entropy, supported background workers and cooperative stop. Optional I/O-thread parallelism initially disabled. |
+| Execution services | One serialized command executor per instance, real BCL TCP/files/time/entropy, supported background workers and cooperative stop. Optional I/O-thread parallelism starts disabled and can be enabled at runtime. |
 | Platforms | Linux x64 first; raw/processed × JIT/NativeAOT. Windows x64 is a subsequent qualification target; other architectures require separate execution evidence. |
 
 Initially defer cluster/Sentinel, replication/failover, background RDB/AOF rewrite,
@@ -242,7 +249,8 @@ TLS, RDMA, native loadable modules, alternative scripting engines, vector comman
 jemalloc-specific defragmentation, daemonization/systemd and OS crash/profiling
 facilities. Keep static Lua's required module/engine registration functional even
 though arbitrary native `MODULE LOAD` is disabled. Do not claim unsupported
-configuration or commands succeeded; reject them with documented errors.
+configuration or commands succeeded; retain actual upstream/runtime errors.
+These are qualification/build omissions, not a managed command allowlist.
 
 Select native `MALLOC=libc`, static Lua, no TLS/RDMA/systemd, one I/O execution
 thread, no automatic RDB saves and no automatic AOF rewrite for matching profile

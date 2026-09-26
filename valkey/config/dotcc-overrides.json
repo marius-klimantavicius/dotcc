@@ -402,17 +402,20 @@
       }
     },
     {
-      "name": "IOThreadMain",
+      "name": "moduleLoad",
       "signature": {
-        "returnType": "void *",
+        "returnType": "int",
         "parameterTypes": [
-          "void *"
+          "const char *",
+          "void **",
+          "int",
+          "int"
         ],
         "variadic": false
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Database.ValkeyHost.RejectIoThread",
+        "method": "global::Managed.Database.ValkeyHost.LoadNativeModule",
         "passInstance": true
       }
     }

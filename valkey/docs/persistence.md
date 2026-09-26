@@ -58,9 +58,10 @@ success. Startup AOF support does not imply runtime enabling is supported.
 
 ## Required configuration and command guards
 
-Use `save ""`, `auto-aof-rewrite-percentage 0`, one I/O execution thread,
-`daemonize no`, no supervision/cluster/replication and no arbitrary native module
-loading in the first profile. Preserve configured startup AOF and explicit SAVE.
+Use `save ""`, `auto-aof-rewrite-percentage 0` and `daemonize no` while fork is
+unavailable. Replication remains unavailable. Preserve configured startup AOF
+and explicit SAVE. One I/O thread is a configurable default; other non-fork
+features are not blocked by a command/configuration allowlist.
 
 Guard `BGSAVE` and `BGREWRITEAOF` before scheduling or changing persistence state;
 guard runtime enabling of `appendonly` before `startAppendOnly`, including inside

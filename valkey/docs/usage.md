@@ -91,7 +91,11 @@ publish outputs.
 
 Runtime qualification is still in progress; consult the [execution ledger](validation.md)
 for actual passes and failures. The managed profile rejects fork-dependent
-background saves/rewrites, runtime AOF enablement, replication, clustering and
-native modules. File contents can be flushed to storage, but directory handles
+background saves/rewrites, runtime AOF enablement, replication and fork-based
+cluster operations. Other commands/configuration reach upstream validation;
+qualification labels do not restrict access. `OBJECT ENCODING` and runtime
+`CONFIG SET io-threads` are available. Upstream defaults, ACLs and actual runtime
+capabilities still apply. Native module loading reports an incompatible ABI;
+translated static Lua remains available. File contents can be flushed to storage, but directory handles
 are unsupported; no power-loss directory durability is promised. See
 [persistence limits](persistence.md).

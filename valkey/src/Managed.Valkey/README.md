@@ -55,5 +55,10 @@ dotnet run --project valkey/samples/ManagedConsumer -c Release -- --port 6379 --
 
 Each run creates distinct data directories by default and prints their location.
 `--directory`, `--password`, and the two port options are also supported. AOF is
-selected at startup; runtime enablement, background rewrite/snapshot, replication,
-clustering, native modules, and process-level features remain outside this profile.
+selected at startup; runtime enablement, background rewrite/snapshot, replication
+and other fork-dependent operations remain unavailable. Other commands and
+configuration reach upstream validation, including `OBJECT ENCODING` and
+`CONFIG SET io-threads`. Upstream defaults and actual runtime capabilities apply;
+unqualified features are not blocked merely because they lack test coverage.
+Native module binaries have an incompatible callback ABI and fail at the loader
+boundary; translated static Lua remains available.

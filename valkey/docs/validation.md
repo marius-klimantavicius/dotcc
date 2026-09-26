@@ -338,3 +338,38 @@ rejected without changing state, and the `Standalone` launch profile enables
 compatibility. Receipts and actual INFO responses are in
 `artifacts/standalone/redis-compat-kv6a35iy/`. No upstream source edits or new
 command overrides were needed.
+
+## Fork-only admission and I/O workers (2026-09-26)
+
+Removed the command/configuration allowlists. Qualification categories no longer
+reject dispatch: ordinary diagnostics, cluster commands and configuration use
+upstream validation. Fork-dependent operations and replication remain guarded,
+including multi-option CONFIG SET before mutation. No new upstream C text hooks
+were added; existing guard messages now name the fork requirement.
+
+The IOThreadMain rejection override was removed. Shared libc now implements
+deferred pthread cancellation and LIFO cleanup before translated frames unwind;
+48 focused unit tests and three functional tests passed, including source/object
+instance callbacks and a matching native C fixture. Asynchronous cancellation
+and cancellation during arbitrary blocking I/O remain unsupported.
+
+I/O cleanup uses upstream cancellation/join while consuming the bounded response
+queue, then stops BIO workers before disposing the owner. The native module
+loader has an explicit C_ERR/ENOTSUP boundary because native exports cannot use
+the translated callback ABI. Startup now processes the upstream module queue;
+existing-library LOAD/LOADEX and failed startup cleanup are covered by a probe.
+
+`./valkey/scripts/translate.sh --no-fetch --tools reuse` passed all 164 units and
+raw/processed builds in `artifacts/campaign/20260926-183836-0b6b2957/receipt.json`.
+The 30 Python tests passed again. An earlier processed JIT run passed 19 checks
+in `artifacts/managed-validation/run-diyl5oig/receipt.json`; the final raw JIT run
+passed 20 checks in `artifacts/managed-validation/run-z8lbr5j3/jit.json`, adding
+the native-module ABI/queued-startup probe. NativeAOT and final processed execution
+are pending at this milestone.
+
+New RESP checks include OBJECT ENCODING/REFCOUNT (including a missing key),
+MEMORY USAGE, LATENCY, SLOWLOG, CONFIG REWRITE/unknown-option upstream errors,
+maxclients 600, upstream CLUSTER-disabled behavior and MODULE LIST. Four clients
+verify pipelined values while changing io-threads 2 → 4 → 1 → 4; upstream threaded
+read/write counters advance, shutdown joins the workers, and a peer remains live.
+These passes do not qualify all newly admitted commands or Windows execution.

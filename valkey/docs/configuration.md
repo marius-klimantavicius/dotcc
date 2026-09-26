@@ -1,13 +1,15 @@
 # Valkey standalone translation profile
 
 The pinned 9.1.2 native control was built and exercised on Linux x64 on
-2026-09-24. This is source/build evidence; the managed server is not yet qualified.
+2026-09-24. This document records source/build evidence; see
+[validation.md](validation.md) for managed execution qualification.
 [sources.json](../config/sources.json) freezes the observed C/dependency closure.
 [profile.json](../config/profile.json) classifies all 425 upstream command and
 subcommand definitions: 307 required, 76 deferred and 42 translated but
 unqualified. These labels express the delivery requirement, not passing managed
-results. Deferred handlers remain in the source closure; C# host guards reject
-their dispatch and unsupported configuration before upstream side effects.
+results. Deferred handlers remain in the source closure and can be dispatched.
+Only fork-dependent operations and replication are rejected by host admission;
+all other commands/configuration reach upstream validation and runtime services.
 
 [licenses.json](../config/licenses.json) records the selected dependency notice
 files and hashes, including Lua, libvalkey, fpconv, histogram and the fast-float
@@ -93,7 +95,7 @@ AOF enabled from startup with `appendfsync always`. It never invokes fork-based
 background persistence. The user's authorized interim libc behavior is
 `fork() == -1` with an appropriate error `EPERM`; fake child success is
 not permitted. Foreground SAVE and initial AOF replay remain required managed
-features. The managed configuration and dispatch layers reject deferred
+features. The managed configuration and dispatch layers reject fork-dependent
 background commands and related automatic options explicitly.
 
 The native control passed 20 checks covering binary SET/GET, pipelined and

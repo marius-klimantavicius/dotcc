@@ -18,37 +18,22 @@
     "appendfsync": "always"
   },
   "managed_capability_guards": {
-    "status": "C# command/config policy is staged for the optional managed profile; managed runtime qualification remains pending",
+    "status": "Commands and configuration reach upstream validation except fork-dependent operations and replication.",
     "reject": [
-      "cluster-enabled yes",
-      "replicaof",
-      "sentinel mode",
-      "native MODULE LOAD/LOADEX",
-      "tls-port nonzero",
-      "RDMA listeners",
-      "daemonize yes",
-      "supervised systemd",
-      "io-threads > 1",
+      "BGSAVE",
+      "BGREWRITEAOF",
+      "replication and failover commands",
+      "CLUSTER REPLICATE/FAILOVER/MIGRATESLOTS/SYNCSLOTS",
+      "SCRIPT DEBUG yes (forked debugging only)",
       "automatic save schedule",
       "automatic AOF rewrite",
-      "runtime appendonly enablement",
-      "BGSAVE",
-      "BGREWRITEAOF"
+      "runtime appendonly enablement from AOF_OFF",
+      "daemonize yes",
+      "replicaof/slaveof startup configuration"
     ],
     "fork": "libc may return -1 and errno=EPERM; no child process or fake success",
-    "inventory_semantics": "required describes intended coverage, not a passing qualification result; deferred and translated-but-unqualified commands are denied unless an explicit exception is recorded",
-    "required_command_exceptions": [
-      {
-        "command": "CONFIG REWRITE",
-        "policy": "deny",
-        "reason": "Embedded startup has no writable configuration file; runtime configuration is supplied by the owning API."
-      },
-      {
-        "command": "SCRIPT DEBUG",
-        "policy": "deny",
-        "reason": "The Lua debugger requires process-level behavior outside the managed embedding profile."
-      }
-    ]
+    "inventory_semantics": "required, deferred and translated-but-unqualified describe qualification coverage only; they do not deny commands. Non-fork commands use upstream validation and actual runtime capabilities.",
+    "required_command_exceptions": []
   },
   "commands": [
     {

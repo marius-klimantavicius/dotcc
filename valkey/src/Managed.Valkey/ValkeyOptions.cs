@@ -18,7 +18,7 @@ public sealed record ValkeyOptions
     /// <summary>Enable upstream Redis compatibility, including redis_mode in INFO server.</summary>
     public bool ExtendedRedisCompatibility { get; init; }
     public string RdbFileName { get; init; } = "dump.rdb";
-    /// <summary>Enable AOF from startup. Runtime enabling is outside this profile.</summary>
+    /// <summary>Enable AOF from startup. Enabling it at runtime from AOF_OFF requires fork.</summary>
     public bool AppendOnly { get; init; }
     public ValkeyAppendFsync AppendFsync { get; init; } = ValkeyAppendFsync.Always;
     /// <summary>A failed SAVE leaves the server running and disposal faults.</summary>

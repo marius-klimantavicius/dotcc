@@ -132,6 +132,11 @@ internal static class Program
     }
     private static async Task OwnersAndRdb(Options options)
     {
+        await Case("modules:native-abi-load-fails-at-runtime-boundary", () =>
+        {
+            RecordEvidence(NativeModuleBoundaryProbe.Run());
+            return Task.CompletedTask;
+        });
         var firstOptions = new ValkeyOptions { DataDirectory = Path.Combine(options.Directory, "rdb-first"), Port = options.Port, Password = "owner-one", DisposeMode = ValkeyShutdownMode.NoSave };
         var peerOptions = firstOptions with { DataDirectory = Path.Combine(options.Directory, "rdb-peer"), Port = options.PeerPort, Password = "owner-two" };
         ValkeyServer first = Start(firstOptions), peer = Start(peerOptions);
@@ -219,18 +224,60 @@ internal static class Program
             Check.Equal(await client.Command("EVALSHA", sha, "1", "owner"), "first");
             Check.Equal(await other.Command("EVAL", script, "1", "owner"), "peer");
         });
+        await Case("commands:ordinary-diagnostics-and-upstream-config-validation", async () =>
+        {
+            const string key = "policy:integer";
+            static string ConfigValue(object? reply, string name)
+            {
+                var values = reply as object?[] ?? throw new InvalidOperationException("CONFIG GET returned no array.");
+                Check.True(values.Length == 2, "CONFIG GET did not return exactly one setting.");
+                Check.Equal(values[0], name);
+                return Check.Text(values[1]);
+            }
+            string slowlog = ConfigValue(await client.Command("CONFIG", "GET", "slowlog-log-slower-than"), "slowlog-log-slower-than");
+            string latency = ConfigValue(await client.Command("CONFIG", "GET", "latency-monitor-threshold"), "latency-monitor-threshold");
+            string maxClients = ConfigValue(await client.Command("CONFIG", "GET", "maxclients"), "maxclients");
+            try
+            {
+                Check.Equal(await client.Command("SET", key, "123"), "OK");
+                Check.Equal(await client.Command("OBJECT", "ENCODING", key), "int");
+                Check.Equal(await client.Command("OBJECT", "ENCODING", "missing-diagnostic-key"), null);
+                Check.Error(await client.Command("CLUSTER", "INFO"), "cluster support disabled");
+                Check.True(await client.Command("MODULE", "LIST") is object?[], "MODULE LIST did not reach upstream.");
+                Check.True(await client.Command("OBJECT", "REFCOUNT", key) is long references && references > 0, "OBJECT REFCOUNT did not report a live object.");
+                Check.True(await client.Command("MEMORY", "USAGE", key) is long bytes && bytes > 0, "MEMORY USAGE did not report allocated storage.");
+                Check.True(await client.Command("LATENCY", "HELP") is object?[] { Length: > 0 }, "LATENCY HELP returned no upstream help.");
+                Check.Equal(await client.Command("CONFIG", "SET", "slowlog-log-slower-than", "0"), "OK");
+                Check.Equal(await client.Command("PING"), "PONG");
+                Check.True(await client.Command("SLOWLOG", "LEN") is long entries && entries > 0, "SLOWLOG did not record the command.");
+                Check.True(await client.Command("SLOWLOG", "GET", "1") is object?[] { Length: 1 }, "SLOWLOG GET did not return the recorded entry.");
+                Check.Equal(await client.Command("CONFIG", "SET", "maxclients", "600"), "OK");
+                Check.Equal(ConfigValue(await client.Command("CONFIG", "GET", "maxclients"), "maxclients"), "600");
+                Check.Equal(await client.Command("CONFIG", "SET", "latency-monitor-threshold", "7"), "OK");
+                Check.Equal(ConfigValue(await client.Command("CONFIG", "GET", "latency-monitor-threshold"), "latency-monitor-threshold"), "7");
+                Check.Error(await client.Command("CONFIG", "REWRITE"), "without a config file");
+                Check.Error(await client.Command("CONFIG", "SET", "unknown-managed-test-option", "1"), "Unknown option");
+                Check.Equal(await other.Command("GET", "owner"), "peer");
+            }
+            finally
+            {
+                Check.Equal(await client.Command("CONFIG", "SET", "slowlog-log-slower-than", slowlog), "OK");
+                Check.Equal(await client.Command("CONFIG", "SET", "latency-monitor-threshold", latency), "OK");
+                Check.Equal(await client.Command("CONFIG", "SET", "maxclients", maxClients), "OK");
+                Check.Equal(await client.Command("DEL", key), 1L);
+            }
+        });
         await Case("profile:fork-commands-and-configurations-rejected", async () =>
         {
             string[][] denied = [["BGSAVE"], ["BGREWRITEAOF"], ["CONFIG", "SET", "save", "60 1"],
                 ["CONFIG", "SET", "appendonly", "yes"], ["CONFIG", "SET", "auto-aof-rewrite-percentage", "100"],
-                ["CONFIG", "SET", "io-threads", "2"], ["CONFIG", "SET", "daemonize", "yes"],
-                ["REPLICAOF", "127.0.0.1", "1"], ["MODULE", "LOAD", "does-not-exist.so"], ["SCRIPT", "DEBUG", "yes"]];
-            foreach (string[] command in denied) Check.Error(await client.Command(command));
+                ["CONFIG", "SET", "daemonize", "yes"], ["REPLICAOF", "127.0.0.1", "1"], ["SCRIPT", "DEBUG", "yes"]];
+            foreach (string[] command in denied) Check.Error(await client.Command(command), "fork");
             string priorMemory = Canonical(await client.Command("CONFIG", "GET", "maxmemory"));
-            Check.Error(await client.Command("CONFIG", "SET", "maxmemory", "12345", "save", "60 1"));
+            Check.Error(await client.Command("CONFIG", "SET", "maxmemory", "12345", "save", "60 1"), "fork");
             Check.Equal(Canonical(await client.Command("CONFIG", "GET", "maxmemory")), priorMemory);
             Check.Equal(await client.Command("MULTI"), "OK");
-            Check.Error(await client.Command("BGSAVE"));
+            Check.Error(await client.Command("BGSAVE"), "fork");
             Check.Error(await client.Command("EXEC"), "EXECABORT");
             Check.Error(await client.Command("EVAL", "return redis.pcall('BGREWRITEAOF')", "0"));
             Check.Equal(await client.Command("PING"), "PONG"); Check.Equal(await other.Command("GET", "owner"), "peer");
@@ -264,6 +311,80 @@ internal static class Program
             Check.Equal(await loaded.Command("FCALL", "managed_read", "1", "owner"), "first");
             Check.Equal(await other.Command("GET", "owner"), "peer");
             await Stopped(restarted, ValkeyShutdownMode.NoSave);
+        });
+        await Case("io:live-worker-reconfiguration-traffic-and-shutdown", async () =>
+        {
+            var owner = Start(firstOptions with { DataDirectory = Path.Combine(options.Directory, "io-workers") });
+            await Ready(owner);
+            var endpoint = await owner.Endpoint;
+            await using var control = await RespConnection.Connect(endpoint, cancellation, firstOptions.Password);
+            // Use upstream's deterministic activation setting so this test
+            // proves worker execution without depending on load heuristics.
+            Check.Equal(await control.Command("CONFIG", "SET", "io-threads-always-active", "yes"), "OK");
+            using var stopTraffic = new CancellationTokenSource();
+            long[] progress = new long[4];
+            async Task Traffic(int worker)
+            {
+                await using var traffic = await RespConnection.Connect(endpoint, cancellation, firstOptions.Password);
+                long sequence = 0;
+                while (!stopTraffic.IsCancellationRequested)
+                {
+                    string value = new string((char)('a' + worker), 1024) + ":" + sequence++;
+                    var commands = new List<string[]>();
+                    for (int key = 0; key < 8; key++)
+                    {
+                        string name = $"io:{worker}:{key}";
+                        commands.Add(["SET", name, value]);
+                        commands.Add(["GET", name]);
+                    }
+                    var replies = await traffic.Pipeline(commands.ToArray());
+                    Check.True(replies.Length == 16, "I/O worker traffic lost responses.");
+                    for (int i = 0; i < replies.Length; i += 2)
+                    {
+                        Check.Equal(replies[i], "OK");
+                        Check.Equal(replies[i + 1], value);
+                    }
+                    Interlocked.Increment(ref progress[worker]);
+                }
+            }
+            Task[] workers = Enumerable.Range(0, progress.Length).Select(Traffic).ToArray();
+            try
+            {
+                foreach (int count in new[] { 2, 4, 1, 4 })
+                {
+                    var before = Info(await control.Command("INFO", "stats"));
+                    long readsBefore = Number(before, "io_threaded_reads_processed");
+                    long writesBefore = Number(before, "io_threaded_writes_processed");
+                    long[] completedBefore = Enumerable.Range(0, progress.Length).Select(i => Interlocked.Read(ref progress[i])).ToArray();
+                    Check.Equal(await control.Command("CONFIG", "SET", "io-threads", count.ToString(CultureInfo.InvariantCulture)), "OK");
+                    var setting = await control.Command("CONFIG", "GET", "io-threads") as object?[] ?? throw new InvalidOperationException("Missing io-threads setting.");
+                    Check.True(setting.Length == 2, "Unexpected io-threads setting reply.");
+                    Check.Equal(setting[0], "io-threads");
+                    Check.Equal(setting[1], count.ToString(CultureInfo.InvariantCulture));
+                    long reads = readsBefore, writes = writesBefore;
+                    await Until(async () =>
+                    {
+                        foreach (Task worker in workers) if (worker.IsFaulted) await worker;
+                        var stats = Info(await control.Command("INFO", "stats"));
+                        reads = Number(stats, "io_threaded_reads_processed");
+                        writes = Number(stats, "io_threaded_writes_processed");
+                        return Enumerable.Range(0, progress.Length).All(i => Interlocked.Read(ref progress[i]) >= completedBefore[i] + 3) &&
+                            (count == 1 || reads > readsBefore && writes > writesBefore);
+                    }, "I/O workers did not continue verified traffic after reconfiguration.");
+                    Check.Equal(Number(Info(await control.Command("INFO", "server")), "io_threads_active"), count == 1 ? 0L : 1L);
+                    Check.Equal(await other.Command("GET", "owner"), "peer");
+                    RecordEvidence($"io-threads={count}; threaded reads {readsBefore}->{reads}; writes {writesBefore}->{writes}; all four clients advanced");
+                }
+            }
+            finally
+            {
+                stopTraffic.Cancel();
+                await Task.WhenAll(workers).WaitAsync(TimeSpan.FromSeconds(20), cancellation);
+            }
+            // The I/O thread count remains four when owner shutdown begins.
+            await Stopped(owner, ValkeyShutdownMode.NoSave);
+            Check.Equal(await other.Command("PING"), "PONG");
+            Check.Equal(await other.Command("GET", "owner"), "peer");
         });
         await Case("bio:lazyfree-worker-completion-and-shutdown-drain", async () =>
         {

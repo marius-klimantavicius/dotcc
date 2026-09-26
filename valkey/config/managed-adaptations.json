@@ -14,7 +14,7 @@
         },
         {
           "before": "    uint64_t cmd_flags = getCommandFlags(c);",
-          "after": "    if (!valkeyManagedCommandAllowed(c)) {\n        rejectCommandSds(c, sdsnew(\"-ERR command or configuration is outside the managed profile\"), 1);\n        return C_OK;\n    }\n    uint64_t cmd_flags = getCommandFlags(c);"
+          "after": "    if (!valkeyManagedCommandAllowed(c)) {\n        rejectCommandSds(c, sdsnew(\"-ERR command or configuration requires fork, which is unavailable in the managed runtime\"), 1);\n        return C_OK;\n    }\n    uint64_t cmd_flags = getCommandFlags(c);"
         },
         {
           "before": "    serverLog(LL_WARNING, \"%s is now ready to exit, bye bye...\", server.sentinel_mode ? \"Sentinel\" : \"Valkey\");\n    return C_OK;",
@@ -22,7 +22,7 @@
         },
         {
           "before": "void call(client *c, int flags) {\n    long long dirty;",
-          "after": "void call(client *c, int flags) {\n    /* Lua/module calls and EXEC dispatch can bypass processCommand admission.\n     * Reply through the actual caller before changing execution/propagation state. */\n    if (!valkeyManagedCommandAllowed(c)) {\n        addReplyError(c, \"Command or configuration is outside the managed profile\");\n        return;\n    }\n    long long dirty;"
+          "after": "void call(client *c, int flags) {\n    /* Lua/module calls and EXEC dispatch can bypass processCommand admission.\n     * Reply through the actual caller before changing execution/propagation state. */\n    if (!valkeyManagedCommandAllowed(c)) {\n        addReplyError(c, \"Command or configuration requires fork, which is unavailable in the managed runtime\");\n        return;\n    }\n    long long dirty;"
         }
       ]
     },
@@ -37,7 +37,7 @@
         },
         {
           "before": "void configSetCommand(client *c) {",
-          "after": "void configSetCommand(client *c) {\n    /* Recheck at execution as well as before transaction enqueue. */\n    if (!valkeyManagedCommandAllowed(c)) {\n        addReplyError(c, \"Configuration is outside the managed profile\");\n        return;\n    }"
+          "after": "void configSetCommand(client *c) {\n    /* Recheck at execution as well as before transaction enqueue. */\n    if (!valkeyManagedCommandAllowed(c)) {\n        addReplyError(c, \"Configuration requires fork, which is unavailable in the managed runtime\");\n        return;\n    }"
         }
       ]
     },

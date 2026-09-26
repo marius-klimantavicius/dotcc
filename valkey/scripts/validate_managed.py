@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT = ROOT / "tests/ManagedHostTests/ManagedHostTests.csproj"
 PRODUCT = ROOT / "generated/TranslatedValkey/TranslatedValkey.csproj"
 PROTOCOL_EXCLUSIONS = [
-    {"name": name, "reason": "Requires DEBUG PROTOCOL, excluded by the managed profile."}
+    {"name": name, "reason": "Requires DEBUG PROTOCOL; upstream enable-debug-command defaults to no."}
     for name in ("RESP3 attributes", "RESP3 attributes readraw", "RESP3 attributes on RESP2",
                  "test big number parsing", "test bool parsing", "test verbatim str parsing")
 ]

@@ -66,11 +66,6 @@ public static unsafe partial class ValkeyHost
         return (delegate*<ValkeyCore, int, void>)(nint)(-1);
     }
 
-    // I/O worker threads are outside the single-executor profile. Reaching this
-    // boundary is a configuration error, never a pretend successful worker.
-    public static void* RejectIoThread(ValkeyCore core, void* argument) =>
-        throw new NotSupportedException("The managed profile requires io-threads 1.");
-
     public static int Glob(ValkeyCore core, byte* pattern, int flags,
         delegate*<ValkeyCore, byte*, int, int> error, ValkeyCore.glob_t* result) =>
         CoreLibc.GlobManaged(core, pattern, flags, error, result);
@@ -98,38 +93,25 @@ public static unsafe partial class ValkeyHost
     public static int ConfigAllowed(ValkeyCore core, byte* name, byte* value, int startup)
     {
         string? option = Text(name)?.ToLowerInvariant(), setting = Text(value);
-        if (option == null || setting == null) return 0;
-        bool allowed = option switch
+        // Admission is independent of the qualification inventory. Let upstream
+        // validate names/values; only prevent activation of fork-dependent work.
+        bool requiresFork = option switch
         {
-            "save" => setting.Length == 0,
-            "auto-aof-rewrite-percentage" or "watchdog-period" or "tls-port" => setting == "0",
-            "io-threads" => setting == "1",
-            "daemonize" or "cluster-enabled" or "set-proc-title" or "syslog-enabled" or
-            "crash-log-enabled" or "crash-memcheck-enabled" or "supervised" or
-            "enable-debug-command" or "enable-module-command" => setting.Equals("no", StringComparison.OrdinalIgnoreCase),
-            "appendonly" => setting.Equals("no", StringComparison.OrdinalIgnoreCase) ||
-                startup != 0 && setting.Equals("yes", StringComparison.OrdinalIgnoreCase),
-            "maxclients" => long.TryParse(setting, NumberStyles.Integer, CultureInfo.InvariantCulture, out long count) && count is > 0 and <= 512,
-            _ => MutableOptions.Contains(option)
+            "save" => !string.IsNullOrWhiteSpace(setting),
+            "auto-aof-rewrite-percentage" => long.TryParse(setting, NumberStyles.Integer,
+                CultureInfo.InvariantCulture, out long percentage) && percentage > 0,
+            "daemonize" => string.Equals(setting, "yes", StringComparison.OrdinalIgnoreCase),
+            "replicaof" or "slaveof" => true,
+            "appendonly" => startup == 0 && core.Globals.server.aof_state == ValkeyCore.AOF_OFF
+                && string.Equals(setting, "yes", StringComparison.OrdinalIgnoreCase),
+            _ => false
         };
-        return allowed ? 1 : 0;
+        return requiresFork ? 0 : 1;
     }
-
-    private static readonly HashSet<string> MutableOptions = new(StringComparer.Ordinal)
-    {
-        "port", "bind", "protected-mode", "requirepass", "databases", "maxmemory", "maxmemory-policy",
-        "timeout", "tcp-keepalive", "tcp-backlog", "hz", "loglevel", "appendfsync", "no-appendfsync-on-rewrite",
-        "dbfilename", "appendfilename", "appenddirname", "rdbchecksum", "rdbcompression",
-        "stop-writes-on-bgsave-error", "activerehashing", "lazyfree-lazy-eviction", "lazyfree-lazy-expire",
-        "lazyfree-lazy-server-del", "lazyfree-lazy-user-del", "lazyfree-lazy-user-flush", "lua-time-limit",
-        "busy-reply-threshold", "notify-keyspace-events", "slowlog-log-slower-than", "slowlog-max-len",
-        "client-output-buffer-limit", "maxmemory-clients", "availability-zone", "extended-redis-compatibility"
-    };
 
     private static bool ValidateOptions(ValkeyCore core, byte* options)
     {
         if (options == null || *options == 0) return true;
-        // Keep upstream quoting and argument parsing, including escaped controls.
         foreach (string line in Text(options)!.Split('\n'))
         {
             string trimmed = line.Trim(' ', '\t', '\r');
@@ -141,7 +123,10 @@ public static unsafe partial class ValkeyHost
                 byte** args = core.sdssplitargs(input, &count);
                 try
                 {
-                    if (args == null || count != 2 || ConfigAllowed(core, args[0], args[1], 1) == 0) return false;
+                    // Malformed or multi-argument directives remain upstream's
+                    // responsibility; do not impose a second configuration grammar.
+                    if (args != null && count >= 2 && ConfigAllowed(core, args[0], args[1], 1) == 0)
+                        return false;
                 }
                 finally { if (args != null) core.sdsfreesplitres(args, count); }
             }
@@ -151,11 +136,14 @@ public static unsafe partial class ValkeyHost
 
     public static int CommandAllowed(ValkeyCore core, ValkeyCore.client* client)
     {
-        if (client == null || client->cmd == null) return 0;
-        // fullname belongs to the resolved original command, so aliases cannot
-        // bypass this inventory and subcommands retain their canonical identity.
-        string? command = Text(client->cmd->fullname);
-        if (command == null || !AllowedCommands.Contains(command) || command is "config|rewrite" or "script|debug") return 0;
+        if (client == null || client->cmd == null) return 1;
+        // Use the resolved canonical name so command aliases cannot bypass a
+        // fork restriction. Unqualified commands otherwise reach upstream.
+        string? command = Text(client->cmd->fullname)?.ToLowerInvariant();
+        if (command != null && ForkDependentCommands.Contains(command)) return 0;
+        if (command == "script|debug" && client->argc == 3 &&
+            string.Equals(Text((byte*)core.objectGetVal(client->argv[2])), "yes", StringComparison.OrdinalIgnoreCase))
+            return 0; // Synchronous debugging and disabling the debugger do not fork.
         if (command == "config|set" && (client->argc & 1) == 0)
             for (int i = 2; i < client->argc; i += 2)
                 if (ConfigAllowed(core, (byte*)core.objectGetVal(client->argv[i]),
@@ -169,7 +157,7 @@ public static unsafe partial class ValkeyHost
         if (state.Lifecycle != 0) return Failure(core, "A Valkey owner can only be started once");
         state.Lifecycle = 1;
         core.zmalloc_set_oom_handler(&OutOfMemory);
-        if (!ValidateOptions(core, options)) return Failure(core, "Startup option is outside the managed profile");
+        if (!ValidateOptions(core, options)) return Failure(core, "Startup configuration requires fork, which is unavailable in the managed runtime");
         // Seeds are per owner; Valkey's own dictionaries and PRNG remain upstream.
         ulong entropy = BitConverter.ToUInt64(System.Security.Cryptography.RandomNumberGenerator.GetBytes(8));
         CoreLibc.srand((uint)entropy);
@@ -196,9 +184,12 @@ public static unsafe partial class ValkeyHost
         if (server.port is < 1 or > 65535) return Failure(core, "A TCP listener port is required");
         state.ServerEntered = true;
         core.initServer();
+        if (server.cluster_enabled != 0) core.clusterInit();
         core.moduleInitModulesSystemLast();
+        core.moduleLoadFromQueue();
         core.ACLLoadUsersAtStartup();
         core.initListeners();
+        if (server.cluster_enabled != 0) core.clusterInitLast();
         fixed (byte* lua = "lua\0"u8)
             if (core.moduleLoadStatic(lua, null, 0, 0) != 0) return Failure(core, "Static Lua initialization failed");
         server.lua_insecure_api_current = server.lua_enable_insecure_api;
@@ -250,6 +241,7 @@ public static unsafe partial class ValkeyHost
         if (state.ServerEntered && server.el != null) core.aeStop(server.el);
         if (state.ServerEntered && !state.ShutdownFinished) core.closeListeningSockets(0);
         if (state.ModulesInitialized && !state.ShutdownFinished && abandon == 0) core.moduleUnloadAllModules();
+        StopIoWorkers(core);
         if (BioStop(core, abandon) != 0) return Failure(core, "Background workers have not all joined");
         if (state.ServerEntered && server.el != null)
         {
