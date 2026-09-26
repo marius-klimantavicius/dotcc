@@ -6,7 +6,7 @@ using Managed.Valkey;
 int port = 6379, peerPort = 6380;
 string? directory = null;
 string? password = null;
-bool appendOnly = false, standalone = false;
+bool appendOnly = false, standalone = false, extendedRedisCompatibility = false;
 for (int i = 0; i < args.Length; ++i)
 {
     string Value() => ++i < args.Length ? args[i] : throw new ArgumentException("Missing option value.");
@@ -18,11 +18,12 @@ for (int i = 0; i < args.Length; ++i)
         case "--password": password = Value(); break;
         case "--appendonly": appendOnly = true; break;
         case "--standalone": standalone = true; break;
+        case "--extended-redis-compatibility": extendedRedisCompatibility = true; break;
         case "--help":
         case "-h":
-            Console.WriteLine("Options: --standalone --port N --directory PATH --password VALUE --appendonly --peer-port N (demo only)");
+            Console.WriteLine("Options: --standalone --port N --directory PATH --password VALUE --appendonly --extended-redis-compatibility --peer-port N (demo only)");
             return;
-        default: throw new ArgumentException("Options: --standalone --port N --peer-port N --directory PATH --password VALUE --appendonly");
+        default: throw new ArgumentException("Options: --standalone --port N --peer-port N --directory PATH --password VALUE --appendonly --extended-redis-compatibility");
     }
 }
 directory ??= standalone ? Path.GetFullPath("valkey-data")
@@ -32,6 +33,7 @@ if (standalone)
     await StandaloneServer.RunAsync(new ValkeyOptions
     {
         DataDirectory = directory, Port = port, Password = password, AppendOnly = appendOnly,
+        ExtendedRedisCompatibility = extendedRedisCompatibility,
         DisposeMode = appendOnly ? ValkeyShutdownMode.NoSave : ValkeyShutdownMode.Save
     });
     return;
@@ -40,6 +42,7 @@ if (port == peerPort) throw new ArgumentException("The two instances require dis
 var firstOptions = new ValkeyOptions
 {
     DataDirectory = Path.Combine(directory, "first"), Port = port, Password = password,
+    ExtendedRedisCompatibility = extendedRedisCompatibility,
     AppendOnly = appendOnly, DisposeMode = appendOnly ? ValkeyShutdownMode.NoSave : ValkeyShutdownMode.Save
 };
 var peerOptions = firstOptions with { DataDirectory = Path.Combine(directory, "peer"), Port = peerPort };

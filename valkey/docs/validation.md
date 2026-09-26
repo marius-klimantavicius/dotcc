@@ -329,3 +329,12 @@ The actual `dotnet run --launch-profile Standalone` invocation also passed an
 external PING and client shutdown on port 6379. Logs and receipts are in
 `artifacts/standalone/run-fyqek9uz/`. These are Linux process/client checks;
 Rider's GUI and Windows signal handling were not exercised here.
+
+`ValkeyOptions.ExtendedRedisCompatibility` now passes upstream's existing
+`extended-redis-compatibility` setting through the managed host. Five TCP checks
+passed: the default reports `server_mode`, opt-in startup reports `redis_mode`,
+runtime toggling leaves a peer's setting unchanged, invalid boolean values are
+rejected without changing state, and the `Standalone` launch profile enables
+compatibility. Receipts and actual INFO responses are in
+`artifacts/standalone/redis-compat-kv6a35iy/`. No upstream source edits or new
+command overrides were needed.

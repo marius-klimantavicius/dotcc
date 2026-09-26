@@ -22,6 +22,13 @@ successful startup; `Completion` reports terminal failure or completion after
 worker joins and owner disposal. Startup does not call the CLI entry point.
 Ports must be positive: upstream port zero disables the TCP listener.
 
+Set `ExtendedRedisCompatibility = true` for Redis-oriented clients that require
+Redis identification fields, such as `redis_mode:standalone` in `INFO server`.
+The default is `false`, matching upstream Valkey. This passes the existing
+`extended-redis-compatibility yes` configuration to the upstream parser; the
+command implementation is unchanged. `CONFIG SET extended-redis-compatibility
+yes` (or `no`) can also change it on a running instance.
+
 `DisposeAsync` requests `DisposeMode` (SAVE by default). A failed final SAVE
 faults that operation and keeps the server running. Retry after correcting the
 cause, or explicitly call `StopAsync(ValkeyShutdownMode.NoSave)` when acceptable.

@@ -44,10 +44,14 @@ dotnet run --project valkey/samples/ManagedConsumer -c Release --no-build \
   --launch-profile Standalone
 # Or supply options explicitly:
 dotnet run --project valkey/samples/ManagedConsumer -c Release --no-build -- \
-  --standalone --port 6379 --directory ./valkey-data
+  --standalone --port 6379 --directory ./valkey-data --extended-redis-compatibility
 ```
 
 Select the `Standalone` launch profile in Rider to launch this mode from the IDE.
+It enables upstream Redis compatibility so `INFO server` reports `redis_mode`,
+as expected by Redis-oriented connection-mode checks. For explicit launches,
+`--extended-redis-compatibility` enables the same setting; the managed API exposes
+it as `ValkeyOptions.ExtendedRedisCompatibility` (default `false`).
 The `ManagedConsumer` profile runs the demo.
 
 Connect to host `127.0.0.1`, port `6379`, without TLS. Authentication is disabled

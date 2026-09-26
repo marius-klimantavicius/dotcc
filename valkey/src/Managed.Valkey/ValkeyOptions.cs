@@ -15,6 +15,8 @@ public sealed record ValkeyOptions
     public IPAddress BindAddress { get; init; } = IPAddress.Loopback;
     public int Port { get; init; } = 6379;
     public string? Password { get; init; }
+    /// <summary>Enable upstream Redis compatibility, including redis_mode in INFO server.</summary>
+    public bool ExtendedRedisCompatibility { get; init; }
     public string RdbFileName { get; init; } = "dump.rdb";
     /// <summary>Enable AOF from startup. Runtime enabling is outside this profile.</summary>
     public bool AppendOnly { get; init; }
@@ -43,6 +45,7 @@ public sealed record ValkeyOptions
         var config = new StringBuilder()
             .Append("bind ").Append(Quote(address.ToString())).Append('\n')
             .Append("port ").Append(Port.ToString(CultureInfo.InvariantCulture)).Append('\n')
+            .Append("extended-redis-compatibility ").Append(ExtendedRedisCompatibility ? "yes" : "no").Append('\n')
             .Append("dbfilename ").Append(Quote(RdbFileName)).Append('\n')
             .Append("appendonly ").Append(AppendOnly ? "yes" : "no").Append('\n')
             .Append("appendfsync ").Append(AppendFsync switch

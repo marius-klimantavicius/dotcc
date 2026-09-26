@@ -5,7 +5,7 @@
     },
     "Standalone": {
       "commandName": "Project",
-      "commandLineArgs": "--standalone --port 6379"
+      "commandLineArgs": "--standalone --port 6379 --extended-redis-compatibility"
     }
   }
 }
