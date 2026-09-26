@@ -55,7 +55,7 @@ internal sealed class MacroExpander : RewritingTokenStream
     // contextual built-ins or count as an expansion in the source report.
     internal static IReadOnlyList<Item> ExpandConstantBody(CPreprocessor cpp, MacroDef macro)
     {
-        using var lexer = BytesLexer.FromString("", C.BuildLexer());
+        using var lexer = LexerGrammar.C.FromString("");
         using var expander = new MacroExpander(lexer, cpp) { _metadata = true };
         try
         {

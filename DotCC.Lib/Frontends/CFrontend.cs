@@ -40,7 +40,7 @@ internal sealed class CFrontend : IFrontend
         var pedanticErrors = (warnings & WarningFlags.PedanticErrors) == WarningFlags.PedanticErrors;
 
         var includeMap = Compiler.BuildIncludeMap(inputPaths, includeDirs);
-        var lexerTable = C.BuildLexer();
+        var lexerTable = LexerGrammar.C;
         var activeDialect = dialect ?? CDialect.Default;
         var seededDefines = Compiler.SeedDialectDefines(activeDialect, defines);
         // C23 #embed: one byte side-table shared by every TU's preprocessor (which
@@ -65,7 +65,7 @@ internal sealed class CFrontend : IFrontend
             if (includeDirs is not null) { embedDirs.AddRange(includeDirs); }
             var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, quiet, gate, embedDirs, embeds, overrides);
             pre.SetActiveFilename(Path.GetFileName(unitPath), unitPath);
-            using var lexer = BytesLexer.FromString(source, lexerTable);
+            using var lexer = lexerTable.FromString(source);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
             using var preproc = pre.WrapStream(mappedLexer);
             // MacroExpander: function-like macro expansion. Needs lookahead

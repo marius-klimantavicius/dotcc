@@ -57,7 +57,7 @@ internal static class ZigParseProbe
         try
         {
             var parser = Zig.BuildParser(Zig.IdentityVisitor.Instance);
-            using var lexer = BytesLexer.FromString(source, Zig.BuildLexer());
+            using var lexer = LexerGrammar.Zig.FromString(source);
             using var tokens = new SyncLATokenIterator(lexer);
             var root = parser.ParseInput(tokens, debugger: null, trimReductions: true);
             return root.IsError

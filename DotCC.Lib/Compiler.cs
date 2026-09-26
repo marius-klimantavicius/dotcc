@@ -348,7 +348,7 @@ public static partial class Compiler
         CDialect? dialect = null, CPreprocessingOptions? preprocessing = null)
     {
         var includeMap = BuildIncludeMap(inputPaths, includeDirs);
-        var lexerTable = C.BuildLexer();
+        var lexerTable = LexerGrammar.C;
         var seededDefines = SeedDialectDefines(dialect ?? CDialect.Default, defines);
         var overrides = preprocessing is { } options ? new MacroOverrideSession(options, defines) : null;
         foreach (var unitPath in inputPaths)
@@ -358,7 +358,7 @@ public static partial class Compiler
             var source = sourceMap.Text;
             var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, overrides: overrides);
             pre.SetActiveFilename(Path.GetFileName(unitPath), unitPath);
-            using var lexer = BytesLexer.FromString(source, lexerTable);
+            using var lexer = lexerTable.FromString(source);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
             using var preproc = pre.WrapStream(mappedLexer);
             // -E mode also routes through MacroExpander so function-like
@@ -412,7 +412,7 @@ public static partial class Compiler
         CDialect? dialect = null, CPreprocessingOptions? preprocessing = null)
     {
         var (content, paths) = BuildIncludeMaps(new[] { sourcePath }, includeDirs);
-        var lexerTable = C.BuildLexer();
+        var lexerTable = LexerGrammar.C;
         var seededDefines = SeedDialectDefines(dialect ?? CDialect.Default, defines);
 
         var sourceMap = new PhysicalSourceMap(File.ReadAllText(sourcePath), filename: Path.GetFileName(sourcePath));
@@ -420,7 +420,7 @@ public static partial class Compiler
         var overrides = preprocessing is { } options ? new MacroOverrideSession(options, defines) : null;
         var pre = new CPreprocessor(lexerTable, content, seededDefines, quiet: true, overrides: overrides);
         pre.SetActiveFilename(Path.GetFileName(sourcePath), sourcePath);
-        var lexer = BytesLexer.FromString(source, lexerTable);
+        var lexer = lexerTable.FromString(source);
         var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
         var preproc = pre.WrapStream(mappedLexer);
         using (lexer)

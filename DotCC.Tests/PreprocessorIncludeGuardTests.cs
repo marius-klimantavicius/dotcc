@@ -178,14 +178,14 @@ public sealed class PreprocessorIncludeGuardTests
             // Drive through the same lex pipeline Compiler.Preprocess uses,
             // but reach in to construct the CPreprocessor ourselves so we
             // can observe the hit counter (internal field).
-            var lexerTable = C.BuildLexer();
+            var lexerTable = LexerGrammar.C;
             var includeMap = new System.Collections.Generic.Dictionary<string, string>(System.StringComparer.Ordinal)
             {
                 ["foo.h"] = File.ReadAllText(Path.Combine(dir, "foo.h")),
             };
             var pre = new CPreprocessor(lexerTable, new Compiler.IncludeMap(includeMap), System.Array.Empty<string>());
             pre.SetActiveFilename("main.c");
-            using var lex = LALR.CC.LexicalGrammar.BytesLexer.FromString(File.ReadAllText(srcPath), lexerTable);
+            using var lex = lexerTable.FromString(File.ReadAllText(srcPath));
             using var wrap = C.WrapPreprocessor(lex, pre);
             while (wrap.MoveNext()) { /* drain */ }
 
@@ -211,14 +211,14 @@ public sealed class PreprocessorIncludeGuardTests
             File.WriteAllText(srcPath,
                 "#include \"raw.h\"\n#include \"raw.h\"\nint main() { return 0; }\n");
 
-            var lexerTable = C.BuildLexer();
+            var lexerTable = LexerGrammar.C;
             var includeMap = new System.Collections.Generic.Dictionary<string, string>(System.StringComparer.Ordinal)
             {
                 ["raw.h"] = File.ReadAllText(Path.Combine(dir, "raw.h")),
             };
             var pre = new CPreprocessor(lexerTable, new Compiler.IncludeMap(includeMap), System.Array.Empty<string>());
             pre.SetActiveFilename("main.c");
-            using var lex = LALR.CC.LexicalGrammar.BytesLexer.FromString(File.ReadAllText(srcPath), lexerTable);
+            using var lex = lexerTable.FromString(File.ReadAllText(srcPath));
             using var wrap = C.WrapPreprocessor(lex, pre);
             while (wrap.MoveNext()) { /* drain */ }
 

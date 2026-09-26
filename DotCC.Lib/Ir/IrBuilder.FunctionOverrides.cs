@@ -57,7 +57,7 @@ internal sealed partial class IrBuilder
             (signature.ParameterTypes.Count == 0 ? "void" : string.Join(",", signature.ParameterTypes)) + ");";
         try
         {
-            using var lexer = BytesLexer.FromString(source, C.BuildLexer());
+            using var lexer = LexerGrammar.C.FromString(source);
             using var validator = new CTokenValidator(lexer);
             using var keywords = new DialectKeywordRewriter(validator, CDialect.Default);
             using var types = new TypeNameRewriter(keywords, _typedefs.Keys.Concat(Compiler.PredefinedTypeNames));

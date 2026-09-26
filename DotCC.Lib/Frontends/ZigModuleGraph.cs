@@ -85,7 +85,7 @@ internal sealed class ZigImportScope
 internal sealed class ZigModuleGraph
 {
     private readonly Parser _parser;
-    private readonly IReadOnlyDictionary<string, LexRule[]> _lexerTable;
+    private readonly LexerGrammar _lexerTable;
     private readonly IReadOnlySet<int> _syncTerminals;
     private readonly IReadOnlySet<int> _openBrackets;
     private readonly IReadOnlySet<int> _closeBrackets;
@@ -100,7 +100,7 @@ internal sealed class ZigModuleGraph
     public ZigModuleGraph(string? stdRootPath = null)
     {
         _parser = Zig.BuildParser(Zig.IdentityVisitor.Instance);
-        _lexerTable = Zig.BuildLexer();
+        _lexerTable = LexerGrammar.Zig;
         (_syncTerminals, _openBrackets, _closeBrackets) = BuildRecoverySets(_parser.Grammar);
         StdRootPath = stdRootPath;
     }
@@ -147,7 +147,7 @@ internal sealed class ZigModuleGraph
     /// cache — the seam unit tests drive, and the primitive <see cref="LoadPath"/> builds on.</summary>
     public ZigModule ParseSource(string path, string source)
     {
-        using var lexer = BytesLexer.FromString(source, _lexerTable);
+        using var lexer = _lexerTable.FromString(source);
         using var tokens = new SyncLATokenIterator(lexer);
         var result = _parser.ParseInputResilient(tokens, _syncTerminals, _openBrackets, _closeBrackets);
         return new ZigModule(path, result);

@@ -43,7 +43,7 @@ public sealed partial class CPreprocessingOptions
         ExportSelector = new MacroExportSelector(EmitDefines);
         ProfilePath = profilePath is null ? null : Path.GetFullPath(profilePath);
         Report = report;
-        var lexer = C.BuildLexer();
+        var lexer = LexerGrammar.C;
         Rules = macroOverrides.Select((rule, index) => new CompiledMacroOverride(rule, index, lexer)).ToArray();
         var unconditional = new HashSet<string>(StringComparer.Ordinal);
         foreach (var rule in Rules)
@@ -175,9 +175,9 @@ internal sealed class CompiledMacroOverride
     private readonly string[]? _exact;
     private readonly string[][]? _expect;
     private readonly (string Text, string? Hole)[] _template;
-    private readonly Dictionary<string, LexRule[]> _lexer;
+    private readonly LexerGrammar _lexer;
 
-    internal CompiledMacroOverride(MacroOverride rule, int index, Dictionary<string, LexRule[]> lexer)
+    internal CompiledMacroOverride(MacroOverride rule, int index, LexerGrammar lexer)
     {
         Rule = rule with { Expect = rule.Expect?.ToArray(), Signature = rule.Signature is { } sig ? sig with { Parameters = sig.Parameters?.ToArray() } : null };
         Index = index; _lexer = lexer;
@@ -270,7 +270,7 @@ internal sealed class CompiledMacroOverride
         if (text.Length > CPreprocessingOptions.MaxText) throw CPreprocessingOptions.Error(Rule, "body exceeds 1 MiB character limit");
         try
         {
-            using var lexer = BytesLexer.FromString(text, _lexer);
+            using var lexer = _lexer.FromString(text);
             var items = new List<Item>();
             while (lexer.MoveNext())
             {

@@ -3,6 +3,9 @@
 See the [2026-09-24 compiler refresh verification](docs/verification-20260924.md)
 for freshly regenerated PicoTLS/MsQuic results and the retained recovery failures.
 
+The [compiler performance review](docs/compiler-performance-20260926.md) records
+the lexer optimization and before/after timings for all 47 translation units.
+
 Regenerate the selected core and its postprocessed product with:
 
 ```sh

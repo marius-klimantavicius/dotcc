@@ -34,7 +34,7 @@ internal sealed record MacroDef(
 
 internal sealed partial class CPreprocessor : C.IPreprocessor
 {
-    private readonly Dictionary<string, LexRule[]> _lexerTable;
+    private readonly LexerGrammar _lexerTable;
     private readonly Compiler.IncludeMap _files;
     private readonly System.IO.TextWriter _diag;
     private readonly Dictionary<string, MacroDef> _macros = new(StringComparer.Ordinal);
@@ -117,7 +117,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     private readonly DialectGate? _gate;
 
     public CPreprocessor(
-        Dictionary<string, LexRule[]> lexerTable,
+        LexerGrammar lexerTable,
         Compiler.IncludeMap files,
         IEnumerable<string> predefines,
         bool quiet = false,
@@ -176,7 +176,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     /// </summary>
     private Item[] LexMacroValue(string text)
     {
-        using var lex = BytesLexer.FromString(text, _lexerTable);
+        using var lex = _lexerTable.FromString(text);
         var list = new List<Item>();
         while (lex.MoveNext()) { list.Add(lex.Current); }
         return list.ToArray();
@@ -189,7 +189,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         // token at a later ##, so retain its spelling until that rescan succeeds.
         try
         {
-            using var lexer = BytesLexer.FromString(text, _lexerTable);
+            using var lexer = _lexerTable.FromString(text);
             if (!lexer.MoveNext()) return fallback;
             var token = lexer.Current;
             return !lexer.MoveNext() && token.Content?.ToString() == text ? token.ID : fallback;
@@ -311,7 +311,7 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
             // name stays at line 1: IsSyntheticHeaderContent tests content
             // identity, not just the name (clang's local-first rule already let
             // the user file win the slot). User headers and `.c` splices: line 1.
-            using var subLexer = BytesLexer.FromString(sourceMap.Text, _lexerTable, initialLine: initialLine);
+            using var subLexer = _lexerTable.FromString(sourceMap.Text, initialLine: initialLine);
             using var mappedLexer = new SourceMappingLexer(subLexer, sourceMap);
             using var subPreproc = WrapStream(mappedLexer);
             // Expand function-like macros WITHIN the include, mirroring the

@@ -28,7 +28,7 @@ internal static class CConstantMacros
             var replacement = string.Join(" ", body.Select(t => t.Content));
             // ## can produce numeric tokens that still carry the preprocessor's
             // ID carrier. Classify the final spellings with the C lexer.
-            using var bodyLexer = BytesLexer.FromString(replacement, C.BuildLexer());
+            using var bodyLexer = LexerGrammar.C.FromString(replacement);
             while (bodyLexer.MoveNext())
             {
                 var token = bodyLexer.Current;
@@ -41,7 +41,7 @@ internal static class CConstantMacros
                 }
                 if (!LiteralTokens.Contains(token.ID)) return null;
             }
-            using var lexer = BytesLexer.FromString("int __dotcc_macro = " + replacement + ";", C.BuildLexer());
+            using var lexer = LexerGrammar.C.FromString("int __dotcc_macro = " + replacement + ";");
             using var validator = new CTokenValidator(lexer);
             using var keywords = new DialectKeywordRewriter(validator, dialect ?? CDialect.Default);
             using var types = new TypeNameRewriter(keywords, context.MacroTypeNames);

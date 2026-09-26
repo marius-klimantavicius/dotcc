@@ -48,7 +48,7 @@ internal sealed class ZigFrontend : IFrontend
     /// caller owns diagnostic flushing.</summary>
     internal static void AddUnits(IrBuilder ir, IReadOnlyList<string> paths, INameLegalizer names, bool testMode = false)
     {
-        var lexerTable = Zig.BuildLexer();
+        var lexerTable = LexerGrammar.Zig;
         // One error-code registry shared across the build's units — a given `error.Foo`
         // name maps to one code program-wide (V1 erases the error set into a flat space).
         var errorCodes = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -67,7 +67,7 @@ internal sealed class ZigFrontend : IFrontend
             try
             {
                 var parser = Zig.BuildParser(Zig.IdentityVisitor.Instance);
-                using var lexer = BytesLexer.FromString(source, lexerTable);
+                using var lexer = lexerTable.FromString(source);
                 using var tokens = new SyncLATokenIterator(lexer);
                 root = parser.ParseInput(tokens, debugger: null, trimReductions: true);
             }
