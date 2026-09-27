@@ -13,7 +13,7 @@ public static unsafe partial class ValkeyHost
     {
         var state = For(core);
         if (state.IoWorkersStopped || !state.ServerEntered) return;
-        if (core.Globals.server.io_threads_num > 1 && core.Globals.io_threads_initialized != 0)
+        if (core.Globals.server.io_threads_num > 1 && core.valkeyManagedIoThreadsInitialized() != 0)
         {
             // Shutdown has ended command execution. Upstream cancellation cleanup
             // flushes each worker's response backlog before joining; keep consuming
@@ -29,8 +29,7 @@ public static unsafe partial class ValkeyHost
                     void** responses = stackalloc void*[64];
                     while (Volatile.Read(ref stopping) == 0)
                     {
-                        if (core.mpscDequeueBatch((ValkeyCore.mpscQueue*)
-                            System.Runtime.CompilerServices.Unsafe.AsPointer(ref core.io_shared_outbox), responses, 64) == 0)
+                        if (core.mpscDequeueBatch((ValkeyCore.mpscQueue*)core.valkeyManagedIoSharedOutbox(), responses, 64) == 0)
                             Thread.Yield();
                     }
                 }

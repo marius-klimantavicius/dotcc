@@ -58,8 +58,8 @@ public sealed class EmbedTests
     }
 
     // A `static const` char array gives a deterministic backing-store emit
-    // (block-auto arrays differ); const → the zero-copy `Libc.L(new byte[]{ … })`
-    // RVA form. The fixture covers runtime.
+    // (block-auto arrays differ); const arrays retain distinct rooted storage.
+    // The fixture covers runtime.
     private const string FillTemplate = """
         int main(void) {
             static const unsigned char d[] = {
@@ -79,9 +79,8 @@ public sealed class EmbedTests
     {
         var (emit, _) = Fill(new byte[] { 0xDE, 0xAD, 0xBE, 0xEF });
         // One backing byte[] carrying exactly the file's bytes — not exploded.
-        // The array is `const`, so it lowers to the zero-copy RVA path (Libc.L
-        // over PE .rodata), not the writable GlobalArrayFrom copy.
-        emit.ShouldContain("Libc.L(new byte[]{ 222, 173, 190, 239 }");
+        // Constness does not permit merging distinct declared array objects.
+        emit.ShouldContain("Libc.GlobalArrayFrom<byte>(new byte[]{ 222, 173, 190, 239 }");
     }
 
     // ---- limit(N): embed only the first N bytes ----------------------------

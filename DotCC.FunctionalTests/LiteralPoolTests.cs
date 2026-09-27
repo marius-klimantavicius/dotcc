@@ -9,6 +9,13 @@ using Xunit;
 
 namespace DotCC.FunctionalTests;
 
+[CollectionDefinition("Collectible literal storage", DisableParallelization = true)]
+public sealed class CollectibleLiteralStorageCollection;
+
+// Other compilation tests enumerate AppDomain.GetAssemblies() for references.
+// Their temporary arrays can retain this test's collectible assembly while we
+// assert that it has unloaded. Keep that process-wide lifetime check isolated.
+[Collection("Collectible literal storage")]
 public sealed class LiteralPoolTests
 {
     private static SyntaxTree ParseSource(string source, string path = "", CancellationToken cancellationToken = default) =>
@@ -71,8 +78,8 @@ public sealed class LiteralPoolTests
                 else
                 {
                     emitted.ShouldContain("Libc.L(\"one\\0\"u8)");
-                    emitted.ShouldContain("Libc.L<int>(new int[]{ 7, 42 })");
-                    emitted.ShouldContain("Libc.L(new byte[]{ 255, 128 })");
+                    emitted.ShouldContain("Libc.GlobalArrayFrom<int>(new int[]{ 7, 42 })");
+                    emitted.ShouldContain("Libc.GlobalArrayFrom<byte>(new byte[]{ 255, 128 })");
                     emitted.ShouldNotContain("using DotCcLiterals =");
                     emitted.ShouldNotContain("class DotCcProgramLiterals");
                     emitted.ShouldNotContain("/*\"one\"*/");
@@ -307,7 +314,6 @@ public sealed class LiteralPoolTests
             {
                 GC.Collect(2, GCCollectionMode.Forced, true, true);
                 GC.WaitForPendingFinalizers();
-                // Parallel.For's completed workers can briefly retain the first-access delegate.
                 if (weak.Context.IsAlive || weak.Storage.IsAlive) Thread.Sleep(25);
             }
             weak.Context.IsAlive.ShouldBeFalse("the pool must not prevent assembly unloading");
@@ -323,7 +329,21 @@ public sealed class LiteralPoolTests
         var assembly = context.LoadFromStream(new MemoryStream(image));
         var consumer = assembly.GetType("LiteralConsumer")!;
         var first = (Action)consumer.GetMethod("FirstAccess")!.CreateDelegate(typeof(Action));
-        Parallel.For(0, 16, _ => first());
+        // Join dedicated workers before testing unload. Thread-pool workers can
+        // retain a completed Parallel.For delegate on their stacks, which roots
+        // the collectible assembly independently of its literal storage.
+        using var start = new ManualResetEventSlim(false);
+        Exception? failure = null;
+        var workers = Enumerable.Range(0, 16).Select(_ => new Thread(() =>
+        {
+            start.Wait();
+            try { first(); }
+            catch (Exception error) { Interlocked.CompareExchange(ref failure, error, null); }
+        }) { IsBackground = true }).ToArray();
+        foreach (var worker in workers) worker.Start();
+        start.Set();
+        foreach (var worker in workers) worker.Join();
+        failure.ShouldBeNull();
         consumer.GetMethod("Check")!.Invoke(null, null).ShouldBe(expected);
         var pool = assembly.GetType(nested ? "PoolTests.LiteralLibrary+LiteralLibraryLiterals" : "PoolTests.LiteralLibraryLiterals")!;
         var storage = (byte[])pool.GetField("Storage", BindingFlags.NonPublic | BindingFlags.Static)!.GetValue(null)!;

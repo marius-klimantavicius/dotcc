@@ -259,7 +259,7 @@ public sealed class WcharTests
     }
 
     [Fact]
-    public void const_global_wchar_array_takes_the_rva_path()
+    public void const_global_wchar_array_keeps_declared_object_storage()
     {
         var src = WriteTemp("""
             const wchar_t g[] = L"hi";
@@ -268,7 +268,7 @@ public sealed class WcharTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.L<char>(new char[]{ unchecked((char)(104)), unchecked((char)(105)), unchecked((char)(0)) })");
+            emitted.ShouldContain("Libc.GlobalArrayFrom<char>(new char[]{ unchecked((char)(104)), unchecked((char)(105)), unchecked((char)(0)) })");
         }
         finally { File.Delete(src); }
     }

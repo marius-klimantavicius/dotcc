@@ -23,10 +23,25 @@ public sealed class GnuIntrinsicTests
     [InlineData("__builtin_clz()", "requires 1 arguments")]
     [InlineData("__builtin_ctzl(1, 2)", "requires 1 arguments")]
     [InlineData("__builtin_popcountll((void*)0)", "arithmetic argument")]
+    [InlineData("__builtin_expect(1)", "requires 2 arguments")]
+    [InlineData("__builtin_expect((void*)0, 1)", "arithmetic arguments")]
+    [InlineData("__builtin_alloca()", "requires 1 arguments")]
+    [InlineData("__builtin_alloca(1.5)", "integer size")]
+    [InlineData("alloca((void*)0)", "integer size")]
     public void Invalid_builtin_arguments_fail_during_binding(string expression, string diagnostic)
     {
         var exception = Should.Throw<CompileException>(() => Emit("int main(void) { " + expression + "; return 0; }"));
         exception.Message.ShouldContain(diagnostic);
+    }
+
+    [Theory]
+    [InlineData("int condition = 0; if (condition && __builtin_alloca(8)) return 1;")]
+    [InlineData("void *p = 0 ? __builtin_alloca(8) : (void*)0;")]
+    [InlineData("while (__builtin_alloca(8)) break;")]
+    public void Alloca_rejects_contexts_that_cannot_preserve_conditional_execution(string statement)
+    {
+        var exception = Should.Throw<CompileException>(() => Emit("int main(void) { " + statement + " return 0; }"));
+        exception.Message.ShouldContain("alloca requires a hoistable function statement context");
     }
 
     [Fact]

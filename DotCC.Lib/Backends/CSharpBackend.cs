@@ -262,6 +262,7 @@ internal sealed partial class CSharpBackend
         var wrappers = new StringBuilder();   // [InlineArray] wrapper types for non-primitive array members
         var sb = new StringBuilder();
         var flexibleField = t.Fields.FirstOrDefault(field => field.Type.Unqualified is CType.Array { Count: 0 });
+        var hasZeroSizedMember = t.Fields.Any(field => IsZeroSizedAggregate(field.Type));
         DotCC.Layout.LayoutInfo? headerLayout = null;
         // Explicit field offsets/extent preserve requested C alignment and the
         // padding it introduces in containing aggregates. Storage alignment is
@@ -272,7 +273,7 @@ internal sealed partial class CSharpBackend
         if (flexibleField.Type is not null)
         {
             headerLayout = _offsetModel.Aggregate(t.Name);
-            if (headerLayout.Alignment > 128 || headerLayout.Size < headerLayout.Alignment)
+            if (headerLayout.Alignment > 128 || (headerLayout.Size != 0 && headerLayout.Size < headerLayout.Alignment))
                 throw new IrUnsupportedException("flexible-array header storage alignment/size for " + t.Name);
             // Register through the same path as explicit C offsetof expressions.
             // Both StructLayout constants and the pointer getter use emitted constants.
@@ -281,9 +282,9 @@ internal sealed partial class CSharpBackend
             sb.Append("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
                 .Append(layoutClass).Append(".Size, Pack = ").Append(layoutClass).Append(".Alignment)]\n");
         }
-        else if (bitFieldLayout is not null || alignedLayout is not null)
+        else if (bitFieldLayout is not null || alignedLayout is not null || hasZeroSizedMember)
         {
-            headerLayout = bitFieldLayout ?? alignedLayout!;
+            headerLayout = bitFieldLayout ?? alignedLayout ?? _offsetModel.Aggregate(t.Name);
             sb.Append("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
                 .Append(headerLayout.Size).Append(", Pack = ").Append(headerLayout.Alignment).Append(")]\n");
         }
@@ -302,7 +303,7 @@ internal sealed partial class CSharpBackend
             sb.Append("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]\n");
         }
         sb.Append(_publicTypes ? "public unsafe partial struct " : "unsafe partial struct ").Append(t.Name).Append("\n{\n");
-        if (headerLayout is not null)
+        if (headerLayout is { Size: > 0 })
         {
             // Preserve the model's alignment even if only unnamed bitfields or
             // a flexible tail impose storage/alignment requirements. The anchor
@@ -341,6 +342,18 @@ internal sealed partial class CSharpBackend
                 var offset = Expr(new OffsetOf(new CType.Named(t.Name), new[] { f.Name }, f.Type) { Type = CType.SizeT });
                 sb.Append("    public ").Append(Cs(f.Type)).Append(' ').Append(DotCC.EmitHelpers.Id(f.Name)).Append("\n    {\n        get\n        {\n            fixed (")
                     .Append(t.Name).Append("* __self = &this)\n            {\n                return (").Append(Cs(f.Type)).Append(")((byte*)__self + ")
+                    .Append(offset).Append(");\n            }\n        }\n    }\n");
+                fi++;
+                continue;
+            }
+            if (IsZeroSizedAggregate(f.Type))
+            {
+                // The CLR gives every value type at least one storage byte.
+                // GNU zero-array unions instead overlay the following C byte:
+                // expose that address without introducing a backing field.
+                var offset = Expr(new OffsetOf(new CType.Named(t.Name), new[] { f.Name }, f.Type) { Type = CType.SizeT });
+                sb.Append("    public ref ").Append(Cs(f.Type)).Append(' ').Append(DotCC.EmitHelpers.Id(f.Name)).Append("\n    {\n        get\n        {\n            fixed (")
+                    .Append(t.Name).Append("* __self = &this)\n            {\n                return ref *(").Append(Cs(f.Type)).Append("*)((byte*)__self + ")
                     .Append(offset).Append(");\n            }\n        }\n    }\n");
                 fi++;
                 continue;
@@ -610,11 +623,12 @@ internal sealed partial class CSharpBackend
     };
 
     /// <summary>Whether a bit-field's declared type is signed (drives sign-extension
-    /// on read). An enum bit-field follows its underlying type.</summary>
+    /// on read). Non-fixed C enums carry their inferred bit-field signedness;
+    /// explicitly fixed enum types follow their underlying type.</summary>
     private static bool IsSignedBitField(CType t) => t.Unqualified switch
     {
         CType.Prim p => p.Signed,
-        CType.Enum e => IsSignedBitField(e.Underlying),
+        CType.Enum e => e.BitFieldSigned ?? IsSignedBitField(e.Underlying),
         _ => false,
     };
 
@@ -1521,6 +1535,7 @@ internal sealed partial class CSharpBackend
     {
         Paren p => BareLValue(p.Inner),
         VarRef v => GlobalName(v.Sym),
+        Member m when IsZeroSizedAggregate(m.Type) => $"*{ZeroSizedMemberAddress(m)}",
         Member m => $"{Sub(m.Base, PPostfix)}{(m.Arrow ? "->" : ".")}{DotCC.EmitHelpers.Id(m.Field)}",
         Index ix => $"{Sub(ix.Base, PPostfix)}[{Expr(DecayEnum(ix.Idx))}]",
         Unary { Op: UnOp.Deref } u => $"*{Sub(u.Operand, PUnary)}",
@@ -2194,6 +2209,7 @@ internal sealed partial class CSharpBackend
             }
             case Member m:
             {
+                if (IsZeroSizedAggregate(m.Type)) return ($"*{ZeroSizedMemberAddress(m)}", PUnary);
                 string dot;
                 if (!m.Arrow && m.Type.Unqualified is CType.Array && !m.Base.IsLValue)
                 {
@@ -2495,6 +2511,8 @@ internal sealed partial class CSharpBackend
             // global pointer must not become Unsafe.AsPointer<T*>'s argument.
             // Keep the IR pointer-to-array type for element-stride semantics.
             case UnOp.AddrOf when u.Operand.Type.Unqualified is CType.Array: return Render(u.Operand);
+            case UnOp.AddrOf when u.Operand is Member zero && IsZeroSizedAggregate(zero.Type):
+                return (ZeroSizedMemberAddress(zero), PPrimary);
             // &global — a file-scope global / static local lowers to a field of the
             // fixed-address globals singleton (`&field` is still CS0212). Take its
             // address via Unsafe.AsPointer: the containing unmanaged value is in
@@ -2773,12 +2791,8 @@ internal sealed partial class CSharpBackend
             return $"({elemCs}*)Libc.GlobalArrayFrom<nint>(new nint[]{{ {ptr} }})";
         }
         var vals = string.Join(", ", pa.Elems.Select(e => Coerced(e, pa.Element)));
-        // Keep storage selection relocatable until the final --literal-pool choice.
-        if (pa.Element.IsConst && pa.Element.Unqualified is CType.Prim && pa.Elems.All(e => e is LitInt or LitFloat))
-            return elemCs == "byte"
-                ? $"DotCcLiterals.ConstBytes(new byte[]{{ {vals} }})"
-                : $"DotCcLiterals.ConstArray<{elemCs}>(new {elemCs}[]{{ {vals} }})";
-        // Other arrays use rooted storage, one allocation per C object.
+        // Each declared array has its own address, including const arrays with
+        // identical contents. Only string literals may use content interning.
         return $"Libc.GlobalArrayFrom<{elemCs}>(new {elemCs}[]{{ {vals} }})";
     }
 
@@ -2993,10 +3007,10 @@ internal sealed partial class CSharpBackend
     // trailing memory_order args are ignored (every order maps to a full barrier —
     // the safe over-approximation, same as volatile).
 
-    /// <summary>C# types Atomic.* covers (4-/8-byte unmanaged INumber scalars).</summary>
+    /// <summary>C# numeric types Atomic.* covers with same-width Interlocked access.</summary>
     private static readonly HashSet<string> _atomicEligible = new(StringComparer.Ordinal)
     {
-        "int", "uint", "long", "ulong", "nint", "nuint", "float", "double",
+        "sbyte", "byte", "short", "ushort", "int", "uint", "long", "ulong", "nint", "nuint", "float", "double",
     };
 
     /// <summary>Lower a recognised <c>atomic_*</c> generic function to its
@@ -3243,7 +3257,20 @@ internal sealed partial class CSharpBackend
     /// used; a scalar/pointer likewise.</summary>
     private string SizeofText(CType t) => t.Unqualified is CType.Array { Count: { } n } a
         ? $"({n} * {SizeofText(a.Element)})"
+        : IsZeroSizedAggregate(t) ? "0"
         : $"sizeof({Cs(t)})";
+
+    private bool IsZeroSizedAggregate(CType type) => type.Unqualified is CType.Named named
+        && _offsetDocument.Aggregates.ContainsKey(named.Name) && _offsetModel.Aggregate(named.Name).Size == 0;
+
+    private string ZeroSizedMemberAddress(Member member)
+    {
+        var aggregate = member.Arrow ? ((CType.Pointer)member.Base.Type.Unqualified).Pointee : member.Base.Type;
+        var offset = Expr(new OffsetOf(aggregate, new[] { member.Field }, member.Type) { Type = CType.SizeT });
+        var address = member.Arrow ? Expr(member.Base)
+            : Expr(new Unary(UnOp.AddrOf, member.Base) { Type = new CType.Pointer(member.Base.Type) });
+        return $"(({Cs(member.Type)}*)((byte*)({address}) + {offset}))";
+    }
 
     /// <summary>The number of flat (innermost-scalar) elements an array type holds —
     /// the stride, in elements, of one row when a multi-dim array is flattened.</summary>

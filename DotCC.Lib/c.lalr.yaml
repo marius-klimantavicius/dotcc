@@ -509,6 +509,7 @@ productions:
       # Storage class applies to every declarator shape, including callbacks
       # returned by functions and parenthesized function names.
       - { lhs: FnSig, rhs: ['static', FnSig], action: fnSigStaticDeclarator }
+      - { lhs: FnSig, rhs: [GnuFormatAttr, FnSig], action: fnSigAttributed }
       # Function specifiers may precede the storage class as well as follow it.
       - { lhs: FnSig, rhs: ['_Noreturn', 'static', FnSig], action: fnSigNoreturnStatic }
       - { lhs: FnSig, rhs: ['inline', 'static', FnSig], action: fnSigInlineStatic }
@@ -781,6 +782,7 @@ productions:
       # so we drop it entirely and emit a pointer parameter.
       - { lhs: Param, rhs: [Type, ID, '[', ']'],     action: paramArrayUnsized }
       - { lhs: Param, rhs: [Type, ID, '[', E, ']'],  action: paramArraySized }
+      - { lhs: Param, rhs: [Type, ID, '[', 'static', E, ']'], action: paramArrayMinimum }
       # Only the outermost bound is discarded; inner dimensions determine
       # pointer-to-row stride, indexing and sizeof(*parameter).
       - { lhs: Param, rhs: [Type, ID, '[', E, ']', ArrDims], action: paramArrayRowsSized }
@@ -839,6 +841,11 @@ productions:
     rules:
       - { lhs: Type, rhs: [Type, '*'],   action: typePtr }
       - { lhs: Type, rhs: [Type, GnuFormatAttr], action: typeGnuAttributes }
+      # GNU attributes can interrupt a declaration-specifier run, after it
+      # has already reduced to Type. Resume it without losing inline/qualifier
+      # markers; semantic validation still rejects incompatible base types.
+      - { lhs: Type, rhs: [Type, TYPE_NAME], action: typeAttributedSpecifierName }
+      - { lhs: Type, rhs: [Type, TypeSpecList], action: typeAttributedSpecifierRun }
       # Pointer qualifiers after `*` — `int * const p`, `int *restrict p`,
       # `int * volatile p`. No C# equivalent (no readonly locals, no aliasing
       # model), so they parse and are DROPPED: the pointer type is unchanged.
@@ -1184,6 +1191,7 @@ productions:
       - { lhs: Member, rhs: [TYPE_NAME, ';'], action: anonymousTypedefMember }
       - { lhs: Member, rhs: ['struct', ID, ';'], action: anonymousStructTagMember }
       - { lhs: Member, rhs: ['union', ID, ';'], action: anonymousUnionTagMember }
+      - { lhs: Member, rhs: [GnuFormatAttr, Member], action: structAttributedMember }
       - { lhs: Member, rhs: [Type, DeclItemList, ';'], action: structMemberList }
       # Bit-field declarators share their leading type across commas, including
       # anonymous padding. Widths remain in the IR for packing and accessors.
@@ -1467,6 +1475,7 @@ productions:
       # *c[5];`). Brace initializers retain their typed array element/zero-fill
       # lowering in a mixed local declaration list.
       - { lhs: DeclItemTail, rhs: [ID, ArrDims],       action: declItemTailArr }
+      - { lhs: DeclItemTail, rhs: [ID, '[', ']'], action: declItemTailFlexArr }
       - { lhs: DeclItemTail, rhs: [ID, ArrDims, '=', '{', InitList, '}'], action: declItemTailArrInit }
       - { lhs: DeclItemTail, rhs: [ID, '=', '{', InitList, '}'], action: declItemTailBraceInit }
       - { lhs: DeclItemTail, rhs: [ID, '=', '{', MemberInitList, '}'], action: declItemTailDesignatedInit }

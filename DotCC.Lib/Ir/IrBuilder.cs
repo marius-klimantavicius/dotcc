@@ -277,6 +277,7 @@ internal sealed partial class IrBuilder
                     case "noreturn": _pendingAttrNoreturn = true; break;
                     case "weak": _pendingAttrWeak = true; break;
                     case "unused": break; // diagnostic-only annotation
+                    case "warn_unused_result": _pendingAttrNodiscard = ""; break;
                     case "always_inline": break; // optimization hint; no observable C behavior
                     case "noinline": case "no_instrument_function": break;
                     case "malloc": break; // allocation/aliasing optimization hint
@@ -315,6 +316,16 @@ internal sealed partial class IrBuilder
 
     private void BuildTopLevel(Item fn)
     {
+        _declaringInternalGlobal = fn.Content is C.GlobalStaticDeclList
+            or C.GlobalAttributedStaticDeclList or C.GlobalAttributedStaticArr or C.GlobalAttributedStaticArrInit
+            or C.GlobalStaticArr or C.GlobalStaticArrInit or C.GlobalStaticArrInitImplicit or C.GlobalStaticArrInitOuterImplicit
+            or C.GlobalStaticFnPtrScalarInit or C.GlobalStaticFnPtrArray or C.GlobalStaticFnPtrArrayInit
+            or C.GlobalStaticCharArrStr or C.GlobalStaticCharArrStrSized
+            or C.GlobalStaticU16CharArrStr or C.GlobalStaticU16CharArrStrSized
+            or C.GlobalStaticWCharArrStr or C.GlobalStaticWCharArrStrSized
+            or C.GlobalStaticU32CharArrStr or C.GlobalStaticU32CharArrStrSized
+            or C.GlobalStaticU8CharArrStr or C.GlobalStaticU8CharArrStrSized
+            or C.GlobalStaticStructInit or C.GlobalStaticStructDesignated;
         switch (fn.Content)
         {
             // C23 `[[attr]]` prepending a file-scope declaration — gate C23,
@@ -335,6 +346,7 @@ internal sealed partial class IrBuilder
             {
                 var noreturn = _pendingAttrNoreturn;
                 var weak = _pendingAttrWeak;
+                var nodiscard = _pendingAttrNodiscard;
                 var weakApplications = _weakFunctionAttributeApplications;
                 ValidateGnuFormatAttribute(a.Arg0);
                 var requiresWeakFunction = _pendingAttrWeak;
@@ -343,16 +355,19 @@ internal sealed partial class IrBuilder
                     throw new IrUnsupportedException("GNU weak attribute on a non-function declaration");
                 _pendingAttrNoreturn = noreturn;
                 _pendingAttrWeak = weak;
+                _pendingAttrNodiscard = nodiscard;
                 break;
             }
             case C.GnuFormatProto a:
             {
                 var noreturn = _pendingAttrNoreturn;
                 var weak = _pendingAttrWeak;
+                var nodiscard = _pendingAttrNodiscard;
                 ValidateGnuFormatAttribute(a.Arg1);
                 RegisterProto(a.Arg0);
                 _pendingAttrNoreturn = noreturn;
                 _pendingAttrWeak = weak;
+                _pendingAttrNodiscard = nodiscard;
                 break;
             }
             case C.EmptyDeclaration: break;
@@ -390,7 +405,7 @@ internal sealed partial class IrBuilder
                 or C.GlobalStaticU32CharArrStr or C.GlobalStaticU32CharArrStrSized
                 or C.GlobalU8CharArrStr or C.GlobalU8CharArrStrSized
                 or C.GlobalStaticU8CharArrStr or C.GlobalStaticU8CharArrStrSized
-                or C.GlobalStaticStructInit when AlreadySeenTopLevel(fn):
+                or C.GlobalStructInit or C.GlobalStaticStructInit when AlreadySeenScalarGlobalInAnotherUnit(fn):
                 break;
             case C.GlobalDeclList g: BuildGlobalDecls(g.Arg0, g.Arg1, Storage.Static); break;
             case C.GlobalStaticDeclList g: BuildGlobalDecls(g.Arg1, g.Arg2, Storage.Static, isStatic: true); break;
@@ -602,6 +617,7 @@ internal sealed partial class IrBuilder
     // AttrFn case), consumed by the wrapped function declaration and cleared on unwind.
     private bool _sawNoreturnSpec;
     private bool _sawInlineSpec;
+    private string? _sawNodiscardSpec;
     // TLS specifier on a file-scope or block-static declaration. Automatic
     // block declarations still reject TLS without an explicit storage class.
     private bool _sawThreadLocalSpec;
@@ -790,7 +806,7 @@ internal sealed partial class IrBuilder
         RememberWeakFunctionDeclaration(sym.Name, sym.Storage == Storage.Static);
         if (_sawInlineSpec) { sym.IsInline = true; }
         if (_pendingAttrDeprecated is { } dep && sym.Deprecated is null) { sym.Deprecated = dep; }
-        if (_pendingAttrNodiscard is { } nd && sym.Nodiscard is null) { sym.Nodiscard = nd; }
+        if ((_pendingAttrNodiscard ?? _sawNodiscardSpec) is { } nd && sym.Nodiscard is null) { sym.Nodiscard = nd; }
     }
 
     /// <summary>Warn (gcc <c>-Wunused-result</c>, on by default — the attribute's
@@ -817,6 +833,7 @@ internal sealed partial class IrBuilder
         _sawNoreturnSpec = false;
         _sawInlineSpec = false;
         _sawWeakSpec = false;
+        _sawNodiscardSpec = null;
         var sig = ExtractFnSig(fnSig);
         // The reduction's position is its leftmost leaf token (LALR.CC propagates
         // children[0].Position up), and the whole declaration lives in one file —
@@ -875,6 +892,7 @@ internal sealed partial class IrBuilder
         _sawNoreturnSpec = false;
         _sawInlineSpec = false;
         _sawWeakSpec = false;
+        _sawNodiscardSpec = null;
         var sig = ExtractFnSig(fnSig);
         if (_staticFunctionSymbols.ContainsKey((FunctionUnitIdentity, sig.Name))) sig = sig with { IsStatic = true };
         RememberWeakFunctionDeclaration(sig.Name, sig.IsStatic);
@@ -963,6 +981,7 @@ internal sealed partial class IrBuilder
         // A function's linkage annotation does not apply to declarations in its body.
         _pendingAttrWeak = false;
         _sawWeakSpec = false;
+        _sawNodiscardSpec = null;
         BindFunctionOverride(funcSym, sig, fnSig);
         if (_functionReplacements.ContainsKey(funcSym))
         {
@@ -1063,6 +1082,7 @@ internal sealed partial class IrBuilder
         C.FnSigNoArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false, FunctionMacroOrigin.Contains(n.Arg1)),
         C.FnSigVoidArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false, FunctionMacroOrigin.Contains(n.Arg1)),
         C.FnSigStaticDeclarator n => ExtractFnSig(n.Arg1) with { IsStatic = true },
+        C.FnSigAttributed n => ExtractAttributedFunction(n.Arg0, n.Arg1),
         C.FnSigNoreturnStatic n => ExtractSpecifierBeforeStatic(n.Arg2, noreturn: true),
         C.FnSigInlineStatic n => ExtractSpecifierBeforeStatic(n.Arg2, noreturn: false),
         // Parenthesized declarator name `T (name)(args)` — identical to
@@ -1082,12 +1102,29 @@ internal sealed partial class IrBuilder
         _ => throw new IrUnsupportedException(TypeName(it.Content)),
     };
 
+    private FnSig ExtractAttributedFunction(Item attributes, Item signature)
+    {
+        ValidateGnuSignatureAttributes(attributes);
+        return ExtractFnSig(signature);
+    }
+
     private FnSig ExtractSpecifierBeforeStatic(Item signature, bool noreturn)
     {
         var result = ExtractFnSig(signature) with { IsStatic = true };
         if (noreturn) _sawNoreturnSpec = true;
         else _sawInlineSpec = true;
         return result;
+    }
+
+    private CType MinimumArrayParameter(Item type, Item minimum, Item source)
+    {
+        Gate(1999, "static array parameter bound", source);
+        // Static bounds are a caller contract, not additional callee storage.
+        // Side-effecting/VLA bounds require entry-time evaluation, which this
+        // pointer adjustment does not implement; do not silently erase them.
+        if (ConstEval(BuildExpr(minimum)) is not { } count || count <= 0)
+            throw new IrUnsupportedException("static array parameter requires a positive constant bound");
+        return new CType.Pointer(ResolveType(type));
     }
 
     private List<ParamInfo> BuildParams(Item paramList, out bool variadic)
@@ -1107,6 +1144,7 @@ internal sealed partial class IrBuilder
                 case C.Param p: acc.Add(new(DecayParam(ResolveType(p.Arg0)), Tok(p.Arg1))); break;
                 case C.ParamUnnamed p: acc.Add(new(DecayParam(ResolveType(p.Arg0)), "_p" + unnamed++)); break;
                 case C.ParamArrayUnsized p: acc.Add(new(new CType.Pointer(ResolveType(p.Arg0)), Tok(p.Arg1))); break;
+                case C.ParamArrayMinimum p: acc.Add(new(MinimumArrayParameter(p.Arg0, p.Arg4, it), Tok(p.Arg1))); break;
                 case C.ParamArraySized p: acc.Add(new(new CType.Pointer(ResolveType(p.Arg0)), Tok(p.Arg1))); break;
                 case C.ParamArrayRowsSized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg5), Tok(p.Arg1))); break;
                 case C.ParamArrayRowsUnsized p: acc.Add(new(ArrayRowParameter(p.Arg0, p.Arg4), Tok(p.Arg1))); break;
@@ -1234,6 +1272,8 @@ internal sealed partial class IrBuilder
         }
         if (enumType is not null)
         {
+            if (baseType is null)
+                enumType = enumType with { BitFieldSigned = members.Any(m => m.Value < 0) };
             if (tag is not null) { _enumTypes[tag] = enumType; }
             if (Enums.All(e => e.Name != enumName)) { Enums.Add(new EnumTypeDef(enumName!, underlying, members)); }
         }
@@ -1388,8 +1428,17 @@ internal sealed partial class IrBuilder
                 case C.AnonymousTypedefMember am: AddExistingAnonymousMember(ResolveTypeName(Tok(am.Arg0)), owner, fields); break;
                 case C.AnonymousStructTagMember am: AddExistingAnonymousMember(ReferenceAggregate(am.Arg1, false), owner, fields); break;
                 case C.AnonymousUnionTagMember am: AddExistingAnonymousMember(ReferenceAggregate(am.Arg1, true), owner, fields); break;
+                case C.StructAttributedMember sm:
+                {
+                    var alignment = GnuObjectAlignment(sm.Arg0);
+                    var start = fields.Count;
+                    Member(sm.Arg1);
+                    for (var index = start; index < fields.Count; index++)
+                        fields[index] = fields[index] with { Alignment = Math.Max(fields[index].Alignment, alignment) };
+                    break;
+                }
                 case C.StructMemberList sm:
-                    WalkDeclList(sm.Arg0, sm.Arg1, (name, _, type) => fields.Add(new StructField(name, type, Alignment: DeclarationAlignment(sm.Arg0, type))));
+                    WalkDeclList(sm.Arg0, sm.Arg1, (name, _, type) => fields.Add(new StructField(name, type, IsFlexibleArray: type is CType.Array { Count: 0 }, Alignment: DeclarationAlignment(sm.Arg0, type))));
                     break;
                 // C11 anonymous struct/union member — its fields are promoted into
                 // the parent. Held in a generated nested aggregate + a hidden field;
@@ -1677,6 +1726,8 @@ internal sealed partial class IrBuilder
         // `inline` (→ [MethodImpl(AggressiveInlining)]) and `_Noreturn` (gated C11,
         // → [DoesNotReturn]). The TYPE_NAME is the whole base type.
         C.TypeSpecThenName t => SpecsThenName(t, it),
+        C.TypeAttributedSpecifierName t => AttributedSpecifierName(t.Arg0, t.Arg1, it),
+        C.TypeAttributedSpecifierRun t => AttributedSpecifierRun(t.Arg0, t.Arg1, it),
         C.TypeSpecThenStruct t => SpecsThenType(t.Arg0, ReferenceAggregate(t.Arg2, false), it),
         C.TypeSpecThenUnion t => SpecsThenType(t.Arg0, ReferenceAggregate(t.Arg2, true), it),
         C.TypeSpecThenEnum t => SpecsThenType(t.Arg0, _enumTypes.TryGetValue(Tok(t.Arg2), out var type) ? type : CType.Int, it),
@@ -1703,17 +1754,77 @@ internal sealed partial class IrBuilder
     private readonly Dictionary<object, CType> _anonAggregates = new(ReferenceEqualityComparer.Instance);
     private int _anonAggrSeq;
 
+    private List<string> AttributedDeclarationSpecs(Item inner)
+    {
+        switch (inner.Content)
+        {
+            case C.TypeGnuAttributes attributes:
+                ValidateGnuSignatureAttributes(attributes.Arg1);
+                return AttributedDeclarationSpecs(attributes.Arg0);
+            case C.TypeFromSpec run:
+                return CollectSpecs(run.Arg0);
+            case C.TypeConstPre q: return QualifiedSpecs(q.Arg1, "const");
+            case C.TypeConstPost q: return QualifiedSpecs(q.Arg0, "const");
+            case C.TypeVolatile q: return QualifiedSpecs(q.Arg1, "volatile");
+            case C.TypeVolatilePost q: return QualifiedSpecs(q.Arg0, "volatile");
+            case C.TypeAtomic q: return QualifiedSpecs(q.Arg1, "_Atomic");
+            case C.TypeAlignasExpr q: Gate(2011, "_Alignas", inner); return AttributedDeclarationSpecs(q.Arg4);
+            case C.TypeAlignasType q: Gate(2011, "_Alignas", inner); return AttributedDeclarationSpecs(q.Arg4);
+            case C.TypeAttributedSpecifierRun continuation:
+                var specs = AttributedDeclarationSpecs(continuation.Arg0);
+                specs.AddRange(CollectSpecs(continuation.Arg1));
+                return specs;
+            default:
+                throw new IrUnsupportedException("multiple base types in declaration");
+        }
+    }
+
+    private List<string> QualifiedSpecs(Item inner, string qualifier)
+    {
+        var specs = AttributedDeclarationSpecs(inner);
+        specs.Add(qualifier);
+        return specs;
+    }
+
+    private CType AttributedSpecifierRun(Item inner, Item following, Item source)
+    {
+        var specs = AttributedDeclarationSpecs(inner);
+        specs.AddRange(CollectSpecs(following));
+        var type = ResolveSpecs(specs, SrcPos.From(source));
+        return specs.Contains("_Atomic") ? AtomicType(type, source) : type;
+    }
+
+    private CType AttributedSpecifierName(Item inner, Item name, Item source)
+    {
+        var specs = AttributedDeclarationSpecs(inner);
+        if (specs.Any(spec => spec is not ("inline" or "_Noreturn" or "_Thread_local" or "const" or "volatile")))
+            throw new IrUnsupportedException("multiple base types in declaration");
+        RecordDeclSpecs(specs, SrcPos.From(source));
+        var type = ResolveTypeName(Tok(name));
+        if (specs.Contains("const")) type = type.WithQuals(TypeQual.Const);
+        if (specs.Contains("volatile")) type = type.WithQuals(TypeQual.Volatile);
+        return type;
+    }
+
     private CType ResolveGnuAttributedType(Item inner, Item attributes)
     {
         var type = ResolveType(inner);
+        ValidateGnuSignatureAttributes(attributes);
+        return type;
+    }
+
+    private void ValidateGnuSignatureAttributes(Item attributes)
+    {
         var pending = _pendingAttrNoreturn;
         var weak = _pendingAttrWeak;
+        var nodiscard = _pendingAttrNodiscard;
         ValidateGnuFormatAttribute(attributes);
         _sawNoreturnSpec |= _pendingAttrNoreturn;
-        _pendingAttrNoreturn = pending;
         _sawWeakSpec |= _pendingAttrWeak;
+        _sawNodiscardSpec ??= _pendingAttrNodiscard;
+        _pendingAttrNoreturn = pending;
         _pendingAttrWeak = weak;
-        return type;
+        _pendingAttrNodiscard = nodiscard;
     }
 
     private CType ResolveAnonAggregate(Item typeItem, Item memberListItem, bool isUnion)
@@ -1949,6 +2060,8 @@ internal sealed partial class IrBuilder
         C.TypeAlignasType a => Math.Max(AlignOfConst(ResolveType(a.Arg2)), RequestedDeclarationAlignment(a.Arg4)),
         C.TypePtr p => RequestedDeclarationAlignment(p.Arg0),
         C.TypeGnuAttributes p => RequestedDeclarationAlignment(p.Arg0),
+        C.TypeAttributedSpecifierRun p => RequestedDeclarationAlignment(p.Arg0),
+        C.TypeAttributedSpecifierName p => RequestedDeclarationAlignment(p.Arg0),
         C.TypePtrQualConst p => RequestedDeclarationAlignment(p.Arg0),
         C.TypePtrQualVolatile p => RequestedDeclarationAlignment(p.Arg0),
         C.TypePtrQualRestrict p => RequestedDeclarationAlignment(p.Arg0),
@@ -2985,6 +3098,10 @@ internal sealed partial class IrBuilder
                 // an array OF the star-wrapped element (`int *a, *c[5];` → c is an
                 // array of int*); the consumer decides the lowering (local →
                 // ArrayDecl/stackalloc, struct member → fixed buffer).
+                case C.DeclItemTailFlexArr a:
+                    Gate(1999, "flexible array member", it);
+                    add(Tok(a.Arg0), null, new CType.Array(tailType, 0));
+                    break;
                 case C.DeclItemTailArr a:
                     add(Tok(a.Arg0), null, MakeArrayType(tailType,
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator tail")));
@@ -3022,7 +3139,7 @@ internal sealed partial class IrBuilder
                 case C.DeclItemGnuAttributesInit di: ValidateGnuObjectAttribute(di.Arg1); add(Tok(di.Arg0), di.Arg3, baseType); break;
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, element); break;
                 case C.DeclItemTailPtr or C.DeclItemTailConstPtr: WalkTail(it, element); break;
-                case C.DeclItemTailArr or C.DeclItemTailArrInit: WalkTail(it, element); break;
+                case C.DeclItemTailFlexArr or C.DeclItemTailArr or C.DeclItemTailArrInit: WalkTail(it, element); break;
                 case C.DeclItemTailBraceInit or C.DeclItemTailDesignatedInit or C.DeclItemTailEmptyInit: WalkTail(it, element); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }

@@ -39,13 +39,14 @@ struct in6_addr {
 #define s6_addr16 __in6_u.__u6_addr16
 #define s6_addr32 __in6_u.__u6_addr32
 
-/* Standard IPv6 constant initializers and objects. These definitions are real
-   immutable module storage in the generated program; the same header across
-   translation units shares the compiler's canonical global definition. */
+/* Standard IPv6 constant initializers and externally linked objects. DotCC
+   coalesces these identical header definitions into one module object. They
+   must not be static: C internal linkage would give each translation unit a
+   different address, unlike the standard library's in6addr_* objects. */
 #define IN6ADDR_ANY_INIT {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}}}
 #define IN6ADDR_LOOPBACK_INIT {{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}}}
-static const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
-static const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
+const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
+const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
 
 struct sockaddr_in6 {
     sa_family_t     sin6_family;

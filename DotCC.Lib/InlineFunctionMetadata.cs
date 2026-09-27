@@ -115,8 +115,9 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
             {
                 // These bodies read equal immutable values. Include the bound
                 // declaration and initializer, not just the source spelling: two
-                // object files may initialize the same name differently.
-                Atom("static-constant-value"); Atom(symbol.TargetName);
+                // object files may initialize the same name differently. Storage
+                // names are TU-qualified, but this proof observes only values.
+                Atom("static-constant-value"); Atom(symbol.Name);
                 Expression(global.Init);
             }
             else Supported = false; // Mutable/identity-sensitive TU storage or unbound references.

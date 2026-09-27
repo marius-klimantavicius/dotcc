@@ -38,6 +38,10 @@ public sealed partial class ManagedLibraryTests
                 }
                 typedef int (*Callback)(int);
                 typedef struct Pair { int x; int y; } Pair;
+                typedef struct RefHeader { int count; } RefHeader;
+                static inline RefHeader *value_header(void *payload) {
+                    return (RefHeader *)((unsigned int *)payload - 1);
+                }
                 struct Hidden;
                 typedef struct Holder { int value; struct Hidden* context; } Holder;
                 static inline int auto_value(Holder* p) { return p->value; }
@@ -71,6 +75,7 @@ public sealed partial class ManagedLibraryTests
                 int first(Pair* p) { return api_sum(p) + variant_caller(); }
                 int first_state(void) { return state(); }
                 int first_mode(void) { return api_mode(0); }
+                RefHeader *first_header(void *payload) { return value_header(payload); }
                 static inline int api_solo(int x) { return x * 3; }
                 Callback solo_saved = api_solo;
                 Callback solo_pointer(void) { return solo_saved; }
@@ -89,6 +94,7 @@ public sealed partial class ManagedLibraryTests
                 int second(Pair* p) { return api_sum(p) + variant_caller(); }
                 int second_state(void) { return state(); }
                 int second_mode(void) { return api_mode(64, 0644u); }
+                RefHeader *second_header(void *payload) { return value_header(payload); }
                 """);
             if (link)
                 paths = paths.Select(p => { var obj = Path.ChangeExtension(p, ".o"); File.WriteAllText(obj, Compiler.EmitObject(p)); return obj; }).ToArray();
@@ -98,6 +104,10 @@ public sealed partial class ManagedLibraryTests
                 ? Compiler.LinkObjectFiles(paths, emit: EmitMode.ManagedLib, className: "Api", namespaceName: "Example", split: split, outputOptions: options)
                 : Compiler.EmitCSharpFiles(paths, emit: EmitMode.ManagedLib, className: "Api", namespaceName: "Example", split: split, outputOptions: options);
             string.Join("\n", files.Values).Contains("DotCcLiterals.Pointer", StringComparison.Ordinal).ShouldBe(literalPool);
+            var generated = string.Join("\n", files.Values);
+            generated.ShouldNotContain("value_header__unit_");
+            System.Text.RegularExpressions.Regex.Matches(generated,
+                @"static unsafe RefHeader\* value_header\(").Count.ShouldBe(1);
             var references = RuntimeReferences();
             var compilation = CSharpCompilation.Create("InlineLibrary" + Guid.NewGuid().ToString("N"),
                 files.Select(f => ParseSource(f.Value, path: f.Key)), references,
@@ -113,6 +123,11 @@ public sealed partial class ManagedLibraryTests
                     public static bool Check() {
                         Pair pair = new Pair { x = 4, y = 3 };
                         Holder holder = new Holder { value = 23 };
+                        RefHeader header = new RefHeader { count = 7 };
+                        void* payload = (byte*)&header + sizeof(RefHeader);
+                        var firstHeader = Api.first_header(payload);
+                        var secondHeader = Api.second_header(payload);
+                        firstHeader->count++;
                         var a = Api.first_pointer();
                         var b = Api.second_pointer();
                         var solo = Api.solo_pointer();
@@ -121,6 +136,7 @@ public sealed partial class ManagedLibraryTests
                             && Api.auto_value(&holder) == 23 && Api.api_sum(&pair) == 15 && Api.first(&pair) == 26 && Api.second(&pair) == 32
                             && Api.api_constant(5) == 17 && Api.api_recursive(5) == 42 && a != b && a(3) == 10 && b(4) == 11
                             && Api.first_mode() == 384 && Api.second_mode() == 420
+                            && firstHeader == &header && secondHeader == &header && secondHeader->count == 8
                             && Api.api_mode(64, 511u) == 511
                             && a == Api.first_pointer() && b == Api.second_pointer()
                             && Api.first_state() == 1 && Api.first_state() == 2 && Api.second_state() == 1

@@ -8,6 +8,21 @@ internal sealed partial class IrBuilder
 {
     private CExpr? TryBuildGnuIntrinsic(string name, List<CExpr> args)
     {
+        if (name is "alloca" or "__builtin_alloca")
+        {
+            RequireCount(1);
+            if (!args[0].Type.IsInteger) throw Bad("requires an integer size");
+            return new Call(name, args, new[] { CType.ULong }) { Type = new CType.Pointer(CType.Void) };
+        }
+        if (name == "__builtin_expect")
+        {
+            RequireCount(2);
+            if (!args[0].Type.IsArithmetic || !args[1].Type.IsArithmetic)
+                throw Bad("requires arithmetic arguments");
+            // GCC's hint has the signature long(long, long). Retain both
+            // evaluations and the LP64 result width; the hint changes no value.
+            return new Call(name, args, new[] { CType.Long, CType.Long }) { Type = CType.Long };
+        }
         if (GnuBitCount(name) is not null)
         {
             RequireCount(1);

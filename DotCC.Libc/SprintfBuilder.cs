@@ -33,7 +33,7 @@ public unsafe ref struct SprintfBuilder
         _dst = dst;
         _capacity = capacity;
         _buf = new StringWriter();
-        _inner = new PrintfBuilder(_buf, fmt);
+        _inner = new PrintfBuilder(_buf, fmt, byteOutput: true);
     }
 
     // Mirror PrintfBuilder's full Arg surface — SprintfBuilder is a thin wrapper
@@ -61,13 +61,8 @@ public unsafe ref struct SprintfBuilder
     public int Done()
     {
         _inner.Done();
-        // The PrintfBuilder writes Unicode chars to the StringWriter for
-        // %c (where the int value becomes a char). For values >127 this
-        // creates a multi-byte UTF-8 sequence when we want a single raw
-        // byte. ISO-8859-1 maps each char 0–255 to a single byte of the
-        // same value, which is exactly printf %c semantics (and all other
-        // printf output — literals, %d, %s, etc. — is ASCII, which both
-        // encodings handle identically).
+        // The byte-output formatter stores each raw byte as a Latin-1 code
+        // unit, preserving non-ASCII narrow literals, strings and %c exactly.
         var latin1 = global::System.Text.Encoding.GetEncoding(28591);
         var bytes = latin1.GetBytes(_buf.ToString());
         int writeCount = _capacity < 0 ? bytes.Length : Math.Min(bytes.Length, _capacity);

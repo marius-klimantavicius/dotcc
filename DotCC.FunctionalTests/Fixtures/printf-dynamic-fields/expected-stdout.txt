@@ -1,0 +1,4 @@
+directive [use strict] 10
+fields [    abc] [42   ] [end] [1.25]
+truncated [   a] 6
+bounded bytes 3 195 169 128

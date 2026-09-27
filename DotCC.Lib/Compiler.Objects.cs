@@ -480,6 +480,11 @@ public static partial class Compiler
         var suffix = "__unit_" + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(identity)));
         foreach (var function in unit.Functions.Where(function => function.Sym.Storage == Ir.Storage.Static))
             function.Sym.TargetName += suffix;
+        // File-scope C static objects have distinct storage in each object,
+        // including identical header tables. Storage.Static alone is not the
+        // linkage discriminator: historical IR also uses it for external data.
+        foreach (var global in unit.InternalGlobals)
+            global.TargetName += suffix;
         // Hoisted block statics restart their sequence in every separately
         // compiled object. Keep their aliases/storage distinct even when the
         // emitted initializer lines happen to be identical and could dedupe.

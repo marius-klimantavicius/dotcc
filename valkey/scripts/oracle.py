@@ -13,6 +13,7 @@ import socket
 import struct
 import subprocess
 import sys
+import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -246,8 +247,11 @@ def upstream_baseline(stage):
     log_path = ARTIFACTS / "upstream-protocol.log"
     with log_path.open("w") as log:
         subprocess.run(command, cwd=stage, stdout=log, stderr=subprocess.STDOUT, check=True)
-    match = re.search(r"Test Summary: (\d+) passed, (\d+) failed", log_path.read_text())
-    if not match or int(match[2]):
+    # Preserve the original transcript; Tcl colors the summary counts even
+    # when stdout is redirected, just as in the managed external-host suite.
+    text = re.sub(r"\x1b\[[0-9;]*m", "", log_path.read_text())
+    match = re.search(r"Test Summary: (\d+) passed, (\d+) failed", text)
+    if not match or int(match[2]) or int(match[1]) == 0:
         raise RuntimeError("upstream protocol suite did not report a passing summary")
     return {"command": command, "passed": int(match[1]), "failed": int(match[2]), "log": str(log_path.relative_to(ROOT))}
 
@@ -272,6 +276,19 @@ def main():
         receipt["versions"] = {"compiler": subprocess.check_output(["cc", "--version"], text=True).splitlines()[0], "make": subprocess.check_output(["make", "--version"], text=True).splitlines()[0], "python": platform.python_version(), "server": subprocess.check_output([str(stage / "src/valkey-server"), "--version"], text=True).strip(), "platform": platform.platform(), "pointer_bytes": struct.calcsize("P")}
         receipt["cases"] = [] if args.build_only else baseline(stage)
         receipt["upstream"] = None if args.build_only else upstream_baseline(stage)
+        if not args.build_only:
+            reduction = Path(tempfile.mkdtemp(prefix='listener-shutdown-', dir=ARTIFACTS)) / 'cases'
+            command = [sys.executable, str(ROOT / 'tests/listener_shutdown.py'),
+                       '--source', str(stage), '--output', str(reduction)]
+            receipt['commands'].append(command)
+            with (reduction.parent / 'run.log').open('w') as log:
+                subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=True, timeout=180)
+            result = reduction / 'report.json'
+            control = json.loads(result.read_text())
+            if control['status'] != 'passed':
+                raise RuntimeError('Listener shutdown native differential failed')
+            receipt['listener_shutdown'] = {'receipt': str(result), 'sha256': digest(result),
+                                            'cases': control['cases']}
         receipt["status"] = "passed"
         print(f"Native Valkey control: {len(inventory['sources'])} C units, {len(receipt['cases'])} baseline checks passed")
     except Exception as error:

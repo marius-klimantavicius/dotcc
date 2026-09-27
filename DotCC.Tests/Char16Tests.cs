@@ -270,10 +270,10 @@ public sealed class Char16Tests
     }
 
     [Fact]
-    public void const_global_char16_array_takes_the_rva_path()
+    public void const_global_char16_array_keeps_declared_object_storage()
     {
-        // const → the zero-copy RVA path (Libc.L<char> over .rodata), same as a
-        // const non-byte array; sound on dotcc's little-endian target.
+        // A declared const array retains object identity independently of
+        // pooled string literals with the same contents.
         var src = WriteTemp("""
             const char16_t g[] = u"hi";
             int main(void) { return g[0]; }
@@ -281,7 +281,7 @@ public sealed class Char16Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.L<char>(new char[]{ unchecked((char)(104)), unchecked((char)(105)), unchecked((char)(0)) })");
+            emitted.ShouldContain("Libc.GlobalArrayFrom<char>(new char[]{ unchecked((char)(104)), unchecked((char)(105)), unchecked((char)(0)) })");
         }
         finally { File.Delete(src); }
     }

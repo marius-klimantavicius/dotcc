@@ -10,7 +10,8 @@ namespace DotCC.Libc;
 /// Seq-cst atomic primitives backing C11 <c>_Atomic</c> and <c>&lt;stdatomic.h&gt;</c>.
 /// C11 atomic operations default to <c>memory_order_seq_cst</c>; these use
 /// <see cref="Interlocked"/> (full fences) on a SAME-WIDTH integer reinterpretation
-/// of the location, so any 1-, 2-, 4-, or 8-byte unmanaged scalar — <c>int</c>/<c>uint</c>/
+/// of the location, so any 1-, 2-, 4-, or 8-byte unmanaged scalar —
+/// <c>sbyte</c>/<c>byte</c>/<c>short</c>/<c>ushort</c>/<c>int</c>/<c>uint</c>/
 /// <c>long</c>/<c>ulong</c>/<c>nint</c>/<c>nuint</c>/<c>float</c>/<c>double</c> —
 /// is covered by one generic implementation. The compare-and-swap loops do the
 /// arithmetic/bitwise step in the value type's own space (<see cref="INumber{T}"/> /
@@ -20,8 +21,8 @@ namespace DotCC.Libc;
 /// <remarks>
 /// Every access uses a same-width Interlocked overload. Pointer callers must
 /// reinterpret pointer storage as nint because pointers cannot be generic type
-/// arguments. The C11 frontend retains its documented eligibility rules; GNU
-/// builtins also route narrow integer objects through these same primitives.
+/// arguments. Both C11 generic functions and GNU builtins route narrow integer
+/// objects through these same primitives.
 /// Fence note (same as <c>volatile</c>): on .NET these are full barriers, which is
 /// at least as strong as C11 seq-cst requires.
 /// <para>

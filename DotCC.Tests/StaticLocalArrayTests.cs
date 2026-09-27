@@ -41,9 +41,8 @@ public sealed class StaticLocalArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            // Hoisted to a mangled global field; the array is `const`, so it takes
-            // the zero-copy RVA path (Libc.L over .rodata) rather than GlobalArrayFrom.
-            emitted.ShouldContain("tab__s0 = Libc.L(new byte[]{ 0, 1, 2, 3 })");
+            // Hoisted to a mangled global field with distinct backing storage.
+            emitted.ShouldContain("tab__s0 = Libc.GlobalArrayFrom<byte>(new byte[]{ 0, 1, 2, 3 })");
             // …and the in-function use rewrites to that field.
             emitted.ShouldContain("tab__s0[x]");
         }
@@ -63,8 +62,8 @@ public sealed class StaticLocalArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            // const → zero-copy RVA via the generic Libc.L<int>.
-            emitted.ShouldContain("tab__s0 = Libc.L<int>(new int[]{ 10, 20, 30 })");
+            // Const arrays retain their object identity.
+            emitted.ShouldContain("tab__s0 = Libc.GlobalArrayFrom<int>(new int[]{ 10, 20, 30 })");
         }
         finally { File.Delete(src); }
     }
@@ -102,9 +101,9 @@ public sealed class StaticLocalArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            // Mangled per declaration order → two distinct fields (const → RVA L<int>).
-            emitted.ShouldContain("t__s0 = Libc.L<int>(new int[]{ 1, 2 })");
-            emitted.ShouldContain("t__s1 = Libc.L<int>(new int[]{ 3, 4 })");
+            // Mangled per declaration order → two distinct fields and backing arrays.
+            emitted.ShouldContain("t__s0 = Libc.GlobalArrayFrom<int>(new int[]{ 1, 2 })");
+            emitted.ShouldContain("t__s1 = Libc.GlobalArrayFrom<int>(new int[]{ 3, 4 })");
         }
         finally { File.Delete(src); }
     }

@@ -121,6 +121,37 @@ public sealed class AtomicTests
 
     // ---- <stdatomic.h> generic functions (phase A2) -----------------------
 
+    [Theory]
+    [InlineData("signed char", "sbyte", false)]
+    [InlineData("unsigned char", "byte", false)]
+    [InlineData("short", "short", false)]
+    [InlineData("unsigned short", "ushort", false)]
+    [InlineData("signed char", "sbyte", true)]
+    [InlineData("unsigned char", "byte", true)]
+    [InlineData("short", "short", true)]
+    [InlineData("unsigned short", "ushort", true)]
+    public void stdatomic_narrow_load_store_use_same_width_atomic_helpers(string cType, string csType, bool explicitOrder)
+    {
+        var suffix = explicitOrder ? "_explicit" : "";
+        var order = explicitOrder ? ", memory_order_seq_cst" : "";
+        var src = WriteTemp($$"""
+            #include <stdatomic.h>
+            {{cType}} read_value(_Atomic {{cType}} *p) { return atomic_load{{suffix}}(p{{order}}); }
+            void write_value(_Atomic {{cType}} *p, {{cType}} value) { atomic_store{{suffix}}(p, value{{order}}); }
+            void initialize_value(_Atomic {{cType}} *p) { atomic_init(p, 7); }
+            int lock_free(_Atomic {{cType}} *p) { return atomic_is_lock_free(p); }
+            """);
+        try
+        {
+            var emitted = Compiler.EmitCSharp(new[] { src }, emit: EmitMode.ManagedLib);
+            emitted.ShouldContain("Atomic.Load(ref *(p))");
+            emitted.ShouldContain($"Atomic.Store(ref *(p), ({csType})(value))");
+            emitted.ShouldContain($"*(p) = ({csType})(7)");
+            emitted.ShouldContain("return 1;");
+        }
+        finally { File.Delete(src); }
+    }
+
     [Fact]
     public void stdatomic_functions_lower_onto_Atomic_helpers()
     {

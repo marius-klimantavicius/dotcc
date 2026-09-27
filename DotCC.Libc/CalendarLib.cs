@@ -55,9 +55,9 @@ public static unsafe partial class Libc
         public int tm_wday;
         public int tm_yday;
         public int tm_isdst;
-        // glibc/BSD extensions — chibi's (chibi time) reads them. dotcc reports
-        // UTC (tm_gmtoff = 0, tm_zone = "UTC") so broken-down time stays
-        // machine-independent; see FillTm.
+        // glibc/BSD extensions. tm_gmtoff describes this instant's actual
+        // offset, including daylight saving. tm_zone currently retains the
+        // stable "UTC" placeholder; local zone names are not represented.
         public long tm_gmtoff;
         public byte* tm_zone;
     }
@@ -83,7 +83,7 @@ public static unsafe partial class Libc
     private static int Mo(tm* t) => ((t->tm_mon % 12) + 12) % 12;
 
     // The embedded runtime shares a file with C types such as SQLite's DateTime.
-    private static void FillTm(tm* t, global::System.DateTime dt, int isdst)
+    private static void FillTm(tm* t, global::System.DateTime dt, int isdst, long offsetSeconds = 0)
     {
         t->tm_sec = dt.Second;
         t->tm_min = dt.Minute;
@@ -94,7 +94,7 @@ public static unsafe partial class Libc
         t->tm_wday = (int)dt.DayOfWeek; // C# Sunday=0 matches C
         t->tm_yday = dt.DayOfYear - 1;  // C: 0-based
         t->tm_isdst = isdst;
-        t->tm_gmtoff = 0;               // UTC (see the struct comment)
+        t->tm_gmtoff = offsetSeconds;
         t->tm_zone = _utcZone;
     }
 
@@ -139,8 +139,11 @@ public static unsafe partial class Libc
         if (timer == null || result == null) { return null; }
         try
         {
-            var local = DateTimeOffset.FromUnixTimeSeconds(*timer).ToLocalTime().DateTime;
-            FillTm(result, local, TimeZoneInfo.Local.IsDaylightSavingTime(local) ? 1 : 0);
+            var local = DateTimeOffset.FromUnixTimeSeconds(*timer).ToLocalTime();
+            // Retain the instant's offset through the fall-back overlap: two
+            // equal local clock readings can have different offsets and DST.
+            FillTm(result, local.DateTime, TimeZoneInfo.Local.IsDaylightSavingTime(local) ? 1 : 0,
+                (long)local.Offset.TotalSeconds);
             return result;
         }
         catch (ArgumentOutOfRangeException) { return null; }
@@ -175,8 +178,10 @@ public static unsafe partial class Libc
                 .AddHours(t->tm_hour)
                 .AddMinutes(t->tm_min)
                 .AddSeconds(t->tm_sec);
-            long secs = new DateTimeOffset(dt).ToUnixTimeSeconds();
-            FillTm(t, dt, TimeZoneInfo.Local.IsDaylightSavingTime(dt) ? 1 : 0);
+            var instant = new DateTimeOffset(dt);
+            long secs = instant.ToUnixTimeSeconds();
+            FillTm(t, dt, TimeZoneInfo.Local.IsDaylightSavingTime(instant) ? 1 : 0,
+                (long)instant.Offset.TotalSeconds);
             return secs;
         }
         catch (ArgumentOutOfRangeException) { return -1; }

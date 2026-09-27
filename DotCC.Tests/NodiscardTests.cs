@@ -50,6 +50,17 @@ public sealed class NodiscardTests
         stderr.ShouldContain("ignoring return value of 'must_use', declared with attribute 'nodiscard'");
     }
 
+    [Theory]
+    [InlineData("__attribute__((warn_unused_result)) int must_use(void);")]
+    [InlineData("int must_use(void) __attribute__((warn_unused_result));")]
+    [InlineData("static inline __attribute__((warn_unused_result)) int must_use(void);")]
+    public void Gnu_warning_attribute_applies_only_to_the_declared_function(string declaration)
+    {
+        var stderr = Stderr(declaration + " int must_use(void) { return 1; } int plain(void) { return 2; } int main(void) { must_use(); plain(); return 0; }");
+        stderr.ShouldContain("ignoring return value of 'must_use'");
+        stderr.ShouldNotContain("ignoring return value of 'plain'");
+    }
+
     [Fact]
     public void The_reason_string_is_appended()
     {

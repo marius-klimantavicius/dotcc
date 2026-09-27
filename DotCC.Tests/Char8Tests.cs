@@ -203,10 +203,9 @@ public sealed class Char8Tests
     }
 
     [Fact]
-    public void const_global_char8_array_takes_the_rva_path()
+    public void const_global_char8_array_has_distinct_rooted_storage()
     {
-        // const → the zero-copy byte RVA path (Libc.L over .rodata), like any const
-        // byte array.
+        // A declared const byte array keeps its own object identity.
         var src = WriteTemp("""
             const char8_t g[] = u8"hi";
             int main(void) { return (int)g[0]; }
@@ -214,7 +213,7 @@ public sealed class Char8Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.L(new byte[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Libc.GlobalArrayFrom<byte>(new byte[]{ 104, 105, 0 })");
         }
         finally { File.Delete(src); }
     }

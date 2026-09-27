@@ -37,13 +37,16 @@ double atanh(double x); float atanhf(float x);
 
 /* Exponentials and logarithms. */
 double exp(double x);   float expf(float x);
+double expm1(double x); float expm1f(float x);
 double log(double x);   float logf(float x);
+double log1p(double x); float log1pf(float x);
 double log10(double x); float log10f(float x);
 double log2(double x);  float log2f(float x);
 
 /* Power and roots. */
 double pow(double x, double y); float powf(float x, float y);
 double sqrt(double x);  float sqrtf(float x);
+double hypot(double x, double y); float hypotf(float x, float y);
 
 /* Mantissa / exponent (C90). frexp writes the exponent through its pointer. */
 double frexp(double x, int* exp); float frexpf(float x, int* exp);
@@ -58,6 +61,7 @@ double round(double x); float roundf(float x);
 /* Default nearest/ties-even only: dotcc has no mutable fenv or FP flags. */
 double rint(double x); float rintf(float x);
 long long llrint(double x);
+long lrint(double x); long lrintf(float x);
 long long llroundl(long double x);
 double trunc(double x); float truncf(float x);
 
@@ -83,6 +87,7 @@ int __dotcc_fpclassify_double(double x);
 
 /* Classification (C99). Returns int (non-zero on match) — NOT bool. */
 int isnan(double x);
+int signbit(double x);
 int isinf(double x);
 int isfinite(double x);
 int isunordered(double x, double y);

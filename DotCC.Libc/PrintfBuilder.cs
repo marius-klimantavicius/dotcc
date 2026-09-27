@@ -66,6 +66,8 @@ public unsafe ref partial struct PrintfBuilder
         public bool DoubleLength;
         public int Width;
         public int Precision;
+        public bool WidthArgument;
+        public bool PrecisionArgument;
         public bool Left;
         public bool Zero;
         public bool Plus;
@@ -93,6 +95,7 @@ public unsafe ref partial struct PrintfBuilder
     public PrintfBuilder Arg(int v)
     {
         var spec = ConsumeUntilSpec();
+        if (ConsumeDynamicField(ref spec, v)) return this;
         var ci = CultureInfo.InvariantCulture;
         string s;
         switch (spec.Conv)
@@ -310,6 +313,7 @@ public unsafe ref partial struct PrintfBuilder
     public PrintfBuilder Arg(long v)
     {
         var spec = ConsumeUntilSpec();
+        if (ConsumeDynamicField(ref spec, v)) return this;
         var ci = CultureInfo.InvariantCulture;
         string s;
         switch (spec.Conv)
@@ -333,6 +337,7 @@ public unsafe ref partial struct PrintfBuilder
     public PrintfBuilder Arg(ulong v)
     {
         var spec = ConsumeUntilSpec();
+        if (ConsumeDynamicField(ref spec, unchecked((long)v))) return this;
         var ci = CultureInfo.InvariantCulture;
         string s;
         switch (spec.Conv)
@@ -364,13 +369,9 @@ public unsafe ref partial struct PrintfBuilder
         if (spec.Conv == (byte)'s' && v != null)
         {
             int len = 0;
-            while (v[len] != 0) { len++; }
-            s = global::System.Text.Encoding.UTF8.GetString(v, len);
-            // Precision on `%s` caps the string length per C99.
-            if (spec.Precision >= 0 && spec.Precision < s.Length)
-            {
-                s = s[..spec.Precision];
-            }
+            // C precision bounds bytes read, including non-terminated slices.
+            while ((spec.Precision < 0 || len < spec.Precision) && v[len] != 0) { len++; }
+            s = (_byteOutput ? global::System.Text.Encoding.Latin1 : global::System.Text.Encoding.UTF8).GetString(v, len);
         }
         else if (spec.Conv == (byte)'p')
         {
@@ -466,6 +467,27 @@ public unsafe ref partial struct PrintfBuilder
         return ConsumeUntilSpec(unused, false, out _);
     }
 
+    // Fluent arguments arrive one at a time. Width/precision stars consume an
+    // integer argument but retain this conversion for its eventual value.
+    private bool ConsumeDynamicField(ref Spec spec, long value)
+    {
+        if (spec.WidthArgument)
+        {
+            spec.WidthArgument = false;
+            spec.Width = checked((int)value);
+            if (spec.Width < 0) { spec.Left = true; spec.Width = checked(-spec.Width); }
+        }
+        else if (spec.PrecisionArgument)
+        {
+            spec.PrecisionArgument = false;
+            spec.Precision = value < 0 ? -1 : checked((int)value);
+        }
+        else return false;
+        _pendingSpec = spec;
+        _hasPendingSpec = true;
+        return true;
+    }
+
     private Spec ConsumeUntilSpec(scoped Libc.VaList arguments, bool cursor, out int consumed)
     {
         consumed = 0;
@@ -516,12 +538,16 @@ public unsafe ref partial struct PrintfBuilder
             s.Width = s.Width * 10 + (*_fmt - (byte)'0');
             _fmt++;
         }
-        if (cursor && *_fmt == (byte)'*')
+        if (*_fmt == (byte)'*')
         {
             _fmt++;
-            s.Width = (int)arguments.Next();
-            consumed++;
-            if (s.Width < 0) { s.Left = true; s.Width = checked(-s.Width); }
+            if (cursor)
+            {
+                s.Width = (int)arguments.Next();
+                consumed++;
+                if (s.Width < 0) { s.Left = true; s.Width = checked(-s.Width); }
+            }
+            else s.WidthArgument = true;
         }
         if (*_fmt == (byte)'.')
         {
@@ -533,12 +559,16 @@ public unsafe ref partial struct PrintfBuilder
                 _fmt++;
             }
         }
-        if (cursor && *_fmt == (byte)'*')
+        if (*_fmt == (byte)'*')
         {
             _fmt++;
-            s.Precision = (int)arguments.Next();
-            consumed++;
-            if (s.Precision < 0) s.Precision = -1;
+            if (cursor)
+            {
+                s.Precision = (int)arguments.Next();
+                consumed++;
+                if (s.Precision < 0) s.Precision = -1;
+            }
+            else s.PrecisionArgument = true;
         }
         if (*_fmt == (byte)'l' || *_fmt == (byte)'L' || *_fmt == (byte)'h'
             || *_fmt == (byte)'z' || *_fmt == (byte)'j' || *_fmt == (byte)'t')

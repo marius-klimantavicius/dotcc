@@ -19,13 +19,16 @@ internal sealed partial class IrBuilder
 
     private readonly Dictionary<string, ScalarGlobalDeclaration> _scalarGlobals = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> _scalarDefinitionUnits = new(StringComparer.Ordinal);
+    private readonly HashSet<Symbol> _internalGlobals = new(ReferenceEqualityComparer.Instance);
+    internal IReadOnlyCollection<Symbol> InternalGlobals => _internalGlobals;
+    private bool _declaringInternalGlobal;
 
     // Preserve the existing cross-TU identical-header-definition behavior, but
     // never suppress declarations in the same TU: two initialized definitions
     // there are an error even when their token text is identical.
     private bool AlreadySeenScalarGlobalInAnotherUnit(Item declaration)
     {
-        var fingerprint = declaration.ToString();
+        var fingerprint = SyntaxIdentity.Of(declaration);
         if (_scalarDefinitionUnits.TryGetValue(fingerprint, out var firstFile)) return firstFile != _file;
         _scalarDefinitionUnits.Add(fingerprint, _file);
         return false;
@@ -37,6 +40,7 @@ internal sealed partial class IrBuilder
         {
             declaration = new ScalarGlobalDeclaration(_symbols.Declare(candidate));
             _scalarGlobals.Add(candidate.Name, declaration);
+            if (_declaringInternalGlobal) _internalGlobals.Add(declaration.Symbol);
             return declaration;
         }
         if (!CompatibleGlobalTypes(declaration.Symbol.Type, candidate.Type))
@@ -52,6 +56,7 @@ internal sealed partial class IrBuilder
             return null;
         }
         declaration.Symbol.Alignment = Math.Max(declaration.Symbol.Alignment, candidate.Alignment);
+        if (_declaringInternalGlobal) _internalGlobals.Add(declaration.Symbol);
         _symbols.DeclareAlias(declaration.Symbol);
         return declaration;
     }

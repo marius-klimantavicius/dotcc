@@ -61,8 +61,10 @@ internal sealed class LiteralPool
     {
         var replacements = new Dictionary<string, string>(StringComparer.Ordinal)
         {
-            ["ConstArray"] = enabled ? "Libc.GlobalArrayFrom" : "Libc.L",
-            ["ConstBytes"] = enabled ? "Libc.GlobalArrayFrom<byte>" : "Libc.L"
+            // Legacy object markers represent declared array storage, not
+            // string literals. Preserve identity in either final output mode.
+            ["ConstArray"] = "Libc.GlobalArrayFrom",
+            ["ConstBytes"] = "Libc.GlobalArrayFrom<byte>"
         };
         int index = 0;
         var utf8 = new List<byte>();

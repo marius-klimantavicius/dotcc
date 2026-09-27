@@ -36,5 +36,8 @@ void valkeyManagedBioQueueCreated(void *queue);
 void valkeyManagedBioWorkerStarted(void *queue, long thread);
 int valkeyManagedBioJobAllowed(void);
 int valkeyManagedBioShouldStop(void *job);
+/* Read the owning io_threads.c state without relying on internal linker names. */
+int valkeyManagedIoThreadsInitialized(void);
+void *valkeyManagedIoSharedOutbox(void);
 
 #endif

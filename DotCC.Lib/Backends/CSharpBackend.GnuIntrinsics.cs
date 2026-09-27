@@ -10,6 +10,20 @@ internal sealed partial class CSharpBackend
     {
         var name = call.Callee;
         var args = call.Args;
+        if (name is "alloca" or "__builtin_alloca")
+        {
+            // Storage must live in the translated caller's frame. A runtime
+            // helper (or an expression lambda) would return a dangling pointer.
+            // Do not move an allocation out of a lazy arm or loop condition.
+            if (!_canHoist || _renderingStaticStorage)
+                throw new IrUnsupportedException("alloca requires a hoistable function statement context");
+            var allocation = $"__alloca{_clCounter++}";
+            var size = Coerced(args[0], CType.ULong);
+            _pending.Add($"byte* {allocation} = stackalloc byte[checked((int)({size}) + 15)]");
+            // LP64's maximum fundamental alignment is sixteen bytes. CLR
+            // stackalloc alignment is not sufficient as a portable guarantee.
+            return $"((void*)(((nuint){allocation} + 15) & ~(nuint)15))";
+        }
         if (IrBuilder.GnuBitCount(name) is { } bits)
         {
             // Builtins have fixed unsigned parameter widths even when the

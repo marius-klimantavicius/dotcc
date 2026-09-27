@@ -654,13 +654,13 @@ internal sealed partial class IrBuilder
             throw new IrUnsupportedException($"file-scope array '{name}' needs a constant size or an initializer");
         }
 
-        AddGlobalArray(name, arrType, init, csName, alignment, threadLocal);
+        AddGlobalArray(name, arrType, init, csName, alignment, threadLocal, initItem is not null, SrcPos.From(nameItem));
     }
 
     /// <summary>Register a global-array symbol and its <see cref="GlobalVar"/>. A
     /// non-null <paramref name="csName"/> marks a static local (mangled field name +
     /// alias symbol); otherwise it's a file-scope name.</summary>
-    private void AddGlobalArray(string name, CType arrType, CExpr init, string? csName, int alignment = 0, bool threadLocal = false)
+    private void AddGlobalArray(string name, CType arrType, CExpr init, string? csName, int alignment = 0, bool threadLocal = false, bool hasInitializer = true, SrcPos position = default)
     {
         if (csName is not null)
         {
@@ -669,8 +669,9 @@ internal sealed partial class IrBuilder
         }
         else
         {
-            var sym = _symbols.Declare(new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true, IsThreadLocal = threadLocal });
-            Globals.Add(new GlobalVar(sym, init));
+            var declaration = RegisterScalarGlobal(new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Static, IsGlobal = true, IsThreadLocal = threadLocal }, position);
+            if (declaration is not null)
+                DefineRegisteredGlobal(declaration, init, hasInitializer, position);
         }
     }
 

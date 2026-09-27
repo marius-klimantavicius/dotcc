@@ -19,6 +19,8 @@ public sealed class TentativeGlobalTests
     [InlineData("int value = 1; int value = 1;")]
     [InlineData("int value; int value = 1; int value = 2;")]
     [InlineData("extern int value = 1; int value = 2;")]
+    [InlineData("static int value[2] = {1,2}; static int value[2] = {1,2};")]
+    [InlineData("struct Item { int x; }; const struct Item value = {1}; const struct Item value = {1};")]
     public void Multiple_initialized_definitions_are_rejected(string declarations)
     {
         Should.Throw<CompileException>(() => Emit(declarations + " int main(void) { return 0; }"))
@@ -29,6 +31,7 @@ public sealed class TentativeGlobalTests
     [InlineData("extern int value; long value;")]
     [InlineData("int *value; const int *value;")]
     [InlineData("typedef int (*A)(int); typedef int (*B)(long); A value; B value;")]
+    [InlineData("static int value[2]; static int value[3];")]
     public void Incompatible_redeclarations_are_rejected(string declarations)
     {
         Should.Throw<CompileException>(() => Emit(declarations + " int main(void) { return 0; }"))
@@ -41,6 +44,14 @@ public sealed class TentativeGlobalTests
         var output = Emit("int value; extern int value; int value = 17; int value; int main(void) { return value; }");
         (output.Split("public int value;").Length - 1).ShouldBe(1);
         output.ShouldContain("Globals.value = 17");
+    }
+
+    [Fact]
+    public void Array_definition_replaces_tentative_storage_instead_of_allocating_twice()
+    {
+        var output = Emit("static unsigned char values[3]; static unsigned char values[3] = {1,2,3}; static unsigned char values[3]; int main(void) { return values[2]; }");
+        (output.Split("public byte* values;").Length - 1).ShouldBe(1);
+        output.ShouldNotContain("GlobalArrayZeroed<byte>(3)");
     }
 
     [Fact]

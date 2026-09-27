@@ -245,10 +245,10 @@ public sealed class Char32Tests
     }
 
     [Fact]
-    public void const_global_char32_array_takes_the_rva_path()
+    public void const_global_char32_array_keeps_declared_object_storage()
     {
-        // const → the zero-copy RVA path (Libc.L<uint> over .rodata), sound on
-        // dotcc's little-endian target.
+        // A declared const array retains object identity independently of
+        // pooled string literals with the same contents.
         var src = WriteTemp("""
             const char32_t g[] = U"hi";
             int main(void) { return (int)g[0]; }
@@ -256,7 +256,7 @@ public sealed class Char32Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.L<uint>(new uint[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Libc.GlobalArrayFrom<uint>(new uint[]{ 104, 105, 0 })");
         }
         finally { File.Delete(src); }
     }

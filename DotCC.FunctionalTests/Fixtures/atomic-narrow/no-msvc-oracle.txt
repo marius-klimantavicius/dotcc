@@ -1,0 +1,1 @@
+MSVC C11 atomics require /experimental:c11atomics, which the default native oracle does not enable.

@@ -1,0 +1,1 @@
+Uses GNU declaration attributes, C99 static minimum array parameters, and the LP64 long model.

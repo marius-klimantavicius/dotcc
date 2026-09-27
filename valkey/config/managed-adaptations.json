@@ -23,6 +23,14 @@
         {
           "before": "void call(client *c, int flags) {\n    long long dirty;",
           "after": "void call(client *c, int flags) {\n    /* Lua/module calls and EXEC dispatch can bypass processCommand admission.\n     * Reply through the actual caller before changing execution/propagation state. */\n    if (!valkeyManagedCommandAllowed(c)) {\n        addReplyError(c, \"Command or configuration requires fork, which is unavailable in the managed runtime\");\n        return;\n    }\n    long long dirty;"
+        },
+        {
+          "before": "        for (j = 0; j < listener->count; j++) close(listener->fd[j]);",
+          "after": "        for (j = 0; j < listener->count; j++) {\n            /* A queued embedded select poll must not retain a closed listener. */\n            if (server.el) aeDeleteFileEvent(server.el, listener->fd[j], AE_READABLE | AE_WRITABLE);\n            close(listener->fd[j]);\n        }"
+        },
+        {
+          "before": "    if (server.cluster_enabled)\n        for (j = 0; j < server.clistener.count; j++) close(server.clistener.fd[j]);",
+          "after": "    if (server.cluster_enabled) {\n        for (j = 0; j < server.clistener.count; j++) {\n            if (server.el) aeDeleteFileEvent(server.el, server.clistener.fd[j], AE_READABLE | AE_WRITABLE);\n            close(server.clistener.fd[j]);\n        }\n    }"
         }
       ]
     },
@@ -80,6 +88,17 @@
         {
           "before": "typedef struct ValkeyModuleCallReply ValkeyModuleCallReply;",
           "after": "typedef struct CallReply ValkeyModuleCallReply;"
+        }
+      ]
+    },
+    {
+      "path": "src/io_threads.c",
+      "sha256": "bfb6428d528a0ba2ee98a72aa32f8fb23cec461d3705c1f2dd7d494639649d05",
+      "purpose": "Expose read-only initialization status and the existing response queue to the owning managed shutdown drain; preserve translation-unit-local storage and upstream I/O algorithms.",
+      "replacements": [
+        {
+          "before": "static int io_threads_initialized = 0;",
+          "after": "static int io_threads_initialized = 0;\n\n/* Managed lifecycle accessors retain the upstream storage owner. */\nint valkeyManagedIoThreadsInitialized(void) { return io_threads_initialized; }\nvoid *valkeyManagedIoSharedOutbox(void) { return &io_shared_outbox; }"
         }
       ]
     }

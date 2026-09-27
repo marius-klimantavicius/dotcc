@@ -128,6 +128,21 @@ and join its own workers, and release its own files and state. `SHUTDOWN` reache
 the same lifecycle. Startup failures unwind only successfully initialized stages.
 No readiness task can complete successfully after a load/listen failure.
 
+The embedded select backend requires listener events to be unregistered before
+their descriptors close. A guarded `closeListeningSockets` adaptation calls the
+real `aeDeleteFileEvent` for ordinary and cluster listeners first. That function
+uses the upstream poll mutex while an I/O worker owns polling, so a queued poll
+cannot retain a closed listener. Native epoll's automatic removal on close does
+not provide this guarantee for select. Upstream shutdown persistence decisions
+and worker draining remain unchanged.
+
+The native oracle runs `tests/listener_shutdown.py` against the actual pinned
+`ae_select.c`, `aeDeleteFileEvent` and listener-close bodies. Its deterministic
+close-then-poll schedule must reproduce `EBADF` with the original body and pass
+with the guarded adaptation, for both ordinary and cluster registrations. The
+full managed verifier additionally exercises live I/O worker reconfiguration and
+shutdown in raw/processed JIT and NativeAOT.
+
 The first executable host proof must exercise two simultaneous instances, stop
 while idle and while clients/jobs are active, ordinary startup/file failures,
 Lua errors and restart. Source review alone leaves P1 open.

@@ -1,0 +1,1 @@
+GNU __builtin_expect is not available in MSVC.

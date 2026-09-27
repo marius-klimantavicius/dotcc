@@ -11,9 +11,10 @@
 
    Memory orders are accepted but treated uniformly as seq-cst (a full barrier
    on .NET) — the conservative over-approximation, never weaker than C requires.
-   The atomic typedefs lower to `_Atomic <T>`; an eligible 4-/8-byte scalar
-   (int/uint/long/ulong/size_t/…/float/double) gets lock-free atomic access, a
-   narrow / _Bool atomic falls back to a plain access (documented in C-SUPPORT). */
+   The atomic typedefs lower to `_Atomic <T>`; eligible 1-/2-/4-/8-byte numeric
+   scalars (signed/unsigned char and short, int/long/size_t/…/float/double) get
+   same-width lock-free atomic access. Generic _Bool load/store still fall back
+   to plain access (documented in C-SUPPORT). */
 
 /* memory_order (C11 7.17.1). Values per the standard's typical encoding. */
 typedef enum memory_order {

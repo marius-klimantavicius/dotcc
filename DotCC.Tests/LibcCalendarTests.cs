@@ -124,6 +124,50 @@ public sealed unsafe class LibcCalendarTests
         (tb.tm_year + 1900).ShouldBe(2023);
     }
 
+    [Theory]
+    [InlineData(1705320000L)] // January: standard time in America/New_York.
+    [InlineData(1721044800L)] // July: daylight time in America/New_York.
+    [InlineData(1730611800L)] // First 01:30 during the November DST overlap.
+    [InlineData(1730615400L)] // Second 01:30 during the November DST overlap.
+    public void Local_time_offset_and_dst_describe_the_original_instant(long timestamp)
+    {
+        tm local;
+        ((nint)localtime_r(&timestamp, &local)).ShouldBe((nint)(&local));
+        var instant = System.DateTimeOffset.FromUnixTimeSeconds(timestamp);
+        local.tm_gmtoff.ShouldBe((long)System.TimeZoneInfo.Local.GetUtcOffset(instant).TotalSeconds);
+        local.tm_isdst.ShouldBe(System.TimeZoneInfo.Local.IsDaylightSavingTime(instant) ? 1 : 0);
+        var reconstructed = new System.DateTimeOffset(local.tm_year + 1900, local.tm_mon + 1,
+            local.tm_mday, local.tm_hour, local.tm_min, local.tm_sec,
+            System.TimeSpan.FromSeconds(local.tm_gmtoff));
+        reconstructed.ToUnixTimeSeconds().ShouldBe(timestamp);
+
+        tm utc;
+        gmtime_r(&timestamp, &utc);
+        utc.tm_gmtoff.ShouldBe(0);
+        utc.tm_isdst.ShouldBe(0);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(6)]
+    public void Mktime_normalization_populates_the_actual_local_offset(int month)
+    {
+        tm local = default;
+        local.tm_year = 124;
+        local.tm_mon = month;
+        local.tm_mday = 15;
+        local.tm_hour = 12;
+        local.tm_isdst = -1;
+        long timestamp = mktime(&local);
+        timestamp.ShouldNotBe(-1);
+        tm roundTrip;
+        localtime_r(&timestamp, &roundTrip);
+        var instant = System.DateTimeOffset.FromUnixTimeSeconds(timestamp);
+        local.tm_gmtoff.ShouldBe((long)System.TimeZoneInfo.Local.GetUtcOffset(instant).TotalSeconds);
+        local.tm_gmtoff.ShouldBe(roundTrip.tm_gmtoff);
+        local.tm_isdst.ShouldBe(roundTrip.tm_isdst);
+    }
+
     [Fact]
     public void asctime_r_writes_caller_buffer()
     {

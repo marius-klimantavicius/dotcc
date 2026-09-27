@@ -197,11 +197,15 @@ public abstract partial record CType
     /// conditions, switch) and recast at enum-typed sinks. In C an enum IS an integer
     /// type, so it reports <see cref="IsInteger"/>/<see cref="IsArithmetic"/> true;
     /// because it is not a <see cref="Prim"/>, <see cref="UsualArithmetic"/> already
-    /// collapses any enum operand to <see cref="Int"/> (the decay). An anonymous,
+    /// decays enum operands to their <see cref="Underlying"/> type. An anonymous,
     /// un-typedef'd enum has no C# name, so its enumerators stay plain int constants
     /// instead (named constants) rather than synthesizing a type.</summary>
     public sealed record Enum(string Name, CType Underlying) : CType
     {
+        /// <summary>GNU C chooses unsigned bit-fields for nonnegative, non-fixed
+        /// enums even when their enumerator constants use int. Null means the
+        /// explicitly selected underlying type determines bit-field signedness.</summary>
+        public bool? BitFieldSigned { get; init; }
         public override int SizeOf => Underlying.SizeOf;
         public override bool IsInteger => true;
         public override bool IsArithmetic => true;
@@ -450,6 +454,11 @@ public abstract partial record CType
 
     public static CType UsualArithmetic(CType a, CType b)
     {
+        // The backend decays enums to their compatible integer type before
+        // emitting arithmetic. Do the same while typing the expression so
+        // stores, sizeof, and enclosing operators see its actual C result.
+        if (a.Unqualified is Enum ea) a = ea.Underlying;
+        if (b.Unqualified is Enum eb) b = eb.Underlying;
         if (a.Unqualified is not Prim pa || b.Unqualified is not Prim pb) { return Int; }
 
         // Either operand floating → the wider floating operand wins (double

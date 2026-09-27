@@ -1,0 +1,1 @@
+This fixture exercises the DotCC LP64 model: unsigned long is 64 bits (MSVC uses LLP64).
