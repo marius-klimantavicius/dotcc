@@ -75,6 +75,10 @@ dotnet run --project blink/samples/ManagedConsumer/ManagedConsumer.csproj -c Rel
   blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService
 ```
 
+Use `bash blink/scripts/translate.sh --fast` to skip native qualification tests.
+Translation still requires the existing native archive for dependency staging
+and builds both generated project forms.
+
 See [translation delivery](scripts/TRANSLATION.md), the
 [usage sample](ManagedConsumer/README.md) and
 [clean delivery verification](scripts/CLEAN-DELIVERY.md). Finish generation before

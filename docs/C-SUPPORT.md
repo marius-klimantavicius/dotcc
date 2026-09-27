@@ -871,6 +871,12 @@ these rewrites and offers in-place fixes and Fix All through IDE suggestions.
 
 ## Generated source layout
 
+Canonical function-pointer properties are emitted only for functions used as
+addresses in translated code or selected by the override profile's
+`stableFunctionPointers` list. Host glue can opt in using original function names;
+direct calls alone do not request a property. Explicit selections preserve address
+identity through object linking and inline deduplication. See [CLI details](cli.md).
+
 C# project output supports `--split=none|function|size` (default `none`) and a
 positive `--split-size` UTF-8 byte target for size mode. Methods share the same
 partial class; shared runtime, types, globals and initialization remain together.

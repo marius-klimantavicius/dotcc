@@ -226,10 +226,29 @@ with a null check and assignment and no synchronization.
 If names such as `foo` and `get_foo` would collide with C#'s generated getter
 names, the container uses abstract base classes to keep both static properties
 accessible through the same container under their original names.
-Functions whose declarator names come from function-like macro expansion get
-pointer properties only when their addresses are used by translated C code. Ordinary
-functions retain automatic public pointer properties; macro expansion in a return
-type or function body alone does not suppress a property.
+Pointer properties are generated only for functions whose addresses are used by
+translated code or whose original names appear in `stableFunctionPointers` in an
+override profile. Direct calls alone do not generate pointer properties. For host
+glue that needs a stable callback address, pass `--overrides-file overrides.json`:
+
+```json
+{
+  "version": 1,
+  "stableFunctionPointers": ["sqlite3_free", "host_callback"]
+}
+```
+
+Names are exact and case-sensitive, using source spelling before C# escaping or
+translation-unit suffixes. The list also supports macro-generated functions and
+declared runtime functions. All matching static definitions retain their own
+addresses. Absent names are ignored so a profile can be shared across translation
+units; duplicate names are coalesced. Apply the profile when compiling each source
+to an object, then rebuild and link those objects. Object-only linking cannot add
+new pointer selections. In the library API, use
+`new CPreprocessingOptions(..., stableFunctionPointers: new[] { "host_callback" })`.
+These explicit address uses also prevent inline deduplication from merging
+distinct functions. Each selected property's cache remains lazy.
+
 Aggregate names, assembly names and native export entry-point names stay unchanged. Choose a name that does not conflict with translated symbols or runtime
 helper types; infrastructure and translated-declaration collisions are diagnosed.
 

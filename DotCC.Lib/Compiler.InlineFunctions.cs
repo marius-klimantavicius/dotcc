@@ -100,8 +100,8 @@ public static partial class Compiler
         var declarations = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var (key, text) in types)
         {
-            // Public managed visibility is not a C address use. Retain real C
-            // callback caches, but don't manufacture addresses for inline APIs.
+            // Older objects may contain automatic public pointer properties.
+            // Retain translated and explicitly requested host address uses.
             if (enabled && key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
                 && metadata.TryGetValue(key[FunctionPointerNames.TypeKeyPrefix.Length..], out var function)
                 && !function.AddressUsed) continue;

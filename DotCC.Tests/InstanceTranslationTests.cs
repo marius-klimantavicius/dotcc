@@ -77,7 +77,8 @@ public sealed class InstanceTranslationTests
             var oldObject = Path.Combine(directory, "static.o");
             var newObject = Path.Combine(directory, "instance.o");
             File.WriteAllText(oldObject, Compiler.EmitObject(source));
-            File.WriteAllText(newObject, Compiler.EmitObject(source, outputOptions: new(InstanceMethods: true)));
+            File.WriteAllText(newObject, Compiler.EmitObject(source, outputOptions: new(InstanceMethods: true),
+                preprocessing: new CPreprocessingOptions(Array.Empty<MacroOverride>(), stableFunctionPointers: new[] { "step" })));
             File.ReadAllText(newObject).ShouldContain("calling-convention:instance-v1");
             Should.Throw<CompileException>(() => Compiler.LinkObjects(new[] { newObject }, emit: EmitMode.ManagedLib))
                 .Message.ShouldContain("calling convention mismatch");

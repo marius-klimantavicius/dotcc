@@ -27,19 +27,25 @@ public sealed partial class ManagedLibraryTests
         File.WriteAllText(source, """
             int field(int x) { return x + 1; }
             int unused(int x) { return x - 1; }
+            int direct_only(int x) { return x * 2; }
             """);
         if (accessorCollision) File.AppendAllText(source, "\nint get_field(int x) { return x + 2; }\nint get_get_field(int x) { return x + 3; }\n");
         try
         {
+            var profile = Path.Combine(directory, "overrides.json");
+            File.WriteAllText(profile, """
+                {"version": 1, "stableFunctionPointers": ["field", "unused", "get_field", "get_get_field"]}
+                """);
+            var preprocessing = CPreprocessingOptions.Load(profile);
             var options = new CSharpOutputOptions { NestTypes = nested };
             string emitted;
             if (objectLink)
             {
                 var obj = Path.Combine(directory, "callbacks.o");
-                File.WriteAllText(obj, Compiler.EmitObject(source));
+                File.WriteAllText(obj, Compiler.EmitObject(source, preprocessing: preprocessing));
                 emitted = Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib, outputOptions: options);
             }
-            else emitted = Compiler.EmitCSharp(new[] { source }, emit: EmitMode.ManagedLib, outputOptions: options);
+            else emitted = Compiler.EmitCSharp(new[] { source }, emit: EmitMode.ManagedLib, outputOptions: options, preprocessing: preprocessing);
             var references = RuntimeReferences();
             var library = Compile("LazyLibrary_" + Guid.NewGuid().ToString("N"), emitted, references);
             references.Add(MetadataReference.CreateFromImage(library));
@@ -62,6 +68,7 @@ public sealed partial class ManagedLibraryTests
             var pointers = assembly.GetType(nested ? "DotCcLib+DotCcLibFunctionPointers" : owner, true)!;
             // No class initializer captures all addresses eagerly. Each property
             // owns private compiler-generated storage that remains zero until read.
+            pointers.GetProperty("direct_only").ShouldBeNull();
             pointers.TypeInitializer.ShouldBeNull();
             pointers.GetFields().ShouldBeEmpty();
             var requested = pointers.GetProperty("field", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)!;

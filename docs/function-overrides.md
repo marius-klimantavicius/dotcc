@@ -179,6 +179,10 @@ A matching name and scope with a changed signature is an error, including when
 function-pointer variables and members with the same name are not rewritten.
 Unknown profile fields, unknown intrinsics and invalid method names are rejected.
 Function rules coexist with `macroOverrides`, `fieldTypeNames` and `externalTypes`.
+The same profile can include `"stableFunctionPointers": ["host_callback"]` to
+request cached function addresses for host glue without replacing implementations.
+Otherwise pointer properties are emitted only for address uses in translated code.
+See [CLI details](cli.md) for matching and separate-compilation behavior.
 
 ## Separate compilation and limits
 

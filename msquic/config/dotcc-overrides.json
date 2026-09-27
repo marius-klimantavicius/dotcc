@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "stableFunctionPointers": ["MsQuicOpenVersion", "MsQuicClose"],
   "fieldTypeNames": [
     {
       "field": "QUIC_CONNECTION_EVENT.CONNECTED",

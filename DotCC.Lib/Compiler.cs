@@ -176,7 +176,7 @@ public static partial class Compiler
         var convGate = (warnings & WarningFlags.Conversion) != 0 ? new ConversionGate() : null;
         // Objects retain public types so managed linking requires no textual
         // rewriting of type declarations or their inline-array wrapper types.
-        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object, relocatable: asObject || namespaceName != null || nested, pointerClass: HelperClass(libraryMode ? libraryClass : "DotCcProgram", "FunctionPointers"), inlineMetadata: asObject || UsesInlineOptions(outputOptions), instanceMethods: outputOptions?.InstanceMethods == true);
+        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object, relocatable: asObject || namespaceName != null || nested, pointerClass: HelperClass(libraryMode ? libraryClass : "DotCcProgram", "FunctionPointers"), inlineMetadata: asObject || UsesInlineOptions(outputOptions), instanceMethods: outputOptions?.InstanceMethods == true, stableFunctionPointers: preprocessing?.StableFunctionPointers);
         if (convGate is { HasAny: true })
         {
             foreach (var d in convGate.Diagnostics) { Console.Error.WriteLine("dotcc: warning: " + d); }

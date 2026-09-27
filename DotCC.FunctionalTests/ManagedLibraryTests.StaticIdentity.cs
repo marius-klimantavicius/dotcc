@@ -37,16 +37,17 @@ public sealed partial class ManagedLibraryTests
         File.WriteAllText(second, externalSecond ? secondSource.Replace("static int same", "int same") : secondSource);
         try
         {
+            var preprocessing = new CPreprocessingOptions(Array.Empty<MacroOverride>(), stableFunctionPointers: new[] { "lock" });
             string emitted;
             if (objectLink)
             {
                 var a = Path.ChangeExtension(first, ".cs");
                 var b = Path.ChangeExtension(second, ".cs");
-                File.WriteAllText(a, Compiler.EmitObject(first));
-                File.WriteAllText(b, Compiler.EmitObject(second));
+                File.WriteAllText(a, Compiler.EmitObject(first, preprocessing: preprocessing));
+                File.WriteAllText(b, Compiler.EmitObject(second, preprocessing: preprocessing));
                 emitted = Compiler.LinkObjects(new[] { a, b }, emit: EmitMode.ManagedLib);
             }
-            else emitted = Compiler.EmitCSharp(new[] { first, second }, emit: EmitMode.ManagedLib);
+            else emitted = Compiler.EmitCSharp(new[] { first, second }, emit: EmitMode.ManagedLib, preprocessing: preprocessing);
             emitted.ShouldContain("public static delegate*<int, int> @lock\n");
             var library = Compile("StaticIdentity_" + Guid.NewGuid().ToString("N"), emitted, RuntimeReferences());
             var context = new AssemblyLoadContext("dotcc-static-identity-" + Guid.NewGuid().ToString("N"), isCollectible: false);

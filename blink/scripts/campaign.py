@@ -69,11 +69,12 @@ def sources(root):
 def translate(ctx):
     root = ctx.root
     ctx.env['DOTCC_COMPILER'] = str(ctx.compiler)
-    ctx.script("native-oracle.sh", "--offline", timeout=1800)
-    native = json_file(root / "artifacts/native/receipt.json")
-    if not native["tests"] or not all(row["pass"] for row in native["tests"]):
-        raise RuntimeError("Native Blink tests failed")
-    ctx.receipt["native"] = native
+    if not ctx.options.fast:
+        ctx.script("native-oracle.sh", "--offline", timeout=1800)
+        native = json_file(root / "artifacts/native/receipt.json")
+        if not native["tests"] or not all(row["pass"] for row in native["tests"]):
+            raise RuntimeError("Native Blink tests failed")
+        ctx.receipt["native"] = native
     staged = ctx.script("probe-core.sh", "--stage-only", label="stage", timeout=300)
     profile = Path(staged.strip().splitlines()[-1]).resolve()
     if not profile.is_relative_to(root / "generated/core-profile"):
@@ -186,5 +187,5 @@ recipe = Recipe("blink", "TranslatedBlink", ("threaded", "single-thread"),
                           for name, directory in (("machine-api", "MachineApi"),
                                                   ("consumer-delivery", "ManagedConsumerDelivery"),
                                                   ("guest-threads", "GuestThreads")))),
-                legacy_owned=("Sources/*.cs",), consumer=Consumer(property="BlinkProject", arguments=("--help",)),
+                legacy_owned=("Sources/*.cs",), supports_fast=True, consumer=Consumer(property="BlinkProject", arguments=("--help",)),
                 default_suites=("consumer",), verify_suites=("source-inputs", "host-files", "host-sockets", "instance-io", "consumer"))

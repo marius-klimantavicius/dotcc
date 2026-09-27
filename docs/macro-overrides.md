@@ -3,6 +3,11 @@
 A translation profile can replace selected macro definitions and assign stable
 names to anonymous field types without editing C sources. Its optional sections
 are independent, leaving room for additional translation settings.
+The optional top-level `stableFunctionPointers` array lists original function
+names whose cached addresses are needed by host glue, for example
+`"stableFunctionPointers": ["sqlite3_free"]`. Other pointer properties are
+generated only when translated code uses a function's address. See
+[CLI details](cli.md) for selection and object-compilation behavior.
 
 ```bash
 dotcc source.c --overrides-file translation.json \

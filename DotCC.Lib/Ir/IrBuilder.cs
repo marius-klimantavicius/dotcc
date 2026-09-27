@@ -95,6 +95,8 @@ internal sealed partial class IrBuilder
     private CType? _currentRet;
 
     public List<FuncDef> Functions { get; } = new();
+    internal IEnumerable<Symbol> FunctionPointerCandidates => Functions.Select(f => f.Sym)
+        .Concat(_protoOnlyFuncs.Values).Distinct();
     public List<GlobalVar> Globals { get; } = new();
     public List<StructTypeDef> Types { get; } = new();
     public List<EnumTypeDef> Enums { get; } = new();

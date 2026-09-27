@@ -99,7 +99,7 @@ public sealed class Symbol
     public bool AddressTaken { get; set; }
 
     /// <summary>The function definition's declarator came from a function-like
-    /// macro expansion. Its address is emitted on demand, not as API metadata.</summary>
+    /// macro expansion.</summary>
     public bool IsMacroGenerated { get; set; }
 
     /// <summary>True when the function is declared to never return to its caller —

@@ -1,0 +1,4 @@
+{
+  "version": 1,
+  "stableFunctionPointers": ["ptls_server_name_is_ipaddr"]
+}

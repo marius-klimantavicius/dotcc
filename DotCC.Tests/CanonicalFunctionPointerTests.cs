@@ -44,7 +44,8 @@ public sealed class CanonicalFunctionPointerTests
                 System.Text.RegularExpressions.Regex.IsMatch(emitted, @" unused_address(?:__unit_[A-F0-9]+)?\s*\{").ShouldBeFalse();
                 System.Text.RegularExpressions.Regex.IsMatch(emitted, @" helper_pasted(?:__unit_[A-F0-9]+)?\s*\{").ShouldBeFalse();
                 System.Text.RegularExpressions.Regex.IsMatch(emitted, @" callback(?:__unit_[A-F0-9]+)?\s*\{").ShouldBeTrue();
-                emitted.ShouldContain(" ordinary\n");
+                Regex.IsMatch(emitted, @" ordinary\s*\{").ShouldBeFalse();
+                emitted.ShouldContain("int ordinary(int x)");
                 System.Text.RegularExpressions.Regex.IsMatch(emitted, @"int unused_address(?:__unit_[A-F0-9]+)?\(int x\)").ShouldBeTrue();
             }
         }

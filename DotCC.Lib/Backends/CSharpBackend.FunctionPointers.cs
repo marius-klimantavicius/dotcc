@@ -12,10 +12,10 @@ internal sealed partial class CSharpBackend
 
     private readonly HashSet<string> _usedFunctionAddresses = new(StringComparer.Ordinal);
 
-    private string FunctionPointer(Symbol function, bool synthetic = false)
+    private string FunctionPointer(Symbol function)
     {
         var name = function.TargetName;
-        if (!synthetic) _usedFunctionAddresses.Add(name);
+        _usedFunctionAddresses.Add(name);
         var signature = Cs(function.Type.Unqualified);
         // The final shell/link binds this alias to the translated class when a
         // definition exists, otherwise Libc. Header provenance does not decide
@@ -77,16 +77,14 @@ internal sealed partial class CSharpBackend
             call.ParamTypes != null && index < call.ParamTypes.Count ? call.ParamTypes[index] : argument.Type)
             .Any(ContainsInstanceCallback);
 
-    private void RegisterPublicFunctionPointers(IrBuilder unit)
+    private void RegisterStableFunctionPointers(IrBuilder unit, IReadOnlyList<string>? names)
     {
-        // Managed consumers need a stable API even when the C source itself never
-        // takes an exported method's address. Variadic pointers include the explicit
-        // span tail used by the emitted method's managed calling convention.
-        // Macro-generated helpers are callable methods, but do not need an API
-        // address unless an actual C designator use requests one via FunctionPointer.
-        if (_publicTypes)
-            foreach (var function in unit.Functions)
-                if (!function.Sym.IsMacroGenerated)
-                    FunctionPointer(function.Sym, synthetic: true);
+        if (names is not { Count: > 0 }) return;
+        var selected = new HashSet<string>(names, StringComparer.Ordinal);
+        // Match original names before C# escaping or object-local qualification.
+        // A host request is an address use too: inline deduplication must preserve
+        // the function's identity even when no translated code takes its address.
+        foreach (var function in unit.FunctionPointerCandidates)
+            if (selected.Contains(function.Name)) FunctionPointer(function);
     }
 }

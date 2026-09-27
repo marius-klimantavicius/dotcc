@@ -13,6 +13,7 @@ generated="$SQLITE_ROOT/generated/VarargsSpanFixture"
 project="$SQLITE_ROOT/tests/VarargsSpanConsumer/VarargsSpanConsumer.csproj"
 prefix="$SQLITE_ROOT/artifacts/varargs-span"
 dotnet "$compiler" -std=c17 "$fixture" --emit=managedlib -o "$generated" \
+  --overrides-file "$SQLITE_ROOT/tests/VarargsSpanConsumer/overrides.json" \
   > "$prefix-emission.log" 2>&1
 dotnet build "$project" -c Release -warnaserror:CS9080 --nologo > "$prefix-build.log" 2>&1
 run_sqlite_process dotnet "$SQLITE_ROOT/tests/VarargsSpanConsumer/bin/Release/net10.0/VarargsSpanConsumer.dll" \

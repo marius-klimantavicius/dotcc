@@ -27,7 +27,7 @@ def prepare(ctx):
         raise RuntimeError("Duplicate core wrapper")
     units = [Unit(reference / name) for name in core if name not in wrappers]
     units += [Unit(root / name) for name in hosts]
-    return Translation(units, ["-std=c17", *flags(lines(root / "config/core-defines.txt"),
+    return Translation(units, ["-std=c17", "--overrides-file", str(root / "config/dotcc-overrides.json"), *flags(lines(root / "config/core-defines.txt"),
                        [reference / "include", reference])], link_flags("PicoTls", "Managed.Security"))
 
 

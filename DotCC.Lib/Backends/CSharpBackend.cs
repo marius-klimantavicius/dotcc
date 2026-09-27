@@ -70,12 +70,12 @@ internal sealed partial class CSharpBackend
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
     private string Cs(CType t) => _target.RenderType(t);
 
-    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false, bool instanceMethods = false)
+    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false, bool instanceMethods = false, IReadOnlyList<string>? stableFunctionPointers = null)
     {
         VaListLifetimeValidator.Validate(unit);
         var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass, _inlineMetadata = inlineMetadata, _instanceMethods = instanceMethods, _target = new CSharpTarget(instanceMethods) };
         foreach (var type in unit.Types) cg._aggregateDefinitions.Add(type.Name, type);
-        cg.RegisterPublicFunctionPointers(unit);
+        cg.RegisterStableFunctionPointers(unit, stableFunctionPointers);
         cg._offsetDocument = unit.CreateOffsetDocument();
         cg._offsetRequests.UnionWith(cg._offsetDocument.Requests.Select(request => request.Name));
         cg._offsetModel = new DotCC.Layout.OffsetLayoutModel(name => cg._offsetDocument.Aggregates.TryGetValue(name, out var aggregate)

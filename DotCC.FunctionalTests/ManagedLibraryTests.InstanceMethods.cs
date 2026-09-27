@@ -89,20 +89,23 @@ public sealed partial class ManagedLibraryTests
         try
         {
             var path = Path.Combine(directory, "instance.c");
-            File.WriteAllText(path, InstanceSource);
+            File.WriteAllText(path, InstanceSource + "\nint host_only(int n) { return value + n; }\n");
+            var preprocessing = new CPreprocessingOptions(Array.Empty<MacroOverride>(), stableFunctionPointers: new[] { "host_only" });
             var options = new CSharpOutputOptions(NestTypes: nested, Runtime: RuntimeProfile.C,
                 InstanceMethods: true, LiteralPool: true, DeduplicateInline: true);
             if (objectLink)
             {
                 var obj = Path.ChangeExtension(path, ".o");
-                File.WriteAllText(obj, Compiler.EmitObject(path, outputOptions: new(InstanceMethods: true)));
+                File.WriteAllText(obj, Compiler.EmitObject(path, outputOptions: new(InstanceMethods: true), preprocessing: preprocessing));
                 path = obj;
             }
             var files = objectLink
                 ? Compiler.LinkObjectFiles(new[] { path }, emit: EmitMode.ManagedLib, className: "Api", outputOptions: options, split: SourceSplit.Function)
-                : Compiler.EmitCSharpFiles(new[] { path }, emit: EmitMode.ManagedLib, className: "Api", outputOptions: options);
+                : Compiler.EmitCSharpFiles(new[] { path }, emit: EmitMode.ManagedLib, className: "Api", outputOptions: options, preprocessing: preprocessing);
+            var host = InstanceHost.Replace("using var a = new Api(); using var b = new Api();",
+                "using var a = new Api(); using var b = new Api(); if (POINTERS.host_only(a, 35) != 42) return \"host callback\";");
             var compilation = CSharpCompilation.Create("Instances_" + Guid.NewGuid().ToString("N"),
-                files.Select(file => ParseSource(file.Value, path: file.Key)).Append(ParseSource(InstanceHost.Replace("POINTERS", nested ? "Api.ApiFunctionPointers" : "ApiFunctionPointers"))),
+                files.Select(file => ParseSource(file.Value, path: file.Key)).Append(ParseSource(host.Replace("POINTERS", nested ? "Api.ApiFunctionPointers" : "ApiFunctionPointers"))),
                 RuntimeReferences(), new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
             using var image = new MemoryStream();
             var result = compilation.Emit(image, cancellationToken: TestContext.Current.CancellationToken);

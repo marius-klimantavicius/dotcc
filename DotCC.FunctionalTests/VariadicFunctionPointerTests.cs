@@ -53,13 +53,14 @@ public sealed partial class ManagedLibraryTests
             """);
         try
         {
+            var preprocessing = new CPreprocessingOptions(Array.Empty<MacroOverride>(), stableFunctionPointers: new[] { "total" });
             string emitted;
             if (objectLink)
             {
-                File.WriteAllText(fragment, Compiler.EmitObject(path));
+                File.WriteAllText(fragment, Compiler.EmitObject(path, preprocessing: preprocessing));
                 emitted = Compiler.LinkObjects(new[] { fragment }, emit: EmitMode.ManagedLib);
             }
-            else emitted = Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib);
+            else emitted = Compiler.EmitCSharp(new[] { path }, emit: EmitMode.ManagedLib, preprocessing: preprocessing);
             emitted.ShouldContain("delegate*<int, global::System.ReadOnlySpan<VaArg>, int>");
             var references = RuntimeReferences();
             var library = Compile("SpanCallbackLibrary_" + Guid.NewGuid().ToString("N"), emitted, references);

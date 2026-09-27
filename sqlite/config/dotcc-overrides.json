@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "stableFunctionPointers": ["sqlite3_free"],
   "macroOverrides": [
     {
       "name": "SQLITE_BIGENDIAN",
