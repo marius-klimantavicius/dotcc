@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Qualify live malformed-input and pre-validation amplification controls serially."""
+from product_evidence import product_closure
 import argparse
 import hashlib
 import json
@@ -90,7 +91,7 @@ def main():
         return path.read_text()
 
     try:
-        closure_path = ROOT / 'config/product-closure.json'
+        closure_path = product_closure(ROOT)
         pico_path = PICO / 'artifacts/campaign/current-default.json'
         pin_path = ROOT / 'config/source.json'
         closure, pin = [json.loads(p.read_text()) for p in (closure_path, pin_path)]

@@ -1,6 +1,6 @@
 # Translation campaigns
 
-SQLite, picotls, MsQuic, Blink, Valkey, libsmb2, and Pinta share the runner in
+SQLite, picotls, MsQuic, Blink, Valkey, libsmb2, Pinta, and QuickJS share the runner in
 `Scripts/campaigns`. Their `scripts/campaign.py` recipes supply source selection,
 adaptations, compiler options, host bindings, and named test suites. Existing
 specialist harnesses retain their behavioral assertions and detailed reports.
@@ -15,9 +15,18 @@ and copy its [project plan template](plans/translation-template.md) to
 `<project>/docs/PLAN.md`. The template records product decisions and acceptance
 gates; the runner integration is described in [Adding a project](#adding-a-project).
 
+Shared campaign `link_flags` defaults to 256 KB source splitting
+(`--split=size --split-size=262144`), `--literal-pool`, and
+`--deduplicate-inline`. Recipes inherit these settings and document any explicit
+exception. Standalone DotCC CLI defaults are unchanged.
+
 Use Bash helpers from any directory. They resolve Python 3 as `python3`, then
 `python`, checking the interpreter before dispatch. Python 3.11+ and .NET 10
 are required; native/AOT/network suites have their project-specific prerequisites.
+Python entry points can also use `python Scripts/campaign.py` directly. Script
+staging and validation must work on Windows without administrator privileges or
+Developer Mode: use ordinary copies, and report unavailable optional filesystem
+link tests explicitly. Native/container prerequisites remain project-specific.
 
 ```bash
 bash Scripts/campaign.sh list all --suites

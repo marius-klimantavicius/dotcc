@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """BCL platform callbacks + unchanged generated worker, against the frozen closure."""
+from product_evidence import product_closure
 import argparse,hashlib,json,re,resource,subprocess,sys
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -29,7 +30,7 @@ overrides={'VersionNegotiationError':'QUIC_STATUS_VER_NEG_ERROR','AlpnNegotiatio
 def macro(name):return overrides.get(name,'QUIC_STATUS_'+re.sub(r'(?<!^)([A-Z])',r'_\1',name).upper())
 
 try:
- closure=ROOT/'config/product-closure.json';receipt['closure_sha256']=sha(closure)
+ closure=product_closure(ROOT);receipt['closure_sha256']=sha(closure)
  closure_data=json.loads(closure.read_text())
  sourcefiles=[ROOT/'src/BclHost'/name for name in ['MsQuicHost.Resources.cs','MsQuicHost.Platform.cs','MsQuicHost.Queue.cs','Status.cs']]+[ROOT/'tests/PlatformHost/Program.cs']
  receipt['source_hashes']={str(p.relative_to(ROOT)):sha(p) for p in sourcefiles}

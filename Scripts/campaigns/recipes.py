@@ -48,6 +48,7 @@ def flags(defines=(), includes=()):
             *(part for path in includes for part in ("-I", str(path)))]
 
 
-def link_flags(name, namespace, size=102400, literals=True):
+def link_flags(name, namespace, size=262144, literals=True, deduplicate_inline=True):
     return ["--nest-types", "--runtime=c", "--class-name", name, "--namespace", namespace,
-            "--split=size", f"--split-size={size}", *(["--literal-pool"] if literals else [])]
+            "--split=size", f"--split-size={size}", *(["--literal-pool"] if literals else []),
+            *(["--deduplicate-inline"] if deduplicate_inline else [])]

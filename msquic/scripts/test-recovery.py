@@ -6,6 +6,7 @@ feature gates. Build and qualify current peers with test-managed-peer.py first.
 Known upstream recovery limitations warn and continue; --strict-recovery retains
 the original fail-fast qualification behavior.
 """
+from product_evidence import product_closure
 import argparse
 import errno
 import hashlib
@@ -65,7 +66,7 @@ def validate_baseline(baseline, variants):
     check(baseline.get('passed'), 'Current baseline peer matrix is not validated')
     bind_files(baseline.get('source_hashes'), 'Baseline source')
     bind_files(baseline.get('binary_hashes'), 'Baseline executable')
-    check(baseline['closure_sha256'] == sha(ROOT / 'config/product-closure.json'), 'Baseline closure changed')
+    check(baseline['closure_sha256'] == sha(product_closure(ROOT)), 'Baseline closure changed')
     for variant in variants:
         directories = (
             ('generated_hashes', ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')),
@@ -395,6 +396,39 @@ def run_case(args, receipt, variant, runtime, role, family, cipher, scenario):
         print('WARNING: ' + message, file=sys.stderr, flush=True)
 
 
+def collect_case(args, receipt, *selection):
+    """Optional diagnostic collection; unexpected outcomes remain failures."""
+    first = len(receipt['cases'])
+    try:
+        run_case(args, receipt, *selection)
+    except Exception as error:
+        if not args.keep_going or len(receipt['cases']) != first + 1:
+            raise
+        case = receipt['cases'][-1]
+        # Only continue after exchange has retained and cleaned up its failed
+        # attempt. Setup failures without a case and inconsistent receipts stop.
+        if case.get('passed') is not False or case.get('error') != str(error) or 'elapsed_seconds' not in case:
+            raise
+        receipt.setdefault('unexpected_failures', []).append(dict(
+            name=case['name'], error=str(error), exception=type(error).__name__))
+        print('UNEXPECTED FAILURE (retained; collecting remaining cases): ' + case['name'] + ': ' + str(error),
+              file=sys.stderr, flush=True)
+
+
+def complete_collection(receipt, full, expected):
+    receipt.update(matrix_complete=len(receipt['cases']) == expected,
+                   cases_expected=expected,
+                   cases_passed=sum(case['passed'] for case in receipt['cases']),
+                   cases_warned=sum('warning' in case for case in receipt['cases']),
+                   cases_unexpected=len(receipt.get('unexpected_failures', [])))
+    check(receipt['matrix_complete'], 'Selected recovery matrix is incomplete')
+    check(not receipt['cases_unexpected'],
+          f"Recovery matrix retained {receipt['cases_unexpected']} unexpected failure(s)")
+    warned = receipt['cases_warned']
+    receipt.update(passed=full and not warned, targeted_passed=not full and not warned,
+                   verification_passed=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variants', nargs='+', choices=['raw', 'optimized'], default=['raw', 'optimized'])
@@ -410,6 +444,8 @@ def main():
     parser.add_argument('--seed', type=int, default=7381)
     parser.add_argument('--strict-recovery', action='store_true',
                         help='Fail instead of warning for recognized upstream recovery limitations')
+    parser.add_argument('--keep-going', action='store_true',
+                        help='Collect all diagnostic outcomes; unexpected failures still exit nonzero')
     parser.add_argument('--peer-receipt', type=Path, default=ROOT / 'artifacts/managed-peer/results.json')
     parser.add_argument('--output', type=Path, default=ROOT / 'artifacts/recovery')
     args = parser.parse_args()
@@ -420,6 +456,7 @@ def main():
         os.sched_setaffinity(0, sorted(os.sched_getaffinity(0))[:4])
     receipt = dict(passed=False, targeted_passed=False, verification_passed=False,
                    phase='P7 packet recovery subset', strict_recovery=args.strict_recovery,
+                   diagnostic_keep_going=args.keep_going,
                    entire_p7_qualified=False, cases=[], warnings=[], source_hashes={
                        str(path.relative_to(REPO)): sha(path) for path in (Path(__file__), PROXY, CLASSIFIER)})
     runtimes = args.runtimes or (['jit'] if args.jit_only else ['jit', 'aot'])
@@ -443,17 +480,15 @@ def main():
                                       for case in baseline['cases']),
                                   'Baseline lacks selected variant/runtime/role/family/cipher')
                             for scenario in args.scenarios:
-                                run_case(args, receipt, variant, runtime, role, family, cipher, scenario)
+                                collect_case(args, receipt, variant, runtime, role, family, cipher, scenario)
         validate_baseline(baseline, args.variants)
         bind_files(receipt['source_hashes'], 'Recovery source')
         check(sha(args.peer_receipt) == receipt['peer_receipt']['sha256'], 'Baseline receipt changed during recovery')
         full = (set(args.variants) == {'raw', 'optimized'} and set(runtimes) == {'jit', 'aot'}
                 and set(args.roles) == {'both', 'client', 'server'} and set(args.families) == {'ipv4', 'ipv6'}
                 and set(args.ciphers) == {'128', '256'} and set(args.scenarios) == set(SCENARIOS))
-        warned = sum('warning' in case for case in receipt['cases'])
-        receipt.update(passed=full and not warned, targeted_passed=not full and not warned,
-                       verification_passed=True, cases_passed=sum(case['passed'] for case in receipt['cases']),
-                       cases_warned=warned)
+        expected = len(args.variants) * len(runtimes) * len(args.roles) * len(args.families) * len(args.ciphers) * len(args.scenarios)
+        complete_collection(receipt, full, expected)
     except BaseException as error:
         receipt['error'] = str(error)
         raise

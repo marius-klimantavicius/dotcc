@@ -4,6 +4,7 @@
 Uses existing frozen translations; never fetches, translates, or changes the core.
 An initial --variants optimized --jit-only probe does not satisfy the full gate.
 """
+from product_evidence import product_closure
 import argparse
 import hashlib
 import json
@@ -55,7 +56,7 @@ def run(command, name):
 
 
 try:
-    closure = ROOT / 'config/product-closure.json'
+    closure = product_closure(ROOT)
     frozen = json.loads(closure.read_text())
     receipt['product_closure_sha256'] = sha(closure)
     provenance = PICOTLS / 'artifacts/campaign/current-default.json'

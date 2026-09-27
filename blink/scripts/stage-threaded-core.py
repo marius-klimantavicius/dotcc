@@ -13,7 +13,7 @@ import shutil
 import subprocess
 import sys
 
-from core_inputs import compiler_identity, emission_identity, profile_sources, stage_managed_boundaries
+from core_inputs import compiler_directory, compiler_identity, emission_identity, profile_sources, stage_managed_boundaries
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
@@ -106,7 +106,7 @@ def main():
         base_inputs_path = base / 'inputs.json'
         inputs = read_json(base_inputs_path)
         track(base_inputs_path)
-        compiler = compiler_identity(REPO / 'DotCC/bin/Release/net10.0')
+        compiler = compiler_identity(compiler_directory(ROOT))
         if inputs['compiler'] != compiler:
             raise RuntimeError('Base compiler differs; prepare a fresh reviewed base')
         if sha(base / 'compiler-identity.py') != track(ROOT / 'scripts/core_inputs.py'):
@@ -401,7 +401,7 @@ def main():
         for name, expected in live.items():
             if sha(Path(name)) != expected:
                 raise RuntimeError('Input changed during staging: ' + name)
-        if compiler_identity(REPO / 'DotCC/bin/Release/net10.0') != compiler:
+        if compiler_identity(compiler_directory(ROOT)) != compiler:
             raise RuntimeError('Compiler changed during staging')
         report.update(staged=True, inputs_sha256=sha(profile / 'inputs.json'), compiler=compiler,
             producer_count=len(entries), selected=entries, emission_identities=identities,

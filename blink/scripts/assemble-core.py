@@ -9,7 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
-from core_inputs import compiler_identity, profile_sources, emission_identity, semantic_selection, managed_boundary_selection, instance_methods, upstream_identity
+from core_inputs import compiler_directory, compiler_identity, profile_sources, emission_identity, semantic_selection, managed_boundary_selection, instance_methods, upstream_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 LINK_OPTIONS = ['--emit=managedlib', '--literal-pool', '--deduplicate-inline', '--nest-types', '--class-name', 'BlinkCore',
@@ -31,7 +31,7 @@ if not (profile / 'closure.json').is_file():
 for name, digest in inputs['staged_headers'].items():
     if sha(profile / name) != digest:
         raise SystemExit('profile checksum mismatch: ' + name)
-compiler_dir = ROOT.parent / 'DotCC/bin/Release/net10.0'
+compiler_dir = compiler_directory(ROOT)
 compiler = compiler_identity(compiler_dir)
 if sha(profile / 'compiler-identity.py') != sha(ROOT / 'scripts/core_inputs.py'):
     raise SystemExit('compiler identity helper differs from frozen profile; stage a new profile')

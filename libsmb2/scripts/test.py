@@ -63,7 +63,11 @@ try:
     run([ROOT / 'scripts/upstream-tests.sh'], logs / 'upstream-tests.log', receipt, timeout=14400)
     # Idempotence is tested on a private copy with the original semantic tool.
     with tempfile.TemporaryDirectory(prefix='idempotence-', dir=ROOT / 'build') as temporary:
-        copied = Path(temporary) / 'TranslatedLibsmb2'
+        # Preserve the product's generated/<project> -> ../../src layout so
+        # its authored host inputs remain part of the semantic compilation.
+        copied = Path(temporary) / 'generated' / 'TranslatedLibsmb2'
+        shutil.copytree(ROOT / 'src', Path(temporary) / 'src',
+                        ignore=shutil.ignore_patterns('bin', 'obj'))
         shutil.copytree(product, copied, ignore=shutil.ignore_patterns('bin', 'obj'))
         before = {p.name: sha(p) for p in copied.glob('*.cs')}
         run(['dotnet', 'restore', copied / 'TranslatedLibsmb2.csproj', '--nologo'], logs / 'idempotence-restore.log', receipt)

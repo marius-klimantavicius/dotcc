@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import shlex
 import shutil
+import stat
 import subprocess
 import sys
 import tarfile
@@ -164,9 +165,22 @@ class InputTests(unittest.TestCase):
         extra = self.tree / "extra.txt"
         extra.write_text("unexpected")
         self.assertNotEqual(self.cli("--no-fetch").returncode, 0)
-        extra.unlink()
-        extra.symlink_to(self.tree / "src/server.c")
-        self.assertNotEqual(self.cli("--no-fetch").returncode, 0)
+        # Inject link metadata rather than creating a privileged Windows link.
+        # The real tree validator must reject that entry before reading it.
+        original_lstat = Path.lstat
+
+        def link_metadata(path, *args, **kwargs):
+            observed = original_lstat(path, *args, **kwargs)
+            if path == extra:
+                fields = list(observed)
+                fields[0] = stat.S_IFLNK | 0o777
+                return os.stat_result(fields)
+            return observed
+
+        manifest = json.loads((self.root / "config/source-files.json").read_text())
+        with patch.object(Path, 'lstat', link_metadata):
+            with self.assertRaisesRegex(ValueError, 'Unsupported source entry.*symlinks'):
+                inputs.verify_tree(self.tree, manifest)
 
     def test_missing_manifest_cannot_be_manufactured_from_tree(self):
         self.seed_archive()
@@ -185,7 +199,11 @@ class InputTests(unittest.TestCase):
     def test_python_resolution_and_argument_preservation(self):
         bins = self.root / "python executables"
         bins.mkdir()
-        (bins / "dirname").symlink_to(shutil.which("dirname"))
+        # An ordinary executable shim keeps PATH controlled without links or
+        # moving a platform executable away from its dependent DLLs.
+        dirname = bins / "dirname"
+        dirname.write_text('#!/bin/bash\nexec ' + shlex.quote(Path(shutil.which('dirname')).as_posix()) + ' "$@"\n')
+        dirname.chmod(0o755)
         invocation_log = self.root / "python.log"
         for usable in [(True, True), (False, True), (False, False)]:
             invocation_log.write_text("")

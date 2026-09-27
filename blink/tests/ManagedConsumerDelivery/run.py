@@ -6,7 +6,7 @@ import json as _campaign_json
 from pathlib import Path as _CampaignPath
 _CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().parents
                       if (parent / "config/source-manifest.json").is_file())
-_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/ManagedConsumerDelivery/run.py']
+_CAMPAIGN_INPUTS = _campaign_json.loads((_CAMPAIGN_ROOT / "config/script-inputs.json").read_text())['tests/KestrelService/build-native.py']
 
 import argparse
 from datetime import datetime, timezone
@@ -25,14 +25,17 @@ ROOT = Path(__file__).resolve().parents[2]
 REPO = ROOT.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
 from semantic_delivery import pin_semantic_delivery
+from campaign_delivery import load_delivery, tool_directory
 
 HELPER = ROOT / 'tests/WorkerInstances/run.py'
 spec = importlib.util.spec_from_file_location('worker_evidence', HELPER)
 helper = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(helper)
+API_HELPER = ROOT / 'tests/MachineApi/run.py'
+api_spec = importlib.util.spec_from_file_location('machine_api_evidence', API_HELPER)
+api_helper = importlib.util.module_from_spec(api_spec)
+api_spec.loader.exec_module(api_helper)
 sha = helper.sha
-NATIVE_SHA = _CAMPAIGN_INPUTS['NATIVE_SHA']
-PROFILE_SHA = _CAMPAIGN_INPUTS['PROFILE_SHA']
 ENVIRONMENT = {'LANG': 'C', 'DOTNET_GCHeapHardLimit': '1000000',
     'DOTNET_GCRegionRange': '2000000', 'DOTNET_GCRegionSize': '100000',
     'DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE': 'false', 'DOTNET_EnableDiagnostics': '0'}
@@ -65,7 +68,9 @@ def main():
     parser.add_argument('--delivery-receipt', type=Path, required=True)
     parser.add_argument('--delivery-sha256', required=True)
     parser.add_argument('--native-receipt', type=Path, required=True)
+    parser.add_argument('--native-sha256', required=True)
     parser.add_argument('--profile-receipt', type=Path, required=True)
+    parser.add_argument('--profile-sha256', required=True)
     args = parser.parse_args()
     base = ROOT / 'artifacts/managed-consumer-delivery'
     base.mkdir(parents=True, exist_ok=True)
@@ -187,9 +192,15 @@ def main():
         project = ROOT / 'samples/ManagedConsumer/ManagedConsumer.csproj'
         solution = ROOT / 'ManagedConsumer.slnx'
         delivery_path = pin(args.delivery_receipt, args.delivery_sha256)
-        native_path = pin(args.native_receipt, NATIVE_SHA)
-        profile_path = pin(args.profile_receipt, PROFILE_SHA)
-        delivery, native, profile = [json.loads(p.read_text()) for p in (delivery_path, native_path, profile_path)]
+        pin(ROOT / 'scripts/campaign_delivery.py')
+        native_path = pin(args.native_receipt, args.native_sha256)
+        profile_path = pin(args.profile_receipt, args.profile_sha256)
+        delivery = load_delivery(delivery_path)
+        native, profile = [json.loads(p.read_text()) for p in (native_path, profile_path)]
+        if (native.get('image', {}).get('digest') != _CAMPAIGN_INPUTS['IMAGE_DIGEST']
+                or native.get('runner_sha256') != sha(ROOT / 'tests/KestrelService/build-native.py')
+                or profile.get('producer') != dict(path=str(native_path), sha256=args.native_sha256)):
+            raise RuntimeError('Native guest/profile do not form the declared current producer chain')
         final = ROOT / 'generated/TranslatedBlink'
         if (delivery.get('passed') is not True or delivery.get('authored_sources_unchanged') is not True
                 or delivery['selected_profile'] != 'threaded'
@@ -233,7 +244,7 @@ def main():
             pin(Path(delivery['profile']) / name, digest)
         receipt['semantic_intrinsics'] = pin_semantic_delivery(delivery, assembly, pin)
         for name, digest in delivery['compiler'].items():
-            pin(REPO / 'DotCC/bin/Release/net10.0' / name, digest)
+            pin(tool_directory(delivery, 'compiler', REPO / 'DotCC/bin/Release/net10.0') / name, digest)
         for row in delivery['results'].values():
             if row['exit_code'] != 0:
                 raise RuntimeError('Public delivery command failed')
@@ -241,9 +252,9 @@ def main():
         for path, digest in helper.source_closure(final / 'TranslatedBlink.csproj').items():
             if not path.is_relative_to(final) and delivery['authored_sources'].get(str(path.relative_to(ROOT))) != digest:
                 raise RuntimeError('Unpinned original authored product source: ' + str(path))
-        inputs = helper.source_closure(project)
+        inputs = api_helper.source_closure(project)
         for path in (Path(__file__), Path(__file__).with_name('README.md'), project.with_name('README.md'),
-                     HELPER, ROOT / 'scripts/core_inputs.py', solution, delivery_path, native_path, profile_path, guest):
+                     HELPER, API_HELPER, ROOT / 'scripts/core_inputs.py', solution, delivery_path, native_path, profile_path, guest):
             inputs[path] = sha(path)
         for path, digest in inputs.items():
             pin(path, digest)
@@ -261,7 +272,8 @@ def main():
             limits=dict(memory_bytes=128*1024*1024, instructions=100_000_000, wall_milliseconds=60_000,
                         descriptors=128, output_bytes=16384, created_workers=16),
             memory_scope='Coupled guest AS/DATA allowance and backing cap, not claimed physical use')
-        receipt['native'] = dict(path=str(native_path), sha256=NATIVE_SHA, profile=str(profile_path), profile_sha256=PROFILE_SHA)
+        receipt['native'] = dict(path=str(native_path), sha256=args.native_sha256,
+                                profile=str(profile_path), profile_sha256=args.profile_sha256)
         receipt['delivery'] = dict(path=str(delivery_path), sha256=args.delivery_sha256, assembly=delivery['assembly'])
         run('dotnet-info', [dotnet, '--info'])
         run('solution-build', [dotnet, 'build', solution, '-c', 'Release', '--disable-build-servers', '-p:UseSharedCompilation=false'])

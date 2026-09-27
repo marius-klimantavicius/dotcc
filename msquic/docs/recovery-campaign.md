@@ -17,9 +17,23 @@ warnings regardless of its hash policy. Use `--strict-recovery` on
 `scripts/test-recovery.py` to restore fail-fast recovery qualification. Historical
 strict results described below remain unchanged.
 
+For a diagnostic inventory of every selected case, pass `--keep-going`.
+Unexpected failures retain their original case error and `passed: false`, are
+listed separately in `unexpected_failures`, and still make the command exit
+nonzero with `verification_passed: false`. `matrix_complete` reports whether
+the selected matrix finished; it does not mean recovery passed. Without this
+option, unexpected failures still stop immediately. This collection option
+does not change the observation classifier or the transfer assertions.
+
 The [2026-09-25 investigation](recovery-investigation-20260925.md) captures the
 pending PATH_RESPONSE overwrite, oversized retransmissions and separate harness
 deadline behavior without changing the core or relabeling strict failures.
+
+The [2026-09-27 verification](verification-20260927.md) records the final complete
+576-case matrix: 488 successes, 87 existing-policy warnings and one unclassified
+mixed FIN deadline. Its exact native control also failed decreasing-ceiling
+delivery. The documented native limitation was accepted in scope; the collection
+still exited nonzero and does not claim successful recovery.
 
 The [2026-09-24 compiler refresh](verification-20260924.md) records a fresh
 execution against the latest regenerated sources. The checkpoints below retain

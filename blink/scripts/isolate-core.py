@@ -15,7 +15,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import time
-from core_inputs import compiler_identity, profile_sources, canonical_emission, semantic_selection, managed_boundary_selection, object_options
+from core_inputs import compiler_directory, compiler_identity, profile_sources, canonical_emission, semantic_selection, managed_boundary_selection, object_options
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -34,7 +34,7 @@ closure_path = profile / 'closure.json'
 if not closure_path.exists():
     closure_path = root / 'artifacts/core/closure.json'  # historical diagnostic snapshots
 closure = {'sources': profile_sources(profile, root, profile_inputs)}
-compiler = root.parent / 'DotCC/bin/Release/net10.0'
+compiler = compiler_directory(root)
 receipt = {'profile': str(profile), 'profile_inputs_sha256': hashlib.sha256((profile / 'inputs.json').read_bytes()).hexdigest(),
            'compiler_sha256': compiler_identity(compiler),
            'compiler_identity_script_sha256': hashlib.sha256((root / 'scripts/core_inputs.py').read_bytes()).hexdigest(),

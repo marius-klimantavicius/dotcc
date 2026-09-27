@@ -158,6 +158,11 @@ urllib.request.urlopen = fixture_fetch
                         TEST_FETCH_ATTEMPT=str(self.repo / "fetch-attempt"),
                         TEST_FETCH_FIXTURE=str(self.transport), TEST_DOTNET_FAIL="",
                         TEST_ALLOW_FIXTURE_FETCH="0")
+        # These isolated campaigns test their own CLI defaults. A parent verify
+        # run's offline/source/tool policy must not replace the fixture policy.
+        for name in tuple(self.env):
+            if name.startswith('DOTCC_CAMPAIGN_') or name == 'DOTCC_COMPILER':
+                self.env.pop(name)
 
     @staticmethod
     def write_json(path, value):

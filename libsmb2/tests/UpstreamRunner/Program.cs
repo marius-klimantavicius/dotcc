@@ -167,12 +167,14 @@ sealed class Runner(Manifest manifest)
             receipt.Adaptations.Add("C# process and file orchestration replaces the shell; original C program bodies and upstream exit/content expectations are preserved");
         }
         receipt.Adaptations.Add("Each executable invocation uses a fresh process, binary stdout/stderr capture, and an external timeout");
+        if ((variant.TestUrl ?? manifest.TestUrl).Contains('?'))
+            receipt.Adaptations.Add("Manifest URL query options are preserved after each fixture path for native and managed programs; the campaign supplies a bounded upstream connection timeout");
         if (name is "test_0300_cat_basic.sh" or "test_0310_cancel_pdu.sh")
             receipt.Adaptations.Add("Additional stdout content checks establish that upstream mains actually read the fixture despite success returns on some errors");
         if (name == "aes128ccm-test.c")
             receipt.Adaptations.Add("Additionally compare the two printed expected/encrypted vectors; upstream itself asserts only successful decryption and plaintext equality");
         if (name == "test_0600_ssc_basic.sh")
-            receipt.Adaptations.Add("Deterministic BCL random fixture bytes shared across variants replace dd from /dev/urandom, preserving every file length, appended x byte, and command argument");
+            receipt.Adaptations.Add("Deterministic BCL random fixture bytes shared across variants replace dd from /dev/urandom, preserving every file length, appended x byte, copy mode, and chunk argument");
         return receipt;
     }
     void CompareVectorTranscripts()
@@ -200,7 +202,15 @@ sealed class Runner(Manifest manifest)
             }
     }
 
-    string Url(string leaf) => (variant.TestUrl ?? manifest.TestUrl).TrimEnd('/') + "/" + leaf;
+    string Url(string leaf)
+    {
+        // Query options belong after the complete path, not before its leaf.
+        string root = variant.TestUrl ?? manifest.TestUrl;
+        int query = root.IndexOf('?');
+        return query < 0
+            ? root.TrimEnd('/') + "/" + leaf
+            : root[..query].TrimEnd('/') + "/" + leaf + root[query..];
+    }
     bool Require(params string[] programs)
     {
         foreach (string program in programs)

@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import shlex
 import subprocess
 import sys
 import tarfile
@@ -389,7 +390,12 @@ class BashTests(Fixture):
             path = binaries / name
             path.write_text('#!/bin/sh\n' + ('exec "' + sys.executable + '" "$@"\n' if works else 'exit 1\n'))
             path.chmod(0o755)
-        (binaries / "dirname").symlink_to(shutil.which("dirname"))
+        dirname = shutil.which("dirname")
+        if not dirname:
+            self.skipTest("dirname required")
+        launcher = binaries / "dirname"
+        launcher.write_text('#!/bin/sh\nexec ' + shlex.quote(Path(dirname).as_posix()) + ' "$@"\n')
+        launcher.chmod(0o755)
         return subprocess.run([shutil.which("bash"), scripts / "campaign.sh", "translate", "fixture", "a b", "$literal"],
                               cwd="/", env={**os.environ, "PATH": str(binaries)}, capture_output=True, text=True)
 

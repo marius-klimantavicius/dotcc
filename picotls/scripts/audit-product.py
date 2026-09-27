@@ -8,6 +8,7 @@ import re
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -236,8 +237,11 @@ class AuditTests(unittest.TestCase):
             self.assertEqual(len(generated_files(directory)), 3)
             extra = directory / 'extra.cs'; extra.write_text('')
             with self.assertRaises(ValueError): generated_files(directory)
-            extra.unlink(); source.unlink(); source.symlink_to(directory / PROJECT)
-            with self.assertRaises(ValueError): generated_files(directory)
+            extra.unlink()
+            # Exercise rejection without requiring Windows link privileges.
+            original_is_symlink = Path.is_symlink
+            with patch.object(Path, 'is_symlink', lambda path: path == source or original_is_symlink(path)):
+                with self.assertRaises(ValueError): generated_files(directory)
 
 
 def main():

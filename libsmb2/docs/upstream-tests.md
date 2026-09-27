@@ -89,6 +89,16 @@ remove them afterward. Remote fixture names intentionally follow upstream; the
 runner does not run safely against unrelated existing data. Credentials are passed
 through the inherited/manifest environment and are not copied into receipts.
 
+The disposable Samba campaign supplies the supported `timeout=10` URL query
+option equally to native and managed variants. The runner appends fixture paths
+before query options. This avoids a race in the pinned synchronous connect loop:
+its default zero timeout can expire when connection readiness crosses a wall-clock
+second, before that readiness is serviced. A deterministic extraction of the
+unchanged loop reproduces the same early failure in native and translated C;
+the positive bounded timeout services readiness in both. Original C bodies,
+upstream assertions, failure controls, and the external process deadline remain
+unchanged. The campaign receipt records the selected connection timeout.
+
 The builder may additionally supply a top-level `baselineBlockedPrograms` object,
 keyed by executable program name. Each value records `reason`, `nativeExitCode`,
 `nativeStdoutSha256`, `nativeStderrSha256`, and `logs` from an actual failed native

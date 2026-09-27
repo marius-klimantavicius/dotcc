@@ -4,6 +4,7 @@
 Prerequisites are current P2/P3/P4/P5 receipts. Native libmsquic is linked only
 into the independent oracle executable; ManagedPeer references the BCL host.
 """
+from product_evidence import product_closure
 import argparse
 import hashlib
 import json
@@ -69,7 +70,7 @@ def require_receipt(name, path):
     if not evidence.get('passed'):
         raise RuntimeError(name + ' is not validated')
     closure = evidence.get('closure_sha256', evidence.get('product_closure_sha256'))
-    if closure is not None and closure != sha(ROOT / 'config/product-closure.json'):
+    if closure is not None and closure != sha(product_closure(ROOT)):
         policy().issue(name + ' has a stale closure receipt')
     for variant in args.variants:
         match = next((item for item in evidence.get('variants', []) if item['name'] == variant), None)
@@ -198,7 +199,7 @@ try:
     for name in ('product-build', 'platform-host', 'packet-crypto', 'datapath-host'):
         require_receipt(name, ROOT / 'artifacts' / name / 'results.json')
     require_receipt('tls-adapter', args.tls_receipt)
-    receipt['closure_sha256'] = sha(ROOT / 'config/product-closure.json')
+    receipt['closure_sha256'] = sha(product_closure(ROOT))
     sources = sorted((ROOT / 'src/BclHost').glob('*.cs')) + sorted((ROOT / 'tests/ManagedPeer').glob('*.*'))
     sources += sorted((REPO / 'picotls/src/BclProvider').glob('*.cs'))
     for variant in args.variants:

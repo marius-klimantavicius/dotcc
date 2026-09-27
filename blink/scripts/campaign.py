@@ -9,6 +9,57 @@ from campaigns.recipes import helper, json_file, link_flags
 from campaigns.translation import deliver
 
 
+def run_product_gate(ctx, suite):
+    """Build declared guest prerequisites and qualify current delivered products."""
+    from campaigns.identity import digest
+    import sys
+    directory = {'machine-api': 'MachineApi', 'consumer-delivery': 'ManagedConsumerDelivery',
+                 'guest-threads': 'GuestThreads'}[suite.name]
+    args = []
+    if suite.name != 'guest-threads':
+        producer = Path(json_file(ctx.artifacts.parent / 'current-threaded.json')['receipt'])
+        if producer == ctx.artifacts / 'receipt.json':
+            # Verification keeps appending command results. Preserve the exact
+            # completed delivery evidence before a specialist pins that receipt.
+            frozen = ctx.artifacts / 'product-delivery-receipt.json'
+            if not frozen.exists():
+                shutil.copy2(producer, frozen)
+            ctx.receipt['product_delivery_snapshot'] = dict(source=str(producer), receipt=str(frozen), sha256=digest(frozen))
+            ctx.save()
+            producer = frozen
+        helper(ctx.root / 'scripts/campaign_delivery.py').load_delivery(producer)
+        args += ['--delivery-receipt', producer, '--delivery-sha256', digest(producer)]
+    if suite.name == 'consumer-delivery':
+        import json
+
+        def prerequisite(script, label, *arguments):
+            output = ctx.run([sys.executable, ctx.root / 'tests/KestrelService' / script, *arguments],
+                             label, timeout=1800)
+            summary = json.loads(output.strip().splitlines()[-1])
+            report = Path(summary['receipt']).resolve()
+            if summary.get('passed') is not True or not report.is_relative_to(ctx.root / 'artifacts'):
+                raise RuntimeError('Guest prerequisite did not pass: ' + label)
+            data = json_file(report)
+            if data.get('passed') is not True:
+                raise RuntimeError('Guest prerequisite report did not pass: ' + label)
+            ctx.receipt.setdefault('product_prerequisites', {})[label] = dict(receipt=str(report), sha256=digest(report))
+            ctx.save()
+            return report, data
+
+        native, native_data = prerequisite('build-native.py', 'kestrel-native-build', '--engine', 'docker')
+        profile, _ = prerequisite('native-profile.py', 'kestrel-native-profile', '--guest-receipt', native)
+        args += ['--guest', native_data['binary']['path'], '--native-receipt', native,
+                 '--native-sha256', digest(native), '--profile-receipt', profile, '--profile-sha256', digest(profile)]
+    transcript = ctx.run([sys.executable, ctx.root / 'tests' / directory / 'run.py', *args],
+                         suite.name, timeout=suite.timeout)
+    for line in transcript.splitlines():
+        if line.startswith(str(ctx.root / 'artifacts') + '/'):
+            report = Path(line.strip()) / 'receipt.json'
+            if report.is_file():
+                ctx.receipt.setdefault('product_gate_reports', {})[suite.name] = str(report)
+                ctx.save()
+
+
 def sources(root):
     pin = json_file(root / "config/source-manifest.json")["upstream"]
     yield Source("product", pin["url"], root / "ref" / pin["archive"], root / "ref" / pin["directory"],
@@ -17,6 +68,7 @@ def sources(root):
 
 def translate(ctx):
     root = ctx.root
+    ctx.env['DOTCC_COMPILER'] = str(ctx.compiler)
     ctx.script("native-oracle.sh", "--offline", timeout=1800)
     native = json_file(root / "artifacts/native/receipt.json")
     if not native["tests"] or not all(row["pass"] for row in native["tests"]):
@@ -129,7 +181,7 @@ recipe = Recipe("blink", "TranslatedBlink", ("threaded", "single-thread"),
                                 scope="opt-in specialist regression; prepares its own test artifacts")
                           for name in ("sqlite-regression", "picotls-regression", "msquic-regression",
                                        "language-regressions", "wat-regression", "zig-regression")),
-                        *(Suite(name, ("python", "{root}/tests/" + directory + "/run.py"), 7200,
+                        *(Suite(name, (), 7200, run=run_product_gate,
                                 platforms=("linux",), profiles=("threaded",))
                           for name, directory in (("machine-api", "MachineApi"),
                                                   ("consumer-delivery", "ManagedConsumerDelivery"),

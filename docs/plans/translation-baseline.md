@@ -1,6 +1,6 @@
 # Baseline for translating an upstream project
 
-Baseline version: 1 (2026-09-26).
+Baseline version: 2 (2026-09-27).
 
 Use this baseline for a new DotCC translation campaign. Copy the
 [project template](translation-template.md) to `<project>/docs/PLAN.md`, then fill
@@ -94,12 +94,26 @@ dispatch, including its validated `python3` then `python` fallback, argument/exi
 handling, and paths resolved from script locations. Test invocation from an
 unrelated working directory. Do not add another Python resolver or runner.
 
+Scripts must run under an ordinary Windows account without administrator
+privileges or Developer Mode. Use portable file copies and project references
+for staging and validation; do not require host symlinks or elevation. Tests of
+filesystem link behavior must detect unavailable capabilities and report those
+specific cases explicitly. Declare platform-specific native/container test
+prerequisites separately from the portability of campaign orchestration.
+
 The project supplies source selection, preparation, compiler/linker flags, host
 bindings and behavioral checks. Reuse the framework for fetching, tool execution,
 logging, raw/processed staging, managed builds and publication. Declare consumer
 settings, suites and dependencies in the recipe; reuse dependency projects rather
 than copying generated libraries. Any additional framework capability should be
 generic and demonstrated by a concrete project need.
+
+Campaigns default to `--split=size --split-size=262144` (256 KB),
+`--literal-pool`, and `--deduplicate-inline`. Use the shared `link_flags` helper
+so recipes inherit these defaults. Record any project-specific exception and
+its reason in the plan. These are campaign defaults; standalone DotCC CLI
+defaults are unchanged. Inline deduplication must retain distinct function
+addresses and translation-unit state whenever required by C semantics.
 
 ## 3. Keep provenance separate from compatibility
 
@@ -197,6 +211,14 @@ into every new plan. Coordinate builds that share output directories.
 Adapt these phases into the project plan. Split P3/P4 into feature milestones
 when needed, with explicit dependencies. API design can begin early; its runtime
 acceptance requires the real translated implementation.
+
+Commit each significant milestone after its required validation passes. Keep
+commits focused on the completed change and record its validation evidence.
+Honor current user restrictions and prerequisites: if downstream verification
+is required before committing pending changes, finish it and resolve regressions
+before the first commit. Do not defer all milestone commits until the entire
+campaign is complete. Pushing remains a separate action governed by the current
+session instructions.
 
 | Phase | Work and exit gate |
 | --- | --- |

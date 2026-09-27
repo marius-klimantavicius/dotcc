@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Native controls and raw/optimized JIT/AOT tests of the actual packet callbacks."""
+from product_evidence import product_closure
 import hashlib
 import json
 from pathlib import Path
@@ -34,7 +35,7 @@ def run(command, name):
 
 
 try:
-    closure = ROOT / 'config/product-closure.json'
+    closure = product_closure(ROOT)
     receipt['product_closure_sha256'] = sha(closure)
     product = json.loads((ROOT / 'artifacts/product-build/results.json').read_text())
     if not product['passed']:

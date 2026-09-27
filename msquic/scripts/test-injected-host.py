@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Run the actual core with controlled clock and BCL I/O failures, in isolation."""
+from product_evidence import product_closure
 import argparse
 import hashlib
 import json
@@ -38,7 +39,7 @@ def main():
     authored = sorted((ROOT / 'src/BclHost').glob('*.cs')) + sorted((ROOT / 'tests/InjectedHost').glob('*.cs')) + [ROOT / 'tests/TlsAdapter/Credentials.cs']
     # Source linking permits test-only partial implementations without exposing
     # injection controls in the delivered host or modifying generated libraries.
-    tracked = authored + sorted((REPO / 'picotls/src/BclProvider').glob('*.cs')) + [Path(__file__).resolve(), ROOT / 'config/product-closure.json']
+    tracked = authored + sorted((REPO / 'picotls/src/BclProvider').glob('*.cs')) + [Path(__file__).resolve(), product_closure(ROOT)]
     for variant in args.variants:
         generated = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
         picotls = REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
@@ -62,7 +63,7 @@ def main():
         if any(scenario != 'keepalive' for scenario in args.scenarios) and not args.certificate.is_file():
             raise RuntimeError('Missing trust certificate: pass --certificate from the native peer setup')
         receipt['certificate_sha256'] = sha(args.certificate) if args.certificate.is_file() else None
-        closure = json.loads((ROOT / 'config/product-closure.json').read_text())
+        closure = json.loads((product_closure(ROOT)).read_text())
         for variant in args.variants:
             generated = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')
             if any(closure['generated'][variant].get(p.name) != sha(p) for p in generated.glob('*.cs')):

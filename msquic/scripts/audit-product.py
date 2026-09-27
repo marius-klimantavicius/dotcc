@@ -4,6 +4,7 @@
 This static inventory does not claim that every generic embedded libc method is
 reachable. The full consumer receipt supplies actual JIT/trimmed NativeAOT proof.
 """
+from product_evidence import product_closure
 import hashlib
 import importlib.util
 import itertools
@@ -169,7 +170,7 @@ def consumer_dependencies(directory, identity, runtime):
 
 try:
     pin = read(ROOT / 'config/source.json')
-    closure = read(ROOT / 'config/product-closure.json')
+    closure = read(product_closure(ROOT))
     stage_path = ROOT / 'build/product-source/manifest.json'
     stage = read(stage_path)
     require(closure['revision'] == pin['commit'] == stage['revision'], 'Source revision mismatch')
@@ -273,7 +274,7 @@ try:
         require(consumer.get('passed') is True, 'Public consumer full raw/optimized JIT/NativeAOT gate is pending')
         require(consumer.get('exact_source_metadata_required') is True, 'Consumer did not require exact compiled source metadata')
         require(consumer.get('source_revision') == pin['commit'], 'Consumer source revision differs')
-        require(consumer.get('product_closure_sha256') == sha(ROOT / 'config/product-closure.json'), 'Consumer used a different product closure')
+        require(consumer.get('product_closure_sha256') == sha(product_closure(ROOT)), 'Consumer used a different product closure')
         require(consumer.get('picotls_translation_sha256') == sha(pico_path), 'Consumer used different picotls provenance')
         require(consumer.get('profile_sha256') == sha(ROOT / 'config/api-profile.json'), 'Consumer used a different selected profile')
         # Both supported receipt names are bound maps, never an existence-only check.

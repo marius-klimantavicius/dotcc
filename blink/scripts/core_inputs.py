@@ -8,7 +8,14 @@ _CAMPAIGN_ROOT = next(parent for parent in _CampaignPath(__file__).resolve().par
 _CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifest.json").read_text())["upstream"]
 
 import hashlib
+import os
 from pathlib import Path
+
+
+def compiler_directory(campaign: Path) -> Path:
+    """Use the shared campaign's immutable tool snapshot when provided."""
+    selected = os.environ.get('DOTCC_COMPILER')
+    return Path(selected).resolve().parent if selected else campaign.parent / 'DotCC/bin/Release/net10.0'
 
 
 def stage_semantic_intrinsics(campaign: Path, profile: Path) -> None:

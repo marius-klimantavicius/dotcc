@@ -9,6 +9,8 @@ for share in alpha beta; do
     mkdir -p "/srv/$share/資料"
     printf '%s' "$share" > "/srv/$share/資料/marker.txt"
 done
+# Server-side DFS fixtures inside the Linux Samba container; these do not
+# create host filesystem links or require Windows host link privileges.
 ln -s "msdfs:$server\\alpha" /srv/dfs/link-a
 ln -s "msdfs:$server\\beta" /srv/dfs/link-b
 exec smbd --foreground --no-process-group --debug-stdout

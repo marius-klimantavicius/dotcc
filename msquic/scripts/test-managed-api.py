@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Serial source-linked owning facade and actual transport controls."""
+from product_evidence import product_closure
 import argparse
 import hashlib
 import json
@@ -77,7 +78,7 @@ def run(command, name, environment=None):
 
 
 try:
-    closure = ROOT / 'config/product-closure.json'
+    closure = product_closure(ROOT)
     provenance = PICO / 'artifacts/campaign/current-default.json'
     frozen, pico_frozen = json.loads(closure.read_text()), picotls_provenance(PICO)
     sources = [Path(__file__).resolve(), closure, provenance, ROOT / 'tests/TlsAdapter/Credentials.cs']

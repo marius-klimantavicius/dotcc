@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REPO = ROOT.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
 from semantic_delivery import pin_semantic_delivery
+from campaign_delivery import load_delivery, tool_directory
 
 HELPER = ROOT / 'tests/WorkerInstances/run.py'
 spec = importlib.util.spec_from_file_location('worker_evidence', HELPER)
@@ -79,6 +80,16 @@ def source_closure(project):
             name = node.get('Include', '')
             if path == DEPLOYMENT.resolve() and name == '$(BlinkWorkerProject)':
                 visit(WORKER)
+            elif name == '$(BlinkProject)' and not node.get('Condition'):
+                expected_owner = ROOT / 'src/Managed.Emulation.ThreadedExecution/Managed.Emulation.ThreadedExecution.csproj'
+                expected_default = '$(MSBuildThisFileDirectory)../../generated/TranslatedBlink/TranslatedBlink.csproj'
+                setting = xml.find('.//BlinkProject')
+                selected = ROOT / 'generated/TranslatedBlink/TranslatedBlink.csproj'
+                if (path != expected_owner.resolve() or setting is None or setting.text != expected_default
+                        or setting.get('Condition') != "'$(BlinkProject)' == ''"
+                        or (os.environ.get('BlinkProject') and Path(os.environ['BlinkProject']).resolve() != selected.resolve())):
+                    raise RuntimeError('Unreviewed BlinkProject selection')
+                visit(selected)
             elif name and '$(' not in name and ';' not in name and not node.get('Condition'):
                 visit(path.parent / name)
             else:
@@ -89,7 +100,8 @@ def source_closure(project):
 
 def verify_delivery(args, receipt, pin, tree):
     delivery_path = pin(args.delivery_receipt, args.delivery_sha256)
-    delivery = json.loads(delivery_path.read_text())
+    pin(ROOT / 'scripts/campaign_delivery.py')
+    delivery = load_delivery(delivery_path)
     final = ROOT / 'generated/TranslatedBlink'
     if (delivery.get('passed') is not True or not delivery.get('authored_sources_unchanged')
             or delivery.get('selected_profile') != 'threaded'
@@ -126,7 +138,7 @@ def verify_delivery(args, receipt, pin, tree):
         if not path.is_relative_to(final) and delivery['authored_sources'].get(str(path.relative_to(ROOT))) != digest:
             raise RuntimeError('Product references an unpinned authored source: ' + str(path))
     for folder, category in [('DotCC', 'compiler'), ('DotCC.PostProcess', 'postprocessor')]:
-        tools = args.producer_tools.resolve() / category if args.producer_tools else REPO / folder / 'bin/Release/net10.0'
+        tools = args.producer_tools.resolve() / category if args.producer_tools else tool_directory(delivery, category, REPO / folder / 'bin/Release/net10.0')
         for name, digest in delivery[category].items():
             pin(tools / name, digest)
     for row in delivery['results'].values():

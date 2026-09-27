@@ -4,6 +4,7 @@
 No translation or reference mutation. This is a decoder corpus, not the complete
 upstream tests, an endpoint malformed-packet campaign, or a fuzzer.
 """
+from product_evidence import product_closure
 import argparse
 import difflib
 import hashlib
@@ -114,7 +115,7 @@ def main():
             raise RuntimeError('Native corpus IDs differ')
         receipt['native'] = dict(passed=True, output_sha256=hashlib.sha256(baseline.encode()).hexdigest(), executable_sha256=sha(native))
         if not args.native_only:
-            closure = ROOT / 'config/product-closure.json'
+            closure = product_closure(ROOT)
             provenance = PICO / 'artifacts/campaign/current-default.json'
             frozen, pico_frozen = json.loads(closure.read_text()), picotls_provenance(PICO)
             receipt['product_closure_sha256'] = sha(closure)

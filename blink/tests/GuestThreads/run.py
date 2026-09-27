@@ -123,8 +123,11 @@ def trace_info(path, require_guest):
             raise RuntimeError("native clone trace does not match the single child contract")
         if "CLONE_DETACHED" not in clones[0] and "0x400000" not in clones[0]:
             raise RuntimeError("native clone trace lacks observed musl detached flag")
-        if len(result["tids"]) != 2 or not all(any(token in call for call in calls) for token in (
-                "FUTEX_WAIT_PRIVATE", "FUTEX_WAKE_PRIVATE", ", FUTEX_WAIT,", "exit(0)", "exit_group(0)")):
+        # strace may split an exit across unfinished/resumed lines, inserting
+        # whitespace before its closing parenthesis when we join the pieces.
+        if len(result["tids"]) != 2 or not all(any(re.search(pattern, call) for call in calls) for pattern in (
+                "FUTEX_WAIT_PRIVATE", "FUTEX_WAKE_PRIVATE", ", FUTEX_WAIT,",
+                r"^exit\(\s*0\s*\)", r"^exit_group\(\s*0\s*\)")):
             raise RuntimeError("native thread/futex/exit trace coverage is incomplete")
         if pending:
             raise RuntimeError("native trace has unmatched unfinished syscalls")

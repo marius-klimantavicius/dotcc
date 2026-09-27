@@ -57,7 +57,7 @@ import hashlib, json, pathlib, shutil, subprocess, sys, tempfile
 p=pathlib.Path(sys.argv[1])
 stage=pathlib.Path(tempfile.mkdtemp(prefix='attempt-',dir=p/'generated/core-profile'))
 sys.path.insert(0,str(p/'scripts'))
-from core_inputs import compiler_identity, stage_semantic_intrinsics, upstream_identity
+from core_inputs import compiler_directory, compiler_identity, stage_semantic_intrinsics, upstream_identity
 upstream_inputs = upstream_identity(p)
 shutil.copyfile(p/'scripts/core_inputs.py',stage/'compiler-identity.py')
 shutil.copyfile(p/'artifacts/core/closure.json',stage/'closure.json')
@@ -260,7 +260,7 @@ for path in native_paths:
     selected.append(str(p/override['staged_path']) if override else path)
 (stage/'core-source-paths.txt').write_text(''.join(path+'\n' for path in selected))
 files={str(f.relative_to(stage)):hashlib.sha256(f.read_bytes()).hexdigest() for f in stage.rglob('*') if f.is_file()}
-compiler=p.parent/'DotCC/bin/Release/net10.0'
+compiler=compiler_directory(p)
 manifest={'staged_headers':files,'compiler':compiler_identity(compiler),'upstream_inputs':upstream_inputs}
 manifest['source_overrides']=source_overrides
 (stage/'inputs.json').write_text(json.dumps(manifest,indent=2)+'\n')
@@ -283,7 +283,7 @@ if [[ -d "$attempt/host" ]]; then
   includes+=(-I "$attempt/host")
 fi
 set +e
-timeout "${CORE_TRANSLATION_TIMEOUT:-1800}" dotnet "$repo/DotCC/bin/Release/net10.0/dotcc.dll" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
+timeout "${CORE_TRANSLATION_TIMEOUT:-1800}" dotnet "${DOTCC_COMPILER:-$repo/DotCC/bin/Release/net10.0/dotcc.dll}" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
   "${includes[@]}" "${sources[@]}" \
   --overrides-file "$attempt/overrides.json" \
   --override-report "$attempt/override-report.jsonl" --runtime=c \

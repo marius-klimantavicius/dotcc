@@ -8,7 +8,7 @@ Do not pre-mark milestones complete based on another project's results. -->
 Status: planning; no implementation or qualification claimed.
 Campaign: `{{project}}/`. Updated: {{date}}.
 
-This plan adopts [translation baseline v1](../../docs/plans/translation-baseline.md)
+This plan adopts [translation baseline v2](../../docs/plans/translation-baseline.md)
 and the [shared framework](../../docs/campaigns.md). It records this project's
 decisions and gates; common execution and repair methodology stays in the
 baseline. Current user instructions govern implementation, commits, branch work,
@@ -41,7 +41,7 @@ independent work moving. Record evidence when accepting or changing a choice.
 | D3 | ABI and text/binary formats | {{data model, widths/alignment, endianness, encodings; native oracle}} | {{status; P1}} |
 | D4 | Host/provider and dependency policy | {{reused runtime/libraries, authored services, permitted imports and prohibited backends}} | {{status; P1}} |
 | D5 | State, concurrency and lifecycle | {{static/per-instance; reentrancy; startup/readiness/stop/drain}} | {{status; P1/P3}} |
-| D6 | Translation and delivery | {{direct/object emission; class/namespace; source splitting; host/facade projects}} | {{status; P2}} |
+| D6 | Translation and delivery | {{direct/object emission; class/namespace; host/facade projects}}; default 256 KB splitting (`--split=size --split-size=262144`), `--literal-pool` and `--deduplicate-inline` through shared `link_flags`; {{document any exception}} | {{status; P2}} |
 | D7 | Native and independent controls | {{native build/profile, assertion checks, fixtures and peers if relevant}} | {{status; P0/P4}} |
 | D8 | Required execution matrix | {{platform/architecture × profile × form × runtime; additional axes}} | {{status; P4/P6}} |
 | D9 | Test scope and optional campaigns | {{upstream coverage; ordinary errors; custom faults/fuzz/stress selected or excluded}} | {{status; P4}} |
@@ -89,6 +89,11 @@ Highest risks to resolve before broad implementation:
 - Recipe dependencies/hooks: {{translated dependencies and project-only hooks}}.
 - Prerequisites: {{SDK/native tools/fixtures/peers; how acquired and when needed}}.
 
+All orchestration and staging scripts must work on Windows without administrator
+privileges or Developer Mode. Use ordinary copies for temporary verification
+trees; declare platform-specific test prerequisites and any unavailable optional
+filesystem-link cases explicitly.
+
 Use the shared helpers and Python resolution. Declare additional source groups
 and specialist suites in the recipe; do not reproduce the framework's fetching,
 process, postprocessing or publication code. Default translation must complete
@@ -100,6 +105,13 @@ ordinary translation unless a documented required gate needs them.
 Specialize each gate below into observable project results. Split host/behavior
 work into named milestones if necessary. Evidence belongs to the artifacts
 actually exercised; old successful receipts do not close new work.
+
+Commit each significant milestone after its required checks pass, keeping each
+commit focused and recording its evidence. Current user commit prerequisites
+take precedence; complete required downstream verification before committing
+pending changes. Commit gates/exceptions for this campaign: {{none, or explicit
+user-required verification and restrictions}}. Standalone DotCC CLI defaults and
+push authorization are outside these campaign defaults.
 
 | Phase | Concrete exit gate for this project | Status | Commands/evidence and remaining work |
 | --- | --- | --- | --- |

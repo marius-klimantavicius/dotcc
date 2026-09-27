@@ -115,13 +115,18 @@ try:
                 time.sleep(0.1)
         receipt['samba_version'] = run(['docker', 'exec', container, 'smbd', '--version'],
                                        logs / 'samba-version.log', receipt).strip()
+        # The upstream synchronous connect loop treats its default zero timeout
+        # as expired when initial readiness crosses a wall-clock second. Use the
+        # supported bounded URL option equally for native and managed programs.
+        connection_timeout = 10
+        receipt['connection_timeout_seconds'] = connection_timeout
         for variant in manifest['variants']:
             name = variant['name']
             run(['docker', 'exec', container, 'mkdir', '/srv/share/' + name],
                 logs / (name + '-mkdir.log'), receipt)
             run(['docker', 'exec', container, 'chown', 'smbprobe:smbprobe', '/srv/share/' + name],
                 logs / (name + '-chown.log'), receipt)
-            variant['testUrl'] = f'smb://WORKGROUP;smbprobe@127.0.0.1:{port}/probe/{name}'
+            variant['testUrl'] = f'smb://WORKGROUP;smbprobe@127.0.0.1:{port}/probe/{name}?timeout={connection_timeout}'
         manifest.update(sourceRoot=str(source), artifactRoot=str(logs / 'cases'),
                         timeoutSeconds=120, environment={'NTLM_USER_FILE': str(credentials)})
         execution_manifest = logs / 'execution-manifest.json'

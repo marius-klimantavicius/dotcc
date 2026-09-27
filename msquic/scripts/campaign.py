@@ -1,5 +1,6 @@
 """MsQuic staged closure and explicit qualification gates."""
 from pathlib import Path
+import hashlib
 from campaigns.model import Consumer, Recipe, Source, Suite, Translation, Unit
 from campaigns.testing import forms
 from campaigns.recipes import flags, json_file, lines, link_flags
@@ -29,7 +30,7 @@ def prepare(ctx):
     if not exports or len(set(exports)) != len(exports):
         raise RuntimeError("Empty or duplicate inline export selectors")
     return Translation([Unit(stage / name) for name in manifest["units"]], options,
-                       [*link_flags("MsQuic", "Managed.Transport"), "--deduplicate-inline",
+                       [*link_flags("MsQuic", "Managed.Transport"),
                        *(part for name in exports for part in ("--export-inline", name))], objects=True)
 
 
@@ -40,6 +41,7 @@ def finish(ctx):
         ctx.script("freeze-product.py", "--without-sqlite", "--output", closure,
                    label="freeze-closure", timeout=1800)
         ctx.receipt["qualification"] = str(closure)
+        ctx.receipt["qualification_sha256"] = hashlib.sha256(closure.read_bytes()).hexdigest()
 
 
 names = ("platform-host", "packet-crypto", "tls-adapter", "datapath-host", "managed-peer",

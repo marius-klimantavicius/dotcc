@@ -353,7 +353,14 @@ def aliases(managed, native, directory):
         deeper = nested / "deeper"
         deeper.mkdir()
         hop = directory / "hop"
-        os.symlink(deeper, hop, target_is_directory=True)
+        try:
+            os.symlink(deeper, hop, target_is_directory=True)
+        except OSError:
+            if os.name != "nt":
+                raise
+            print("PASS inode alias locking and canonical symlink journal paths", flush=True)
+            print("SKIP directory symlink/.. test: unavailable to this Windows account", flush=True)
+            return
         alias_path = hop / ".." / "through-link.db"
         with open_server(managed, alias_path, directory) as reader:
             reader.execute("CREATE TABLE t(value)")

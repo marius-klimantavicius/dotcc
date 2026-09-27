@@ -10,19 +10,26 @@ signal supplies success. Independent review checks 2,080 file/tree/source/log/
 binary identities. The solution build retains 17 CS8632 nullable-context
 warnings and no errors; this is not a warning-free-build claim.
 
-Reproduce with the reviewed exact delivery identity:
+Reproduce against the current threaded delivery:
 
 ```bash
-python3 blink/tests/ManagedConsumerDelivery/run.py \
-  --guest blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/publish/KestrelService \
-  --native-receipt blink/artifacts/kestrel-guest-musl/attempt-o5jvvf7t/receipt.json \
-  --profile-receipt blink/artifacts/kestrel-native-profile/attempt-zphi57zq/receipt.json \
-  --delivery-receipt blink/artifacts/translation/attempt-kaddtzlg/receipt.json \
-  --delivery-sha256 711c66f92de0d2bf3a4a3005c529f316ca29cabfc0a53a3353ea255969c0de11
+bash blink/scripts/translate.sh --profile threaded
+bash blink/scripts/test.sh --profile threaded --suite consumer-delivery
 ```
 
-Native producer and six-environment profile identities are fixed in the runner;
-the delivery identity is an explicit required argument. It validates the complete
+The recipe builds a fresh static-musl guest with Docker using
+`tests/KestrelService/build-native.py --engine docker`, then executes
+`native-profile.py --guest-receipt` against that exact producer receipt.
+The official image digest is declared in `config/script-inputs.json`; image
+acquisition and NuGet restore require their normal caches or network access.
+Guest paths and native/profile receipt digests come directly from these commands
+and are retained in the current campaign receipt. No historical attempt directory
+is a prerequisite. Direct specialist invocation requires explicit
+`--delivery-receipt`/`--delivery-sha256`, `--native-receipt`/`--native-sha256`,
+`--profile-receipt`/`--profile-sha256`, and `--guest` arguments.
+
+The runner accepts actual shared-framework or historical delivery schemas and
+validates the complete
 public raw/final manifests, 108 translation objects, staged headers, compiler and
 producer logs, original authored sources, native source/tool/package/binary
 identities and profile evidence. It never substitutes a reconstructed receipt.

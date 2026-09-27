@@ -4,6 +4,7 @@ import argparse
 import difflib
 import hashlib
 import json
+import os
 import pathlib
 import subprocess
 import tempfile
@@ -18,6 +19,16 @@ def run(*command, expected=0):
     if result.returncode != expected:
         raise AssertionError(f'{command}: expected {expected}, got {result.returncode}\n{result.stdout}')
     return result.stdout
+
+def optional_symlink(path, target, *, directory=False):
+    try:
+        path.symlink_to(target, target_is_directory=directory)
+        return True
+    except OSError as error:
+        if os.name != 'nt':
+            raise
+        print(f'SKIP optional symbolic-link case: unavailable to this Windows account ({error})')
+        return False
 
 with tempfile.TemporaryDirectory(prefix='dotcc-postprocess-tests-') as temporary:
     root = pathlib.Path(temporary)
@@ -103,15 +114,11 @@ static class Program {
     for bad in (output, source / 'nested'):
         assert 'overlap' in run('dotnet', tool, project, '--output', bad, expected=1) or bad == output
     alias = root / 'alias'
-    try:
-        alias.symlink_to(source, target_is_directory=True)
-    except OSError:
-        pass
-    else:
+    if optional_symlink(alias, source, directory=True):
         assert 'overlap' in run('dotnet', tool, project, '--output', alias / 'nested', expected=1)
         project_link = root / 'Linked.csproj'
-        project_link.symlink_to(project)
-        assert 'overlap' in run('dotnet', tool, project_link, '--output', source / 'linked-nested', expected=1)
+        if optional_symlink(project_link, project):
+            assert 'overlap' in run('dotnet', tool, project_link, '--output', source / 'linked-nested', expected=1)
     code.write_text('class Broken { invalid syntax }')
     failure = root / 'failure'
     run('dotnet', tool, project, '--output', failure, expected=1)

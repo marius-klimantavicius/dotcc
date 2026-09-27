@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Qualify the typed BCL UDP host against raw/optimized frozen MsQuic workers."""
+from product_evidence import product_closure
 import argparse,hashlib,json,resource,subprocess,sys
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -23,7 +24,7 @@ def run(command,name,negative=False):
  elif result.returncode:raise RuntimeError(name+' failed; see '+str(LOGS/(name+'.log')))
  return result.stdout
 try:
- receipt['closure_sha256']=sha(ROOT/'config/product-closure.json')
+ receipt['closure_sha256']=sha(product_closure(ROOT))
  receipt['test_driver_sha256']=sha(Path(__file__))
  receipt['bootstrap_sha256']=sha(ROOT/'tests/PlatformHost/bootstrap.py')
  sourcefiles=[ROOT/'src/BclHost'/name for name in ['MsQuicHost.Resources.cs','MsQuicHost.Platform.cs','MsQuicHost.Queue.cs','Status.cs']]+sorted((ROOT/'src/BclHost').glob('MsQuicHost.Datapath*.cs'))+sorted((ROOT/'tests/DatapathHost').glob('*.cs'))

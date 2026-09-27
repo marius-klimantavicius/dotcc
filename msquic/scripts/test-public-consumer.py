@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Qualify the real public ProjectReference consumer; serialize all builds/runs."""
+from product_evidence import product_closure
 import argparse
 import hashlib
 import json
@@ -208,7 +209,7 @@ def pair(command, variant, runtime, family, certificates, untrusted, environment
 
 
 try:
-    closure_path, pico_path = ROOT / 'config/product-closure.json', PICO / 'artifacts/campaign/current-default.json'
+    closure_path, pico_path = product_closure(ROOT), PICO / 'artifacts/campaign/current-default.json'
     closure, pico = json.loads(closure_path.read_text()), picotls_provenance(PICO)
     pin = json.loads((ROOT / 'config/source.json').read_text())
     profile = json.loads((ROOT / 'config/api-profile.json').read_text())
