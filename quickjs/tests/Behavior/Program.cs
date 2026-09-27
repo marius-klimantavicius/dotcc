@@ -66,23 +66,28 @@ internal static unsafe class Program
     private static void Register(QuickJsContext context, string name,
         delegate*<VM.JSContext*, VM.JSValue, int, VM.JSValue*, VM.JSValue> function)
     {
+        QuickJsText.CheckName(name);
         context.Runtime.Enter();
+        scoped var nameMarshaller = new QuickJsText.ManagedToUnmanagedIn();
         try
         {
-            fixed (byte* key = QuickJsText.Encode(name))
+            nameMarshaller.FromManaged(name, stackalloc byte[QuickJsText.ManagedToUnmanagedIn.BufferSize]);
+            var key = nameMarshaller.ToUnmanaged();
+            var value = VM.JS_NewCFunction2(context.NativeContext, function, key, 1, VM.JSCFunctionEnum.JS_CFUNC_generic, 0);
+            if (value.tag == VM.JS_TAG_EXCEPTION) throw QuickJsContext.TakeException(context.NativeContext);
+            var global = VM.JS_GetGlobalObject(context.NativeContext);
+            try
             {
-                var value = VM.JS_NewCFunction2(context.Pointer, function, key, 1, (VM.JSCFunctionEnum)0, 0);
-                if (value.tag == 6) throw QuickJsContext.TakeException(context.Pointer);
-                var global = VM.JS_GetGlobalObject(context.Pointer);
-                try
-                {
-                    if (VM.JS_SetPropertyStr(context.Pointer, global, key, value) < 0)
-                        throw QuickJsContext.TakeException(context.Pointer);
-                }
-                finally { VM.JS_FreeValue(context.Pointer, global); }
+                if (VM.JS_SetPropertyStr(context.NativeContext, global, key, value) < 0)
+                    throw QuickJsContext.TakeException(context.NativeContext);
             }
+            finally { VM.JS_FreeValue(context.NativeContext, global); }
         }
-        finally { context.Runtime.Leave(); }
+        finally
+        {
+            nameMarshaller.Free();
+            context.Runtime.Leave();
+        }
     }
     private static void Setup(QuickJsContext context)
     {
@@ -101,7 +106,7 @@ internal static unsafe class Program
             Evaluate(context, File.ReadAllText(Path.Combine(root, "tests/fixtures/atomics.js")), "atomics.js");
             Check(javascriptCases.Count == 5 && javascriptCases.Distinct().Count() == 5, "Expected all five Atomics operation cases.");
             runtime.Enter();
-            try { VM.JS_SetCanBlock(runtime.Pointer, 1); }
+            try { VM.JS_SetCanBlock(runtime.NativeRuntime, 1); }
             finally { runtime.Leave(); }
             Evaluate(context, File.ReadAllText(Path.Combine(root, "tests/fixtures/atomics-wait.js")), "atomics-wait.js");
             Check(javascriptCases.Count == 6 && javascriptCases[^1] == "atomics-bounded-wait", "Bounded wait fixture did not execute.");
@@ -157,7 +162,7 @@ internal static unsafe class Program
             using var empty = context.CreateArrayBuffer(ReadOnlySpan<byte>.Empty);
             Check(empty.ToArrayBuffer().Length == 0, "Empty buffer contract failed.");
             runtime.Enter();
-            try { VM.JS_DetachArrayBuffer(context.Pointer, buffer.Raw); }
+            try { VM.JS_DetachArrayBuffer(context.NativeContext, buffer.Raw); }
             finally { runtime.Leave(); }
             Throws<QuickJsException>(() => buffer.ToArrayBuffer(), "detach");
             Clean(runtime);
@@ -182,17 +187,17 @@ internal static unsafe class Program
         context.Runtime.Enter();
         try
         {
-            VM.JSValue buffer = VM.JS_NewArrayBuffer(context.Pointer, (byte*)backing, 16, &SharedReleased, null, 1);
-            if (buffer.tag == 6) throw QuickJsContext.TakeException(context.Pointer);
-            VM.JSValue global = VM.JS_GetGlobalObject(context.Pointer);
+            VM.JSValue buffer = VM.JS_NewArrayBuffer(context.NativeContext, (byte*)backing, 16, &SharedReleased, null, 1);
+            if (buffer.tag == 6) throw QuickJsContext.TakeException(context.NativeContext);
+            VM.JSValue global = VM.JS_GetGlobalObject(context.NativeContext);
             try
             {
                 fixed (byte* name = "shared\0"u8)
-                    if (VM.JS_SetPropertyStr(context.Pointer, global, name, buffer) < 0)
-                        throw QuickJsContext.TakeException(context.Pointer);
+                    if (VM.JS_SetPropertyStr(context.NativeContext, global, name, buffer) < 0)
+                        throw QuickJsContext.TakeException(context.NativeContext);
             }
-            finally { VM.JS_FreeValue(context.Pointer, global); }
-            VM.JS_SetCanBlock(context.Runtime.Pointer, 1);
+            finally { VM.JS_FreeValue(context.NativeContext, global); }
+            VM.JS_SetCanBlock(context.Runtime.NativeRuntime, 1);
         }
         finally { context.Runtime.Leave(); }
         Evaluate(context, "globalThis.waitBigInt=" + (big ? "true" : "false"));
@@ -342,12 +347,12 @@ internal static unsafe class Program
             Evaluate(context, "Promise.reject({toString(){throw Error('conversion failure')}})");
             Throws<QuickJsException>(() => runtime.DrainJobs(), "Unhandled");
             runtime.Enter();
-            try { Check(VM.JS_HasException(context.Pointer) == 0, "Rejection reason conversion left a pending exception."); }
+            try { Check(VM.JS_HasException(context.NativeContext) == 0, "Rejection reason conversion left a pending exception."); }
             finally { runtime.Leave(); }
             using var value = context.Evaluate("({toString(){throw Error('conversion failure')}})");
             Throws<QuickJsException>(() => value.ToString());
             runtime.Enter();
-            try { Check(VM.JS_HasException(context.Pointer) == 0, "Value conversion left a pending exception."); }
+            try { Check(VM.JS_HasException(context.NativeContext) == 0, "Value conversion left a pending exception."); }
             finally { runtime.Leave(); }
             Check(Text(context, "6*7") == "42", "Runtime did not recover after reason/value conversion errors.");
             Clean(runtime);
@@ -480,12 +485,12 @@ internal static unsafe class Program
                     fixed (byte* name = "ConcurrentHostClass\0"u8)
                     {
                         var definition = new VM.JSClassDef { class_name = name };
-                        Check(VM.JS_NewClass(runtime.Pointer, classId, &definition) == 0, "Host class registration failed.");
+                        Check(VM.JS_NewClass(runtime.NativeRuntime, classId, &definition) == 0, "Host class registration failed.");
                     }
-                    var instance = VM.JS_NewObjectClass(context.Pointer, (int)classId);
-                    if (instance.tag == 6) throw QuickJsContext.TakeException(context.Pointer);
+                    var instance = VM.JS_NewObjectClass(context.NativeContext, (int)classId);
+                    if (instance.tag == 6) throw QuickJsContext.TakeException(context.NativeContext);
                     try { Check(VM.JS_GetClassID(instance) == classId, "Host instance lost its class ID."); }
-                    finally { VM.JS_FreeValue(context.Pointer, instance); }
+                    finally { VM.JS_FreeValue(context.NativeContext, instance); }
                 }
                 finally { runtime.Leave(); }
                 Evaluate(context, $"globalThis.identity={id}; for(let i=0;i<1000;i++)Math.sqrt(i);");
@@ -624,8 +629,8 @@ internal static unsafe class Program
             runtime.Enter();
             try
             {
-                VM.JSValue shortBigInt = VM.JS_NewBigInt64(context.Pointer, long.MaxValue);
-                VM.JSValue heapBigInt = VM.JS_NewBigUint64(context.Pointer, ulong.MaxValue);
+                VM.JSValue shortBigInt = VM.JS_NewBigInt64(context.NativeContext, long.MaxValue);
+                VM.JSValue heapBigInt = VM.JS_NewBigUint64(context.NativeContext, ulong.MaxValue);
                 try
                 {
                     Check(shortBigInt.tag == 7 && heapBigInt.tag == -9, "Actual BigInt constructor tags disagree with native.");
@@ -635,12 +640,12 @@ internal static unsafe class Program
                     foreach (VM.JSValue value in inputs)
                     {
                         VM.JSValue argument = value;
-                        VM.JSValue result = VM.JS_Call(context.Pointer, function.Raw, new() { tag = 3 }, 1, &argument);
+                        VM.JSValue result = VM.JS_Call(context.NativeContext, function.Raw, new() { tag = 3 }, 1, &argument);
                         try { Check(result.tag == value.tag && result.u.uint64 == value.u.uint64, "Direct callback changed aggregate payload/tag."); }
-                        finally { VM.JS_FreeValue(context.Pointer, result); }
+                        finally { VM.JS_FreeValue(context.NativeContext, result); }
                     }
                 }
-                finally { VM.JS_FreeValue(context.Pointer, shortBigInt); VM.JS_FreeValue(context.Pointer, heapBigInt); }
+                finally { VM.JS_FreeValue(context.NativeContext, shortBigInt); VM.JS_FreeValue(context.NativeContext, heapBigInt); }
             }
             finally { runtime.Leave(); }
             Clean(runtime);

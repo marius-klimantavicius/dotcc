@@ -5,7 +5,7 @@ for (int iteration = 0; iteration < 2; iteration++)
 {
     var runtime = new QuickJsRuntime(new Dictionary<string, string>
     {
-        ["sum"] = "export const sum = values => values.reduce((a, b) => a + b, 0);"
+        ["sum"] = "export const sum = values => values.reduce((a, b) => a + b, 0);",
     });
     using (runtime)
     using (var context = runtime.CreateContext())
