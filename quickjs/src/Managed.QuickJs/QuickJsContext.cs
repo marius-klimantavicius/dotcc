@@ -6,6 +6,14 @@ namespace Managed.Interpreters;
 /// <summary>Owns a QuickJS realm and all outstanding values created in that realm.</summary>
 public sealed unsafe class QuickJsContext : IDisposable
 {
+    // Anonymous JS_TAG_* enum values from the pinned quickjs.h, using the
+    // qualified non-NaN-boxed JSValue tag representation.
+    private const long JsTagException = 6;
+    private const long JsTagFloat64 = 8;
+    private const int MaximumCallbackArity = 256;
+    private const int MaximumCallbackArguments = 4096;
+    private const int Cesu8Encoding = 1;
+
     internal readonly QuickJsRuntime Runtime;
     internal VM.JSContext* Pointer;
     private readonly HashSet<QuickJsValue> values = [];
@@ -22,7 +30,7 @@ public sealed unsafe class QuickJsContext : IDisposable
     internal void Check() => ObjectDisposedException.ThrowIf(Pointer == null, this);
     internal QuickJsValue Own(VM.JSValue value)
     {
-        if (value.tag == 6) throw TakeException(Pointer);
+        if (value.tag == JsTagException) throw TakeException(Pointer);
         try
         {
             var result = new QuickJsValue(this, value);
@@ -115,7 +123,7 @@ public sealed unsafe class QuickJsContext : IDisposable
     {
         ArgumentNullException.ThrowIfNull(function);
         QuickJsText.CheckName(name);
-        if (arity < 0 || arity > 256) throw new ArgumentOutOfRangeException(nameof(arity));
+        if (arity < 0 || arity > MaximumCallbackArity) throw new ArgumentOutOfRangeException(nameof(arity));
         Runtime.Enter();
         try
         {
@@ -127,7 +135,7 @@ public sealed unsafe class QuickJsContext : IDisposable
             {
                 // The generic-magic union member has the canonical translated callback signature.
                 var callback = VM.JS_NewCFunctionMagic(Pointer, &Invoke, (byte*)key, arity, VM.JSCFunctionEnum.JS_CFUNC_generic_magic, id);
-                if (callback.tag == 6) throw TakeException(Pointer);
+                if (callback.tag == JsTagException) throw TakeException(Pointer);
                 var global = VM.JS_GetGlobalObject(Pointer);
                 try
                 {
@@ -145,16 +153,16 @@ public sealed unsafe class QuickJsContext : IDisposable
         {
             var weak = (WeakReference<QuickJsContext>)GCHandle.FromIntPtr((nint)VM.JS_GetContextOpaque(pointer)).Target!;
             if (!weak.TryGetTarget(out var context)) throw new ObjectDisposedException(nameof(QuickJsContext));
-            if (count > 4096) throw new ArgumentOutOfRangeException(nameof(count), "Callback argument limit exceeded.");
+            if (count > MaximumCallbackArguments) throw new ArgumentOutOfRangeException(nameof(count), "Callback argument limit exceeded.");
             var values = new double[count];
             for (int i = 0; i < count; i++)
             {
                 double number = 0;
-                if (VM.JS_ToFloat64(pointer, &number, arguments[i]) < 0) return new() { tag = 6 };
+                if (VM.JS_ToFloat64(pointer, &number, arguments[i]) < 0) return new() { tag = JsTagException };
                 values[i] = number;
             }
             double result = context.callbacks[magic](values);
-            return new() { tag = 8, u = new() { float64 = result } };
+            return new() { tag = JsTagFloat64, u = new() { float64 = result } };
         }
         catch (Exception error) { return ThrowManaged(pointer, error); }
     }
@@ -166,16 +174,16 @@ public sealed unsafe class QuickJsContext : IDisposable
         try
         {
             exception = VM.JS_NewError(context);
-            if (exception.tag == 6) return exception;
+            if (exception.tag == JsTagException) return exception;
             ownsException = true;
             byte[] message = QuickJsText.Encode(error.Message);
             fixed (byte* text = message)
             fixed (byte* key = "message\0"u8)
             {
                 var value = VM.JS_NewStringLen(context, (byte*)text, (ulong)(message.Length - 1));
-                if (value.tag == 6) return value;
+                if (value.tag == JsTagException) return value;
                 if (VM.JS_SetPropertyStr(context, exception, (byte*)key, value) < 0)
-                    return new() { tag = 6 };
+                    return new() { tag = JsTagException };
             }
             ownsException = false;
             return VM.JS_Throw(context, exception);
@@ -194,7 +202,7 @@ public sealed unsafe class QuickJsContext : IDisposable
     internal static string String(VM.JSContext* context, VM.JSValue value)
     {
         ulong length = 0;
-        byte* text = VM.JS_ToCStringLen2(context, &length, value, 1);
+        byte* text = VM.JS_ToCStringLen2(context, &length, value, Cesu8Encoding);
         if (text == null)
         {
             // User-defined toString can throw, including while formatting an
