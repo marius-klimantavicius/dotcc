@@ -1,0 +1,22 @@
+{
+  "project": "quickjs",
+  "upstream": "Bellard QuickJS",
+  "version": "2026-06-04",
+  "url": "https://bellard.org/quickjs/quickjs-2026-06-04.tar.xz",
+  "archive": "quickjs-2026-06-04.tar.xz",
+  "directory": "quickjs-2026-06-04",
+  "sha256": "b376e839b322978313d929fd20663b11ba58b75df5a46c126dd19ea2fa70ad2a",
+  "hash_evidence": "Computed from the official archive downloaded for source inspection on 2026-09-26; not an independently signed upstream digest.",
+  "homepage": "https://bellard.org/quickjs/",
+  "license": "MIT",
+  "license_file": "LICENSE",
+  "group": "product",
+  "required": [
+    "VERSION", "LICENSE", "Makefile", "quickjs.c", "quickjs.h",
+    "quickjs-atom.h", "quickjs-opcode.h", "dtoa.c", "dtoa.h",
+    "libregexp.c", "libregexp.h", "libregexp-opcode.h",
+    "libunicode.c", "libunicode.h", "libunicode-table.h",
+    "cutils.c", "cutils.h", "list.h"
+  ],
+  "test_inputs": "Bundled tests from this same archive; no external Test262 checkout selected."
+}

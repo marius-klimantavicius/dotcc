@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="generated/TranslatedQuickJs/TranslatedQuickJs.csproj" />
+  <Project Path="src/Managed.QuickJs/Managed.QuickJs.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>

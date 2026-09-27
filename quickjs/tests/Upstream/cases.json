@@ -1,0 +1,100 @@
+{
+  "count_unit": "upstream top-level test function invocation; not individual assertions",
+  "files": {
+    "test_closure.js": [
+      "test_closure1",
+      "test_closure2",
+      "test_closure3",
+      "test_arrow_function",
+      "test_with",
+      "test_eval_closure",
+      "test_eval_const"
+    ],
+    "test_language.js": [
+      "test_op1",
+      "test_cvt",
+      "test_eq",
+      "test_inc_dec",
+      "test_op2",
+      "test_constructor",
+      "test_delete",
+      "test_prototype",
+      "test_arguments",
+      "test_class",
+      "test_template",
+      "test_template_skip",
+      "test_object_literal",
+      "test_regexp_skip",
+      "test_labels",
+      "test_labels2",
+      "test_destructuring",
+      "test_spread",
+      "test_function_length",
+      "test_argument_scope",
+      "test_function_expr_name",
+      "test_parse_semicolon",
+      "test_optional_chaining",
+      "test_parse_arrow_function",
+      "test_unicode_ident",
+      "test_global_var_opt",
+      "test_number_literals"
+    ],
+    "test_loop.js": [
+      "test_while",
+      "test_while_break",
+      "test_do_while",
+      "test_for",
+      "test_for_break",
+      "test_switch1",
+      "test_switch2",
+      "test_for_in",
+      "test_for_in2",
+      "test_for_in_proxy",
+      "test_try_catch1",
+      "test_try_catch2",
+      "test_try_catch3",
+      "test_try_catch4",
+      "test_try_catch5",
+      "test_try_catch6",
+      "test_try_catch7",
+      "test_try_catch8"
+    ],
+    "test_bigint.js": [
+      "test_bigint1",
+      "test_bigint2",
+      "test_bigint3",
+      "test_pi"
+    ],
+    "test_builtin.js": [
+      "test",
+      "test_function",
+      "test_enum",
+      "test_array",
+      "test_string",
+      "test_math",
+      "test_number",
+      "test_eval",
+      "test_typed_array",
+      "test_json",
+      "test_date",
+      "test_regexp",
+      "test_symbol",
+      "test_map",
+      "test_weak_map",
+      "test_weak_map_cycles",
+      "test_weak_ref",
+      "test_generator",
+      "test_rope",
+      "test_line_column_numbers"
+    ]
+  },
+  "module_cases": {
+    "test_cyclic_import.js": {
+      "expected_exit_code": 0,
+      "expected_behavior": "assert(f(1), 4) succeeds; pinned source negative metadata is stale"
+    }
+  },
+  "excluded_cases": {
+    "test_builtin.js:test_finalization_registry": "Uses os.setTimeout; OS event loop excluded from embedded profile"
+  }
+}

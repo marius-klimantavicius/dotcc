@@ -1,0 +1,32 @@
+{
+  "status": "Source, ABI and embedded profile validated by native controls and four translated Linux x64 execution cells; final receipts in docs/validation.md",
+  "default_profile": "embedded",
+  "rid": "linux-x64",
+  "c_data_model": "LP64 little-endian, unsigned plain char",
+  "dialect": "gnu11",
+  "defines": [
+    "_GNU_SOURCE",
+    "__SIZEOF_INT128__=16"
+  ],
+  "inline_exports": [
+    "JS_FreeValue",
+    "JS_DupValue",
+    "JS_FreeValueRT",
+    "JS_DupValueRT",
+    "JS_NewCFunctionMagic"
+  ],
+  "version_define": "CONFIG_VERSION must be derived from source.json and checked against VERSION",
+  "include_order": [
+    "reviewed campaign compatibility headers, if required",
+    "staged upstream root",
+    "DotCC libc headers"
+  ],
+  "dispatch": "Apply config/dotcc-overrides.json to quickjs.c object emission: override DIRECT_DISPATCH to 0 without editing source",
+  "atomics": "Keep upstream CONFIG_ATOMICS enabled; C11 atomics and pthread-backed wait/notify use the shared managed runtime. Owning runtimes retain upstream can_block=false by default.",
+  "stack_checks": "Authored host available-stack and requested-allocation check; parser, module, JavaScript recursion and RegExp/job cancellation pass in JIT and NativeAOT",
+  "adaptations_status": "Actual translation uses guarded dispatch and branch-hint macro overrides without source adaptations; native oracle alone uses the equivalent switch-dispatch adaptation.",
+  "alternate_profiles": [],
+  "dotcc_standard": "c11",
+  "dialect_note": "Native control uses gnu11; DotCC accepts c11 and supports GNU extensions as compiler extensions.",
+  "branch_hints": "Guarded likely/unlikely and js_likely/js_unlikely macro overrides replace __builtin_expect(!!(x), 0|1) with (!!(x)); expected arguments are source literals without side effects."
+}

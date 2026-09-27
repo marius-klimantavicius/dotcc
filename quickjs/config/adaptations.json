@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "adaptations": [
+    {
+      "id": "native-switch-dispatch",
+      "native_only": true,
+      "path": "quickjs.c",
+      "reason": "TESTS ONLY: applied to the native oracle control because its C compiler does not support DotCC macro overrides. NOT used for actual DotCC translation, which uses the guarded DIRECT_DISPATCH=0 macro override. Preserve stock native source for the independent dispatch comparison.",
+      "original": "#if defined(__EMSCRIPTEN__)\n#define DIRECT_DISPATCH  0\n#else\n#define DIRECT_DISPATCH  1\n#endif",
+      "replacement": "/* TESTS ONLY: native oracle equivalent of the DotCC macro override.\n   NOT used for actual DotCC translation. */\n#define DIRECT_DISPATCH  0"
+    }
+  ]
+}

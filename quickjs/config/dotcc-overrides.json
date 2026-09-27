@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "macroOverrides": [
+    {
+      "name": "DIRECT_DISPATCH",
+      "signature": {
+        "kind": "object"
+      },
+      "replacement": "0",
+      "expect": [
+        "1"
+      ],
+      "requireMatch": true
+    },
+    {
+      "name": "likely",
+      "signature": {
+        "kind": "function",
+        "parameters": [
+          "x"
+        ],
+        "variadic": false
+      },
+      "replacement": "(!!(${__dotcc_x}))",
+      "expect": [
+        "__builtin_expect(!!(x), 1)"
+      ],
+      "requireMatch": true
+    },
+    {
+      "name": "unlikely",
+      "signature": {
+        "kind": "function",
+        "parameters": [
+          "x"
+        ],
+        "variadic": false
+      },
+      "replacement": "(!!(${__dotcc_x}))",
+      "expect": [
+        "__builtin_expect(!!(x), 0)"
+      ],
+      "requireMatch": true
+    },
+    {
+      "name": "js_likely",
+      "signature": {
+        "kind": "function",
+        "parameters": [
+          "x"
+        ],
+        "variadic": false
+      },
+      "replacement": "(!!(${__dotcc_x}))",
+      "expect": [
+        "__builtin_expect(!!(x), 1)"
+      ],
+      "match": {
+        "exact": "__builtin_expect(!!(x), 1)"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "js_unlikely",
+      "signature": {
+        "kind": "function",
+        "parameters": [
+          "x"
+        ],
+        "variadic": false
+      },
+      "replacement": "(!!(${__dotcc_x}))",
+      "expect": [
+        "__builtin_expect(!!(x), 0)"
+      ],
+      "match": {
+        "exact": "__builtin_expect(!!(x), 0)"
+      },
+      "requireMatch": false
+    }
+  ],
+  "functionOverrides": [
+    {
+      "name": "js_get_stack_pointer",
+      "signature": {
+        "returnType": "uintptr_t",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Interpreters.QuickJsHost.StackPointer"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "js_check_stack_overflow",
+      "signature": {
+        "returnType": "BOOL",
+        "parameterTypes": [
+          "JSRuntime *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Interpreters.QuickJsHost.CheckStack"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "js_def_malloc",
+      "signature": {
+        "returnType": "void *",
+        "parameterTypes": [
+          "JSMallocState *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Interpreters.QuickJsHost.Allocate"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "js_def_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "JSMallocState *",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Interpreters.QuickJsHost.Free"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "js_def_realloc",
+      "signature": {
+        "returnType": "void *",
+        "parameterTypes": [
+          "JSMallocState *",
+          "void *",
+          "size_t"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Interpreters.QuickJsHost.Reallocate"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "js_def_malloc_usable_size",
+      "signature": {
+        "returnType": "size_t",
+        "parameterTypes": [
+          "const void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Interpreters.QuickJsHost.UsableSize"
+      },
+      "requireMatch": true
+    }
+  ]
+}

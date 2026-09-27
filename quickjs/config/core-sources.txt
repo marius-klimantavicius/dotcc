@@ -1,0 +1,6 @@
+# Embedded engine closure; excludes the POSIX shell integration in quickjs-libc.c.
+quickjs.c
+dtoa.c
+libregexp.c
+libunicode.c
+cutils.c
