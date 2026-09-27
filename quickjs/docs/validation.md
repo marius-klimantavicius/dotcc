@@ -5,6 +5,13 @@
 records fresh full-source translation, raw and processed builds, all seven
 suites, all four execution cells and the final dependency/distribution audit.
 
+The enum-export follow-up [receipt](../artifacts/campaign/20260927-181345-c1f9baea/receipt.json)
+passes fresh translation, native controls and all seven suites for raw/processed
+JIT. `enumExports: ["JS_TAG_*"]` in `config/dotcc-overrides.json` emits all 17
+header tags once per product; `QuickJsContext` consumes those generated constants.
+This follow-up did not rerun NativeAOT; the four-cell qualification below records
+the earlier run.
+
 The final run used the absolute wrapper with local source inputs,
 the default `warn` provenance policy and the final compiler snapshot. The link
 uses the shared 256 KB split, literal-pool and inline-deduplication defaults:

@@ -27,6 +27,7 @@ def sources(project, root):
     rc_helpers = []
     inline_exports = json.loads((root / 'config/profile.json').read_text())['inline_exports']
     inline_definitions = {name: 0 for name in inline_exports}
+    tag_definitions = []
     for path in generated:
         if not path.resolve().is_relative_to(directory) or not path.is_file():
             raise RuntimeError(f'Invalid generated source ownership: {path}')
@@ -41,6 +42,7 @@ def sources(project, root):
         for name in inline_exports:
             inline_definitions[name] += len(re.findall(
                 r'\bpublic\s+static\s+unsafe\s+\w+\s+' + re.escape(name) + r'\s*\(', text))
+        tag_definitions.extend(re.findall(r'\bpublic\s+const\s+int\s+(JS_TAG_\w+)\s*=', text))
         rc_helpers.extend(re.findall(r'\bstatic\s+unsafe\s+JSRefCountHeader\s*\*\s+(__js_rc(?:__unit_[A-F0-9]+)?)\s*\(', text))
         # Compiler-generated per-symbol bindings are forbidden. The generic,
         # unused NativeImports helper in the shared runtime is permitted.
@@ -51,6 +53,8 @@ def sources(project, root):
         raise RuntimeError(f'Expected one deduplicated __js_rc definition in {directory}: {rc_helpers}')
     if any(count != 1 for count in inline_definitions.values()):
         raise RuntimeError(f'Expected one original-name upstream inline export per API: {inline_definitions}')
+    if not {'JS_TAG_EXCEPTION', 'JS_TAG_FLOAT64'}.issubset(tag_definitions) or len(tag_definitions) != len(set(tag_definitions)):
+        raise RuntimeError(f'Expected unique upstream JS_TAG_* constant exports: {tag_definitions}')
     for path in directory.rglob('*.cs'):
         if not {'bin', 'obj'}.intersection(path.relative_to(directory).parts) and path not in generated:
             raise RuntimeError(f'Unowned compiled source in generated product: {path}')
@@ -85,7 +89,7 @@ def sources(project, root):
         if dynamic.search(path.read_text()):
             raise RuntimeError(f'Project-authored native/dynamic loading is prohibited: {path}')
     return dict(project=str(project), generated_source_count=len(generated), linked_hosts=sorted(map(str, host)),
-                compiler_native_binding_symbols=[], upstream_notices=notice_record, inline_exports=inline_definitions,
+                compiler_native_binding_symbols=[], upstream_notices=notice_record, inline_exports=inline_definitions, enum_exports=sorted(tag_definitions),
                 inline_deduplication={'__js_rc_definitions': len(rc_helpers), 'name': rc_helpers[0]})
 
 

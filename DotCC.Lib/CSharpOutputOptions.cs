@@ -4,7 +4,8 @@ namespace DotCC;
 public enum RuntimeProfile { All, C, Auto }
 
 /// <summary>Final output layout; set at link time when using object fragments.</summary>
+/// <param name="ExportEnum">Exact/glob selectors for file-scope C enumerators, exported as underlying integer constants.</param>
 public sealed record CSharpOutputOptions(bool NestTypes = false, RuntimeProfile Runtime = RuntimeProfile.All,
     bool DeduplicateInline = false, System.Collections.Generic.IReadOnlyList<string>? ExportInline = null,
     bool LiteralPool = false, bool StateContext = false,
-    bool InstanceMethods = false);
+    bool InstanceMethods = false, System.Collections.Generic.IReadOnlyList<string>? ExportEnum = null);

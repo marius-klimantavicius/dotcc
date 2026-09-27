@@ -212,6 +212,12 @@ public static partial class Compiler
         {
             throw new CompileException("no `main` function defined in any translation unit.");
         }
+        if (preprocessing?.EnumExports is { Count: > 0 } enumExports)
+        {
+            var declarations = new Dictionary<string, string>(cg.TypeDeclarations!, StringComparer.Ordinal);
+            foreach (var pattern in enumExports) declarations[EnumExportPrefix + pattern] = "";
+            cg = cg with { TypeDeclarations = declarations };
+        }
         if (asObject)
         {
             // Serialize THIS TU's import candidates (non-variadic ProtoOnlyReferenced —
@@ -236,6 +242,9 @@ public static partial class Compiler
             cg = cg with { Functions = inline.Functions, FunctionSources = inline.Parts,
                 TypeDeclarations = inline.Types, Globals = inline.Globals };
         }
+        cg = cg with { TypeDeclarations = SelectEnumExports(cg.TypeDeclarations!, outputOptions,
+            libraryMode ? libraryClass : "DotCcProgram",
+            cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) };
         if (className != null)
             CheckLibraryClassCollision(libraryClass, cg.TypeDeclarations?.Keys ?? Array.Empty<string>(),
                 cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));

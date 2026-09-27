@@ -238,6 +238,7 @@ internal sealed partial class CSharpBackend
         }
         foreach (var declaration in typeDeclarations.Values) structs.Append(declaration);
         cg.AddMacroConstants(unit, typeDeclarations);
+        cg.AddEnumConstants(unit, typeDeclarations);
         cg._literals.AddDeclarations(typeDeclarations);
 
         // Zig test-mode manifest (empty for a normal build): each test's display name paired with the

@@ -289,3 +289,15 @@ embedding inlines selected by `--export-inline` in `config/profile.json`. The
 forwarding `DotCC_JS_*` functions and their extra C translation unit are removed.
 The final source and rooted-AOT audits validate the original-name APIs, and all
 four execution cells pass in `20260927-062444-292bece5`.
+
+
+**Header enum exports — completed.** Select `JS_TAG_*` through `enumExports` in
+`config/dotcc-overrides.json`. DotCC carries file-scope enumerator metadata and
+profile requests through object emission and coalesces equal header definitions
+at link time. Conflicting values/types, missing selectors and managed-name
+collisions must fail explicitly. `QuickJsContext` uses `QuickJs.JS_TAG_EXCEPTION`
+and `QuickJs.JS_TAG_FLOAT64` directly; tag integers are owned by the pinned header.
+Direct/object managed-consumer tests pass. Fresh verification receipt
+`20260927-181345-c1f9baea` passes native controls and every suite for raw/processed
+JIT, including the audit of all 17 exported tag constants. Callback limits and
+string-encoding policy remain facade constants.

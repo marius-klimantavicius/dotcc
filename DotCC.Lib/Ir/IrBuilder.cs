@@ -100,6 +100,7 @@ internal sealed partial class IrBuilder
     public List<GlobalVar> Globals { get; } = new();
     public List<StructTypeDef> Types { get; } = new();
     public List<EnumTypeDef> Enums { get; } = new();
+    internal List<(string Name, CType Underlying, long Value)> EnumConstants { get; } = new();
     public List<Diagnostic> Diagnostics { get; } = new();
 
     /// <summary>Zig test-mode manifest: each <c>test "name" {}</c> block, lowered to a runnable
@@ -1269,6 +1270,7 @@ internal sealed partial class IrBuilder
                 Name = name, Kind = SymKind.EnumConst,
                 Type = (CType?)enumType ?? CType.Int, ConstValue = next, IsGlobal = true,
             });
+            if (_symbols.AtFileScope) EnumConstants.Add((name, underlying, next));
             if (enumType is not null) { members.Add(new EnumMember(name, next)); }
             next++;
         }

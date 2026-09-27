@@ -11,9 +11,10 @@ public static partial class Compiler
     {
         if (options is null) return;
         if (!Enum.IsDefined(options.Runtime)) throw new CompileException("unknown runtime profile");
+        if (options.ExportEnum != null) _ = new MacroExportSelector(options.ExportEnum, "--export-enum");
         if (options.ExportInline != null) _ = new MacroExportSelector(options.ExportInline, "--export-inline");
-        if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options) || options.LiteralPool || options.StateContext))
-            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline --literal-pool and --state-context must be set at link time for objects");
+        if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options) || options.ExportEnum is { Count: > 0 } || options.LiteralPool || options.StateContext))
+            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline, --export-enum, --literal-pool and --state-context must be set at link time for objects");
         if (options.InstanceMethods && emit is not (EmitMode.Object or EmitMode.ManagedLib))
             throw new CompileException("--instance-methods requires object or managed-library output");
         if (options.InstanceMethods && options.StateContext)

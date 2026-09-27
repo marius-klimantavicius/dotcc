@@ -6,10 +6,6 @@ namespace Managed.Interpreters;
 /// <summary>Owns a QuickJS realm and all outstanding values created in that realm.</summary>
 public sealed unsafe class QuickJsContext : IDisposable
 {
-    // Anonymous JS_TAG_* enum values from the pinned quickjs.h, using the
-    // qualified non-NaN-boxed JSValue tag representation.
-    private const long JsTagException = 6;
-    private const long JsTagFloat64 = 8;
     private const int MaximumCallbackArity = 256;
     private const int MaximumCallbackArguments = 4096;
     private const int Cesu8Encoding = 1;
@@ -30,7 +26,7 @@ public sealed unsafe class QuickJsContext : IDisposable
     internal void Check() => ObjectDisposedException.ThrowIf(Pointer == null, this);
     internal QuickJsValue Own(VM.JSValue value)
     {
-        if (value.tag == JsTagException) throw TakeException(Pointer);
+        if (value.tag == VM.JS_TAG_EXCEPTION) throw TakeException(Pointer);
         try
         {
             var result = new QuickJsValue(this, value);
@@ -135,7 +131,7 @@ public sealed unsafe class QuickJsContext : IDisposable
             {
                 // The generic-magic union member has the canonical translated callback signature.
                 var callback = VM.JS_NewCFunctionMagic(Pointer, &Invoke, (byte*)key, arity, VM.JSCFunctionEnum.JS_CFUNC_generic_magic, id);
-                if (callback.tag == JsTagException) throw TakeException(Pointer);
+                if (callback.tag == VM.JS_TAG_EXCEPTION) throw TakeException(Pointer);
                 var global = VM.JS_GetGlobalObject(Pointer);
                 try
                 {
@@ -158,11 +154,11 @@ public sealed unsafe class QuickJsContext : IDisposable
             for (int i = 0; i < count; i++)
             {
                 double number = 0;
-                if (VM.JS_ToFloat64(pointer, &number, arguments[i]) < 0) return new() { tag = JsTagException };
+                if (VM.JS_ToFloat64(pointer, &number, arguments[i]) < 0) return new() { tag = VM.JS_TAG_EXCEPTION };
                 values[i] = number;
             }
             double result = context.callbacks[magic](values);
-            return new() { tag = JsTagFloat64, u = new() { float64 = result } };
+            return new() { tag = VM.JS_TAG_FLOAT64, u = new() { float64 = result } };
         }
         catch (Exception error) { return ThrowManaged(pointer, error); }
     }
@@ -174,16 +170,16 @@ public sealed unsafe class QuickJsContext : IDisposable
         try
         {
             exception = VM.JS_NewError(context);
-            if (exception.tag == JsTagException) return exception;
+            if (exception.tag == VM.JS_TAG_EXCEPTION) return exception;
             ownsException = true;
             byte[] message = QuickJsText.Encode(error.Message);
             fixed (byte* text = message)
             fixed (byte* key = "message\0"u8)
             {
                 var value = VM.JS_NewStringLen(context, (byte*)text, (ulong)(message.Length - 1));
-                if (value.tag == JsTagException) return value;
+                if (value.tag == VM.JS_TAG_EXCEPTION) return value;
                 if (VM.JS_SetPropertyStr(context, exception, (byte*)key, value) < 0)
-                    return new() { tag = JsTagException };
+                    return new() { tag = VM.JS_TAG_EXCEPTION };
             }
             ownsException = false;
             return VM.JS_Throw(context, exception);

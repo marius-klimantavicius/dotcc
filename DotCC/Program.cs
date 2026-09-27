@@ -48,6 +48,11 @@ internal static class Program
             Description = "Expose selected inline functions under their original names. Repeatable exact names or * / ? patterns (quote globs); set at link time.",
             AllowMultipleArgumentsPerToken = false
         };
+        var exportEnumOpt = new Option<string[]>("--export-enum")
+        {
+            Description = "Export file-scope C enumerators as public integral constants. Repeatable exact names or * / ? patterns (quote globs); set at link time for objects.",
+            AllowMultipleArgumentsPerToken = false
+        };
         var instanceMethodsOpt = new Option<bool>("--instance-methods") { Description = "Emit an instance managed library with explicit-context function pointers; set at object emission and link." };
         var stateContextOpt = new Option<bool>("--state-context") { Description = "Emit explicitly bound, disposable C program state for independent managed-library instances (--runtime=c). Link-time option." };
         var literalPoolOpt = new Option<bool>("--literal-pool") { Description = "Copy translated literals into rooted pinned storage with short names and usage comments (default: Libc.L). Set at link time for objects." };
@@ -161,7 +166,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, exportInlineOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -284,7 +289,7 @@ internal static class Program
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),
-                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), ExportInline: parse.GetValue(exportInlineOpt), LiteralPool: parse.GetValue(literalPoolOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));
+                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), ExportInline: parse.GetValue(exportInlineOpt), ExportEnum: parse.GetValue(exportEnumOpt), LiteralPool: parse.GetValue(literalPoolOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));
             }
             catch (Exception ex) when (ex is CompileException or IOException or UnauthorizedAccessException)
             {
@@ -344,8 +349,8 @@ internal static class Program
         WarningFlags warnings = WarningFlags.Default,
         bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null)
     {
-        if ((preprocessOnly || string.Equals(target, "wat", StringComparison.OrdinalIgnoreCase)) && outputOptions is { } layout && (layout.NestTypes || layout.Runtime != RuntimeProfile.All || layout.DeduplicateInline || layout.ExportInline is { Count: > 0 } || layout.LiteralPool || layout.StateContext || layout.InstanceMethods))
-            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline and --literal-pool require C# output");
+        if ((preprocessOnly || string.Equals(target, "wat", StringComparison.OrdinalIgnoreCase)) && outputOptions is { } layout && (layout.NestTypes || layout.Runtime != RuntimeProfile.All || layout.DeduplicateInline || layout.ExportInline is { Count: > 0 } || layout.ExportEnum is { Count: > 0 } || layout.LiteralPool || layout.StateContext || layout.InstanceMethods))
+            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline, --export-enum and --literal-pool require C# output");
         if ((splitSize.HasValue && (split != SourceSplit.Size || splitSize <= 0))
             || (split != SourceSplit.None && (preprocessOnly || emit is EmitKind.File or EmitKind.Obj
                 || (target != null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase)))))
@@ -398,8 +403,8 @@ internal static class Program
         // merges objects. This is what a CMake/make toolchain calls per file.
         if (emit == EmitKind.Obj)
         {
-            if (outputOptions is { } objectLayout && (objectLayout.NestTypes || objectLayout.Runtime != RuntimeProfile.All || objectLayout.DeduplicateInline || objectLayout.ExportInline is { Count: > 0 } || objectLayout.LiteralPool || objectLayout.StateContext))
-                throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline and --literal-pool must be set at link time for objects");
+            if (outputOptions is { } objectLayout && (objectLayout.NestTypes || objectLayout.Runtime != RuntimeProfile.All || objectLayout.DeduplicateInline || objectLayout.ExportInline is { Count: > 0 } || objectLayout.ExportEnum is { Count: > 0 } || objectLayout.LiteralPool || objectLayout.StateContext))
+                throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline, --export-enum and --literal-pool must be set at link time for objects");
             if (inputPaths.Length != 1)
             {
                 Console.Error.WriteLine("dotcc: --emit=obj compiles one .c at a time");

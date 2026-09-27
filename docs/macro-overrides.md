@@ -78,6 +78,35 @@ Regexes use culture-invariant matching, a 100 ms timeout, no compiled/dynamic
 code, and a 16,384-character pattern limit. Regex input bodies, exact selectors and replacement templates are
 limited to 1,048,576 characters. These are character limits, not UTF-8 byte limits.
 
+## Exporting enum constants
+
+Enum constants can be selected in the same version-1 profile:
+
+```json
+{
+  "version": 1,
+  "enumExports": ["JS_TAG_*"]
+}
+```
+
+`enumExports` takes case-sensitive C names or `*` / `?` patterns. It exports
+file-scope enumerators from named, typedef and anonymous enums as public constants
+on the generated library class, using their underlying integer type. Block-scope
+enumerators are excluded. It does not change enum values or preprocessor behavior.
+
+Pass the profile when compiling C sources. Objects retain the requests and enum
+metadata, so final linking selects and coalesces shared-header constants without
+requiring the profile again. Every selector must match at final output; conflicting
+underlying types or values across translation units and generated-name collisions
+are errors. Rebuild older objects before enabling exports. Unselected enumerators
+retain their existing output behavior. The link-time `--export-enum` option and
+`CSharpOutputOptions.ExportEnum` add selectors to those carried by profiles;
+the source API exposes `CPreprocessingOptions.EnumExports`.
+
+For example, QuickJS's `"enumExports": ["JS_TAG_*"]` makes
+`QuickJs.JS_TAG_EXCEPTION` available to an authored C# facade without copying its
+numeric value from `quickjs.h`.
+
 ## Stable names for anonymous field types
 
 ```json

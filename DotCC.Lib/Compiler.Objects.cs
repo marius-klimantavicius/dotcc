@@ -72,6 +72,7 @@ public static partial class Compiler
         sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
         sb.Append(SerializeFunctionOverrides(functionOverrides));
         sb.Append(SerializeExternalTypes(externalTypes));
+        sb.Append(EnumConstantsVersion).Append('\n');
         sb.Append(InlineFunctionMetadata.Version).Append('\n');
         if (weakReferences != null)
             foreach (var name in weakReferences) sb.Append(FragWeakReference).Append(name).Append('\n');
@@ -160,6 +161,7 @@ public static partial class Compiler
         var usedFunctionAddresses = new HashSet<string>(StringComparer.Ordinal);
         var globalNames = new HashSet<string>(StringComparer.Ordinal);
         bool missingBoundaries = false;
+        bool missingEnumMetadata = false;
         var mainArity = -1;
         var mainReturnsVoid = false;
         var mainReturnsErrUnion = false;
@@ -206,6 +208,7 @@ public static partial class Compiler
             }
             if (text.Contains(FragWeakFunction, StringComparison.Ordinal) && !text.Contains(FragFunction, StringComparison.Ordinal))
                 throw new CompileException("Weak function objects require function boundaries; regenerate objects");
+            missingEnumMetadata |= !text.Split('\n').Contains(EnumConstantsVersion, StringComparer.Ordinal);
             if (UsesInlineOptions(outputOptions) && !text.Split('\n').Contains(InlineFunctionMetadata.Version, StringComparer.Ordinal))
                 throw new CompileException("Object lacks inline metadata; regenerate objects before using --deduplicate-inline or --export-inline");
             foreach (var line in text.Split('\n'))
@@ -263,8 +266,9 @@ public static partial class Compiler
                             typeByName[name] = buf.ToString(); aggregateByName[name] = incoming; typeOrigins[name] = path;
                         }
                     }
-                    else if (name.StartsWith(MacroConstantPrefix, StringComparison.Ordinal) && typeByName[name] != buf.ToString())
-                        typeByName[name] = ""; // Conflicting TU-local macros have no single public value.
+                    else if ((name.StartsWith(MacroConstantPrefix, StringComparison.Ordinal)
+                        || name.StartsWith(EnumConstantPrefix, StringComparison.Ordinal)) && typeByName[name] != buf.ToString())
+                        typeByName[name] = ""; // Conflicting TU-local constants have no single public value.
                     else if (name.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
                         && typeByName[name] != buf.ToString())
                     {
@@ -403,7 +407,11 @@ public static partial class Compiler
             if (inlineMetadata.TryGetValue(name, out var entry)) inlineMetadata[name] = entry with { AddressUsed = true };
         var inline = ProcessInlineFunctions(functionSources, inlineMetadata, typeByName,
             globals, outputOptions, globalNames);
-        typeByName = new Dictionary<string, string>(inline.Types, StringComparer.Ordinal);
+        if ((outputOptions?.ExportEnum is { Count: > 0 } || inline.Types.Keys.Any(key => key.StartsWith(EnumExportPrefix, StringComparison.Ordinal)))
+            && missingEnumMetadata)
+            throw new CompileException("Object lacks enum metadata; regenerate objects before using enum exports");
+        typeByName = SelectEnumExports(inline.Types, outputOptions, libraryMode ? libraryClass : "DotCcProgram",
+            definedNames.Concat(functionSources.Select(f => f.Name)).Concat(inline.Parts.Select(f => f.Name)));
         typeOrder.RemoveAll(name => !typeByName.ContainsKey(name));
         if (!missingBoundaries) { functions.Clear(); functions.Append(inline.Functions); functionSources = inline.Parts.ToList(); }
         definedNames.UnionWith(functionSources.Select(f => f.Name));
