@@ -257,11 +257,9 @@ public sealed unsafe class QuickJsRuntime : IDisposable
         try
         {
             var owner = Owner(opaque);
-            ulong length = 0;
-            while (name[length] != 0)
-                length++;
 
-            var key = QuickJsText.Decode(name, length);
+            var nameSpan = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(name);
+            var key = QuickJsText.Decode(nameSpan);
             if (!owner._modules.TryGetValue(key, out var source))
             {
                 QuickJsContext.ThrowManaged(context, new QuickJsException($"Unknown in-memory module '{key}'."));

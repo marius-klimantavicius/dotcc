@@ -1,5 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.Unicode;
 
 namespace Managed.Interpreters;
 
@@ -64,6 +66,9 @@ internal static unsafe class QuickJsText
 
     internal static int GetByteCount(ReadOnlySpan<char> text)
     {
+        if (!text.ContainsAnyInRange('\uD800', '\uDFFF'))
+            return Encoding.UTF8.GetByteCount(text);
+
         var count = 0;
         for (var i = 0; i < text.Length; i++)
         {
@@ -94,6 +99,9 @@ internal static unsafe class QuickJsText
 
     internal static int GetBytes(ReadOnlySpan<char> text, Span<byte> result)
     {
+        if (!text.ContainsAnyInRange('\uD800', '\uDFFF'))
+            return Encoding.UTF8.GetBytes(text, result);
+
         var count = 0;
         for (var i = 0; i < text.Length; i++)
         {
@@ -135,6 +143,14 @@ internal static unsafe class QuickJsText
             throw new OverflowException("JavaScript string exceeds managed string capacity.");
 
         var bytes = new ReadOnlySpan<byte>(pointer, (int)length);
+        return Decode(bytes);
+    }
+
+    public static string Decode(ReadOnlySpan<byte> bytes)
+    {
+        if (Utf8.IsValid(bytes))
+            return Encoding.UTF8.GetString(bytes);
+
         var stringLength = GetCharCount(bytes);
         return string.Create(stringLength, bytes, static (destination, source) =>
         {
