@@ -37,6 +37,16 @@ def configure(ctx, project, form):
         ET.SubElement(group, 'None', Update='lwIP.COPYING', CopyToOutputDirectory='PreserveNewest', CopyToPublishDirectory='PreserveNewest')
     ET.indent(tree, space='  ')
     tree.write(project, encoding='unicode')
+    profile = json_file(ctx.root / 'config/profiles.json')[ctx.profile]
+    defines = profile['defines']
+    capability = ET.Element('Project')
+    values = ET.SubElement(capability, 'PropertyGroup')
+    for key, value in {'_LwipProductProfile': ctx.profile, '_LwipProductKind': profile['kind'],
+                       '_LwipNoSys': str(bool(defines.get('NO_SYS', 0))).lower(),
+                       '_LwipHasSockets': str(bool(defines.get('LWIP_SOCKET', 0))).lower()}.items():
+        ET.SubElement(values, key).text = value
+    ET.indent(capability, space='  ')
+    ET.ElementTree(capability).write(project.parent / 'Lwip.Capabilities.props', encoding='unicode')
 
 
 def finish(ctx, project, form):
@@ -115,8 +125,12 @@ def prepare(ctx):
     ctx.receipt['source_wrappers'] = [{'wrapper': str(ctx.root / 'src/port/bridge_service.c'),
         'includes': [str(source / name) for name in bridge_sources],
         'scope': 'Original bridge algorithms included unchanged; authored owner validation, FIFO barrier and quiescent teardown.'}]
-    authored = [Unit(p, ('-I' + str(source / 'src'),) if p.name == 'bridge_service.c' else ()) for p in sorted((ctx.root / 'src/port').glob('*.c')) + sorted((ctx.root / 'src/Host').glob('*.c'))]
-    return Translation([*[source_unit(name, ('-DDOTCC_TCPIP_WORKER=1',) if name == 'src/api/tcpip.c' else ()) for name in selected if name not in bridge_sources], *authored], options,
+    ctx.receipt['source_wrappers'].append({'wrapper': str(ctx.root / 'src/port/socket_refs.c'),
+        'includes': [str(source / 'src/api/sockets.c')],
+        'scope': 'Original socket algorithms included unchanged; expose original private get_socket/done_socket references for owning call admission.'})
+    wrapped_sources = (*bridge_sources, 'src/api/sockets.c')
+    authored = [Unit(p, ('-I' + str(source / 'src'),) if p.name in ('bridge_service.c', 'socket_refs.c') else ()) for p in sorted((ctx.root / 'src/port').glob('*.c')) + sorted((ctx.root / 'src/Host').glob('*.c'))]
+    return Translation([*[source_unit(name, ('-DDOTCC_TCPIP_WORKER=1',) if name == 'src/api/tcpip.c' else ()) for name in selected if name not in wrapped_sources], *authored], options,
                        [*link_flags('Lwip', 'Managed.Networking'), '--instance-methods'],
                        objects=True, configure=configure, finish=finish, validate_objects=validate_objects)
 
@@ -188,6 +202,8 @@ def run_suite(ctx, suite):
 
 
 def run_one(ctx, suite):
+    if suite.name == 'owned-api':
+        return helper(ctx.root / 'scripts/owned-api-tests.py').run(ctx, suite)
     if suite.name == 'http-transactions' or (suite.name == 'tools' and ctx.profile == 'http-content'):
         return helper(ctx.root / 'scripts/http-tests.py').run(ctx, suite)
     if suite.name == 'tools' and ctx.profile == 'makefsdata':
@@ -217,7 +233,7 @@ def validate_options(args):
 
 
 _product = ('threaded', 'nosys', 'threaded-locking')
-_suites = ('oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
+_suites = ('owned-api', 'oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
            'routing', 'links', 'ppp', 'applications', 'contrib', 'tools', 'upstream',
            'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ipv6-addressing', 'multicast-fixtures', 'ppp-serial', 'ppp-ethernet', 'ppp-l2tp', 'routing-ipv6', 'bridge-fixtures', 'lowpan-vectors')
 _applicability = {'tools': ('makefsdata', 'http-content'), 'tool-generator': ('makefsdata',), 'upstream': ('unit', 'unit-nosys'), 'contrib': ('contrib',),

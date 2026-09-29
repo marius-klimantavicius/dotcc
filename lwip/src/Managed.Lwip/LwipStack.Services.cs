@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 namespace Managed.Networking;
+// A stopped service may retain callback roots until the original core can no
+// longer invoke them. Hooks remain registered through failed disposal/retry.
+internal interface ILwipAfterCoreStop { void ReleaseAfterCoreStop(); }
 public sealed unsafe partial class LwipStack
 {
     private readonly List<IDisposable> services=new();
+    private readonly List<ILwipAfterCoreStop> afterCoreStop=new();
     private bool stopping;
     private bool stopMarkerQueued;
     private bool workersJoined;
@@ -25,7 +29,9 @@ public sealed unsafe partial class LwipStack
             serviceConstructionDepth++;
             try{service=factory(this)??throw new InvalidOperationException("Service factory returned null.");}
             finally{serviceConstructionDepth--;}
-            services.Add(service);return service;
+            services.Add(service);
+            if(service is ILwipAfterCoreStop retained)afterCoreStop.Add(retained);
+            return service;
         }
     }
     /// <summary>After a failed Dispose and before the core stop marker, synchronously release previously borrowed resources. Does not reopen admission for new work. Callback may not reenter this facade.</summary>
@@ -52,6 +58,15 @@ public sealed unsafe partial class LwipStack
             // Remove only after a successful stop; a failed disposal retains its
             // service registration and the live core for an explicit retry.
             services[i].Dispose();services.RemoveAt(i);
+        }
+    }
+    private void ReleaseStoppedServiceContexts()
+    {
+        while(afterCoreStop.Count!=0)
+        {
+            int last=afterCoreStop.Count-1;
+            afterCoreStop[last].ReleaseAfterCoreStop();
+            afterCoreStop.RemoveAt(last);
         }
     }
 }

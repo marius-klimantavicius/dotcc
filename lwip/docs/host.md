@@ -39,8 +39,9 @@ operations using upstream callback APIs, copies inbound frames into owned pbufs,
 and removes its interfaces before stopping the worker. `Core` is an explicitly
 low-level borrowed owner: callers must establish `__DotCcEnter`, honor upstream
 threading rules and finish all calls/resources before disposing the facade.
-Higher-level cancellable sockets and full pending-protocol teardown are not yet
-qualified. Clearing the final host registry is not evidence of protocol cleanup.
+The owning socket, netconn and resolver services are covered by the finite
+`owned-api` suite. Broader pending-protocol shutdown remains open; clearing the
+final host registry is not evidence of protocol cleanup.
 
 Ethernet `linkoutput` copies the pbuf chain before returning. `LwipFrames` copies
 again into a managed byte array owned by the receiving transport. The sample
@@ -111,3 +112,28 @@ facade's Invoke, Receive and Poll callback scopes. An original sys_timeout
 callback is tested independently of Invoke. With NO_SYS, callbacks entered by
 direct borrowed-Core calls outside these facade scopes remain the borrower's
 responsibility; they must not reenter facade operations.
+
+The owning socket/netconn services admit one reader or acceptor and one writer
+or connector per handle, concurrently with close. Scheduling itself retains the owner and registers the returned Task before
+queueing; disposal joins these Tasks even when their worker has not started.
+Each original call also retains and binds its owner on its actual calling thread. Socket calls pin upstream descriptor references so close
+cannot recycle an admitted call's descriptor; netconns prepare deletion, join
+callers, then delete. Accepted children enter the registry before rejection,
+and failed release retains them for retry. Cancellation closes the entire
+handle, including another operation on it. User buffers and address DTOs copy
+on admission; numeric IPv6 zones are owner-relative lwIP indices from 0 to 255.
+
+Resolver cancellation completes the caller Task but retains the original query's
+callback root until a real reply or the post-core-join phase. Disposal retries
+preserve these roots. Interfaces detach and stop while backing remains alive,
+cross an actual FIFO callback barrier, and only then free. AddInterface validates
+arguments before allocation and rolls back failed output registration while
+restoring the previous owned default interface. Its returned nint remains a
+borrowed compatibility surface; typed interface ownership is still pending.
+
+Finite tests cover blocked calls, accepted-child races, DNS callbacks across GC
+and disposal retry, constructor rollback and independent owners. They do not yet
+qualify all pending TIME_WAIT, fragment, ARP or ND queue shutdown cases. Internal
+owner-backed nodes may survive until final owner reclamation once external
+references and workers are gone; host/runtime allocations still need explicit
+release. Protocol-specific application and link service lifetimes remain open.

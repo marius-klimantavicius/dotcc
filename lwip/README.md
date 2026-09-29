@@ -22,10 +22,31 @@ The managed consumer connects two independent translated owners over copied
 Ethernet queues, transfers a deterministic 256 KiB TCP echo and UDP datagram over
 IPv4 and IPv6, then closes endpoints and joins its workers. Select a generated
 alternate product with `-p:LwipProject=/absolute/path/to/TranslatedLwip.csproj`;
-for the main-loop consumer additionally pass `-p:LwipProfile=nosys`.
+the consumer imports capabilities from that actual project. No profile hint is
+needed for the main-loop product; an explicitly mismatching `LwipProfile` fails
+the build.
 All runtime sockets in this workload are lwIP sockets, not OS sockets.
 
 NativeOracle requires a C compiler and POSIX threads on Linux. Its native code is
 a test dependency only. Product builds use the .NET 10 toolchain and shared
 DotCC.Libc runtime. Authored host/facade files stay under `src`; generated projects
 reference those originals so ordinary builds pick up host changes directly.
+
+When selecting `LwipProject` inside a consumer project, import `src/LwipProduct.props`
+and forward the normalized selection to its facade reference:
+
+```xml
+<ProjectReference Include="path/to/Managed.Lwip.csproj"
+  AdditionalProperties="LwipProject=$(_LwipSelectedProject);LwipProfile=$(LwipProfile)" />
+```
+
+The import enables static graph restore, adds an explicit selected-product
+reference, and removes only its duplicate SDK-generated transitive edge. Other
+application dependencies retain their normal transitive behavior. This preserves
+the selection during both restore and build, without duplicate product instances.
+This matters for relative paths: project-local properties do not automatically
+propagate to referenced projects. `tests/LocalReference` verifies this pattern
+with a local relative NO_SYS selection and no command-line product/profile hints.
+Older auxiliary publications (including contrib and http-content) need a fresh
+translation before using the current facade, because capability metadata is now
+required alongside the generated project.

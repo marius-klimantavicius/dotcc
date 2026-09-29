@@ -1,0 +1,33 @@
+<Project>
+  <!-- Derive capabilities from the actual referenced product, including NO_SYS. -->
+  <PropertyGroup>
+    <!-- Preserve ProjectReference AdditionalProperties during NuGet graph discovery. -->
+    <RestoreUseStaticGraphEvaluation>true</RestoreUseStaticGraphEvaluation>
+    <LwipProject Condition="'$(LwipProject)' == ''">$(MSBuildThisFileDirectory)../generated/TranslatedLwip/TranslatedLwip.csproj</LwipProject>
+    <_LwipSelectedProject>$([System.IO.Path]::GetFullPath('$(LwipProject)', '$(MSBuildProjectDirectory)'))</_LwipSelectedProject>
+    <_LwipCapabilitiesFile>$([System.IO.Path]::GetDirectoryName('$(_LwipSelectedProject)'))/Lwip.Capabilities.props</_LwipCapabilitiesFile>
+  </PropertyGroup>
+  <Import Project="$(_LwipCapabilitiesFile)" Condition="Exists('$(_LwipCapabilitiesFile)')" />
+  <PropertyGroup>
+    <LwipProfile Condition="'$(LwipProfile)' == ''">$(_LwipProductProfile)</LwipProfile>
+    <DefineConstants Condition="'$(_LwipHasSockets)' == 'true'">$(DefineConstants);LWIP_HAS_SOCKETS</DefineConstants>
+    <DefineConstants Condition="'$(_LwipNoSys)' == 'true'">$(DefineConstants);LWIP_NOSYS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(_LwipSelectedProject)" GlobalPropertiesToRemove="LwipProject;LwipProfile" />
+  </ItemGroup>
+  <!-- Only the selected product already has a canonical explicit reference.
+       Preserve all unrelated SDK transitive project references. -->
+  <Target Name="CanonicalizeSelectedLwipReference"
+          BeforeTargets="IncludeTransitiveProjectReferences" DependsOnTargets="ResolvePackageAssets">
+    <ItemGroup>
+      <_TransitiveProjectReferences Remove="@(_TransitiveProjectReferences)"
+        Condition="'%(_TransitiveProjectReferences.FullPath)' == '$(_LwipSelectedProject)'" />
+    </ItemGroup>
+  </Target>
+  <Target Name="ValidateSelectedLwipProduct" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(_LwipCapabilitiesFile)')" Text="The selected lwIP product lacks capability metadata. Translate this profile with the current campaign before referencing it." />
+    <Error Condition="'$(_LwipProductKind)' != 'product' and '$(_LwipProductKind)' != 'extension'" Text="Managed.Lwip requires a product or extension profile, not a tool or diagnostic assembly." />
+    <Error Condition="'$(LwipProfile)' != '$(_LwipProductProfile)'" Text="LwipProfile ($(LwipProfile)) does not match the actual referenced product ($(_LwipProductProfile))." />
+  </Target>
+</Project>

@@ -4,6 +4,8 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.ExceptionServices;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Managed.Networking;
 
@@ -13,6 +15,7 @@ public sealed unsafe partial class LwipStack : IDisposable
     private readonly Lwip owner = new();
     private readonly object gate = new();
     private readonly List<nint> interfaces = new();
+    private readonly List<nint> retiredInterfaces = new();
     [ThreadStatic] private static LwipStack? executingCallback;
     private void RejectCallbackReentry()
     {if(ReferenceEquals(executingCallback,this)||LwipSysArch.IsCoreContext(owner))throw new InvalidOperationException("A core callback cannot synchronously reenter its owning facade.");}
@@ -69,18 +72,59 @@ public sealed unsafe partial class LwipStack : IDisposable
     }
     public nint AddInterface(string ipv4,string ipv6,ReadOnlySpan<byte> mac,Action<byte[]> output,string netmask="255.255.255.0",string gateway="0.0.0.0")
     {
+        RejectCallbackReentry();ArgumentNullException.ThrowIfNull(output);
+        static void CheckAddress(string value,string name,bool v6,bool optional=false)
+        {
+            ArgumentNullException.ThrowIfNull(value,name);
+            if(optional&&value.Length==0)return;
+            if(value.Contains('\0')||value.Contains('%')||!IPAddress.TryParse(value,out var parsed)||
+               parsed.AddressFamily!=(v6?AddressFamily.InterNetworkV6:AddressFamily.InterNetwork)||
+               (v6&&parsed.ScopeId!=0))throw new ArgumentException("A complete IP address of the specified family is required; interface addresses do not contain zone suffixes.",name);
+        }
+        CheckAddress(ipv4,nameof(ipv4),false);CheckAddress(ipv6,nameof(ipv6),true,true);
+        CheckAddress(netmask,nameof(netmask),false);CheckAddress(gateway,nameof(gateway),false);
         if(mac.Length!=6)throw new ArgumentException("Ethernet addresses contain six bytes.",nameof(mac));
         byte[] address4=Encoding.UTF8.GetBytes(ipv4+"\0"),address6=Encoding.UTF8.GetBytes(ipv6+"\0"),hardware=mac.ToArray(),subnet=Encoding.UTF8.GetBytes(netmask+"\0"),route=Encoding.UTF8.GetBytes(gateway+"\0");
-        nint result=0;
-        Invoke(core=>
+        lock(gate)
         {
-            ObjectDisposedException.ThrowIf(stopping,this);
-            fixed(byte* a=address4,b=address6,m=hardware,mask=subnet,gw=route)
-                result=(nint)core.lwip_host_interface_add(a,mask,gw,b,m);
-            if(result==0)throw new InvalidOperationException("Interface creation failed.");
-            LwipFrames.Attach(core,result,output);interfaces.Add(result);core.lwip_host_interface_up((void*)result);
-        });
-        return result;
+            ObjectDisposedException.ThrowIf(disposed||stopping,this);
+            interfaces.EnsureCapacity(interfaces.Count+1);retiredInterfaces.EnsureCapacity(retiredInterfaces.Count+1);
+            nint result=0,previousDefault=0;
+            try
+            {
+                Invoke(core=>
+                {
+                    previousDefault=(nint)core.Globals.netif_default;
+                    fixed(byte* a=address4,b=address6,m=hardware,mask=subnet,gw=route)
+                        result=(nint)core.lwip_host_interface_add(a,mask,gw,b,m);
+                    if(result==0)throw new InvalidOperationException("Interface creation failed.");
+                    // Capacity was reserved before native allocation. Every
+                    // allocated interface is registered before attach/up may fail.
+                    interfaces.Add(result);LwipFrames.Attach(core,result,output);core.lwip_host_interface_up((void*)result);
+                });
+                return result;
+            }
+            catch(Exception original)
+            {
+                if(result!=0)
+                {
+                    try
+                    {
+                        DrainCoreQueue();
+                        Invoke(core=>
+                        {
+                            if(!retiredInterfaces.Contains(result))retiredInterfaces.Add(result);
+                            LwipFrames.Detach(core,result);core.lwip_host_interface_stop((void*)result);interfaces.Remove(result);
+                            if(interfaces.Contains(previousDefault))core.netif_set_default((Lwip.netif*)previousDefault);
+                        });
+                        DrainCoreQueue();
+                        Invoke(core=>{core.lwip_host_interface_free((void*)result);retiredInterfaces.Remove(result);});
+                    }
+                    catch(Exception cleanup){throw new AggregateException("Interface initialization failed; registered backing is retained for disposal retry.",original,cleanup);}
+                }
+                throw;
+            }
+        }
     }
     /// <summary>Select the fallback route among this owner's interfaces.</summary>
     public void SetDefaultInterface(nint interfaceAddress) => Invoke(core=>
@@ -120,6 +164,13 @@ public sealed unsafe partial class LwipStack : IDisposable
             try{using(owner.__DotCcEnter())owner.lwip_host_poll();}finally{executingCallback=previous;}
         }
     }
+    // Unlike tcpip_callback_wait under core locking, this queues a real FIFO
+    // marker. It must execute outside a core callback and outside the core lock.
+    private void DrainCoreQueue()
+    {
+        using(owner.__DotCcEnter())
+            if(owner.lwip_host_barrier()!=0)throw new InvalidOperationException("Cannot queue core lifetime barrier; interfaces retained.");
+    }
     public void Dispose()
     {
         RejectCallbackReentry();
@@ -140,12 +191,26 @@ public sealed unsafe partial class LwipStack : IDisposable
             if(started&&!stopMarkerQueued)
             {
                 LwipApplications.CheckQuiescent(owner);
+                DrainCoreQueue();
                 Invoke(core=>
                 {
                     while(interfaces.Count!=0)
                     {
                         int index=interfaces.Count-1;var address=interfaces[index];
-                        LwipFrames.Detach(core,address);core.lwip_host_interface_remove((void*)address);interfaces.RemoveAt(index);
+                        // Register backing before any irreversible removal, so
+                        // allocation failure cannot lose its retirement record.
+                        if(!retiredInterfaces.Contains(address))retiredInterfaces.Add(address);
+                        LwipFrames.Detach(core,address);core.lwip_host_interface_stop((void*)address);interfaces.RemoveAt(index);
+                    }
+                });
+                DrainCoreQueue();
+                Invoke(core=>
+                {
+                    while(retiredInterfaces.Count!=0)
+                    {
+                        int last=retiredInterfaces.Count-1;
+                        core.lwip_host_interface_free((void*)retiredInterfaces[last]);
+                        retiredInterfaces.RemoveAt(last);
                     }
                 });
                 using(owner.__DotCcEnter())
@@ -155,6 +220,7 @@ public sealed unsafe partial class LwipStack : IDisposable
                 stopMarkerQueued=true;
             }
             if(!workersJoined){LwipSysArch.JoinWorkers(owner);workersJoined=true;}
+            ReleaseStoppedServiceContexts();
             if(!applicationStorageReleased){LwipApplications.Release(owner);applicationStorageReleased=true;}
             if(!hostStopped){LwipSysArch.Stop(owner);hostStopped=true;}
             owner.Dispose();

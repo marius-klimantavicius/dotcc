@@ -63,7 +63,31 @@ void *lwip_host_interface_add(const char *ipv4,const char *netmask,const char *g
   return interface;
 }
 void lwip_host_interface_up(void *handle){struct netif*n=handle;netif_set_up(n);netif_set_link_up(n);}
+/* The owning facade excludes new ingress, queues a FIFO barrier, stops on the
+ * core, queues another FIFO barrier, then frees. Backing survives queued polls. */
+void lwip_host_interface_stop(void *handle){struct netif*n=handle;netif_set_link_down(n);netif_set_down(n);
+#if ENABLE_LOOPBACK
+netif_poll(n);
+#endif
+netif_remove(n);}
+void lwip_host_interface_free(void *handle){free(handle);}
+/* Borrowed compatibility entrypoint: caller must already have excluded and
+ * drained every queued input/poll callback and any pending loopback pbufs. */
 void lwip_host_interface_remove(void *handle){struct netif*n=handle;netif_set_link_down(n);netif_set_down(n);netif_remove(n);free(n);}
+#if !NO_SYS
+static void lwip_host_barrier_callback(void *argument){sys_sem_signal((sys_sem_t*)argument);}
+#endif
+/* Must run outside the core lock/worker; callback_wait is not FIFO in locking mode. */
+int lwip_host_barrier(void)
+{
+#if NO_SYS
+  return ERR_OK;
+#else
+  sys_sem_t done;err_t result=sys_sem_new(&done,0);if(result!=ERR_OK)return result;
+  result=tcpip_callback(lwip_host_barrier_callback,&done);
+  if(result==ERR_OK)sys_sem_wait(&done);sys_sem_free(&done);return result;
+#endif
+}
 int lwip_host_frame_input(void *handle,const unsigned char *bytes,unsigned int length)
 {
   struct netif *interface=handle;if(length>65535)return ERR_VAL;

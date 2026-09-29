@@ -2,7 +2,7 @@
   "schema_version": 1,
   "recorded_date": "2026-09-29",
   "user_instruction": "For verification - do not do any corruption tests unless those exist in upstream.",
-  "status": "Coordinator source/callgraph review complete; permitted focused verification authorized; revised behavior not yet rerun",
+  "status": "Reviewed permitted verification paths; scoped owning API and project-reference matrices passed. Remaining campaign gates and revised broader protocol matrices stay incomplete.",
   "upstream": {
     "repository": "https://github.com/lwip-tcpip/lwip",
     "commit": "77dcd25a72509eb83f72b033d219b1d40cd8eb95"
@@ -731,6 +731,43 @@
         "config/upstream-tests.json"
       ],
       "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "owned-api"
+      ],
+      "dispatcher": "scripts/owned-api-tests.py",
+      "managed": [
+        "tests/OwnedApi/AdoptionCases.cs",
+        "tests/OwnedApi/InterfaceRollbackCases.cs",
+        "tests/OwnedApi/NetconnCases.cs",
+        "tests/OwnedApi/Program.cs",
+        "tests/OwnedApi/ResolverCases.cs",
+        "tests/OwnedApi/ScheduledAdmissionCases.cs"
+      ],
+      "native": [
+        "tests/OwnedApi/interface_native.py",
+        "tests/OwnedApi/interface_native.c",
+        "tests/OwnedApi/socket_refs_native.py",
+        "tests/OwnedApi/socket_refs_native.c",
+        "tests/OwnedApi/native.py",
+        "tests/OwnedApi/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ],
+      "classification": "Ordinary concurrency/adoption/cancellation/disposal, constructor rollback, copied buffers and valid DNS; no custom corruption. Profile mismatch and local relative reference propagation are ordinary configuration controls; unrelated transitive references must remain usable.",
+      "build_controls": [
+        "tests/LocalReference/LocalReference.csproj",
+        "tests/LocalReference/Program.cs",
+        "tests/ReferenceChain/Chain.cs",
+        "tests/ReferenceChain/ReferenceChain.csproj",
+        "tests/ReferenceLeaf/Leaf.cs",
+        "tests/ReferenceLeaf/ReferenceLeaf.csproj"
+      ]
     }
   ],
   "shared_helpers": [
@@ -750,20 +787,6 @@
         "tests/Zep/service.h"
       ],
       "status": "Not selected by campaign; invalid-version probe removed; valid lifetime/fragment work remains unqualified managed."
-    },
-    {
-      "paths": [
-        "tests/OwnedApi/native.py",
-        "tests/OwnedApi/native.c",
-        "tests/OwnedApi/interface_native.py",
-        "tests/OwnedApi/interface_native.c",
-        "tests/OwnedApi/socket_refs_native.py",
-        "tests/OwnedApi/socket_refs_native.c",
-        "tests/OwnedApi/Program.cs",
-        "tests/OwnedApi/NetconnCases.cs",
-        "tests/OwnedApi/ResolverCases.cs"
-      ],
-      "status": "Not selected by campaign; source reviewed and malformed lifecycle placeholder replaced; API errors/cancellation remain normal behavior; no managed qualification claim."
     }
   ],
   "incomplete_aggregate_suites": [
@@ -782,6 +805,10 @@
   ],
   "audited_authored_paths": [
     {
+      "path": "samples/ManagedConsumer/ManagedConsumer.csproj",
+      "sha256": "7ac18d8e10ab254a34c0ceef5bf36e4e173a69cfe1237f2e80f6e9016c58f3ce"
+    },
+    {
       "path": "samples/ManagedConsumer/Program.cs",
       "sha256": "1d2cf7d9154c548923f131955c4d9100e26eceb2839764f2b8c0e8203c30a8b7"
     },
@@ -795,7 +822,7 @@
     },
     {
       "path": "scripts/campaign.py",
-      "sha256": "1c1d489464be4b660e9a39c9ffad03cb3cb9965fec942e92597368aed758f952"
+      "sha256": "8e83706179c4cbfc9666c88496d69deaa1bb852c98057c9ee7d0acd29bf0e424"
     },
     {
       "path": "scripts/common.sh",
@@ -848,6 +875,10 @@
     {
       "path": "scripts/notices.py",
       "sha256": "a2f8dac5a76d109b1354f1ddbc5802234e8674046ef8350f2330f80a18ee3e38"
+    },
+    {
+      "path": "scripts/owned-api-tests.py",
+      "sha256": "c32dce30b657bb5932210ff98e87dd074ea40362740de946fde55ea2b820ab37"
     },
     {
       "path": "scripts/ppp-link-tests.py",
@@ -1018,6 +1049,14 @@
       "sha256": "f5353d02127979f8e6700195d2fece73e9903cce2b289e43ca36b63c0d6f325f"
     },
     {
+      "path": "tests/LocalReference/LocalReference.csproj",
+      "sha256": "8d4cbc949de0293e97610bcf2778de983c4a0f7f65bb002809371016040dfbcf"
+    },
+    {
+      "path": "tests/LocalReference/Program.cs",
+      "sha256": "c5f4e11ae07f41c06f0bebe65af3c53103c573a2e847e876c39949ea41b06012"
+    },
+    {
       "path": "tests/Lowpan/Program.cs",
       "sha256": "0d6b41529d8c4f257d09128478d4466b568213dc80b6f5c05545ab1e257909bc"
     },
@@ -1058,32 +1097,36 @@
       "sha256": "5d31763f8bf3fd8e00cccc0b48d149b191f934b7a0606aaff512791a10ab1bc3"
     },
     {
-      "path": "tests/OwnedApi/LwipNetconns.cs",
-      "sha256": "68953567811533039ab9a2e80b1f7b3feddedd6319ccf91c6fff3e32ffa4fc68"
+      "path": "tests/OwnedApi/AdoptionCases.cs",
+      "sha256": "d12b35ccd6fdad29f9bfaee344607170085e25fb4427dd02417a6fb73225b5d1"
     },
     {
-      "path": "tests/OwnedApi/LwipResolver.cs",
-      "sha256": "4e727f9576e434a3ae2cc98088ed11ec6c4885aeb02d4880f538538ba2a1f728"
-    },
-    {
-      "path": "tests/OwnedApi/LwipSockets.cs",
-      "sha256": "8123aaef98713e8419b114b57ee08797bb6d1cba4b6e2b54299b6f63138fbb7d"
+      "path": "tests/OwnedApi/InterfaceRollbackCases.cs",
+      "sha256": "5c615bdbc070121bf0743d0c18cb1bee9ad4e8289ca45ba62279bcc7e8b8537a"
     },
     {
       "path": "tests/OwnedApi/NetconnCases.cs",
-      "sha256": "d20575bdbbef365c0527a1f7f16f55c0e6e531b9a26d5245a8fdbea1f9eb6259"
+      "sha256": "d309c3833cd03ec31bbdf4b424e9d396c4b8a925dfe7ca24e0ff0cf6126b7809"
+    },
+    {
+      "path": "tests/OwnedApi/OwnedApi.csproj",
+      "sha256": "d0b46d5447f9bb85fb264639228a450291b2cd25c26f764b0ece846ccd911c6b"
     },
     {
       "path": "tests/OwnedApi/Program.cs",
-      "sha256": "4002c86b0e076df3905207e7e6af972f0e7aacf5c4ecc56ab43f487b1934a33c"
+      "sha256": "df77aeaf894413e68070b3a1f5eaa6a709720ca8faa6707fad95c01320adffcf"
     },
     {
       "path": "tests/OwnedApi/ResolverCases.cs",
-      "sha256": "da8778ef209c95eeb57eec666da36264b4fae5d7228171dd2b2829bb99935413"
+      "sha256": "c16014bfe91d887bcfd4a18a8490241c88bf928f6e709ca39f0bd4dd6b91136a"
+    },
+    {
+      "path": "tests/OwnedApi/ScheduledAdmissionCases.cs",
+      "sha256": "0bacef58f6d65d69096f3507e6f5d21d3de117b52924aa23d36286bdcf58ca97"
     },
     {
       "path": "tests/OwnedApi/interface_native.c",
-      "sha256": "133818a4e7f1c29c05cdbde622a19f6cbd3698d3da54c85f1eb5012e639d50a2"
+      "sha256": "f618e1f54225ea1fae539f1e305a921400fcd22482aaad8b1e8dea1a963d3261"
     },
     {
       "path": "tests/OwnedApi/interface_native.py",
@@ -1098,16 +1141,12 @@
       "sha256": "019cb2f6241e782ec9cd8a5b95ec06cb62abdf910c6b0b4f9bc5a3926d7201c1"
     },
     {
-      "path": "tests/OwnedApi/socket_refs.c",
-      "sha256": "1dfe487586e1e20fcffa40d4891c4e463a5b747f4c95b95956937fc6b1644645"
-    },
-    {
       "path": "tests/OwnedApi/socket_refs_native.c",
       "sha256": "23c352296d63af0186ff663f7b5717603c5a8350afd938dcbcceddcebe5f4a30"
     },
     {
       "path": "tests/OwnedApi/socket_refs_native.py",
-      "sha256": "0eeb85b4412b687190b31909200e732291d2d828ef16c5ebf140d46b59dbadd0"
+      "sha256": "462bdabfaab41104b40f363c9a4c7acfab194bfddd6001d7bb0941dfc7e41bbd"
     },
     {
       "path": "tests/PacketScenarios/ArpQueue.cs",
@@ -1198,6 +1237,22 @@
       "sha256": "f6ac01daf21309de474fa8ce2c827158a969469dbed3565dc0026d330014b602"
     },
     {
+      "path": "tests/ReferenceChain/Chain.cs",
+      "sha256": "30b8fe5523ea01b55a1a89d3feb1e9334c83d80790d97c91504ccada302907f3"
+    },
+    {
+      "path": "tests/ReferenceChain/ReferenceChain.csproj",
+      "sha256": "032882c476f6697955f03670b43c604740274bf724844f09bbc1d42dd226a15a"
+    },
+    {
+      "path": "tests/ReferenceLeaf/Leaf.cs",
+      "sha256": "adf4d6624020f4f5eaa66e531186f751bc28b19ff3d91231a68285c78291f96d"
+    },
+    {
+      "path": "tests/ReferenceLeaf/ReferenceLeaf.csproj",
+      "sha256": "ed7c0f20902846adddafbfc178137e3a0dd399bba0a8c656195f76855d2233bb"
+    },
+    {
       "path": "tests/Routing/Program.cs",
       "sha256": "140d803dc18a97a4402fb7a00a870b6a58936967ed193fe582884ab4329b6d26"
     },
@@ -1278,6 +1333,10 @@
       "sha256": "818a5767be5e5933c95fd66a7c8240852fbb1fda427c99dcd9deddd2d156ec54"
     },
     {
+      "path": "tests/Upstream.Runner/Program.cs",
+      "sha256": "03780846c5626dcc31aefa0889c94686901d7e70afbebd82b8f8d2fd3bda1451"
+    },
+    {
       "path": "tests/Upstream/CheckHost.cs",
       "sha256": "5e72ad12cf0191fde7c8c040885622a4c75658bc0d924dba73be76af0bc40224"
     },
@@ -1310,10 +1369,6 @@
       "sha256": "5f58dd820c43b653c8e63020f7a67e577efece8409affa9fa6cf4705c6eba6af"
     },
     {
-      "path": "tests/Upstream.Runner/Program.cs",
-      "sha256": "03780846c5626dcc31aefa0889c94686901d7e70afbebd82b8f8d2fd3bda1451"
-    },
-    {
       "path": "tests/Zep/native.c",
       "sha256": "a8942082b55081828b96c6173f71cc6660ab18c030f218a2a5ae347927382f69"
     },
@@ -1331,7 +1386,96 @@
     }
   ],
   "validation": {
-    "execution_after_constraint": false,
-    "review": "Coordinator verified 137 authored source hashes, 11 upstream definition/registration/source hash records, 23 entrypoint groups and 13 removed/replaced custom groups; root informed before test restart. No custom corruption exception retained."
+    "execution_after_constraint": true,
+    "review": "Coordinator verified 137 authored source hashes, 11 upstream definition/registration/source hash records, 23 entrypoint groups and 13 removed/replaced custom groups; root informed before test restart. No custom corruption exception retained.",
+    "focused_receipt": "artifacts/campaign/20260929-113734-bf3d5d86/receipt.json",
+    "focused_scope": "Ten affected suites on threaded raw JIT with matching native prerequisites; no alternate-profile/processed/AOT acceptance claim.",
+    "audited_snapshot": "82eb1a4a",
+    "owning_api_focused_receipts": [
+      "artifacts/campaign/20260929-114957-74819912/receipt.json",
+      "artifacts/campaign/20260929-115339-2ea6fd9d/receipt.json"
+    ],
+    "owning_api_scope": "All three products owned-api+consumer raw/processed JIT/NativeAOT passed final narrow project graph. Subsequent scheduling-admission correction passed all4 threaded and locking; NO_SYS excludes these APIs and keeps final graph receipt121848. Earlier owner-lifecycle/pool-recovery matrices remain scoped to their unchanged implementation. Broad aggregate gates remain incomplete.",
+    "owning_api_matrix_receipts": [
+      "artifacts/campaign/20260929-115825-fc8e63a0/receipt.json",
+      "artifacts/campaign/20260929-120036-26c6b530/receipt.json",
+      "artifacts/campaign/20260929-120312-d52e329b/receipt.json"
+    ],
+    "owning_api_rollback_receipts": [
+      "artifacts/campaign/20260929-120630-457be2fa/receipt.json",
+      "artifacts/campaign/20260929-120955-dfcf28c1/receipt.json",
+      "artifacts/campaign/20260929-121107-56ed1e8c/receipt.json"
+    ],
+    "owning_api_preserved_failures": {
+      "artifacts/campaign/20260929-114817-d24c28ac/receipt.json": "Authored IPv6 fixed-buffer pointer construction corrected to addr[0] in all promoted endpoint/resolver paths.",
+      "artifacts/campaign/20260929-121229-14960450/receipt.json": "SDK default restore discarded local ProjectReference selection metadata; static graph restore and canonical selected-product edge added.",
+      "artifacts/campaign/20260929-122333-540a599b/receipt.json": "Scheduling fixture used VirtualPair pump after manually disposing A; changed fixture to independently owned valid loopback stacks. Production scheduling accounting unchanged in meaning."
+    },
+    "expanded_review": "Coordinator independently verified 144 authored source/build hashes, 11 implementation hashes, 11 pinned upstream records and 24 entrypoint groups, then reviewed the subsequent scheduling-admission correction and deterministic public-API witness. Current inventory contains 145 authored source/build hashes; no new corruption exception.",
+    "owning_api_final_graph_receipts": [
+      "artifacts/campaign/20260929-121848-8f47f868/receipt.json",
+      "artifacts/campaign/20260929-122007-dac94da8/receipt.json",
+      "artifacts/campaign/20260929-122125-d03caecf/receipt.json"
+    ],
+    "owning_api_scheduling_receipts": [
+      "artifacts/campaign/20260929-122521-090f75f3/receipt.json",
+      "artifacts/campaign/20260929-122622-a0980575/receipt.json"
+    ],
+    "owning_api_pipeline_checks": {
+      "command": "python3 -m unittest discover -s lwip/tests/Pipeline -p test_*.py -v",
+      "tests_passed": 9,
+      "layout": "bash Scripts/campaign.sh layout lwip --check: layout OK",
+      "syntax": "Named Python AST and project/import XML checks passed; git diff --check lwip clean."
+    }
+  },
+  "owning_api_implementation_paths": [
+    {
+      "path": "src/Host/bridge.c",
+      "sha256": "7b9e4cbd69ef97ea2556cb75cbb8a0344f34704a9f40368a921543b3743ac85b"
+    },
+    {
+      "path": "src/LwipProduct.props",
+      "sha256": "85f8722f792d256623d3ca370bd653b7f5f36b1e7cc55a148ff1b36bb67fe371"
+    },
+    {
+      "path": "src/Managed.Lwip/AssemblyInfo.cs",
+      "sha256": "98f376279be6df21633d83d0a307cb0a4fd3a61a33a46537f66be4bfe50a3b10"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipEndpoint.cs",
+      "sha256": "dbff60796caf966318ee45345bab3892f882a38560ceafca1be5e326a7b4a6b3"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipNetconns.cs",
+      "sha256": "ab59cc831f6cbe1434064c8f0e47bacc4249c39f6e0bebe07f7e57fe13643e91"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipResolver.cs",
+      "sha256": "05b1fac32653d6158dee1489d092fdcddd7034fff6f7d896f30526c15b90a996"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipSockets.cs",
+      "sha256": "c11eb14cae649827fb35ace546585cb0ed15a5a3537c1e8069b07716464f1094"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipStack.Services.cs",
+      "sha256": "e2b2a1c7257ab1a5dbbe696673ad46f6d5a8a9c9642c0c65d1f52079caa594f5"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipStack.cs",
+      "sha256": "3a4186db47cac9e0a7d9c83c10368d02490647d5aae3bca24a8458613905cbf1"
+    },
+    {
+      "path": "src/Managed.Lwip/Managed.Lwip.csproj",
+      "sha256": "f384bc93a92a63da85af89c614e80ca461b15ad010549fa107cf86a12fc3e66f"
+    },
+    {
+      "path": "src/port/socket_refs.c",
+      "sha256": "1dfe487586e1e20fcffa40d4891c4e463a5b747f4c95b95956937fc6b1644645"
+    }
+  ],
+  "superseded_prototype_archive": {
+    "manifest": "artifacts/owned-api-prototype-history-20260929/manifest.json",
+    "status": "Four superseded prototype files moved out of test project; owning fixtures compile production facade only."
   }
 }

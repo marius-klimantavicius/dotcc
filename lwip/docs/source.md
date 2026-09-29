@@ -3,7 +3,7 @@
 The campaign acquires lwIP 2.2.1 using the pinned metadata in
 `config/sources.json`. The initial local reference was copied from the planning
 checkout; acquisition receipts describe observed provenance. Preparation never
-modifies this reference. Four narrow upstream repairs are recorded in `config/adaptations.json`: generator checksum-loop progress, IPv4 software-checksum predicates, EAP control-pbuf release and the IEEE802.15.4 short-source constant. Only staged copies change. IPv6 hop expiry uses a scoped macro override, and bridge lifetime support uses an authored include-wrapper around unchanged algorithms. Diagnostic applicability is recorded per repair; no diagnostic assertion or fixture is modified.
+modifies this reference. Four narrow upstream repairs are recorded in `config/adaptations.json`: generator checksum-loop progress, IPv4 software-checksum predicates, EAP control-pbuf release and the IEEE802.15.4 short-source constant. Only staged copies change. IPv6 hop expiry uses a scoped macro override, and bridge lifetime support and socket descriptor references use authored include-wrappers around unchanged algorithms. Diagnostic applicability is recorded per repair; no diagnostic assertion or fixture is modified.
 
 `config/source-groups.json` enumerates all C translation units declared by
 upstream `src/Filelists.cmake`, including its conditional SLIP append. The stack
@@ -193,3 +193,38 @@ address combinations. Nine focused recipe/staging/hop-contract checks pass.
 The source snapshot is artifacts/link-routing-source-snapshot-20260929-1114.json.
 ZEP prototype code remains outside the selected product and this checkpoint.
 Full link/application/feature-variant qualification remains open.
+
+### Owning API and selected-product capabilities (2026-09-29)
+
+Product publication now writes `Lwip.Capabilities.props` next to each project.
+The facade and ordinary consumer import this metadata through
+`src/LwipProduct.props`, so NO_SYS selection removes socket/netconn references
+from the managed API without relying on a caller-supplied profile hint. Explicit
+mismatches fail before compilation. The import selects static graph restore and
+an explicit product reference; consumer facade references forward normalized
+`LwipProject` and matching `LwipProfile` metadata. The local-relative selection
+witness checks both the generated constant and the facade API surface.
+`src/port/socket_refs.c` includes the original
+sockets unit and exposes only original get/done reference operations; source
+closure reports retain the original logical unit mapping.
+
+`owned-api` exercises production facade sources, not copies of prototype classes.
+It includes native descriptor-reference and interface-lifetime controls, valid
+DNS traffic, copied buffers, cancellation, accepted-child adoption races, disposal
+retry and partial interface construction. Verification-policy metadata records
+exact permitted source hashes and receipts. Superseded prototypes are archived
+under `artifacts/owned-api-prototype-history-20260929/manifest.json`, outside the
+consumer project. ZEP and broader application/variant work remain unqualified.
+
+Current main product publications carry this metadata; older contrib and
+http-content publications must be refreshed before referencing the new facade.
+Historical auxiliary protocol receipts do not qualify that new integration.
+
+The final narrow project-reference graph passes owning-api and ordinary consumer
+in all four cells for NO_SYS (121848-8f47f868), threaded (122007-dac94da8), and
+core-locking (122125-d03caecf). Subsequent socket/netconn scheduling admission
+retains/accounting before queueing passed owning-api all four cells for threaded
+(122521-090f75f3) and core-locking (122622-a0980575); those APIs are compiled out
+of NO_SYS. Paused public Tasks settle before owner disposal completes. The
+original fixed-buffer pointer failure (114817) and local restore graph failure
+(121229) remain preserved. Nine pipeline checks and layout validation pass.

@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(LwipProfile)' == 'nosys'"><DefineConstants>$(DefineConstants);LWIP_NOSYS</DefineConstants></PropertyGroup>
-  <ItemGroup><ProjectReference Include="../../src/Managed.Lwip/Managed.Lwip.csproj" /></ItemGroup>
+  <Import Project="../../src/LwipProduct.props" />
+  <ItemGroup><ProjectReference Include="../../src/Managed.Lwip/Managed.Lwip.csproj" AdditionalProperties="LwipProject=$(_LwipSelectedProject);LwipProfile=$(LwipProfile)" /></ItemGroup>
   <ItemGroup Condition="'$(LwipRootLibrary)' == 'true'"><TrimmerRootAssembly Include="TranslatedLwip" /></ItemGroup>
 </Project>
