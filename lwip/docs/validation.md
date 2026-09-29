@@ -163,6 +163,42 @@ layout, syntax and whitespace validation pass. No compiler repair or external
 library was added. Auxiliary product refresh and the remaining required-work audit
 in [remaining-work-audit.md](remaining-work-audit.md) remain open.
 
+Native NO_SYS application characterization passes five finite cases under
+`artifacts/udp-native-20260929/<case>-attempt-1/report.json`: `tftp-server`,
+`tftp-get`, `sntp`, `netbios` and `mdns`. Native TFTP PUT remains failed; diagnostic
+attempt2 confirms ordinary ERROR5 after valid ACK0. Each attempt has exact frozen
+input hashes and compile/link/log records. SNTP uses a test-only notification
+contract, and original mDNS retains one global UDP PCB after service removal.
+These are not owning product-service acceptance or managed matrix results.
+Owning TFTP/SNTP implementation and option-profile work subsequently passed
+source-snapshot review and entered qualification. Native enhanced attempt
+`artifacts/enhanced-udp-native-20260929/enhanced-01/report.json` passes all ten
+designated options, its assertion control, original timer cancellation/removal,
+and natural heap/pbuf/TCP PCB baselines. Six peer/eight stack frames pass
+independent IPv4/TCP/UDP checksum/length checks. Exact native ABI observations
+are recorded for the managed receive-info comparison.
+
+The same directory contains original PUT failure `put-original-01`, adapted
+success `put-adapted-01`, and owning C boundary success `owned-native-01` for
+completion, explicit pending cancellation, ordinary storage error and original
+server no-ACK expiry. `put-comparison.json` confirms 295 identical shared input
+hashes and the same profile header. The guarded typed entry helper sets block0
+before the original request serializer, without a new text patch. These native
+results do not qualify the managed facade or broaden the original client's
+request-timeout behavior.
+
+Threaded translation `150928-70d1e79d` failed before publication because DotCC does
+not support GCC forced-header `-include`. An authored SNTP include-wrapper now
+expresses the same upstream macro hook; retry `151138-f5c825ab` passes raw and
+processed publication. Enhanced publication `151412-e242ced2` also passes.
+Coordinator verified all 533 inputs in snapshot
+`artifacts/enhanced-udp-readiness-20260929-02.json`. Seven UDP cases are registered
+on baseline product profiles; the ten-option suite is designated to additive
+`threaded-enhanced`. All new managed behavior remains pending. Review identified
+that the initial enhanced natural baseline covered only three counters; stronger
+fixture checks for UDP PCB, netconn, netbuf and listening TCP PCB pools are being
+added before the managed runs, without broadening the earlier native claim.
+
 ## Migration and source snapshots
 
 Root migration checks passed 43 framework, 105 focused compiler, 10 functional

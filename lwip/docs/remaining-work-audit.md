@@ -56,8 +56,9 @@ Coarse feature rows and stale `unrun` fields require reconciliation with receipt
    `MEMP_MEM_MALLOC=0`) with an authored pool list. Reconcile MPU, custom
    timers/allocators, socket header/naming aliases, offload/CRC/padding as explicit
    alternative host contracts. The implemented event API is incompatible with
-   callback API and ALTCP; if included as a complete integration alternative,
-   give it a small separate raw-event product with explicit compatibility scope.
+   callback API and ALTCP; represent it as a small separate raw-event product
+   with explicit compatibility scope. It remains a dependency-free implemented
+   API requirement; incompatibility with the baseline is not an exclusion.
 7. Complete contrib closure: inventory marks 32 C files required; selected list
    contains 15 (11 apps and four addons), leaving 17 example C files unselected.
    Deliver original callback examples in compatible separate products and run

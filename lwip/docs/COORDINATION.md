@@ -18,9 +18,9 @@ historical execution only and are superseded by this active workspace rule.
 
 | Agent | Ownership | Current task |
 | --- | --- | --- |
-| `/root/lwip_coordinator_resume` | This ledger, validation index, scope/contract review and verification scheduling | Coordinate remaining P0–P6 work and retain evidence |
-| `/root/lwip_coordinator_resume/permitted_implementation` | Campaign source, configuration, scripts and fixtures; sole shared build owner | Review preserved LOWPAN/ZEP work and verification policy, then implement and qualify permitted remaining behavior |
-| `/root/lwip_coordinator_resume/scope_audit` | Only new unregistered `tests/Applications.Udp/` fixtures; no builds or registration | Draft next positive TFTP/SNTP workflow batch after completing read-only scope audit |
+| `/root/lwip_coordinator_resume` | Ledger/evidence/source review and verification scheduling | Coordinate remaining P0–P6 work |
+| `/root/lwip_coordinator_resume/permitted_implementation` | Shared campaign source/config/scripts, enhanced and UDP integration/qualification | Sole build owner; native controls pass, translation/managed matrices active |
+| `/root/lwip_coordinator_resume/scope_audit` | Only new unregistered `tests/Applications.Tcp/` drafts | Author next MQTT/SMTP/lwiperf/client workflows; no builds or shared edits |
 
 A fresh implementation worker successfully started after normal agent capacity
 became available. The former coordinator and workers are no longer in the active
@@ -29,9 +29,11 @@ service errors identified no specific prohibited action. Neither those errors no
 replacement availability authorizes bypassing a safety rejection: any identified
 prohibited action must stop and be reported.
 
-Current shared .NET build ownership is **permitted_implementation**, after its
-initial preserved-source/policy review is acknowledged. No other agent may mutate
-implementation or build outputs concurrently. Latest qualified implementation is
+Product/UDP/enhanced source passed snapshot/policy review and initial native
+controls. Primary owns all integration fixes and is the sole build owner.
+Secondary edits only a new unregistered TCP application fixture
+directory, which is not consumed by this batch. No shared concurrent edits/builds.
+Latest qualified implementation is
 `537bfc3d`: owning LOWPAN/ZEP/BLE finite input/output/lifetime passes all three
 product profiles and four cells, with common owning API/lifecycle/consumer
 regressions. Complete option/application/contrib and final acceptance gates remain
@@ -998,3 +1000,116 @@ fixture directory and preserve failed attempts; it may not patch original source
 or change shared configuration. The next product batch will add explicit option
 coverage and an enhanced threaded profile, while real application owning services
 and SNTP notification integration remain required.
+
+Native application build ownership explicitly transferred to `scope_audit` after
+primary recorded policy SHA
+`e0a957acb3c39b746771de71bd1bb979db18032221e43932150448e2a0fe2217`.
+The reviewed draft inventory contains 16 source files, 15 transitive authored/
+configuration inputs and 84 original C unit hashes. Secondary may execute the
+six native NO_SYS cases, preserve distinct attempt directories and correct only
+authored fixtures plus their exact inventory hashes. No managed build, suite
+registration, original-source repair or speculative product clock binding is
+authorized by this limited transfer. Primary remains read-only until release.
+
+### Native application characterization and parallel authored work
+
+Native NO_SYS application attempt1 passes TFTP server (six RRQ/WRQ transfers,
+0/512/1025 bytes, exact storage closes), original client GET, SNTP NTP-word
+notification contract, NetBIOS NB response and mDNS service query/removal. Distinct
+receipts and full input hashes live under `artifacts/udp-native-20260929/`. Their
+UDP PCB baseline returns to zero except original mDNS's documented retained
+owner-internal global PCB. This is finite native behavior, not product service
+delivery or whole-owner cleanup acceptance.
+
+Normal original TFTP PUT fails; diagnostic attempt2 changes only output logging
+and confirms ERROR5, "Wrong block number", after unchanged valid ACK0. Original
+`tftp_put` initializes block1, while its ACK handler requires the current block
+and increments it before sending DATA. No corrupt request or mutation is used.
+No original source was changed. The secondary is designing a guarded typed
+entrypoint override around a small authored C setup helper so original request/
+receive/retransmission algorithms remain intact. A new text patch is not approved.
+
+Native build ownership has been released. All builds are now paused while the
+primary implements an additive option-level audit/enhanced threaded profile and
+the secondary implements real owning SNTP/TFTP source in disjoint new files.
+Secondary sends macro/typed binding/source-selection needs to primary, which
+owns shared config/scripts and verification inventory. The existing lifecycle
+helper stays frozen. Both must report source readiness before a coherent product
+refresh. Raw NTP seconds/fraction and era semantics will be documented; the
+test-only observer is not a delivered product notification service.
+
+The PUT repair design now uses an original-source include-wrapper and a typed
+`tftp_put` binding to a small authored setup helper. It preserves the original
+validators and request serializer, sets initial block0 before sending, and leaves
+receive/retry bodies intact. Whole-file SHA is provenance; unique local body and
+state/close-context guards preserve unrelated local-input edits. No sixth source
+patch is planned. The owning close observer reads an opcode safely and calls the
+original receive function without modifying packets or protocol decisions; it
+distinguishes final DATA/ACK closure, explicit stop, timer closure and captured
+storage callback errors. These are design/source-review conclusions, not runtime
+qualification.
+
+Source review also requires a file-count/metadata bound in addition to TFTP
+payload-byte limits, because empty named files otherwise consume unbounded map
+entries. Test it with ordinary valid small-capacity operations. Original client
+GET/PUT do not start the server's retry timer, so explicit client cancellation and
+server data retry/timeout must be qualified separately; do not claim an unobserved
+client request-timeout path or introduce a host retransmission engine. SNTP
+notifications use bounded copied NTP values and asynchronous continuations.
+
+Secondary completed and froze five new application product files plus seven
+reviewed-intent native/managed application cases: TFTP server/GET/PUT, owned TFTP,
+SNTP, NetBIOS and mDNS. Primary now owns their integration fixes and qualification.
+Existing five native passes and two original PUT failures remain historical; no
+new repair/service pass is claimed. Source review confirmed valid nonempty names
+with empty payloads for file-count capacity cases, typed pre-send block0 setup,
+original server retry/timeout and explicit pending client cancellation.
+
+Secondary's next isolated work is restricted to new unregistered
+`tests/Applications.Tcp/` drafts for MQTT/SMTP/lwiperf and client HTTP/proxy. It may
+not build, register suites or edit current product/UDP/config/scripts. This keeps
+primary's consumed snapshot stable during integration and later execution.
+
+### Enhanced and UDP execution release
+
+Coordinator independently checked all 532 consumed paths in
+`artifacts/enhanced-udp-readiness-20260929.json` (SHA256
+`a952d63076727edf7554849b7dd0adb0add8311dc433220c2370737caf111bce`)
+against policy SHA256
+`8551049369bd19cc6e1f6cd9837fe8b7590d0bba3a329d5b2cd1207d284e7e50`.
+The primary is now the sole build owner, first running enhanced native behavior,
+preserved original PUT failure, adapted PUT and owned native lifecycle controls
+under `artifacts/enhanced-udp-native-20260929/`, then threaded and enhanced-threaded
+translation using existing tools and pinned local source. Source changes needed
+after failures require fresh affected hashes and separate attempt receipts.
+No adapted/native or managed product pass is claimed at release. Secondary's
+unregistered TCP drafts remain outside the consumed snapshot.
+
+The frozen-source native enhanced attempt passes all ten option cases and the
+assertion-failure control. Its independently checked six peer/eight stack frames
+have coherent IPv4/TCP/UDP lengths/checksums; original timer/cancellation/removal
+callbacks and natural heap/pbuf/TCP PCB baselines pass. NO_SYS controls reproduce
+the original valid PUT failure and pass the adapted PUT (one storage close, no
+live handle/UDP PCB); the owning C boundary passes success, pending cancellation,
+ordinary storage error and original server no-ACK expiry. Receipts are
+`enhanced-01`, `put-original-01`, `put-adapted-01`, `owned-native-01` beneath the
+released artifact directory. Threaded translation started as receipt
+`20260929-150928-70d1e79d`; managed product behavior remains unqualified.
+
+That first translation failed before publication because DotCC's driver does not
+support GCC's forced-header `-include` switch and treated its argument as another
+input. Primary will express the same SNTP macro hook through an authored
+two-include translation unit (hook header, then unchanged original `sntp.c`),
+matching the TFTP include-wrapper pattern. This source-selection correction adds
+no original-source text patch or new scenario. Failed receipt and native passes
+remain preserved; refreshed policy/input hashes precede the retry.
+
+Threaded retry `151138-f5c825ab` and enhanced publication `151412-e242ced2`
+passed raw/processed final builds. Snapshot04 independently verifies 533 paths.
+Focused enhanced receipt `151632-ca93df3c` passes its stronger native prerequisite:
+all ten options and natural heap, pbuf, TCP/UDP PCB, netconn, netbuf and listening
+PCB counters. Managed facade compilation passes, but the fixture has six C#
+narrow-conversion/error-enum spelling errors. Primary owns the fixture-only fix,
+fresh hashes and retry. Completed-cell reports will persist even if a later cell
+fails. UDP fixtures reuse an immutable executable within a receipt per exact
+profile/form/runtime/source key, with separately recorded case commands and exits.
