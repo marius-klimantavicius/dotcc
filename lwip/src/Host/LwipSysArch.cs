@@ -15,6 +15,7 @@ public static unsafe partial class LwipSysArch
     public const uint Timeout = uint.MaxValue;
     private const sbyte ErrMem = -1;
     private sealed class Stopped : OperationCanceledException { }
+    private sealed class ServiceStopped : OperationCanceledException { }
     internal sealed class Resource
     {
         internal readonly object Gate = new();
@@ -31,9 +32,15 @@ public static unsafe partial class LwipSysArch
         internal readonly object CoreLock = new();
         internal readonly Dictionary<long, Resource> Resources = new();
         internal readonly List<Thread> Threads = new();
+        internal readonly Dictionary<long,Thread> WorkerHandles = new();
+        internal readonly Dictionary<long,nint> WorkerArguments = new();
+        internal readonly HashSet<long> ServiceStopRequests = new();
+        internal readonly ThreadLocal<long> CurrentWorker = new();
         internal readonly Dictionary<int, nint> ThreadSemaphores = new();
         internal readonly List<Exception> Failures = new();
         internal readonly Dictionary<byte, SerialChannel> Serial = new();
+        internal readonly Dictionary<byte,long> SerialHandles = new();
+        internal readonly Dictionary<long,SerialChannel> SerialByHandle = new();
 
         internal volatile bool Stopping;
         internal volatile bool WorkerStopRequested;
@@ -96,6 +103,32 @@ public static unsafe partial class LwipSysArch
             if (thread == Thread.CurrentThread) throw new InvalidOperationException("Cannot join current worker.");
             if (!thread.Join(TimeSpan.FromSeconds(10))) throw new TimeoutException("lwIP worker did not drain; owner backing retained.");
         }
+    }
+    public static long[] FindWorkers(Lwip owner,string name,nint argument)
+    {
+        var state=For(owner);var matches=new List<long>();lock(state.Registry)
+            foreach(var item in state.WorkerHandles)
+                if(item.Value.Name==name&&state.WorkerArguments[item.Key]==argument&&item.Value.IsAlive)matches.Add(item.Key);
+        return matches.ToArray();
+    }
+    /// <summary>Mark one ancillary worker for exit at an explicitly safe service boundary; does not interrupt sys_arch waits.</summary>
+    public static void RequestServiceStop(Lwip owner,long worker)
+    {
+        var state=For(owner);lock(state.Registry)
+        {if(!state.WorkerHandles.ContainsKey(worker))throw new InvalidOperationException("Invalid or foreign worker handle.");state.ServiceStopRequests.Add(worker);}
+    }
+    /// <summary>Call only after the upstream operation has returned and released its waiter/accounting state.</summary>
+    public static void ExitServiceIfRequested(Lwip owner)
+    {
+        var state=For(owner);lock(state.Registry)
+            if(state.ServiceStopRequests.Contains(state.CurrentWorker.Value))throw new ServiceStopped();
+    }
+    public static void JoinWorker(Lwip owner,long worker)
+    {
+        var state=For(owner);Thread thread;lock(state.Registry)
+            thread=state.WorkerHandles.TryGetValue(worker,out var value)?value:throw new InvalidOperationException("Invalid or foreign worker handle.");
+        if(thread==Thread.CurrentThread)throw new InvalidOperationException("Cannot join current worker.");
+        if(!thread.Join(TimeSpan.FromSeconds(10)))throw new TimeoutException("Ancillary worker did not quiesce; owner retained.");
     }
     public static void Init(Lwip owner) => _ = For(owner);
     public static uint Now(Lwip owner) => For(owner).Clock?.Invoke() ?? unchecked((uint)Environment.TickCount64);
@@ -209,25 +242,29 @@ public static unsafe partial class LwipSysArch
     public static long ThreadNew(Lwip owner, byte* name, delegate*<Lwip, void*, void> entry, void* argument, int stackSize, int priority)
     {
         var state = For(owner); var lease = owner.__DotCcRetain();
-        var callback = (nint)entry; var payload = (nint)argument;
-        var thread = new Thread(() =>
+        var callback = (nint)entry; var payload = (nint)argument;long worker=Interlocked.Increment(ref nextHandle);
+        Thread thread;
+        try { thread = new Thread(() =>
         {
-            try { using var binding = owner.__DotCcEnter(); ((delegate*<Lwip, void*, void>)callback)(owner, (void*)payload); }
+            try { state.CurrentWorker.Value=worker;using var binding = owner.__DotCcEnter(); ((delegate*<Lwip, void*, void>)callback)(owner, (void*)payload); }
             catch (Stopped) when (state.Stopping) { }
+            catch (ServiceStopped) when (ServiceExitExpected(state,worker)) { }
             catch (Exception error) { lock (state.Registry) state.Failures.Add(error); }
             finally {
                 while (Monitor.IsEntered(state.CoreLock)) Monitor.Exit(state.CoreLock);
-                ThreadSemFree(owner); lease.Dispose();
+                ThreadSemFree(owner);state.CurrentWorker.Value=0; lease.Dispose();
             }
-        }, Math.Max(0,stackSize)) { IsBackground = true, Name = Marshal.PtrToStringUTF8((nint)name) ?? "lwIP" };
+        }, Math.Max(0,stackSize)) { IsBackground = true, Name = Marshal.PtrToStringUTF8((nint)name) ?? "lwIP" }; }
+        catch { lease.Dispose();throw; }
         lock (state.Registry)
         {
             if (state.Stopping) { lease.Dispose(); throw new Stopped(); }
-            state.Threads.Add(thread);
-            try { thread.Start(); } catch { state.Threads.Remove(thread); lease.Dispose(); throw; }
-            return Interlocked.Increment(ref nextHandle);
+            state.Threads.Add(thread);state.WorkerHandles.Add(worker,thread);state.WorkerArguments.Add(worker,payload);
+            try { thread.Start(); } catch { state.Threads.Remove(thread);state.WorkerHandles.Remove(worker);state.WorkerArguments.Remove(worker); lease.Dispose(); throw; }
+            return worker;
         }
     }
+    private static bool ServiceExitExpected(State state,long worker){lock(state.Registry)return state.ServiceStopRequests.Contains(worker);}
     public static long* ThreadSemGet(Lwip owner)
     {
         var state = For(owner);
@@ -281,7 +318,7 @@ public static unsafe partial class LwipSysArch
         lock (state.Registry)
         {
             foreach (var address in state.ThreadSemaphores.Values) NativeMemory.Free((void*)address);
-            state.ThreadSemaphores.Clear(); state.Resources.Clear();
+            state.ThreadSemaphores.Clear(); state.Resources.Clear();state.Serial.Clear();state.SerialHandles.Clear();state.SerialByHandle.Clear();
             if (state.Failures.Count != 0) throw new AggregateException("lwIP worker failed.", state.Failures);
         }
     }

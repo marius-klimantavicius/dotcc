@@ -63,3 +63,21 @@ instance callback ABI or translated-worker correctness. NativeOracle builds the
 matching product profile's core/API/PPP closure, performs 256 KiB TCP and UDP over
 IPv4/IPv6 loopback and verifies a deliberate assertion failure. It is an early
 oracle, not an independent Ethernet peer or a two-owner isolation witness.
+
+Serial transport now admits input atomically into a bounded queue (default
+65,536 bytes, configurable per channel). `TryFeed` reports capacity without
+partial admission; `Feed` throws on the host caller when full. Output callback
+exceptions return a zero-byte write and are retained for `ThrowErrors`, so they
+do not unwind a translated protocol callback. Serial descriptors, semaphore and
+mailbox handles are unique across owners; registries remain owner-local.
+
+Ancillary service cancellation is explicit: `FindWorkers` selects a live worker
+by owner, upstream thread name and argument pointer; `RequestServiceStop` marks
+only that worker. `ExitServiceIfRequested` must run after an upstream operation
+has returned and released its waiter accounting. Serial reads expose this
+boundary before waiting and after returning; an owning SLIP wrapper must abort
+the serial read, join the worker, then release any partial decoder pbuf. Generic
+sys_arch mailbox/semaphore waits are not interrupted by this service request.
+`JoinWorker` retains the stack on timeout. Real protocol-specific service
+teardown requires its own fixture; the host contract checks alone do not prove
+SNMP, SLIP or contrib service shutdown.

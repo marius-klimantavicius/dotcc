@@ -43,9 +43,19 @@ unsafe class Program
     }
     static void SocketClose(Lwip owner,int socket){using var entry=owner.__DotCcEnter();Require(owner.lwip_close(socket)==0,"socket close");owner.lwip_socket_thread_cleanup();}
 #endif
+    readonly record struct Usage(uint Udp,uint Pbuf,uint Timers,uint Heap,uint Netconn,uint Netbuf);
+    static Usage Snapshot(LwipStack stack)
+    {
+        Usage usage=default;stack.Invoke(owner=>{uint netconn=0,netbuf=0;
+#if !LWIP_NOSYS
+            netconn=owner.Globals.memp_NETCONN.stats->used;netbuf=owner.Globals.memp_NETBUF.stats->used;
+#endif
+            usage=new Usage(owner.Globals.memp_UDP_PCB.stats->used,owner.Globals.memp_PBUF_POOL.stats->used,owner.Globals.memp_SYS_TIMEOUT.stats->used,owner.Globals.lwip_stats.mem.used,netconn,netbuf);});return usage;
+    }
     static void Main()
     {
         using var a=new LwipStack();using var b=new LwipStack();uint clock=uint.MaxValue-5;LwipSysArch.SetClock(b.Core,()=>Volatile.Read(ref clock));a.Start();b.Start();
+        var baselineA=Snapshot(a);var baselineB=Snapshot(b);var hostBaselineB=LwipSysArch.Counters(b.Core);
         var stateA=new State(a.Core,0xa1);var stateB=new State(b.Core,0xb2);var handleA=GCHandle.Alloc(stateA);var handleB=GCHandle.Alloc(stateB);nint endpointA=0,endpointB=0;
         IDisposable? timerLease=null;
 #if !LWIP_NOSYS
@@ -63,13 +73,12 @@ unsafe class Program
 #if !LWIP_NOSYS
             SocketClose(a.Core,socketA);socketA=-1;
 #endif
-            a.Invoke(owner=>owner.udp_remove((udp_pcb*)endpointA));endpointA=0;a.Dispose();
+            a.Invoke(owner=>owner.udp_remove((udp_pcb*)endpointA));endpointA=0;Require(Snapshot(a)==baselineA,"A per-operation protocol allocations returned to initialized baseline before dispose");a.Dispose();
             Send(b,endpointB,0xb2);Wait(b,stateB,()=>Volatile.Read(ref stateB.Datagrams)==2);
 #if !LWIP_NOSYS
             SocketTraffic(b.Core,socketB,0xb3);
 #endif
             Volatile.Write(ref clock,5);Wait(b,stateB,()=>Volatile.Read(ref stateB.Timers)==1);b.Invoke(_=>{});Require(stateB.Timers==1,"timer fires once across uint32 wrap");timerLease.Dispose();timerLease=null;
-            Console.WriteLine("PASS owner-lifecycle: overlapping addresses/ports/descriptors, explicit callback ownership, GC, dispose A with B endpoints/timer live, clock wrap");
         }
         finally
         {
@@ -80,5 +89,7 @@ unsafe class Program
 #endif
             timerLease?.Dispose();handleA.Free();handleB.Free();
         }
+        Require(Snapshot(b)==baselineB,"B protocol pools/timers/heap returned to initialized baseline before dispose");Require(LwipSysArch.Counters(b.Core)==hostBaselineB,"B host handles/workers/TLS returned to initialized baseline");
+        Console.WriteLine($"PASS owner-lifecycle: overlapping endpoints, explicit owner, GC, A disposed with B live, clock wrap; protocol before={baselineB} after={Snapshot(b)}; host before-clear={hostBaselineB}");
     }
 }

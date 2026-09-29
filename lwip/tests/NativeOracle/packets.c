@@ -20,11 +20,22 @@ static err_t initialize(struct netif*n){n->name[0]='t';n->name[1]='p';n->mtu=150
 static void receive_packet(void*arg,struct udp_pcb*u,struct pbuf*p,const ip_addr_t*addr,u16_t port){(void)arg;(void)u;(void)addr;(void)port;CHECK(p->tot_len==expected_length);unsigned char bytes[4500];CHECK(pbuf_copy_partial(p,bytes,p->tot_len,0)==p->tot_len);for(unsigned i=0;i<expected_length;i++)CHECK(bytes[i]==(unsigned char)(payload[i]^((mutation&&i==32)?0x80:0)));received++;pbuf_free(p);}
 static void input_frames(struct netif*n){unsigned count=frame_count;for(unsigned i=0;i<count;i++){trace_frame(frames[i],lengths[i]);struct pbuf*p=pbuf_alloc(PBUF_RAW,(u16_t)lengths[i],PBUF_POOL);CHECK(p);CHECK(pbuf_take(p,frames[i],(u16_t)lengths[i])==ERR_OK);CHECK(ethernet_input(p,n)==ERR_OK);}frame_count=0;}
 static void send_packet(struct udp_pcb*sender,ip_addr_t*target,u16_t port){struct pbuf*p=pbuf_alloc(PBUF_TRANSPORT,(u16_t)expected_length,PBUF_RAM);CHECK(p);CHECK(pbuf_take(p,payload,(u16_t)expected_length)==ERR_OK);CHECK(udp_sendto(sender,p,target,port)==ERR_OK);pbuf_free(p);}
+static void arp_queue_case(struct netif *interface)
+{
+  frame_count=0;etharp_cleanup_netif(interface);ip_addr_t target;CHECK(ipaddr_aton("10.1.0.2",&target));struct udp_pcb *sender=udp_new();CHECK(sender);expected_length=1;
+  for(unsigned value=1;value<=3;value++){payload[0]=(unsigned char)value;send_packet(sender,&target,25050);}
+  CHECK(frame_count>=1);for(unsigned i=0;i<frame_count;i++)CHECK(frames[i][12]==8&&frames[i][13]==6);
+  unsigned char reply[42]={0};unsigned char local[6]={2,0,0,0,0,1},peer[6]={2,0,0,0,0,2};memcpy(reply,local,6);memcpy(reply+6,peer,6);reply[12]=8;reply[13]=6;reply[15]=1;reply[16]=8;reply[18]=6;reply[19]=4;reply[21]=2;memcpy(reply+22,peer,6);reply[28]=10;reply[29]=1;reply[31]=2;memcpy(reply+32,local,6);reply[38]=10;reply[39]=1;reply[41]=1;
+  frame_count=0;trace_frame(reply,sizeof(reply));struct pbuf *input=pbuf_alloc(PBUF_RAW,sizeof(reply),PBUF_POOL);CHECK(input);CHECK(pbuf_take(input,reply,sizeof(reply))==0);CHECK(ethernet_input(input,interface)==0);
+  CHECK(frame_count==(ARP_QUEUEING?3:1));for(unsigned i=0;i<frame_count;i++)CHECK(lengths[i]==43&&frames[i][12]==8&&frames[i][13]==0&&frames[i][42]==(ARP_QUEUEING?i+1:3));
+  printf("{\"case\":\"native-arp-queue\",\"enabled\":%d,\"submitted\":3,\"emitted\":%u}\n",ARP_QUEUEING,frame_count);udp_remove(sender);frame_count=0;
+}
 void native_packet_cases(void*argument)
 {
   (void)argument;const char *trace_path=getenv("LWIP_PACKET_PCAP");if(trace_path){trace=fopen(trace_path,"wb");CHECK(trace);uint32_t header[6]={0xa1b2c3d4,0x00040002,0,0,65535,1};CHECK(fwrite(header,sizeof(header),1,trace)==1);}struct netif interface;memset(&interface,0,sizeof(interface));ip4_addr_t ip,mask,gw;IP4_ADDR(&ip,10,1,0,1);IP4_ADDR(&mask,255,255,255,0);ip4_addr_set_zero(&gw);
   CHECK(netif_add(&interface,&ip,&mask,&gw,NULL,initialize,ethernet_input));netif_set_default(&interface);
   ip6_addr_t ipv6;CHECK(ip6addr_aton("fd01::1",&ipv6));netif_ip6_addr_set(&interface,0,&ipv6);netif_ip6_addr_set_state(&interface,0,IP6_ADDR_PREFERRED);netif_set_up(&interface);netif_set_link_up(&interface);
+  arp_queue_case(&interface);
   for(int v6=0;v6<2;v6++)for(int lite=0;lite<2;lite++)
   {
     frame_count=received=mutation=0;expected_length=lite?64:4500;for(unsigned i=0;i<expected_length;i++)payload[i]=(unsigned char)(i*31+(i>>8));

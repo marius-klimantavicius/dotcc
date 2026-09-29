@@ -29,10 +29,13 @@ unsafe class Program
         Check(LwipSysArch.SemWait(a, &sem, 20) != uint.MaxValue && LwipSysArch.SemWait(a, &sem, 20) == uint.MaxValue, "binary semaphore");
         ulong first = LwipSysArch.Protect(a), second = LwipSysArch.Protect(a); LwipSysArch.Unprotect(a, second); LwipSysArch.Unprotect(a, first);
         LwipSysArch.ThreadSemAlloc(a); Check(LwipSysArch.ThreadSemGet(a) != null && LwipSysArch.ThreadSemGet(b) == null, "TLS owner isolation"); LwipSysArch.ThreadSemFree(a);
-        byte[]? written = null; var serial = new LwipSysArch.SerialChannel(bytes => written = bytes); LwipSysArch.AttachSerial(a, 0, serial);
+        byte[]? written = null; var serial = new LwipSysArch.SerialChannel(bytes => written = bytes,2); LwipSysArch.AttachSerial(a, 0, serial);
         var fd = LwipSysArch.SerialOpen(a, 0); byte payload = 7; LwipSysArch.SerialWrite(a, fd, &payload, 1); Check(written![0] == 7, "serial output copy");
-        serial.Feed(new byte[]{1,2}); byte* buffer = stackalloc byte[2]; Check(LwipSysArch.SerialRead(a, fd, buffer, 2) == 2 && buffer[1] == 2, "serial input");
+        LwipSysArch.AttachSerial(b,0,new LwipSysArch.SerialChannel(_=>{}));rejected=false;try{LwipSysArch.SerialWrite(b,fd,&payload,1);}catch(InvalidOperationException){rejected=true;}Check(rejected,"serial foreign handle rejected despite same device");
+        Check(!serial.TryFeed(new byte[]{1,2,3}),"serial oversize admission rejected atomically");
+        serial.Feed(new byte[]{1,2});Check(!serial.TryFeed(new byte[]{3}),"serial full admission rejected"); byte* buffer = stackalloc byte[2]; Check(LwipSysArch.SerialRead(a, fd, buffer, 2) == 2 && buffer[1] == 2, "serial input");
         LwipSysArch.SerialAbort(a, fd); Check(LwipSysArch.SerialRead(a, fd, buffer, 2) == 0, "serial abort");
+        var failedSerial=new LwipSysArch.SerialChannel(_=>throw new Exception("serial user callback"));LwipSysArch.AttachSerial(a,1,failedSerial);Check(LwipSysArch.SerialWrite(a,LwipSysArch.SerialOpen(a,1),&payload,1)==0,"serial output error contained");bool serialError=false;try{failedSerial.ThrowErrors();}catch(AggregateException){serialError=true;}Check(serialError,"serial output error deferred");
         LwipApplications.AddContent(a,"/index.html",new byte[]{3,4,5});
         int contentLength=0;fixed(byte* path="/index.html\0"u8)
         {
@@ -48,6 +51,10 @@ unsafe class Program
         }
         LwipApplications.Release(a);
         LwipSysArch.SemFree(a, &sem); LwipSysArch.MboxFree(a, &mailbox);
+        using(var entered=new ManualResetEventSlim())using(var proceed=new ManualResetEventSlim())
+        {
+            var service=GCHandle.Alloc((entered,proceed));long worker=0;try{worker=LwipSysArch.ThreadNew(a,null,&ServiceWorker,(void*)GCHandle.ToIntPtr(service),0,0);Check(entered.Wait(2000),"ancillary service entered bound owner");rejected=false;try{LwipSysArch.RequestServiceStop(b,worker);}catch(InvalidOperationException){rejected=true;}Check(rejected,"foreign worker cancellation rejected");LwipSysArch.RequestServiceStop(a,worker);proceed.Set();LwipSysArch.JoinWorker(a,worker);Check(LwipSysArch.Counters(a).Workers==0,"service exit at completed operation boundary releases lease");}finally{if(worker!=0)LwipSysArch.RequestServiceStop(a,worker);proceed.Set();if(worker!=0)LwipSysArch.JoinWorker(a,worker);service.Free();}
+        }
         LwipSysArch.ThreadNew(a, null, &Worker, null, 0, 0);
         SpinWait.SpinUntil(() => LwipSysArch.Counters(a).Resources == 1, 2000);
         LwipSysArch.Stop(a); Check(LwipSysArch.Counters(a) == (0,0,0), "worker cancel join release");
@@ -59,5 +66,6 @@ unsafe class Program
         Console.WriteLine($"PASS sysarch: {checks} host contract checks with actual translated owner retention/binding/disposal");
 #endif
     }
+    static void ServiceWorker(Lwip owner,void* argument){var state=((ManualResetEventSlim,ManualResetEventSlim))GCHandle.FromIntPtr((nint)argument).Target!;state.Item1.Set();state.Item2.Wait();LwipSysArch.ExitServiceIfRequested(owner);throw new Exception("Service cancellation boundary failed");}
     static void Worker(Lwip owner, void* argument) { long box; LwipSysArch.MboxNew(owner, &box, 1); LwipSysArch.MboxFetch(owner, &box, null, 0); }
 }

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Managed.Networking;
 using static Managed.Networking.Lwip;
-unsafe class Program
+unsafe partial class Program
 {
     private sealed class Receiver
     {
@@ -22,7 +22,7 @@ unsafe class Program
     static void Main(string[] args)
     {
         using var capture=args.Length==0?null:new Pcap(args[0]);
-        using var pair=new VirtualPair(capture==null?null:capture.Write);DatagramCase(pair,false,false);DatagramCase(pair,true,false);DatagramCase(pair,false,true);DatagramCase(pair,true,true);pair.Check();
+        using var pair=new VirtualPair(capture==null?null:capture.Write);ArpQueueCase(pair);DatagramCase(pair,false,false);DatagramCase(pair,true,false);DatagramCase(pair,false,true);DatagramCase(pair,true,true);pair.Check();
         Console.WriteLine("PASS datagrams: IPv4/IPv6 fragmentation/reassembly and UDP-Lite partial coverage positive/negative fixtures");
     }
     static int ProtocolOffset(byte[] frame,bool ipv6,int protocol)
@@ -50,6 +50,7 @@ unsafe class Program
             // Upstream ARP_QUEUEING=0 retains only one pending packet. Resolve
             // the neighbor with a small datagram before testing IP fragments.
             byte[] actualPayload=payload;payload=new byte[]{0xa5};Send();Require(Await(1).AsSpan().SequenceEqual(payload),"neighbor-resolution datagram");
+            pair.Drain();
             lock(receiver.Datagrams)receiver.Datagrams.Clear();payload=actualPayload;Volatile.Write(ref fragments,0);
             Send();Require(Await(1).AsSpan().SequenceEqual(payload),"UDP complete payload");
             if(lite)

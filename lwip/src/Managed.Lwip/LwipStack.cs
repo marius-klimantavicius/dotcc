@@ -59,20 +59,32 @@ public sealed unsafe class LwipStack : IDisposable
             finally{handle.Free();}
         }
     }
-    public nint AddInterface(string ipv4,string ipv6,ReadOnlySpan<byte> mac,Action<byte[]> output)
+    public nint AddInterface(string ipv4,string ipv6,ReadOnlySpan<byte> mac,Action<byte[]> output,string netmask="255.255.255.0",string gateway="0.0.0.0")
     {
         if(mac.Length!=6)throw new ArgumentException("Ethernet addresses contain six bytes.",nameof(mac));
-        byte[] address4=Encoding.UTF8.GetBytes(ipv4+"\0"),address6=Encoding.UTF8.GetBytes(ipv6+"\0"),hardware=mac.ToArray();
+        byte[] address4=Encoding.UTF8.GetBytes(ipv4+"\0"),address6=Encoding.UTF8.GetBytes(ipv6+"\0"),hardware=mac.ToArray(),subnet=Encoding.UTF8.GetBytes(netmask+"\0"),route=Encoding.UTF8.GetBytes(gateway+"\0");
         nint result=0;
         Invoke(core=>
         {
-            fixed(byte* a=address4,b=address6,m=hardware,mask="255.255.255.0\0"u8,gw="0.0.0.0\0"u8)
+            fixed(byte* a=address4,b=address6,m=hardware,mask=subnet,gw=route)
                 result=(nint)core.lwip_host_interface_add(a,mask,gw,b,m);
             if(result==0)throw new InvalidOperationException("Interface creation failed.");
             LwipFrames.Attach(core,result,output);interfaces.Add(result);core.lwip_host_interface_up((void*)result);
         });
         return result;
     }
+    /// <summary>Select the fallback route among this owner's interfaces.</summary>
+    public void SetDefaultInterface(nint interfaceAddress) => Invoke(core=>
+    {
+        if(!interfaces.Contains(interfaceAddress))throw new ArgumentException("Interface does not belong to this stack.",nameof(interfaceAddress));
+        core.netif_set_default((Lwip.netif*)interfaceAddress);
+    });
+    /// <summary>Change physical link availability while preserving configured addresses.</summary>
+    public void SetLinkState(nint interfaceAddress,bool up) => Invoke(core=>
+    {
+        if(!interfaces.Contains(interfaceAddress))throw new ArgumentException("Interface does not belong to this stack.",nameof(interfaceAddress));
+        if(up)core.netif_set_link_up((Lwip.netif*)interfaceAddress);else core.netif_set_link_down((Lwip.netif*)interfaceAddress);
+    });
     public void Receive(nint interfaceAddress,ReadOnlySpan<byte> frame)
     {
         lock(gate)
