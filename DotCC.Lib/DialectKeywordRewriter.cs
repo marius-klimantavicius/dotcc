@@ -142,6 +142,10 @@ internal sealed class DialectKeywordRewriter : RewritingTokenStream
 
     protected override void ProcessToken(Item token)
     {
+        // GNU __extension__ suppresses extension diagnostics for the following
+        // construct; it does not change its C evaluation or type. This runs
+        // after macro expansion so an explicitly defined macro still wins.
+        if (token.ID == _idSymbol && token.Content is "__extension__") return;
         if (token.ID == _idSymbol
             && token.Content is string name
             && _promotions.TryGetValue(name, out var p)

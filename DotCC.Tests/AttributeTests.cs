@@ -50,6 +50,18 @@ public sealed class AttributeTests
     }
 
     [Theory]
+    [InlineData("nonnull")]
+    [InlineData("__nonnull__(1)")]
+    [InlineData("nonnull(1, 2)")]
+    [InlineData("nonnull(1, 2, 3)")]
+    public void Native_nonnull_promises_preserve_function_signatures(string attribute)
+    {
+        var src = WriteTemp($"int first(int *a, int *b, int *c) __attribute__(({attribute})) {{ return *a; }}");
+        try { Compiler.EmitCSharp(new[] { src }, emit: EmitMode.ManagedLib).ShouldContain("int first(int* a, int* b, int* c)"); }
+        finally { File.Delete(src); }
+    }
+
+    [Theory]
     [InlineData("default", true)]
     [InlineData("hidden", false)]
     [InlineData("protected", false)]
@@ -120,6 +132,10 @@ public sealed class AttributeTests
     [Theory]
     [InlineData("alloc_size(0)")]
     [InlineData("alloc_size(1, 0)")]
+    [InlineData("nonnull(0)")]
+    [InlineData("nonnull(1, 0)")]
+    [InlineData("nonnull(1, 2, 0)")]
+    [InlineData("nonnull(effect())")]
     [InlineData("aligned(16, 32)")]
     public void Invalid_or_unknown_argument_attributes_remain_errors(string attribute)
     {

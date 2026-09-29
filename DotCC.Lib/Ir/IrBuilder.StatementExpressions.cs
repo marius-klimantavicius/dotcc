@@ -40,9 +40,17 @@ internal sealed partial class IrBuilder
     {
         var body = BuildBlock(item);
         // Keep control transfers in the enclosing C function from accidentally
-        // becoming returns/breaks inside a generated delegate. Broader control
-        // flow requires a dedicated lowering pass; reject it explicitly for now.
-        if (body.Stmts.Any(s => s is not (DeclStmt or ExprStmt)))
+        // becoming returns/breaks inside a generated delegate. Structured
+        // conditionals stay inside that delegate and need no transfer lowering.
+        bool Supported(CStmt statement) => statement switch
+        {
+            DeclStmt or ExprStmt => true,
+            Block block => block.Stmts.All(Supported),
+            If conditional => Supported(conditional.Then) &&
+                (conditional.Else is null || Supported(conditional.Else)),
+            _ => false,
+        };
+        if (!body.Stmts.All(Supported))
             throw new IrUnsupportedException("statement expression with control flow or non-scalar declarations");
         var value = (body.Stmts.LastOrDefault() as ExprStmt)?.Expr;
         var statements = value is null ? body.Stmts : body.Stmts.Take(body.Stmts.Count - 1).ToArray();

@@ -286,12 +286,25 @@ internal sealed partial class IrBuilder
                     // Native headers use these optimizer promises. Leaving
                     // calls effectful and potentially throwing is conservative.
                     case "nothrow": case "leaf": case "const": case "pure": break;
+                    case "nonnull": break; // diagnostic/optimization promise; no runtime checks
                     case "malloc": break; // allocation/aliasing optimization hint
                     default: throw new IrUnsupportedException("unsupported GNU attribute: " + Tok(a.Arg0));
                 }
                 break;
             case C.AttrCall a when Tok(a.Arg0).Trim('_') == "alloc_size":
                 ValidateAllocationSizeIndex(a.Arg2);
+                break;
+            case C.AttrCall a when Tok(a.Arg0).Trim('_') == "nonnull":
+                ValidateAttributeArgumentIndex(a.Arg2, "nonnull");
+                break;
+            case C.AttrCallTwo a when Tok(a.Arg0).Trim('_') == "nonnull":
+                ValidateAttributeArgumentIndex(a.Arg2, "nonnull");
+                ValidateAttributeArgumentIndex(a.Arg4, "nonnull");
+                break;
+            case C.AttrCallThree a when Tok(a.Arg0).Trim('_') == "nonnull":
+                ValidateAttributeArgumentIndex(a.Arg2, "nonnull");
+                ValidateAttributeArgumentIndex(a.Arg4, "nonnull");
+                ValidateAttributeArgumentIndex(a.Arg6, "nonnull");
                 break;
             case C.AttrCall a when Tok(a.Arg0).Trim('_') == "visibility":
                 // Default visibility is already the ordinary external export
@@ -317,13 +330,16 @@ internal sealed partial class IrBuilder
     }
 
     private void ValidateAllocationSizeIndex(Item expression)
+        => ValidateAttributeArgumentIndex(expression, "alloc_size");
+
+    private void ValidateAttributeArgumentIndex(Item expression, string attribute)
     {
-        // alloc_size describes the allocation result for diagnostics and
-        // optimization; it does not perform allocation or change the C ABI.
+        // These indices describe diagnostic/optimization promises, not runtime
+        // operations or ABI changes.
         // Accept only integer constant argument positions, never arbitrary
         // expressions whose side effects might otherwise be silently dropped.
         if (ConstEval(BuildExpr(expression)) is not { } index || index <= 0 || index > int.MaxValue)
-            throw new IrUnsupportedException("GNU alloc_size requires positive constant argument positions");
+            throw new IrUnsupportedException($"GNU {attribute} requires positive constant argument positions");
     }
 
     private void BuildTopLevel(Item fn)
@@ -3849,7 +3865,8 @@ internal sealed partial class IrBuilder
         // (notably conditional expressions and sizeof), before C# name binding.
         if (name is "stdin" or "stdout" or "stderr")
             return new NameRef(name) { Type = new CType.Pointer(new CType.Named("FILE")) };
-        if (name is "__func__" && _currentFnName.Length != 0)
+        // In C (unlike C++), GNU's two spellings contain just the function name.
+        if (name is "__func__" or "__FUNCTION__" or "__PRETTY_FUNCTION__" && _currentFnName.Length != 0)
         {
             var fnSegs = new[] { $"\"{_currentFnName}\"" };
             var fnLen = DotCC.EmitHelpers.StringByteLength(fnSegs);
