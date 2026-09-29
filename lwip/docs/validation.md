@@ -23,9 +23,12 @@ staged IPv4 forwarding checksum repair. Receipts live under `artifacts/campaign/
 | Managed NO_SYS upstream Check | 132 applicable cases and native registration/negative-fixture parity; all four cells; five threaded socket cases inapplicable | `20260929-083055-ad449f5f/receipt.json` |
 | Native upstream Check | 137 original cases with zero failures/errors; test-only Check 0.15.2 | `artifacts/upstream-native/lwip_unittests.xml` |
 | Native makefsdata | Original loop failure bounded by 8 MiB; staged progress repair passes empty/odd/multiple-MSS checksum/data/framing controls | `artifacts/native-tools/report.json` |
-| Managed makefsdata generator | Native-exact 27,529-byte image, checksum/header-offset/temp cleanup; all four cells; generated-image HTTP roundtrip still pending | `20260929-083157-23870a49/receipt.json` |
-| Initial bundled PPP controls | Raw JIT primitive/auth/MPPE vectors, including 600 stateful/stateless packets; remaining cells and link negotiations pending | `20260929-090230-b19a87b0/receipt.json` |
-| Initial contrib controls | Raw JIT addon ABI/owner callbacks/static routes/ISN; remaining cells and application workflows pending | `20260929-090220-366b245d/receipt.json` |
+| Managed makefsdata generator | Native-exact 27,529-byte image, checksum/header-offset/temp cleanup; all four cells | `20260929-083157-23870a49/receipt.json` |
+| Generated-content HTTP | Actual translated processed makefsdata image consumed by original fs.c; empty/odd/4097-byte content served correctly; all four HTTP-content cells | Publication `20260929-093414-95dafdc6`, behavior `20260929-093554-eba3af0c/http-transactions-report.json` |
+| Bundled PPP controls | Primitive/auth/MPPE vectors, including 600 stateful/stateless packets; all three profiles × four cells; actual link negotiations pending | `20260929-092814-c3aef247`, `20260929-092953-8a3a53fc`, `20260929-093126-d3ef1043` (`bundled-ppp-report.json`) |
+| Contrib addon controls | ABI/owner callbacks/static routes/ISN; all four cells; contrib application workflows pending | `20260929-092742-40fc80aa/contrib-addons-report.json` |
+| SLIP framing | Original decoder with real UDP IPv4/IPv6 ingress, framing/escapes, joined worker and partial-pbuf cleanup; all three profiles × four cells | `20260929-092814-c3aef247`, `20260929-092953-8a3a53fc`, `20260929-093126-d3ef1043` (`slip-framing-report.json`) |
+| HTTP baseline | Five actual transactions: custom GET, IPv6 SSI, CGI parameters, 404 and POST/split headers; all three profiles × four cells | Same three receipts (`http-transactions-report.json`) |
 | Shared compiler/runtime repairs | 14 focused compiler and 6 affected functional checks; full lwIP retries and isolated QuickJS translation/JIT consumer regressions | `docs/blockers.md` L005/L007; QuickJS `080236-2f0ecda6`, `080433-b0e54d3a` |
 
 Independent kernel interoperability is implemented and passes all three product
@@ -40,7 +43,9 @@ cyclic timers and the TCP/IP worker are identified initialized infrastructure.
 These finite cases do not prove arbitrary pending-protocol teardown. The low-level
 borrowed core API requires callers to settle their resources. Newly authored
 owning ancillary-service registration/stop integration is not yet qualified by
-these receipts and needs fresh tests.
+these receipts and needs fresh tests. Auxiliary protocol matrices used explicit
+fixture teardown and do not qualify the new StartService/failure-retry contract.
+Shared facade/host sources are now frozen during dependent worker builds.
 
 ## Historical snapshot evidence
 
@@ -60,7 +65,7 @@ final acceptance.
 ## Remaining acceptance
 
 Full socket APIs, memory/timer/core recovery, addressing, IPv6 routing/bridging,
-SLIP/PPP/6LoWPAN/ZEP, application/contrib workflows, generated-content HTTP,
+SLIP/PPP/6LoWPAN/ZEP, remaining HTTP variants and application/contrib workflows,
 pending/blocked service lifecycle, selected independent application/link peers,
 final import/active-feature/adaptation audits, all-profile rooted AOT and owning
 examples, clean/local-input reproduction and Windows orchestration remain open.

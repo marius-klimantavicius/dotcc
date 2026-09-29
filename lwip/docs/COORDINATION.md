@@ -18,14 +18,18 @@ original branch. Use `-p:UseLocalLalrCc=false` for tool/runtime builds.
 | `/root/lwip_coordinator/pipeline` | `config/`, `scripts/`, `src/port/` headers, `docs/source.md`, `docs/blockers.md`, `tests/Upstream/`; approved structural compiler fixes | Source/feature/profile inventory, recipe, full translation |
 | `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `tests/` except `Upstream/`, README and `docs/host.md` | sys_arch, owning API, native oracle and consumer |
 
-Current shared .NET build ownership is **pipeline**, handed back after host
-completed repaired routing/kernel interoperability all three profiles × four cells.
-Repaired publications: threaded `085444-ed99ac5f`, nosys `085621-ea694e86`, locking
-`085752-bc7b505f`, contrib `085928-13eb1f13`. Latest full receipts: threaded
-`090503-a94d59d9`, nosys `091423-b5f02ec9`, locking `091556-6c1b6415`.
-Pipeline runs SLIP/HTTP/PPP/contrib finite matrices and generated-content roundtrip.
-Host authors owning ancillary-service teardown and recovery/addressing cases.
-No simultaneous shared bin/obj builds. Workers implement; coordinator reviews,
+Current shared .NET build ownership is **host**, handed back after pipeline
+completed finite PPP/SLIP/HTTP all product matrices, contrib addons, and actual
+translated makefsdata→HTTP all four cells. Repaired publications: threaded
+`085444-ed99ac5f`, nosys `085621-ea694e86`, locking `085752-bc7b505f`, contrib
+`085928-13eb1f13`, HTTP-content `093414-95dafdc6`. Current evidence index:
+[validation.md](validation.md). Host qualifies owning-service/disposal phases,
+pool recovery, default ARP queueing and DHCP. Pipeline authors actual PPP link
+negotiations, then 6LoWPAN/ZEP and remaining applications/contrib workflows.
+No simultaneous shared bin/obj builds. Freeze shared Host/facade source while the
+other worker builds dependent matrices; author new isolated fixtures meanwhile.
+Receipts from successive source snapshots do not jointly qualify the latest edits.
+Workers implement; coordinator reviews,
 schedules and integrates. Commit named files with evidence and honest scope.
 
 ## Agreed constraints and contracts
@@ -411,3 +415,47 @@ Its prior validated facade snapshot is `build/validated-LwipStack-before-service
 Do not treat earlier lifecycle receipts as qualification of the new service API.
 After pipeline hands back .NET, host must build and qualify actual ancillary
 service stop/join, pool recovery, default ARP queueing and broader addressing.
+
+### Auxiliary protocol matrices and host checkpoint
+
+Validated host checkpoint `cae2e2ef` contains host32/serial, natural lifecycle,
+routing and independent kernel fixtures plus the prior validated facade routing
+surface. It depends on pipeline-owned staged forwarding repair pending its
+checkpoint. New service/DHCP/PoolRecovery work stays outside this commit.
+
+Contrib addon four-cell matrix passes `092742-40fc80aa`. Finite bundled PPP,
+SLIP framing/actual UDP ingress and five baseline HTTP transactions pass all four
+cells for threaded `092814-c3aef247`, nosys `092953-8a3a53fc`, locking
+`093126-d3ef1043`. Initial `092312-37ea469b` aggregate failed HTTP harness CGI
+teardown after SLIP passed; fixed clean HTTP `092443-6eedfe86` and the subsequent
+full matrices supersede it. These protocol fixtures do not qualify newly authored
+owning-service registration/disposal retry. Shared Host/facade sources are frozen
+until pipeline hands builds back; host must qualify that exact final snapshot.
+
+Generated-content raw JIT passed `092727-103cb8ef`: translated makefsdata output
+fed original fs.c and HTTP served empty/odd/4097-byte files. Pipeline now repeats
+preparation with portable bounded monitoring and qualifies all four HTTP-content
+cells. Native PPPoS auth negotiation is in progress; postclose allocation accounting
+is under investigation, not yet an upstream defect claim. Native DHCP phase
+controls are being collected by host ahead of managed tests.
+
+### Actual translated generator→HTTP roundtrip complete
+
+Portable bounded subprocess monitoring replaces POSIX-only preparation limits.
+Fresh HTTP-content publication `093414-95dafdc6` passes and all four HTTP-content
+behavior cells pass `093554-eba3af0c`, serving actual translated makefsdata output
+through original fs.c. Native controls use the same generated image. Full other
+HTTP variants and application/contrib families remain open.
+
+Native PPPoS postclose allocation discrepancy was queued IPv6 router-solicitation
+loopback data: the fixture's NO_SYS pump omitted netif_poll_all. Actual mainloop
+drain fixes accounting; no product patch. Link negotiation fixtures remain in
+progress. Host has frozen shared source until build handoff and will qualify the
+latest owning-service/disposal phases in its next window.
+
+Pipeline checkpoint `b5ee80e4` commits 44 owned files covering validated diagnostic
+matrices, generator/HTTP roundtrip, active-feature/binding checks, both staged
+repairs and finite contrib/PPP crypto/SLIP/HTTP fixtures. Unfinished PppLinks and
+new host suite names remain outside its index. This supplies the staged-repair
+dependency of host checkpoint `cae2e2ef`. Completed private auxiliary build caches
+were pruned by their owner (2.3 GiB), retaining apps, receipts, reports and products.
