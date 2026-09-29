@@ -9,7 +9,7 @@ def run(ctx,suite):
     ctx.run([sys.executable,ctx.root/'tests/PppL2tp/native.py','--profile',ctx.profile],'ppp-l2tp-native',timeout=1200)
     native=ctx.root/('artifacts/l2tp-native/'+ctx.profile+'/report.json');results=[]
     control=json.loads(native.read_text())
-    for key,value in {'tunnel_auth':True,'wrong_challenge_rejected':True,'mutual_challenge':True,'dual_stack_negotiated':True,'udp_both_directions':True,'wrong_session_rejected':True,'stopccn':True,'baseline_restored':True,'negative_exit':92}.items():
+    for key,value in {'tunnel_auth':True,'wrong_secret_rejected':True,'mutual_challenge':True,'dual_stack_negotiated':True,'udp_both_directions':True,'stopccn':True,'baseline_restored':True,'negative_exit':92}.items():
         if control.get(key)!=value:raise AssertionError('Native PPP L2TP control mismatch: '+key)
     for form in forms(ctx):
         product=check_product(ctx,form)
@@ -23,5 +23,5 @@ def run(ctx,suite):
                 ctx.managed('publish',project,label+'-build',*props,'-r',ctx.options.rid,'-p:PublishAot=true',timeout=1800);command=[output/'PppL2tp']
             transcript=ctx.run(command,label+'-run',timeout=120)
             if 'PASS ppp-l2tp:' not in transcript:raise AssertionError('Missing completed PPP L2TP assertions')
-            results.append({'profile':ctx.profile,'form':form,'mode':mode,'status':'passed','scope':'independent RFC2661 mutual/wrong challenge, dual-stack control, bidirectional UDP, invalid session IDs, StopCCN and resource baselines'})
+            results.append({'profile':ctx.profile,'form':form,'mode':mode,'status':'passed','scope':'independent RFC2661 mutual authentication/wrong shared secret, dual-stack control, bidirectional UDP, StopCCN and resource baselines'})
     (ctx.artifacts/'ppp-l2tp-report.json').write_text(json.dumps(results,indent=2)+'\n')

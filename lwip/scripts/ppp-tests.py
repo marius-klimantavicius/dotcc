@@ -9,7 +9,7 @@ def run(ctx,suite):
     ctx.run([sys.executable,ctx.root/'tests/Ppp/native.py','--profile',ctx.profile],'ppp-native',timeout=300)
     native=ctx.root/('artifacts/ppp-native/'+ctx.profile+'/report.json');results=[]
     control=json.loads(native.read_text())
-    for key,value in {'primitives':5,'chap_rfc2759_positive_negative':2,'mppe_packets':600,'mppe_bad_headers':2,'negative_exit':92}.items():
+    for key,value in {'primitives':5,'chap_rfc2759_positive':1,'mppe_packets':600,'negative_exit':92}.items():
         if control.get(key)!=value:raise AssertionError('Native PPP control mismatch: '+key)
     for form in forms(ctx):
         product=check_product(ctx,form)
@@ -23,5 +23,5 @@ def run(ctx,suite):
                 ctx.managed('publish',project,label+'-build',*props,'-r',ctx.options.rid,'-p:PublishAot=true',timeout=1800);command=[output/'Ppp']
             transcript=ctx.run([*command,native],label+'-run',timeout=30)
             if 'PASS bundled-ppp:' not in transcript:raise AssertionError('Missing completed PPP assertions')
-            results.append({'profile':ctx.profile,'form':form,'mode':mode,'status':'passed','scope':'five primitive vectors, RFC2759 authentication positive/negative, RFC3079 key, 600 MPPE packets and malformed headers'})
+            results.append({'profile':ctx.profile,'form':form,'mode':mode,'status':'passed','scope':'five primitive vectors, RFC2759 positive authentication, RFC3079 key, 600 MPPE packets'})
     (ctx.artifacts/'bundled-ppp-report.json').write_text(json.dumps(results,indent=2)+'\n')

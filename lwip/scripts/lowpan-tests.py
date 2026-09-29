@@ -23,5 +23,5 @@ def run(ctx,suite):
                 ctx.managed('publish',project,label+'-build',*props,'-r',ctx.options.rid,'-p:PublishAot=true',timeout=1800);command=[output/'Lowpan']
             transcript=ctx.run(command,label+'-run',timeout=120)
             if 'PASS lowpan-vectors:' not in transcript:raise AssertionError('Missing completed 6LoWPAN assertions')
-            results.append({'profile':ctx.profile,'form':form,'mode':mode,'status':'passed','scope':'independent raw/IPHC IEEE802.15.4 and BLE receive vectors, address/CRC checks, invalid dispatch and owner/resource isolation'})
+            results.append({'profile':ctx.profile,'form':form,'mode':mode,'status':'passed','scope':'independent raw/IPHC IEEE802.15.4 and BLE receive vectors, address/CRC checks and owner/resource isolation'})
     (ctx.artifacts/'lowpan-vectors-report.json').write_text(json.dumps(results,indent=2)+'\n')

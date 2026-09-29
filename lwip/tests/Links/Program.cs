@@ -57,9 +57,8 @@ unsafe class Program
         pbuf* first=Packet(owner,payload[..129]),second=Packet(owner,payload[129..]);owner.pbuf_cat(first,second);Require(iface.output(owner,&iface,first,null)==0,"IPv4 SLIP chained output");owner.pbuf_free(first);
         Require(state.Output.SequenceEqual(expected),"independent escaping vector");int split=Array.IndexOf(expected,(byte)0xdb);
         serial.Feed(expected.AsSpan(0,split+1));if(nosys){owner.slipif_poll(&iface);Require(state.Received.IsEmpty,"partial escape pending");}
-        serial.Feed(expected.AsSpan(split+1,expected.Length-split-2));if(nosys){owner.slipif_poll(&iface);Require(state.Received.IsEmpty,"truncated frame pending");}
+        serial.Feed(expected.AsSpan(split+1,expected.Length-split-2));if(nosys){owner.slipif_poll(&iface);Require(state.Received.IsEmpty,"valid stream pending final delimiter");}
         serial.Feed(expected.AsSpan(expected.Length-1));Require(Receive(owner,&iface,state,nosys).SequenceEqual(payload),"split escaped frame roundtrip");
-        serial.Feed([0xc0,0xc0,0xdb,0x01,0xc0]);Require(Receive(owner,&iface,state,nosys).SequenceEqual(new byte[]{1}),"native unknown escape tolerance and empty delimiter");
         state.Output.Clear();first=Packet(owner,"abc"u8.ToArray());Require(iface.output_ip6(owner,&iface,first,null)==0,"IPv6 SLIP output");owner.pbuf_free(first);Require(state.Output.SequenceEqual(new byte[]{0xc0,97,98,99,0xc0}),"IPv6 output bytes");
         iface.input=&IpInput;ip6_addr address6=default;fixed(byte* a="fd00::1\0"u8)Require(owner.ip6addr_aton(a,&address6)==1,"SLIP IPv6 address");owner.netif_ip6_addr_set(&iface,0,&address6);owner.netif_ip6_addr_set_state(&iface,0,IP6_ADDR_PREFERRED);
         ip_addr any=new(){type=46};udp_pcb* udp=owner.udp_new_ip_type(46);Require(udp!=null&&owner.udp_bind(udp,&any,9000)==0,"SLIP UDP listener");owner.udp_recv(udp,&Datagram,null);
@@ -71,6 +70,6 @@ unsafe class Program
         slipif_priv* decoder=(slipif_priv*)iface.state;Require(decoder->q!=null,"partial decoder pbuf retained before cleanup");owner.pbuf_free(decoder->q);decoder->q=decoder->p=null;owner.netif_remove(&iface);owner.mem_free(decoder);iface.state=null;
         Require(owner.Globals.lwip_stats.mem.used==baseline&&owner.Globals.lwip_stats.memp[(int)memp_t.MEMP_PBUF_POOL].Value->used==pool,"decoder memory/pbuf baseline restored");
         serial.ThrowErrors();LwipSysArch.Stop(owner);Require(LwipSysArch.Counters(owner).Workers==0,"SLIP worker joined");States.TryRemove(owner,out _);state.Changed.Dispose();
-        Console.WriteLine("PASS slip-framing: native-matched two receive frames, split escapes/truncation, 300-byte chained output, IPv4/IPv6 UDP input, partial-pbuf baseline cleanup, owner worker stop/join");
+        Console.WriteLine("PASS slip-framing: native-matched complete receive frame, split escapes/pending valid stream, 300-byte chained output, IPv4/IPv6 UDP input, partial-pbuf baseline cleanup, owner worker stop/join");
     }
 }

@@ -1,0 +1,1337 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-09-29",
+  "user_instruction": "For verification - do not do any corruption tests unless those exist in upstream.",
+  "status": "Coordinator source/callgraph review complete; permitted focused verification authorized; revised behavior not yet rerun",
+  "upstream": {
+    "repository": "https://github.com/lwip-tcpip/lwip",
+    "commit": "77dcd25a72509eb83f72b033d219b1d40cd8eb95"
+  },
+  "rules": {
+    "authored_corruption": "Excluded from default, explicit-test and full-verify paths unless the exact scenario is an upstream test and its source/registration provenance is recorded before execution. Rejection implementation branches are not provenance.",
+    "existing_upstream": "Run original upstream tests unchanged, including their original edge/malformed cases. Exceptions here do not authorize derivative custom corruption cases.",
+    "historical_receipts": "Retained unchanged as pre-constraint historical evidence. Removed cases are not required to run again, and historical passes do not qualify revised fixture source.",
+    "new_cases": "Review packet coherence and native prerequisite call graph before registration; record any permitted upstream exception first."
+  },
+  "excluded_cases": [
+    {
+      "id": "udplite-bitflips",
+      "case": "Covered and uncovered payload byte mutations",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/PacketScenarios/Program.cs",
+        "tests/NativeOracle/packets.c",
+        "scripts/test.py"
+      ],
+      "retained": "Unchanged repeated UDP-Lite datagrams, emitted coverage16, valid UDP fragmentation/reassembly",
+      "upstream_exception": null
+    },
+    {
+      "id": "ppp-authenticator-bitflip",
+      "case": "MSCHAPv2 response byte mutation",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/Ppp/Program.cs",
+        "tests/Ppp/crypto.c",
+        "scripts/ppp-tests.py"
+      ],
+      "retained": "Published positive primitive/authentication vectors and normal wrong configured credentials in ppp-serial",
+      "upstream_exception": null
+    },
+    {
+      "id": "mppe-malformed-header",
+      "case": "Two zero bytes submitted as an MPPE header",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/Ppp/Program.cs",
+        "tests/Ppp/crypto.c",
+        "scripts/ppp-tests.py"
+      ],
+      "retained": "600 valid encrypted/decrypted packets and positive key vectors",
+      "upstream_exception": null
+    },
+    {
+      "id": "pppos-invalid-fcs",
+      "case": "Custom byte sequence with invalid FCS",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/PppLinks/Program.cs",
+        "tests/PppLinks/serial.c",
+        "scripts/ppp-link-tests.py"
+      ],
+      "retained": "Observe FCS on unmodified negotiated wire output, valid UDP/TCP, VJ/MPPE and normal credential rejection",
+      "upstream_exception": null
+    },
+    {
+      "id": "pppoe-hostunique-and-length",
+      "case": "Mutated HostUnique and inconsistent PADS payload length",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/PppLinks/Ethernet.cs",
+        "tests/PppLinks/ethernet.c",
+        "scripts/pppoe-tests.py"
+      ],
+      "retained": "Correct discovery/cookie/session negotiation, ordinary Configure-Reject, data, PADT",
+      "upstream_exception": null
+    },
+    {
+      "id": "slip-unknown-escape",
+      "case": "Custom unknown escape byte pair",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/Links/Program.cs",
+        "tests/Links/slip.c",
+        "scripts/link-tests.py"
+      ],
+      "retained": "Valid escaped/split stream, IPv4/IPv6 datagrams and pending partial valid stream cleanup",
+      "upstream_exception": null
+    },
+    {
+      "id": "lowpan-dispatch",
+      "case": "Overwrite valid LOWPAN dispatch with 0x50",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/Lowpan/Program.cs",
+        "scripts/lowpan-tests.py"
+      ],
+      "retained": "Ten independently encoded valid radio/BLE inputs, address-mode bug control and API argument rejection",
+      "upstream_exception": null
+    },
+    {
+      "id": "zep-version",
+      "case": "Custom invalid ZEP version",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/Zep/native.c",
+        "tests/Zep/native.py"
+      ],
+      "retained": "Valid ZEP ingress, timer/fragment lifetime, partial-init rollback; prototype not registered as campaign suite",
+      "upstream_exception": null
+    },
+    {
+      "id": "ra-hop-and-checksum",
+      "case": "Invalid RA hop-limit and checksum byte flip",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/Ipv6Addressing/Program.cs",
+        "tests/Ipv6Addressing/native.c",
+        "scripts/test.py"
+      ],
+      "retained": "Valid RA/SLAAC/DAD states and lifetime expiry",
+      "upstream_exception": null
+    },
+    {
+      "id": "dhcp6-xid",
+      "case": "Mutated transaction ID in reply",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/Ipv6Addressing/Program.cs",
+        "tests/Ipv6Addressing/native.c",
+        "scripts/test.py"
+      ],
+      "retained": "Delayed valid reply, original retransmission timer, same-transaction retry, refresh/DNS",
+      "upstream_exception": null
+    },
+    {
+      "id": "l2tp-session-and-authenticator",
+      "case": "Mutated tunnel/session IDs and challenge digest bit flip",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/PppL2tp/Program.cs",
+        "tests/PppL2tp/native.c",
+        "scripts/l2tp-tests.py"
+      ],
+      "retained": "Actual authenticator computed with a different configured shared secret; correct session data and normal termination",
+      "upstream_exception": null
+    },
+    {
+      "id": "lifecycle-placeholder",
+      "case": "Incomplete zero IPv4 header used merely to populate loopback queue",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/Bridge/Program.cs",
+        "tests/Bridge/native.c",
+        "tests/OwnedApi/interface_native.c"
+      ],
+      "retained": "Coherent 40-byte IPv6 packet, next-header59, payload length0, hop1, fe80::2 to ff02::1; pending queue lifetime unchanged",
+      "upstream_exception": null
+    },
+    {
+      "id": "routing6-stale-checksum",
+      "case": "Changing address variants without regenerating UDP pseudo-header checksum",
+      "disposition": "removed from authored executable paths; no default, explicit-test or full-verify opt-in",
+      "paths": [
+        "tests/Routing6/Program.cs",
+        "tests/Routing6/native.c"
+      ],
+      "retained": "Recompute UDP checksum for valid same-interface/link-local routing cases; TTL/hop expiry remains ordinary behavior",
+      "upstream_exception": null
+    }
+  ],
+  "retained_upstream_cases": [
+    {
+      "case": "test_tcp_malformed_header",
+      "upstream_path": "test/unit/tcp/test_tcp.c",
+      "definition_line": 382,
+      "registration_line": 1683,
+      "source_sha256": "a1f4305366a38481d342b01d1329feb92e1fe27ef5cd1a34fa56acfeec63eff1",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "readname_short_buf",
+      "upstream_path": "test/unit/mdns/test_mdns.c",
+      "definition_line": 78,
+      "registration_line": 884,
+      "source_sha256": "1e9ef448b9ad21709c005d66d8000998737b333c9b28786ae56ff1585fdd2574",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "readname_long_label",
+      "upstream_path": "test/unit/mdns/test_mdns.c",
+      "definition_line": 95,
+      "registration_line": 885,
+      "source_sha256": "1e9ef448b9ad21709c005d66d8000998737b333c9b28786ae56ff1585fdd2574",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "readname_overflow",
+      "upstream_path": "test/unit/mdns/test_mdns.c",
+      "definition_line": 120,
+      "registration_line": 886,
+      "source_sha256": "1e9ef448b9ad21709c005d66d8000998737b333c9b28786ae56ff1585fdd2574",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "readname_half_jump",
+      "upstream_path": "test/unit/mdns/test_mdns.c",
+      "definition_line": 293,
+      "registration_line": 891,
+      "source_sha256": "1e9ef448b9ad21709c005d66d8000998737b333c9b28786ae56ff1585fdd2574",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "readname_jump_toolong",
+      "upstream_path": "test/unit/mdns/test_mdns.c",
+      "definition_line": 312,
+      "registration_line": 892,
+      "source_sha256": "1e9ef448b9ad21709c005d66d8000998737b333c9b28786ae56ff1585fdd2574",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "readname_jump_loop_label",
+      "upstream_path": "test/unit/mdns/test_mdns.c",
+      "definition_line": 331,
+      "registration_line": 893,
+      "source_sha256": "1e9ef448b9ad21709c005d66d8000998737b333c9b28786ae56ff1585fdd2574",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "readname_jump_loop_jump",
+      "upstream_path": "test/unit/mdns/test_mdns.c",
+      "definition_line": 351,
+      "registration_line": 894,
+      "source_sha256": "1e9ef448b9ad21709c005d66d8000998737b333c9b28786ae56ff1585fdd2574",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "test_ip4_icmp_replylen_short",
+      "upstream_path": "test/unit/ip4/test_ip4.c",
+      "definition_line": 277,
+      "registration_line": 339,
+      "source_sha256": "573dcf36369e8e8d8f1e8e3969a891f33c953c4425f700b77cc40dc49023d927",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "test_ip4_icmp_replylen_first_8",
+      "upstream_path": "test/unit/ip4/test_ip4.c",
+      "definition_line": 303,
+      "registration_line": 340,
+      "source_sha256": "573dcf36369e8e8d8f1e8e3969a891f33c953c4425f700b77cc40dc49023d927",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    },
+    {
+      "case": "test_ip6_frag_pbuf_len_assert",
+      "upstream_path": "test/unit/ip6/test_ip6.c",
+      "definition_line": 407,
+      "registration_line": 534,
+      "source_sha256": "fb944881193c5ffd5adb6c984802ec1aa026c00609f4347e384d4a6cfd737b4f",
+      "execution": "Original upstream body/fixture/registration only; no authored reproducer exception"
+    }
+  ],
+  "upstream_harness": {
+    "profiles": {
+      "unit": 137,
+      "unit-nosys": 132
+    },
+    "source_manifest": "config/unit-sources.json",
+    "registration_inventory": "config/upstream-tests.json",
+    "dispatch": "scripts/upstream-tests.py",
+    "native": "tests/Upstream/native.py",
+    "managed": "tests/Upstream.Runner/Program.cs",
+    "adapter": "tests/Upstream/CheckHost.cs",
+    "check_pin_manifest": "config/check-source.json",
+    "assertions": "Original assertions and registration counts unchanged. Authored Check fixture failure controls verify runner behavior without corrupt network data.",
+    "pppos_note": "test/unit/ppp/test_pppos.c:39 test_pppos_empty_packet_with_valid_fcs is a valid-FCS case and does not justify custom invalid-FCS input."
+  },
+  "allowed_ordinary_cases": [
+    {
+      "class": "Credential rejection",
+      "examples": [
+        "Wrong configured PAP/CHAP/MSCHAP/EAP password",
+        "L2TP digest correctly computed using a different shared secret"
+      ],
+      "reason": "Normal authentication outcome, no encoded-message mutation."
+    },
+    {
+      "class": "Coherent protocol errors and lifetime",
+      "examples": [
+        "TTL/hop-limit0 or1 expiry",
+        "DNS NXDOMAIN",
+        "DHCP NAK",
+        "LCP Configure-Reject",
+        "DAD/ACD conflict",
+        "Unjoined multicast/no route"
+      ],
+      "reason": "Well-formed protocol messages exercising normal semantics."
+    },
+    {
+      "class": "Loss, scheduling and segmentation",
+      "examples": [
+        "Valid stream delivered in separate chunks",
+        "Delayed reply/retransmission",
+        "Valid fragmentation/reassembly",
+        "Partial valid fragment retained during shutdown"
+      ],
+      "reason": "No malformed lengths, overlapping corruption or changed payload/checksum."
+    },
+    {
+      "class": "API and resource errors",
+      "examples": [
+        "Invalid API address length or argument before wire emission",
+        "Foreign/stale handle rejection",
+        "Pool exhaustion",
+        "Callback exception containment",
+        "Blocked receive closed normally",
+        "Cancellation and owner disposal"
+      ],
+      "reason": "Library API/lifetime behavior, not network data corruption."
+    },
+    {
+      "class": "Verification controls",
+      "examples": [
+        "Deliberate REQUIRE(0) or Check assertion-failure control",
+        "Source staging guard drift on temporary copies",
+        "Positive primitive/checksum vectors",
+        "Original-source bug reproduction with valid input"
+      ],
+      "reason": "Checks harness/repair correctness without fabricated corrupt packet input."
+    },
+    {
+      "class": "Opaque framing and caller-copy controls",
+      "examples": [
+        "SLIP opaque payloads terminate at authored byte collector; actual IP ingress has coherent packet headers",
+        "Mutating caller-owned array after SendToAsync copies it leaves encoded wire bytes unchanged"
+      ],
+      "reason": "No corrupted packet is supplied to a protocol parser."
+    }
+  ],
+  "entrypoints": [
+    {
+      "suites": [
+        "oracle",
+        "abi",
+        "datagram-fixtures"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/Abi/Program.cs",
+        "tests/PacketScenarios/Program.cs",
+        "tests/PacketScenarios/ArpQueue.cs"
+      ],
+      "native": [
+        "tests/NativeOracle/run.py"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "socket-semantics"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/SocketSemantics/Program.cs"
+      ],
+      "native": [
+        "tests/SocketSemantics/native.py",
+        "tests/SocketSemantics/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "dns-fixtures"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/Addressing/Program.cs"
+      ],
+      "native": [
+        "tests/Addressing/native.py",
+        "tests/Addressing/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "dhcp-fixtures"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/Addressing/Dhcp.cs"
+      ],
+      "native": [
+        "tests/Addressing/dhcp-native.py",
+        "tests/Addressing/dhcp-native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "autoip-fixtures"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/Addressing/AutoIp.cs"
+      ],
+      "native": [
+        "tests/Addressing/autoip-native.py",
+        "tests/Addressing/autoip-native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "ipv6-addressing"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/Ipv6Addressing/Program.cs"
+      ],
+      "native": [
+        "tests/Ipv6Addressing/native.py",
+        "tests/Ipv6Addressing/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "multicast-fixtures"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/Multicast/Program.cs"
+      ],
+      "native": [
+        "tests/Multicast/native.py",
+        "tests/Multicast/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "routing-ipv4"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/Routing/Program.cs"
+      ],
+      "native": [
+        "tests/Routing/native.py",
+        "tests/Routing/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "routing-ipv6"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/Routing6/Program.cs"
+      ],
+      "native": [
+        "tests/Routing6/native.py",
+        "tests/Routing6/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "bridge-fixtures"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/Bridge/Program.cs"
+      ],
+      "native": [
+        "tests/Bridge/native.py",
+        "tests/Bridge/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "pool-recovery"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/PoolRecovery/Program.cs"
+      ],
+      "native": [
+        "tests/PoolRecovery/native.py",
+        "tests/PoolRecovery/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/run.py",
+        "tests/NativeOracle/oracle.c",
+        "tests/NativeOracle/packets.c",
+        "tests/NativeOracle/sys_arch.c"
+      ]
+    },
+    {
+      "suites": [
+        "bundled-ppp"
+      ],
+      "dispatcher": "scripts/ppp-tests.py",
+      "managed": [
+        "tests/Ppp/Program.cs"
+      ],
+      "native": [
+        "tests/Ppp/native.py",
+        "tests/Ppp/crypto.c"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "ppp-serial"
+      ],
+      "dispatcher": "scripts/ppp-link-tests.py",
+      "managed": [
+        "tests/PppLinks/Program.cs"
+      ],
+      "native": [
+        "tests/PppLinks/native.py",
+        "tests/PppLinks/serial.c"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "ppp-ethernet"
+      ],
+      "dispatcher": "scripts/pppoe-tests.py",
+      "managed": [
+        "tests/PppLinks/Ethernet.cs"
+      ],
+      "native": [
+        "tests/PppLinks/ethernet-native.py",
+        "tests/PppLinks/ethernet.c"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "ppp-l2tp"
+      ],
+      "dispatcher": "scripts/l2tp-tests.py",
+      "managed": [
+        "tests/PppL2tp/Program.cs"
+      ],
+      "native": [
+        "tests/PppL2tp/native.py",
+        "tests/PppL2tp/native.c"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "lowpan-vectors"
+      ],
+      "dispatcher": "scripts/lowpan-tests.py",
+      "managed": [
+        "tests/Lowpan/Program.cs"
+      ],
+      "native": [
+        "tests/Lowpan/native.py",
+        "tests/Lowpan/native.c"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "slip-framing"
+      ],
+      "dispatcher": "scripts/link-tests.py",
+      "managed": [
+        "tests/Links/Program.cs"
+      ],
+      "native": [
+        "tests/Links/native.py",
+        "tests/Links/slip.c"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "http-transactions",
+        "tools:http-content"
+      ],
+      "dispatcher": "scripts/http-tests.py",
+      "managed": [
+        "tests/Applications/Program.cs"
+      ],
+      "native": [
+        "tests/Applications/native.py",
+        "tests/Applications/http.c"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "contrib-addons"
+      ],
+      "dispatcher": "scripts/contrib-tests.py",
+      "managed": [
+        "tests/Contrib/Program.cs"
+      ],
+      "native": [
+        "tests/Contrib/native.py",
+        "tests/Contrib/contract.c"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "consumer",
+        "aot-rooted",
+        "sysarch",
+        "direct-apis",
+        "owner-lifecycle"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "samples/ManagedConsumer/Program.cs",
+        "tests/SysArch/Program.cs",
+        "tests/SocketApi/Program.cs",
+        "tests/SocketApi/Altcp.cs",
+        "tests/SocketApi/Netconn.cs",
+        "tests/Lifecycle/Program.cs"
+      ],
+      "native": [],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "interop-kernel"
+      ],
+      "dispatcher": "scripts/test.py",
+      "managed": [
+        "tests/IndependentPeer/Program.cs",
+        "tests/IndependentPeer/RawProgram.cs",
+        "tests/IndependentPeer/Tap.cs"
+      ],
+      "native": [
+        "tests/IndependentPeer/provision.py"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "tool-generator",
+        "tools:makefsdata"
+      ],
+      "dispatcher": "scripts/tool-tests.py",
+      "managed": [
+        "src/Tools.MakeFsData/Program.cs"
+      ],
+      "native": [
+        "scripts/native-tools.py",
+        "scripts/generated-http.py"
+      ],
+      "transitive_oracle": []
+    },
+    {
+      "suites": [
+        "upstream"
+      ],
+      "dispatcher": "scripts/upstream-tests.py",
+      "managed": [
+        "tests/Upstream.Runner/Program.cs",
+        "tests/Upstream/CheckHost.cs",
+        "tests/Upstream/check_support.c",
+        "tests/Upstream/check_control.c",
+        "tests/Upstream/nosys.c"
+      ],
+      "native": [
+        "tests/Upstream/native.py",
+        "tests/Upstream/native_port.c",
+        "tests/Upstream/check_control.c",
+        "config/unit-sources.json",
+        "config/upstream-tests.json"
+      ],
+      "transitive_oracle": []
+    }
+  ],
+  "shared_helpers": [
+    "tests/Support/VirtualPair.cs",
+    "tests/Support/Pcap.cs",
+    "scripts/campaign.py",
+    "scripts/profiles.py",
+    "scripts/stage.py",
+    "scripts/ip6-hop.py"
+  ],
+  "unregistered_prototypes": [
+    {
+      "paths": [
+        "tests/Zep/native.py",
+        "tests/Zep/native.c",
+        "tests/Zep/service.c",
+        "tests/Zep/service.h"
+      ],
+      "status": "Not selected by campaign; invalid-version probe removed; valid lifetime/fragment work remains unqualified managed."
+    },
+    {
+      "paths": [
+        "tests/OwnedApi/native.py",
+        "tests/OwnedApi/native.c",
+        "tests/OwnedApi/interface_native.py",
+        "tests/OwnedApi/interface_native.c",
+        "tests/OwnedApi/socket_refs_native.py",
+        "tests/OwnedApi/socket_refs_native.c",
+        "tests/OwnedApi/Program.cs",
+        "tests/OwnedApi/NetconnCases.cs",
+        "tests/OwnedApi/ResolverCases.cs"
+      ],
+      "status": "Not selected by campaign; source reviewed and malformed lifecycle placeholder replaced; API errors/cancellation remain normal behavior; no managed qualification claim."
+    }
+  ],
+  "incomplete_aggregate_suites": [
+    "packets",
+    "socket-api",
+    "addressing",
+    "routing",
+    "links",
+    "ppp",
+    "applications",
+    "contrib",
+    "lifecycle",
+    "recovery",
+    "interop",
+    "audit"
+  ],
+  "audited_authored_paths": [
+    {
+      "path": "samples/ManagedConsumer/Program.cs",
+      "sha256": "1d2cf7d9154c548923f131955c4d9100e26eceb2839764f2b8c0e8203c30a8b7"
+    },
+    {
+      "path": "samples/ManagedConsumer/RawProgram.cs",
+      "sha256": "a84d32eca5a601ddbd99b0ff6c89f044cac342077fd838ce7027fb08591c113a"
+    },
+    {
+      "path": "scripts/build.sh",
+      "sha256": "273f02a85a235c08533f06457bd2ad1b81d474173895148cec1728c1cecfb109"
+    },
+    {
+      "path": "scripts/campaign.py",
+      "sha256": "1c1d489464be4b660e9a39c9ffad03cb3cb9965fec942e92597368aed758f952"
+    },
+    {
+      "path": "scripts/common.sh",
+      "sha256": "647b909daa9c665e55f5d18ba382a80809b7600b820a80405a5920f04eb8661a"
+    },
+    {
+      "path": "scripts/contrib-tests.py",
+      "sha256": "57613a36e40cb7b2f0a66ed4f147558ad263d8480fb5d216b100cb92eb930c5f"
+    },
+    {
+      "path": "scripts/feature-audit.py",
+      "sha256": "1834bddf093020ab2274512fc5af9e8b04ce6335e1c5b381acbe9853394c0053"
+    },
+    {
+      "path": "scripts/fetch.sh",
+      "sha256": "29a53cd86ff8501c80928a33d368846b099adeb3bc04c7288385cabf0eef9c50"
+    },
+    {
+      "path": "scripts/generated-http.py",
+      "sha256": "5e3e4f7cfb191555899636b72255680ba02421839e9e800519311e94af673164"
+    },
+    {
+      "path": "scripts/http-tests.py",
+      "sha256": "cb8167343d563c456a9a391632727c72cb9603311556029528aa0d64f94a3bb5"
+    },
+    {
+      "path": "scripts/inventory.py",
+      "sha256": "fd8c177863e0519f48d80ca662f7f87bbd09614eadd107875149dd36b79d0870"
+    },
+    {
+      "path": "scripts/ip6-hop.py",
+      "sha256": "65ab276261cf9c2f710e5a72eb50647d9793d1b3eedacf69332518b50cab879b"
+    },
+    {
+      "path": "scripts/l2tp-tests.py",
+      "sha256": "284cac7c760ff0d99a0ae1eb94ff26a33a5b8bebf6c35399fd1a6b5a2f19bb96"
+    },
+    {
+      "path": "scripts/link-tests.py",
+      "sha256": "d5dcb563578161a96ee141ad5cf166ab8b3aa1c20002020ccb0cfc0c4775a623"
+    },
+    {
+      "path": "scripts/lowpan-tests.py",
+      "sha256": "d06e25bc842ed1c3f8793967e4f4c220c9d3aac115970e1a7e1765dd71a8ccbb"
+    },
+    {
+      "path": "scripts/native-tools.py",
+      "sha256": "b1fc03d733898d937ab3ed50f71a84e0a69ac13cf0505a6de59e6a1499428179"
+    },
+    {
+      "path": "scripts/notices.py",
+      "sha256": "a2f8dac5a76d109b1354f1ddbc5802234e8674046ef8350f2330f80a18ee3e38"
+    },
+    {
+      "path": "scripts/ppp-link-tests.py",
+      "sha256": "27893966321746c8afc4508a000c59ad4012e0b5fddfe0651a0783d0e4a5d39a"
+    },
+    {
+      "path": "scripts/ppp-tests.py",
+      "sha256": "75ccfa24e608ce3ab2120efed1ae57142795502f49f47067a2d80e927cc87edc"
+    },
+    {
+      "path": "scripts/pppoe-tests.py",
+      "sha256": "6dda28d2aa1a92157ef7b58c299992b8df4e7ec1b2229128960e9933c314fb3b"
+    },
+    {
+      "path": "scripts/probe.sh",
+      "sha256": "12e259ea14d10c036d908f92ee453427aa2e2467599a4dfc35ed542e4e33843f"
+    },
+    {
+      "path": "scripts/profiles.py",
+      "sha256": "76398d7e957440dbc3e2c9dc790eec36344d56306a90db01127bd1fcb645bd90"
+    },
+    {
+      "path": "scripts/stage.py",
+      "sha256": "385fbb6faee8e0a6851ee5ecdf6b17790553da2caa790df2d9cab610571629bc"
+    },
+    {
+      "path": "scripts/test.py",
+      "sha256": "fad2adf122b52eba40b17eeb63502b40c4ddd552afb3dc9c7ab72a0a29cdbdcc"
+    },
+    {
+      "path": "scripts/test.sh",
+      "sha256": "cf0c1fe72f7a9158f4ca6d0876fc5d532f84f7bc40ce6915ebe198448aca4e6a"
+    },
+    {
+      "path": "scripts/tool-tests.py",
+      "sha256": "be8ebd447606b57f5e785bf8ffd9a4d2a97a0c551272a48d2d4441a794ac8c56"
+    },
+    {
+      "path": "scripts/translate.sh",
+      "sha256": "f76c6f1d81661c318b8aaab29ebfcdbb67b502cbbe19b88fa29992af5e4686c2"
+    },
+    {
+      "path": "scripts/upstream-tests.py",
+      "sha256": "bef44b6a4c4c7cc3b1970276cb2ec5aaa6f9d58e3f2323d3c289c740f7974455"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "sha256": "a286887ad9ba44407d8785386b5de1b18a91399e9d3aef5b823b80af8258365b"
+    },
+    {
+      "path": "tests/Abi/Program.cs",
+      "sha256": "d7c8bce9d1625d079b0f34b1aac620735c495f6e683a5a512cbb57f7bab4ab22"
+    },
+    {
+      "path": "tests/Addressing/AutoIp.cs",
+      "sha256": "70a11ae9cbea420f8f177468df5158c717f0c035dd5e69f0fc04628774320d7a"
+    },
+    {
+      "path": "tests/Addressing/Dhcp.cs",
+      "sha256": "9ca6acf0f9713011403e65ab6f3c8217af941dbe187e90f8a3b63adc771ccc82"
+    },
+    {
+      "path": "tests/Addressing/Program.cs",
+      "sha256": "f0a88a50a076baaeb4dae9c231c23ce8ec5d16ae97cbf41d301faf5a14f7a915"
+    },
+    {
+      "path": "tests/Addressing/autoip-native.c",
+      "sha256": "178ab318f86cd8ce9143df85cac65c2172f86689c9a444c44961840f965ca96d"
+    },
+    {
+      "path": "tests/Addressing/autoip-native.py",
+      "sha256": "aaa44c257012949fdc0f6637c68895b5c0993d27a5456dfcceeccdae03af23e5"
+    },
+    {
+      "path": "tests/Addressing/dhcp-native.c",
+      "sha256": "f5ae5ab7aea71dedc9b03c612ec69320104d3d49fe8bfe357b44ab892c22c304"
+    },
+    {
+      "path": "tests/Addressing/dhcp-native.py",
+      "sha256": "2e121742f66fa9956835b0d431fb875d3db2ee3d719df5827edb1d3c595a636d"
+    },
+    {
+      "path": "tests/Addressing/native.c",
+      "sha256": "7c90c65969fd9f2495e16e4bdde26ffbaab1b7865b936864071c38153e952c3a"
+    },
+    {
+      "path": "tests/Addressing/native.py",
+      "sha256": "189f3576b196f4277fc4d11d52c3b70bf561b07a524eaa3e5f6e32b291e61b36"
+    },
+    {
+      "path": "tests/Applications/Program.cs",
+      "sha256": "d7bd34f50e645a1f3faac2759e4ccf0e7025b5da8895dada312fe971454a83b9"
+    },
+    {
+      "path": "tests/Applications/http.c",
+      "sha256": "70346f81f49a6be9ac2226bc1f5a3f0cbd07a85a444d43287ccd676e85fe0ebc"
+    },
+    {
+      "path": "tests/Applications/native.py",
+      "sha256": "f260d72d8bfe90634e88eb983be71b95aeec24bbec6c63fbfaa6484207c2ab6e"
+    },
+    {
+      "path": "tests/Bridge/Program.cs",
+      "sha256": "5fdeb9aff70a631dff2bec3fa0b87b8a687544dab1f17dfdb95be3b02cff5e80"
+    },
+    {
+      "path": "tests/Bridge/native.c",
+      "sha256": "40dff1d0b3dba33a98f7ce09e82e3063d1d27e828263ce558deaf4b20f891edd"
+    },
+    {
+      "path": "tests/Bridge/native.py",
+      "sha256": "cda4635059707e8ba8cb0f94a19210b4510a8700b70a0cd5a47ff619d10efbe4"
+    },
+    {
+      "path": "tests/Contrib/Program.cs",
+      "sha256": "bd2322750115415e25c35a3e139365e87ff494a1c3bde66d49f8a0469d8266a8"
+    },
+    {
+      "path": "tests/Contrib/contract.c",
+      "sha256": "190e1b5350d62e6972e7a36d6cb2dde12d0a1d85796b25f8e27966ecd94d1081"
+    },
+    {
+      "path": "tests/Contrib/native.py",
+      "sha256": "f8781930e0ed5ff213f0f87ad20f9a314e6815e8c5a6fefd97cc9c84862e0da6"
+    },
+    {
+      "path": "tests/IndependentPeer/Program.cs",
+      "sha256": "a729498d46ec89da2ea7c544437047a8fac135a240e21465a6df12d15e45f13a"
+    },
+    {
+      "path": "tests/IndependentPeer/RawProgram.cs",
+      "sha256": "bb23b121aad9aa644e67d9637b559d490c563a8d5653c18e4f9e1d627404c399"
+    },
+    {
+      "path": "tests/IndependentPeer/Tap.cs",
+      "sha256": "6ec1d0579cd07136cc803008799e084f613f062ac48ff30a4577aea8dc065137"
+    },
+    {
+      "path": "tests/IndependentPeer/provision.py",
+      "sha256": "9cb58a1f8a98a41223e224f085a30d28d2e3477ec795f0b22110b78d0efd9c15"
+    },
+    {
+      "path": "tests/Ipv6Addressing/Program.cs",
+      "sha256": "7698101e4101763b145bf3780530dcb0ec0ef7c99e78cb437a7503824a2e9dd5"
+    },
+    {
+      "path": "tests/Ipv6Addressing/native.c",
+      "sha256": "d04a533ae9576c095cae044fa83899848a22829eb775304c73fd35946e72c6dc"
+    },
+    {
+      "path": "tests/Ipv6Addressing/native.py",
+      "sha256": "e8ac3a5c5980394a12ef48b5e6ec5d43c241669bad2fc571ad41d75aa3e1f385"
+    },
+    {
+      "path": "tests/Lifecycle/Program.cs",
+      "sha256": "2bdb3324895672aeb1cd7dcbbb249eb423a48259e1615522070acfdf0e8f0bb7"
+    },
+    {
+      "path": "tests/Links/Program.cs",
+      "sha256": "031eacd5402db83c0c8d5dfbf656fa45457cab875224fb5e2ff02f8ddd3e8b6f"
+    },
+    {
+      "path": "tests/Links/native.py",
+      "sha256": "77db9d0113c6b84cd7e4fd8714bfe3b9b818e35c64cd253ebf874f889a1e1f33"
+    },
+    {
+      "path": "tests/Links/slip.c",
+      "sha256": "f5353d02127979f8e6700195d2fece73e9903cce2b289e43ca36b63c0d6f325f"
+    },
+    {
+      "path": "tests/Lowpan/Program.cs",
+      "sha256": "0d6b41529d8c4f257d09128478d4466b568213dc80b6f5c05545ab1e257909bc"
+    },
+    {
+      "path": "tests/Lowpan/native.c",
+      "sha256": "ea17064bdd5fca68c58bf9360248991a8ce17795becc791781cdc2bb1a0cc4a2"
+    },
+    {
+      "path": "tests/Lowpan/native.py",
+      "sha256": "d412ba0828b5f70ff49f5587c95d025664ce7332a133f06f9d719d4b91f5f49f"
+    },
+    {
+      "path": "tests/Multicast/Program.cs",
+      "sha256": "74320d364f0e870d0ed4a0c5868d76f85bda618eab84917fada925eeac0a07ce"
+    },
+    {
+      "path": "tests/Multicast/native.c",
+      "sha256": "002188be99098528960b4e89b56a792bf90c08b75cd58d455581ba755279f2eb"
+    },
+    {
+      "path": "tests/Multicast/native.py",
+      "sha256": "82dea8d7dd8109e8b2cd6fb85b3244005cc0822f27d4df1ff72f278a5e9f023c"
+    },
+    {
+      "path": "tests/NativeOracle/oracle.c",
+      "sha256": "dc7125c979bb557b3511de2a247a193537b9b69f87a43f6a829acd065104bda9"
+    },
+    {
+      "path": "tests/NativeOracle/packets.c",
+      "sha256": "5b6ff2363914bff6aa3d7e59d5a56e145bd1c5104c11eb85c2431667242d257a"
+    },
+    {
+      "path": "tests/NativeOracle/run.py",
+      "sha256": "d5f239365ae381a3c75ae5598d936eba251a94028e8c8fd6545315889324a0a8"
+    },
+    {
+      "path": "tests/NativeOracle/sys_arch.c",
+      "sha256": "5d31763f8bf3fd8e00cccc0b48d149b191f934b7a0606aaff512791a10ab1bc3"
+    },
+    {
+      "path": "tests/OwnedApi/LwipNetconns.cs",
+      "sha256": "68953567811533039ab9a2e80b1f7b3feddedd6319ccf91c6fff3e32ffa4fc68"
+    },
+    {
+      "path": "tests/OwnedApi/LwipResolver.cs",
+      "sha256": "4e727f9576e434a3ae2cc98088ed11ec6c4885aeb02d4880f538538ba2a1f728"
+    },
+    {
+      "path": "tests/OwnedApi/LwipSockets.cs",
+      "sha256": "8123aaef98713e8419b114b57ee08797bb6d1cba4b6e2b54299b6f63138fbb7d"
+    },
+    {
+      "path": "tests/OwnedApi/NetconnCases.cs",
+      "sha256": "d20575bdbbef365c0527a1f7f16f55c0e6e531b9a26d5245a8fdbea1f9eb6259"
+    },
+    {
+      "path": "tests/OwnedApi/Program.cs",
+      "sha256": "4002c86b0e076df3905207e7e6af972f0e7aacf5c4ecc56ab43f487b1934a33c"
+    },
+    {
+      "path": "tests/OwnedApi/ResolverCases.cs",
+      "sha256": "da8778ef209c95eeb57eec666da36264b4fae5d7228171dd2b2829bb99935413"
+    },
+    {
+      "path": "tests/OwnedApi/interface_native.c",
+      "sha256": "133818a4e7f1c29c05cdbde622a19f6cbd3698d3da54c85f1eb5012e639d50a2"
+    },
+    {
+      "path": "tests/OwnedApi/interface_native.py",
+      "sha256": "e16266fe70f5e0da8618224affa59f714b852619a77f100bd5b2278906b22b54"
+    },
+    {
+      "path": "tests/OwnedApi/native.c",
+      "sha256": "3da2b69aa1a6cf951275663aaea54bed12716b168c18e4fa4701c1e1c9cf467f"
+    },
+    {
+      "path": "tests/OwnedApi/native.py",
+      "sha256": "019cb2f6241e782ec9cd8a5b95ec06cb62abdf910c6b0b4f9bc5a3926d7201c1"
+    },
+    {
+      "path": "tests/OwnedApi/socket_refs.c",
+      "sha256": "1dfe487586e1e20fcffa40d4891c4e463a5b747f4c95b95956937fc6b1644645"
+    },
+    {
+      "path": "tests/OwnedApi/socket_refs_native.c",
+      "sha256": "23c352296d63af0186ff663f7b5717603c5a8350afd938dcbcceddcebe5f4a30"
+    },
+    {
+      "path": "tests/OwnedApi/socket_refs_native.py",
+      "sha256": "0eeb85b4412b687190b31909200e732291d2d828ef16c5ebf140d46b59dbadd0"
+    },
+    {
+      "path": "tests/PacketScenarios/ArpQueue.cs",
+      "sha256": "1d954c3b228e6a3be64898906b31def1e1afc4778b8b584b85ab15298610c8c7"
+    },
+    {
+      "path": "tests/PacketScenarios/Program.cs",
+      "sha256": "48e1d683d9b425a5975144b345fdb39d12070de449142e638ca1fae57a2f19cc"
+    },
+    {
+      "path": "tests/Pipeline/test_hop_contract.py",
+      "sha256": "72f3ef50734494bcb7333951d34ff816afc00a2ba159b682c9baf2cd6ebf678d"
+    },
+    {
+      "path": "tests/Pipeline/test_recipe.py",
+      "sha256": "6ce291f8da7624bfe954b37e6c0ce5f11732c78b58f54340963043146935fa12"
+    },
+    {
+      "path": "tests/Pipeline/test_staging.py",
+      "sha256": "cb65458384b3aacded068e5381dba605c0a2957770dace9a1b8d5453b065b504"
+    },
+    {
+      "path": "tests/PoolRecovery/BlockedService.cs",
+      "sha256": "3fbce3f87d59764ed0be264c3d05a883b498e4031445890f4fa56887aaee290f"
+    },
+    {
+      "path": "tests/PoolRecovery/Program.cs",
+      "sha256": "7baafcdd22ec540d40262e472484b327083cf8f604b30d343b92e35bd0f082be"
+    },
+    {
+      "path": "tests/PoolRecovery/TimerReentry.cs",
+      "sha256": "a532c36cec73a3368e315a11cf055afff78873525f1a80f2e26d5ac889d9759a"
+    },
+    {
+      "path": "tests/PoolRecovery/native.c",
+      "sha256": "34e8bd0874a4b19e39ced80617eebbb29505403eb15ccdf246a3f7454d4c70c7"
+    },
+    {
+      "path": "tests/PoolRecovery/native.py",
+      "sha256": "95aea023558d95846eb5de47ed5e67e1acf6f33c4089d4129127f3cbf5816dc7"
+    },
+    {
+      "path": "tests/Ppp/Program.cs",
+      "sha256": "e4984a981301a622a7ee4d2485faa370b681b93865777f3d30a71e8f6bb89d24"
+    },
+    {
+      "path": "tests/Ppp/crypto.c",
+      "sha256": "d65fc434211468f385c6fbcaacc84d1762a9f8e7ac2c039e1a7b0eab4c2eeda2"
+    },
+    {
+      "path": "tests/Ppp/native.py",
+      "sha256": "0b251fd175f36b1cac7f2aa089f1d0f1f8b7c0ca90b3175bf6196f778e184f97"
+    },
+    {
+      "path": "tests/PppL2tp/Program.cs",
+      "sha256": "a7bb7f4e51f722abfde362a6f9b5b08c516fb775eeac8efde066246376ff58b7"
+    },
+    {
+      "path": "tests/PppL2tp/native.c",
+      "sha256": "9082052f37c89d9dd949a53368e7176b6afc3e21ebd1f96c2c93fcb68f6cbb9e"
+    },
+    {
+      "path": "tests/PppL2tp/native.py",
+      "sha256": "2ac798c9a3e41c433817f1413c50dc0a41661ddd09e237335d7e4e5b5c1e2a4c"
+    },
+    {
+      "path": "tests/PppLinks/Ethernet.cs",
+      "sha256": "0d2d02edfd78b371d37048384c4c42cbb3b8d7c3df88f4e6a65230a70e43d3b3"
+    },
+    {
+      "path": "tests/PppLinks/Program.cs",
+      "sha256": "7705e2945bf0258630c1563ca006d71509f4d26a604db4da8af6181ab611cf91"
+    },
+    {
+      "path": "tests/PppLinks/ethernet-native.py",
+      "sha256": "6cb48648ff7537e19530de33cc27d386d14ab2cefd620138618b8173f21788b7"
+    },
+    {
+      "path": "tests/PppLinks/ethernet.c",
+      "sha256": "d80e57b01ddc6dedf4b715a363a77b8c54b1a4194df6325b330afd6e619f015c"
+    },
+    {
+      "path": "tests/PppLinks/native.py",
+      "sha256": "02708bd4e7c755c9b057702cb6009419d0b777e2b0375a3904a47681ac36fa23"
+    },
+    {
+      "path": "tests/PppLinks/serial.c",
+      "sha256": "f6ac01daf21309de474fa8ce2c827158a969469dbed3565dc0026d330014b602"
+    },
+    {
+      "path": "tests/Routing/Program.cs",
+      "sha256": "140d803dc18a97a4402fb7a00a870b6a58936967ed193fe582884ab4329b6d26"
+    },
+    {
+      "path": "tests/Routing/native.c",
+      "sha256": "c5eb4e2adc0ca66789d71678330baec08ada434f065f5929d3e92106cbcf79e4"
+    },
+    {
+      "path": "tests/Routing/native.py",
+      "sha256": "dc3d7af2cf32adfced53ce208fee67199a6d681b2fbd0a3010477123dc7d2c11"
+    },
+    {
+      "path": "tests/Routing/test_staging.py",
+      "sha256": "cc90ee454a78211daeb602d66903bc0dba8aa9f28a3d0054ee42203333c26794"
+    },
+    {
+      "path": "tests/Routing6/Program.cs",
+      "sha256": "bfae17acf6e3c501058d3c3bd08720c856dfe1ee70f3bb2739ff979a1bf60ba9"
+    },
+    {
+      "path": "tests/Routing6/hop-limit-override.h",
+      "sha256": "46d4303fd51fe0cf867f0ad02008cdfe11096a21914807d8a0772e9c4ac2677e"
+    },
+    {
+      "path": "tests/Routing6/hop-limit-setter.c",
+      "sha256": "1cd4ce22a863550b2a400ac7d34f46489f1f45e298a4a4c5af5049089ebac79e"
+    },
+    {
+      "path": "tests/Routing6/hop-override-native.py",
+      "sha256": "65d6f887b98ced0b3a731b7959c059fd7eb0e273177dc4c3dd305268d6064abc"
+    },
+    {
+      "path": "tests/Routing6/native.c",
+      "sha256": "958a5ac182aa2171ca4c99549753d17173d1b08817700a03898060e10bead42f"
+    },
+    {
+      "path": "tests/Routing6/native.py",
+      "sha256": "21530edbc6805591c38d77e44bcd24186fa53ddee67276054810257452a1b5f2"
+    },
+    {
+      "path": "tests/SocketApi/Altcp.cs",
+      "sha256": "092d205157a9eee7def01fb58d1a26a2e89eaf9a2558653ace0369f8a2676e9b"
+    },
+    {
+      "path": "tests/SocketApi/Netconn.cs",
+      "sha256": "099d6081822ff8d25144a53e695a1e9ad79ef0f0c02a38d5febe27c613a6b1ab"
+    },
+    {
+      "path": "tests/SocketApi/Program.cs",
+      "sha256": "f1c1deb68b05c480e4c8f39ac0bc8fb4f0ab43353c105c714a3b51f90e3bf4a0"
+    },
+    {
+      "path": "tests/SocketSemantics/Program.cs",
+      "sha256": "0f3e7b2ccedb824c6f32fd22a7de3f1643096c6a457019a0e86c4d6b0068831e"
+    },
+    {
+      "path": "tests/SocketSemantics/native.c",
+      "sha256": "d83de88189dd5792998cfbf35fd9736319e29232271154c9d42df32a775dad4f"
+    },
+    {
+      "path": "tests/SocketSemantics/native.py",
+      "sha256": "80202d17c8a4498199264a232c8cef44354229a7f74f66aad89d15fafcdfb2e7"
+    },
+    {
+      "path": "tests/Support/Pcap.cs",
+      "sha256": "3a767841a8c8e7133d45837b0ea4706ce79a96541cafff083141e637a9c09a8b"
+    },
+    {
+      "path": "tests/Support/VirtualPair.cs",
+      "sha256": "b73d1b67e581d433953eec2cc3f74ce1fd45f2043714d5b9fe232353b50de006"
+    },
+    {
+      "path": "tests/SysArch/Program.cs",
+      "sha256": "51e93644a81585e2563eeedf0aecf73927266b4c75cdae6e4d9cc86a3a67b23f"
+    },
+    {
+      "path": "tests/SysArch/TestOwner.cs",
+      "sha256": "818a5767be5e5933c95fd66a7c8240852fbb1fda427c99dcd9deddd2d156ec54"
+    },
+    {
+      "path": "tests/Upstream/CheckHost.cs",
+      "sha256": "5e72ad12cf0191fde7c8c040885622a4c75658bc0d924dba73be76af0bc40224"
+    },
+    {
+      "path": "tests/Upstream/check_control.c",
+      "sha256": "2d41970ee1179b0e89d096eb318b7267439a7527788898d67d785f5cde40a2bc"
+    },
+    {
+      "path": "tests/Upstream/check_support.c",
+      "sha256": "bc309a8cf7424b20e87f379f0fbd0a8c32f524529e3ca004f00c489602b1d1e7"
+    },
+    {
+      "path": "tests/Upstream/include/check.h",
+      "sha256": "1b785a3e0896f19bef330d0826a62b685255d59824d2a29e8352227929f7d3fe"
+    },
+    {
+      "path": "tests/Upstream/include/config.h",
+      "sha256": "c8da890e6cac8be0701d183aa121b94b6b21007c01fb8e1615d23ae6c78b3862"
+    },
+    {
+      "path": "tests/Upstream/native.py",
+      "sha256": "7b25c625d471aa3e839b2d526d6643a9ec50f4c5213c00680e974b878d66be1d"
+    },
+    {
+      "path": "tests/Upstream/native_port.c",
+      "sha256": "53fc0b5d53c0cf7c503583d5d8c1d1f67a6c36df47fdb98c0745583ea739db6a"
+    },
+    {
+      "path": "tests/Upstream/nosys.c",
+      "sha256": "5f58dd820c43b653c8e63020f7a67e577efece8409affa9fa6cf4705c6eba6af"
+    },
+    {
+      "path": "tests/Upstream.Runner/Program.cs",
+      "sha256": "03780846c5626dcc31aefa0889c94686901d7e70afbebd82b8f8d2fd3bda1451"
+    },
+    {
+      "path": "tests/Zep/native.c",
+      "sha256": "a8942082b55081828b96c6173f71cc6660ab18c030f218a2a5ae347927382f69"
+    },
+    {
+      "path": "tests/Zep/native.py",
+      "sha256": "92de96a1fd4617b0e71cc64fe07535c764cce6c4777a3c90ba93d28d149ff94e"
+    },
+    {
+      "path": "tests/Zep/service.c",
+      "sha256": "3a2052d696811acbf8ae7fc3d116caddd08a737745e07b36e8fd3457774340f3"
+    },
+    {
+      "path": "tests/Zep/service.h",
+      "sha256": "e22645f814db641e39829fd629c196e6ec09ebaf3d79867ff283355d400bd552"
+    }
+  ],
+  "validation": {
+    "execution_after_constraint": false,
+    "review": "Coordinator verified 137 authored source hashes, 11 upstream definition/registration/source hash records, 23 entrypoint groups and 13 removed/replaced custom groups; root informed before test restart. No custom corruption exception retained."
+  }
+}

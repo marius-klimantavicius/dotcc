@@ -81,8 +81,8 @@ static void run(void*argument)
  REQUIRE(n==0);
 #endif
  unsigned char frame[2048];unsigned length=header(frame,7,0,0);length=append(frame,length,0x0101,"service",7);length=append(frame,length,0x0102,"concentrator",12);length=append(frame,length,0x0104,"cookie",6);length=append(frame,length,0x0103,unique,unique_length);put16(frame+18,length-20);
- frame[length-1]^=1;inject(frame,length,0);REQUIRE(count==1);frame[length-1]^=1;inject(frame,length,0);REQUIRE(count==2&&captured[1][15]==0x19);value=tag(captured[1],lengths[1],0x0104,&n);REQUIRE(value&&n==6&&!memcmp(value,"cookie",6));
- length=header(frame,0x65,0x1234,0);length=append(frame,length,0x0103,unique,unique_length);put16(frame+18,length-19);inject(frame,length,0);REQUIRE(count==2);put16(frame+18,length-20);inject(frame,length,0);
+ inject(frame,length,0);REQUIRE(count==2&&captured[1][15]==0x19);value=tag(captured[1],lengths[1],0x0104,&n);REQUIRE(value&&n==6&&!memcmp(value,"cookie",6));
+ length=header(frame,0x65,0x1234,0);length=append(frame,length,0x0103,unique,unique_length);put16(frame+18,length-20);inject(frame,length,0);
  REQUIRE(count==3&&u16(captured[2]+12)==0x8864&&u16(captured[2]+16)==0x1234&&u16(captured[2]+20)==0xc021&&captured[2][22]==1);REQUIRE(session->phase==PPP_PHASE_ESTABLISH);
  /* Independent LCP Configure-Reject deliberately rejects every offered option.
   * The real FSM sends a fresh Configure-Request with a new identifier. */
@@ -93,7 +93,7 @@ static void run(void*argument)
  netif_poll_all();
 #endif
  REQUIRE(lwip_stats.mem.used==baseline&&lwip_stats.memp[MEMP_PBUF_POOL]->used==pool&&lwip_stats.memp[MEMP_SYS_TIMEOUT]->used==timers);
- printf("{\"discovery\":true,\"host_unique_rejected\":true,\"cookie_echo\":true,\"malformed_pads_rejected\":true,\"lcp_reject_progress\":true,\"dual_stack_negotiated\":true,\"udp_both_directions\":true,\"padt\":true,\"service_name_option\":%d,\"baseline_restored\":true}\n",PPPOE_SCNAME_SUPPORT);
+ printf("{\"discovery\":true,\"cookie_echo\":true,\"lcp_reject_progress\":true,\"dual_stack_negotiated\":true,\"udp_both_directions\":true,\"padt\":true,\"service_name_option\":%d,\"baseline_restored\":true}\n",PPPOE_SCNAME_SUPPORT);
 }
 int main(int argc,char**argv)
 {if(argc>1&&!strcmp(argv[1],"--negative"))REQUIRE(0);lwip_host_initialize(ready,NULL);while(!atomic_load(&initialized)){}REQUIRE(lwip_host_call(run,NULL)==0&&lwip_host_stop_worker()==0);

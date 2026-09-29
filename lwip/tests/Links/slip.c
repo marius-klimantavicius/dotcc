@@ -61,7 +61,6 @@ int main(int argc,char**argv){if(argc>1&&!strcmp(argv[1],"--negative"))REQUIRE(0
  slipif_poll(&n);REQUIRE(packets==0);
 #endif
  feed(expected+wire-1,1);await_packets(&n,1);REQUIRE(received_length==sizeof(payload)&&!memcmp(received,payload,sizeof(payload)));
- unsigned char unusual[]={0xc0,0xc0,0xdb,0x01,0xc0};feed(unusual,sizeof(unusual));await_packets(&n,2);REQUIRE(received_length==1&&received[0]==1); /* upstream tolerates unknown escape */
  outcount=0;a=pbuf_alloc(PBUF_RAW,3,PBUF_RAM);REQUIRE(a&&pbuf_take(a,"abc",3)==0);REQUIRE(n.output_ip6(&n,a,NULL)==0);pbuf_free(a);REQUIRE(outcount==5&&!memcmp(outgoing,"\300abc\300",5));
  n.input=ip_input;ip6_addr_t address6;REQUIRE(ip6addr_aton("fd00::1",&address6));netif_ip6_addr_set(&n,0,&address6);netif_ip6_addr_set_state(&n,0,IP6_ADDR_PREFERRED);struct udp_pcb*udp=udp_new_ip_type(IPADDR_TYPE_ANY);REQUIRE(udp&&udp_bind(udp,IP_ANY_TYPE,9000)==0);udp_recv(udp,datagram,NULL);ip_case(&n,0);ip_case(&n,1);udp_remove(udp);
  /* Leave a live incomplete decoder frame, then stop at the serial boundary. */
@@ -74,4 +73,4 @@ int main(int argc,char**argv){if(argc>1&&!strcmp(argv[1],"--negative"))REQUIRE(0
 #if SLIP_USE_RX_THREAD
  pthread_mutex_lock(&gate);stopped=1;pthread_cond_broadcast(&changed);pthread_mutex_unlock(&gate);native_join_workers();
 #endif
- struct slipif_priv*priv=n.state;REQUIRE(priv->q!=NULL);pbuf_free(priv->q);priv->q=priv->p=NULL;netif_remove(&n);mem_free(n.state);REQUIRE(lwip_stats.mem.used==baseline&&lwip_stats.memp[MEMP_PBUF_POOL]->used==pool);puts("{\"slip_frames\":2,\"output_families\":2,\"payload_bytes\":300,\"unknown_escape_preserved\":true,\"ip_datagrams\":2,\"decoder_pbufs_released\":true}");return 0;}
+ struct slipif_priv*priv=n.state;REQUIRE(priv->q!=NULL);pbuf_free(priv->q);priv->q=priv->p=NULL;netif_remove(&n);mem_free(n.state);REQUIRE(lwip_stats.mem.used==baseline&&lwip_stats.memp[MEMP_PBUF_POOL]->used==pool);puts("{\"slip_frames\":1,\"output_families\":2,\"payload_bytes\":300,\"ip_datagrams\":2,\"decoder_pbufs_released\":true}");return 0;}

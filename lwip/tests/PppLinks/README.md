@@ -6,7 +6,8 @@ separate `LwipStack` instances; the native control uses two PPP PCBs under the
 original native stack. Both run PAP, CHAP-MD5, MSCHAPv1, MSCHAPv2 and EAP-MD5 with
 valid and wrong credentials, then MSCHAPv2 with required 128-bit MPPE. Each successful
 link must finish IPCP and IPv6CP, receive one IPv4 UDP payload and three TCP payloads,
-reject a bad FCS without closing, close normally, and restore heap/pbuf/timeout usage.
+close normally and restore heap/pbuf/timeout usage. Wire FCS is observed on
+unaltered successful frames; no custom invalid-FCS input is injected.
 The independently written RFC1662 decoder checks frame FCS and observes VJ full and
 compressed protocols. MPPE must be negotiated, use the encrypted protocol on wire,
 exclude the known plaintext, and deliver the correct decrypted UDP/TCP bytes.
@@ -27,8 +28,8 @@ No upstream reference file is changed. Managed qualification uses products fresh
 published with the same staged source.
 
 `ethernet.c` and `Ethernet.cs` are an independently encoded RFC2516/RFC1661 peer.
-They check PADI service/concentrator names, reject wrong host-unique PADO, echo the
-AC cookie in PADR, reject malformed PADS, negotiate an actual session, reject LCP
+They check PADI service/concentrator names, echo the AC cookie in PADR,
+negotiate an actual session, reject LCP
 options and observe a fresh request, complete IPCP/IPv6CP, exchange independently
 encoded/decoded UDP payloads, and acknowledge termination through PADT. This is a
 scripted access concentrator, not lwIP's unimplemented PPPoE server branch. Native controls and managed raw/processed JIT/NativeAOT cells pass in all three

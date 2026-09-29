@@ -38,10 +38,10 @@ unsafe class Program
     {byte[] frame=new byte[2048];Put16(frame,0,0xc802);Put16(frame,4,p.Tunnel);Put16(frame,6,p.SessionId);Put16(frame,8,ns);Put16(frame,10,nr);length=12;if(message!=0){byte[] value=new byte[2];Put16(value,0,message);length=Attribute(frame,length,0,value);}return frame;}
     static void Inject(Peer p,Lwip owner,byte[] l2tp,int length)
     {byte[] frame=new byte[length+28];frame[0]=0x45;Put16(frame,2,frame.Length);frame[8]=64;frame[9]=17;frame[12]=frame[16]=10;frame[13]=frame[17]=8;frame[15]=2;frame[19]=1;Put16(frame,10,Checksum(frame.AsSpan(0,20)));Put16(frame,20,1701);Put16(frame,22,p.Port);Put16(frame,24,length+8);l2tp.AsSpan(0,length).CopyTo(frame.AsSpan(28));pbuf* packet=owner.pbuf_alloc(pbuf_layer.PBUF_RAW,(ushort)frame.Length,pbuf_type.PBUF_RAM);Require(packet!=null,"L2TP injection allocation");fixed(byte* bytes=frame)Require(owner.pbuf_take(packet,bytes,(ushort)frame.Length)==0,"L2TP injection copy");Require(owner.ip_input(packet,p.Outer)==0,"outer IP ingress");if(p.Failure!=null)throw p.Failure;}
-    static byte[] Digest(int id,byte[] challenge)
-    {byte[] bytes=new byte[challenge.Length+7];bytes[0]=(byte)id;"secret"u8.CopyTo(bytes.AsSpan(1));challenge.CopyTo(bytes,7);return MD5.HashData(bytes);}
-    static void Data(Peer p,Lwip owner,int protocol,ReadOnlySpan<byte> payload,int bad=0)
-    {byte[] frame=new byte[payload.Length+8];Put16(frame,0,2);Put16(frame,2,p.Tunnel^(bad==1?1:0));Put16(frame,4,p.SessionId^(bad==2?1:0));Put16(frame,6,protocol);payload.CopyTo(frame.AsSpan(8));Inject(p,owner,frame,frame.Length);}
+    static byte[] Digest(int id,byte[] challenge,bool wrongSecret=false)
+    {byte[] bytes=new byte[challenge.Length+7];bytes[0]=(byte)id;(wrongSecret?"wrong!"u8:"secret"u8).CopyTo(bytes.AsSpan(1));challenge.CopyTo(bytes,7);return MD5.HashData(bytes);}
+    static void Data(Peer p,Lwip owner,int protocol,ReadOnlySpan<byte> payload)
+    {byte[] frame=new byte[payload.Length+8];Put16(frame,0,2);Put16(frame,2,p.Tunnel);Put16(frame,4,p.SessionId);Put16(frame,6,protocol);payload.CopyTo(frame.AsSpan(8));Inject(p,owner,frame,frame.Length);}
     static void Response(Peer p,Lwip owner,int protocol,int code,int id,ReadOnlySpan<byte> payload)
     {byte[] frame=new byte[payload.Length+4];frame[0]=(byte)code;frame[1]=(byte)id;Put16(frame,2,frame.Length);payload.CopyTo(frame.AsSpan(4));Data(p,owner,protocol,frame);}
     static void Negotiate(Peer p,Lwip owner)
@@ -68,7 +68,7 @@ unsafe class Program
     {
         ip_addr local=default,remote=default;fixed(byte* a="10.7.0.1\0"u8,b="10.7.0.2\0"u8)Require(owner.ipaddr_aton(a,&local)==1&&owner.ipaddr_aton(b,&remote)==1,"inner IP addresses");udp_pcb* udp=owner.udp_new();Require(udp!=null&&owner.udp_bind(udp,&local,9000)==0,"inner UDP listener");owner.udp_recv(udp,&Received,(void*)GCHandle.ToIntPtr(p.Root));
         byte[] ip=new byte[101];ip[0]=0x45;Put16(ip,2,101);ip[8]=64;ip[9]=17;ip[12]=ip[16]=10;ip[13]=ip[17]=7;ip[15]=2;ip[19]=1;Put16(ip,10,Checksum(ip.AsSpan(0,20)));Put16(ip,20,9001);Put16(ip,22,9000);Put16(ip,24,81);for(int i=0;i<73;i++)ip[28+i]=(byte)(i*7);
-        Data(p,owner,0x21,ip,1);Require(p.Datagrams==0,"wrong tunnel rejects data");Data(p,owner,0x21,ip,2);Require(p.Datagrams==0,"wrong session rejects data");Data(p,owner,0x21,ip);Require(p.Datagrams==1,"actual authenticated PPP UDP ingress");
+        Data(p,owner,0x21,ip);Require(p.Datagrams==1,"actual authenticated PPP UDP ingress");
         int start=p.Packets.Count;pbuf* packet=owner.pbuf_alloc(pbuf_layer.PBUF_TRANSPORT,73,pbuf_type.PBUF_RAM);Require(packet!=null,"inner UDP output pbuf");fixed(byte* bytes=ip)Require(owner.pbuf_take(packet,bytes+28,73)==0,"inner output bytes");Require(owner.udp_sendto_if_src(udp,packet,&remote,9001,p.Inner,&local)==0,"inner UDP output");owner.pbuf_free(packet);Require(p.Packets.Count==start+1,"one inner UDP frame");byte[] wire=p.Packets[start];Require(U16(wire,0)==0x21&&wire[11]==17&&U16(wire,22)==9000&&U16(wire,24)==9001&&wire.AsSpan(30,73).SequenceEqual(ip.AsSpan(28,73)),"independent tunnel UDP egress decode");owner.udp_remove(udp);
     }
     static void Case(Peer p,Lwip owner,bool wrong)
@@ -78,9 +78,9 @@ unsafe class Program
         ip_addr remote=default;fixed(byte* a="10.8.0.2\0"u8)Require(owner.ipaddr_aton(a,&remote)==1,"LNS address");
         fixed(byte* secret="secret"u8)
         {
-            p.Session=owner.pppol2tp_create(p.Inner,p.Outer,&remote,1701,secret,6,&Status,(void*)GCHandle.ToIntPtr(p.Root));Require(p.Session!=null,"L2TP allocation");ip4_addr il=default,ir=default;fixed(byte* a="10.7.0.1\0"u8,b="10.7.0.2\0"u8)Require(owner.ip4addr_aton(a,&il)==1&&owner.ip4addr_aton(b,&ir)==1,"PPP addresses");p.Session->ipcp_wantoptions.ouraddr=il.addr;p.Session->ask_for_local=1;p.Session->ipcp_wantoptions.hisaddr=ir.addr;Require(owner.ppp_connect(p.Session,0)==0&&p.Frames.Count==1,"SCCRQ starts tunnel");p.Port=U16(p.Frames[0],20);Require(U16(Avp(p,0,0),0)==1,"SCCRQ message");p.Tunnel=U16(Avp(p,0,9),0);byte[] challenge=Avp(p,0,11);Require(challenge.Length==16,"client challenge");byte[] digest=Digest(2,challenge);if(wrong)digest[0]^=1;
+            p.Session=owner.pppol2tp_create(p.Inner,p.Outer,&remote,1701,secret,6,&Status,(void*)GCHandle.ToIntPtr(p.Root));Require(p.Session!=null,"L2TP allocation");ip4_addr il=default,ir=default;fixed(byte* a="10.7.0.1\0"u8,b="10.7.0.2\0"u8)Require(owner.ip4addr_aton(a,&il)==1&&owner.ip4addr_aton(b,&ir)==1,"PPP addresses");p.Session->ipcp_wantoptions.ouraddr=il.addr;p.Session->ask_for_local=1;p.Session->ipcp_wantoptions.hisaddr=ir.addr;Require(owner.ppp_connect(p.Session,0)==0&&p.Frames.Count==1,"SCCRQ starts tunnel");p.Port=U16(p.Frames[0],20);Require(U16(Avp(p,0,0),0)==1,"SCCRQ message");p.Tunnel=U16(Avp(p,0,9),0);byte[] challenge=Avp(p,0,11);Require(challenge.Length==16,"client challenge");byte[] digest=Digest(2,challenge,wrong);
             byte[] peerChallenge=Enumerable.Range(1,16).Select(i=>(byte)i).ToArray();byte[] frame=Control(p,2,0,1,out int length);length=Attribute(frame,length,9,[0x11,0x22]);length=Attribute(frame,length,13,digest);length=Attribute(frame,length,11,peerChallenge);Put16(frame,2,length);Inject(p,owner,frame,length);
-            if(wrong)Require(p.Session->phase==0&&p.Error!=0,"wrong tunnel challenge aborts connection");
+            if(wrong)Require(p.Session->phase==0&&p.Error!=0,"peer with different shared secret cannot authenticate");
             else
             {
                 Require(p.Frames.Count==3&&U16(Avp(p,1,0),0)==3&&Avp(p,1,13).AsSpan().SequenceEqual(Digest(3,peerChallenge))&&U16(Avp(p,2,0),0)==10,"mutual authentication SCCCN and ICRQ");p.SessionId=U16(Avp(p,2,14),0);frame=Control(p,11,1,3,out length);length=Attribute(frame,length,14,[0x33,0x44]);Put16(frame,2,length);Inject(p,owner,frame,length);Require(p.Frames.Count==4&&U16(Avp(p,3,0),0)==12,"ICCN connected");frame=Control(p,0,2,4,out length);Put16(frame,2,length);Inject(p,owner,frame,length);Require(p.Frames.Count==5&&U16(p.Frames[4],28)==2&&U16(p.Frames[4],30)==0x1122&&U16(p.Frames[4],32)==0x3344&&p.Session->phase==6,"ZLB acknowledgment starts PPP data");
@@ -98,6 +98,6 @@ unsafe class Program
             try{p.Stack.Start();p.Stack.Invoke(owner=>Case(p,owner,wrong!=0));if(p.Failure!=null)throw p.Failure;}
             finally{p.Stack.Dispose();p.Root.Free();NativeMemory.Free(p.Outer);NativeMemory.Free(p.Inner);Active=null;}
         }
-        Console.WriteLine("PASS ppp-l2tp: independent mutual/wrong tunnel challenge, IPCP/IPv6CP, UDP both directions, invalid session IDs, StopCCN and resource baselines");
+        Console.WriteLine("PASS ppp-l2tp: independent mutual tunnel authentication and wrong shared secret, IPCP/IPv6CP, UDP both directions, StopCCN and resource baselines");
     }
 }

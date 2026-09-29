@@ -37,7 +37,6 @@ unsafe class Program
             var verify=owner.Globals.chapms2_digest.verify_response;
             Require(verify(owner,pcb,7,user,password,10,c,r,message,256)==1,"RFC2759 MSCHAPv2 verification");
             Require((Marshal.PtrToStringUTF8((nint)message)??"").StartsWith("S=407A5589115FD0D6209F510FE9C04566932CDA56",StringComparison.Ordinal),"RFC2759 mutual authentication response");
-            r[25]^=1;Require(verify(owner,pcb,7,user,password,10,c,r,message,256)==0,"modified MSCHAPv2 response rejection");
         }
     }
     static void Mppe(Lwip owner,ppp_pcb_s* pcb)
@@ -58,14 +57,12 @@ unsafe class Program
                 Require(owner.mppe_decompress(pcb,&dec,&wire)==0 && wire->tot_len==75,"MPPE decryption and rekey");
                 Require(owner.pbuf_copy_partial(wire,actual,75,0)==75 && actual[0]==0 && actual[1]==0x21 && new ReadOnlySpan<byte>(actual+2,73).SequenceEqual(new ReadOnlySpan<byte>(bytes,73)),"MPPE complete protocol payload");owner.pbuf_free(wire);
             }
-            pbuf* bad=owner.pbuf_alloc(pbuf_layer.PBUF_RAW,2,pbuf_type.PBUF_RAM);Require(bad!=null,"negative packet allocation");new Span<byte>(bad->payload,2).Clear();
-            Require(owner.mppe_decompress(pcb,&dec,&bad)==(sbyte)err_enum_t.ERR_BUF,"unencrypted header rejection");owner.pbuf_free(bad);
         }
     }
     static void Main()
     {
         using var owner=new Lwip();using var binding=owner.__DotCcEnter();owner.lwip_init();Primitives(owner);
         ppp_pcb_s pcb=default;netif iface=default;pcb.netif=&iface;Chap(owner,&pcb);Mppe(owner,&pcb);LwipSysArch.Stop(owner);
-        Console.WriteLine("PASS bundled-ppp: five primitive vectors; RFC2759 positive/tampered authentication; RFC3079 session key; 600 MPPE packets across stateful/stateless rollover and two malformed headers");
+        Console.WriteLine("PASS bundled-ppp: five primitive vectors; RFC2759 positive authentication; RFC3079 session key; 600 MPPE packets across stateful/stateless rollover");
     }
 }

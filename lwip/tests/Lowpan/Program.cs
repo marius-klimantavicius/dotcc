@@ -38,11 +38,10 @@ unsafe class Program
             if(ble){byte* mac=stackalloc byte[]{2,0x11,0x22,0x33,0x44,0x55};byte* eui=stackalloc byte[8];byte* back=stackalloc byte[6];owner.ble_addr_to_eui64(eui,mac,1);R(new ReadOnlySpan<byte>(eui,8).SequenceEqual(new byte[]{0,0x11,0x22,0xff,0xfe,0x33,0x44,0x55}),"BLE public EUI64 vector");owner.eui64_to_ble_addr(back,eui);R(back[0]==0&&new ReadOnlySpan<byte>(back+1,5).SequenceEqual(new ReadOnlySpan<byte>(mac+1,5)),"BLE reverse vector");R(owner.rfc7668_set_local_addr_mac48(&iface,mac,6,1)==0&&owner.rfc7668_set_peer_addr_eui64(&iface,eui,8)==0&&owner.rfc7668_set_local_addr_mac48(&iface,mac,5,1)==-6,"BLE address validation");}
             else{R(owner.lowpan6_set_pan_id(0x1234)==0,"PAN ID");fixed(byte* check="123456789"u8)R(owner.lowpan6_calc_crc(check,9)==0x2189,"802.15.4 CRC vector");}
             int count=0;for(int mode=0;mode<(ble?1:4);mode++)for(int compressed=0;compressed<2;compressed++){Inject(owner,&iface,ble,Frame(ble,compressed!=0,mode));if(state.Failure!=null)throw state.Failure;R(state.Received==++count,"raw/IPHC address combination delivered");}
-            byte[] invalid=Frame(ble,false,0);invalid[ble?0:15]=0x50;Inject(owner,&iface,ble,invalid);R(state.Received==count,"unknown dispatch discarded");
         }
         finally{owner.udp_remove(udp);owner.netif_set_down(&iface);owner.netif_remove(&iface);root.Free();}
         R(owner.Globals.lwip_stats.mem.used==memory&&owner.Globals.lwip_stats.memp[(int)memp_t.MEMP_PBUF_POOL].Value->used==pool,"lowpan resources naturally restored");
     }
     static void Run(LwipStack stack){stack.Invoke(owner=>{Case(owner,false);Case(owner,true);});}
-    static void Main(){var a=new LwipStack();using var b=new LwipStack();try{a.Start();b.Start();Run(a);Run(b);}finally{a.Dispose();}Run(b);Console.WriteLine("PASS lowpan-vectors: 30 real UDP deliveries, raw/IPHC IEEE address combinations, BLE EUI64 and CRC vectors, invalid dispatch, two owners and natural baselines");}
+    static void Main(){var a=new LwipStack();using var b=new LwipStack();try{a.Start();b.Start();Run(a);Run(b);}finally{a.Dispose();}Run(b);Console.WriteLine("PASS lowpan-vectors: 30 real UDP deliveries, raw/IPHC IEEE address combinations, BLE EUI64 and CRC vectors, two owners and natural baselines");}
 }

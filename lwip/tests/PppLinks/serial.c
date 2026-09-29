@@ -23,7 +23,7 @@ typedef struct{int target;unsigned length;unsigned char data[2048];} chunk;
 typedef struct{int opened,dead,up[2],error[2];unsigned received;} snapshot;
 typedef struct{u8_t auth;int wrong,mppe;} settings;
 static peer peers[2];static chunk chunks[2048];static unsigned head,count,bytes,received;
-static unsigned memory,pool,timeouts,link_bad;
+static unsigned memory,pool,timeouts;
 static unsigned wire_mppe,wire_vj_full,wire_vj_compressed,wire_ip,wire_lqr_ack;
 static unsigned frame_len[2],frame_escape[2];static unsigned char frames[2][4096];
 static unsigned tcp_received,tcp_connected;static struct tcp_pcb*tcp_sender,*tcp_receiver,*tcp_listener;
@@ -98,8 +98,6 @@ static struct udp_pcb*sender,*receiver;
 static void send_data(void*arg)
 {
  settings*options=arg;if(options->mppe)REQUIRE(peers[0].pcb->ccp_gotoptions.mppe&&peers[1].pcb->ccp_gotoptions.mppe);
- /* Invalid FCS must be rejected without changing the open PPP state. */
- unsigned char invalid[]={0x7e,0xff,3,0xc0,0x21,0,0,0x7e};link_bad=lwip_stats.link.chkerr;pppos_input(peers[1].pcb,invalid,sizeof(invalid));REQUIRE(lwip_stats.link.chkerr==link_bad+1);
  ip_addr_t local,remote;REQUIRE(ipaddr_aton("10.4.0.1",&local)&&ipaddr_aton("10.4.0.2",&remote));
  receiver=udp_new();sender=udp_new();REQUIRE(receiver&&sender&&udp_bind(receiver,&remote,9000)==0&&udp_bind(sender,&local,9001)==0);udp_recv(receiver,datagram,NULL);
  struct pbuf*p=pbuf_alloc(PBUF_TRANSPORT,73,PBUF_RAM);REQUIRE(p);unsigned char payload[73];for(unsigned i=0;i<73;i++)payload[i]=(unsigned char)(i*7);REQUIRE(pbuf_take(p,payload,73)==0);
@@ -160,5 +158,5 @@ int main(int argc,char**argv)
 #if !NO_SYS
  native_join_workers();
 #endif
- puts("{\"serial_negotiations\":6,\"wrong_credentials\":5,\"ipv4_ipv6_control\":true,\"datagrams\":6,\"bad_fcs\":6,\"tcp_payloads\":18,\"vj_negotiated\":true,\"mppe_wire_private\":true,\"closed_and_freed\":true}");return 0;
+ puts("{\"serial_negotiations\":6,\"wrong_credentials\":5,\"ipv4_ipv6_control\":true,\"datagrams\":6,\"tcp_payloads\":18,\"vj_negotiated\":true,\"mppe_wire_private\":true,\"closed_and_freed\":true}");return 0;
 }
