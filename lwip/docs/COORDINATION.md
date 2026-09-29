@@ -22,14 +22,15 @@ historical execution only and are superseded by this active workspace rule.
 | `/root/lwip_coordinator/pipeline` | `config/`, `scripts/` except `test.py`, `src/port/`, source/blocker docs, Upstream/Pipeline/Links/Ppp/PppLinks/Applications/Contrib tests and tools; approved compiler fixes | Merged-toolchain refresh, full links/apps/contrib, source/feature audits |
 | `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `scripts/test.py`, remaining core/API/addressing/routing/lifecycle tests, README and host docs | Owning API, IPv6/multicast/routing/bridge, native and independent controls |
 
-Current shared .NET/config/staging build ownership is **pipeline**, rebuilding the
-merged toolchain and refreshing all product/auxiliary/diagnostic profiles with the
-pending EAP repair before fresh qualification in this checkout. Then run actual
-managed PPP sessions and diagnostic controls. Host has first git-index slot for
-its validated service/DHCP/AutoIP checkpoint, then authors isolated native IPv6,
-multicast, IPv6 routing and bridge fixtures. Shared Host/facade remains frozen.
-Current evidence: [validation.md](validation.md). Pre-migration receipts retain
-historical provenance; current product pointers are being refreshed here.
+Current shared .NET build ownership is **host**, qualifying IPv6 addressing and
+multicast against refreshed merged-toolchain/EAP products. Pipeline completed all
+eight profile publications, actual PPP serial/independent PPPoE matrices and both
+upstream diagnostic matrices. Pipeline has the git-index slot for its validated
+EAP/PPP checkpoint, then authors isolated native L2TP/6LoWPAN/ZEP/apps and plans
+coherent default-off feature variants. Shared Host/facade and active staging/config
+behavior remain frozen during host builds; coordinate metadata-only atomic updates.
+Current evidence: [validation.md](validation.md). Old receipts retain historical
+provenance; fresh product and PPP/diagnostic records are from this checkout.
 No simultaneous shared bin/obj builds. Freeze shared Host/facade source and staging/configuration helpers while the
 other worker builds dependent native or managed matrices; author new isolated
 fixtures meanwhile. Coordinate complete multi-file adaptation readiness before
@@ -542,3 +543,54 @@ Managed PPP counterpart remains unbuilt and copied publications predate EAP repa
 Both workers explicitly acknowledged new working directory. Pipeline owns merged
 refresh; host owns validated checkpoint then isolated native feature authoring.
 Old-worktree cache-pruning permission is superseded: preserve it read-only.
+
+### Fresh merged products and initial actual managed PPP
+
+Validated host checkpoint `dbb67fb3` (22 named files) and migration/evidence docs
+`36f94d2f` are committed in active original checkout. Pipeline refreshed all eight
+profiles with the merged toolchain: threaded `100938-1e61b771`, nosys
+`101126-d7f9a0c3`, locking `101258-8d10f70a`, contrib `101436-e4f2dfc8`,
+makefsdata `101623-bba174b7`, HTTP-content `101639-f50e3581`, unit
+`101818-531970c1`, unit-nosys `101941-06379f74`. All raw/processed builds pass.
+Fresh generated HTTP preparation executes the translated tool in the new root.
+
+Actual threaded raw-JIT PPP serial and independent PPPoE tests pass
+`102137-1ff0f781`; full three-profile/four-cell matrices and refreshed upstream
+137/132 diagnostic matrices are running next. No compiler/runtime workaround was
+needed for the first actual managed link sessions. Native PPPoE data/control
+fixtures and locking LQR negotiation witness pass. Full PPPoL2TP, 6LoWPAN/ZEP,
+remaining apps/contrib and default-off feature variants remain open.
+
+Host native IPv6 forwarding boundary control found hop-limit zero wrapping to255
+in pinned ip6_forward. Override-first candidate: guarded per-translation-unit
+IP6H_HOPLIM_SET through a typed single-evaluation helper, preserving ordinary
+0..255 output setter semantics and routing zero through existing ICMP path.
+Native evidence/qualification and product integration remain pending; no additional
+text repair is authorized yet. Bridge private timer/state teardown uses an authored
+include wrapper under review, keeping original algorithms and sources unchanged.
+
+### Fresh actual PPP and upstream matrices complete
+
+Actual PPP serial plus independent PPPoE all four cells pass threaded
+`102218-436a6eb5`, NO_SYS `102323-8af6d3ee`, locking `102423-3e0a37ed`; locking
+includes explicit LQR option ACK. Original upstream 137 cases pass all four cells
+`102529-f99f8fc4`; applicable NO_SYS132 plus native registration/negative controls
+pass all four `102607-122fea01`. Pipeline handed .NET to host for IPv6/multicast.
+Its validated EAP/PPP checkpoint excludes unfinished L2TP and unqualified host
+fixtures. Native L2TP first tunnel/mutual-challenge/rejection/control/StopCCN
+baseline passes; full IP data and managed mirror remain in progress.
+
+Native IPv6 hop-limit override candidate now passes twelve threaded routing
+controls, 0/1/2/255 edge values, all 256 ordinary setter values, single evaluation
+and assignment-result parity (`artifacts/hop-override-native/threaded`). Original
+zero-limit forwarding failure is durable under artifacts. Product integration
+remains pending coherent per-unit override scoping; no fourth text patch needed
+if final native/managed proof holds. Host transient agent error was resumed within
+the authorized bounded local compatibility fixture scope; no work was lost.
+
+Validated EAP/PPP checkpoint `f4448346` commits 21 named files: guarded release
+repair and native parity, actual PPP serial/independent PPPoE matrices, new-root
+diagnostic evidence and six staging guard checks. Source snapshot:
+`artifacts/ppp-source-snapshot-20260929-1030.json`. Unfinished L2TP, host fixtures
+and coordinator/unrelated files stayed outside the checkpoint. Pipeline continues
+isolated L2TP/6LoWPAN/ZEP/application work while host owns .NET.

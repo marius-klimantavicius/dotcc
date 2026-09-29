@@ -11,16 +11,20 @@ results below are Linux x64. “Four cells” means raw/processed × JIT/NativeA
 Root migration checks passed 43 framework, 105 focused compiler, 10 functional
 (with four optional native-oracle skips), six pipeline checks and layout. New-root
 threaded raw/processed JIT consumer passes `20260929-100709-5e0adecd`. Logs and
-verified WIP-copy manifest: `artifacts/migration-20260929`. Merged-toolchain product
-refresh with the pending EAP repair is in progress. Earlier full matrices below
+verified WIP-copy manifest: `artifacts/migration-20260929`. Merged-toolchain raw/processed refresh of all eight profiles with applicable
+EAP repair has passed; fresh behavioral qualification is in progress. Earlier full matrices below
 qualify their recorded snapshots, not all subsequent source/compiler changes.
 
 ## Qualified behavior by recorded snapshot
 
-The repaired product publications are threaded `20260929-085444-ed99ac5f`, nosys
-`20260929-085621-ea694e86`, threaded-locking `20260929-085752-bc7b505f`, and contrib
-`20260929-085928-13eb1f13`. They include the enabled DHCPv6 parent option and the
-staged IPv4 forwarding checksum repair. Receipts live under `artifacts/campaign/`.
+Fresh merged-toolchain raw/processed publications in the original checkout pass:
+threaded `20260929-100938-1e61b771`, nosys `20260929-101126-d7f9a0c3`, locking
+`20260929-101258-8d10f70a`, contrib `20260929-101436-e4f2dfc8`, makefsdata
+`20260929-101623-bba174b7`, HTTP-content `20260929-101639-f50e3581`, unit
+`20260929-101818-531970c1`, unit-nosys `20260929-101941-06379f74`. Applicable
+products include the staged bundled EAP failure-path release repair in addition
+to IPv4 forwarding and the tool checksum-loop repair. New qualification is in
+progress. Receipts live under `artifacts/campaign/`; older rows retain snapshot scope.
 
 | Evidence | Passed scope | Receipt/report |
 | --- | --- | --- |
@@ -32,12 +36,13 @@ staged IPv4 forwarding checksum repair. Receipts live under `artifacts/campaign/
 | HTTP cleanup/consumer refinement | Active HTTP context refusal before core stop, explicit cleanup-only fs_close and retry; consumer; three profiles × four cells | `20260929-095609-5894d6ee`, `20260929-095703-fadcd930`, `20260929-095758-3e4181b3` |
 | Final finite service/pool guards | Actual timer/core-context reentry rejection, blocked UDP shutdown, pool/owner independence, cleanup-only recovery and retries; three profiles × four cells | `20260929-100126-d50e6381`, `20260929-100152-2c79deb8`, `20260929-100221-287fcea6` |
 | Native forwarding controls | Original failure and adapted pass for all three product profiles; IP/UDP/TCP/ICMP checksums, fragments, TTL and same-interface cases | `artifacts/native-routing/<profile>/report.json` |
-| Managed upstream Check | Original 137 cases and negative/fixture controls, exact native registration; all four normal unit cells | `20260929-081512-9608394d/receipt.json`, `20260929-081538-a7d37662/receipt.json` |
-| Managed NO_SYS upstream Check | 132 applicable cases and native registration/negative-fixture parity; all four cells; five threaded socket cases inapplicable | `20260929-083055-ad449f5f/receipt.json` |
+| Managed upstream Check | Fresh merged-toolchain original 137 cases and negative/fixture controls, exact native registration; all four normal unit cells | `20260929-102529-f99f8fc4/receipt.json` |
+| Managed NO_SYS upstream Check | Fresh merged-toolchain 132 applicable cases and native registration/negative-fixture parity; all four cells; five threaded socket cases inapplicable | `20260929-102607-122fea01/receipt.json` |
 | Native upstream Check | 137 original cases with zero failures/errors; test-only Check 0.15.2 | `artifacts/upstream-native/lwip_unittests.xml` |
 | Native makefsdata | Original loop failure bounded by 8 MiB; staged progress repair passes empty/odd/multiple-MSS checksum/data/framing controls | `artifacts/native-tools/report.json` |
 | Managed makefsdata generator | Native-exact 27,529-byte image, checksum/header-offset/temp cleanup; all four cells | `20260929-083157-23870a49/receipt.json` |
 | Generated-content HTTP | Actual translated processed makefsdata image consumed by original fs.c; empty/odd/4097-byte content served correctly; all four HTTP-content cells | Publication `20260929-093414-95dafdc6`, behavior `20260929-093554-eba3af0c/http-transactions-report.json` |
+| Actual PPP serial and independent PPPoE | Auth success/wrong credentials, UDP/TCP, VJ/MPPE wire controls, bad FCS, LQR negotiation in locking; independent PPPoE discovery/session/data/reject/close; all three profiles × four cells | `20260929-102218-436a6eb5`, `20260929-102323-8af6d3ee`, `20260929-102423-3e0a37ed` (`ppp-serial-report.json`, `ppp-ethernet-report.json`) |
 | Bundled PPP controls | Primitive/auth/MPPE vectors, including 600 stateful/stateless packets; all three profiles × four cells; actual link negotiations pending | `20260929-092814-c3aef247`, `20260929-092953-8a3a53fc`, `20260929-093126-d3ef1043` (`bundled-ppp-report.json`) |
 | Contrib addon controls | ABI/owner callbacks/static routes/ISN; all four cells; contrib application workflows pending | `20260929-092742-40fc80aa/contrib-addons-report.json` |
 | SLIP framing | Original decoder with real UDP IPv4/IPv6 ingress, framing/escapes, joined worker and partial-pbuf cleanup; all three profiles × four cells | `20260929-092814-c3aef247`, `20260929-092953-8a3a53fc`, `20260929-093126-d3ef1043` (`slip-framing-report.json`) |
