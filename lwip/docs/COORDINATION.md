@@ -22,13 +22,14 @@ historical execution only and are superseded by this active workspace rule.
 | `/root/lwip_coordinator/pipeline` | `config/`, `scripts/` except `test.py`, `src/port/`, source/blocker docs, Upstream/Pipeline/Links/Ppp/PppLinks/Applications/Contrib tests and tools; approved compiler fixes | Merged-toolchain refresh, full links/apps/contrib, source/feature audits |
 | `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `scripts/test.py`, remaining core/API/addressing/routing/lifecycle tests, README and host docs | Owning API, IPv6/multicast/routing/bridge, native and independent controls |
 
-Current shared .NET build ownership is **pipeline**, refreshing coherent IPv6
-hop-limit override, bridge include-wrapper and guarded LOWPAN short-source repair
-integration. Host completed IPv6 addressing/multicast qualification and authors
-isolated owning socket/resolver APIs and managed routing/bridge fixtures. Pipeline
-continues L2TP/6LoWPAN/ZEP/apps and coherent default-off feature variants. Shared
-Host/facade changes require the next agreed build window; dependent native controls
-must also wait while staging/configuration integration is in progress.
+Current shared .NET build ownership is **pipeline**. Checkpoint `7835b38b`
+qualifies scoped IPv6 hop-limit, bridge and LOWPAN integration and L2TP behavior
+in all three profiles and four cells. Host authored isolated owning APIs and
+ordinary-interface lifetime controls, but its agent turn is currently unavailable
+after repeated generic execution flags; source and evidence remain preserved.
+Pipeline continues independent ZEP/apps and default-off feature work. Coordinate
+reassignment before any shared Host/facade or recipe mutation; dependent native
+controls must also wait while staging/configuration integration is in progress.
 Current evidence: [validation.md](validation.md). Old receipts retain historical
 provenance; fresh product and PPP/diagnostic records are from this checkout.
 No simultaneous shared bin/obj builds. Freeze shared Host/facade source and staging/configuration helpers while the
@@ -627,3 +628,36 @@ blocking-operation leases, close-before-join, accepted-handle adoption and DNS
 callback lifetime through core-worker shutdown. Shared facade changes wait for
 handoff. Only the confirmed-idle current-root managed-consumer intermediate cache
 was removed to recover space; historical worktree and all receipts remain intact.
+
+### Link/routing checkpoint and owning-boundary review
+
+Checkpoint `7835b38b` commits 47 named files after all-three-profile/four-cell
+L2TP, finite LOWPAN, IPv6 routing and bridge qualification: threaded
+`110105-df4730c6`, NO_SYS `110524-6852b698`, locking `111004-d11b3587`.
+New publications are `105719-74e8e2eb`, `110311-4b343b75` and
+`110757-36b627d9`. Nine pipeline checks and layout pass. The 54-file input snapshot
+is `artifacts/link-routing-source-snapshot-20260929-1114.json`. Auxiliary refresh
+waits for the next coherent wrapper/configuration batch. Finite LOWPAN inputs do
+not close fragmentation/ZEP; isolated ZEP native work is outside this checkpoint.
+
+Owning API review identified a descriptor lifetime gap between managed operation
+admission and entry into the original syscall. Native threaded/locking controls
+prove that an authored include-wrapper exposing original get_socket/done_socket
+references prevents premature reuse, returns the original closed-socket error,
+and restores allocation/resource baselines after release. No socket algorithm or
+upstream source text changes. Evidence: `artifacts/native-socket-refs`.
+
+Ordinary interface cleanup also needs to preserve backing through queued loopback
+callbacks: netif_remove does not cancel netif_poll callbacks, and the locking
+callback_wait path is not FIFO. The native locking control reproduces the old
+lifetime error under ASan; a public-API stop/remove, FIFO drain and delayed-free
+prototype passes. Evidence: `artifacts/native-interface-retirement`. Shared Host
+and facade promotion plus managed qualification remain pending. Durable retired
+interface lists must survive failures and disposal retries.
+
+Host agent execution repeatedly ended with a generic possible-cybersecurity-risk
+flag despite the task being local compatibility/resource-lifetime implementation.
+No action-specific restriction or external target was identified. Its WIP is
+preserved, retries paused, and the parent was notified. Pipeline continues
+independent work; this is not a whole-campaign completion or external-prerequisite
+claim. Confirm ownership before resuming or reassigning the host implementation.

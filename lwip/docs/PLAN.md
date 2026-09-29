@@ -323,7 +323,7 @@ in the new campaign's local ignore file when implementing it.
 
 ## Milestones and evidence
 
-Implementation is active in the isolated worktree. Current receipts and remaining
+Implementation is active in the original checkout on branch `sqlite`. Current receipts and remaining
 gates are tracked in [COORDINATION.md](COORDINATION.md). Milestone commits follow
 the baseline after their
 required checks pass, subject to current session instructions. Implementation is
@@ -433,7 +433,7 @@ correctness passes. No timing threshold or claim is required for acceptance.
 
 These commands use the shared framework. Initial product translations and selected
 consumer/boundary suites now run; full verification still reports unimplemented or
-unqualified gates as failures. Run from the isolated repository root:
+unqualified gates as failures. Run from `/home/marius/p/dotcc`:
 
 ```bash
 bash Scripts/campaign.sh layout lwip --write

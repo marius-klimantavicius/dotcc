@@ -36,6 +36,7 @@ progress. Receipts live under `artifacts/campaign/`; older rows retain snapshot 
 | HTTP cleanup/consumer refinement | Active HTTP context refusal before core stop, explicit cleanup-only fs_close and retry; consumer; three profiles × four cells | `20260929-095609-5894d6ee`, `20260929-095703-fadcd930`, `20260929-095758-3e4181b3` |
 | Final finite service/pool guards | Actual timer/core-context reentry rejection, blocked UDP shutdown, pool/owner independence, cleanup-only recovery and retries; three profiles × four cells | `20260929-100126-d50e6381`, `20260929-100152-2c79deb8`, `20260929-100221-287fcea6` |
 | IPv6 addressing and multicast | DAD/RA/SLAAC lifetime/duplicate controls, stateless DHCPv6 retry and DNS replacement, IGMP/MLD group admission/report/leave; three profiles × four cells | `20260929-103455-c49324c6`, `20260929-103633-09b9abb5`, `20260929-103831-2b08f372`; checkpoint `e229fc42` |
+| L2TP, finite LOWPAN, IPv6 routing and bridge | L2TP tunnel/authentication/control/data; ten independently encoded radio/BLE inputs repeated across two owners and after A disposal; guarded IPv6 hop-limit boundaries; bridge forwarding/teardown and managed owner independence; three profiles × four cells | `20260929-110105-df4730c6`, `20260929-110524-6852b698`, `20260929-111004-d11b3587` |
 | Native forwarding controls | Original failure and adapted pass for all three product profiles; IP/UDP/TCP/ICMP checksums, fragments, TTL and same-interface cases | `artifacts/native-routing/<profile>/report.json` |
 | Managed upstream Check | Fresh merged-toolchain original 137 cases and negative/fixture controls, exact native registration; all four normal unit cells | `20260929-102529-f99f8fc4/receipt.json` |
 | Managed NO_SYS upstream Check | Fresh merged-toolchain 132 applicable cases and native registration/negative-fixture parity; all four cells; five threaded socket cases inapplicable | `20260929-102607-122fea01/receipt.json` |
@@ -66,6 +67,14 @@ reentry guards now pass their separate finite matrices above. Auxiliary protocol
 used explicit fixture teardown and do not qualify all protocol-specific owned
 services (SLIP/PPP/app registrations still need their own pending-stop cases).
 Shared facade/host sources are now frozen during dependent worker builds.
+
+The latest link/routing/bridge rows use refreshed product publications
+`20260929-105719-74e8e2eb` (threaded), `20260929-110311-4b343b75` (NO_SYS), and
+`20260929-110757-36b627d9` (locking). They add the scoped IPv6 hop-limit macro
+override, authored bridge lifecycle include-wrapper, and fourth guarded source
+repair for LOWPAN short-source address recognition. They do not qualify broader
+LOWPAN fragmentation/ZEP or all pending owning-service lifetimes. Auxiliary
+publications above retain their earlier source snapshots pending the next refresh.
 
 ## Historical snapshot evidence
 
