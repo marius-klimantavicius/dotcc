@@ -78,7 +78,7 @@ recipe = Recipe("libuv", "TranslatedLibuv", ("native-runtime",),
                         Suite("dispatch-foundation", (), run=dispatch_foundation, timeout=1200,
                               scope="authored native identity/binding JIT/AOT; not translated backend dispatch"),
                         Suite("foreign-headers", (), run=foreign_headers, timeout=1800,
-                              scope="real Windows/Darwin target preprocessing, syntax, layout and AST; not runtime qualification"),
+                              scope="real Windows/Darwin/Linux/BSD target preprocessing, syntax, layout and AST; not runtime qualification"),
                         *(Suite(name, (), run=incomplete, scope="required gate, currently unimplemented")
                           for name in REQUIRED if name != "consumer")),
                 default_suites=("consumer",),

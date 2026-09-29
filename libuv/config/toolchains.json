@@ -109,6 +109,166 @@
       "abi": "LP64",
       "sdk": "Zig bundled Darwin libc headers; full Apple SDK not claimed",
       "clang_target": "arm64-apple-macos11.0"
+    },
+    {
+      "id": "linux-musl-x64",
+      "triple": "x86_64-linux-musl",
+      "clang_target": "x86_64-unknown-linux-musl",
+      "backend": "linux-musl",
+      "defines": [
+        "_FILE_OFFSET_BITS=64",
+        "_LARGEFILE_SOURCE",
+        "_GNU_SOURCE",
+        "_POSIX_C_SOURCE=200112"
+      ],
+      "abi": "LP64",
+      "sdk": "Zig bundled native libc headers; exact version macros and header paths recorded by foreign-headers suite"
+    },
+    {
+      "id": "linux-musl-arm64",
+      "triple": "aarch64-linux-musl",
+      "clang_target": "aarch64-unknown-linux-musl",
+      "backend": "linux-musl",
+      "defines": [
+        "_FILE_OFFSET_BITS=64",
+        "_LARGEFILE_SOURCE",
+        "_GNU_SOURCE",
+        "_POSIX_C_SOURCE=200112"
+      ],
+      "abi": "LP64",
+      "sdk": "Zig bundled native libc headers; exact version macros and header paths recorded by foreign-headers suite"
+    },
+    {
+      "id": "freebsd-x64",
+      "triple": "x86_64-freebsd.14.0",
+      "clang_target": "x86_64-unknown-freebsd14.0",
+      "backend": "freebsd",
+      "defines": [
+        "_FILE_OFFSET_BITS=64",
+        "_LARGEFILE_SOURCE"
+      ],
+      "abi": "LP64",
+      "sdk": "Zig bundled native libc headers; exact version macros and header paths recorded by foreign-headers suite"
+    },
+    {
+      "id": "freebsd-arm64",
+      "triple": "aarch64-freebsd.14.0",
+      "clang_target": "aarch64-unknown-freebsd14.0",
+      "backend": "freebsd",
+      "defines": [
+        "_FILE_OFFSET_BITS=64",
+        "_LARGEFILE_SOURCE"
+      ],
+      "abi": "LP64",
+      "sdk": "Zig bundled native libc headers; exact version macros and header paths recorded by foreign-headers suite"
+    },
+    {
+      "id": "netbsd-x64",
+      "triple": "x86_64-netbsd",
+      "clang_target": "x86_64-unknown-netbsd",
+      "backend": "netbsd",
+      "defines": [
+        "_FILE_OFFSET_BITS=64",
+        "_LARGEFILE_SOURCE"
+      ],
+      "abi": "LP64",
+      "sdk": "Zig bundled native libc headers; exact version macros and header paths recorded by foreign-headers suite"
+    },
+    {
+      "id": "netbsd-arm64",
+      "triple": "aarch64-netbsd",
+      "clang_target": "aarch64-unknown-netbsd",
+      "backend": "netbsd",
+      "defines": [
+        "_FILE_OFFSET_BITS=64",
+        "_LARGEFILE_SOURCE"
+      ],
+      "abi": "LP64",
+      "sdk": "Zig bundled native libc headers; exact version macros and header paths recorded by foreign-headers suite"
+    },
+    {
+      "id": "linux-glibc-arm64",
+      "triple": "aarch64-linux-gnu",
+      "clang_target": "aarch64-unknown-linux-gnu",
+      "backend": "linux-glibc",
+      "defines": [
+        "_FILE_OFFSET_BITS=64",
+        "_LARGEFILE_SOURCE",
+        "_GNU_SOURCE",
+        "_POSIX_C_SOURCE=200112"
+      ],
+      "abi": "LP64",
+      "sdk": "Zig bundled native libc headers; exact version macros and header paths recorded by foreign-headers suite"
+    },
+    {
+      "id": "linux-glibc-x86",
+      "triple": "x86-linux-gnu",
+      "clang_target": "i386-unknown-linux-gnu",
+      "backend": "linux-glibc",
+      "defines": [
+        "_FILE_OFFSET_BITS=64",
+        "_LARGEFILE_SOURCE",
+        "_GNU_SOURCE",
+        "_POSIX_C_SOURCE=200112"
+      ],
+      "abi": "ILP32",
+      "sdk": "Zig bundled native libc headers; exact version macros and header paths recorded by foreign-headers suite"
+    }
+  ],
+  "unsupported_without_additional_sysroot": [
+    {
+      "id": "android-arm64",
+      "triple": "aarch64-linux-android",
+      "observed_exit": 1,
+      "failure": "include/uv.h:57: fatal error: 'stdio.h' file not found"
+    },
+    {
+      "id": "openbsd-x64",
+      "triple": "x86_64-openbsd",
+      "observed_exit": 1,
+      "failure": "include/uv.h:57: fatal error: 'stdio.h' file not found"
+    },
+    {
+      "id": "dragonfly-x64",
+      "triple": "x86_64-dragonfly",
+      "observed_exit": 1,
+      "failure": "include/uv.h:57: fatal error: 'stdio.h' file not found"
+    },
+    {
+      "id": "illumos-x64",
+      "triple": "x86_64-illumos",
+      "observed_exit": 1,
+      "failure": "include/uv.h:57: fatal error: 'stdio.h' file not found"
+    },
+    {
+      "id": "solaris-x64",
+      "triple": "x86_64-solaris",
+      "observed_exit": 1,
+      "failure": "include/uv.h:57: fatal error: 'stdio.h' file not found"
+    },
+    {
+      "id": "aix-ppc64",
+      "triple": "powerpc64-aix",
+      "observed_exit": 1,
+      "failure": "include/uv.h:57: fatal error: 'stdio.h' file not found"
+    },
+    {
+      "id": "haiku-x64",
+      "triple": "x86_64-haiku",
+      "observed_exit": 1,
+      "failure": "include/uv.h:57: fatal error: 'stdio.h' file not found"
+    },
+    {
+      "id": "qnx-arm64",
+      "triple": "aarch64-qnx",
+      "observed_exit": 1,
+      "failure": "UnknownOperatingSystem"
+    },
+    {
+      "id": "hurd-x64",
+      "triple": "x86_64-hurd",
+      "observed_exit": 1,
+      "failure": "include/uv.h:57: fatal error: 'stdio.h' file not found"
     }
   ]
 }

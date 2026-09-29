@@ -59,3 +59,34 @@ and emit in **all four** target configurations. Evidence:
 bodies do not establish platform backend translation. Full native-header
 translation, target ABI support, external-call binding and backend aggregation
 remain required.
+
+
+Expanded native header coverage (same pinned toolchain)
+
+Receipt `artifacts/campaign/20260929-075954-073ef186/receipt.json` supersedes the
+four-profile native header scope above with **430/430** preprocessing and native
+syntax checks across 12 profiles. All 24 target AST/layout diagnostics also exit
+successfully, and every profile supplies a measured `uv_loop_s` record.
+
+| Added profile | Source units passing | Native uv_loop_t size / alignment |
+| --- | --- | --- |
+| Linux musl x64 / arm64 | 35 each | 848 / 8 each |
+| FreeBSD x64 / arm64 | 36 each | 712 / 8 each |
+| NetBSD x64 | 35 | 808 / 8 |
+| NetBSD arm64 | 35 | 800 / 8 |
+| Linux glibc arm64 | 35 | 856 / 8 |
+| Linux glibc x86 (ILP32) | 35 | 464 / 4 |
+
+The differing NetBSD architecture layouts and glibc ILP32 shape are evidence for
+separate ABI domains, not interchangeable typedef assumptions. The additional
+profiles are source/header and native compile-time evidence only. Their emitted
+layout equivalence, native import contracts and runtime behavior remain unrun.
+
+Actual attempts against Android, OpenBSD, DragonFly, Solaris/illumos, AIX, Haiku
+and Hurd fail at missing `stdio.h` with the current Zig bundle: it has no matching
+libc header sysroot. QNX is rejected as `UnknownOperatingSystem`. This does not
+prove these platforms cannot be translated; separate real SDK/header acquisition
+is required. Exact commands/diagnostics remain in
+`build/additional-header-feasibility/unsupported-result.json`, with normalized
+prerequisite records in `config/toolchains.json`. IBM i, z/OS, Cygwin/MSYS and
+additional compiler/OS-version variants are not covered by this target survey.

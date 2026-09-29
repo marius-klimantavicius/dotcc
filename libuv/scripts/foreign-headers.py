@@ -40,7 +40,9 @@ def run(ctx):
         selected = {name: macro_values.get(name) for name in
                     ("__SIZEOF_POINTER__", "__SIZEOF_LONG__", "__SIZEOF_WCHAR_T__", "__BYTE_ORDER__",
                      "__ORDER_LITTLE_ENDIAN__", "_WIN32", "_WIN64", "__APPLE__", "__aarch64__", "__x86_64__",
-                     "__MINGW32__", "__MSVCRT_VERSION__", "_UCRT", "__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__")}
+                     "__MINGW32__", "__MSVCRT_VERSION__", "_UCRT", "_MSC_VER", "_WIN32_WINNT",
+                     "__GLIBC__", "__GLIBC_MINOR__", "__FreeBSD__", "__FreeBSD_version", "__NetBSD__",
+                     "__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__")}
 
         def inspect(name):
             label = target["id"] + "-" + name.replace("/", "_").removesuffix(".c")

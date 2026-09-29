@@ -7,7 +7,8 @@ Repository baseline: `cbbef56d7bf195824c3e7027113729f086347ec7`. At implementati
 start `libuv/` and unrelated `lwip/` were untracked. The separate lwIP session's
 files and later shared changes are not libuv baseline regressions.
 
-Validated campaign checkpoint: `d1b364c0`; shared compiler checkpoint: `6b58b2b8`.
+Validated checkpoints: campaign `d1b364c0`, native binding `a8613b10`, shared compiler
+`6b58b2b8` / `65de432a`, actual source closures `cbb4b71c`, foreign headers `ff35c497`.
 
 Available host: Linux x86_64, kernel `6.8.0-138-generic`, .NET SDK `10.0.111`,
 .NET runtime `10.0.11`, GCC `13.3.0`, CMake `3.28.3`. Native controls use the pinned
@@ -25,7 +26,8 @@ reference recorded in `config/sources.json`, not installed native libuv.
 | Native import candidates | `python3 libuv/scripts/import-inventory.py`: 227 Linux glibc x64 archive externs after subtracting archive definitions, plus 26 direct string-named dynamic lookups across all sources. No unresolved native `uv_*` imports. This is an unaudited candidate inventory, not a complete binding contract or foreign import closure. |
 | Initial actual-source probes | Worker reports original synthetic-header path emits `src/strtok.c`; version/strscpy/timer/Unix core/Linux fail at `uv/unix.h:132` because `pthread_rwlock_t` is absent (pwd/semaphore headers also incomplete). Genuine host preprocessing exposed postfix GNU attribute parser handling; focused compiler repair/testing is active. Initial logs: `artifacts/compiler-probes/initial-source-survey.json` and `native-header-source-survey.json`. Compiler milestone `6b58b2b8` passed 83 focused unit tests and 5 functional native tests. Its 35-unit genuine-header retry still emits **0/35** (`artifacts/host-source-survey/result.json`); next blockers remain visible, so source translation is not claimed. |
 | Native identity/binding foundation | **Passed JIT and NativeAOT on Linux glibc x64**; `artifacts/campaign/20260929-074236-a382d209/receipt.json`. Frozen actual process provider, lazy/concurrent module loading, optional/required absent module/symbol behavior, native memory across GC, getpid, close/errno, and actual `LD_PRELOAD` mixed-provider rejection. Authored-only; no translated backend dispatch qualification. See [native foundation](native-foundation.md). |
-| Foreign source/header feasibility | **148/148 actual source configurations preprocess and pass native target syntax** (Windows/Darwin × x64/arm64), with native AST/layout receipts at `artifacts/campaign/20260929-075104-0fa631fa`. Whole-header DotCC attempts remain 0/12; exact native dependency closures of actual version.c emit 4/4. See [foreign headers](foreign-headers.md); no foreign runtime or complete backend claim. |
+| Foreign source/header feasibility | **430/430 actual source configurations preprocess and pass native target syntax** across 12 Windows/Darwin/Linux/BSD ABI profiles, including x86 ILP32, with native AST/layout receipts at `artifacts/campaign/20260929-075954-073ef186`. Whole-header DotCC attempts remain 0/12; exact native dependency closures of actual version.c emit 4/4. See [foreign headers](foreign-headers.md); no foreign runtime or complete backend claim. |
+| Exact native declaration closures | Milestone `cbb4b71c` validates actual common source bodies plus the translated upstream timer algorithm with 116 emitted/native layout measurements and raw/processed × JIT/AOT behavior. This progress is distinct from the retained failing whole-header survey. See [compiler/native evidence](compiler-native.md). |
 | Managed native-boundary probes | Separate compiler/native worker records results in `artifacts/native-boundary/result.json`. These are authored boundary / small actual-emission feasibility probes, not translated libuv consumer success. |
 
 Native upstream skips are preserved individually: recursive filesystem directory
