@@ -293,6 +293,12 @@ internal sealed partial class IrBuilder
             case C.AttrCall a when Tok(a.Arg0).Trim('_') == "alloc_size":
                 ValidateAllocationSizeIndex(a.Arg2);
                 break;
+            case C.AttrCall a when Tok(a.Arg0).Trim('_') == "visibility":
+                // Default visibility is already the ordinary external export
+                // contract. Other visibility modes need explicit link semantics.
+                if (TryStringLiteral(a.Arg2) != "default")
+                    throw new IrUnsupportedException("GNU visibility requires the supported default visibility contract");
+                break;
             case C.AttrCallTwo a when Tok(a.Arg0).Trim('_') == "alloc_size":
                 ValidateAllocationSizeIndex(a.Arg2);
                 ValidateAllocationSizeIndex(a.Arg4);

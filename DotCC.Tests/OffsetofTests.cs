@@ -12,6 +12,14 @@ namespace DotCC.Tests;
 public sealed class OffsetofTests
 {
     [Fact]
+    public void native_header_builtin_spelling_retains_nested_layout_semantics()
+    {
+        var src = WriteTemp("struct Inner { char flag; int value; }; struct Outer { char tag; struct Inner rows[3]; }; int main(void) { return (int)__builtin_offsetof(struct Outer, rows[2].value); }");
+        try { Compiler.EmitCSharp(new[] { src }).ShouldContain("public const ulong Value = 24UL;"); }
+        finally { File.Delete(src); }
+    }
+
+    [Fact]
     public void offsets_emit_constants_directly_without_delegates()
     {
         var src = WriteTemp("struct S { char a; double b; }; int main(void) { return (int)offsetof(struct S, b); }");

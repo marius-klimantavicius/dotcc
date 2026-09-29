@@ -2016,6 +2016,7 @@ lexer:
     # an ordinary ID (the ID rule matches the longer run).
     - { symbol: 'va_arg',   match: 'va_arg' }
     - { symbol: 'offsetof', match: 'offsetof' }
+    - { symbol: 'offsetof', match: '__builtin_offsetof' }
     - { symbol: 'typedef',  match: 'typedef' }
     - { symbol: 'do',       match: 'do' }
     - { symbol: 'enum',     match: 'enum' }

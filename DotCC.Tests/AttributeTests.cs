@@ -49,6 +49,24 @@ public sealed class AttributeTests
         finally { File.Delete(src); }
     }
 
+    [Theory]
+    [InlineData("default", true)]
+    [InlineData("hidden", false)]
+    [InlineData("protected", false)]
+    [InlineData("internal", false)]
+    public void Native_default_visibility_preserves_external_export_contract(string visibility, bool supported)
+    {
+        var src = WriteTemp($"__attribute__((visibility(\"{visibility}\"))) int answer(void); int answer(void) {{ return 42; }}");
+        try
+        {
+            if (supported)
+                Compiler.EmitCSharp(new[] { src }, emit: EmitMode.ManagedLib).ShouldContain("public static unsafe int answer(");
+            else
+                Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { src }, emit: EmitMode.ManagedLib)).Message.ShouldContain("visibility");
+        }
+        finally { File.Delete(src); }
+    }
+
     [Fact]
     public void Native_header_postfix_attributes_do_not_leak_noreturn_to_following_functions()
     {
