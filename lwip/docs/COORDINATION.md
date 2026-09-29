@@ -19,16 +19,18 @@ historical execution only and are superseded by this active workspace rule.
 | Agent | Ownership | Current task |
 | --- | --- | --- |
 | `/root/lwip_coordinator` | This ledger, scope/contract review, integration and validation scheduling | Coordinate P0–P6 and retain evidence |
-| `/root/lwip_coordinator/pipeline` | `config/`, `scripts/` except `test.py`, `src/port/`, source/blocker docs, Upstream/Pipeline/Links/Ppp/PppLinks/Applications/Contrib tests and tools; approved compiler fixes | Merged-toolchain refresh, full links/apps/contrib, source/feature audits |
-| `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `scripts/test.py`, remaining core/API/addressing/routing/lifecycle tests, README and host docs | Owning API, IPv6/multicast/routing/bridge, native and independent controls |
+| `/root/lwip_coordinator/pipeline` | All campaign implementation/configuration/fixtures and approved compiler fixes, including the reassigned Host/facade/OwnedApi work | Owning API and interface-lifetime integration, then coherent products and permitted matrices; broader links/apps/features follow |
+| `/root/lwip_coordinator/host` | Unavailable; preserved WIP reassigned to pipeline | Execution failed; no active mutations or builds. Fresh replacement creation is blocked by the orchestrator thread limit |
 
 Current shared .NET build ownership is **pipeline**. Checkpoint `7835b38b`
 qualifies scoped IPv6 hop-limit, bridge and LOWPAN integration and L2TP behavior
 in all three profiles and four cells. Host authored isolated owning APIs and
 ordinary-interface lifetime controls, but its agent turn is currently unavailable
 after repeated generic execution flags; source and evidence remain preserved.
-Pipeline continues independent ZEP/apps and default-off feature work. Coordinate
-reassignment before any shared Host/facade or recipe mutation; dependent native
+Pipeline has accepted ownership of the preserved Host/facade/OwnedApi work and
+is integrating it before the next product refresh. A fresh replacement was
+requested but could not be created because the errored worker still occupies a
+thread. Coordinate reassignment before any new worker mutates shared inputs; dependent native
 controls must also wait while staging/configuration integration is in progress.
 Current evidence: [validation.md](validation.md). Old receipts retain historical
 provenance; fresh product and PPP/diagnostic records are from this checkout.
@@ -49,7 +51,8 @@ schedules and integrates. Commit named files with evidence and honest scope.
   non-corrupt API/authentication/lifetime/error cases and original upstream tests.
   Historical receipts remain historical, and excluded-by-user cases are neither
   passes nor blockers. The focused source/call-graph audit is complete; only
-  permitted revised verification may resume. New fixtures still need fresh results.
+  permitted revised verification may resume. Ten revised suites now pass threaded
+  raw JIT plus native prerequisites; other cells and new fixtures need fresh results.
 - Include every implemented bundled feature without external product libraries,
   including PPP's bundled crypto. Exclude TLS and externally provided crypto.
 - Use original configuration/hooks first, guarded macro/typed overrides next,
