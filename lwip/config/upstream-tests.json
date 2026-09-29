@@ -1,0 +1,2848 @@
+{
+  "status": "unit-and-unit-nosys-native-managed-all4-validated",
+  "native_control": "Check0.15.2, CK_NOFORK, same pinned source and upstream diagnostic scheduler",
+  "evidence": "artifacts/upstream-native/lwip_unittests.xml",
+  "cases": [
+    {
+      "case": "test_ip4_frag",
+      "suite": "IPv4",
+      "source": "test/unit/ip4/test_ip4.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip4_setup",
+          "ip4_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip4_reass",
+      "suite": "IPv4",
+      "source": "test/unit/ip4/test_ip4.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip4_setup",
+          "ip4_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_127_0_0_1",
+      "suite": "IPv4",
+      "source": "test/unit/ip4/test_ip4.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip4_setup",
+          "ip4_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip4addr_aton",
+      "suite": "IPv4",
+      "source": "test/unit/ip4/test_ip4.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip4_setup",
+          "ip4_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip4_icmp_replylen_short",
+      "suite": "IPv4",
+      "source": "test/unit/ip4/test_ip4.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip4_setup",
+          "ip4_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip4_icmp_replylen_first_8",
+      "suite": "IPv4",
+      "source": "test/unit/ip4/test_ip4.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip4_setup",
+          "ip4_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip6_ll_addr",
+      "suite": "IPv6",
+      "source": "test/unit/ip6/test_ip6.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip6_setup",
+          "ip6_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip6_aton_ipv4mapped",
+      "suite": "IPv6",
+      "source": "test/unit/ip6/test_ip6.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip6_setup",
+          "ip6_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip6_ntoa_ipv4mapped",
+      "suite": "IPv6",
+      "source": "test/unit/ip6/test_ip6.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip6_setup",
+          "ip6_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip6_ntoa",
+      "suite": "IPv6",
+      "source": "test/unit/ip6/test_ip6.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip6_setup",
+          "ip6_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip6_lladdr",
+      "suite": "IPv6",
+      "source": "test/unit/ip6/test_ip6.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip6_setup",
+          "ip6_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip6_dest_unreachable_chained_pbuf",
+      "suite": "IPv6",
+      "source": "test/unit/ip6/test_ip6.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip6_setup",
+          "ip6_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip6_frag_pbuf_len_assert",
+      "suite": "IPv6",
+      "source": "test/unit/ip6/test_ip6.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip6_setup",
+          "ip6_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip6_frag",
+      "suite": "IPv6",
+      "source": "test/unit/ip6/test_ip6.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip6_setup",
+          "ip6_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_ip6_reass",
+      "suite": "IPv6",
+      "source": "test/unit/ip6/test_ip6.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "ip6_setup",
+          "ip6_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_udp_new_remove",
+      "suite": "UDP",
+      "source": "test/unit/udp/test_udp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "udp_setup",
+          "udp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_udp_broadcast_rx_with_2_netifs",
+      "suite": "UDP",
+      "source": "test/unit/udp/test_udp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "udp_setup",
+          "udp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_udp_bind",
+      "suite": "UDP",
+      "source": "test/unit/udp/test_udp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "udp_setup",
+          "udp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_new_abort",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_listen_passive_open",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_inseq",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_inseq_trim",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_passive_close",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_active_abort",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_malformed_header",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_fast_retx_recover",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_fast_rexmit_wraparound",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_rto_rexmit_wraparound",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_tx_full_window_lost_from_unacked",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_tx_full_window_lost_from_unsent",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_retx_add_to_sent",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_rto_tracking",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_rto_timeout",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_rto_timeout_link_down",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_rto_timeout_syn_sent",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_rto_timeout_syn_sent_link_down",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_zwp_timeout",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_zwp_timeout_link_down",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_persist_split",
+      "suite": "TCP",
+      "source": "test/unit/tcp/test_tcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_setup",
+          "tcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_FIN_OOSEQ",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_FIN_INSEQ",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_overrun_rxwin",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_overrun_rxwin_edge",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_max_bytes",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_max_pbufs",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_0",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_1",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_2",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_3",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_4",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_5",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_6",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_7",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_8",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_9",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_10",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_11",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_12",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_13",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_14",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_recv_ooseq_double_FIN_15",
+      "suite": "TCP_OOS",
+      "source": "test/unit/tcp/test_tcp_oos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_oos_setup",
+          "tcp_oos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_new_max_num",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_new_max_num_remove_TIME_WAIT",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_connect_active_open",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_active_close",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_imultaneous_close",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_gen_rst_in_CLOSED",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_gen_rst_in_LISTEN",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_gen_rst_in_TIME_WAIT",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_process_rst_seqno",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_gen_rst_in_SYN_SENT_ackseq",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_gen_rst_in_SYN_SENT_non_syn_ack",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_gen_rst_in_SYN_RCVD",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_tcp_receive_rst_SYN_RCVD_to_LISTEN",
+      "suite": "TCP_STATE",
+      "source": "test/unit/tcp/test_tcp_state.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "tcp_state_setup",
+          "tcp_state_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_def_lwip_itoa",
+      "suite": "DEF",
+      "source": "test/unit/core/test_def.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "def_setup",
+          "def_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_dns_set_get_server",
+      "suite": "DNS",
+      "source": "test/unit/core/test_dns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "dns_setup",
+          "dns_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_mem_one",
+      "suite": "MEM",
+      "source": "test/unit/core/test_mem.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "mem_setup",
+          "mem_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_mem_random",
+      "suite": "MEM",
+      "source": "test/unit/core/test_mem.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "mem_setup",
+          "mem_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_mem_invalid_free",
+      "suite": "MEM",
+      "source": "test/unit/core/test_mem.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "mem_setup",
+          "mem_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_mem_double_free",
+      "suite": "MEM",
+      "source": "test/unit/core/test_mem.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "mem_setup",
+          "mem_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_netif_extcallbacks",
+      "suite": "NETIF",
+      "source": "test/unit/core/test_netif.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "netif_setup",
+          "netif_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_netif_flag_set",
+      "suite": "NETIF",
+      "source": "test/unit/core/test_netif.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "netif_setup",
+          "netif_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_netif_find",
+      "suite": "NETIF",
+      "source": "test/unit/core/test_netif.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "netif_setup",
+          "netif_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_pbuf_alloc_zero_pbufs",
+      "suite": "PBUF",
+      "source": "test/unit/core/test_pbuf.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "pbuf_setup",
+          "pbuf_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_pbuf_copy_zero_pbuf",
+      "suite": "PBUF",
+      "source": "test/unit/core/test_pbuf.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "pbuf_setup",
+          "pbuf_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_pbuf_copy_unmatched_chains",
+      "suite": "PBUF",
+      "source": "test/unit/core/test_pbuf.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "pbuf_setup",
+          "pbuf_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_pbuf_copy_partial_pbuf",
+      "suite": "PBUF",
+      "source": "test/unit/core/test_pbuf.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "pbuf_setup",
+          "pbuf_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_pbuf_split_64k_on_small_pbufs",
+      "suite": "PBUF",
+      "source": "test/unit/core/test_pbuf.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "pbuf_setup",
+          "pbuf_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_pbuf_queueing_bigger_than_64k",
+      "suite": "PBUF",
+      "source": "test/unit/core/test_pbuf.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "pbuf_setup",
+          "pbuf_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_pbuf_take_at_edge",
+      "suite": "PBUF",
+      "source": "test/unit/core/test_pbuf.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "pbuf_setup",
+          "pbuf_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_pbuf_get_put_at_edge",
+      "suite": "PBUF",
+      "source": "test/unit/core/test_pbuf.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "pbuf_setup",
+          "pbuf_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_bug52748",
+      "suite": "TIMERS",
+      "source": "test/unit/core/test_timers.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "timers_setup",
+          "timers_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_cyclic_timers",
+      "suite": "TIMERS",
+      "source": "test/unit/core/test_timers.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "timers_setup",
+          "timers_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_timers",
+      "suite": "TIMERS",
+      "source": "test/unit/core/test_timers.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "timers_setup",
+          "timers_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_long_timer",
+      "suite": "TIMERS",
+      "source": "test/unit/core/test_timers.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "timers_setup",
+          "timers_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_etharp_table",
+      "suite": "ETHARP",
+      "source": "test/unit/etharp/test_etharp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "etharp_setup",
+          "etharp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_dhcp",
+      "suite": "DHCP",
+      "source": "test/unit/dhcp/test_dhcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "dhcp_setup",
+          "dhcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_dhcp_nak",
+      "suite": "DHCP",
+      "source": "test/unit/dhcp/test_dhcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "dhcp_setup",
+          "dhcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_dhcp_relayed",
+      "suite": "DHCP",
+      "source": "test/unit/dhcp/test_dhcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "dhcp_setup",
+          "dhcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_dhcp_nak_no_endmarker",
+      "suite": "DHCP",
+      "source": "test/unit/dhcp/test_dhcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "dhcp_setup",
+          "dhcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_dhcp_invalid_overload",
+      "suite": "DHCP",
+      "source": "test/unit/dhcp/test_dhcp.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "dhcp_setup",
+          "dhcp_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_basic",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_anydata",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_short_buf",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_long_label",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_overflow",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_jump_earlier",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_jump_earlier_jump",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_jump_maxdepth",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_jump_later",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_half_jump",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_jump_toolong",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_jump_loop_label",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "readname_jump_loop_jump",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "add_label_basic",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "add_label_long_label",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "add_label_full",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "domain_eq_basic",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "domain_eq_diff",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "domain_eq_case",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "domain_eq_anydata",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "domain_eq_length",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "compress_full_match",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "compress_full_match_subset",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "compress_full_match_jump",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "compress_no_match",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "compress_2nd_label",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "compress_2nd_label_short",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "compress_jump_to_jump",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "compress_long_match",
+      "suite": "MDNS",
+      "source": "test/unit/mdns/test_mdns.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "basic_connect",
+      "suite": "MQTT",
+      "source": "test/unit/mqtt/test_mqtt.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "mqtt_setup",
+          "mqtt_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    },
+    {
+      "case": "test_sockets_basics",
+      "suite": "SOCKETS",
+      "source": "test/unit/api/test_sockets.c",
+      "iteration": 0,
+      "profiles": [
+        "unit"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "sockets_setup",
+          "sockets_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed.",
+      "exclusions": {
+        "unit-nosys": "Socket/netconn APIs require NO_SYS=0; original sockets_suite else registers zero tests."
+      }
+    },
+    {
+      "case": "test_sockets_allfunctions_basic",
+      "suite": "SOCKETS",
+      "source": "test/unit/api/test_sockets.c",
+      "iteration": 0,
+      "profiles": [
+        "unit"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "sockets_setup",
+          "sockets_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed.",
+      "exclusions": {
+        "unit-nosys": "Socket/netconn APIs require NO_SYS=0; original sockets_suite else registers zero tests."
+      }
+    },
+    {
+      "case": "test_sockets_msgapis",
+      "suite": "SOCKETS",
+      "source": "test/unit/api/test_sockets.c",
+      "iteration": 0,
+      "profiles": [
+        "unit"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "sockets_setup",
+          "sockets_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed.",
+      "exclusions": {
+        "unit-nosys": "Socket/netconn APIs require NO_SYS=0; original sockets_suite else registers zero tests."
+      }
+    },
+    {
+      "case": "test_sockets_select",
+      "suite": "SOCKETS",
+      "source": "test/unit/api/test_sockets.c",
+      "iteration": 0,
+      "profiles": [
+        "unit"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "sockets_setup",
+          "sockets_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed.",
+      "exclusions": {
+        "unit-nosys": "Socket/netconn APIs require NO_SYS=0; original sockets_suite else registers zero tests."
+      }
+    },
+    {
+      "case": "test_sockets_recv_after_rst",
+      "suite": "SOCKETS",
+      "source": "test/unit/api/test_sockets.c",
+      "iteration": 0,
+      "profiles": [
+        "unit"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "sockets_setup",
+          "sockets_teardown"
+        ],
+        [
+          "NULL",
+          "NULL"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed.",
+      "exclusions": {
+        "unit-nosys": "Socket/netconn APIs require NO_SYS=0; original sockets_suite else registers zero tests."
+      }
+    },
+    {
+      "case": "test_pppos_empty_packet_with_valid_fcs",
+      "suite": "PPPOS",
+      "source": "test/unit/ppp/test_pppos.c",
+      "iteration": 0,
+      "profiles": [
+        "unit",
+        "unit-nosys"
+      ],
+      "disposition": "required",
+      "native": "passed",
+      "managed": "passed-all-applicable-profiles-raw-processed-jit-aot",
+      "fixtures": [
+        [
+          "pppos_setup",
+          "pppos_teardown"
+        ]
+      ],
+      "assertions": "Original assertion expressions retained; original setup and teardown executed."
+    }
+  ],
+  "nosys_native_evidence": "artifacts/upstream-native-nosys/lwip_unittests.xml",
+  "nosys_native_cases": 132,
+  "nosys_scheduler": "Authored test-only tcpip_thread_poll_one pumps netif_poll_all+sys_check_timeouts for unchanged IP teardown; source selection omits unguarded socket helpers and reproduces original empty suite branch.",
+  "managed_evidence": [
+    "artifacts/campaign/20260929-081512-9608394d/upstream-report.json",
+    "artifacts/campaign/20260929-081538-a7d37662/upstream-report.json",
+    "artifacts/campaign/20260929-083055-ad449f5f/upstream-report.json"
+  ],
+  "managed_matrix": {
+    "unit": {
+      "cases": 137,
+      "forms": [
+        "raw",
+        "processed"
+      ],
+      "modes": [
+        "jit",
+        "aot"
+      ],
+      "failures": 0
+    },
+    "unit-nosys": {
+      "cases": 132,
+      "forms": [
+        "raw",
+        "processed"
+      ],
+      "modes": [
+        "jit",
+        "aot"
+      ],
+      "failures": 0,
+      "excluded_cases": 5
+    }
+  }
+}

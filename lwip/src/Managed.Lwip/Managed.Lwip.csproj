@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <LwipProject Condition="'$(LwipProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedLwip/TranslatedLwip.csproj</LwipProject>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="$(LwipProject)" /></ItemGroup>
+</Project>

@@ -1,0 +1,752 @@
+[
+  {
+    "id": "core-buffers-heap-pools",
+    "source_groups": [
+      "lwipcore_SRCS"
+    ],
+    "suite": "packets",
+    "options": [
+      "MEM_ALIGNMENT",
+      "MEM_SIZE",
+      "MEM_LIBC_MALLOC",
+      "MEMP_MEM_MALLOC",
+      "PBUF_POOL_SIZE"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "stable owner storage"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "raw-altcp-tcp-udp-udplite",
+    "source_groups": [
+      "lwipcore_SRCS"
+    ],
+    "suite": "packets",
+    "options": [
+      "LWIP_RAW",
+      "LWIP_ALTCP",
+      "LWIP_TCP",
+      "LWIP_UDP",
+      "LWIP_UDPLITE"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "packet frames",
+      "clock"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "dual-stack-fragments-checksums",
+    "source_groups": [
+      "lwipcore4_SRCS",
+      "lwipcore6_SRCS"
+    ],
+    "suite": "packets",
+    "options": [
+      "LWIP_IPV4",
+      "LWIP_IPV6",
+      "IP_REASSEMBLY",
+      "IP_FRAG",
+      "LWIP_IPV6_REASS",
+      "LWIP_IPV6_FRAG",
+      "IPV6_FRAG_COPYHEADER"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "netconn-netbuf-netdb-socket-netifapi",
+    "source_groups": [
+      "lwipapi_SRCS"
+    ],
+    "suite": "socket-api",
+    "options": [
+      "LWIP_NETCONN",
+      "LWIP_SOCKET",
+      "LWIP_NETIF_API",
+      "LWIP_NETCONN_FULLDUPLEX",
+      "LWIP_NETCONN_SEM_PER_THREAD",
+      "LWIP_SOCKET_SELECT",
+      "LWIP_SOCKET_POLL",
+      "LWIP_SO_RCVTIMEO",
+      "LWIP_SO_SNDTIMEO",
+      "LWIP_SO_RCVBUF",
+      "SO_REUSE",
+      "LWIP_TCP_KEEPALIVE"
+    ],
+    "profiles": [
+      "threaded",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "sys_arch mailbox semaphore threads"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "tcpip-message-passing",
+    "source_groups": [
+      "lwipapi_SRCS"
+    ],
+    "suite": "sysarch",
+    "options": [
+      "NO_SYS",
+      "SYS_LIGHTWEIGHT_PROT",
+      "LWIP_TCPIP_CORE_LOCKING"
+    ],
+    "profiles": [
+      "threaded"
+    ],
+    "host_services": [
+      "owner-bound thread/mailbox"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "tcpip-core-locking",
+    "source_groups": [
+      "lwipapi_SRCS"
+    ],
+    "suite": "sysarch",
+    "options": [
+      "LWIP_TCPIP_CORE_LOCKING",
+      "LWIP_TCPIP_CORE_LOCKING_INPUT"
+    ],
+    "profiles": [
+      "threaded-locking"
+    ],
+    "host_services": [
+      "owner core lock"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "dhcp-acd-autoip",
+    "source_groups": [
+      "lwipcore4_SRCS"
+    ],
+    "suite": "addressing",
+    "options": [
+      "LWIP_DHCP",
+      "LWIP_ACD",
+      "LWIP_AUTOIP",
+      "LWIP_DHCP_AUTOIP_COOP"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "dhcp6-stateless-slaac-dad",
+    "source_groups": [
+      "lwipcore6_SRCS"
+    ],
+    "suite": "addressing",
+    "options": [
+      "LWIP_IPV6_DHCP6",
+      "LWIP_IPV6_DHCP6_STATELESS",
+      "LWIP_IPV6_AUTOCONFIG",
+      "LWIP_IPV6_DUP_DETECT_ATTEMPTS",
+      "LWIP_IPV6_SEND_ROUTER_SOLICIT"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "dns-multicast",
+    "source_groups": [
+      "lwipcore_SRCS",
+      "lwipcore4_SRCS",
+      "lwipcore6_SRCS"
+    ],
+    "suite": "addressing",
+    "options": [
+      "LWIP_DNS",
+      "LWIP_IGMP",
+      "LWIP_IPV6_MLD"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "routing-loopback-bridging",
+    "source_groups": [
+      "lwipcore_SRCS",
+      "lwipcore4_SRCS",
+      "lwipcore6_SRCS",
+      "lwipnetif_SRCS"
+    ],
+    "suite": "routing",
+    "options": [
+      "IP_FORWARD",
+      "LWIP_IPV6_FORWARD",
+      "LWIP_HAVE_LOOPIF",
+      "LWIP_NETIF_LOOPBACK"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "multiple interfaces"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "slip",
+    "source_groups": [
+      "lwipnetif_SRCS"
+    ],
+    "suite": "links",
+    "options": [
+      "LWIP_IPV4",
+      "SLIP_USE_RX_THREAD",
+      "SLIP_RX_FROM_ISR",
+      "SLIP_RX_QUEUE"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "sio byte stream"
+    ],
+    "disposition": "required",
+    "status": "partial",
+    "evidence": {
+      "threaded": "artifacts/campaign/20260929-092814-c3aef247/slip-framing-report.json",
+      "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/slip-framing-report.json",
+      "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/slip-framing-report.json"
+    },
+    "remaining": "ISR/queued variants and broader link-family cases remain open."
+  },
+  {
+    "id": "6lowpan-802154-ble-zep",
+    "source_groups": [
+      "lwipsixlowpan_SRCS"
+    ],
+    "suite": "links",
+    "options": [
+      "LWIP_IPV6",
+      "LWIP_6LOWPAN_IPHC",
+      "LWIP_6LOWPAN_NUM_CONTEXTS"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "radio frames"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "ppp-links-control",
+    "source_groups": [
+      "lwipppp_SRCS"
+    ],
+    "suite": "ppp",
+    "options": [
+      "PPP_SUPPORT",
+      "PPPOS_SUPPORT",
+      "PPPOE_SUPPORT",
+      "PPPOE_SCNAME_SUPPORT",
+      "PPPOL2TP_SUPPORT",
+      "PPPOL2TP_AUTH_SUPPORT",
+      "PPP_SERVER",
+      "PPP_NOTIFY_PHASE"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "serial/Ethernet/UDP frames"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "ppp-pap-chap-mschap-eap-md5",
+    "source_groups": [
+      "lwipppp_SRCS"
+    ],
+    "suite": "ppp",
+    "options": [
+      "PAP_SUPPORT",
+      "CHAP_SUPPORT",
+      "MSCHAP_SUPPORT",
+      "EAP_SUPPORT"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "credentials",
+      "entropy"
+    ],
+    "disposition": "required",
+    "status": "partial",
+    "evidence": {
+      "threaded": "artifacts/campaign/20260929-092814-c3aef247/bundled-ppp-report.json",
+      "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/bundled-ppp-report.json",
+      "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/bundled-ppp-report.json"
+    },
+    "remaining": "Full PPP link/authentication negotiation, VJ and peer-error workflows remain open."
+  },
+  {
+    "id": "ppp-mppe-vj-compression",
+    "source_groups": [
+      "lwipppp_SRCS"
+    ],
+    "suite": "ppp",
+    "options": [
+      "CCP_SUPPORT",
+      "MPPE_SUPPORT",
+      "VJ_SUPPORT"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "bundled hash/cipher primitives"
+    ],
+    "disposition": "required",
+    "status": "partial",
+    "evidence": {
+      "threaded": "artifacts/campaign/20260929-092814-c3aef247/bundled-ppp-report.json",
+      "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/bundled-ppp-report.json",
+      "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/bundled-ppp-report.json"
+    },
+    "remaining": "Full PPP link/authentication negotiation, VJ and peer-error workflows remain open."
+  },
+  {
+    "id": "snmp-v1-v2c-v3-noauth",
+    "source_groups": [
+      "lwipsnmp_SRCS"
+    ],
+    "suite": "applications",
+    "options": [
+      "LWIP_SNMP",
+      "LWIP_SNMP_V3",
+      "LWIP_SNMP_CONFIGURE_VERSIONS",
+      "SNMP_SAFE_REQUESTS",
+      "MIB2_STATS"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "MIB/engine/user persistence"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "snmp-raw",
+    "source_groups": [
+      "lwipsnmp_SRCS"
+    ],
+    "suite": "applications",
+    "options": [
+      "SNMP_USE_RAW"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys"
+    ],
+    "host_services": [],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "snmp-netconn-threadsync",
+    "source_groups": [
+      "lwipsnmp_SRCS"
+    ],
+    "suite": "applications",
+    "options": [
+      "SNMP_USE_NETCONN"
+    ],
+    "profiles": [
+      "threaded-locking"
+    ],
+    "host_services": [
+      "thread synchronization"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "http-client-server-proxy",
+    "source_groups": [
+      "lwiphttp_SRCS"
+    ],
+    "suite": "applications",
+    "options": [
+      "LWIP_HTTPD_CGI",
+      "LWIP_HTTPD_SSI",
+      "LWIP_HTTPD_SSI_MULTIPART",
+      "LWIP_HTTPD_SUPPORT_POST",
+      "LWIP_HTTPD_CUSTOM_FILES",
+      "LWIP_HTTPD_DYNAMIC_HEADERS",
+      "LWIP_HTTPD_SUPPORT_11_KEEPALIVE",
+      "HTTPD_FSDATA_FILE",
+      "HTTPD_PRECALCULATED_CHECKSUM"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking",
+      "http-content"
+    ],
+    "host_services": [
+      "content/POST callbacks"
+    ],
+    "disposition": "required",
+    "status": "partial",
+    "evidence": {
+      "threaded": "artifacts/campaign/20260929-092814-c3aef247/http-transactions-report.json",
+      "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/http-transactions-report.json",
+      "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/http-transactions-report.json",
+      "http-content": "artifacts/campaign/20260929-093554-eba3af0c/http-transactions-report.json"
+    },
+    "remaining": "HTTP client/proxy, asynchronous/dynamic file and other configuration variants remain open."
+  },
+  {
+    "id": "mqtt",
+    "source_groups": [
+      "lwipmqtt_SRCS"
+    ],
+    "suite": "applications",
+    "options": [],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "application events"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "smtp",
+    "source_groups": [
+      "lwipsmtp_SRCS"
+    ],
+    "suite": "applications",
+    "options": [
+      "SMTP_BODYDH",
+      "SMTP_CHECK_DATA"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "message content"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "sntp",
+    "source_groups": [
+      "lwipsntp_SRCS"
+    ],
+    "suite": "applications",
+    "options": [
+      "SNTP_GET_SERVERS_FROM_DHCP",
+      "SNTP_GET_SERVERS_FROM_DHCPV6"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "clock set"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "mdns",
+    "source_groups": [
+      "lwipmdns_SRCS"
+    ],
+    "suite": "applications",
+    "options": [
+      "LWIP_MDNS_RESPONDER",
+      "MDNS_MAX_SERVICES"
+    ],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "service records"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "netbios",
+    "source_groups": [
+      "lwipnetbios_SRCS"
+    ],
+    "suite": "applications",
+    "options": [],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "local name"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "tftp",
+    "source_groups": [
+      "lwiptftp_SRCS"
+    ],
+    "suite": "applications",
+    "options": [],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "storage"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "lwiperf",
+    "source_groups": [
+      "lwipiperf_SRCS"
+    ],
+    "suite": "applications",
+    "options": [],
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking"
+    ],
+    "host_services": [
+      "result callback"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "makefsdata-uncompressed",
+    "source_groups": [
+      "lwipmakefsdata_SRCS"
+    ],
+    "suite": "tools",
+    "options": [
+      "MAKEFS_SUPPORT_DEFLATE"
+    ],
+    "profiles": [
+      "makefsdata"
+    ],
+    "host_services": [
+      "filesystem"
+    ],
+    "disposition": "required",
+    "status": "unrun"
+  },
+  {
+    "id": "contrib-apps-addons-examples",
+    "source_groups": [],
+    "suite": "contrib",
+    "options": [],
+    "profiles": [
+      "contrib"
+    ],
+    "host_services": [
+      "see contrib-inventory.json"
+    ],
+    "disposition": "required",
+    "status": "partial",
+    "evidence": {
+      "contrib": "artifacts/campaign/20260929-092742-40fc80aa/contrib-addons-report.json"
+    },
+    "remaining": "Other addon packet behavior, app/example workflows and full contrib suite remain open."
+  },
+  {
+    "id": "external-tls-snmp-crypto",
+    "source_groups": [
+      "lwipmbedtls_SRCS"
+    ],
+    "suite": "",
+    "options": [
+      "LWIP_ALTCP_TLS",
+      "LWIP_SNMP_V3_MBEDTLS",
+      "LWIP_SNMP_V3_CRYPTO"
+    ],
+    "profiles": [],
+    "host_services": [],
+    "disposition": "excluded-external-dependency",
+    "status": "classified",
+    "reason": "Requires external mbedTLS provider; user excluded external crypto dependencies."
+  },
+  {
+    "id": "external-eap-srp",
+    "source_groups": [
+      "lwipppp_SRCS"
+    ],
+    "suite": "",
+    "options": [
+      "USE_SRP"
+    ],
+    "profiles": [],
+    "host_services": [],
+    "disposition": "excluded-external-dependency",
+    "status": "classified",
+    "reason": "EAP SRP references external SRP implementation; bundled EAP MD5-Challenge remains required."
+  },
+  {
+    "id": "unsupported-ppp-modes",
+    "source_groups": [
+      "lwipppp_SRCS"
+    ],
+    "suite": "",
+    "options": [
+      "CBCP_SUPPORT",
+      "ECP_SUPPORT",
+      "DEMAND_SUPPORT"
+    ],
+    "profiles": [],
+    "host_services": [],
+    "disposition": "upstream-unimplemented",
+    "status": "classified",
+    "reason": "Upstream option documentation explicitly says unsupported; no translated success claim."
+  },
+  {
+    "id": "ppp-multilink",
+    "source_groups": [
+      "lwipppp_SRCS"
+    ],
+    "options": [
+      "HAVE_MULTILINK"
+    ],
+    "profiles": [],
+    "disposition": "excluded-external-dependency",
+    "status": "classified",
+    "reason": "multilink.c documents unported Samba TDB dependency; not a self-contained bundled mode."
+  },
+  {
+    "id": "ppp-unimplemented-compressors",
+    "source_groups": [
+      "lwipppp_SRCS"
+    ],
+    "options": [
+      "DEFLATE_SUPPORT",
+      "BSDCOMPRESS_SUPPORT",
+      "PREDICTOR_SUPPORT"
+    ],
+    "profiles": [],
+    "disposition": "upstream-unimplemented",
+    "status": "classified",
+    "reason": "ccp.c negotiation remnants call ccp_test(), whose implementation is disabled under #if 0 in ppp.c; transmit/receive switches implement only MPPE. No payload codec is supplied."
+  },
+  {
+    "id": "ppp-lqr-negotiation",
+    "source_groups": [
+      "lwipppp_SRCS"
+    ],
+    "options": [
+      "LQR_SUPPORT"
+    ],
+    "profiles": [
+      "threaded-locking"
+    ],
+    "disposition": "required",
+    "status": "unrun",
+    "suite": "ppp",
+    "reason": "Upstream implements only LCP quality negotiation, not a report engine; qualify the behavior actually supplied."
+  },
+  {
+    "id": "arp-neighbor-queue-variant",
+    "source_groups": [
+      "lwipcore4_SRCS"
+    ],
+    "suite": "addressing",
+    "options": [
+      "ARP_QUEUEING",
+      "ARP_QUEUE_LEN"
+    ],
+    "profiles": [
+      "threaded-locking"
+    ],
+    "host_services": [
+      "packet frames",
+      "clock"
+    ],
+    "disposition": "required",
+    "status": "unrun",
+    "behavior": "Queue up to eight packets during neighbor resolution; ownership/drop/error behavior requires explicit native and managed fixtures. Other product profiles retain upstream ARP_QUEUEING=0 last-packet-only behavior."
+  }
+]

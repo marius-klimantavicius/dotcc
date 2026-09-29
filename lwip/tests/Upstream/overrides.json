@@ -1,0 +1,246 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "lwip_host_random",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.Random",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_assert",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "const char *",
+          "const char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.Assert",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "dotcc_check_failure",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "const char *",
+          "const char *",
+          "int",
+          "const char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.Failure",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "suite_create",
+      "signature": {
+        "returnType": "void *",
+        "parameterTypes": [
+          "const char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.SuiteCreate",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "tcase_create",
+      "signature": {
+        "returnType": "void *",
+        "parameterTypes": [
+          "const char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.CaseCreate",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "suite_add_tcase",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.SuiteAddCase",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "tcase_add_checked_fixture",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "void (*)(void)",
+          "void (*)(void)"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.CaseFixture",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "_tcase_add_test",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "void (*)(int)",
+          "const char *",
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.CaseAdd",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "srunner_create",
+      "signature": {
+        "returnType": "void *",
+        "parameterTypes": [
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.RunnerCreate",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "srunner_add_suite",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.RunnerAddSuite",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "srunner_set_xml",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "const char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.RunnerXml",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "srunner_set_fork_status",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.RunnerFork",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "srunner_run_all",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.RunnerRun",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "srunner_ntests_failed",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.RunnerFailed",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "srunner_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.Tests.CheckHost.RunnerFree",
+        "passInstance": true
+      }
+    }
+  ]
+}

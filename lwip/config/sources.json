@@ -1,0 +1,21 @@
+{
+  "version": "2.2.1",
+  "tag": "STABLE-2_2_1_RELEASE",
+  "commit": "77dcd25a72509eb83f72b033d219b1d40cd8eb95",
+  "repository": "https://github.com/lwip-tcpip/lwip",
+  "url": "https://github.com/lwip-tcpip/lwip/archive/77dcd25a72509eb83f72b033d219b1d40cd8eb95.tar.gz",
+  "directory": "lwip-77dcd25a72509eb83f72b033d219b1d40cd8eb95",
+  "archive": "lwip-77dcd25a72509eb83f72b033d219b1d40cd8eb95.tar.gz",
+  "required": [
+    "COPYING",
+    "src/core/init.c",
+    "src/include/lwip/init.h",
+    "src/Filelists.cmake",
+    "contrib/Filelists.cmake"
+  ],
+  "licenses": [
+    "COPYING",
+    "src/netif/ppp/polarssl",
+    "src/apps/http/makefsdata/tinydir.h"
+  ]
+}

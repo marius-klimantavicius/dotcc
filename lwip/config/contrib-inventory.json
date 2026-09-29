@@ -1,0 +1,1623 @@
+[
+  {
+    "path": "contrib/Coverity/coverity.c",
+    "disposition": "tooling-or-documentation",
+    "status": "classified",
+    "reason": "Static analyzer modeling input, not executable product implementation."
+  },
+  {
+    "path": "contrib/Filelists.cmake",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/Filelists.mk",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/addons/dhcp_extra_opts/README",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/addons/dhcp_extra_opts/dhcp_extra_opts.c",
+    "disposition": "required-extension",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/addons/dhcp_extra_opts/dhcp_extra_opts.h",
+    "disposition": "required-extension",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/addons/ipv6_static_routing/README",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/addons/ipv6_static_routing/ip6_route_table.c",
+    "disposition": "required-extension",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/addons/ipv6_static_routing/ip6_route_table.h",
+    "disposition": "required-extension",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/addons/netconn/external_resolve/dnssd.c",
+    "disposition": "excluded-external-dependency",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/addons/netconn/external_resolve/dnssd.h",
+    "disposition": "excluded-external-dependency",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/addons/tcp_isn/tcp_isn.c",
+    "disposition": "required-extension",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/addons/tcp_isn/tcp_isn.h",
+    "disposition": "required-extension",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/addons/tcp_md5/README",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/addons/tcp_md5/tcp_md5.c",
+    "disposition": "required-extension",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/addons/tcp_md5/tcp_md5.h",
+    "disposition": "required-extension",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/CCodeGeneration.csproj",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/CFile.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/CGenerator.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/Code.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/CodeContainerBase.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/CodeElement.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/Comment.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/EmptyLine.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/Function.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/FunctionDeclaration.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/IfThenElse.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/PP_If.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/PP_Ifdef.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/PP_Include.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/PP_Macro.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/PlainText.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/Properties/AssemblyInfo.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/Switch.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/VariableDeclaration.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/VariablePrototype.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/CCodeGeneration/VariableType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipMibCompiler/LwipMibCompiler.csproj",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipMibCompiler/Program.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipMibCompiler/Properties/AssemblyInfo.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipMibCompiler/app.config",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipMibCompiler.sln",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/IRestriction.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/LwipSnmp.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/LwipSnmpCodeGeneration.csproj",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/MibCFile.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/MibHeaderFile.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/Properties/AssemblyInfo.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpMib.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpNode.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarAggregationNode.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarArrayNode.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarNode.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarNodeBits.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarNodeCounter64.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarNodeInt.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarNodeObjectIdentifier.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarNodeOctetString.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarNodeTruthValue.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpScalarNodeUint.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpTableNode.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/LwipSnmpCodeGeneration/SnmpTreeNode.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/FormMain.Designer.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/FormMain.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/FormMain.resx",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/MibViewer.csproj",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/Program.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/Properties/AssemblyInfo.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/Properties/Resources.Designer.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/Properties/Resources.resx",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/Properties/Settings.Designer.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/Properties/Settings.settings",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/MibViewer/app.config",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA/IANA-ITU-ALARM-TC-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA/IANA-LANGUAGE-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA/IANA-MALLOC-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA/IANA-MAU-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA/IANA-PRINTER-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA/IANA-RTPROTO-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA/IANATn3270eTC-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA/IANAifType-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA-ADDRESS-FAMILY-NUMBERS-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IANA-CHARSET-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IF-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/INET-ADDRESS-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/IP-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/RFC-1212",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/RFC-1215",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/RFC1065-SMI",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/RFC1155-SMI",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/RFC1158-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/RFC1213-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/SNMPv2-CONF",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/SNMPv2-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/SNMPv2-SMI",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/SNMPv2-TC",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/SNMPv2-TM",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/TCP-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/Mibs/UDP-MIB",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/DisplayHint.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/AgentCapabilities.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/EntityBase.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/IEntity.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/ModuleCompliance.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/ModuleIdentity.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/NotificationGroup.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/NotificationType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/ObjectGroup.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/ObjectIdentity.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/ObjectType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Entities/OidValueAssignment.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Exports.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/IDeclaration.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/IElement.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/ITypeReferrer.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Imports.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/ImportsFrom.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/TrapType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/BaseType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/BitsType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/Choice.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/ITypeAssignment.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/IntegerType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/IpAddressType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/Macro.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/ObjectIdentifierType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/OctetStringType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/OpaqueType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/Sequence.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/SequenceOf.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/TextualConvention.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/TypeAssignment.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Elements/Types/UnsignedType.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/IModule.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/ISymbolEnumerator.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Lexer.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/MaxAccess.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/MibDocument.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/MibException.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/MibModule.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/MibResolver.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/MibTree.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/MibTreeNode.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/MibTypesResolver.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/ObjectIdentifier.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Status.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/Symbol.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/SymbolList.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/ValueMap.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Mib/ValueRange.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Properties/AssemblyInfo.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Properties/Resources.Designer.cs",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/Properties/Resources.resx",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/SharpSnmpLib.Mib.csproj",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/license.txt",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/readme.txt",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/SharpSnmpLib/sharpsnmplib.snk",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/example/compile_udp_mib.cmd",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/LwipMibCompiler/example/compile_udp_mib.sh",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/chargen/README",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/chargen/chargen.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/chargen/chargen.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/httpserver/README",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/apps/httpserver/httpserver-netconn.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/httpserver/httpserver-netconn.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/netio/netio.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/netio/netio.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/ping/ping.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/ping/ping.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/rtp/rtp.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/rtp/rtp.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/rtp/rtpdata.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/shell/shell.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/shell/shell.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/socket_examples/socket_examples.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/socket_examples/socket_examples.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/tcpecho/tcpecho.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/tcpecho/tcpecho.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/tcpecho_raw/tcpecho_raw.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/tcpecho_raw/tcpecho_raw.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/udpecho/udpecho.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/udpecho/udpecho.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/udpecho_raw/udpecho_raw.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/apps/udpecho_raw/udpecho_raw.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/ethernetif/ethernetif.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/default_netif.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/lwipcfg.h.ci",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/example_app/lwipcfg.h.example",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/example_app/lwipopts.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/lwippools.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/ppp_settings.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_default.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_dualstack.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_ipv4only.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_ipv6only.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_no_tcp_dualstack.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_no_tcp_ipv4only.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_no_tcp_ipv6only.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_no_udp_dualstack.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_no_udp_ipv4only.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_no_udp_ipv6only.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_none.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_nosys_dual.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_nosys_ipv4.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/example_app/test_configs/opt_nosys_ipv6.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/cgi_example/cgi_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/cgi_example/cgi_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/examples_fs/404.html",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/httpd/examples_fs/img/sics.gif",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/httpd/examples_fs/index.html",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/httpd/examples_fs/login.html",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/httpd/examples_fs/loginfail.html",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/httpd/examples_fs/session.html",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/httpd/examples_fs/ssi.shtml",
+    "disposition": "tooling-or-documentation",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/httpd/examples_fsdata.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/fs_example/fs_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/fs_example/fs_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/genfiles_example/genfiles_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/genfiles_example/genfiles_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/https_example/https_example.c",
+    "disposition": "excluded-external-dependency",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/httpd/https_example/https_example.h",
+    "disposition": "excluded-external-dependency",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/examples/httpd/post_example/post_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/ssi_example/ssi_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/httpd/ssi_example/ssi_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/lwiperf/lwiperf_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/lwiperf/lwiperf_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/mdns/mdns_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/mdns/mdns_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/mqtt/mqtt_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/mqtt/mqtt_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/ppp/pppos_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/ppp/pppos_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/snmp/snmp_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/snmp/snmp_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/snmp/snmp_private_mib/lwip_prvmib.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/snmp/snmp_private_mib/private_mib.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/snmp/snmp_v3/snmpv3_dummy.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/snmp/snmp_v3/snmpv3_dummy.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/sntp/sntp_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/sntp/sntp_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/tftp/tftp_example.c",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/examples/tftp/tftp_example.h",
+    "disposition": "required-example",
+    "status": "unrun"
+  },
+  {
+    "path": "contrib/ports/CMakeCommon.cmake",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/Common.allports.mk",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/freertos/include/arch/sys_arch.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/freertos/sys_arch.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/Common.mk",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/Filelists.cmake",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/README",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/check/CMakeLists.txt",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/check/Makefile",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/check/README",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/check/config.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/example_app/CMakeLists.txt",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/example_app/Makefile",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/example_app/default_netif.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/example_app/iteropts.sh",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/lib/CMakeLists.txt",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/lib/README",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/lib/lwipopts.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/include/arch/cc.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/include/arch/perf.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/include/arch/sys_arch.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/include/netif/fifo.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/include/netif/list.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/include/netif/pcapif.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/include/netif/sio.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/include/netif/tapif.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/include/netif/vdeif.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/netif/fifo.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/netif/list.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/netif/pcapif.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/netif/sio.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/netif/tapif.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/netif/vdeif.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/perf.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/port/sys_arch.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/posixlib/CMakeLists.txt",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/posixlib/Uninstall.cmake",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/posixlib/include/posix/inet.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/posixlib/include/posix/sockets.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/posixlib/lwipopts.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/unix/setup-tapif",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/Common.mk",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/Filelists.cmake",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/check/check_stdint.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/check/config.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/check/stdbool.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/check/sys/time.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/check/time.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/check/unistd.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/example_app/CMakeLists.txt",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/example_app/Makefile",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/example_app/default_netif.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/include/arch/bpstruct.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/include/arch/cc.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/include/arch/epstruct.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/include/arch/perf.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/include/arch/sys_arch.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/build_coverity.cmd",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/libcheck.vcxproj",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/libcheck.vcxproj.filters",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwIP.vcxproj",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwIP.vcxproj.filters",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwIP_Test.sln",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwIP_Test.vcxproj",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwIP_Test.vcxproj.filters",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwIP_fuzz.sln",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwIP_pcapif.vcxproj",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwIP_pcapif.vcxproj.filters",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwIP_unittests.sln",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwip_fuzz.vcxproj",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwip_unittests.vcxproj",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/lwip_unittests.vcxproj.filters",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/makefsdata.vcxproj",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/msvc/makefsdata.vcxproj.filters",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/pcapif.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/pcapif.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/pcapif_helper.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/pcapif_helper.h",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/readme.txt",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/sio.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  },
+  {
+    "path": "contrib/ports/win32/sys_arch.c",
+    "disposition": "replaced-platform-boundary",
+    "status": "classified"
+  }
+]

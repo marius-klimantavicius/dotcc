@@ -226,6 +226,13 @@ The scaffold creates directories, the root solution, and Bash wrappers while
 preserving existing files. It checks for the consumer project rather than
 inventing application code. No edit to `Scripts/campaigns` is needed.
 
+`Suite.verify_profiles` lists alternate products prepared only by `verify`.
+The framework validates their names and prepares the deduplicated union with
+`required_profiles`. The suite's custom runner still controls execution across
+these profiles. Explicit `test --profile ... --form ...` does not require
+verify-only products; `required_profiles` retains its existing cross-profile
+dependency semantics for both test and verify.
+
 For custom tests, supply `Suite(..., run=callable)` taking `(context, suite)`, or
 use ordinary `("script", "helper.py", ...)` / `("python", ...)` commands.
 `Recipe.script_arguments` adapts existing harness options; `before_suite` prepares

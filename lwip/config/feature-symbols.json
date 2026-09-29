@@ -1,0 +1,156 @@
+{
+  "core-buffers-heap-pools": [
+    "mem_malloc",
+    "memp_malloc",
+    "pbuf_alloc"
+  ],
+  "raw-altcp-tcp-udp-udplite": [
+    "raw_new",
+    "altcp_tcp_new_ip_type",
+    "tcp_new",
+    "udp_new"
+  ],
+  "dual-stack-fragments-checksums": [
+    "ip4_reass",
+    "ip4_frag",
+    "ip6_reass",
+    "ip6_frag",
+    "inet_chksum"
+  ],
+  "netconn-netbuf-netdb-socket-netifapi": [
+    "netconn_new_with_proto_and_callback",
+    "netbuf_new",
+    "lwip_getaddrinfo",
+    "lwip_socket",
+    "netifapi_netif_add"
+  ],
+  "tcpip-message-passing": [
+    "tcpip_init",
+    "tcpip_callback"
+  ],
+  "tcpip-core-locking": [
+    "tcpip_init",
+    "tcpip_input"
+  ],
+  "dhcp-acd-autoip": [
+    "dhcp_start",
+    "acd_start",
+    "autoip_start"
+  ],
+  "dhcp6-stateless-slaac-dad": [
+    "dhcp6_enable_stateless",
+    "nd6_tmr"
+  ],
+  "dns-multicast": [
+    "dns_gethostbyname_addrtype",
+    "igmp_start",
+    "mld6_joingroup"
+  ],
+  "routing-loopback-bridging": [
+    "ip4_forward",
+    "ip6_forward",
+    "bridgeif_init",
+    "netif_loop_output"
+  ],
+  "slip": [
+    "slipif_init",
+    "slipif_poll"
+  ],
+  "6lowpan-802154-ble-zep": [
+    "lowpan6_if_init",
+    "rfc7668_if_init",
+    "zepif_init"
+  ],
+  "ppp-links-control": [
+    "pppos_create",
+    "pppoe_create",
+    "pppol2tp_create",
+    "ppp_connect"
+  ],
+  "ppp-pap-chap-mschap-eap-md5": [
+    "pap_protent",
+    "chap_protent",
+    "eap_protent",
+    "ChapMS2",
+    "md5_starts"
+  ],
+  "ppp-mppe-vj-compression": [
+    "mppe_init",
+    "vj_compress_tcp",
+    "ccp_protent"
+  ],
+  "snmp-v1-v2c-v3-noauth": [
+    "snmp_init",
+    "snmp_receive",
+    "snmpv3_get_engine_id"
+  ],
+  "snmp-raw": [
+    "snmp_sendto"
+  ],
+  "snmp-netconn-threadsync": [
+    "snmp_threadsync_init"
+  ],
+  "http-client-server-proxy": [
+    "httpd_init",
+    "httpc_get_file",
+    "fs_open",
+    "altcp_proxyconnect_new",
+    "altcp_proxyconnect_new_tcp"
+  ],
+  "mqtt": [
+    "mqtt_client_connect"
+  ],
+  "smtp": [
+    "smtp_send_mail",
+    "smtp_send_mail_bodycback"
+  ],
+  "sntp": [
+    "sntp_init",
+    "sntp_set_servers_from_dhcp"
+  ],
+  "mdns": [
+    "mdns_resp_init",
+    "mdns_resp_add_service"
+  ],
+  "netbios": [
+    "netbiosns_init"
+  ],
+  "tftp": [
+    "tftp_init_server",
+    "tftp_init_client"
+  ],
+  "lwiperf": [
+    "lwiperf_start_tcp_client",
+    "lwiperf_start_tcp_server"
+  ],
+  "makefsdata-uncompressed": [
+    "main",
+    "write_checksums"
+  ],
+  "contrib-apps-addons-examples": [
+    "ip6_add_route_entry",
+    "dhcp_parse_extra_opts",
+    "dhcp_append_extra_opts",
+    "lwip_init_tcp_isn",
+    "lwip_hook_tcp_isn",
+    "tcp_md5_init",
+    "tcp_md5_check_inpacket",
+    "tcpecho_raw_init",
+    "udpecho_raw_init",
+    "chargen_init",
+    "http_server_netconn_init",
+    "netio_init",
+    "ping_init",
+    "rtp_init",
+    "shell_init",
+    "socket_examples_init",
+    "tcpecho_init",
+    "udpecho_init"
+  ],
+  "ppp-lqr-negotiation": [
+    "lcp_protent"
+  ],
+  "arp-neighbor-queue-variant": [
+    "etharp_query"
+  ]
+}

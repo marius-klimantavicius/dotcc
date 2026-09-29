@@ -1,0 +1,73 @@
+# lwIP validation evidence
+
+Full acceptance is incomplete. Implementation and receipts belong to the isolated
+`/home/marius/p/dotcc-lwip-full` worktree. The [plan](PLAN.md) defines the complete
+scope; [coordination](COORDINATION.md) records ownership and next work. All matrix
+results below are Linux x64. “Four cells” means raw/processed × JIT/NativeAOT.
+
+## Current qualified behavior
+
+The repaired product publications are threaded `20260929-085444-ed99ac5f`, nosys
+`20260929-085621-ea694e86`, threaded-locking `20260929-085752-bc7b505f`, and contrib
+`20260929-085928-13eb1f13`. They include the enabled DHCPv6 parent option and the
+staged IPv4 forwarding checksum repair. Receipts live under `artifacts/campaign/`.
+
+| Evidence | Passed scope | Receipt/report |
+| --- | --- | --- |
+| Threaded repaired matrix | Host 32 contracts, natural resource lifecycle, IPv4 routing, independent kernel TCP/UDP; all four cells | `20260929-090503-a94d59d9/receipt.json` |
+| NO_SYS repaired matrix | Independent kernel TCP/UDP through raw callbacks, natural resource lifecycle, IPv4 routing, DNS, ABI and consumer; all four cells | `20260929-091423-b5f02ec9/receipt.json` |
+| Locking repaired matrix | ARP queueing/datagrams, host 32 contracts, natural resource lifecycle, socket semantics, DNS, IPv4 routing, independent kernel TCP/UDP, ABI and consumer; all four cells | `20260929-091556-6c1b6415/receipt.json` |
+| Threaded independent cases | Updated netif ABI, consumer, finite owner lifecycle, socket semantics and DNS; all four cells, before product-only forwarding repair | `20260929-085113-333ba145/receipt.json` |
+| Native forwarding controls | Original failure and adapted pass for all three product profiles; IP/UDP/TCP/ICMP checksums, fragments, TTL and same-interface cases | `artifacts/native-routing/<profile>/report.json` |
+| Managed upstream Check | Original 137 cases and negative/fixture controls, exact native registration; all four normal unit cells | `20260929-081512-9608394d/receipt.json`, `20260929-081538-a7d37662/receipt.json` |
+| Managed NO_SYS upstream Check | 132 applicable cases and native registration/negative-fixture parity; all four cells; five threaded socket cases inapplicable | `20260929-083055-ad449f5f/receipt.json` |
+| Native upstream Check | 137 original cases with zero failures/errors; test-only Check 0.15.2 | `artifacts/upstream-native/lwip_unittests.xml` |
+| Native makefsdata | Original loop failure bounded by 8 MiB; staged progress repair passes empty/odd/multiple-MSS checksum/data/framing controls | `artifacts/native-tools/report.json` |
+| Managed makefsdata generator | Native-exact 27,529-byte image, checksum/header-offset/temp cleanup; all four cells | `20260929-083157-23870a49/receipt.json` |
+| Generated-content HTTP | Actual translated processed makefsdata image consumed by original fs.c; empty/odd/4097-byte content served correctly; all four HTTP-content cells | Publication `20260929-093414-95dafdc6`, behavior `20260929-093554-eba3af0c/http-transactions-report.json` |
+| Bundled PPP controls | Primitive/auth/MPPE vectors, including 600 stateful/stateless packets; all three profiles × four cells; actual link negotiations pending | `20260929-092814-c3aef247`, `20260929-092953-8a3a53fc`, `20260929-093126-d3ef1043` (`bundled-ppp-report.json`) |
+| Contrib addon controls | ABI/owner callbacks/static routes/ISN; all four cells; contrib application workflows pending | `20260929-092742-40fc80aa/contrib-addons-report.json` |
+| SLIP framing | Original decoder with real UDP IPv4/IPv6 ingress, framing/escapes, joined worker and partial-pbuf cleanup; all three profiles × four cells | `20260929-092814-c3aef247`, `20260929-092953-8a3a53fc`, `20260929-093126-d3ef1043` (`slip-framing-report.json`) |
+| HTTP baseline | Five actual transactions: custom GET, IPv6 SSI, CGI parameters, 404 and POST/split headers; all three profiles × four cells | Same three receipts (`http-transactions-report.json`) |
+| Shared compiler/runtime repairs | 14 focused compiler and 6 affected functional checks; full lwIP retries and isolated QuickJS translation/JIT consumer regressions | `docs/blockers.md` L005/L007; QuickJS `080236-2f0ecda6`, `080433-b0e54d3a` |
+
+Independent kernel interoperability is implemented and passes all three product
+profiles in all four cells: active/passive TCP 256 KiB echo and bidirectional UDP
+123 bytes over IPv4 and IPv6. A test-only TAP runs in an unprivileged user/network
+namespace, with per-cell packet captures. No product TAP/TUN adapter is delivered.
+Selected independent application/link peer workflows remain required.
+
+Natural lifecycle cases observe generated pool/heap counters returning to the
+initialized baseline **before** owner disposal or host registry clearing. Remaining
+cyclic timers and the TCP/IP worker are identified initialized infrastructure.
+These finite cases do not prove arbitrary pending-protocol teardown. The low-level
+borrowed core API requires callers to settle their resources. Newly authored
+owning ancillary-service registration/stop integration is not yet qualified by
+these receipts and needs fresh tests. Auxiliary protocol matrices used explicit
+fixture teardown and do not qualify the new StartService/failure-retry contract.
+Shared facade/host sources are now frozen during dependent worker builds.
+
+## Historical snapshot evidence
+
+The following receipts establish earlier behavior, not acceptance of subsequent
+configuration or host edits. Required affected cases must be refreshed before
+final acceptance.
+
+| Earlier evidence | Scope | Receipt |
+| --- | --- | --- |
+| Initial stack translation | 119 upstream stack C units plus two host units in each product profile, raw/processed | Historical publication receipts; current product IDs above |
+| Initial threaded/NO_SYS consumers | Two owners, both IP families, TCP/UDP, B continues after A disposal; four cells | `20260929-075129-14a2b48d`, `20260929-075656-c2e46bad` |
+| Early ABI/sys_arch | 19 layouts/checksums and 24 original host contracts; threaded four cells | `20260929-075904-16948989`, `20260929-075553-7edc1797` |
+| Whole-library rooted NativeAOT | Threaded raw and processed, separately rooted from trimmed consumer | `20260929-075750-7fe1bb64` |
+| Initial locking boundaries | Consumer, ABI/wire images, sys_arch; four cells | `20260929-081643-1a17a7f2` |
+| Direct APIs/datagrams | Plain altcp/applicable netconn, fragmentation and UDP-Lite; three profiles × four cells | `20260929-082120-9e746efd`, `20260929-082457-04b31050`, `20260929-082706-a7b10f5a` |
+
+## Remaining acceptance
+
+Full socket APIs, memory/timer/core recovery, addressing, IPv6 routing/bridging,
+SLIP/PPP/6LoWPAN/ZEP, remaining HTTP variants and application/contrib workflows,
+pending/blocked service lifecycle, selected independent application/link peers,
+final import/active-feature/adaptation audits, all-profile rooted AOT and owning
+examples, clean/local-input reproduction and Windows orchestration remain open.
+Finite suites do not close their broader aggregate gates. No missing gate is
+counted as a pass; a historical receipt does not qualify changed code.
