@@ -6,6 +6,18 @@ from `/home/marius/p/dotcc-lwip-full`, which remains a read-only historical back
 scope; [coordination](COORDINATION.md) records ownership and next work. All matrix
 results below are Linux x64. “Four cells” means raw/processed × JIT/NativeAOT.
 
+The user subsequently restricted verification: **do not run corruption tests
+unless those exact scenarios exist as upstream tests**. The receipts currently
+indexed below predate that restriction and may include custom cases that are now
+excluded by the user. Preserve them as historical evidence; do not rerun or require
+those excluded cases. The source audit is complete in
+[`verification-policy.json`](../config/verification-policy.json): 13 custom case
+groups removed/replaced, 23 entrypoint groups including native prerequisites,
+137 authored source hashes, and 11 exact upstream case/file/registration records
+verified. No authored corruption exception is retained. Revised fixtures await
+new behavioral receipts. Ordinary valid API errors, authentication rejection,
+lifecycle and non-corrupt timeout/loss/reordering controls remain eligible.
+
 ## Migration and source snapshots
 
 Root migration checks passed 43 framework, 105 focused compiler, 10 functional
@@ -98,5 +110,7 @@ SLIP/PPP/6LoWPAN/ZEP, remaining HTTP variants and application/contrib workflows,
 pending/blocked service lifecycle, selected independent application/link peers,
 final import/active-feature/adaptation audits, all-profile rooted AOT and owning
 examples, clean/local-input reproduction and Windows orchestration remain open.
+Custom corruption cases excluded by the user's later instruction are no longer
+acceptance requirements; their exclusion is neither a pass nor a blocker.
 Finite suites do not close their broader aggregate gates. No missing gate is
 counted as a pass; a historical receipt does not qualify changed code.

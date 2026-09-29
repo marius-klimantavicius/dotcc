@@ -42,6 +42,14 @@ schedules and integrates. Commit named files with evidence and honest scope.
 
 ## Agreed constraints and contracts
 
+- Latest user verification instruction: do not perform corruption tests unless the
+  exact scenario exists in a pinned upstream test. Implementation rejection paths
+  alone are not provenance. Disable unsupported authored corruption in every
+  invoked native/managed/prerequisite path, including full verify; retain ordinary
+  non-corrupt API/authentication/lifetime/error cases and original upstream tests.
+  Historical receipts remain historical, and excluded-by-user cases are neither
+  passes nor blockers. The focused source/call-graph audit is complete; only
+  permitted revised verification may resume. New fixtures still need fresh results.
 - Include every implemented bundled feature without external product libraries,
   including PPP's bundled crypto. Exclude TLS and externally provided crypto.
 - Use original configuration/hooks first, guarded macro/typed overrides next,
@@ -661,3 +669,44 @@ No action-specific restriction or external target was identified. Its WIP is
 preserved, retries paused, and the parent was notified. Pipeline continues
 independent work; this is not a whole-campaign completion or external-prerequisite
 claim. Confirm ownership before resuming or reassigning the host implementation.
+
+Read-only review of emitted constants in all three latest product profiles confirms
+required option coverage still missing: VLAN/PCP/static ARP; DNS local-host lists
+and mDNS queries; netbuf receive information; TCP SACK/backlog/timestamps/window
+scale; netif removal callback and tcpip timeouts; socket linger/reuse-receive/Linux
+FIONREAD mode; ND6 RDNSS; HTTP dynamic/file-state/async/CGI-SSI/raw-SSI variants.
+These constants are zero in actual generated code, not merely upstream defaults.
+HTTP keepalive and extended netif status callbacks are already enabled. Evidence:
+`artifacts/feature-options-review-20260929-1122.json`. Coherent required variants
+and behavior cases remain implementation work; tuning/debug constants should be
+classified separately rather than generating an arbitrary option Cartesian product.
+
+### User verification restriction applied
+
+The user prohibited corruption tests unless an exact upstream test exists.
+Pipeline removed or replaced 13 authored case groups from every identified native,
+managed and prerequisite route, including NativeOracle/packets.c which many suites
+execute indirectly. Durable review is `config/verification-policy.json`: 23
+entrypoint groups, 137 authored source hashes, and 11 original upstream exception
+records with pinned source hashes and exact definition/registration lines.
+Coordinator independently verified those hashes/locations and reviewed the
+implementation diffs before reporting audit completion to root and releasing
+permitted verification. No authored corruption exception remains.
+
+Removed groups include UDP-Lite payload mutations; PPP authenticator/MPPE-header/
+FCS mutation; PPPoE token and length mutation; L2TP identifier/digest mutation;
+SLIP unknown escapes; LOWPAN dispatch and ZEP version mutation; RA hop/checksum
+and DHCPv6 transaction mutation. L2TP rejection uses an authenticator correctly
+computed with a genuinely different shared secret. Pending-interface/bridge
+queues now use coherent IPv6 no-next-header packets, and routing address variants
+recompute transport checksums. Product validation is unchanged. Original upstream
+malformed TCP/mDNS and recorded short-ICMP/fragment-boundary fixtures stay intact.
+Ordinary errors, valid TTL/hop expiry, auth rejection, lifetime and harness-failure
+controls remain. All prior receipts predate the restriction; revised fixture
+behavior is unrun until fresh receipts are recorded.
+
+The user requested a fresh replacement for the unavailable host worker. Coordinator
+attempted a new read-only-first worker with explicit no-bypass and test constraints,
+but spawning failed with `agent thread limit reached`; the errored worker still
+occupies a thread, and no close/release tool is exposed. Parent was notified.
+Pipeline remains the sole active implementation/build owner; source WIP is intact.

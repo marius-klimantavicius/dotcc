@@ -41,7 +41,7 @@ link, routing, configuration and application features with runnable examples.
 | Excluded platform delivery | Production TAP/TUN, physical NIC/radio/serial device drivers and upstream OS-specific ports; replace the execution/link boundary with managed host interfaces. Protocol code above those interfaces stays in scope. |
 | Upstream limitations | Preserve the selected release's actual limitations. Do not promise stateful DHCPv6 or implement PPP modes explicitly marked unsupported upstream (for example CBCP, ECP and demand mode). Classify such entries as upstream-unimplemented, not translation successes. |
 | Later extensions | External-library features and additional execution targets (Windows/ARM64). No bundled working feature is deferred merely to shorten this campaign. |
-| Baseline departures | None in execution methodology. Initial runtime qualification is Linux x64; portable Windows orchestration remains required. Random fuzzing, extended stress and performance thresholds are not acceptance requirements. |
+| Baseline departures | Initial runtime qualification is Linux x64; portable Windows orchestration remains required. User test-scope restriction: do not run corruption tests unless those cases already exist in upstream tests. Custom corruption, random fuzzing, extended stress and performance thresholds are excluded. |
 
 Dependency policy applies to additional libraries, not automatically to bundled
 code: PPP ships its own hash/cipher primitives. The user explicitly selected
@@ -71,7 +71,7 @@ choices require the stated evidence before dependent functionality is accepted.
 | D6 | Translation/delivery | Object emission/managed-library linking; class `Lwip`, namespace `Managed.Networking`, assembly `TranslatedLwip`. Shared `link_flags`: `--split=size --split-size=262144`, `--literal-pool`, `--deduplicate-inline`; no exception. Host linked from `src/Host/`, facade under `src/Managed.Lwip/`; tools/examples separately delivered. | Decided; all selected profiles raw/processed P2, consumer P5. |
 | D7 | Native and independent controls | Native harness with matching profile, inputs and logical host contracts. Independent kernel TCP/IP peer through a test-only pre-provisioned link, plus application/link peers or published fixtures selected per feature. Native lwIP and another managed owner are not independent implementations. | Decided; native validity P0, independent TCP/UDP/application checks P4. Test TAP bridge remains isolated from product delivery. |
 | D8 | Required matrix | Linux x64 × each required product profile × raw/processed × JIT/NativeAOT; corresponding diagnostic profiles for upstream tests. Feature cases run in declared applicable profiles, not every impossible combination. Rooted library AOT and normally trimmed consumers are separate gates. | Decided; P4–P6. |
-| D9 | Tests | All applicable upstream cases, core/API/link/application scenarios, ordinary errors, bounded recovery, thread/owner isolation and independent peers. Exclude random fuzzing, exhaustive allocation-fault injection and extended stress. Test tools/peers are separate from product dependencies. | Decided; feature and case inventory P0, required rows pass P4. |
+| D9 | Tests | All applicable upstream cases, core/API/link/application scenarios, ordinary errors, bounded recovery, thread/owner isolation and independent peers. Corruption tests are permitted only when an existing upstream test establishes the same scenario; exclude authored corruption tests, random fuzzing, exhaustive allocation-fault injection and extended stress. Test tools/peers are separate from product dependencies. | Decided; feature and case inventory P0, required rows pass P4. |
 | D10 | Adaptation precedence | Upstream options/port interfaces first; guarded macro and typed function overrides next; a minimal staged text patch only after documenting why these cannot express the needed change. Apply to product, tests and native controls. | Decided user requirement; override reports and patch-necessity audit P1–P6. |
 
 Create `config/sources.json` with repository/archive URLs, tag, peeled commit,
@@ -357,6 +357,30 @@ according to shared behavior changed, and coordinate builds sharing output paths
 
 ## Validation selection
 
+User restriction (2026-09-29): **Do not run corruption tests unless those tests
+already exist upstream.** This overrides earlier custom rejection/recovery
+requirements throughout this plan, including combined suites, native oracles,
+managed fixtures, independent peers, standalone commands and full verification.
+
+- Do not author or run new packet/payload/header/checksum/FCS/length/fragment
+  corruption, malformed-data mutation or cryptographic-tampering scenarios.
+- An allowed corruption case must identify the pinned upstream test file and
+  test function/case, or an existing upstream test fixture with its exercising
+  harness, in `config/upstream-tests.json` or the suite inventory. A rejection
+  branch in upstream implementation code, a protocol specification or a native
+  oracle accepting the authored test does not establish upstream-test provenance.
+  Preserve the upstream scenario without extending it into new mutation cases.
+- Keep ordinary API-error checks, legitimate authentication/negotiation rejection,
+  valid boundary values, checksum correctness on valid data, ownership/lifecycle,
+  resource exhaustion and loss/reordering/timeouts with otherwise valid inputs.
+  Split mixed suites so these cases can continue without executing custom
+  corruption cases. When provenance is absent or uncertain, omit the corruption
+  case and record the reason.
+- Mark removed cases `excluded-by-user`; they are not passes or outstanding
+  acceptance blockers. Historical results remain historical, but excluded cases
+  must not run again in default, targeted or full verification paths. Do not
+  weaken product input validation or protocol semantics to change test selection.
+
 `Product matrix` means each applicable required product profile × raw/processed ×
 JIT/NativeAOT × Linux x64. A feature must run in all four form/runtime cells of
 its designated profile; shared core/host/lifecycle behavior also runs in every
@@ -376,17 +400,17 @@ profiles discovered at P0 join the required selection, not an optional backlog.
 | Addressing | `addressing`: DHCPv4 renewal/NAK/conflict/expiry, AutoIP, DHCPv6 information exchange, DNS A/AAAA/cache/errors, SLAAC/DAD, IGMP/MLD and interface-scoped results | Product matrix | Native and deterministic packet peers |
 | Routing/bridge | `routing`: IPv4/IPv6 multi-interface forwarding, TTL/hop-limit/ICMP behavior, routes, bridge learning/aging/flooding and per-port ownership | Product matrix | At least three virtual interfaces; static-routing addon cases |
 | Other links | `links`: SLIP partial/escaped serial frames; 802.15.4 and BLE 6LoWPAN compression, fragmentation/reassembly/errors; ZEP encode/decode and transport; MTU/link state | Applicable product profiles, four cells | Virtual byte/radio links, published fixtures and native comparisons |
-| PPP including bundled crypto | `ppp`: PPPoS/PPPoE/PPPoL2TP discovery/negotiation/teardown, IPCP/IPv6CP, PAP, bundled CHAP/MSCHAP/EAP/MPPE cases, VJ and supported compression; wrong credentials/truncated frames and cryptographic known-answer fixtures | Applicable product profiles, four cells | Same-source controls plus independent vectors/peers; no external crypto linked into product |
+| PPP including bundled crypto | `ppp`: PPPoS/PPPoE/PPPoL2TP discovery/negotiation/teardown, IPCP/IPv6CP, PAP, bundled CHAP/MSCHAP/EAP/MPPE cases, VJ and supported compression; ordinary authentication failure and cryptographic known-answer fixtures; corruption cases only with existing upstream-test provenance | Applicable product profiles, four cells | Same-source controls plus independent vectors/peers; no external crypto linked into product |
 | HTTP | `applications`: HTTP client/server, proxy CONNECT, static/custom content, SSI/CGI/POST, fragmented input, missing paths and close; generated fsdata round trip | Designated raw/threaded profiles, four cells | Native control and independent HTTP client/server |
 | Other applications | `applications`: MQTT connect/pub/sub/keepalive and supported QoS; SMTP transaction/error; SNTP response/clock callback; mDNS query/probe/conflict; NetBIOS name reply; TFTP read/write/retry; SNMPv1/v2c get/set/walk/trap plus v3 noAuthNoPriv and rejection of crypto requests; lwiperf data transfer/result | Designated profiles/variants, four cells | Deterministic peers/storage/MIB/time fixtures plus declared independent application peers |
 | Contrib/tool delivery | `contrib`: every included addon/app/example gets its declared behavior case, including TCP ISN/signature known-answer and packet verification cases; `tools`: translated uncompressed makefsdata produces content served correctly by translated HTTP | Declared auxiliary profiles, raw/processed JIT/AOT | Native tool/content comparison and ordinary project references |
 | Upstream assertions | `upstream`: all applicable bundled core, DHCP, ARP, IP, TCP/UDP, sockets, PPPoS, mDNS and MQTT cases, with fixtures/setup/teardown intact | Unit matrix and matching native cases | Validated Check-compatible test runner |
 | Errors/lifecycle | `lifecycle`: exhausted pools/mailboxes, duplicate binds, callback errors, pending DNS/TCP/PPP/apps, blocking calls during cancellation/close, worker join and A/B owner isolation | Product matrix | Bounded cases and resource/lease counters |
-| Recovery | `recovery`: bad headers/checksums/lengths/fragments, lost/duplicate/reordered packets, link down/up, backpressure and clock wrap | Applicable product matrix | Bounded scripted disturbances |
+| Recovery | `recovery`: loss/duplication/reordering of otherwise valid packets, link down/up, backpressure and clock wrap; no authored packet corruption | Applicable product matrix | Bounded scripted disturbances |
 | Independent protocol checks | `interop`: kernel TCP active/passive and UDP both families; selected independent application/link peer exchanges supplement same-source controls | Applicable product matrix | Pre-provisioned isolated test link; declared peer inputs and offload settings |
 | AOT/dependency/adaptation audit | `aot-rooted`: root and execute library boundaries; `audit`: all manifests/profiles/imports, override reports, patch necessity, authored references and forbidden external dependencies | All product forms/profiles; AOT for rooting; auxiliary products audited too | AOT toolchain and current artifacts |
 | Shared regressions | Compiler/functional/postprocessor and affected existing campaigns | Impact-selected forms/targets | Required whenever shared code changes |
-| Extended campaigns | Random fuzzing, exhaustive fault injection and long stress | None | Excluded; finite upstream or scripted cases above remain required |
+| Extended campaigns | Custom corruption, random fuzzing, exhaustive fault injection and long stress | None | Excluded by scope; existing upstream corruption cases may run with source provenance, and permitted finite behavior cases above remain required |
 
 Default suites: `consumer`.
 Verification suites: `oracle`, `abi`, `sysarch`, `consumer`, `packets`,
