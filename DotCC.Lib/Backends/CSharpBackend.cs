@@ -2341,7 +2341,11 @@ internal sealed partial class CSharpBackend
                     // cast/call supplies a target type. Otherwise (byte*)(c ?
                     // malloc(n) : null) tries to convert malloc's void* arm to
                     // byte* implicitly while binding the conditional itself.
-                    return (t.Type.Unqualified is CType.Pointer or CType.Func
+                    // Comparisons lower to CBool even though their C type is int.
+                    // Both arms (or a nested conditional) can therefore share that
+                    // rendered type. Pin arithmetic results to C's common type too,
+                    // before an overloaded caller sees the conditional expression.
+                    return (t.Type.IsArithmetic || t.Type.Unqualified is CType.Pointer or CType.Func
                         ? $"(({Cs(t.Type)}){conditional})" : conditional, PPrimary);
                 }
             case SwitchExpr sw:
