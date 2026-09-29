@@ -228,3 +228,32 @@ retains/accounting before queueing passed owning-api all four cells for threaded
 of NO_SYS. Paused public Tasks settle before owner disposal completes. The
 original fixed-buffer pointer failure (114817) and local restore graph failure
 (121229) remain preserved. Nine pipeline checks and layout validation pass.
+
+## Owning LOWPAN output checkpoint
+
+The original LOWPAN and ZEP bodies now share an authored include-wrapper that
+exposes only lifecycle boundaries: radio timer leases, stop, core FIFO drain and
+backing release. BLE retains its separate original contexts. The owning facade
+provides copied radio/BLE frames and ZEP UDP transport, owner-relative interface
+properties, shared PAN/context controls, constructor rollback and retryable
+disposal. Original algorithms remain translated. Public usage/contracts are in
+`tests/Zep/README.md` and the campaign README.
+
+A fifth minimal staged source repair adds the missing `p->next=q` when a valid
+FRAGN is inserted before the existing first queued fragment. Without it, valid
+original output delivered out of order loses the queued tail. There is no local
+port hook/configuration for that assignment; whole-function substitution would
+duplicate the parser. Exact guards preserve prior short-address adaptation,
+original references and unrelated content. Native before/after input/profile
+bytes match, with only this assignment changed. The permitted fixture delivers
+unchanged complete frames and does not generate corruption.
+
+Product IPv6 reassembly is configured for 32 packet buffers against the existing
+256-buffer pool, permitting the observed LOWPAN/IPv6 MTU-crossing reassembly. A
+fresh isolated ten-buffer control records the prior resource limit. Three native
+profiles and three managed profiles × raw/processed × JIT/NativeAOT pass the
+finite LOWPAN suite, with shared owning/lifecycle/consumer regressions recorded
+in validation.md. The PoolRecovery project uses canonical product property
+propagation after an AOT reference-output collision. No shared compiler repair
+was needed. Remaining option/application/contrib work is explicitly inventoried
+in remaining-work-audit.md; this checkpoint does not complete those gates.

@@ -6,6 +6,13 @@ from `/home/marius/p/dotcc-lwip-full`, which remains a read-only historical back
 scope; [coordination](COORDINATION.md) records ownership and next work. All matrix
 results below are Linux x64. “Four cells” means raw/processed × JIT/NativeAOT.
 
+Fresh coordination and implementation workers are active after the preserved
+worker handoff. Owning LOWPAN radio/BLE/ZEP finite output/lifetime qualification
+now passes all three product profiles and four cells, with current common owning
+API/lifecycle/consumer regressions. Required application, option/contrib and final
+acceptance work remains; the complete plan is not finished. The earlier generic
+service errors do not authorize retrying any identified prohibited action.
+
 The user subsequently restricted verification: **do not run corruption tests
 unless those exact scenarios exist as upstream tests**. Except for the explicitly
 identified permitted receipts below, indexed receipts predate that restriction and may include custom cases that are now
@@ -84,6 +91,77 @@ Failure `20260929-121229-14960450` exposed the SDK restore-selection issue; fail
 owner and was corrected to use independent loopback owners.
 These finite owning suites do not close full socket options, typed interface
 identity, pending protocol-specific services or the complete lifecycle gate.
+
+Owning radio/ZEP/BLE implementation is now under qualification. Refreshed
+raw/processed publications pass threaded `20260929-123615-d0fe9319`, NO_SYS
+`20260929-123913-71c8944e` and locking `20260929-124411-8570ce3e`. The first
+managed/native receipt `20260929-124849-beeaef37` passes **threaded raw JIT** for
+valid ZEP/FCS and radio/BLE ingress, shared radio timer leases, fragments surviving
+another link's close, pending-fragment cleanup, duplicate-bind rollback, foreign
+transport rejection, restart and owner independence. Matching native inputs use
+the production wrapper and record original/staged include hashes. Three-profile
+native controls live under `artifacts/zep-native`.
+
+This finite pass does not qualify output/compression/MTU expansion, the remaining
+managed matrix or regressions of the changed shared service-registration helpers.
+Initial receipt `20260929-124649-91471845` is retained: an authored fixture enum
+reference failed compilation and was corrected before the passing run. No new
+compiler repair or upstream text patch was required.
+
+The interrupted worker's handoff recorded that valid native output passed payloads
+17, 900 and 1232 bytes, then stopped at 1233 with the original ten-buffer IPv6
+reassembly budget (`ip6_frag.memerr=1`). Its reused per-profile log was overwritten
+by resumed native execution; the handoff summary remains, but that original log
+is no longer an independently inspectable receipt. A fresh isolated resource-budget
+control is being recorded separately. Raising the configured limit to 32 and
+repairing valid fragment insertion are qualified only by the fresh scoped evidence
+below, not by the interrupted experiment.
+
+The resumed native valid-output controls now pass all three product profiles at
+`artifacts/zep-output-native/<profile>/report.json`. Identical-fixture original
+head-insertion behavior fails the valid reorder assertion (exit 92) under
+`artifacts/zep-output-original-order/<profile>/failure.json`; the staged repair
+preserves the queued fragment tail and passes delivery/expiry and natural
+heap/pbuf/timer baseline. The original acquired source is unchanged.
+
+Checkpoint **`537bfc3d`** records this finite owning LOWPAN implementation.
+Fresh raw/processed publications pass threaded `20260929-141507-80ed4f8d`,
+NO_SYS `20260929-142007-5b497849` and locking `20260929-142357-b36aa0ed`.
+The owning LOWPAN suite passes all three profiles × four cells:
+
+| Profile | LOWPAN, owning API and owner lifecycle | Final pool recovery | Consumer |
+| --- | --- | --- | --- |
+| Threaded | `20260929-141705-edad1d9e` | `20260929-142916-95783640` | `20260929-141705-edad1d9e` |
+| NO_SYS | `20260929-142119-7e9e1e2e` | `20260929-142927-2dfeb959` | `20260929-142119-7e9e1e2e` |
+| Locking | specialist reports in `20260929-142515-eba9318e` | `20260929-142834-20facba6` | `20260929-142834-20facba6` |
+
+LOWPAN covers copied radio/BLE output at 17/900/1232/1233-byte payloads,
+compression, IPv6 MTU crossing, unchanged duplicate/reordered frames, normal
+expiry, shared radio timer leases, pending-fragment cleanup, constructor rollback
+and independent-owner continuation. Native production-wrapper controls exercise
+queued loopback with stop/FIFO/free. Managed common-interface tests qualify the
+shared facade barrier; this is finite lifetime evidence, not all protocol teardown.
+
+The locking batch's overall receipt remains **failed**: after its LOWPAN, owning
+API and lifecycle cells passed, PoolRecovery processed AOT encountered MSB3883
+while copying a referenced product assembly. Its legacy project reference was
+replaced with the established canonical product import; final pool matrices and
+pending locking consumer then passed in the fresh receipts above. Preserve the
+failed receipt, and use its completed specialist reports only for their scopes.
+
+The configured reassembly budget is 32 against the existing 256-buffer pool.
+Fresh isolated `artifacts/zep-resource-limit10/nosys/report.json` reproduces the
+valid MTU-crossing resource failure with budget ten. Its paired headers differ
+only by that setting; it is new evidence, not recovery of the overwritten initial
+worker log. `artifacts/lowpan-reorder-comparison-20260929.json` records identical
+fixtures/profile headers and the sole pointer-assignment repair across all three
+native profiles. Coordinator independently verified those bytes, 20 checkpoint
+path hashes, 148 authored policy hashes, 11 owning and four LOWPAN implementation
+hashes, and 11 original upstream exception records. Snapshot:
+`artifacts/lowpan-qualified-snapshot-20260929-1430.json`. Ten pipeline checks,
+layout, syntax and whitespace validation pass. No compiler repair or external
+library was added. Auxiliary product refresh and the remaining required-work audit
+in [remaining-work-audit.md](remaining-work-audit.md) remain open.
 
 ## Migration and source snapshots
 

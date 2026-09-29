@@ -18,20 +18,24 @@ historical execution only and are superseded by this active workspace rule.
 
 | Agent | Ownership | Current task |
 | --- | --- | --- |
-| `/root/lwip_coordinator` | This ledger, scope/contract review, integration and validation scheduling | Coordinate P0–P6 and retain evidence |
-| `/root/lwip_coordinator/pipeline` | All campaign implementation/configuration/fixtures and approved compiler fixes, including the reassigned Host/facade work | ZEP/radio/BLE owning integration and full LOWPAN behavior; required variants/apps/contrib follow |
-| `/root/lwip_coordinator/host` | Unavailable; preserved WIP reassigned to pipeline | Execution failed; no active mutations or builds. Fresh replacement creation is blocked by the orchestrator thread limit |
+| `/root/lwip_coordinator_resume` | This ledger, validation index, scope/contract review and verification scheduling | Coordinate remaining P0–P6 work and retain evidence |
+| `/root/lwip_coordinator_resume/permitted_implementation` | Campaign source, configuration, scripts and fixtures; sole shared build owner | Review preserved LOWPAN/ZEP work and verification policy, then implement and qualify permitted remaining behavior |
+| `/root/lwip_coordinator_resume/scope_audit` | Only new unregistered `tests/Applications.Udp/` fixtures; no builds or registration | Draft next positive TFTP/SNTP workflow batch after completing read-only scope audit |
 
-Current shared .NET build ownership is **pipeline**. Checkpoint `7835b38b`
-qualifies scoped IPv6 hop-limit, bridge and LOWPAN integration and L2TP behavior
-in all three profiles and four cells. Host authored isolated owning APIs and
-ordinary-interface lifetime controls, but its agent turn is currently unavailable
-after repeated generic execution flags; source and evidence remain preserved.
-Pipeline completed the owning API checkpoint `aa2e23f1` and is promoting the
-preserved ZEP/LOWPAN lifecycle prototypes. A fresh replacement was
-requested but could not be created because the errored worker still occupies a
-thread. Coordinate reassignment before any new worker mutates shared inputs; dependent native
-controls must also wait while staging/configuration integration is in progress.
+A fresh implementation worker successfully started after normal agent capacity
+became available. The former coordinator and workers are no longer in the active
+team; their preserved work and receipts remain intact. The previous generic
+service errors identified no specific prohibited action. Neither those errors nor
+replacement availability authorizes bypassing a safety rejection: any identified
+prohibited action must stop and be reported.
+
+Current shared .NET build ownership is **permitted_implementation**, after its
+initial preserved-source/policy review is acknowledged. No other agent may mutate
+implementation or build outputs concurrently. Latest qualified implementation is
+`537bfc3d`: owning LOWPAN/ZEP/BLE finite input/output/lifetime passes all three
+product profiles and four cells, with common owning API/lifecycle/consumer
+regressions. Complete option/application/contrib and final acceptance gates remain
+open. Secondary application fixture drafts are unregistered and unqualified.
 Current evidence: [validation.md](validation.md). Old receipts retain historical
 provenance; fresh product and PPP/diagnostic records are from this checkout.
 No simultaneous shared bin/obj builds. Freeze shared Host/facade source and staging/configuration helpers while the
@@ -808,3 +812,189 @@ Qualify valid fragmentation/output/expiry and owner independence. The prototype'
 ZEP radio FCS bytes are being corrected to a real CRC before reruns; direct radio
 input uses its documented already-stripped-FCS contract. No custom malformed
 or corruption scenario may be added.
+
+### Owning LOWPAN/ZEP/BLE implementation in progress
+
+Pipeline remains sole implementation/build owner in the current checkout. The
+replacement-worker request is still constrained by the agent thread limit; no
+replacement is running. Existing source changes are preserved, and the failed
+worker is not being retried to bypass its rejection.
+
+The promoted `src/port/lowpan_service.c` includes the staged original LOWPAN body
+before the original source include root, plus original ZEP; BLE retains its
+original separate context/address state. Product wrapper receipts record selected
+include paths and hashes. Radio, ZEP and explicit borrowed-radio leases share
+one original timer. BLE holds no radio timer lease. Stop, actual FIFO drain and
+backing free are separate retryable phases.
+
+The authored `LwipLowpanLink` facade supplies radio/BLE/ZEP constructors, copied
+input/output, owner-wide PAN/context/BLE-peer configuration, same-owner transport
+validation and safe interface index/MTU/link-state/default-route access. A shared
+initialization helper registers an empty managed wrapper before acquiring native
+state, retaining failed cleanup for stack-disposal retry. These changes are not
+qualified by the earlier owning API receipts.
+
+Permitted native controls pass all three profiles under `artifacts/zep-native`:
+valid ZEP FCS, shared timer, reassembly surviving another service's close, last
+lease cleanup, BLE independence, rollback/restart and natural resource baselines.
+Raw/processed publications pass threaded `20260929-123615-d0fe9319`, NO_SYS
+`20260929-123913-71c8944e` and locking `20260929-124411-8570ce3e`; managed
+behavior qualification is in progress. Publication alone is not a behavior pass.
+The new suite audit records 146 authored hashes, 25 entrypoint groups and four
+LOWPAN implementation hashes before invoking it. Native reports record the same
+product wrapper and selected original/staged include hashes. Next work covers
+copied output, compression/fragmentation/MTU behavior, valid fragment ordering and
+expiry, all applicable four-cell matrices, refreshed policy provenance, and
+relevant owning/lifecycle regressions after the shared facade-helper change.
+
+First promoted managed/native receipt `20260929-124849-beeaef37` passes threaded
+raw JIT for the finite ingress/lifetime scope above. Initial build receipt
+`20260929-124649-91471845` is preserved; an authored fixture used an enum member
+as a top-level constant and was corrected to the explicit upstream IPv6 type
+value. Output/compression/MTU expansion and the remaining matrix are still open.
+Finished private cache pruning is recorded in
+`artifacts/owning-completed-cache-prune-20260929-1247.json`; application outputs,
+reports, references and published products were retained.
+
+### Worker interruption and preserved handoff
+
+The pipeline worker has now also stopped with the generic service error
+"This content was flagged for possible cybersecurity risk." Both implementation
+workers are errored; no implementation worker is active. The service did not
+identify a particular source action as prohibited. Coordinator attempted a fresh
+worker restricted to a separate read-only handoff audit, with explicit no-bypass
+instructions; creation again failed with `agent thread limit reached`. No exposed
+tool can retire the errored threads. Parent was notified. Do not describe this as
+completed implementation or a successful replacement launch.
+
+The latest native output experiment is preserved under
+`artifacts/zep-output-native/nosys`. Valid payloads 17, 900 and 1232 bytes pass;
+1233 emits 14 frames but hits the original IPv6 reassembly resource limit:
+`IP_REASS_MAX_PBUFS=10`, `ip6_frag.memerr=1`, no queued multicast loopback.
+The proposed upstream configuration value is 32, bounded against the existing
+256-buffer pool; **it has not been applied**. Neither `profiles.json` nor
+`adaptations.json` has a working-tree change. A separate suspected lost fragment
+link during valid reordering remains unproven because this earlier resource-limit
+failure stops the fixture. No new algorithm patch was added.
+
+Current source WIP is the owning LOWPAN facade/wrapper, service-registration
+helpers, suite registration/runner, policy inventory and `tests/Zep` fixtures.
+It remains uncommitted. No process with a campaign working directory was active
+at the coordinator's handoff check. Latest qualified implementation stays at
+`aa2e23f1`; `28e65ccd` recorded its scope. Current source publications and finite
+`124849-beeaef37` behavior are scoped above; pending output work is not a pass.
+
+Once normal agent capacity is restored, assign a fresh worker only permitted work
+with explicit path ownership and the user's no-custom-corruption restriction.
+Begin with `git status --short` and this ledger; do not retry any identified
+prohibited action or use another agent to bypass a rejection. Safe existing
+orchestration entry points remain:
+
+```sh
+cd /home/marius/p/dotcc
+bash Scripts/campaign.sh layout lwip --check
+bash lwip/scripts/translate.sh --fetch never --profile threaded
+bash lwip/scripts/test.sh --fetch never --profile threaded --suite lowpan-services --form all --mode all
+```
+
+Translation/testing commands are restart references, not evidence that the
+unfinished output case or its proposed change passed. Review the permitted
+fixture/source snapshot before executing affected suites. Complete native output
+qualification and any necessary configuration work before coherent product
+refresh; then add the managed output/copy-retention counterpart, all applicable
+matrix cells and shared lifecycle regressions. Required default-off feature
+variants, applications/contrib, protocol-specific owning services, final rooted
+AOT/full verification and reproduction remain unfinished after that batch.
+
+Coordinator handoff snapshot: `artifacts/worker-stop-20260929-100232/manifest.json`
+records 14 preserved lwIP WIP paths with verified source copies and SHA256 values.
+Unrelated libuv changes and the compiler-review document were not copied or
+modified. All campaign WIP, including this ledger, remains unstaged/uncommitted.
+
+### Fresh coordinator and implementation worker resumed
+
+The resumed coordinator recovered the current `sqlite` checkout, read the plan,
+verification policy, validation index and worker-interruption handoff, and
+confirmed all campaign and unrelated libuv work remained preserved. A fresh
+implementation worker `/root/lwip_coordinator_resume/permitted_implementation`
+started successfully. It owns source/configuration/scripts/fixtures and shared
+builds; the coordinator owns this ledger and validation index. Initial work is a
+review of preserved LOWPAN/ZEP inputs before allowed execution, followed by
+remaining valid-traffic, ownership and lifecycle implementation. No custom
+corruption testing is permitted. No new verification result is claimed by this
+restart; full acceptance remains incomplete.
+
+### Valid LOWPAN output expansion
+
+Fresh-worker review confirmed the preserved output fixture sends coherent original
+radio frames, validates their real FCS, and only changes complete-frame delivery
+order or repeats unchanged frames. The upstream reassembly budget is being raised
+from ten to 32 packet buffers against the existing 256-buffer pool; this is a
+bounded product configuration choice, with diagnostics unchanged. The first native
+run then passed payloads 17, 900, 1232 and 1233 bytes and duplicate delivery, but
+failed permitted reordered delivery. These observations do not yet qualify a
+complete suite.
+
+Coordinator source review confirmed a local original `lowpan6_input` list bug:
+when a received fragment precedes the first queued FRAGN, head insertion changes
+`lrh->frags` but omits linking `p->next` to the old head `q`. The fixture delivers
+unmodified FRAG1, last FRAGN, then intermediate FRAGNs; it does not fabricate
+corrupt or overlapping data. One guarded assignment in that branch is approved
+for staged adaptation. There is no local configuration/hook for the insertion; a
+whole-function override would duplicate the original parser algorithm. Original
+reference remains untouched, and matching native original-failure/staged-pass,
+resource baseline and managed matrix evidence are required before qualification.
+
+The read-only remaining-scope audit is recorded in
+[remaining-work-audit.md](remaining-work-audit.md). It identifies concrete required
+option/application/contrib batches and distinguishes emitted source from behavior
+and lifetime qualification. The audit worker now owns only new unregistered
+`tests/Applications.Udp/` fixture drafts. It may not edit shared source/config or
+build/run/register tests while the sole build owner finishes LOWPAN. These drafts
+are implementation work, not qualification evidence.
+
+All three native original/staged comparisons now confirm the scoped reorder repair
+and natural resource baseline. Threaded raw/processed publication
+`20260929-141507-80ed4f8d` and focused raw JIT behavior
+`20260929-141634-8e1839b6` pass, including copied radio/BLE output, compression,
+MTU crossing and permitted duplicate/reorder/expiry. The implementation worker is
+qualifying all three profiles and four cells plus owning API/consumer/lifecycle/
+pool regressions. Remaining cells are not yet counted as passes.
+
+Evidence retention correction: the native runner reuses per-profile output paths,
+so the interrupted worker's original ten-buffer resource-limit run log was
+overwritten during resumed execution. Its historical handoff summary remains,
+but that original log must not be claimed as independently archived evidence.
+Reorder-before failure and exact comparisons were archived separately. After the
+locking matrix, a fresh isolated NO_SYS valid-output budget-ten control will
+substantiate the configuration rationale using a distinct artifact family; it
+will be identified as fresh evidence rather than recovery of the old log.
+
+### Qualified LOWPAN checkpoint and next build handoff
+
+Implementation checkpoint `537bfc3d` contains exactly the 20 reviewed paths in
+`artifacts/lowpan-qualified-snapshot-20260929-1430.json`. Coordinator independently
+verified those path hashes, 148 authored policy hashes, 11 owning and four LOWPAN
+implementation hashes, 11 pinned upstream case/registration records, native
+comparison source/header bytes and the managed specialist reports. LOWPAN and
+common owning/lifecycle suites pass all three profiles and four cells. Final
+pool-recovery receipts are locking `142834-20facba6`, threaded `142916-95783640`
+and NO_SYS `142927-2dfeb959`; consumers pass all profiles. The locking original
+batch `142515-eba9318e` remains failed overall because its later pool AOT build
+hit MSB3883. Completed specialist passes are scoped, and the final project-import
+repair has fresh successful pool receipts.
+
+A fresh isolated budget-ten valid-output control is now preserved in
+`artifacts/zep-resource-limit10/nosys/report.json`, paired with the passing
+budget-32 fixture. This is fresh evidence, not recovery of the overwritten
+interrupted-worker log. Ten pipeline checks, layout, source syntax and whitespace
+checks pass. Public LOWPAN usage and lifetime contracts are documented.
+
+Next, primary is preparing policy inventory for source-reviewed application
+fixtures before a brief explicit native-build transfer to the secondary worker.
+All shared source/config stays frozen during that native window; primary works
+read-only on enhanced option design. Secondary may change only its own authored
+fixture directory and preserve failed attempts; it may not patch original source
+or change shared configuration. The next product batch will add explicit option
+coverage and an enhanced threaded profile, while real application owning services
+and SNTP notification integration remain required.
