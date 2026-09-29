@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Native-control suite, executed through shared campaign logging/process support."""
 from pathlib import Path
-from campaigns.compat import references
+from campaigns.inputs import acquire
 
 
 def run(ctx):
-    source = references(ctx.root, ctx.options.fetch == "never")["product"]
+    specification = next(source for source in ctx.recipe.sources(ctx.root) if source.name == "product")
+    source = acquire(specification, ctx.policy, ctx.options.fetch)
     build = ctx.root / "build/native-baseline"
     ctx.run(["cmake", "-S", ctx.root / "tests/native", "-B", build,
              "-DLIBUV_SOURCE=" + str(source), "-DCMAKE_BUILD_TYPE=Release",

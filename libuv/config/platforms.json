@@ -44,9 +44,9 @@
         "src/win/winapi.c",
         "src/win/winsock.c"
       ],
-      "source_inventory": "assigned; branches/ABI variants unresolved",
-      "abi": "unmeasured",
-      "native_prerequisites": "matching platform SDK/sysroot and libc/CRT",
+      "source_inventory": "all source units preprocess/native-syntax pass x64/arm64; conditional compiler/OS-version closure unresolved",
+      "abi": "native target compile-time layouts recorded; emitted comparison and foreign execution pending",
+      "native_prerequisites": "Zig 0.15.2 bundled MinGW/UCRT or Darwin headers acquired; native target preprocessing/syntax verified x64 and arm64",
       "runtime_availability": "runner unavailable in current environment",
       "execution_qualification": "unrun",
       "native_import_audit": "pending"
@@ -231,9 +231,9 @@
         "src/uv-data-getter-setters.c",
         "src/version.c"
       ],
-      "source_inventory": "assigned; branches/ABI variants unresolved",
-      "abi": "unmeasured",
-      "native_prerequisites": "matching platform SDK/sysroot and libc/CRT",
+      "source_inventory": "all source units preprocess/native-syntax pass x64/arm64; conditional compiler/OS-version closure unresolved",
+      "abi": "native target compile-time layouts recorded; emitted comparison and foreign execution pending",
+      "native_prerequisites": "Zig 0.15.2 bundled MinGW/UCRT or Darwin headers acquired; native target preprocessing/syntax verified x64 and arm64",
       "runtime_availability": "runner unavailable in current environment",
       "execution_qualification": "unrun",
       "native_import_audit": "pending"
