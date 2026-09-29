@@ -129,10 +129,21 @@ def task_plan(ctx, suites):
     return ordered_tasks(tasks)
 
 
+def preparation_profiles(recipe, suites, action, current_profile=None):
+    declared = [profile for suite in suites for profile in (*suite.required_profiles, *suite.verify_profiles)]
+    unknown = set(declared) - set(recipe.profiles)
+    if unknown:
+        raise ValueError('Unknown suite profiles for ' + recipe.name + ': ' + ', '.join(sorted(unknown)))
+    profiles = dict.fromkeys(profile for suite in suites for profile in
+                             (*suite.required_profiles, *(suite.verify_profiles if action == 'verify' else ())))
+    # The parent verify task translates its selected profile itself.
+    return tuple(profile for profile in profiles if action != 'verify' or profile != (current_profile or recipe.default_profile))
+
+
 def run_project(recipe, args, session):
     ctx = Context(REPO, recipe, args, session)
     suites = select(recipe, args) if args.action in ("test", "verify") else []
-    for profile in dict.fromkeys(profile for suite in suites for profile in suite.required_profiles):
+    for profile in preparation_profiles(recipe, suites, args.action, ctx.profile):
         if args.action == "verify":
             if ("delivery", recipe.name, profile) not in session:
                 child = copy.copy(args)
@@ -167,7 +178,8 @@ def run_project(recipe, args, session):
                           "hash_policy": args.hashes, "fetch": args.fetch, "tools": args.tools,
                           "tasks": [{"name": task.name, "dependencies": task.dependencies} for task in tasks],
                           "suites": [{"name": suite.name, "scope": suite.scope, "matrix": suite.matrix,
-                                      "required_profiles": suite.required_profiles} for suite in suites],
+                                      "required_profiles": suite.required_profiles,
+                                      "verify_profiles": suite.verify_profiles} for suite in suites],
                           "sources": [{"name": s.name, "directory": str(s.directory), "archive": str(s.archive)}
                                       for s in source_selection(ctx)],
                           "output": str(ctx.layout.project(ctx.profile)), "layout_issues": issues}, indent=2))

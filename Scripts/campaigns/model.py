@@ -46,6 +46,7 @@ class Suite:
     scope: str = "project test"
     required_profiles: tuple[str, ...] = ()
     run: Callable | None = None
+    verify_profiles: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)

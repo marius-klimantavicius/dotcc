@@ -1,5 +1,5 @@
 """Infrastructure contracts exercised with tiny fixtures, never upstream builds."""
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
 import io
 import json
 import os
@@ -13,6 +13,7 @@ import tempfile
 import threading
 from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
@@ -20,10 +21,43 @@ from campaigns.delivery import lock, promote, recover
 from campaigns.identity import HashPolicy, digest, exact_replace, apply_unified_patch, write_json
 from campaigns.inputs import acquire, extract
 from campaigns.layout import Layout, check, scaffold
-from campaigns.model import Recipe, Source, Task, ordered_tasks
+from campaigns.model import Recipe, Source, Suite, Task, ordered_tasks
 from campaigns.process import CommandError, execute
 from campaigns.translation import check_product
 from campaigns.recipes import discover, load
+
+
+class ProfilePreparationTests(unittest.TestCase):
+    def setUp(self):
+        self.recipe = Recipe('fixture', 'TranslatedFixture', ('default', 'nosys', 'unit'), (), lambda root: ())
+
+    def test_verify_prepares_union_once_and_targeted_test_keeps_dependencies_only(self):
+        suites = [Suite('consumer', (), verify_profiles=('default', 'nosys')),
+                  Suite('unit', (), required_profiles=('unit',), verify_profiles=('nosys', 'unit'))]
+        from campaigns.cli import preparation_profiles
+        self.assertEqual(preparation_profiles(self.recipe, suites, 'verify'), ('nosys', 'unit'))
+        self.assertEqual(preparation_profiles(self.recipe, suites, 'verify', 'nosys'), ('default', 'unit'))
+        self.assertEqual(preparation_profiles(self.recipe, suites, 'test'), ('unit',))
+        self.assertEqual(preparation_profiles(self.recipe, suites[:1], 'test'), ())
+
+    def test_unknown_profile_metadata_fails_even_in_targeted_selection(self):
+        from campaigns.cli import preparation_profiles
+        for field in ('required_profiles', 'verify_profiles'):
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'Unknown suite profiles.*typo'):
+                preparation_profiles(self.recipe, [Suite('bad', (), **{field: ('typo',)})], 'test')
+
+    def test_verify_translates_each_profile_once(self):
+        from campaigns import cli
+        self.recipe.suites = (Suite('consumer', (), verify_profiles=('default', 'nosys', 'unit')),)
+        args = cli.options_for(cli.parser().parse_args(['verify', '--suite', 'consumer']), self.recipe)
+        translated = []
+        def plan(ctx, suites):
+            return [Task('translation', lambda: translated.append((ctx.profile, ctx.options.form)))]
+        with tempfile.TemporaryDirectory() as directory, patch.object(cli, 'REPO', Path(directory)), \
+                patch.object(cli, 'task_plan', plan), patch.object(cli, 'check', return_value=[]), redirect_stdout(io.StringIO()):
+            cli.run_project(self.recipe, args, set())
+        self.assertEqual([profile for profile, form in translated], ['nosys', 'unit', 'default'])
+        self.assertTrue(all(form == 'all' for profile, form in translated[:2]))
 
 
 class DiscoveryTests(unittest.TestCase):
