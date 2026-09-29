@@ -1,5 +1,6 @@
 """Infrastructure contracts exercised with tiny fixtures, never upstream builds."""
 from contextlib import redirect_stderr
+from dataclasses import replace
 import io
 import json
 import os
@@ -8,6 +9,7 @@ import shutil
 import shlex
 import subprocess
 import sys
+import stat
 import tarfile
 import tempfile
 import threading
@@ -220,6 +222,92 @@ class InputTests(Fixture):
                 bundle.addfile(member, io.BytesIO(b"x"))
         with self.assertRaises(RuntimeError):
             extract(archive, self.root / "out", "upstream")
+
+    def selected_archive(self, extension, entries):
+        """Entries are (archive name, kind, contents/link target)."""
+        archive = self.root / ("selected." + extension)
+        if extension == "tar":
+            with tarfile.open(archive, "w") as bundle:
+                for name, kind, value in entries:
+                    member = tarfile.TarInfo(name)
+                    if kind == "symlink":
+                        member.type, member.linkname = tarfile.SYMTYPE, value
+                        bundle.addfile(member)
+                    elif kind == "fifo":
+                        member.type = tarfile.FIFOTYPE
+                        bundle.addfile(member)
+                    else:
+                        data = value.encode()
+                        member.size = len(data)
+                        bundle.addfile(member, io.BytesIO(data))
+        else:
+            with zipfile.ZipFile(archive, "w") as bundle:
+                for name, kind, value in entries:
+                    member = zipfile.ZipInfo(name)
+                    member.create_system = 3
+                    member.external_attr = ((stat.S_IFLNK if kind == "symlink" else
+                                             stat.S_IFIFO if kind == "fifo" else stat.S_IFREG) | 0o644) << 16
+                    bundle.writestr(member, value)
+        return archive
+
+    def test_selected_header_subtrees_skip_unrelated_links_and_preserve_strict_scope(self):
+        for extension in ("tar", "zip"):
+            with self.subTest(extension=extension):
+                archive = self.selected_archive(extension, [
+                    ("upstream/.clang-format", "symlink", "../unavailable/repository"),
+                    ("upstream/fifo", "fifo", ""),
+                    ("upstream/include/one.h", "file", "header"),
+                    ("upstream/include/nested/two.h", "file", "nested"),
+                    ("upstream/include-extra/not-selected.h", "file", "omit"),
+                    ("upstream/LICENSE", "file", "notice"),
+                    ("upstream/LICENSE-extra", "file", "omit")])
+                source = replace(self.source(), archive=archive, sha256=digest(archive),
+                                 directory=self.root / extension, required=("include/one.h", "LICENSE"),
+                                 archive_paths=("include/", "LICENSE"))
+                acquire(source, HashPolicy("strict"), "never")
+                actual = {path.relative_to(source.directory).as_posix() for path in source.directory.rglob("*") if path.is_file()}
+                self.assertEqual(actual, {"include/one.h", "include/nested/two.h", "LICENSE"})
+                (source.directory / "include/one.h").write_text("edited")
+                with self.assertRaisesRegex(RuntimeError, "Hash differs"):
+                    acquire(source, HashPolicy("strict"), "never")
+                self.assertEqual(acquire(source, HashPolicy("off"), "never"), source.directory)
+
+    def test_archive_selection_never_hides_unsafe_names_or_selected_special_entries(self):
+        entries = [("upstream/include/link", "symlink", "../elsewhere"),
+                   ("upstream/include/fifo", "fifo", ""),
+                   ("upstream/../escape", "file", "bad"),
+                   ("unrelated-root/unselected", "file", "bad"),
+                   ("upstream/unselected/../../escape", "symlink", "../elsewhere")]
+        for extension in ("tar", "zip"):
+            for entry in entries:
+                with self.subTest(extension=extension, entry=entry):
+                    archive = self.selected_archive(extension, [entry])
+                    with self.assertRaises(RuntimeError):
+                        extract(archive, self.root / "out", "upstream", ("include/",))
+
+    def test_selected_duplicate_members_and_missing_required_files_fail(self):
+        for extension in ("tar", "zip"):
+            with self.subTest(extension=extension):
+                import warnings
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", UserWarning)
+                    archive = self.selected_archive(extension, [("upstream/include/a.h", "file", "a")] * 2)
+                with self.assertRaisesRegex(RuntimeError, "Duplicate archive member"):
+                    extract(archive, self.root / (extension + "-duplicates"), "upstream", ("include/",))
+                archive = self.selected_archive(extension, [("upstream/source.c", "file", "excluded")])
+                source = replace(self.source(), archive=archive, directory=self.root / (extension + "-missing"),
+                                 archive_paths=("include/",))
+                with self.assertRaisesRegex(RuntimeError, "Missing/invalid required source"):
+                    acquire(source, HashPolicy("off"), "never")
+                self.assertFalse(source.directory.exists())
+
+    def test_archive_selectors_validate_even_with_existing_inputs(self):
+        self.file("tree/source.c")
+        for selectors in (("",), ("/include/",), ("../include/",), ("include/../",),
+                          ("include//",), ("C:/include",), ("include\\header.h",), ("include/*.h",),
+                          ("include/", "include/"), "include/"):
+            with self.subTest(selectors=selectors), self.assertRaisesRegex(RuntimeError, "[Aa]rchive selector"):
+                acquire(replace(self.source(), archive_paths=selectors), HashPolicy("off"), "never")
 
 
 class LayoutTests(Fixture):

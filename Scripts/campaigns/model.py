@@ -15,6 +15,9 @@ class Source:
     required: tuple[str, ...] = ()
     group: str = "product"
     files: dict[str, str] = field(default_factory=dict)
+    # Archive-relative exact files or slash-terminated subtrees, excluding prefix.
+    # Empty selects the whole archive (historical behavior).
+    archive_paths: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)

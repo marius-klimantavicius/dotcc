@@ -87,6 +87,17 @@ can still calculate diagnostic fingerprints and validate their own cache entries
 `--hashes strict` requests historical integrity checks, including source manifests
 or comparisons against cached archives. It is an explicit reproducibility mode.
 
+A source can declare `archive_paths` to acquire only needed archive members.
+Selectors are relative to the source's declared archive root: `include/` selects
+that subtree and `LICENSE` selects exactly that file. The default empty tuple
+extracts the complete archive. Selectors cannot contain traversal, glob syntax,
+backslashes, or absolute paths. Every member name is checked for traversal and
+the declared root, including unselected members. Unselected links and special
+entries are skipped; selected links, special entries, and duplicate files still
+fail. Required-file checks apply to the resulting tree, and strict comparison
+extracts the same selection. This supports a header-only reference from an
+upstream archive with unrelated links without weakening archive safety.
+
 Exact source replacements and patch hunks always require unique matching local
 context. Unrelated edits elsewhere in a file are accepted. Missing inputs,
 unsafe archives, incomplete generated manifests, compiler errors, host binding

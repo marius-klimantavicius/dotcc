@@ -17,9 +17,33 @@ def member_path(name, prefix):
     return Path(*path.parts[1:])
 
 
-def extract(archive, target, prefix):
-    """Only regular files/directories; reject symlinks and duplicate file entries."""
+def archive_selection(paths):
+    """Validate literal exact-file/subtree selectors, never glob or traversal syntax."""
+    if isinstance(paths, str):
+        raise RuntimeError("Archive selectors must be a sequence of paths")
+    paths = tuple(paths)
     seen = set()
+    for value in paths:
+        if (not isinstance(value, str) or not value or "\\" in value or ":" in value
+                or any(character in value for character in "*?[]")
+                or any(part in ("", ".", "..") for part in value.removesuffix("/").split("/"))):
+            raise RuntimeError(f"Unsafe archive selector: {value!r}")
+        if value in seen:
+            raise RuntimeError(f"Duplicate archive selector: {value}")
+        seen.add(value)
+    return tuple(paths)
+
+
+def extract(archive, target, prefix, archive_paths=()):
+    """Extract declared regular files; validate all member names before selection."""
+    selectors = archive_selection(archive_paths)
+    seen = set()
+
+    def selected(name):
+        relative = member_path(name, prefix).as_posix()
+        return not selectors or any(relative == entry.removesuffix("/")
+                                    or entry.endswith("/") and relative.startswith(entry)
+                                    for entry in selectors)
 
     def copy(name, directory, mode, stream):
         relative = member_path(name, prefix)
@@ -42,14 +66,20 @@ def extract(archive, target, prefix):
     if zipfile.is_zipfile(archive):
         with zipfile.ZipFile(archive) as bundle:
             for member in bundle.infolist():
+                if not selected(member.filename):
+                    continue
                 mode = member.external_attr >> 16
                 if stat.S_ISLNK(mode):
                     raise RuntimeError(f"Unsupported archive symlink: {member.filename}")
+                if stat.S_IFMT(mode) not in (0, stat.S_IFREG, stat.S_IFDIR):
+                    raise RuntimeError(f"Unsupported archive entry: {member.filename}")
                 with bundle.open(member) as stream:
                     copy(member.filename, member.is_dir(), mode, stream)
     else:
         with tarfile.open(archive) as bundle:
             for member in bundle:
+                if not selected(member.name):
+                    continue
                 if not (member.isfile() or member.isdir()):
                     raise RuntimeError(f"Unsupported archive entry: {member.name}")
                 stream = bundle.extractfile(member) if member.isfile() else None
@@ -61,6 +91,7 @@ def extract(archive, target, prefix):
 
 
 def acquire(source, policy, fetch="missing"):
+    archive_selection(source.archive_paths)
     tree, archive = source.directory, source.archive
     if tree.is_symlink() or archive.is_symlink():
         raise RuntimeError(f"Source tree/archive must not be a symlink: {tree}")
@@ -81,7 +112,7 @@ def acquire(source, policy, fetch="missing"):
         with tempfile.TemporaryDirectory(prefix=".extract-", dir=tree.parent) as temp:
             staged = Path(temp) / "source"
             staged.mkdir()
-            extract(archive, staged, source.prefix)
+            extract(archive, staged, source.prefix, source.archive_paths)
             validate(source, staged, policy)
             staged.rename(tree)
     validate(source, tree, policy)
@@ -90,7 +121,7 @@ def acquire(source, policy, fetch="missing"):
             raise RuntimeError(f"Strict source verification needs archive or file manifest: {tree}")
         with tempfile.TemporaryDirectory(prefix=".verify-", dir=tree.parent) as temp:
             baseline = Path(temp)
-            extract(archive, baseline, source.prefix)
+            extract(archive, baseline, source.prefix, source.archive_paths)
             for path in baseline.rglob("*"):
                 if path.is_file():
                     from .identity import digest
