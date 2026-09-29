@@ -15,8 +15,8 @@ def run(profile, output=None, forwarding_fix=True):
     adaptations=[]
     if forwarding_fix:
         spec=importlib.util.spec_from_file_location('forwarding_fix',ROOT/'scripts/stage.py');fix=importlib.util.module_from_spec(spec);spec.loader.exec_module(fix)
-        staged,adaptations=fix.ipv4_forwarding(ROOT,source,build/'staged')
-        paths=[staged if path==source/'src/core/ipv4/ip4.c' else path for path in paths]
+        staged,adaptations=fix.product_units(ROOT,source,build/'staged')
+        paths=[staged.get(str(path.relative_to(source)),path) if path.is_relative_to(source) else path for path in paths]
     base=['cc' ,'-std=c17','-D_POSIX_C_SOURCE=200809L','-O1','-g','-ffunction-sections','-fdata-sections','-pthread','-include','errno.h','-I'+str(build),'-I'+str(ROOT/'src/port'),'-I'+str(source/'src/include')]
     def compile_unit(pair):
         i,path=pair; target=build/(str(i)+'.o');cmd=base+(['-DDOTCC_TCPIP_WORKER=1'] if path.name=='tcpip.c' else [])+['-c',str(path),'-o',str(target)]

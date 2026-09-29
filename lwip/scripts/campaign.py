@@ -189,7 +189,7 @@ def validate_options(args):
 _product = ('threaded', 'nosys', 'threaded-locking')
 _suites = ('oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
            'routing', 'links', 'ppp', 'applications', 'contrib', 'tools', 'upstream',
-           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ppp-serial', 'ppp-ethernet')
+           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ipv6-addressing', 'multicast-fixtures', 'ppp-serial', 'ppp-ethernet')
 _applicability = {'tools': ('makefsdata', 'http-content'), 'tool-generator': ('makefsdata',), 'upstream': ('unit', 'unit-nosys'), 'contrib': ('contrib',),
                   'sysarch': ('threaded', 'threaded-locking'), 'socket-api': ('threaded', 'threaded-locking'),
                   'direct-apis': _product, 'socket-semantics': ('threaded', 'threaded-locking'), 'contrib-addons': ('contrib',), 'interop-kernel': _product, 'http-transactions': (*_product, 'http-content')}
