@@ -510,6 +510,7 @@ productions:
       # returned by functions and parenthesized function names.
       - { lhs: FnSig, rhs: ['static', FnSig], action: fnSigStaticDeclarator }
       - { lhs: FnSig, rhs: [GnuFormatAttr, FnSig], action: fnSigAttributed }
+      - { lhs: FnSig, rhs: [FnSig, GnuFormatAttr], action: fnSigPostAttributed }
       # Function specifiers may precede the storage class as well as follow it.
       - { lhs: FnSig, rhs: ['_Noreturn', 'static', FnSig], action: fnSigNoreturnStatic }
       - { lhs: FnSig, rhs: ['inline', 'static', FnSig], action: fnSigInlineStatic }
@@ -548,7 +549,6 @@ productions:
       - { lhs: Fn, rhs: [';'], action: emptyDeclaration }
       - { lhs: Fn, rhs: ['typedef', FnSig, ';'], action: typedefFunction }
       - { lhs: Fn, rhs: [GnuFormatAttr, Fn], action: gnuFormatFn }
-      - { lhs: Fn, rhs: [FnSig, GnuFormatAttr, ';'], action: gnuFormatProto }
       - { lhs: Fn, rhs: [FnSig, Block], action: funcDef }
       - { lhs: Fn, rhs: [FnSig, ';'],    action: funcProto }
       # Struct declaration: `struct ID { MemberList } ;`. Disambiguates from

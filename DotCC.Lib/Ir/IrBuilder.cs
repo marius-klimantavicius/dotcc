@@ -283,6 +283,9 @@ internal sealed partial class IrBuilder
                     case "warn_unused_result": _pendingAttrNodiscard = ""; break;
                     case "always_inline": break; // optimization hint; no observable C behavior
                     case "noinline": case "no_instrument_function": break;
+                    // Native headers use these optimizer promises. Leaving
+                    // calls effectful and potentially throwing is conservative.
+                    case "nothrow": case "leaf": case "const": case "pure": break;
                     case "malloc": break; // allocation/aliasing optimization hint
                     default: throw new IrUnsupportedException("unsupported GNU attribute: " + Tok(a.Arg0));
                 }
@@ -356,18 +359,6 @@ internal sealed partial class IrBuilder
                 BuildTopLevel(a.Arg1);
                 if (requiresWeakFunction && weakApplications == _weakFunctionAttributeApplications)
                     throw new IrUnsupportedException("GNU weak attribute on a non-function declaration");
-                _pendingAttrNoreturn = noreturn;
-                _pendingAttrWeak = weak;
-                _pendingAttrNodiscard = nodiscard;
-                break;
-            }
-            case C.GnuFormatProto a:
-            {
-                var noreturn = _pendingAttrNoreturn;
-                var weak = _pendingAttrWeak;
-                var nodiscard = _pendingAttrNodiscard;
-                ValidateGnuFormatAttribute(a.Arg1);
-                RegisterProto(a.Arg0);
                 _pendingAttrNoreturn = noreturn;
                 _pendingAttrWeak = weak;
                 _pendingAttrNodiscard = nodiscard;
@@ -1086,6 +1077,7 @@ internal sealed partial class IrBuilder
         C.FnSigVoidArgs n => new(ResolveType(n.Arg0), Tok(n.Arg1), new(), false, false, FunctionMacroOrigin.Contains(n.Arg1)),
         C.FnSigStaticDeclarator n => ExtractFnSig(n.Arg1) with { IsStatic = true },
         C.FnSigAttributed n => ExtractAttributedFunction(n.Arg0, n.Arg1),
+        C.FnSigPostAttributed n => ExtractAttributedFunction(n.Arg1, n.Arg0),
         C.FnSigNoreturnStatic n => ExtractSpecifierBeforeStatic(n.Arg2, noreturn: true),
         C.FnSigInlineStatic n => ExtractSpecifierBeforeStatic(n.Arg2, noreturn: false),
         // Parenthesized declarator name `T (name)(args)` — identical to

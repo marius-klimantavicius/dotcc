@@ -3139,14 +3139,6 @@ internal sealed partial class CSharpBackend
         var a = new List<string>(c.Args.Count);
         for (var i = 0; i < c.Args.Count; i++)
         {
-            // malloc's size arg: a bare `sizeof(T)` is already a C# int, so emit it
-            // directly — `malloc(sizeof(T))` — not the size_t-wrapped form
-            // `malloc((int)((ulong)(sizeof(T))))` the generic int-param coercion gives.
-            if (c.Callee == "malloc" && c.Args[i] is SizeOfExpr so)
-            {
-                a.Add(SizeofText(so.Of));
-                continue;
-            }
             // A known parameter coerces the arg to its type; a variadic-tail or
             // unknown-signature arg takes C's default argument promotions — notably
             // an enum decays to its underlying int (C# has no enum→int for `.Arg`).

@@ -122,6 +122,15 @@ A prototype-only C function may be selected. dotcc then generates its managed
 implementation rather than treating the declaration as a native-library import.
 Missing or incompatible C# methods fail the generated project's build.
 
+Allocator functions, including `malloc` and `free`, may target authored methods.
+Their declared signatures still have to match, including `size_t` widths. When
+the profile contains a `malloc` or `free` rule, the compiler conservatively
+disables malloc-to-stack promotion for that invocation. Direct and function
+pointer calls retain the replacement's allocation, release and other observable
+effects, including when selection occurs at a later declaration. The author must
+provide compatible allocation/free families; the compiler does not infer native
+heap ownership or add a fallback allocator.
+
 For an explicitly `_Noreturn` C declaration, the managed target must opt into
 the same termination contract:
 
@@ -233,7 +242,7 @@ checks do not claim NativeAOT or postprocessed unsigned-target qualification.
 
 Functions with special compiler lowering remain excluded: `__builtin_*`,
 `__atomic_*`, `__sync_*`, `__dotcc_*`,
-`setjmp`/`longjmp`, allocation/free operations, `dlsym`, variadic format functions,
+`setjmp`/`longjmp`, `dlsym`, variadic format functions,
 and `va_*`. These are rejected explicitly because their specialized lowering
 requires a separate replacement contract.
 

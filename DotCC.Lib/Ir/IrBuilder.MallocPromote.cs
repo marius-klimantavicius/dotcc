@@ -58,6 +58,12 @@ internal sealed partial class IrBuilder
     /// rewritten block (or the original when nothing is promotable).</summary>
     private Block PromoteMallocs(Block body)
     {
+        // An authored allocator/free replacement owns its effects and storage.
+        // Conservatively retain calls even when a later declaration selects the
+        // rule: lowering this body may precede binding that declaration.
+        if (_functionOverrideOptions?.FunctionOverrides.Any(r => r.Name is "malloc" or "free") == true)
+            return body;
+
         var structCands = new Dictionary<Symbol, CType>();   // sym → pointee struct type
         CollectMallocDecls(body, structCands);
 

@@ -32,6 +32,39 @@ public sealed class AttributeTests
         return path;
     }
 
+    [Fact]
+    public void Native_header_postfix_attributes_allow_extern_and_chained_annotations()
+    {
+        var src = WriteTemp("""
+            extern int* native_errno(void) __attribute__((__nothrow__, __leaf__)) __attribute__((__const__));
+            extern int answer(void) __attribute__((__pure__)) { return 42; }
+            int main(void) { return answer() - 42; }
+            """);
+        try
+        {
+            var emitted = Compiler.EmitCSharp(new[] { src });
+            emitted.ShouldContain("int answer(");
+            emitted.ShouldNotContain("__attribute__");
+        }
+        finally { File.Delete(src); }
+    }
+
+    [Fact]
+    public void Native_header_postfix_attributes_do_not_leak_noreturn_to_following_functions()
+    {
+        var src = WriteTemp("""
+            extern void finish(void) __attribute__((__noreturn__)) __attribute__((__nothrow__));
+            int answer(void) { return 42; }
+            int main(void) { return answer() - 42; }
+            """);
+        try
+        {
+            var emitted = Compiler.EmitObject(src);
+            emitted.ShouldNotContain("DoesNotReturn"); // prototype-only finish is not emitted
+        }
+        finally { File.Delete(src); }
+    }
+
     [Theory]
     [InlineData("__attribute__", "format")]
     [InlineData("__attribute", "__format__")]

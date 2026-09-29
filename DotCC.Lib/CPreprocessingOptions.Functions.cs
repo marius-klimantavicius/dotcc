@@ -30,7 +30,7 @@ public sealed partial class CPreprocessingOptions
                 || rule.Name.StartsWith("__builtin_", StringComparison.Ordinal)
                 || rule.Name.StartsWith("__atomic_", StringComparison.Ordinal)
                 || rule.Name.StartsWith("__sync_", StringComparison.Ordinal)
-                || rule.Name is "setjmp" or "longjmp" or "malloc" or "free" or "dlsym"
+                || rule.Name is "setjmp" or "longjmp" or "dlsym"
                     or "va_start" or "va_end" or "va_copy" or "va_arg"
                     or "printf" or "fprintf" or "sprintf" or "snprintf" or "scanf" or "fscanf" or "sscanf"
                     or "wprintf" or "fwprintf" or "swprintf" or "wscanf" or "fwscanf" or "swscanf")
