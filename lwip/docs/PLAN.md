@@ -8,8 +8,11 @@ and the [shared framework](../../docs/campaigns.md), using the
 [project template](../../docs/plans/translation-template.md). Common execution,
 provenance, repair and publication rules stay in those documents. Current user
 instructions govern implementation, commits, branch work and delegation. The user has now authorized coordinator-led implementation through completion.
-Implementation agents work in the isolated `campaign/lwip-full` worktree;
-qualification gates remain open until current evidence passes them.
+Implementation agents now work in `/home/marius/p/dotcc` on the current `sqlite`
+branch, following the user's instruction after the libuv session stopped. Validated
+history merged at `38c1cfa8`; unfinished files were preserved exactly. The former
+`/home/marius/p/dotcc-lwip-full` worktree is a read-only historical backup.
+Qualification gates remain open until current evidence passes them.
 
 ## Outcome and scope
 

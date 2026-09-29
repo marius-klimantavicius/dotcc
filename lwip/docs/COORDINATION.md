@@ -3,31 +3,37 @@
 Updated: 2026-09-29. Complete scope: [PLAN.md](PLAN.md), baseline v2.
 Status: active; core and upstream matrices have passed; full P0–P6 acceptance remains incomplete.
 
-## Isolation and ownership
+## Active workspace and ownership
 
-All campaign mutations and builds run in `/home/marius/p/dotcc-lwip-full`, branch
-`campaign/lwip-full`, based on `cbbef56d`. The separate libuv session owns its work
-in `/home/marius/p/dotcc`; do not modify, build, stage, reset, clean or switch the
-original checkout. Do not modify sibling SharpAstro sources. Shared changes made
-here must be reported before eventual integration; do not push or merge into the
-original branch. Use `-p:UseLocalLalrCc=false` for tool/runtime builds.
+All future campaign mutations and builds run in `/home/marius/p/dotcc`, current
+branch `sqlite`, following the user's migration instruction after libuv stopped.
+Validated lwIP and completed libuv history merged at `38c1cfa8`. Root copied all 47
+unfinished paths with SHA256 verification and preserved them uncommitted/unstaged.
+The old `/home/marius/p/dotcc-lwip-full` worktree and `campaign/lwip-full` branch are
+historical read-only backups: do not build, edit, reset, remove or prune there.
+Do not modify sibling SharpAstro sources. Do not stage unrelated untracked
+`docs/plans/compiler-review-2026-09-29.md`. Use `-p:UseLocalLalrCc=false` for tool and
+runtime builds. No push is authorized. Earlier isolation directions below describe
+historical execution only and are superseded by this active workspace rule.
 
 | Agent | Ownership | Current task |
 | --- | --- | --- |
 | `/root/lwip_coordinator` | This ledger, scope/contract review, integration and validation scheduling | Coordinate P0–P6 and retain evidence |
-| `/root/lwip_coordinator/pipeline` | `config/`, `scripts/`, `src/port/` headers, `docs/source.md`, `docs/blockers.md`, `tests/Upstream/`; approved structural compiler fixes | Source/feature/profile inventory, recipe, full translation |
-| `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `tests/` except `Upstream/`, README and `docs/host.md` | sys_arch, owning API, native oracle and consumer |
+| `/root/lwip_coordinator/pipeline` | `config/`, `scripts/` except `test.py`, `src/port/`, source/blocker docs, Upstream/Pipeline/Links/Ppp/PppLinks/Applications/Contrib tests and tools; approved compiler fixes | Merged-toolchain refresh, full links/apps/contrib, source/feature audits |
+| `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `scripts/test.py`, remaining core/API/addressing/routing/lifecycle tests, README and host docs | Owning API, IPv6/multicast/routing/bridge, native and independent controls |
 
-Current shared .NET build ownership is **host**, handed back after pipeline
-completed finite PPP/SLIP/HTTP all product matrices, contrib addons, and actual
-translated makefsdata→HTTP all four cells. Repaired publications: threaded
-`085444-ed99ac5f`, nosys `085621-ea694e86`, locking `085752-bc7b505f`, contrib
-`085928-13eb1f13`, HTTP-content `093414-95dafdc6`. Current evidence index:
-[validation.md](validation.md). Host qualifies owning-service/disposal phases,
-pool recovery, default ARP queueing and DHCP. Pipeline authors actual PPP link
-negotiations, then 6LoWPAN/ZEP and remaining applications/contrib workflows.
-No simultaneous shared bin/obj builds. Freeze shared Host/facade source while the
-other worker builds dependent matrices; author new isolated fixtures meanwhile.
+Current shared .NET/config/staging build ownership is **pipeline**, rebuilding the
+merged toolchain and refreshing all product/auxiliary/diagnostic profiles with the
+pending EAP repair before fresh qualification in this checkout. Then run actual
+managed PPP sessions and diagnostic controls. Host has first git-index slot for
+its validated service/DHCP/AutoIP checkpoint, then authors isolated native IPv6,
+multicast, IPv6 routing and bridge fixtures. Shared Host/facade remains frozen.
+Current evidence: [validation.md](validation.md). Pre-migration receipts retain
+historical provenance; current product pointers are being refreshed here.
+No simultaneous shared bin/obj builds. Freeze shared Host/facade source and staging/configuration helpers while the
+other worker builds dependent native or managed matrices; author new isolated
+fixtures meanwhile. Coordinate complete multi-file adaptation readiness before
+allowing builds, since intermediate metadata/stager versions can reject controls.
 Receipts from successive source snapshots do not jointly qualify the latest edits.
 Workers implement; coordinator reviews,
 schedules and integrates. Commit named files with evidence and honest scope.
@@ -55,7 +61,7 @@ schedules and integrates. Commit named files with evidence and honest scope.
 | P2 all product/diagnostic/auxiliary builds | Partial | Three product, unit/unit-nosys, contrib and makefsdata raw/processed builds published; auxiliary variants/final audits remain |
 | P3a first useful workflow | Partial | Raw/socket consumer and direct netconn/altcp matrices pass; full lifetime/error qualification remains |
 | P3b core/link features | Partial | Finite DNS/IPv4 routing/lifecycle matrices pass; SLIP and bundled PPP initial controls pass; broader scope remains |
-| P3c applications/contrib/tool | In progress | Managed makefsdata generator all four cells and initial contrib controls pass; HTTP content/app workflows remain |
+| P3c applications/contrib/tool | In progress | Managed generator→HTTP content and finite contrib/PPP/SLIP/HTTP matrices pass; full app/contrib workflows remain |
 | P4 behavioral matrix | Partial | Original unit137/unit-nosys132 and kernel TCP/UDP all required cells pass; full feature/error/recovery/application-link peers remain |
 | P5 consumer delivery | Partial | Ordinary references and trimmed/rooted AOT established; full feature delivery pending |
 | P6 complete reproduction | Unrun | Final regeneration, full evidence and portable orchestration |
@@ -69,7 +75,7 @@ current external blocker to the remaining Linux implementation. Never alter host
 ## Restart
 
 ```bash
-cd /home/marius/p/dotcc-lwip-full
+cd /home/marius/p/dotcc
 git status --short
 cat lwip/docs/COORDINATION.md
 cat lwip/docs/blockers.md
@@ -459,3 +465,80 @@ repairs and finite contrib/PPP crypto/SLIP/HTTP fixtures. Unfinished PppLinks an
 new host suite names remain outside its index. This supplies the staged-repair
 dependency of host checkpoint `cae2e2ef`. Completed private auxiliary build caches
 were pruned by their owner (2.3 GiB), retaining apps, receipts, reports and products.
+
+### Confirmed bundled EAP failure-path leak; staging coordination correction
+
+Reduced native wrong-password EAP trace identifies an unfreed 536-byte RAM pbuf
+allocated by eap_send_request, leaving 552 heap bytes after both PPP sessions are
+DEAD, ppp_free and actual loopback drain. Positive EAP returns to baseline.
+Evidence: `artifacts/native-eap-leak/before.json` and `eap-trace-symbols.log`.
+Coordinator reviewed the pinned function and conditionally authorized exactly one
+pbuf_free(p) before its default switch return, once this trace confirmed the path.
+No upstream hook can free the local allocation; a whole-function override would
+replace the authentication algorithm. Pipeline now stages this third guarded
+repair for native/product EAP paths, leaves acquired references untouched and
+keeps EAP-disabled diagnostic source unchanged. Adapted native and fresh managed
+full auth controls are required; current published products predate this repair.
+
+Host matrix `094136-ab75833b` failed before native AutoIP compilation because it
+observed new three-repair metadata while the old stager still required two. This
+is a shared-file staging race, not an AutoIP protocol failure. Pool/DHCP constituent
+matrices had passed; no aggregate pass is claimed. Workers must freeze shared
+staging/configuration as well as Host/facade during dependent builds. Host retries
+only after pipeline confirms the complete coherent repair files are ready.
+
+### Expanded host matrices; final pending-HTTP refinement
+
+Threaded `094413-fe06cf88`, NO_SYS `094658-5dd39ead`, and locking
+`095020-fab83601` pass all four cells for pools/recovery/owner independence,
+DHCP4 DORA/ACD/options/renewal/NAK/expiry/conflict, AutoIP, ARP queue policy and
+datagrams, natural lifecycle and full consumer; threaded modes include host32 and
+actual blocked translated UDP receive disposal. Failed service-stop and post-marker
+worker-error retry paths pass. These supersede the staging-race aggregate failure.
+
+Final review found active HTTP context refusal must occur before core shutdown;
+storage release itself remains after joins. Host adds CleanupForDisposal, available
+only after a failed disposal before the marker, to release existing borrowed
+resources while ordinary admissions remain closed. Actual translated fs_open →
+refused disposal → explicit fs_close cleanup → successful retry will be qualified
+before the new lifecycle checkpoint. Earlier matrices do not qualify this latest
+refinement. Native IPv6 DAD/RA/SLAAC/DHCPv6 timer/XID/DNS and IGMP/MLD controls pass;
+managed full matrices remain next-window work.
+
+Native NO_SYS PPPoS report `artifacts/ppp-links-native/nosys/report.json` passes six
+positive serial sessions and five wrong credentials, both IP control negotiations,
+actual UDP and six bad-FCS cases, orderly close/free baseline after EAP repair.
+Managed link-session products/tests remain pending the build handoff and refresh.
+
+### Migration to original checkout and final host snapshot
+
+User reported libuv stopped and directed integration into original checkout.
+Both workers froze safely: host session 75246 and pipeline session 19480 exited 0;
+no writes, commits or pruning during root integration. Root merged validated
+history into `sqlite` at `38c1cfa8`, resolved one shared framework-test import
+conflict preserving both sides, verified 47 WIP files by SHA256, copied ref/generated/
+artifacts, and retained old build history only in the read-only worktree.
+Migration evidence: `artifacts/migration-20260929`. Root checks passed 43 framework,
+105 focused compiler, 10 functional (four optional native-oracle skips), six pipeline
+checks and layout; raw/processed JIT consumer passed `100709-5e0adecd` in new root.
+Copied historical receipts retain their old paths. check_product selects the new
+root's generated project; no historical receipt is rewritten as fresh evidence.
+
+Latest pre-migration host refinements: HTTP cleanup-scope plus consumer all four
+cells pass threaded `095609-5894d6ee`, NO_SYS `095703-fadcd930`, locking
+`095758-3e4181b3`. Final actual timer/core-context rejection and finite service/pool
+recovery pass all four cells threaded `100126-d50e6381`, NO_SYS `100152-2c79deb8`,
+locking `100221-287fcea6`; source snapshots are in artifacts. IPv6/multicast have
+native controls only; managed smoke was deliberately not started before freeze.
+
+Native PPP serial final controls pass all three profiles with original EAP exit92
+versus adapted pass0, actual UDP/TCP data, VJ full/compressed frames, MPPE wire and
+payload controls, malformed FCS, wrong credentials and cleanup baselines. The
+locking fixture explicitly drives real timeout processing under core lock for the
+injected clock. Native independent PPPoE NO_SYS discovery/service name/cookie/
+bad HostUnique/bad PADS/LCP reject/PADT controls pass; full data and L2TP remain.
+Managed PPP counterpart remains unbuilt and copied publications predate EAP repair.
+
+Both workers explicitly acknowledged new working directory. Pipeline owns merged
+refresh; host owns validated checkpoint then isolated native feature authoring.
+Old-worktree cache-pruning permission is superseded: preserve it read-only.

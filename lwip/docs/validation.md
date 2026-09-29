@@ -1,11 +1,21 @@
 # lwIP validation evidence
 
-Full acceptance is incomplete. Implementation and receipts belong to the isolated
-`/home/marius/p/dotcc-lwip-full` worktree. The [plan](PLAN.md) defines the complete
+Full acceptance is incomplete. Active implementation is in `/home/marius/p/dotcc`
+on branch `sqlite` after migration merge `38c1cfa8`. Earlier receipts were copied
+from `/home/marius/p/dotcc-lwip-full`, which remains a read-only historical backup. The [plan](PLAN.md) defines the complete
 scope; [coordination](COORDINATION.md) records ownership and next work. All matrix
 results below are Linux x64. “Four cells” means raw/processed × JIT/NativeAOT.
 
-## Current qualified behavior
+## Migration and source snapshots
+
+Root migration checks passed 43 framework, 105 focused compiler, 10 functional
+(with four optional native-oracle skips), six pipeline checks and layout. New-root
+threaded raw/processed JIT consumer passes `20260929-100709-5e0adecd`. Logs and
+verified WIP-copy manifest: `artifacts/migration-20260929`. Merged-toolchain product
+refresh with the pending EAP repair is in progress. Earlier full matrices below
+qualify their recorded snapshots, not all subsequent source/compiler changes.
+
+## Qualified behavior by recorded snapshot
 
 The repaired product publications are threaded `20260929-085444-ed99ac5f`, nosys
 `20260929-085621-ea694e86`, threaded-locking `20260929-085752-bc7b505f`, and contrib
@@ -18,6 +28,9 @@ staged IPv4 forwarding checksum repair. Receipts live under `artifacts/campaign/
 | NO_SYS repaired matrix | Independent kernel TCP/UDP through raw callbacks, natural resource lifecycle, IPv4 routing, DNS, ABI and consumer; all four cells | `20260929-091423-b5f02ec9/receipt.json` |
 | Locking repaired matrix | ARP queueing/datagrams, host 32 contracts, natural resource lifecycle, socket semantics, DNS, IPv4 routing, independent kernel TCP/UDP, ABI and consumer; all four cells | `20260929-091556-6c1b6415/receipt.json` |
 | Threaded independent cases | Updated netif ABI, consumer, finite owner lifecycle, socket semantics and DNS; all four cells, before product-only forwarding repair | `20260929-085113-333ba145/receipt.json` |
+| DHCP/AutoIP/pool and service recovery | DHCP acquisition/ACD/renewal/NAK/expiry/conflict, AutoIP, actual pool exhaustion/recovery and other-owner independence, registered blocked UDP cleanup, disposal retries, ARP policy, lifecycle and consumer; three profiles × four cells | `20260929-094413-fe06cf88`, `20260929-094658-5dd39ead`, `20260929-095020-fab83601` (before new HTTP quiescence/recovery refinement) |
+| HTTP cleanup/consumer refinement | Active HTTP context refusal before core stop, explicit cleanup-only fs_close and retry; consumer; three profiles × four cells | `20260929-095609-5894d6ee`, `20260929-095703-fadcd930`, `20260929-095758-3e4181b3` |
+| Final finite service/pool guards | Actual timer/core-context reentry rejection, blocked UDP shutdown, pool/owner independence, cleanup-only recovery and retries; three profiles × four cells | `20260929-100126-d50e6381`, `20260929-100152-2c79deb8`, `20260929-100221-287fcea6` |
 | Native forwarding controls | Original failure and adapted pass for all three product profiles; IP/UDP/TCP/ICMP checksums, fragments, TTL and same-interface cases | `artifacts/native-routing/<profile>/report.json` |
 | Managed upstream Check | Original 137 cases and negative/fixture controls, exact native registration; all four normal unit cells | `20260929-081512-9608394d/receipt.json`, `20260929-081538-a7d37662/receipt.json` |
 | Managed NO_SYS upstream Check | 132 applicable cases and native registration/negative-fixture parity; all four cells; five threaded socket cases inapplicable | `20260929-083055-ad449f5f/receipt.json` |
@@ -41,10 +54,11 @@ Natural lifecycle cases observe generated pool/heap counters returning to the
 initialized baseline **before** owner disposal or host registry clearing. Remaining
 cyclic timers and the TCP/IP worker are identified initialized infrastructure.
 These finite cases do not prove arbitrary pending-protocol teardown. The low-level
-borrowed core API requires callers to settle their resources. Newly authored
-owning ancillary-service registration/stop integration is not yet qualified by
-these receipts and needs fresh tests. Auxiliary protocol matrices used explicit
-fixture teardown and do not qualify the new StartService/failure-retry contract.
+borrowed core API requires callers to settle their resources. Owned blocking UDP service stop and failed-disposal retries now have the finite
+recovery matrices above. Pending HTTP-context refusal, explicit cleanup-only recovery and actual timer
+reentry guards now pass their separate finite matrices above. Auxiliary protocol matrices
+used explicit fixture teardown and do not qualify all protocol-specific owned
+services (SLIP/PPP/app registrations still need their own pending-stop cases).
 Shared facade/host sources are now frozen during dependent worker builds.
 
 ## Historical snapshot evidence
