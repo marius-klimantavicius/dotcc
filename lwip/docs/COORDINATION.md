@@ -19,7 +19,7 @@ historical execution only and are superseded by this active workspace rule.
 | Agent | Ownership | Current task |
 | --- | --- | --- |
 | `/root/lwip_coordinator` | This ledger, scope/contract review, integration and validation scheduling | Coordinate P0–P6 and retain evidence |
-| `/root/lwip_coordinator/pipeline` | All campaign implementation/configuration/fixtures and approved compiler fixes, including the reassigned Host/facade/OwnedApi work | Owning API and interface-lifetime integration, then coherent products and permitted matrices; broader links/apps/features follow |
+| `/root/lwip_coordinator/pipeline` | All campaign implementation/configuration/fixtures and approved compiler fixes, including the reassigned Host/facade work | ZEP/radio/BLE owning integration and full LOWPAN behavior; required variants/apps/contrib follow |
 | `/root/lwip_coordinator/host` | Unavailable; preserved WIP reassigned to pipeline | Execution failed; no active mutations or builds. Fresh replacement creation is blocked by the orchestrator thread limit |
 
 Current shared .NET build ownership is **pipeline**. Checkpoint `7835b38b`
@@ -27,8 +27,8 @@ qualifies scoped IPv6 hop-limit, bridge and LOWPAN integration and L2TP behavior
 in all three profiles and four cells. Host authored isolated owning APIs and
 ordinary-interface lifetime controls, but its agent turn is currently unavailable
 after repeated generic execution flags; source and evidence remain preserved.
-Pipeline has accepted ownership of the preserved Host/facade/OwnedApi work and
-is integrating it before the next product refresh. A fresh replacement was
+Pipeline completed the owning API checkpoint `aa2e23f1` and is promoting the
+preserved ZEP/LOWPAN lifecycle prototypes. A fresh replacement was
 requested but could not be created because the errored worker still occupies a
 thread. Coordinate reassignment before any new worker mutates shared inputs; dependent native
 controls must also wait while staging/configuration integration is in progress.
@@ -734,3 +734,77 @@ Coordinator review requires numeric IPv6 zone range validation consistent with
 lwIP's u8 zone representation, retained after-core-stop hooks even after successful
 service stop, and retryable retired-interface ownership. These remain unqualified
 implementation changes until fresh product and behavior receipts pass.
+
+### Owning API checkpoint
+
+Fresh product publications pass raw/processed: threaded `114549-0edfd8d9`,
+NO_SYS `115149-f29bbb4b`, locking `115452-acdef463`. The owning API, consumer,
+owner-lifecycle and pool-recovery suites now pass all four cells in each profile:
+`115825-fc8e63a0`, `120036-26c6b530`, `120312-d52e329b`, respectively. This is
+post-restriction permitted verification. Socket/netconn cases are correctly
+inapplicable to NO_SYS; actual selected-product metadata controls compilation,
+and an explicit mismatching profile hint is rejected.
+
+The initial threaded managed run `114817-d24c28ac` failed in an authored IPv6
+fixed-buffer address expression. Endpoint write/read and resolver copy now use
+the first fixed-buffer element's address; the failed receipt remains preserved.
+Focused corrected runs `114957-74819912` and `115339-2ea6fd9d` preceded the
+complete matrices above. No compiler repair or upstream text change was needed.
+
+Review also corrected accepted-netconn retention on failed cleanup, monotonic
+close timeout accounting, and one-reader/one-writer admission matching upstream's
+full-duplex contract. The all-profile matrices include actual accepted-child
+shutdown races, late canceled DNS callbacks under GC, pending query disposal
+retry and owner isolation, numeric zone bounds and interface argument validation.
+
+An additional fixture now exercises actual NETIF_ADDED duplicate registration,
+constructor rollback and restoration of the original interface/default route and
+heap/pbuf baseline. Product implementation is unchanged; owning-only four-cell
+reruns pass threaded `120630-457be2fa`, NO_SYS `120955-dfcf28c1`, and locking
+`121107-56ed1e8c`. Superseded prototype copies were archived
+with hashes under `artifacts/owned-api-prototype-history-20260929`; current tests
+compile the production facade.
+Normalized ProjectReference property propagation was then added for a consumer
+that selects its product locally with a relative path. The outside-sample NO_SYS
+project checks both generated constants and the facade's socket API absence
+without command-line hints. Focused receipt `121229-14960450` failed: the normal
+SDK restore graph flattened references and lost the additional properties, so
+the consumer selected the wrong transitive generated product. The final import
+uses static graph restore and removes only the selected product's duplicate SDK
+edge. An unrelated two-hop project dependency remains available. All four cells
+for owning API and consumer pass NO_SYS `121848-8f47f868`, threaded
+`122007-dac94da8` and locking `122125-d03caecf`. The failed receipt is retained.
+
+Final review found queued async calls missing from disposal accounting. Public
+async invocation now retains the owner and increments scheduling admission before
+queueing, settles the caller Task before releasing that count, and joins both
+scheduled and running operations. Deterministic actual public-receive pauses pass
+threaded `122521-090f75f3` and locking `122622-a0980575`, all four cells. NO_SYS
+excludes these APIs and keeps its applicable final-graph evidence. Initial
+fixture failure `122333-540a599b` is preserved; its transport pump had continued
+polling an intentionally disposed owner, so the witness now uses independent
+loopback owners.
+
+Checkpoint `aa2e23f1` commits exactly 38 implementation/test/doc paths listed in
+`artifacts/owning-checkpoint-files.json`. Nine pipeline checks, layout and syntax
+checks pass. Snapshot: `artifacts/owning-api-snapshot-20260929-1227.json`.
+Coordinator independently reverified all 145 authored source/build hashes,
+11 implementation hashes, 11 exact upstream records and 24 entrypoint groups.
+Policy SHA256: `53afae6f1815810e68901c915457b776f2c76f725a3b23039e392413cde0b52e`.
+No new compiler repair or upstream text patch was required. Older contrib and
+HTTP-content publications need refreshed capability metadata before facade use.
+
+Next implementation remains ZEP/full LOWPAN lifecycle and required default-off
+feature variants, followed by remaining application/contrib workflows and owning
+services. Typed interface identity and bounded pending TCP TIME_WAIT/fragment/
+ARP/ND shutdown observations remain open. Final aggregate verification,
+all-profile rooted AOT and reproduction gates remain incomplete.
+
+The next ZEP/radio/BLE batch must retain unchanged original algorithms, explicit
+shared radio/ZEP/borrowed timer leases, per-stack PAN/context/reassembly semantics,
+and stop/FIFO/free with retry ownership. Closing ZEP must preserve a surviving
+direct-radio lease and its fragments; the last lease releases pending resources.
+Qualify valid fragmentation/output/expiry and owner independence. The prototype's
+ZEP radio FCS bytes are being corrected to a real CRC before reruns; direct radio
+input uses its documented already-stripped-FCS contract. No custom malformed
+or corruption scenario may be added.

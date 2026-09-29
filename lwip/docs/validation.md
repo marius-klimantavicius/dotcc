@@ -8,13 +8,15 @@ results below are Linux x64. “Four cells” means raw/processed × JIT/NativeA
 
 The user subsequently restricted verification: **do not run corruption tests
 unless those exact scenarios exist as upstream tests**. Except for the explicitly
-identified permitted receipt below, indexed receipts predate that restriction and may include custom cases that are now
+identified permitted receipts below, indexed receipts predate that restriction and may include custom cases that are now
 excluded by the user. Preserve them as historical evidence; do not rerun or require
 those excluded cases. The source audit is complete in
 [`verification-policy.json`](../config/verification-policy.json): 13 custom case
 groups removed/replaced, 23 entrypoint groups including native prerequisites,
 137 authored source hashes, and 11 exact upstream case/file/registration records
-verified. No authored corruption exception is retained. Ordinary valid API errors, authentication rejection,
+verified. The owning checkpoint expands this to 24 entrypoint groups, 145 authored
+source/build hashes and 11 implementation hashes, independently verified again.
+No authored corruption exception is retained. Ordinary valid API errors, authentication rejection,
 lifecycle and non-corrupt timeout/loss/reordering controls remain eligible.
 
 ## Permitted verification after the user restriction
@@ -26,6 +28,62 @@ bridge. Removed custom corruption cases were not executed. This receipt qualifie
 the source snapshot before the current owning API implementation. Revised
 processed/AOT and alternate-profile matrices remain pending; it is not a full
 matrix pass. Source-policy checkpoint is `82eb1a4a`.
+
+The owning API, consumer, owner-lifecycle and pool-recovery suites subsequently
+passed **three profiles × four cells**: threaded `20260929-115825-fc8e63a0`,
+NO_SYS `20260929-120036-26c6b530`, locking `20260929-120312-d52e329b`.
+Product publications are respectively `20260929-114549-0edfd8d9`,
+`20260929-115149-f29bbb4b`, `20260929-115452-acdef463`. Socket/netconn cases
+apply only to threaded profiles; NO_SYS qualifies the owning resolver and common
+lifetime paths. Actual product metadata controls the facade's compiled API surface,
+and a mismatching explicit profile hint is rejected.
+
+These cases exercise copied socket/netconn buffers and endpoints, supported
+concurrent read/write/close, blocked-call cancellation, accepted children racing
+service shutdown, descriptor references before original syscall entry, and
+natural pool recovery. DNS cases cover IDNA, A/AAAA/cache/NXDOMAIN, copied results,
+late callbacks after cancellation and GC, pending-query disposal retries and
+owner independence. Ordinary interface backing survives queued callbacks through
+stop, a real FIFO barrier and free. No new upstream text repair was needed.
+
+The added interface-construction rollback fixture also passes the owning-only
+four-cell matrix on all three profiles: `20260929-120630-457be2fa`,
+`20260929-120955-dfcf28c1`, `20260929-121107-56ed1e8c`. It uses a real duplicate
+output registration from NETIF_ADDED, verifies restoration of the original
+interface/default route and heap/pbuf baseline, then unregisters the callback.
+Product implementation was unchanged for these additional fixture runs.
+
+Checkpoint **`aa2e23f1`** qualifies the subsequent final owning implementation and
+ordinary project-reference integration. The import uses static graph restore and
+normalizes only the selected product's duplicate reference; an unrelated two-hop
+project dependency remains available. The local relative NO_SYS consumer builds
+without command-line selection hints. Final receipts, all four cells:
+
+| Profile | Owning API | Consumer with final project graph |
+| --- | --- | --- |
+| Threaded | `20260929-122521-090f75f3` | `20260929-122007-dac94da8` |
+| NO_SYS | `20260929-121848-8f47f868` | `20260929-121848-8f47f868` |
+| Locking | `20260929-122622-a0980575` | `20260929-122125-d03caecf` |
+
+The final threaded owning runs additionally qualify async scheduling admission:
+accepted Tasks retain the owner and count toward disposal before a worker enters
+the original API. Completion settles before that accounting is released. A
+deterministic scheduling pause proves owner disposal waits, followed by valid
+traffic on owner B. These APIs are absent from NO_SYS, whose compiled applicable
+implementation is unchanged. Earlier owner-lifecycle/pool-recovery receipts retain
+their scoped unchanged behavior. Nine pipeline checks, layout and syntax checks
+also pass. Input snapshot: `artifacts/owning-api-snapshot-20260929-1227.json`.
+
+Older contrib and HTTP-content publications must be refreshed before referencing
+this facade because they lack the now-required capability metadata.
+
+Initial failure `20260929-114817-d24c28ac` is preserved: authored IPv6 fixed-buffer
+address expressions in the new facade were corrected before passing runs.
+Failure `20260929-121229-14960450` exposed the SDK restore-selection issue; failure
+`20260929-122333-540a599b` came from a fixture polling an intentionally disposed
+owner and was corrected to use independent loopback owners.
+These finite owning suites do not close full socket options, typed interface
+identity, pending protocol-specific services or the complete lifecycle gate.
 
 ## Migration and source snapshots
 
