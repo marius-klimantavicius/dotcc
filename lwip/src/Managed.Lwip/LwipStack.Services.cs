@@ -25,6 +25,10 @@ public sealed unsafe partial class LwipStack
         {
             ObjectDisposedException.ThrowIf(disposed||stopping,this);
             if(!started)throw new InvalidOperationException("Stack is not ready.");
+            // A successful native factory must not become untracked because
+            // its subsequent managed registration needs another allocation.
+            services.EnsureCapacity(services.Count+1);
+            afterCoreStop.EnsureCapacity(afterCoreStop.Count+1);
             T service;
             serviceConstructionDepth++;
             try{service=factory(this)??throw new InvalidOperationException("Service factory returned null.");}
@@ -45,6 +49,44 @@ public sealed unsafe partial class LwipStack
             disposalThread=Environment.CurrentManagedThreadId;
             try{Invoke(cleanup);}finally{disposalThread=0;}
         }
+    }
+    // Register an empty managed wrapper before it acquires native state. A
+    // failed rollback remains reachable through the owner's disposal registry.
+    internal T StartInitializedService<T>(Func<LwipStack,T> allocate,Action<T> initialize) where T:class,IDisposable
+    {
+        RejectCallbackReentry();lock(gate)
+        {
+            T service=StartService(allocate);
+            serviceConstructionDepth++;
+            try{initialize(service);return service;}
+            catch(Exception initialization)
+            {
+                try{service.Dispose();}
+                catch(Exception cleanup){throw new AggregateException("Service initialization and rollback failed; registered backing retained for stack disposal retry.",initialization,cleanup);}
+                services.Remove(service);
+                // Retained callback hooks survive ordinary registration removal
+                // until the core joins, just as after normal service stop.
+                throw;
+            }
+            finally{serviceConstructionDepth--;}
+        }
+    }
+    // Multi-phase link boundaries hold the existing facade gate on the caller
+    // thread. Invoke enters the core separately; FIFO waits never run on core.
+    internal void RunServiceBoundary(Action action)
+    {
+        RejectCallbackReentry();lock(gate)
+        {
+            ObjectDisposedException.ThrowIf(disposed,this);CheckServiceAdmission();
+            if(!started)throw new InvalidOperationException("Stack is not ready.");
+            action();
+        }
+    }
+    internal void ServiceBarrier()=>RunServiceBoundary(DrainCoreQueue);
+    internal void RequireOwnedInterface(nint value)
+    {
+        // Caller holds the facade service boundary, so removal cannot race.
+        if(value!=0&&!interfaces.Contains(value))throw new ArgumentException("The transport interface must belong to this stack.",nameof(value));
     }
     private void CheckServiceAdmission()
     {

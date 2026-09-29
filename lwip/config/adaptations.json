@@ -135,6 +135,36 @@
           "threaded-locking": "artifacts/campaign/20260929-111004-d11b3587/lowpan-vectors-report.json"
         }
       }
+    },
+    {
+      "id": "lowpan6-reordered-fragment-link",
+      "path": "src/netif/lowpan6.c",
+      "source_sha256": "9ebbe5af554f102e08cbbb0e4d46381c23a310bef8a7741e41f311c5d8d747c2",
+      "changes": [
+        {
+          "before": "      /* insert fragment */\n      if (last == NULL) {\n        lrh->frags = p;\n      } else {",
+          "after": "      /* insert fragment */\n      if (last == NULL) {\n        p->next = q;\n        lrh->frags = p;\n      } else {"
+        }
+      ],
+      "reason": "Valid unmodified radio output reordered as FRAG1, last FRAGN, intermediate FRAGNs loses the existing fragment tail on head insertion. No configuration or hook controls this local link assignment; a macro field substitution affects unrelated accesses and a typed whole-function replacement duplicates the parser algorithm. Add only the missing next link in the head-insertion branch. Same guarded staged input for native and translation; acquired reference unchanged.",
+      "classification": "upstream-bug-repair",
+      "guard": "one unique insert-fragment head branch; original source hash observational provenance",
+      "tests": [
+        "valid original emitted output at 17/900/1232/1233 payload bytes",
+        "unchanged duplicate and reordered complete fragments",
+        "natural heap/pbuf/timer baseline after close"
+      ],
+      "removal_condition": "Remove once upstream head insertion links the previous first fragment through p->next; changed local anchor requires review.",
+      "failure_evidence": "artifacts/lowpan-reorder-before-20260929/failure.json",
+      "validation": {
+        "native": "artifacts/zep-output-native/{threaded,nosys,threaded-locking}/report.json: identical fixture/config original-order exit92 versus staged full valid output/lifecycle exit0",
+        "managed": {
+          "threaded": "artifacts/campaign/20260929-141705-edad1d9e/lowpan-services-report.json",
+          "nosys": "artifacts/campaign/20260929-142119-7e9e1e2e/lowpan-services-report.json",
+          "threaded-locking": "artifacts/campaign/20260929-142515-eba9318e/lowpan-services-report.json"
+        },
+        "scope": "LOWPAN specialist report all4 passes per profile; locking combined receipt later failed in a separate PoolRecovery build, successfully retried without product changes."
+      }
     }
   ]
 }

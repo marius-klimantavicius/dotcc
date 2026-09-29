@@ -143,7 +143,8 @@
       "SNMP_USE_NETCONN": 0,
       "SNMP_USE_RAW": 1,
       "MIB2_STATS": 1,
-      "LWIP_IPV6_DHCP6": 1
+      "LWIP_IPV6_DHCP6": 1,
+      "IP_REASS_MAX_PBUFS": 32
     }
   },
   "nosys": {
@@ -290,7 +291,8 @@
       "SNMP_USE_NETCONN": 0,
       "SNMP_USE_RAW": 1,
       "MIB2_STATS": 1,
-      "LWIP_IPV6_DHCP6": 1
+      "LWIP_IPV6_DHCP6": 1,
+      "IP_REASS_MAX_PBUFS": 32
     }
   },
   "threaded-locking": {
@@ -440,7 +442,8 @@
       "ARP_QUEUEING": 1,
       "ARP_QUEUE_LEN": 8,
       "LQR_SUPPORT": 1,
-      "LWIP_IPV6_DHCP6": 1
+      "LWIP_IPV6_DHCP6": 1,
+      "IP_REASS_MAX_PBUFS": 32
     }
   },
   "unit": {
@@ -647,7 +650,8 @@
       "LWIP_DHCP_ENABLE_CLIENT_ID": 1,
       "LWIP_HOOK_FILENAME": "\"contrib/lwip_hooks.h\"",
       "LWIP_HOOK_TCP_ISN": "lwip_hook_tcp_isn",
-      "LWIP_IPV6_DHCP6": 1
+      "LWIP_IPV6_DHCP6": 1,
+      "IP_REASS_MAX_PBUFS": 32
     }
   },
   "http-content": {
@@ -796,7 +800,8 @@
       "MIB2_STATS": 1,
       "LWIP_IPV6_DHCP6": 1,
       "HTTPD_FSDATA_FILE": "\"dotcc_fsdata.c\"",
-      "HTTPD_PRECALCULATED_CHECKSUM": 1
+      "HTTPD_PRECALCULATED_CHECKSUM": 1,
+      "IP_REASS_MAX_PBUFS": 32
     },
     "purpose": "Full stack with actual translated makefsdata output consumed by original fs.c; precomputed HTTP checksums enabled"
   }

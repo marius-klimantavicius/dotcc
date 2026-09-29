@@ -7,7 +7,7 @@ import shutil
 
 def metadata(root):
     result = json.loads((root / 'config/adaptations.json').read_text())
-    allowed = {'makefsdata-checksum-progress', 'ipv4-forwarding-software-checksums', 'eap-request-invalid-state-release', 'lowpan6-short-source-address'}
+    allowed = {'makefsdata-checksum-progress', 'ipv4-forwarding-software-checksums', 'eap-request-invalid-state-release', 'lowpan6-short-source-address', 'lowpan6-reordered-fragment-link'}
     declared = [item['id'] for item in result['textPatches']]
     if len(declared) != len(set(declared)) or set(declared) != allowed:
         raise RuntimeError('Adaptation declarations must match the supported, profile-assigned repairs')
@@ -32,13 +32,13 @@ def makefsdata(root, source, destination):
     return evidence
 
 
-def _unit(root, source, destination, identifier, scope, report):
+def _unit(root, source, destination, identifier, scope, report, input_path=None):
     """Stage one corrected translation unit and return (path, evidence)."""
     root, source, destination = map(Path, (root, source, destination))
     repairs = metadata(root)
     repair = next(item for item in repairs['textPatches']
                   if item['id'] == identifier)
-    original = source / repair['path']
+    original = Path(input_path) if input_path is not None else source / repair['path']
     data = original.read_bytes()
     text = data.decode()
     changes = []
@@ -74,8 +74,15 @@ def lowpan_short_source(root, source, destination):
                  'IEEE802.15.4 short-source frame parsing', 'lowpan-adaptation.json')
 
 
-def product_units(root, source, destination):
+def lowpan_reordered_fragment(root, source, destination, input_path=None):
+    return _unit(root, source, destination, 'lowpan6-reordered-fragment-link',
+                 'Valid reordered FRAGN insertion retains existing tail', 'lowpan-reorder-adaptation.json', input_path)
+
+
+def product_units(root, source, destination, original_lowpan_order=False):
     units={};evidence=[]
     for stage in (ipv4_forwarding,eap_request,lowpan_short_source):
         path,repairs=stage(root,source,destination);units[repairs[0]['path']]=path;evidence.extend(repairs)
+    if not original_lowpan_order:
+        path,repairs=lowpan_reordered_fragment(root,source,destination,units['src/netif/lowpan6.c']);units['src/netif/lowpan6.c']=path;evidence.extend(repairs)
     return units,evidence

@@ -61,5 +61,24 @@ class StagingTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,'unique local condition'):
             stage.lowpan_short_source(self.root,self.source,self.root/'bad-lowpan')
 
+    def test_lowpan_composed_repairs_keep_previous_stage_and_guard_drift(self):
+        source=ROOT/'ref'/json.loads((ROOT/'config/sources.json').read_text())['directory']
+        path=self.source/'src/netif/lowpan6.c';path.parent.mkdir(parents=True)
+        original=(source/'src/netif/lowpan6.c').read_text()
+        path.write_text(original+'\n/* unrelated local source remains */\n')
+        destination=self.root/'lowpan-composed'
+        first,_=stage.lowpan_short_source(self.root,self.source,destination)
+        prior=first.read_text()
+        second,evidence=stage.lowpan_reordered_fragment(self.root,self.source,destination,first)
+        repair=next(item for item in stage.metadata(self.root)['textPatches'] if item['id']=='lowpan6-reordered-fragment-link')
+        change=repair['changes'][0]
+        self.assertEqual(second.read_text(),prior.replace(change['before'],change['after'],1))
+        self.assertIn('unrelated local source remains',second.read_text())
+        self.assertEqual(evidence[0]['changes'][0]['matches'],1)
+        self.assertNotIn('        p->next = q;\n        lrh->frags = p;',path.read_text())
+        second.write_text(prior+change['before'])
+        with self.assertRaisesRegex(RuntimeError,'unique local condition'):
+            stage.lowpan_reordered_fragment(self.root,self.source,destination,second)
+
 
 if __name__=='__main__':unittest.main()

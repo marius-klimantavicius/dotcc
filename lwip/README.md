@@ -50,3 +50,35 @@ with a local relative NO_SYS selection and no command-line product/profile hints
 Older auxiliary publications (including contrib and http-content) need a fresh
 translation before using the current facade, because capability metadata is now
 required alongside the generated project.
+
+`LwipLowpanLink` owns a radio, BLE, or ZEP interface and its shutdown. Radio and
+ZEP links in one stack share the original PAN, short address, compression contexts,
+reassembly list and timer; BLE has separate owner-wide peer/context state. Keep
+their configuration consistent within each stack. Different stacks have separate
+state. See [the radio/BLE/ZEP example and verification scope](tests/Zep/README.md).
+
+```csharp
+using System.Collections.Concurrent;
+using System.Net;
+using Managed.Networking;
+
+using var stack = new LwipStack();
+stack.Start();
+var outgoing = new ConcurrentQueue<byte[]>();
+LwipLowpanLink.ConfigureRadio(stack, 0x1234);
+using var radio = LwipLowpanLink.StartRadio(stack, IPAddress.Parse("fd00::1"),
+    new byte[] { 2, 0, 0, 0, 0, 1 }, outgoing.Enqueue);
+radio.SetDefaultRoute();
+// Drain outgoing on the transport side; each callback supplies an owned copy.
+// Supply complete received frames with their radio FCS already removed:
+// radio.Receive(frameWithoutFcs);
+```
+
+The output callback runs on the stack core and should enqueue its copied bytes.
+Deliver queued input outside callbacks. Radio output includes the original FCS;
+`Receive` takes a complete frame with that trailer already removed. BLE uses a
+complete L2CAP payload. Input is copied before entering the original algorithm.
+Disposing a link stops ingress, drains queued callbacks and then frees interface
+backing. Disposing the stack also closes its registered links. A surviving radio
+or ZEP link keeps the shared timer and pending reassembly until the last lease
+closes. Application-owned raw PCBs still require explicit cleanup.

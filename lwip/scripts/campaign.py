@@ -1,5 +1,6 @@
 """lwIP complete bundled-source translation, isolated host and profile selection."""
 import copy
+import hashlib
 import json
 import os
 import shutil
@@ -80,7 +81,7 @@ def prepare(ctx):
                            objects=True, configure=configure, finish=finish)
     if profile['kind'] == 'diagnostic':
         staged_units, repairs = {}, []
-        ctx.receipt['adaptation_inapplicability'] = {'ipv4-forwarding-software-checksums': 'Original diagnostic options select IP_FORWARD=0; native and managed diagnostics retain original ip4.c.', 'eap-request-invalid-state-release': 'Original diagnostic options leave EAP_SUPPORT=0; native and managed diagnostics retain original eap.c.', 'lowpan6-short-source-address': 'Diagnostic source closure does not select lowpan6.c.', 'ipv6-hop-limit-override': 'Original diagnostic options leave LWIP_IPV6_FORWARD=0; ordinary u8 output hop limits retain the original setter.'}
+        ctx.receipt['adaptation_inapplicability'] = {'ipv4-forwarding-software-checksums': 'Original diagnostic options select IP_FORWARD=0; native and managed diagnostics retain original ip4.c.', 'eap-request-invalid-state-release': 'Original diagnostic options leave EAP_SUPPORT=0; native and managed diagnostics retain original eap.c.', 'lowpan6-short-source-address': 'Diagnostic source closure does not select lowpan6.c.', 'lowpan6-reordered-fragment-link': 'Diagnostic source closure does not select lowpan6.c.', 'ipv6-hop-limit-override': 'Original diagnostic options leave LWIP_IPV6_FORWARD=0; ordinary u8 output hop limits retain the original setter.'}
     else:
         staged_units, repairs = helper(ctx.root / 'scripts/stage.py').product_units(ctx.root, source, ctx.work / 'source')
     ctx.receipt['adaptations'] = repairs
@@ -128,8 +129,18 @@ def prepare(ctx):
     ctx.receipt['source_wrappers'].append({'wrapper': str(ctx.root / 'src/port/socket_refs.c'),
         'includes': [str(source / 'src/api/sockets.c')],
         'scope': 'Original socket algorithms included unchanged; expose original private get_socket/done_socket references for owning call admission.'})
-    wrapped_sources = (*bridge_sources, 'src/api/sockets.c')
-    authored = [Unit(p, ('-I' + str(source / 'src'),) if p.name in ('bridge_service.c', 'socket_refs.c') else ()) for p in sorted((ctx.root / 'src/port').glob('*.c')) + sorted((ctx.root / 'src/Host').glob('*.c'))]
+    lowpan_sources = ('src/netif/lowpan6.c', 'src/netif/zepif.c')
+    included_lowpan = [staged_units.get(name, source / name) for name in lowpan_sources]
+    ctx.receipt['source_wrappers'].append({'wrapper': str(ctx.root / 'src/port/lowpan_service.c'),
+        'includes': [str(path) for path in included_lowpan],
+        'included_sha256': {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in included_lowpan},
+        'scope': 'Original staged LOWPAN and original ZEP algorithms; shared radio timer leases, separate BLE lifetime, core stop/FIFO/free boundary.'})
+    wrapped_sources = (*bridge_sources, 'src/api/sockets.c', *lowpan_sources)
+    def authored_flags(path):
+        if path.name == 'lowpan_service.c':
+            return ('-I' + str(ctx.work / 'source/src'), '-I' + str(source / 'src'))
+        return ('-I' + str(source / 'src'),) if path.name in ('bridge_service.c', 'socket_refs.c') else ()
+    authored = [Unit(p, authored_flags(p)) for p in sorted((ctx.root / 'src/port').glob('*.c')) + sorted((ctx.root / 'src/Host').glob('*.c'))]
     return Translation([*[source_unit(name, ('-DDOTCC_TCPIP_WORKER=1',) if name == 'src/api/tcpip.c' else ()) for name in selected if name not in wrapped_sources], *authored], options,
                        [*link_flags('Lwip', 'Managed.Networking'), '--instance-methods'],
                        objects=True, configure=configure, finish=finish, validate_objects=validate_objects)
@@ -210,6 +221,8 @@ def run_one(ctx, suite):
         return helper(ctx.root / 'scripts/tool-tests.py').run(ctx, suite)
     if suite.name == 'slip-framing':
         return helper(ctx.root / 'scripts/link-tests.py').run(ctx, suite)
+    if suite.name == 'lowpan-services':
+        return helper(ctx.root / 'scripts/lowpan-service-tests.py').run(ctx, suite)
     if suite.name == 'lowpan-vectors':
         return helper(ctx.root / 'scripts/lowpan-tests.py').run(ctx, suite)
     if suite.name == 'ppp-l2tp':
@@ -235,7 +248,7 @@ def validate_options(args):
 _product = ('threaded', 'nosys', 'threaded-locking')
 _suites = ('owned-api', 'oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
            'routing', 'links', 'ppp', 'applications', 'contrib', 'tools', 'upstream',
-           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ipv6-addressing', 'multicast-fixtures', 'ppp-serial', 'ppp-ethernet', 'ppp-l2tp', 'routing-ipv6', 'bridge-fixtures', 'lowpan-vectors')
+           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ipv6-addressing', 'multicast-fixtures', 'ppp-serial', 'ppp-ethernet', 'ppp-l2tp', 'routing-ipv6', 'bridge-fixtures', 'lowpan-vectors', 'lowpan-services')
 _applicability = {'tools': ('makefsdata', 'http-content'), 'tool-generator': ('makefsdata',), 'upstream': ('unit', 'unit-nosys'), 'contrib': ('contrib',),
                   'sysarch': ('threaded', 'threaded-locking'), 'socket-api': ('threaded', 'threaded-locking'),
                   'direct-apis': _product, 'socket-semantics': ('threaded', 'threaded-locking'), 'contrib-addons': ('contrib',), 'interop-kernel': _product, 'http-transactions': (*_product, 'http-content')}

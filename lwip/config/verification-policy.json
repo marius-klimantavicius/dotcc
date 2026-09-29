@@ -2,7 +2,7 @@
   "schema_version": 1,
   "recorded_date": "2026-09-29",
   "user_instruction": "For verification - do not do any corruption tests unless those exist in upstream.",
-  "status": "Reviewed permitted verification paths; scoped owning API and project-reference matrices passed. Remaining campaign gates and revised broader protocol matrices stay incomplete.",
+  "status": "Permitted verification inventory current; owning LOWPAN/ZEP/BLE finite input/output/lifetime matrix qualified on three product profiles, with common owning/lifecycle/pool/consumer regressions. Aggregate campaign gates remain open.",
   "upstream": {
     "repository": "https://github.com/lwip-tcpip/lwip",
     "commit": "77dcd25a72509eb83f72b033d219b1d40cd8eb95"
@@ -105,7 +105,7 @@
         "tests/Zep/native.c",
         "tests/Zep/native.py"
       ],
-      "retained": "Valid ZEP ingress, timer/fragment lifetime, partial-init rollback; prototype not registered as campaign suite",
+      "retained": "Valid ZEP ingress with genuine radio FCS, timer/fragment lifetime and partial-init rollback; now registered as finite lowpan-services, managed qualification pending.",
       "upstream_exception": null
     },
     {
@@ -768,6 +768,32 @@
         "tests/ReferenceLeaf/Leaf.cs",
         "tests/ReferenceLeaf/ReferenceLeaf.csproj"
       ]
+    },
+    {
+      "suites": [
+        "lowpan-services"
+      ],
+      "dispatcher": "scripts/lowpan-service-tests.py",
+      "managed": [
+        "tests/Zep/Program.cs",
+        "tests/Zep/Output.cs"
+      ],
+      "native": [
+        "tests/Zep/native.py",
+        "tests/Zep/native.c",
+        "tests/Zep/output.c"
+      ],
+      "shared_product_sources": [
+        "src/port/lowpan_service.c",
+        "src/port/lowpan_service.h",
+        "src/Managed.Lwip/LwipLowpanLink.cs",
+        "src/Managed.Lwip/LwipStack.Services.cs"
+      ],
+      "classification": "Valid coherent IPv4 UDP/ZEP with genuine radio FCS, independent radio/BLE IPHC, valid split fragments and pending-state cleanup, duplicate-bind/foreign-handle API rejection, owner lifetime and timer leases. Native REQUIRE(0) checks harness failure. No authored corruption input. Output extension uses original generated complete frames unchanged at MTU boundary, duplicate/reordered delivery and original expiry ticks; no header, payload or checksum mutation.",
+      "native_output_control": [
+        "tests/Zep/native.py --output-case",
+        "tests/Zep/output.c"
+      ]
     }
   ],
   "shared_helpers": [
@@ -778,17 +804,7 @@
     "scripts/stage.py",
     "scripts/ip6-hop.py"
   ],
-  "unregistered_prototypes": [
-    {
-      "paths": [
-        "tests/Zep/native.py",
-        "tests/Zep/native.c",
-        "tests/Zep/service.c",
-        "tests/Zep/service.h"
-      ],
-      "status": "Not selected by campaign; invalid-version probe removed; valid lifetime/fragment work remains unqualified managed."
-    }
-  ],
+  "unregistered_prototypes": [],
   "incomplete_aggregate_suites": [
     "packets",
     "socket-api",
@@ -822,7 +838,7 @@
     },
     {
       "path": "scripts/campaign.py",
-      "sha256": "8e83706179c4cbfc9666c88496d69deaa1bb852c98057c9ee7d0acd29bf0e424"
+      "sha256": "cf4ebfa6ec30e24a068136bb07043b8434f3f51fc834135988e17e6e70af3938"
     },
     {
       "path": "scripts/common.sh",
@@ -865,6 +881,10 @@
       "sha256": "d5dcb563578161a96ee141ad5cf166ab8b3aa1c20002020ccb0cfc0c4775a623"
     },
     {
+      "path": "scripts/lowpan-service-tests.py",
+      "sha256": "564219647dd34099a95a097d16e895ec1bbebbbdb6fa65406c6c224392159993"
+    },
+    {
       "path": "scripts/lowpan-tests.py",
       "sha256": "d06e25bc842ed1c3f8793967e4f4c220c9d3aac115970e1a7e1765dd71a8ccbb"
     },
@@ -902,7 +922,7 @@
     },
     {
       "path": "scripts/stage.py",
-      "sha256": "385fbb6faee8e0a6851ee5ecdf6b17790553da2caa790df2d9cab610571629bc"
+      "sha256": "95cbf0ae8ced0b84b3d95ff465a00e2d62771e303485ba9e67bf4a333cdf8418"
     },
     {
       "path": "scripts/test.py",
@@ -1166,7 +1186,7 @@
     },
     {
       "path": "tests/Pipeline/test_staging.py",
-      "sha256": "cb65458384b3aacded068e5381dba605c0a2957770dace9a1b8d5453b065b504"
+      "sha256": "ed9aefcdc41965756b19b9d47b46bafcb5c41e6b40e5fdc51c114cdcc09496ac"
     },
     {
       "path": "tests/PoolRecovery/BlockedService.cs",
@@ -1369,20 +1389,28 @@
       "sha256": "5f58dd820c43b653c8e63020f7a67e577efece8409affa9fa6cf4705c6eba6af"
     },
     {
+      "path": "tests/Zep/Program.cs",
+      "sha256": "179825c52789ab00f2dd36ff63424907ba3f765c77b315d2aee0171cd1f8b49f"
+    },
+    {
+      "path": "tests/Zep/ZepServices.csproj",
+      "sha256": "91f201bab00e3bfb80a342df95b3cff8d8bdc9a6ebdb38d57c28ae58b16504b3"
+    },
+    {
       "path": "tests/Zep/native.c",
-      "sha256": "a8942082b55081828b96c6173f71cc6660ab18c030f218a2a5ae347927382f69"
+      "sha256": "59bbb4eac6e535cdc027d243215c21d64e680ec3a668317e04f9405471fd4911"
     },
     {
       "path": "tests/Zep/native.py",
-      "sha256": "92de96a1fd4617b0e71cc64fe07535c764cce6c4777a3c90ba93d28d149ff94e"
+      "sha256": "e5616ff10c4347dcd2059b3e2019c01fa112125229d83e5c2dad6034a14ab4bc"
     },
     {
-      "path": "tests/Zep/service.c",
-      "sha256": "3a2052d696811acbf8ae7fc3d116caddd08a737745e07b36e8fd3457774340f3"
+      "path": "tests/Zep/output.c",
+      "sha256": "856cea1ee2aecd380a8237261361bca420ff2053b63ee6dfa5272388dd602e59"
     },
     {
-      "path": "tests/Zep/service.h",
-      "sha256": "e22645f814db641e39829fd629c196e6ec09ebaf3d79867ff283355d400bd552"
+      "path": "tests/Zep/Output.cs",
+      "sha256": "f7666b516498a622251cfd2cf959009f96c663c7fa485bce5793c172982062f5"
     }
   ],
   "validation": {
@@ -1426,6 +1454,35 @@
       "tests_passed": 9,
       "layout": "bash Scripts/campaign.sh layout lwip --check: layout OK",
       "syntax": "Named Python AST and project/import XML checks passed; git diff --check lwip clean."
+    },
+    "owning_api_qualified_commit": "aa2e23f1",
+    "lowpan_services": "Finite native+managed input/output/compression/MTU/unchanged duplicate/reorder/expiry/copy-retention/shared-timer/lifetime scope passed all3 profiles raw/processed JIT/NativeAOT. The locking combined receipt fails only at later PoolRecovery AOT build; its earlier LOWPAN/owned-api/lifecycle specialist reports pass all4. Fresh PoolRecovery/consumer retries below pass.",
+    "lowpan_resumed_review": "Fresh worker reviewed complete ZEP native/managed/output call paths: coherent IP/UDP lengths and checksums, genuine FCS, unmodified emitted fragments reordered/duplicated or lost, no corruption exception. Original assertion-failure runner control is permitted.",
+    "lowpan_reorder_review": "Coordinator approved one local missing p->next=q assignment after original valid FRAG1,last,intermediates traffic fails; unchanged output packet bytes, no corruption case. Exact native original/staged comparisons pending.",
+    "lowpan_reorder_native": "All3 same fixture/config: original head insertion fails exit92 at valid reordered delivery; staged one-assignment repair passes sizes/duplicate/reorder/expiry and natural baseline. artifacts/zep-output-original-order/{profile}/failure.json and artifacts/zep-output-native/{profile}/report.json.",
+    "lowpan_output_review": "Managed Output.cs uses original udp_sendto_if_src radio/BLE output; captures copied frames and re-injects unchanged frame bytes (radio FCS removed at documented input boundary). Positive FCS check, valid MTU boundaries, duplicate/reorder/loss, natural cleanup. Retained copies checked across subsequent sends and GC; no corruption tests.",
+    "lowpan_preserved_failure": "142515-eba9318e: locking final PoolRecovery AOT build hit MSB3883 product reference-copy IO lock. Legacy fixture graph lacked established canonical product import; duplicate product builds are the diagnosis, not independently proven from a build graph. Updated only PoolRecovery project to canonical import/reference pattern; all3 profiles/all4 cells pass fresh retries. Product and behavior source unchanged.",
+    "lowpan_publications": [
+      "20260929-141507-80ed4f8d",
+      "20260929-142007-5b497849",
+      "20260929-142357-b36aa0ed"
+    ],
+    "lowpan_behavior_receipts": {
+      "threaded": "20260929-141705-edad1d9e",
+      "nosys": "20260929-142119-7e9e1e2e",
+      "threaded-locking": "20260929-142515-eba9318e (passed specialist reports; overall later build failure)"
+    },
+    "lowpan_final_pool_receipts": {
+      "threaded": "20260929-142916-95783640",
+      "nosys": "20260929-142927-2dfeb959",
+      "threaded-locking": "20260929-142834-20facba6 (also consumer all4)"
+    },
+    "lowpan_reorder_comparison": "artifacts/lowpan-reorder-comparison-20260929.json: same fixture hash and profile-header bytes; exact one-assignment staged delta; original reorder failure and repaired natural baseline for all3 profiles.",
+    "lowpan_pipeline_checks": {
+      "passed": 10,
+      "layout": "layout OK",
+      "syntax": "Named Python AST and project XML pass",
+      "whitespace": "git diff --check lwip pass"
     }
   },
   "owning_api_implementation_paths": [
@@ -1459,7 +1516,7 @@
     },
     {
       "path": "src/Managed.Lwip/LwipStack.Services.cs",
-      "sha256": "e2b2a1c7257ab1a5dbbe696673ad46f6d5a8a9c9642c0c65d1f52079caa594f5"
+      "sha256": "23e2bde3fcd9c5db7de2096a745596bb350519d0bce1a20df5c08708aa524cbf"
     },
     {
       "path": "src/Managed.Lwip/LwipStack.cs",
@@ -1477,5 +1534,38 @@
   "superseded_prototype_archive": {
     "manifest": "artifacts/owned-api-prototype-history-20260929/manifest.json",
     "status": "Four superseded prototype files moved out of test project; owning fixtures compile production facade only."
+  },
+  "lowpan_service_implementation_paths": [
+    {
+      "path": "src/port/lowpan_service.c",
+      "sha256": "ad19b1fb9d8adb87689797b944c3b08056a796aeed0904a0af9075ca1c8dfad9"
+    },
+    {
+      "path": "src/port/lowpan_service.h",
+      "sha256": "e22645f814db641e39829fd629c196e6ec09ebaf3d79867ff283355d400bd552"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipLowpanLink.cs",
+      "sha256": "31ac3442b076d0fc025420ffe6f75f584556c9c329d87cb18eeefcabcf2abd72"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipStack.Services.cs",
+      "sha256": "23e2bde3fcd9c5db7de2096a745596bb350519d0bce1a20df5c08708aa524cbf"
+    }
+  ],
+  "lowpan_resource_configuration": {
+    "option": "IP_REASS_MAX_PBUFS",
+    "value": 32,
+    "profiles": [
+      "threaded",
+      "nosys",
+      "threaded-locking",
+      "contrib",
+      "http-content"
+    ],
+    "reason": "An IPv6 datagram just over 1280-byte radio MTU produces IPv6 fragments whose LOWPAN reassembly retains more than ten pbufs. Bound reassembly to 32 against existing PBUF_POOL_SIZE=256 (one eighth of pool), leaving 224 pool buffers for other use. Native and translated products use the same profile header. Original upstream diagnostic profiles remain unchanged.",
+    "profile_sha256": "45977b6c711c92feb8380dd7753c3568088f9ca5bed04d07033bc182a454f7a1",
+    "control_report": "artifacts/zep-resource-limit10/nosys/report.json",
+    "history": "Initial interrupted-worker default10 output log was overwritten by resumed per-profile runner; only historical handoff summary remains. Distinct fresh isolated control reproduces same valid MTU+1 resource failure against current passing limit32 fixture."
   }
 }
