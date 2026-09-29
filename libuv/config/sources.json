@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "product": {
+    "name": "libuv",
+    "version": "1.52.1",
+    "revision": "1cfa32ff59c076ffb6ed735bbc8c18361558661f",
+    "url": "https://github.com/libuv/libuv/archive/1cfa32ff59c076ffb6ed735bbc8c18361558661f.tar.gz",
+    "archive": "libuv-1.52.1.tar.gz",
+    "directory": "libuv-1cfa32ff59c076ffb6ed735bbc8c18361558661f",
+    "required": [
+      "CMakeLists.txt",
+      "Makefile.am",
+      "include/uv.h",
+      "src/uv-common.c",
+      "test/test-list.h",
+      "LICENSE"
+    ],
+    "sha256": "3abc9a0542cccce3dc820aa7b85e44ab20c102625ebb0b78c72dfb4e30335530"
+  },
+  "test_oracle": "product",
+  "native_peer": "authored tests/native peer; no extra downloaded source",
+  "hash_policy": "warn"
+}

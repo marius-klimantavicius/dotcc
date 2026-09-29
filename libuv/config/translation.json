@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "profile": "native-runtime",
+  "product": "TranslatedLibuv",
+  "namespace": "Managed.Libuv.Translated",
+  "dialect": "gnu11",
+  "runtime_backend_selection": true,
+  "all_backends_required": true,
+  "publication_status": "blocked: backend aggregation and native-call binding incomplete",
+  "diagnostic_defines": ["_GNU_SOURCE", "_POSIX_C_SOURCE=200112", "__linux__"],
+  "diagnostic_units": ["src/version.c", "src/strtok.c", "src/strscpy.c", "src/timer.c", "src/unix/core.c", "src/unix/linux.c"],
+  "link_defaults": {"split_size": 262144, "literal_pool": true, "deduplicate_inline": true},
+  "required_suites": ["source-coverage", "abi", "dispatch", "consumer", "upstream", "lifecycle", "process-signal", "native-calls", "interop", "capabilities", "delivery"],
+  "implemented_suites": ["inventory", "native-baseline"]
+}
