@@ -678,6 +678,41 @@
         "method": "global::Managed.Networking.LwipFrames.Send",
         "passInstance": true
       }
+    },
+    {
+      "name": "lwip_host_sntp_time",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "unsigned int",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipUdpApplications.SntpTime",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "tftp_put",
+      "signature": {
+        "returnType": "signed char",
+        "parameterTypes": [
+          "void *",
+          "const struct ip_addr *",
+          "unsigned short",
+          "const char *",
+          "enum tftp_transfer_mode"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipUdpApplications.TftpPut",
+        "passInstance": true
+      }
     }
   ]
 }

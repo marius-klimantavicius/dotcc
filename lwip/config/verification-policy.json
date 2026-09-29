@@ -2,7 +2,7 @@
   "schema_version": 1,
   "recorded_date": "2026-09-29",
   "user_instruction": "For verification - do not do any corruption tests unless those exist in upstream.",
-  "status": "Permitted verification inventory current; owning LOWPAN/ZEP/BLE finite input/output/lifetime matrix qualified on three product profiles, with common owning/lifecycle/pool/consumer regressions. Aggregate campaign gates remain open.",
+  "status": "Owning LOWPAN and finite enhanced/UDP milestone qualified. Ten enhanced options and seven UDP application cases have matching native and raw/processed JIT/AOT evidence; broader required option/application/contrib and final aggregate gates remain open.",
   "upstream": {
     "repository": "https://github.com/lwip-tcpip/lwip",
     "commit": "77dcd25a72509eb83f72b033d219b1d40cd8eb95"
@@ -794,6 +794,105 @@
         "tests/Zep/native.py --output-case",
         "tests/Zep/output.c"
       ]
+    },
+    {
+      "suites": [
+        "udp-app-tftp-server",
+        "udp-app-tftp-get",
+        "udp-app-tftp-put",
+        "udp-app-sntp",
+        "udp-app-netbios",
+        "udp-app-mdns",
+        "udp-app-owned-tftp"
+      ],
+      "status": "Qualified seven finite cases on threaded/nosys/threaded-locking, raw/processed JIT/AOT; broader application variants remain required.",
+      "dispatcher": "tests/Applications.Udp/campaign-runner.py",
+      "managed": [
+        "tests/Applications.Udp/Program.cs",
+        "tests/Applications.Udp/UdpPeer.cs",
+        "tests/Applications.Udp/TftpCases.cs",
+        "tests/Applications.Udp/SntpCases.cs",
+        "tests/Applications.Udp/NetbiosCases.cs",
+        "tests/Applications.Udp/MdnsCases.cs",
+        "tests/Applications.Udp/Applications.Udp.csproj",
+        "tests/Applications.Udp/OwnedTftpCases.cs"
+      ],
+      "native": [
+        "tests/Applications.Udp/native.py",
+        "tests/Applications.Udp/native-main.c",
+        "tests/Applications.Udp/native-common.h",
+        "tests/Applications.Udp/native-tftp.c",
+        "tests/Applications.Udp/native-services.c",
+        "tests/Applications.Udp/sntp-clock.c",
+        "tests/Applications.Udp/sntp-clock.h",
+        "tests/Applications.Udp/native-product-adapter.h"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/sys_arch.c",
+        "src/Host/bridge.c",
+        "src/port/lwipopts.h",
+        "src/port/arch/cc.h",
+        "src/port/arch/sys_arch.h",
+        "src/port/ip6-hop-limit-native.h",
+        "scripts/profiles.py",
+        "scripts/stage.py",
+        "scripts/ip6-hop.py",
+        "config/sources.json",
+        "config/profiles.json",
+        "config/source-groups.json",
+        "config/adaptations.json",
+        "config/ip6-hop-contract.json",
+        "src/port/udp_app_services.c",
+        "src/port/udp_app_services.h",
+        "src/Host/LwipUdpApplications.cs",
+        "src/Managed.Lwip/LwipSntpClient.cs",
+        "src/Managed.Lwip/LwipTftpService.cs",
+        "scripts/udp-app-contract.py",
+        "config/udp-app-contract.json"
+      ],
+      "upstream_groups": [
+        "lwipcore_SRCS",
+        "lwipcore4_SRCS",
+        "lwipcore6_SRCS",
+        "lwipapi_SRCS",
+        "lwipppp_SRCS",
+        "lwipsntp_SRCS",
+        "lwiptftp_SRCS",
+        "lwipnetbios_SRCS",
+        "lwipmdns_SRCS"
+      ],
+      "upstream_additions": [
+        "src/netif/ethernet.c"
+      ],
+      "control": "Immediate deliberate assertion failure before stack initialization; no packet input. No existing oracle workload is invoked implicitly.",
+      "permitted_scope": "Normal coherent TFTP RRQ/WRQ/GET/PUT, exact block/ACK/terminal data; unicast SNTP request/reply echoing originate timestamp; NetBIOS NB address query; mDNS legacy-unicast PTR/SRV/TXT response and callback removal. Bounds checks parse outputs only. Owning singleton admission, API rollback, bounded storage/file count, explicit pending client cancellation, original server no-ACK retry/timeout, natural cleanup and owner survival. Borrowed original client rejects owning construction with ERR_USE after host claim/context allocation, then completes a coherent original GET; original cleanup permits owning restart.",
+      "clock_boundary": "SNTP owner-bound copied raw NTP notification via original setter macro; native captures same words. TFTP timeout advances host clock only, original scheduling/retries run unchanged.",
+      "exclusions": "No corruption or modified packet bytes. Typed tiny PUT entry helper is guarded and compared against original failure, not an upstream text patch. Broader app variants remain open."
+    },
+    {
+      "suites": [
+        "enhanced-options"
+      ],
+      "dispatcher": "scripts/enhanced-tests.py",
+      "managed": [
+        "tests/Enhanced/Enhanced.csproj",
+        "tests/Enhanced/Program.cs"
+      ],
+      "native": [
+        "tests/Enhanced/native.py",
+        "tests/Enhanced/native.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/sys_arch.c",
+        "src/Host/bridge.c",
+        "scripts/profiles.py",
+        "scripts/stage.py",
+        "scripts/ip6-hop.py"
+      ],
+      "status": "Qualified ten declared positive options on threaded-enhanced, raw/processed JIT/AOT; partial option inventory remains explicit.",
+      "permitted_scope": "Independent coherent IPv4 TCP SYN/ACK with legal MSS/SACK/window-scale/timestamp options; complete pre-encoded unchanged data segments delivered later then earlier; ordinary broadcast UDP copies; IPv4 IP_PKTINFO and IPv6 netbuf destination; FIONREAD queued legal datagrams; linger0 close with genuinely unacknowledged original data; deterministic original posted timeout/cancel, remove callback; two owners and survivor, native-derived layout/window and natural heap/PBUF_POOL/TCP_PCB/UDP_PCB/NETCONN/NETBUF/TCP_PCB_LISTEN cleanup.",
+      "wire_record": "Each peer and stack packet recorded in exact wire hex and checked for complete IPv4 length/header and TCP/UDP checksum coherence. No parser corruption input.",
+      "control": "Immediate assertion failure before stack initialization; no packet."
     }
   ],
   "shared_helpers": [
@@ -821,6 +920,18 @@
   ],
   "audited_authored_paths": [
     {
+      "path": "config/dotcc-overrides.json",
+      "sha256": "c96fbe92ac0388b09c929ecb5529ac3d395c83642a046456d0efd438b77f56f3"
+    },
+    {
+      "path": "config/feature-options.json",
+      "sha256": "896bbe61e732fcfad9a54a408f2ebf9cd8a40508e0b1e802a8bec6279f616864"
+    },
+    {
+      "path": "config/udp-app-contract.json",
+      "sha256": "b775352ef960d8c0718ac8091a445cd1af6bfbed1130003e8b6564c383085abb"
+    },
+    {
       "path": "samples/ManagedConsumer/ManagedConsumer.csproj",
       "sha256": "7ac18d8e10ab254a34c0ceef5bf36e4e173a69cfe1237f2e80f6e9016c58f3ce"
     },
@@ -838,7 +949,7 @@
     },
     {
       "path": "scripts/campaign.py",
-      "sha256": "cf4ebfa6ec30e24a068136bb07043b8434f3f51fc834135988e17e6e70af3938"
+      "sha256": "d758938f7222151594af0f33cc813f31173c49615aa77844ae1c10bd9432fe62"
     },
     {
       "path": "scripts/common.sh",
@@ -849,8 +960,12 @@
       "sha256": "57613a36e40cb7b2f0a66ed4f147558ad263d8480fb5d216b100cb92eb930c5f"
     },
     {
+      "path": "scripts/enhanced-tests.py",
+      "sha256": "403d0850bd32f128bc5891b2c45fdebefe780821a11b0e118e63fd078eb40c71"
+    },
+    {
       "path": "scripts/feature-audit.py",
-      "sha256": "1834bddf093020ab2274512fc5af9e8b04ce6335e1c5b381acbe9853394c0053"
+      "sha256": "51799d2e2cfce333e9cf1ddfd60afc5c53a08b8f9088380f101a82c0e76e852c"
     },
     {
       "path": "scripts/fetch.sh",
@@ -941,12 +1056,36 @@
       "sha256": "f76c6f1d81661c318b8aaab29ebfcdbb67b502cbbe19b88fa29992af5e4686c2"
     },
     {
+      "path": "scripts/udp-app-contract.py",
+      "sha256": "99932c0d593817027a31a6137d97c4dae22ea6c8a9e3d6d698f5b2d831e4a9bc"
+    },
+    {
       "path": "scripts/upstream-tests.py",
       "sha256": "bef44b6a4c4c7cc3b1970276cb2ec5aaa6f9d58e3f2323d3c289c740f7974455"
     },
     {
       "path": "scripts/verify.sh",
       "sha256": "a286887ad9ba44407d8785386b5de1b18a91399e9d3aef5b823b80af8258365b"
+    },
+    {
+      "path": "src/Host/LwipUdpApplications.cs",
+      "sha256": "068ff7a57656c32d092a369e759c90baa4f3530481b8a150294d7982574cdf60"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipSntpClient.cs",
+      "sha256": "39351b93349674b7af69f1b1557024d7cbe64e557d6a548e2853896f53a7f91e"
+    },
+    {
+      "path": "src/Managed.Lwip/LwipTftpService.cs",
+      "sha256": "0eda269d4b9f5aea48735f02d88f89d677dba72ff29079319fecdf7e27b3a4ba"
+    },
+    {
+      "path": "src/port/udp_app_services.c",
+      "sha256": "8cb2d3085092dadccf985b89f0ad0ad3919bc89f4b7679fe0c451562f625172d"
+    },
+    {
+      "path": "src/port/udp_app_services.h",
+      "sha256": "8f3a8e1efa728b275b077795e40e7e3fb411e3eafe354804aa5dd26bc2674eb1"
     },
     {
       "path": "tests/Abi/Program.cs",
@@ -989,6 +1128,78 @@
       "sha256": "189f3576b196f4277fc4d11d52c3b70bf561b07a524eaa3e5f6e32b291e61b36"
     },
     {
+      "path": "tests/Applications.Udp/Applications.Udp.csproj",
+      "sha256": "8bebcbc9f981ae50b7f7f281c84ba96c09bef92a05d0d7d71dc94f6091fb75ed"
+    },
+    {
+      "path": "tests/Applications.Udp/MdnsCases.cs",
+      "sha256": "6a9c78cef2be2c50926660fd7bad5dfabe450bccecd6713ebc8157b6604cfed2"
+    },
+    {
+      "path": "tests/Applications.Udp/NetbiosCases.cs",
+      "sha256": "5ee3bdeb9e967e4a34cf359d6f1351b6608dc3f8cdab3e622b34737a1904cab1"
+    },
+    {
+      "path": "tests/Applications.Udp/OwnedTftpCases.cs",
+      "sha256": "edc690b7c40d175e943f5650057c4ecac0a29698dca1b859ba05cd0554e0d5e3"
+    },
+    {
+      "path": "tests/Applications.Udp/Program.cs",
+      "sha256": "c734fbed46c356cad60343c6410550ed9a20c3a8dddc4466e8337137f6150204"
+    },
+    {
+      "path": "tests/Applications.Udp/README.md",
+      "sha256": "35c634af1bf2ac30ce7b30292a2a6d8b0785b79bf7353fca1d280b954af3e208"
+    },
+    {
+      "path": "tests/Applications.Udp/SntpCases.cs",
+      "sha256": "590666a81347f982d5ba03291e6f61b195d333a6e604826e36d1909f6875fca7"
+    },
+    {
+      "path": "tests/Applications.Udp/TftpCases.cs",
+      "sha256": "ba5c931f6e029b882e32287671c29a62fd38dab97f4228ce45c10d7b816decc6"
+    },
+    {
+      "path": "tests/Applications.Udp/UdpPeer.cs",
+      "sha256": "bca9895bd995eaa10ce22abc36b8b42bb9179a85d0b140a0309b8af0c59bf6f5"
+    },
+    {
+      "path": "tests/Applications.Udp/campaign-runner.py",
+      "sha256": "75ded7db483fdf31fa7d174163c18c521bdbee0d0dc40b6f35b0525a06964e77"
+    },
+    {
+      "path": "tests/Applications.Udp/native-common.h",
+      "sha256": "f8fa34be111f854a508c6a606c6368cc563075f3d2ac33ad78f39abdabc24df2"
+    },
+    {
+      "path": "tests/Applications.Udp/native-main.c",
+      "sha256": "98a638847dc49a302618761b8a1487e6ac4d9741fbe69982776cf4cd80d2680b"
+    },
+    {
+      "path": "tests/Applications.Udp/native-product-adapter.h",
+      "sha256": "b98518a553f73fdeb47f511d5f4b3bc6a3e970308292b53f797ada5d8c7e6ccb"
+    },
+    {
+      "path": "tests/Applications.Udp/native-services.c",
+      "sha256": "9aec8788d598f83b225a7727d0ba22c7416c6849155c482d4d73ad57d5e1dd21"
+    },
+    {
+      "path": "tests/Applications.Udp/native-tftp.c",
+      "sha256": "2e1adf37edaa607658fe2e4f53de0e66db41f541f31f665f0d1e35c9da7ce9ea"
+    },
+    {
+      "path": "tests/Applications.Udp/native.py",
+      "sha256": "2952c95deb4c612d00082a8fd1a8f466043d24dbdfcdd0aa171cb7ed15bf2185"
+    },
+    {
+      "path": "tests/Applications.Udp/sntp-clock.c",
+      "sha256": "a19d14684de8d03a399741cb78289199b3b5368f5f46ac964c038f51769d7edf"
+    },
+    {
+      "path": "tests/Applications.Udp/sntp-clock.h",
+      "sha256": "11d9b6f603929236b69fbc1a723ae3f0765cc2a36eb4d1ec2e759c11d81aa804"
+    },
+    {
       "path": "tests/Applications/Program.cs",
       "sha256": "d7bd34f50e645a1f3faac2759e4ccf0e7025b5da8895dada312fe971454a83b9"
     },
@@ -1023,6 +1234,22 @@
     {
       "path": "tests/Contrib/native.py",
       "sha256": "f8781930e0ed5ff213f0f87ad20f9a314e6815e8c5a6fefd97cc9c84862e0da6"
+    },
+    {
+      "path": "tests/Enhanced/Enhanced.csproj",
+      "sha256": "5f24337e11214574b4e46f2058c63839e9f73670abf64594b925c413f47d2b12"
+    },
+    {
+      "path": "tests/Enhanced/Program.cs",
+      "sha256": "cc40151d3274d55804a112b23261cd583772b80cb46f1433651deeb278f50e06"
+    },
+    {
+      "path": "tests/Enhanced/native.c",
+      "sha256": "41bc0d72997bf6b6aa3a0a925ac0d758c63fed1547b99eae478acb26d7478769"
+    },
+    {
+      "path": "tests/Enhanced/native.py",
+      "sha256": "e69f7a50c5e578df3945d107f8a45bfc1779acc34647befece84c5bc9732e765"
     },
     {
       "path": "tests/IndependentPeer/Program.cs",
@@ -1182,7 +1409,7 @@
     },
     {
       "path": "tests/Pipeline/test_recipe.py",
-      "sha256": "6ce291f8da7624bfe954b37e6c0ce5f11732c78b58f54340963043146935fa12"
+      "sha256": "3842aa7baf8249c4ed9b1df8c2384b15b3b0249fdc021fbc4111f7dc6b7b7a39"
     },
     {
       "path": "tests/Pipeline/test_staging.py",
@@ -1389,6 +1616,10 @@
       "sha256": "5f58dd820c43b653c8e63020f7a67e577efece8409affa9fa6cf4705c6eba6af"
     },
     {
+      "path": "tests/Zep/Output.cs",
+      "sha256": "f7666b516498a622251cfd2cf959009f96c663c7fa485bce5793c172982062f5"
+    },
+    {
       "path": "tests/Zep/Program.cs",
       "sha256": "179825c52789ab00f2dd36ff63424907ba3f765c77b315d2aee0171cd1f8b49f"
     },
@@ -1409,8 +1640,8 @@
       "sha256": "856cea1ee2aecd380a8237261361bca420ff2053b63ee6dfa5272388dd602e59"
     },
     {
-      "path": "tests/Zep/Output.cs",
-      "sha256": "f7666b516498a622251cfd2cf959009f96c663c7fa485bce5793c172982062f5"
+      "path": "src/port/sntp_service.c",
+      "sha256": "dae586e127c999025f424032a7f5b43b1f169527bca2f9bc33a965b9e8dcdbe0"
     }
   ],
   "validation": {
@@ -1483,7 +1714,8 @@
       "layout": "layout OK",
       "syntax": "Named Python AST and project XML pass",
       "whitespace": "git diff --check lwip pass"
-    }
+    },
+    "udp_application_draft_review": "Primary and coordinator reviewed complete native/managed draft source and runner paths. Source hashes recorded before first native execution; drafts remain unregistered and unqualified. Speculative test-only SNTP observer is not product implementation. Shared metadata frozen for short secondary native-only window."
   },
   "owning_api_implementation_paths": [
     {
@@ -1567,5 +1799,641 @@
     "profile_sha256": "45977b6c711c92feb8380dd7753c3568088f9ca5bed04d07033bc182a454f7a1",
     "control_report": "artifacts/zep-resource-limit10/nosys/report.json",
     "history": "Initial interrupted-worker default10 output log was overwritten by resumed per-profile runner; only historical handoff summary remains. Distinct fresh isolated control reproduces same valid MTU+1 resource failure against current passing limit32 fixture."
+  },
+  "udp_application_draft_snapshot": {
+    "state": "Historical field name retained by native runner; current seven finite application suites qualified on all three baseline profiles/four cells, including owning TFTP/SNTP.",
+    "paths": [
+      {
+        "path": "tests/Applications.Udp/Applications.Udp.csproj",
+        "sha256": "8bebcbc9f981ae50b7f7f281c84ba96c09bef92a05d0d7d71dc94f6091fb75ed"
+      },
+      {
+        "path": "tests/Applications.Udp/MdnsCases.cs",
+        "sha256": "6a9c78cef2be2c50926660fd7bad5dfabe450bccecd6713ebc8157b6604cfed2"
+      },
+      {
+        "path": "tests/Applications.Udp/NetbiosCases.cs",
+        "sha256": "5ee3bdeb9e967e4a34cf359d6f1351b6608dc3f8cdab3e622b34737a1904cab1"
+      },
+      {
+        "path": "tests/Applications.Udp/OwnedTftpCases.cs",
+        "sha256": "edc690b7c40d175e943f5650057c4ecac0a29698dca1b859ba05cd0554e0d5e3"
+      },
+      {
+        "path": "tests/Applications.Udp/Program.cs",
+        "sha256": "c734fbed46c356cad60343c6410550ed9a20c3a8dddc4466e8337137f6150204"
+      },
+      {
+        "path": "tests/Applications.Udp/README.md",
+        "sha256": "35c634af1bf2ac30ce7b30292a2a6d8b0785b79bf7353fca1d280b954af3e208"
+      },
+      {
+        "path": "tests/Applications.Udp/SntpCases.cs",
+        "sha256": "590666a81347f982d5ba03291e6f61b195d333a6e604826e36d1909f6875fca7"
+      },
+      {
+        "path": "tests/Applications.Udp/TftpCases.cs",
+        "sha256": "ba5c931f6e029b882e32287671c29a62fd38dab97f4228ce45c10d7b816decc6"
+      },
+      {
+        "path": "tests/Applications.Udp/UdpPeer.cs",
+        "sha256": "bca9895bd995eaa10ce22abc36b8b42bb9179a85d0b140a0309b8af0c59bf6f5"
+      },
+      {
+        "path": "tests/Applications.Udp/campaign-runner.py",
+        "sha256": "75ded7db483fdf31fa7d174163c18c521bdbee0d0dc40b6f35b0525a06964e77"
+      },
+      {
+        "path": "tests/Applications.Udp/native-common.h",
+        "sha256": "f8fa34be111f854a508c6a606c6368cc563075f3d2ac33ad78f39abdabc24df2"
+      },
+      {
+        "path": "tests/Applications.Udp/native-main.c",
+        "sha256": "98a638847dc49a302618761b8a1487e6ac4d9741fbe69982776cf4cd80d2680b"
+      },
+      {
+        "path": "tests/Applications.Udp/native-product-adapter.h",
+        "sha256": "b98518a553f73fdeb47f511d5f4b3bc6a3e970308292b53f797ada5d8c7e6ccb"
+      },
+      {
+        "path": "tests/Applications.Udp/native-services.c",
+        "sha256": "9aec8788d598f83b225a7727d0ba22c7416c6849155c482d4d73ad57d5e1dd21"
+      },
+      {
+        "path": "tests/Applications.Udp/native-tftp.c",
+        "sha256": "2e1adf37edaa607658fe2e4f53de0e66db41f541f31f665f0d1e35c9da7ce9ea"
+      },
+      {
+        "path": "tests/Applications.Udp/native.py",
+        "sha256": "2952c95deb4c612d00082a8fd1a8f466043d24dbdfcdd0aa171cb7ed15bf2185"
+      },
+      {
+        "path": "tests/Applications.Udp/sntp-clock.c",
+        "sha256": "a19d14684de8d03a399741cb78289199b3b5368f5f46ac964c038f51769d7edf"
+      },
+      {
+        "path": "tests/Applications.Udp/sntp-clock.h",
+        "sha256": "11d9b6f603929236b69fbc1a723ae3f0765cc2a36eb4d1ec2e759c11d81aa804"
+      }
+    ],
+    "input_ownership": "Exclusive shared source/config freeze before native execution; output commands/reports must preserve selected source/profile hashes.",
+    "product_acceptance": true,
+    "native_dependency_paths": [
+      {
+        "path": "config/adaptations.json",
+        "sha256": "0ea5628767311457896d9099c30ce0f11dc95cf7037de09ee7f0cad03b4d5c91"
+      },
+      {
+        "path": "config/ip6-hop-contract.json",
+        "sha256": "a254fe09d2cc1991dc1b28863ca89107d9e56aaccbad25a93dd4f26e493e9b0e"
+      },
+      {
+        "path": "config/profiles.json",
+        "sha256": "ee2a00a860a57f107b5c268a7c232d67eb02b2cee3cc30ba00752cd6c374d695"
+      },
+      {
+        "path": "config/source-groups.json",
+        "sha256": "9c87450fa9efb2e8a8d93e0acce7f7a2a151a4e3c30457090c0d37d282a2179f"
+      },
+      {
+        "path": "config/sources.json",
+        "sha256": "32337d0f4b33e42920350e1729fc237f329e03c4eb00afffb94a7477f2758888"
+      },
+      {
+        "path": "config/udp-app-contract.json",
+        "sha256": "b775352ef960d8c0718ac8091a445cd1af6bfbed1130003e8b6564c383085abb"
+      },
+      {
+        "path": "scripts/ip6-hop.py",
+        "sha256": "65ab276261cf9c2f710e5a72eb50647d9793d1b3eedacf69332518b50cab879b"
+      },
+      {
+        "path": "scripts/profiles.py",
+        "sha256": "76398d7e957440dbc3e2c9dc790eec36344d56306a90db01127bd1fcb645bd90"
+      },
+      {
+        "path": "scripts/stage.py",
+        "sha256": "95cbf0ae8ced0b84b3d95ff465a00e2d62771e303485ba9e67bf4a333cdf8418"
+      },
+      {
+        "path": "scripts/udp-app-contract.py",
+        "sha256": "99932c0d593817027a31a6137d97c4dae22ea6c8a9e3d6d698f5b2d831e4a9bc"
+      },
+      {
+        "path": "src/Host/LwipUdpApplications.cs",
+        "sha256": "068ff7a57656c32d092a369e759c90baa4f3530481b8a150294d7982574cdf60"
+      },
+      {
+        "path": "src/Host/bridge.c",
+        "sha256": "7b9e4cbd69ef97ea2556cb75cbb8a0344f34704a9f40368a921543b3743ac85b"
+      },
+      {
+        "path": "src/Managed.Lwip/LwipSntpClient.cs",
+        "sha256": "39351b93349674b7af69f1b1557024d7cbe64e557d6a548e2853896f53a7f91e"
+      },
+      {
+        "path": "src/Managed.Lwip/LwipTftpService.cs",
+        "sha256": "0eda269d4b9f5aea48735f02d88f89d677dba72ff29079319fecdf7e27b3a4ba"
+      },
+      {
+        "path": "src/port/arch/cc.h",
+        "sha256": "54eebef4ffaa7c678a014d96fc367cef220f136053834940050940f8c7cfe70b"
+      },
+      {
+        "path": "src/port/arch/sys_arch.h",
+        "sha256": "0b293e79515b3d81e3e14cfae1ef3a8fda42a5b64c46a669c16fe0396f59d17e"
+      },
+      {
+        "path": "src/port/ip6-hop-limit-native.h",
+        "sha256": "9c216aa0dda66dcc64204375096d2f29c5a79f1f75fe2163d1aebc5cd359cc23"
+      },
+      {
+        "path": "src/port/lwipopts.h",
+        "sha256": "778d94031b17faee452cb5a38964bb4cd61fce48dabd733b2fecaf2d2e83aead"
+      },
+      {
+        "path": "src/port/udp_app_services.c",
+        "sha256": "8cb2d3085092dadccf985b89f0ad0ad3919bc89f4b7679fe0c451562f625172d"
+      },
+      {
+        "path": "src/port/udp_app_services.h",
+        "sha256": "8f3a8e1efa728b275b077795e40e7e3fb411e3eafe354804aa5dd26bc2674eb1"
+      },
+      {
+        "path": "tests/NativeOracle/sys_arch.c",
+        "sha256": "5d31763f8bf3fd8e00cccc0b48d149b191f934b7a0606aaff512791a10ab1bc3"
+      },
+      {
+        "path": "src/port/sntp_service.c",
+        "sha256": "dae586e127c999025f424032a7f5b43b1f169527bca2f9bc33a965b9e8dcdbe0"
+      }
+    ],
+    "original_units": [
+      {
+        "path": "src/core/init.c",
+        "sha256": "e79eface962c17e082bc6d2f9bc0eef16be4cbef1deca3e8248fc7b171b0a49f"
+      },
+      {
+        "path": "src/core/def.c",
+        "sha256": "a12f3ef6c087efb6d4ec524cf332ff438d2504c17d60c263d0bb1b82b79eb2cd"
+      },
+      {
+        "path": "src/core/dns.c",
+        "sha256": "fe35ede9919974da54598630cc08d654ccc30b668c45b09668c3ba572686b26c"
+      },
+      {
+        "path": "src/core/inet_chksum.c",
+        "sha256": "fc82b44fc866704a51c0aacd6037b10802b88e8576e1b691917cd2b863878b1b"
+      },
+      {
+        "path": "src/core/ip.c",
+        "sha256": "82d0fc6b45c6d1af88bdece3229fc9821274263c261369de4f81b8d6c80751e7"
+      },
+      {
+        "path": "src/core/mem.c",
+        "sha256": "b5316284f3f42782d8b55a750f3f0557d3031edd0c280e653f2fb6dec3f74ed3"
+      },
+      {
+        "path": "src/core/memp.c",
+        "sha256": "91ca3a00487d61849324ae571ac9ede550a879365c557aba38667ace122b6c00"
+      },
+      {
+        "path": "src/core/netif.c",
+        "sha256": "62e386985e3f2c9b943466ef01d3dcda798ee0167d56fd59c057e928f979cbc2"
+      },
+      {
+        "path": "src/core/pbuf.c",
+        "sha256": "2f953eb2bc5b696b2eea156386cc4f99c793859bbf65cee967653bdf3374db61"
+      },
+      {
+        "path": "src/core/raw.c",
+        "sha256": "3ba4f2e5d2b61bbfbe813653c7f4e88e2542d567808d3f03be000e0876ce0392"
+      },
+      {
+        "path": "src/core/stats.c",
+        "sha256": "a18b76cde437213ca9f00137bdb61adb00f6f931fe28c40c81f811a5e674caea"
+      },
+      {
+        "path": "src/core/sys.c",
+        "sha256": "86e336dedec36e042aadaebe93c8be944675210841ccabf180200e82c91b0f8d"
+      },
+      {
+        "path": "src/core/altcp.c",
+        "sha256": "3c6653588772a62efdd11ceeffa760847f95d8ec98889c7551e9a1eb8326f8cd"
+      },
+      {
+        "path": "src/core/altcp_alloc.c",
+        "sha256": "90db26c801a4a6466e188e8b5a6b8d2aac2e6f39b4ceeb0f825e7b35ae1786c7"
+      },
+      {
+        "path": "src/core/altcp_tcp.c",
+        "sha256": "55119d3a2213bff38a3734834391c48475c1fd6eb35cc0ffdde74ef0ed657a3a"
+      },
+      {
+        "path": "src/core/tcp.c",
+        "sha256": "76d701944a20dae435fb09a37046fea046ba1d996038362e37eae57157ba586f"
+      },
+      {
+        "path": "src/core/tcp_in.c",
+        "sha256": "f79b20e6b123af2ed2cfc2b470fe982d0c88d1357fc5a11537bab9cd20d4b639"
+      },
+      {
+        "path": "src/core/tcp_out.c",
+        "sha256": "d8d8d5a54097114904f89f8c5602c937ef3b086933f2132a557698fc65d7e4af"
+      },
+      {
+        "path": "src/core/timeouts.c",
+        "sha256": "930bcfaf5b12b97f975fca7b8c2f7ab999cffa37f7c840ea91b340aa4ef62115"
+      },
+      {
+        "path": "src/core/udp.c",
+        "sha256": "6454ba858cf8a2c71e4a27e0da4b1569160f923c2adce19842dbb6f90da61af7"
+      },
+      {
+        "path": "src/core/ipv4/acd.c",
+        "sha256": "40132cfec33d8efa2b645754b6d5c1bf6ecb6341fb5dbf72cd51448b11ec8bd2"
+      },
+      {
+        "path": "src/core/ipv4/autoip.c",
+        "sha256": "7cb49b13d57605a31bacdbb946abcc6313d264a4c5f07a6483f84a6d6c73bd1f"
+      },
+      {
+        "path": "src/core/ipv4/dhcp.c",
+        "sha256": "f89cf1aacbd9a04dcb47a03c81a1a231331f4edb323d2e0cf26e640ca78c3453"
+      },
+      {
+        "path": "src/core/ipv4/etharp.c",
+        "sha256": "8ee2c65e26eacf265ef34798aefd39aa9678296a64154d3d049b10f32e658f5d"
+      },
+      {
+        "path": "src/core/ipv4/icmp.c",
+        "sha256": "d53c96e7ce02514d6c88b41df7c2e37d8e0212a297466f50590305c5e3504285"
+      },
+      {
+        "path": "src/core/ipv4/igmp.c",
+        "sha256": "8097841aac8642af43ad7e19a5b340f4b34eabbce8b3b18839176dc5df12b981"
+      },
+      {
+        "path": "src/core/ipv4/ip4_frag.c",
+        "sha256": "bb0ddf79430bcd073f7f837451f868107dd6ce60444df72b7c02aca7ca3d4ff6"
+      },
+      {
+        "path": "src/core/ipv4/ip4.c",
+        "sha256": "d4973142adede3b868036d5404df9a258ed632788d98969539dc21470b748ae6"
+      },
+      {
+        "path": "src/core/ipv4/ip4_addr.c",
+        "sha256": "b440b85c9e49e60510cfa61d40e24b0e2ad480e23a821a94017e42df09dcf8be"
+      },
+      {
+        "path": "src/core/ipv6/dhcp6.c",
+        "sha256": "0984b06d9d907af2c9de419d507dc749f622753e752d13802751be1253f00086"
+      },
+      {
+        "path": "src/core/ipv6/ethip6.c",
+        "sha256": "548b460688f824015b5b30401cf907828f1dc088a8442d8ee43e4049c1e1401d"
+      },
+      {
+        "path": "src/core/ipv6/icmp6.c",
+        "sha256": "d2136d4130f39f854d1279be494d0106b99d6523c3b20c4d96698af08d7961e6"
+      },
+      {
+        "path": "src/core/ipv6/inet6.c",
+        "sha256": "3f7676e46413586fc3d07438b51c0dcd46bb3ba24644892362cf47f84fc15390"
+      },
+      {
+        "path": "src/core/ipv6/ip6.c",
+        "sha256": "dae51038b1ddc9bdacc40fe648eb1d2afed4e2ca2205c9e922ab18ffe5e70907"
+      },
+      {
+        "path": "src/core/ipv6/ip6_addr.c",
+        "sha256": "af20c31623fa8bcc50fd41855b7308d9492f7272147f5018aea069358beb7bce"
+      },
+      {
+        "path": "src/core/ipv6/ip6_frag.c",
+        "sha256": "c8577005c75c52b560b74497c20a97f1348bd46260943f7c0560efb4148d703e"
+      },
+      {
+        "path": "src/core/ipv6/mld6.c",
+        "sha256": "70b43ea0fe3cd29817bbd6ced03d56696cc7355ab28fe8fae9b5c5e2acc45670"
+      },
+      {
+        "path": "src/core/ipv6/nd6.c",
+        "sha256": "c54d4c52d0a2c78f6045d125cf18eaae64e094bfd9693d0f697c399ff1ca9e0e"
+      },
+      {
+        "path": "src/api/api_lib.c",
+        "sha256": "fcb5fe814f566e3eb5dce8868fb1bd2546e7f514fafb48aa1b3ef7bc01ad0ee1"
+      },
+      {
+        "path": "src/api/api_msg.c",
+        "sha256": "4d3c8a181870443d7e70c78c4bb98d444955c6bcb67543224ba557f26d232b08"
+      },
+      {
+        "path": "src/api/err.c",
+        "sha256": "5dd20e93a89f5cf4492e6cc3de49a5b6de6a9b15136963cef2a08a5e411a1f15"
+      },
+      {
+        "path": "src/api/if_api.c",
+        "sha256": "72cf85ae71f085aa7c13a330a5eed3f8120739d63ec4a961d36b951e89aa75bc"
+      },
+      {
+        "path": "src/api/netbuf.c",
+        "sha256": "2b2bc92804b38f37eb865714d68e5039fa7fe7ad43aabfed7cd39528b93a35b4"
+      },
+      {
+        "path": "src/api/netdb.c",
+        "sha256": "1c1cf024e736bd311b5cd2fa536af16b58d38d70f9e087f2630fe505e21f8223"
+      },
+      {
+        "path": "src/api/netifapi.c",
+        "sha256": "d8426d620c4556c1f8cfc68aba0e91c8e7bbe214a13fb877f364041f9bf8ec34"
+      },
+      {
+        "path": "src/api/sockets.c",
+        "sha256": "b1c971b6d940b8bc035a3f7a3574ee39c7c68c833a63cd82c70ba45b57fd5bcf"
+      },
+      {
+        "path": "src/api/tcpip.c",
+        "sha256": "bfbbe0a7d0b1a999df90a5e4af1c8ff27af35cb4f95c0ece5e6b7f5ed61bbc99"
+      },
+      {
+        "path": "src/netif/ppp/auth.c",
+        "sha256": "006d30196d668c6a78c9d93262dfd23695ac94e3038e8c3a3cc33be64aed09e8"
+      },
+      {
+        "path": "src/netif/ppp/ccp.c",
+        "sha256": "4364bb55858f291f9778d912f79188cb970b8cbe1c215103bf9f6fccd4504f41"
+      },
+      {
+        "path": "src/netif/ppp/chap-md5.c",
+        "sha256": "9f099cddf6fa7931b962fda6dc1d1df5eecf8c94881eda29a63d1abafe317ec2"
+      },
+      {
+        "path": "src/netif/ppp/chap_ms.c",
+        "sha256": "9525f8b409f87a6a9da898ee4a8ca9b9d64d388cecb2da644417df6725529072"
+      },
+      {
+        "path": "src/netif/ppp/chap-new.c",
+        "sha256": "28bb59f086f6b4eb512a92d05e78146341f7567bbf0c1d8d43795a7ac9a5a505"
+      },
+      {
+        "path": "src/netif/ppp/demand.c",
+        "sha256": "49a14c600252d8b99d44fcfe90906594db1755f5de80b4500bc270f6d648c2bb"
+      },
+      {
+        "path": "src/netif/ppp/eap.c",
+        "sha256": "7d0829d25a8f464f791e5de7e938952ba127b729d9aaa8b3360f2c3aee37260c"
+      },
+      {
+        "path": "src/netif/ppp/ecp.c",
+        "sha256": "b6736696754a289ea5464f7386d05790365b873c0ed0123692bebc4ebb18e6eb"
+      },
+      {
+        "path": "src/netif/ppp/eui64.c",
+        "sha256": "531be9bfa9c33e0abc4452b976ca4ab60f8f0ecc92d9af91121551250810cd4b"
+      },
+      {
+        "path": "src/netif/ppp/fsm.c",
+        "sha256": "694ad832d097811e3800d1e1f7b7bba5bb6d03beb8ad580fd636ca74a95194b1"
+      },
+      {
+        "path": "src/netif/ppp/ipcp.c",
+        "sha256": "337644f1c80b05720fea31b01439e0555445675214647a76c4ac4b47caac14db"
+      },
+      {
+        "path": "src/netif/ppp/ipv6cp.c",
+        "sha256": "954d2c4b48696e72e5ef47b392612f252b234793202ba3d508f834d392031e27"
+      },
+      {
+        "path": "src/netif/ppp/lcp.c",
+        "sha256": "208b61c8c3fe89168f7d22171e7ed34ace7dc2408c81e314da3fdbe0725c8f25"
+      },
+      {
+        "path": "src/netif/ppp/magic.c",
+        "sha256": "d5721e4b422229735c31fa362d8b0d060e94eef5a676d3d7ca5d4064eb6f0e20"
+      },
+      {
+        "path": "src/netif/ppp/mppe.c",
+        "sha256": "f209f08e59f0e9ed5d4b736a7534e6c0df726b2d14cac07dee311017fa2a0a41"
+      },
+      {
+        "path": "src/netif/ppp/multilink.c",
+        "sha256": "56bf93e396b7083040df963eaaf382e897f096d5fd0f479a80409c9eb63bc7c7"
+      },
+      {
+        "path": "src/netif/ppp/ppp.c",
+        "sha256": "e6d37dc3aff63f08fc6fb91518016e3c64885a03fb41132762b20ae2a2c8e9db"
+      },
+      {
+        "path": "src/netif/ppp/pppapi.c",
+        "sha256": "269bade48fe467119d59b3c33f8f42423c1b162d9e4cdb4c4da36bd87bcbd246"
+      },
+      {
+        "path": "src/netif/ppp/pppcrypt.c",
+        "sha256": "02b12e7626078be9591237fe84ae000514a2cfd6f0653c890b7b75ce20cada8b"
+      },
+      {
+        "path": "src/netif/ppp/pppoe.c",
+        "sha256": "74a718a5105531dab7bfc7a96fa93a8ad302c84c3e533811f542b34f0877a0f0"
+      },
+      {
+        "path": "src/netif/ppp/pppol2tp.c",
+        "sha256": "33a2629a97af962361693f5ea1e314be967c0f05a49f04467ad6a91b14335650"
+      },
+      {
+        "path": "src/netif/ppp/pppos.c",
+        "sha256": "318c9aa46449904d9c7ca0999932163f0e11cd4408513a73826b6da98082386c"
+      },
+      {
+        "path": "src/netif/ppp/upap.c",
+        "sha256": "fa1ac01eca4d95eb904ed843f6b6bfb80c09caf304adf3c6a1b1025134b898a1"
+      },
+      {
+        "path": "src/netif/ppp/utils.c",
+        "sha256": "a311cdf6708635bc04cccf2352452d28fa246cf1aa400059c7b11455e33aa9bb"
+      },
+      {
+        "path": "src/netif/ppp/vj.c",
+        "sha256": "5aeb6a28663396b0f6f385a4c247ac2d0a552239b60f891d84328de9f8bc7ed2"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/arc4.c",
+        "sha256": "7d844ec4f6e88a788e17419d4525a07611851fe793e0bb52c7e24a1db5d2d6df"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/des.c",
+        "sha256": "4b2c48659036ad89adb2d08a2b54dc30fba73759a6a5ce810e9c794f7b4aacf4"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/md4.c",
+        "sha256": "9110b56e9b926edf560933b76d1bb1ca7e9532134773ddcb04bbd57db646e209"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/md5.c",
+        "sha256": "9bd07f764f9104538474c69838de131538f0a500952b8b24f32b758e23d91b4d"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/sha1.c",
+        "sha256": "844114b4c45f689aaef64df2bf8b445e6dcea9c52bb4cb485c18d0fb68e04d5b"
+      },
+      {
+        "path": "src/apps/sntp/sntp.c",
+        "sha256": "fae3e164e413d5f8181de9759317b6900d8a3b3a83db07cb1698c7ab85641ae6"
+      },
+      {
+        "path": "src/apps/mdns/mdns.c",
+        "sha256": "abb4846a0d85cc75f7ff82e8503a9d93bc3309a3760e71d50d1f50c8986b8263"
+      },
+      {
+        "path": "src/apps/mdns/mdns_out.c",
+        "sha256": "722ff35f55d9f8f3695663e1f1d16b2cf0e5ca6445798bd07ba0a1221ca2f135"
+      },
+      {
+        "path": "src/apps/mdns/mdns_domain.c",
+        "sha256": "e273ff4e4e1a4b9a96a8e1cded5ff240f14f89d9ab6cacf233a8eba49ab51642"
+      },
+      {
+        "path": "src/apps/netbiosns/netbiosns.c",
+        "sha256": "81b263c5ca478185b87032faa08c26a4cde5161a7c8118a9c70f83e94d839002"
+      },
+      {
+        "path": "src/apps/tftp/tftp.c",
+        "sha256": "02ec6a99128835e492d4c801a1f9bb93ed762aaa95a31700d9321b733f4329d1"
+      },
+      {
+        "path": "src/netif/ethernet.c",
+        "sha256": "7c493427956150ca9e97decd87784df0d2adb0f1504fa262b7e732bee1892eaf"
+      }
+    ],
+    "native_attempts": [
+      {
+        "case": "tftp-server",
+        "profile": "nosys",
+        "report": "artifacts/udp-native-20260929/tftp-server-attempt-1/report.json",
+        "status": "passed"
+      },
+      {
+        "case": "tftp-get",
+        "profile": "nosys",
+        "report": "artifacts/udp-native-20260929/tftp-get-attempt-1/report.json",
+        "status": "passed"
+      },
+      {
+        "case": "sntp",
+        "profile": "nosys",
+        "report": "artifacts/udp-native-20260929/sntp-attempt-1/report.json",
+        "status": "passed"
+      },
+      {
+        "case": "netbios",
+        "profile": "nosys",
+        "report": "artifacts/udp-native-20260929/netbios-attempt-1/report.json",
+        "status": "passed"
+      },
+      {
+        "case": "mdns",
+        "profile": "nosys",
+        "report": "artifacts/udp-native-20260929/mdns-attempt-1/report.json",
+        "status": "passed"
+      },
+      {
+        "case": "tftp-put",
+        "profile": "nosys",
+        "report": "artifacts/udp-native-20260929/tftp-put-attempt-1/report.json",
+        "status": "failed"
+      },
+      {
+        "case": "tftp-put",
+        "profile": "nosys",
+        "report": "artifacts/udp-native-20260929/tftp-put-attempt-2/report.json",
+        "status": "failed",
+        "scope": "Authorized output-only diagnostic rerun; unchanged normal WRQ/ACK-0 flow"
+      }
+    ],
+    "native_failure_note": "Ordinary original TFTP PUT returns opcode 5, error 5, Wrong block number after coherent WRQ/ACK 0; initial blknum is 1. Diagnostic attempt 2 confirms the exact original reply. No source repair or altered peer flow. Required unresolved scope, not an exclusion.",
+    "managed_status": "Unrun. Canonical LwipProduct.props import prepared. Product SNTP typed notification and protocol owning services remain required.",
+    "diagnostic_rerun": "One authorized unchanged ordinary PUT rerun with output-only received opcode/error capture; no sent-message or upstream changes.",
+    "acceptance_scope": "Only the seven registered finite cases; not aggregate application completion or all variants."
+  },
+  "enhanced_udp_source_review": {
+    "state": "Qualified finite milestone; no new upstream text patch/external module. README examples are documentation snippets using supplied connected stacks, not separately executed sample projects.",
+    "source_patches_added": false,
+    "files": [
+      {
+        "path": "tests/Enhanced/Enhanced.csproj",
+        "sha256": "5f24337e11214574b4e46f2058c63839e9f73670abf64594b925c413f47d2b12"
+      },
+      {
+        "path": "tests/Enhanced/Program.cs",
+        "sha256": "cc40151d3274d55804a112b23261cd583772b80cb46f1433651deeb278f50e06"
+      },
+      {
+        "path": "tests/Enhanced/native.c",
+        "sha256": "41bc0d72997bf6b6aa3a0a925ac0d758c63fed1547b99eae478acb26d7478769"
+      },
+      {
+        "path": "tests/Enhanced/native.py",
+        "sha256": "e69f7a50c5e578df3945d107f8a45bfc1779acc34647befece84c5bc9732e765"
+      },
+      {
+        "path": "src/port/udp_app_services.c",
+        "sha256": "8cb2d3085092dadccf985b89f0ad0ad3919bc89f4b7679fe0c451562f625172d"
+      },
+      {
+        "path": "src/port/udp_app_services.h",
+        "sha256": "8f3a8e1efa728b275b077795e40e7e3fb411e3eafe354804aa5dd26bc2674eb1"
+      },
+      {
+        "path": "src/Host/LwipUdpApplications.cs",
+        "sha256": "068ff7a57656c32d092a369e759c90baa4f3530481b8a150294d7982574cdf60"
+      },
+      {
+        "path": "src/Managed.Lwip/LwipSntpClient.cs",
+        "sha256": "39351b93349674b7af69f1b1557024d7cbe64e557d6a548e2853896f53a7f91e"
+      },
+      {
+        "path": "src/Managed.Lwip/LwipTftpService.cs",
+        "sha256": "0eda269d4b9f5aea48735f02d88f89d677dba72ff29079319fecdf7e27b3a4ba"
+      },
+      {
+        "path": "config/feature-options.json",
+        "sha256": "896bbe61e732fcfad9a54a408f2ebf9cd8a40508e0b1e802a8bec6279f616864"
+      },
+      {
+        "path": "config/dotcc-overrides.json",
+        "sha256": "c96fbe92ac0388b09c929ecb5529ac3d395c83642a046456d0efd438b77f56f3"
+      },
+      {
+        "path": "config/udp-app-contract.json",
+        "sha256": "b775352ef960d8c0718ac8091a445cd1af6bfbed1130003e8b6564c383085abb"
+      },
+      {
+        "path": "scripts/udp-app-contract.py",
+        "sha256": "99932c0d593817027a31a6137d97c4dae22ea6c8a9e3d6d698f5b2d831e4a9bc"
+      },
+      {
+        "path": "scripts/feature-audit.py",
+        "sha256": "51799d2e2cfce333e9cf1ddfd60afc5c53a08b8f9088380f101a82c0e76e852c"
+      },
+      {
+        "path": "scripts/enhanced-tests.py",
+        "sha256": "403d0850bd32f128bc5891b2c45fdebefe780821a11b0e118e63fd078eb40c71"
+      },
+      {
+        "path": "src/port/sntp_service.c",
+        "sha256": "dae586e127c999025f424032a7f5b43b1f169527bca2f9bc33a965b9e8dcdbe0"
+      }
+    ],
+    "scope": "Only lawful complete traffic, ordinary API/storage failures, whole-frame reorder/loss and original lifecycle/timeouts; no custom corruption test.",
+    "native_evidence": "artifacts/enhanced-udp-native-20260929",
+    "qualification": {
+      "enhanced": "20260929-151952-1dd6c694",
+      "threaded": "20260929-152417-bf654250",
+      "threaded_owned_factory_rollback": "20260929-152929-8bc38f5f",
+      "nosys": "20260929-153013-22a4e10d",
+      "threaded-locking": "20260929-153409-2521e1f0",
+      "post_qualification_changes": "Only documentation/comment/status metadata and pipeline dispatch expectation. Exact pre-comment fixture bytes verified against recorded SHA and archived at artifacts/enhanced-udp-qualified-source-before-doc-comments/proof.json."
+    }
   }
 }

@@ -30,7 +30,7 @@ class RecipeTests(unittest.TestCase):
         ctx=self.context(); suite=next(x for x in campaign.recipe.suites if x.name=='consumer')
         with patch('campaigns.runner.Context',FakeContext), patch.object(campaign,'run_one') as run:
             campaign.run_suite(ctx,suite)
-        self.assertEqual([call.args[0].profile for call in run.call_args_list],['threaded','nosys','threaded-locking'])
+        self.assertEqual([call.args[0].profile for call in run.call_args_list],['threaded','nosys','threaded-locking','threaded-enhanced'])
         self.assertTrue(all(x['status']=='passed' for x in ctx.receipt['profile_suites']))
 
     def test_failure_preserves_child_receipt_then_propagates(self):

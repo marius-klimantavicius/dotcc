@@ -135,11 +135,18 @@ def prepare(ctx):
         'includes': [str(path) for path in included_lowpan],
         'included_sha256': {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in included_lowpan},
         'scope': 'Original staged LOWPAN and original ZEP algorithms; shared radio timer leases, separate BLE lifetime, core stop/FIFO/free boundary.'})
-    wrapped_sources = (*bridge_sources, 'src/api/sockets.c', *lowpan_sources)
+    ctx.receipt['udp_application_contract'] = helper(ctx.root / 'scripts/udp-app-contract.py').check_contract(ctx.root, source)
+    ctx.receipt['source_wrappers'].append({'wrapper': str(ctx.root / 'src/port/udp_app_services.c'),
+        'includes': [str(source / 'src/apps/tftp/tftp.c')],
+        'scope': 'Unchanged original TFTP included with owning callbacks and guarded typed PUT entry override; original SNTP receives owner-bound raw NTP clock callback.'})
+    ctx.receipt['source_wrappers'].append({'wrapper': str(ctx.root / 'src/port/sntp_service.c'),
+        'includes': [str(ctx.root / 'src/port/udp_app_services.h'), str(source / 'src/apps/sntp/sntp.c')],
+        'scope': 'Documented raw NTP setter macro supplied before unchanged original SNTP source; dotcc has no GCC -include option.'})
+    wrapped_sources = (*bridge_sources, 'src/api/sockets.c', *lowpan_sources, 'src/apps/tftp/tftp.c', 'src/apps/sntp/sntp.c')
     def authored_flags(path):
         if path.name == 'lowpan_service.c':
             return ('-I' + str(ctx.work / 'source/src'), '-I' + str(source / 'src'))
-        return ('-I' + str(source / 'src'),) if path.name in ('bridge_service.c', 'socket_refs.c') else ()
+        return ('-I' + str(source / 'src'),) if path.name in ('bridge_service.c', 'socket_refs.c', 'udp_app_services.c', 'sntp_service.c') else ()
     authored = [Unit(p, authored_flags(p)) for p in sorted((ctx.root / 'src/port').glob('*.c')) + sorted((ctx.root / 'src/Host').glob('*.c'))]
     return Translation([*[source_unit(name, ('-DDOTCC_TCPIP_WORKER=1',) if name == 'src/api/tcpip.c' else ()) for name in selected if name not in wrapped_sources], *authored], options,
                        [*link_flags('Lwip', 'Managed.Networking'), '--instance-methods'],
@@ -213,6 +220,10 @@ def run_suite(ctx, suite):
 
 
 def run_one(ctx, suite):
+    if suite.name.startswith('udp-app-'):
+        return helper(ctx.root / 'tests/Applications.Udp/campaign-runner.py').run(ctx, suite)
+    if suite.name == 'enhanced-options':
+        return helper(ctx.root / 'scripts/enhanced-tests.py').run(ctx, suite)
     if suite.name == 'owned-api':
         return helper(ctx.root / 'scripts/owned-api-tests.py').run(ctx, suite)
     if suite.name == 'http-transactions' or (suite.name == 'tools' and ctx.profile == 'http-content'):
@@ -246,13 +257,14 @@ def validate_options(args):
 
 
 _product = ('threaded', 'nosys', 'threaded-locking')
-_suites = ('owned-api', 'oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
+_udp_suites = tuple('udp-app-' + name for name in ('tftp-server', 'tftp-get', 'tftp-put', 'sntp', 'netbios', 'mdns', 'owned-tftp'))
+_suites = (*_udp_suites, 'enhanced-options', 'owned-api', 'oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
            'routing', 'links', 'ppp', 'applications', 'contrib', 'tools', 'upstream',
            'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ipv6-addressing', 'multicast-fixtures', 'ppp-serial', 'ppp-ethernet', 'ppp-l2tp', 'routing-ipv6', 'bridge-fixtures', 'lowpan-vectors', 'lowpan-services')
-_applicability = {'tools': ('makefsdata', 'http-content'), 'tool-generator': ('makefsdata',), 'upstream': ('unit', 'unit-nosys'), 'contrib': ('contrib',),
+_applicability = {**{name: _product for name in _udp_suites}, 'enhanced-options': ('threaded-enhanced',), 'consumer': (*_product, 'threaded-enhanced'), 'abi': (*_product, 'threaded-enhanced'), 'owned-api': (*_product, 'threaded-enhanced'), 'aot-rooted': (*_product, 'threaded-enhanced'), 'tools': ('makefsdata', 'http-content'), 'tool-generator': ('makefsdata',), 'upstream': ('unit', 'unit-nosys'), 'contrib': ('contrib',),
                   'sysarch': ('threaded', 'threaded-locking'), 'socket-api': ('threaded', 'threaded-locking'),
                   'direct-apis': _product, 'socket-semantics': ('threaded', 'threaded-locking'), 'contrib-addons': ('contrib',), 'interop-kernel': _product, 'http-transactions': (*_product, 'http-content')}
-recipe = Recipe('lwip', 'TranslatedLwip', (*_product, 'unit', 'unit-nosys', 'makefsdata', 'contrib', 'http-content'),
+recipe = Recipe('lwip', 'TranslatedLwip', (*_product, 'threaded-enhanced', 'unit', 'unit-nosys', 'makefsdata', 'contrib', 'http-content'),
                 ('src/Managed.Lwip/Managed.Lwip.csproj', 'samples/ManagedConsumer/ManagedConsumer.csproj'),
                 sources, prepare, consumer=Consumer(property='LwipProject'), validate_options=validate_options,
                 suites=tuple(Suite(name, (), run=run_suite, matrix=name != 'oracle',

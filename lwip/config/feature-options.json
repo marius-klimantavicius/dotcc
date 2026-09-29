@@ -1,0 +1,569 @@
+{
+  "schema_version": 1,
+  "scope": "Additive option-level required coverage. Broad features.json rows remain aggregate gates; this initial inventory does not claim all default-off options are enumerated.",
+  "profiles": {
+    "threaded-enhanced": {
+      "base_feature_profiles": [
+        "threaded"
+      ],
+      "resource_budget": {
+        "TCP_WND": 131072,
+        "TCP_RCV_SCALE": 2,
+        "TCP_SND_BUF": 32768,
+        "PBUF_POOL_SIZE": 256,
+        "reason": "Window scale 2 advertises 32768 for the full 131072-byte receive budget after negotiation. Existing 256 pool buffers accommodate the receive window; send buffering remains bounded at 32768. Upstream compile-time compatibility checks remain enabled."
+      }
+    }
+  },
+  "options": [
+    {
+      "id": "lwip-tcp-sack-out",
+      "macro": "LWIP_TCP_SACK_OUT",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/core/tcp_out.c",
+        "condition": "LWIP_TCP_SACK_OUT"
+      },
+      "required_definitions": [
+        "tcp_output"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "LWIP_TCP_SACK_OUT",
+        "contract": "valid complete later TCP segment before held earlier segment produces exact selective ACK block",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "held original segment delivered; original out-of-order queue empties",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input."
+    },
+    {
+      "id": "lwip-tcp-timestamps",
+      "macro": "LWIP_TCP_TIMESTAMPS",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/core/tcp_out.c",
+        "condition": "LWIP_TCP_TIMESTAMPS"
+      },
+      "required_definitions": [
+        "tcp_output"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "LWIP_TCP_TIMESTAMPS",
+        "contract": "SYN/SYNACK negotiate timestamp option; subsequent ACK echoes valid peer timestamp",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "original PCB close/abort releases timestamp-bearing session",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input."
+    },
+    {
+      "id": "tcp-listen-backlog",
+      "macro": "TCP_LISTEN_BACKLOG",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/core/tcp.c",
+        "condition": "TCP_LISTEN_BACKLOG"
+      },
+      "required_definitions": [
+        "tcp_backlog_delayed",
+        "tcp_backlog_accepted"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "TCP_LISTEN_BACKLOG",
+        "contract": "established connection deferred and then accepted decrements pending listener admission",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "accepted child and listener closed",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input."
+    },
+    {
+      "id": "lwip-wnd-scale",
+      "macro": "LWIP_WND_SCALE",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/core/tcp_in.c",
+        "condition": "LWIP_WND_SCALE"
+      },
+      "required_definitions": [
+        "tcp_input"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "LWIP_WND_SCALE",
+        "contract": "peer and local scale negotiation with 131072-byte window, original data exchange",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "original connection queues close",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input.",
+      "required_options": {
+        "TCP_RCV_SCALE": 2,
+        "TCP_WND": 131072
+      }
+    },
+    {
+      "id": "lwip-so-linger",
+      "macro": "LWIP_SO_LINGER",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/api/sockets.c",
+        "condition": "LWIP_SO_LINGER"
+      },
+      "required_definitions": [
+        "lwip_setsockopt",
+        "lwip_getsockopt",
+        "lwip_close"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "LWIP_SO_LINGER",
+        "contract": "set/get zero-time linger and close connected socket, peer observes reset/closure",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "all descriptors/connection children released",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input."
+    },
+    {
+      "id": "lwip-netbuf-recvinfo",
+      "macro": "LWIP_NETBUF_RECVINFO",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/api/sockets.c",
+        "condition": "LWIP_NETBUF_RECVINFO"
+      },
+      "required_definitions": [
+        "lwip_recvmsg"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "LWIP_NETBUF_RECVINFO",
+        "contract": "IPv4 IP_PKTINFO destination/interface metadata; original netbuf destination metadata",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "received netbuf/control storage consumed and freed",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input."
+    },
+    {
+      "id": "so-reuse-rxtoall",
+      "macro": "SO_REUSE_RXTOALL",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/core/udp.c",
+        "condition": "SO_REUSE && SO_REUSE_RXTOALL"
+      },
+      "required_definitions": [
+        "udp_input"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "SO_REUSE_RXTOALL",
+        "contract": "two reusable matching UDP PCBs receive complete valid broadcast datagram copies",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "both original matching UDP PCBs removed and copied pbufs freed",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input."
+    },
+    {
+      "id": "lwip-fionread-linuxmode",
+      "macro": "LWIP_FIONREAD_LINUXMODE",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/api/sockets.c",
+        "condition": "LWIP_FIONREAD_LINUXMODE"
+      },
+      "required_definitions": [
+        "lwip_ioctl"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "LWIP_FIONREAD_LINUXMODE",
+        "contract": "two queued datagrams report next datagram length rather than sum",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "both datagrams consumed and socket closed",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input."
+    },
+    {
+      "id": "lwip-tcpip-timeout",
+      "macro": "LWIP_TCPIP_TIMEOUT",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/api/tcpip.c",
+        "condition": "LWIP_TCPIP_TIMEOUT && LWIP_TIMERS"
+      },
+      "required_definitions": [
+        "tcpip_timeout",
+        "tcpip_untimeout"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "LWIP_TCPIP_TIMEOUT",
+        "contract": "posted timeout executes on owning original core; canceled timeout never fires",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "barrier drains posting/cancel messages before callback roots release",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input."
+    },
+    {
+      "id": "lwip-netif-remove-callback",
+      "macro": "LWIP_NETIF_REMOVE_CALLBACK",
+      "expected_by_profile": {
+        "threaded-enhanced": 1
+      },
+      "implementation_guard": {
+        "path": "src/core/netif.c",
+        "condition": "LWIP_NETIF_REMOVE_CALLBACK"
+      },
+      "required_definitions": [
+        "netif_set_remove_callback"
+      ],
+      "behavior": {
+        "suite": "enhanced-options",
+        "case": "LWIP_NETIF_REMOVE_CALLBACK",
+        "contract": "original remove callback sees correct interface exactly once",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "lifetime": {
+        "suite": "enhanced-options",
+        "contract": "remove/FIFO/free before callback root release",
+        "status": "qualified-designated-profile",
+        "evidence": {
+          "profile": "threaded-enhanced",
+          "receipt": "artifacts/campaign/20260929-151952-1dd6c694/receipt.json",
+          "managed_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-options-report.json",
+          "native_report": "artifacts/campaign/20260929-151952-1dd6c694/enhanced-native-report.json",
+          "forms": [
+            "raw",
+            "processed"
+          ],
+          "modes": [
+            "jit",
+            "aot"
+          ]
+        }
+      },
+      "scope": "Compiled option evidence is separate from runtime behavior and owner lifetime; no custom corruption input."
+    }
+  ],
+  "qualification_scope": "Ten designated enhanced-profile options only. Compiled/effective evidence is independently emitted by feature-audit.py; behavioral/lifetime status references completed native and raw/processed JIT/AOT receipts. Remaining option/application/contrib coverage is not closed."
+}

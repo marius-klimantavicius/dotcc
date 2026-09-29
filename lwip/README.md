@@ -82,3 +82,52 @@ Disposing a link stops ingress, drains queued callbacks and then frees interface
 backing. Disposing the stack also closes its registered links. A surviving radio
 or ZEP link keeps the shared timer and pending reassembly until the last lease
 closes. Application-owned raw PCBs still require explicit cleanup.
+
+
+`LwipTftpService` owns one original TFTP client or server per stack, with copied
+in-memory files and explicit limits for file bytes, total stored bytes and file
+count. It supports octet transfers with printable ASCII names within the selected
+original filename limit. The following uses two stacks already connected by the
+application's packet transport:
+
+```csharp
+using var server = LwipTftpService.StartServer(serverStack,
+    maximumFileBytes: 65536, maximumStoredBytes: 262144, maximumFiles: 16);
+using var client = LwipTftpService.StartClient(clientStack, maximumTransferBytes: 65536);
+server.SetFile("sample.bin", "hello"u8);
+var endpoint = new LwipEndpoint(IPAddress.Parse("10.0.0.2"), 69);
+byte[] downloaded = await client.DownloadAsync(endpoint, "sample.bin");
+await client.UploadAsync(endpoint, "copy.bin", downloaded);
+```
+
+Files are stored in memory; filenames do not access the host filesystem.
+`CancelPending()` closes the active original transfer and restarts the service;
+partial writes are discarded. Original client requests have no retry timer, so
+applications must explicitly cancel an unanswered request. Disposal cancels
+pending client tasks, stops original timers/PCBs, drains callbacks and releases
+storage handles. A borrowed original TFTP instance prevents owning construction
+without being stopped. Stop that borrowed instance before starting an owner.
+
+`LwipSntpClient` owns one original SNTP client per stack and exposes a bounded queue
+of copied time values. User continuations run outside the original core:
+
+```csharp
+using var timeClient = LwipSntpClient.Start(clientStack,
+    IPAddress.Parse("10.0.0.3"), notificationCapacity: 16);
+LwipNtpTime sample = await timeClient.ReadTimeAsync(cancellationToken);
+```
+
+`Seconds` is the unsigned NTP era-second word and `Fraction` is in units of
+2^-32 seconds. Consumers resolve the era and decide how to use the sample; the
+service does not change the OS clock. A full queue drops its oldest sample.
+Canceling a read cancels only that wait. Disposing the service stops original
+poll/retry activity, drains callbacks and completes pending readers. See the
+[UDP application cases and limits](tests/Applications.Udp/README.md).
+
+The additional `threaded-enhanced` profile enables SACK output, TCP timestamps,
+listen backlog, window scaling, linger, receive metadata, UDP broadcast reuse,
+Linux-style `FIONREAD`, posted core timeouts and netif removal callbacks. It uses
+a 131072-byte receive window with scale 2 and retains the ordinary 32768-byte
+send budget. Select it explicitly with `--profile threaded-enhanced`; the three
+baseline profiles retain their existing settings. The [option inventory](config/feature-options.json)
+links compiled contracts separately from the completed native/JIT/AOT evidence.
