@@ -18,13 +18,15 @@ original branch. Use `-p:UseLocalLalrCc=false` for tool/runtime builds.
 | `/root/lwip_coordinator/pipeline` | `config/`, `scripts/`, `src/port/` headers, `docs/source.md`, `docs/blockers.md`, `tests/Upstream/`; approved structural compiler fixes | Source/feature/profile inventory, recipe, full translation |
 | `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `tests/` except `Upstream/`, README and `docs/host.md` | sys_arch, owning API, native oracle and consumer |
 
-Current shared .NET build ownership is **pipeline**, handed back after refreshed
-threaded independent matrix `085113-333ba145`. It regenerates product profiles
-with the native-proven forwarding repair and runs its finite contrib/link cases.
-Host finishes native routing controls and authors broader addressing/routing and
-owning service lifecycle work. No simultaneous shared bin/obj builds. Workers
-implement; coordinator reviews, schedules and integrates. Commit only named
-validated files, stating partial milestone scope honestly.
+Current shared .NET build ownership is **pipeline**, handed back after host
+completed repaired routing/kernel interoperability all three profiles × four cells.
+Repaired publications: threaded `085444-ed99ac5f`, nosys `085621-ea694e86`, locking
+`085752-bc7b505f`, contrib `085928-13eb1f13`. Latest full receipts: threaded
+`090503-a94d59d9`, nosys `091423-b5f02ec9`, locking `091556-6c1b6415`.
+Pipeline runs SLIP/HTTP/PPP/contrib finite matrices and generated-content roundtrip.
+Host authors owning ancillary-service teardown and recovery/addressing cases.
+No simultaneous shared bin/obj builds. Workers implement; coordinator reviews,
+schedules and integrates. Commit named files with evidence and honest scope.
 
 ## Agreed constraints and contracts
 
@@ -46,19 +48,19 @@ validated files, stating partial milestone scope honestly.
 | --- | --- | --- |
 | P0 inventory/native baseline | Partial | Canonical layout, full source inventory, three native product controls and native Check pass; active-feature audit remains |
 | P1 ABI/host/ownership | Partial | Emitted/native ABI and actual-owner sys_arch matrices pass; pending-resource teardown remains |
-| P2 all product/diagnostic/auxiliary builds | Partial | Three product, unit and makefsdata raw/processed builds published; unit-nosys and contrib follow |
-| P3a first useful workflow | Partial | Raw/socket consumer and direct netconn/altcp matrices pass; current locking direct-API rerun underway |
-| P3b core/link features | Unrun | Addressing/routing/SLIP/PPP/6LoWPAN/ZEP including bundled PPP modes |
-| P3c applications/contrib/tool | In progress | Native makefsdata repair verified; managed tool and broader apps/contrib follow |
-| P4 behavioral matrix | Partial | Original unit137 passes all four cells; remaining diagnostics/features/error/recovery/independent peers open |
+| P2 all product/diagnostic/auxiliary builds | Partial | Three product, unit/unit-nosys, contrib and makefsdata raw/processed builds published; auxiliary variants/final audits remain |
+| P3a first useful workflow | Partial | Raw/socket consumer and direct netconn/altcp matrices pass; full lifetime/error qualification remains |
+| P3b core/link features | Partial | Finite DNS/IPv4 routing/lifecycle matrices pass; SLIP and bundled PPP initial controls pass; broader scope remains |
+| P3c applications/contrib/tool | In progress | Managed makefsdata generator all four cells and initial contrib controls pass; HTTP content/app workflows remain |
+| P4 behavioral matrix | Partial | Original unit137/unit-nosys132 and kernel TCP/UDP all required cells pass; full feature/error/recovery/application-link peers remain |
 | P5 consumer delivery | Partial | Ordinary references and trimmed/rooted AOT established; full feature delivery pending |
 | P6 complete reproduction | Unrun | Final regeneration, full evidence and portable orchestration |
 
 Environment: .NET SDK 10.0.111; GCC 13.3.0. Native Check 0.15.2 is
 acquired and built as a campaign-local test-only dependency. Unprivileged
 user/network namespace creation and temporary TAP provisioning both succeed;
-independent kernel interoperability is implementation work, not a current
-external blocker. Never alter host routes/interfaces or run sudo.
+independent kernel interoperability now passes all product matrices. There is no
+current external blocker to the remaining Linux implementation. Never alter host routes/interfaces or run sudo.
 
 ## Restart
 
@@ -71,10 +73,18 @@ bash Scripts/campaign.sh layout lwip --check
 bash lwip/scripts/translate.sh --fetch never --profile threaded
 ```
 
-The last two commands become available when the initial recipe/layout is created;
-there are no successful translation receipts yet. Preserve references and authored
-files when retrying. Pipeline reports exact first-failure command and receipt in
-`docs/blockers.md`. Consult running agents before starting a shared-output build.
+The recipe/layout and translations are established. Preserve references and authored
+files when retrying. Consult running agents before starting any shared-output
+build. Use wrappers, not direct execution of the imported recipe module. Current
+finite repaired behavior can be rerun after the build owner yields:
+
+```bash
+bash lwip/scripts/test.sh --fetch never --profile threaded --suite routing-ipv4 --suite interop-kernel --form all --mode all
+bash lwip/scripts/test.sh --fetch never --profile nosys --suite routing-ipv4 --suite interop-kernel --form all --mode all
+bash lwip/scripts/test.sh --fetch never --profile threaded-locking --suite routing-ipv4 --suite interop-kernel --form all --mode all
+```
+
+Following sections are chronological snapshot history; current state is above.
 
 ## Initial translation attempts
 
@@ -357,3 +367,47 @@ nonzero UDP/TCP/ICMP checksum preservation and first/nonfirst fragment payload
 controls. Locking native and all managed routing cells follow. Three staging
 guard checks include acceptance of unrelated local source edits; whole-file hash
 is not an unconditional repair gate.
+
+### Independent kernel peer and natural cleanup
+
+`20260929-090320-bbf3afe9` passes threaded raw-JIT repaired IPv4 routing and
+independent Linux-kernel TCP active/passive 256 KiB echo plus bidirectional UDP 123
+over both families through a test-only TAP. User/network namespace provisioning
+contains all interface/route changes and exits cleanly. No delivered TAP adapter
+is introduced. Remaining interop matrix cells and NO_SYS raw protocol harness
+are required; current socket-based finite interop fixture covers threaded modes.
+
+Updated lifecycle observes generated pool/heap counters returning to initialized
+baseline before owner disposal or registry clearing: UDP/PBUF/NETCONN/NETBUF 0,
+SYS_TIMEOUT 11 and heap 0, plus host resources 2/workers 1/thread-semaphores 0. The
+remaining timer/worker infrastructure is intentional initialized stack state.
+Host 32 checks now cover bounded serial admission/deferred errors and explicit
+service-exit boundary. Real ancillary-service teardown still requires its own
+protocol-specific ownership/stop integration.
+
+Pipeline initial managed raw-JIT controls pass contrib addons
+`090220-366b245d` (native ABI, routes, extargs ownership, ISN) and bundled PPP
+`090230-b19a87b0` (five primitives, MSCHAPv2 positive/tampered response, initial
+MPPE key, 600 stateful/stateless packets with rollover and malformed headers).
+Full auxiliary cells and actual link/PPP negotiation remain open. Latest host
+fixture checkpoint is `3d65b4cc`; subsequent refinements require fresh receipts.
+
+### Complete repaired routing/kernel matrices; next link/application window
+
+Threaded `090503-a94d59d9`, NO_SYS `091423-b5f02ec9`, and locking
+`091556-6c1b6415` all pass four cells for repaired IPv4 forwarding, independent
+Linux-kernel TCP active/passive and UDP both families, and natural lifecycle.
+Locking additionally passes explicit ARP_QUEUEING=1 FIFO cases, host32, socket
+semantics, DNS, ABI and consumer. NO_SYS also passes DNS, ABI and consumer.
+The earlier NO_SYS `091006-472a1bf0` aggregate is not a pass: its six applicable
+suites passed, but a trailing inapplicable sysarch request was rejected. The clean
+`091423` receipt is authoritative. Current evidence is indexed in validation.md;
+older entries in this chronological ledger refer to their historical snapshots.
+
+Build ownership has passed to pipeline for finite PPP/contrib/SLIP/HTTP matrices
+and actual translated makefsdata image→HTTP roundtrip. Host authored additive
+StartService ownership and reverse cleanup before core shutdown, still unbuilt.
+Its prior validated facade snapshot is `build/validated-LwipStack-before-services.cs`.
+Do not treat earlier lifecycle receipts as qualification of the new service API.
+After pipeline hands back .NET, host must build and qualify actual ancillary
+service stop/join, pool recovery, default ARP queueing and broader addressing.
