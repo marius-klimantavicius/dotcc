@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <AssemblyName>Managed.Libuv.Native</AssemblyName>
+    <RootNamespace>Managed.Libuv.Native</RootNamespace>
+  </PropertyGroup>
+</Project>

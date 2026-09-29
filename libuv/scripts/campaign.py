@@ -35,6 +35,11 @@ def native_upstream(ctx, suite):
     helper(ctx.root / "scripts/native-upstream.py").run(ctx)
 
 
+def dispatch_foundation(ctx, suite):
+    from campaigns.recipes import helper
+    helper(ctx.root / "scripts/dispatch-foundation.py").run(ctx)
+
+
 def incomplete(ctx, suite):
     raise RuntimeError(f"Required suite {suite.name!r} is not implemented; no qualification claimed. See docs/blockers.md.")
 
@@ -44,7 +49,8 @@ REQUIRED = ("source-coverage", "abi", "dispatch", "consumer", "upstream", "lifec
 
 
 recipe = Recipe("libuv", "TranslatedLibuv", ("native-runtime",),
-                ("samples/ManagedConsumer/ManagedConsumer.csproj",), sources, prepare,
+                ("src/Managed.Libuv.Native/Managed.Libuv.Native.csproj",
+                 "samples/ManagedConsumer/ManagedConsumer.csproj"), sources, prepare,
                 consumer=Consumer(property="TranslatedProject"),
                 suites=(Suite("consumer", ("consumer",), matrix=True),
                         Suite("inventory", (), run=source_inventory,
@@ -53,6 +59,8 @@ recipe = Recipe("libuv", "TranslatedLibuv", ("native-runtime",),
                               scope="pinned native first workflow and native-only ABI measurements"),
                         Suite("native-upstream", (), run=native_upstream, timeout=1200,
                               scope="complete native pinned upstream cases; not translated qualification"),
+                        Suite("dispatch-foundation", (), run=dispatch_foundation, timeout=1200,
+                              scope="authored native identity/binding JIT/AOT; not translated backend dispatch"),
                         *(Suite(name, (), run=incomplete, scope="required gate, currently unimplemented")
                           for name in REQUIRED if name != "consumer")),
                 default_suites=("consumer",),

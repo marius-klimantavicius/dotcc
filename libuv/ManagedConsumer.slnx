@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="generated/TranslatedLibuv/TranslatedLibuv.csproj" />
   <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+  <Project Path="src/Managed.Libuv.Native/Managed.Libuv.Native.csproj" />
 </Solution>
