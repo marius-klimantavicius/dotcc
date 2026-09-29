@@ -165,6 +165,35 @@
         },
         "scope": "LOWPAN specialist report all4 passes per profile; locking combined receipt later failed in a separate PoolRecovery build, successfully retried without product changes."
       }
+    },
+    {
+      "id": "smtp-body-linebreak-validation",
+      "path": "src/apps/smtp/smtp.c",
+      "source_sha256": "034b95eb79e3e0d9f69fd958c945f6d7cd3f2f224f13068306ad546df0bbcdde",
+      "changes": [
+        {
+          "before": "    if (smtp_verify(s->body, s->body_len, 0) != ERR_OK) {",
+          "after": "    if (smtp_verify(s->body, s->body_len, 1) != ERR_OK) {"
+        }
+      ],
+      "reason": "Pinned original rejects coherent ASCII CRLF mail bodies with ERR_ARG because body validation passes the header-only no-linebreak flag. No configuration/hook distinguishes this local argument; disabling SMTP_CHECK_DATA removes validation, a global verifier override alters header rules, and whole-entry replacement duplicates unrelated SMTP logic. Change only body argument to permit existing verifier CRLF checks; to/from/subject and verifier unchanged. Same staged bytes for native/product; reference untouched.",
+      "classification": "upstream-bug-repair",
+      "guard": "one exact unique body-validation call in every source hash mode",
+      "tests": [
+        "unchanged coherent copied and retained-static multiline SMTP body",
+        "ordinary recipient550 and peerFIN",
+        "original ERR_ARG versus staged completion using identical fixture/profile"
+      ],
+      "removal_condition": "Remove when upstream passes linebreaks_allowed=1 for body; changed unique call requires re-review.",
+      "failure_evidence": "artifacts/tcp-native-20260929/smtp-original-diagnostic-02/report.json",
+      "validation": {
+        "native": "artifacts/tcp-native-20260929/smtp-comparison.json",
+        "managed": {
+          "threaded": "artifacts/campaign/20260929-160809-dd5468af/tcp-app-smtp-report.json",
+          "nosys": "artifacts/campaign/20260929-161345-b55f9edf/tcp-app-smtp-report.json",
+          "threaded-locking": "artifacts/campaign/20260929-161858-576439ba/tcp-app-smtp-report.json"
+        }
+      }
     }
   ]
 }

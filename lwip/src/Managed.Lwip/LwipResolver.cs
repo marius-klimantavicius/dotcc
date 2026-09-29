@@ -94,6 +94,7 @@ public sealed unsafe class LwipResolver:IDisposable,ILwipAfterCoreStop
         foreach(var query in snapshot)query.Completion.TrySetCanceled();
         // Upstream has no public per-query cancellation. Roots remain reachable
         // until Found returns or the owning stack's post-join phase runs.
+        stack.CompleteServiceDisposal(this);
     }
     void ILwipAfterCoreStop.ReleaseAfterCoreStop()
     {

@@ -146,7 +146,7 @@ public sealed unsafe class LwipLowpanLink:IDisposable
                 stack.ServiceBarrier();
                 stack.Invoke(core=>Check(core.lwip_owned_lowpan_free((void*)handle),"free after FIFO"));handle=0;interfaceAddress=0;
             }
-            disposed=true;
+            disposed=true;stack.CompleteServiceDisposal(this);
         });}catch(ObjectDisposedException) when(disposed){}
     }
 }

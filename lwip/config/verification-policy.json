@@ -893,6 +893,43 @@
       "permitted_scope": "Independent coherent IPv4 TCP SYN/ACK with legal MSS/SACK/window-scale/timestamp options; complete pre-encoded unchanged data segments delivered later then earlier; ordinary broadcast UDP copies; IPv4 IP_PKTINFO and IPv6 netbuf destination; FIONREAD queued legal datagrams; linger0 close with genuinely unacknowledged original data; deterministic original posted timeout/cancel, remove callback; two owners and survivor, native-derived layout/window and natural heap/PBUF_POOL/TCP_PCB/UDP_PCB/NETCONN/NETBUF/TCP_PCB_LISTEN cleanup.",
       "wire_record": "Each peer and stack packet recorded in exact wire hex and checked for complete IPv4 length/header and TCP/UDP checksum coherence. No parser corruption input.",
       "control": "Immediate assertion failure before stack initialization; no packet."
+    },
+    {
+      "suites": [
+        "tcp-app-mqtt",
+        "tcp-app-smtp",
+        "tcp-app-lwiperf",
+        "tcp-app-http-client",
+        "tcp-app-proxy-connect",
+        "tcp-app-owned-mqtt"
+      ],
+      "dispatcher": "tests/Applications.Tcp/campaign-runner.py",
+      "managed": [
+        "tests/Applications.Tcp/ProxyConnectCases.cs",
+        "tests/Applications.Tcp/HttpClientCases.cs",
+        "tests/Applications.Tcp/TcpPeer.cs",
+        "tests/Applications.Tcp/OwnedMqttCases.cs",
+        "tests/Applications.Tcp/SmtpCases.cs",
+        "tests/Applications.Tcp/Fixture.cs",
+        "tests/Applications.Tcp/Program.cs",
+        "tests/Applications.Tcp/MqttCases.cs",
+        "tests/Applications.Tcp/LwiperfCases.cs"
+      ],
+      "native": [
+        "tests/Applications.Tcp/native-http.c",
+        "tests/Applications.Tcp/native-main.c",
+        "tests/Applications.Tcp/native-mqtt.c",
+        "tests/Applications.Tcp/native-lwiperf.c",
+        "tests/Applications.Tcp/native-common.h",
+        "tests/Applications.Tcp/native-proxy.c",
+        "tests/Applications.Tcp/native.py",
+        "tests/Applications.Tcp/native-peer.c",
+        "tests/Applications.Tcp/native-smtp.c"
+      ],
+      "transitive_oracle": [
+        "tests/NativeOracle/sys_arch.c"
+      ],
+      "scope": "Only the sys_arch host prerequisites are reused; no unrelated NativeOracle workload executes."
     }
   ],
   "shared_helpers": [
@@ -949,7 +986,7 @@
     },
     {
       "path": "scripts/campaign.py",
-      "sha256": "d758938f7222151594af0f33cc813f31173c49615aa77844ae1c10bd9432fe62"
+      "sha256": "c3cf8af2a68c1ba56fb902d045b109b707db7c8145e413119b4432382562d646"
     },
     {
       "path": "scripts/common.sh",
@@ -1037,7 +1074,7 @@
     },
     {
       "path": "scripts/stage.py",
-      "sha256": "95cbf0ae8ced0b84b3d95ff465a00e2d62771e303485ba9e67bf4a333cdf8418"
+      "sha256": "635e98b093fdf421a83377174df2ef0cd8dfa3ed339f1cab6a271967b9cedcd2"
     },
     {
       "path": "scripts/test.py",
@@ -1072,12 +1109,20 @@
       "sha256": "068ff7a57656c32d092a369e759c90baa4f3530481b8a150294d7982574cdf60"
     },
     {
+      "path": "src/Managed.Lwip/LwipMqttClient.cs",
+      "sha256": "8fb791d2ccc115ad6cee259a43631495ff643ec8a90d5d25fecdce008cdf67a2"
+    },
+    {
       "path": "src/Managed.Lwip/LwipSntpClient.cs",
-      "sha256": "39351b93349674b7af69f1b1557024d7cbe64e557d6a548e2853896f53a7f91e"
+      "sha256": "01a6d2f369d691122e3d2a4b3b9c2bc61d1eef85e96ea4336023b18406b8dede"
     },
     {
       "path": "src/Managed.Lwip/LwipTftpService.cs",
-      "sha256": "0eda269d4b9f5aea48735f02d88f89d677dba72ff29079319fecdf7e27b3a4ba"
+      "sha256": "d2f46e45150f2ca1494c08e1bc40854ab7bca5dfe4ede8d835a5c6942301f39c"
+    },
+    {
+      "path": "src/port/sntp_service.c",
+      "sha256": "dae586e127c999025f424032a7f5b43b1f169527bca2f9bc33a965b9e8dcdbe0"
     },
     {
       "path": "src/port/udp_app_services.c",
@@ -1126,6 +1171,102 @@
     {
       "path": "tests/Addressing/native.py",
       "sha256": "189f3576b196f4277fc4d11d52c3b70bf561b07a524eaa3e5f6e32b291e61b36"
+    },
+    {
+      "path": "tests/Applications/Program.cs",
+      "sha256": "d7bd34f50e645a1f3faac2759e4ccf0e7025b5da8895dada312fe971454a83b9"
+    },
+    {
+      "path": "tests/Applications/http.c",
+      "sha256": "70346f81f49a6be9ac2226bc1f5a3f0cbd07a85a444d43287ccd676e85fe0ebc"
+    },
+    {
+      "path": "tests/Applications/native.py",
+      "sha256": "f260d72d8bfe90634e88eb983be71b95aeec24bbec6c63fbfaa6484207c2ab6e"
+    },
+    {
+      "path": "tests/Applications.Tcp/Applications.Tcp.csproj",
+      "sha256": "97b534765f49dedda81307c7348a3f87546ab2e9473cac4e5c79868375672594"
+    },
+    {
+      "path": "tests/Applications.Tcp/Fixture.cs",
+      "sha256": "f67691824cf2b5451cb3bad90ada2c599ad62bfb6ec022163e736959f6fa4987"
+    },
+    {
+      "path": "tests/Applications.Tcp/HttpClientCases.cs",
+      "sha256": "9e83659a200e8a94ac7d6e675e259c2623765765c4fb71ccfa46b0dbaf529d6b"
+    },
+    {
+      "path": "tests/Applications.Tcp/LwiperfCases.cs",
+      "sha256": "2cdc522a42b1a7035509f46d6d19bc18aa642fb2639152957901d75920db05f3"
+    },
+    {
+      "path": "tests/Applications.Tcp/MqttCases.cs",
+      "sha256": "27088ea9571734dc620e52b612d6827ebca1be0acc43db46101e34dac5202ade"
+    },
+    {
+      "path": "tests/Applications.Tcp/OwnedMqttCases.cs",
+      "sha256": "a9411c3499f74d2aeef020d4bacc2978ec7c34d8da220ef3da38b1390086cda0"
+    },
+    {
+      "path": "tests/Applications.Tcp/Program.cs",
+      "sha256": "27419ae0ab04e6b02d7fcae6b3de61988dc40df7d258ce72a0b32d81126e7a02"
+    },
+    {
+      "path": "tests/Applications.Tcp/ProxyConnectCases.cs",
+      "sha256": "051c92854f00882dbe3de1bc34531e5afdf7cbcf37ea183e3c1ce4e7b76d7979"
+    },
+    {
+      "path": "tests/Applications.Tcp/README.md",
+      "sha256": "3bf2dce29b38cd17de17505f1e188980504a9184b36faed8814e0ce9d0fa7bad"
+    },
+    {
+      "path": "tests/Applications.Tcp/SmtpCases.cs",
+      "sha256": "2b04df0b0eba997cf1e3a17d4d4ec54a2d7f2f3fe6cb997708ef4298ed78de86"
+    },
+    {
+      "path": "tests/Applications.Tcp/TcpPeer.cs",
+      "sha256": "520bf5520fc17fe7f4dc988a6021c4c16b4625cf34d30ad9112eb09edc6e1155"
+    },
+    {
+      "path": "tests/Applications.Tcp/campaign-runner.py",
+      "sha256": "98ed400e9ae520701470ab28d8f921416a44b7d734e161e4cec5430d3c315a86"
+    },
+    {
+      "path": "tests/Applications.Tcp/native-common.h",
+      "sha256": "5d3180dbbbfe867b4afeb0d6c1d3a9e9930e161d0793705b8b5a344ae7f5bcc2"
+    },
+    {
+      "path": "tests/Applications.Tcp/native-http.c",
+      "sha256": "f27df3e5d0b8553d6bc02783cd5b46e214b1578d1e9f89e5c2ed0bff55c089a3"
+    },
+    {
+      "path": "tests/Applications.Tcp/native-lwiperf.c",
+      "sha256": "a7f332c43e4f47ef4556602eb270e2f7fa9bd90b3d98759932e2358b1375f935"
+    },
+    {
+      "path": "tests/Applications.Tcp/native-main.c",
+      "sha256": "efc9954b691c7a8c90817cc40791ce3c01ec643d89e3a1dd293672c202a59a49"
+    },
+    {
+      "path": "tests/Applications.Tcp/native-mqtt.c",
+      "sha256": "f0ce6f3dcff8075dab35fe8395c35a2e7bc8b69c7e781c1cd5fbf77faef7c762"
+    },
+    {
+      "path": "tests/Applications.Tcp/native-peer.c",
+      "sha256": "3b0b2e329df72c138c9c0392c69ba8787c56f537e80153f4af7f1031af5862f2"
+    },
+    {
+      "path": "tests/Applications.Tcp/native-proxy.c",
+      "sha256": "6d5f2bfd6390e86a5a2be03997cff65a0c65adb1d123cfc4fc426555218aa9ea"
+    },
+    {
+      "path": "tests/Applications.Tcp/native-smtp.c",
+      "sha256": "2c8b06243f609c839594823ba7a5b411197d6b7a40ffcdc3ef367d6e25ff7d75"
+    },
+    {
+      "path": "tests/Applications.Tcp/native.py",
+      "sha256": "20effc75f4691bf1c0f21bbb34ef1d206a2abadbad31d90f8df16345a6c0ffde"
     },
     {
       "path": "tests/Applications.Udp/Applications.Udp.csproj",
@@ -1198,18 +1339,6 @@
     {
       "path": "tests/Applications.Udp/sntp-clock.h",
       "sha256": "11d9b6f603929236b69fbc1a723ae3f0765cc2a36eb4d1ec2e759c11d81aa804"
-    },
-    {
-      "path": "tests/Applications/Program.cs",
-      "sha256": "d7bd34f50e645a1f3faac2759e4ccf0e7025b5da8895dada312fe971454a83b9"
-    },
-    {
-      "path": "tests/Applications/http.c",
-      "sha256": "70346f81f49a6be9ac2226bc1f5a3f0cbd07a85a444d43287ccd676e85fe0ebc"
-    },
-    {
-      "path": "tests/Applications/native.py",
-      "sha256": "f260d72d8bfe90634e88eb983be71b95aeec24bbec6c63fbfaa6484207c2ab6e"
     },
     {
       "path": "tests/Bridge/Program.cs",
@@ -1413,7 +1542,7 @@
     },
     {
       "path": "tests/Pipeline/test_staging.py",
-      "sha256": "ed9aefcdc41965756b19b9d47b46bafcb5c41e6b40e5fdc51c114cdcc09496ac"
+      "sha256": "cb8bc5c6bf40bd7a5befbc9ad3b7fd1e18d728ce5f0f4249e1c5ab1b27ab1f5c"
     },
     {
       "path": "tests/PoolRecovery/BlockedService.cs",
@@ -1580,10 +1709,6 @@
       "sha256": "818a5767be5e5933c95fd66a7c8240852fbb1fda427c99dcd9deddd2d156ec54"
     },
     {
-      "path": "tests/Upstream.Runner/Program.cs",
-      "sha256": "03780846c5626dcc31aefa0889c94686901d7e70afbebd82b8f8d2fd3bda1451"
-    },
-    {
       "path": "tests/Upstream/CheckHost.cs",
       "sha256": "5e72ad12cf0191fde7c8c040885622a4c75658bc0d924dba73be76af0bc40224"
     },
@@ -1616,6 +1741,10 @@
       "sha256": "5f58dd820c43b653c8e63020f7a67e577efece8409affa9fa6cf4705c6eba6af"
     },
     {
+      "path": "tests/Upstream.Runner/Program.cs",
+      "sha256": "03780846c5626dcc31aefa0889c94686901d7e70afbebd82b8f8d2fd3bda1451"
+    },
+    {
       "path": "tests/Zep/Output.cs",
       "sha256": "f7666b516498a622251cfd2cf959009f96c663c7fa485bce5793c172982062f5"
     },
@@ -1638,10 +1767,6 @@
     {
       "path": "tests/Zep/output.c",
       "sha256": "856cea1ee2aecd380a8237261361bca420ff2053b63ee6dfa5272388dd602e59"
-    },
-    {
-      "path": "src/port/sntp_service.c",
-      "sha256": "dae586e127c999025f424032a7f5b43b1f169527bca2f9bc33a965b9e8dcdbe0"
     }
   ],
   "validation": {
@@ -1736,19 +1861,19 @@
     },
     {
       "path": "src/Managed.Lwip/LwipNetconns.cs",
-      "sha256": "ab59cc831f6cbe1434064c8f0e47bacc4249c39f6e0bebe07f7e57fe13643e91"
+      "sha256": "1a5ca4208d94d9090657d147d713e423b28b2d3e922a6556fd70536bc1d3dbd3"
     },
     {
       "path": "src/Managed.Lwip/LwipResolver.cs",
-      "sha256": "05b1fac32653d6158dee1489d092fdcddd7034fff6f7d896f30526c15b90a996"
+      "sha256": "603476ab77d160ab26d7223dc64ced779e3c5460fad6248b357bd3d6f9e39bd3"
     },
     {
       "path": "src/Managed.Lwip/LwipSockets.cs",
-      "sha256": "c11eb14cae649827fb35ace546585cb0ed15a5a3537c1e8069b07716464f1094"
+      "sha256": "06e1a17156af5006220815043981b16f0f8d6ed5dc3baa62c6d69357044185d1"
     },
     {
       "path": "src/Managed.Lwip/LwipStack.Services.cs",
-      "sha256": "23e2bde3fcd9c5db7de2096a745596bb350519d0bce1a20df5c08708aa524cbf"
+      "sha256": "710f5a7a2ef8f004e15a4301068bf5918f0093ba92f7a74867ba2845f952d377"
     },
     {
       "path": "src/Managed.Lwip/LwipStack.cs",
@@ -1778,11 +1903,11 @@
     },
     {
       "path": "src/Managed.Lwip/LwipLowpanLink.cs",
-      "sha256": "31ac3442b076d0fc025420ffe6f75f584556c9c329d87cb18eeefcabcf2abd72"
+      "sha256": "c77f72c6022800f74cab9619f88512aa917388303e5fa31c13fc89a24294240e"
     },
     {
       "path": "src/Managed.Lwip/LwipStack.Services.cs",
-      "sha256": "23e2bde3fcd9c5db7de2096a745596bb350519d0bce1a20df5c08708aa524cbf"
+      "sha256": "710f5a7a2ef8f004e15a4301068bf5918f0093ba92f7a74867ba2845f952d377"
     }
   ],
   "lowpan_resource_configuration": {
@@ -1881,7 +2006,7 @@
     "native_dependency_paths": [
       {
         "path": "config/adaptations.json",
-        "sha256": "0ea5628767311457896d9099c30ce0f11dc95cf7037de09ee7f0cad03b4d5c91"
+        "sha256": "85bbfd2ad2e01fc7000975abe1fafbede2df016b82d187cee6caec115420abdd"
       },
       {
         "path": "config/ip6-hop-contract.json",
@@ -1913,7 +2038,7 @@
       },
       {
         "path": "scripts/stage.py",
-        "sha256": "95cbf0ae8ced0b84b3d95ff465a00e2d62771e303485ba9e67bf4a333cdf8418"
+        "sha256": "635e98b093fdf421a83377174df2ef0cd8dfa3ed339f1cab6a271967b9cedcd2"
       },
       {
         "path": "scripts/udp-app-contract.py",
@@ -1929,11 +2054,11 @@
       },
       {
         "path": "src/Managed.Lwip/LwipSntpClient.cs",
-        "sha256": "39351b93349674b7af69f1b1557024d7cbe64e557d6a548e2853896f53a7f91e"
+        "sha256": "01a6d2f369d691122e3d2a4b3b9c2bc61d1eef85e96ea4336023b18406b8dede"
       },
       {
         "path": "src/Managed.Lwip/LwipTftpService.cs",
-        "sha256": "0eda269d4b9f5aea48735f02d88f89d677dba72ff29079319fecdf7e27b3a4ba"
+        "sha256": "d2f46e45150f2ca1494c08e1bc40854ab7bca5dfe4ede8d835a5c6942301f39c"
       },
       {
         "path": "src/port/arch/cc.h",
@@ -2354,7 +2479,12 @@
     "native_failure_note": "Ordinary original TFTP PUT returns opcode 5, error 5, Wrong block number after coherent WRQ/ACK 0; initial blknum is 1. Diagnostic attempt 2 confirms the exact original reply. No source repair or altered peer flow. Required unresolved scope, not an exclusion.",
     "managed_status": "Unrun. Canonical LwipProduct.props import prepared. Product SNTP typed notification and protocol owning services remain required.",
     "diagnostic_rerun": "One authorized unchanged ordinary PUT rerun with output-only received opcode/error capture; no sent-message or upstream changes.",
-    "acceptance_scope": "Only the seven registered finite cases; not aggregate application completion or all variants."
+    "acceptance_scope": "Only the seven registered finite cases; not aggregate application completion or all variants.",
+    "shared_lifetime_requalification": {
+      "threaded": "20260929-160809-dd5468af",
+      "nosys": "20260929-161345-b55f9edf",
+      "threaded-locking": "20260929-161858-576439ba"
+    }
   },
   "enhanced_udp_source_review": {
     "state": "Qualified finite milestone; no new upstream text patch/external module. README examples are documentation snippets using supplied connected stacks, not separately executed sample projects.",
@@ -2390,11 +2520,11 @@
       },
       {
         "path": "src/Managed.Lwip/LwipSntpClient.cs",
-        "sha256": "39351b93349674b7af69f1b1557024d7cbe64e557d6a548e2853896f53a7f91e"
+        "sha256": "01a6d2f369d691122e3d2a4b3b9c2bc61d1eef85e96ea4336023b18406b8dede"
       },
       {
         "path": "src/Managed.Lwip/LwipTftpService.cs",
-        "sha256": "0eda269d4b9f5aea48735f02d88f89d677dba72ff29079319fecdf7e27b3a4ba"
+        "sha256": "d2f46e45150f2ca1494c08e1bc40854ab7bca5dfe4ede8d835a5c6942301f39c"
       },
       {
         "path": "config/feature-options.json",
@@ -2434,6 +2564,1223 @@
       "nosys": "20260929-153013-22a4e10d",
       "threaded-locking": "20260929-153409-2521e1f0",
       "post_qualification_changes": "Only documentation/comment/status metadata and pipeline dispatch expectation. Exact pre-comment fixture bytes verified against recorded SHA and archived at artifacts/enhanced-udp-qualified-source-before-doc-comments/proof.json."
+    }
+  },
+  "tcp_application_draft_snapshot": {
+    "state": "Finite five original TCP cases plus owning MQTT qualified all baseline3 x raw/processed JIT/AOT; broader modes/ownership boundaries remain required.",
+    "product_acceptance": true,
+    "paths": [
+      {
+        "path": "tests/Applications.Tcp/Applications.Tcp.csproj",
+        "sha256": "97b534765f49dedda81307c7348a3f87546ab2e9473cac4e5c79868375672594"
+      },
+      {
+        "path": "tests/Applications.Tcp/Fixture.cs",
+        "sha256": "f67691824cf2b5451cb3bad90ada2c599ad62bfb6ec022163e736959f6fa4987"
+      },
+      {
+        "path": "tests/Applications.Tcp/HttpClientCases.cs",
+        "sha256": "9e83659a200e8a94ac7d6e675e259c2623765765c4fb71ccfa46b0dbaf529d6b"
+      },
+      {
+        "path": "tests/Applications.Tcp/LwiperfCases.cs",
+        "sha256": "2cdc522a42b1a7035509f46d6d19bc18aa642fb2639152957901d75920db05f3"
+      },
+      {
+        "path": "tests/Applications.Tcp/MqttCases.cs",
+        "sha256": "27088ea9571734dc620e52b612d6827ebca1be0acc43db46101e34dac5202ade"
+      },
+      {
+        "path": "tests/Applications.Tcp/OwnedMqttCases.cs",
+        "sha256": "a9411c3499f74d2aeef020d4bacc2978ec7c34d8da220ef3da38b1390086cda0"
+      },
+      {
+        "path": "tests/Applications.Tcp/Program.cs",
+        "sha256": "27419ae0ab04e6b02d7fcae6b3de61988dc40df7d258ce72a0b32d81126e7a02"
+      },
+      {
+        "path": "tests/Applications.Tcp/ProxyConnectCases.cs",
+        "sha256": "051c92854f00882dbe3de1bc34531e5afdf7cbcf37ea183e3c1ce4e7b76d7979"
+      },
+      {
+        "path": "tests/Applications.Tcp/README.md",
+        "sha256": "3bf2dce29b38cd17de17505f1e188980504a9184b36faed8814e0ce9d0fa7bad"
+      },
+      {
+        "path": "tests/Applications.Tcp/SmtpCases.cs",
+        "sha256": "2b04df0b0eba997cf1e3a17d4d4ec54a2d7f2f3fe6cb997708ef4298ed78de86"
+      },
+      {
+        "path": "tests/Applications.Tcp/TcpPeer.cs",
+        "sha256": "520bf5520fc17fe7f4dc988a6021c4c16b4625cf34d30ad9112eb09edc6e1155"
+      },
+      {
+        "path": "tests/Applications.Tcp/campaign-runner.py",
+        "sha256": "98ed400e9ae520701470ab28d8f921416a44b7d734e161e4cec5430d3c315a86"
+      },
+      {
+        "path": "tests/Applications.Tcp/native-common.h",
+        "sha256": "5d3180dbbbfe867b4afeb0d6c1d3a9e9930e161d0793705b8b5a344ae7f5bcc2"
+      },
+      {
+        "path": "tests/Applications.Tcp/native-http.c",
+        "sha256": "f27df3e5d0b8553d6bc02783cd5b46e214b1578d1e9f89e5c2ed0bff55c089a3"
+      },
+      {
+        "path": "tests/Applications.Tcp/native-lwiperf.c",
+        "sha256": "a7f332c43e4f47ef4556602eb270e2f7fa9bd90b3d98759932e2358b1375f935"
+      },
+      {
+        "path": "tests/Applications.Tcp/native-main.c",
+        "sha256": "efc9954b691c7a8c90817cc40791ce3c01ec643d89e3a1dd293672c202a59a49"
+      },
+      {
+        "path": "tests/Applications.Tcp/native-mqtt.c",
+        "sha256": "f0ce6f3dcff8075dab35fe8395c35a2e7bc8b69c7e781c1cd5fbf77faef7c762"
+      },
+      {
+        "path": "tests/Applications.Tcp/native-peer.c",
+        "sha256": "3b0b2e329df72c138c9c0392c69ba8787c56f537e80153f4af7f1031af5862f2"
+      },
+      {
+        "path": "tests/Applications.Tcp/native-proxy.c",
+        "sha256": "6d5f2bfd6390e86a5a2be03997cff65a0c65adb1d123cfc4fc426555218aa9ea"
+      },
+      {
+        "path": "tests/Applications.Tcp/native-smtp.c",
+        "sha256": "2c8b06243f609c839594823ba7a5b411197d6b7a40ffcdc3ef367d6e25ff7d75"
+      },
+      {
+        "path": "tests/Applications.Tcp/native.py",
+        "sha256": "20effc75f4691bf1c0f21bbb34ef1d206a2abadbad31d90f8df16345a6c0ffde"
+      }
+    ],
+    "native_dependency_paths": [
+      {
+        "path": "config/adaptations.json",
+        "sha256": "85bbfd2ad2e01fc7000975abe1fafbede2df016b82d187cee6caec115420abdd"
+      },
+      {
+        "path": "config/ip6-hop-contract.json",
+        "sha256": "a254fe09d2cc1991dc1b28863ca89107d9e56aaccbad25a93dd4f26e493e9b0e"
+      },
+      {
+        "path": "config/profiles.json",
+        "sha256": "ee2a00a860a57f107b5c268a7c232d67eb02b2cee3cc30ba00752cd6c374d695"
+      },
+      {
+        "path": "config/source-groups.json",
+        "sha256": "9c87450fa9efb2e8a8d93e0acce7f7a2a151a4e3c30457090c0d37d282a2179f"
+      },
+      {
+        "path": "config/sources.json",
+        "sha256": "32337d0f4b33e42920350e1729fc237f329e03c4eb00afffb94a7477f2758888"
+      },
+      {
+        "path": "scripts/campaign.py",
+        "sha256": "c3cf8af2a68c1ba56fb902d045b109b707db7c8145e413119b4432382562d646"
+      },
+      {
+        "path": "scripts/ip6-hop.py",
+        "sha256": "65ab276261cf9c2f710e5a72eb50647d9793d1b3eedacf69332518b50cab879b"
+      },
+      {
+        "path": "scripts/profiles.py",
+        "sha256": "76398d7e957440dbc3e2c9dc790eec36344d56306a90db01127bd1fcb645bd90"
+      },
+      {
+        "path": "scripts/stage.py",
+        "sha256": "635e98b093fdf421a83377174df2ef0cd8dfa3ed339f1cab6a271967b9cedcd2"
+      },
+      {
+        "path": "src/Host/bridge.c",
+        "sha256": "7b9e4cbd69ef97ea2556cb75cbb8a0344f34704a9f40368a921543b3743ac85b"
+      },
+      {
+        "path": "src/Managed.Lwip/LwipMqttClient.cs",
+        "sha256": "8fb791d2ccc115ad6cee259a43631495ff643ec8a90d5d25fecdce008cdf67a2"
+      },
+      {
+        "path": "src/port/arch/bpstruct.h",
+        "sha256": "fd0de3f762f8618ab910b3e0ec6cff38b0b1eef8816de2da598809b9c52abef1"
+      },
+      {
+        "path": "src/port/arch/cc.h",
+        "sha256": "54eebef4ffaa7c678a014d96fc367cef220f136053834940050940f8c7cfe70b"
+      },
+      {
+        "path": "src/port/arch/epstruct.h",
+        "sha256": "bab566c157fdcc3e4c2f6e7c360cf69918a07d537c46d74b429264ea585677a4"
+      },
+      {
+        "path": "src/port/arch/sys_arch.h",
+        "sha256": "0b293e79515b3d81e3e14cfae1ef3a8fda42a5b64c46a669c16fe0396f59d17e"
+      },
+      {
+        "path": "src/port/bridge_service.c",
+        "sha256": "7307e2bd3655572e48f33ae6778b577f0050e215be7b2f4f89432222d81279a6"
+      },
+      {
+        "path": "src/port/bridge_service.h",
+        "sha256": "1d46120fe48eaf540d00dfcb2f4c65eb2fb68ed7897c6558e3d7d75e29aca9d4"
+      },
+      {
+        "path": "src/port/contrib/lwip_hooks.h",
+        "sha256": "c9debee546fab3b67a93b5786e005f0c6073f863dd52cbf93e9d35f2db8fdd1e"
+      },
+      {
+        "path": "src/port/ip6-hop-limit-native.h",
+        "sha256": "9c216aa0dda66dcc64204375096d2f29c5a79f1f75fe2163d1aebc5cd359cc23"
+      },
+      {
+        "path": "src/port/ip6-hop-limit-value.h",
+        "sha256": "1443ad8e3261ac84f3c24e0142ecd7096a819d2fcb8bdc2a42e0714d75c00238"
+      },
+      {
+        "path": "src/port/lowpan_service.c",
+        "sha256": "ad19b1fb9d8adb87689797b944c3b08056a796aeed0904a0af9075ca1c8dfad9"
+      },
+      {
+        "path": "src/port/lowpan_service.h",
+        "sha256": "e22645f814db641e39829fd629c196e6ec09ebaf3d79867ff283355d400bd552"
+      },
+      {
+        "path": "src/port/lwipopts.h",
+        "sha256": "778d94031b17faee452cb5a38964bb4cd61fce48dabd733b2fecaf2d2e83aead"
+      },
+      {
+        "path": "src/port/sntp_service.c",
+        "sha256": "dae586e127c999025f424032a7f5b43b1f169527bca2f9bc33a965b9e8dcdbe0"
+      },
+      {
+        "path": "src/port/socket_refs.c",
+        "sha256": "1dfe487586e1e20fcffa40d4891c4e463a5b747f4c95b95956937fc6b1644645"
+      },
+      {
+        "path": "src/port/udp_app_services.c",
+        "sha256": "8cb2d3085092dadccf985b89f0ad0ad3919bc89f4b7679fe0c451562f625172d"
+      },
+      {
+        "path": "src/port/udp_app_services.h",
+        "sha256": "8f3a8e1efa728b275b077795e40e7e3fb411e3eafe354804aa5dd26bc2674eb1"
+      },
+      {
+        "path": "tests/NativeOracle/sys_arch.c",
+        "sha256": "5d31763f8bf3fd8e00cccc0b48d149b191f934b7a0606aaff512791a10ab1bc3"
+      },
+      {
+        "path": "tests/Support/VirtualPair.cs",
+        "sha256": "b73d1b67e581d433953eec2cc3f74ce1fd45f2043714d5b9fe232353b50de006"
+      }
+    ],
+    "original_units": [
+      {
+        "path": "src/api/api_lib.c",
+        "sha256": "fcb5fe814f566e3eb5dce8868fb1bd2546e7f514fafb48aa1b3ef7bc01ad0ee1"
+      },
+      {
+        "path": "src/api/api_msg.c",
+        "sha256": "4d3c8a181870443d7e70c78c4bb98d444955c6bcb67543224ba557f26d232b08"
+      },
+      {
+        "path": "src/api/err.c",
+        "sha256": "5dd20e93a89f5cf4492e6cc3de49a5b6de6a9b15136963cef2a08a5e411a1f15"
+      },
+      {
+        "path": "src/api/if_api.c",
+        "sha256": "72cf85ae71f085aa7c13a330a5eed3f8120739d63ec4a961d36b951e89aa75bc"
+      },
+      {
+        "path": "src/api/netbuf.c",
+        "sha256": "2b2bc92804b38f37eb865714d68e5039fa7fe7ad43aabfed7cd39528b93a35b4"
+      },
+      {
+        "path": "src/api/netdb.c",
+        "sha256": "1c1cf024e736bd311b5cd2fa536af16b58d38d70f9e087f2630fe505e21f8223"
+      },
+      {
+        "path": "src/api/netifapi.c",
+        "sha256": "d8426d620c4556c1f8cfc68aba0e91c8e7bbe214a13fb877f364041f9bf8ec34"
+      },
+      {
+        "path": "src/api/sockets.c",
+        "sha256": "b1c971b6d940b8bc035a3f7a3574ee39c7c68c833a63cd82c70ba45b57fd5bcf"
+      },
+      {
+        "path": "src/api/tcpip.c",
+        "sha256": "bfbbe0a7d0b1a999df90a5e4af1c8ff27af35cb4f95c0ece5e6b7f5ed61bbc99"
+      },
+      {
+        "path": "src/apps/http/altcp_proxyconnect.c",
+        "sha256": "880eeea58d1eaf4e1b095b666de6a0a81826061d4d397091389951ad74c11f3c"
+      },
+      {
+        "path": "src/apps/http/http_client.c",
+        "sha256": "ee723ee76862380e3bef6c9dd4947baa1b3e18b98b235589378c3f4a7de7ebe3"
+      },
+      {
+        "path": "src/apps/lwiperf/lwiperf.c",
+        "sha256": "93fa74097e832e6199b07498a808d62c15f54c22f30b0bbe0ee2a7bcdbc58808"
+      },
+      {
+        "path": "src/apps/mqtt/mqtt.c",
+        "sha256": "f0049a7c8736fe51eb02667efe065599df8647b6aef8132a89e9abcad41f038a"
+      },
+      {
+        "path": "src/apps/smtp/smtp.c",
+        "sha256": "034b95eb79e3e0d9f69fd958c945f6d7cd3f2f224f13068306ad546df0bbcdde"
+      },
+      {
+        "path": "src/apps/sntp/sntp.c",
+        "sha256": "fae3e164e413d5f8181de9759317b6900d8a3b3a83db07cb1698c7ab85641ae6"
+      },
+      {
+        "path": "src/core/altcp.c",
+        "sha256": "3c6653588772a62efdd11ceeffa760847f95d8ec98889c7551e9a1eb8326f8cd"
+      },
+      {
+        "path": "src/core/altcp_alloc.c",
+        "sha256": "90db26c801a4a6466e188e8b5a6b8d2aac2e6f39b4ceeb0f825e7b35ae1786c7"
+      },
+      {
+        "path": "src/core/altcp_tcp.c",
+        "sha256": "55119d3a2213bff38a3734834391c48475c1fd6eb35cc0ffdde74ef0ed657a3a"
+      },
+      {
+        "path": "src/core/def.c",
+        "sha256": "a12f3ef6c087efb6d4ec524cf332ff438d2504c17d60c263d0bb1b82b79eb2cd"
+      },
+      {
+        "path": "src/core/dns.c",
+        "sha256": "fe35ede9919974da54598630cc08d654ccc30b668c45b09668c3ba572686b26c"
+      },
+      {
+        "path": "src/core/inet_chksum.c",
+        "sha256": "fc82b44fc866704a51c0aacd6037b10802b88e8576e1b691917cd2b863878b1b"
+      },
+      {
+        "path": "src/core/init.c",
+        "sha256": "e79eface962c17e082bc6d2f9bc0eef16be4cbef1deca3e8248fc7b171b0a49f"
+      },
+      {
+        "path": "src/core/ip.c",
+        "sha256": "82d0fc6b45c6d1af88bdece3229fc9821274263c261369de4f81b8d6c80751e7"
+      },
+      {
+        "path": "src/core/ipv4/acd.c",
+        "sha256": "40132cfec33d8efa2b645754b6d5c1bf6ecb6341fb5dbf72cd51448b11ec8bd2"
+      },
+      {
+        "path": "src/core/ipv4/autoip.c",
+        "sha256": "7cb49b13d57605a31bacdbb946abcc6313d264a4c5f07a6483f84a6d6c73bd1f"
+      },
+      {
+        "path": "src/core/ipv4/dhcp.c",
+        "sha256": "f89cf1aacbd9a04dcb47a03c81a1a231331f4edb323d2e0cf26e640ca78c3453"
+      },
+      {
+        "path": "src/core/ipv4/etharp.c",
+        "sha256": "8ee2c65e26eacf265ef34798aefd39aa9678296a64154d3d049b10f32e658f5d"
+      },
+      {
+        "path": "src/core/ipv4/icmp.c",
+        "sha256": "d53c96e7ce02514d6c88b41df7c2e37d8e0212a297466f50590305c5e3504285"
+      },
+      {
+        "path": "src/core/ipv4/igmp.c",
+        "sha256": "8097841aac8642af43ad7e19a5b340f4b34eabbce8b3b18839176dc5df12b981"
+      },
+      {
+        "path": "src/core/ipv4/ip4.c",
+        "sha256": "d4973142adede3b868036d5404df9a258ed632788d98969539dc21470b748ae6"
+      },
+      {
+        "path": "src/core/ipv4/ip4_addr.c",
+        "sha256": "b440b85c9e49e60510cfa61d40e24b0e2ad480e23a821a94017e42df09dcf8be"
+      },
+      {
+        "path": "src/core/ipv4/ip4_frag.c",
+        "sha256": "bb0ddf79430bcd073f7f837451f868107dd6ce60444df72b7c02aca7ca3d4ff6"
+      },
+      {
+        "path": "src/core/ipv6/dhcp6.c",
+        "sha256": "0984b06d9d907af2c9de419d507dc749f622753e752d13802751be1253f00086"
+      },
+      {
+        "path": "src/core/ipv6/ethip6.c",
+        "sha256": "548b460688f824015b5b30401cf907828f1dc088a8442d8ee43e4049c1e1401d"
+      },
+      {
+        "path": "src/core/ipv6/icmp6.c",
+        "sha256": "d2136d4130f39f854d1279be494d0106b99d6523c3b20c4d96698af08d7961e6"
+      },
+      {
+        "path": "src/core/ipv6/inet6.c",
+        "sha256": "3f7676e46413586fc3d07438b51c0dcd46bb3ba24644892362cf47f84fc15390"
+      },
+      {
+        "path": "src/core/ipv6/ip6.c",
+        "sha256": "dae51038b1ddc9bdacc40fe648eb1d2afed4e2ca2205c9e922ab18ffe5e70907"
+      },
+      {
+        "path": "src/core/ipv6/ip6_addr.c",
+        "sha256": "af20c31623fa8bcc50fd41855b7308d9492f7272147f5018aea069358beb7bce"
+      },
+      {
+        "path": "src/core/ipv6/ip6_frag.c",
+        "sha256": "c8577005c75c52b560b74497c20a97f1348bd46260943f7c0560efb4148d703e"
+      },
+      {
+        "path": "src/core/ipv6/mld6.c",
+        "sha256": "70b43ea0fe3cd29817bbd6ced03d56696cc7355ab28fe8fae9b5c5e2acc45670"
+      },
+      {
+        "path": "src/core/ipv6/nd6.c",
+        "sha256": "c54d4c52d0a2c78f6045d125cf18eaae64e094bfd9693d0f697c399ff1ca9e0e"
+      },
+      {
+        "path": "src/core/mem.c",
+        "sha256": "b5316284f3f42782d8b55a750f3f0557d3031edd0c280e653f2fb6dec3f74ed3"
+      },
+      {
+        "path": "src/core/memp.c",
+        "sha256": "91ca3a00487d61849324ae571ac9ede550a879365c557aba38667ace122b6c00"
+      },
+      {
+        "path": "src/core/netif.c",
+        "sha256": "62e386985e3f2c9b943466ef01d3dcda798ee0167d56fd59c057e928f979cbc2"
+      },
+      {
+        "path": "src/core/pbuf.c",
+        "sha256": "2f953eb2bc5b696b2eea156386cc4f99c793859bbf65cee967653bdf3374db61"
+      },
+      {
+        "path": "src/core/raw.c",
+        "sha256": "3ba4f2e5d2b61bbfbe813653c7f4e88e2542d567808d3f03be000e0876ce0392"
+      },
+      {
+        "path": "src/core/stats.c",
+        "sha256": "a18b76cde437213ca9f00137bdb61adb00f6f931fe28c40c81f811a5e674caea"
+      },
+      {
+        "path": "src/core/sys.c",
+        "sha256": "86e336dedec36e042aadaebe93c8be944675210841ccabf180200e82c91b0f8d"
+      },
+      {
+        "path": "src/core/tcp.c",
+        "sha256": "76d701944a20dae435fb09a37046fea046ba1d996038362e37eae57157ba586f"
+      },
+      {
+        "path": "src/core/tcp_in.c",
+        "sha256": "f79b20e6b123af2ed2cfc2b470fe982d0c88d1357fc5a11537bab9cd20d4b639"
+      },
+      {
+        "path": "src/core/tcp_out.c",
+        "sha256": "d8d8d5a54097114904f89f8c5602c937ef3b086933f2132a557698fc65d7e4af"
+      },
+      {
+        "path": "src/core/timeouts.c",
+        "sha256": "930bcfaf5b12b97f975fca7b8c2f7ab999cffa37f7c840ea91b340aa4ef62115"
+      },
+      {
+        "path": "src/core/udp.c",
+        "sha256": "6454ba858cf8a2c71e4a27e0da4b1569160f923c2adce19842dbb6f90da61af7"
+      },
+      {
+        "path": "src/include/compat/posix/arpa/inet.h",
+        "sha256": "8b3edc25121de40cd1c3338d5d68be93091f0713ee8a23eba9789f14d41e0f6d"
+      },
+      {
+        "path": "src/include/compat/posix/net/if.h",
+        "sha256": "b1cc52bb828e7cc23f070269a60a6ea33f3fd828190b0248f4cd589f06fcab6e"
+      },
+      {
+        "path": "src/include/compat/posix/netdb.h",
+        "sha256": "ec3cb99596ef6bf11b39870541bf6607a7cff6011cfef99bf5d53f2abed05948"
+      },
+      {
+        "path": "src/include/compat/posix/sys/socket.h",
+        "sha256": "8b3edc25121de40cd1c3338d5d68be93091f0713ee8a23eba9789f14d41e0f6d"
+      },
+      {
+        "path": "src/include/compat/stdc/errno.h",
+        "sha256": "9fdac7c52c9fe0cfdf50f96eae29c5f341a9afde5a56166d21500c656a8a0728"
+      },
+      {
+        "path": "src/include/lwip/acd.h",
+        "sha256": "ac7477d81a56bedf62e3db9e502a6d9a46ddf6f8705fd420df91e9f8a2398275"
+      },
+      {
+        "path": "src/include/lwip/altcp.h",
+        "sha256": "9140dba340b590f329b0d8653c71104d0509d1e7dbb6c184a99afe980474c958"
+      },
+      {
+        "path": "src/include/lwip/altcp_tcp.h",
+        "sha256": "e6b325b516d9e2af49b3187e01cd324066ef2c6508a2d9c06016fc0570148d43"
+      },
+      {
+        "path": "src/include/lwip/altcp_tls.h",
+        "sha256": "cf34454f5e63c8f766b0653ffe492bebf763ee767cacfa7277ee84336a9ac55d"
+      },
+      {
+        "path": "src/include/lwip/api.h",
+        "sha256": "39a93870e9151ab0a4a70c007c931cf3b642b0704eee43aa662aba9cb9d14f4a"
+      },
+      {
+        "path": "src/include/lwip/apps/altcp_proxyconnect.h",
+        "sha256": "c4b47d012ce46a6aa25d4038ecfe0844b0f3cdfe40e6234d622de298aa48ab13"
+      },
+      {
+        "path": "src/include/lwip/apps/altcp_tls_mbedtls_opts.h",
+        "sha256": "7fb4fef6a302f23316bad885be4d108a9227377c00948df5be82c9a49fefb0b9"
+      },
+      {
+        "path": "src/include/lwip/apps/fs.h",
+        "sha256": "7b262fbde86e0217750e1254db7fe2660f7d79f11a9c7cc4b039d75870582bfe"
+      },
+      {
+        "path": "src/include/lwip/apps/http_client.h",
+        "sha256": "ff927c68dd58bb9eeeb99f407b72849dc0da7d39253dd601707269d478a3ad86"
+      },
+      {
+        "path": "src/include/lwip/apps/httpd.h",
+        "sha256": "d9b70d5da0ad3d525cf2a2c3d18bc5403fa6d693365db583dd64b3de94d60087"
+      },
+      {
+        "path": "src/include/lwip/apps/httpd_opts.h",
+        "sha256": "d7dec61f4a8f4856504f21734290396588116ec09c8fe1ff9f89ec8ba2510cb9"
+      },
+      {
+        "path": "src/include/lwip/apps/lwiperf.h",
+        "sha256": "894124ebd57d7aa493072e19981781a642d6d7f0ebdd58af5f792dfde20d101e"
+      },
+      {
+        "path": "src/include/lwip/apps/mdns.h",
+        "sha256": "359d459f2d0a4d00eab082d28699478bfb175bd015ecd00a7b601f3494a5d0ca"
+      },
+      {
+        "path": "src/include/lwip/apps/mdns_domain.h",
+        "sha256": "6fd124cb463e07bf6ee81aa816db0cc86204c739f57e98be2f31691fea9bc456"
+      },
+      {
+        "path": "src/include/lwip/apps/mdns_opts.h",
+        "sha256": "f98772a9ec77cb8ff02853f77d2fa9538d7f4e96561ee5a64a1e39b36952383b"
+      },
+      {
+        "path": "src/include/lwip/apps/mdns_out.h",
+        "sha256": "2bff804ddd536e3b1daa97d6322a5279aac56288851de1f277c9c131f16dc365"
+      },
+      {
+        "path": "src/include/lwip/apps/mdns_priv.h",
+        "sha256": "46167eba46afba0bc2ecede799441e1f6916e6dd864f2a4ecb75a90ba6474e4d"
+      },
+      {
+        "path": "src/include/lwip/apps/mqtt.h",
+        "sha256": "f7732e962845c1870905d6c6e2cf589cf646b86f82ab3e88bf0bbe31e2de55ee"
+      },
+      {
+        "path": "src/include/lwip/apps/mqtt_opts.h",
+        "sha256": "b8bb920a04472488f3fa1371cbb9c934bfead7cc8ba7f06316da4bdb2e354feb"
+      },
+      {
+        "path": "src/include/lwip/apps/mqtt_priv.h",
+        "sha256": "e4903b34c12c941650045977e2629d41b1ca8407e48dc28d9ba36382825bb2d9"
+      },
+      {
+        "path": "src/include/lwip/apps/netbiosns.h",
+        "sha256": "438a8e5cb80794959e0ebb0989a8d0615dc8d2d737fa97c231b10d4040e8f715"
+      },
+      {
+        "path": "src/include/lwip/apps/netbiosns_opts.h",
+        "sha256": "6d83f549e1ce36325382c0a776bddb1b66fc1d3cb1cd573aa92eb2cc719ac313"
+      },
+      {
+        "path": "src/include/lwip/apps/smtp.h",
+        "sha256": "61d670c0c914cc4d39f6c9e4661a1ac5e2b3cdfc45bb972b35cbf7ad3ea3d569"
+      },
+      {
+        "path": "src/include/lwip/apps/smtp_opts.h",
+        "sha256": "6f3e0517c42b198078615074a72d8d158304264c8fa56a1dea79636bdd1898be"
+      },
+      {
+        "path": "src/include/lwip/apps/snmp.h",
+        "sha256": "5fd93bca18a358edc4771ec850278d1615c1b6869d30bd51d6bddaa37fefaae9"
+      },
+      {
+        "path": "src/include/lwip/apps/snmp_core.h",
+        "sha256": "226888829e92f37f5e34e04f8472c2bc00f16817f41253288b7746eb1afeeb7a"
+      },
+      {
+        "path": "src/include/lwip/apps/snmp_mib2.h",
+        "sha256": "6f40a24aedc34c24f13d4e4dba0fc49237bc692ee30e2a2d43b6bbe9446087b0"
+      },
+      {
+        "path": "src/include/lwip/apps/snmp_opts.h",
+        "sha256": "fcd7d37a9418f6b25fc367ad1252c193a62915099b5bbc9f6693f0526d915bd4"
+      },
+      {
+        "path": "src/include/lwip/apps/snmp_scalar.h",
+        "sha256": "f88ed96f2010bb383af723c50f8e0b93a9a5d566599ef0f35c11102124805c09"
+      },
+      {
+        "path": "src/include/lwip/apps/snmp_snmpv2_framework.h",
+        "sha256": "8397074e6d74aceb6430e077537eff4330f6c712d00647a13f2832093a7f9eeb"
+      },
+      {
+        "path": "src/include/lwip/apps/snmp_snmpv2_usm.h",
+        "sha256": "ddd777bac19a3f0c6823854f121e52e1c16a9f788540e1f172920b45a01713bc"
+      },
+      {
+        "path": "src/include/lwip/apps/snmp_table.h",
+        "sha256": "1d0ef0508b2a00f55e6a90c27d484e526a2db5cde41c13b2aafcc6f2c8d7e25b"
+      },
+      {
+        "path": "src/include/lwip/apps/snmp_threadsync.h",
+        "sha256": "730f06bbad7d1fc61cf30fb43f27c4b90c6da50685630563c2f9b1763576f74b"
+      },
+      {
+        "path": "src/include/lwip/apps/snmpv3.h",
+        "sha256": "7d1be4c7469ae8108d3657433f965c8884e66475178fee2a474fbbf01aee3fe0"
+      },
+      {
+        "path": "src/include/lwip/apps/sntp.h",
+        "sha256": "c7b56e4653387585d4d5073c1917f93114027ccae13ef842880441477b471653"
+      },
+      {
+        "path": "src/include/lwip/apps/sntp_opts.h",
+        "sha256": "368b754a6fb6ddfaa050df58f0db975937ca49b49803cd647baee8cdd295c0d3"
+      },
+      {
+        "path": "src/include/lwip/apps/tftp_client.h",
+        "sha256": "afe8265f9b7c7746c5bf86b5a739e1eae6c064c7af7e116959a7b52c66064ed3"
+      },
+      {
+        "path": "src/include/lwip/apps/tftp_common.h",
+        "sha256": "76b2fb20cbe1212c6e691e9216ced22cc959f602ce76e0fed06dd3c474fb6f31"
+      },
+      {
+        "path": "src/include/lwip/apps/tftp_opts.h",
+        "sha256": "185e13e074f0ca14271e187fe15fbe8411de355d55ec6cd4fbb5b271776f8479"
+      },
+      {
+        "path": "src/include/lwip/apps/tftp_server.h",
+        "sha256": "627e19deb28320005781f9052d090aa6fc7d5785ccb0a4315c50beee4180d0c8"
+      },
+      {
+        "path": "src/include/lwip/arch.h",
+        "sha256": "9801c4638064a3f7f27a90ed4b01867fa65128c67303d40536867dad1ad03f78"
+      },
+      {
+        "path": "src/include/lwip/autoip.h",
+        "sha256": "d7b0a366fc1442033df3e7247fff0cf28851c1ef7ad6539ac2728fb5f483f707"
+      },
+      {
+        "path": "src/include/lwip/debug.h",
+        "sha256": "1f3545fc48dec531f2dff50fffa1094bd4bdd0fca5bb96e32f82c559e33a4fce"
+      },
+      {
+        "path": "src/include/lwip/def.h",
+        "sha256": "224152c2266e14b418ee0e7e1704df9c103011630240548221a91cf6aff64d90"
+      },
+      {
+        "path": "src/include/lwip/dhcp.h",
+        "sha256": "babfa093330aa0b8039badc8c373f11dda5dd8f0e94c55e4440a6643b9996f7e"
+      },
+      {
+        "path": "src/include/lwip/dhcp6.h",
+        "sha256": "dbac3f610e3e76547691af73a667bd5fd6564a7fbfa5ac382ef77604938d4afa"
+      },
+      {
+        "path": "src/include/lwip/dns.h",
+        "sha256": "962c462c90afd41ed010b961f539c11b2baba3e8a6bfe584f331a5e4d43c1b05"
+      },
+      {
+        "path": "src/include/lwip/err.h",
+        "sha256": "af26b573fc5c6a31877fdcde35e15382ac0c8b01f35af3f5a4429f9cf5dd323d"
+      },
+      {
+        "path": "src/include/lwip/errno.h",
+        "sha256": "79dc6e03887ccf301e01a5129d1a732e21fb05308a8e38f04ada44e0928c075a"
+      },
+      {
+        "path": "src/include/lwip/etharp.h",
+        "sha256": "bd50bec728d92dbd790a1504e52f42e4e1bdd018380c2b116f0dd8d3ed44e3f9"
+      },
+      {
+        "path": "src/include/lwip/ethip6.h",
+        "sha256": "7a7e744ae373a720261be3651adaa0f35ff00ebb1bcf38e5330e371ddfd162b7"
+      },
+      {
+        "path": "src/include/lwip/icmp.h",
+        "sha256": "84f63c9fbc6f6d66ef437f834279c25c20bfa78834eb0ee347c70377f7f8d8c8"
+      },
+      {
+        "path": "src/include/lwip/icmp6.h",
+        "sha256": "f790cd444ecbe2e605b2f1a1deab3e6e9662ba6e87fd47b401912c5a118ee836"
+      },
+      {
+        "path": "src/include/lwip/if_api.h",
+        "sha256": "6f6945cccbf0721180ddc7ff589d9f7b47f825ce62ae8b3cf6c186f5d2750822"
+      },
+      {
+        "path": "src/include/lwip/igmp.h",
+        "sha256": "abf5ff1e19ec61690b6e8d55c8ee11afd1556b77c8b0fc452d5eb490810cc27f"
+      },
+      {
+        "path": "src/include/lwip/inet.h",
+        "sha256": "27abe1e75d1d8a1901875360ac4444199ff0193bc8f83368c182c08c0240db36"
+      },
+      {
+        "path": "src/include/lwip/inet_chksum.h",
+        "sha256": "df6720f78e47afde2315d6a9dee1bb5b26f76692ce3e040c574409493435c933"
+      },
+      {
+        "path": "src/include/lwip/init.h",
+        "sha256": "b5ab1373f83c2ead8413d681351d1275ce6c6375c25e2bc555c4098d2d9a5307"
+      },
+      {
+        "path": "src/include/lwip/ip.h",
+        "sha256": "dc040fd513b7fff5de699e235e2a09623f2a80d813c09ae91f9c6af067f756e8"
+      },
+      {
+        "path": "src/include/lwip/ip4.h",
+        "sha256": "188a62765c765fb07cda26a695f17c9c1674c0da7539c71e4d8f79b3f6f6ba21"
+      },
+      {
+        "path": "src/include/lwip/ip4_addr.h",
+        "sha256": "58f6c9a179e8719fb91f2b76b489be45e05365c3958dbba55f00a4d134adf535"
+      },
+      {
+        "path": "src/include/lwip/ip4_frag.h",
+        "sha256": "8b0bb67655cba6da8cddc360e655c711553ad35e6306dbae618637e80be9911c"
+      },
+      {
+        "path": "src/include/lwip/ip6.h",
+        "sha256": "7681c2948f700aa565c387ca20654f7322991ca15de7fd4e8f342a8ce44abe57"
+      },
+      {
+        "path": "src/include/lwip/ip6_addr.h",
+        "sha256": "9dea395e61fdcc6676afdfd322838c185cb87d8b38c39b0ad0b83b206f300c00"
+      },
+      {
+        "path": "src/include/lwip/ip6_frag.h",
+        "sha256": "3ab1bdb9220a3c87c8187fb26b1150cd03c4401b0a0c6db2ea4a22674141dd3b"
+      },
+      {
+        "path": "src/include/lwip/ip6_zone.h",
+        "sha256": "4b1dfc44be4c4c138ac41d17fdfc88712fab42557c899193e46bc4e6972e4641"
+      },
+      {
+        "path": "src/include/lwip/ip_addr.h",
+        "sha256": "90e9886f4fc5e96058d19d3504415d52ee37d8ebd7d29aeede3435f247cb4146"
+      },
+      {
+        "path": "src/include/lwip/mem.h",
+        "sha256": "6a3403dd83cc564cdb1b2f712baf925b522fe2755ccebef3dc17ffd3c19319c6"
+      },
+      {
+        "path": "src/include/lwip/memp.h",
+        "sha256": "79dfd019219330cf08deb1360483eb7d1da7a1a7a304034ef65ad52feefba1ef"
+      },
+      {
+        "path": "src/include/lwip/mld6.h",
+        "sha256": "026348d23012aa1c2210ae53f2a5ddf3a273cf004ef597a1861266a01d4ca86e"
+      },
+      {
+        "path": "src/include/lwip/nd6.h",
+        "sha256": "79fa57b4bded6763d38f5e4fa56aa2fac8117bf76ffc69869e05357af88951d6"
+      },
+      {
+        "path": "src/include/lwip/netbuf.h",
+        "sha256": "1aa92014d8919c5073b5123c92881e00b0c507ca485667ccdebbf31afa214ff3"
+      },
+      {
+        "path": "src/include/lwip/netdb.h",
+        "sha256": "582518497fefd57cd1d227947965c71b1dc16846add471af0fddfbb461c7aca0"
+      },
+      {
+        "path": "src/include/lwip/netif.h",
+        "sha256": "6e958aa1bd23b7381c09a873f7af919323f87ec50a2d3055a46f75275c2a121b"
+      },
+      {
+        "path": "src/include/lwip/netifapi.h",
+        "sha256": "2c087eac81246ac74e3ba2c3922de0612890587f0cca7c1360f379a57ab45518"
+      },
+      {
+        "path": "src/include/lwip/opt.h",
+        "sha256": "d750b825d4e399eca387bdeb98a78dc96267095eb8f15cdb39e4e88d23c14360"
+      },
+      {
+        "path": "src/include/lwip/pbuf.h",
+        "sha256": "0b84e49877d81241874c101d24aa6fd815e6e78407f0894f88af371e04437196"
+      },
+      {
+        "path": "src/include/lwip/priv/altcp_priv.h",
+        "sha256": "8b1c271129eea8f8d125ee8e653e143d5099683c2fddb9bc64524fcfdadcabd1"
+      },
+      {
+        "path": "src/include/lwip/priv/api_msg.h",
+        "sha256": "e2458063868f0813bc26f41709bbf78d994760e72667b646b88f15e16e235f48"
+      },
+      {
+        "path": "src/include/lwip/priv/mem_priv.h",
+        "sha256": "c90c9b64c8ea95c05d5b8b10d706acb53b6cc124166e8dd85b397698679f7920"
+      },
+      {
+        "path": "src/include/lwip/priv/memp_priv.h",
+        "sha256": "37aff2894bbe25f1888e43b96be80f4c1a43a24867c0fc9aceb4093328682937"
+      },
+      {
+        "path": "src/include/lwip/priv/memp_std.h",
+        "sha256": "86cdf1d80f2716a07011dc763e5fa614cd2b555382cb7d6750176116def67a0f"
+      },
+      {
+        "path": "src/include/lwip/priv/nd6_priv.h",
+        "sha256": "0f8b44f4163523c10c2085a8b9393b87e81d054c9a40cf0887be2885d8b2fa35"
+      },
+      {
+        "path": "src/include/lwip/priv/raw_priv.h",
+        "sha256": "0b2b019a55fab8eed89d668f13402778835117fe472464046472cd04b93c2bb2"
+      },
+      {
+        "path": "src/include/lwip/priv/sockets_priv.h",
+        "sha256": "2efcf39c42b1a7055628461915d42521a4df3cb285b6f5635a5c6a961aff4f93"
+      },
+      {
+        "path": "src/include/lwip/priv/tcp_priv.h",
+        "sha256": "07df02da365d83e5a488b4cf9e61d8319132d11b6830a7fe6b04c2912fd3d4c9"
+      },
+      {
+        "path": "src/include/lwip/priv/tcpip_priv.h",
+        "sha256": "13fb2e7159ebcafc4ddda4961a9d70b2f8182f9e201aa990cb9148d8897bf598"
+      },
+      {
+        "path": "src/include/lwip/prot/acd.h",
+        "sha256": "3d5d347182390f367afd107322bdbc2b4997806cd0bc83a7ccc5579248e956a5"
+      },
+      {
+        "path": "src/include/lwip/prot/autoip.h",
+        "sha256": "a0b78c818f6642e68c1d9c0b5c3ad12fc6595b66ac5ae41724c52decc6de760c"
+      },
+      {
+        "path": "src/include/lwip/prot/dhcp.h",
+        "sha256": "bc74edb6abff7b5182e04e2e588292401ecba3875bb6673156b026a5c391dbc4"
+      },
+      {
+        "path": "src/include/lwip/prot/dhcp6.h",
+        "sha256": "72c645a6153694229ca535f044af2d1520ebc7860baa98121747218a08c2b74b"
+      },
+      {
+        "path": "src/include/lwip/prot/dns.h",
+        "sha256": "34049c0f7f489aaec12d0589dc51ecfb24408dba422f605d8deb207c44d02b8f"
+      },
+      {
+        "path": "src/include/lwip/prot/etharp.h",
+        "sha256": "55164c0d047f1279982fef9681491c8811f8482976aff7fab9b63a9a589ded76"
+      },
+      {
+        "path": "src/include/lwip/prot/ethernet.h",
+        "sha256": "0d8dab96e78a88835525ef03299666e7007434874a6b63c0206aee499c7e3ad9"
+      },
+      {
+        "path": "src/include/lwip/prot/iana.h",
+        "sha256": "745c2d70a5d4839e3df5a34f7e37b83bcc7fe58f39eba1d2f5e238242d74c878"
+      },
+      {
+        "path": "src/include/lwip/prot/icmp.h",
+        "sha256": "5acac93c34363f3ca07f3f14c8861f09cf822096e6654941a307f1c78914cf5c"
+      },
+      {
+        "path": "src/include/lwip/prot/icmp6.h",
+        "sha256": "a3fdc254460b9e2c45cbfb1ad2402c055b34b907a09fb5337a0f26e068302074"
+      },
+      {
+        "path": "src/include/lwip/prot/ieee.h",
+        "sha256": "ec85a505aba178178743b34429f463a41ac43d3750d63901c7e1273dcd0a2ba6"
+      },
+      {
+        "path": "src/include/lwip/prot/igmp.h",
+        "sha256": "9adb3a0b03feff302b057020aa860fd958f6ef4528225014c104bd4175ebdff7"
+      },
+      {
+        "path": "src/include/lwip/prot/ip.h",
+        "sha256": "eb5371e5ac58467253d813bc58726e317f91abadb10336497de0d64645ec01cd"
+      },
+      {
+        "path": "src/include/lwip/prot/ip4.h",
+        "sha256": "033570c0b7657f5475959f7b74d9e23c6f8e81498495d5b23d8c2eeb0640d7a7"
+      },
+      {
+        "path": "src/include/lwip/prot/ip6.h",
+        "sha256": "c0514e97f153f2e5cf514e6f1f4350fd2cbcb7073ebc05495b436c638bd32109"
+      },
+      {
+        "path": "src/include/lwip/prot/mld6.h",
+        "sha256": "9601cee67b48c4b7cadb75caf3d83c05f5409d367341af70af7e7e4f46f173f8"
+      },
+      {
+        "path": "src/include/lwip/prot/nd6.h",
+        "sha256": "20f5b3bf8edd5be9b6241df2a5448a7ed4f08ae35714ac7c36383efbba012edf"
+      },
+      {
+        "path": "src/include/lwip/prot/tcp.h",
+        "sha256": "db67bb5ea0517a8cd9e30ebf655743f69ce05e77ca6e4a113e8c60e69bd7c48a"
+      },
+      {
+        "path": "src/include/lwip/prot/udp.h",
+        "sha256": "b56daa8ff1e8e52cdd4f720297f07af2a96feea254db86768e20e157d7ce2784"
+      },
+      {
+        "path": "src/include/lwip/raw.h",
+        "sha256": "e9efc60e31f2ff39a98b1367968ac724fc91ecdc115a74fc44813b761f02caf7"
+      },
+      {
+        "path": "src/include/lwip/sio.h",
+        "sha256": "d5b13bb9fe2010b215d0c8b9453890b564c12b58471968bcd099563b02469d34"
+      },
+      {
+        "path": "src/include/lwip/snmp.h",
+        "sha256": "6cdfd8137209605ed6623ba081d37cc291840d85b40fb5120eaa6d93b83dd1a7"
+      },
+      {
+        "path": "src/include/lwip/sockets.h",
+        "sha256": "cd8af60d7acd3158103cd2b141884cecea79d4011daaa6c9e3f987bb21f8ad84"
+      },
+      {
+        "path": "src/include/lwip/stats.h",
+        "sha256": "02d5512b59cce1c006388c6535134dd7f84e866ecca5f72bc632fb0718634b9f"
+      },
+      {
+        "path": "src/include/lwip/sys.h",
+        "sha256": "3455bc027fd97de759f962f664c6084242f08dd80e5c65834cc05aa0a0802e8e"
+      },
+      {
+        "path": "src/include/lwip/tcp.h",
+        "sha256": "eb514477b21ed78dd4d527f4aea3bed5585200e285b85c666689b9c43b77a89a"
+      },
+      {
+        "path": "src/include/lwip/tcpbase.h",
+        "sha256": "cf4b048f3bc228ab364cde15eb6be5eca961fab09036c699c2c4b1437ab90aff"
+      },
+      {
+        "path": "src/include/lwip/tcpip.h",
+        "sha256": "c772dbff8e46a86ffa65ec62e5b304e75525b6bcfef94917fb7de1045449f603"
+      },
+      {
+        "path": "src/include/lwip/timeouts.h",
+        "sha256": "a383b43e3ba021d06ff3791d223db46cb3385e8dcdfcec0221ef2a006243c022"
+      },
+      {
+        "path": "src/include/lwip/udp.h",
+        "sha256": "f9783bca6b68b10c229185559e0ae7e79bb793e1d6c244c7b26408516187f1f8"
+      },
+      {
+        "path": "src/include/netif/bridgeif.h",
+        "sha256": "39d409d880187e2a7b372ddae2b1cfc004b88a0dd786dbe9070945420b8e42c8"
+      },
+      {
+        "path": "src/include/netif/bridgeif_opts.h",
+        "sha256": "bc6e5f0677c621a5a8adb315e1cdb06210e1391efea6d308684103fd38edfe66"
+      },
+      {
+        "path": "src/include/netif/etharp.h",
+        "sha256": "2e1ab81eced65420cdee5940d2e547cae7b0fa70088f452692363676ecfc66dc"
+      },
+      {
+        "path": "src/include/netif/ethernet.h",
+        "sha256": "1dd88263e583593e47f7c891680d67838287160551b8c06562c9feca1ddee443"
+      },
+      {
+        "path": "src/include/netif/ieee802154.h",
+        "sha256": "02f21d8b3e143fa77d8fa3f0d3db9ac1683507436ab441a61d5012ddb6037699"
+      },
+      {
+        "path": "src/include/netif/lowpan6.h",
+        "sha256": "538ac2429cedf9193b6538998f3ba5bdd003fbf0840fd03b46d4ad5bcfaa4c20"
+      },
+      {
+        "path": "src/include/netif/lowpan6_ble.h",
+        "sha256": "5c40e2a9640810cebaa8a0e501913cae093368da21f1226e9476b078f34f247f"
+      },
+      {
+        "path": "src/include/netif/lowpan6_common.h",
+        "sha256": "eed0a8f45ea6e62ba4238d6bc139a1bef5fe625ec7527b52856fbf885c12f8ba"
+      },
+      {
+        "path": "src/include/netif/lowpan6_opts.h",
+        "sha256": "fc57628292ff0ccece9770a9c101b992f350c55088af2bb364246fbcf6f3f024"
+      },
+      {
+        "path": "src/include/netif/ppp/ccp.h",
+        "sha256": "b6e681ffe6855a6772c6d0a9077f144676c30db0c9ec0ea461e816f7647d6d43"
+      },
+      {
+        "path": "src/include/netif/ppp/chap-md5.h",
+        "sha256": "f67cd93664262575ded862c17bac7c1003e2eb690224b89ba2b0cdd221c2f725"
+      },
+      {
+        "path": "src/include/netif/ppp/chap-new.h",
+        "sha256": "f7bfb4e194fedcd1e6d499320826ecca7f14add5170c8fb7d4832b8e831bc2ac"
+      },
+      {
+        "path": "src/include/netif/ppp/chap_ms.h",
+        "sha256": "77316bd6366248a0d0715e19e231667c1564f3ef081dc3ba839cd673a5d4984e"
+      },
+      {
+        "path": "src/include/netif/ppp/eap.h",
+        "sha256": "1f52215c54298f1b93049cda01f2a9a6dfd254f52b5ba4507bcf755fee16a2c1"
+      },
+      {
+        "path": "src/include/netif/ppp/ecp.h",
+        "sha256": "4936fccc29a900ced5b67906f97f192ea634642b6a003605dc1cb40d65d011f6"
+      },
+      {
+        "path": "src/include/netif/ppp/eui64.h",
+        "sha256": "fc79081c31fd7333b0e2b3cf61c870727a3b066d82482c894b02c81cdbf464c7"
+      },
+      {
+        "path": "src/include/netif/ppp/fsm.h",
+        "sha256": "8751104f5cdeb3ace720744016431ee2d704983e8a94de7add0830e63dfdef0e"
+      },
+      {
+        "path": "src/include/netif/ppp/ipcp.h",
+        "sha256": "60bb47d15951954c865393be49b64f6daecc966f7146aeee187530a111d9008a"
+      },
+      {
+        "path": "src/include/netif/ppp/ipv6cp.h",
+        "sha256": "69de1cc233f9ec05312a6cd4d5b558d91d04e39626ad6f9e0fbc4ee61a5709d0"
+      },
+      {
+        "path": "src/include/netif/ppp/lcp.h",
+        "sha256": "0278457347c50aeaa4636124d0265fb8064511f461de2b3ff7fa51e3dacb0345"
+      },
+      {
+        "path": "src/include/netif/ppp/magic.h",
+        "sha256": "44881d887c9d1cb351115eabdb54e276fcbaf7e631ef310ef59195b299e5fc2a"
+      },
+      {
+        "path": "src/include/netif/ppp/mppe.h",
+        "sha256": "8dd28c994f67ca45b11586ecc195fabedd5d51efa0bd99872336d82886477c9f"
+      },
+      {
+        "path": "src/include/netif/ppp/polarssl/arc4.h",
+        "sha256": "970bc9075bf7aef36f4a225ba8a3dcb89c16a1948016f3521ca4a7609b7ba284"
+      },
+      {
+        "path": "src/include/netif/ppp/polarssl/des.h",
+        "sha256": "f0a3ea812ead16f7d8fba08115429b5bd7deed1d9ffc6dddf66ec44b1d95ef0a"
+      },
+      {
+        "path": "src/include/netif/ppp/polarssl/md4.h",
+        "sha256": "d1982ff627c1176d03c60fa8ae307af09626a2655e08525a146019276edb9058"
+      },
+      {
+        "path": "src/include/netif/ppp/polarssl/md5.h",
+        "sha256": "1962ff0d88f8a7efbb6c8592eb13154129cfc7012c8cc22be7981df35e3c8ba4"
+      },
+      {
+        "path": "src/include/netif/ppp/polarssl/sha1.h",
+        "sha256": "2951ad6ae5b5797112ae1899cd814536c445334bf59cbd91bf5414db0613980d"
+      },
+      {
+        "path": "src/include/netif/ppp/ppp.h",
+        "sha256": "980aca3ab5ad5e5d90922728b1e0779f53fc747bcd1e47b7e2cf0c63e1d17863"
+      },
+      {
+        "path": "src/include/netif/ppp/ppp_impl.h",
+        "sha256": "6470c520bf42767fdb850ce6028e494ea67ed12258499c3f7c4eb86d58d2998e"
+      },
+      {
+        "path": "src/include/netif/ppp/ppp_opts.h",
+        "sha256": "4a3507a0cc400a05592d15252ac6513044f1e514be26ba6502fe0b055daa2bc8"
+      },
+      {
+        "path": "src/include/netif/ppp/pppapi.h",
+        "sha256": "f1520293792605ad0f0c78c93a5907d478affbebea8d6be1b0f8a8bdc9c4b427"
+      },
+      {
+        "path": "src/include/netif/ppp/pppcrypt.h",
+        "sha256": "954943c6c1286c707c0f1182428eb514dc8cf87a704a4e8f26a926553f260d58"
+      },
+      {
+        "path": "src/include/netif/ppp/pppdebug.h",
+        "sha256": "fab025981023c13721fac50978c5416ce2c9a0f40db200ef78ce4cd36d3b9b63"
+      },
+      {
+        "path": "src/include/netif/ppp/pppoe.h",
+        "sha256": "0288d2c8921899c66d0c5f4be01d3173eba6d68473b1af0a8d2e21220ea58238"
+      },
+      {
+        "path": "src/include/netif/ppp/pppol2tp.h",
+        "sha256": "ae9a819aaf816ae4ff25c35bddaf7c10654a54b95451b247fd5d2824229d3cf7"
+      },
+      {
+        "path": "src/include/netif/ppp/pppos.h",
+        "sha256": "afaafbc40596ccc0511cf3352deec609f5a114e181cfeb3eb804525abecf49e3"
+      },
+      {
+        "path": "src/include/netif/ppp/upap.h",
+        "sha256": "7cf555545ed20e7d7897ed935c6333e77d629b1862e4e2136df87ebebfcb3907"
+      },
+      {
+        "path": "src/include/netif/ppp/vj.h",
+        "sha256": "9fc361a36a938d2044d9449bd82d4f3c36e3145a1585596b64fe10b6cb1d13cd"
+      },
+      {
+        "path": "src/include/netif/slipif.h",
+        "sha256": "f58cc6842251be4358904b2475021fc2da592de3756fbb358b615b0173efd791"
+      },
+      {
+        "path": "src/include/netif/zepif.h",
+        "sha256": "7b3a4c9094483c14eb3c4da651874aca325e3927fde02eb28e226040deef4714"
+      },
+      {
+        "path": "src/netif/ethernet.c",
+        "sha256": "7c493427956150ca9e97decd87784df0d2adb0f1504fa262b7e732bee1892eaf"
+      },
+      {
+        "path": "src/netif/lowpan6.c",
+        "sha256": "9ebbe5af554f102e08cbbb0e4d46381c23a310bef8a7741e41f311c5d8d747c2"
+      },
+      {
+        "path": "src/netif/ppp/auth.c",
+        "sha256": "006d30196d668c6a78c9d93262dfd23695ac94e3038e8c3a3cc33be64aed09e8"
+      },
+      {
+        "path": "src/netif/ppp/ccp.c",
+        "sha256": "4364bb55858f291f9778d912f79188cb970b8cbe1c215103bf9f6fccd4504f41"
+      },
+      {
+        "path": "src/netif/ppp/chap-md5.c",
+        "sha256": "9f099cddf6fa7931b962fda6dc1d1df5eecf8c94881eda29a63d1abafe317ec2"
+      },
+      {
+        "path": "src/netif/ppp/chap-new.c",
+        "sha256": "28bb59f086f6b4eb512a92d05e78146341f7567bbf0c1d8d43795a7ac9a5a505"
+      },
+      {
+        "path": "src/netif/ppp/chap_ms.c",
+        "sha256": "9525f8b409f87a6a9da898ee4a8ca9b9d64d388cecb2da644417df6725529072"
+      },
+      {
+        "path": "src/netif/ppp/demand.c",
+        "sha256": "49a14c600252d8b99d44fcfe90906594db1755f5de80b4500bc270f6d648c2bb"
+      },
+      {
+        "path": "src/netif/ppp/eap.c",
+        "sha256": "7d0829d25a8f464f791e5de7e938952ba127b729d9aaa8b3360f2c3aee37260c"
+      },
+      {
+        "path": "src/netif/ppp/ecp.c",
+        "sha256": "b6736696754a289ea5464f7386d05790365b873c0ed0123692bebc4ebb18e6eb"
+      },
+      {
+        "path": "src/netif/ppp/eui64.c",
+        "sha256": "531be9bfa9c33e0abc4452b976ca4ab60f8f0ecc92d9af91121551250810cd4b"
+      },
+      {
+        "path": "src/netif/ppp/fsm.c",
+        "sha256": "694ad832d097811e3800d1e1f7b7bba5bb6d03beb8ad580fd636ca74a95194b1"
+      },
+      {
+        "path": "src/netif/ppp/ipcp.c",
+        "sha256": "337644f1c80b05720fea31b01439e0555445675214647a76c4ac4b47caac14db"
+      },
+      {
+        "path": "src/netif/ppp/ipv6cp.c",
+        "sha256": "954d2c4b48696e72e5ef47b392612f252b234793202ba3d508f834d392031e27"
+      },
+      {
+        "path": "src/netif/ppp/lcp.c",
+        "sha256": "208b61c8c3fe89168f7d22171e7ed34ace7dc2408c81e314da3fdbe0725c8f25"
+      },
+      {
+        "path": "src/netif/ppp/magic.c",
+        "sha256": "d5721e4b422229735c31fa362d8b0d060e94eef5a676d3d7ca5d4064eb6f0e20"
+      },
+      {
+        "path": "src/netif/ppp/mppe.c",
+        "sha256": "f209f08e59f0e9ed5d4b736a7534e6c0df726b2d14cac07dee311017fa2a0a41"
+      },
+      {
+        "path": "src/netif/ppp/multilink.c",
+        "sha256": "56bf93e396b7083040df963eaaf382e897f096d5fd0f479a80409c9eb63bc7c7"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/arc4.c",
+        "sha256": "7d844ec4f6e88a788e17419d4525a07611851fe793e0bb52c7e24a1db5d2d6df"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/des.c",
+        "sha256": "4b2c48659036ad89adb2d08a2b54dc30fba73759a6a5ce810e9c794f7b4aacf4"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/md4.c",
+        "sha256": "9110b56e9b926edf560933b76d1bb1ca7e9532134773ddcb04bbd57db646e209"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/md5.c",
+        "sha256": "9bd07f764f9104538474c69838de131538f0a500952b8b24f32b758e23d91b4d"
+      },
+      {
+        "path": "src/netif/ppp/polarssl/sha1.c",
+        "sha256": "844114b4c45f689aaef64df2bf8b445e6dcea9c52bb4cb485c18d0fb68e04d5b"
+      },
+      {
+        "path": "src/netif/ppp/ppp.c",
+        "sha256": "e6d37dc3aff63f08fc6fb91518016e3c64885a03fb41132762b20ae2a2c8e9db"
+      },
+      {
+        "path": "src/netif/ppp/pppapi.c",
+        "sha256": "269bade48fe467119d59b3c33f8f42423c1b162d9e4cdb4c4da36bd87bcbd246"
+      },
+      {
+        "path": "src/netif/ppp/pppcrypt.c",
+        "sha256": "02b12e7626078be9591237fe84ae000514a2cfd6f0653c890b7b75ce20cada8b"
+      },
+      {
+        "path": "src/netif/ppp/pppoe.c",
+        "sha256": "74a718a5105531dab7bfc7a96fa93a8ad302c84c3e533811f542b34f0877a0f0"
+      },
+      {
+        "path": "src/netif/ppp/pppol2tp.c",
+        "sha256": "33a2629a97af962361693f5ea1e314be967c0f05a49f04467ad6a91b14335650"
+      },
+      {
+        "path": "src/netif/ppp/pppos.c",
+        "sha256": "318c9aa46449904d9c7ca0999932163f0e11cd4408513a73826b6da98082386c"
+      },
+      {
+        "path": "src/netif/ppp/upap.c",
+        "sha256": "fa1ac01eca4d95eb904ed843f6b6bfb80c09caf304adf3c6a1b1025134b898a1"
+      },
+      {
+        "path": "src/netif/ppp/utils.c",
+        "sha256": "a311cdf6708635bc04cccf2352452d28fa246cf1aa400059c7b11455e33aa9bb"
+      },
+      {
+        "path": "src/netif/ppp/vj.c",
+        "sha256": "5aeb6a28663396b0f6f385a4c247ac2d0a552239b60f891d84328de9f8bc7ed2"
+      }
+    ],
+    "selected_cases": [
+      "mqtt",
+      "smtp",
+      "lwiperf",
+      "http-client",
+      "proxy-connect"
+    ],
+    "managed_additional_case": "owned-mqtt uses mqtt native wire/callback prerequisite plus actual owning facade lifetime assertions",
+    "deferred_unselected": [
+      "tests/Applications.Tcp/LwiperfRefusalCases.cs",
+      "tests/Applications.Tcp/native-lwiperf-refusal.c"
+    ],
+    "allowed_scope": "Coherent complete application messages, valid stream segmentation, ordinary 550/CONNACK refusal/FIN, successful lwiperf data/report, host clock original timeout scheduling, normal API capacity/cancellation/disposal. No custom corrupted input. Original public lwiperf_abort and refused-connect control are unexecuted.",
+    "owning_limits": "Queued MQTT wrapper collection and idle original heap baseline qualified; resolver afterCoreStop still retains even empty disposed wrappers. Original lwiperf listener retained until owner stop; broader MQTT modes and other app owning boundaries remain required.",
+    "qualification": {
+      "threaded": "20260929-160809-dd5468af",
+      "nosys": "20260929-161345-b55f9edf",
+      "threaded-locking": "20260929-161858-576439ba"
     }
   }
 }

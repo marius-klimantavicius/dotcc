@@ -131,3 +131,38 @@ a 131072-byte receive window with scale 2 and retains the ordinary 32768-byte
 send budget. Select it explicitly with `--profile threaded-enhanced`; the three
 baseline profiles retain their existing settings. The [option inventory](config/feature-options.json)
 links compiled contracts separately from the completed native/JIT/AOT evidence.
+
+`LwipMqttClient` owns one original MQTT client. Multiple clients can share a stack,
+and different stacks keep separate callback and request registries. This example
+uses an initialized stack with an application-provided packet transport and a
+reachable broker; it is a usage snippet, not a standalone executed sample:
+
+```csharp
+using var mqtt = LwipMqttClient.Create(clientStack,
+    new LwipMqttOptions { MaximumPendingRequests = 4, PublicationQueueCapacity = 16 });
+var broker = new LwipEndpoint(IPAddress.Parse("10.0.0.2"), 1883);
+var status = await mqtt.ConnectAsync(broker,
+    new LwipMqttConnectOptions("example-client") { KeepAliveSeconds = 0 });
+if (status != LwipMqttConnectionStatus.Accepted)
+    throw new IOException($"Broker refused the connection: {status}");
+await mqtt.SubscribeAsync("example/in", maximumQualityOfService: 1);
+await mqtt.PublishAsync("example/out", "hello"u8.ToArray(), qualityOfService: 1);
+LwipMqttPublication publication = await mqtt.ReadPublicationAsync(cancellationToken);
+```
+
+Topic/payload notifications and outgoing payloads are copied. Notification queues
+are bounded and discard new items when full; counters expose discarded items.
+Consumer limits can be lower than original MQTT limits. `CancelPending()` and
+`Disconnect()` stop the whole original connection and settle its pending tasks;
+there is no per-request original cancellation or public graceful DISCONNECT-packet
+entry. Canceling a publication read only cancels that wait. Disposal stops original
+work, drains callbacks, releases request/client roots and unregisters the completed
+service. Broker FIN faults pending requests; ordinary CONNACK refusals return their
+status. The [TCP application cases and remaining modes](tests/Applications.Tcp/README.md)
+distinguish tested QoS1/lifetime behavior from broader unqualified modes.
+
+Completed built-in services leave active stack tracking only after successful
+cleanup; failed disposal remains registered for retry. Resolver callback retention
+is separate: disposed resolver wrappers, including empty ones, remain in the
+post-core-stop list until their owner stops. The MQTT tests prove collection of a
+disposed wrapper with queued copied data while its stack remains alive.

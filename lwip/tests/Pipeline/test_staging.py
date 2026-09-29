@@ -40,6 +40,26 @@ class StagingTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,'unique local condition'):
             stage.eap_request(self.root,self.source,self.root/'bad-stage')
 
+    def test_smtp_body_flag_only_and_unique_guard(self):
+        source=ROOT/'ref'/json.loads((ROOT/'config/sources.json').read_text())['directory']
+        path=self.source/'src/apps/smtp/smtp.c';path.parent.mkdir(parents=True)
+        original=(source/'src/apps/smtp/smtp.c').read_text()
+        local=original+'\n/* unrelated editable-source comment remains */\n';path.write_text(local)
+        staged,evidence=stage.smtp_body_validation(self.root,self.source,self.root/'smtp-stage')
+        repair=next(item for item in stage.metadata(self.root)['textPatches'] if item['id']=='smtp-body-linebreak-validation')
+        change=repair['changes'][0]
+        self.assertEqual(staged.read_text(),local.replace(change['before'],change['after'],1))
+        self.assertEqual(path.read_text(),local)
+        for name in ('to','from','subject'):
+            self.assertIn(f'smtp_verify(s->{name}, s->{name}_len, 0)',staged.read_text())
+        self.assertEqual(evidence[0]['changes'][0]['matches'],1)
+        path.write_text(local+change['before'])
+        with self.assertRaisesRegex(RuntimeError,'unique local condition'):
+            stage.smtp_body_validation(self.root,self.source,self.root/'ambiguous-smtp')
+        path.write_text(local.replace(change['before'],change['after'],1))
+        with self.assertRaisesRegex(RuntimeError,'unique local condition'):
+            stage.smtp_body_validation(self.root,self.source,self.root/'already-fixed-smtp')
+
     def test_unknown_repair_is_not_silently_ignored(self):
         path=self.root/'config/adaptations.json';data=json.loads(path.read_text());data['textPatches'].append({'id':'unassigned'})
         path.write_text(json.dumps(data))

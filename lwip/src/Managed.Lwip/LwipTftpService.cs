@@ -289,7 +289,7 @@ public sealed unsafe class LwipTftpService:IDisposable
                 if(claimed){LwipUdpApplications.ReleaseTftp(core,this);claimed=false;}
                 NativeMemory.Free((void*)context);context=0;files.Clear();storedBytes=0;
             });
-            disposed=true;
+            disposed=true;stack.CompleteServiceDisposal(this);
         });}catch(ObjectDisposedException)when(disposed){}
     }
 }

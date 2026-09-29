@@ -8,9 +8,9 @@ public sealed record LwipDatagram(byte[] Bytes,LwipEndpoint Sender);
 /// <summary>Owns socket children. At most one read/accept and one write/connect call may be active per handle, concurrently with close. Cancellation closes the entire affected socket, including its other pending operation. Calls execute without holding the stack facade lock.</summary>
 public sealed unsafe class LwipSockets:IDisposable
 {
-    readonly Lwip owner;readonly object gate=new();readonly HashSet<LwipSocket> sockets=new();bool stopping,disposed;int active;
-    private LwipSockets(Lwip owner)=>this.owner=owner;
-    public static LwipSockets Start(LwipStack stack){ArgumentNullException.ThrowIfNull(stack);return stack.StartService(s=>new LwipSockets(s.Core));}
+    readonly LwipStack stack;readonly Lwip owner;readonly object gate=new();readonly HashSet<LwipSocket> sockets=new();bool stopping,disposed;int active;
+    private LwipSockets(LwipStack stack){this.stack=stack;owner=stack.Core;}
+    public static LwipSockets Start(LwipStack stack){ArgumentNullException.ThrowIfNull(stack);return stack.StartService(s=>new LwipSockets(s));}
     public LwipSocket CreateTcp(bool ipv6=false)=>Create(ipv6,SOCK_STREAM);
     public LwipSocket CreateUdp(bool ipv6=false)=>Create(ipv6,SOCK_DGRAM);
     // Scheduling is admission too: returned Tasks must settle before backing
@@ -126,6 +126,7 @@ public sealed unsafe class LwipSockets:IDisposable
         if(failures!=null)throw new AggregateException("Socket service close failed; core retained for retry.",failures);
         foreach(var socket in snapshot)Close(socket);
         lock(gate){if(active!=0||sockets.Count!=0)throw new InvalidOperationException("Socket operation/adoption accounting did not quiesce; retained for retry.");disposed=true;}
+        stack.CompleteServiceDisposal(this);
     }
     public sealed class LwipSocket:IDisposable
     {

@@ -8,9 +8,9 @@ public sealed record LwipNetconnData(byte[] Bytes,LwipEndpoint? Sender);
 /// <summary>Owns direct netconn handles with one active reader/acceptor and one writer/connector per connection. Cancellation closes the entire affected connection. Teardown prepares deletion, joins callers, then frees the connection.</summary>
 public sealed unsafe class LwipNetconns:IDisposable
 {
-    readonly Lwip owner;readonly object gate=new();readonly HashSet<Connection> connections=new();bool stopping,disposed;
-    private LwipNetconns(Lwip owner)=>this.owner=owner;
-    public static LwipNetconns Start(LwipStack stack)=>stack.StartService(s=>new LwipNetconns(s.Core));
+    readonly LwipStack stack;readonly Lwip owner;readonly object gate=new();readonly HashSet<Connection> connections=new();bool stopping,disposed;
+    private LwipNetconns(LwipStack stack){this.stack=stack;owner=stack.Core;}
+    public static LwipNetconns Start(LwipStack stack)=>stack.StartService(s=>new LwipNetconns(s));
     // Scheduling is admission too: returned Tasks must settle before backing
     // can be released, even if their worker has not entered an original call.
     internal TaskScheduler Scheduler = TaskScheduler.Default;
@@ -110,6 +110,7 @@ public sealed unsafe class LwipNetconns:IDisposable
         if(failures!=null)throw new AggregateException("Netconn shutdown failed; core retained.",failures);
         foreach(var item in snapshot)Delete(item);
         lock(gate){if(connections.Count!=0)throw new InvalidOperationException("Accepted netconn backing remains registered; retained for disposal retry.");disposed=true;}
+        stack.CompleteServiceDisposal(this);
     }
     public sealed class Connection:IDisposable
     {

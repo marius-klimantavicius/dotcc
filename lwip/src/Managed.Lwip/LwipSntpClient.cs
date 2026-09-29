@@ -66,7 +66,7 @@ public sealed unsafe class LwipSntpClient:IDisposable
             stack.ServiceBarrier();
             stack.Invoke(core=>{if(registered){LwipUdpApplications.UnregisterSntp(core,this);registered=false;}});
             notifications.Writer.TryComplete(new ObjectDisposedException(nameof(LwipSntpClient)));
-            disposed=true;
+            disposed=true;stack.CompleteServiceDisposal(this);
         });}catch(ObjectDisposedException)when(disposed){}
     }
 }

@@ -7,7 +7,7 @@ import shutil
 
 def metadata(root):
     result = json.loads((root / 'config/adaptations.json').read_text())
-    allowed = {'makefsdata-checksum-progress', 'ipv4-forwarding-software-checksums', 'eap-request-invalid-state-release', 'lowpan6-short-source-address', 'lowpan6-reordered-fragment-link'}
+    allowed = {'makefsdata-checksum-progress', 'ipv4-forwarding-software-checksums', 'eap-request-invalid-state-release', 'lowpan6-short-source-address', 'lowpan6-reordered-fragment-link', 'smtp-body-linebreak-validation'}
     declared = [item['id'] for item in result['textPatches']]
     if len(declared) != len(set(declared)) or set(declared) != allowed:
         raise RuntimeError('Adaptation declarations must match the supported, profile-assigned repairs')
@@ -79,9 +79,14 @@ def lowpan_reordered_fragment(root, source, destination, input_path=None):
                  'Valid reordered FRAGN insertion retains existing tail', 'lowpan-reorder-adaptation.json', input_path)
 
 
+def smtp_body_validation(root, source, destination):
+    return _unit(root, source, destination, 'smtp-body-linebreak-validation',
+                 'Original SMTP_CHECK_DATA permits coherent CRLF only in body', 'smtp-body-adaptation.json')
+
+
 def product_units(root, source, destination, original_lowpan_order=False):
     units={};evidence=[]
-    for stage in (ipv4_forwarding,eap_request,lowpan_short_source):
+    for stage in (ipv4_forwarding,eap_request,lowpan_short_source,smtp_body_validation):
         path,repairs=stage(root,source,destination);units[repairs[0]['path']]=path;evidence.extend(repairs)
     if not original_lowpan_order:
         path,repairs=lowpan_reordered_fragment(root,source,destination,units['src/netif/lowpan6.c']);units['src/netif/lowpan6.c']=path;evidence.extend(repairs)

@@ -220,6 +220,8 @@ def run_suite(ctx, suite):
 
 
 def run_one(ctx, suite):
+    if suite.name.startswith('tcp-app-'):
+        return helper(ctx.root / 'tests/Applications.Tcp/campaign-runner.py').run(ctx, suite)
     if suite.name.startswith('udp-app-'):
         return helper(ctx.root / 'tests/Applications.Udp/campaign-runner.py').run(ctx, suite)
     if suite.name == 'enhanced-options':
@@ -258,10 +260,11 @@ def validate_options(args):
 
 _product = ('threaded', 'nosys', 'threaded-locking')
 _udp_suites = tuple('udp-app-' + name for name in ('tftp-server', 'tftp-get', 'tftp-put', 'sntp', 'netbios', 'mdns', 'owned-tftp'))
-_suites = (*_udp_suites, 'enhanced-options', 'owned-api', 'oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
+_tcp_suites = tuple('tcp-app-' + name for name in ('mqtt', 'smtp', 'lwiperf', 'http-client', 'proxy-connect', 'owned-mqtt'))
+_suites = (*_tcp_suites, *_udp_suites, 'enhanced-options', 'owned-api', 'oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
            'routing', 'links', 'ppp', 'applications', 'contrib', 'tools', 'upstream',
            'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ipv6-addressing', 'multicast-fixtures', 'ppp-serial', 'ppp-ethernet', 'ppp-l2tp', 'routing-ipv6', 'bridge-fixtures', 'lowpan-vectors', 'lowpan-services')
-_applicability = {**{name: _product for name in _udp_suites}, 'enhanced-options': ('threaded-enhanced',), 'consumer': (*_product, 'threaded-enhanced'), 'abi': (*_product, 'threaded-enhanced'), 'owned-api': (*_product, 'threaded-enhanced'), 'aot-rooted': (*_product, 'threaded-enhanced'), 'tools': ('makefsdata', 'http-content'), 'tool-generator': ('makefsdata',), 'upstream': ('unit', 'unit-nosys'), 'contrib': ('contrib',),
+_applicability = {**{name: _product for name in _tcp_suites},**{name: _product for name in _udp_suites}, 'enhanced-options': ('threaded-enhanced',), 'consumer': (*_product, 'threaded-enhanced'), 'abi': (*_product, 'threaded-enhanced'), 'owned-api': (*_product, 'threaded-enhanced'), 'aot-rooted': (*_product, 'threaded-enhanced'), 'tools': ('makefsdata', 'http-content'), 'tool-generator': ('makefsdata',), 'upstream': ('unit', 'unit-nosys'), 'contrib': ('contrib',),
                   'sysarch': ('threaded', 'threaded-locking'), 'socket-api': ('threaded', 'threaded-locking'),
                   'direct-apis': _product, 'socket-semantics': ('threaded', 'threaded-locking'), 'contrib-addons': ('contrib',), 'interop-kernel': _product, 'http-transactions': (*_product, 'http-content')}
 recipe = Recipe('lwip', 'TranslatedLwip', (*_product, 'threaded-enhanced', 'unit', 'unit-nosys', 'makefsdata', 'contrib', 'http-content'),

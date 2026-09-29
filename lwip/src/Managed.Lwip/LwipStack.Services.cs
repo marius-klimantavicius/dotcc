@@ -63,7 +63,7 @@ public sealed unsafe partial class LwipStack
             {
                 try{service.Dispose();}
                 catch(Exception cleanup){throw new AggregateException("Service initialization and rollback failed; registered backing retained for stack disposal retry.",initialization,cleanup);}
-                services.Remove(service);
+                RemoveServiceReference(service);
                 // Retained callback hooks survive ordinary registration removal
                 // until the core joins, just as after normal service stop.
                 throw;
@@ -93,13 +93,25 @@ public sealed unsafe partial class LwipStack
         if(stopMarkerQueued||(stopping&&disposalThread!=Environment.CurrentManagedThreadId))
             throw new ObjectDisposedException(nameof(LwipStack),"Stack is stopping; only its registered service cleanup may enter.");
     }
-    private void StopOwnedServices()
+    // Called only after a built-in service has completed native cleanup and
+    // stopped its callers. Post-core-stop callback retention is independent.
+    internal void CompleteServiceDisposal(IDisposable service)
+    {
+        RejectCallbackReentry();lock(gate)RemoveServiceReference(service);
+    }
+    private void RemoveServiceReference(IDisposable service)
     {
         for(int i=services.Count-1;i>=0;i--)
+            if(ReferenceEquals(services[i],service)){services.RemoveAt(i);return;}
+    }
+    private void StopOwnedServices()
+    {
+        while(services.Count!=0)
         {
-            // Remove only after a successful stop; a failed disposal retains its
-            // service registration and the live core for an explicit retry.
-            services[i].Dispose();services.RemoveAt(i);
+            var service=services[^1];
+            // Successful built-ins may unregister themselves. A failed stop
+            // keeps its exact registration and the core available for retry.
+            service.Dispose();RemoveServiceReference(service);
         }
     }
     private void ReleaseStoppedServiceContexts()
