@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#ifdef DOTCC_LWIP_IP6_HOP_LIMIT
+#include "ip6-hop-limit-value.h"
+#endif
 #ifndef BYTE_ORDER
 #define BYTE_ORDER LITTLE_ENDIAN
 #endif

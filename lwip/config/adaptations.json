@@ -104,6 +104,37 @@
           "threaded-locking": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-serial-report.json"
         }
       }
+    },
+    {
+      "id": "lowpan6-short-source-address",
+      "path": "src/netif/lowpan6.c",
+      "source_sha256": "9ebbe5af554f102e08cbbb0e4d46381c23a310bef8a7741e41f311c5d8d747c2",
+      "changes": [
+        {
+          "before": "  } else if (addr_mode == IEEE_802154_FC_DST_ADDR_MODE_SHORT) {\n    /* short address (16 bit) */\n    src->addr_len = 2;",
+          "after": "  } else if (addr_mode == IEEE_802154_FC_SRC_ADDR_MODE_SHORT) {\n    /* short address (16 bit) */\n    src->addr_len = 2;"
+        }
+      ],
+      "reason": "The parser masks source address bits14..15 but compares them with the destination-short constant in bits10..11. Valid IEEE802.15.4 short-source frames are discarded before IPv6 dispatch. Shared destination macro replacement breaks destination parsing; a source bitmask alone cannot normalize source bits, and whole-parser substitution replaces the algorithm. Correct only the source-branch constant under unique local context, identically staged native/managed; acquired reference unchanged.",
+      "classification": "upstream-bug-repair",
+      "guard": "one unique source-address short branch anchored by src->addr_len; file hash observational",
+      "tests": [
+        "independently encoded IPv6 UDP with short/extended source and destination addresses",
+        "uncompressed/IPHC receive vectors",
+        "original short-source reject versus adapted delivery",
+        "unchanged BLE and extended-source receive",
+        "natural pbuf/heap baseline"
+      ],
+      "removal_condition": "Remove when upstream source branch compares IEEE_802154_FC_SRC_ADDR_MODE_SHORT; changed branch requires review.",
+      "failure_evidence": "artifacts/lowpan-native/nosys/short-source.log",
+      "validation": {
+        "native": "artifacts/lowpan-native/{threaded,nosys,threaded-locking}/report.json: identical fixture original short-source exit92 versus staged ten actual IPv6/UDP inputs pass0",
+        "managed": {
+          "threaded": "artifacts/campaign/20260929-110105-df4730c6/lowpan-vectors-report.json",
+          "nosys": "artifacts/campaign/20260929-110524-6852b698/lowpan-vectors-report.json",
+          "threaded-locking": "artifacts/campaign/20260929-111004-d11b3587/lowpan-vectors-report.json"
+        }
+      }
     }
   ]
 }

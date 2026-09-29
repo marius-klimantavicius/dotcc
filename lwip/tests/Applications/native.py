@@ -23,14 +23,17 @@ def run(profile='threaded'):
 
     spec=importlib.util.spec_from_file_location('stage',ROOT/'scripts/stage.py');stage=importlib.util.module_from_spec(spec);spec.loader.exec_module(stage)
     staged_units,repairs=stage.product_units(ROOT,source,work/'source')
+    spec=importlib.util.spec_from_file_location('hop',ROOT/'scripts/ip6-hop.py');hop=importlib.util.module_from_spec(spec);spec.loader.exec_module(hop)
+    hop_flags=hop.native_flags(ROOT,source)
     groups=json.loads((ROOT/'config/source-groups.json').read_text())
     paths=[staged_units.get(name,source/name) for group,names in groups.items() if group not in ('lwipmbedtls_SRCS','lwipmakefsdata_SRCS') for name in names]
     paths += [ROOT/'tests/NativeOracle/sys_arch.c',ROOT/'tests/Applications/http.c',ROOT/'src/Host/bridge.c',ROOT/'src/Host/app_port.c']
+    paths=[path for path in paths if path.name not in ('bridgeif.c','bridgeif_fdb.c')]+[ROOT/'src/port/bridge_service.c']
     base=['cc','-std=c17','-D_POSIX_C_SOURCE=200809L','-O1','-g','-ffunction-sections','-fdata-sections','-pthread','-I'+str(work/'include'),'-I'+str(ROOT/'src/port'),'-I'+str(source/'src/include'),'-I'+str(source/'contrib')]
     commands=[]
     def compile(pair):
         index,path=pair;target=work/(str(index)+'.o')
-        args=base+(['-DDOTCC_TCPIP_WORKER=1'] if path.name=='tcpip.c' else [])+['-c',str(path),'-o',str(target)]
+        args=base+(['-DDOTCC_TCPIP_WORKER=1'] if path.name=='tcpip.c' else [])+(hop_flags if path.name=='ip6.c' else ['-I'+str(source/'src')] if path.name=='bridge_service.c' else [])+['-c',str(path),'-o',str(target)]
         commands.append(args);result=subprocess.run(args,text=True,capture_output=True,timeout=90)
         if result.returncode:raise RuntimeError(result.stderr)
         return target

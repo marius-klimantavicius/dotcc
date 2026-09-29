@@ -1,0 +1,14 @@
+{
+  "macro": "IP6H_HOPLIM_SET",
+  "parameters": [
+    "hdr",
+    "hl"
+  ],
+  "body": "(hdr)->_hoplim = (u8_t)(hl)",
+  "unit": "src/core/ipv6/ip6.c",
+  "calls": [
+    "IP6H_HOPLIM_SET(iphdr, IP6H_HOPLIM(iphdr) - 1);",
+    "IP6H_HOPLIM_SET(ip6hdr, hl);"
+  ],
+  "scope": "Only original ip6.c: forwarding promoted integer decrement and ordinary output u8_t value. Other translation units retain their original macro."
+}

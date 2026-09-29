@@ -231,7 +231,22 @@
       "multiple interfaces"
     ],
     "disposition": "required",
-    "status": "unrun"
+    "status": "partial",
+    "evidence": {
+      "threaded": {
+        "routing-ipv6": "artifacts/campaign/20260929-110105-df4730c6/receipt.json",
+        "bridge-fixtures": "artifacts/campaign/20260929-110105-df4730c6/receipt.json"
+      },
+      "nosys": {
+        "routing-ipv6": "artifacts/campaign/20260929-110524-6852b698/receipt.json",
+        "bridge-fixtures": "artifacts/campaign/20260929-110524-6852b698/receipt.json"
+      },
+      "threaded-locking": {
+        "routing-ipv6": "artifacts/campaign/20260929-111004-d11b3587/receipt.json",
+        "bridge-fixtures": "artifacts/campaign/20260929-111004-d11b3587/receipt.json"
+      }
+    },
+    "remaining": "Finite IPv6 forwarding/bridge proof; full routing matrix and owning consumer API scope remain in the plan."
   },
   {
     "id": "slip",
@@ -282,7 +297,13 @@
       "radio frames"
     ],
     "disposition": "required",
-    "status": "unrun"
+    "status": "partial",
+    "evidence": {
+      "threaded": "artifacts/campaign/20260929-110105-df4730c6/lowpan-vectors-report.json",
+      "nosys": "artifacts/campaign/20260929-110524-6852b698/lowpan-vectors-report.json",
+      "threaded-locking": "artifacts/campaign/20260929-111004-d11b3587/lowpan-vectors-report.json"
+    },
+    "remaining": "Fragmentation/reassembly, additional compression/context forms, output MTU behavior and owned ZEP/radio service lifetime remain open."
   },
   {
     "id": "ppp-links-control",
@@ -313,18 +334,21 @@
     "evidence": {
       "threaded": {
         "serial": "artifacts/campaign/20260929-102218-436a6eb5/ppp-serial-report.json",
-        "ethernet": "artifacts/campaign/20260929-102218-436a6eb5/ppp-ethernet-report.json"
+        "ethernet": "artifacts/campaign/20260929-102218-436a6eb5/ppp-ethernet-report.json",
+        "l2tp": "artifacts/campaign/20260929-110105-df4730c6/ppp-l2tp-report.json"
       },
       "nosys": {
         "serial": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-serial-report.json",
-        "ethernet": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-ethernet-report.json"
+        "ethernet": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-ethernet-report.json",
+        "l2tp": "artifacts/campaign/20260929-110524-6852b698/ppp-l2tp-report.json"
       },
       "threaded-locking": {
         "serial": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-serial-report.json",
-        "ethernet": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-ethernet-report.json"
+        "ethernet": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-ethernet-report.json",
+        "l2tp": "artifacts/campaign/20260929-111004-d11b3587/ppp-l2tp-report.json"
       }
     },
-    "remaining": "L2TP data/managed qualification, broader IPv6 link data, reconnect/timer failures and registered-service owner lifetime remain open."
+    "remaining": "Broader IPv6 link data, reconnect/timer failures and registered PPP service owner lifetime remain open."
   },
   {
     "id": "ppp-pap-chap-mschap-eap-md5",

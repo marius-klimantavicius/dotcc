@@ -3,7 +3,7 @@
 The campaign acquires lwIP 2.2.1 using the pinned metadata in
 `config/sources.json`. The initial local reference was copied from the planning
 checkout; acquisition receipts describe observed provenance. Preparation never
-modifies this reference. Two narrow upstream repairs are recorded in config/adaptations.json: the separate generator checksum-loop progress fix and four IPv4 forwarding software-checksum predicates. Only staged copies change. Product/contrib forwarding sources use the latter; diagnostic options explicitly keep IP_FORWARD=0 and retain original ip4.c in both native and managed builds.
+modifies this reference. Four narrow upstream repairs are recorded in `config/adaptations.json`: generator checksum-loop progress, IPv4 software-checksum predicates, EAP control-pbuf release and the IEEE802.15.4 short-source constant. Only staged copies change. IPv6 hop expiry uses a scoped macro override, and bridge lifetime support uses an authored include-wrapper around unchanged algorithms. Diagnostic applicability is recorded per repair; no diagnostic assertion or fixture is modified.
 
 `config/source-groups.json` enumerates all C translation units declared by
 upstream `src/Filelists.cmake`, including its conditional SLIP append. The stack
@@ -15,7 +15,7 @@ file in contrib, including inputs absent from the aggregate CMake list.
 
 Profiles and feature-to-suite rows are implementation drafts until effective
 preprocessing and behavioral checks have qualified them. Source presence does
-not prove an active compile guard or tested behavior. The unit diagnostic profile layers the original options and simplified scheduler without changing upstream fixtures or assertions. All137 actual registrations match native Check and pass raw/processed JIT/NativeAOT (081512-9608394d, 081538-a7d37662). The corresponding unit-nosys132 cases also pass all four cells (083055-ad449f5f). The uncompressed generator has a native-matched four-cell checksum fixture (083157-23870a49); generated-content HTTP consumption and contrib behavior remain open.
+not prove an active compile guard or tested behavior. The unit diagnostic profile layers the original options and simplified scheduler without changing upstream fixtures or assertions. All137 actual registrations match native Check and pass raw/processed JIT/NativeAOT (081512-9608394d, 081538-a7d37662). The corresponding unit-nosys132 cases also pass all four cells (083055-ad449f5f). The uncompressed generator has a native-matched four-cell checksum fixture (083157-23870a49); the subsequent actual generated-content HTTP roundtrip passes093554-eba3af0c. Full contrib behavior remains open. Dated results below are chronological milestones; docs/validation.md records current evidence.
 
 Packing uses the official `PACK_STRUCT_USE_INCLUDES` port hook with paired
 `#pragma pack(push, 1)` / `pop` headers. Host handles use `intptr_t`; these are C
@@ -148,3 +148,48 @@ registration parity and deliberate assertion/setup controls. These checkpoints d
 not close full link/application gates: L2TP data/managed qualification, broader
 IPv6 link data and reconnect cases, registered PPP/SLIP service lifetimes,
 6LoWPAN/ZEP and remaining applications/configuration variants remain required.
+
+The IPv6 hop-limit repair uses a macro override only for `src/core/ipv6/ip6.c`.
+The original forwarding decrement promotes zero to a negative integer before the
+setter truncates it to255. The authored typed helper clamps negative input to
+zero, allowing the existing expiry path to reject it; ordinary u8 output values
+remain unchanged. `config/ip6-hop-contract.json` guards the exact original
+macro parameters/body and both setter call roles. Object reports must show one
+selected definition and exactly two expansions in the intended source unit.
+Native builds force-include the equivalent reviewed header for this unit only.
+Diagnostics retain the original setter because forwarding is disabled.
+
+`src/port/bridge_service.c` includes the two original bridge implementation files
+unchanged and supplies owner validation, a real queued FIFO barrier, and private
+FDB/timer teardown. The product selects this wrapper instead of the two standalone
+bridge units. Receipts preserve both logical upstream source closure and the
+wrapper-to-original inclusion mapping. Teardown requires a barrier outside the
+core before stop and between stop/free; this also drains pending loopback in the
+locking profile. These requirements are tested through ordinary consumer code.
+
+The fourth minimal staged source repair corrects the source-short address
+constant in the IEEE802.15.4 parser. Its source bits were compared with the
+unrelated destination-short encoding. The unique larger source-branch guard
+leaves destination parsing intact; unrelated local edits remain allowed. Native
+controls compile the same fixture against original and repaired lowpan6.c:
+original short-source input fails, while all ten raw/IPHC radio address
+combinations and BLE receive vectors pass in all three profiles. Diagnostic
+closures do not select lowpan6.c. This finite receive-vector witness does not
+qualify fragmentation, reassembly, ZEP lifecycle, or every compression option.
+
+
+The four additional finite suites pass raw/processed JIT and NativeAOT in every
+product profile: threaded110105-df4730c6, nosys110524-6852b698 and
+threaded-locking111004-d11b3587. These cover independent authenticated L2TP
+control/data, ten native BLE/radio vectors and thirty managed deliveries across
+two owners, IPv6 forwarding hop-expiry/error paths, and bridge forwarding/FDB
+aging/queued-loopback teardown and owner isolation. Product publications are
+105719-74e8e2eb,110311-4b343b75 and110757-36b627d9 respectively. Auxiliary
+contrib/http-content publications still precede these latest adapters and require
+refresh with the next shared wrapper batch. The original native LOWPAN parser
+must fail the same short-source fixture; the corrected parser must pass all
+address combinations. Nine focused recipe/staging/hop-contract checks pass.
+
+The source snapshot is artifacts/link-routing-source-snapshot-20260929-1114.json.
+ZEP prototype code remains outside the selected product and this checkpoint.
+Full link/application/feature-variant qualification remains open.

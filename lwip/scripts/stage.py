@@ -7,7 +7,7 @@ import shutil
 
 def metadata(root):
     result = json.loads((root / 'config/adaptations.json').read_text())
-    allowed = {'makefsdata-checksum-progress', 'ipv4-forwarding-software-checksums', 'eap-request-invalid-state-release'}
+    allowed = {'makefsdata-checksum-progress', 'ipv4-forwarding-software-checksums', 'eap-request-invalid-state-release', 'lowpan6-short-source-address'}
     declared = [item['id'] for item in result['textPatches']]
     if len(declared) != len(set(declared)) or set(declared) != allowed:
         raise RuntimeError('Adaptation declarations must match the supported, profile-assigned repairs')
@@ -69,8 +69,13 @@ def eap_request(root, source, destination):
                  'Bundled EAP authentication server; no external SRP dependency', 'eap-adaptation.json')
 
 
+def lowpan_short_source(root, source, destination):
+    return _unit(root, source, destination, 'lowpan6-short-source-address',
+                 'IEEE802.15.4 short-source frame parsing', 'lowpan-adaptation.json')
+
+
 def product_units(root, source, destination):
     units={};evidence=[]
-    for stage in (ipv4_forwarding,eap_request):
+    for stage in (ipv4_forwarding,eap_request,lowpan_short_source):
         path,repairs=stage(root,source,destination);units[repairs[0]['path']]=path;evidence.extend(repairs)
     return units,evidence

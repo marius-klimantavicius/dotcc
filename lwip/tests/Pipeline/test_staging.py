@@ -46,5 +46,20 @@ class StagingTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,'profile-assigned'):
             stage.ipv4_forwarding(self.root,self.source,self.root/'stage')
 
+    def test_lowpan_repairs_only_source_short_address_branch(self):
+        source=ROOT/'ref'/json.loads((ROOT/'config/sources.json').read_text())['directory']
+        path=self.source/'src/netif/lowpan6.c';path.parent.mkdir(parents=True)
+        original=(source/'src/netif/lowpan6.c').read_text()
+        local=original+'\n/* unrelated editable source change */\n';path.write_text(local)
+        staged,evidence=stage.lowpan_short_source(self.root,self.source,self.root/'lowpan-stage')
+        repair=next(item for item in stage.metadata(self.root)['textPatches'] if item['id']=='lowpan6-short-source-address')
+        change=repair['changes'][0]
+        self.assertEqual(staged.read_text(),local.replace(change['before'],change['after'],1))
+        self.assertEqual(path.read_text(),local)
+        self.assertEqual(evidence[0]['changes'][0]['matches'],1)
+        path.write_text(local+change['before'])
+        with self.assertRaisesRegex(RuntimeError,'unique local condition'):
+            stage.lowpan_short_source(self.root,self.source,self.root/'bad-lowpan')
+
 
 if __name__=='__main__':unittest.main()

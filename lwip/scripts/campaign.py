@@ -70,12 +70,17 @@ def prepare(ctx):
                            objects=True, configure=configure, finish=finish)
     if profile['kind'] == 'diagnostic':
         staged_units, repairs = {}, []
-        ctx.receipt['adaptation_inapplicability'] = {'ipv4-forwarding-software-checksums': 'Original diagnostic options select IP_FORWARD=0; native and managed diagnostics retain original ip4.c.', 'eap-request-invalid-state-release': 'Original diagnostic options leave EAP_SUPPORT=0; native and managed diagnostics retain original eap.c.'}
+        ctx.receipt['adaptation_inapplicability'] = {'ipv4-forwarding-software-checksums': 'Original diagnostic options select IP_FORWARD=0; native and managed diagnostics retain original ip4.c.', 'eap-request-invalid-state-release': 'Original diagnostic options leave EAP_SUPPORT=0; native and managed diagnostics retain original eap.c.', 'lowpan6-short-source-address': 'Diagnostic source closure does not select lowpan6.c.', 'ipv6-hop-limit-override': 'Original diagnostic options leave LWIP_IPV6_FORWARD=0; ordinary u8 output hop limits retain the original setter.'}
     else:
         staged_units, repairs = helper(ctx.root / 'scripts/stage.py').product_units(ctx.root, source, ctx.work / 'source')
     ctx.receipt['adaptations'] = repairs
+    hop_flags = ()
+    if profile['kind'] != 'diagnostic':
+        hop = helper(ctx.root / 'scripts/ip6-hop.py')
+        hop_flags = hop.managed_flags(ctx.root, source)
+        ctx.receipt['ipv6_hop_override'] = hop.check_contract(ctx.root, source)
     def source_unit(name, unit_flags=()):
-        return Unit(staged_units.get(name, source / name), unit_flags)
+        return Unit(staged_units.get(name, source / name), (*unit_flags, *(hop_flags if name == 'src/core/ipv6/ip6.c' else ())))
     selected = [name for group, names in groups.items()
                 if group not in ('lwipmbedtls_SRCS', 'lwipmakefsdata_SRCS') for name in names]
     if profile['kind'] == 'diagnostic':
@@ -106,8 +111,12 @@ def prepare(ctx):
     options = ['-std=c17', '--instance-methods',
                *flags(includes=[includes, ctx.root / 'src/port', source / 'src/include', source / 'contrib']),
                '--overrides-file', str(ctx.root / 'config/dotcc-overrides.json')]
-    authored = [Unit(p) for p in sorted((ctx.root / 'src/port').glob('*.c')) + sorted((ctx.root / 'src/Host').glob('*.c'))]
-    return Translation([*[source_unit(name, ('-DDOTCC_TCPIP_WORKER=1',) if name == 'src/api/tcpip.c' else ()) for name in selected], *authored], options,
+    bridge_sources = ('src/netif/bridgeif.c', 'src/netif/bridgeif_fdb.c')
+    ctx.receipt['source_wrappers'] = [{'wrapper': str(ctx.root / 'src/port/bridge_service.c'),
+        'includes': [str(source / name) for name in bridge_sources],
+        'scope': 'Original bridge algorithms included unchanged; authored owner validation, FIFO barrier and quiescent teardown.'}]
+    authored = [Unit(p, ('-I' + str(source / 'src'),) if p.name == 'bridge_service.c' else ()) for p in sorted((ctx.root / 'src/port').glob('*.c')) + sorted((ctx.root / 'src/Host').glob('*.c'))]
+    return Translation([*[source_unit(name, ('-DDOTCC_TCPIP_WORKER=1',) if name == 'src/api/tcpip.c' else ()) for name in selected if name not in bridge_sources], *authored], options,
                        [*link_flags('Lwip', 'Managed.Networking'), '--instance-methods'],
                        objects=True, configure=configure, finish=finish, validate_objects=validate_objects)
 
@@ -117,6 +126,23 @@ def validate_objects(ctx, reports):
     bindings = [row for row in records if row.get('event') == 'function-override']
     ctx.receipt['host_bindings'] = bindings
     ctx.receipt['override_reports'] = [str(path) for path in reports]
+    if not ctx.profile.startswith('unit'):
+        scoped = []
+        for report in reports:
+            rows = [json.loads(line) for line in report.read_text().splitlines() if line]
+            rows = [row for row in rows if row.get('name') == 'IP6H_HOPLIM_SET']
+            if rows:
+                scoped.append({'report': str(report), 'events': rows})
+        summaries = [row for item in scoped for row in item['events'] if row.get('event') == 'summary']
+        if len(scoped) != 1 or len(summaries) != 1 or int(summaries[0].get('selected', 0)) != 1 or int(summaries[0].get('expansions', 0)) != 2:
+            raise RuntimeError('IPv6 hop-limit override must select one definition and exactly two calls in one translation unit')
+        expansions = [row for row in scoped[0]['events'] if row.get('event') == 'expansion']
+        report_name = scoped[0]['report'].replace('\\', '/').rsplit('/', 1)[-1]
+        unit_index = int(report_name.split('-', 1)[0])
+        unit_source = ctx.receipt['units'][unit_index].replace('\\', '/')
+        if not unit_source.endswith('/src/core/ipv6/ip6.c') or any(not row.get('source', '').startswith('ip6.c:') for row in expansions):
+            raise RuntimeError('IPv6 hop-limit override escaped its reviewed translation unit')
+        ctx.receipt['ipv6_hop_override_reports'] = scoped
     if not bindings:
         raise RuntimeError('No typed host bindings matched the translated source closure')
     config = ctx.root / ('tests/Upstream/overrides.json' if ctx.profile.startswith('unit') else 'config/dotcc-overrides.json')
@@ -168,6 +194,10 @@ def run_one(ctx, suite):
         return helper(ctx.root / 'scripts/tool-tests.py').run(ctx, suite)
     if suite.name == 'slip-framing':
         return helper(ctx.root / 'scripts/link-tests.py').run(ctx, suite)
+    if suite.name == 'lowpan-vectors':
+        return helper(ctx.root / 'scripts/lowpan-tests.py').run(ctx, suite)
+    if suite.name == 'ppp-l2tp':
+        return helper(ctx.root / 'scripts/l2tp-tests.py').run(ctx, suite)
     if suite.name == 'ppp-ethernet':
         return helper(ctx.root / 'scripts/pppoe-tests.py').run(ctx, suite)
     if suite.name == 'ppp-serial':
@@ -189,7 +219,7 @@ def validate_options(args):
 _product = ('threaded', 'nosys', 'threaded-locking')
 _suites = ('oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
            'routing', 'links', 'ppp', 'applications', 'contrib', 'tools', 'upstream',
-           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ipv6-addressing', 'multicast-fixtures', 'ppp-serial', 'ppp-ethernet')
+           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ipv6-addressing', 'multicast-fixtures', 'ppp-serial', 'ppp-ethernet', 'ppp-l2tp', 'routing-ipv6', 'bridge-fixtures', 'lowpan-vectors')
 _applicability = {'tools': ('makefsdata', 'http-content'), 'tool-generator': ('makefsdata',), 'upstream': ('unit', 'unit-nosys'), 'contrib': ('contrib',),
                   'sysarch': ('threaded', 'threaded-locking'), 'socket-api': ('threaded', 'threaded-locking'),
                   'direct-apis': _product, 'socket-semantics': ('threaded', 'threaded-locking'), 'contrib-addons': ('contrib',), 'interop-kernel': _product, 'http-transactions': (*_product, 'http-content')}
