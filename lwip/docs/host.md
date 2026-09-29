@@ -81,3 +81,33 @@ sys_arch mailbox/semaphore waits are not interrupted by this service request.
 `JoinWorker` retains the stack on timeout. Real protocol-specific service
 teardown requires its own fixture; the host contract checks alone do not prove
 SNMP, SLIP or contrib service shutdown.
+
+`LwipStack.StartService` registers an owning `IDisposable` before exposing it.
+Services stop in reverse order while core dispatch is still available. A factory
+that throws must release partial resources; service cleanup must close local
+operations and join callers without waiting for remote network progress. Core
+callbacks must not synchronously reenter the facade while its admission gate is
+held. Borrowed `Core` users continue to own their own protocol objects.
+
+Disposal records each successful phase. Once the TCP/IP stop marker is admitted,
+a retry never dispatches to that core again. Worker join precedes host application
+storage release, and host reclamation precedes generated owner release. A service
+stop failure retains its registration for retry; a recorded worker failure is
+reported after host reclamation and cleared from the deferred queue, allowing a
+subsequent disposal to release the retained owner without hiding the first error.
+
+Before accepting the core stop marker, disposal validates application contexts
+are quiescent. If a borrowed HTTP context remains, disposal leaves the core live
+and ordinary admission closed. `CleanupForDisposal` is available only after such
+failed disposal and before the marker; its synchronous callback may release
+previously borrowed resources, after which disposal can be retried. It never
+reopens service/interface creation. Callback exceptions leave admission closed,
+and callback reentry into the same facade is rejected before acquiring its gate.
+The cleanup API is unavailable before failed disposal, after the marker, or after
+owner disposal.
+
+Reentry checks recognize the owning TCP/IP worker/core lock as well as the
+facade's Invoke, Receive and Poll callback scopes. An original sys_timeout
+callback is tested independently of Invoke. With NO_SYS, callbacks entered by
+direct borrowed-Core calls outside these facade scopes remain the borrower's
+responsibility; they must not reenter facade operations.

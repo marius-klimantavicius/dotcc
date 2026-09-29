@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Managed.Networking;
 using static Managed.Networking.Lwip;
-unsafe class Program
+unsafe partial class Program
 {
     static void R(bool condition,string message){if(!condition)throw new InvalidOperationException(message);}
     sealed class DnsPeer
@@ -84,7 +84,7 @@ unsafe class Program
     static void Main(string[] args)
     {
         using var capture=args.Length>0?new Pcap(args[0]):null;var pair=new VirtualPair(capture==null?null:capture.Write);var pending=new List<GCHandle>();
-        try{Dns(pair,pending);pair.Check();Console.WriteLine("PASS dns-fixtures: translated A/AAAA/cache/NXDOMAIN over two-owner Ethernet");}
+        try{if(args.Length>1&&args[1]=="autoip"){AutoIp(pair);}else if(args.Length>1&&args[1]=="dhcp"){Dhcp(pair);Console.WriteLine("PASS dhcp-fixtures: DORA renewal NAK expiry conflict recovery over translated Ethernet");}else{Dns(pair,pending);Console.WriteLine("PASS dns-fixtures: translated A/AAAA/cache/NXDOMAIN over two-owner Ethernet");}pair.Check();}
         finally{pair.Dispose();foreach(var handle in pending)handle.Free();}
     }
 }

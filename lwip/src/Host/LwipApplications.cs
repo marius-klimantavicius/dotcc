@@ -81,6 +81,12 @@ public static unsafe class LwipApplications
     public static (int OpenFiles,int Posts) Counters(Lwip owner) { var state=For(owner);lock(state)return(state.OpenFiles.Count,state.Posts.Count); }
     public static void ThrowErrors(Lwip owner)
     {var state=For(owner);lock(state){if(state.Errors.Count==0)return;var errors=state.Errors.ToArray();state.Errors.Clear();throw new AggregateException("HTTP application callback failed.",errors);}}
+    /// <summary>Validate callbacks have released their contexts while the core can still perform cleanup.</summary>
+    public static void CheckQuiescent(Lwip owner)
+    {
+        var state=For(owner);lock(state)
+            if(state.OpenFiles.Count!=0||state.Posts.Count!=0)throw new InvalidOperationException("HTTP files or POST requests still active; stop applications before disposing the stack.");
+    }
     public static void Release(Lwip owner)
     {
         var state=For(owner);lock(state)

@@ -230,6 +230,9 @@ public static unsafe partial class LwipSysArch
         if(!Monitor.IsEntered(state.Protection)||state.ProtectionDepth.Value==0||token!=state.ProtectionDepth.Value-1)throw new InvalidOperationException("sys_arch protection must unwind on its entering thread in nesting order.");
         state.ProtectionDepth.Value--;Monitor.Exit(state.Protection);
     }
+    /// <summary>Whether this thread is executing on the owner TCP/IP worker or holds its core lock.</summary>
+    public static bool IsCoreContext(Lwip owner)
+    {var state=For(owner);return state.CoreThread==Environment.CurrentManagedThreadId||Monitor.IsEntered(state.CoreLock);}
     public static void MarkCoreThread(Lwip owner) => For(owner).CoreThread = Environment.CurrentManagedThreadId;
     public static void LockCore(Lwip owner) => Monitor.Enter(For(owner).CoreLock);
     public static void UnlockCore(Lwip owner) => Monitor.Exit(For(owner).CoreLock);
@@ -319,7 +322,11 @@ public static unsafe partial class LwipSysArch
         {
             foreach (var address in state.ThreadSemaphores.Values) NativeMemory.Free((void*)address);
             state.ThreadSemaphores.Clear(); state.Resources.Clear();state.Serial.Clear();state.SerialHandles.Clear();state.SerialByHandle.Clear();
-            if (state.Failures.Count != 0) throw new AggregateException("lwIP worker failed.", state.Failures);
+            if (state.Failures.Count != 0)
+            {
+                var failures=state.Failures.ToArray();state.Failures.Clear();
+                throw new AggregateException("lwIP worker failed; host resources reclaimed. Dispose may be retried to release the retained owner.",failures);
+            }
         }
     }
 }
