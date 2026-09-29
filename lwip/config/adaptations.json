@@ -25,7 +25,49 @@
       "failure_evidence": "artifacts/native-tools/before.json",
       "validation": {
         "native": "artifacts/native-tools/report.json",
-        "managed": "unrun"
+        "managed": "artifacts/campaign/20260929-083157-23870a49/makefsdata-report.json"
+      }
+    },
+    {
+      "id": "ipv4-forwarding-software-checksums",
+      "path": "src/core/ipv4/ip4.c",
+      "source_sha256": "d4973142adede3b868036d5404df9a258ed632788d98969539dc21470b748ae6",
+      "changes": [
+        {
+          "before": "if (CHECKSUM_GEN_IP || NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_IP))",
+          "after": "if (!CHECKSUM_GEN_IP || (LWIP_CHECKSUM_CTRL_PER_NETIF && !NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_IP)))"
+        },
+        {
+          "before": "if (CHECKSUM_GEN_UDP || NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_UDP))",
+          "after": "if (!CHECKSUM_GEN_UDP || (LWIP_CHECKSUM_CTRL_PER_NETIF && !NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_UDP)))"
+        },
+        {
+          "before": "if (CHECKSUM_GEN_TCP || NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_TCP))",
+          "after": "if (!CHECKSUM_GEN_TCP || (LWIP_CHECKSUM_CTRL_PER_NETIF && !NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_TCP)))"
+        },
+        {
+          "before": "if (CHECKSUM_GEN_ICMP || NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_ICMP))",
+          "after": "if (!CHECKSUM_GEN_ICMP || (LWIP_CHECKSUM_CTRL_PER_NETIF && !NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_ICMP)))"
+        }
+      ],
+      "reason": "Native forwarding corrupts valid IPv4 and transport checksums when software checksums are enabled. Port options and macro overrides affect other uses in the same unit; replacing the whole function would duplicate the protocol algorithm. Correct only the four inverted software/offload conditions and use the egress interface. Native and translated builds consume the identical staged source. No reference mutation. Hardware offload is not qualified.",
+      "classification": "upstream-bug-repair",
+      "guard": "four unique exact local conditions; source SHA recorded as provenance without disabling warn/off local-source edits",
+      "tests": [
+        "valid forwarded UDP/TCP/ICMP checksums",
+        "first and nonfirst fragmented UDP payload preservation",
+        "TTL expired ICMP",
+        "link down/up recovery"
+      ],
+      "removal_condition": "Remove when acquired upstream preserves software-generated IP/transport checksums in ip4_forward; changed conditions require re-review.",
+      "failure_evidence": "artifacts/native-routing/{threaded,nosys,threaded-locking}/report.json (original exit 92)",
+      "validation": {
+        "native": "artifacts/native-routing/{threaded,nosys,threaded-locking}/report.json (adapted exit 0)",
+        "managed": {
+          "threaded": "artifacts/campaign/20260929-090503-a94d59d9/routing-ipv4-cases.json",
+          "nosys": "artifacts/campaign/20260929-091423-b5f02ec9/routing-ipv4-cases.json",
+          "threaded-locking": "artifacts/campaign/20260929-091556-6c1b6415/routing-ipv4-cases.json"
+        }
       }
     }
   ]

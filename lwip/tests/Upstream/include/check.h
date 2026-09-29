@@ -1,5 +1,6 @@
 #ifndef DOTCC_LWIP_CHECK_H
 #define DOTCC_LWIP_CHECK_H
+#include <string.h>
 /* Check 0.12 registration ABI supported by upstream lwip_check.h.
  * Assertions and fixtures are executed; unsupported APIs fail compilation. */
 #define CHECK_MAJOR_VERSION 0

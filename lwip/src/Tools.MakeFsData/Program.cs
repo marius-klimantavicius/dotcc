@@ -11,6 +11,7 @@ unsafe
         for (int i = 0; i < args.Length; i++) strings[i + 1] = Marshal.StringToCoTaskMemUTF8(args[i]);
         for (int i = 0; i < strings.Length; i++) argv[i] = (byte*)strings[i];
         using var tool = new MakeFsData();
+        using var binding = tool.__DotCcEnter();
         return tool.main(strings.Length, argv);
     }
     finally

@@ -32,7 +32,6 @@
     "options": [
       "LWIP_RAW",
       "LWIP_ALTCP",
-      "LWIP_ALTCP_TCP",
       "LWIP_TCP",
       "LWIP_UDP",
       "LWIP_UDPLITE"
@@ -171,6 +170,7 @@
     ],
     "suite": "addressing",
     "options": [
+      "LWIP_IPV6_DHCP6",
       "LWIP_IPV6_DHCP6_STATELESS",
       "LWIP_IPV6_AUTOCONFIG",
       "LWIP_IPV6_DUP_DETECT_ATTEMPTS",
@@ -240,7 +240,10 @@
     ],
     "suite": "links",
     "options": [
-      "LWIP_IPV4"
+      "LWIP_IPV4",
+      "SLIP_USE_RX_THREAD",
+      "SLIP_RX_FROM_ISR",
+      "SLIP_RX_QUEUE"
     ],
     "profiles": [
       "threaded",
@@ -251,7 +254,13 @@
       "sio byte stream"
     ],
     "disposition": "required",
-    "status": "unrun"
+    "status": "partial",
+    "evidence": {
+      "threaded": "artifacts/campaign/20260929-092814-c3aef247/slip-framing-report.json",
+      "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/slip-framing-report.json",
+      "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/slip-framing-report.json"
+    },
+    "remaining": "ISR/queued variants and broader link-family cases remain open."
   },
   {
     "id": "6lowpan-802154-ble-zep",
@@ -324,7 +333,13 @@
       "entropy"
     ],
     "disposition": "required",
-    "status": "unrun"
+    "status": "partial",
+    "evidence": {
+      "threaded": "artifacts/campaign/20260929-092814-c3aef247/bundled-ppp-report.json",
+      "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/bundled-ppp-report.json",
+      "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/bundled-ppp-report.json"
+    },
+    "remaining": "Full PPP link/authentication negotiation, VJ and peer-error workflows remain open."
   },
   {
     "id": "ppp-mppe-vj-compression",
@@ -346,7 +361,13 @@
       "bundled hash/cipher primitives"
     ],
     "disposition": "required",
-    "status": "unrun"
+    "status": "partial",
+    "evidence": {
+      "threaded": "artifacts/campaign/20260929-092814-c3aef247/bundled-ppp-report.json",
+      "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/bundled-ppp-report.json",
+      "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/bundled-ppp-report.json"
+    },
+    "remaining": "Full PPP link/authentication negotiation, VJ and peer-error workflows remain open."
   },
   {
     "id": "snmp-v1-v2c-v3-noauth",
@@ -420,18 +441,28 @@
       "LWIP_HTTPD_SUPPORT_POST",
       "LWIP_HTTPD_CUSTOM_FILES",
       "LWIP_HTTPD_DYNAMIC_HEADERS",
-      "LWIP_HTTPD_SUPPORT_11_KEEPALIVE"
+      "LWIP_HTTPD_SUPPORT_11_KEEPALIVE",
+      "HTTPD_FSDATA_FILE",
+      "HTTPD_PRECALCULATED_CHECKSUM"
     ],
     "profiles": [
       "threaded",
       "nosys",
-      "threaded-locking"
+      "threaded-locking",
+      "http-content"
     ],
     "host_services": [
       "content/POST callbacks"
     ],
     "disposition": "required",
-    "status": "unrun"
+    "status": "partial",
+    "evidence": {
+      "threaded": "artifacts/campaign/20260929-092814-c3aef247/http-transactions-report.json",
+      "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/http-transactions-report.json",
+      "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/http-transactions-report.json",
+      "http-content": "artifacts/campaign/20260929-093554-eba3af0c/http-transactions-report.json"
+    },
+    "remaining": "HTTP client/proxy, asynchronous/dynamic file and other configuration variants remain open."
   },
   {
     "id": "mqtt",
@@ -598,7 +629,11 @@
       "see contrib-inventory.json"
     ],
     "disposition": "required",
-    "status": "unrun"
+    "status": "partial",
+    "evidence": {
+      "contrib": "artifacts/campaign/20260929-092742-40fc80aa/contrib-addons-report.json"
+    },
+    "remaining": "Other addon packet behavior, app/example workflows and full contrib suite remain open."
   },
   {
     "id": "external-tls-snmp-crypto",
@@ -686,11 +721,32 @@
       "LQR_SUPPORT"
     ],
     "profiles": [
-      "threaded"
+      "threaded-locking"
     ],
     "disposition": "required",
     "status": "unrun",
     "suite": "ppp",
     "reason": "Upstream implements only LCP quality negotiation, not a report engine; qualify the behavior actually supplied."
+  },
+  {
+    "id": "arp-neighbor-queue-variant",
+    "source_groups": [
+      "lwipcore4_SRCS"
+    ],
+    "suite": "addressing",
+    "options": [
+      "ARP_QUEUEING",
+      "ARP_QUEUE_LEN"
+    ],
+    "profiles": [
+      "threaded-locking"
+    ],
+    "host_services": [
+      "packet frames",
+      "clock"
+    ],
+    "disposition": "required",
+    "status": "unrun",
+    "behavior": "Queue up to eight packets during neighbor resolution; ownership/drop/error behavior requires explicit native and managed fixtures. Other product profiles retain upstream ARP_QUEUEING=0 last-packet-only behavior."
   }
 ]

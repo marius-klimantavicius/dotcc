@@ -4,7 +4,8 @@
 #include "addons/tcp_md5/tcp_md5.h"
 #include "addons/ipv6_static_routing/ip6_route_table.h"
 #include "addons/dhcp_extra_opts/dhcp_extra_opts.h"
-#define LWIP_HOOK_TCP_ISN(local_ip, local_port, remote_ip, remote_port) lwip_hook_tcp_isn(local_ip, local_port, remote_ip, remote_port)
+/* LWIP_HOOK_TCP_ISN is defined by profile.h: tcp_isn.c also guards its body
+ * with that option before any LWIP_HOOK_FILENAME include. */
 #define LWIP_HOOK_TCP_INPACKET_PCB(pcb, hdr, optlen, opt1len, opt2, p) tcp_md5_check_inpacket(pcb, hdr, optlen, opt1len, opt2, p)
 #define LWIP_HOOK_TCP_OUT_TCPOPT_LENGTH(pcb, internal_len) tcp_md5_get_additional_option_length(pcb, internal_len)
 #define LWIP_HOOK_TCP_OUT_ADD_TCPOPTS(p, hdr, pcb, opts) tcp_md5_add_tx_options(p, hdr, pcb, opts)

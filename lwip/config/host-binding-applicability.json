@@ -1,0 +1,28 @@
+{
+  "policy": "Every configured binding must match a declaration in the selected source closure unless explicitly inapplicable; declaration matches are not execution coverage. All matches must retain explicit owner.",
+  "absent": {
+    "nosys": {
+      "lwip_host_netconn_sem_alloc": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "lwip_host_netconn_sem_free": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "lwip_host_netconn_sem_get": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_arch_mbox_fetch": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_arch_mbox_tryfetch": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_arch_protect": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_arch_sem_wait": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_arch_unprotect": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_mbox_free": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_mbox_new": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_mbox_post": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_mbox_trypost": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_mbox_trypost_fromisr": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_mutex_free": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_mutex_lock": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_mutex_new": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_mutex_unlock": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_sem_free": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_sem_new": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_sem_signal": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services.",
+      "sys_thread_new": "NO_SYS=1 disables threaded synchronization and netconn TLS declarations; production mainloop does not use these services."
+    }
+  }
+}

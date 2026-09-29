@@ -13,5 +13,6 @@
     "src/check.c",
     "src/check.h.in"
   ],
-  "license": "COPYING.LESSER"
+  "license": "COPYING.LESSER",
+  "sha256": "20e7360f5774844c09fde696e5bf71d061e9f53b3d763d886d3318d8893fdda4"
 }
