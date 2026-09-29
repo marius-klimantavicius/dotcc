@@ -3,6 +3,8 @@ using Managed.Networking;
 using static Managed.Networking.Lwip;
 unsafe class Program
 {
+    static void MatchImage(JsonElement images,string name,void* value,int length)
+    {if(!new ReadOnlySpan<byte>(value,length).SequenceEqual(Convert.FromHexString(images.GetProperty(name).GetString()!)))throw new InvalidOperationException($"Native/emitted byte image differs: {name}");Console.WriteLine($"PASS byte image {name}");}
     static void Main(string[] args)
     {
         using var document=JsonDocument.Parse(File.ReadAllText(args[0]));var native=document.RootElement.GetProperty("cases")[0].GetProperty("abi");
@@ -20,6 +22,15 @@ unsafe class Program
             pbuf tail=new(){payload=bytes+8,len=8,tot_len=8};pbuf head=new(){next=&tail,payload=bytes+1,len=7,tot_len=15};
             if(owner.inet_chksum(bytes+1,15)!=expected.GetProperty("odd_address_odd_length").GetUInt16()||owner.inet_chksum_pbuf(&head)!=expected.GetProperty("odd_chain").GetUInt16())throw new InvalidOperationException("Actual translated odd-address/odd-chain checksum differs from native");
             Console.WriteLine("PASS checksum: odd-address/odd-length and split pbuf chain match native");
+            var images=document.RootElement.GetProperty("cases")[2].GetProperty("wire_images");
+            ip_hdr header=new(){_v_hl=0x45,_tos=0x2e,_len=owner.lwip_htons(0x1234),_id=owner.lwip_htons(0x5678),_offset=owner.lwip_htons(0x2001),_ttl=64,_proto=17,src=new(){addr=owner.lwip_htonl(0xc0000201)},dest=new(){addr=owner.lwip_htonl(0xc6336402)}};
+            header._chksum=owner.inet_chksum(&header,(ushort)sizeof(ip_hdr));
+            MatchImage(images,"ipv4",&header,sizeof(ip_hdr));
+#if !LWIP_NOSYS
+            sockaddr_in socketAddress=new(){sin_len=(byte)sizeof(sockaddr_in),sin_family=AF_INET,sin_port=owner.lwip_htons(0x1234),sin_addr=new(){s_addr=owner.lwip_htonl(0xc0000201)}};
+            fd_set descriptors=default;descriptors.fd_bits[0]=2;descriptors.fd_bits[2]=2;
+            MatchImage(images,"sockaddr4",&socketAddress,sizeof(sockaddr_in));MatchImage(images,"fd_set",&descriptors,sizeof(fd_set));
+#endif
         }
         Console.WriteLine("PASS abi: actual emitted layouts match independently compiled native structures");
     }

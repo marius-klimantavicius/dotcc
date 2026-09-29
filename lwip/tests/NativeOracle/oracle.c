@@ -21,8 +21,11 @@
 #endif
 #define REQUIRE(v) do{if(!(v)){fprintf(stderr,"FAIL %s:%d %s\n",__FILE__,__LINE__,#v);exit(92);}}while(0)
 #define TOTAL (256*1024)
+extern void native_packet_cases(void*);
+extern int lwip_host_call(void(*)(void*),void*);
 static unsigned char data[4096];
 static unsigned pattern(unsigned i){return (i*31u+(i>>8))&255;}
+static void print_hex(const void *value,size_t length){const unsigned char *bytes=value;for(size_t i=0;i<length;i++)printf("%02x",bytes[i]);}
 static void abi(void)
 {
   printf("{\"abi\":{\"pbuf\":%zu,\"pbuf_payload\":%zu,\"netif\":%zu,\"tcp_pcb\":%zu,\"ip_addr\":%zu,\"eth_hdr\":%zu,\"ip_hdr\":%zu,\"ip6_hdr\":%zu,\"tcp_hdr\":%zu,\"udp_hdr\":%zu",sizeof(struct pbuf),offsetof(struct pbuf,payload),sizeof(struct netif),sizeof(struct tcp_pcb),sizeof(ip_addr_t),sizeof(struct eth_hdr),sizeof(struct ip_hdr),sizeof(struct ip6_hdr),sizeof(struct tcp_hdr),sizeof(struct udp_hdr));
@@ -33,6 +36,13 @@ static void abi(void)
   unsigned char bytes[18];for(unsigned i=0;i<18;i++)bytes[i]=(unsigned char)(i*17+3);
   struct pbuf tail={0},head={0};head.next=&tail;head.payload=bytes+1;head.len=7;head.tot_len=15;tail.payload=bytes+8;tail.len=tail.tot_len=8;
   printf("{\"checksums\":{\"odd_address_odd_length\":%u,\"odd_chain\":%u}}\n",inet_chksum(bytes+1,15),inet_chksum_pbuf(&head));
+  struct ip_hdr header;memset(&header,0,sizeof(header));header._v_hl=0x45;header._tos=0x2e;header._len=lwip_htons(0x1234);header._id=lwip_htons(0x5678);header._offset=lwip_htons(0x2001);header._ttl=64;header._proto=17;header.src.addr=lwip_htonl(0xc0000201);header.dest.addr=lwip_htonl(0xc6336402);header._chksum=inet_chksum(&header,sizeof(header));
+  printf("{\"wire_images\":{\"ipv4\":\"");print_hex(&header,sizeof(header));printf("\"");
+#if !NO_SYS
+  struct sockaddr_in socket_address;memset(&socket_address,0,sizeof(socket_address));socket_address.sin_len=sizeof(socket_address);socket_address.sin_family=AF_INET;socket_address.sin_port=lwip_htons(0x1234);socket_address.sin_addr.s_addr=lwip_htonl(0xc0000201);fd_set descriptors;FD_ZERO(&descriptors);FD_SET(1,&descriptors);FD_SET(17,&descriptors);
+  printf(",\"sockaddr4\":\"");print_hex(&socket_address,sizeof(socket_address));printf("\",\"fd_set\":\"");print_hex(&descriptors,sizeof(descriptors));printf("\"");
+#endif
+  printf("}}\n");
 }
 
 #if NO_SYS
@@ -54,8 +64,8 @@ static void socket_case(int v6){int family=v6?AF_INET6:AF_INET;struct sockaddr_s
 #endif
 int main(int argc,char**argv){if(argc>1&&!strcmp(argv[1],"--negative")){REQUIRE(0);}abi();
 #if NO_SYS
-lwip_init();raw_case(0);raw_case(1);
+lwip_init();raw_case(0);raw_case(1);native_packet_cases(NULL);
 #else
-lwip_host_initialize(initialized,NULL);while(!atomic_load(&ready)){struct timespec t={0,1000000};nanosleep(&t,NULL);}lwip_socket_thread_init();socket_case(0);socket_case(1);lwip_socket_thread_cleanup();REQUIRE(lwip_host_stop_worker()==ERR_OK);native_join_workers();
+lwip_host_initialize(initialized,NULL);while(!atomic_load(&ready)){struct timespec t={0,1000000};nanosleep(&t,NULL);}lwip_socket_thread_init();socket_case(0);socket_case(1);REQUIRE(lwip_host_call(native_packet_cases,NULL)==ERR_OK);lwip_socket_thread_cleanup();REQUIRE(lwip_host_stop_worker()==ERR_OK);native_join_workers();
 #endif
 return 0;}

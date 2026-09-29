@@ -1,7 +1,7 @@
 # lwIP implementation coordination
 
 Updated: 2026-09-29. Complete scope: [PLAN.md](PLAN.md), baseline v2.
-Status: active; no qualification milestone has passed yet.
+Status: active; core and upstream matrices have passed; full P0–P6 acceptance remains incomplete.
 
 ## Isolation and ownership
 
@@ -18,14 +18,13 @@ original branch. Use `-p:UseLocalLalrCc=false` for tool/runtime builds.
 | `/root/lwip_coordinator/pipeline` | `config/`, `scripts/`, `src/port/` headers, `docs/source.md`, `docs/blockers.md`, `tests/Upstream/`; approved structural compiler fixes | Source/feature/profile inventory, recipe, full translation |
 | `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `tests/` except `Upstream/`, README and `docs/host.md` | sys_arch, owning API, native oracle and consumer |
 
-Current shared .NET build ownership is **pipeline**, returned after host receipt
-`20260929-075904-16948989`. Pipeline runs locking/auxiliary translation and
-QuickJS downstream regression; host authors direct API/lifecycle tests until the
-next finite build window. Host may use gcc or
-standalone projects with private output directories; shared bin/obj builds require
-coordination. Do not kill unrelated build processes. Workers implement code;
-coordinator reviews, schedules and integrates. Commit only named owned files after
-relevant validation, with milestone scope stated honestly.
+Current shared .NET build ownership is **pipeline**, returned after locking
+feature receipt `20260929-082706-a7b10f5a`. Pipeline runs unit-nosys and managed
+tool/contrib closure. Host authors finite owner-lifecycle and socket semantics
+cases until handback. Standalone native builds may use private output directories;
+shared bin/obj builds require coordination. Do not kill unrelated build processes.
+Workers implement code; coordinator reviews, schedules and integrates. Commit only
+named owned files after relevant validation, with milestone scope stated honestly.
 
 ## Agreed constraints and contracts
 
@@ -45,23 +44,21 @@ relevant validation, with milestone scope stated honestly.
 
 | Gate | State | Evidence / next action |
 | --- | --- | --- |
-| P0 inventory/native baseline | In progress | Canonical layout passes; 119 stack source units and 324 contrib files initially inventoried; first full translation attempted, recipe fixes and retry underway; native controls pending |
-| P1 ABI/host/ownership | Unrun | Native and emitted boundary probes follow first translation |
-| P2 all product/diagnostic/auxiliary builds | Unrun | Full translation starts after recipe and bindings |
-| P3a first useful workflow | Unrun | Two owners, 256 KiB dual-stack TCP and UDP, raw/netconn/sockets |
+| P0 inventory/native baseline | Partial | Canonical layout, full source inventory, three native product controls and native Check pass; active-feature audit remains |
+| P1 ABI/host/ownership | Partial | Emitted/native ABI and actual-owner sys_arch matrices pass; pending-resource teardown remains |
+| P2 all product/diagnostic/auxiliary builds | Partial | Three product, unit and makefsdata raw/processed builds published; unit-nosys and contrib follow |
+| P3a first useful workflow | Partial | Raw/socket consumer and direct netconn/altcp matrices pass; current locking direct-API rerun underway |
 | P3b core/link features | Unrun | Addressing/routing/SLIP/PPP/6LoWPAN/ZEP including bundled PPP modes |
-| P3c applications/contrib/tool | Unrun | Every included family has real behavior cases |
-| P4 behavioral matrix | Unrun | Upstream/error/recovery and independent peer cases |
-| P5 consumer delivery | Unrun | Ordinary references and rooted/trimmed AOT |
+| P3c applications/contrib/tool | In progress | Native makefsdata repair verified; managed tool and broader apps/contrib follow |
+| P4 behavioral matrix | Partial | Original unit137 passes all four cells; remaining diagnostics/features/error/recovery/independent peers open |
+| P5 consumer delivery | Partial | Ordinary references and trimmed/rooted AOT established; full feature delivery pending |
 | P6 complete reproduction | Unrun | Final regeneration, full evidence and portable orchestration |
 
-Read-only environment check: .NET SDK 10.0.111; GCC 13.3.0. `pkg-config
---modversion check` cannot find Check; native upstream Check qualification needs a
-campaign-local test-only acquisition or available system installation. `/dev/net/tun`
-exists, but no provisioned isolated TAP link is visible (`ip -brief link` lists
-lo, physical interfaces, virbr0 and docker0). Independent kernel peer gate remains
-an external prerequisite; do not alter host routes or run sudo. Continue all
-independent implementation and in-memory qualification work.
+Environment: .NET SDK 10.0.111; GCC 13.3.0. Native Check 0.15.2 is
+acquired and built as a campaign-local test-only dependency. Unprivileged
+user/network namespace creation and temporary TAP provisioning both succeed;
+independent kernel interoperability is implementation work, not a current
+external blocker. Never alter host routes/interfaces or run sudo.
 
 ## Restart
 
@@ -210,3 +207,66 @@ emitted core/socket/fd_set/netbuf size/offset observations plus odd-address,
 odd-length and split-pbuf checksum comparisons with the native oracle. Build
 ownership returned to pipeline, which started locking profile translation
 `20260929-080016-cd2be273`.
+
+### Independent peer provisioning feasibility
+
+The initial missing TAP is not currently an external blocker: both
+`unshare --user --map-root-user --net true` and
+`unshare --user --map-root-user --net ip tuntap add dev lwip-probe mode tap`
+succeeded. The probe network namespace and its link disappear when its process
+exits; no host routes/interfaces were changed. An independent-peer runner can
+provision a temporary user/network namespace and test-only TAP, then run peers
+inside it without sudo or interfering with libuv. Actual interop remains unrun.
+
+### Committed checkpoints
+
+- `537374c6`: preserve C arithmetic common type through nested conditionals.
+- `a0347b86`: shared ENOSYS definitions and message.
+- `b9ae0ce2`: initial isolated lwIP owning stack/consumer/boundary campaign.
+
+Shared fixes passed focused compiler/functional checks and isolated QuickJS
+raw/processed translation (`080236-2f0ecda6`) and JIT consumers
+(`080433-b0e54d3a`). Initial campaign checkpoint records qualified scope and open
+acceptance honestly; new direct API/packet tests remained in-flight outside it.
+
+Native original upstream Check 137/137 passes, with explicit negative/fixture
+control. Diagnostic implicit-memset callback-guard failure was a compatible test
+header missing Check's transitive string.h include, not a compiler defect; the
+harness header is corrected and full diagnostic retries continue.
+
+### Original managed upstream matrix
+
+Original upstream normal diagnostic profile passes 137/137 cases in all four
+raw/processed × JIT/NativeAOT cells, with exact native suite/test registration
+equality. Deliberate negative Check control matches native exit 1, setup 3,
+body 2, teardown 2 and failure 2 counts. Native skips teardown after failed
+setup; managed runner preserves that behavior. Receipts:
+`20260929-081512-9608394d` (JIT) and `20260929-081538-a7d37662` (AOT).
+Unit-nosys native/managed applicability and remaining feature suites still open.
+
+Implementation streams after current windows: host owns core/socket/datagram,
+addressing/routing/lifecycle/recovery and independent peer; pipeline owns
+upstream/auxiliary products, then links/PPP and applications. Host remains primary
+owner of shared authored Host code; pipeline coordinates extensions directly.
+
+
+### Direct API and datagram matrices
+
+`20260929-082120-9e746efd` (threaded) and `20260929-082457-04b31050`
+(nosys) pass all four raw/processed × JIT/NativeAOT direct-apis and
+datagram-fixtures cells. Direct cases exercise plain altcp and, when applicable,
+netconn. Datagrams cover 4500-byte IPv4/IPv6 fragmentation plus UDP-Lite partial
+coverage acceptance/rejection and recovery. ARP_QUEUEING=0 fixtures resolve a
+neighbor first; this does not claim pending-neighbor queue behavior coverage.
+Locking matrix is running. Full socket-api/packets gates remain open.
+
+Pipeline framework profile-preparation tests pass37/37 and recipe dispatch3/3;
+review identified a redundant default-profile verify translation being removed
+before committing the shared change. Host is preparing stronger identical-port
+owner isolation with GC, live B endpoints after A disposal and wraparound timer.
+
+Locking direct-apis/datagram-fixtures all four cells also pass
+`20260929-082706-a7b10f5a`, completing these finite suites across all three
+product profiles. Pipeline now owns the .NET window for unit-nosys/tools/contrib.
+Shared framework commit `d48ffc06` passes38/38 framework and3/3 recipe tests;
+full verify prepares each selected profile exactly once.
