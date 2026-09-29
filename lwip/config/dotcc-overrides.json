@@ -1,0 +1,683 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "sys_init",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.Init",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_now",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.Now",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_jiffies",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.Jiffies",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_random",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.Random",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_assert",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "const char *",
+          "const char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.Assert",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_assert_core_locked",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.CheckCore",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_mark_tcpip_thread",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MarkCoreThread",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_lock_core",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.LockCore",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_unlock_core",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.UnlockCore",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_netconn_sem_alloc",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.ThreadSemAlloc",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_netconn_sem_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.ThreadSemFree",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_netconn_sem_get",
+      "signature": {
+        "returnType": "long *",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.ThreadSemGet",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_sem_new",
+      "signature": {
+        "returnType": "signed char",
+        "parameterTypes": [
+          "long *",
+          "unsigned char"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SemNew",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_arch_sem_wait",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "long *",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SemWait",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_sem_signal",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "long *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SemSignal",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_sem_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "long *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SemFree",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_mbox_new",
+      "signature": {
+        "returnType": "signed char",
+        "parameterTypes": [
+          "long *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MboxNew",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_mbox_post",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "long *",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MboxPost",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_mbox_trypost",
+      "signature": {
+        "returnType": "signed char",
+        "parameterTypes": [
+          "long *",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MboxTryPost",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_mbox_trypost_fromisr",
+      "signature": {
+        "returnType": "signed char",
+        "parameterTypes": [
+          "long *",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MboxTryPost",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_arch_mbox_fetch",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "long *",
+          "void **",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MboxFetch",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_arch_mbox_tryfetch",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "long *",
+          "void **"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MboxTryFetch",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_mbox_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "long *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MboxFree",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_mutex_new",
+      "signature": {
+        "returnType": "signed char",
+        "parameterTypes": [
+          "long *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MutexNew",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_mutex_lock",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "long *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MutexLock",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_mutex_unlock",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "long *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MutexUnlock",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_mutex_free",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "long *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.MutexFree",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_thread_new",
+      "signature": {
+        "returnType": "long",
+        "parameterTypes": [
+          "const char *",
+          "void (*)(void *)",
+          "void *",
+          "int",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.ThreadNew",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_arch_protect",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.Protect",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sys_arch_unprotect",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.Unprotect",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sio_open",
+      "signature": {
+        "returnType": "void *",
+        "parameterTypes": [
+          "unsigned char"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SerialOpen",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sio_send",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "unsigned char",
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SerialSend",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sio_recv",
+      "signature": {
+        "returnType": "unsigned char",
+        "parameterTypes": [
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SerialReceive",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sio_read",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "void *",
+          "unsigned char *",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SerialRead",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sio_tryread",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "void *",
+          "unsigned char *",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SerialTryRead",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sio_write",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "void *",
+          "const unsigned char *",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SerialWrite",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "sio_read_abort",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.SerialAbort",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_request_worker_stop",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.RequestWorkerStop",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_worker_stopping",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipSysArch.WorkerStopping",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_http_open",
+      "signature": {
+        "returnType": "const unsigned char *",
+        "parameterTypes": [
+          "const char *",
+          "int *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipApplications.HttpOpen",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_http_close",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "const unsigned char *"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipApplications.HttpClose",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_post_begin",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "void *",
+          "const char *",
+          "int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipApplications.PostBegin",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_post_data",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "void *",
+          "const unsigned char *",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipApplications.PostData",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_post_finish",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void *",
+          "char *",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipApplications.PostFinish",
+        "passInstance": true
+      }
+    },
+    {
+      "name": "lwip_host_frame_send",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "void *",
+          "const unsigned char *",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Networking.LwipFrames.Send",
+        "passInstance": true
+      }
+    }
+  ]
+}

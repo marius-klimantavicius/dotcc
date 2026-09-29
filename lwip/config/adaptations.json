@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "policy": [
+    "upstream configuration/hooks",
+    "typed overrides",
+    "guarded staged text changes only when demonstrated necessary"
+  ],
+  "textPatches": [
+    {
+      "id": "makefsdata-checksum-progress",
+      "path": "src/apps/http/makefsdata/makefsdata.c",
+      "before": "  src_offset = 0;\n  for (offset = hdr_len; ; offset += len) {\n    unsigned short chksum;",
+      "after": "  src_offset = 0;\n  for (offset = hdr_len; ; offset += len, src_offset += len) {\n    unsigned short chksum;",
+      "reason": "Pinned upstream -c loops forever for every nonempty input: src_offset never progresses. No configuration/hook can change this local loop update; a typed whole-function replacement would replace the generator algorithm. Preserve the body and add only the missing progress update. Applied identically to native and translated tool, never to acquired references.",
+      "classification": "upstream-bug-repair",
+      "guard": "unique exact local context in every hash mode",
+      "tests": [
+        "empty",
+        "odd small",
+        "multiple TCP_MSS chunks",
+        "checksum offsets/content",
+        "bounded termination/output"
+      ],
+      "removal_condition": "Remove when acquired upstream write_checksums advances src_offset correctly; changed local context intentionally requires re-review.",
+      "failure_evidence": "artifacts/native-tools/before.json",
+      "validation": {
+        "native": "artifacts/native-tools/report.json",
+        "managed": "unrun"
+      }
+    }
+  ]
+}

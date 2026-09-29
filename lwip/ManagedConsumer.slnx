@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="generated/TranslatedLwip/TranslatedLwip.csproj" />
+  <Project Path="src/Managed.Lwip/Managed.Lwip.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>
