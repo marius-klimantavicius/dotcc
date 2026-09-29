@@ -309,7 +309,22 @@
       "serial/Ethernet/UDP frames"
     ],
     "disposition": "required",
-    "status": "unrun"
+    "status": "partial",
+    "evidence": {
+      "threaded": {
+        "serial": "artifacts/campaign/20260929-102218-436a6eb5/ppp-serial-report.json",
+        "ethernet": "artifacts/campaign/20260929-102218-436a6eb5/ppp-ethernet-report.json"
+      },
+      "nosys": {
+        "serial": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-serial-report.json",
+        "ethernet": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-ethernet-report.json"
+      },
+      "threaded-locking": {
+        "serial": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-serial-report.json",
+        "ethernet": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-ethernet-report.json"
+      }
+    },
+    "remaining": "L2TP data/managed qualification, broader IPv6 link data, reconnect/timer failures and registered-service owner lifetime remain open."
   },
   {
     "id": "ppp-pap-chap-mschap-eap-md5",
@@ -335,11 +350,25 @@
     "disposition": "required",
     "status": "partial",
     "evidence": {
+      "threaded": {
+        "serial": "artifacts/campaign/20260929-102218-436a6eb5/ppp-serial-report.json",
+        "ethernet": "artifacts/campaign/20260929-102218-436a6eb5/ppp-ethernet-report.json"
+      },
+      "nosys": {
+        "serial": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-serial-report.json",
+        "ethernet": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-ethernet-report.json"
+      },
+      "threaded-locking": {
+        "serial": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-serial-report.json",
+        "ethernet": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-ethernet-report.json"
+      }
+    },
+    "remaining": "L2TP data/managed qualification, broader IPv6 link data, reconnect/timer failures and registered-service owner lifetime remain open.",
+    "primitive_evidence": {
       "threaded": "artifacts/campaign/20260929-092814-c3aef247/bundled-ppp-report.json",
       "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/bundled-ppp-report.json",
       "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/bundled-ppp-report.json"
-    },
-    "remaining": "Full PPP link/authentication negotiation, VJ and peer-error workflows remain open."
+    }
   },
   {
     "id": "ppp-mppe-vj-compression",
@@ -363,11 +392,25 @@
     "disposition": "required",
     "status": "partial",
     "evidence": {
+      "threaded": {
+        "serial": "artifacts/campaign/20260929-102218-436a6eb5/ppp-serial-report.json",
+        "ethernet": "artifacts/campaign/20260929-102218-436a6eb5/ppp-ethernet-report.json"
+      },
+      "nosys": {
+        "serial": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-serial-report.json",
+        "ethernet": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-ethernet-report.json"
+      },
+      "threaded-locking": {
+        "serial": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-serial-report.json",
+        "ethernet": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-ethernet-report.json"
+      }
+    },
+    "remaining": "L2TP data/managed qualification, broader IPv6 link data, reconnect/timer failures and registered-service owner lifetime remain open.",
+    "primitive_evidence": {
       "threaded": "artifacts/campaign/20260929-092814-c3aef247/bundled-ppp-report.json",
       "nosys": "artifacts/campaign/20260929-092953-8a3a53fc/bundled-ppp-report.json",
       "threaded-locking": "artifacts/campaign/20260929-093126-d3ef1043/bundled-ppp-report.json"
-    },
-    "remaining": "Full PPP link/authentication negotiation, VJ and peer-error workflows remain open."
+    }
   },
   {
     "id": "snmp-v1-v2c-v3-noauth",
@@ -676,13 +719,14 @@
     "options": [
       "CBCP_SUPPORT",
       "ECP_SUPPORT",
-      "DEMAND_SUPPORT"
+      "DEMAND_SUPPORT",
+      "PPPOE_SERVER"
     ],
     "profiles": [],
     "host_services": [],
     "disposition": "upstream-unimplemented",
     "status": "classified",
-    "reason": "Upstream option documentation explicitly says unsupported; no translated success claim."
+    "reason": "Upstream option documentation explicitly says CBCP/ECP/demand unsupported; src/netif/ppp/pppoe.c explicitly #errors for PPPOE_SERVER. No translated implementation claim."
   },
   {
     "id": "ppp-multilink",
@@ -724,9 +768,13 @@
       "threaded-locking"
     ],
     "disposition": "required",
-    "status": "unrun",
+    "status": "passed",
     "suite": "ppp",
-    "reason": "Upstream implements only LCP quality negotiation, not a report engine; qualify the behavior actually supplied."
+    "reason": "Upstream implements only LCP quality negotiation, not a report engine; qualify the behavior actually supplied.",
+    "evidence": {
+      "threaded-locking": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-serial-report.json"
+    },
+    "scope": "Both peers request LQR period100 and independently observed LCP ACKs confirm the option; no upstream LQR report engine exists."
   },
   {
     "id": "arp-neighbor-queue-variant",

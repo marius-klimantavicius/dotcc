@@ -109,3 +109,42 @@ and failed-shutdown retry behavior during earlier cells; these finite protocol
 receipts do not qualify that newer service contract. Its dedicated lifecycle
 qualification remains separate. No full PPP/link/application/contrib gate is
 closed by these subsets.
+
+After migration to the main checkout, merged toolchain refreshes publish all eight
+profiles: threaded100938-1e61b771, nosys101126-d7f9a0c3,
+threaded-locking101258-8d10f70a, contrib101436-e4f2dfc8,
+makefsdata101623-bba174b7, http-content101639-f50e3581,
+unit101818-531970c1 and unit-nosys101941-06379f74. Historical receipts preserve
+old absolute paths as provenance; new qualification uses the main-checkout products.
+
+The third narrow staged upstream repair releases an untransferred pbuf in
+`eap_send_request`'s invalid-state default branch. Real EAP-MD5 wrong credentials
+reproduce the552-byte retained heap allocation after both sessions are dead and
+freed. The reference is unchanged. A unique larger local switch-tail guard is
+mandatory while the file hash remains observational, preserving unrelated local
+edits under warn/off policy. Native exact-fixture original/adapted controls and
+symbolized allocation evidence are under artifacts/ppp-links-native and
+artifacts/native-eap-leak. Product/contrib/http-content native and translated
+closures use the identical staged unit. Diagnostics keep original EAP source,
+which is inactive in the upstream diagnostic configuration.
+
+Real PPPoS and independent PPPoE client suites now pass raw/processed JIT and
+NativeAOT in all three profiles: threaded102218-436a6eb5,
+nosys102323-8af6d3ee and threaded-locking102423-3e0a37ed. PPPoS covers six successful
+sessions (PAP, CHAP-MD5, MSCHAPv1/v2, EAP-MD5, required128-bit MPPE), five wrong
+credential outcomes, actual IPCP/IPv6CP, UDP and TCP payloads, bad FCS, independent
+FCS/VJ/MPPE wire inspection and natural resource baselines after close/free.
+Managed peers have separate owning stacks. Locking also requests and observes
+LQR option acknowledgements; the pin supplies negotiation only, no report engine.
+PPPoE uses independently encoded RFC2516/RFC1661 frames, including service and
+concentrator names, wrong host-unique rejection, cookie echo, malformed PADS,
+LCP rejection/progress, dual-stack negotiation, bidirectional UDP and orderly
+termination/PADT. Upstream's PPPOE_SERVER branch explicitly emits #error and is
+classified as unimplemented; this fixture independently emulates that peer.
+
+Fresh main-checkout upstream diagnostics also pass every cell: original137 cases
+102529-f99f8fc4 and132 NO_SYS-applicable cases102607-122fea01, including native
+registration parity and deliberate assertion/setup controls. These checkpoints do
+not close full link/application gates: L2TP data/managed qualification, broader
+IPv6 link data and reconnect cases, registered PPP/SLIP service lifetimes,
+6LoWPAN/ZEP and remaining applications/configuration variants remain required.

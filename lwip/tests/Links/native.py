@@ -14,9 +14,9 @@ def run(profile='threaded'):
     spec=importlib.util.spec_from_file_location('profiles',ROOT/'scripts/profiles.py');profiles=importlib.util.module_from_spec(spec);spec.loader.exec_module(profiles)
     profiles.write_header(ROOT,source,profile,work/'include')
     spec=importlib.util.spec_from_file_location('stage',ROOT/'scripts/stage.py');stage=importlib.util.module_from_spec(spec);spec.loader.exec_module(stage)
-    staged_ip4,repairs=stage.ipv4_forwarding(ROOT,source,work/'source')
+    staged_units,repairs=stage.product_units(ROOT,source,work/'source')
     groups=json.loads((ROOT/'config/source-groups.json').read_text())
-    paths=[staged_ip4 if name=='src/core/ipv4/ip4.c' else source/name for group,names in groups.items() if group not in ('lwipmbedtls_SRCS','lwipmakefsdata_SRCS') for name in names if name!='src/netif/slipif.c']
+    paths=[staged_units.get(name,source/name) for group,names in groups.items() if group not in ('lwipmbedtls_SRCS','lwipmakefsdata_SRCS') for name in names if name!='src/netif/slipif.c']
     paths += [ROOT/'tests/NativeOracle/sys_arch.c',ROOT/'tests/Links/slip.c']
     base=['cc','-std=c17','-D_POSIX_C_SOURCE=200809L','-O1','-g','-ffunction-sections','-fdata-sections','-pthread','-I'+str(work/'include'),'-I'+str(ROOT/'src/port'),'-I'+str(source/'src/include'),'-I'+str(source/'contrib'),'-I'+str(source/'src/netif')]
     commands=[]

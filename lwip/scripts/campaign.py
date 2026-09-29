@@ -69,13 +69,13 @@ def prepare(ctx):
                            [*link_flags('MakeFsData', 'Managed.Networking.Tools'), '--instance-methods'],
                            objects=True, configure=configure, finish=finish)
     if profile['kind'] == 'diagnostic':
-        staged_ip4, repairs = source / 'src/core/ipv4/ip4.c', []
-        ctx.receipt['adaptation_inapplicability'] = {'ipv4-forwarding-software-checksums': 'Original diagnostic options select IP_FORWARD=0; native and managed diagnostics retain original ip4.c.'}
+        staged_units, repairs = {}, []
+        ctx.receipt['adaptation_inapplicability'] = {'ipv4-forwarding-software-checksums': 'Original diagnostic options select IP_FORWARD=0; native and managed diagnostics retain original ip4.c.', 'eap-request-invalid-state-release': 'Original diagnostic options leave EAP_SUPPORT=0; native and managed diagnostics retain original eap.c.'}
     else:
-        staged_ip4, repairs = helper(ctx.root / 'scripts/stage.py').ipv4_forwarding(ctx.root, source, ctx.work / 'source')
+        staged_units, repairs = helper(ctx.root / 'scripts/stage.py').product_units(ctx.root, source, ctx.work / 'source')
     ctx.receipt['adaptations'] = repairs
     def source_unit(name, unit_flags=()):
-        return Unit(staged_ip4 if name == 'src/core/ipv4/ip4.c' else source / name, unit_flags)
+        return Unit(staged_units.get(name, source / name), unit_flags)
     selected = [name for group, names in groups.items()
                 if group not in ('lwipmbedtls_SRCS', 'lwipmakefsdata_SRCS') for name in names]
     if profile['kind'] == 'diagnostic':
@@ -168,6 +168,10 @@ def run_one(ctx, suite):
         return helper(ctx.root / 'scripts/tool-tests.py').run(ctx, suite)
     if suite.name == 'slip-framing':
         return helper(ctx.root / 'scripts/link-tests.py').run(ctx, suite)
+    if suite.name == 'ppp-ethernet':
+        return helper(ctx.root / 'scripts/pppoe-tests.py').run(ctx, suite)
+    if suite.name == 'ppp-serial':
+        return helper(ctx.root / 'scripts/ppp-link-tests.py').run(ctx, suite)
     if suite.name == 'bundled-ppp':
         return helper(ctx.root / 'scripts/ppp-tests.py').run(ctx, suite)
     if suite.name == 'contrib-addons':
@@ -185,7 +189,7 @@ def validate_options(args):
 _product = ('threaded', 'nosys', 'threaded-locking')
 _suites = ('oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
            'routing', 'links', 'ppp', 'applications', 'contrib', 'tools', 'upstream',
-           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures')
+           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures', 'routing-ipv4', 'tool-generator', 'contrib-addons', 'bundled-ppp', 'interop-kernel', 'slip-framing', 'http-transactions', 'pool-recovery', 'dhcp-fixtures', 'autoip-fixtures', 'ppp-serial', 'ppp-ethernet')
 _applicability = {'tools': ('makefsdata', 'http-content'), 'tool-generator': ('makefsdata',), 'upstream': ('unit', 'unit-nosys'), 'contrib': ('contrib',),
                   'sysarch': ('threaded', 'threaded-locking'), 'socket-api': ('threaded', 'threaded-locking'),
                   'direct-apis': _product, 'socket-semantics': ('threaded', 'threaded-locking'), 'contrib-addons': ('contrib',), 'interop-kernel': _product, 'http-transactions': (*_product, 'http-content')}

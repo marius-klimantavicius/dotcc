@@ -69,6 +69,41 @@
           "threaded-locking": "artifacts/campaign/20260929-091556-6c1b6415/routing-ipv4-cases.json"
         }
       }
+    },
+    {
+      "id": "eap-request-invalid-state-release",
+      "path": "src/netif/ppp/eap.c",
+      "source_sha256": "7d0829d25a8f464f791e5de7e938952ba127b729d9aaa8b3360f2c3aee37260c",
+      "changes": [
+        {
+          "before": "#endif /* USE_SRP */\n\n\tdefault:\n\t\treturn;\n\t}\n\n\toutlen = (outp - (unsigned char*)p->payload) - PPP_HDRLEN;",
+          "after": "#endif /* USE_SRP */\n\n\tdefault:\n\t\tpbuf_free(p);\n\t\treturn;\n\t}\n\n\toutlen = (outp - (unsigned char*)p->payload) - PPP_HDRLEN;"
+        }
+      ],
+      "reason": "Real PPPoS EAP-MD5 wrong credentials reach eap_send_request after authentication failure. The function allocates a 512-byte control pbuf before its state switch and returns in the default branch without releasing it. Native allocation tracing identifies a 536-byte pbuf allocation and 552 heap bytes retained after both sessions close/free and loopback drains. No option/hook can access local p; whole-function override would replace the protocol algorithm. Release only this untransferred allocation before return, identically staged for native and managed. Reference remains unchanged.",
+      "classification": "upstream-bug-repair",
+      "guard": "one unique larger local switch-tail anchor in eap_send_request; file SHA observational provenance",
+      "tests": [
+        "real PPPoS EAP-MD5 positive and wrong credentials",
+        "both IPCP/IPv6CP negotiation",
+        "both peers dead and freed after orderly close",
+        "heap and pbuf baseline restored",
+        "other bundled authentication and MPPE negotiation controls"
+      ],
+      "removal_condition": "Remove once upstream releases the allocated pbuf on the invalid-state default return in eap_send_request; changed anchor requires re-review.",
+      "failure_evidence": {
+        "reduced_allocation": "artifacts/native-eap-leak/before.json",
+        "symbolized_stack": "artifacts/native-eap-leak/eap-trace-symbols.log",
+        "original_final_fixture": "artifacts/ppp-links-native/{threaded,nosys,threaded-locking}/original-eap.log"
+      },
+      "validation": {
+        "native": "artifacts/ppp-links-native/{threaded,nosys,threaded-locking}/report.json: identical-fixture original EAP exit92 versus staged full session pass0",
+        "managed": {
+          "threaded": "artifacts/campaign/20260929-102218-436a6eb5/ppp-serial-report.json",
+          "nosys": "artifacts/campaign/20260929-102323-8af6d3ee/ppp-serial-report.json",
+          "threaded-locking": "artifacts/campaign/20260929-102423-3e0a37ed/ppp-serial-report.json"
+        }
+      }
     }
   ]
 }

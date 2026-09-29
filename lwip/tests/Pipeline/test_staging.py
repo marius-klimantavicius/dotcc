@@ -24,6 +24,22 @@ class StagingTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,'unique local condition'):
             stage.ipv4_forwarding(self.root,self.source,self.root/'stage')
 
+    def test_eap_local_edit_preserved_and_ambiguous_anchor_rejected(self):
+        source=ROOT/'ref'/json.loads((ROOT/'config/sources.json').read_text())['directory']
+        path=self.source/'src/netif/ppp/eap.c';path.parent.mkdir(parents=True)
+        original=(source/'src/netif/ppp/eap.c').read_text()
+        local=original+'\n/* unrelated local edit retained under warn/off hash policy */\n'
+        path.write_text(local)
+        staged,evidence=stage.eap_request(self.root,self.source,self.root/'eap-stage')
+        self.assertEqual(path.read_text(),local)
+        self.assertIn('unrelated local edit retained',staged.read_text())
+        self.assertEqual(evidence[0]['changes'][0]['matches'],1)
+        self.assertNotEqual(evidence[0]['source_sha256'],evidence[0]['staged_sha256'])
+        repair=next(item for item in stage.metadata(self.root)['textPatches'] if item['id']=='eap-request-invalid-state-release')
+        path.write_text(local+repair['changes'][0]['before'])
+        with self.assertRaisesRegex(RuntimeError,'unique local condition'):
+            stage.eap_request(self.root,self.source,self.root/'bad-stage')
+
     def test_unknown_repair_is_not_silently_ignored(self):
         path=self.root/'config/adaptations.json';data=json.loads(path.read_text());data['textPatches'].append({'id':'unassigned'})
         path.write_text(json.dumps(data))

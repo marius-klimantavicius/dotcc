@@ -22,9 +22,9 @@ def run(profile='threaded'):
         shutil.copyfile(generated['image'],work/'include/dotcc_fsdata.c')
 
     spec=importlib.util.spec_from_file_location('stage',ROOT/'scripts/stage.py');stage=importlib.util.module_from_spec(spec);spec.loader.exec_module(stage)
-    staged_ip4,repairs=stage.ipv4_forwarding(ROOT,source,work/'source')
+    staged_units,repairs=stage.product_units(ROOT,source,work/'source')
     groups=json.loads((ROOT/'config/source-groups.json').read_text())
-    paths=[staged_ip4 if name=='src/core/ipv4/ip4.c' else source/name for group,names in groups.items() if group not in ('lwipmbedtls_SRCS','lwipmakefsdata_SRCS') for name in names]
+    paths=[staged_units.get(name,source/name) for group,names in groups.items() if group not in ('lwipmbedtls_SRCS','lwipmakefsdata_SRCS') for name in names]
     paths += [ROOT/'tests/NativeOracle/sys_arch.c',ROOT/'tests/Applications/http.c',ROOT/'src/Host/bridge.c',ROOT/'src/Host/app_port.c']
     base=['cc','-std=c17','-D_POSIX_C_SOURCE=200809L','-O1','-g','-ffunction-sections','-fdata-sections','-pthread','-I'+str(work/'include'),'-I'+str(ROOT/'src/port'),'-I'+str(source/'src/include'),'-I'+str(source/'contrib')]
     commands=[]
