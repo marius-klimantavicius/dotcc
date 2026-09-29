@@ -13,6 +13,12 @@ and consumer-owned lifetime are separate claims. The current symbol audit proves
 only its named definitions; it does not prove every implemented option family.
 Coarse feature rows and stale `unrun` fields require reconciliation with receipts.
 
+Since this audit, owning LOWPAN output/lifetime, the ten enhanced options and
+seven UDP application cases including owning TFTP/SNTP have passed their finite
+designated matrices; see [validation.md](validation.md). Their broader variants
+are still required. Five TCP application native/managed drafts are authored but
+unqualified. The ordered list below retains the original audit context.
+
 ## Ordered implementation batches
 
 1. Finish owning LOWPAN/ZEP/BLE output/lifecycle and its applicable matrices.
@@ -31,7 +37,7 @@ Coarse feature rows and stale `unrun` fields require reconciliation with receipt
    MQTT connection/pub/sub/QoS/keepalive; SMTP completion/refusal; lwiperf transfer
    and abort; SNMP v1/v2c get/set/walk/trap and v3 noAuthNoPriv including the
    existing netconn/threadsync variant. Original unit tests do not replace these
-   product workflows. SNTP currently uses the default no-op system-time macro;
+   product workflows. At the audit snapshot SNTP used the default no-op system-time macro;
    supply owner-bound clock notifications and timestamp callbacks. Designate
    `SNTP_SERVER_DNS`, `SNTP_COMP_ROUNDTRIP` and implemented response check level 2;
    levels 3/4 are upstream TODOs. Add `LWIP_NETBIOS_RESPOND_NAME_QUERY` NBSTAT response

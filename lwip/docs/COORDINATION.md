@@ -19,8 +19,8 @@ historical execution only and are superseded by this active workspace rule.
 | Agent | Ownership | Current task |
 | --- | --- | --- |
 | `/root/lwip_coordinator_resume` | Ledger/evidence/source review and verification scheduling | Coordinate remaining P0–P6 work |
-| `/root/lwip_coordinator_resume/permitted_implementation` | Shared campaign source/config/scripts, enhanced and UDP integration/qualification | Sole build owner; native controls pass, translation/managed matrices active |
-| `/root/lwip_coordinator_resume/scope_audit` | Only new unregistered `tests/Applications.Tcp/` drafts | Author next MQTT/SMTP/lwiperf/client workflows; no builds or shared edits |
+| `/root/lwip_coordinator_resume/permitted_implementation` | Shared campaign source/config/scripts and frozen TCP/MQTT integration | Sole build owner; prepare reviewed TCP policy/snapshot and owning integration |
+| `/root/lwip_coordinator_resume/scope_audit` | Only new unregistered `drafts/TcpBoundaries/` candidates | Implement proposed lwiperf/SMTP narrow boundaries; no builds or shared edits |
 
 A fresh implementation worker successfully started after normal agent capacity
 became available. The former coordinator and workers are no longer in the active
@@ -29,15 +29,15 @@ service errors identified no specific prohibited action. Neither those errors no
 replacement availability authorizes bypassing a safety rejection: any identified
 prohibited action must stop and be reported.
 
-Product/UDP/enhanced source passed snapshot/policy review and initial native
-controls. Primary owns all integration fixes and is the sole build owner.
-Secondary edits only a new unregistered TCP application fixture
-directory, which is not consumed by this batch. No shared concurrent edits/builds.
-Latest qualified implementation is
-`537bfc3d`: owning LOWPAN/ZEP/BLE finite input/output/lifetime passes all three
-product profiles and four cells, with common owning API/lifecycle/consumer
-regressions. Complete option/application/contrib and final acceptance gates remain
-open. Secondary application fixture drafts are unregistered and unqualified.
+Primary owns all integration fixes and is the sole build owner. Secondary edits
+only a new unregistered TCP boundary candidate directory. Frozen TCP fixtures
+and MQTT candidates transferred to primary for integration. No shared concurrent
+edits/builds. Latest qualified implementation is `944edd73`: owning TFTP/SNTP and
+seven finite UDP cases pass all three baseline profiles/four cells, while the
+ten-option enhanced profile passes its specialist/common/rooted-AOT gates.
+Earlier `537bfc3d` qualified owning LOWPAN/ZEP/BLE. Complete application modes,
+other option/contrib and final acceptance gates remain open. TCP fixtures and
+owning candidates remain unregistered/unqualified.
 Current evidence: [validation.md](validation.md). Old receipts retain historical
 provenance; fresh product and PPP/diagnostic records are from this checkout.
 No simultaneous shared bin/obj builds. Freeze shared Host/facade source and staging/configuration helpers while the
@@ -1113,3 +1113,57 @@ narrow-conversion/error-enum spelling errors. Primary owns the fixture-only fix,
 fresh hashes and retry. Completed-cell reports will persist even if a later cell
 fails. UDP fixtures reuse an immutable executable within a receipt per exact
 profile/form/runtime/source key, with separately recorded case commands and exits.
+
+### TCP fixture handoff and next isolated service work
+
+Coordinator verified all 22 hashes in `tests/Applications.Tcp/draft-inputs.json`
+(manifest SHA256 `b979d4603ecf8eb03371912fa8fd6a766664ebf7a1edce73e9f931eda0aefa02`).
+Five native/managed pairs are authored but unbuilt/unregistered: MQTT, SMTP,
+lwiperf success, HTTP client and cleartext CONNECT. Coherent positive traffic,
+normal refusal/remote close, bounded storage, explicit core handoff and retained
+callback roots were source-reviewed. lwiperf refusal is a separate unselected
+source-observed failure control; its abort and null-PCB report issues remain open.
+Native active/TIME_WAIT counts are observations, not natural-baseline passes.
+CONNECT status interpretation is an upstream TODO, distinct from the existing
+tunnel's ordinary segmentation/coalescing limitations. No corruption exception.
+
+Primary owns these frozen fixtures for later policy integration and execution.
+Secondary's new assignment is restricted to `drafts/TcpServices/`: candidate
+owning MQTT implementation using original public APIs, plus proposed narrow
+SMTP/lwiperf lifecycle boundaries. These candidates are not compiled or delivered
+until reviewed and moved by primary; no C repair or text patch is preapproved.
+
+### UDP and enhanced runtime milestone
+
+Enhanced receipt `151952-1dd6c694` passes the ten-option specialist, ABI,
+canonical consumer and owning API in all four cells plus both rooted-AOT forms.
+UDP's seven cases and consumer matrix pass threaded `152417-bf654250`, NO_SYS
+`153013-22a4e10d` and locking `153409-2521e1f0`. The deeper borrowed-original
+TFTP factory rollback passes all four threaded cells separately in
+`152929-8bc38f5f` and is included in both alternate-profile receipts. Refreshed
+publications are threaded `151138-f5c825ab`, NO_SYS `152646-d6b5d065`, locking
+`153230-f26bb7ac`, and enhanced `151412-e242ced2`.
+
+The first UDP AOT attempt `152245-7a09cacc` remains failed on fixture-only JSON
+reflection reporting; explicit Utf8JsonWriter fixed reporting before final
+passes. Snapshot07 has 533 independently verified inputs. Primary is pausing
+builds for metadata/example documentation and scoped checks, then a narrow
+qualified checkpoint. TCP fixtures/service candidates remain excluded from that
+checkpoint. The complete plan is still incomplete.
+
+Coordinator independently verified the final 39-path snapshot, nine receipt
+hashes/statuses, 84 UDP case cells, four enhanced cells, current policy hashes,
+and all 11 upstream exception definitions/registrations. Commit `944edd73`
+contains exactly those 39 paths. README snippets are documented usage, not
+standalone executable examples. No new external module or source patch.
+
+The frozen MQTT candidate manifest is
+`drafts/TcpServices/draft-inputs.json` (SHA256
+`40d53006806f46861bad11a4dd29c1c17d30bed0ace2f602195e6a0b020b1ed8`).
+Its source design uses existing original public APIs and asynchronous bounded
+channels/tasks, explicit-owner roots, original disconnect plus settlement of
+silently cleared requests, then FIFO/free. It adds no delivery worker or new C
+binding. Primary owns future integration/qualification. Secondary now authors
+only `drafts/TcpBoundaries/`: lwiperf first, then SMTP candidate wrappers and
+guard contracts. Those designs may be implemented without text patches in the
+isolated candidate directory, but integration/execution still requires review.

@@ -194,10 +194,59 @@ processed publication. Enhanced publication `151412-e242ced2` also passes.
 Coordinator verified all 533 inputs in snapshot
 `artifacts/enhanced-udp-readiness-20260929-02.json`. Seven UDP cases are registered
 on baseline product profiles; the ten-option suite is designated to additive
-`threaded-enhanced`. All new managed behavior remains pending. Review identified
-that the initial enhanced natural baseline covered only three counters; stronger
-fixture checks for UDP PCB, netconn, netbuf and listening TCP PCB pools are being
-added before the managed runs, without broadening the earlier native claim.
+`threaded-enhanced`. Review identified that the initial enhanced natural baseline
+covered only three counters; stronger fixture checks add UDP PCB, netconn, netbuf
+and listening TCP PCB pools without broadening the earlier native claim.
+
+Focused enhanced receipt `151821-16c02ba8` passes **raw JIT**, with the stronger
+native prerequisite, all ten option paths, all seven natural counters, native
+layout/window agreement, two owners and a surviving owner after A disposal.
+All three wire transcripts pass independent checksum/length validation. Earlier
+`151632-ca93df3c` remains failed on fixture C# casts/error-enum naming; its native
+prerequisite and facade compilation passed, and no product correction was needed.
+
+Focused threaded `151850-f4dab6c8` passes **raw JIT** for all seven UDP application
+cases and their native comparisons. Owning TFTP covers successful GET/PUT,
+cancellation/restart, owner disposal, original server expiry, payload/file-count
+bounds and ordinary storage errors. SNTP delivers actual copied product time
+notifications and settles pending readers on disposal. One immutable fixture
+build serves seven separately recorded executions.
+
+Enhanced receipt `151952-1dd6c694` now passes all 42 recorded commands: the
+ten-option specialist, ABI, canonical consumer and owning API each pass all four
+cells, and separately rooted NativeAOT passes both forms. This qualifies the
+designated enhanced profile's finite option and common boundaries, not every
+option family or every application.
+
+Threaded UDP receipt `152417-bf654250` passes all seven cases × four cells plus
+the canonical consumer matrix. Earlier `152245-7a09cacc` remains failed: its first
+raw AOT case reached terminal reporting, where reflection-based anonymous JSON
+serialization was unavailable. Explicit Utf8JsonWriter reporting corrected that
+fixture-only failure; no protocol/product change. Deeper borrowed-original TFTP
+initialization rollback passes native and all four threaded cells in
+`152929-8bc38f5f`: actual ERR_USE preserves the borrowed instance's subsequent
+valid transfer, releases failed owning admission/context, and permits restart.
+
+Final NO_SYS `153013-22a4e10d` and locking `153409-2521e1f0` also pass all seven
+UDP cases × four cells plus canonical consumer, including that rollback case.
+Their raw/processed publications are `152646-d6b5d065` and `153230-f26bb7ac`.
+This closes the current finite UDP/enhanced runtime matrix. Standalone example
+delivery, wider application modes/services and full final acceptance remain
+separate requirements.
+
+Checkpoint **`944edd73`** contains the final 39 qualified implementation paths.
+Its snapshot is
+`artifacts/enhanced-udp-qualified-snapshot-20260929.json` (39 paths). Coordinator
+independently verified those hashes, nine receipt hashes/statuses, all 84 UDP
+case/profile/form/runtime cells and four enhanced cells, 181 authored policy
+paths, 11 owning and four LOWPAN implementation paths, and all 11 exact original
+upstream exception records. The expected profile-mismatch control is a failing
+build with the precise capability error, correctly accepted by its dispatcher.
+Two post-qualification comment/docstring edits have preserved qualified bytes
+and exact comment-only deltas. Ten existing pipeline checks, layout, syntax and
+whitespace checks pass. README usage snippets require caller-provided connected
+stacks; they are not separately executed standalone examples. No new external
+dependency or text patch was added.
 
 ## Migration and source snapshots
 

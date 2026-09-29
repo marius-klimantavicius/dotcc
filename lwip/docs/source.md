@@ -3,7 +3,7 @@
 The campaign acquires lwIP 2.2.1 using the pinned metadata in
 `config/sources.json`. The initial local reference was copied from the planning
 checkout; acquisition receipts describe observed provenance. Preparation never
-modifies this reference. Four narrow upstream repairs are recorded in `config/adaptations.json`: generator checksum-loop progress, IPv4 software-checksum predicates, EAP control-pbuf release and the IEEE802.15.4 short-source constant. Only staged copies change. IPv6 hop expiry uses a scoped macro override, and bridge lifetime support and socket descriptor references use authored include-wrappers around unchanged algorithms. Diagnostic applicability is recorded per repair; no diagnostic assertion or fixture is modified.
+modifies this reference. Five narrow upstream repairs are recorded in `config/adaptations.json`: generator checksum-loop progress, IPv4 software-checksum predicates, EAP control-pbuf release, the IEEE802.15.4 short-source constant and LOWPAN reassembly list insertion. Only staged copies change. IPv6 hop expiry uses a scoped macro override, and lifecycle support uses authored include-wrappers around unchanged algorithms. Diagnostic applicability is recorded per repair; no diagnostic assertion or fixture is modified.
 
 `config/source-groups.json` enumerates all C translation units declared by
 upstream `src/Filelists.cmake`, including its conditional SLIP append. The stack
@@ -257,3 +257,36 @@ in validation.md. The PoolRecovery project uses canonical product property
 propagation after an AOT reference-output collision. No shared compiler repair
 was needed. Remaining option/application/contrib work is explicitly inventoried
 in remaining-work-audit.md; this checkpoint does not complete those gates.
+
+## UDP applications and enhanced option checkpoint
+
+An authored TFTP include-wrapper retains the original parser, request serializer
+and retry engine while exposing singleton admission, original cleanup and close
+context. A guarded typed `tftp_put` override invokes a small C setup helper whose
+initial block number is zero before original serialization. Native controls show
+the original valid ACK0 failure and corrected transfer with otherwise identical
+inputs. Exact local body/state/context guards protect this dependency; the whole
+original file hash records provenance without rejecting unrelated source edits.
+No sixth text patch was added.
+
+SNTP uses its documented raw-NTP time setter macro, supplied before unchanged
+original `sntp.c` through an authored include-wrapper. The typed explicit-owner
+binding publishes copied seconds/fraction values and never changes the operating
+system clock. The owning client bounds notifications and completes readers at
+shutdown. Owning TFTP bounds payload bytes and file count separately, retains
+copied read snapshots, stops the original client/server before draining callbacks,
+and releases roots only afterward. A borrowed original instance survives failed
+owning initialization, and subsequent owning restart succeeds. Original client
+request retransmission is not invented; server retry/expiry and explicit pending
+client cancellation are distinct qualified behaviors.
+
+Additive `threaded-enhanced` enables ten compatible implemented TCP/socket/core
+options. `config/feature-options.json` records effective macros, local compile
+guards, required definitions, dependent literals, and distinct behavior/lifetime
+contracts. Its initial ten rows do not claim complete option inventory. SACK,
+timestamps, backlog, window scaling, linger, receive metadata, reusable broadcast
+delivery, next-datagram FIONREAD, core timeouts and interface-removal callbacks
+pass native and all four managed cells. Canonical consumer/ABI/owning gates and
+separately rooted AOT also pass. UDP's seven finite application cases pass all
+three baseline profiles and four cells; receipts are in validation.md. Other
+applications, variants, owning services and final full-product audits remain open.
