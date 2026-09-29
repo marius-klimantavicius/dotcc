@@ -47,6 +47,7 @@
 #define EDOM     33
 #define ERANGE   34
 #define EDEADLK  35
+#define ENOSYS   38
 #define ETIME    62
 #define EPROTO   71
 #define EOVERFLOW 75

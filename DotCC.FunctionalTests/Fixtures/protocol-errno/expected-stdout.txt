@@ -1,6 +1,7 @@
 abi=24,8,8,16
 errno=26,39,40,61,67,102,11
 messages=Text file busy;Directory not empty;Too many levels of symbolic links;No data available;Link has been severed;Network dropped connection on reset
+enosys=38,Function not implemented
 tcp=tcp,6,TCP,1
 alias=tcp,6
 udp=udp,17

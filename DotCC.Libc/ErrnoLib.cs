@@ -72,6 +72,7 @@ public static unsafe partial class Libc
     public const int EPIPE = 32;    // Broken pipe
     public const int EDOM = 33;     // Numerical argument out of domain   (C std)
     public const int ERANGE = 34;   // Numerical result out of range      (C std)
+    public const int ENOSYS = 38;   // Function not implemented
     public const int EDEADLK = 35;  // Resource deadlock avoided
     public const int ENOTSUP = 95;  // Operation not supported
     public const int EILSEQ = 84;   // Invalid or incomplete multibyte/wide char (C std)
@@ -156,6 +157,7 @@ public static unsafe partial class Libc
         EPIPE   => (LiteralPool.Pointer + LiteralPool.ErrorEPIPE),
         EDOM    => (LiteralPool.Pointer + LiteralPool.ErrorEDOM),
         ERANGE  => (LiteralPool.Pointer + LiteralPool.ErrorERANGE),
+        ENOSYS => (LiteralPool.Pointer + LiteralPool.ErrorENOSYS),
         EDEADLK => (LiteralPool.Pointer + LiteralPool.ErrorEDEADLK),
         ENOTSUP => (LiteralPool.Pointer + LiteralPool.ErrorENOTSUP),
         ETIMEDOUT => (LiteralPool.Pointer + LiteralPool.ErrorETIMEDOUT),
