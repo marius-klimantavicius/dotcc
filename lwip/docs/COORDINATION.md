@@ -22,13 +22,13 @@ historical execution only and are superseded by this active workspace rule.
 | `/root/lwip_coordinator/pipeline` | `config/`, `scripts/` except `test.py`, `src/port/`, source/blocker docs, Upstream/Pipeline/Links/Ppp/PppLinks/Applications/Contrib tests and tools; approved compiler fixes | Merged-toolchain refresh, full links/apps/contrib, source/feature audits |
 | `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `scripts/test.py`, remaining core/API/addressing/routing/lifecycle tests, README and host docs | Owning API, IPv6/multicast/routing/bridge, native and independent controls |
 
-Current shared .NET build ownership is **host**, qualifying IPv6 addressing and
-multicast against refreshed merged-toolchain/EAP products. Pipeline completed all
-eight profile publications, actual PPP serial/independent PPPoE matrices and both
-upstream diagnostic matrices. Pipeline has the git-index slot for its validated
-EAP/PPP checkpoint, then authors isolated native L2TP/6LoWPAN/ZEP/apps and plans
-coherent default-off feature variants. Shared Host/facade and active staging/config
-behavior remain frozen during host builds; coordinate metadata-only atomic updates.
+Current shared .NET build ownership is **pipeline**, refreshing coherent IPv6
+hop-limit override, bridge include-wrapper and guarded LOWPAN short-source repair
+integration. Host completed IPv6 addressing/multicast qualification and authors
+isolated owning socket/resolver APIs and managed routing/bridge fixtures. Pipeline
+continues L2TP/6LoWPAN/ZEP/apps and coherent default-off feature variants. Shared
+Host/facade changes require the next agreed build window; dependent native controls
+must also wait while staging/configuration integration is in progress.
 Current evidence: [validation.md](validation.md). Old receipts retain historical
 provenance; fresh product and PPP/diagnostic records are from this checkout.
 No simultaneous shared bin/obj builds. Freeze shared Host/facade source and staging/configuration helpers while the
@@ -594,3 +594,36 @@ diagnostic evidence and six staging guard checks. Source snapshot:
 `artifacts/ppp-source-snapshot-20260929-1030.json`. Unfinished L2TP, host fixtures
 and coordinator/unrelated files stayed outside the checkpoint. Pipeline continues
 isolated L2TP/6LoWPAN/ZEP/application work while host owns .NET.
+
+### IPv6/multicast checkpoint and next link integration
+
+IPv6 addressing and multicast pass all four cells in all three profiles:
+threaded `103455-c49324c6`, NO_SYS `103633-09b9abb5`, locking
+`103831-2b08f372`. Checkpoint `e229fc42` contains 13 named fixture/native parity
+and dispatcher files. Cases cover DAD, invalid RA rejection, SLAAC lifetime and
+duplicate-address behavior, stateless DHCPv6 retry/query/DNS replacement, and
+IGMP/MLD exact-group admission, reports and leave. These finite cases do not close
+the broader addressing or core aggregate gates.
+
+Native IPv6 routing and the scoped hop-limit override pass all three profiles,
+including original zero-hop failure, 0/1/2/255 routing boundaries, all ordinary
+setter values and single-evaluation/result semantics. Integration uses a guarded
+macro/typed helper, not an additional source patch. Native bridge teardown passes
+two bridge instances within one native stack and natural allocation/timer
+baselines; managed owner-isolation remains pending. The authored include-wrapper
+exposes teardown while retaining original bridge algorithms.
+
+The fourth narrowly guarded source repair corrects LOWPAN source short-address
+recognition from the destination constant to the source constant. Original valid
+short-source input fails with exit92; the adapted radio/BLE ten-input control passes
+all three native profiles (`artifacts/lowpan-native/<profile>`). Macro replacement
+would corrupt destination uses, and a whole-parser override would replace more
+original code. Full managed link qualification remains pending. Native L2TP now
+passes tunnel authentication/control plus actual data in all three profiles.
+
+Pipeline owns the coherent refresh and managed link/routing/bridge build window.
+Host develops owning socket/netconn/resolver contracts with registry admission,
+blocking-operation leases, close-before-join, accepted-handle adoption and DNS
+callback lifetime through core-worker shutdown. Shared facade changes wait for
+handoff. Only the confirmed-idle current-root managed-consumer intermediate cache
+was removed to recover space; historical worktree and all receipts remain intact.
