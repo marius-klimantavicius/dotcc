@@ -3,7 +3,7 @@
 The campaign acquires lwIP 2.2.1 using the pinned metadata in
 `config/sources.json`. The initial local reference was copied from the planning
 checkout; acquisition receipts describe observed provenance. Preparation never
-modifies this reference. Five narrow upstream repairs are recorded in `config/adaptations.json`: generator checksum-loop progress, IPv4 software-checksum predicates, EAP control-pbuf release, the IEEE802.15.4 short-source constant and LOWPAN reassembly list insertion. Only staged copies change. IPv6 hop expiry uses a scoped macro override, and lifecycle support uses authored include-wrappers around unchanged algorithms. Diagnostic applicability is recorded per repair; no diagnostic assertion or fixture is modified.
+modifies this reference. Six narrow upstream repairs are recorded in `config/adaptations.json`: generator checksum-loop progress, IPv4 software-checksum predicates, EAP control-pbuf release, the IEEE802.15.4 short-source constant, LOWPAN reassembly list insertion and SMTP body line-break validation. Qualification is recorded per milestone below and in validation.md. Only staged copies change. IPv6 hop expiry uses a scoped macro override, and lifecycle support uses authored include-wrappers around unchanged algorithms. Diagnostic applicability is recorded per repair; no diagnostic assertion or fixture is modified.
 
 `config/source-groups.json` enumerates all C translation units declared by
 upstream `src/Filelists.cmake`, including its conditional SLIP append. The stack
@@ -290,3 +290,18 @@ pass native and all four managed cells. Canonical consumer/ABI/owning gates and
 separately rooted AOT also pass. UDP's seven finite application cases pass all
 three baseline profiles and four cells; receipts are in validation.md. Other
 applications, variants, owning services and final full-product audits remain open.
+
+The next TCP application batch found valid multiline SMTP bodies rejected before
+transmission: the body-only validator call incorrectly disables line breaks.
+A sixth uniquely guarded staged repair changes that call's flag from zero to one.
+Header calls and the original verifier remain unchanged. No configuration/hook
+selects just this argument; a whole-entry override copies unrelated SMTP logic,
+and a global verifier override alters header rules. Identical-source/configuration
+native original/adapted controls reproduce ERR_ARG versus completed copied/static
+mail and ordinary refusal/FIN. The coordinator independently confirmed the sole
+token delta; original references remain unchanged. Checkpoint `48a3af9d` qualifies
+SMTP and the other finite TCP workflows plus owning MQTT across all three baseline
+profiles/four cells, with refreshed enhanced and shared lifetime regressions.
+Its active-service unregistration fix preserves failed cleanup and separate
+resolver post-core-stop roots. Owning SMTP/lwiperf wrapper candidates are reviewed
+but uncompiled/unexecuted; wider modes and final acceptance remain open.

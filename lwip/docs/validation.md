@@ -7,9 +7,10 @@ scope; [coordination](COORDINATION.md) records ownership and next work. All matr
 results below are Linux x64. “Four cells” means raw/processed × JIT/NativeAOT.
 
 Fresh coordination and implementation workers are active after the preserved
-worker handoff. Owning LOWPAN radio/BLE/ZEP finite output/lifetime qualification
-now passes all three product profiles and four cells, with current common owning
-API/lifecycle/consumer regressions. Required application, option/contrib and final
+worker handoff. Owning LOWPAN, seven UDP application workflows and six TCP/MQTT
+suites pass their finite three-profile/four-cell matrices. The enhanced profile
+and affected common owning/consumer/rooted-AOT gates also pass. Required wider
+application modes and owning services, option/contrib variants and final
 acceptance work remains; the complete plan is not finished. The earlier generic
 service errors do not authorize retrying any identified prohibited action.
 
@@ -212,7 +213,8 @@ bounds and ordinary storage errors. SNTP delivers actual copied product time
 notifications and settles pending readers on disposal. One immutable fixture
 build serves seven separately recorded executions.
 
-Enhanced receipt `151952-1dd6c694` now passes all 42 recorded commands: the
+Enhanced receipt `151952-1dd6c694` passes its 42-command validation, including the
+expected profile-mismatch build rejection: the
 ten-option specialist, ABI, canonical consumer and owning API each pass all four
 cells, and separately rooted NativeAOT passes both forms. This qualifies the
 designated enhanced profile's finite option and common boundaries, not every
@@ -247,6 +249,67 @@ and exact comment-only deltas. Ten existing pipeline checks, layout, syntax and
 whitespace checks pass. README usage snippets require caller-provided connected
 stacks; they are not separately executed standalone examples. No new external
 dependency or text patch was added.
+
+The finite TCP and shared lifetime milestone now passes its designated matrices.
+Original native MQTT, positive lwiperf, HTTP client and CONNECT controls pass in
+`artifacts/tcp-native-20260929`. Valid multiline SMTP fails original validation;
+matched pair03 passes after the sixth minimal staged repair, changing only the
+body's linebreak flag. `smtp-comparison.json` records 301 identical shared inputs
+and the source comparison. Header checks and the original verifier remain intact.
+
+Threaded publication `155841-0e6232e5` passes 128 commands. Matrix
+`160809-dd5468af` passes six TCP suites in all four cells: raw MQTT, SMTP,
+positive lwiperf, HTTP client, CONNECT and owning MQTT. It also passes affected
+owning API, owning TFTP, SNTP, LOWPAN and canonical consumer matrices. Its 78
+commands include the expected profile-mismatch build failure with the precise
+metadata error. Coordinator independently checked the receipt and all 24 TCP
+cells; receipt SHA256 is
+`24c41386b0d7e25d4b485140235a2394f6f594233dea729f0cf0bd745db2aa7f`.
+NO_SYS `161345-b55f9edf` and locking `161858-576439ba` pass the same eleven
+applicable suites in four cells. Their raw/processed publications are
+`161215-b0305e9d` and `161728-dc031fea`. The six TCP suites therefore cover
+72 case/profile/form/runtime cells. Enhanced publication `162450-e023e8b4` and
+regression `162644-7954d925` also pass refreshed option, ABI, owning API and
+consumer matrices plus both separately rooted NativeAOT forms.
+
+Owning MQTT uses original APIs with copied inputs/publications, bounded pending
+requests and receive channels, async completion, explicit cancellation and
+original disconnect/FIFO/free. Current finite coverage includes QoS1,
+subscription/unsubscription, ordinary refusal/FIN, cancellation/reconnect,
+capacity/recovery and independent owners. QoS0/QoS2, keepalive, Will, credentials
+and IPv6 mode coverage remain open. Native TCP PCB/TIME_WAIT observations are
+not claimed as a natural pool baseline for every connected application.
+
+Completed built-in services now leave the owner's active registration only
+after successful cleanup. Failed stops remain registered; resolver roots remain
+in the separate after-core-stop registry, including empty disposed resolvers.
+The new WeakReference control directly proves a disposed MQTT wrapper with an
+unread copied publication is collectible while the stack remains live. Existing
+failed-disposal/retry, resolver post-stop and socket/netconn teardown regressions
+pass. Empty-resolver retention still requires follow-up; the collection result
+does not prove collection of every wrapper type.
+
+Preserved failures include initial fixture variable shadowing and lwiperf clock
+scheduling. `160023-843753dc` retains a successful original 24-byte lwiperf report
+followed by the fixture's >=48-byte assertion failure. Retry `160204-5d300d31`
+waits for coherent emitted sequence extent before advancing the same clock,
+retains that assertion, and passes. No protocol or application algorithm changed.
+Snapshot09 has 547 independently verified consumed inputs; candidate SMTP and
+lwiperf ownership wrappers remain unselected and unqualified. No corruption
+exception was added.
+
+Checkpoint **`48a3af9d`** has snapshot `artifacts/tcp-qualified-snapshot-20260929.json`,
+SHA256 `ddb0f9c8942bdeb101c1397121414b691160cda8ca8267435dde6d6fef9a1ded`.
+Coordinator independently verified its 35 implementation/configuration/selected
+fixture/documentation paths, all 651 consumed inputs, eight final receipts,
+72 TCP cells, 14 shared/enhanced reports, check logs and archived metadata-only
+updates. Current policy has 203 verified authored paths, 11 owning and four
+LOWPAN implementation paths, and 11 unchanged exact upstream source/definition/
+registration records. Eleven pipeline tests, layout, Python syntax and scoped
+whitespace checks pass. README examples remain usage snippets requiring supplied
+connected stacks, not separately executed standalone programs. Only the sixth
+guarded body-validation token repair was added; no external library or compiler
+change. The complete plan remains open.
 
 ## Migration and source snapshots
 

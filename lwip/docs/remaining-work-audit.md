@@ -16,8 +16,10 @@ Coarse feature rows and stale `unrun` fields require reconciliation with receipt
 Since this audit, owning LOWPAN output/lifetime, the ten enhanced options and
 seven UDP application cases including owning TFTP/SNTP have passed their finite
 designated matrices; see [validation.md](validation.md). Their broader variants
-are still required. Five TCP application native/managed drafts are authored but
-unqualified. The ordered list below retains the original audit context.
+are still required. Five TCP application workflows and owning MQTT now pass the
+three-baseline-profile four-cell matrices. Their
+broader modes and owning SMTP/lwiperf/HTTP boundaries remain required. The ordered
+list below retains the original audit context.
 
 ## Ordered implementation batches
 

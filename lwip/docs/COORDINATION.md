@@ -19,8 +19,8 @@ historical execution only and are superseded by this active workspace rule.
 | Agent | Ownership | Current task |
 | --- | --- | --- |
 | `/root/lwip_coordinator_resume` | Ledger/evidence/source review and verification scheduling | Coordinate remaining P0–P6 work |
-| `/root/lwip_coordinator_resume/permitted_implementation` | Shared campaign source/config/scripts and frozen TCP/MQTT integration | Sole build owner; prepare reviewed TCP policy/snapshot and owning integration |
-| `/root/lwip_coordinator_resume/scope_audit` | Only new unregistered `drafts/TcpBoundaries/` candidates | Implement proposed lwiperf/SMTP narrow boundaries; no builds or shared edits |
+| `/root/lwip_coordinator_resume/permitted_implementation` | Shared campaign source/config/scripts and frozen TCP/MQTT integration | Sole build owner; finish TCP/shared-lifetime checkpoint, then integrate reviewed C boundaries |
+| `/root/lwip_coordinator_resume/scope_audit` | Only new unregistered `drafts/TcpOwnedServices/` candidates | Author owning lwiperf/SMTP managed facades; no builds, shared edits or frozen C changes |
 
 A fresh implementation worker successfully started after normal agent capacity
 became available. The former coordinator and workers are no longer in the active
@@ -30,14 +30,16 @@ replacement availability authorizes bypassing a safety rejection: any identified
 prohibited action must stop and be reported.
 
 Primary owns all integration fixes and is the sole build owner. Secondary edits
-only a new unregistered TCP boundary candidate directory. Frozen TCP fixtures
-and MQTT candidates transferred to primary for integration. No shared concurrent
-edits/builds. Latest qualified implementation is `944edd73`: owning TFTP/SNTP and
-seven finite UDP cases pass all three baseline profiles/four cells, while the
-ten-option enhanced profile passes its specialist/common/rooted-AOT gates.
+only a new unregistered managed-service candidate directory. Frozen TCP fixtures,
+MQTT and C boundary candidates transferred to primary for integration. No shared concurrent
+edits/builds. Latest qualified implementation is `48a3af9d`: five TCP workflows,
+owning MQTT and affected shared lifetimes pass all three baseline profiles/four
+cells, with refreshed enhanced/common/rooted-AOT gates. Earlier `944edd73`
+qualifies owning TFTP/SNTP, seven UDP cases and the ten-option enhanced profile.
 Earlier `537bfc3d` qualified owning LOWPAN/ZEP/BLE. Complete application modes,
-other option/contrib and final acceptance gates remain open. TCP fixtures and
-owning candidates remain unregistered/unqualified.
+other option/contrib and final acceptance gates remain open. Six finite TCP
+suites now pass all three baseline profiles/four cells. SMTP and
+lwiperf lifecycle candidates remain unregistered/unqualified.
 Current evidence: [validation.md](validation.md). Old receipts retain historical
 provenance; fresh product and PPP/diagnostic records are from this checkout.
 No simultaneous shared bin/obj builds. Freeze shared Host/facade source and staging/configuration helpers while the
@@ -1167,3 +1169,153 @@ binding. Primary owns future integration/qualification. Secondary now authors
 only `drafts/TcpBoundaries/`: lwiperf first, then SMTP candidate wrappers and
 guard contracts. Those designs may be implemented without text patches in the
 isolated candidate directory, but integration/execution still requires review.
+
+### TCP native and owning MQTT execution release
+
+Coordinator verified all 408 consumed paths in
+`artifacts/tcp-integration-ready-01.json` (SHA256
+`df4b3de038dc7dc2456fc5833510a32d7f15a72f5aa07568ec87a6ac9589e5fd`)
+and policy SHA256
+`8c5358fb461d6cc6e72d235e6bc7831b43763c40f678e136c0db1b7084f27575`.
+Primary may run the five selected native NO_SYS cases sequentially in distinct
+attempt directories, diagnose failures, then the six-suite threaded raw-JIT
+focus. Owning MQTT adds no C binding or protocol replacement; existing products
+already contain its original public APIs. Native MQTT is its wire/callback
+prerequisite, while managed assertions qualify the actual owning facade.
+
+Selected traffic remains coherent: normal SMTP/CONNACK refusals, FIN, successful
+lwiperf, valid stream segmentation and ordinary API/resource/disposal outcomes.
+Idle MQTT heap baseline is separate from connected TCP TIME_WAIT and callback
+root cleanup. Public lwiperf abort and refused-connect controls remain unselected;
+secondary boundary candidates remain outside all consumed inputs. No new runtime
+pass is claimed at release.
+
+Native MQTT, successful lwiperf, HTTP client and CONNECT now pass their finite
+NO_SYS controls. Initial MQTT link failure lacked original SNTP needed by the
+enabled DHCP NTP hook; the native dependency closure now includes that original
+provider without running a SNTP workload. Native SMTP rejects the unchanged
+valid multiline body with ERR_ARG. Diagnostic-only attempt records the exact
+return before the same assertion; no input weakening or repair was applied.
+
+Coordinator reviewed original SMTP and approved a sixth minimal staged repair:
+change only the body's smtp_verify linebreak argument from zero to one. A unique
+local guard preserves to/from/subject calls and the verifier. No option/hook
+targets only this local argument; a global verifier override alters headers,
+while whole-entry substitution copies unrelated logic. Primary must preserve
+matched original/adapted controls, then refresh products before claiming managed
+SMTP behavior. Secondary's eventual SMTP wrapper must include staged source.
+Four unaffected raw workflows and owning MQTT may proceed under reviewed policy;
+the first managed attempt failed only a fixture variable-shadowing error, fixed
+before retry. No SMTP pass or lifetime repair is claimed yet.
+
+### TCP focus and shared owning-service lifetime review
+
+Matched SMTP native controls now preserve the original valid-body rejection and
+staged success in `artifacts/tcp-native-20260929/smtp-comparison.json`. Coordinator
+verified that the original and staged SMTP bytes differ only in the unique body
+linebreak flag. Threaded publication `155841-0e6232e5` passes 128 commands with
+the sixth repair. Receipt `160023-843753dc` passes MQTT, SMTP, HTTP client,
+CONNECT and owning MQTT in raw JIT, then preserves a failed lwiperf fixture
+timing assertion. Its successful original report had only 24 transferred bytes:
+the fixture advanced time before a second send opportunity. Retry
+`160204-5d300d31` observes coherent TCP sequence extent before advancing time,
+keeps the >=48-byte report assertion, and passes. These separate receipts cover
+six focused cells; they are not the complete TCP matrix.
+
+Source review also found that successfully disposed built-in services remain in
+the live stack's strong service list. Original native heap cleanup alone does
+not demonstrate managed wrapper/channel collection. Primary owns a shared fix:
+unregister completed built-in service disposal by reference identity only after
+native/barrier/worker cleanup; make owner teardown robust to self-removal; keep
+failed disposal registered and preserve separate after-core-stop roots. A live
+owner WeakReference control and existing failed-stop/socket/netconn regressions
+are required before broader qualification. No source translation refresh is
+needed for that managed-only change.
+
+Secondary handed off an unexecuted lwiperf boundary at
+`drafts/TcpBoundaries/draft-inputs.json`, SHA256
+`93c816edeec9944b8eae673384ae279e635a8cba54d4bc279ee9109b01f164ed`.
+The reviewed design uses existing allocation hooks and local TCP call observers,
+original close, captured error endpoints, stable owner tokens, descendant-first
+stop and partial-factory rollback. Raw session pointer ambiguity after allocator
+reuse returns ERR_USE; product lifetime uses stable tokens. This candidate is
+not yet integrated, compiled or qualified. Secondary now authors only isolated
+SMTP candidate files in the same draft directory, preserving the frozen lwiperf
+handoff. Primary remains the sole build owner. No custom corruption tests.
+
+Coordinator independently verified all 547 paths in
+`artifacts/tcp-integration-ready-09.json` (SHA256
+`de24ecb0bd6fb992a6c801875e6ee6ff3e4c3e246ef4d806a8ae9dbaefb51660`)
+and its policy hash `51f94f7a516645b9a22f057542d4b946bbd0f34151bc3557edf8cef71c5e571e`.
+The source review confirms successful built-in cleanup unregisters by reference
+identity, socket/netconn unregister outside their local gates, and resolver
+post-core-stop roots remain separately retained. Focus `160652-5a16a188` passes
+owned MQTT collection, owning API failed-stop/retry, owning TFTP, SNTP, LOWPAN
+and canonical consumer in raw JIT. The four-cell threaded TCP plus affected
+lifetime matrix is now running against that frozen snapshot.
+
+Threaded receipt `160809-dd5468af` completed successfully: six TCP suites plus
+owning API, owning TFTP, SNTP, LOWPAN and consumer, each in four cells.
+Coordinator checked all 24 TCP cells and the expected capability-mismatch build
+failure. NO_SYS publication `161215-b0305e9d` passed before its matching matrix.
+Primary recorded completed-cache cleanup in `artifacts/tcp-cache-prune-20260929.json`;
+only older campaign-private bin/obj trees were removed, preserving receipt hashes,
+app outputs, native controls, logs and source manifests.
+
+SMTP candidate review requires preserving the original borrowed public APIs in
+the selected product. An allocation hook that accepts only owning-helper calls
+would regress existing `smtp_send_mail*` callers and is not accepted. Secondary
+is revising explicit bounded borrowed-work bookkeeping and owning admission,
+with raw fixtures continuing unchanged and separate owning-helper controls.
+`smtp_send_mail_int` runs on the original core boundary; the caller supplies any
+threaded scheduling. It is not silently omitted or moved to a diagnostic-only
+product. The revised candidate remains isolated, uncompiled and unexecuted.
+
+Reviewed SMTP admission adjustment: generation zero is a bounded borrowed-work
+domain. Owning open rejects while borrowed sessions/transports/DNS remain and
+does not clean them up; raw allocation during an owning lease has explicit
+ordinary admission rejection. Original global configuration setters remain
+unchanged. As with other borrowed core APIs, callers must not mutate an owned
+subsystem's configuration through raw access during its lease. Owning configure
+helpers validate token/generation and serialize configuration; no setter symbol
+renaming or extra override is needed solely to enforce raw API misuse.
+Empty non-NULL credentials may clear credential strings but do not disable the
+original AUTH negotiation. Authentication reset source observation is L029;
+ordinary PLAIN/LOGIN/reconfiguration controls remain required before qualification.
+
+SMTP C candidate freeze is `drafts/TcpBoundaries/smtp-inputs.json`, SHA256
+`0d44b7bab67fe3de5067a85bc321dc2b2699d4b1a6e01c6dfb0e76ce5784fa55`.
+Coordinator reviewed the 870-line wrapper and handoff and verified all seven
+manifest hashes. Both SMTP and lwiperf candidates are approved for primary's
+integration review after the current checkpoint; native controls, policy
+inventory and product/managed qualification remain required. Original borrowed
+SMTP fixtures should run unchanged when its wrapper is selected. The pin's FIN
+allocation failure is converted by tcp_close to successful deferred close, so
+the defensive close-error restoration is not forced with fabricated state.
+
+Secondary now authors only `drafts/TcpOwnedServices/`, first owning lwiperf then
+SMTP. The proposed SMTP after-core-stop action should be one lightweight record
+per owner, holding no service/request buffers, to avoid repeating the known
+per-disposed-resolver retention limitation. Frozen C candidates are read-only.
+Primary remains sole build owner and will integrate both boundaries before the
+next full publication when their matched native controls pass.
+
+### Qualified TCP and completed-service checkpoint
+
+Implementation commit `48a3af9d98172a2e4be172490d500608f8c6c42b` contains exactly
+the 35 reviewed paths in `artifacts/tcp-qualified-snapshot-20260929.json`, SHA256
+`ddb0f9c8942bdeb101c1397121414b691160cda8ca8267435dde6d6fef9a1ded`.
+Coordinator independently checked all 651 consumed inputs, eight receipt hashes
+and expected mismatch rejections, 72 TCP cells, 14 shared/enhanced reports, check
+logs and archived metadata-only updates. Policy verification covers 203 authored
+paths, 11 owning and four LOWPAN implementation paths, plus all 11 exact original
+upstream source/definition/registration records. Eleven pipeline tests and
+separate layout, Python syntax and whitespace checks pass.
+
+Final baseline matrices are threaded `160809-dd5468af`, NO_SYS
+`161345-b55f9edf`, locking `161858-576439ba`; enhanced refresh/regression are
+`162450-e023e8b4`/`162644-7954d925`. No candidate C boundary, deferred refusal
+fixture, coordinator documentation or unrelated libuv work entered that commit.
+Primary now integrates reviewed C boundaries and prepares native fixtures;
+secondary authors isolated managed service candidates. Fresh execution release
+requires reviewed policy/input snapshots. Full plan acceptance remains open.
