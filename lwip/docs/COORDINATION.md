@@ -18,13 +18,13 @@ original branch. Use `-p:UseLocalLalrCc=false` for tool/runtime builds.
 | `/root/lwip_coordinator/pipeline` | `config/`, `scripts/`, `src/port/` headers, `docs/source.md`, `docs/blockers.md`, `tests/Upstream/`; approved structural compiler fixes | Source/feature/profile inventory, recipe, full translation |
 | `/root/lwip_coordinator/host` | `src/Host/`, `src/Managed.Lwip/`, `samples/`, `tests/` except `Upstream/`, README and `docs/host.md` | sys_arch, owning API, native oracle and consumer |
 
-Current shared .NET build ownership is **pipeline**, returned after locking
-feature receipt `20260929-082706-a7b10f5a`. Pipeline runs unit-nosys and managed
-tool/contrib closure. Host authors finite owner-lifecycle and socket semantics
-cases until handback. Standalone native builds may use private output directories;
-shared bin/obj builds require coordination. Do not kill unrelated build processes.
-Workers implement code; coordinator reviews, schedules and integrates. Commit only
-named owned files after relevant validation, with milestone scope stated honestly.
+Current shared .NET build ownership is **pipeline**, handed back after refreshed
+threaded independent matrix `085113-333ba145`. It regenerates product profiles
+with the native-proven forwarding repair and runs its finite contrib/link cases.
+Host finishes native routing controls and authors broader addressing/routing and
+owning service lifecycle work. No simultaneous shared bin/obj builds. Workers
+implement; coordinator reviews, schedules and integrates. Commit only named
+validated files, stating partial milestone scope honestly.
 
 ## Agreed constraints and contracts
 
@@ -260,7 +260,7 @@ coverage acceptance/rejection and recovery. ARP_QUEUEING=0 fixtures resolve a
 neighbor first; this does not claim pending-neighbor queue behavior coverage.
 Locking matrix is running. Full socket-api/packets gates remain open.
 
-Pipeline framework profile-preparation tests pass37/37 and recipe dispatch3/3;
+Pipeline framework profile-preparation tests pass 37/37 and recipe dispatch 3/3;
 review identified a redundant default-profile verify translation being removed
 before committing the shared change. Host is preparing stronger identical-port
 owner isolation with GC, live B endpoints after A disposal and wraparound timer.
@@ -268,5 +268,92 @@ owner isolation with GC, live B endpoints after A disposal and wraparound timer.
 Locking direct-apis/datagram-fixtures all four cells also pass
 `20260929-082706-a7b10f5a`, completing these finite suites across all three
 product profiles. Pipeline now owns the .NET window for unit-nosys/tools/contrib.
-Shared framework commit `d48ffc06` passes38/38 framework and3/3 recipe tests;
+Shared framework commit `d48ffc06` passes 38/38 framework and 3/3 recipe tests;
 full verify prepares each selected profile exactly once.
+
+### Active compile-time variant audit
+
+Pipeline has enabled `ARP_QUEUEING=1`, `ARP_QUEUE_LEN=8` and `LQR_SUPPORT=1`
+in threaded-locking. These expose bundled working branches omitted by defaults;
+LQR means only the upstream-provided LCP quality negotiation. Existing locking
+receipts describe the prior snapshot and do not qualify this changed profile.
+Regeneration and affected matrices will follow the current unit/tool/contrib
+window. Host will distinguish default queue-drop behavior from queued-neighbor
+behavior in the packet fixtures.
+
+Latest feature milestone is `2c91bd16` (direct APIs/datagram matrices); shared
+framework milestone is `d48ffc06` (verify-only profile preparation).
+
+### NO_SYS original upstream matrix
+
+Unit-nosys translation `20260929-082901-59a31d59` and all four raw/processed ×
+JIT/NativeAOT cells `20260929-083055-ad449f5f` pass 132 original applicable cases
+with native registration and negative fixture parity. Five threaded socket cases
+are inapplicable; the test-only adapter preserves the original zero-case NO_SYS
+socket suite and real poll/timeout pumping. This is not five stubbed successes.
+Both diagnostic upstream matrices now pass. Managed makefsdata is running next.
+
+Review identified ancillary worker shutdown ordering: stopping only tcpip then
+joining all workers before signalling ancillary waits cannot terminate a live
+SNMP/SLIP/contrib worker. Host owns coordinated cancellation/cleanup before those
+feature families can qualify. No resource-registry clear may substitute for this.
+
+### Managed makefsdata generator matrix
+
+`20260929-083157-23870a49` passes all four generator form/runtime cells with
+a 27,529-byte native-exact image and independently verified empty/odd/multiple-MSS
+checksum, header-offset and temporary-file controls. The staged upstream progress
+repair now has both native and managed evidence. Translated HTTP consumption of
+generated content remains required, so this is generator qualification rather
+than closure of the complete tools/application roundtrip gate. Contrib 136-unit
+full translation is running.
+
+Active-body auditing exposed a material parent-option error: the stateless
+DHCPv6 option was enabled but `LWIP_IPV6_DHCP6` remained its default 0, so
+`dhcp6.c` had no active implementation. Pipeline now enables the correct parent
+in all product/contrib profiles and removes the unused `LWIP_DHCP6` typo. All
+affected product/native/ABI/runtime evidence must be refreshed after regeneration.
+Contrib TCP ISN had a similar whole-body guard issue: defining the documented
+`LWIP_HOOK_TCP_ISN` in the profile makes its implementation active before the
+core hook header is included. No upstream patch or compiler change is needed.
+
+Disk headroom fell to 27 GiB during concurrent sessions. With host confirming no
+writer, coordinator removed only obsolete `lwip/build/managed-consumer`
+intermediate caches (about 3.3 GiB). All campaign app outputs, reports, PCAPs,
+receipts, native controls, reference sources and published products remain.
+Upcoming .NET tests recreate their caches; no other worktree was touched.
+
+### Native IPv4 forwarding defect and repair contract
+
+The new native routing fixture fails valid forwarded IPv4 header checksum before
+translation: pinned `ip4_forward` clears IP/UDP/TCP/ICMP checksums when software
+generation is enabled, using ingress-interface state. Hooks cannot express a
+local correction; replacing the whole function would replace the algorithm.
+Coordinator authorized four narrowly staged predicate corrections, preserving the
+original incremental IP checksum logic. Correct offload condition must include
+`!CHECKSUM_GEN_* || (LWIP_CHECKSUM_CTRL_PER_NETIF &&
+!NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_*))`: the macro expands 0 when
+per-netif control is disabled, so naive negation is incorrect.
+
+Apply only in staged sources, with four unique exact local anchors mandatory in
+every hash mode; whole-file hashes remain provenance metadata governed by policy.
+Reference source is untouched. Central `stage.py` and `adaptations.json` own the
+repair contract. Native unmodified failure plus adapted software forwarding,
+fragment payload preservation and later managed matrix must pass. Hardware
+checksum-offload qualification is not claimed. Current product snapshots precede
+this repair.
+
+### Refreshed threaded behavior checkpoint
+
+`20260929-085113-333ba145` passes all four raw/processed × JIT/NativeAOT cells:
+owner-lifecycle overlapping addresses/ports/descriptors, GC and B existing endpoint
+after A disposal, wraparound timer; socket options/select/poll/partial reads,
+half-close and actually blocked UDP receive/concurrent close; DNS A/AAAA/cache/
+NXDOMAIN; updated emitted/native netif 584 ABI and 256 KiB consumer. These are
+finite suites; complete socket/addressing/lifecycle gates remain open.
+
+Native routing original-fail/adapted-pass pairs now pass threaded and nosys, with
+nonzero UDP/TCP/ICMP checksum preservation and first/nonfirst fragment payload
+controls. Locking native and all managed routing cells follow. Three staging
+guard checks include acceptance of unrelated local source edits; whole-file hash
+is not an unconditional repair gate.

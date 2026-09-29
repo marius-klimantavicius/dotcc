@@ -116,7 +116,7 @@ def validate_options(args):
 _product = ('threaded', 'nosys', 'threaded-locking')
 _suites = ('oracle', 'abi', 'sysarch', 'consumer', 'packets', 'socket-api', 'addressing',
            'routing', 'links', 'ppp', 'applications', 'contrib', 'tools', 'upstream',
-           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures')
+           'lifecycle', 'recovery', 'interop', 'aot-rooted', 'audit', 'direct-apis', 'datagram-fixtures', 'owner-lifecycle', 'socket-semantics', 'dns-fixtures')
 recipe = Recipe('lwip', 'TranslatedLwip', (*_product, 'unit', 'unit-nosys', 'makefsdata', 'contrib'),
                 ('src/Managed.Lwip/Managed.Lwip.csproj', 'samples/ManagedConsumer/ManagedConsumer.csproj'),
                 sources, prepare, consumer=Consumer(property='LwipProject'), validate_options=validate_options,

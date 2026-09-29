@@ -15,10 +15,13 @@ scope; [coordination](COORDINATION.md) records active ownership and next work.
 | Rooted NativeAOT | Whole threaded library rooted separately from trimmed consumer; raw and processed execute consumer | `artifacts/campaign/20260929-075750-7fe1bb64/aot-rooted-cases.json` |
 | Locking consumer/boundaries | Consumer, ABI including native wire images, and actual-owner sys_arch; all four cells | `artifacts/campaign/20260929-081643-1a17a7f2/receipt.json` |
 | Direct APIs/datagrams | Plain altcp plus applicable netconn; IPv4/IPv6 fragmentation and UDP-Lite coverage/recovery; all three product profiles, each all four cells | `artifacts/campaign/20260929-082120-9e746efd/receipt.json`, `20260929-082457-04b31050/receipt.json`, `20260929-082706-a7b10f5a/receipt.json` |
+| Refreshed threaded independent cases | Updated netif 584 ABI and consumer, stronger finite owner-lifecycle, socket semantics and DNS fixtures; all four cells | `artifacts/campaign/20260929-085113-333ba145/receipt.json` |
 | Native product oracle | Raw/threaded/locking matching profile loopback TCP 256 KiB plus UDP, both IP families, ABI observations and deliberate failed assertion | `build/native/<profile>/report.json` |
 | Managed upstream Check | Original 137 cases pass all four normal unit profile cells, exact native registration match and deliberate negative/fixture-control equality | `artifacts/campaign/20260929-081512-9608394d/receipt.json`, `20260929-081538-a7d37662/receipt.json` |
+| Managed NO_SYS upstream Check | 132 applicable original cases, all four cells, native registration and negative fixture parity; five threaded-only socket cases explicitly inapplicable | `artifacts/campaign/20260929-083055-ad449f5f/receipt.json` |
 | Native upstream Check | Original upstream cases, registration, fixtures and simplified test scheduler: 137 cases, zero failures/errors; test-only Check 0.15.2 | `artifacts/upstream-native/lwip_unittests.xml` |
 | Native makefsdata | Unmodified checksum loop failure bounded by 8 MiB; staged loop-progress repair passes empty/odd/multiple-MSS checksum/data/HTTP framing controls | `artifacts/native-tools/report.json` |
+| Managed makefsdata generator | Native-exact 27,529-byte generated image all four cells; independently checked checksum/header-offset/temp cleanup; HTTP roundtrip still open | `artifacts/campaign/20260929-083157-23870a49/receipt.json` |
 | Shared repairs | Arithmetic conditional emission regression and ENOSYS runtime/header/message: 14 focused compiler and 6 affected functional checks passed; full lwIP retries pass | `docs/blockers.md` L005/L007; downstream evidence follows |
 
 Actual-owner sys_arch exercises host contracts, while translated TCP/IP worker
@@ -28,7 +31,7 @@ API currently requires callers to settle their resources before disposal.
 
 Required work remains: complete locking feature matrix and full
 socket APIs; complete memory/timer/core/addressing/routing/link/PPP/application
-cases; translated makefsdata/contrib and real behavior; unit-nosys applicability and upstream matrix; pending/blocked lifecycle and
+cases; translated makefsdata/contrib and real behavior; pending/blocked lifecycle and
 recovery; independent peers; import/active-feature/adaptation audits; all-profile
 rooted/consumer delivery; clean and local-input reproduction; Windows orchestration.
 No TAP peer was initially provisioned. Unprivileged user/network namespace and
