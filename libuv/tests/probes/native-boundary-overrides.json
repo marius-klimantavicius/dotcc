@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "pipe",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int*"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Libuv.Probes.NativeBoundary.Pipe"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "close",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Libuv.Probes.NativeBoundary.Close"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "read",
+      "signature": {
+        "returnType": "ssize_t",
+        "parameterTypes": [
+          "int",
+          "void*",
+          "size_t"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Libuv.Probes.NativeBoundary.Read"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "write",
+      "signature": {
+        "returnType": "ssize_t",
+        "parameterTypes": [
+          "int",
+          "const void*",
+          "size_t"
+        ]
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Libuv.Probes.NativeBoundary.Write"
+      },
+      "requireMatch": true
+    },
+    {
+      "name": "__errno_location",
+      "signature": {
+        "returnType": "int*",
+        "parameterTypes": []
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Libuv.Probes.NativeBoundary.ErrnoLocation"
+      },
+      "requireMatch": true
+    }
+  ]
+}
