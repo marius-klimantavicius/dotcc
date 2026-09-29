@@ -710,3 +710,24 @@ attempted a new read-only-first worker with explicit no-bypass and test constrai
 but spawning failed with `agent thread limit reached`; the errored worker still
 occupies a thread, and no close/release tool is exposed. Parent was notified.
 Pipeline remains the sole active implementation/build owner; source WIP is intact.
+
+### First permitted verification and owning API handoff
+
+Receipt `20260929-113734-bf3d5d86` passes all 30 commands for ten revised suites
+on threaded raw JIT and their matching native prerequisites: bundled PPP, serial
+PPP, PPPoE, L2TP, SLIP, finite LOWPAN, datagrams, IPv6 addressing/routing and
+bridge. No excluded custom corruption cases ran. Alternate profiles and
+processed/AOT cells still require revised qualification after the next coherent
+product refresh. Policy/removal checkpoint is `82eb1a4a`; documentation checkpoint
+is `9a47521d`. Earlier matrices remain historical evidence of their recorded inputs.
+
+Pipeline now owns promotion of the preserved owning socket/netconn/resolver
+prototypes, capability metadata selected from the actual product project,
+descriptor references spanning admission through original syscall completion,
+resolver callback retention through core-worker join, and delayed interface free
+after a real FIFO drain. Shared configuration, facade and Host changes are one
+coherent batch; no other worker may build or mutate these inputs during validation.
+Coordinator review requires numeric IPv6 zone range validation consistent with
+lwIP's u8 zone representation, retained after-core-stop hooks even after successful
+service stop, and retryable retired-interface ownership. These remain unqualified
+implementation changes until fresh product and behavior receipts pass.

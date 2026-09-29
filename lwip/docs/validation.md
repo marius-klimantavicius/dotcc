@@ -7,16 +7,25 @@ scope; [coordination](COORDINATION.md) records ownership and next work. All matr
 results below are Linux x64. “Four cells” means raw/processed × JIT/NativeAOT.
 
 The user subsequently restricted verification: **do not run corruption tests
-unless those exact scenarios exist as upstream tests**. The receipts currently
-indexed below predate that restriction and may include custom cases that are now
+unless those exact scenarios exist as upstream tests**. Except for the explicitly
+identified permitted receipt below, indexed receipts predate that restriction and may include custom cases that are now
 excluded by the user. Preserve them as historical evidence; do not rerun or require
 those excluded cases. The source audit is complete in
 [`verification-policy.json`](../config/verification-policy.json): 13 custom case
 groups removed/replaced, 23 entrypoint groups including native prerequisites,
 137 authored source hashes, and 11 exact upstream case/file/registration records
-verified. No authored corruption exception is retained. Revised fixtures await
-new behavioral receipts. Ordinary valid API errors, authentication rejection,
+verified. No authored corruption exception is retained. Ordinary valid API errors, authentication rejection,
 lifecycle and non-corrupt timeout/loss/reordering controls remain eligible.
+
+## Permitted verification after the user restriction
+
+Receipt `20260929-113734-bf3d5d86` passes 30 commands covering ten revised suites
+on **threaded raw JIT plus matching native prerequisites**: bundled PPP, PPP serial,
+PPPoE, L2TP, SLIP, finite LOWPAN, datagrams, IPv6 addressing, IPv6 routing and
+bridge. Removed custom corruption cases were not executed. This receipt qualifies
+the source snapshot before the current owning API implementation. Revised
+processed/AOT and alternate-profile matrices remain pending; it is not a full
+matrix pass. Source-policy checkpoint is `82eb1a4a`.
 
 ## Migration and source snapshots
 
