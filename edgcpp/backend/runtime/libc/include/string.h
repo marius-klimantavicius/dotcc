@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 #include <stddef.h>
+#include <locale.h>
 void *memcpy(void *, const void *, size_t);
 void *memmove(void *, const void *, size_t);
 void *memset(void *, int, size_t);
@@ -14,7 +15,9 @@ size_t strlen(const char *);
 size_t strnlen(const char *, size_t);
 int strcmp(const char *, const char *);
 int strcoll(const char *, const char *);
+int strcoll_l(const char *, const char *, locale_t);
 size_t strxfrm(char *, const char *, size_t);
+size_t strxfrm_l(char *, const char *, size_t, locale_t);
 char *strerror(int);
 int strerror_r(int, char *, size_t);
 int strncmp(const char *, const char *, size_t);

@@ -1,0 +1,119 @@
+{
+  "status": "passed",
+  "scope": "VLA and exception lifetimes, selected wide libc and BCL services",
+  "snapshot": "artifacts/campaign/milestone-wide-lifetimes-snapshot-004",
+  "snapshotManifestSha256": "a77391fe542d3073c4902272fc7330789d35d3d5b56ceaaa5a222b0817c4023c",
+  "fullJitChecks": 337,
+  "fullJitResultsSha256": "4a622a158be4d2fabd6ed886c12a546cda1a066a8ac9cd5f76d89cb4beba2816",
+  "continuation": {
+    "progress": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/milestone-wide-lifetimes-snapshot-003/results/progress.json",
+    "sha256": "b7f5ba5aabe4f08e487eebbd6e14fdf8a6748aea1d237e72e7f12f3e3e6a26ae",
+    "completedChecks": 51,
+    "nextSuite": "class_exceptions",
+    "difference": "only fatal-child harness timeout15->60; compiler and runtime bytes identical"
+  },
+  "focused": {
+    "reports": [
+      {
+        "path": "artifacts/campaign/packed-bitfields-unsigned-002/results.json",
+        "sha256": "93dd0f0f5b14650e9baf7e8412d6be866d8c6c663f515f90b07b1df69b53cc9f",
+        "checks": 5
+      },
+      {
+        "path": "artifacts/campaign/vla-translated-003/results.json",
+        "sha256": "c93bb8bc738fbba0b7c84d266059a303a851c37261c11d1877564febda0265b9",
+        "checks": 10
+      },
+      {
+        "path": "artifacts/campaign/vla-alignment-translated-001/results.json",
+        "sha256": "0586b4959b2da5ec6c38c8fc8e04ccfba2a021d4c5b6b0ce34c2e2e11021dd77",
+        "checks": 5
+      },
+      {
+        "path": "artifacts/campaign/restrict-qualifiers-001/results.json",
+        "sha256": "cea37e549e9359be180333ac02cb71d54ff5624eee50c5ff5c7cbf6434406ad6",
+        "checks": 9
+      },
+      {
+        "path": "artifacts/campaign/union-constant-translated-001/results.json",
+        "sha256": "2f00c90b04e2579810535916f72f20a8589769a9fff274f8af32750ebf439310",
+        "checks": 5
+      },
+      {
+        "path": "artifacts/campaign/exception-capture-20261003-011804/results.json",
+        "sha256": "e1fc009bbe0eb7f3530eec9df4289950df9bfdb242a12e7b41914d5d66c9690e",
+        "checks": 10
+      },
+      {
+        "path": "artifacts/campaign/exception-tls-threads-20261003-011929/results.json",
+        "sha256": "e66816890ddd095649595f906baa7572a60ffe2fc7f3145eef841830cc2f60ba",
+        "checks": 6
+      },
+      {
+        "path": "artifacts/campaign/libc-ctype-translated-20261003-015730/results.json",
+        "sha256": "1302fd8cac76be7adeef94ca93b1b51549f6fed9289f0898a509da49ccaedb1b",
+        "checks": 9
+      },
+      {
+        "path": "artifacts/campaign/libc-clock-translated-20261003-020830/results.json",
+        "sha256": "d65423a4422a5b6b6f9e5bb9abf1cacadef3fada2d51066de2cc04737c613f27",
+        "checks": 9
+      },
+      {
+        "path": "artifacts/campaign/libc-clock-abi-20261003-020830/results.json",
+        "sha256": "129c45281e55aeef810e1c82bc2a2635500a2d3b422d398071104f4432d1d8ac",
+        "checks": 11
+      },
+      {
+        "path": "artifacts/campaign/libc-wide-translated-20261003-023600/results.json",
+        "sha256": "521d31bf8886af414716c62c6a1e6f681321518e31d8f6148ec159e061ffbe5f",
+        "checks": 9
+      },
+      {
+        "path": "artifacts/campaign/libcxx-atomic-wait-translated-002/results.json",
+        "sha256": "a4a4e41e9781589d9e59c8580711320a17169264854519f9f2624f055accaebf",
+        "checks": 4
+      },
+      {
+        "path": "artifacts/campaign/libcxx-atomic-protocol-translated-002/results.json",
+        "sha256": "31334b62236efa0ab5fa22ce4008c44f5ced3e16ee285080f8f01454d775c902",
+        "checks": 4
+      },
+      {
+        "path": "artifacts/campaign/musl-provider-wide-001/results.json",
+        "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082",
+        "checks": 8
+      },
+      {
+        "path": "artifacts/campaign/libc-string-builtins-20261003-024550/results.json",
+        "sha256": "aab00a854f0b2343effe0d2e3b9bc586b5e2fa5a8e7542a5c83e1ebfb179dcf9",
+        "checks": 9
+      },
+      {
+        "path": "artifacts/campaign/exception-counts-20261003-013058/results.json",
+        "sha256": "a24fe0006282a4944824ad9144180eede09733395bb020ac65004e2323c9143b",
+        "checks": 19
+      },
+      {
+        "path": "artifacts/campaign/exception-counts-regression-20261003-013219/results.json",
+        "sha256": "6afdb5062480c66d072a09e1a27b7b869e509f9871f16308832b64273eaf9d09",
+        "checks": 20
+      },
+      {
+        "path": "artifacts/campaign/exception-counts-order-20261003-013436/results.json",
+        "sha256": "88aff4d30b5a0c7f81cdc8c08c4d51ae7f97c9044fb270d624b46a3577ecf97b",
+        "checks": 18
+      }
+    ],
+    "totalChecksIncludingRegressions": 170
+  },
+  "platformExecution": "Linux x64 JIT/NativeAOT; other OS/architecture cells remain unexecuted",
+  "excludedNextWork": [
+    "configured implicit termination",
+    "dynamic exception specifications",
+    "multibyte/calendar/process providers",
+    "owned physical type graph",
+    "separate-TU object linker",
+    "full libc/libc++ coverage"
+  ]
+}

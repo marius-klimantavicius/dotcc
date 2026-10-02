@@ -1,0 +1,19 @@
+--- a/iswgraph.c
++++ b/iswgraph.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ 
+ int iswgraph(wint_t wc)
+@@ -6,9 +7,9 @@
+ 	return !iswspace(wc) && iswprint(wc);
+ }
+ 
+-int __iswgraph_l(wint_t c, locale_t l)
++int iswgraph_l(wint_t c, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return iswgraph(c);
+ }
+ 
+-weak_alias(__iswgraph_l, iswgraph_l);

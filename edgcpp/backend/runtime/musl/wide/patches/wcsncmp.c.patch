@@ -1,0 +1,7 @@
+--- a/wcsncmp.c
++++ b/wcsncmp.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wchar.h>
+ 
+ int wcsncmp(const wchar_t *l, const wchar_t *r, size_t n)

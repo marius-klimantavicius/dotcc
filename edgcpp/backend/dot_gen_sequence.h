@@ -86,7 +86,7 @@ string expression_effect(an_expr_node_ptr e) {
     if(eh.kind==leck_cleanup_state)
       return cleanup_transition(eh.variant.cleanup_region_number,cleanup_slot);
     if(eh.kind==leck_unreachable_cleanup_state)return "";
-    if(eh.kind==leck_exception_started && !pending_exception.empty())return pending_exception+".Started = true;\n";
+    if(eh.kind==leck_exception_started && !pending_exception.empty())return "__edg_start_exception("+pending_exception+");\n";
     if(eh.kind==leck_internal_try) {
       cleanup_cursor_used=true;
       string id="__edg_internal_boundary"+std::to_string(++expression_serial);

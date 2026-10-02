@@ -63,8 +63,22 @@ choices, not final coverage claims.
   wrapper headers can use `include_next`. A generated config directory must
   not accidentally shadow those wrappers with C headers.
 
-No libc++ fixture currently has a passing generated C# execution result.
+The subsequent `libcxx-seeds-002/003` traits consumer passes generated JIT and
+NativeAOT. Public-header exception-handle tests also pass with the separately
+adapted managed ABI provider; see the campaign ledger for current owner/lifetime
+coverage. The broader allocation/container source closure remains incomplete.
 These failures are our port/backend integration gaps; no EDG fix is proposed.
+
+Source probes through `libcxx-core-seeds-020` select original allocation,
+shared-count, error-category, stream-base and value-exception source files.
+The explicit diagnostic unity mode also needs an early `__config` include
+followed by removal of `_LIBCPP_DEPRECATED_ABI_LEGACY_LIBRARY_DEFINITIONS_FOR_INLINE_FUNCTIONS`:
+those exports preserve old native ABI-v1 library symbols for methods now
+defined inline. This new managed ABI has no such older native consumers.
+ABI-v1 layouts and current inline semantics remain selected. Keeping the
+legacy error-category constructor declaration instead would make the original
+system-category `constinit` definitions invalid in that combined translation
+unit. This diagnostic configuration does not establish separate-TU support.
 
 ## Runtime port contract
 

@@ -32,6 +32,8 @@ void emit_main(a_routine_ptr r) {
     line("argv[arguments.Length]=null;");
   }
   line("return "+name(r,"f")+"("+string(arguments?"arguments.Length,argv":"")+"); }");
+  if(exception_helpers_emitted)
+    line("catch (global::System.Exception error) { __edg_end_exception(error); throw; }");
   line("finally { "+string(lifecycle_emitted?"__edg_leave(); ":"")+"global::System.GC.KeepAlive("+string(instance_mode?"this":"__edg_storage")+"); }");
   line("}\n// dot-gen:member-end");
 }

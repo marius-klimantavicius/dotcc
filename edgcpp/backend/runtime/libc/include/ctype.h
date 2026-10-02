@@ -1,6 +1,8 @@
 /* C17 declarations; imports remain explicitly implemented and ABI checked. */
 #ifndef __EDG_DOT_LIBC_CTYPE_H
 #define __EDG_DOT_LIBC_CTYPE_H
+
+#include <locale.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -19,6 +21,20 @@ int isupper(int);
 int isxdigit(int);
 int tolower(int);
 int toupper(int);
+int isalnum_l(int, locale_t);
+int isalpha_l(int, locale_t);
+int isblank_l(int, locale_t);
+int iscntrl_l(int, locale_t);
+int isdigit_l(int, locale_t);
+int isgraph_l(int, locale_t);
+int islower_l(int, locale_t);
+int isprint_l(int, locale_t);
+int ispunct_l(int, locale_t);
+int isspace_l(int, locale_t);
+int isupper_l(int, locale_t);
+int isxdigit_l(int, locale_t);
+int tolower_l(int, locale_t);
+int toupper_l(int, locale_t);
 #ifdef __cplusplus
 }
 #endif

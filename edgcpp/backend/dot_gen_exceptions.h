@@ -208,7 +208,7 @@ void ensure_exception_helpers() {
 // dot-gen:member-begin
 private sealed class __edg_exception_storage {
   internal int Type;
-  internal __edg_exception_storage? Previous,Next;
+  internal __edg_exception_storage? Previous,Next,AllPrevious,AllNext;
   internal readonly nuint Size;
   private int internalHandles;
   private nint storage;
@@ -248,13 +248,28 @@ private sealed class __edg_exception_storage {
     // after libc++ successfully placement-constructs the object.
     if(global::System.Threading.Interlocked.Exchange(ref pendingPrimary,0)!=0)Complete=true;
     else Retain();
-    if(__edg_owned_exception_holder(owner,holder))global::System.Threading.Interlocked.Increment(ref internalHandles);
-    else __edg_change_exception_owner_references(owner,1);
+    bool tracked=false;
+    try {
+      if(__edg_owned_exception_holder(owner,holder)) {
+        if(global::System.Threading.Interlocked.Increment(ref internalHandles)<=0)
+          global::System.Environment.FailFast("Invalid internal exception handle retain");
+      } else {
+        __edg_track_foreign_exception_holder(holder,this);tracked=true;
+        __edg_change_exception_owner_references(owner,1);
+      }
+    } catch(global::System.OutOfMemoryException error) {
+      if(tracked)__edg_untrack_foreign_exception_holder(holder,this);
+      // Bookkeeping failure must not leave a retained reference or escape a
+      // foreign CLR exception from libc++'s noexcept handle operation.
+      Abandon(1);
+      global::System.Environment.FailFast("Unable to retain C++ exception handle",error);throw;
+    }
   }
   internal void ReleasePrimary(void* holder) {
     bool local=__edg_owned_exception_holder(owner,holder);object? held=owner;
     if(local && global::System.Threading.Interlocked.Decrement(ref internalHandles)<0)
       global::System.Environment.FailFast("Invalid internal exception handle count");
+    if(!local)__edg_untrack_foreign_exception_holder(holder,this);
     try {Release();}finally{if(!local)__edg_change_exception_owner_references(held,-1);}
   }
   internal void AddWrapper(bool retain) {
@@ -268,6 +283,10 @@ private sealed class __edg_exception_storage {
     object? held=owner;
     try {Abandon(count);}finally{__edg_change_exception_owner_references(held,-count);}
   }
+  internal void AbandonForeignHandles(int count) {
+    object? held=owner;
+    try {Abandon(count);}finally{__edg_change_exception_owner_references(held,-count);}
+  }
   internal void AbandonOwnedHandles() {
     int count=global::System.Threading.Interlocked.Exchange(ref internalHandles,0)+
         global::System.Threading.Interlocked.Exchange(ref pendingPrimary,0);
@@ -277,11 +296,14 @@ private sealed class __edg_exception_storage {
   }
   ~__edg_exception_storage() { FreeStorage(); }
   private void FreeStorage() {
+    byte* address=Address;
     nint raw=global::System.Threading.Interlocked.Exchange(ref storage,0);
     if(raw==0)return;
     __edg_unregister_exception_storage(owner,this);
-    try { global::System.Runtime.InteropServices.NativeMemory.Free((void*)raw); }
-    finally {
+    try {
+      try {__edg_abandon_exception_region((nuint)address,(ulong)Size);}
+      finally {global::System.Runtime.InteropServices.NativeMemory.Free((void*)raw);}
+    } finally {
       nint token=global::System.Threading.Interlocked.Exchange(ref handle,0);
       if(token!=0)global::System.Runtime.InteropServices.GCHandle.FromIntPtr(token).Free();
       object? held=owner;owner=null;releaseOwner(held);
@@ -318,6 +340,7 @@ private sealed class __edg_exception : global::System.Exception, global::System.
   internal int Type => Storage.Type;
   internal byte* Address => Storage.Address;
   internal bool Started=false;
+  internal int CountedThread=0;
   internal bool Complete {get=>Storage.Complete;set=>Storage.Complete=value;}
   private int disposeRequested,uses=1;
   internal __edg_exception(__edg_exception_storage storage,bool retain) {
@@ -345,9 +368,40 @@ private sealed class __edg_exception : global::System.Exception, global::System.
   }
 }
 // dot-gen:member-end
+[global::System.ThreadStatic] private static int __edg_uncaught_count;
+// dot-gen:member-begin
+private static bool __edg_begin_exception(global::System.Exception error) {
+  if(error is __edg_exception carrier) {
+    int thread=global::System.Environment.CurrentManagedThreadId;
+    int previous=global::System.Threading.Interlocked.CompareExchange(ref carrier.CountedThread,thread,0);
+    if(previous==0)checked{++__edg_uncaught_count;}
+    else if(previous!=thread)global::System.Environment.FailFast("Concurrent host reuse of a C++ throw carrier; rethrow an exception_ptr instead");
+  }
+  return true;
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private static void __edg_end_exception(global::System.Exception error) {
+  if(error is not __edg_exception carrier)return;
+  int thread=global::System.Threading.Volatile.Read(ref carrier.CountedThread);
+  if(thread==0)return;
+  if(thread!=global::System.Environment.CurrentManagedThreadId)
+    global::System.Environment.FailFast("C++ uncaught marker ended on a different thread");
+  global::System.Threading.Volatile.Write(ref carrier.CountedThread,0);
+  if(--__edg_uncaught_count<0)global::System.Environment.FailFast("Invalid C++ uncaught exception count");
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private static void __edg_start_exception(__edg_exception carrier) {
+  carrier.Started=true;__edg_begin_exception(carrier);
+}
+// dot-gen:member-end
 [global::System.ThreadStatic] private static __edg_catch_frame? __edg_current_catch;
 private static global::System.Exception? __edg_active_exception {
   get {var frame=__edg_current_catch;while(frame!=null && !frame.Active)frame=frame.parent;return frame?.Error;}
+}
+private static global::System.Exception? __edg_handled_exception {
+  get {var frame=__edg_current_catch;while(frame!=null && (!frame.Active || !frame.Caught))frame=frame.parent;return frame?.Error;}
 }
 // dot-gen:member-begin
 private sealed class __edg_catch_frame {
@@ -378,6 +432,7 @@ private sealed class __edg_catch_frame {
     offset = adjustment;
     Error = error; parent = __edg_current_catch; __edg_current_catch = this;
   }
+  internal void MarkCaught() {Caught=true;__edg_end_exception(Error);}
   internal void Leave() {
     if (!Active) return;
     if (!global::System.Object.ReferenceEquals(__edg_current_catch, this))
@@ -394,6 +449,7 @@ private static void __edg_rethrow() {
   var error = __edg_active_exception;
   if (error == null) global::System.Environment.FailFast("C++ rethrow without active exception");
   if (error is __edg_exception payload) payload.Retain();
+  __edg_begin_exception(error!);
   global::System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(error!).Throw();
 }
 // dot-gen:member-end
@@ -436,11 +492,57 @@ private static void* __edg_exception_alloc(nuint size) {
   string receiver=instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":"";
   string mod=instance_mode?"":"static ";
   helper_output+="private "+mod+"__edg_exception_storage? __edg_exception_head=null;\n";
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_prepare_exception_ledger() {lock(__edg_sync){if(__edg_abandon_exception_handles==null)__edg_abandon_exception_handles=__edg_abandon_owned_exception_handles;}}\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_prepare_exception_ledger() {lock(__edg_sync){if(__edg_abandon_exception_handles==null)__edg_abandon_exception_handles=__edg_abandon_owned_exception_handles;if(__edg_heap_owner.RegionReleased==null)__edg_heap_owner.RegionReleased=__edg_abandon_exception_region;}}\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate static void __edg_change_exception_owner_references(object? owner,int delta) {"+receiver+"__edg_change_exception_references(delta);}\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\nprivate static void __edg_register_exception_storage(object? owner,__edg_exception_storage storage) {\nlock("+receiver+"__edg_sync) {storage.Next="+receiver+"__edg_exception_head;if(storage.Next!=null)storage.Next.Previous=storage;"+receiver+"__edg_exception_head=storage;}\n}\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\nprivate static void __edg_unregister_exception_storage(object? owner,__edg_exception_storage storage) {\nlock("+receiver+"__edg_sync) {if(storage.Previous!=null)storage.Previous.Next=storage.Next;else "+receiver+"__edg_exception_head=storage.Next;if(storage.Next!=null)storage.Next.Previous=storage.Previous;storage.Previous=null;storage.Next=null;}\n}\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static void __edg_register_exception_storage(object? owner,__edg_exception_storage storage) {\nlock("+receiver+"__edg_sync) {storage.Next="+receiver+"__edg_exception_head;if(storage.Next!=null)storage.Next.Previous=storage;"+receiver+"__edg_exception_head=storage;}\nlock(__edg_exception_regions_sync){storage.AllNext=__edg_all_exception_payloads;if(storage.AllNext!=null)storage.AllNext.AllPrevious=storage;__edg_all_exception_payloads=storage;}\n}\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static void __edg_unregister_exception_storage(object? owner,__edg_exception_storage storage) {\nlock("+receiver+"__edg_sync) {if(storage.Previous!=null)storage.Previous.Next=storage.Next;else "+receiver+"__edg_exception_head=storage.Next;if(storage.Next!=null)storage.Next.Previous=storage.Previous;storage.Previous=null;storage.Next=null;}\nlock(__edg_exception_regions_sync){if(storage.AllPrevious!=null)storage.AllPrevious.AllNext=storage.AllNext;else __edg_all_exception_payloads=storage.AllNext;if(storage.AllNext!=null)storage.AllNext.AllPrevious=storage.AllPrevious;storage.AllPrevious=null;storage.AllNext=null;}\n}\n// dot-gen:member-end\n";
   helper_output+=R"CS(
+// dot-gen:member-begin
+private static readonly object __edg_exception_regions_sync=new();
+private static __edg_exception_storage? __edg_all_exception_payloads=null;
+private static readonly global::System.Collections.Generic.Dictionary<(nuint Holder,__edg_exception_storage Target),int> __edg_foreign_exception_handles=new();
+// dot-gen:member-end
+// dot-gen:member-begin
+private static void __edg_track_foreign_exception_holder(void* address,__edg_exception_storage target) {
+  if(address==null)return;
+  bool region=__edg_heap_owner.ContainsAny(address);
+  lock(__edg_exception_regions_sync) {
+    if(!region)for(var storage=__edg_all_exception_payloads;storage!=null;storage=storage.AllNext)
+      if((nuint)address>=(nuint)storage.Address && (nuint)address-(nuint)storage.Address<storage.Size){region=true;break;}
+    if(!region)return; // Stack/global/TLS holders have ordinary C++ teardown.
+    var key=((nuint)address,target);
+    __edg_foreign_exception_handles.TryGetValue(key,out int count);
+    __edg_foreign_exception_handles[key]=checked(count+1);
+  }
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private static void __edg_untrack_foreign_exception_holder(void* address,__edg_exception_storage target) {
+  if(address==null)return;
+  lock(__edg_exception_regions_sync) {
+    var key=((nuint)address,target);
+    if(__edg_foreign_exception_handles.TryGetValue(key,out int count)) {
+      if(count==1)__edg_foreign_exception_handles.Remove(key);else __edg_foreign_exception_handles[key]=count-1;
+    }
+  }
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private static void __edg_abandon_exception_region(nuint address,ulong size) {
+  for(;;) {
+    (nuint Holder,__edg_exception_storage Target) key=default;int count=0;
+    lock(__edg_exception_regions_sync) {
+      foreach(var entry in __edg_foreign_exception_handles)
+        if(entry.Key.Holder>=address && (ulong)(entry.Key.Holder-address)<size){key=entry.Key;count=entry.Value;break;}
+      if(count==0)return;
+      __edg_foreign_exception_handles.Remove(key);
+    }
+    // Remove first, then release outside the registry lock. Recursive foreign
+    // payload cleanup is finite and must not call translated destructors.
+    key.Target!.AbandonForeignHandles(count);
+  }
+}
+// dot-gen:member-end
 // dot-gen:member-begin
 private static bool __edg_in_exception_arena(byte[] bytes,void* address) {
   if(bytes.Length==0)return false;
@@ -451,10 +553,10 @@ private static bool __edg_in_exception_arena(byte[] bytes,void* address) {
 )CS";
   helper_output+="// dot-gen:member-begin\nprivate static bool __edg_owned_exception_holder(object? owner,void* address) {\nif(address==null)return false;lock("+receiver+"__edg_sync) {\n"+
       "if(__edg_in_exception_arena("+receiver+"__edg_storage,address))return true;\n"+
-      "foreach(var thread in "+receiver+"__edg_threads.Values)if(thread.Storage!=null && __edg_in_exception_arena(thread.Storage,address))return true;\n"+
+      "if("+receiver+"__edg_threads.Contains(address))return true;\n"+
       "for(var payload="+receiver+"__edg_exception_head;payload!=null;payload=payload.Next)if((nuint)address>=(nuint)payload.Address && (nuint)address-(nuint)payload.Address<payload.Size)return true;\n"+
       "if("+receiver+"__edg_heap.Contains(address))return true;\nreturn false;}\n}\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_abandon_owned_exception_handles() {lock(__edg_sync){while(__edg_exception_head!=null)__edg_exception_head.AbandonOwnedHandles();}}\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_abandon_owned_exception_handles() {for(;;){__edg_exception_storage? storage;lock(__edg_sync)storage=__edg_exception_head;if(storage==null)return;storage.AbandonOwnedHandles();}}\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate static void __edg_release_exception_owner(object? owner) { "+receiver+"__edg_release_exception_lease(); }\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate static __edg_exception __edg_create_exception(int type,int size,int alignment,delegate* managed<object?,byte*,void> dtor,object? owner) {\n"
       "void* raw=null;bool leased=false;__edg_exception_storage? storage=null;try { "+receiver+"__edg_prepare_exception_ledger();"+receiver+"__edg_acquire_exception_lease();leased=true;\n"
@@ -517,7 +619,7 @@ string throw_effect(an_expr_node_ptr e) {
   // initializer. Successful throws transfer that root to CLR exception handling.
   return "{ var "+id+" = __edg_create_exception("+key+", "+std::to_string(payload_type->size)+", "+
       std::to_string(alignment)+", "+dtor+", "+(instance_mode?"this":"null")+");\ntry {\n"+init+
-      id+".Complete = true; throw "+id+";\n} catch (global::System.Exception initialization_error) when (__edg_throw_filter("+id+", initialization_error)) {\n"
+      id+".Complete = true; __edg_start_exception("+id+"); throw "+id+";\n} catch (global::System.Exception initialization_error) when (__edg_throw_filter("+id+", initialization_error)) {\n"
       "if (!global::System.Object.ReferenceEquals(initialization_error, "+id+")) {\n"+
       id+".Release(); } throw;\n} finally { global::System.GC.KeepAlive("+id+"); } }\n";
 }

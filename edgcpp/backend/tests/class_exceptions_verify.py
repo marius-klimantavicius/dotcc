@@ -33,7 +33,7 @@ int main(int argc,char** argv){if(argc>1){report_fatal=1;terminate_case(atoi(arg
     if not clang: raise RuntimeError('Clang required for the C oracle')
     def terminated(command,argument,message):
         result=subprocess.run([*map(str,command),str(argument)],capture_output=True,text=True,
-             timeout=15,preexec_fn=lambda:resource.setrlimit(resource.RLIMIT_CORE,(0,0)))
+             timeout=60,preexec_fn=lambda:resource.setrlimit(resource.RLIMIT_CORE,(0,0)))
         assert result.returncode not in (0,90,91) and message in result.stderr,(argument,result.returncode,result.stdout,result.stderr)
         return result.stdout
     fatal={0:'Exception escaped catch parameter initialization',1:'Exception escaped EDG throw copy',

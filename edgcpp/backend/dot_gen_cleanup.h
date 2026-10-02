@@ -13,6 +13,7 @@ struct cleanup_region {
   unsigned long long next, flags;
   a_constant_ptr condition;
   a_constant_ptr vtt;
+  a_constant_ptr vla_count;
   unsigned long long vtt_flags;
 };
 std::map<unsigned long long,cleanup_region> cleanup_regions;
@@ -84,10 +85,10 @@ void prepare_cleanup(a_scope_ptr scope) {
     bool guard=(flags & 0x80)!=0;
     if(!guard && (dtor->kind!=ck_address || dtor->variant.address.kind!=abk_routine ||
        dtor->variant.address.offset))unsupported("cleanup destructor constant");
-    cleanup_region r={guard?nullptr:dtor->variant.address.variant.routine,f[1],cleanup_integer(f[2]),flags,nullptr,nullptr,0};
-    // 0x40 means VLA when combined with ARRAY. 0x20 is a VTT supplement only
-    // for a non-array base-subobject entry (0x40); reject other interpretations.
-    if((r.flags & ~0xffULL) || ((r.flags & 0x48)==0x48) || ((r.flags & 0x20) && !(r.flags & 0x40)) ||
+    cleanup_region r={guard?nullptr:dtor->variant.address.variant.routine,f[1],cleanup_integer(f[2]),flags,nullptr,nullptr,nullptr,0};
+    // 0x40 means VLA with ARRAY, otherwise base subobject. 0x20 is a
+    // VTT supplement only for a non-array base-subobject entry.
+    if((r.flags & ~0xffULL) || ((r.flags & 0x20) && (!(r.flags & 0x40) || (r.flags & 8))) ||
        ((r.flags & 4) && (r.flags & (0x20|0x40))))
       unsupported("cleanup region flags",(int)r.flags);
     auto index=i;
@@ -103,11 +104,17 @@ void prepare_cleanup(a_scope_ptr scope) {
       r.vtt=supplement[1];r.vtt_flags=cleanup_integer(supplement[3]);
       if(r.vtt_flags & ~1ULL)unsupported("cleanup VTT flags");
     }
+    if((r.flags & 0x48)==0x48) {
+      if(++i>=entries.size())unsupported("missing VLA element count supplement");
+      auto supplement=cleanup_fields(entries[i],4);
+      if(cleanup_integer(supplement[3])!=0)unsupported("VLA count supplement flags");
+      r.vla_count=supplement[1];
+    }
     cleanup_regions[index]=r;
   }
   for(auto &entry:cleanup_regions) {
     auto &r=entry.second;
-    capture_cleanup_handle(r.handle);capture_cleanup_handle(r.condition);capture_cleanup_handle(r.vtt);
+    capture_cleanup_handle(r.handle);capture_cleanup_handle(r.condition);capture_cleanup_handle(r.vtt);capture_cleanup_handle(r.vla_count);
     if((r.flags & 0x10) && cleanup_this &&
        std::find(cleanup_capture_variables.begin(),cleanup_capture_variables.end(),cleanup_this)==cleanup_capture_variables.end())
       cleanup_capture_variables.push_back(cleanup_this);
@@ -144,16 +151,21 @@ string cleanup_handle(a_constant_ptr c,unsigned long long flags) {
     unsupported("cleanup variable handle");
   auto &p=c->variant.stack_offset;
   string base=variable(p.variable);
-  if(!(flags & 1))base="&("+base+")";
+  // A lowered VLA variable is already the array-storage pointer. EDG's C
+  // backend initializes its object-address table through
+  // make_address_of_init_entity_node, which applies this VLA indirection.
+  if(!(flags & 1) && !p.variable->is_vla)base="&("+base+")";
   return "((byte*)("+base+") + "+std::to_string(p.offset)+"UL)";
 }
+void ensure_exception_helpers();
 void ensure_cleanup_failure_filter() {
+  ensure_exception_helpers();
   const string name="__edg_cleanup_failure";
   if(helper_output.find("bool "+name+"(")!=string::npos)return;
   // throw.c pass 1 terminates upon reaching a throw-processing marker,
   // before pass 2 unwinds locals in the escaping destructor. A CLR catch
   // body is too late: use its first-pass filter to retain that ordering.
-  helper_output+="// dot-gen:member-begin\nprivate static bool __edg_begin_unwind(ref bool unwinding) { unwinding = true; return false; }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static bool __edg_begin_unwind(global::System.Exception error, ref bool unwinding) { __edg_begin_exception(error); unwinding = true; return false; }\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate static bool "+name+
       "(global::System.Exception error) { global::System.Environment.FailFast(\"Destructor threw during unwinding\", error); return false; }\n// dot-gen:member-end\n";
 }
@@ -179,7 +191,9 @@ string emit_cleanup() {
           std::to_string(cleanup_state(region.next))+"; __edg_current_catch!.Leave(); break;\n";
       continue;
     }
-    if(!r || r->function_def_number==NULL_function_def_number)unsupported("external cleanup destructor");
+    bool vla_deallocation=r && r->compiler_generated && r->source_corresp.name &&
+        string(r->source_corresp.name)=="__vla_dealloc_eh";
+    if(!r || (r->function_def_number==NULL_function_def_number && !vla_deallocation))unsupported("external cleanup destructor");
     auto rt=skip_typerefs(r->type);
     auto params=rt->variant.routine.extra_info->param_type_list;
     bool sized_delete=(region.flags & 12)==12;
@@ -188,7 +202,10 @@ string emit_cleanup() {
          (sized_delete?type(params->next->type)!="ulong":skip_typerefs(params->next->type)->kind!=tk_pointer)):params->next!=nullptr))
       unsupported("destructor ABI");
     string destruction;
-    if(region.flags & 4) {
+    if(vla_deallocation) {
+      if((region.flags & ~3ULL)!=4 || type(params->type)!="void*")unsupported("VLA deallocation cleanup ABI");
+      destruction="global::Edg.Runtime.Vla.Release("+cleanup_handle(region.handle,region.flags)+");";
+    } else if(region.flags & 4) {
       string address,size_arg;
       if(sized_delete) {
         auto index=cleanup_integer(region.handle);
@@ -205,12 +222,18 @@ string emit_cleanup() {
       auto index=cleanup_integer(region.handle);
       if(index>=cleanup_arrays.size())unsupported("cleanup array index");
       auto &a=cleanup_arrays[index];
-      auto size=cleanup_integer(a[1]),count=cleanup_integer(a[2]);
-      if(!size || count>64*1024*1024 || size>64*1024*1024 || count*size>64*1024*1024)
-        unsupported("dynamic or excessive cleanup array");
+      auto size=cleanup_integer(a[1]);
+      string count;
+      if(region.vla_count)count="(*(ulong*)"+cleanup_handle(region.vla_count,0)+")";
+      else {
+        auto value=cleanup_integer(a[2]);
+        if(value>64*1024*1024 || (size && value>64*1024*1024/size))unsupported("excessive cleanup array");
+        count=std::to_string(value)+"UL";
+      }
+      if(!size || size>64*1024*1024)unsupported("cleanup array element size");
       ensure_array_helpers();
-      destruction="__edg_vec_cleanup("+cleanup_handle(a[0],region.flags)+", "+std::to_string(count)+
-          "UL, "+std::to_string(size)+"UL, ("+array_callback_type()+")"+routine_address(r)+");";
+      destruction="__edg_vec_cleanup("+cleanup_handle(a[0],region.flags)+", "+count+
+          ", "+std::to_string(size)+"UL, ("+array_callback_type()+")"+routine_address(r)+");";
     } else {
       destruction=name(r,"f")+"(("+type(params->type)+")"+cleanup_handle(region.handle,region.flags);
       if(region.vtt)destruction+=", ("+type(params->next->type)+")"+cleanup_handle(region.vtt,region.vtt_flags);

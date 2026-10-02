@@ -28,7 +28,7 @@ void ensure_exception_ptr_helpers() {
   helper_output+=R"CS(
 // dot-gen:member-begin
 private static void* __edg_current_primary_exception(void* holder) {
-  if(__edg_active_exception is not __edg_exception error)return null;
+  if(__edg_handled_exception is not __edg_exception error)return null;
   error.Storage.RetainPrimary(holder);return error.Address;
 }
 // dot-gen:member-end
@@ -50,7 +50,7 @@ private static void __edg_rethrow_primary_exception(void* token) {
   catch(global::System.OutOfMemoryException failure) {
     global::System.Environment.FailFast("Unable to allocate EDG exception carrier",failure);throw;
   }
-  throw error;
+  __edg_start_exception(error);throw error;
 }
 // dot-gen:member-end
 // dot-gen:member-begin
@@ -93,7 +93,7 @@ string exception_ptr_call(a_routine_ptr r,an_expr_node_ptr args) {
      source!="__cxa_decrement_exception_refcount" && source!="__cxa_rethrow_primary_exception" &&
      source!="__cxa_allocate_exception" && source!="__cxa_free_exception" && source!="__cxa_init_primary_exception" &&
      source!="__edg_cxx_terminate" && source!="__edg_cxx_terminate_default" &&
-     source!="__edg_cxx_set_terminate" && source!="__edg_cxx_get_terminate" &&
+     source!="__edg_cxx_set_terminate" && source!="__edg_cxx_get_terminate" && source!="__edg_cxx_uncaught_exceptions" &&
      source!="__edg_cxx_current_exception" && source!="__edg_cxx_increment_exception_refcount" &&
      source!="__edg_cxx_decrement_exception_refcount")return "";
   ensure_exception_ptr_helpers();
@@ -107,8 +107,9 @@ string exception_ptr_call(a_routine_ptr r,an_expr_node_ptr args) {
     string helper=source=="__edg_cxx_increment_exception_refcount"?"__edg_increment_exception_refcount":"__edg_decrement_exception_refcount";
     return helper+"((void*)("+expr(values[0])+"),(void*)("+expr(values[1])+"))";
   }
-  if(source=="__cxa_current_primary_exception" || source=="__edg_cxx_terminate" || source=="__edg_cxx_terminate_default" || source=="__edg_cxx_get_terminate") {
+  if(source=="__cxa_current_primary_exception" || source=="__edg_cxx_terminate" || source=="__edg_cxx_terminate_default" || source=="__edg_cxx_get_terminate" || source=="__edg_cxx_uncaught_exceptions") {
     if(!values.empty())unsupported("primary exception no-argument ABI");
+    if(source=="__edg_cxx_uncaught_exceptions")return "__edg_uncaught_count";
     if(source=="__cxa_current_primary_exception")return "__edg_current_primary_exception(null)";
     if(source=="__edg_cxx_get_terminate")return "("+type(skip_typerefs(r->type)->variant.routine.return_type)+")global::System.Threading.Interlocked.CompareExchange(ref __edg_terminate_handler,0,0)";
     if(source=="__edg_cxx_terminate_default")return "global::System.Environment.FailFast(\"C++ default terminate\")";

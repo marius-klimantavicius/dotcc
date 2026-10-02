@@ -1,0 +1,19 @@
+--- a/iswalnum.c
++++ b/iswalnum.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ 
+ int iswalnum(wint_t wc)
+@@ -5,9 +6,9 @@
+ 	return iswdigit(wc) || iswalpha(wc);
+ }
+ 
+-int __iswalnum_l(wint_t c, locale_t l)
++int iswalnum_l(wint_t c, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return iswalnum(c);
+ }
+ 
+-weak_alias(__iswalnum_l, iswalnum_l);

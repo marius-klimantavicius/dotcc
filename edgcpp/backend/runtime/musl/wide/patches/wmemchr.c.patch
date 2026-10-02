@@ -1,0 +1,7 @@
+--- a/wmemchr.c
++++ b/wmemchr.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wchar.h>
+ 
+ wchar_t *wmemchr(const wchar_t *s, wchar_t c, size_t n)

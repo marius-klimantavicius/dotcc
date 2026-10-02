@@ -20,4 +20,8 @@ __pycache__/
 /upstream/src/libc-math-bindings.def
 
 /upstream/src/libc-numeric-bindings.def
+
 /upstream/src/libc-locale-bindings.def
+
+/upstream/src/dot_gen_vla.h
+/upstream/src/libc-clock-bindings.def

@@ -1,0 +1,16 @@
+{
+  "release": "llvmorg-18.1.8",
+  "upstreamPath": "libcxx/src/atomic.cpp",
+  "upstreamSha256": "06a1f935a152f8dab4d65f3e286c546f73a61c8c12c956ac5ac9032f7e4887aa",
+  "adaptedPath": "abi_atomic.cpp",
+  "adaptedSha256": "462155d0e5f28ed4ddc060ffb1b93764b0433fb8e07f1d3bd20de2af018a34c6",
+  "patch": "atomic-managed.patch",
+  "patchSha256": "d473dcf5d62e8f786c67fb78cead8804751c5cfd005defad3b23654b1382b865",
+  "license": "Apache-2.0 WITH LLVM-exception",
+  "changes": [
+    "Use minimal private headers for the existing algorithm",
+    "Replace platform waiting/waking with BCL Monitor boundary",
+    "Use shared pinned program storage for the private contention table; assert its layout"
+  ],
+  "sourceAcquisitionManifest": "source.json"
+}

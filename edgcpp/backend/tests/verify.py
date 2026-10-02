@@ -236,6 +236,28 @@ def main():
     checks.extend(verify_musl_provider(ROOT, TESTS, suite_output("musl_provider"), args.nativeaot, run))
     from libc_locale_translated_verify import verify_libc_locale
     checks.extend(verify_libc_locale(ROOT, TESTS, suite_output("libc_locale"), args.nativeaot, run))
+    from packed_bitfields_verify import verify_packed_bitfields
+    checks.extend(verify_packed_bitfields(ROOT, TESTS, suite_output("packed_bitfields"), args.nativeaot, run))
+    from vla_verify import verify_vla
+    checks.extend(verify_vla(ROOT, TESTS, suite_output("vla"), args.nativeaot, run))
+    from vla_alignment_verify import verify_vla_alignment
+    checks.extend(verify_vla_alignment(ROOT, TESTS, suite_output("vla_alignment"), args.nativeaot, run))
+    from restrict_qualifiers_verify import verify_restrict_qualifiers
+    checks.extend(verify_restrict_qualifiers(ROOT, TESTS, suite_output("restrict_qualifiers"), args.nativeaot, run))
+    from union_constant_members_verify import verify_union_constant_members
+    checks.extend(verify_union_constant_members(ROOT, TESTS, suite_output("union_constant_members"), args.nativeaot, run))
+    from libc_ctype_verify import verify_libc_ctype
+    checks.extend(verify_libc_ctype(ROOT, TESTS, suite_output("libc_ctype"), args.nativeaot, run))
+    from libc_clock_verify import verify_libc_clock
+    checks.extend(verify_libc_clock(ROOT, TESTS, suite_output("libc_clock"), args.nativeaot, run))
+    from libc_clock_abi_verify import verify_libc_clock_abi
+    checks.extend(verify_libc_clock_abi(ROOT, TESTS, suite_output("libc_clock_abi")))
+    from libc_wide_verify import verify_libc_wide
+    checks.extend(verify_libc_wide(ROOT, TESTS, suite_output("libc_wide"), args.nativeaot, run))
+    from libc_string_builtins_verify import verify_libc_string_builtins
+    checks.extend(verify_libc_string_builtins(ROOT, TESTS, suite_output("libc_string_builtins"), args.nativeaot, run))
+    from libcxx_atomic_wait_verify import verify_libcxx_atomic_wait
+    checks.extend(verify_libcxx_atomic_wait(ROOT, TESTS, suite_output("libcxx_atomic_wait"), args.nativeaot, run))
     from diagnostics_verify import verify_diagnostics
     checks.extend(verify_diagnostics(ROOT, TESTS, suite_output("diagnostics"), run))
     if args.libcxx_acquisition:
@@ -243,6 +265,11 @@ def main():
         checks.extend(verify_libcxx_exception_ptr(ROOT, TESTS, suite_output("libcxx_exception_ptr"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_owner_verify import verify_libcxx_exception_owner
         checks.extend(verify_libcxx_exception_owner(ROOT, TESTS, suite_output("libcxx_exception_owner"), args.nativeaot, run, args.libcxx_acquisition))
+        checks.extend(verify_libcxx_exception_owner(ROOT, TESTS, suite_output("libcxx_exception_foreign"), args.nativeaot, run, args.libcxx_acquisition,foreign=True,allocation_free=True))
+        from libcxx_atomic_protocol_verify import verify_libcxx_atomic_protocol
+        checks.extend(verify_libcxx_atomic_protocol(ROOT, TESTS, suite_output("libcxx_atomic_protocol"), args.nativeaot, run, args.libcxx_acquisition))
+        from libcxx_exception_counts_verify import verify_libcxx_exception_counts
+        checks.extend(verify_libcxx_exception_counts(ROOT, TESTS, suite_output("libcxx_exception_counts"), args.nativeaot, run, args.libcxx_acquisition))
     report = {"checks": checks, "nativeaot": args.nativeaot, "rid": "linux-x64",
               "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"}
     (out / "results.json").write_text(json.dumps(report, indent=2) + "\n")

@@ -1,0 +1,19 @@
+--- a/iswdigit.c
++++ b/iswdigit.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ 
+ #undef iswdigit
+@@ -7,9 +8,9 @@
+ 	return (unsigned)wc-'0' < 10;
+ }
+ 
+-int __iswdigit_l(wint_t c, locale_t l)
++int iswdigit_l(wint_t c, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return iswdigit(c);
+ }
+ 
+-weak_alias(__iswdigit_l, iswdigit_l);

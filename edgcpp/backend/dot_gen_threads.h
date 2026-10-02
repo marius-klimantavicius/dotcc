@@ -63,6 +63,9 @@ bool thread_routine(a_routine_ptr r) {
   if(symbol.compare(0,13,"__edg_libcpp_")!=0)return false;
   struct binding {const char *symbol,*result,*parameters,*expression;};
   const binding bindings[]={
+    {"__edg_libcpp_atomic_table","void*","","global::Edg.Runtime.LibcxxAtomicWait.Table()"},
+    {"__edg_libcpp_atomic_wait64","void","void*,long","global::Edg.Runtime.LibcxxAtomicWait.Wait64(a0,a1)"},
+    {"__edg_libcpp_atomic_wake64","void","void*","global::Edg.Runtime.LibcxxAtomicWait.Wake64(a0)"},
     {"__edg_libcpp_mutex_lock","int","ulong*,int","__edg_thread_services.MutexLock(a0,a1!=0)"},
     {"__edg_libcpp_mutex_trylock","int","ulong*,int","(__edg_thread_services.MutexTryLock(a0,a1!=0)?1:0)"},
     {"__edg_libcpp_mutex_unlock","int","ulong*,int","__edg_thread_services.MutexUnlock(a0,a1!=0)"},
@@ -93,7 +96,10 @@ bool thread_routine(a_routine_ptr r) {
     string result=type(rt->variant.routine.return_type);
     if(extra->has_ellipsis || !extra->prototyped || parameters!=binding.parameters || result!=binding.result)
       unsupported(("thread import ABI for "+symbol+": expected "+binding.result+"("+binding.parameters+") but got "+result+"("+parameters+")").c_str());
-    ensure_thread_services();thread_routines.insert(r);
+    // Stateless address-wait buckets neither retain owners nor need thread/TLS
+    // resources. Ordinary generated entry leases still protect caller storage.
+    if(symbol!="__edg_libcpp_atomic_wait64" && symbol!="__edg_libcpp_atomic_wake64" && symbol!="__edg_libcpp_atomic_table")ensure_thread_services();
+    thread_routines.insert(r);
     string expression=binding.expression,runtime=thread_runtime_type();
     for(size_t at=expression.find("@RUNTIME@");at!=string::npos;at=expression.find("@RUNTIME@",at+runtime.size()))expression.replace(at,9,runtime);
     helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+name(r,"f")+"("+signature+") { "+

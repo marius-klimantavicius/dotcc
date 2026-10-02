@@ -1,0 +1,54 @@
+--- a/towctrans.c
++++ b/towctrans.c
+@@ -1,11 +1,8 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ 
+-static const unsigned char tab[];
+ 
+-static const unsigned char rulebases[512];
+-static const int rules[];
+ 
+-static const unsigned char exceptions[][2];
+ 
+ #include "casemap.h"
+ 
+@@ -42,15 +39,15 @@
+ 	xn = rd & 0xff;
+ 	xb = (unsigned)rd >> 8;
+ 	while (xn) {
+-		unsigned try = exceptions[xb+xn/2][0];
+-		if (try == c) {
++		unsigned candidate = exceptions[xb+xn/2][0];
++		if (candidate == c) {
+ 			r = rules[exceptions[xb+xn/2][1]];
+ 			rt = r & 255;
+ 			rd = r >> 8;
+ 			if (rt < 2) return c0 + (rd & -(rt^dir));
+ 			/* Hard-coded for the four exceptional titlecase */
+ 			return c0 + (dir ? -1 : 1);
+-		} else if (try > c) {
++		} else if (candidate > c) {
+ 			xn /= 2;
+ 		} else {
+ 			xb += xn/2;
+@@ -70,15 +67,15 @@
+ 	return casemap(wc, 1);
+ }
+ 
+-wint_t __towupper_l(wint_t c, locale_t l)
++wint_t towupper_l(wint_t c, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return c;
+ 	return towupper(c);
+ }
+ 
+-wint_t __towlower_l(wint_t c, locale_t l)
++wint_t towlower_l(wint_t c, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return c;
+ 	return towlower(c);
+ }
+ 
+-weak_alias(__towupper_l, towupper_l);
+-weak_alias(__towlower_l, towlower_l);

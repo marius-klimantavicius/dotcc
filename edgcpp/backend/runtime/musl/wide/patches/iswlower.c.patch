@@ -1,0 +1,19 @@
+--- a/iswlower.c
++++ b/iswlower.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ 
+ int iswlower(wint_t wc)
+@@ -5,9 +6,9 @@
+ 	return towupper(wc) != wc;
+ }
+ 
+-int __iswlower_l(wint_t c, locale_t l)
++int iswlower_l(wint_t c, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return iswlower(c);
+ }
+ 
+-weak_alias(__iswlower_l, iswlower_l);

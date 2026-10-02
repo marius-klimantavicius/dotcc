@@ -71,6 +71,12 @@ string intrinsic_call(an_expr_node_ptr call) {
   string floating=floating_intrinsic_call(call,routine,first);
   if(!floating.empty())return floating;
   switch(routine->variant.builtin_function_kind) {
+    case bfk_constant_p:
+      // expr.c folds proven constants. A surviving function-scope query is
+      // optimization-dependent (the C backend delegates it to GCC). Choosing
+      // conservative false is valid; its operand must never be evaluated.
+      if(!first || first->next)unsupported("constant-p builtin arguments");
+      return "(("+type(call->type)+")0)";
     case bfk_is_constant_evaluated:
       if(first)unsupported("constant-evaluation builtin arguments");
       return "(("+type(call->type)+")0)";

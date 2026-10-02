@@ -170,7 +170,8 @@ module artifacts. This does not alter the recorded successful executions.
 
 ## Fourth increment: numeric libraries, storage and exception handles
 
-The immutable `milestone-numeric-owners-snapshot` passes 439 checks and 1,069
+Commit `10ea8248e` records the immutable `milestone-numeric-owners-snapshot`,
+which passes 439 checks and 1,069
 recorded commands, including static/instance JIT and Linux-x64 NativeAOT.
 Every suite retains separate artifacts, and completed checks are checkpointed.
 The earlier `milestone-numeric-arrays-snapshot` failure remains preserved:
@@ -198,3 +199,42 @@ atomic waits, narrow classification/collation and BCL clocks have focused
 results but are not part of this immutable snapshot. VLA lowering is undergoing
 verification. Full library/API coverage, platform execution and performance
 closure remain open; no real-world project acceptance has been run.
+
+## Fifth increment: wide libc and remaining lifetime boundaries
+
+The immutable `milestone-wide-lifetimes-snapshot-004` passes the complete
+337-check JIT suite. It carries forward 51 completed checks from snapshot003
+with identical compiler/runtime hashes, then reruns the incomplete class suite
+and every subsequent suite. A fatal child exceeded the old 15-second test
+budget; the same executable completed with the expected trace and termination
+in 13.50 seconds during isolated reproduction. The continuation changes only
+that timeout to 60 seconds. Earlier failed snapshots and all commands remain.
+
+Two earlier integration findings are resolved: the EH-disabled test host is
+regenerated when it replaces the normal compiler output, and optimized bitfield
+loads/stores widen bytes before shifts/masks so strict C# warning checks pass.
+No EDG lowering changes or diagnostic suppression were used.
+
+This increment adds native VLA storage with scoped and exceptional cleanup,
+partial C++ array destruction, explicit 64/256/4096-byte alignment, restrict
+qualifier acceptance, retained nonfirst-union initializer designators, and
+bytewise packed-field operations. Exception handles cover foreign containing
+regions, balanced bookkeeping OOM, allocation-free TLS classification and
+uncaught/current_exception behavior across catch construction and managed
+handoff. Configured implicit termination remains the next increment.
+
+The automatic musl provider now selects 49 pinned translation units, adding
+wide classification/case/string/memory/collation algorithms. All 1,114,112
+Unicode values match the pinned native oracle. BCL clocks, narrow classification,
+known memory/string intrinsic aliases and shared atomic wait services have
+focused acceptance. Source-backed libc++ atomic contention preserves the
+original algorithm while sharing only its private synchronization table across
+owners; application globals remain instanced.
+
+The evidence index `evidence/milestone-wide-lifetimes.json` records 170 focused
+checks, including targeted regressions and Linux-x64 NativeAOT. This is not a
+second full NativeAOT run or 170 disjoint language features. Multibyte/calendar
+providers, configured termination, dynamic exception specifications and the
+owned-type graph prototype remain separate subsequent work. Full libc/libc++,
+separate-TU assembly, performance closure and other platform executions remain
+open. No real-world project acceptance was run.

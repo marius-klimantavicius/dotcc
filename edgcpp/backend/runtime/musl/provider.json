@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "id": "musl-selected-bcl-lp64-v1",
-  "description": "Selected translated musl formatting and numeric conversion with the audited BCL libc bridge; not complete libc coverage.",
+  "description": "Selected translated musl formatting, numeric conversion and wide-character algorithms with audited BCL libc services; not complete libc coverage.",
   "components": [
     {
       "directory": "printf",
@@ -24,6 +24,47 @@
         "atoll.c",
         "atof.c",
         "locale_wrappers.c"
+      ]
+    },
+    {
+      "directory": "wide",
+      "translationUnits": [
+        "iswalnum.c",
+        "iswalpha.c",
+        "iswblank.c",
+        "iswcntrl.c",
+        "iswctype.c",
+        "iswdigit.c",
+        "iswgraph.c",
+        "iswlower.c",
+        "iswprint.c",
+        "iswpunct.c",
+        "iswspace.c",
+        "iswupper.c",
+        "iswxdigit.c",
+        "towctrans.c",
+        "wctrans.c",
+        "wcslen.c",
+        "wcscpy.c",
+        "wcsncpy.c",
+        "wcscat.c",
+        "wcsncat.c",
+        "wcscmp.c",
+        "wcsncmp.c",
+        "wcschr.c",
+        "wcsrchr.c",
+        "wcscspn.c",
+        "wcsspn.c",
+        "wcspbrk.c",
+        "wcsstr.c",
+        "wcstok.c",
+        "wmemchr.c",
+        "wmemcmp.c",
+        "wmemcpy.c",
+        "wmemmove.c",
+        "wmemset.c",
+        "wcscoll.c",
+        "wcsxfrm.c"
       ]
     }
   ]

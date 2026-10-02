@@ -72,6 +72,14 @@ Use the original `src/typeinfo.cpp`, `src/new.cpp`, `src/new_helpers.cpp` and
 `src/new_handler.cpp` for their corresponding definitions. The exception handle
 and termination provider is separate; no native C++ ABI library is linked.
 
+`abi_atomic.cpp` ports the pinned contention algorithm using the BCL wait/wake
+boundary and a shared pinned runtime table. `atomic-source.json` records exact
+original/adapted hashes; `atomic-managed.patch` reproduces the adaptation from
+the acquired original source. See `docs/libcxx-atomic-wait.md` for the ownership
+contract and focused protocol acceptance. The vendor configuration also selects
+the C provider's tested `clock_gettime` capability for `chrono.cpp`; this selects
+no host OS identity and the implementation uses BCL clocks at runtime.
+
 ## Initial source and ABI dependency inventory
 
 | Consumer | Upstream code and required boundary |

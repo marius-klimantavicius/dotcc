@@ -1,0 +1,37 @@
+--- a/wctrans.c
++++ b/wctrans.c
+@@ -1,10 +1,11 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ #include <string.h>
+ 
+-wctrans_t wctrans(const char *class)
++wctrans_t wctrans(const char *property_name)
+ {
+-	if (!strcmp(class, "toupper")) return (wctrans_t)1;
+-	if (!strcmp(class, "tolower")) return (wctrans_t)2;
++	if (!strcmp(property_name, "toupper")) return (wctrans_t)1;
++	if (!strcmp(property_name, "tolower")) return (wctrans_t)2;
+ 	return 0;
+ }
+ 
+@@ -15,15 +16,15 @@
+ 	return wc;
+ }
+ 
+-wctrans_t __wctrans_l(const char *s, locale_t l)
++wctrans_t wctrans_l(const char *s, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return wctrans(s);
+ }
+ 
+-wint_t __towctrans_l(wint_t c, wctrans_t t, locale_t l)
++wint_t towctrans_l(wint_t c, wctrans_t t, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return c;
+ 	return towctrans(c, t);
+ }
+ 
+-weak_alias(__wctrans_l, wctrans_l);
+-weak_alias(__towctrans_l, towctrans_l);

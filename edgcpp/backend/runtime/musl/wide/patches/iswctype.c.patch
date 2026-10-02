@@ -1,0 +1,27 @@
+--- a/iswctype.c
++++ b/iswctype.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ #include <string.h>
+ 
+@@ -61,15 +62,15 @@
+ 	return 0;
+ }
+ 
+-int __iswctype_l(wint_t c, wctype_t t, locale_t l)
++int iswctype_l(wint_t c, wctype_t t, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return iswctype(c, t);
+ }
+ 
+-wctype_t __wctype_l(const char *s, locale_t l)
++wctype_t wctype_l(const char *s, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return wctype(s);
+ }
+ 
+-weak_alias(__iswctype_l, iswctype_l);
+-weak_alias(__wctype_l, wctype_l);

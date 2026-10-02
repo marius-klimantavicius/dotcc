@@ -6,7 +6,11 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdarg.h>
+#include <locale.h>
+#ifndef __EDG_DOT_LIBC_WINT_T
+#define __EDG_DOT_LIBC_WINT_T
 typedef unsigned int wint_t;
+#endif
 /* Stateful UTF-8 conversion storage; provider ABI is independent of host mbstate_t. */
 typedef struct { unsigned int __state, __value; } mbstate_t;
 #define WEOF 0xffffffffU
@@ -21,7 +25,9 @@ unsigned long wcstoul(const wchar_t *, wchar_t **, int);
 long long wcstoll(const wchar_t *, wchar_t **, int);
 unsigned long long wcstoull(const wchar_t *, wchar_t **, int);
 int wcscoll(const wchar_t *, const wchar_t *);
+int wcscoll_l(const wchar_t *, const wchar_t *, locale_t);
 size_t wcsxfrm(wchar_t *, const wchar_t *, size_t);
+size_t wcsxfrm_l(wchar_t *, const wchar_t *, size_t, locale_t);
 size_t wcsftime(wchar_t *, size_t, const wchar_t *, const struct tm *);
 int fwide(FILE *, int);
 int fwprintf(FILE *, const wchar_t *, ...);

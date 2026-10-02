@@ -15,6 +15,7 @@ std::terminate_handler __edg_cxx_set_terminate(std::terminate_handler) noexcept;
 std::terminate_handler __edg_cxx_get_terminate() noexcept;
 [[noreturn]] void __edg_cxx_terminate() noexcept;
 [[noreturn]] void __edg_cxx_terminate_default() noexcept;
+int __edg_cxx_uncaught_exceptions() noexcept;
 }
 
 // Adapted from LLVM 18.1.8 src/support/runtime/exception_pointer_cxxabi.ipp.
@@ -88,4 +89,6 @@ terminate_handler get_terminate() noexcept {
   return handler?handler:managed_default_terminate;
 }
 void terminate() noexcept {__edg_cxx_terminate();}
+bool uncaught_exception() noexcept {return __edg_cxx_uncaught_exceptions()!=0;}
+int uncaught_exceptions() noexcept {return __edg_cxx_uncaught_exceptions();}
 }

@@ -21,7 +21,8 @@ void ensure_rtti_helpers() {
     auto v=entry.first;
     auto source=rtti_source_types.at(v);
     if(source->kind!=tk_class && source->kind!=tk_struct)continue;
-    if(v->init_kind!=initk_static)unsupported("external RTTI class descriptor");
+    if(v->init_kind!=initk_static)unsupported(("external RTTI class descriptor: "+
+      string(v->source_corresp.name?v->source_corresp.name:"<unnamed>")).c_str());
     auto fields=cleanup_fields(v->initializer.constant,0);
     auto &rec=records[entry.second];rec.kind=0;rec.flags=3;
     auto add=[&](a_constant_ptr base,unsigned long long bits) {

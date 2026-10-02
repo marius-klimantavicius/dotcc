@@ -23,6 +23,46 @@ private sealed class __edg_thread_state {
   internal readonly global::System.Collections.Generic.List<__edg_finalizer> Finalizers=new();
   internal byte[]? Storage;
   internal int Depth;
+  internal __edg_thread_state? Previous,Next;
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private sealed class __edg_thread_registry {
+  private readonly object sync=new();
+  private readonly global::System.Threading.ThreadLocal<__edg_thread_state> values;
+  private __edg_thread_state? head;
+  internal __edg_thread_registry() {values=new(Make,true);}
+  private void Link(__edg_thread_state state) {
+    state.Next=head;state.Previous=null;if(head!=null)head.Previous=state;head=state;
+  }
+  private __edg_thread_state Make() {
+    var state=new __edg_thread_state();lock(sync)Link(state);return state;
+  }
+  internal __edg_thread_state Value {
+    get=>values.Value!;
+    set {
+      var old=values.Value!;if(global::System.Object.ReferenceEquals(old,value))return;
+      // Publish through ThreadLocal before changing the intrusive list: a
+      // failed runtime slot update leaves the original state registered.
+      values.Value=value;
+      lock(sync) {
+        if(old.Previous!=null)old.Previous.Next=old.Next;else head=old.Next;
+        if(old.Next!=null)old.Next.Previous=old.Previous;old.Previous=null;old.Next=null;
+        Link(value);
+      }
+    }
+  }
+  internal global::System.Collections.Generic.IList<__edg_thread_state> Values=>values.Values;
+  internal bool Contains(void* address) {
+    lock(sync)for(var state=head;state!=null;state=state.Next) {
+      // Another thread can clear its storage while an unrelated holder is
+      // being classified. Keep one strong snapshot of this pinned arena.
+      byte[]? bytes=state.Storage;if(bytes==null || bytes.Length==0)continue;
+      nuint start=(nuint)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref bytes[0]);
+      if((nuint)address>=start && (nuint)address-start<(nuint)bytes.Length)return true;
+    }
+    return false;
+  }
 }
 // dot-gen:member-end
 // dot-gen:member-begin
@@ -31,7 +71,7 @@ private sealed class __edg_guard {internal int Thread;}
 private @MOD@readonly object __edg_sync=new object();
 private @MOD@readonly global::System.Collections.Generic.List<__edg_finalizer> __edg_finalizers=new();
 private @MOD@readonly global::System.Collections.Generic.Dictionary<nint,__edg_guard> __edg_guards=new();
-private @MOD@readonly global::System.Threading.ThreadLocal<__edg_thread_state> __edg_threads=new(()=>new __edg_thread_state(),true);
+private @MOD@readonly __edg_thread_registry __edg_threads=new();
 private @MOD@int __edg_active,__edg_state,__edg_shutdown_thread,__edg_exception_leases,__edg_exception_references,__edg_thread_leases;
 private @MOD@global::System.Action? __edg_abandon_exception_handles=null;
 private @MOD@nint __edg_new_handler;
@@ -134,7 +174,7 @@ private @MOD@void __edg_release_thread_core(bool retained) {
     if(__edg_state==2)return;
     ++__edg_active;++__edg_threads.Value!.Depth;
   }
-  try {var thread=__edg_threads.Value!;__edg_drain(thread.Finalizers);/*__EDG_LIBC_THREAD_KEYS_RELEASE__*//*__EDG_LIBC_THREAD_RELEASE__*/thread.Storage=null;__edg_threads.Value=new __edg_thread_state();}
+  try {var thread=__edg_threads.Value!;__edg_drain(thread.Finalizers);/*__EDG_LIBC_THREAD_KEYS_RELEASE__*//*__EDG_LIBC_THREAD_RELEASE__*/thread.Storage=null;thread.Depth=0;__edg_threads.Value=new __edg_thread_state();}
   finally {lock(__edg_sync){--__edg_active;global::System.Threading.Monitor.PulseAll(__edg_sync);}}
 }
 // dot-gen:member-end
@@ -199,6 +239,7 @@ private sealed class __edg_heap_owner {
   private static readonly object Sync=new object();
   private static readonly global::System.Collections.Generic.Dictionary<nuint,(__edg_heap_owner Owner,nuint Raw,ulong Size)> All=new();
   private readonly global::System.Collections.Generic.HashSet<nuint> pointers=new();
+  internal static global::System.Action<nuint,ulong>? RegionReleased=null;
   internal void* Allocate(ulong size,ulong alignment) {
     if(alignment<16)alignment=16;
     if((alignment&(alignment-1))!=0 || alignment>(ulong)nint.MaxValue || size>(ulong)nint.MaxValue-alignment)return null;
@@ -216,14 +257,31 @@ private sealed class __edg_heap_owner {
     lock(Sync){foreach(nuint p in pointers)if(value>=p && (ulong)(value-p)<All[p].Size)return true;}
     return false;
   }
+  internal static bool ContainsAny(void* address) {
+    nuint value=(nuint)address;
+    lock(Sync){foreach(var entry in All)if(value>=entry.Key && (ulong)(value-entry.Key)<entry.Value.Size)return true;}
+    return false;
+  }
   internal static ulong Size(void* p) {lock(Sync)return All[(nuint)p].Size;}
   internal static void Free(void* p) {
-    if(p==null)return;nuint raw;
-    lock(Sync){var entry=All[(nuint)p];All.Remove((nuint)p);entry.Owner.pointers.Remove((nuint)p);raw=entry.Raw;}
-    global::System.Runtime.InteropServices.NativeMemory.Free((void*)raw);
+    if(p==null)return;nuint raw;ulong size;
+    lock(Sync){var entry=All[(nuint)p];All.Remove((nuint)p);entry.Owner.pointers.Remove((nuint)p);raw=entry.Raw;size=entry.Size;}
+    try{RegionReleased?.Invoke((nuint)p,size);}
+    finally{global::System.Runtime.InteropServices.NativeMemory.Free((void*)raw);}
   }
   internal void Dispose() {
-    lock(Sync){foreach(nuint p in pointers){global::System.Runtime.InteropServices.NativeMemory.Free((void*)All[p].Raw);All.Remove(p);}pointers.Clear();}
+    (nuint Address,nuint Raw,ulong Size)[] pending;
+    lock(Sync) {
+      pending=new (nuint,nuint,ulong)[pointers.Count];int index=0;
+      foreach(nuint p in pointers){var entry=All[p];pending[index++]=(p,entry.Raw,entry.Size);}
+      foreach(var entry in pending)All.Remove(entry.Address);pointers.Clear();
+    }
+    // Region callbacks may release another owner's payload. Never hold the
+    // heap registry lock while acquiring any owner's lifecycle lock.
+    foreach(var entry in pending) {
+      try{RegionReleased?.Invoke(entry.Address,entry.Size);}
+      finally{global::System.Runtime.InteropServices.NativeMemory.Free((void*)entry.Raw);}
+    }
   }
 }
 // dot-gen:member-end

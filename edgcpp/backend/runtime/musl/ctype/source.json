@@ -1,0 +1,24 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "src/ctype/isalnum.c": "2c82aaca8d3037dd57d432896d9b3771874230c763bbb1a790f216e2577bd8bf",
+    "src/ctype/isalpha.c": "b7fdb98ed32f7e30acca92115685952adf983fe0a58c10c080543ab723518ebd",
+    "src/ctype/isblank.c": "2fe71bd5c48604d04f2582e35e1230c2c302bd175ebcfa3c7ed15cf191156bd3",
+    "src/ctype/iscntrl.c": "c4790426059cd35679f133bbb328793bbcd392b92fd6db58b2622bb450aaf1da",
+    "src/ctype/isdigit.c": "7e224dac8298f55d05eccc1238d97a99b9811825b6ddfa1b2242576064c210da",
+    "src/ctype/isgraph.c": "3de06a27ed178f61385ae2327ce7f45c1f1316b8b5921a97799d409d0436f142",
+    "src/ctype/islower.c": "765bcfd0db456145badfd97ed5ff45619951783f936760aca7c08e6ae3e5d0d1",
+    "src/ctype/isprint.c": "5d32f5dd37c41c74ca3eac890c627a95abe6bc0fb894e6ea4c5fd4f8024ef324",
+    "src/ctype/ispunct.c": "c35d2a85ff92dce9538626365d540edd2602e85bc62f6c8337994999d74bf896",
+    "src/ctype/isspace.c": "c1dbd26bc677fade40299d7a8383762143c4807aec3284e72a26a36c330cc539",
+    "src/ctype/isupper.c": "f8f161355220063d468fdf79fc427f516c22144dc2f672f8bb936e7bcc9ecca7",
+    "src/ctype/isxdigit.c": "8dfb7d82bbf4c0e876ef047e094642a38d1e23294ed227077a5fa6422be340b5",
+    "src/ctype/tolower.c": "ecdd1dedb49853eab7a79381726c4bf3c70c08be6b8fc9b9ece270769355ff7a",
+    "src/ctype/toupper.c": "d63476d65fa366bd1e3fe2e0af1dd0b7b50327b8ade2e6c7820bbc1dc90c00da",
+    "src/ctype/isascii.c": "82c7e70afe3a58b237c994b3d8fb2ec0212d2c3c629f9310b1fa2c88fe9f1ff2",
+    "src/locale/strcoll.c": "31f4b8eca018511427ad85809327d2a6f850f72cb92d4c391684712ebc771d11",
+    "src/locale/strxfrm.c": "6ef828cfecd93527eec6cb476abfb69d7b8b7b149b157f9cb42d0d9a9db2db85"
+  },
+  "adaptation": "LibcText.cs: ASCII predicates and unsigned-byte collation; explicit locale handles validated against owner. Original C files retained for audit, not automatic translated package."
+}

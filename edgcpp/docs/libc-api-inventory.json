@@ -1,0 +1,1493 @@
+{
+  "bindingCount": 138,
+  "bindings": {
+    "__edg_fpclassify": {
+      "parameters": "double",
+      "result": "int",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.Classify"
+    },
+    "__edg_fpclassifyf": {
+      "parameters": "float",
+      "result": "int",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.Classify"
+    },
+    "__edg_fpclassifyl": {
+      "parameters": "global::Edg.Runtime.Float80",
+      "result": "int",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.Classify"
+    },
+    "__edg_isfinite": {
+      "parameters": "double",
+      "result": "int",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.IsFinite"
+    },
+    "__edg_isfinitef": {
+      "parameters": "float",
+      "result": "int",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.IsFinite"
+    },
+    "__edg_isfinitel": {
+      "parameters": "global::Edg.Runtime.Float80",
+      "result": "int",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.IsFinite"
+    },
+    "__edg_locale_validate": {
+      "parameters": "LOCALE*",
+      "result": "int",
+      "source": "libc-locale-bindings.def",
+      "target": "__edg_text.Locales.Validate"
+    },
+    "__edg_mb_cur_max": {
+      "parameters": "",
+      "result": "ulong",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.MbCurMax"
+    },
+    "__edg_scalbn_nearest": {
+      "parameters": "double,int",
+      "result": "double",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.ScaleB"
+    },
+    "__edg_scan_remainder": {
+      "parameters": "global::Edg.Runtime.Float80,global::Edg.Runtime.Float80",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-numeric-bindings.def",
+      "target": "global::Edg.Runtime.LibcScanMath.Remainder"
+    },
+    "__edg_scan_scalbnl_nearest": {
+      "parameters": "global::Edg.Runtime.Float80,int",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-numeric-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.ScaleB"
+    },
+    "__edg_signbit": {
+      "parameters": "double",
+      "result": "int",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.SignBit"
+    },
+    "__edg_signbitf": {
+      "parameters": "float",
+      "result": "int",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.SignBit"
+    },
+    "__edg_signbitl": {
+      "parameters": "global::Edg.Runtime.Float80",
+      "result": "int",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.SignBit"
+    },
+    "__errno_location": {
+      "parameters": "",
+      "result": "int*",
+      "source": "libc-bindings.def",
+      "target": "__edg_libc.ErrnoLocation"
+    },
+    "abs": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Abs"
+    },
+    "aligned_alloc": {
+      "parameters": "ulong,ulong",
+      "result": "void*",
+      "source": "libc-bindings.def",
+      "target": "__edg_aligned_alloc"
+    },
+    "calloc": {
+      "parameters": "ulong,ulong",
+      "result": "void*",
+      "source": "libc-bindings.def",
+      "target": "__edg_calloc"
+    },
+    "ceil": {
+      "parameters": "double",
+      "result": "double",
+      "source": "libc-bindings.def",
+      "target": "global::System.Math.Ceiling"
+    },
+    "ceilf": {
+      "parameters": "float",
+      "result": "float",
+      "source": "libc-bindings.def",
+      "target": "global::System.MathF.Ceiling"
+    },
+    "ceill": {
+      "parameters": "global::Edg.Runtime.Float80",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Ceiling"
+    },
+    "clearerr": {
+      "parameters": "FILE*",
+      "result": "void",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Clearerr"
+    },
+    "clock_gettime": {
+      "parameters": "int,TIMESPEC*",
+      "result": "int",
+      "source": "libc-clock-bindings.def",
+      "target": "__edg_clock.ClockGettime"
+    },
+    "copysign": {
+      "parameters": "double,double",
+      "result": "double",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.CopySign"
+    },
+    "copysignf": {
+      "parameters": "float,float",
+      "result": "float",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.CopySign"
+    },
+    "copysignl": {
+      "parameters": "global::Edg.Runtime.Float80,global::Edg.Runtime.Float80",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.CopySign"
+    },
+    "difftime": {
+      "parameters": "long,long",
+      "result": "double",
+      "source": "libc-clock-bindings.def",
+      "target": "global::Edg.Runtime.LibcClock.Difftime"
+    },
+    "duplocale": {
+      "parameters": "LOCALE*",
+      "result": "LOCALE*",
+      "source": "libc-locale-bindings.def",
+      "target": "__edg_text.Locales.DupLocale"
+    },
+    "fabs": {
+      "parameters": "double",
+      "result": "double",
+      "source": "libc-bindings.def",
+      "target": "global::System.Math.Abs"
+    },
+    "fabsf": {
+      "parameters": "float",
+      "result": "float",
+      "source": "libc-bindings.def",
+      "target": "global::System.MathF.Abs"
+    },
+    "fabsl": {
+      "parameters": "global::Edg.Runtime.Float80",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Abs"
+    },
+    "fclose": {
+      "parameters": "FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fclose"
+    },
+    "feof": {
+      "parameters": "FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Feof"
+    },
+    "ferror": {
+      "parameters": "FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Ferror"
+    },
+    "fflush": {
+      "parameters": "FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fflush"
+    },
+    "fgetc": {
+      "parameters": "FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fgetc"
+    },
+    "fgetpos": {
+      "parameters": "FILE*,long*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fgetpos"
+    },
+    "fgets": {
+      "parameters": "sbyte*,int,FILE*",
+      "result": "sbyte*",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fgets"
+    },
+    "floor": {
+      "parameters": "double",
+      "result": "double",
+      "source": "libc-bindings.def",
+      "target": "global::System.Math.Floor"
+    },
+    "floorf": {
+      "parameters": "float",
+      "result": "float",
+      "source": "libc-bindings.def",
+      "target": "global::System.MathF.Floor"
+    },
+    "floorl": {
+      "parameters": "global::Edg.Runtime.Float80",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Floor"
+    },
+    "fopen": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "FILE*",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fopen"
+    },
+    "fputc": {
+      "parameters": "int,FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fputc"
+    },
+    "fputs": {
+      "parameters": "sbyte*,FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fputs"
+    },
+    "fread": {
+      "parameters": "void*,ulong,ulong,FILE*",
+      "result": "ulong",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fread"
+    },
+    "free": {
+      "parameters": "void*",
+      "result": "void",
+      "source": "libc-bindings.def",
+      "target": "__edg_free"
+    },
+    "freelocale": {
+      "parameters": "LOCALE*",
+      "result": "void",
+      "source": "libc-locale-bindings.def",
+      "target": "__edg_text.Locales.FreeLocale"
+    },
+    "frexp": {
+      "parameters": "double,int*",
+      "result": "double",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.Frexp"
+    },
+    "frexpf": {
+      "parameters": "float,int*",
+      "result": "float",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.Frexp"
+    },
+    "frexpl": {
+      "parameters": "global::Edg.Runtime.Float80,int*",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-float-bindings.def",
+      "target": "global::Edg.Runtime.LibcFloat.Frexp"
+    },
+    "fseek": {
+      "parameters": "FILE*,long,int",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fseek"
+    },
+    "fsetpos": {
+      "parameters": "FILE*,long*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fsetpos"
+    },
+    "ftell": {
+      "parameters": "FILE*",
+      "result": "long",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Ftell"
+    },
+    "fwrite": {
+      "parameters": "void*,ulong,ulong,FILE*",
+      "result": "ulong",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fwrite"
+    },
+    "getc": {
+      "parameters": "FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fgetc"
+    },
+    "getchar": {
+      "parameters": "",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Getchar"
+    },
+    "isalnum": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsAlnum"
+    },
+    "isalnum_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsAlnumL"
+    },
+    "isalpha": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsAlpha"
+    },
+    "isalpha_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsAlphaL"
+    },
+    "isascii": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsAscii"
+    },
+    "isblank": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsBlank"
+    },
+    "isblank_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsBlankL"
+    },
+    "iscntrl": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsCntrl"
+    },
+    "iscntrl_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsCntrlL"
+    },
+    "isdigit": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsDigit"
+    },
+    "isdigit_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsDigitL"
+    },
+    "isgraph": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsGraph"
+    },
+    "isgraph_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsGraphL"
+    },
+    "islower": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsLower"
+    },
+    "islower_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsLowerL"
+    },
+    "isprint": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsPrint"
+    },
+    "isprint_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsPrintL"
+    },
+    "ispunct": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsPunct"
+    },
+    "ispunct_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsPunctL"
+    },
+    "isspace": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsSpace"
+    },
+    "isspace_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsSpaceL"
+    },
+    "isupper": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsUpper"
+    },
+    "isupper_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsUpperL"
+    },
+    "isxdigit": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.IsXdigit"
+    },
+    "isxdigit_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.IsXdigitL"
+    },
+    "labs": {
+      "parameters": "long",
+      "result": "long",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Abs"
+    },
+    "llabs": {
+      "parameters": "long",
+      "result": "long",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Abs"
+    },
+    "localeconv": {
+      "parameters": "",
+      "result": "LCONV*",
+      "source": "libc-locale-bindings.def",
+      "target": "__edg_text.Locales.LocaleConv"
+    },
+    "malloc": {
+      "parameters": "ulong",
+      "result": "void*",
+      "source": "libc-bindings.def",
+      "target": "__edg_malloc"
+    },
+    "memchr": {
+      "parameters": "void*,int,ulong",
+      "result": "void*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Memchr"
+    },
+    "memcmp": {
+      "parameters": "void*,void*,ulong",
+      "result": "int",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Memcmp"
+    },
+    "memcpy": {
+      "parameters": "void*,void*,ulong",
+      "result": "void*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Memcpy"
+    },
+    "memmove": {
+      "parameters": "void*,void*,ulong",
+      "result": "void*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Memmove"
+    },
+    "memset": {
+      "parameters": "void*,int,ulong",
+      "result": "void*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Memset"
+    },
+    "newlocale": {
+      "parameters": "int,sbyte*,LOCALE*",
+      "result": "LOCALE*",
+      "source": "libc-locale-bindings.def",
+      "target": "__edg_text.Locales.NewLocale"
+    },
+    "posix_memalign": {
+      "parameters": "void**,ulong,ulong",
+      "result": "int",
+      "source": "libc-bindings.def",
+      "target": "__edg_posix_memalign"
+    },
+    "putc": {
+      "parameters": "int,FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Fputc"
+    },
+    "putchar": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Putchar"
+    },
+    "puts": {
+      "parameters": "sbyte*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Puts"
+    },
+    "realloc": {
+      "parameters": "void*,ulong",
+      "result": "void*",
+      "source": "libc-bindings.def",
+      "target": "__edg_realloc"
+    },
+    "remove": {
+      "parameters": "sbyte*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Remove"
+    },
+    "rename": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Rename"
+    },
+    "roundl": {
+      "parameters": "global::Edg.Runtime.Float80",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Round"
+    },
+    "setlocale": {
+      "parameters": "int,sbyte*",
+      "result": "sbyte*",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.SetLocale"
+    },
+    "setvbuf": {
+      "parameters": "FILE*,sbyte*,int,ulong",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Setvbuf"
+    },
+    "sqrt": {
+      "parameters": "double",
+      "result": "double",
+      "source": "libc-bindings.def",
+      "target": "__edg_libc.Sqrt"
+    },
+    "sqrtf": {
+      "parameters": "float",
+      "result": "float",
+      "source": "libc-bindings.def",
+      "target": "__edg_libc.SqrtF"
+    },
+    "sqrtl": {
+      "parameters": "global::Edg.Runtime.Float80",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-math-bindings.def",
+      "target": "__edg_math.Sqrt"
+    },
+    "strcat": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strcat"
+    },
+    "strchr": {
+      "parameters": "sbyte*,int",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strchr"
+    },
+    "strcmp": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "int",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strcmp"
+    },
+    "strcoll": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.Strcoll"
+    },
+    "strcoll_l": {
+      "parameters": "sbyte*,sbyte*,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.StrcollL"
+    },
+    "strcpy": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strcpy"
+    },
+    "strcspn": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "ulong",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strcspn"
+    },
+    "strerror": {
+      "parameters": "int",
+      "result": "sbyte*",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.Strerror"
+    },
+    "strerror_r": {
+      "parameters": "int,sbyte*,ulong",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.StrerrorR"
+    },
+    "strlen": {
+      "parameters": "sbyte*",
+      "result": "ulong",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strlen"
+    },
+    "strncat": {
+      "parameters": "sbyte*,sbyte*,ulong",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strncat"
+    },
+    "strncmp": {
+      "parameters": "sbyte*,sbyte*,ulong",
+      "result": "int",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strncmp"
+    },
+    "strncpy": {
+      "parameters": "sbyte*,sbyte*,ulong",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strncpy"
+    },
+    "strnlen": {
+      "parameters": "sbyte*,ulong",
+      "result": "ulong",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strnlen"
+    },
+    "strpbrk": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strpbrk"
+    },
+    "strrchr": {
+      "parameters": "sbyte*,int",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strrchr"
+    },
+    "strspn": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "ulong",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strspn"
+    },
+    "strstr": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.Strstr"
+    },
+    "strtok": {
+      "parameters": "sbyte*,sbyte*",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "__edg_libc.Strtok"
+    },
+    "strtok_r": {
+      "parameters": "sbyte*,sbyte*,sbyte**",
+      "result": "sbyte*",
+      "source": "libc-bindings.def",
+      "target": "global::Edg.Runtime.LibcContext.StrtokR"
+    },
+    "strxfrm": {
+      "parameters": "sbyte*,sbyte*,ulong",
+      "result": "ulong",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.Strxfrm"
+    },
+    "strxfrm_l": {
+      "parameters": "sbyte*,sbyte*,ulong,LOCALE*",
+      "result": "ulong",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.StrxfrmL"
+    },
+    "time": {
+      "parameters": "long*",
+      "result": "long",
+      "source": "libc-clock-bindings.def",
+      "target": "__edg_clock.Time"
+    },
+    "timespec_get": {
+      "parameters": "TIMESPEC*,int",
+      "result": "int",
+      "source": "libc-clock-bindings.def",
+      "target": "__edg_clock.TimespecGet"
+    },
+    "tolower": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.ToLower"
+    },
+    "tolower_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.ToLowerL"
+    },
+    "toupper": {
+      "parameters": "int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "global::Edg.Runtime.LibcText.ToUpper"
+    },
+    "toupper_l": {
+      "parameters": "int,LOCALE*",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.ToUpperL"
+    },
+    "trunc": {
+      "parameters": "double",
+      "result": "double",
+      "source": "libc-bindings.def",
+      "target": "global::System.Math.Truncate"
+    },
+    "truncf": {
+      "parameters": "float",
+      "result": "float",
+      "source": "libc-bindings.def",
+      "target": "global::System.MathF.Truncate"
+    },
+    "truncl": {
+      "parameters": "global::Edg.Runtime.Float80",
+      "result": "global::Edg.Runtime.Float80",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Truncate"
+    },
+    "ungetc": {
+      "parameters": "int,FILE*",
+      "result": "int",
+      "source": "libc-files-bindings.def",
+      "target": "__edg_files.Ungetc"
+    },
+    "uselocale": {
+      "parameters": "LOCALE*",
+      "result": "LOCALE*",
+      "source": "libc-locale-bindings.def",
+      "target": "__edg_text.Locales.UseLocale"
+    },
+    "wctomb": {
+      "parameters": "sbyte*,int",
+      "result": "int",
+      "source": "libc-text-bindings.def",
+      "target": "__edg_text.Wctomb"
+    }
+  },
+  "headers": {
+    "ctype.h": {
+      "isalnum": "runtime-binding",
+      "isalnum_l": "runtime-binding",
+      "isalpha": "runtime-binding",
+      "isalpha_l": "runtime-binding",
+      "isascii": "runtime-binding",
+      "isblank": "runtime-binding",
+      "isblank_l": "runtime-binding",
+      "iscntrl": "runtime-binding",
+      "iscntrl_l": "runtime-binding",
+      "isdigit": "runtime-binding",
+      "isdigit_l": "runtime-binding",
+      "isgraph": "runtime-binding",
+      "isgraph_l": "runtime-binding",
+      "islower": "runtime-binding",
+      "islower_l": "runtime-binding",
+      "isprint": "runtime-binding",
+      "isprint_l": "runtime-binding",
+      "ispunct": "runtime-binding",
+      "ispunct_l": "runtime-binding",
+      "isspace": "runtime-binding",
+      "isspace_l": "runtime-binding",
+      "isupper": "runtime-binding",
+      "isupper_l": "runtime-binding",
+      "isxdigit": "runtime-binding",
+      "isxdigit_l": "runtime-binding",
+      "tolower": "runtime-binding",
+      "tolower_l": "runtime-binding",
+      "toupper": "runtime-binding",
+      "toupper_l": "runtime-binding"
+    },
+    "errno.h": {
+      "__errno_location": "runtime-binding"
+    },
+    "float.h": {},
+    "inttypes.h": {
+      "imaxabs": "declaration-only",
+      "imaxdiv": "declaration-only",
+      "strtoimax": "declaration-only",
+      "strtoumax": "declaration-only",
+      "wcstoimax": "declaration-only",
+      "wcstoumax": "declaration-only"
+    },
+    "langinfo.h": {
+      "nl_langinfo": "declaration-only",
+      "nl_langinfo_l": "declaration-only"
+    },
+    "limits.h": {},
+    "locale.h": {
+      "duplocale": "runtime-binding",
+      "freelocale": "runtime-binding",
+      "localeconv": "runtime-binding",
+      "newlocale": "runtime-binding",
+      "setlocale": "runtime-binding",
+      "uselocale": "runtime-binding"
+    },
+    "math.h": {
+      "acos": "declaration-only",
+      "acosf": "declaration-only",
+      "acosh": "declaration-only",
+      "acoshf": "declaration-only",
+      "acoshl": "declaration-only",
+      "acosl": "declaration-only",
+      "asin": "declaration-only",
+      "asinf": "declaration-only",
+      "asinh": "declaration-only",
+      "asinhf": "declaration-only",
+      "asinhl": "declaration-only",
+      "asinl": "declaration-only",
+      "atan": "declaration-only",
+      "atan2": "declaration-only",
+      "atan2f": "declaration-only",
+      "atan2l": "declaration-only",
+      "atanf": "declaration-only",
+      "atanh": "declaration-only",
+      "atanhf": "declaration-only",
+      "atanhl": "declaration-only",
+      "atanl": "declaration-only",
+      "cbrt": "declaration-only",
+      "cbrtf": "declaration-only",
+      "cbrtl": "declaration-only",
+      "ceil": "runtime-binding",
+      "ceilf": "runtime-binding",
+      "ceill": "runtime-binding",
+      "copysign": "runtime-binding",
+      "copysignf": "runtime-binding",
+      "copysignl": "runtime-binding",
+      "cos": "declaration-only",
+      "cosf": "declaration-only",
+      "cosh": "declaration-only",
+      "coshf": "declaration-only",
+      "coshl": "declaration-only",
+      "cosl": "declaration-only",
+      "erf": "declaration-only",
+      "erfc": "declaration-only",
+      "erfcf": "declaration-only",
+      "erfcl": "declaration-only",
+      "erff": "declaration-only",
+      "erfl": "declaration-only",
+      "exp": "declaration-only",
+      "exp2": "declaration-only",
+      "exp2f": "declaration-only",
+      "exp2l": "declaration-only",
+      "expf": "declaration-only",
+      "expl": "declaration-only",
+      "expm1": "declaration-only",
+      "expm1f": "declaration-only",
+      "expm1l": "declaration-only",
+      "fabs": "runtime-binding",
+      "fabsf": "runtime-binding",
+      "fabsl": "runtime-binding",
+      "fdim": "declaration-only",
+      "fdimf": "declaration-only",
+      "fdiml": "declaration-only",
+      "floor": "runtime-binding",
+      "floorf": "runtime-binding",
+      "floorl": "runtime-binding",
+      "fma": "declaration-only",
+      "fmaf": "declaration-only",
+      "fmal": "declaration-only",
+      "fmax": "declaration-only",
+      "fmaxf": "declaration-only",
+      "fmaxl": "declaration-only",
+      "fmin": "declaration-only",
+      "fminf": "declaration-only",
+      "fminl": "declaration-only",
+      "fmod": "declaration-only",
+      "fmodf": "declaration-only",
+      "fmodl": "declaration-only",
+      "frexp": "runtime-binding",
+      "frexpf": "runtime-binding",
+      "frexpl": "runtime-binding",
+      "hypot": "declaration-only",
+      "hypotf": "declaration-only",
+      "hypotl": "declaration-only",
+      "ilogb": "declaration-only",
+      "ilogbf": "declaration-only",
+      "ilogbl": "declaration-only",
+      "ldexp": "declaration-only",
+      "ldexpf": "declaration-only",
+      "ldexpl": "declaration-only",
+      "lgamma": "declaration-only",
+      "lgammaf": "declaration-only",
+      "lgammal": "declaration-only",
+      "llrint": "declaration-only",
+      "llrintf": "declaration-only",
+      "llrintl": "declaration-only",
+      "llround": "declaration-only",
+      "llroundf": "declaration-only",
+      "llroundl": "declaration-only",
+      "log": "declaration-only",
+      "log10": "declaration-only",
+      "log10f": "declaration-only",
+      "log10l": "declaration-only",
+      "log1p": "declaration-only",
+      "log1pf": "declaration-only",
+      "log1pl": "declaration-only",
+      "log2": "declaration-only",
+      "log2f": "declaration-only",
+      "log2l": "declaration-only",
+      "logb": "declaration-only",
+      "logbf": "declaration-only",
+      "logbl": "declaration-only",
+      "logf": "declaration-only",
+      "logl": "declaration-only",
+      "lrint": "declaration-only",
+      "lrintf": "declaration-only",
+      "lrintl": "declaration-only",
+      "lround": "declaration-only",
+      "lroundf": "declaration-only",
+      "lroundl": "declaration-only",
+      "modf": "declaration-only",
+      "modff": "declaration-only",
+      "modfl": "declaration-only",
+      "nan": "declaration-only",
+      "nanf": "declaration-only",
+      "nanl": "declaration-only",
+      "nearbyint": "declaration-only",
+      "nearbyintf": "declaration-only",
+      "nearbyintl": "declaration-only",
+      "nextafter": "declaration-only",
+      "nextafterf": "declaration-only",
+      "nextafterl": "declaration-only",
+      "nexttoward": "declaration-only",
+      "nexttowardf": "declaration-only",
+      "nexttowardl": "declaration-only",
+      "pow": "declaration-only",
+      "powf": "declaration-only",
+      "powl": "declaration-only",
+      "remainder": "declaration-only",
+      "remainderf": "declaration-only",
+      "remainderl": "declaration-only",
+      "remquo": "declaration-only",
+      "remquof": "declaration-only",
+      "remquol": "declaration-only",
+      "rint": "declaration-only",
+      "rintf": "declaration-only",
+      "rintl": "declaration-only",
+      "round": "declaration-only",
+      "roundf": "declaration-only",
+      "roundl": "runtime-binding",
+      "scalbln": "declaration-only",
+      "scalblnf": "declaration-only",
+      "scalblnl": "declaration-only",
+      "scalbn": "declaration-only",
+      "scalbnf": "declaration-only",
+      "scalbnl": "declaration-only",
+      "sin": "declaration-only",
+      "sinf": "declaration-only",
+      "sinh": "declaration-only",
+      "sinhf": "declaration-only",
+      "sinhl": "declaration-only",
+      "sinl": "declaration-only",
+      "sqrt": "runtime-binding",
+      "sqrtf": "runtime-binding",
+      "sqrtl": "runtime-binding",
+      "tan": "declaration-only",
+      "tanf": "declaration-only",
+      "tanh": "declaration-only",
+      "tanhf": "declaration-only",
+      "tanhl": "declaration-only",
+      "tanl": "declaration-only",
+      "tgamma": "declaration-only",
+      "tgammaf": "declaration-only",
+      "tgammal": "declaration-only",
+      "trunc": "runtime-binding",
+      "truncf": "runtime-binding",
+      "truncl": "runtime-binding"
+    },
+    "stdarg.h": {},
+    "stddef.h": {},
+    "stdint.h": {},
+    "stdio.h": {
+      "asprintf": "selected-source",
+      "clearerr": "runtime-binding",
+      "fclose": "runtime-binding",
+      "feof": "runtime-binding",
+      "ferror": "runtime-binding",
+      "fflush": "runtime-binding",
+      "fgetc": "runtime-binding",
+      "fgetpos": "runtime-binding",
+      "fgets": "runtime-binding",
+      "fopen": "runtime-binding",
+      "fprintf": "selected-source",
+      "fputc": "runtime-binding",
+      "fputs": "runtime-binding",
+      "fread": "runtime-binding",
+      "freopen": "declaration-only",
+      "fscanf": "declaration-only",
+      "fseek": "runtime-binding",
+      "fsetpos": "runtime-binding",
+      "ftell": "runtime-binding",
+      "fwrite": "runtime-binding",
+      "getc": "runtime-binding",
+      "getchar": "runtime-binding",
+      "perror": "declaration-only",
+      "printf": "selected-source",
+      "putc": "runtime-binding",
+      "putchar": "runtime-binding",
+      "puts": "runtime-binding",
+      "remove": "runtime-binding",
+      "rename": "runtime-binding",
+      "rewind": "declaration-only",
+      "scanf": "declaration-only",
+      "setbuf": "declaration-only",
+      "setvbuf": "runtime-binding",
+      "snprintf": "selected-source",
+      "sprintf": "selected-source",
+      "sscanf": "declaration-only",
+      "tmpfile": "declaration-only",
+      "tmpnam": "declaration-only",
+      "ungetc": "runtime-binding",
+      "vasprintf": "selected-source",
+      "vfprintf": "selected-source",
+      "vfscanf": "declaration-only",
+      "vprintf": "selected-source",
+      "vscanf": "declaration-only",
+      "vsnprintf": "selected-source",
+      "vsprintf": "selected-source",
+      "vsscanf": "declaration-only"
+    },
+    "stdlib.h": {
+      "_Exit": "declaration-only",
+      "abort": "declaration-only",
+      "abs": "runtime-binding",
+      "aligned_alloc": "runtime-binding",
+      "at_quick_exit": "declaration-only",
+      "atexit": "declaration-only",
+      "atof": "selected-source",
+      "atoi": "selected-source",
+      "atol": "selected-source",
+      "atoll": "selected-source",
+      "bsearch": "declaration-only",
+      "calloc": "runtime-binding",
+      "div": "declaration-only",
+      "exit": "declaration-only",
+      "free": "runtime-binding",
+      "getenv": "declaration-only",
+      "labs": "runtime-binding",
+      "ldiv": "declaration-only",
+      "llabs": "runtime-binding",
+      "lldiv": "declaration-only",
+      "malloc": "runtime-binding",
+      "mblen": "declaration-only",
+      "mbstowcs": "declaration-only",
+      "mbtowc": "declaration-only",
+      "posix_memalign": "runtime-binding",
+      "qsort": "declaration-only",
+      "quick_exit": "declaration-only",
+      "rand": "declaration-only",
+      "realloc": "runtime-binding",
+      "srand": "declaration-only",
+      "strtod": "selected-source",
+      "strtod_l": "selected-source",
+      "strtof": "selected-source",
+      "strtof_l": "selected-source",
+      "strtol": "selected-source",
+      "strtol_l": "selected-source",
+      "strtold": "selected-source",
+      "strtold_l": "selected-source",
+      "strtoll": "selected-source",
+      "strtoll_l": "selected-source",
+      "strtoul": "selected-source",
+      "strtoul_l": "selected-source",
+      "strtoull": "selected-source",
+      "strtoull_l": "selected-source",
+      "system": "declaration-only",
+      "wcstombs": "declaration-only",
+      "wctomb": "runtime-binding"
+    },
+    "string.h": {
+      "memchr": "runtime-binding",
+      "memcmp": "runtime-binding",
+      "memcpy": "runtime-binding",
+      "memmove": "runtime-binding",
+      "memset": "runtime-binding",
+      "strcat": "runtime-binding",
+      "strchr": "runtime-binding",
+      "strcmp": "runtime-binding",
+      "strcoll": "runtime-binding",
+      "strcoll_l": "runtime-binding",
+      "strcpy": "runtime-binding",
+      "strcspn": "runtime-binding",
+      "strerror": "runtime-binding",
+      "strerror_r": "runtime-binding",
+      "strlen": "runtime-binding",
+      "strncat": "runtime-binding",
+      "strncmp": "runtime-binding",
+      "strncpy": "runtime-binding",
+      "strnlen": "runtime-binding",
+      "strpbrk": "runtime-binding",
+      "strrchr": "runtime-binding",
+      "strspn": "runtime-binding",
+      "strstr": "runtime-binding",
+      "strtok": "runtime-binding",
+      "strtok_r": "runtime-binding",
+      "strxfrm": "runtime-binding",
+      "strxfrm_l": "runtime-binding"
+    },
+    "time.h": {
+      "asctime": "declaration-only",
+      "asctime_r": "declaration-only",
+      "clock": "declaration-only",
+      "clock_gettime": "runtime-binding",
+      "ctime": "declaration-only",
+      "ctime_r": "declaration-only",
+      "difftime": "runtime-binding",
+      "gmtime": "declaration-only",
+      "gmtime_r": "declaration-only",
+      "localtime": "declaration-only",
+      "localtime_r": "declaration-only",
+      "mktime": "declaration-only",
+      "strftime": "declaration-only",
+      "strftime_l": "declaration-only",
+      "time": "runtime-binding",
+      "timespec_get": "runtime-binding"
+    },
+    "wchar.h": {
+      "btowc": "declaration-only",
+      "fgetwc": "declaration-only",
+      "fgetws": "declaration-only",
+      "fputwc": "declaration-only",
+      "fputws": "declaration-only",
+      "fwide": "declaration-only",
+      "fwprintf": "declaration-only",
+      "fwscanf": "declaration-only",
+      "getwc": "declaration-only",
+      "getwchar": "declaration-only",
+      "mbrlen": "declaration-only",
+      "mbrtowc": "declaration-only",
+      "mbsinit": "declaration-only",
+      "mbsnrtowcs": "declaration-only",
+      "mbsrtowcs": "declaration-only",
+      "putwc": "declaration-only",
+      "putwchar": "declaration-only",
+      "swprintf": "declaration-only",
+      "swscanf": "declaration-only",
+      "ungetwc": "declaration-only",
+      "vfwprintf": "declaration-only",
+      "vfwscanf": "declaration-only",
+      "vswprintf": "declaration-only",
+      "vswscanf": "declaration-only",
+      "vwprintf": "declaration-only",
+      "vwscanf": "declaration-only",
+      "wcrtomb": "declaration-only",
+      "wcscat": "selected-source",
+      "wcschr": "selected-source",
+      "wcscmp": "selected-source",
+      "wcscoll": "selected-source",
+      "wcscoll_l": "selected-source",
+      "wcscpy": "selected-source",
+      "wcscspn": "selected-source",
+      "wcsftime": "declaration-only",
+      "wcslen": "selected-source",
+      "wcsncat": "selected-source",
+      "wcsncmp": "selected-source",
+      "wcsncpy": "selected-source",
+      "wcsnrtombs": "declaration-only",
+      "wcspbrk": "selected-source",
+      "wcsrchr": "selected-source",
+      "wcsrtombs": "declaration-only",
+      "wcsspn": "selected-source",
+      "wcsstr": "selected-source",
+      "wcstod": "declaration-only",
+      "wcstof": "declaration-only",
+      "wcstok": "selected-source",
+      "wcstol": "declaration-only",
+      "wcstold": "declaration-only",
+      "wcstoll": "declaration-only",
+      "wcstoul": "declaration-only",
+      "wcstoull": "declaration-only",
+      "wcsxfrm": "selected-source",
+      "wcsxfrm_l": "selected-source",
+      "wctob": "declaration-only",
+      "wmemchr": "selected-source",
+      "wmemcmp": "selected-source",
+      "wmemcpy": "selected-source",
+      "wmemmove": "selected-source",
+      "wmemset": "selected-source",
+      "wprintf": "declaration-only",
+      "wscanf": "declaration-only"
+    },
+    "wctype.h": {
+      "iswalnum": "selected-source",
+      "iswalnum_l": "selected-source",
+      "iswalpha": "selected-source",
+      "iswalpha_l": "selected-source",
+      "iswblank": "selected-source",
+      "iswblank_l": "selected-source",
+      "iswcntrl": "selected-source",
+      "iswcntrl_l": "selected-source",
+      "iswctype": "selected-source",
+      "iswctype_l": "selected-source",
+      "iswdigit": "selected-source",
+      "iswdigit_l": "selected-source",
+      "iswgraph": "selected-source",
+      "iswgraph_l": "selected-source",
+      "iswlower": "selected-source",
+      "iswlower_l": "selected-source",
+      "iswprint": "selected-source",
+      "iswprint_l": "selected-source",
+      "iswpunct": "selected-source",
+      "iswpunct_l": "selected-source",
+      "iswspace": "selected-source",
+      "iswspace_l": "selected-source",
+      "iswupper": "selected-source",
+      "iswupper_l": "selected-source",
+      "iswxdigit": "selected-source",
+      "iswxdigit_l": "selected-source",
+      "towctrans": "selected-source",
+      "towctrans_l": "selected-source",
+      "towlower": "selected-source",
+      "towlower_l": "selected-source",
+      "towupper": "selected-source",
+      "towupper_l": "selected-source",
+      "wctrans": "selected-source",
+      "wctrans_l": "selected-source",
+      "wctype": "selected-source",
+      "wctype_l": "selected-source"
+    }
+  },
+  "provider": {
+    "components": [
+      {
+        "directory": "printf",
+        "translationUnits": [
+          "vfprintf.c",
+          "vsnprintf.c",
+          "format_wrappers.c",
+          "format_allocating.c"
+        ]
+      },
+      {
+        "directory": "strto",
+        "translationUnits": [
+          "intscan.c",
+          "floatscan.c",
+          "strtol.c",
+          "strtod.c",
+          "atoi.c",
+          "atol.c",
+          "atoll.c",
+          "atof.c",
+          "locale_wrappers.c"
+        ]
+      },
+      {
+        "directory": "wide",
+        "translationUnits": [
+          "iswalnum.c",
+          "iswalpha.c",
+          "iswblank.c",
+          "iswcntrl.c",
+          "iswctype.c",
+          "iswdigit.c",
+          "iswgraph.c",
+          "iswlower.c",
+          "iswprint.c",
+          "iswpunct.c",
+          "iswspace.c",
+          "iswupper.c",
+          "iswxdigit.c",
+          "towctrans.c",
+          "wctrans.c",
+          "wcslen.c",
+          "wcscpy.c",
+          "wcsncpy.c",
+          "wcscat.c",
+          "wcsncat.c",
+          "wcscmp.c",
+          "wcsncmp.c",
+          "wcschr.c",
+          "wcsrchr.c",
+          "wcscspn.c",
+          "wcsspn.c",
+          "wcspbrk.c",
+          "wcsstr.c",
+          "wcstok.c",
+          "wmemchr.c",
+          "wmemcmp.c",
+          "wmemcpy.c",
+          "wmemmove.c",
+          "wmemset.c",
+          "wcscoll.c",
+          "wcsxfrm.c"
+        ]
+      }
+    ],
+    "description": "Selected translated musl formatting, numeric conversion and wide-character algorithms with audited BCL libc services; not complete libc coverage.",
+    "id": "musl-selected-bcl-lp64-v1",
+    "schema": 1
+  },
+  "publicBindingCount": 123,
+  "schema": 1,
+  "scope": "C17 header-category ledger plus explicit POSIX extensions; not an exhaustive POSIX API catalogue; regex declaration census excludes macros, data and compiler facilities",
+  "selectedPublicDefinitions": [
+    "printf",
+    "fprintf",
+    "sprintf",
+    "snprintf",
+    "vprintf",
+    "vfprintf",
+    "vsprintf",
+    "vsnprintf",
+    "asprintf",
+    "vasprintf",
+    "strtol",
+    "strtoul",
+    "strtoll",
+    "strtoull",
+    "strtof",
+    "strtod",
+    "strtold",
+    "atoi",
+    "atol",
+    "atoll",
+    "atof",
+    "strtol_l",
+    "strtoul_l",
+    "strtoll_l",
+    "strtoull_l",
+    "strtof_l",
+    "strtod_l",
+    "strtold_l",
+    "iswalnum",
+    "iswalpha",
+    "iswblank",
+    "iswcntrl",
+    "iswdigit",
+    "iswgraph",
+    "iswlower",
+    "iswprint",
+    "iswpunct",
+    "iswspace",
+    "iswupper",
+    "iswxdigit",
+    "iswctype",
+    "wctype",
+    "towlower",
+    "towupper",
+    "towctrans",
+    "wctrans",
+    "iswalnum_l",
+    "iswalpha_l",
+    "iswblank_l",
+    "iswcntrl_l",
+    "iswdigit_l",
+    "iswgraph_l",
+    "iswlower_l",
+    "iswprint_l",
+    "iswpunct_l",
+    "iswspace_l",
+    "iswupper_l",
+    "iswxdigit_l",
+    "iswctype_l",
+    "wctype_l",
+    "towlower_l",
+    "towupper_l",
+    "towctrans_l",
+    "wctrans_l",
+    "wcslen",
+    "wcscpy",
+    "wcsncpy",
+    "wcscat",
+    "wcsncat",
+    "wcscmp",
+    "wcsncmp",
+    "wcschr",
+    "wcsrchr",
+    "wcscspn",
+    "wcsspn",
+    "wcspbrk",
+    "wcsstr",
+    "wcstok",
+    "wmemchr",
+    "wmemcmp",
+    "wmemcpy",
+    "wmemmove",
+    "wmemset",
+    "wcscoll",
+    "wcscoll_l",
+    "wcsxfrm",
+    "wcsxfrm_l"
+  ],
+  "standardHeadersAbsent": [
+    "assert.h",
+    "complex.h",
+    "fenv.h",
+    "iso646.h",
+    "setjmp.h",
+    "signal.h",
+    "stdalign.h",
+    "stdatomic.h",
+    "stdbool.h",
+    "stdnoreturn.h",
+    "tgmath.h",
+    "threads.h",
+    "uchar.h"
+  ]
+}

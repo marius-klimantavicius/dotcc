@@ -108,7 +108,16 @@ unsafe class EntryPoint {{
     assert 'cleanup=' not in disabled.stderr and '__edg_cleanup_state' not in disabled.stdout
     (directory / 'retained-eh.il.txt').write_text(enabled.stderr)
     (directory / 'disabled-eh.il.txt').write_text(disabled.stderr)
+    (directory / 'Translated.eh-enabled.cs.saved').write_bytes((directory / 'Translated.cs').read_bytes())
     (directory / 'Translated.cs').write_text(disabled.stdout)
+    # The direct EH-disabled compiler invocation can omit lifecycle services
+    # that the normal driver invocation required for exception bookkeeping.
+    # Keep the host consistent with the actual replacement compiler output.
+    entry=directory / 'EntryPoint.cs'
+    (directory / 'EntryPoint.eh-enabled.cs.saved').write_bytes(entry.read_bytes())
+    entry.write_text('internal static class EntryPoint { public static int Main() { '+
+                    ('try { return @Edg.@Generated.@TranslatedProgram.Run(); } finally { @Edg.@Generated.@TranslatedProgram.Shutdown(); }'
+                     if 'void Shutdown()' in disabled.stdout else 'return @Edg.@Generated.@TranslatedProgram.Run();')+' } }\n')
     run(['g++','-std=c++17','-fno-exceptions',tests / 'lifetime_normal.cpp','-o',out / 'native-noeh'])
     run([out / 'native-noeh'])
     from runtime_verify import execute

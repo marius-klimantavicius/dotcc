@@ -1,0 +1,157 @@
+--- a/src/atomic.cpp
++++ b/src/atomic.cpp
+@@ -6,112 +6,29 @@
+ //
+ //===----------------------------------------------------------------------===//
+ 
+-#include <__thread/timed_backoff_policy.h>
+-#include <atomic>
+-#include <climits>
+-#include <functional>
+-#include <thread>
++#include <__atomic/contention_t.h>
++#include <__functional/hash.h>
+ 
+-#include "include/apple_availability.h"
+-
+-#ifdef __linux__
+-
+-#  include <linux/futex.h>
+-#  include <sys/syscall.h>
+-#  include <unistd.h>
+-
+-// libc++ uses SYS_futex as a universal syscall name. However, on 32 bit architectures
+-// with a 64 bit time_t, we need to specify SYS_futex_time64.
+-#  if !defined(SYS_futex) && defined(SYS_futex_time64)
+-#    define SYS_futex SYS_futex_time64
+-#  endif
+-#  define _LIBCPP_FUTEX(...) syscall(SYS_futex, __VA_ARGS__)
+-
+-#elif defined(__FreeBSD__)
+-
+-#  include <sys/types.h>
+-#  include <sys/umtx.h>
+-
+-#  define _LIBCPP_FUTEX(...) syscall(SYS_futex, __VA_ARGS__)
+-
+-#elif defined(__OpenBSD__)
+-
+-#  include <sys/futex.h>
+-
+-// OpenBSD has no indirect syscalls
+-#  define _LIBCPP_FUTEX(...) futex(__VA_ARGS__)
+-
+-#else // <- Add other operating systems here
+-
+-// Baseline needs no new headers
+-
+-#  define _LIBCPP_FUTEX(...) syscall(SYS_futex, __VA_ARGS__)
+-
+-#endif
++// Managed port: retain libc++'s contention table, sequence laundering and
++// memory orders. Replace only the OS wait/wake boundary with BCL monitors.
++// Portable target __cxx_contention_t is int64_t, independent of the host OS.
++extern "C" void __edg_libcpp_atomic_wait64(const volatile void*, long long) noexcept;
++extern "C" void __edg_libcpp_atomic_wake64(const volatile void*) noexcept;
++extern "C" void* __edg_libcpp_atomic_table() noexcept;
+ 
+ _LIBCPP_BEGIN_NAMESPACE_STD
+-
+-#ifdef __linux__
+-
+-static void
+-__libcpp_platform_wait_on_address(__cxx_atomic_contention_t const volatile* __ptr, __cxx_contention_t __val) {
+-  static constexpr timespec __timeout = {2, 0};
+-  _LIBCPP_FUTEX(__ptr, FUTEX_WAIT_PRIVATE, __val, &__timeout, 0, 0);
++static_assert(sizeof(__cxx_contention_t) == 8 && alignof(__cxx_atomic_contention_t) >= 8,
++              "managed atomic wait requires aligned 64-bit contention storage");
++static void __libcpp_platform_wait_on_address(
++    __cxx_atomic_contention_t const volatile* p, __cxx_contention_t value) {
++  __edg_libcpp_atomic_wait64(p, static_cast<long long>(value));
+ }
+-
+-static void __libcpp_platform_wake_by_address(__cxx_atomic_contention_t const volatile* __ptr, bool __notify_one) {
+-  _LIBCPP_FUTEX(__ptr, FUTEX_WAKE_PRIVATE, __notify_one ? 1 : INT_MAX, 0, 0, 0);
++static void __libcpp_platform_wake_by_address(
++    __cxx_atomic_contention_t const volatile* p, bool) {
++  // Hash buckets can contain different addresses. Wake all so a notify_one
++  // never wakes only a waiter for an unrelated address and loses progress.
++  __edg_libcpp_atomic_wake64(p);
+ }
+-
+-#elif defined(__APPLE__) && defined(_LIBCPP_USE_ULOCK)
+-
+-extern "C" int __ulock_wait(
+-    uint32_t operation, void* addr, uint64_t value, uint32_t timeout); /* timeout is specified in microseconds */
+-extern "C" int __ulock_wake(uint32_t operation, void* addr, uint64_t wake_value);
+-
+-#  define UL_COMPARE_AND_WAIT 1
+-#  define ULF_WAKE_ALL 0x00000100
+-
+-static void
+-__libcpp_platform_wait_on_address(__cxx_atomic_contention_t const volatile* __ptr, __cxx_contention_t __val) {
+-  __ulock_wait(UL_COMPARE_AND_WAIT, const_cast<__cxx_atomic_contention_t*>(__ptr), __val, 0);
+-}
+-
+-static void __libcpp_platform_wake_by_address(__cxx_atomic_contention_t const volatile* __ptr, bool __notify_one) {
+-  __ulock_wake(
+-      UL_COMPARE_AND_WAIT | (__notify_one ? 0 : ULF_WAKE_ALL), const_cast<__cxx_atomic_contention_t*>(__ptr), 0);
+-}
+-
+-#elif defined(__FreeBSD__) && __SIZEOF_LONG__ == 8
+-/*
+- * Since __cxx_contention_t is int64_t even on 32bit FreeBSD
+- * platforms, we have to use umtx ops that work on the long type, and
+- * limit its use to architectures where long and int64_t are synonyms.
+- */
+-
+-static void
+-__libcpp_platform_wait_on_address(__cxx_atomic_contention_t const volatile* __ptr, __cxx_contention_t __val) {
+-  _umtx_op(const_cast<__cxx_atomic_contention_t*>(__ptr), UMTX_OP_WAIT, __val, NULL, NULL);
+-}
+-
+-static void __libcpp_platform_wake_by_address(__cxx_atomic_contention_t const volatile* __ptr, bool __notify_one) {
+-  _umtx_op(const_cast<__cxx_atomic_contention_t*>(__ptr), UMTX_OP_WAKE, __notify_one ? 1 : INT_MAX, NULL, NULL);
+-}
+-
+-#else // <- Add other operating systems here
+-
+-// Baseline is just a timed backoff
+-
+-static void
+-__libcpp_platform_wait_on_address(__cxx_atomic_contention_t const volatile* __ptr, __cxx_contention_t __val) {
+-  __libcpp_thread_poll_with_backoff(
+-      [=]() -> bool { return !__cxx_nonatomic_compare_equal(__cxx_atomic_load(__ptr, memory_order_relaxed), __val); },
+-      __libcpp_timed_backoff_policy());
+-}
+-
+-static void __libcpp_platform_wake_by_address(__cxx_atomic_contention_t const volatile*, bool) {}
+-
+-#endif // __linux__
+ 
+ static constexpr size_t __libcpp_contention_table_size = (1 << 8); /* < there's no magic in this number */
+ 
+@@ -121,12 +38,21 @@
+   inline constexpr __libcpp_contention_table_entry() : __contention_state(0), __platform_state(0) {}
+ };
+ 
+-static __libcpp_contention_table_entry __libcpp_contention_table[__libcpp_contention_table_size];
++static_assert(sizeof(__libcpp_contention_table_entry) == 64 &&
++              alignof(__libcpp_contention_table_entry) == 64 &&
++              __builtin_offsetof(__libcpp_contention_table_entry, __contention_state) == 0 &&
++              __builtin_offsetof(__libcpp_contention_table_entry, __platform_state) == 8,
++              "managed shared contention table layout");
+ 
+ static hash<void const volatile*> __libcpp_contention_hasher;
+ 
+ static __libcpp_contention_table_entry* __libcpp_contention_state(void const volatile* p) {
+-  return &__libcpp_contention_table[__libcpp_contention_hasher(p) & (__libcpp_contention_table_size - 1)];
++  // Synchronization for an explicitly shared atomic must cross engine owners.
++  // Only this private runtime table uses program storage; user globals retain
++  // the CLI-selected instance behavior. Zeroed pinned bytes match the original
++  // constexpr constructor of both contention words.
++  auto table = static_cast<__libcpp_contention_table_entry*>(__edg_libcpp_atomic_table());
++  return &table[__libcpp_contention_hasher(p) & (__libcpp_contention_table_size - 1)];
+ }
+ 
+ /* Given an atomic to track contention and an atomic to actually wait on, which may be

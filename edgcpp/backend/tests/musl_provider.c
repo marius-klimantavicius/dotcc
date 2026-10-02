@@ -3,6 +3,8 @@
 #include <string.h>
 #include <errno.h>
 #include <locale.h>
+#include <wchar.h>
+#include <wctype.h>
 #ifdef __cplusplus
 #include <exception>
 #endif
@@ -24,5 +26,10 @@ int main(void) {
  char* allocated=0;
  if(asprintf(&allocated,"%s-%d",localeconv()->decimal_point,17)!=4 || strcmp(allocated,".-17"))return 8;
  free(allocated);freelocale(locale);
+ wchar_t wide[24];wcscpy(wide,L"wide ");wcscat(wide,L"storage");
+ if(wcslen(wide)!=12 || wcscmp(wide,L"wide storage") ||
+    wcsstr(wide,L"storage")!=wide+5)return 9;
+ if(!iswalpha(0x03b1) || towupper(0x03b1)!=0x0391 ||
+    !iswctype(0x03b1,wctype("alpha")))return 10;
  return 0;
 }

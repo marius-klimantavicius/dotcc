@@ -1,0 +1,19 @@
+--- a/iswcntrl.c
++++ b/iswcntrl.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ 
+ int iswcntrl(wint_t wc)
+@@ -8,9 +9,9 @@
+ 	    || (unsigned)(wc-0xfff9) < 3;
+ }
+ 
+-int __iswcntrl_l(wint_t c, locale_t l)
++int iswcntrl_l(wint_t c, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return iswcntrl(c);
+ }
+ 
+-weak_alias(__iswcntrl_l, iswcntrl_l);

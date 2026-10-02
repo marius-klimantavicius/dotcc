@@ -161,8 +161,26 @@ string aggregate_type(a_type_ptr t) {
           fields+="[global::System.Runtime.InteropServices.FieldOffset("+std::to_string(f->offset+i)+")] private byte __edg_bits"+std::to_string(f->offset+i)+";\n";
         string read="bits";
         if(int_type_is_signed(ft))read="((long)(bits << "+std::to_string(64-f->bit_size)+") >> "+std::to_string(64-f->bit_size)+")";
-        string start=std::to_string(f->offset_bit_remainder),width=std::to_string(f->bit_size);
-        fields+="public "+type(f->type)+" "+name(f,"m")+" { get { fixed(byte* p=&__edg_bits"+std::to_string(f->offset)+") { ulong bits=0; for(int i=0;i<"+width+";++i)bits|=(ulong)((p[(i+"+start+")/8] >> ((i+"+start+")%8)) & 1) << i; return unchecked(("+type(f->type)+")"+read+"); } } set { fixed(byte* p=&__edg_bits"+std::to_string(f->offset)+") { ulong bits=unchecked((ulong)value); for(int i=0;i<"+width+";++i) { int bit=i+"+start+"; p[bit/8]=(byte)((p[bit/8] & ~(1 << (bit%8))) | (int)((bits >> i)&1) << (bit%8)); } } } }\n";
+        // Byte operations avoid a 64-iteration loop while preserving adjacent
+        // packed fields. At most nine bytes cover a 64-bit unaligned field;
+        // no widened load/store may reach outside the declared object.
+        unsigned remainder=(unsigned)f->offset_bit_remainder;
+        if(remainder>7)unsupported("bitfield byte remainder");
+        string load="ulong bits=((ulong)p[0] >> "+std::to_string(remainder)+")";
+        for(unsigned i=1;i<count;++i)
+          load+=" | ((ulong)p["+std::to_string(i)+"] << "+std::to_string(i*8-remainder)+")";
+        load+=";";
+        if(f->bit_size<64)load+="bits &= "+std::to_string((1ULL<<f->bit_size)-1ULL)+"UL;";
+        string store="ulong bits=unchecked((ulong)value);";
+        for(unsigned i=0;i<count;++i) {
+          int shift=(int)(i*8)-(int)remainder;
+          unsigned low=shift<0?(unsigned)-shift:0;
+          unsigned high=std::min(8U,remainder+(unsigned)f->bit_size-i*8);
+          unsigned mask=((1U<<(high-low))-1U)<<low;
+          string fragment=shift<0?"(bits << "+std::to_string(-shift)+")":"(bits >> "+std::to_string(shift)+")";
+          store+="p["+std::to_string(i)+"]=(byte)(((ulong)p["+std::to_string(i)+"] & ~"+std::to_string(mask)+"UL) | ("+fragment+" & "+std::to_string(mask)+"UL));";
+        }
+        fields+="public "+type(f->type)+" "+name(f,"m")+" { get { fixed(byte* p=&__edg_bits"+std::to_string(f->offset)+") { "+load+"return unchecked(("+type(f->type)+")"+read+"); } } set { fixed(byte* p=&__edg_bits"+std::to_string(f->offset)+") { "+store+"} } }\n";
         continue;
       }
       bool vptr=f->compiler_generated && f->source_corresp.name && string(f->source_corresp.name)=="__vptr" &&
@@ -185,7 +203,10 @@ string aggregate_type(a_type_ptr t) {
   return id;
 }
 string type(a_type_ptr t) {
-  if ((get_type_qualifiers(t) & ~(TQ_CONST | TQ_VOLATILE)) != 0) unsupported("qualified type");
+  // Restrict constrains valid source aliases; omitting that optimization
+  // promise in managed code preserves valid-program behavior. EDG itself has
+  // SUPPRESS_RESTRICT_IN_GENERATED_CODE in il_to_str.c::form_type_qualifiers.
+  if ((get_type_qualifiers(t) & ~(TQ_CONST | TQ_VOLATILE | TQ_RESTRICT)) != 0) unsupported("qualified type");
   t = skip_typerefs(t);
   if(va_tag_type(t)) {
     if(t->size!=24 || alignment_of_type(t)!=8)unsupported("builtin va_list tag layout");
@@ -363,7 +384,7 @@ string constant(a_constant_ptr c) {
     if (c->variant.address.kind != abk_variable || !c->variant.address.variant.variable)
       unsupported("address constant", c->variant.address.kind);
     auto v = c->variant.address.variant.variable;
-    if (!global_offsets.count(v) && !tls_offsets.count(v) && libc_variable(v).empty()) unsupported("address of unallocated global");
+    if (!global_offsets.count(v) && !tls_offsets.count(v) && libc_variable(v).empty()) unsupported(("address of unallocated global: "+string(v->source_corresp.name?v->source_corresp.name:"<unnamed>")).c_str());
     return "((" + type(c->type) + ")((byte*)&" + variable(v) + " + (" +
            std::to_string(c->variant.address.offset) + ")))";
   }
@@ -415,6 +436,22 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
   auto field = t->kind == tk_array ? nullptr : next_non_empty_initializable_field(t->variant.class_struct_union.field_list);
   unsigned long long index = 0;
   for (auto item = c->variant.aggregate.first_constant; item; item = item->next) {
+    if (item->kind == ck_designator) {
+      // c_gen_be.c::dump_initializer_part retains lowered designators only
+      // to select a union member; the following constant supplies its value.
+      if (t->kind != tk_union || item->variant.designator.is_generic ||
+          !item->variant.designator.is_field_designator)
+        unsupported("lowered aggregate designator");
+      auto selected = item->variant.designator.variant.field;
+      bool found = false;
+      for (auto candidate = t->variant.class_struct_union.field_list;
+           candidate; candidate = candidate->next)
+        if (candidate == selected) { found = true; break; }
+      if (!found || !item->next || item->next->kind == ck_designator)
+        unsupported("lowered union designator field or value");
+      field = selected;
+      item = item->next;
+    }
     auto value = item;
     unsigned long long count = 1;
     if (item->kind == ck_init_repeat) {
@@ -475,6 +512,7 @@ bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch) {
   }
 }
 #include "dot_gen_arrays.h"
+#include "dot_gen_vla.h"
 #include "dot_gen_cleanup.h"
 #include "dot_gen_exceptions.h"
 #include "dot_gen_lifecycle.h"
@@ -576,6 +614,8 @@ string location(an_expr_node_ptr e) {
     if (a->kind == enk_routine) {
       auto r = a->variant.routine.ptr;
       string source=r->source_corresp.name?r->source_corresp.name:"";
+      string vla=vla_call(r,b);
+      if(!vla.empty())return vla;
       string array_call=array_allocation_call(r,b);
       if(!array_call.empty())return array_call;
       string lifecycle=lifecycle_call(r,b);
@@ -959,7 +999,7 @@ void statement(a_statement_ptr s) {
             line(cleanup_transition(eh.variant.cleanup_region_number,"__edg_cleanup_state")); break;
           // These are annotations, not runtime state changes.
           case leck_unreachable_cleanup_state: case leck_function_prologue: case leck_function_epilogue: break;
-          case leck_exception_caught: line("__edg_current_catch!.Caught = true;"); break;
+          case leck_exception_caught: line("__edg_current_catch!.MarkCaught();"); break;
           case leck_try_epilogue: {
             auto found=try_frames.find(eh.variant.epilogue_try_block);
             if(found==try_frames.end())unsupported("try epilogue without try");
@@ -1002,7 +1042,7 @@ void statement(a_statement_ptr s) {
         matches+=exception_match("((__edg_exception)"+id+"_error).Type",catch_type(h));
       }
       matches=catches_all?"true":"("+id+"_error is __edg_exception && ("+matches+"))";
-      line("} catch (global::System.Exception "+id+"_error) when ("+id+"_active && "+matches+") {");
+      line("} catch (global::System.Exception "+id+"_error) when ("+id+"_active && __edg_begin_exception("+id+"_error) && "+matches+") {");
       line(cleanup_unwind(id+"_boundary"));
       bool first=true,ellipsis=false;
       for(auto h=t->handlers;h;h=h->next) {
@@ -1159,6 +1199,7 @@ void back_end(void) {
     context = r->source_corresp.name ? r->source_corresp.name : "generated function";
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
     current_function_scope=s;
+    function_vla_used=false;
     try_frames.clear(); exception_locals.clear();
     prepare_cleanup(s);
     check_operand_order(s->assoc_block);
@@ -1207,9 +1248,13 @@ void back_end(void) {
     if (cleanup_cursor_used) {
       emit_cleanup_helper();
       output.insert(body_start, exception_locals+"int __edg_cleanup_state = 0;\nbool __edg_unwinding = false;\ntry {\n");
-      line("} catch when (__edg_begin_unwind(ref __edg_unwinding)) { throw; } finally {");
+      line("} catch (global::System.Exception __edg_unwind_error) when (__edg_begin_unwind(__edg_unwind_error, ref __edg_unwinding)) { throw; } finally {");
       line("if (__edg_unwinding) { "+cleanup_unwind("0")+" }");
       line("}");
+    }
+    if(function_vla_used) {
+      output.insert(body_start,"nint __edg_vla_mark = global::Edg.Runtime.Vla.Mark();\ntry {\n");
+      line("} finally { global::Edg.Runtime.Vla.Restore(__edg_vla_mark); }");
     }
     if (heap_frame) line("} finally { global::System.Runtime.InteropServices.NativeMemory.Free(__edg_frame_raw); }");
     if (no_throw) line("} catch (global::System.Exception error) { global::System.Environment.FailFast(\"Exception escaped noexcept function\", error); throw; }");
@@ -1234,12 +1279,17 @@ void back_end(void) {
       api.replace(pos + 1, name(r, "f").size(), exported);
       line("// dot-gen:member-begin");
       line(api + ") { /*__EDG_ENTER__*/ try { " + (type(rt->variant.routine.return_type) == "void" ? "" : "return ") +
-           name(r, "f") + "(" + args + "); } finally { /*__EDG_LEAVE__*/ global::System.GC.KeepAlive(" +
+           name(r, "f") + "(" + args + "); } /*__EDG_EXCEPTION_BOUNDARY__*/ finally { /*__EDG_LEAVE__*/ global::System.GC.KeepAlive(" +
            string(instance_mode ? "this" : "__edg_storage") + "); } }");
       line("// dot-gen:member-end");
     }
   }
   output += (nested_types ? type_output : "") + helper_output + address_output;
+  const string exception_boundary="/*__EDG_EXCEPTION_BOUNDARY__*/";
+  const string exception_boundary_code=exception_helpers_emitted?
+      "catch (global::System.Exception __edg_boundary_error) { __edg_end_exception(__edg_boundary_error); throw; }":"";
+  for(size_t pos=output.find(exception_boundary);pos!=string::npos;pos=output.find(exception_boundary,pos+exception_boundary_code.size()))
+    output.replace(pos,exception_boundary.size(),exception_boundary_code);
   for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_LIBC_THREAD_KEYS_RELEASE__*/",thread_keys_release_code()},{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_thread_release_code()},{"/*__EDG_LIBC_DISPOSE__*/",thread_disposal_code()+libc_disposal_code()}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);
   for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_ENTER__*/",lifecycle_emitted?"__edg_enter();":""},{"/*__EDG_LEAVE__*/",lifecycle_emitted?"__edg_leave();":""}})

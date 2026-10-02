@@ -1,6 +1,6 @@
 // Explicit import contracts for the portable LP64 libc bridge. Definitions in
 // translated input always win; an unknown symbol or mismatched ABI is an error.
-bool libc_enabled=false,libc_emitted=false,files_emitted=false,text_emitted=false,math_emitted=false;
+bool libc_enabled=false,libc_emitted=false,files_emitted=false,text_emitted=false,math_emitted=false,clock_emitted=false;
 std::set<a_routine_ptr> libc_routines;
 std::map<string,a_routine_ptr> libc_binding_addresses;
 std::map<a_routine_ptr,a_routine_ptr> libc_address_aliases;
@@ -18,6 +18,25 @@ string libc_builtin_symbol(a_routine_ptr r) {
   // builtin identities, not arbitrary user spellings beginning __builtin_.
   if(!special_kind_is(r,sfk_none))return "";
   switch(r->variant.builtin_function_kind) {
+    case bfk_memchr:return "memchr";
+    case bfk_memcmp:return "memcmp";
+    case bfk_memcpy:return "memcpy";
+    case bfk_memmove:return "memmove";
+    case bfk_memset:return "memset";
+    case bfk_strlen:return "strlen";
+    case bfk_strnlen:return "strnlen";
+    case bfk_strcmp:return "strcmp";
+    case bfk_strncmp:return "strncmp";
+    case bfk_strcpy:return "strcpy";
+    case bfk_strncpy:return "strncpy";
+    case bfk_strcat:return "strcat";
+    case bfk_strncat:return "strncat";
+    case bfk_strchr:return "strchr";
+    case bfk_strrchr:return "strrchr";
+    case bfk_strstr:return "strstr";
+    case bfk_strspn:return "strspn";
+    case bfk_strcspn:return "strcspn";
+    case bfk_strpbrk:return "strpbrk";
     case bfk_abs:return "abs";
     case bfk_labs:return "labs";
     case bfk_llabs:return "llabs";
@@ -53,10 +72,11 @@ const libc_binding libc_bindings[]={
 #include "libc-math-bindings.def"
 #include "libc-numeric-bindings.def"
 #include "libc-locale-bindings.def"
+#include "libc-clock-bindings.def"
 #undef EDG_LIBC
 };
 void reset_libc_imports() {
-  libc_emitted=false;files_emitted=false;text_emitted=false;math_emitted=false;libc_routines.clear();
+  libc_emitted=false;files_emitted=false;text_emitted=false;math_emitted=false;clock_emitted=false;libc_routines.clear();
   libc_binding_addresses.clear();libc_address_aliases.clear();
 }
 string libc_thread_release_code() {return string(text_emitted?"__edg_text_value?.ReleaseThread();":"")+(libc_emitted?"__edg_libc.ReleaseThread();":"");}
@@ -135,6 +155,26 @@ void ensure_math() {
   helper_output+="private "+mod+"global::Edg.Runtime.LibcMath? __edg_math_value;\n";
   helper_output+="private "+mod+"global::Edg.Runtime.LibcMath __edg_math { get { lock(__edg_libc) { if(__edg_math_value==null)__edg_math_value=new global::Edg.Runtime.LibcMath(__edg_libc.SetErrno); return __edg_math_value; } } }\n";
 }
+void ensure_clock() {
+  if(clock_emitted)return;
+  ensure_libc();clock_emitted=true;
+  string mod=instance_mode?"":"static ";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcClock? __edg_clock_value;\n";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcClock __edg_clock { get { lock(__edg_libc) { if(__edg_clock_value==null)__edg_clock_value=new global::Edg.Runtime.LibcClock(__edg_libc.SetErrno); return __edg_clock_value; } } }\n";
+}
+bool libc_timespec_pointer(a_type_ptr t) {
+  t=skip_typerefs(t);if(t->kind!=tk_pointer || t->size!=8)return false;
+  t=skip_typerefs(t->variant.pointer.type);
+  if((t->kind!=tk_struct && t->kind!=tk_class) || t->incomplete || t->size!=16 || alignment_of_type(t)!=8 ||
+     !t->source_corresp.name || string(t->source_corresp.name)!="timespec" ||
+     !t->source_corresp.parent_scope || t->source_corresp.parent_scope->kind!=sck_file)return false;
+  const char* field_names[]={"tv_sec","tv_nsec"};unsigned index=0;
+  for(auto f=t->variant.class_struct_union.field_list;f;f=f->next,++index) {
+    if(index>=2 || f->is_bit_field || !f->source_corresp.name || string(f->source_corresp.name)!=field_names[index] ||
+       f->offset!=index*8 || type(f->type)!="long")return false;
+  }
+  return index==2;
+}
 bool libc_file_pointer(a_type_ptr t) {
   t=skip_typerefs(t);if(t->kind!=tk_pointer)return false;
   t=skip_typerefs(t->variant.pointer.type);
@@ -164,8 +204,9 @@ bool libc_lconv_pointer(a_type_ptr t) {
   }
   return index==24;
 }
-bool libc_boundary_pointer(a_type_ptr t) {return libc_file_pointer(t)||libc_locale_pointer(t)||libc_lconv_pointer(t);}
+bool libc_boundary_pointer(a_type_ptr t) {return libc_file_pointer(t)||libc_locale_pointer(t)||libc_lconv_pointer(t)||libc_timespec_pointer(t);}
 string libc_abi_type(a_type_ptr t) {
+  if(libc_timespec_pointer(t))return "TIMESPEC*";
   if(libc_file_pointer(t))return "FILE*";
   if(libc_locale_pointer(t))return "LOCALE*";
   if(libc_lconv_pointer(t))return "LCONV*";
@@ -231,6 +272,7 @@ bool libc_routine(a_routine_ptr r) {
     ensure_libc();if(string(binding.target).find("__edg_files.")==0)ensure_files();
     if(string(binding.target).find("__edg_text.")==0)ensure_text();
     if(string(binding.target).find("__edg_math.")==0)ensure_math();
+    if(string(binding.target).find("__edg_clock.")==0)ensure_clock();
     libc_register_routine(r,binding.symbol);
     helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+name(r,"f")+"("+signature+") { "+
       (result=="void"?"":"return ")+(libc_boundary_pointer(rt->variant.routine.return_type)?"("+result+")":"")+binding.target+"("+args+"); }\n// dot-gen:member-end\n";

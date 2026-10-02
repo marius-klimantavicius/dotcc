@@ -1,0 +1,19 @@
+--- a/iswblank.c
++++ b/iswblank.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ #include <ctype.h>
+ 
+@@ -6,9 +7,9 @@
+ 	return isblank(wc);
+ }
+ 
+-int __iswblank_l(wint_t c, locale_t l)
++int iswblank_l(wint_t c, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return iswblank(c);
+ }
+ 
+-weak_alias(__iswblank_l, iswblank_l);

@@ -1,0 +1,19 @@
+--- a/iswalpha.c
++++ b/iswalpha.c
+@@ -1,3 +1,4 @@
++#include "wide_compat.h"
+ #include <wctype.h>
+ 
+ static const unsigned char table[] = {
+@@ -13,9 +14,9 @@
+ 	return 0;
+ }
+ 
+-int __iswalpha_l(wint_t c, locale_t l)
++int iswalpha_l(wint_t c, locale_t l)
+ {
++	if (!__edg_locale_validate(l)) return 0;
+ 	return iswalpha(c);
+ }
+ 
+-weak_alias(__iswalpha_l, iswalpha_l);

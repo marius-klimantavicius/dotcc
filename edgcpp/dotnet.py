@@ -18,7 +18,7 @@ RUNTIME_DEPENDENCIES = {
     "LibcFiles": ("LibcAppend", "LibcPaths"), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
-    "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
+    "LibcClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
     "LibcxxThreads": (),
 }
 

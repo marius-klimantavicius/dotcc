@@ -1,0 +1,5 @@
+// Strict 16-byte LP64 struct timespec; only realtime and monotonic IDs admitted.
+EDG_LIBC("clock_gettime", "int", "int,TIMESPEC*", "__edg_clock.ClockGettime")
+EDG_LIBC("timespec_get", "int", "TIMESPEC*,int", "__edg_clock.TimespecGet")
+EDG_LIBC("time", "long", "long*", "__edg_clock.Time")
+EDG_LIBC("difftime", "double", "long,long", "global::Edg.Runtime.LibcClock.Difftime")
